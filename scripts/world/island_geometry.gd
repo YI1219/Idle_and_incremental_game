@@ -122,18 +122,19 @@ static func build_island(cells: Dictionary, river_polygons: Array, high_detail: 
 	for cell: Vector2i in water_cells:
 		if cells.has(cell):
 			hole_cutters.append(cell_quad(cell))
-	var top := build_top(scale_from_centroid(smooth_high, OVERHANG), hole_cutters)
-	var volume := build_core(smooth_high, true)
-	var low := build_core(smooth_low, false)
+	var top := build_top(smooth_high, hole_cutters)
+	var volume := _empty_mesh()
+	var low := _empty_mesh()
 	var centroid := _centroid3(cells)
 	return {
 		"top": top,
 		"volume": volume,
 		"low_volume": low,
 		"centroid": centroid,
-		"bounds": _bounds_of(volume),
+		"bounds": AABB(centroid + Vector3(0, -4, 0), Vector3(1, 1, 1)),
 		"cell_count": cells.size(),
 		"outline": smooth_high,
+		"cutters": hole_cutters,
 	}
 
 
@@ -317,7 +318,7 @@ static func build_top(outline: PackedVector2Array, cutters: Array) -> ArrayMesh:
 	for piece in triangles:
 		if _centroid_in(piece, cutters):
 			continue
-		_emit_top(st, piece, cutters)
+		_emit_top(st, piece, cutters, outline)
 	st.generate_normals()
 	return st.commit()
 
@@ -552,12 +553,12 @@ static func _tri(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, ta: float,
 	for item in [[a, ta], [b, tb], [c, tc]]:
 		var p: Vector3 = item[0]
 		st.set_normal(normal)
-		st.set_color(Color(float(item[1]), 0.18, 0.08))
+		st.set_color(Color(float(item[1]), float(item[1]), 0.08))
 		st.set_uv(Vector2(p.x, p.z) * 0.12)
 		st.add_vertex(p)
 
 
-static func _emit_top(st: SurfaceTool, polygon: PackedVector2Array, cutters: Array = []) -> void:
+static func _emit_top(st: SurfaceTool, polygon: PackedVector2Array, cutters: Array = [], rim: PackedVector2Array = PackedVector2Array()) -> void:
 	var indices := Geometry2D.triangulate_polygon(polygon)
 	if indices.is_empty():
 		return
@@ -568,7 +569,39 @@ static func _emit_top(st: SurfaceTool, polygon: PackedVector2Array, cutters: Arr
 		var top_tris: Array = []
 		_emit_capped(top_tris, tri, 0.0, 1.0, false)
 		for item in top_tris:
-			_tri(st, item[0], item[1], item[2], item[3], item[4], item[5])
+			_tri_top(st, item[0], item[1], item[2], rim)
+
+
+static func _tri_top(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, rim: PackedVector2Array) -> void:
+	var normal := (b - a).cross(c - a)
+	if normal.length_squared() < 1e-10:
+		return
+	normal = normal.normalized()
+	for p in [a, b, c]:
+		st.set_normal(normal)
+		st.set_color(Color(1.0, _inland(Vector2(p.x, p.z), rim), 0.08))
+		st.set_uv(Vector2(p.x, p.z) * 0.12)
+		st.add_vertex(p)
+
+
+static func _inland(p: Vector2, rim: PackedVector2Array) -> float:
+	if rim.size() < 3:
+		return 1.0
+	var d := _dist_to_edges(p, rim)
+	if not Geometry2D.is_point_in_polygon(p, rim):
+		return 0.0
+	return clampf(d / 0.70, 0.0, 1.0)
+
+
+static func _dist_to_edges(p: Vector2, rim: PackedVector2Array) -> float:
+	var best := INF
+	for i in rim.size():
+		var a := rim[i]
+		var b := rim[(i + 1) % rim.size()]
+		var ab := b - a
+		var t := clampf((p - a).dot(ab) / maxf(ab.length_squared(), 1e-8), 0.0, 1.0)
+		best = minf(best, p.distance_to(a + ab * t))
+	return best if best < INF else 0.0
 
 
 static func _covers_cutter(tri: PackedVector2Array, cutters: Array) -> bool:

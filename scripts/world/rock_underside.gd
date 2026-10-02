@@ -4,11 +4,12 @@ extends Object
 const RockKit := preload("res://scripts/world/rock_kit.gd")
 
 ## s, top y, target width, scale min/max, z-stretch min/max, tilt deg, spacing, pool, protrude
+const GROUND_Y := 0.0
 const RINGS := [
-	[1.04, -0.02, 2.85, 0.78, 1.34, 0.55, 0.78, 9.0, 0.52, "rim", 0.42],
-	[0.80, -1.15, 2.45, 0.80, 1.22, 0.95, 1.20, 14.0, 0.60, "rim+mid", 0.06],
-	[0.58, -2.20, 2.15, 0.80, 1.16, 1.05, 1.32, 18.0, 0.64, "mid+rim", 0.0],
-	[0.36, -3.20, 1.85, 0.80, 1.12, 1.10, 1.38, 22.0, 0.70, "mid", 0.0],
+	[1.015, 0.58, 2.85, 0.78, 1.34, 0.62, 0.88, 8.0, 0.54, "rim", 0.36],
+	[0.80, -0.95, 2.45, 0.80, 1.22, 0.95, 1.20, 14.0, 0.60, "rim+mid", 0.06],
+	[0.58, -2.10, 2.15, 0.80, 1.16, 1.05, 1.32, 18.0, 0.64, "mid+rim", 0.0],
+	[0.36, -3.15, 1.85, 0.80, 1.12, 1.10, 1.38, 22.0, 0.70, "mid", 0.0],
 ]
 const JITTER_ARC := 0.28
 const JITTER_RADIAL := 0.18
@@ -71,7 +72,7 @@ static func respace(prev: Dictionary, outline: PackedVector2Array, seed: int, fa
 	}
 
 
-static func any_floating(state: Dictionary, outline: PackedVector2Array, slab_y: float = 0.12) -> bool:
+static func any_floating(state: Dictionary, outline: PackedVector2Array, _slab_y: float = 0.12) -> bool:
 	var mid := _centroid(outline)
 	var reach := 0.0
 	for p in outline:
@@ -79,11 +80,60 @@ static func any_floating(state: Dictionary, outline: PackedVector2Array, slab_y:
 	reach += 2.8
 	for slot in state.get("slots", []):
 		var xf: Transform3D = slot["xf"]
-		if xf.origin.y > slab_y:
-			return true
 		if Vector2(xf.origin.x, xf.origin.z).distance_to(mid) > reach:
 			return true
+		var info: Dictionary = RockKit.piece(String(slot["piece"]))
+		var bottom := xf.origin.y - float(info.get("height", 1.0)) * xf.basis.y.length()
+		if bottom > GROUND_Y + 0.05:
+			return true
 	return false
+
+
+static func cover_outline(outline: PackedVector2Array, state: Dictionary) -> PackedVector2Array:
+	if outline.size() < 3:
+		return outline
+	var mid := _centroid(outline)
+	var bins := 72
+	var rad := PackedFloat32Array()
+	rad.resize(bins)
+	for p in outline:
+		var i := _bin(p - mid, bins)
+		rad[i] = maxf(rad[i], p.distance_to(mid))
+	RockKit.ensure()
+	for slot in state.get("slots", []):
+		if int(slot.get("ring", 0)) > 0:
+			continue
+		var xf: Transform3D = slot["xf"]
+		var info: Dictionary = RockKit.piece(String(slot["piece"]))
+		var mesh: ArrayMesh = info.get("mesh")
+		if mesh == null:
+			continue
+		var box := mesh.get_aabb()
+		for x in [0.0, 1.0]:
+			for y in [0.0, 1.0]:
+				for z in [0.0, 1.0]:
+					var w: Vector3 = xf * (box.position + box.size * Vector3(x, y, z))
+					if w.y < -1.1:
+						continue
+					var q := Vector2(w.x, w.z)
+					var i := _bin(q - mid, bins)
+					rad[i] = maxf(rad[i], q.distance_to(mid) + 0.05)
+	for i in bins:
+		if rad[i] <= 0.01:
+			var prev := rad[(i - 1 + bins) % bins]
+			var nxt := rad[(i + 1) % bins]
+			rad[i] = maxf(prev, nxt)
+	var out := PackedVector2Array()
+	out.resize(bins)
+	for i in bins:
+		var ang := -PI + TAU * (float(i) + 0.5) / float(bins)
+		out[i] = mid + Vector2(cos(ang), sin(ang)) * (rad[i] + 0.04)
+	return out
+
+
+static func _bin(d: Vector2, bins: int) -> int:
+	var ang := atan2(d.y, d.x)
+	return posmod(int(floor((ang + PI) / TAU * float(bins))), bins)
 
 
 static func triangle_count(state: Dictionary) -> int:

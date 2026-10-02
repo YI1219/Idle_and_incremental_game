@@ -28,7 +28,9 @@ func run() -> void:
 	print("rockkit_bench: playable")
 	var starter := _rect(-6, 7, -6, 4)
 	terrain.configure(starter)
-	await _settle(8)
+	await _settle(4)
+	terrain.flush_bakes()
+	await _settle(2)
 	var playable: Dictionary = terrain.rock_stats()
 	lines.append(_block("playable courtyard (~130 cells, 1 island)", playable, await _frame_sample(12)))
 
@@ -39,6 +41,7 @@ func run() -> void:
 	var large_build_ms := float(Time.get_ticks_usec() - t0) / 1000.0
 	print("rockkit_bench: 4x build %.1f ms" % large_build_ms)
 	await _settle(2)
+	terrain.flush_bakes()
 	var large_stats: Dictionary = terrain.rock_stats()
 	large_stats["build_ms"] = large_build_ms
 	lines.append(_block("4x-area island (%d cells, 1 island)" % large.size(), large_stats, await _frame_sample(12)))
@@ -67,6 +70,7 @@ func run() -> void:
 	var multi_build_ms := float(Time.get_ticks_usec() - t0) / 1000.0
 	print("rockkit_bench: multi build %.1f ms" % multi_build_ms)
 	await _settle(2)
+	terrain.flush_bakes()
 	var far := Vector3(80, 12, 80)
 	if terrain.has_method("refresh_lod"):
 		terrain.refresh_lod(far)
@@ -100,8 +104,10 @@ func _block(title: String, stats: Dictionary, frames: Dictionary) -> String:
 			stats.get("islands", 0), stats.get("pieces", 0),
 			stats.get("triangles", 0), stats.get("draw_calls", 0),
 		],
-		"build_ms=%s  last_rock_rebuild_ms=%s" % [
+		"build_ms=%s  last_rock_rebuild_ms=%s  bake_ms=%s  hitch_ms=%s  baked_islands=%s" % [
 			stats.get("build_ms", "-"), stats.get("rebuild_ms", 0),
+			stats.get("bake_ms", "-"), stats.get("hitch_ms", "-"),
+			stats.get("baked_islands", 0),
 		],
 		"process_ms avg/max=%.2f/%.2f  physics_ms avg/max=%.2f/%.2f  fps_est=%.1f" % [
 			frames["process_avg"], frames["process_max"],

@@ -55,6 +55,14 @@ func flush_rebuild() -> void:
 	if _pending_rebuild:
 		_pending_rebuild = false
 		rebuild()
+	flush_bakes()
+
+
+func flush_bakes() -> void:
+	for child in _islands_root.get_children():
+		if child.has_method("flush_bake"):
+			child.flush_bake()
+	_assemble_island_meshes()
 
 
 func _process(delta: float) -> void:
@@ -164,6 +172,7 @@ func _ensure_nodes() -> void:
 		mesh_instance.name = pair[1]
 		mesh_instance.material_override = pair[2]
 		add_child(mesh_instance)
+	_cliff_mesh.visible = false
 	_islands_root.name = "Islands"
 	add_child(_islands_root)
 
@@ -279,6 +288,8 @@ func _rebuild_islands() -> void:
 			built["rocks"] = RockUnderside.respace(matched["rocks"], built["outline"], seed, false)
 		else:
 			built["rocks"] = RockUnderside.assemble(built["outline"], seed, false)
+		var cover: PackedVector2Array = RockUnderside.cover_outline(built["outline"], built["rocks"])
+		built["top"] = IslandGeometry.build_top(cover, built.get("cutters", []))
 		rock_ms += float(Time.get_ticks_usec() - t0) / 1000.0
 		built["rock_seed"] = seed
 		next_cache[key] = built
@@ -315,19 +326,31 @@ func rock_stats() -> Dictionary:
 	var pieces := 0
 	var tris := 0
 	var draw := 0
+	var bake_ms := 0.0
+	var hitch_ms := 0.0
+	var baked_n := 0
 	for child in _islands_root.get_children():
 		var state: Dictionary = child.get("rock_state") if child.get("rock_state") != null else {}
 		if state.is_empty():
 			var key := int(child.get("island_hash"))
 			state = island_cache.get(key, {}).get("rocks", {})
 		pieces += int(state.get("piece_count", 0))
-		tris += RockUnderside.triangle_count(state)
-		var kit := child.get_node_or_null("RockKit")
-		if kit:
-			for mmi in kit.get_children():
-				if mmi is MultiMeshInstance3D and (mmi as MultiMeshInstance3D).visible:
-					draw += 1
-	if _cliff_mesh and _cliff_mesh.mesh and _cliff_mesh.mesh.get_surface_count() > 0:
+		if bool(child.get("baked")):
+			baked_n += 1
+			tris += int(child.baked_triangles()) if child.has_method("baked_triangles") else 0
+			bake_ms = maxf(bake_ms, float(child.get("last_bake_ms")))
+			hitch_ms = maxf(hitch_ms, float(child.get("last_hitch_ms")))
+			var baked_node := child.get_node_or_null("BakedUnderside")
+			if baked_node and baked_node.visible:
+				draw += 1
+		else:
+			tris += RockUnderside.triangle_count(state)
+			var kit := child.get_node_or_null("RockKit")
+			if kit:
+				for mmi in kit.get_children():
+					if mmi is MultiMeshInstance3D and (mmi as MultiMeshInstance3D).visible:
+						draw += 1
+	if _cliff_mesh and _cliff_mesh.visible and _cliff_mesh.mesh and _cliff_mesh.mesh.get_surface_count() > 0:
 		draw += 1
 		tris += int(_cliff_mesh.mesh.get_faces().size() / 3)
 	return {
@@ -336,6 +359,9 @@ func rock_stats() -> Dictionary:
 		"triangles": tris,
 		"draw_calls": draw,
 		"rebuild_ms": last_rock_rebuild_ms,
+		"bake_ms": bake_ms,
+		"hitch_ms": hitch_ms,
+		"baked_islands": baked_n,
 	}
 
 
@@ -379,6 +405,7 @@ func _assemble_island_meshes() -> void:
 			volumes.append(island_cache[key].get("volume"))
 	_land_mesh.mesh = IslandGeometry.combine_meshes(tops)
 	_cliff_mesh.mesh = IslandGeometry.combine_meshes(volumes)
+	_cliff_mesh.visible = false
 
 
 func _build_land() -> ArrayMesh:

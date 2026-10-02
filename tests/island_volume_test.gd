@@ -3,6 +3,8 @@ extends SceneTree
 const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
 const IslandPresence := preload("res://scripts/world/island_presence.gd")
 const RiverTerrain := preload("res://scripts/world/river_terrain.gd")
+const RockUnderside := preload("res://scripts/world/rock_underside.gd")
+const RockBaker := preload("res://scripts/world/rock_baker.gd")
 
 var checks := 0
 var failures := 0
@@ -35,10 +37,14 @@ func _geometry() -> void:
 	var built: Dictionary = IslandGeometry.build_island(rect, [], true)
 	check(built.outline.size() > 8, "smoothed coastline has more than the raw rectangle corners")
 	check(not IslandGeometry.has_rectangular_top(built.top), "top outline is not a raw rectangle")
-	check(IslandGeometry.lowest_y(built.volume) < -3.0, "volume hangs an inverted rocky underside")
-	check(IslandGeometry.is_closed_volume(built.volume), "underside is a closed watertight volume")
-	check(IslandGeometry.outward_normal_ratio(built.volume) > 0.88, "volume triangle windings face outward")
-	check(built.low_volume.get_surface_count() > 0, "low-detail mesh is produced")
+	var rocks: Dictionary = RockUnderside.assemble(built.outline, 7)
+	var baked: Dictionary = RockBaker.bake(rocks)
+	check(int(rocks.piece_count) > 8, "rock kit hangs under the top")
+	check(bool(baked.get("ok", false)), "underside bake produces a mesh")
+	check(float(baked.get("max_y", 1.0)) <= 0.03, "baked rock stays at or below the grass plane")
+	check(RockBaker.is_closed_enough(baked), "baked underside is closed except the grass cut")
+	check(RockBaker.has_no_interior_proxy(baked), "baked underside keeps only outer faces")
+	check(IslandGeometry.lowest_y(RockBaker.make_mesh(baked)) < -1.6, "baked volume hangs below the slab")
 	var two: Dictionary = {}
 	for cell in [Vector2i(0, 0), Vector2i(8, 8)]:
 		two[cell] = true
@@ -75,7 +81,10 @@ func _terrain_islands() -> void:
 	await process_frame
 	var first_rebuilds: int = terrain.island_rebuilds
 	check(terrain.island_count() == 1, "starter block is one island")
-	check(IslandGeometry.lowest_y(terrain.get_node("IslandCliff").mesh) < -3.0, "merged cliff is a hanging volume")
+	terrain.flush_bakes()
+	var presence: Node3D = terrain.get_node("Islands").get_child(0)
+	check(bool(presence.get("baked")), "settled island swaps in a baked underside")
+	check(IslandGeometry.lowest_y(presence.current_volume()) < -1.6, "baked cliff is a hanging volume")
 	terrain.land_cells[Vector2i(12, 12)] = true
 	terrain.rebuild()
 	check(terrain.island_count() == 2, "a distant cell is a second island")

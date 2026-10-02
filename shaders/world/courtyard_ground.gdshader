@@ -53,8 +53,15 @@ void fragment() {
 	float bands = smoothstep(0.35, 0.65, fract(world_pos.y * 0.55 + noise(p * 0.4) * 0.18));
 	vec3 rock = mix(earth_color.rgb, rock_color.rgb, bands);
 	rock += (noise(vec2(world_pos.y * 1.7, p.x * 0.35)) - 0.5) * 0.04;
-	float turf = smoothstep(0.48, 0.90, world_normal.y) * COLOR.r;
-	turf = clamp(turf + (noise(p * 2.4) - 0.5) * 0.06, 0.0, 1.0);
-	ALBEDO = mix(rock, top, turf);
-	ROUGHNESS = mix(0.88, 0.94, turf);
+	float inland = COLOR.g;
+	if (inland < 0.001 && COLOR.r > 0.5) {
+		inland = 1.0;
+	}
+	float soil_w = 1.0 - smoothstep(0.10, 0.48, inland + (noise(p * 3.1) - 0.5) * 0.08);
+	float rock_w = 1.0 - smoothstep(0.00, 0.20, inland + (noise(p * 2.2) - 0.5) * 0.05);
+	vec3 rim = mix(top, earth_color.rgb, soil_w);
+	rim = mix(rim, rock, rock_w * 0.85);
+	float turf = smoothstep(0.48, 0.90, world_normal.y);
+	ALBEDO = mix(rock, rim, turf);
+	ROUGHNESS = mix(0.88, 0.94, turf * inland);
 }

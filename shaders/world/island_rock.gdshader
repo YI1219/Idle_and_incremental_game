@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode diffuse_toon, specular_disabled, shadows_disabled, cull_back;
+uniform float ground_y = 0.0;
 varying float world_y;
 varying vec3 world_n;
 varying float jitter;
@@ -12,6 +13,9 @@ void vertex() {
 }
 
 void fragment() {
+	if (world_y > ground_y) {
+		discard;
+	}
 	float t = clamp((-world_y - 0.08) / 6.4, 0.0, 1.0);
 	vec3 warm = vec3(0.608, 0.490, 0.392);
 	vec3 mid = vec3(0.525, 0.475, 0.435);

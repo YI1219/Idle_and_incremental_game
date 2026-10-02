@@ -25,10 +25,23 @@ func run() -> void:
 	rig.snap_to_target()
 	if builder:
 		builder.set_active(false)
+	if island and island.terrain and island.terrain.has_method("flush_bakes"):
+		island.terrain.flush_bakes()
 	await shot("res://art/review/island_style/2026-10-02/overview_play.png")
 	rig._distance = rig.min_distance
 	rig.snap_to_target()
 	await shot("res://art/review/island_style/2026-10-02/closeup_play.png")
+	rig.set_physics_process(false)
+	var edge_from := Vector3(2.4, 1.45, 6.2)
+	var edge_look := Vector3(0.8, 0.02, 3.05)
+	rig.global_transform = Transform3D(Basis.looking_at(edge_look - edge_from, Vector3.UP), edge_from)
+	var edge_cam := rig.get_node_or_null("Camera3D") as Camera3D
+	if edge_cam:
+		edge_cam.fov = 36
+	await shot("res://art/review/island_style/2026-10-02/grass_edge.png")
+	rig.set_physics_process(true)
+	rig._distance = rig.default_distance
+	rig.snap_to_target()
 	if builder:
 		builder.set_active(true)
 	rig._distance = rig.default_distance
@@ -55,7 +68,9 @@ func run() -> void:
 	terrain.rebuild()
 	if terrain.has_method("flush_rebuild"):
 		terrain.flush_rebuild()
-	await frames(20)
+	if terrain.has_method("flush_bakes"):
+		terrain.flush_bakes()
+	await frames(12)
 	if camera:
 		camera.fov = 38
 	from = Vector3(-26.0, 16.0, 28.0)
@@ -78,7 +93,9 @@ func run() -> void:
 			for z in range(off.y, off.y + 4):
 				terrain.land_cells[Vector2i(x, z)] = true
 	terrain.rebuild()
-	await frames(20)
+	if terrain.has_method("flush_bakes"):
+		terrain.flush_bakes()
+	await frames(12)
 	from = Vector3(-8.0, 42.0, 54.0)
 	look = Vector3(2.0, -1.0, 0.0)
 	rig.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
