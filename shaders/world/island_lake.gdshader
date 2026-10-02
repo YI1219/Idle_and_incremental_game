@@ -14,8 +14,8 @@ void vertex() {
 void fragment() {
 	float depth = clamp(shore, 0.0, 1.0);
 	vec2 p = world_pos.xz;
-	float n1 = sin(p.x * 3.2 + TIME * 0.52) + sin(p.z * 4.0 - TIME * 0.38);
-	float n2 = sin(p.x * 7.6 - p.z * 5.1 + TIME * 0.88);
+	float n1 = sin(p.x * 3.2 + TIME * 0.52) + sin(p.y * 4.0 - TIME * 0.38);
+	float n2 = sin(p.x * 7.6 - p.y * 5.1 + TIME * 0.88);
 	vec3 col = mix(shallow.rgb, deep.rgb, smoothstep(0.10, 0.80, depth));
 	col += n1 * 0.018;
 	float foam = (1.0 - smoothstep(0.0, 0.30, depth)) * (0.72 + n2 * 0.10);
