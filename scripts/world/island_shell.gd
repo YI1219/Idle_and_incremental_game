@@ -22,6 +22,7 @@ var _targets: PackedColorArray = PackedColorArray()
 var _shown: PackedColorArray = PackedColorArray()
 var _hud_accum := 0.0
 var _clock_minutes := 0.0
+var _terrain_visual_ready := false
 
 
 func _ready() -> void:
@@ -170,7 +171,11 @@ func rebuild_instances() -> void:
 	_rebuild_facilities()
 	_refresh_hud()
 	if terrain:
-		terrain.configure(sim.cells_in_order)
+		if not _terrain_visual_ready:
+			terrain.configure(sim.cells_in_order)
+			_terrain_visual_ready = true
+		else:
+			terrain.apply_cells_deferred(sim.cells_in_order)
 
 
 func _rebuild_facilities() -> void:

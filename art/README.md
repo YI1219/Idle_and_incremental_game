@@ -28,6 +28,8 @@ Old `cottage_demo.blend` / `cottage_demo.glb` and direct-modeling scripts are hi
 
 Unsuitable nature-asset four-views and their generation lists have been deleted. Pines are not a prerequisite for the next stage. Evaluate [complete free packs](../docs/art/free_asset_candidates.md) across multiple layouts; do not copy the concept-image landscape.
 
+Island undersides now use a committed CC0 rock kit under [`assets/rockkit/`](../assets/rockkit/): eight KayKit Forest Nature Pack 1.0 FREE rocks and two Quaternius Stylized Nature MegaKit Standard rocks, plus license files and [`ASSET_SOURCES.md`](../assets/rockkit/ASSET_SOURCES.md). Source textures are imported only for completeness; runtime colour is the shared world-height rock shader. Prototype rules: [`notes/rockkit-test/README.md`](../notes/rockkit-test/README.md).
+
 Kenney Nature Kit (enclosed version 2.1) and Quaternius Stylized Nature MegaKit Standard (68 glTF models) have now been downloaded, with enclosed CC0 licenses checked and originals retained. Five models from each were tested in three static layouts and three camera views. [Quaternius comparison and source links](review/module_probe/2026-09-20/quaternius/review.md). Eight unchanged Quaternius models are now integrated in the default courtyard with grouped planting, shared foliage/wind, ground contact, water, cottage and sky material refinement. [Environment review](review/visual_refinement/2026-09-20/review.md) includes two layouts at three cameras and source provenance. The earlier comparison samples remain in art/work/module_probe. Final foliage detail, placement acceptance, and target-device performance are still pending.
 
 ## Acceptance boundary

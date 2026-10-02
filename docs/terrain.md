@@ -61,7 +61,7 @@ Tiny Glade–style stroke auto-join is left for later roofs and paths, not as th
 
 ## Cliffs and cloud sea
 
-Logic cells stay a sparse 1 m grid (play, cost, footprints). The visible courtyard is not that grid. Each connected land component is built as its own floating volume: a large-radius Chaikin/Catmull-Rom coastline with low-frequency wobble, a grass overhang into a rounded shoulder, and one closed inverted-cone rocky underside (centroid-scaled rings, no local-normal spikes) hanging in the cloud sea. Grass top and earth/rock sides blend in the ground shader by normal and vertex color. Islands do not need to stay connected; any number of independent landmasses may exist.
+Logic cells stay a sparse 1 m grid (play, cost, footprints). The visible courtyard is not that grid. Each connected land component is built as its own floating volume: a large-radius Chaikin/Catmull-Rom coastline with low-frequency wobble, a grass overhang into a rounded shoulder, and a rule-based rock-kit underside (CC0 KayKit + Quaternius pieces on MultiMeshes, world-height rock shader, hidden faceted occluder core). The old smooth inverted cone is gone. Grass top stays procedural. Islands do not need to stay connected; any number of independent landmasses may exist. Unchanged islands skip rebuild; dirty islands respace existing rock slots; land paint debounces the visual rebuild.
 
 Cloud sea is a viewing layer under/outside the island (high-contrast unshaded billow planes plus mild height fog). It is not a cell and does not join the bitmask. Walking stops on the side with no neighbor. Distant mountains and distant islands are not drawn.
 

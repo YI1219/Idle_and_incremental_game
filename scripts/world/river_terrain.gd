@@ -6,6 +6,8 @@ extends Node3D
 const Blob47 := preload("res://scripts/world/blob47.gd")
 const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
 const IslandPresence := preload("res://scripts/world/island_presence.gd")
+const RockUnderside := preload("res://scripts/world/rock_underside.gd")
+const RockKit := preload("res://scripts/world/rock_kit.gd")
 const WATER_DROP := 0.18
 const CLIFF_BOTTOM := -0.72
 const BANK_INSET := 0.28
@@ -18,6 +20,10 @@ var bridge_cells: Dictionary = {}
 var blob_masks: Dictionary = {}
 var island_rebuilds: int = 0
 var island_cache: Dictionary = {}
+var last_rock_rebuild_ms: float = 0.0
+var _pending_rebuild := false
+var _pending_wait := 0.0
+const REBUILD_DEBOUNCE := 0.055
 
 var _land_mesh := MeshInstance3D.new()
 var _water_mesh := MeshInstance3D.new()
@@ -34,6 +40,33 @@ func _ready() -> void:
 
 
 func configure(cells: Array[Vector2i]) -> void:
+	_apply_cells(cells)
+	_pending_rebuild = false
+	rebuild()
+
+
+func apply_cells_deferred(cells: Array[Vector2i]) -> void:
+	_apply_cells(cells)
+	_pending_rebuild = true
+	_pending_wait = REBUILD_DEBOUNCE
+
+
+func flush_rebuild() -> void:
+	if _pending_rebuild:
+		_pending_rebuild = false
+		rebuild()
+
+
+func _process(delta: float) -> void:
+	if not _pending_rebuild:
+		return
+	_pending_wait -= delta
+	if _pending_wait <= 0.0:
+		_pending_rebuild = false
+		rebuild()
+
+
+func _apply_cells(cells: Array[Vector2i]) -> void:
 	land_cells.clear()
 	for cell in cells:
 		land_cells[cell] = true
@@ -45,7 +78,6 @@ func configure(cells: Array[Vector2i]) -> void:
 	for cell in [Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1)]:
 		if land_cells.has(cell):
 			bridge_cells[cell] = true
-	rebuild()
 
 
 func set_water_cell(cell: Vector2i, enabled: bool) -> void:
@@ -60,6 +92,7 @@ func set_water_cell(cell: Vector2i, enabled: bool) -> void:
 
 
 func rebuild() -> void:
+	_pending_rebuild = false
 	_ensure_nodes()
 	_rebuild_masks()
 	_river_polygons = _make_river_polygons()
@@ -118,7 +151,8 @@ func _default_river() -> Array[Vector2i]:
 func _ensure_nodes() -> void:
 	if _land_mesh.get_parent() == self:
 		return
-	_volume_material = _land_material()
+	RockKit.ensure()
+	_volume_material = RockKit.rock_material if RockKit.rock_material else _land_material()
 	for pair in [
 		[_land_mesh, "LandSurface", _volume_material],
 		[_water_mesh, "JadeWater", _water_material()],
@@ -224,6 +258,8 @@ func _cell_polygon(cell: Vector2i) -> PackedVector2Array:
 func _rebuild_islands() -> void:
 	var next_cache: Dictionary = {}
 	island_rebuilds = 0
+	var used_old: Dictionary = {}
+	var rock_ms := 0.0
 	for group in IslandGeometry.components(land_cells):
 		var water_in_group: Dictionary = {}
 		for cell: Vector2i in water_cells:
@@ -232,14 +268,73 @@ func _rebuild_islands() -> void:
 		var key: int = IslandGeometry.cells_hash(group) * 10007 + IslandGeometry.cells_hash(water_in_group)
 		if island_cache.has(key):
 			next_cache[key] = island_cache[key]
+			used_old[key] = true
 			continue
 		var built: Dictionary = IslandGeometry.build_island(group, _river_polygons, true, water_cells)
 		built["cells"] = group
+		var matched := _match_island(group, used_old)
+		var seed := int(matched.get("rock_seed", IslandGeometry.cells_hash(group)))
+		var t0 := Time.get_ticks_usec()
+		if matched.has("rocks") and (matched["rocks"] as Dictionary).has("slots"):
+			built["rocks"] = RockUnderside.respace(matched["rocks"], built["outline"], seed, false)
+		else:
+			built["rocks"] = RockUnderside.assemble(built["outline"], seed, false)
+		rock_ms += float(Time.get_ticks_usec() - t0) / 1000.0
+		built["rock_seed"] = seed
 		next_cache[key] = built
 		island_rebuilds += 1
 	island_cache = next_cache
+	last_rock_rebuild_ms = rock_ms
 	_sync_presence()
 	_assemble_island_meshes()
+
+
+func _match_island(group: Dictionary, used_old: Dictionary) -> Dictionary:
+	var best := {}
+	var best_n := 0
+	var best_key := 0
+	for key in island_cache.keys():
+		if used_old.has(key):
+			continue
+		var prev: Dictionary = island_cache[key]
+		var cells: Dictionary = prev.get("cells", {})
+		var n := 0
+		for cell: Vector2i in group:
+			if cells.has(cell):
+				n += 1
+		if n > best_n:
+			best_n = n
+			best = prev
+			best_key = int(key)
+	if best_n > 0:
+		used_old[best_key] = true
+	return best
+
+
+func rock_stats() -> Dictionary:
+	var pieces := 0
+	var tris := 0
+	var draw := 0
+	for row in island_cache.values():
+		var rocks: Dictionary = row.get("rocks", {})
+		pieces += int(rocks.get("piece_count", 0))
+		tris += RockUnderside.triangle_count(rocks)
+	for child in _islands_root.get_children():
+		var kit := child.get_node_or_null("RockKit")
+		if kit:
+			for mmi in kit.get_children():
+				if mmi is MultiMeshInstance3D and (mmi as MultiMeshInstance3D).visible:
+					draw += 1
+	if _cliff_mesh and _cliff_mesh.mesh and _cliff_mesh.mesh.get_surface_count() > 0:
+		draw += 1
+		tris += int(_cliff_mesh.mesh.get_faces().size() / 3)
+	return {
+		"islands": island_cache.size(),
+		"pieces": pieces,
+		"triangles": tris,
+		"draw_calls": draw,
+		"rebuild_ms": last_rock_rebuild_ms,
+	}
 
 
 func _sync_presence() -> void:
@@ -259,6 +354,8 @@ func _sync_presence() -> void:
 		node.configure(int(key), row.get("centroid", Vector3.ZERO), int(row.get("cell_count", 0)), row.get("volume"), row.get("low_volume"), row.get("top"))
 		if node.has_method("set_material"):
 			node.set_material(_volume_material)
+		if node.has_method("apply_rocks"):
+			node.apply_rocks(row.get("rocks", {}))
 
 
 func _assemble_island_meshes() -> void:

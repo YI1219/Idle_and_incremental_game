@@ -123,8 +123,8 @@ static func build_island(cells: Dictionary, river_polygons: Array, high_detail: 
 		if cells.has(cell):
 			hole_cutters.append(cell_quad(cell))
 	var top := build_top(scale_from_centroid(smooth_high, OVERHANG), hole_cutters)
-	var volume := build_volume(smooth_high, RINGS_HIGH)
-	var low := build_volume(smooth_low, RINGS_LOW)
+	var volume := build_core(smooth_high, true)
+	var low := build_core(smooth_low, false)
 	var centroid := _centroid3(cells)
 	return {
 		"top": top,
@@ -322,7 +322,41 @@ static func build_top(outline: PackedVector2Array, cutters: Array) -> ArrayMesh:
 	return st.commit()
 
 
-static func build_volume(outline: PackedVector2Array, rings: Array, _holes: Array = []) -> ArrayMesh:
+static func build_core(outline: PackedVector2Array, high_detail: bool = true, bottom: float = -5.05) -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	if outline.size() < 3:
+		return st.commit()
+	var mid := centroid2(outline)
+	var segs := 24 if high_detail else 12
+	var rim := _resample(scale_from_centroid(outline, 0.76), segs)
+	var waist := _resample(scale_from_centroid(outline, 0.40), segs)
+	var top_y := -0.62
+	var mid_y := (top_y + bottom) * 0.48
+	var tris: Array = []
+	_stitch_rings(tris, rim, top_y, 0.0, waist, mid_y, 0.0)
+	for i in segs:
+		var j := (i + 1) % segs
+		var p0 := Vector3(waist[i].x, mid_y, waist[i].y)
+		var p1 := Vector3(waist[j].x, mid_y, waist[j].y)
+		var tip := Vector3(mid.x, bottom, mid.y)
+		tris.append([p0, p1, tip, 0.0, 0.0, 0.0])
+	_emit_capped(tris, rim, top_y, 0.0, false)
+	var interior := Vector3(mid.x, (top_y + bottom) * 0.5, mid.y)
+	for item in tris:
+		var a: Vector3 = item[0]
+		var b: Vector3 = item[1]
+		var c: Vector3 = item[2]
+		var normal := (b - a).cross(c - a)
+		if normal.dot((a + b + c) / 3.0 - interior) < 0.0:
+			var swap_p := b
+			b = c
+			c = swap_p
+		_tri(st, a, b, c, 0.0, 0.0, 0.0)
+	return st.commit()
+
+
+static func build_volume(outline: PackedVector2Array, rings: Array = [], _holes: Array = []) -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	if outline.size() < 3 or rings.size() < 2:

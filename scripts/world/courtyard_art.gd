@@ -7,6 +7,7 @@ const SOURCE_DIR := "res://assets/nature/quaternius/"
 const FOLIAGE := preload("res://shaders/world/courtyard_foliage.gdshader")
 const GROUND := preload("res://shaders/world/courtyard_ground.gdshader")
 const CLIFF := preload("res://shaders/world/island_cliff.gdshader")
+const RockKit := preload("res://scripts/world/rock_kit.gd")
 const COTTAGE_SHADER := preload("res://shaders/world/courtyard_cottage.gdshader")
 const WATER := preload("res://shaders/world/courtyard_water.gdshader")
 const SKY_SHADER := preload("res://shaders/world/courtyard_sky.gdshader")
@@ -38,9 +39,13 @@ func attach(to_terrain: Node3D, to_cottage: Node3D) -> void:
 	water.shader = WATER
 	_override("JadeWater", water)
 	_override("RiverBank", ground_material)
-	var cliff := ShaderMaterial.new()
-	cliff.shader = CLIFF
-	_override("IslandCliff", cliff)
+	RockKit.ensure()
+	if RockKit.rock_material:
+		_override("IslandCliff", RockKit.rock_material)
+	else:
+		var cliff := ShaderMaterial.new()
+		cliff.shader = CLIFF
+		_override("IslandCliff", cliff)
 	_load_models()
 	_refine_cottage(cottage)
 
