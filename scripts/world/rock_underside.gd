@@ -7,7 +7,7 @@ const RockKit := preload("res://scripts/world/rock_kit.gd")
 ## Matches notes/rockkit-test/rockkit_island.py seed7 table (Godot Y-up).
 const GROUND_Y := 0.0
 const RINGS := [
-	[0.985, -0.07, 2.6, 0.80, 1.30, 0.90, 1.15, 10.0, 0.62, "rim", 0.05],
+	[0.985, -0.24, 2.35, 0.80, 1.20, 0.90, 1.15, 10.0, 0.62, "rim", -0.12],
 	[0.80, -1.25, 2.3, 0.80, 1.20, 1.00, 1.25, 16.0, 0.66, "rim+mid", 0.0],
 	[0.58, -2.35, 2.0, 0.80, 1.15, 1.00, 1.30, 20.0, 0.70, "mid+rim", 0.0],
 	[0.35, -3.40, 1.7, 0.80, 1.10, 1.05, 1.35, 24.0, 0.75, "mid", 0.0],
@@ -328,7 +328,7 @@ static func _size_boost(poly: PackedVector2Array, mid: Vector2) -> float:
 	var reach := 0.0
 	for p in poly:
 		reach = maxf(reach, p.distance_to(mid))
-	return clampf(reach / 6.5, 0.92, 2.15)
+	return clampf(reach / 6.5, 0.88, 1.12)
 
 
 static func _perimeter(poly: PackedVector2Array) -> float:

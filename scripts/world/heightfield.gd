@@ -436,6 +436,10 @@ func _snap_rim_to_loops() -> void:
 					best_d = d
 					best = q
 			if best != p:
+				var mid := land_centroid()
+				var radial := best - mid
+				if radial.length_squared() > 1e-6:
+					best += radial.normalized() * 0.78
 				rim_shift[Vector2i(ix, iz)] = best - p
 
 

@@ -50,15 +50,17 @@ func run() -> void:
 	# Low side must show the rock-kit underside.
 	_set_house_visible(false)
 	_restore_pitch(rig)
-	rig.near_pitch_deg = 8.0
-	rig.pitch_deg = 12.0
-	_look(rig, player, Vector3(6.4, 0.0, -1.6), 14.0, 2)
+	rig.near_pitch_deg = -2.0
+	rig.pitch_deg = 2.0
+	_look(rig, player, Vector3(4.8, 0.0, -0.4), 16.0, 2)
 	await shot(OUT + "/low_side.png")
 
 	# seed7-like 3/4 of the whole island from slightly below.
-	rig.near_pitch_deg = -16.0
-	rig.pitch_deg = -12.0
-	_look(rig, player, Vector3(0.2, 0.0, 0.0), 20.0, 3)
+	# far_pitch must stay negative; _pitch_for_zoom lerps toward it past default distance.
+	rig.near_pitch_deg = -9.0
+	rig.pitch_deg = -7.0
+	rig.far_pitch_deg = -6.0
+	_look(rig, player, Vector3(0.2, 0.0, 0.0), 20.0, 2)
 	await shot(OUT + "/seed7_three_quarter.png")
 	_restore_pitch(rig)
 

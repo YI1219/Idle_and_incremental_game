@@ -187,11 +187,11 @@ static func build_slab(field: Heightfield, skip_top: Dictionary = {}) -> Diction
 	var profile := [
 		[-1.70, 0.03, 0.88],
 		[-0.85, 0.01, 0.82],
-		[-0.32, -0.02, 0.70],
-		[-0.08, -0.08, 0.55],
-		[0.05, -0.18, 0.38],
-		[0.10, -0.30, 0.18],
-		[-0.04, SLAB_BOTTOM, 0.14],
+		[-0.28, -0.01, 0.70],
+		[0.06, -0.06, 0.48],
+		[0.28, -0.14, 0.28],
+		[0.40, -0.26, 0.16],
+		[0.22, SLAB_BOTTOM, 0.14],
 	]
 	for loop in field.visual_loops:
 		if loop.size() < 6:
@@ -250,10 +250,10 @@ static func build_lake_bank(field: Heightfield, lake: Dictionary) -> Dictionary:
 			if poly.size() >= 4:
 				loops.append(poly)
 	var profile := [
-		[0.42, 0.04, 0.20],
-		[0.18, -0.02, 0.16],
-		[0.02, -0.08, 0.14],
-		[-0.10, level - 0.02, 0.12],
+		[0.22, 0.03, 0.20],
+		[0.08, -0.02, 0.16],
+		[-0.02, -0.07, 0.14],
+		[-0.12, level - 0.02, 0.12],
 	]
 	var earth := Color(0.80, 0.18, 0.0, 1.0)
 	for loop in loops:
