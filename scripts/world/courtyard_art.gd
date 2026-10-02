@@ -270,35 +270,35 @@ static func apply_atmosphere(world_environment: WorldEnvironment, sun: Direction
 	var sky := Sky.new()
 	var sky_material := ShaderMaterial.new()
 	sky_material.shader = SKY_SHADER
-	sky_material.set_shader_parameter("zenith_color", Color(0.36, 0.60, 0.88))
-	sky_material.set_shader_parameter("horizon_color", Color(0.70, 0.80, 0.90))
-	sky_material.set_shader_parameter("nadir_color", Color(0.42, 0.54, 0.66))
+	sky_material.set_shader_parameter("zenith_color", Color("c5d8e6"))
+	sky_material.set_shader_parameter("horizon_color", Color("dde8ee"))
+	sky_material.set_shader_parameter("nadir_color", Color("b7c8d4"))
 	sky.sky_material = sky_material
 	environment.sky = sky
 	environment.background_mode = Environment.BG_SKY
-	environment.background_color = Color("6ea0d0")
+	environment.background_color = Color("dde8ee")
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.ambient_light_color = Color("a8b0a4")
-	environment.ambient_light_energy = 0.12
+	environment.ambient_light_color = Color("c8d2da")
+	environment.ambient_light_energy = 0.26
 	environment.tonemap_mode = Environment.TONE_MAPPER_AGX
-	environment.tonemap_exposure = 1.24
+	environment.tonemap_exposure = 1.12
 	environment.tonemap_white = 8.0
 	environment.adjustment_enabled = true
-	environment.adjustment_saturation = 1.08
-	environment.adjustment_contrast = 1.04
+	environment.adjustment_saturation = 1.04
+	environment.adjustment_contrast = 1.02
 	environment.fog_enabled = true
-	environment.fog_light_color = Color("8eb0cc")
-	environment.fog_density = 0.00025
+	environment.fog_light_color = Color("d5e0e8")
+	environment.fog_density = 0.00018
 	environment.fog_sky_affect = 0.0
 	environment.fog_height = -7.4
-	environment.fog_height_density = 0.005
+	environment.fog_height_density = 0.004
 	environment.ssao_enabled = true
-	environment.ssao_radius = 0.18
-	environment.ssao_intensity = 2.4
-	environment.ssao_power = 1.35
-	environment.ssao_light_affect = 0.75
-	environment.ssao_horizon = 0.04
-	environment.ssao_sharpness = 0.72
+	environment.ssao_radius = 0.22
+	environment.ssao_intensity = 1.15
+	environment.ssao_power = 1.15
+	environment.ssao_light_affect = 0.45
+	environment.ssao_horizon = 0.06
+	environment.ssao_sharpness = 0.55
 	environment.ssil_enabled = false
 	environment.sdfgi_enabled = false
 	environment.glow_enabled = true
@@ -308,17 +308,17 @@ static func apply_atmosphere(world_environment: WorldEnvironment, sun: Direction
 	environment.glow_bloom = 0.06
 	environment.glow_hdr_threshold = 0.92
 	environment.glow_hdr_scale = 0.55
-	sun.rotation_degrees = Vector3(-32, -38, 0)
-	sun.light_color = Color("ffd39a")
-	sun.light_energy = 1.85
-	sun.light_angular_distance = 0.0
+	sun.rotation_degrees = Vector3(-28, -42, 0)
+	sun.light_color = Color("ffe0b0")
+	sun.light_energy = 1.35
+	sun.light_angular_distance = 1.6
 	sun.shadow_enabled = true
-	sun.shadow_blur = 1.1
-	sun.shadow_bias = 0.04
-	sun.shadow_normal_bias = 1.15
+	sun.shadow_blur = 2.2
+	sun.shadow_bias = 0.05
+	sun.shadow_normal_bias = 1.25
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
 	sun.directional_shadow_max_distance = 52.0
 	var fill := sun.get_parent().get_node_or_null("FillLight") as DirectionalLight3D
 	if fill:
-		fill.light_energy = 0.04
-		fill.light_color = Color("9aa8b4")
+		fill.light_energy = 0.12
+		fill.light_color = Color("c5d0da")

@@ -4,16 +4,17 @@ extends Object
 const RockKit := preload("res://scripts/world/rock_kit.gd")
 
 ## s, top y, target width, scale min/max, z-stretch min/max, tilt deg, spacing, pool, protrude
+## Matches notes/rockkit-test/rockkit_island.py seed7 table (Godot Y-up).
 const GROUND_Y := 0.0
 const RINGS := [
-	[1.015, 0.58, 2.85, 0.78, 1.34, 0.62, 0.88, 8.0, 0.54, "rim", 0.36],
-	[0.80, -0.95, 2.45, 0.80, 1.22, 0.95, 1.20, 14.0, 0.60, "rim+mid", 0.06],
-	[0.58, -2.10, 2.15, 0.80, 1.16, 1.05, 1.32, 18.0, 0.64, "mid+rim", 0.0],
-	[0.36, -3.15, 1.85, 0.80, 1.12, 1.10, 1.38, 22.0, 0.70, "mid", 0.0],
+	[0.985, -0.07, 2.6, 0.80, 1.30, 0.90, 1.15, 10.0, 0.62, "rim", 0.05],
+	[0.80, -1.25, 2.3, 0.80, 1.20, 1.00, 1.25, 16.0, 0.66, "rim+mid", 0.0],
+	[0.58, -2.35, 2.0, 0.80, 1.15, 1.00, 1.30, 20.0, 0.70, "mid+rim", 0.0],
+	[0.35, -3.40, 1.7, 0.80, 1.10, 1.05, 1.35, 24.0, 0.75, "mid", 0.0],
 ]
-const JITTER_ARC := 0.28
+const JITTER_ARC := 0.25
 const JITTER_RADIAL := 0.18
-const JITTER_Y := 0.10
+const JITTER_Y := 0.15
 const FAR_RINGS := 2
 
 
@@ -180,33 +181,36 @@ static func _ring_transform(slot: Dictionary, ring: PackedVector2Array, mid: Vec
 static func _tips(outline: PackedVector2Array, mid: Vector2, seed: int, far: bool, lowest_top: float, boost: float = 1.0) -> Array:
 	if far:
 		return []
-	var pool := RockKit.pool("mid")
+	var pool := RockKit.pool("tip")
 	if pool.is_empty():
-		pool = RockKit.pool("tip")
-	var extra := RockKit.pool("tip")
-	var count := 1 + (1 if _unit(seed, 20, 0) > 0.62 else 0)
+		pool = RockKit.pool("mid")
+	var count := 1
+	if _unit(seed, 20, 0) > 0.40:
+		count += 1
+	if _unit(seed, 20, 1) > 0.72:
+		count += 1
 	var out: Array = []
 	var last := ""
+	var tip_y := minf(lowest_top - 0.30, -3.70)
 	for i in count:
 		var u0 := _unit(seed, 21, i)
 		var u1 := _unit(seed, 21, i + 11)
 		var u2 := _unit(seed, 21, i + 23)
-		var names := pool if i == 0 or extra.is_empty() else extra
-		var name := _pick_piece(names, last, seed, 21, i)
+		var name := _pick_piece(pool, last, seed, 21, i)
 		last = name
 		var info: Dictionary = RockKit.piece(name)
 		var ang := u0 * TAU
-		var rad := lerpf(0.15, 0.55, u0) if i == 0 else lerpf(0.85, 1.85, u1)
+		var rad := 0.0 if i == 0 else lerpf(0.60, 1.30, u1)
 		var pos := Vector3(mid.x + cos(ang) * rad, 0.0, mid.y + sin(ang) * rad)
-		pos.y = lowest_top - (0.90 if i == 0 else lerpf(0.35, 1.15, u2))
-		var width := lerpf(1.7, 2.35, u1) * boost * (1.0 if i == 0 else 0.68)
+		pos.y = tip_y + (0.0 if i == 0 else lerpf(0.30, 0.90, u2))
+		var width := lerpf(2.3, 2.9, u1) * boost * (1.0 if i == 0 else 0.75)
 		var s := width / maxf(float(info.get("width", 1.0)), 0.2)
-		var zs := lerpf(0.70, 0.92, u2) * (1.0 if i == 0 else 0.74)
+		var zs := lerpf(0.65, 0.85, u2) * (1.0 if i == 0 else 0.70)
 		var out_dir := Vector3(cos(ang), 0.0, sin(ang))
 		var axis := out_dir.cross(Vector3.UP)
 		if axis.length_squared() < 1e-6:
 			axis = Vector3.RIGHT
-		var tilt := (11.0 if i == 0 else 18.0) * lerpf(0.7, 1.25, u0)
+		var tilt := 8.0 * (0.5 if i == 0 else 1.5) * lerpf(0.7, 1.2, u0)
 		var xf := _compose(info, pos, u0 * TAU, s, zs, axis.normalized(), tilt, out_dir)
 		out.append({"piece": name, "ring": 8, "slot": i, "xf": xf, "jitter": u1})
 	return out

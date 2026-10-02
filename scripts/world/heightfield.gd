@@ -400,31 +400,294 @@ func stamp_rounded_blob() -> void:
 
 
 func apply_coast_smooth() -> void:
-	## Pull rim vertices onto a Chaikin / Catmull loop so walls are not stairs.
+	## Visual contour only. Gameplay mask/H stay on the grid.
 	rim_shift.clear()
 	visual_loops.clear()
-	var loops: Array = _mask_loops()
+	var loops: Array = _sdf_loops()
 	if loops.is_empty():
-		return
+		loops = _mask_loops()
 	var smoothed: Array = []
 	for loop in loops:
-		smoothed.append(_low_freq_loop(_catmull(_chaikin2(loop))))
+		if loop.size() < 4:
+			continue
+		smoothed.append(_low_freq_loop(_resample_loop(_catmull(_chaikin2(loop)), 96)))
 	visual_loops = smoothed
+	_snap_rim_to_loops()
+
+
+func _snap_rim_to_loops() -> void:
+	## Render-only. Pull stair-step rim verts onto the SDF contour.
+	rim_shift.clear()
+	if visual_loops.is_empty():
+		return
+	var max_d := spacing * 1.85
+	var max_d2 := max_d * max_d
 	for iz in verts_z:
 		for ix in verts_x:
 			if not _vertex_is_rim(ix, iz):
 				continue
 			var p := vertex_world(ix, iz)
 			var best := p
-			var best_d := 1.0e9
-			for loop in smoothed:
+			var best_d := max_d2
+			for loop in visual_loops:
 				var q := _closest_on_loop(p, loop)
-				var d := p.distance_to(q)
+				var d := p.distance_squared_to(q)
 				if d < best_d:
 					best_d = d
 					best = q
-			if best_d < spacing * 3.6:
+			if best != p:
 				rim_shift[Vector2i(ix, iz)] = best - p
+
+
+func water_visual_loops(cells: Array) -> Array:
+	## SDF contour of a lake cell set. Same blur → march → Chaikin path as the coast.
+	if cells.is_empty() or cells_x() < 1:
+		return []
+	var lake: Dictionary = {}
+	for cell in cells:
+		var c: Vector2i = cell
+		if is_land(c.x, c.y):
+			lake[c] = true
+	if lake.size() < 3:
+		return []
+	var w := verts_x
+	var h := verts_z
+	var raw := PackedFloat32Array()
+	raw.resize(w * h)
+	for iz in h:
+		for ix in w:
+			var n := 0.0
+			for cz in range(iz - 1, iz + 1):
+				for cx in range(ix - 1, ix + 1):
+					if lake.has(Vector2i(cx, cz)):
+						n += 1.0
+			raw[ix + iz * w] = n / 4.0
+	var blur := PackedFloat32Array()
+	blur.resize(w * h)
+	for iz in h:
+		for ix in w:
+			var acc := raw[ix + iz * w] * 2.0
+			var wt := 2.0
+			for d in [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]]:
+				var nx := ix + int(d[0])
+				var nz := iz + int(d[1])
+				if nx < 0 or nz < 0 or nx >= w or nz >= h:
+					continue
+				var k := 0.5 if int(d[0]) != 0 and int(d[1]) != 0 else 1.0
+				acc += raw[nx + nz * w] * k
+				wt += k
+			blur[ix + iz * w] = acc / wt
+	var loops: Array = _march_iso(blur, 0.48)
+	var out: Array = []
+	for loop in loops:
+		if loop.size() < 4:
+			continue
+		out.append(_low_freq_loop(_resample_loop(_catmull(_chaikin2(loop)), 64)))
+	return out
+
+
+func primary_loop() -> PackedVector2Array:
+	var best: Array = []
+	var best_p := 0.0
+	for loop in visual_loops:
+		var p := _loop_len(loop)
+		if p > best_p:
+			best_p = p
+			best = loop
+	var out := PackedVector2Array()
+	for q in best:
+		out.append(q)
+	return out
+
+
+func _loop_len(loop: Array) -> float:
+	var L := 0.0
+	for i in loop.size():
+		var a: Vector2 = loop[i]
+		var b: Vector2 = loop[(i + 1) % loop.size()]
+		L += a.distance_to(b)
+	return L
+
+
+func _vertex_land_frac(ix: int, iz: int) -> float:
+	var n := 0.0
+	for cz in range(iz - 1, iz + 1):
+		for cx in range(ix - 1, ix + 1):
+			if is_land(cx, cz):
+				n += 1.0
+	return n / 4.0
+
+
+func _sdf_loops() -> Array:
+	if cells_x() < 1 or cells_z() < 1:
+		return []
+	var w := verts_x
+	var h := verts_z
+	var raw := PackedFloat32Array()
+	raw.resize(w * h)
+	for iz in h:
+		for ix in w:
+			raw[ix + iz * w] = _vertex_land_frac(ix, iz)
+	var blur := PackedFloat32Array()
+	blur.resize(w * h)
+	for iz in h:
+		for ix in w:
+			var acc := raw[ix + iz * w] * 2.0
+			var wt := 2.0
+			for d in [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]]:
+				var nx := ix + int(d[0])
+				var nz := iz + int(d[1])
+				if nx < 0 or nz < 0 or nx >= w or nz >= h:
+					continue
+				var k := 0.5 if int(d[0]) != 0 and int(d[1]) != 0 else 1.0
+				acc += raw[nx + nz * w] * k
+				wt += k
+			blur[ix + iz * w] = acc / wt
+	return _march_iso(blur, 0.48)
+
+
+func _iso_cross(ix0: int, iz0: int, v0: float, ix1: int, iz1: int, v1: float, iso: float) -> Vector2:
+	var t := 0.5
+	if absf(v1 - v0) > 1e-5:
+		t = clampf((iso - v0) / (v1 - v0), 0.0, 1.0)
+	return vertex_world(ix0, iz0).lerp(vertex_world(ix1, iz1), t)
+
+
+func _ms_pairs(bits: int) -> Array:
+	match bits:
+		1, 14:
+			return [[3, 0]]
+		2, 13:
+			return [[0, 1]]
+		3, 12:
+			return [[3, 1]]
+		4, 11:
+			return [[1, 2]]
+		6, 9:
+			return [[0, 2]]
+		7, 8:
+			return [[3, 2]]
+		5:
+			return [[3, 2], [0, 1]]
+		10:
+			return [[0, 3], [1, 2]]
+		_:
+			return []
+
+
+func _march_iso(vals: PackedFloat32Array, iso: float) -> Array:
+	var w := verts_x
+	var segs: Array = []
+	for iz in cells_z():
+		for ix in cells_x():
+			var v00 := vals[ix + iz * w]
+			var v10 := vals[ix + 1 + iz * w]
+			var v11 := vals[ix + 1 + (iz + 1) * w]
+			var v01 := vals[ix + (iz + 1) * w]
+			var bits := 0
+			if v00 >= iso:
+				bits |= 1
+			if v10 >= iso:
+				bits |= 2
+			if v11 >= iso:
+				bits |= 4
+			if v01 >= iso:
+				bits |= 8
+			if bits == 0 or bits == 15:
+				continue
+			var e: Array = [null, null, null, null]
+			if (bits & 1) != (bits & 2):
+				e[0] = _iso_cross(ix, iz, v00, ix + 1, iz, v10, iso)
+			if (bits & 2) != (bits & 4):
+				e[1] = _iso_cross(ix + 1, iz, v10, ix + 1, iz + 1, v11, iso)
+			if (bits & 4) != (bits & 8):
+				e[2] = _iso_cross(ix + 1, iz + 1, v11, ix, iz + 1, v01, iso)
+			if (bits & 8) != (bits & 1):
+				e[3] = _iso_cross(ix, iz + 1, v01, ix, iz, v00, iso)
+			for pair in _ms_pairs(bits):
+				var a = e[int(pair[0])]
+				var b = e[int(pair[1])]
+				if a != null and b != null:
+					segs.append([a, b])
+	return _stitch_segs(segs)
+
+
+func _qkey(p: Vector2) -> String:
+	return "%d,%d" % [int(round(p.x * 40.0)), int(round(p.y * 40.0))]
+
+
+func _stitch_segs(segs: Array) -> Array:
+	var unused: Array = segs.duplicate()
+	var loops: Array = []
+	while not unused.is_empty():
+		var seg: Array = unused.pop_back()
+		var loop: Array = [seg[0], seg[1]]
+		var guard := 0
+		var grew := true
+		while grew and guard < 8000:
+			guard += 1
+			grew = false
+			var head: Vector2 = loop[0]
+			var tail: Vector2 = loop[loop.size() - 1]
+			var hk := _qkey(head)
+			var tk := _qkey(tail)
+			for i in range(unused.size() - 1, -1, -1):
+				var s: Array = unused[i]
+				var a: Vector2 = s[0]
+				var b: Vector2 = s[1]
+				var ak := _qkey(a)
+				var bk := _qkey(b)
+				if ak == tk:
+					loop.append(b)
+					unused.remove_at(i)
+					grew = true
+					break
+				if bk == tk:
+					loop.append(a)
+					unused.remove_at(i)
+					grew = true
+					break
+				if ak == hk:
+					loop.insert(0, b)
+					unused.remove_at(i)
+					grew = true
+					break
+				if bk == hk:
+					loop.insert(0, a)
+					unused.remove_at(i)
+					grew = true
+					break
+		if loop.size() >= 6:
+			if _qkey(loop[0]) == _qkey(loop[loop.size() - 1]):
+				loop.pop_back()
+			loops.append(loop)
+	return loops
+
+
+func _resample_loop(loop: Array, count: int) -> Array:
+	if loop.size() < 4:
+		return loop
+	var n := maxi(count, 8)
+	var total := _loop_len(loop)
+	if total < 0.2:
+		return loop
+	var out: Array = []
+	var acc := 0.0
+	var i := 0
+	var seg := (loop[(i + 1) % loop.size()] as Vector2).distance_to(loop[i])
+	for j in n:
+		var d := total * float(j) / float(n)
+		while acc + seg < d and i < loop.size() * 2:
+			acc += seg
+			i += 1
+			var a: Vector2 = loop[i % loop.size()]
+			var b: Vector2 = loop[(i + 1) % loop.size()]
+			seg = a.distance_to(b)
+		var a2: Vector2 = loop[i % loop.size()]
+		var b2: Vector2 = loop[(i + 1) % loop.size()]
+		var u := 0.0 if seg < 1e-6 else clampf((d - acc) / seg, 0.0, 1.0)
+		out.append(a2.lerp(b2, u))
+	return out
 
 
 func coast_shift(ix: int, iz: int) -> Vector2:
@@ -610,8 +873,9 @@ func _low_freq_loop(loop: Array) -> Array:
 			out.append(q)
 			continue
 		var t := float(i) / float(n)
-		var wobble := sin(t * TAU * 2.0 + float(seed) * 0.17) * 0.11
-		wobble += sin(t * TAU * 3.0 - float(seed) * 0.09) * 0.06
+		var salt := float(absi(seed) % 97) * 0.13
+		var wobble := sin(t * TAU * 2.0 + salt) * 0.10
+		wobble += sin(t * TAU * 3.0 - salt * 0.7) * 0.05
 		out.append(q + radial.normalized() * wobble)
 	return out
 

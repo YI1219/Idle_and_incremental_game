@@ -85,7 +85,7 @@ func _bake_clip() -> void:
 	var cells := _rect(6, 5)
 	var outline: PackedVector2Array = IslandGeometry.build_island(cells, [], true)["outline"]
 	var state: Dictionary = RockUnderside.assemble(outline, 7)
-	var poked := false
+	var max_top := -999.0
 	for slot in state["slots"]:
 		if int(slot.get("ring", 0)) != 0:
 			continue
@@ -95,12 +95,9 @@ func _bake_clip() -> void:
 		if mesh == null:
 			continue
 		for v in mesh.get_faces():
-			if (xf * v).y > 0.08:
-				poked = true
-				break
-		if poked:
-			break
-	check(poked, "shore rocks poke above the grass plane before the clip")
+			max_top = maxf(max_top, (xf * v).y)
+	check(max_top < 0.35, "seed7 snap keeps hanging shore rocks under the grass lip (max_y=%.3f)" % max_top)
+	check(max_top > -1.2, "shore ring still hangs from just under the slab")
 	var baked: Dictionary = RockBaker.bake(state)
 	check(bool(baked.get("ok", false)), "bake succeeds for a seeded island")
 	check(float(baked.get("max_y", 1.0)) <= 0.03, "no baked rock geometry sits above ground height")

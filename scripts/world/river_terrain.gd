@@ -389,6 +389,9 @@ func heightfield_stats() -> Dictionary:
 	var tris := 0
 	var draw := 0
 	var chunks := 0
+	var rocks := 0
+	var rock_tris := 0
+	var tufts := 0
 	var stroke := last_stroke_ms
 	var rebuild := last_rock_rebuild_ms
 	for child in _islands_root.get_children():
@@ -397,6 +400,9 @@ func heightfield_stats() -> Dictionary:
 			tris += int(row.get("triangles", 0))
 			draw += int(row.get("draw_calls", 0))
 			chunks += int(row.get("chunks", 0))
+			rocks += int(row.get("rock_instances", 0))
+			rock_tris += int(row.get("rock_tris", 0))
+			tufts += int(row.get("tufts", 0))
 			stroke = maxf(stroke, float(row.get("stroke_ms", 0.0)))
 			rebuild = maxf(rebuild, float(row.get("rebuild_ms", 0.0)))
 	if _land_mesh and _land_mesh.visible and _land_mesh.mesh:
@@ -412,7 +418,10 @@ func heightfield_stats() -> Dictionary:
 		"draw_calls": draw,
 		"rebuild_ms": rebuild,
 		"stroke_ms": stroke,
-		"pieces": 0,
+		"pieces": rocks,
+		"rock_instances": rocks,
+		"rock_tris": rock_tris,
+		"tufts": tufts,
 		"bake_ms": 0.0,
 		"hitch_ms": 0.0,
 		"baked_islands": 0,
