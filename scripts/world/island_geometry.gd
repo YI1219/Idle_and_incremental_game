@@ -77,7 +77,14 @@ static func component_size_after_add(cells: Array, added: Vector2i) -> int:
 	return 1
 
 
-static func build_island(cells: Dictionary, river_polygons: Array, high_detail: bool = true) -> Dictionary:
+static func cell_quad(cell: Vector2i) -> PackedVector2Array:
+	return PackedVector2Array([
+		Vector2(cell.x, cell.y), Vector2(cell.x, cell.y + 1),
+		Vector2(cell.x + 1, cell.y + 1), Vector2(cell.x + 1, cell.y),
+	])
+
+
+static func build_island(cells: Dictionary, river_polygons: Array, high_detail: bool = true, water_cells: Dictionary = {}) -> Dictionary:
 	var empty := {
 		"top": _empty_mesh(),
 		"volume": _empty_mesh(),
@@ -109,6 +116,9 @@ static func build_island(cells: Dictionary, river_polygons: Array, high_detail: 
 	var hole_cutters: Array = river_polygons.duplicate()
 	for hole in holes:
 		hole_cutters.append(chaikin(hole, 1))
+	for cell: Vector2i in water_cells:
+		if cells.has(cell):
+			hole_cutters.append(cell_quad(cell))
 	var top := build_top(smooth_high, hole_cutters)
 	var volume := build_volume(smooth_high, RINGS_HIGH, holes)
 	var low := build_volume(smooth_low, RINGS_LOW, [])
@@ -203,11 +213,13 @@ static func build_top(outline: PackedVector2Array, cutters: Array) -> ArrayMesh:
 		var clipped: Array[PackedVector2Array] = []
 		for tri in triangles:
 			for remain: PackedVector2Array in Geometry2D.clip_polygons(tri, cutter):
-				if remain.size() >= 3:
+				if remain.size() >= 3 and signed_area(remain) > 0.0:
 					clipped.append(remain)
 		triangles = clipped
 	for piece in triangles:
-		_emit_top(st, piece)
+		if _centroid_in(piece, cutters):
+			continue
+		_emit_top(st, piece, cutters)
 	st.generate_normals()
 	return st.commit()
 
@@ -260,6 +272,17 @@ static func lowest_y(mesh: ArrayMesh) -> float:
 	for vertex in mesh.get_faces():
 		lowest = minf(lowest, vertex.y)
 	return lowest
+
+
+static func _centroid_in(piece: PackedVector2Array, cutters: Array) -> bool:
+	var mid := Vector2.ZERO
+	for p in piece:
+		mid += p
+	mid /= float(maxi(piece.size(), 1))
+	for cutter in cutters:
+		if cutter is PackedVector2Array and cutter.size() >= 3 and Geometry2D.is_point_in_polygon(mid, cutter):
+			return true
+	return false
 
 
 static func signed_area(polygon: PackedVector2Array) -> float:
@@ -326,8 +349,28 @@ static func _tri(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, ta: float,
 		st.add_vertex(p)
 
 
-static func _emit_top(st: SurfaceTool, polygon: PackedVector2Array) -> void:
-	_emit_top_colored(st, polygon, 0.0, 1.0, Vector3.UP)
+static func _emit_top(st: SurfaceTool, polygon: PackedVector2Array, cutters: Array = []) -> void:
+	var indices := Geometry2D.triangulate_polygon(polygon)
+	if indices.is_empty():
+		return
+	for i in range(0, indices.size(), 3):
+		var tri := PackedVector2Array([polygon[indices[i]], polygon[indices[i + 1]], polygon[indices[i + 2]]])
+		if _covers_cutter(tri, cutters) or signed_area(tri) <= 0.0:
+			continue
+		_emit_top_colored(st, tri, 0.0, 1.0, Vector3.UP)
+
+
+static func _covers_cutter(tri: PackedVector2Array, cutters: Array) -> bool:
+	for cutter in cutters:
+		if not (cutter is PackedVector2Array) or cutter.size() < 3:
+			continue
+		var mid := Vector2.ZERO
+		for p: Vector2 in cutter:
+			mid += p
+		mid /= float(cutter.size())
+		if Geometry2D.is_point_in_polygon(mid, tri):
+			return true
+	return false
 
 
 static func _emit_top_colored(st: SurfaceTool, polygon: PackedVector2Array, y: float, turf: float, normal: Vector3) -> void:

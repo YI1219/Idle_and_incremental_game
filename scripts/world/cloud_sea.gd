@@ -1,7 +1,7 @@
 extends Node3D
 ## Soft stylized cloud sea under the grotto islands. No distant mountains.
 
-const SEA_Y := -5.15
+const SEA_Y := -4.35
 const SPAN := 220.0
 
 var _sea: MeshInstance3D

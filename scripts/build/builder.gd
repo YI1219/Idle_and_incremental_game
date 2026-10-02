@@ -224,7 +224,7 @@ func _make_preview() -> void:
 	var material:=StandardMaterial3D.new()
 	material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.albedo_color=Color(.84,.9,.8,.14)
+	material.albedo_color=Color(.78,.86,.74,.32)
 	_grid.material_override=material
 	_grid.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_grid)

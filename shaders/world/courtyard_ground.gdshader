@@ -1,10 +1,10 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled;
-uniform vec4 moss_color : source_color = vec4(0.42, 0.50, 0.34, 1.0);
-uniform vec4 meadow_color : source_color = vec4(0.55, 0.60, 0.38, 1.0);
+uniform vec4 moss_color : source_color = vec4(0.33, 0.42, 0.27, 1.0);
+uniform vec4 meadow_color : source_color = vec4(0.46, 0.52, 0.30, 1.0);
 uniform vec4 path_color : source_color = vec4(0.64, 0.59, 0.44, 1.0);
-uniform vec4 earth_color : source_color = vec4(0.55, 0.46, 0.36, 1.0);
-uniform vec4 rock_color : source_color = vec4(0.46, 0.50, 0.50, 1.0);
+uniform vec4 earth_color : source_color = vec4(0.50, 0.41, 0.32, 1.0);
+uniform vec4 rock_color : source_color = vec4(0.40, 0.44, 0.44, 1.0);
 uniform vec4 path_segments[8];
 uniform int path_count = 0;
 uniform vec4 contact_patches[32];
@@ -53,8 +53,8 @@ void fragment() {
 	float bands = smoothstep(0.35, 0.65, fract(world_pos.y * 0.55 + noise(p * 0.4) * 0.18));
 	vec3 rock = mix(earth_color.rgb, rock_color.rgb, bands);
 	rock += (noise(vec2(world_pos.y * 1.7, p.x * 0.35)) - 0.5) * 0.04;
-	float turf = smoothstep(0.28, 0.78, world_normal.y) * mix(COLOR.r, 1.0, 0.15);
-	turf = clamp(turf + (noise(p * 2.4) - 0.5) * 0.08, 0.0, 1.0);
+	float turf = smoothstep(0.48, 0.90, world_normal.y) * COLOR.r;
+	turf = clamp(turf + (noise(p * 2.4) - 0.5) * 0.06, 0.0, 1.0);
 	ALBEDO = mix(rock, top, turf);
 	ROUGHNESS = mix(0.88, 0.94, turf);
 }

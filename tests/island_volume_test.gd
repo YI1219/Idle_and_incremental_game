@@ -53,11 +53,12 @@ func _presence() -> void:
 	node.configure(1, Vector3.ZERO, 4, dummy, dummy)
 	node.mark_settled(10.0)
 	check(is_equal_approx(node.settle(16.0), 6.0), "revisit settles by elapsed minutes")
-	node.set_active(false)
-	check(node.process_mode == Node.PROCESS_MODE_DISABLED, "inactive island pauses processing")
 	check(node.update_lod(Vector3(40, 4, 0)), "far camera switches LOD")
 	check(node.far, "far flag latches past the enter distance")
+	check(node.process_mode == Node.PROCESS_MODE_DISABLED, "far island pauses processing")
 	check(not node.update_lod(Vector3(40, 4, 0)), "unchanged LOD does not rebuild")
+	node.set_active(false)
+	check(node.process_mode == Node.PROCESS_MODE_DISABLED, "inactive island pauses processing")
 	node.free()
 
 
@@ -77,8 +78,8 @@ func _terrain_islands() -> void:
 	terrain.rebuild()
 	check(terrain.island_count() == 2, "a distant cell is a second island")
 	check(terrain.island_rebuilds == 1, "only the changed island rebuilds")
-	var before: int = terrain.island_rebuilds
+	var dirty_rebuilds: int = terrain.island_rebuilds
 	terrain.rebuild()
 	check(terrain.island_rebuilds == 0 and terrain.island_count() == 2, "unchanged land skips mesh rebuild")
-	check(first_rebuilds >= 1 and before == 0, "rebuild counters distinguish dirty and clean passes")
+	check(first_rebuilds >= 1 and dirty_rebuilds == 1, "rebuild counters distinguish dirty and clean passes")
 	terrain.queue_free()

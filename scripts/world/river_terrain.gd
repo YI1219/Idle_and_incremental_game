@@ -214,11 +214,15 @@ func _rebuild_islands() -> void:
 	var next_cache: Dictionary = {}
 	island_rebuilds = 0
 	for group in IslandGeometry.components(land_cells):
-		var key: int = IslandGeometry.cells_hash(group)
+		var water_in_group: Dictionary = {}
+		for cell: Vector2i in water_cells:
+			if group.has(cell):
+				water_in_group[cell] = true
+		var key: int = IslandGeometry.cells_hash(group) * 10007 + IslandGeometry.cells_hash(water_in_group)
 		if island_cache.has(key):
 			next_cache[key] = island_cache[key]
 			continue
-		var built: Dictionary = IslandGeometry.build_island(group, _river_polygons, true)
+		var built: Dictionary = IslandGeometry.build_island(group, _river_polygons, true, water_cells)
 		built["cells"] = group
 		next_cache[key] = built
 		island_rebuilds += 1
