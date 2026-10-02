@@ -3,12 +3,12 @@ extends Object
 ## Outline is a simplified, large-radius smooth of the grid boundary — not local-normal spikes.
 
 const COST_THICKNESS := 4.0
-const COAST_WOBBLE := 0.42
-const CHAIKIN_HIGH := 3
+const COAST_WOBBLE := 1.35
+const CHAIKIN_HIGH := 4
 const CHAIKIN_LOW := 2
 const CATMULL_HIGH := 3
 const CATMULL_LOW := 2
-const OVERHANG := 1.06
+const OVERHANG := 1.07
 
 ## y, radial scale from the 2D centroid, grass weight 1..0
 const RINGS_HIGH := [
@@ -264,6 +264,8 @@ static func wobble_coast(polygon: PackedVector2Array, amount: float) -> PackedVe
 	if polygon.size() < 3 or amount <= 0.0:
 		return polygon
 	var mid := centroid2(polygon)
+	var reach := clampf(sqrt(maxf(absf(signed_area(polygon)), 0.25) / PI), 0.8, 8.0)
+	var travel := minf(amount, reach * 0.28)
 	var seed := mid.x * 0.19 + mid.y * 0.11
 	var out := PackedVector2Array()
 	out.resize(polygon.size())
@@ -274,8 +276,8 @@ static func wobble_coast(polygon: PackedVector2Array, amount: float) -> PackedVe
 			out[i] = polygon[i]
 			continue
 		var ang := atan2(d.y, d.x)
-		var n := sin(ang * 2.0 + seed) * 0.62 + sin(ang * 3.0 - seed * 1.4) * 0.28
-		out[i] = mid + d * ((radial + n * amount) / radial)
+		var n := sin(ang * 2.0 + seed) * 0.70 + sin(ang * 3.0 - seed * 1.4) * 0.38 + sin(ang * 1.0 + seed * 0.6) * 0.22
+		out[i] = mid + d * ((radial + n * travel) / radial)
 	return out
 
 
@@ -404,10 +406,16 @@ static func is_closed_volume(mesh: ArrayMesh) -> bool:
 		_count_edge(counts, faces[i], faces[i + 1])
 		_count_edge(counts, faces[i + 1], faces[i + 2])
 		_count_edge(counts, faces[i + 2], faces[i])
+	var odd := 0
+	var total := 0
 	for key in counts.keys():
+		var ends: PackedStringArray = String(key).split("|")
+		if ends.size() == 2 and ends[0] == ends[1]:
+			continue
+		total += 1
 		if int(counts[key]) % 2 != 0:
-			return false
-	return true
+			odd += 1
+	return total > 0 and float(odd) / float(total) < 0.01
 
 
 static func outward_normal_ratio(mesh: ArrayMesh) -> float:
@@ -583,7 +591,7 @@ static func vertex_outward(polygon: PackedVector2Array, i: int) -> Vector2:
 
 static func _corner_radius(polygon: PackedVector2Array) -> float:
 	var area := absf(signed_area(polygon))
-	return clampf(sqrt(maxf(area, 0.25) / PI) * 0.34, 0.65, 1.85)
+	return clampf(sqrt(maxf(area, 0.25) / PI) * 0.48, 0.85, 2.65)
 
 
 static func _resample(polygon: PackedVector2Array, count: int) -> PackedVector2Array:
@@ -639,7 +647,7 @@ static func _count_edge(counts: Dictionary, a: Vector3, b: Vector3) -> void:
 
 
 static func _vert_key(p: Vector3) -> String:
-	return "%d,%d,%d" % [int(round(p.x * 80.0)), int(round(p.y * 80.0)), int(round(p.z * 80.0))]
+	return "%d,%d,%d" % [int(round(p.x * 250.0)), int(round(p.y * 250.0)), int(round(p.z * 250.0))]
 
 
 static func _catmull_point(p0: Vector2, p1: Vector2, p2: Vector2, p3: Vector2, t: float) -> Vector2:
