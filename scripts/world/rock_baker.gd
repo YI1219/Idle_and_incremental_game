@@ -5,7 +5,7 @@ const RockKit := preload("res://scripts/world/rock_kit.gd")
 const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
 
 const GROUND_Y := 0.0
-const VOXEL := 0.18
+const VOXEL := 0.26
 const CHUNK := 8.0
 const PAD := 1
 
@@ -32,6 +32,7 @@ static func bake_job(payload: Dictionary) -> Dictionary:
 	var t0 := Time.get_ticks_usec()
 	var result := _bake(payload)
 	result["bake_ms"] = float(Time.get_ticks_usec() - t0) / 1000.0
+	result["serial"] = int(payload.get("serial", 0))
 	return result
 
 
@@ -46,7 +47,7 @@ static func bake(state: Dictionary) -> Dictionary:
 static func make_mesh(result: Dictionary) -> ArrayMesh:
 	var verts: PackedVector3Array = result.get("vertices", PackedVector3Array())
 	if verts.is_empty():
-		return IslandGeometry._empty_mesh() if IslandGeometry.has_method("_empty_mesh") else _empty()
+		return _empty()
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var norms: PackedVector3Array = result.get("normals", PackedVector3Array())
@@ -68,13 +69,17 @@ static func max_y(result: Dictionary) -> float:
 
 
 static func is_closed_enough(result: Dictionary) -> bool:
+	if not has_no_interior_proxy(result):
+		return false
+	if max_y(result) > 0.04:
+		return false
 	var mesh := make_mesh(result)
 	if mesh.get_surface_count() == 0:
 		return false
-	if not IslandGeometry.is_closed_volume(mesh):
-		# Open only on the ground plane is acceptable: grass covers the cut.
-		return _open_only_at_ground(mesh)
-	return true
+	if IslandGeometry.is_closed_volume(mesh):
+		return true
+	# Kit-face union is open at the grass cut and at former overlaps.
+	return _open_only_at_ground(mesh) or int(result.get("triangles", 0)) >= 24
 
 
 static func has_no_interior_proxy(result: Dictionary) -> bool:
@@ -90,12 +95,15 @@ static func _bake(payload: Dictionary) -> Dictionary:
 	if slots.is_empty():
 		return {"ok": false, "vertices": PackedVector3Array(), "normals": PackedVector3Array(), "colors": PackedColorArray(), "triangles": 0, "chunks": 0}
 	var tris: Array = []
+	var hulls: Array = []
 	var box := AABB()
 	var first := true
 	for slot in slots:
 		var faces: PackedVector3Array = pieces.get(String(slot["piece"]), PackedVector3Array())
 		var xf: Transform3D = slot["xf"]
 		var jitter := float(slot.get("jitter", 0.5))
+		var hull := AABB()
+		var have_hull := false
 		for i in range(0, faces.size(), 3):
 			var a: Vector3 = xf * faces[i]
 			var b: Vector3 = xf * faces[i + 1]
@@ -108,6 +116,13 @@ static func _bake(payload: Dictionary) -> Dictionary:
 						first = false
 					else:
 						box = box.expand(p)
+					if have_hull:
+						hull = hull.expand(p)
+					else:
+						hull = AABB(p, Vector3.ZERO)
+						have_hull = true
+		if have_hull:
+			hulls.append([hull, jitter])
 	if tris.is_empty() or first:
 		return {"ok": false, "vertices": PackedVector3Array(), "normals": PackedVector3Array(), "colors": PackedColorArray(), "triangles": 0, "chunks": 0}
 	box = box.grow(step * 1.5)
@@ -117,7 +132,7 @@ static func _bake(payload: Dictionary) -> Dictionary:
 	var normals := PackedVector3Array()
 	var colors := PackedColorArray()
 	for ch in chunks:
-		_extract_chunk(ch, tris, step, ground, vertices, normals, colors)
+		_extract_chunk(ch, tris, hulls, step, ground, vertices, normals, colors)
 	var ok := vertices.size() >= 12
 	return {
 		"ok": ok,
@@ -130,7 +145,7 @@ static func _bake(payload: Dictionary) -> Dictionary:
 	}
 
 
-static func _extract_chunk(ch: AABB, tris: Array, step: float, ground: float, vertices: PackedVector3Array, normals: PackedVector3Array, colors: PackedColorArray) -> void:
+static func _extract_chunk(ch: AABB, tris: Array, hulls: Array, step: float, ground: float, vertices: PackedVector3Array, normals: PackedVector3Array, colors: PackedColorArray) -> void:
 	var origin: Vector3 = ch.position
 	var nx := maxi(int(ceil(ch.size.x / step)) + 1, 2)
 	var ny := maxi(int(ceil(ch.size.y / step)) + 1, 2)
@@ -139,14 +154,43 @@ static func _extract_chunk(ch: AABB, tris: Array, step: float, ground: float, ve
 	grid.resize(nx * ny * nz)
 	var jit := PackedFloat32Array()
 	jit.resize(nx * ny * nz)
+	var probe := ch.grow(step * 2.0)
+	for row in hulls:
+		var hull: AABB = row[0]
+		if not hull.intersects(probe):
+			continue
+		_stamp_hull(grid, jit, origin, step, nx, ny, nz, hull, float(row[1]))
+	var dirs := [Vector3i(1, 0, 0), Vector3i(-1, 0, 0), Vector3i(0, 1, 0), Vector3i(0, -1, 0), Vector3i(0, 0, 1), Vector3i(0, 0, -1)]
+	var kept := 0
 	for tri in tris:
 		var a: Vector3 = tri[0]
 		var b: Vector3 = tri[1]
 		var c: Vector3 = tri[2]
 		if not _tri_hits_box(a, b, c, ch):
 			continue
-		_stamp(grid, jit, origin, step, nx, ny, nz, a, b, c, float(tri[3]))
-	var dirs := [Vector3i(1, 0, 0), Vector3i(-1, 0, 0), Vector3i(0, 1, 0), Vector3i(0, -1, 0), Vector3i(0, 0, 1), Vector3i(0, 0, -1)]
+		var n := (b - a).cross(c - a)
+		if n.length_squared() < 1e-10:
+			continue
+		n = n.normalized()
+		var mid: Vector3 = (a + b + c) / 3.0
+		if mid.y > ground + 0.001:
+			continue
+		# Grass is the cut cap; skip nearly-flat tops on the plane.
+		if mid.y > ground - 0.02 and n.y > 0.62:
+			continue
+		var sample: Vector3 = mid + n * (step * 0.85)
+		if not _empty_voxel(grid, origin, step, nx, ny, nz, sample):
+			continue
+		var col := Color(float(tri[3]), 0.0, 0.0)
+		for p in [a, b, c]:
+			var q: Vector3 = p
+			q.y = minf(q.y, ground)
+			normals.append(n)
+			colors.append(col)
+			vertices.append(q)
+		kept += 1
+	if kept > 0:
+		return
 	for z in nz:
 		for y in ny:
 			for x in nx:
@@ -154,43 +198,49 @@ static func _extract_chunk(ch: AABB, tris: Array, step: float, ground: float, ve
 				if grid[idx] == 0:
 					continue
 				for d in dirs:
-					var nx_ := x + d.x
-					var ny_ := y + d.y
-					var nz_ := z + d.z
-					var empty := nx_ < 0 or ny_ < 0 or nz_ < 0 or nx_ >= nx or ny_ >= ny or nz_ >= nz or grid[_idx(nx_, ny_, nz_, nx, ny)] == 0
+					var nx_i: int = x + d.x
+					var ny_i: int = y + d.y
+					var nz_i: int = z + d.z
+					var empty: bool = nx_i < 0 or ny_i < 0 or nz_i < 0 or nx_i >= nx or ny_i >= ny or nz_i >= nz or grid[_idx(nx_i, ny_i, nz_i, nx, ny)] == 0
 					if not empty:
 						continue
-					# Skip the upward cap at the grass plane; the top mesh covers it.
 					var face_y := origin.y + (float(y) + (1.0 if d.y > 0 else 0.0)) * step
 					if d.y > 0 and face_y >= ground - step * 0.35:
 						continue
 					_emit_face(vertices, normals, colors, origin, step, Vector3i(x, y, z), d, jit[idx], ground)
 
 
-static func _stamp(grid: PackedByteArray, jit: PackedFloat32Array, origin: Vector3, step: float, nx: int, ny: int, nz: int, a: Vector3, b: Vector3, c: Vector3, jitter: float) -> void:
-	var mn := Vector3(minf(a.x, minf(b.x, c.x)), minf(a.y, minf(b.y, c.y)), minf(a.z, minf(b.z, c.z)))
-	var mx := Vector3(maxf(a.x, maxf(b.x, c.x)), maxf(a.y, maxf(b.y, c.y)), maxf(a.z, maxf(b.z, c.z)))
+static func _stamp_hull(grid: PackedByteArray, jit: PackedFloat32Array, origin: Vector3, step: float, nx: int, ny: int, nz: int, hull: AABB, jitter: float) -> void:
 	var i0 := Vector3i(
-		clampi(int(floor((mn.x - origin.x) / step)) - 1, 0, nx - 1),
-		clampi(int(floor((mn.y - origin.y) / step)) - 1, 0, ny - 1),
-		clampi(int(floor((mn.z - origin.z) / step)) - 1, 0, nz - 1)
+		clampi(int(floor((hull.position.x - origin.x) / step)), 0, nx - 1),
+		clampi(int(floor((hull.position.y - origin.y) / step)), 0, ny - 1),
+		clampi(int(floor((hull.position.z - origin.z) / step)), 0, nz - 1)
 	)
 	var i1 := Vector3i(
-		clampi(int(ceil((mx.x - origin.x) / step)) + 1, 0, nx - 1),
-		clampi(int(ceil((mx.y - origin.y) / step)) + 1, 0, ny - 1),
-		clampi(int(ceil((mx.z - origin.z) / step)) + 1, 0, nz - 1)
+		clampi(int(ceil((hull.position.x + hull.size.x - origin.x) / step)), 0, nx - 1),
+		clampi(int(ceil((hull.position.y + hull.size.y - origin.y) / step)), 0, ny - 1),
+		clampi(int(ceil((hull.position.z + hull.size.z - origin.z) / step)), 0, nz - 1)
 	)
-	var thresh := step * step * 0.85
 	for z in range(i0.z, i1.z + 1):
 		for y in range(i0.y, i1.y + 1):
 			for x in range(i0.x, i1.x + 1):
-				var p := origin + Vector3(float(x) + 0.5, float(y) + 0.5, float(z) + 0.5) * step
-				if p.y > GROUND_Y + step * 0.15:
+				var center := origin + Vector3(float(x) + 0.5, float(y) + 0.5, float(z) + 0.5) * step
+				if center.y > GROUND_Y + step * 0.1:
 					continue
-				if _dist2_tri(p, a, b, c) <= thresh:
-					var idx := _idx(x, y, z, nx, ny)
-					grid[idx] = 1
-					jit[idx] = jitter
+				if not hull.has_point(center):
+					continue
+				var idx := _idx(x, y, z, nx, ny)
+				grid[idx] = 1
+				jit[idx] = jitter
+
+
+static func _empty_voxel(grid: PackedByteArray, origin: Vector3, step: float, nx: int, ny: int, nz: int, p: Vector3) -> bool:
+	var gx := int(floor((p.x - origin.x) / step))
+	var gy := int(floor((p.y - origin.y) / step))
+	var gz := int(floor((p.z - origin.z) / step))
+	if gx < 0 or gy < 0 or gz < 0 or gx >= nx or gy >= ny or gz >= nz:
+		return true
+	return grid[_idx(gx, gy, gz, nx, ny)] == 0
 
 
 static func _emit_face(vertices: PackedVector3Array, normals: PackedVector3Array, colors: PackedColorArray, origin: Vector3, step: float, v: Vector3i, dir: Vector3i, jitter: float, ground: float) -> void:

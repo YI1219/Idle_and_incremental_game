@@ -124,10 +124,16 @@ static func cover_outline(outline: PackedVector2Array, state: Dictionary) -> Pac
 			var nxt := rad[(i + 1) % bins]
 			rad[i] = maxf(prev, nxt)
 	var out := PackedVector2Array()
-	out.resize(bins)
-	for i in bins:
-		var ang := -PI + TAU * (float(i) + 0.5) / float(bins)
-		out[i] = mid + Vector2(cos(ang), sin(ang)) * (rad[i] + 0.04)
+	out.resize(outline.size())
+	for i in outline.size():
+		var p := outline[i]
+		var d := p - mid
+		var r := d.length()
+		var need := rad[_bin(d, bins)] + 0.04
+		if r < 1e-4:
+			out[i] = p
+		else:
+			out[i] = mid + d * (maxf(r, need) / r)
 	return out
 
 

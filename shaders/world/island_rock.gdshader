@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode diffuse_toon, specular_disabled, shadows_disabled, cull_back;
+render_mode diffuse_toon, specular_disabled, shadows_disabled, cull_disabled;
 uniform float ground_y = 0.0;
 varying float world_y;
 varying vec3 world_n;
@@ -23,7 +23,7 @@ void fragment() {
 	vec3 base = mix(warm, mid, smoothstep(0.0, 0.42, t));
 	base = mix(base, cool, smoothstep(0.38, 1.0, t));
 	base *= 1.0 + (jitter - 0.5) * 0.10;
-	float wrap = clamp(world_n.y * 0.28 + 0.72, 0.42, 1.05);
+	float wrap = clamp(world_n.y * 0.22 + 0.80, 0.55, 1.08);
 	ALBEDO = base * wrap;
 	ROUGHNESS = 1.0;
 }

@@ -32,12 +32,11 @@ func run() -> void:
 	rig.snap_to_target()
 	await shot("res://art/review/island_style/2026-10-02/closeup_play.png")
 	rig.set_physics_process(false)
-	var edge_from := Vector3(2.4, 1.45, 6.2)
-	var edge_look := Vector3(0.8, 0.02, 3.05)
-	rig.global_transform = Transform3D(Basis.looking_at(edge_look - edge_from, Vector3.UP), edge_from)
+	var edge := _rim_view(island)
+	rig.global_transform = Transform3D(Basis.looking_at(edge["look"] - edge["from"], Vector3.UP), edge["from"])
 	var edge_cam := rig.get_node_or_null("Camera3D") as Camera3D
 	if edge_cam:
-		edge_cam.fov = 36
+		edge_cam.fov = 30
 	await shot("res://art/review/island_style/2026-10-02/grass_edge.png")
 	rig.set_physics_process(true)
 	rig._distance = rig.default_distance
@@ -103,3 +102,33 @@ func run() -> void:
 		camera.fov = 46
 	await shot("res://art/review/island_style/2026-10-02/multi_island.png")
 	quit()
+
+
+func _rim_view(island: Node3D) -> Dictionary:
+	var outline := PackedVector2Array()
+	var mid := Vector2.ZERO
+	if island and island.terrain:
+		for row in island.terrain.island_cache.values():
+			outline = row.get("outline", PackedVector2Array())
+			var c: Vector3 = row.get("centroid", Vector3.ZERO)
+			mid = Vector2(c.x, c.z)
+			break
+	var rim2 := Vector2(-2.4, 5.2)
+	var best := -INF
+	for p in outline:
+		# South-west rim: grass/rock, away from the pond and cottage.
+		var score := p.y - p.x * 0.15
+		if score > best:
+			best = score
+			rim2 = p
+	if mid == Vector2.ZERO:
+		mid = Vector2(0.4, -0.5)
+	var out2 := rim2 - mid
+	if out2.length_squared() < 1e-4:
+		out2 = Vector2(0.0, 1.0)
+	out2 = out2.normalized()
+	var rim := Vector3(rim2.x, 0.02, rim2.y)
+	return {
+		"from": rim + Vector3(out2.x, 0.0, out2.y) * 2.65 + Vector3(0.0, 0.78, 0.0),
+		"look": rim + Vector3(0.0, -0.06, 0.0) - Vector3(out2.x, 0.0, out2.y) * 0.28,
+	}

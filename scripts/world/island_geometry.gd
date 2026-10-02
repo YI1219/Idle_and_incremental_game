@@ -295,7 +295,7 @@ static func noise_coast(polygon: PackedVector2Array, amount: float) -> PackedVec
 	return wobble_coast(polygon, amount)
 
 
-static func build_top(outline: PackedVector2Array, cutters: Array) -> ArrayMesh:
+static func build_top(outline: PackedVector2Array, cutters: Array, fade_rim: PackedVector2Array = PackedVector2Array()) -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	if outline.size() < 3:
@@ -315,10 +315,11 @@ static func build_top(outline: PackedVector2Array, cutters: Array) -> ArrayMesh:
 				if remain.size() >= 3 and signed_area(remain) > 0.0:
 					clipped.append(remain)
 		triangles = clipped
+	var rim: PackedVector2Array = fade_rim if fade_rim.size() >= 3 else outline
 	for piece in triangles:
 		if _centroid_in(piece, cutters):
 			continue
-		_emit_top(st, piece, cutters, outline)
+		_emit_top(st, piece, cutters, rim)
 	st.generate_normals()
 	return st.commit()
 

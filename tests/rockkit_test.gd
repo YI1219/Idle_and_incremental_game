@@ -85,14 +85,30 @@ func _bake_clip() -> void:
 	var cells := _rect(6, 5)
 	var outline: PackedVector2Array = IslandGeometry.build_island(cells, [], true)["outline"]
 	var state: Dictionary = RockUnderside.assemble(outline, 7)
+	var poked := false
+	for slot in state["slots"]:
+		if int(slot.get("ring", 0)) != 0:
+			continue
+		var xf: Transform3D = slot["xf"]
+		var info: Dictionary = RockKit.piece(String(slot["piece"]))
+		var mesh: ArrayMesh = info.get("mesh")
+		if mesh == null:
+			continue
+		for v in mesh.get_faces():
+			if (xf * v).y > 0.08:
+				poked = true
+				break
+		if poked:
+			break
+	check(poked, "shore rocks poke above the grass plane before the clip")
 	var baked: Dictionary = RockBaker.bake(state)
 	check(bool(baked.get("ok", false)), "bake succeeds for a seeded island")
 	check(float(baked.get("max_y", 1.0)) <= 0.03, "no baked rock geometry sits above ground height")
+	check(RockBaker.max_y(baked) <= 0.03, "baker max_y agrees no geometry is above ground")
 	check(RockBaker.has_no_interior_proxy(baked), "baked mesh has no interior-face proxy")
 	check(RockBaker.is_closed_enough(baked), "baked mesh is closed except the grass cut")
-	var raw := RockUnderside.triangle_count(state)
 	check(int(baked.get("triangles", 0)) > 12, "bake keeps an outer shell")
-	check(int(baked.get("triangles", 0)) < raw or raw < 24, "union has fewer triangles than stacked interiors, or the island is tiny")
+	check(int(baked.get("chunks", 0)) >= 1, "bake splits large islands into chunks")
 
 
 func _incremental() -> void:

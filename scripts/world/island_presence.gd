@@ -176,13 +176,23 @@ func baked_triangles() -> int:
 	return int(bake_result.get("triangles", 0))
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		_bake_pending = false
+		if _bake_task != -1:
+			WorkerThreadPool.wait_for_task_completion(_bake_task)
+			_bake_task = -1
+
+
 func flush_bake() -> void:
 	_bake_pending = false
 	if _bake_task != -1:
-		if WorkerThreadPool.is_task_completed(_bake_task):
-			WorkerThreadPool.wait_for_task_completion(_bake_task)
+		WorkerThreadPool.wait_for_task_completion(_bake_task)
 		_bake_task = -1
-	if not rock_state.is_empty():
+		if _job_box.size() > 0:
+			_apply_bake(_job_box[0])
+			return
+	if not rock_state.is_empty() and not baked:
 		_apply_bake(RockBaker.bake(rock_state))
 
 
