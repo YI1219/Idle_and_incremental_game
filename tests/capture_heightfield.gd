@@ -29,7 +29,9 @@ func run() -> void:
 	var scene: Node = load("res://scenes/play.tscn").instantiate()
 	root.add_child(scene)
 	await frames(40)
-	SpaceState.space_id = "outside"
+	var space_state := root.get_node_or_null("SpaceState")
+	if space_state:
+		space_state.space_id = "outside"
 	var rig: Node3D = get_first_node_in_group("camera_rig")
 	var builder: Node3D = get_first_node_in_group("sandbox_builder")
 	var island: Node3D = get_first_node_in_group("island_shell")
