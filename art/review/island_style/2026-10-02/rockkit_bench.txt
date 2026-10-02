@@ -1,0 +1,31 @@
+Rock-kit underside benchmark
+Godot 4.7.2-stable (official)  renderer=unknown
+This is a development-machine / VM sample. It is not target-laptop evidence.
+
+=== playable courtyard (~130 cells, 1 island) ===
+islands=1  pieces=97  triangles=32310  rock_draw_calls=10
+build_ms=-  last_rock_rebuild_ms=6.164
+process_ms avg/max=0.00/0.00  physics_ms avg/max=0.00/0.00  fps_est=100000.0
+perf_draw_calls=0  primitives=0
+
+=== 4x-area island (528 cells, 1 island) ===
+islands=1  pieces=184  triangles=61000  rock_draw_calls=10
+build_ms=56.167  last_rock_rebuild_ms=11.248
+process_ms avg/max=0.00/0.00  physics_ms avg/max=0.00/0.00  fps_est=100000.0
+perf_draw_calls=0  primitives=0
+
+coastline-edit rebuild: 87.79 ms (logic+mesh+respace)
+rock respace only: 20.51 ms
+
+=== 4x island + 7 satellites (668 cells, 8 islands) ===
+islands=8  pieces=284  triangles=102668  rock_draw_calls=59
+build_ms=139.81  last_rock_rebuild_ms=24.083
+process_ms avg/max=161.50/227.99  physics_ms avg/max=131.78/186.04  fps_est=6.2
+perf_draw_calls=0  primitives=0
+
+=== same 8 islands, camera near the main island ===
+islands=8  pieces=379  triangles=128926  rock_draw_calls=64
+build_ms=-  last_rock_rebuild_ms=24.083
+process_ms avg/max=227.99/227.99  physics_ms avg/max=186.04/186.04  fps_est=4.4
+perf_draw_calls=0  primitives=0
+
