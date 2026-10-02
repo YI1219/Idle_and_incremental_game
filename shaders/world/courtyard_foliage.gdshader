@@ -28,5 +28,4 @@ void fragment() {
     ALBEDO = mix(leaf, tex.rgb, preserve_color);
     ROUGHNESS = 0.95;
     BACKLIGHT = ALBEDO * 0.36;
-    EMISSION = ALBEDO * 0.06;
 }
