@@ -328,7 +328,8 @@ func _tune_gradient() -> void:
 				top = maxf(top, field.height_at(ix, iz))
 	_rock_mat.set_shader_parameter("top_y", top + 0.05)
 	_rock_mat.set_shader_parameter("bottom_y", bot - 0.2)
-	_rock_mat.set_shader_parameter("clip_above", top - 0.04)
+	# Placement keeps rock tops under the lip. A low clip sliced them into flat slivers.
+	_rock_mat.set_shader_parameter("clip_above", top + 4.0)
 
 
 func _rect_hits_rim(rect: Rect2i) -> bool:

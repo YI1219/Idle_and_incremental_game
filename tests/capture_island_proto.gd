@@ -52,6 +52,11 @@ func run() -> void:
 	_look(cam, mid + Vector3(r * 1.55, -2.15, r * 1.45), mid + Vector3(0.0, -1.7, 0.0))
 	await shot(OUT + "/three_quarter_below.png")
 
+	cam.fov = 32.0
+	var south := Vector3(mid.x, mid.y, box.position.z)
+	_look(cam, south + Vector3(0.55, -0.05, -1.15), south + Vector3(0.0, -0.42, 0.35))
+	await shot(OUT + "/lip_south.png")
+
 	print("PROTO_CAPTURE done")
 	quit()
 

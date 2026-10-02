@@ -9,7 +9,7 @@ extends RefCounted
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 
 const ISO := 0.5
-const LIP := 0.20
+const SKIRT := 0.14
 const BLUR_PASSES := 3
 
 # Bit 0 SW, 1 SE, 2 NE, 3 NW. Local ids: 0 SW, 1 SE, 2 NE, 3 NW, 4 S, 5 E, 6 N, 7 W.
@@ -53,12 +53,18 @@ static func prepare(field: Heightfield) -> Dictionary:
 	var seams: Dictionary = {}
 	var chunks_x := ceili(float(field.cells_x()) / float(Heightfield.CHUNK))
 	var chunks_z := ceili(float(field.cells_z()) / float(Heightfield.CHUNK))
-	return {
+	var ctx := {
 		"occ": occ,
 		"seams": seams,
 		"chunks_x": chunks_x,
 		"chunks_z": chunks_z,
 	}
+	for cz in field.cells_z():
+		for cx in field.cells_x():
+			_emit_cell(field, occ, cx, cz, null, seams, false, ctx)
+	ctx["loops"] = _trace_loops(field, seams)
+	ctx["edge_buckets"] = _bucket_edges(field, ctx["loops"])
+	return ctx
 
 
 static func build_chunk(field: Heightfield, chunk: Vector2i, ctx: Dictionary) -> Dictionary:
@@ -73,20 +79,22 @@ static func build_chunk(field: Heightfield, chunk: Vector2i, ctx: Dictionary) ->
 		for cx in range(x0, x1):
 			# Void cells still emit when blur pulls a corner across the iso,
 			# so the coast polyline stays connected.
-			_emit_cell(field, occ, cx, cz, buf, seams, true)
+			_emit_cell(field, occ, cx, cz, buf, seams, true, ctx)
+	_emit_skirts(field, chunk, ctx, buf)
 	return buf.payload()
 
 
 static func collect_loops(field: Heightfield, ctx: Dictionary) -> Array:
-	## Walk mask iso-segments once. Call after every chunk has filled ctx.seams,
-	## or call _emit_cell in seam-only mode below.
+	if ctx.has("loops"):
+		return ctx["loops"]
 	if (ctx["seams"] as Dictionary).is_empty():
 		var occ: PackedFloat32Array = ctx["occ"]
-		var buf := _Buf.new()
 		for cz in field.cells_z():
 			for cx in field.cells_x():
-				_emit_cell(field, occ, cx, cz, buf, ctx["seams"], false)
-	return _trace_loops(field, ctx["seams"])
+				_emit_cell(field, occ, cx, cz, null, ctx["seams"], false, ctx)
+	var loops: Array = _trace_loops(field, ctx["seams"])
+	ctx["loops"] = loops
+	return loops
 
 
 static func build_core(field: Heightfield, loops: Array) -> Dictionary:
@@ -147,7 +155,7 @@ static func _occupancy(field: Heightfield) -> PackedFloat32Array:
 	return occ
 
 
-static func _emit_cell(field: Heightfield, occ: PackedFloat32Array, cx: int, cz: int, buf: RefCounted, seams: Dictionary, emit_faces: bool) -> void:
+static func _emit_cell(field: Heightfield, occ: PackedFloat32Array, cx: int, cz: int, buf: RefCounted, seams: Dictionary, emit_faces: bool, ctx: Dictionary) -> void:
 	var corner_i := [Vector2i(cx, cz), Vector2i(cx + 1, cz), Vector2i(cx + 1, cz + 1), Vector2i(cx, cz + 1)]
 	var xz: Array[Vector2] = []
 	var o := PackedFloat32Array()
@@ -185,23 +193,48 @@ static func _emit_cell(field: Heightfield, occ: PackedFloat32Array, cx: int, cz:
 	if not emit_faces:
 		_add_boundary(pts, mask, seams)
 		return
+	var loops: Array = ctx.get("loops", [])
+	var cell_edges: Array = _cell_edges(ctx, cx, cz) if not loops.is_empty() else []
 	var full := mask == 15
-	var polys: Array = LAND_POLYS.get(mask, [])
-	if full:
-		_emit_quadrants(buf, xz, h, PackedVector2Array(), true)
-		_emit_quadrant_walls(buf, xz, h, PackedVector2Array(), true)
+	if cell_edges.is_empty():
+		if full or loops.is_empty():
+			_emit_quadrants(buf, xz, h, PackedVector2Array(), true)
+			_emit_quadrant_walls(buf, xz, h, PackedVector2Array(), true)
+		else:
+			var land_polys: Array[PackedVector2Array] = []
+			var polys: Array = LAND_POLYS.get(mask, [])
+			for poly_ids in polys:
+				var poly := PackedVector2Array()
+				for id in poly_ids:
+					poly.append(pts[int(id)])
+				poly = _ccw(poly)
+				if poly.size() >= 3:
+					land_polys.append(poly)
+			_emit_quadrants(buf, xz, h, land_polys, false)
+			_emit_quadrant_walls(buf, xz, h, land_polys, false)
 	else:
-		var land_polys: Array[PackedVector2Array] = []
-		for poly_ids in polys:
-			var poly := PackedVector2Array()
-			for id in poly_ids:
-				poly.append(pts[int(id)])
-			poly = _ccw(poly)
-			if poly.size() >= 3:
-				land_polys.append(poly)
-		_emit_quadrants(buf, xz, h, land_polys, false)
-		_emit_quadrant_walls(buf, xz, h, land_polys, false)
-		_emit_lip(buf, pts, mask, h, xz)
+		var clipped: Array[PackedVector2Array] = []
+		var mid_s := (xz[0] + xz[1]) * 0.5
+		var mid_e := (xz[1] + xz[2]) * 0.5
+		var mid_n := (xz[2] + xz[3]) * 0.5
+		var mid_w := (xz[3] + xz[0]) * 0.5
+		var center := (xz[0] + xz[1] + xz[2] + xz[3]) * 0.25
+		var quads: Array[PackedVector2Array] = [
+			_quad(xz[0], mid_s, center, mid_w),
+			_quad(xz[1], mid_e, center, mid_s),
+			_quad(xz[2], mid_n, center, mid_e),
+			_quad(xz[3], mid_w, center, mid_n),
+		]
+		for i in 4:
+			if _quad_inside(quads[i], cell_edges):
+				clipped.append(quads[i])
+				_fan_y(buf, quads[i], h[i], Color(1.0, 0.55, 0.15))
+				continue
+			var cut := _clip_land(quads[i], cell_edges, loops)
+			if cut.size() >= 3:
+				clipped.append(cut)
+				_fan_y(buf, cut, h[i], Color(1.0, 0.55, 0.15))
+		_emit_quadrant_walls(buf, xz, h, clipped, false)
 	_add_boundary(pts, mask, seams)
 
 
@@ -257,24 +290,129 @@ static func _emit_quadrant_walls(buf: RefCounted, xz: Array[Vector2], h: PackedF
 					_wall(buf, seg[0], seg[1], h[ia], h[ib], Color(0.55, 0.45, 0.2), side_pt)
 
 
-static func _emit_lip(buf: RefCounted, pts: Array[Vector2], mask: int, h: PackedFloat32Array, xz: Array[Vector2]) -> void:
-	for seg in BOUNDARY.get(mask, []):
-		var a: Vector2 = pts[int(seg[0])]
-		var b: Vector2 = pts[int(seg[1])]
-		var ya := _nearest_h(a, xz, h)
-		var yb := _nearest_h(b, xz, h)
-		var a0 := Vector3(a.x, ya, a.y)
-		var b0 := Vector3(b.x, yb, b.y)
-		var a1 := Vector3(a.x, ya - LIP, a.y)
-		var b1 := Vector3(b.x, yb - LIP, b.y)
-		var mid := (a + b) * 0.5
-		var center := (xz[0] + xz[1] + xz[2] + xz[3]) * 0.25
-		var outward := mid - center
-		if outward.length_squared() < 1.0e-8:
-			outward = Vector2(1.0, 0.0)
-		outward = outward.normalized()
-		var prefer := Vector3(mid.x, (ya + yb) * 0.5, mid.y) + Vector3(outward.x, 0.0, outward.y)
-		buf.quad(a0, b0, b1, a1, Color(0.0, 0.4, 0.2), prefer)
+static func _emit_skirts(field: Heightfield, chunk: Vector2i, ctx: Dictionary, buf: RefCounted) -> void:
+	## One continuous earth ribbon on the smoothed coast. It hangs onto the top rocks.
+	var loops: Array = ctx.get("loops", [])
+	for loop in loops:
+		var pts: PackedVector2Array = loop["pts"]
+		var n := pts.size()
+		if n < 3:
+			continue
+		for i in n:
+			var a: Vector2 = pts[i]
+			var b: Vector2 = pts[(i + 1) % n]
+			var mid := (a + b) * 0.5
+			if _chunk_of_world(field, mid) != chunk:
+				continue
+			var ya := _coast_y(field, a)
+			var yb := _coast_y(field, b)
+			var a0 := Vector3(a.x, ya, a.y)
+			var b0 := Vector3(b.x, yb, b.y)
+			var a1 := Vector3(a.x, ya - SKIRT, a.y)
+			var b1 := Vector3(b.x, yb - SKIRT, b.y)
+			var dir := b - a
+			if dir.length_squared() < 1.0e-8:
+				continue
+			dir = dir.normalized()
+			# Loops are oriented so the right side is outside (air).
+			var outward := Vector2(dir.y, -dir.x)
+			var prefer := Vector3(mid.x, (ya + yb) * 0.5 - SKIRT * 0.5, mid.y) + Vector3(outward.x, 0.0, outward.y)
+			buf.quad(a0, b0, b1, a1, Color(0.0, 0.4, 0.2), prefer)
+
+
+static func _chunk_of_world(field: Heightfield, p: Vector2) -> Vector2i:
+	var local := p - field.origin
+	var cx := int(floor(local.x / field.spacing))
+	var cz := int(floor(local.y / field.spacing))
+	return chunk_of_cell(cx, cz)
+
+
+static func _bucket_edges(field: Heightfield, loops: Array) -> Dictionary:
+	var buckets: Dictionary = {}
+	for loop in loops:
+		var pts: PackedVector2Array = loop["pts"]
+		var n := pts.size()
+		for i in n:
+			var a: Vector2 = pts[i]
+			var b: Vector2 = pts[(i + 1) % n]
+			var min_p := Vector2(minf(a.x, b.x), minf(a.y, b.y)) - Vector2(0.7, 0.7)
+			var max_p := Vector2(maxf(a.x, b.x), maxf(a.y, b.y)) + Vector2(0.7, 0.7)
+			var c0 := _cell_of(field, min_p)
+			var c1 := _cell_of(field, max_p)
+			for cz in range(c0.y, c1.y + 1):
+				for cx in range(c0.x, c1.x + 1):
+					var key := Vector2i(cx, cz)
+					if not buckets.has(key):
+						buckets[key] = []
+					(buckets[key] as Array).append([a, b])
+	return buckets
+
+
+static func _cell_of(field: Heightfield, p: Vector2) -> Vector2i:
+	var local := p - field.origin
+	return Vector2i(int(floor(local.x / field.spacing)), int(floor(local.y / field.spacing)))
+
+
+static func _cell_edges(ctx: Dictionary, cx: int, cz: int) -> Array:
+	var buckets: Dictionary = ctx.get("edge_buckets", {})
+	return buckets.get(Vector2i(cx, cz), [])
+
+
+static func _quad_inside(poly: PackedVector2Array, edges: Array) -> bool:
+	for edge in edges:
+		var a: Vector2 = edge[0]
+		var b: Vector2 = edge[1]
+		for p in poly:
+			if not _left(a, b, p):
+				return false
+	return true
+
+
+static func _clip_land(poly: PackedVector2Array, edges: Array, loops: Array) -> PackedVector2Array:
+	if poly.size() < 3:
+		return PackedVector2Array()
+	if edges.is_empty():
+		var c := Vector2.ZERO
+		for p in poly:
+			c += p
+		c /= float(poly.size())
+		if _in_land(c, loops):
+			return poly
+		return PackedVector2Array()
+	var cur := poly
+	for edge in edges:
+		var a: Vector2 = edge[0]
+		var b: Vector2 = edge[1]
+		cur = _clip_edge(cur, a, b)
+		if cur.size() < 3:
+			return PackedVector2Array()
+	return cur
+
+
+static func _in_land(p: Vector2, loops: Array) -> bool:
+	var inside := false
+	for loop in loops:
+		var hole := bool(loop.get("hole", false))
+		var hit := _point_in_poly(p, loop["pts"])
+		if hole:
+			if hit:
+				return false
+		elif hit:
+			inside = true
+	return inside
+
+
+static func _point_in_poly(p: Vector2, poly: PackedVector2Array) -> bool:
+	var n := poly.size()
+	var inside := false
+	var j := n - 1
+	for i in n:
+		var a: Vector2 = poly[i]
+		var b: Vector2 = poly[j]
+		if ((a.y > p.y) != (b.y > p.y)) and (p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y + 1.0e-12) + a.x):
+			inside = not inside
+		j = i
+	return inside
 
 
 static func _add_boundary(pts: Array[Vector2], mask: int, seams: Dictionary) -> void:
@@ -331,11 +469,18 @@ static func _trace_loops(field: Heightfield, seams: Dictionary) -> Array:
 		var raw := PackedVector2Array()
 		for key in loop_keys:
 			raw.append(seams[key]["p"])
-		var smooth := _chaikin(raw)
+		var smooth := _smooth_coast(raw, field)
 		if _poly_len(smooth) < 2.0:
 			continue
 		var c := _centroid(smooth)
 		var hole := not field.sample_land(Vector3(c.x, 0.0, c.y))
+		# Outer loops are CCW (land on the left). Holes are CW so land stays on the left.
+		if hole:
+			if _area(smooth) > 0.0:
+				smooth.reverse()
+		elif _area(smooth) < 0.0:
+			smooth.reverse()
+		c = _centroid(smooth)
 		loops.append({"pts": smooth, "hole": hole, "centroid": c})
 	return loops
 
@@ -353,33 +498,32 @@ static func _emit_belly(field: Heightfield, loop: Dictionary, buf: RefCounted) -
 		var y := _coast_y(field, ring_xz[i])
 		top_y[i] = y
 		min_top = minf(min_top, y)
-	# t, radial scale, extra drop fraction. Rim is inset so the core sits behind the rocks.
+	# t, radial scale. A cone behind the rocks, ending in a short stalk.
 	var profile := [
-		[0.00, 0.76, 0.08],
-		[0.18, 0.64, 0.12],
-		[0.36, 0.50, 0.16],
-		[0.54, 0.36, 0.20],
-		[0.72, 0.22, 0.24],
-		[0.88, 0.10, 0.30],
+		[0.00, 0.70],
+		[0.20, 0.52],
+		[0.42, 0.34],
+		[0.64, 0.18],
+		[0.82, 0.07],
+		[0.94, 0.035],
 	]
 	var rings: Array[PackedVector3Array] = []
 	for row in profile:
 		var t: float = row[0]
 		var sc: float = row[1]
-		var extra: float = row[2]
 		var ring := PackedVector3Array()
 		ring.resize(segs)
 		for i in segs:
 			var p: Vector2 = c2 + (ring_xz[i] - c2) * sc
 			var depth: float = top_y[i] - field.y_bottom
-			# Invert: higher coast hangs a little deeper; the taper does the rest.
-			var y := top_y[i] - LIP - pow(t, 1.08) * depth - extra * 0.15
+			var y := top_y[i] - 0.05 - pow(t, 1.2) * depth
 			var wob := Heightfield._hash2(p.x * 0.47 + float(field.seed), p.y * 0.39)
-			var amp := 0.04 + t * 0.16
-			var inward := (c2 - ring_xz[i]).normalized()
-			p += inward * (wob.x - 0.5) * amp
-			y += (wob.y - 0.5) * amp * 0.35
-			y = clampf(y, field.y_bottom - 0.15, top_y[i] - 0.12)
+			var amp := 0.02 + t * 0.06
+			var inward := (c2 - ring_xz[i])
+			if inward.length_squared() > 1.0e-6:
+				p += inward.normalized() * (wob.x - 0.5) * amp
+			y += (wob.y - 0.5) * amp * 0.25
+			y = clampf(y, field.y_bottom - 0.35, top_y[i] - 0.08)
 			ring[i] = Vector3(p.x, y, p.y)
 		rings.append(ring)
 	var interior := Vector3(c2.x, (min_top + field.y_bottom) * 0.5, c2.y)
@@ -391,7 +535,7 @@ static func _emit_belly(field: Heightfield, loop: Dictionary, buf: RefCounted) -
 			buf.tri_out(upper[i], upper[j], lower[j], Color(0.5, 0.5, 0.5), interior)
 			buf.tri_out(upper[i], lower[j], lower[i], Color(0.5, 0.5, 0.5), interior)
 	var last: PackedVector3Array = rings[rings.size() - 1]
-	var tip_y := field.y_bottom - 0.05
+	var tip_y := field.y_bottom - 0.55
 	var tip := Vector3(c2.x, tip_y, c2.y)
 	for i in segs:
 		var j := (i + 1) % segs
@@ -407,7 +551,7 @@ static func _emit_shaft(field: Heightfield, loop: Dictionary, buf: RefCounted) -
 	var y0 := PackedFloat32Array()
 	y0.resize(segs)
 	for i in segs:
-		y0[i] = _coast_y(field, rim[i]) - LIP
+		y0[i] = _coast_y(field, rim[i]) - SKIRT
 	var rings := 3
 	var prev := PackedVector3Array()
 	for r in rings + 1:
@@ -577,6 +721,54 @@ static func _qkey(p: Vector2) -> Vector2i:
 
 static func _snap_pt(p: Vector2) -> Vector2:
 	return Vector2(round(p.x * 80.0) / 80.0, round(p.y * 80.0) / 80.0)
+
+
+static func _smooth_coast(raw: PackedVector2Array, field: Heightfield) -> PackedVector2Array:
+	## Same idea as Heightfield.apply_coast_smooth: Chaikin, Catmull, low-frequency wobble.
+	var pts := raw
+	for _i in 2:
+		pts = _chaikin(pts)
+	pts = _catmull(pts)
+	pts = _low_freq(pts, field.seed)
+	var count := clampi(int(round(_poly_len(pts) / 0.22)), 36, 220)
+	return _resample(pts, count)
+
+
+static func _catmull(loop: PackedVector2Array) -> PackedVector2Array:
+	var n := loop.size()
+	if n < 4:
+		return loop
+	var out := PackedVector2Array()
+	for i in n:
+		var p0: Vector2 = loop[(i - 1 + n) % n]
+		var p1: Vector2 = loop[i]
+		var p2: Vector2 = loop[(i + 1) % n]
+		var p3: Vector2 = loop[(i + 2) % n]
+		out.append(p1)
+		var t := 0.5
+		var t2 := t * t
+		var t3 := t2 * t
+		out.append(0.5 * ((2.0 * p1) + (-p0 + p2) * t + (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3) * t2 + (-p0 + 3.0 * p1 - 3.0 * p2 + p3) * t3))
+	return out
+
+
+static func _low_freq(loop: PackedVector2Array, seed: int) -> PackedVector2Array:
+	var n := loop.size()
+	if n < 4:
+		return loop
+	var c := _centroid(loop)
+	var out := PackedVector2Array()
+	for i in n:
+		var q: Vector2 = loop[i]
+		var radial := q - c
+		if radial.length_squared() < 1.0e-6:
+			out.append(q)
+			continue
+		var t := float(i) / float(n)
+		var wobble := sin(t * TAU * 2.0 + float(seed) * 0.17) * 0.16
+		wobble += sin(t * TAU * 3.0 - float(seed) * 0.09) * 0.08
+		out.append(q + radial.normalized() * wobble)
+	return out
 
 
 static func _chaikin(loop: PackedVector2Array) -> PackedVector2Array:
