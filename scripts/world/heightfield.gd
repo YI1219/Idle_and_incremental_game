@@ -761,11 +761,21 @@ func _waterfall_sites(fill: PackedFloat32Array, cell_h: PackedFloat32Array) -> A
 			if inland or is_notch:
 				var mid := vertex_world(cx, cz) + Vector2(spacing * 0.5, spacing * 0.5)
 				var outward := _drain_outward(cx, cz)
+				var origin := Vector3(mid.x, cell_h[idx], mid.y)
+				var crowded := false
+				for prev in sites:
+					if origin.distance_to(prev["origin"]) < spacing * 1.6:
+						crowded = true
+						break
+				if crowded:
+					continue
 				sites.append({
 					"cell": Vector2i(cx, cz),
-					"origin": Vector3(mid.x, cell_h[idx], mid.y),
+					"origin": origin,
 					"outward": outward,
 				})
+				if sites.size() >= 8:
+					return sites
 	return sites
 
 

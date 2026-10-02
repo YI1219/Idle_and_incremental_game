@@ -2,6 +2,7 @@ extends SceneTree
 ## Screenshots for the heightfield island pass. Not art acceptance.
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
+const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
 const OUT := "res://art/review/heightfield/2026-10-02"
 
 func _initialize() -> void:
@@ -11,8 +12,14 @@ func frames(n: int) -> void:
 	for i in n:
 		await process_frame
 
+var _shot_cam: Camera3D
+
 func shot(path: String) -> void:
+	if _shot_cam:
+		_shot_cam.make_current()
 	await frames(10)
+	if _shot_cam:
+		_shot_cam.make_current()
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(path)
 	print("wrote ", path)
@@ -30,23 +37,39 @@ func run() -> void:
 	if builder:
 		builder.set_active(false)
 	terrain.flush_rebuild()
-	rig._distance = rig.default_distance
-	rig.snap_to_target()
+	rig.set_physics_process(false)
+	var play_cam := rig.get_node_or_null("Camera3D") as Camera3D
+	if play_cam:
+		play_cam.current = false
+	var arena: Node = scene.find_child("PracticeArena", true, false)
+	if arena:
+		arena.visible = false
+	var shot_cam := Camera3D.new()
+	shot_cam.name = "ShotCam"
+	shot_cam.near = 1.2
+	shot_cam.far = 240.0
+	scene.add_child(shot_cam)
+	_shot_cam = shot_cam
+	shot_cam.make_current()
+	_aim(shot_cam, Vector3(8.5, 14.0, 12.0), Vector3(0.0, -0.4, 0.0), 42)
 	await shot(OUT + "/overview.png")
 
 	_sculpt_demo(terrain, island)
 	terrain.flush_rebuild()
 	await frames(8)
+	if scene.get("house"):
+		(scene.house as Node3D).visible = false
+	var player: Node3D = get_first_node_in_group("player")
+	if player:
+		player.visible = false
 
-	rig._distance = rig.min_distance
-	rig.snap_to_target()
+	_aim(shot_cam, Vector3(-6.4, 3.8, 4.8), Vector3(-3.4, 0.6, 1.3), 38)
 	await shot(OUT + "/closeup_slope.png")
 
-	rig.set_physics_process(false)
-	_look(rig, Vector3(4.6, 4.2, 1.8), Vector3(4.4, -0.2, 0.2), 32)
+	_aim(shot_cam, Vector3(3.4, 6.4, -6.2), Vector3(1.2, -0.4, -3.2), 40)
 	await shot(OUT + "/lake.png")
 
-	_look(rig, Vector3(-2.2, 3.4, 7.2), Vector3(0.4, -0.8, 3.2), 34)
+	_aim(shot_cam, Vector3(3.2, 1.8, 6.6), Vector3(0.4, -1.8, 2.6), 36)
 	await shot(OUT + "/hole_waterfall.png")
 
 	if builder:
@@ -54,10 +77,10 @@ func run() -> void:
 		builder.commit_place("tree", Vector2i(-2, -5))
 		builder.set_active(false)
 	terrain.flush_rebuild()
-	_look(rig, Vector3(-2.0, 4.8, -2.4), Vector3(-1.5, 0.2, -4.6), 36)
+	_aim(shot_cam, Vector3(-2.0, 5.6, -9.5), Vector3(-2.0, 0.2, -5.0), 38)
 	await shot(OUT + "/placed_building.png")
 
-	_look(rig, Vector3(-16.0, 0.4, 12.5), Vector3(0.2, -2.4, -0.2), 40)
+	_aim(shot_cam, Vector3(-12.0, -2.8, 10.0), Vector3(0.5, -3.5, 0.8), 42)
 	await shot(OUT + "/underside.png")
 
 	var playable: Dictionary = terrain.heightfield_stats()
@@ -71,7 +94,7 @@ func run() -> void:
 	await frames(6)
 	var large: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x island", large)
-	_look(rig, Vector3(-22.0, 16.0, 26.0), Vector3(0.0, -1.0, 0.0), 38)
+	_aim(shot_cam, Vector3(-22.0, 16.0, 26.0), Vector3(0.0, -1.0, 0.0), 38)
 	await shot(OUT + "/large_island.png")
 
 	var offsets := [
@@ -87,7 +110,7 @@ func run() -> void:
 	await frames(6)
 	var multi: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x + 7 satellites", multi)
-	_look(rig, Vector3(-8.0, 42.0, 54.0), Vector3(2.0, -1.0, 0.0), 46)
+	_aim(shot_cam, Vector3(-8.0, 42.0, 54.0), Vector3(2.0, -1.0, 0.0), 46)
 	await shot(OUT + "/multi_island.png")
 	quit()
 
@@ -106,15 +129,27 @@ func _sculpt_demo(terrain: Node3D, island: Node3D) -> void:
 	# Through-hole near the south rim so water can fall into the cloud sea.
 	for _i in 6:
 		field.apply_brush("lower", Vector3(0.4, 0.0, 2.8), 1.0, 1.4, true)
+	var span := HeightfieldMesh.chunk_range(field)
+	var t0 := Time.get_ticks_usec()
+	for z in span.y:
+		for x in span.x:
+			HeightfieldMesh.build_chunk(field, Vector2i(x, z), "top", main.skip_top)
+	main.last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
 	main.rebuild_full(true)
 
 
-func _look(rig: Node3D, from: Vector3, look: Vector3, fov: float) -> void:
-	rig.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
-	var cam := rig.get_node_or_null("Camera3D") as Camera3D
-	if cam:
-		cam.fov = fov
-		cam.near = 1.2
+func _aim(cam: Camera3D, from: Vector3, look: Vector3, fov: float) -> void:
+	var forward := look - from
+	if forward.length_squared() < 1e-6:
+		look += Vector3(0.2, -0.2, 0.2)
+		forward = look - from
+	if absf(forward.normalized().dot(Vector3.UP)) > 0.92:
+		look += Vector3(0.4, 0.0, 0.4)
+	cam.fov = fov
+	cam.near = 1.2
+	cam.far = 240.0
+	cam.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
+	cam.make_current()
 
 
 func _print_stats(label: String, stats: Dictionary) -> void:

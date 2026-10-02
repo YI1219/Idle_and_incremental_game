@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode diffuse_burley, specular_disabled, shadows_disabled;
-uniform vec4 grass_a : source_color = vec4(0.33, 0.42, 0.27, 1.0);
-uniform vec4 grass_b : source_color = vec4(0.46, 0.52, 0.30, 1.0);
+uniform vec4 grass_a : source_color = vec4(0.38, 0.50, 0.28, 1.0);
+uniform vec4 grass_b : source_color = vec4(0.52, 0.60, 0.32, 1.0);
 uniform vec4 soil_color : source_color = vec4(0.50, 0.41, 0.32, 1.0);
 uniform vec4 rock_warm : source_color = vec4(0.58, 0.47, 0.39, 1.0);
 uniform vec4 rock_cool : source_color = vec4(0.42, 0.44, 0.47, 1.0);

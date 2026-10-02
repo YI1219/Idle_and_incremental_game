@@ -143,14 +143,14 @@ static func build_waterfall(origin: Vector3, outward: Vector3, bottom: float) ->
 	var norms := PackedVector3Array()
 	var cols := PackedColorArray()
 	var uvs := PackedVector2Array()
-	var side := Vector3(-outward.z, 0.0, outward.x) * 0.18
-	var top := origin + outward * 0.05
-	var foot := Vector3(origin.x, bottom, origin.z) + outward * 0.35
+	var side := Vector3(-outward.z, 0.0, outward.x) * 0.32
+	var top := origin + outward * 0.08 + Vector3(0.0, 0.04, 0.0)
+	var foot := Vector3(origin.x, bottom, origin.z) + outward * 0.55
 	var a := top - side
 	var b := top + side
 	var c := foot + side
 	var d := foot - side
-	var color := Color(0.35, 0.62, 0.60, 0.85)
+	var color := Color(0.55, 0.82, 0.80, 0.92)
 	_tri(verts, norms, cols, uvs, a, b, c, color, false)
 	_tri(verts, norms, cols, uvs, a, c, d, color, false)
 	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
@@ -175,11 +175,11 @@ static func _emit_top(field: Heightfield, chunk: Vector2i, verts: PackedVector3A
 			var c := _top_vert(field, mini(cx + step, field.verts_x - 1), mini(cz + step, field.verts_z - 1))
 			var d := _top_vert(field, cx, mini(cz + step, field.verts_z - 1))
 			if field.flip_diagonal(cx, cz):
-				_emit_facet(field, verts, norms, cols, uvs, a, b, c)
-				_emit_facet(field, verts, norms, cols, uvs, a, c, d)
+				_emit_facet(field, verts, norms, cols, uvs, a, c, b)
+				_emit_facet(field, verts, norms, cols, uvs, a, d, c)
 			else:
-				_emit_facet(field, verts, norms, cols, uvs, a, b, d)
-				_emit_facet(field, verts, norms, cols, uvs, b, c, d)
+				_emit_facet(field, verts, norms, cols, uvs, a, d, b)
+				_emit_facet(field, verts, norms, cols, uvs, b, d, c)
 
 
 static func _block_land(field: Heightfield, cx: int, cz: int, step: int) -> bool:
@@ -200,6 +200,11 @@ static func _emit_facet(field: Heightfield, verts: PackedVector3Array, norms: Pa
 	var n := (b - a).cross(c - a)
 	if n.length_squared() < 1e-10:
 		return
+	if n.y < 0.0:
+		var tmp := b
+		b = c
+		c = tmp
+		n = -n
 	_tri(verts, norms, cols, uvs, a, b, c, field.hash_color((a + b + c) / 3.0, n.normalized().y), false)
 
 
@@ -246,14 +251,15 @@ static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: 
 	var col_a: Array = _wall_post(field, a.x, a.y, rings, posts)
 	var col_b: Array = _wall_post(field, b.x, b.y, rings, posts)
 	var n := mini(col_a.size(), col_b.size())
+	var hint := Vector3(float(dx), 0.0, float(dz))
 	for r in range(n - 1):
 		var pa: Vector3 = col_a[r]
 		var pb: Vector3 = col_b[r]
 		var qa: Vector3 = col_a[r + 1]
 		var qb: Vector3 = col_b[r + 1]
 		var color := field.hash_color((pa + pb + qb) / 3.0, 0.2 if r > 0 else 0.85)
-		_tri(verts, norms, cols, uvs, pa, pb, qb, color, false)
-		_tri(verts, norms, cols, uvs, pa, qb, qa, color, false)
+		_tri_facing(verts, norms, cols, uvs, pa, pb, qb, color, hint)
+		_tri_facing(verts, norms, cols, uvs, pa, qb, qa, color, hint)
 
 
 static func _vertex_outward(field: Heightfield, ix: int, iz: int) -> Vector3:
@@ -430,7 +436,7 @@ static func _emit_bottom(field: Heightfield, chunk: Vector2i, verts: PackedVecto
 	var z0 := chunk.y * cs
 	var x1 := mini(x0 + cs, field.cells_x())
 	var z1 := mini(z0 + cs, field.cells_z())
-	var color := Color(0.02, 0.04, 0.92, 0.45)
+	var color := Color(0.02, 0.08, 0.95, 0.35)
 	for cz in range(z0, z1):
 		for cx in range(x0, x1):
 			if not field.is_land(cx, cz):
@@ -439,7 +445,7 @@ static func _emit_bottom(field: Heightfield, chunk: Vector2i, verts: PackedVecto
 			var p10 := _bottom_vert(field, cx + 1, cz)
 			var p01 := _bottom_vert(field, cx, cz + 1)
 			var p11 := _bottom_vert(field, cx + 1, cz + 1)
-			# Downward winding.
+			# Downward winding so the underside lights from below.
 			_tri(verts, norms, cols, uvs, p00, p11, p10, color, true)
 			_tri(verts, norms, cols, uvs, p00, p01, p11, color, true)
 
@@ -453,6 +459,15 @@ static func _bottom_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
 static func _bottom_noise(field: Heightfield, x: float, z: float) -> float:
 	var h := Heightfield._hash2(x * 0.31 + float(field.seed), z * 0.29)
 	return (h.x - 0.5) * 0.07
+
+
+static func _tri_facing(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, hint: Vector3) -> void:
+	var n := (b - a).cross(c - a)
+	if n.dot(hint) < 0.0:
+		var tmp := b
+		b = c
+		c = tmp
+	_tri(verts, norms, cols, uvs, a, b, c, color, false)
 
 
 static func _tri(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, force_down: bool) -> void:

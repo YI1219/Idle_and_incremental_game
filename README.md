@@ -25,6 +25,7 @@ Double-click **Play Demo.command**. Requires Godot 4.7; the script imports model
 | Rotate / zoom camera | Q, E / mouse wheel |
 | Pan / recenter | Middle-mouse drag / Home |
 | Toggle Build | B; in Build, left click lays ground, Shift + left click removes it |
+| Sculpt height (raise / lower / flatten / smooth) | Build panel tools; hold left button; Alt = free height; [ ] = radius |
 | Pause | Esc |
 
 Walking into the cottage doorway switches to interior automatically; walking to the indoor south doorway returns. The east bridge can cross the river. River water and off-island areas block walking and dodge. The west dummy can be practiced on repeatedly; dodge during the gold-ring charge; it resets when finished. The south cloud gate still uses the original exploration demo; 7 collects into the pack.
