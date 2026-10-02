@@ -60,4 +60,4 @@ Not art acceptance.
 - Water is still the run 5 lake surface. Tuft density and flowers are unchanged from that pass.
 - Grass mottling is intentionally mild. The shoulder is a few centimetres of dip plus a thin earth band; it will not read as a thick soil roll from the high camera.
 - Tree cards no longer self-light. The rest of the lighting stack was already low ambient, AgX, and small-radius SSAO, so the frame stays close to the previous shot.
-- Target-device frame rate was not measured. Playable stroke on this VM after the shader change was 75 ms.
+- Target-device frame rate was not measured. The numbers above are this VM only.
