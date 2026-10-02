@@ -617,10 +617,24 @@ func _low_freq_loop(loop: Array) -> Array:
 
 
 func visual_relief(world: Vector3) -> float:
-	## Render-only. Never write this into heights.
-	var n1 := _hash2(world.x * 0.31 + float(seed) * 0.02, world.z * 0.29)
-	var n2 := _hash2(world.x * 0.95 - float(seed) * 0.01, world.z * 0.88)
-	return (n1.x - 0.5) * 0.07 + (n2.y - 0.5) * 0.018
+	## Render-only continuous noise. Never write this into heights.
+	var n1 := _value_noise(world.x * 0.28 + float(seed) * 0.03, world.z * 0.26)
+	var n2 := _value_noise(world.x * 0.82 - float(seed) * 0.02, world.z * 0.78)
+	return (n1 - 0.5) * 0.055 + (n2 - 0.5) * 0.016
+
+
+func _value_noise(x: float, z: float) -> float:
+	var ix := floorf(x)
+	var iz := floorf(z)
+	var fx := x - ix
+	var fz := z - iz
+	fx = fx * fx * (3.0 - 2.0 * fx)
+	fz = fz * fz * (3.0 - 2.0 * fz)
+	var a := _hash2(ix, iz).x
+	var b := _hash2(ix + 1.0, iz).x
+	var c := _hash2(ix, iz + 1.0).x
+	var d := _hash2(ix + 1.0, iz + 1.0).x
+	return lerpf(lerpf(a, b, fx), lerpf(c, d, fx), fz)
 
 
 func visual_bank_dip(ix: int, iz: int) -> float:
