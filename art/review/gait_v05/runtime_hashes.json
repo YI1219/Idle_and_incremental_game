@@ -1,0 +1,14 @@
+{
+  "scripts/player.gd": "e40d3c7fcf04e94dd000a15fce07b4a5a8ab68a8e34552567c2dd798ef464ce5",
+  "scripts/characters/fabric_finish.gd": "4b638dd101de61051cf35c3a4fb77de698ce0bea0cae3f91030b9aceedb3af0a",
+  "scenes/player.tscn": "fe35bd82bce17da4441be2a3f8bd9fa161408b10c5685dfbb1cbb5b8415c82ed",
+  "assets/characters/qinglan/qinglan_fabric_v05.glb": "572af160e2056283952e83a85e4f14484642dffb4dd4bf72c55e62f5a45d86e5",
+  "assets/characters/qinglan/gentle_jog.tres": "13cbb20ea510a96ea787e4443038e732942dce77061e7f152fb3b3e8d0c51938",
+  "assets/characters/qinglan/turn_motion.tres": "3836239c98f1bcda6caa8c26a8fe412b1ffc4dd965d9b6bd6ad422af9fbfc9c0",
+  "assets/characters/qinglan/turn_motion.json": "edc47620c92eed7b54ef6cad2dfe4519c41b31cc28c3bf2eafa85779005fd6f9",
+  "assets/characters/qinglan/qinglan_template_v03.glb": "991c31fe69af61991c2b9503e3467b4335f8deb24006f18a8445ef04d8cdb846",
+  "assets/characters/qinglan/qinglan_clothed_v04.glb": "7ed32a827a04c58d015ff67aaf266cb857a65c5e975d073bf62e1c654601669a",
+  "assets/characters/qinglan/qinglan_candidate.glb": "dd629f2abef0b8cc9117308a88a9b0456f6f0430d0b889e5080b0af3ac436f8c",
+  "assets/weapons/sword/starter_jian.glb": "4aa9c0fff5d834bcb671f4662707f4cd34347aa0655fc240f6cd523be2fd616c",
+  "assets/buildings/cottage/cottage_tripo.glb": "e344e7d935f555b8bc947d716fb35a45f396ae3bc7379268c3bc30a51a99976b"
+}

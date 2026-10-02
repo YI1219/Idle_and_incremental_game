@@ -1,0 +1,114 @@
+{
+  "asset": "starter_jian",
+  "status": "integrated_sword_practice_candidate",
+  "views": {
+    "front": {
+      "file": "front.png",
+      "generator": "built-in image_gen",
+      "source": "/Users/yi/.codex/generated_images/01a0b742-1891-7982-90c7-a036c406ada6/exec-7c2a75af-2e26-4aa6-83a0-912c33b85afa.png",
+      "sha256": "fa1713ef3a7bcc85ab36e4a871cbcbbbf098a1f75c5ed809a73525c821158e79",
+      "size": [
+        1254,
+        1254
+      ],
+      "dark_foreground_bounds": [
+        549,
+        51,
+        704,
+        1181
+      ]
+    },
+    "left": {
+      "file": "left.png",
+      "generator": "built-in image_gen",
+      "source": "/Users/yi/.codex/generated_images/01a0b742-1891-7982-90c7-a036c406ada6/exec-536490fc-012a-4b8e-92a3-234d2c576449.png",
+      "sha256": "3bb2ee1f90eb7e4428f8d1934e7079d8048ea2cc52d027c1f0298dde014575c7",
+      "size": [
+        1254,
+        1254
+      ],
+      "dark_foreground_bounds": [
+        602,
+        53,
+        652,
+        1183
+      ]
+    },
+    "right": {
+      "file": "right.png",
+      "generator": "built-in image_gen",
+      "source": "/Users/yi/.codex/generated_images/01a0b742-1891-7982-90c7-a036c406ada6/exec-2f050d9c-c6a0-456f-925c-492b25afd4cd.png",
+      "sha256": "163721c3d4d3e2172655cc3b1a26863a23fa36c84aa731a8047e946972fa6ca2",
+      "size": [
+        1254,
+        1254
+      ],
+      "dark_foreground_bounds": [
+        601,
+        50,
+        652,
+        1183
+      ]
+    },
+    "back": {
+      "file": "back.png",
+      "generator": "built-in image_gen",
+      "source": "/Users/yi/.codex/generated_images/01a0b742-1891-7982-90c7-a036c406ada6/exec-8cc88fbd-5c23-4fa3-b402-2647b50e30d4.png",
+      "sha256": "749e0b07d1740530cc1c2faecffa4ddbee1866a1ee02bafcad09d9823724a870",
+      "size": [
+        1254,
+        1254
+      ],
+      "dark_foreground_bounds": [
+        549,
+        50,
+        704,
+        1181
+      ]
+    }
+  },
+  "review": "Source refined and GLB reimport checked; runtime right-hand binding and initial sword poses integrated. Final finger grip and all-frame clothing review remain incomplete. See runtime and CURRENT_CONTEXT.md.",
+  "tripo_suggested_settings": {
+    "model": "P2.0 Smart Mesh",
+    "mode": "four separate multiview slots",
+    "topology": "triangles",
+    "target_faces": 1000
+  },
+  "tripo": {
+    "operator": "user",
+    "task_id": null,
+    "actual_generation_settings": null,
+    "submission": "user_reported_generated_and_downloaded",
+    "original_export": {
+      "file": "tripo/jian_3d_model.glb",
+      "bytes": 26252,
+      "sha256": "00effca9e7c7d3d8c6fb87d2c8126626e7d7aed0e8e6299c1725fef095a27260",
+      "glb_version": 2,
+      "meshes": 1,
+      "triangles": 993,
+      "materials": 1,
+      "images": 0,
+      "animations": 0,
+      "external_uris": []
+    }
+  },
+  "refinement": {
+    "blend": "../../../work/sword/sword_candidate.blend",
+    "glb": "../../../work/sword/sword_candidate.glb",
+    "report": "../../../review/sword/refinement_report.json",
+    "triangles": 1068,
+    "boundary_edges": 0,
+    "materials": 3,
+    "texture_images": 0,
+    "length_m": 0.9
+  },
+  "runtime": {
+    "asset": "assets/weapons/sword/starter_jian.glb",
+    "binding": "Hand.R via BoneAttachment3D",
+    "scale": 0.8,
+    "effective_length_m": 0.72,
+    "pose_modifier": "scripts/combat/sword_pose.gd",
+    "review": "art/review/sword/runtime/",
+    "limits": "First right-arm/wrist pose pass, not final finger grip or all-frame clothing collision validation."
+  }
+}

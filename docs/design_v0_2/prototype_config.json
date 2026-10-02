@@ -1,0 +1,316 @@
+{
+  "meta": {
+    "version": "0.2-prototype",
+    "status": "All new numerical values are design proposals, not approved balance values.",
+    "time_unit": "minute",
+    "energy_unit": "qi_unit",
+    "source_priority": "latest user decisions > current discussion > prior consolidated document > original files",
+    "not_implemented": [
+      "full game simulation",
+      "multiplayer transaction system",
+      "combat model",
+      "complete offline scheduler"
+    ]
+  },
+  "time": {
+    "economy_tick_seconds": 1.0,
+    "minutes_per_game_day": 10.0,
+    "days_per_season": 60,
+    "offline_cap_minutes": 600.0
+  },
+  "land": {
+    "policy": "soft_dormant",
+    "allowed_policies": [
+      "soft_dormant",
+      "strict_capacity"
+    ],
+    "initial_cells": 48,
+    "base_free_cells": 64,
+    "hard_area_cap": 128,
+    "tax_qi_per_cell_minute": 0.1,
+    "paid_maintenance_budget_qi_per_minute": 2.4,
+    "dormant_productivity_floor": 0.35,
+    "show_desaturation": true,
+    "dormant_saturation": 0.2,
+    "visual_transition_seconds": 3.0,
+    "clutter_mode": "off",
+    "allocation": "stable_priority_then_creation_order",
+    "protection_items": {
+      "regional_support_basic": {
+        "quota_cells": 16,
+        "world_installed_only": true,
+        "decays": false
+      }
+    }
+  },
+  "spring": {
+    "base_seep_qi_per_minute": 10.0,
+    "pool_capacity_qi": 600.0,
+    "initial_pool_qi": 0.0,
+    "max_draw_qi_per_minute": 12.0
+  },
+  "condensation": {
+    "stone_energy_qi": 10.0,
+    "conversion_efficiency": 0.9,
+    "base_stones_per_minute": 0.18,
+    "active_overhead_qi_per_minute": 0.1,
+    "output_full_stops_overhead": true
+  },
+  "formations": {
+    "world_capacity_hard": 16,
+    "enabled_count_hard": 16,
+    "realm_base_capacity": {
+      "0": 0,
+      "1": 2,
+      "2": 3,
+      "3": 4,
+      "4": 5
+    },
+    "item_capacity_limit": {
+      "0": 0,
+      "1": 4,
+      "2": 6,
+      "3": 8,
+      "4": 10
+    },
+    "world_realm_policy": "highest_locally_recorded_attainment_persists_offline",
+    "visitor_auto_grants_world_attainment": false,
+    "support_items": {
+      "array_support_basic": {
+        "capacity_points": 2,
+        "installed_world_only": true
+      }
+    },
+    "stacking": "sum_eligible_then_hard_cap_per_target_and_effect_type",
+    "focus": {
+      "capacity_cost": 1,
+      "bonus_nominal": 0.5,
+      "target_bonus_hard_cap": 0.5,
+      "idle_when_no_targets": true,
+      "active_base_qi_per_minute": 0.2,
+      "qi_per_standard_target_minute": 0.3
+    },
+    "work_triangle": {
+      "capacity_cost": 2,
+      "bonus_nominal": 0.4,
+      "target_bonus_hard_cap": 0.4,
+      "min_side_cells": 2.0,
+      "min_area_cells_squared": 2.0,
+      "initial_max_area_cells_squared": 16.0,
+      "initial_max_perimeter_cells": 24.0,
+      "initial_entity_target_cap": 16,
+      "digital_edge_deviation_cells": 0.35,
+      "idle_when_no_targets": true,
+      "active_base_qi_per_minute": 0.2,
+      "qi_per_standard_target_minute": 0.1
+    }
+  },
+  "farming": {
+    "growth_work_required": 4.0,
+    "natural_growth_work_per_minute": 1.0,
+    "harvest_herbs": 2,
+    "seed_returned_per_cycle": 1,
+    "water_required_for_survival": false,
+    "growth_bonus_hard_cap": 0.75,
+    "water_bonus_hard_cap": 0.25,
+    "trail_bonus_hard_cap": 0.5,
+    "sow_work_required": 0.1,
+    "harvest_work_required": 0.1,
+    "sow_harvest_work_per_minute": 1.0,
+    "sow_harvest_qi_per_minute": 0.2,
+    "local_herb_output_capacity": 32
+  },
+  "beasts": {
+    "A": {
+      "role": "water_service_consumer_and_crop_carer",
+      "natural_water_distance_cells": 2.0,
+      "crop_radius_cells": 3.0,
+      "standard_crop_service_capacity": 6.0,
+      "water_bonus": 0.25,
+      "working_qi_per_minute": 0.2,
+      "chased_disables_watering": true
+    },
+    "B": {
+      "role": "water_condition_provider",
+      "service_radius_cells": 6.0,
+      "service_ports": 2,
+      "qi_per_used_port_minute": 0.2,
+      "idle_qi_per_minute": 0.0
+    },
+    "C": {
+      "role": "chase_and_growth_trail",
+      "working_qi_per_minute": 0.6,
+      "trail_radius_cells": 1.0,
+      "trail_bonus": 0.5,
+      "trail_seconds": 30.0,
+      "acquire_distance_cells": 4.0,
+      "release_distance_cells": 5.0,
+      "state_debounce_seconds": 2.0,
+      "repeat_trail": "refresh_duration_not_stack",
+      "offline_model": "same_deterministic_periodic_plan_with_phase"
+    }
+  },
+  "research": {
+    "consumes_sample": false,
+    "required_work_base": 2.0,
+    "required_work_rarity_multiplier": 1.5,
+    "base_work_per_minute": 1.0,
+    "completion_key": [
+      "topic_id",
+      "meaningful_variant_id"
+    ],
+    "shared_results": true,
+    "sample_reservation_required": true,
+    "active_qi_per_minute": 0.4
+  },
+  "collection": {
+    "actual_instance_only": true,
+    "auto_sale_blocked_by_default": true,
+    "auto_recipe_consumption_blocked_by_default": true,
+    "production_bonus": 0.0,
+    "discovered_and_present_are_separate": true
+  },
+  "loot": {
+    "overhead_slots": 3,
+    "pickup_radius_cells": 1.5,
+    "acquisition_seconds_per_entry": 0.2,
+    "reveal_seconds_by_rarity": [
+      0.15,
+      0.35,
+      0.65,
+      1.0,
+      1.4
+    ],
+    "auto_pack": false,
+    "pause_pickup_when_overhead_full": true,
+    "merge_into_full_overhead": false,
+    "reveal_parallel": true,
+    "reveal_locks_movement": false,
+    "unrevealed_packable": false,
+    "overhead_counts_as_carried_risk": true,
+    "oversized_portable_can_extract_in_overhead": true
+  },
+  "backpack": {
+    "columns": 6,
+    "rows": 5,
+    "rotation_degrees": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "weight_system": false,
+    "example_shapes": {
+      "seed": [
+        [
+          0,
+          0
+        ]
+      ],
+      "herb": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "tool": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "relic": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    "example_stack_max": {
+      "herb": 20,
+      "unique_relic": 1
+    }
+  },
+  "stock": {
+    "example_potion_low": 6,
+    "example_potion_high": 12,
+    "potion_batch_size": 1,
+    "potion_work_minutes_per_batch_at_base_rate": 2.5,
+    "count_scope": "explicit_shared_inventory_domain",
+    "include_reserved_output_in_projected_count": true,
+    "include_personal_backpacks": false,
+    "potion_herbs_per_batch": 2,
+    "potion_active_qi_per_minute": 0.4,
+    "potion_output_buffer": 12
+  },
+  "cultivation": {
+    "base_work_per_minute": 1.0,
+    "realm_increment_base_work": 12.0,
+    "realm_increment_growth": 2.5,
+    "store_progress_past_pending_confirmation": true,
+    "active_qi_per_minute": 2.0
+  },
+  "multiplayer": {
+    "placed_world_assets_shared": true,
+    "knowledge_shared": true,
+    "carried_items_personal": true,
+    "capacity_scales_with_online_count": false,
+    "world_offline_catchup_once": true
+  },
+  "balance_examples_not_locked": {
+    "trip_minutes": 12.0,
+    "potion_use_per_trip": 3.0,
+    "trade_item_price_stones": 18.0,
+    "net_income_stones_per_minute": 0.6,
+    "chase_good_period_seconds": 20.0,
+    "chase_good_covered_of_six": 4,
+    "chase_bad_period_seconds": 40.0,
+    "chase_bad_covered_of_six": 2
+  }
+}

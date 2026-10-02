@@ -1,0 +1,121 @@
+{
+  "source_sha256": "ce32b176bd99c39c8eb4b036a6ecc6fa13dd33520be83a774fd9cb00f5352cc2",
+  "body_before": {
+    "vertices": 1545,
+    "faces": 1698,
+    "triangles": 3064,
+    "boundary_edges": 20,
+    "nonmanifold_junctions": 2,
+    "degenerate_faces": 0
+  },
+  "body_after": {
+    "vertices": 1549,
+    "faces": 1698,
+    "triangles": 3064,
+    "boundary_edges": 22,
+    "nonmanifold_junctions": 0,
+    "degenerate_faces": 0
+  },
+  "clothes_source_sha256": "e27b09fc20ef4a59d3a710f8861ff6c5c10eeca129a189be30ecc21fd874c498",
+  "clothes_before": {
+    "vertices": 2672,
+    "faces": 2760,
+    "triangles": 4625,
+    "boundary_edges": 744,
+    "nonmanifold_junctions": 7,
+    "degenerate_faces": 0
+  },
+  "clothes_fitting": {
+    "collar_z": 0.8846719687347339,
+    "waist_z": 0.6275063996091843,
+    "hem_z": 0.21301601172447487,
+    "sleeve_extension": 0.08067939423546655,
+    "sleeve_lift": 0.1456711284807035,
+    "thickness": 0.0016808207132388865,
+    "retained_pieces": 7
+  },
+  "covered_body_faces_omitted": 606,
+  "status": "assembly_candidate",
+  "meshes": {
+    "BeltDetail.3": {
+      "vertices": 144,
+      "faces": 142,
+      "triangles": 284,
+      "boundary_edges": 0,
+      "nonmanifold_junctions": 0,
+      "degenerate_faces": 0
+    },
+    "BeltDetail.4": {
+      "vertices": 104,
+      "faces": 107,
+      "triangles": 204,
+      "boundary_edges": 0,
+      "nonmanifold_junctions": 0,
+      "degenerate_faces": 0
+    },
+    "BeltDetail.5": {
+      "vertices": 96,
+      "faces": 114,
+      "triangles": 188,
+      "boundary_edges": 0,
+      "nonmanifold_junctions": 0,
+      "degenerate_faces": 0
+    },
+    "BeltDetail.6": {
+      "vertices": 96,
+      "faces": 114,
+      "triangles": 188,
+      "boundary_edges": 0,
+      "nonmanifold_junctions": 0,
+      "degenerate_faces": 0
+    },
+    "Body": {
+      "vertices": 1014,
+      "faces": 1092,
+      "triangles": 1926,
+      "boundary_edges": 84,
+      "nonmanifold_junctions": 0,
+      "degenerate_faces": 0
+    },
+    "Ribbon.1": {
+      "vertices": 284,
+      "faces": 304,
+      "triangles": 564,
+      "boundary_edges": 0,
+      "nonmanifold_junctions": 0,
+      "degenerate_faces": 0
+    },
+    "Ribbon.2": {
+      "vertices": 254,
+      "faces": 272,
+      "triangles": 508,
+      "boundary_edges": 0,
+      "nonmanifold_junctions": 1,
+      "degenerate_faces": 0
+    },
+    "Robe": {
+      "vertices": 4434,
+      "faces": 5262,
+      "triangles": 8904,
+      "boundary_edges": 0,
+      "nonmanifold_junctions": 6,
+      "degenerate_faces": 0
+    },
+    "WhiteTrousers.L": {
+      "vertices": 64,
+      "faces": 48,
+      "triangles": 96,
+      "boundary_edges": 32,
+      "nonmanifold_junctions": 0,
+      "degenerate_faces": 0
+    },
+    "WhiteTrousers.R": {
+      "vertices": 64,
+      "faces": 48,
+      "triangles": 96,
+      "boundary_edges": 32,
+      "nonmanifold_junctions": 0,
+      "degenerate_faces": 0
+    }
+  }
+}

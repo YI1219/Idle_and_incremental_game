@@ -1,0 +1,7 @@
+{
+  "body_geometry_restored_from_v03": true,
+  "body_weights_restored_from_v03": true,
+  "robe_topology_preserved": true,
+  "ribbons_and_belt_geometry_and_weights_preserved": true,
+  "trouser_source_topology_restored": true
+}

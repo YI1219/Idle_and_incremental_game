@@ -1,0 +1,50 @@
+[
+  {
+    "file": "cottage_raw_v01.glb",
+    "sha256": "e9cd9a0cac7f57a1d60a424b419d3f1f01695be501c036a869384c65ae56fd4e",
+    "bytes": 74528,
+    "meshes": [
+      {
+        "name": "tripo_node_ccbf4bf5-94cf-464c-b531-b6af97db52f9",
+        "vertices": 1638,
+        "triangles": 2834,
+        "boundary_edges": 399,
+        "nonmanifold_edges": 400,
+        "dimensions": [
+          0.99658203125,
+          0.99951171875,
+          0.80908203125
+        ]
+      }
+    ],
+    "images": []
+  },
+  {
+    "file": "cottage_raw_v01_with_color.glb",
+    "sha256": "a1e107084393208c83ae2ea72e674318b81f889fa930a34f00007cf3bdbcca52",
+    "bytes": 344768,
+    "meshes": [
+      {
+        "name": "tripo_node_b05807c8-a0bf-4776-8852-e545a441e0c7",
+        "vertices": 3449,
+        "triangles": 2834,
+        "boundary_edges": 3270,
+        "nonmanifold_edges": 3270,
+        "dimensions": [
+          0.99658203125,
+          0.99951171875,
+          0.80908203125
+        ]
+      }
+    ],
+    "images": [
+      {
+        "name": "cottage_raw_v01_with_color_basecolor",
+        "size": [
+          1024,
+          1024
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "roundtrip_import": "passed",
+  "mesh_objects": 10,
+  "bones": 28,
+  "actions": [
+    "attack_1",
+    "attack_2",
+    "dodge",
+    "idle",
+    "walk"
+  ],
+  "unweighted_vertices": 0,
+  "pose_samples": 25,
+  "visual_acceptance": "demo_candidate",
+  "remaining": [
+    "袖口及衣领局部网格仍待正式资产精修",
+    "动作是基础骨骼动画，无完整布料物理和脚底IK",
+    "目前纯色材质，无高模法线烘焙"
+  ]
+}

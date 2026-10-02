@@ -1,0 +1,51 @@
+[
+  {
+    "test": "animation_refinement_test",
+    "exit_code": 0,
+    "summary": [
+      "ANIMATION REFINEMENT checks=121 failures=0"
+    ]
+  },
+  {
+    "test": "scene_art_integration_test",
+    "exit_code": 0,
+    "summary": [
+      "SCENE ART INTEGRATION checks=12 failures=0"
+    ]
+  },
+  {
+    "test": "sword_runtime_test",
+    "exit_code": 0,
+    "summary": [
+      "SWORD RUNTIME failures=0"
+    ]
+  },
+  {
+    "test": "sword_rules_test",
+    "exit_code": 0,
+    "summary": [
+      "SWORD_RULES failures=0"
+    ]
+  },
+  {
+    "test": "demo_test",
+    "exit_code": 0,
+    "summary": [
+      "DEMO CHECKS 21/21 failures=0"
+    ]
+  },
+  {
+    "test": "space_test",
+    "exit_code": 0,
+    "summary": [
+      "SPACE CHECKS: 21 passed / 21, failures=0"
+    ]
+  },
+  {
+    "test": "camera_test",
+    "exit_code": 0,
+    "summary": [
+      "CAMERA CHECKS: 8/8 passed, failures=0"
+    ]
+  }
+]

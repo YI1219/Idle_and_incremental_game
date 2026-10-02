@@ -1,0 +1,12 @@
+{
+  "runtime_sha256": "991c31fe69af61991c2b9503e3467b4335f8deb24006f18a8445ef04d8cdb846",
+  "geometry_accessor_comparisons": 60,
+  "geometry_and_skinning": "byte-identical",
+  "materials": "identical",
+  "bind_matrices_and_joint_order": "identical",
+  "preserved_files": {
+    "assets/characters/qinglan/qinglan_candidate.glb": "dd629f2abef0b8cc9117308a88a9b0456f6f0430d0b889e5080b0af3ac436f8c",
+    "assets/weapons/sword/starter_jian.glb": "4aa9c0fff5d834bcb671f4662707f4cd34347aa0655fc240f6cd523be2fd616c",
+    "assets/buildings/cottage/cottage_tripo.glb": "e344e7d935f555b8bc947d716fb35a45f396ae3bc7379268c3bc30a51a99976b"
+  }
+}

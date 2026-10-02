@@ -1,0 +1,33 @@
+{
+  "units": "metres",
+  "footprint": {
+    "width": 6.0,
+    "depth": 4.2
+  },
+  "wall_top": 2.0,
+  "roof": {
+    "ridge_height": 3.05,
+    "eave_height": 2.02,
+    "overhang_width": 6.9
+  },
+  "door_clear_opening": {
+    "width": 1.6,
+    "height": 1.8,
+    "front_local_z_after_export": 2.2
+  },
+  "player_reference": {
+    "height": 1.12,
+    "capsule_diameter": 0.4
+  },
+  "clearance_ratios": {
+    "door_to_player_height": 1.607,
+    "door_to_capsule_width": 4.0
+  },
+  "walk_plane": 0.0,
+  "plinth_top": 0.0,
+  "exported_mesh_count": 27,
+  "notes": [
+    "Front faces Godot +Z after glTF Y-up conversion.",
+    "Doorway contains no wall mesh or curtain."
+  ]
+}

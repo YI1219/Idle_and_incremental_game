@@ -1,0 +1,167 @@
+[
+  {
+    "test": "demo",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/demo_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nDEMO CHECKS 21/21 failures=0\n"
+  },
+  {
+    "test": "space",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/space_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSPACE CHECKS: 21 passed / 21, failures=0\n"
+  },
+  {
+    "test": "camera",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/camera_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CHECKS: 8/8 passed, failures=0\n"
+  },
+  {
+    "test": "terrain",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/terrain_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CHECKS: 794/794 passed, failures=0\n"
+  },
+  {
+    "test": "sword_rules",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/sword_rules_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSWORD_RULES failures=0\n"
+  },
+  {
+    "test": "sword_runtime",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/sword_runtime_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSWORD RUNTIME failures=0\n"
+  },
+  {
+    "test": "combat",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/combat_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCOMBAT failures=0\n"
+  },
+  {
+    "test": "sim_kernel",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/sim_kernel_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSIM KERNEL: 6252/6252 passed, failures=0\n"
+  },
+  {
+    "test": "sim_loop",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/sim_loop_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSIM LOOP: 17/17 passed, failures=0\n"
+  },
+  {
+    "test": "sim_research",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/sim_research_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSIM RESEARCH: 32/32 passed, failures=0\n"
+  },
+  {
+    "test": "sim_explore",
+    "command": [
+      "godot",
+      "--headless",
+      "--path",
+      ".",
+      "--fixed-fps",
+      "60",
+      "--script",
+      "tests/sim_explore_test.gd"
+    ],
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSIM EXPLORE: 30/30 passed, failures=0\n"
+  }
+]

@@ -1,0 +1,3122 @@
+[
+	{
+		"animation": "idle",
+		"animation_time": 0.0333333333333333,
+		"frame": 0,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.0,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.0666666666666667,
+		"frame": 1,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.0333333333333333,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.1,
+		"frame": 2,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.0666666666666667,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.133333333333333,
+		"frame": 3,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.1,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.166666666666667,
+		"frame": 4,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.133333333333333,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.2,
+		"frame": 5,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.166666666666667,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.233333333333333,
+		"frame": 6,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.2,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.266666666666667,
+		"frame": 7,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.233333333333333,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.3,
+		"frame": 8,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.266666666666667,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.333333333333333,
+		"frame": 9,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.3,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.366666666666667,
+		"frame": 10,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.333333333333333,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.4,
+		"frame": 11,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.366666666666667,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.433333333333333,
+		"frame": 12,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.4,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.466666666666667,
+		"frame": 13,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.433333333333333,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.5,
+		"frame": 14,
+		"phase": "Idle",
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.466666666666667,
+		"speed": 0.0,
+		"yaw": 0.0
+	},
+	{
+		"animation": "walk",
+		"animation_time": 0.0267821431159973,
+		"frame": 15,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.0155555568635464
+		],
+		"seconds": 0.5,
+		"speed": 0.466666668653488,
+		"yaw": 0.0
+	},
+	{
+		"animation": "walk",
+		"animation_time": 0.0803464293479919,
+		"frame": 16,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.0466666705906391
+		],
+		"seconds": 0.533333333333333,
+		"speed": 0.933333337306976,
+		"yaw": 0.0
+	},
+	{
+		"animation": "walk",
+		"animation_time": 0.160692854722341,
+		"frame": 17,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.0933333337306976
+		],
+		"seconds": 0.566666666666667,
+		"speed": 1.39999985694885,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.131982389993994,
+		"frame": 18,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.155555546283722
+		],
+		"seconds": 0.6,
+		"speed": 1.86666631698608,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.156354135183025,
+		"frame": 19,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.233333319425583
+		],
+		"seconds": 0.633333333333333,
+		"speed": 2.33333301544189,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.185600232986141,
+		"frame": 20,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.326666653156281
+		],
+		"seconds": 0.666666666666667,
+		"speed": 2.79999995231628,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.219720669495591,
+		"frame": 21,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.435555517673492
+		],
+		"seconds": 0.7,
+		"speed": 3.26666569709778,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.257322796093949,
+		"frame": 22,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.555555522441864
+		],
+		"seconds": 0.733333333333333,
+		"speed": 3.59999990463257,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.294924922692308,
+		"frame": 23,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.675555527210236
+		],
+		"seconds": 0.766666666666667,
+		"speed": 3.59999990463257,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.332527049290666,
+		"frame": 24,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.795555531978607
+		],
+		"seconds": 0.8,
+		"speed": 3.59999990463257,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.370129175889024,
+		"frame": 25,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			0.915555536746979
+		],
+		"seconds": 0.833333333333333,
+		"speed": 3.59999990463257,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.407731322355597,
+		"frame": 26,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.03555560112
+		],
+		"seconds": 0.866666666666667,
+		"speed": 3.6000018119812,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.445333409217525,
+		"frame": 27,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.15555548667908
+		],
+		"seconds": 0.9,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.482935496079453,
+		"frame": 28,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.27555537223816
+		],
+		"seconds": 0.933333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.520537582941382,
+		"frame": 29,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.39555525779724
+		],
+		"seconds": 0.966666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.55813966980331,
+		"frame": 30,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.51555514335632
+		],
+		"seconds": 1.0,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.595741756665238,
+		"frame": 31,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.63555502891541
+		],
+		"seconds": 1.03333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.633343843527167,
+		"frame": 32,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.75555491447449
+		],
+		"seconds": 1.06666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.670945930389095,
+		"frame": 33,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.87555480003357
+		],
+		"seconds": 1.1,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.708548017251023,
+		"frame": 34,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			1.99555468559265
+		],
+		"seconds": 1.13333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.746150104112952,
+		"frame": 35,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			2.11555457115173
+		],
+		"seconds": 1.16666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.78375219097488,
+		"frame": 36,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			2.23555445671082
+		],
+		"seconds": 1.2,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.821354277836808,
+		"frame": 37,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			2.3555543422699
+		],
+		"seconds": 1.23333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.858956364698737,
+		"frame": 38,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			2.47555422782898
+		],
+		"seconds": 1.26666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.896558451560665,
+		"frame": 39,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			2.59555411338806
+		],
+		"seconds": 1.3,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.000827201115617182,
+		"frame": 40,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			2.71555399894714
+		],
+		"seconds": 1.33333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0384292879775455,
+		"frame": 41,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			2.83555388450623
+		],
+		"seconds": 1.36666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0760313748394738,
+		"frame": 42,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			2.95555377006531
+		],
+		"seconds": 1.4,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.113633461701402,
+		"frame": 43,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			3.07555365562439
+		],
+		"seconds": 1.43333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.15123554856333,
+		"frame": 44,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			3.19555354118347
+		],
+		"seconds": 1.46666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.188837635425259,
+		"frame": 45,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			3.31555342674255
+		],
+		"seconds": 1.5,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.226439722287187,
+		"frame": 46,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			3.43555331230164
+		],
+		"seconds": 1.53333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.264041809149115,
+		"frame": 47,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			3.55555319786072
+		],
+		"seconds": 1.56666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.301643896011044,
+		"frame": 48,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			3.6755530834198
+		],
+		"seconds": 1.6,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.339245982872972,
+		"frame": 49,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			3.79555296897888
+		],
+		"seconds": 1.63333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.3768480697349,
+		"frame": 50,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			3.91555285453796
+		],
+		"seconds": 1.66666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.414450232096045,
+		"frame": 51,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.03555297851562
+		],
+		"seconds": 1.7,
+		"speed": 3.60000348091125,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.452052318957973,
+		"frame": 52,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.15555286407471
+		],
+		"seconds": 1.73333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.489654405819902,
+		"frame": 53,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.27555274963379
+		],
+		"seconds": 1.76666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.52725649268183,
+		"frame": 54,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.39555263519287
+		],
+		"seconds": 1.8,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.564858579543758,
+		"frame": 55,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.51555252075195
+		],
+		"seconds": 1.83333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.602460666405687,
+		"frame": 56,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.63555240631104
+		],
+		"seconds": 1.86666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.640062753267615,
+		"frame": 57,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.75555229187012
+		],
+		"seconds": 1.9,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.677664840129543,
+		"frame": 58,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.8755521774292
+		],
+		"seconds": 1.93333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.715266926991472,
+		"frame": 59,
+		"phase": "Accelerate to normal travel",
+		"position": [
+			0.0,
+			4.99555206298828
+		],
+		"seconds": 1.96666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 0.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.744512965189943,
+		"frame": 60,
+		"phase": "90 degree running turn",
+		"position": [
+			0.0305381380021572,
+			5.08374786376953
+		],
+		"seconds": 2.0,
+		"speed": 2.79999423027039,
+		"yaw": 0.333333343267441
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.76540301234278,
+		"frame": 61,
+		"phase": "90 degree running turn",
+		"position": [
+			0.0717626810073853,
+			5.1361403465271
+		],
+		"seconds": 2.03333333333333,
+		"speed": 1.9999977350235,
+		"yaw": 0.666666686534882
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.791167439925203,
+		"frame": 62,
+		"phase": "90 degree running turn",
+		"position": [
+			0.140950232744217,
+			5.18056535720825
+		],
+		"seconds": 2.06666666666667,
+		"speed": 2.46666741371155,
+		"yaw": 1.0
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.821806238003104,
+		"frame": 63,
+		"phase": "90 degree running turn",
+		"position": [
+			0.235984206199646,
+			5.2035665512085
+		],
+		"seconds": 2.1,
+		"speed": 2.93333601951599,
+		"yaw": 1.33333337306976
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.857319376774161,
+		"frame": 64,
+		"phase": "90 degree running turn",
+		"position": [
+			0.349317610263824,
+			5.2035665512085
+		],
+		"seconds": 2.13333333333333,
+		"speed": 3.40000200271606,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.894921503372519,
+		"frame": 65,
+		"phase": "90 degree running turn",
+		"position": [
+			0.469317615032196,
+			5.2035665512085
+		],
+		"seconds": 2.16666666666667,
+		"speed": 3.59999990463257,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.932523629970877,
+		"frame": 66,
+		"phase": "90 degree running turn",
+		"position": [
+			0.589317619800568,
+			5.2035665512085
+		],
+		"seconds": 2.2,
+		"speed": 3.59999990463257,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0367924192622593,
+		"frame": 67,
+		"phase": "90 degree running turn",
+		"position": [
+			0.709317624568939,
+			5.2035665512085
+		],
+		"seconds": 2.23333333333333,
+		"speed": 3.59999990463257,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0743945458606174,
+		"frame": 68,
+		"phase": "90 degree running turn",
+		"position": [
+			0.829317629337311,
+			5.2035665512085
+		],
+		"seconds": 2.26666666666667,
+		"speed": 3.59999990463257,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.111996672458976,
+		"frame": 69,
+		"phase": "90 degree running turn",
+		"position": [
+			0.949317634105682,
+			5.2035665512085
+		],
+		"seconds": 2.3,
+		"speed": 3.59999990463257,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.149598779189119,
+		"frame": 70,
+		"phase": "90 degree running turn",
+		"position": [
+			1.06931757926941,
+			5.2035665512085
+		],
+		"seconds": 2.33333333333333,
+		"speed": 3.59999823570251,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.187200866051047,
+		"frame": 71,
+		"phase": "90 degree running turn",
+		"position": [
+			1.18931746482849,
+			5.2035665512085
+		],
+		"seconds": 2.36666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.224802952912975,
+		"frame": 72,
+		"phase": "90 degree running turn",
+		"position": [
+			1.30931735038757,
+			5.2035665512085
+		],
+		"seconds": 2.4,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.262405039774904,
+		"frame": 73,
+		"phase": "90 degree running turn",
+		"position": [
+			1.42931723594666,
+			5.2035665512085
+		],
+		"seconds": 2.43333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.300007126636832,
+		"frame": 74,
+		"phase": "90 degree running turn",
+		"position": [
+			1.54931712150574,
+			5.2035665512085
+		],
+		"seconds": 2.46666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.33760921349876,
+		"frame": 75,
+		"phase": "90 degree running turn",
+		"position": [
+			1.66931700706482,
+			5.2035665512085
+		],
+		"seconds": 2.5,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.375211300360689,
+		"frame": 76,
+		"phase": "90 degree running turn",
+		"position": [
+			1.7893168926239,
+			5.2035665512085
+		],
+		"seconds": 2.53333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.412813387222617,
+		"frame": 77,
+		"phase": "90 degree running turn",
+		"position": [
+			1.90931677818298,
+			5.2035665512085
+		],
+		"seconds": 2.56666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.450415474084545,
+		"frame": 78,
+		"phase": "90 degree running turn",
+		"position": [
+			2.02931666374207,
+			5.2035665512085
+		],
+		"seconds": 2.6,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.488017560946473,
+		"frame": 79,
+		"phase": "90 degree running turn",
+		"position": [
+			2.14931654930115,
+			5.2035665512085
+		],
+		"seconds": 2.63333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.525619647808402,
+		"frame": 80,
+		"phase": "90 degree running turn",
+		"position": [
+			2.26931643486023,
+			5.2035665512085
+		],
+		"seconds": 2.66666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.56322173467033,
+		"frame": 81,
+		"phase": "90 degree running turn",
+		"position": [
+			2.38931632041931,
+			5.2035665512085
+		],
+		"seconds": 2.7,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.600823821532258,
+		"frame": 82,
+		"phase": "90 degree running turn",
+		"position": [
+			2.50931620597839,
+			5.2035665512085
+		],
+		"seconds": 2.73333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.638425908394187,
+		"frame": 83,
+		"phase": "90 degree running turn",
+		"position": [
+			2.62931609153748,
+			5.2035665512085
+		],
+		"seconds": 2.76666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.676027995256115,
+		"frame": 84,
+		"phase": "90 degree running turn",
+		"position": [
+			2.74931597709656,
+			5.2035665512085
+		],
+		"seconds": 2.8,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.713630082118043,
+		"frame": 85,
+		"phase": "90 degree running turn",
+		"position": [
+			2.86931586265564,
+			5.2035665512085
+		],
+		"seconds": 2.83333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.751232168979972,
+		"frame": 86,
+		"phase": "90 degree running turn",
+		"position": [
+			2.98931574821472,
+			5.2035665512085
+		],
+		"seconds": 2.86666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.7888342558419,
+		"frame": 87,
+		"phase": "90 degree running turn",
+		"position": [
+			3.1093156337738,
+			5.2035665512085
+		],
+		"seconds": 2.9,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.826436342703828,
+		"frame": 88,
+		"phase": "90 degree running turn",
+		"position": [
+			3.22931551933289,
+			5.2035665512085
+		],
+		"seconds": 2.93333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.864038429565757,
+		"frame": 89,
+		"phase": "90 degree running turn",
+		"position": [
+			3.34931540489197,
+			5.2035665512085
+		],
+		"seconds": 2.96666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.901640516427685,
+		"frame": 90,
+		"phase": "90 degree running turn",
+		"position": [
+			3.46931529045105,
+			5.2035665512085
+		],
+		"seconds": 3.0,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.00590926598263719,
+		"frame": 91,
+		"phase": "90 degree running turn",
+		"position": [
+			3.58931517601013,
+			5.2035665512085
+		],
+		"seconds": 3.03333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0435113528445655,
+		"frame": 92,
+		"phase": "90 degree running turn",
+		"position": [
+			3.70931506156921,
+			5.2035665512085
+		],
+		"seconds": 3.06666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0811134397064938,
+		"frame": 93,
+		"phase": "90 degree running turn",
+		"position": [
+			3.8293149471283,
+			5.2035665512085
+		],
+		"seconds": 3.1,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.118715526568422,
+		"frame": 94,
+		"phase": "90 degree running turn",
+		"position": [
+			3.94931483268738,
+			5.2035665512085
+		],
+		"seconds": 3.13333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.156317688929567,
+		"frame": 95,
+		"phase": "90 degree running turn",
+		"position": [
+			4.06931495666504,
+			5.2035665512085
+		],
+		"seconds": 3.16666666666667,
+		"speed": 3.60000348091125,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.193919775791495,
+		"frame": 96,
+		"phase": "90 degree running turn",
+		"position": [
+			4.18931484222412,
+			5.2035665512085
+		],
+		"seconds": 3.2,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.231521862653424,
+		"frame": 97,
+		"phase": "90 degree running turn",
+		"position": [
+			4.3093147277832,
+			5.2035665512085
+		],
+		"seconds": 3.23333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.269123949515352,
+		"frame": 98,
+		"phase": "90 degree running turn",
+		"position": [
+			4.42931461334229,
+			5.2035665512085
+		],
+		"seconds": 3.26666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.30672603637728,
+		"frame": 99,
+		"phase": "90 degree running turn",
+		"position": [
+			4.54931449890137,
+			5.2035665512085
+		],
+		"seconds": 3.3,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.344328123239209,
+		"frame": 100,
+		"phase": "90 degree running turn",
+		"position": [
+			4.66931438446045,
+			5.2035665512085
+		],
+		"seconds": 3.33333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.381930210101137,
+		"frame": 101,
+		"phase": "90 degree running turn",
+		"position": [
+			4.78931427001953,
+			5.2035665512085
+		],
+		"seconds": 3.36666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.419532296963065,
+		"frame": 102,
+		"phase": "90 degree running turn",
+		"position": [
+			4.90931415557861,
+			5.2035665512085
+		],
+		"seconds": 3.4,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.457134383824993,
+		"frame": 103,
+		"phase": "90 degree running turn",
+		"position": [
+			5.0293140411377,
+			5.2035665512085
+		],
+		"seconds": 3.43333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.494736470686922,
+		"frame": 104,
+		"phase": "90 degree running turn",
+		"position": [
+			5.14931392669678,
+			5.2035665512085
+		],
+		"seconds": 3.46666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.53233855754885,
+		"frame": 105,
+		"phase": "90 degree running turn",
+		"position": [
+			5.26931381225586,
+			5.2035665512085
+		],
+		"seconds": 3.5,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.569940644410778,
+		"frame": 106,
+		"phase": "90 degree running turn",
+		"position": [
+			5.38931369781494,
+			5.2035665512085
+		],
+		"seconds": 3.53333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.607542731272707,
+		"frame": 107,
+		"phase": "90 degree running turn",
+		"position": [
+			5.50931358337402,
+			5.2035665512085
+		],
+		"seconds": 3.56666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.645144818134635,
+		"frame": 108,
+		"phase": "90 degree running turn",
+		"position": [
+			5.62931346893311,
+			5.2035665512085
+		],
+		"seconds": 3.6,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.682746904996563,
+		"frame": 109,
+		"phase": "90 degree running turn",
+		"position": [
+			5.74931335449219,
+			5.2035665512085
+		],
+		"seconds": 3.63333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.711992972997357,
+		"frame": 110,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.84264659881592,
+			5.2035665512085
+		],
+		"seconds": 3.66666666666667,
+		"speed": 2.79999709129333,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.732883022137016,
+		"frame": 111,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.9093132019043,
+			5.2035665512085
+		],
+		"seconds": 3.7,
+		"speed": 1.99999797344208,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "walk",
+		"animation_time": 1.11584406800652,
+		"frame": 112,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.94931316375732,
+			5.2035665512085
+		],
+		"seconds": 3.73333333333333,
+		"speed": 1.19999873638153,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "walk",
+		"animation_time": 1.13880016711935,
+		"frame": 113,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.962646484375,
+			5.2035665512085
+		],
+		"seconds": 3.76666666666667,
+		"speed": 0.399999588727951,
+		"yaw": 1.57079637050629
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.0333333333333333,
+		"frame": 114,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.962646484375,
+			5.2035665512085
+		],
+		"seconds": 3.8,
+		"speed": 0.0,
+		"yaw": 1.90412974357605
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.0666666666666667,
+		"frame": 115,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.962646484375,
+			5.2035665512085
+		],
+		"seconds": 3.83333333333333,
+		"speed": 0.0,
+		"yaw": 2.23746299743652
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.1,
+		"frame": 116,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.962646484375,
+			5.2035665512085
+		],
+		"seconds": 3.86666666666667,
+		"speed": 0.0,
+		"yaw": 2.570796251297
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.133333333333333,
+		"frame": 117,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.962646484375,
+			5.2035665512085
+		],
+		"seconds": 3.9,
+		"speed": 0.0,
+		"yaw": 2.90412950515747
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.166666666666667,
+		"frame": 118,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.96254110336304,
+			5.20247220993042
+		],
+		"seconds": 3.93333333333333,
+		"speed": 0.0329821035265923,
+		"yaw": 3.23746275901794
+	},
+	{
+		"animation": "walk",
+		"animation_time": 1.16747516301855,
+		"frame": 119,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.95561027526855,
+			5.18732786178589
+		],
+		"seconds": 3.96666666666667,
+		"speed": 0.499648749828339,
+		"yaw": 3.57079601287842
+	},
+	{
+		"animation": "walk",
+		"animation_time": 1.2229325007159,
+		"frame": 120,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.93336057662964,
+			5.16403675079346
+		],
+		"seconds": 4.0,
+		"speed": 0.966318905353546,
+		"yaw": 3.90412926673889
+	},
+	{
+		"animation": "walk",
+		"animation_time": 1.30517150071844,
+		"frame": 121,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.89088106155396,
+			5.1421947479248
+		],
+		"seconds": 4.03333333333333,
+		"speed": 1.43297719955444,
+		"yaw": 4.23746252059937
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.000128567477073793,
+		"frame": 122,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.82819318771362,
+			5.13325881958008
+		],
+		"seconds": 4.06666666666667,
+		"speed": 1.8996467590332,
+		"yaw": 4.57079601287842
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0248447480400468,
+		"frame": 123,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.74931621551514,
+			5.13325881958008
+		],
+		"seconds": 4.1,
+		"speed": 2.36630892753601,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0544352235992814,
+		"frame": 124,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.65488386154175,
+			5.13325881958008
+		],
+		"seconds": 4.13333333333333,
+		"speed": 2.83297038078308,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0889001431663896,
+		"frame": 125,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.5448956489563,
+			5.13325881958008
+		],
+		"seconds": 4.16666666666667,
+		"speed": 3.2996461391449,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.126502230028318,
+		"frame": 126,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.42489576339722,
+			5.13325881958008
+		],
+		"seconds": 4.2,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.164104316890246,
+		"frame": 127,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.30489587783813,
+			5.13325881958008
+		],
+		"seconds": 4.23333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.201706403752175,
+		"frame": 128,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.18489599227905,
+			5.13325881958008
+		],
+		"seconds": 4.26666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.239308490614103,
+		"frame": 129,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			5.06489610671997,
+			5.13325881958008
+		],
+		"seconds": 4.3,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.276910577476031,
+		"frame": 130,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			4.94489622116089,
+			5.13325881958008
+		],
+		"seconds": 4.33333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.314512664337959,
+		"frame": 131,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			4.82489633560181,
+			5.13325881958008
+		],
+		"seconds": 4.36666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.352114751199888,
+		"frame": 132,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			4.70489645004272,
+			5.13325881958008
+		],
+		"seconds": 4.4,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.389716838061816,
+		"frame": 133,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			4.58489656448364,
+			5.13325881958008
+		],
+		"seconds": 4.43333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.427318924923744,
+		"frame": 134,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			4.46489667892456,
+			5.13325881958008
+		],
+		"seconds": 4.46666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.464921011785673,
+		"frame": 135,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			4.34489679336548,
+			5.13325881958008
+		],
+		"seconds": 4.5,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.502523098647601,
+		"frame": 136,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			4.2248969078064,
+			5.13325881958008
+		],
+		"seconds": 4.53333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.540125185509529,
+		"frame": 137,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			4.10489702224731,
+			5.13325881958008
+		],
+		"seconds": 4.56666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.577727272371458,
+		"frame": 138,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.98489713668823,
+			5.13325881958008
+		],
+		"seconds": 4.6,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.615329359233386,
+		"frame": 139,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.86489725112915,
+			5.13325881958008
+		],
+		"seconds": 4.63333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.652931446095314,
+		"frame": 140,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.74489736557007,
+			5.13325881958008
+		],
+		"seconds": 4.66666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.690533532957243,
+		"frame": 141,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.62489748001099,
+			5.13325881958008
+		],
+		"seconds": 4.7,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.728135619819171,
+		"frame": 142,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.5048975944519,
+			5.13325881958008
+		],
+		"seconds": 4.73333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.765737706681099,
+		"frame": 143,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.38489770889282,
+			5.13325881958008
+		],
+		"seconds": 4.76666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.803339793543028,
+		"frame": 144,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.26489782333374,
+			5.13325881958008
+		],
+		"seconds": 4.8,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.840941880404956,
+		"frame": 145,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.14489793777466,
+			5.13325881958008
+		],
+		"seconds": 4.83333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.878543967266884,
+		"frame": 146,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			3.02489805221558,
+			5.13325881958008
+		],
+		"seconds": 4.86666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.916146054128813,
+		"frame": 147,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			2.90489816665649,
+			5.13325881958008
+		],
+		"seconds": 4.9,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0204148036837647,
+		"frame": 148,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			2.78489828109741,
+			5.13325881958008
+		],
+		"seconds": 4.93333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.058016890545693,
+		"frame": 149,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			2.66489839553833,
+			5.13325881958008
+		],
+		"seconds": 4.96666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0956189774076213,
+		"frame": 150,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			2.54489850997925,
+			5.13325881958008
+		],
+		"seconds": 5.0,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.13322106426955,
+		"frame": 151,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			2.42489862442017,
+			5.13325881958008
+		],
+		"seconds": 5.03333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.170823151131478,
+		"frame": 152,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			2.30489873886108,
+			5.13325881958008
+		],
+		"seconds": 5.06666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.208425237993406,
+		"frame": 153,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			2.184898853302,
+			5.13325881958008
+		],
+		"seconds": 5.1,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.246027324855335,
+		"frame": 154,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			2.06489896774292,
+			5.13325881958008
+		],
+		"seconds": 5.13333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.283629411717263,
+		"frame": 155,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			1.94489908218384,
+			5.13325881958008
+		],
+		"seconds": 5.16666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.321231498579191,
+		"frame": 156,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			1.82489919662476,
+			5.13325881958008
+		],
+		"seconds": 5.2,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.358833585441119,
+		"frame": 157,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			1.70489931106567,
+			5.13325881958008
+		],
+		"seconds": 5.23333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.396435672303048,
+		"frame": 158,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			1.58489942550659,
+			5.13325881958008
+		],
+		"seconds": 5.26666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.434037759164976,
+		"frame": 159,
+		"phase": "180 degree reversal: brake, pivot, accelerate",
+		"position": [
+			1.46489953994751,
+			5.13325881958008
+		],
+		"seconds": 5.3,
+		"speed": 3.59999632835388,
+		"yaw": 4.71238899230957
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.463283827165769,
+		"frame": 160,
+		"phase": "90 degree running turn",
+		"position": [
+			1.37670361995697,
+			5.10272073745728
+		],
+		"seconds": 5.33333333333333,
+		"speed": 2.79999709129333,
+		"yaw": 4.37905550003052
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.484173832595355,
+		"frame": 161,
+		"phase": "90 degree running turn",
+		"position": [
+			1.32431125640869,
+			5.06149625778198
+		],
+		"seconds": 5.36666666666667,
+		"speed": 1.99999380111694,
+		"yaw": 4.04572200775146
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.509938246270028,
+		"frame": 162,
+		"phase": "90 degree running turn",
+		"position": [
+			1.27988648414612,
+			4.99230861663818
+		],
+		"seconds": 5.4,
+		"speed": 2.46666598320007,
+		"yaw": 3.71238875389099
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.540577068189787,
+		"frame": 163,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			4.89727449417114
+		],
+		"seconds": 5.43333333333333,
+		"speed": 2.93333840370178,
+		"yaw": 3.37905550003052
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.576090302328275,
+		"frame": 164,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			4.78394079208374
+		],
+		"seconds": 5.46666666666667,
+		"speed": 3.40001082420349,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.613692389190204,
+		"frame": 165,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			4.66394090652466
+		],
+		"seconds": 5.5,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.651294476052132,
+		"frame": 166,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			4.54394102096558
+		],
+		"seconds": 5.53333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.68889656291406,
+		"frame": 167,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			4.42394113540649
+		],
+		"seconds": 5.56666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.726498649775989,
+		"frame": 168,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			4.30394124984741
+		],
+		"seconds": 5.6,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.764100736637917,
+		"frame": 169,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			4.18394136428833
+		],
+		"seconds": 5.63333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.801702823499845,
+		"frame": 170,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			4.06394147872925
+		],
+		"seconds": 5.66666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.839304910361774,
+		"frame": 171,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			3.94394159317017
+		],
+		"seconds": 5.7,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.876906997223702,
+		"frame": 172,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			3.82394170761108
+		],
+		"seconds": 5.73333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.91450908408563,
+		"frame": 173,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			3.703941822052
+		],
+		"seconds": 5.76666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0187778336405825,
+		"frame": 174,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			3.58394193649292
+		],
+		"seconds": 5.8,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0563799205025108,
+		"frame": 175,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			3.46394205093384
+		],
+		"seconds": 5.83333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0939820073644391,
+		"frame": 176,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			3.34394216537476
+		],
+		"seconds": 5.86666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.131584094226367,
+		"frame": 177,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			3.22394227981567
+		],
+		"seconds": 5.9,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.169186181088296,
+		"frame": 178,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			3.10394239425659
+		],
+		"seconds": 5.93333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.206788267950224,
+		"frame": 179,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.98394250869751
+		],
+		"seconds": 5.96666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.244390354812152,
+		"frame": 180,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.86394262313843
+		],
+		"seconds": 6.0,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.281992441674081,
+		"frame": 181,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.74394273757935
+		],
+		"seconds": 6.03333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.319594528536009,
+		"frame": 182,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.62394285202026
+		],
+		"seconds": 6.06666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.357196615397937,
+		"frame": 183,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.50394296646118
+		],
+		"seconds": 6.1,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.394798702259866,
+		"frame": 184,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.3839430809021
+		],
+		"seconds": 6.13333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.432400789121794,
+		"frame": 185,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.26394319534302
+		],
+		"seconds": 6.16666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.470002875983722,
+		"frame": 186,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.14394330978394
+		],
+		"seconds": 6.2,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.50760496284565,
+		"frame": 187,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			2.02394342422485
+		],
+		"seconds": 6.23333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.545207049707579,
+		"frame": 188,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			1.90394353866577
+		],
+		"seconds": 6.26666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.582809136569507,
+		"frame": 189,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			1.78394365310669
+		],
+		"seconds": 6.3,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.620411223431435,
+		"frame": 190,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			1.66394376754761
+		],
+		"seconds": 6.33333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.658013310293364,
+		"frame": 191,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			1.54394388198853
+		],
+		"seconds": 6.36666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.695615397155292,
+		"frame": 192,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			1.42394399642944
+		],
+		"seconds": 6.4,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.73321748401722,
+		"frame": 193,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			1.30394411087036
+		],
+		"seconds": 6.43333333333333,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.770819570879149,
+		"frame": 194,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			1.18394422531128
+		],
+		"seconds": 6.46666666666667,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.808421657741077,
+		"frame": 195,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			1.0639443397522
+		],
+		"seconds": 6.5,
+		"speed": 3.59999632835388,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.84602376447122,
+		"frame": 196,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			0.94394439458847
+		],
+		"seconds": 6.53333333333333,
+		"speed": 3.59999823570251,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.883625891069578,
+		"frame": 197,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			0.823944389820099
+		],
+		"seconds": 6.56666666666667,
+		"speed": 3.59999990463257,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.921228017667937,
+		"frame": 198,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			0.703944385051727
+		],
+		"seconds": 6.6,
+		"speed": 3.59999990463257,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0254968069593184,
+		"frame": 199,
+		"phase": "90 degree running turn",
+		"position": [
+			1.25688552856445,
+			0.583944380283356
+		],
+		"seconds": 6.63333333333333,
+		"speed": 3.59999990463257,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0547429047624343,
+		"frame": 200,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.490611046552658
+		],
+		"seconds": 6.66666666666667,
+		"speed": 2.79999995231628,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "jog",
+		"animation_time": 0.0756329717834863,
+		"frame": 201,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.423944383859634
+		],
+		"seconds": 6.7,
+		"speed": 1.99999976158142,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "walk",
+		"animation_time": 0.17691545629055,
+		"frame": 202,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.383944392204285
+		],
+		"seconds": 6.73333333333333,
+		"speed": 1.19999969005585,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "walk",
+		"animation_time": 0.199871555403379,
+		"frame": 203,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 6.76666666666667,
+		"speed": 0.399999588727951,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.0333333333333333,
+		"frame": 204,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 6.8,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.0666666666666667,
+		"frame": 205,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 6.83333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.1,
+		"frame": 206,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 6.86666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.133333333333333,
+		"frame": 207,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 6.9,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.166666666666667,
+		"frame": 208,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 6.93333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.2,
+		"frame": 209,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 6.96666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.233333333333333,
+		"frame": 210,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.0,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.266666666666667,
+		"frame": 211,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.03333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.3,
+		"frame": 212,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.06666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.333333333333333,
+		"frame": 213,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.1,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.366666666666667,
+		"frame": 214,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.13333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.4,
+		"frame": 215,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.16666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.433333333333333,
+		"frame": 216,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.2,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.466666666666667,
+		"frame": 217,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.23333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.5,
+		"frame": 218,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.26666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.533333333333333,
+		"frame": 219,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.3,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.566666666666667,
+		"frame": 220,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.33333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.6,
+		"frame": 221,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.36666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.633333333333333,
+		"frame": 222,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.4,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.666666666666667,
+		"frame": 223,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.43333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.7,
+		"frame": 224,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.46666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.733333333333333,
+		"frame": 225,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.5,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.766666666666667,
+		"frame": 226,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.53333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.8,
+		"frame": 227,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.56666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.833333333333333,
+		"frame": 228,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.6,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.866666666666667,
+		"frame": 229,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.63333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.9,
+		"frame": 230,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.66666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.933333333333333,
+		"frame": 231,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.7,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 0.966666666666667,
+		"frame": 232,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.73333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 1.0,
+		"frame": 233,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.76666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 1.03333333333333,
+		"frame": 234,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.8,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 1.06666666666667,
+		"frame": 235,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.83333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 1.1,
+		"frame": 236,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.86666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 1.13333333333333,
+		"frame": 237,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.9,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 1.16666666666667,
+		"frame": 238,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.93333333333333,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	},
+	{
+		"animation": "idle",
+		"animation_time": 1.2,
+		"frame": 239,
+		"phase": "Release and stop",
+		"position": [
+			1.25688552856445,
+			0.370611071586609
+		],
+		"seconds": 7.96666666666667,
+		"speed": 0.0,
+		"yaw": 3.14159274101257
+	}
+]

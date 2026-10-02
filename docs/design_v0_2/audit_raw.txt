@@ -1,0 +1,45 @@
+test_chase_examples (__main__.BeastAndStockChecks.test_chase_examples) ... ok
+test_periodic_continuous_refresh (__main__.BeastAndStockChecks.test_periodic_continuous_refresh) ... ok
+test_periodic_phase_and_partition (__main__.BeastAndStockChecks.test_periodic_phase_and_partition) ... ok
+test_replenishment_gross_and_net (__main__.BeastAndStockChecks.test_replenishment_gross_and_net) ... ok
+test_research_work_values (__main__.BeastAndStockChecks.test_research_work_values) ... ok
+test_reserved_output_does_not_create_redundant_job (__main__.BeastAndStockChecks.test_reserved_output_does_not_create_redundant_job) ... ok
+test_same_type_trail_not_added (__main__.BeastAndStockChecks.test_same_type_trail_not_added) ... ok
+test_stock_hysteresis (__main__.BeastAndStockChecks.test_stock_hysteresis) ... ok
+test_water_service_capacity (__main__.BeastAndStockChecks.test_water_service_capacity) ... ok
+test_condensation_base (__main__.EnergyChecks.test_condensation_base) ... ok
+test_condensation_bonus_is_not_free_energy (__main__.EnergyChecks.test_condensation_bonus_is_not_free_energy) ... ok
+test_empty_pool_supply_bound (__main__.EnergyChecks.test_empty_pool_supply_bound) ... ok
+test_energy_loss_identity (__main__.EnergyChecks.test_energy_loss_identity) ... ok
+test_split_land_cost_across_springs (__main__.EnergyChecks.test_split_land_cost_across_springs) ... ok
+test_capacity_table (__main__.FormationChecks.test_capacity_table) ... ok
+test_effect_saturation (__main__.FormationChecks.test_effect_saturation) ... ok
+test_geometry_area (__main__.FormationChecks.test_geometry_area) ... ok
+test_overlap_receiver_hard_cap (__main__.FormationChecks.test_overlap_receiver_hard_cap) ... ok
+test_rank_one_example (__main__.FormationChecks.test_rank_one_example) ... ok
+test_rank_zero_and_hard_cap (__main__.FormationChecks.test_rank_zero_and_hard_cap) ... ok
+test_work_is_integrated_not_harvest_snapshot (__main__.FormationChecks.test_work_is_integrated_not_harvest_snapshot) ... ok
+test_area_is_not_sufficient (__main__.InventoryChecks.test_area_is_not_sufficient) ... ok
+test_carried_loss_set_includes_overhead (__main__.InventoryChecks.test_carried_loss_set_includes_overhead) ... ok
+test_overhead_full_blocks_even_with_free_bag (__main__.InventoryChecks.test_overhead_full_blocks_even_with_free_bag) ... ok
+test_rarity_reveal_bounded (__main__.InventoryChecks.test_rarity_reveal_bounded) ... ok
+test_rotate_four_times_invariant (__main__.InventoryChecks.test_rotate_four_times_invariant) ... ok
+test_valid_placement_and_overlap (__main__.InventoryChecks.test_valid_placement_and_overlap) ... ok
+test_exact_table (__main__.LandChecks.test_exact_table) ... ok
+test_exhaustive_small_nonnegative_and_conservation (__main__.LandChecks.test_exhaustive_small_nonnegative_and_conservation) ... ok
+test_insensitive_facility_and_visual_independent (__main__.LandChecks.test_insensitive_facility_and_visual_independent) ... ok
+test_negative_input_rejected (__main__.LandChecks.test_negative_input_rejected) ... ok
+test_partial_coverage (__main__.LandChecks.test_partial_coverage) ... ok
+test_protection_does_not_generate_source_energy (__main__.LandChecks.test_protection_does_not_generate_source_energy) ... ok
+test_zero_area_and_zero_source (__main__.LandChecks.test_zero_area_and_zero_source) ... ok
+test_zero_tax (__main__.LandChecks.test_zero_tax) ... ok
+test_config_guardrails (__main__.RecipeClosureChecks.test_config_guardrails) ... ok
+test_local_buffer_runtime (__main__.RecipeClosureChecks.test_local_buffer_runtime) ... ok
+test_two_fields_supply_one_potion_bench (__main__.RecipeClosureChecks.test_two_fields_supply_one_potion_bench) ... ok
+test_unbuffed_field_cycle (__main__.RecipeClosureChecks.test_unbuffed_field_cycle) ... ok
+test_water_only_affects_growth_stage (__main__.RecipeClosureChecks.test_water_only_affects_growth_stage) ... ok
+
+----------------------------------------------------------------------
+Ran 40 tests in 0.003s
+
+OK

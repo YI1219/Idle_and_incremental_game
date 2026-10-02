@@ -1,0 +1,118 @@
+[
+  {
+    "name": "CommonTree_1",
+    "triangles": 6265,
+    "materials": 2,
+    "textures": 3,
+    "dependencies": [
+      {
+        "file": "CommonTree_1.gltf",
+        "sha256": "b51cdea6545edb51d102dd6c27caafe62aa75e3c328ac8f9039f4e7bfd690bfa"
+      },
+      {
+        "file": "CommonTree_1.bin",
+        "sha256": "9dd689e84e1aa2f5b08db8def591254d582783c73737af54ba0d89b3e549c3ae"
+      },
+      {
+        "file": "Bark_NormalTree_Normal.png",
+        "sha256": "852f6155404b8c39e100e41e26970e02a6a5c81b482d3726618dab28e3ad03a2"
+      },
+      {
+        "file": "Bark_NormalTree.png",
+        "sha256": "f36e94fdd73255347325b998e02a0b2575fdf714b0315bfe5e8ff34bc8e13603"
+      },
+      {
+        "file": "Leaves_NormalTree_C.png",
+        "sha256": "998612bdf0b76a22f5f54d65cd7a457815d2842d89653fa4348a4ebb42933ad3"
+      }
+    ]
+  },
+  {
+    "name": "CommonTree_3",
+    "triangles": 3505,
+    "materials": 2,
+    "textures": 3,
+    "dependencies": [
+      {
+        "file": "CommonTree_3.gltf",
+        "sha256": "17c6537aa8042bb7255fbb501bf7aeb2b6db87c16766f794f9c37be3ce70c976"
+      },
+      {
+        "file": "CommonTree_3.bin",
+        "sha256": "24541f46fd9553e2389aba15575f2697009226e82118ed76868284114fd12b49"
+      },
+      {
+        "file": "Bark_NormalTree_Normal.png",
+        "sha256": "852f6155404b8c39e100e41e26970e02a6a5c81b482d3726618dab28e3ad03a2"
+      },
+      {
+        "file": "Bark_NormalTree.png",
+        "sha256": "f36e94fdd73255347325b998e02a0b2575fdf714b0315bfe5e8ff34bc8e13603"
+      },
+      {
+        "file": "Leaves_NormalTree_C.png",
+        "sha256": "998612bdf0b76a22f5f54d65cd7a457815d2842d89653fa4348a4ebb42933ad3"
+      }
+    ]
+  },
+  {
+    "name": "Grass_Common_Short",
+    "triangles": 155,
+    "materials": 1,
+    "textures": 1,
+    "dependencies": [
+      {
+        "file": "Grass_Common_Short.gltf",
+        "sha256": "6957b50622c9e26e7296c1b47ea8653bc0d957e0a547de444e2ed96f0075a21a"
+      },
+      {
+        "file": "Grass_Common_Short.bin",
+        "sha256": "7a0f0f7a9ac39cfa4b303bac03a6594f43e48d873b73553fa06a79e4df1271e9"
+      },
+      {
+        "file": "Grass.png",
+        "sha256": "5d69048193b246a73c996b892607fb36c75d0c60afcb2dab8aa12de3c0b2d9bd"
+      }
+    ]
+  },
+  {
+    "name": "Rock_Medium_1",
+    "triangles": 342,
+    "materials": 1,
+    "textures": 1,
+    "dependencies": [
+      {
+        "file": "Rock_Medium_1.gltf",
+        "sha256": "5d1ab1fa03218f4a908728ed0eabe6486344a7e4f510b0d3d6f837fd1d011bd8"
+      },
+      {
+        "file": "Rock_Medium_1.bin",
+        "sha256": "ea79527d4c2b3bdb7a28bf589bf0c1fd96d192a4d0738636753911dd58681e99"
+      },
+      {
+        "file": "Rocks_Diffuse.png",
+        "sha256": "b813696df6081f469a127092eb0ce45cc39d56f3ccc0699152bfcd3804810b48"
+      }
+    ]
+  },
+  {
+    "name": "Rock_Medium_2",
+    "triangles": 244,
+    "materials": 1,
+    "textures": 1,
+    "dependencies": [
+      {
+        "file": "Rock_Medium_2.gltf",
+        "sha256": "fac2d05a05f2d0d2098de59c09b58f42cc875c9caca4fd4c4bd57f3d36e7b12e"
+      },
+      {
+        "file": "Rock_Medium_2.bin",
+        "sha256": "76b60bf8349f71abdb0ed462b3223d93c2dcabdfb5754bc132e18b021cc6c805"
+      },
+      {
+        "file": "Rocks_Diffuse.png",
+        "sha256": "b813696df6081f469a127092eb0ce45cc39d56f3ccc0699152bfcd3804810b48"
+      }
+    ]
+  }
+]

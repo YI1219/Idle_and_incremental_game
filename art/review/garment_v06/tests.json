@@ -1,0 +1,92 @@
+{
+  "garment_motion": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "GARMENT MOTION checks=40059 failures=0"
+    ],
+    "script_errors": false
+  },
+  "gait_context": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "GAIT CONTEXT checks=36 failures=0"
+    ],
+    "script_errors": false
+  },
+  "running_turn": {
+    "exit": 0,
+    "summary": [
+      "TURN fps=120 target=move_left min_facing_dot=1.00000 min_speed=0.000 resumed=1.525s",
+      "TURN fps=120 target=move_forward min_facing_dot=1.00000 min_speed=0.000 resumed=1.825s",
+      "RUNNING TURN checks=99 failures=0"
+    ],
+    "script_errors": false
+  },
+  "turn_transition": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "TURN TRANSITION checks=520 failures=0"
+    ],
+    "script_errors": false
+  },
+  "template_motion": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "TEMPLATE MOTION checks=37 failures=0"
+    ],
+    "script_errors": false
+  },
+  "animation_refinement": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "ANIMATION LOOP INTEGRITY checks=123 failures=0"
+    ],
+    "script_errors": false
+  },
+  "space": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "SPACE CHECKS: 22 passed / 22, failures=0"
+    ],
+    "script_errors": false
+  },
+  "demo": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "DEMO CHECKS 29/29 failures=0"
+    ],
+    "script_errors": false
+  },
+  "sword_runtime": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "SWORD RUNTIME failures=0"
+    ],
+    "script_errors": false
+  },
+  "combat": {
+    "exit": 0,
+    "summary": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "COMBAT failures=0"
+    ],
+    "script_errors": false
+  }
+}

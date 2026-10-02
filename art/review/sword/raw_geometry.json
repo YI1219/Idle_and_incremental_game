@@ -1,0 +1,30 @@
+[
+  {
+    "name": "tripo_node_e54b18dd-d093-468d-bab9-c61e89a9fff9",
+    "dimensions": [
+      0.04345703125,
+      0.13916015625,
+      0.99951171875
+    ],
+    "bounds": [
+      [
+        -0.021728515625,
+        0.021728515625
+      ],
+      [
+        -0.069580078125,
+        0.069580078125
+      ],
+      [
+        0.0,
+        0.99951171875
+      ]
+    ],
+    "vertices": 546,
+    "faces": 993,
+    "boundary_edges": 89,
+    "nonmanifold_edges": 89,
+    "loose_vertices": 0,
+    "degenerate_faces": 0
+  }
+]

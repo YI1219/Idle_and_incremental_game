@@ -1,0 +1,21 @@
+# Godot 4
+.godot/
+*.translation
+export.cfg
+export_presets.cfg
+*.tmp
+
+# OS
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Local download scratch
+third_party/
+
+# Art source/review/work binaries stay local (1GB); keep docs, prompts, manifests
+art/**
+!art/**/
+!art/**/*.md
+!art/**/*.txt
+!art/**/*.json

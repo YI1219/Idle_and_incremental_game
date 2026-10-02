@@ -1,0 +1,14 @@
+{
+  "roundtrip_import": "passed",
+  "mesh_objects": 10,
+  "bones": 28,
+  "pose_samples": 90,
+  "unweighted_vertices": 0,
+  "runtime_sha256": "991c31fe69af61991c2b9503e3467b4335f8deb24006f18a8445ef04d8cdb846",
+  "visual_acceptance": "pending user review",
+  "limitations": [
+    "Existing face and garment topology retained",
+    "Minimal garment-bone response; no cloth simulation",
+    "Locomotion cycle is not terrain-adaptive foot IK"
+  ]
+}

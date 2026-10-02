@@ -1,0 +1,44 @@
+{
+	"cpu": "Apple M4 Pro",
+	"engine": "4.7.2-stable (official)",
+	"gpu": "Apple M4 Pro (Apple9)",
+	"layouts": [
+		{
+			"draw_calls": 124.0,
+			"layout": "sparse",
+			"max_ms": 17.951,
+			"mean_ms": 11.4409,
+			"nature_instances": 20,
+			"p50_ms": 8.413,
+			"p95_ms": 17.368,
+			"rendered_primitives": 41820.0,
+			"samples": 180
+		},
+		{
+			"draw_calls": 130.0,
+			"layout": "dense",
+			"max_ms": 18.034,
+			"mean_ms": 11.4788333333333,
+			"nature_instances": 100,
+			"p50_ms": 8.407,
+			"p95_ms": 17.498,
+			"rendered_primitives": 78780.0,
+			"samples": 180
+		},
+		{
+			"draw_calls": 116.0,
+			"layout": "relocated_dry",
+			"max_ms": 19.11,
+			"mean_ms": 11.6713055555556,
+			"nature_instances": 20,
+			"p50_ms": 8.451,
+			"p95_ms": 17.455,
+			"rendered_primitives": 40485.0,
+			"samples": 180
+		}
+	],
+	"os": "macOS",
+	"renderer": "forward_plus",
+	"resolution": "(1280, 720)",
+	"scope": "Static render probe; existing Forward+ settings, vsync off; NOT low-quality preset, gameplay, target-hardware or sustained-power validation."
+}

@@ -1,0 +1,21 @@
+{
+  "source_page": "https://quaternius.itch.io/stylized-nature-megakit",
+  "official_page": "https://quaternius.com/packs/stylizednaturemegakit.html",
+  "edition": "Standard (free)",
+  "upload_id": "11055123",
+  "retrieved": "2026-09-20",
+  "upload_timestamp": "2024-07-30 20:36 UTC (download page)",
+  "sha256": "298f6732b872e4cf7b30e6e7abf9641c7f6dc6b326df37ac089533ed7e3d58c9",
+  "bytes": 104088529,
+  "license": "CC0-1.0, confirmed in enclosed License_Standard.txt",
+  "status": "evaluation source, not approved production art",
+  "gltf_model_count": 68,
+  "version": "Standard; no explicit semantic version in enclosed license",
+  "selected_models": [
+    "CommonTree_1",
+    "CommonTree_3",
+    "Grass_Common_Short",
+    "Rock_Medium_1",
+    "Rock_Medium_2"
+  ]
+}

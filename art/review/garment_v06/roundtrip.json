@@ -1,0 +1,14 @@
+{
+  "roundtrip_import": "passed",
+  "mesh_objects": 10,
+  "bones": 38,
+  "pose_samples": 90,
+  "unweighted_vertices": 0,
+  "runtime_sha256": "75c5a431be7486fc20b00ae262fc70db0b86455d973b50b9fe732735da2159f0",
+  "visual_acceptance": "pending user review",
+  "limitations": [
+    "Robe topology and human animation retained; original calf surfaces restored and trousers end near knee",
+    "Runtime garment modifiers are inspected separately in Godot; no cloth solver",
+    "No terrain-adaptive foot IK; CMU turns remain a separate runtime library"
+  ]
+}

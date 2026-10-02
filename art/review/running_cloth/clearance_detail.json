@@ -1,0 +1,1684 @@
+{
+  "after": [
+    {
+      "clip": "idle",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006726255642206524,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.000661139734347671,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006361701960031496,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006166293596834294,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006086629077231009,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006131551171506544,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006280006706447239,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006499239316326566,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006665101968792442,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006586735435121227,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006362637029724283,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006172259936647606,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006088756726967404,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006127888885885113,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006278040475535818,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006512642507914279,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.000554768444999354,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0004026692226943851,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0003978189815327937,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00043438002446549717,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006366098095895723,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.000544801601790823,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0004414753602759447,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00041059143040911295,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0004294343962101266,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0004152093388256617,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00041052505548577756,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0007368370424956083,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.0011447462893556803,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.001021294665406458,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0005761949560110224,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00038779954775236547,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0007452226564055309,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.0010647325252648443,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 8,
+      "max_signed_distance": 0.003954116337354208,
+      "detail": {
+        "vertex": 347,
+        "rest": [
+          -0.07577919214963913,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.0020502386196312727,
+      "detail": {
+        "vertex": 347,
+        "rest": [
+          -0.07577919214963913,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0005623067768283363,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0004795230634044856,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0004131496461923234,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0003821902828349266,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00040446266893923166,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.001737757760565728,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 6,
+      "max_signed_distance": 0.006167047013079241,
+      "detail": {
+        "vertex": 853,
+        "rest": [
+          0.07523205131292343,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 4,
+      "max_signed_distance": 0.0031333831439042115,
+      "detail": {
+        "vertex": 853,
+        "rest": [
+          0.07523205131292343,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.001173687560367398,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006511689766739437,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00044729408909915946,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00046576686145272106,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0007451932615367696,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0008269414029138389,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.001951631779775198,
+      "detail": {
+        "vertex": 347,
+        "rest": [
+          -0.07577919214963913,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.0023625221319889533,
+      "detail": {
+        "vertex": 347,
+        "rest": [
+          -0.07577919214963913,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0009725042909849435,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00038298276922432706,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.0024756357888691127,
+      "detail": {
+        "vertex": 352,
+        "rest": [
+          -0.06319492310285568,
+          0.06811919808387756,
+          0.17453835904598236
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0007947500528473483,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.0014776703974348493,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 5,
+      "max_signed_distance": 0.004934453763780766,
+      "detail": {
+        "vertex": 853,
+        "rest": [
+          0.07523205131292343,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 6,
+      "max_signed_distance": 0.005119529918815147,
+      "detail": {
+        "vertex": 853,
+        "rest": [
+          0.07523205131292343,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 4,
+      "max_signed_distance": 0.0035916825349886494,
+      "detail": {
+        "vertex": 853,
+        "rest": [
+          0.07523205131292343,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00095669687652844,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.00040523674761061557,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006110688555054367,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "run",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0007451040874002501,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006395137165782216,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.000907124689547345,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0008943709328832483,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.0015310839808080345,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.0038531929021701217,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.0034105281229130924,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.004001454915851355,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.003916426561772823,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 4,
+      "max_signed_distance": 0.003058656002394855,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.0016290229048081528,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.0012107683141948655,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0008498232928104699,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006362428366060158,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006048452332834131,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006488653457381588,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006707337834086502,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006395094628715015,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0007240639583869779,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.0010414332384698355,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.0011413436668306076,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.0012097846897631825,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.0012147405659561628,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.001201648638698316,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.001171606690149929,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.001122089826822048,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.0010295375384430372,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0007578966277606014,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0005387072936571258,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.000521031085213508,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0005666794891077132,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006121863871157984,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006357398763157107,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006726181482008542,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 5,
+      "max_signed_distance": 0.005204938002862036,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 5,
+      "max_signed_distance": 0.006288521806709468,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 6,
+      "max_signed_distance": 0.004648927162634209,
+      "detail": {
+        "vertex": 347,
+        "rest": [
+          -0.07577919214963913,
+          0.07906204462051392,
+          0.24676112830638885
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.002994681242853403,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.002880720770917833,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.002807806944474578,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.002841744921170175,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.0028999109636060894,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.0028957322938367724,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 3,
+      "max_signed_distance": 0.0027447312604635954,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 2,
+      "max_signed_distance": 0.0018653020961210132,
+      "detail": {
+        "vertex": 358,
+        "rest": [
+          -0.05498778820037842,
+          0.06921348720788956,
+          0.24511969089508057
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 5,
+      "max_signed_distance": 0.0018905280621908105,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 1,
+      "max_signed_distance": 0.0010278494155500084,
+      "detail": {
+        "vertex": 834,
+        "rest": [
+          0.057723499834537506,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "L"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0005989192518427444,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": 0.0006598565764761588,
+      "detail": {
+        "vertex": 360,
+        "rest": [
+          -0.058270640671253204,
+          0.07194919884204865,
+          0.2139325886964798
+        ],
+        "side": "R"
+      }
+    }
+  ]
+}

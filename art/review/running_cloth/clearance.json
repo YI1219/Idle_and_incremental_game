@@ -1,0 +1,1350 @@
+{
+  "before": [
+    {
+      "clip": "idle",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 27,
+      "max_signed_distance": 0.03237995586823672
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 28,
+      "max_signed_distance": 0.033535188529640436
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 29,
+      "max_signed_distance": 0.0363019680371508
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 31,
+      "max_signed_distance": 0.04017162136733532
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 31,
+      "max_signed_distance": 0.04220521170645952
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 31,
+      "max_signed_distance": 0.04121775645762682
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 30,
+      "max_signed_distance": 0.03806129633449018
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 28,
+      "max_signed_distance": 0.034086125378962606
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 27,
+      "max_signed_distance": 0.031411560135893524
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 28,
+      "max_signed_distance": 0.032558236009208485
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 29,
+      "max_signed_distance": 0.03628709726035595
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 31,
+      "max_signed_distance": 0.040101072285324335
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 31,
+      "max_signed_distance": 0.04214330157265067
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 31,
+      "max_signed_distance": 0.04123055003583431
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 30,
+      "max_signed_distance": 0.03798977192491293
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 28,
+      "max_signed_distance": 0.03448812570422888
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 22,
+      "max_signed_distance": 0.023039127641823143
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 32,
+      "max_signed_distance": 0.045773249585181475
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 36,
+      "max_signed_distance": 0.068915810668841
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 42,
+      "max_signed_distance": 0.09260606128373183
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 40,
+      "max_signed_distance": 0.10425126564223319
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 39,
+      "max_signed_distance": 0.10151847871020436
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 40,
+      "max_signed_distance": 0.08595860145578627
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 33,
+      "max_signed_distance": 0.0522993774866336
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 27,
+      "max_signed_distance": 0.03897749469615519
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 33,
+      "max_signed_distance": 0.04607958369888365
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 38,
+      "max_signed_distance": 0.0656279144459404
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 43,
+      "max_signed_distance": 0.09056334290653467
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 45,
+      "max_signed_distance": 0.10377412231173366
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 41,
+      "max_signed_distance": 0.1010409276932478
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 38,
+      "max_signed_distance": 0.08534432037413353
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 31,
+      "max_signed_distance": 0.04974648909410462
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 26,
+      "max_signed_distance": 0.06529874872649089
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 55,
+      "max_signed_distance": 0.10239339323015884
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 61,
+      "max_signed_distance": 0.10956237185746431
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 53,
+      "max_signed_distance": 0.1125834333797684
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 45,
+      "max_signed_distance": 0.10124459734652191
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 38,
+      "max_signed_distance": 0.0887741994811222
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 39,
+      "max_signed_distance": 0.07591652573319152
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 35,
+      "max_signed_distance": 0.05127107200678438
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 26,
+      "max_signed_distance": 0.06454230326926336
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 59,
+      "max_signed_distance": 0.11109189339913428
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 63,
+      "max_signed_distance": 0.10993854072876275
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 54,
+      "max_signed_distance": 0.11314804811263457
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 47,
+      "max_signed_distance": 0.10477350273868069
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 38,
+      "max_signed_distance": 0.08846429759341845
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 37,
+      "max_signed_distance": 0.0720410822541453
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 33,
+      "max_signed_distance": 0.051438601018162444
+    },
+    {
+      "clip": "run",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 33,
+      "max_signed_distance": 0.0916981132759247
+    },
+    {
+      "clip": "run",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 55,
+      "max_signed_distance": 0.10952103207819164
+    },
+    {
+      "clip": "run",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 59,
+      "max_signed_distance": 0.11348129471298307
+    },
+    {
+      "clip": "run",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 47,
+      "max_signed_distance": 0.11393991895602085
+    },
+    {
+      "clip": "run",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 39,
+      "max_signed_distance": 0.11085834846744547
+    },
+    {
+      "clip": "run",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 46,
+      "max_signed_distance": 0.09343751257983968
+    },
+    {
+      "clip": "run",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 44,
+      "max_signed_distance": 0.07556729910720605
+    },
+    {
+      "clip": "run",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 39,
+      "max_signed_distance": 0.09445221442729235
+    },
+    {
+      "clip": "run",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 43,
+      "max_signed_distance": 0.1102129346691072
+    },
+    {
+      "clip": "run",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.10393653319624718
+    },
+    {
+      "clip": "run",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 60,
+      "max_signed_distance": 0.09142448304919526
+    },
+    {
+      "clip": "run",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 59,
+      "max_signed_distance": 0.11282330939570784
+    },
+    {
+      "clip": "run",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 34,
+      "max_signed_distance": 0.09945981972850859
+    },
+    {
+      "clip": "run",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 27,
+      "max_signed_distance": 0.0632610009633936
+    },
+    {
+      "clip": "run",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 29,
+      "max_signed_distance": 0.052788000597502105
+    },
+    {
+      "clip": "run",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 26,
+      "max_signed_distance": 0.0662233706243569
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 30,
+      "max_signed_distance": 0.03942270793777425
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 54,
+      "max_signed_distance": 0.10160408075898886
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 54,
+      "max_signed_distance": 0.10968785549630411
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 56,
+      "max_signed_distance": 0.10891508683562279
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11272871308028698
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 55,
+      "max_signed_distance": 0.11155915446579456
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11308726482093334
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 54,
+      "max_signed_distance": 0.11477366462349892
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 62,
+      "max_signed_distance": 0.11487561682588421
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 57,
+      "max_signed_distance": 0.10760586708784103
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 43,
+      "max_signed_distance": 0.09258648380637169
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 40,
+      "max_signed_distance": 0.07474198378622532
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 36,
+      "max_signed_distance": 0.056750841438770294
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 31,
+      "max_signed_distance": 0.0420617000781931
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 28,
+      "max_signed_distance": 0.03672811819706112
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 27,
+      "max_signed_distance": 0.033659639419056475
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 30,
+      "max_signed_distance": 0.03942253801506013
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 51,
+      "max_signed_distance": 0.09274019859731197
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 56,
+      "max_signed_distance": 0.10995036363601685
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 56,
+      "max_signed_distance": 0.11148588173091412
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 57,
+      "max_signed_distance": 0.11134637807845138
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 57,
+      "max_signed_distance": 0.11124574689893052
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 57,
+      "max_signed_distance": 0.11203514598309994
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 56,
+      "max_signed_distance": 0.11160257272422314
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 56,
+      "max_signed_distance": 0.11077363044023514
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 56,
+      "max_signed_distance": 0.10875346139073372
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.09801113419234753
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 44,
+      "max_signed_distance": 0.07421225309371948
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 40,
+      "max_signed_distance": 0.056972865015268326
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 33,
+      "max_signed_distance": 0.04662437178194523
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 32,
+      "max_signed_distance": 0.041592580266296864
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 30,
+      "max_signed_distance": 0.03970182609191397
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 27,
+      "max_signed_distance": 0.03237997367978096
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 62,
+      "max_signed_distance": 0.11521854251623154
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 57,
+      "max_signed_distance": 0.09406204521656036
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 57,
+      "max_signed_distance": 0.10327359405346215
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11106979148462415
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11127857258543372
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11164853628724813
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11173374950885773
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11166331253480166
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11158882547169924
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.11111070506740361
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 51,
+      "max_signed_distance": 0.11042199935764074
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 59,
+      "max_signed_distance": 0.11022693195263855
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 52,
+      "max_signed_distance": 0.09948028641520068
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 40,
+      "max_signed_distance": 0.06532108411192894
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 29,
+      "max_signed_distance": 0.04021088112494908
+    }
+  ],
+  "after": [
+    {
+      "clip": "idle",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "idle",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "walk",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "jog",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "run",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "attack_1",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "counter",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.0,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.0625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.1875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.25,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.3125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.4375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.5,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.5625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.625,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.6875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.75,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.8125,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.875,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    },
+    {
+      "clip": "dodge",
+      "fraction": 0.9375,
+      "skin_points_outside_pants": 0,
+      "max_signed_distance": -1
+    }
+  ]
+}

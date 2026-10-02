@@ -1,0 +1,53 @@
+{
+	"cpu": "Apple M4 Pro",
+	"engine": "4.7.2-stable (official)",
+	"gpu": "Apple M4 Pro (Apple9)",
+	"kit": "quaternius",
+	"layouts": [
+		{
+			"draw_calls": 114.0,
+			"layout": "sparse",
+			"max_ms": 17.842,
+			"mean_ms": 10.8250333333333,
+			"nature_instances": 20,
+			"p50_ms": 8.46,
+			"p95_ms": 17.434,
+			"rendered_primitives": 158712.0,
+			"samples": 180
+		},
+		{
+			"draw_calls": 118.0,
+			"layout": "dense",
+			"max_ms": 18.235,
+			"mean_ms": 11.1101333333333,
+			"nature_instances": 100,
+			"p50_ms": 8.573,
+			"p95_ms": 17.224,
+			"rendered_primitives": 663240.0,
+			"samples": 180
+		},
+		{
+			"draw_calls": 106.0,
+			"layout": "relocated_dry",
+			"max_ms": 17.739,
+			"mean_ms": 10.5600888888889,
+			"nature_instances": 20,
+			"p50_ms": 8.434,
+			"p95_ms": 17.324,
+			"rendered_primitives": 157377.0,
+			"samples": 180
+		}
+	],
+	"models": [
+		"CommonTree_1",
+		"CommonTree_3",
+		"Grass_Common_Short",
+		"Rock_Medium_1",
+		"Rock_Medium_2"
+	],
+	"os": "macOS",
+	"recorded_at": "2026-09-20T16:18:40",
+	"renderer": "forward_plus",
+	"resolution": "(1280, 720)",
+	"scope": "Static render probe; existing Forward+ settings, vsync off; NOT low-quality preset, gameplay, target-hardware or sustained-power validation."
+}

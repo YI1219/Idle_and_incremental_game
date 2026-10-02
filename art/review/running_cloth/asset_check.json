@@ -1,0 +1,12 @@
+{
+  "runtime_sha256": "7ed32a827a04c58d015ff67aaf266cb857a65c5e975d073bf62e1c654601669a",
+  "preserved_v03_sha256": "991c31fe69af61991c2b9503e3467b4335f8deb24006f18a8445ef04d8cdb846",
+  "all_animation_tracks": "byte-identical",
+  "materials_and_bind_matrices": "identical",
+  "accessory_geometry": "byte-identical",
+  "body": "outfit-specific covered-calf mask; unmasked original retained",
+  "robe_geometry": "byte-identical; skin weights updated",
+  "trousers": "existing upper panels retained, lower panels extended with four support loops",
+  "skin_weights": "normalized, four influences maximum",
+  "visual_acceptance": "separate from these checks"
+}

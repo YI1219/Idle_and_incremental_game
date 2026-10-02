@@ -1,0 +1,34 @@
+[
+  {
+    "file": "assets/characters/qinglan/qinglan_candidate.glb",
+    "sha256": "dd629f2abef0b8cc9117308a88a9b0456f6f0430d0b889e5080b0af3ac436f8c",
+    "triangles": 12958,
+    "materials": 6,
+    "animations": [
+      "idle",
+      "walk",
+      "attack_1",
+      "attack_2",
+      "dodge"
+    ],
+    "skin_joints": [
+      28
+    ]
+  },
+  {
+    "file": "assets/weapons/sword/starter_jian.glb",
+    "sha256": "4aa9c0fff5d834bcb671f4662707f4cd34347aa0655fc240f6cd523be2fd616c",
+    "triangles": 1068,
+    "materials": 3,
+    "animations": [],
+    "skin_joints": []
+  },
+  {
+    "file": "assets/buildings/cottage/cottage_tripo.glb",
+    "sha256": "e344e7d935f555b8bc947d716fb35a45f396ae3bc7379268c3bc30a51a99976b",
+    "triangles": 2966,
+    "materials": 4,
+    "animations": [],
+    "skin_joints": []
+  }
+]

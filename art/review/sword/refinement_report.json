@@ -1,0 +1,35 @@
+{
+  "source": "art/source/sword/2026-09-20/tripo/jian_3d_model.glb",
+  "source_sha256": "00effca9e7c7d3d8c6fb87d2c8126626e7d7aed0e8e6299c1725fef095a27260",
+  "before": {
+    "vertices": 546,
+    "faces": 993,
+    "boundary_edges": 89
+  },
+  "after": {
+    "vertices": 546,
+    "triangles": 1068,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0
+  },
+  "length_m": 0.9,
+  "authoring_axis": "Blender +Z blade; origin at grip center. GLB exports blade +Y.",
+  "materials": "Three constant PBR color blocks; no image textures needed for this candidate.",
+  "reimport": {
+    "meshes": 1,
+    "materials": 3,
+    "dimensions": [
+      0.12530532479286194,
+      0.03913043439388275,
+      0.9000000357627869
+    ]
+  },
+  "status": "refined_candidate_not_yet_integrated_or_animated",
+  "limitations": [
+    "Separate original mesh shells capped; no boolean union or self-intersection proof.",
+    "Hand fitting and gameplay silhouette still need runtime review."
+  ],
+  "holes_fill_caps": 6,
+  "additional_concave_rim_edges": 14
+}

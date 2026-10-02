@@ -1,0 +1,12 @@
+{
+	"estimated_native_speed": 1.98669614889568,
+	"jog_weight": 0.55,
+	"method": "phase-aligned quaternion/translation blend of licensed human templates",
+	"seconds": 1.0,
+	"source": "res://assets/characters/qinglan/qinglan_clothed_v04.glb",
+	"source_clips": [
+		"walk",
+		"jog"
+	],
+	"visual_acceptance": "pending"
+}

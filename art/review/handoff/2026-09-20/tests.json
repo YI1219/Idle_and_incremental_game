@@ -1,0 +1,57 @@
+[
+  {
+    "test": "demo",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nDEMO CHECKS 21/21 failures=0\n"
+  },
+  {
+    "test": "space",
+    "exit_code": 1,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSPACE CHECKS: 20 passed / 21, failures=1\nERROR: 离屋同样只在完整遮蔽下瞬移\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/space_test.gd:15)\n       [1] run (res://tests/space_test.gd:53)\n       [2] observe_transition (res://tests/space_test.gd:109)\n"
+  },
+  {
+    "test": "camera",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CHECKS: 8/8 passed, failures=0\n"
+  },
+  {
+    "test": "terrain",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CHECKS: 794/794 passed, failures=0\n"
+  },
+  {
+    "test": "sword_rules",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSWORD_RULES failures=0\n"
+  },
+  {
+    "test": "sword_runtime",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSWORD RUNTIME failures=0\n"
+  },
+  {
+    "test": "combat",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCOMBAT failures=0\n"
+  },
+  {
+    "test": "sim_kernel",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSIM KERNEL: 6252/6252 passed, failures=0\n"
+  },
+  {
+    "test": "sim_loop",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSIM LOOP: 17/17 passed, failures=0\n"
+  },
+  {
+    "test": "sim_research",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSIM RESEARCH: 32/32 passed, failures=0\n"
+  },
+  {
+    "test": "sim_explore",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSIM EXPLORE: 30/30 passed, failures=0\n"
+  }
+]

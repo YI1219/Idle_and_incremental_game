@@ -1,0 +1,22 @@
+{
+  "source": "Quaternius Stylized Nature MegaKit Standard, preserved 2026-09-20 archive",
+  "source_url": "https://quaternius.com/packs/stylizednaturemegakit.html",
+  "license": "CC0 1.0; License_Standard.txt",
+  "modifications": "none; per-instance shader/material overrides in scene study",
+  "files": {
+    "CommonTree_4.gltf": "ddf0e8837705702871d3f03de8cf7aeed61ad4bf8ee92052b6f95bdd771297b6",
+    "CommonTree_4.bin": "4fa52cc5bb9aa42d5ce1eee6cffca0f0a7f25dd07fe4431e371548e89bc30233",
+    "Bark_NormalTree_Normal.png": "852f6155404b8c39e100e41e26970e02a6a5c81b482d3726618dab28e3ad03a2",
+    "Bark_NormalTree.png": "f36e94fdd73255347325b998e02a0b2575fdf714b0315bfe5e8ff34bc8e13603",
+    "Leaves_NormalTree_C.png": "998612bdf0b76a22f5f54d65cd7a457815d2842d89653fa4348a4ebb42933ad3",
+    "CommonTree_5.gltf": "fb7061f2bf9fe850870b056431f8f66cd8fdeb443c90695c5efbcf1fe6876d53",
+    "CommonTree_5.bin": "0e617612d50e6bb2ca3c64338383f8938ce9e04d55b548ff11cec7a7b7d8f072",
+    "RockPath_Round_Wide.gltf": "47d4f9d79f2500a595822f9eb0e1a46c28c82ea17d8b2167733f15627210dedd",
+    "RockPath_Round_Wide.bin": "d88fa064e1c11fadf5c6a1cf15bc3e81a54174e12cc79285de9ec5bbe1f2cb88",
+    "PathRocks_Diffuse.png": "85a04abb2c136fee53b376daf3b7d7f96fdf3966de0258dff6fe2b24da792b23",
+    "RockPath_Round_Thin.gltf": "afa02d5495b8ead8bf738f7142f299c336fbef80d98e2e591a2b775d65ab140e",
+    "RockPath_Round_Thin.bin": "3bacc605d7bd1a525252ada6fa2362236493b6468fba3fbad4ba8f8e9360de8f",
+    "RockPath_Round_Small_1.gltf": "9e2fc37aabceed94a2ece3dbffeae4477b87b46a220c3f3ff97503923902d4b9",
+    "RockPath_Round_Small_1.bin": "8a77235966e7df8eae421de3d14940ca7903951c3e85dcca6c136fbec31fa661"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "source": "art/work/qinglan/qinglan_candidate.blend",
+  "geometry_changed": false,
+  "materials_changed": false,
+  "clips": {
+    "idle": {
+      "seconds": 4.8,
+      "frames": 145
+    },
+    "walk": {
+      "seconds": 0.6,
+      "frames": 19
+    },
+    "attack_1": {
+      "seconds": 1.1,
+      "frames": 34
+    },
+    "attack_2": {
+      "seconds": 1.6,
+      "frames": 49
+    },
+    "dodge": {
+      "seconds": 0.8,
+      "frames": 25
+    }
+  },
+  "acceptance": "pending user visual acceptance"
+}

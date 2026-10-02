@@ -1,0 +1,160 @@
+{
+  "asset": "starter_cottage",
+  "status": "integrated_demo_candidate",
+  "views": {
+    "front": {
+      "file": "front.png",
+      "source": "/Users/yi/.codex/generated_images/01a0b742-1891-7982-90c7-a036c406ada6/exec-fc2236be-b987-4e2a-8376-c7551f9cb9ac.png",
+      "sha256": "0df84819ba9315488dedb8e458c7f111e3e591c1bc4485a01639e2375518ac31",
+      "size": [
+        1254,
+        1254
+      ],
+      "colored_structure_bounds": [
+        47,
+        141,
+        1206,
+        999
+      ]
+    },
+    "back": {
+      "file": "back.png",
+      "source": "/Users/yi/.codex/generated_images/01a0b742-1891-7982-90c7-a036c406ada6/exec-3cef33c2-cbc4-4069-9987-dfda9c9001d5.png",
+      "sha256": "b63cb96eb6d764f03ad93642701945e7584b13196ddc3c87dff48c76f46992fc",
+      "size": [
+        1254,
+        1254
+      ],
+      "colored_structure_bounds": [
+        47,
+        140,
+        1206,
+        1000
+      ]
+    },
+    "left": {
+      "file": "left.png",
+      "source": "/Users/yi/.codex/generated_images/01a0b742-1891-7982-90c7-a036c406ada6/exec-1429e41b-319a-45ad-9337-efe6ca08963b.png",
+      "sha256": "63de721cf848b875847a57ebd80f53270d384af5c7c393cbbe470903f1b1088f",
+      "size": [
+        1254,
+        1254
+      ],
+      "colored_structure_bounds": [
+        43,
+        133,
+        1213,
+        999
+      ]
+    },
+    "right": {
+      "file": "right.png",
+      "source": "/Users/yi/.codex/generated_images/01a0b742-1891-7982-90c7-a036c406ada6/exec-b4bcbf48-604f-4058-ba0e-20cb01d42e75.png",
+      "sha256": "fc404cce8f93d2775d1f6b2a187ff838028e806d6407987bc1fb098b687340e6",
+      "size": [
+        1254,
+        1254
+      ],
+      "colored_structure_bounds": [
+        43,
+        133,
+        1213,
+        999
+      ]
+    }
+  },
+  "suggested_settings": {
+    "model": "P2.0 Smart Mesh",
+    "mode": "four separate multiview slots",
+    "topology": "triangles",
+    "target_faces": 3000,
+    "texture_resolution_if_available": 1024,
+    "export": "GLB",
+    "texture_stage": "only after geometry review; do not texture first-round retries"
+  },
+  "download_directory": "tripo/",
+  "suggested_filename": "cottage_raw_v01.glb",
+  "review": "Four standalone views visually inspected; gable entrance front, plain rear and sides; side ridge corrected. Side elevations differ in ridge height by roughly 8 pixels from front/back (under 1% of building height); soft shading/plinth tops are illustrative, not dimensioned CAD. Door opening must be verified on generated mesh before gameplay use.",
+  "runtime_targets": {
+    "door_clear_height_min": 1.8,
+    "door_clear_width_min": 1.2,
+    "character_height": 1.12
+  },
+  "tripo_task_id": null,
+  "received_exports": [
+    {
+      "file": "cottage_raw_v01.glb",
+      "sha256": "e9cd9a0cac7f57a1d60a424b419d3f1f01695be501c036a869384c65ae56fd4e",
+      "bytes": 74528,
+      "meshes": [
+        {
+          "name": "tripo_node_ccbf4bf5-94cf-464c-b531-b6af97db52f9",
+          "vertices": 1638,
+          "triangles": 2834,
+          "boundary_edges": 399,
+          "nonmanifold_edges": 400,
+          "dimensions": [
+            0.99658203125,
+            0.99951171875,
+            0.80908203125
+          ]
+        }
+      ],
+      "images": []
+    },
+    {
+      "file": "cottage_raw_v01_with_color.glb",
+      "sha256": "a1e107084393208c83ae2ea72e674318b81f889fa930a34f00007cf3bdbcca52",
+      "bytes": 344768,
+      "meshes": [
+        {
+          "name": "tripo_node_b05807c8-a0bf-4776-8852-e545a441e0c7",
+          "vertices": 3449,
+          "triangles": 2834,
+          "boundary_edges": 3270,
+          "nonmanifold_edges": 3270,
+          "dimensions": [
+            0.99658203125,
+            0.99951171875,
+            0.80908203125
+          ]
+        }
+      ],
+      "images": [
+        {
+          "name": "cottage_raw_v01_with_color_basecolor",
+          "size": [
+            1024,
+            1024
+          ]
+        }
+      ]
+    }
+  ],
+  "user_reported_billing": {
+    "same_parameters_retry": "unlimited_free_on_current_membership",
+    "texture_generation_credits": 10,
+    "retry_after_texturing": false,
+    "parameter_changes": "may_cost_credits; justified face-count changes acceptable"
+  },
+  "review_latest": "Tripo refinement integrated in demo; source wall infill removed, door widened to 1.608 x 1.8294 m, colors/normals adjusted. Prior runtime checks recorded below verified passage and wall blocking. Open shell/nonmanifold edges remain; final art and target-hardware performance are not approved.",
+  "refinement": {
+    "blend": "../../../work/cottage/cottage_tripo_candidate.blend",
+    "glb": "../../../work/cottage/cottage_tripo_candidate.glb",
+    "report": "../../../review/cottage/tripo_v01/refinement.json",
+    "triangles": 2966,
+    "door_clearance_m": [
+      1.608,
+      1.8294
+    ],
+    "runtime_integrated": true,
+    "runtime_glb": "../../../../assets/buildings/cottage/cottage_tripo.glb"
+  },
+  "runtime_validation": {
+    "demo": "21/21",
+    "space": "21/21",
+    "camera": "8/8",
+    "render": "art/review/demo/courtyard.png",
+    "limitations": "Open shell remains; target office hardware performance not measured."
+  }
+}

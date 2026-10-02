@@ -1,0 +1,24 @@
+{
+  "source": "qinglan_fabric_v05.blend",
+  "restored_body": {
+    "vertices": 1014,
+    "faces": 1092,
+    "additional_mask": false
+  },
+  "trousers": {
+    "L": {
+      "hem_z": 0.2969449758529663,
+      "vertices": 64
+    },
+    "R": {
+      "hem_z": 0.2969449758529663,
+      "vertices": 64
+    }
+  },
+  "weights": {
+    "sleeve": 757,
+    "hem": 2110
+  },
+  "new_garment_bones": 10,
+  "cloth_solver": false
+}

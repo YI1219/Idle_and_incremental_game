@@ -1,0 +1,15 @@
+{
+  "body": {
+    "file": "body.fbx",
+    "origin": "Downloaded Tripo conversion ZIP tripo_convert_0511c174-9e70-4ce6-9f11-b811bc161e66.zip",
+    "bytes": 71292,
+    "sha256": "ce32b176bd99c39c8eb4b036a6ecc6fa13dd33520be83a774fd9cb00f5352cc2"
+  },
+  "clothes": {
+    "file": "clothes.fbx",
+    "asset_page": "https://studio.tripo3d.com/3d-model/f5582f93-6b83-4bcb-8283-cda8c2ebbf44",
+    "origin": "FBX resource exposed by the asset page export",
+    "bytes": 108108,
+    "sha256": "e27b09fc20ef4a59d3a710f8861ff6c5c10eeca129a189be30ecc21fd874c498"
+  }
+}

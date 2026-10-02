@@ -1,0 +1,45 @@
+{
+  "method": "offline worst-pose capsule-guided rest-vertex fit; shell/seam displacement smoothing; no removed faces",
+  "poses": 480,
+  "max_displacement_m": 0.048000000000000015,
+  "changed_vertices": 978,
+  "iterations": [
+    {
+      "iteration": 0,
+      "inside_vertices": 650,
+      "worst_capsule_penetration_m": 0.05330180734663693
+    },
+    {
+      "iteration": 1,
+      "inside_vertices": 624,
+      "worst_capsule_penetration_m": 0.053010001545419946
+    },
+    {
+      "iteration": 2,
+      "inside_vertices": 577,
+      "worst_capsule_penetration_m": 0.0535341644179201
+    },
+    {
+      "iteration": 3,
+      "inside_vertices": 517,
+      "worst_capsule_penetration_m": 0.05285067032988278
+    },
+    {
+      "iteration": 4,
+      "inside_vertices": 449,
+      "worst_capsule_penetration_m": 0.052186703444165934
+    },
+    {
+      "iteration": 5,
+      "inside_vertices": 423,
+      "worst_capsule_penetration_m": 0.0496420985351217
+    },
+    {
+      "iteration": 6,
+      "inside_vertices": 402,
+      "worst_capsule_penetration_m": 0.048174727280002105
+    }
+  ],
+  "accepted_for_runtime": false,
+  "reason": "Reduced conservative capsule penetration counts but damaged source folds and seam finish in actual Godot frames. Trial preserved separately; runtime restored before this trial."
+}

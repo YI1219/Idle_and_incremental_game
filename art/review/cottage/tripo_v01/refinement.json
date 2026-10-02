@@ -1,0 +1,32 @@
+{
+  "source_sha256": "a1e107084393208c83ae2ea72e674318b81f889fa930a34f00007cf3bdbcca52",
+  "removed_door_faces": 21,
+  "triangles": 2966,
+  "boundary_edges": 429,
+  "nonmanifold_edges": 430,
+  "passage_rays": 16,
+  "blocked_rays": [],
+  "door_nominal_clear_width_m": 1.608,
+  "door_nominal_clear_height_m": 1.8294,
+  "status": "integrated_demo_candidate",
+  "notes": [
+    "Original wall shell is single-sided/open; no blanket hole filling.",
+    "No new visible primitives; only source mesh split, infill removal, jamb/lintel adjustment and material correction."
+  ],
+  "reimport": {
+    "mesh_count": 1,
+    "materials": 4,
+    "dimensions": [
+      5.9794921875,
+      5.9970703125,
+      4.8544921875
+    ]
+  },
+  "runtime_validation": {
+    "capsule_passage": "center and ±0.45m offsets pass; adjacent wall blocks",
+    "transitions": "21/21",
+    "demo": "21/21",
+    "camera": "8/8",
+    "initial_camera_distance": 16.5
+  }
+}

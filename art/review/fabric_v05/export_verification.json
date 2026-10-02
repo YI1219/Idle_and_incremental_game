@@ -1,0 +1,54 @@
+{
+  "unchanged_topology": {
+    "BeltDetail.3": true,
+    "BeltDetail.4": true,
+    "BeltDetail.5": true,
+    "BeltDetail.6": true,
+    "Body": true,
+    "Ribbon.1": true,
+    "Ribbon.2": true,
+    "Robe": true,
+    "WhiteTrousers.L": true,
+    "WhiteTrousers.R": true
+  },
+  "unchanged_skin_weights": {
+    "BeltDetail.3": true,
+    "BeltDetail.4": true,
+    "BeltDetail.5": true,
+    "BeltDetail.6": true,
+    "Body": true,
+    "Ribbon.1": true,
+    "Ribbon.2": true,
+    "Robe": true
+  },
+  "unchanged_nonrobe_positions": {
+    "BeltDetail.3": true,
+    "BeltDetail.4": true,
+    "BeltDetail.5": true,
+    "BeltDetail.6": true,
+    "Body": true,
+    "Ribbon.1": true,
+    "Ribbon.2": true
+  },
+  "preserved_lower_trousers": {
+    "WhiteTrousers.L": true,
+    "WhiteTrousers.R": true
+  },
+  "animation_tracks_identical": {
+    "idle": true,
+    "walk": true,
+    "formal_walk": true,
+    "jog": true,
+    "run": true,
+    "armed_idle": true,
+    "attack_1": true,
+    "counter": true,
+    "dodge": true,
+    "dodge_recovery": true
+  },
+  "rest_nodes_identical": true,
+  "inverse_bind_matrices_identical": true,
+  "images": 6,
+  "materials": 6,
+  "runtime_sha256": "572af160e2056283952e83a85e4f14484642dffb4dd4bf72c55e62f5a45d86e5"
+}

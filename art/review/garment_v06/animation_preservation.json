@@ -1,0 +1,16 @@
+{
+  "animation_tracks": {
+    "idle": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "walk": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "formal_walk": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "jog": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "run": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "armed_idle": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "attack_1": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "counter": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "dodge": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name",
+    "dodge_recovery": "all 84 original channels byte-identical (input/output/interpolation), targets matched by bone name"
+  },
+  "exporter_constant_tracks_removed": 30,
+  "new_garment_bones": 10
+}

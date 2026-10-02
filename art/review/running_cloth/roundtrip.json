@@ -1,0 +1,14 @@
+{
+  "roundtrip_import": "passed",
+  "mesh_objects": 10,
+  "bones": 28,
+  "pose_samples": 90,
+  "unweighted_vertices": 0,
+  "runtime_sha256": "7ed32a827a04c58d015ff67aaf266cb857a65c5e975d073bf62e1c654601669a",
+  "visual_acceptance": "pending user review",
+  "limitations": [
+    "Robe topology and human animation retained; trousers extended and outfit-specific covered-calf mask applied",
+    "Garment skinning, not physical cloth simulation",
+    "No terrain-adaptive foot IK or dedicated authored turn clip"
+  ]
+}

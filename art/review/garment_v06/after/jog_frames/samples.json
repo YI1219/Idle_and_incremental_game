@@ -1,0 +1,1082 @@
+[
+	{
+		"animation": "idle",
+		"frame": 0,
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.0,
+		"speed": 0.0,
+		"time": 0.0333333333333333,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"frame": 1,
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.0333333333333333,
+		"speed": 0.0,
+		"time": 0.0666666666666667,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"frame": 2,
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.0666666666666667,
+		"speed": 0.0,
+		"time": 0.1,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"frame": 3,
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.1,
+		"speed": 0.0,
+		"time": 0.133333333333333,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"frame": 4,
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.133333333333333,
+		"speed": 0.0,
+		"time": 0.166666666666667,
+		"yaw": 0.0
+	},
+	{
+		"animation": "idle",
+		"frame": 5,
+		"position": [
+			0.0,
+			0.0
+		],
+		"seconds": 0.166666666666667,
+		"speed": 0.0,
+		"time": 0.2,
+		"yaw": 0.0
+	},
+	{
+		"animation": "walk",
+		"frame": 6,
+		"position": [
+			0.0,
+			0.0155555568635464
+		],
+		"seconds": 0.2,
+		"speed": 0.466666668653488,
+		"time": 0.0267821431159973,
+		"yaw": 0.0
+	},
+	{
+		"animation": "walk",
+		"frame": 7,
+		"position": [
+			0.0,
+			0.0466666705906391
+		],
+		"seconds": 0.233333333333333,
+		"speed": 0.933333337306976,
+		"time": 0.0803464293479919,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 8,
+		"position": [
+			0.0,
+			0.0933333337306976
+		],
+		"seconds": 0.266666666666667,
+		"speed": 1.39999985694885,
+		"time": 0.0837494027537161,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 9,
+		"position": [
+			0.0,
+			0.155555546283722
+		],
+		"seconds": 0.3,
+		"speed": 1.86666631698608,
+		"time": 0.115068842164879,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 10,
+		"position": [
+			0.0,
+			0.222222208976746
+		],
+		"seconds": 0.333333333333333,
+		"speed": 1.99999976158142,
+		"time": 0.148625386945611,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 11,
+		"position": [
+			0.0,
+			0.288888871669769
+		],
+		"seconds": 0.366666666666667,
+		"speed": 1.99999976158142,
+		"time": 0.182181931726342,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 12,
+		"position": [
+			0.0,
+			0.355555534362793
+		],
+		"seconds": 0.4,
+		"speed": 1.99999976158142,
+		"time": 0.215738476507073,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 13,
+		"position": [
+			0.0,
+			0.422222197055817
+		],
+		"seconds": 0.433333333333333,
+		"speed": 1.99999976158142,
+		"time": 0.249295021287804,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 14,
+		"position": [
+			0.0,
+			0.48888885974884
+		],
+		"seconds": 0.466666666666667,
+		"speed": 1.99999976158142,
+		"time": 0.282851566068535,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 15,
+		"position": [
+			0.0,
+			0.555555522441864
+		],
+		"seconds": 0.5,
+		"speed": 1.99999976158142,
+		"time": 0.316408110849267,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 16,
+		"position": [
+			0.0,
+			0.622222185134888
+		],
+		"seconds": 0.533333333333333,
+		"speed": 1.99999976158142,
+		"time": 0.349964655629998,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 17,
+		"position": [
+			0.0,
+			0.688888847827911
+		],
+		"seconds": 0.566666666666667,
+		"speed": 1.99999976158142,
+		"time": 0.383521200410729,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 18,
+		"position": [
+			0.0,
+			0.755555510520935
+		],
+		"seconds": 0.6,
+		"speed": 1.99999976158142,
+		"time": 0.41707774519146,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 19,
+		"position": [
+			0.0,
+			0.822222173213959
+		],
+		"seconds": 0.633333333333333,
+		"speed": 1.99999976158142,
+		"time": 0.450634289972192,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 20,
+		"position": [
+			0.0,
+			0.888888835906982
+		],
+		"seconds": 0.666666666666667,
+		"speed": 1.99999976158142,
+		"time": 0.484190834752923,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 21,
+		"position": [
+			0.0,
+			0.955555498600006
+		],
+		"seconds": 0.7,
+		"speed": 1.99999976158142,
+		"time": 0.517747379533654,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 22,
+		"position": [
+			0.0,
+			1.02222216129303
+		],
+		"seconds": 0.733333333333333,
+		"speed": 1.99999976158142,
+		"time": 0.551303924314385,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 23,
+		"position": [
+			0.0,
+			1.0888888835907
+		],
+		"seconds": 0.766666666666667,
+		"speed": 2.00000166893005,
+		"time": 0.58486050088426,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 24,
+		"position": [
+			0.0,
+			1.15555560588837
+		],
+		"seconds": 0.8,
+		"speed": 2.00000166893005,
+		"time": 0.618417077454135,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 25,
+		"position": [
+			0.0,
+			1.22222232818604
+		],
+		"seconds": 0.833333333333333,
+		"speed": 2.00000166893005,
+		"time": 0.651973654024011,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 26,
+		"position": [
+			0.0,
+			1.2888890504837
+		],
+		"seconds": 0.866666666666667,
+		"speed": 2.00000166893005,
+		"time": 0.685530230593886,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 27,
+		"position": [
+			0.0,
+			1.35555577278137
+		],
+		"seconds": 0.9,
+		"speed": 2.00000166893005,
+		"time": 0.719086807163761,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 28,
+		"position": [
+			0.0,
+			1.42222249507904
+		],
+		"seconds": 0.933333333333333,
+		"speed": 2.00000166893005,
+		"time": 0.752643383733636,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 29,
+		"position": [
+			0.0,
+			1.48888921737671
+		],
+		"seconds": 0.966666666666667,
+		"speed": 2.00000166893005,
+		"time": 0.786199960303511,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 30,
+		"position": [
+			0.0,
+			1.55555593967438
+		],
+		"seconds": 1.0,
+		"speed": 2.00000166893005,
+		"time": 0.819756536873386,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 31,
+		"position": [
+			0.0,
+			1.62222266197205
+		],
+		"seconds": 1.03333333333333,
+		"speed": 2.00000166893005,
+		"time": 0.853313113443261,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 32,
+		"position": [
+			0.0,
+			1.68888938426971
+		],
+		"seconds": 1.06666666666667,
+		"speed": 2.00000166893005,
+		"time": 0.886869690013136,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 33,
+		"position": [
+			0.0,
+			1.75555610656738
+		],
+		"seconds": 1.1,
+		"speed": 2.00000166893005,
+		"time": 0.920426266583011,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 34,
+		"position": [
+			0.0,
+			1.82222282886505
+		],
+		"seconds": 1.13333333333333,
+		"speed": 2.00000166893005,
+		"time": 0.953982843152886,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 35,
+		"position": [
+			0.0,
+			1.88888955116272
+		],
+		"seconds": 1.16666666666667,
+		"speed": 2.00000166893005,
+		"time": 0.987539419722761,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 36,
+		"position": [
+			0.0,
+			1.95555627346039
+		],
+		"seconds": 1.2,
+		"speed": 2.00000166893005,
+		"time": 0.0210959962926365,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 37,
+		"position": [
+			0.0,
+			2.02222299575806
+		],
+		"seconds": 1.23333333333333,
+		"speed": 2.00000166893005,
+		"time": 0.0546525728625116,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 38,
+		"position": [
+			0.0,
+			2.08888959884644
+		],
+		"seconds": 1.26666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.0882090898277419,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 39,
+		"position": [
+			0.0,
+			2.15555620193481
+		],
+		"seconds": 1.3,
+		"speed": 1.99999797344208,
+		"time": 0.121765606792972,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 40,
+		"position": [
+			0.0,
+			2.22222280502319
+		],
+		"seconds": 1.33333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.155322123758202,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 41,
+		"position": [
+			0.0,
+			2.28888940811157
+		],
+		"seconds": 1.36666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.188878640723433,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 42,
+		"position": [
+			0.0,
+			2.35555601119995
+		],
+		"seconds": 1.4,
+		"speed": 1.99999797344208,
+		"time": 0.222435157688663,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 43,
+		"position": [
+			0.0,
+			2.42222261428833
+		],
+		"seconds": 1.43333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.255991674653893,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 44,
+		"position": [
+			0.0,
+			2.48888921737671
+		],
+		"seconds": 1.46666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.289548191619124,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 45,
+		"position": [
+			0.0,
+			2.55555582046509
+		],
+		"seconds": 1.5,
+		"speed": 1.99999797344208,
+		"time": 0.323104708584354,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 46,
+		"position": [
+			0.0,
+			2.62222242355347
+		],
+		"seconds": 1.53333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.356661225549584,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 47,
+		"position": [
+			0.0,
+			2.68888902664185
+		],
+		"seconds": 1.56666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.390217742514815,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 48,
+		"position": [
+			0.0,
+			2.75555562973022
+		],
+		"seconds": 1.6,
+		"speed": 1.99999797344208,
+		"time": 0.423774259480045,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 49,
+		"position": [
+			0.0,
+			2.8222222328186
+		],
+		"seconds": 1.63333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.457330776445275,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 50,
+		"position": [
+			0.0,
+			2.88888883590698
+		],
+		"seconds": 1.66666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.490887293410506,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 51,
+		"position": [
+			0.0,
+			2.95555543899536
+		],
+		"seconds": 1.7,
+		"speed": 1.99999797344208,
+		"time": 0.524443810375736,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 52,
+		"position": [
+			0.0,
+			3.02222204208374
+		],
+		"seconds": 1.73333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.558000327340966,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 53,
+		"position": [
+			0.0,
+			3.08888864517212
+		],
+		"seconds": 1.76666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.591556844306197,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 54,
+		"position": [
+			0.0,
+			3.1555552482605
+		],
+		"seconds": 1.8,
+		"speed": 1.99999797344208,
+		"time": 0.625113361271427,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 55,
+		"position": [
+			0.0,
+			3.22222185134888
+		],
+		"seconds": 1.83333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.658669878236657,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 56,
+		"position": [
+			0.0,
+			3.28888845443726
+		],
+		"seconds": 1.86666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.692226395201888,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 57,
+		"position": [
+			0.0,
+			3.35555505752563
+		],
+		"seconds": 1.9,
+		"speed": 1.99999797344208,
+		"time": 0.725782912167118,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 58,
+		"position": [
+			0.0,
+			3.42222166061401
+		],
+		"seconds": 1.93333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.759339429132348,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 59,
+		"position": [
+			0.0,
+			3.48888826370239
+		],
+		"seconds": 1.96666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.792895946097579,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 60,
+		"position": [
+			0.0,
+			3.55555486679077
+		],
+		"seconds": 2.0,
+		"speed": 1.99999797344208,
+		"time": 0.826452463062809,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 61,
+		"position": [
+			0.0,
+			3.62222146987915
+		],
+		"seconds": 2.03333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.860008980028039,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 62,
+		"position": [
+			0.0,
+			3.68888807296753
+		],
+		"seconds": 2.06666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.893565496993269,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 63,
+		"position": [
+			0.0,
+			3.75555467605591
+		],
+		"seconds": 2.1,
+		"speed": 1.99999797344208,
+		"time": 0.9271220139585,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 64,
+		"position": [
+			0.0,
+			3.82222127914429
+		],
+		"seconds": 2.13333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.96067853092373,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 65,
+		"position": [
+			0.0,
+			3.88888788223267
+		],
+		"seconds": 2.16666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.99423504788896,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 66,
+		"position": [
+			0.0,
+			3.95555448532104
+		],
+		"seconds": 2.2,
+		"speed": 1.99999797344208,
+		"time": 0.0277915648541907,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 67,
+		"position": [
+			0.0,
+			4.02222108840942
+		],
+		"seconds": 2.23333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.061348081819421,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 68,
+		"position": [
+			0.0,
+			4.0888876914978
+		],
+		"seconds": 2.26666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.0949045987846513,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 69,
+		"position": [
+			0.0,
+			4.15555429458618
+		],
+		"seconds": 2.3,
+		"speed": 1.99999797344208,
+		"time": 0.128461115749882,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 70,
+		"position": [
+			0.0,
+			4.22222089767456
+		],
+		"seconds": 2.33333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.162017632715112,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 71,
+		"position": [
+			0.0,
+			4.28888750076294
+		],
+		"seconds": 2.36666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.195574149680342,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 72,
+		"position": [
+			0.0,
+			4.35555410385132
+		],
+		"seconds": 2.4,
+		"speed": 1.99999797344208,
+		"time": 0.229130666645573,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 73,
+		"position": [
+			0.0,
+			4.4222207069397
+		],
+		"seconds": 2.43333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.262687183610803,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 74,
+		"position": [
+			0.0,
+			4.48888731002808
+		],
+		"seconds": 2.46666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.296243700576033,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 75,
+		"position": [
+			0.0,
+			4.55555391311646
+		],
+		"seconds": 2.5,
+		"speed": 1.99999797344208,
+		"time": 0.329800217541263,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 76,
+		"position": [
+			0.0,
+			4.62222051620483
+		],
+		"seconds": 2.53333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.363356734506494,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 77,
+		"position": [
+			0.0,
+			4.68888711929321
+		],
+		"seconds": 2.56666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.396913251471724,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 78,
+		"position": [
+			0.0,
+			4.75555372238159
+		],
+		"seconds": 2.6,
+		"speed": 1.99999797344208,
+		"time": 0.430469768436954,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 79,
+		"position": [
+			0.0,
+			4.82222032546997
+		],
+		"seconds": 2.63333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.464026285402185,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 80,
+		"position": [
+			0.0,
+			4.88888692855835
+		],
+		"seconds": 2.66666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.497582802367415,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 81,
+		"position": [
+			0.0,
+			4.95555353164673
+		],
+		"seconds": 2.7,
+		"speed": 1.99999797344208,
+		"time": 0.531139319332645,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 82,
+		"position": [
+			0.0,
+			5.02222013473511
+		],
+		"seconds": 2.73333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.564695836297876,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 83,
+		"position": [
+			0.0,
+			5.08888673782349
+		],
+		"seconds": 2.76666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.598252353263106,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 84,
+		"position": [
+			0.0,
+			5.15555334091187
+		],
+		"seconds": 2.8,
+		"speed": 1.99999797344208,
+		"time": 0.631808870228336,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 85,
+		"position": [
+			0.0,
+			5.22221994400024
+		],
+		"seconds": 2.83333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.665365387193567,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 86,
+		"position": [
+			0.0,
+			5.28888654708862
+		],
+		"seconds": 2.86666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.698921904158797,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 87,
+		"position": [
+			0.0,
+			5.355553150177
+		],
+		"seconds": 2.9,
+		"speed": 1.99999797344208,
+		"time": 0.732478421124027,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 88,
+		"position": [
+			0.0,
+			5.42221975326538
+		],
+		"seconds": 2.93333333333333,
+		"speed": 1.99999797344208,
+		"time": 0.766034938089258,
+		"yaw": 0.0
+	},
+	{
+		"animation": "gentle_jog",
+		"frame": 89,
+		"position": [
+			0.0,
+			5.48888635635376
+		],
+		"seconds": 2.96666666666667,
+		"speed": 1.99999797344208,
+		"time": 0.799591455054488,
+		"yaw": 0.0
+	}
+]

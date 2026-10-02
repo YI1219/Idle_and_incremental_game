@@ -1,0 +1,25 @@
+{
+  "source": "art/work/qinglan/qinglan_template_v03.blend",
+  "source_sha256": "7cc65a90df18e0c5178c07b0622c41ed80196ff792aa4a4df4f824aa02256f5d",
+  "robe": {
+    "reweighted_vertices": 2115,
+    "method": "leg-driven skirt with retained garment response and hip transition; at most four weights"
+  },
+  "trousers": {
+    "L": {
+      "before_vertices": 64,
+      "after_vertices": 128,
+      "hem_z": 0.097
+    },
+    "R": {
+      "before_vertices": 64,
+      "after_vertices": 128,
+      "hem_z": 0.097
+    }
+  },
+  "outfit_mask": {
+    "covered_calf_faces_omitted": 113,
+    "retained": "head, hands, feet and ankle boundary; all source body geometry remains in v03"
+  },
+  "runtime_sha256": "7ed32a827a04c58d015ff67aaf266cb857a65c5e975d073bf62e1c654601669a"
+}

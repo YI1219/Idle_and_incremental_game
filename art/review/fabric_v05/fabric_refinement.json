@@ -1,0 +1,90 @@
+{
+  "source": "art/work/qinglan/qinglan_clothed_v04.blend",
+  "source_sha256": "3ddad51f7f28658eef83f260f2b010a2fff982b78784f36039ab68bafd431046",
+  "drape": {
+    "changed_vertices": 3162,
+    "max_vertex_displacement_m": 0.06544618510616701,
+    "topology_changed": false,
+    "weights_changed": false,
+    "description": "Reduce lower bell depth by up to 19%, lateral flare by 7%, sleeve depth by 12%; 2.5 mm shallow sleeve creases."
+  },
+  "waistband": {
+    "L": {
+      "old_waist_z": 0.6163009405136108,
+      "new_waist_z": 0.553,
+      "changed_position_vertices": 48,
+      "changed_weight_vertices": 16,
+      "waist_binding": "Hips only",
+      "preserved": "All faces; knee and lower-leg positions/weights; covered-calf body."
+    },
+    "R": {
+      "old_waist_z": 0.6163009405136108,
+      "new_waist_z": 0.553,
+      "changed_position_vertices": 48,
+      "changed_weight_vertices": 16,
+      "waist_binding": "Hips only",
+      "preserved": "All faces; knee and lower-leg positions/weights; covered-calf body."
+    }
+  },
+  "uv": {
+    "BeltDetail.3": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 1.2622533265525577
+    },
+    "BeltDetail.4": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 0.8942535765201917
+    },
+    "BeltDetail.5": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 0.58041183126557
+    },
+    "BeltDetail.6": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 0.5748632156411908
+    },
+    "Ribbon.1": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 3.7482408309410595
+    },
+    "Ribbon.2": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 3.293571038368377
+    },
+    "Robe": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 29.304682712087036
+    },
+    "WhiteTrousers.L": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 3.02107238304685
+    },
+    "WhiteTrousers.R": {
+      "uv_layer": "UVMap",
+      "repeat_meters": 0.16,
+      "uv_scale": 3.021072394362968
+    }
+  },
+  "actions": [
+    "armed_idle",
+    "attack_1",
+    "counter",
+    "dodge",
+    "dodge_recovery",
+    "formal_walk",
+    "idle",
+    "jog",
+    "run",
+    "walk"
+  ],
+  "simulation": "Not added. Existing skirt/ribbon tracks remain unchanged. This pass addresses shape and surface response.",
+  "runtime_sha256": "572af160e2056283952e83a85e4f14484642dffb4dd4bf72c55e62f5a45d86e5"
+}

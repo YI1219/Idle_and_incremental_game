@@ -1,0 +1,15 @@
+{
+  "runtime_sha256": "75c5a431be7486fc20b00ae262fc70db0b86455d973b50b9fe732735da2159f0",
+  "godot": "4.7.2",
+  "backend": "Metal Forward+",
+  "device": "Apple M4 Pro",
+  "phase_frames_after": 540,
+  "phase_samples_per_clip_per_view": 12,
+  "phase_views": [
+    "front",
+    "side",
+    "back"
+  ],
+  "traversal_frames_per_version": 570,
+  "sampling": "Fixed simulation clock. This is not a performance benchmark. GIFs package rendered frames, no interpolation."
+}

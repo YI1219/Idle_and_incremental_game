@@ -1,0 +1,590 @@
+{
+  "template_v03": {
+    "body_verts": 1014,
+    "body_faces": 1092,
+    "rows": [
+      {
+        "clip": "jog",
+        "phase": 0.0,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 256
+      },
+      {
+        "clip": "jog",
+        "phase": 0.041666666666666664,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 328
+      },
+      {
+        "clip": "jog",
+        "phase": 0.08333333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 395
+      },
+      {
+        "clip": "jog",
+        "phase": 0.125,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 306
+      },
+      {
+        "clip": "jog",
+        "phase": 0.16666666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 412
+      },
+      {
+        "clip": "jog",
+        "phase": 0.20833333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 378
+      },
+      {
+        "clip": "jog",
+        "phase": 0.25,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 361
+      },
+      {
+        "clip": "jog",
+        "phase": 0.2916666666666667,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 330
+      },
+      {
+        "clip": "jog",
+        "phase": 0.3333333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 315
+      },
+      {
+        "clip": "jog",
+        "phase": 0.375,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 301
+      },
+      {
+        "clip": "jog",
+        "phase": 0.4166666666666667,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 312
+      },
+      {
+        "clip": "jog",
+        "phase": 0.4583333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 245
+      },
+      {
+        "clip": "jog",
+        "phase": 0.5,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 217
+      },
+      {
+        "clip": "jog",
+        "phase": 0.5416666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 366
+      },
+      {
+        "clip": "jog",
+        "phase": 0.5833333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 428
+      },
+      {
+        "clip": "jog",
+        "phase": 0.625,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 378
+      },
+      {
+        "clip": "jog",
+        "phase": 0.6666666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 440
+      },
+      {
+        "clip": "jog",
+        "phase": 0.7083333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 395
+      },
+      {
+        "clip": "jog",
+        "phase": 0.75,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 368
+      },
+      {
+        "clip": "jog",
+        "phase": 0.7916666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 318
+      },
+      {
+        "clip": "jog",
+        "phase": 0.8333333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 341
+      },
+      {
+        "clip": "jog",
+        "phase": 0.875,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 372
+      },
+      {
+        "clip": "jog",
+        "phase": 0.9166666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 335
+      },
+      {
+        "clip": "jog",
+        "phase": 0.9583333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 270
+      },
+      {
+        "clip": "run",
+        "phase": 0.0,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 316
+      },
+      {
+        "clip": "run",
+        "phase": 0.041666666666666664,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 400
+      },
+      {
+        "clip": "run",
+        "phase": 0.08333333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 421
+      },
+      {
+        "clip": "run",
+        "phase": 0.125,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 369
+      },
+      {
+        "clip": "run",
+        "phase": 0.16666666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 497
+      },
+      {
+        "clip": "run",
+        "phase": 0.20833333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 381
+      },
+      {
+        "clip": "run",
+        "phase": 0.25,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 334
+      },
+      {
+        "clip": "run",
+        "phase": 0.2916666666666667,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 342
+      },
+      {
+        "clip": "run",
+        "phase": 0.3333333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 384
+      },
+      {
+        "clip": "run",
+        "phase": 0.375,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 385
+      },
+      {
+        "clip": "run",
+        "phase": 0.4166666666666667,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 375
+      },
+      {
+        "clip": "run",
+        "phase": 0.4583333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 363
+      },
+      {
+        "clip": "run",
+        "phase": 0.5,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 359
+      },
+      {
+        "clip": "run",
+        "phase": 0.5416666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 370
+      },
+      {
+        "clip": "run",
+        "phase": 0.5833333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 414
+      },
+      {
+        "clip": "run",
+        "phase": 0.625,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 468
+      },
+      {
+        "clip": "run",
+        "phase": 0.6666666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 560
+      },
+      {
+        "clip": "run",
+        "phase": 0.7083333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 420
+      },
+      {
+        "clip": "run",
+        "phase": 0.75,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 344
+      },
+      {
+        "clip": "run",
+        "phase": 0.7916666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 345
+      },
+      {
+        "clip": "run",
+        "phase": 0.8333333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 334
+      },
+      {
+        "clip": "run",
+        "phase": 0.875,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 363
+      },
+      {
+        "clip": "run",
+        "phase": 0.9166666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 336
+      },
+      {
+        "clip": "run",
+        "phase": 0.9583333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 317
+      }
+    ]
+  },
+  "fabric_v05": {
+    "body_verts": 903,
+    "body_faces": 979,
+    "rows": [
+      {
+        "clip": "jog",
+        "phase": 0.0,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 378
+      },
+      {
+        "clip": "jog",
+        "phase": 0.041666666666666664,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 395
+      },
+      {
+        "clip": "jog",
+        "phase": 0.08333333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 506
+      },
+      {
+        "clip": "jog",
+        "phase": 0.125,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 580
+      },
+      {
+        "clip": "jog",
+        "phase": 0.16666666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 487
+      },
+      {
+        "clip": "jog",
+        "phase": 0.20833333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 421
+      },
+      {
+        "clip": "jog",
+        "phase": 0.25,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 378
+      },
+      {
+        "clip": "jog",
+        "phase": 0.2916666666666667,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 353
+      },
+      {
+        "clip": "jog",
+        "phase": 0.3333333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 352
+      },
+      {
+        "clip": "jog",
+        "phase": 0.375,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 355
+      },
+      {
+        "clip": "jog",
+        "phase": 0.4166666666666667,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 342
+      },
+      {
+        "clip": "jog",
+        "phase": 0.4583333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 350
+      },
+      {
+        "clip": "jog",
+        "phase": 0.5,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 360
+      },
+      {
+        "clip": "jog",
+        "phase": 0.5416666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 436
+      },
+      {
+        "clip": "jog",
+        "phase": 0.5833333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 508
+      },
+      {
+        "clip": "jog",
+        "phase": 0.625,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 610
+      },
+      {
+        "clip": "jog",
+        "phase": 0.6666666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 556
+      },
+      {
+        "clip": "jog",
+        "phase": 0.7083333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 490
+      },
+      {
+        "clip": "jog",
+        "phase": 0.75,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 394
+      },
+      {
+        "clip": "jog",
+        "phase": 0.7916666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 380
+      },
+      {
+        "clip": "jog",
+        "phase": 0.8333333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 391
+      },
+      {
+        "clip": "jog",
+        "phase": 0.875,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 401
+      },
+      {
+        "clip": "jog",
+        "phase": 0.9166666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 386
+      },
+      {
+        "clip": "jog",
+        "phase": 0.9583333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 378
+      },
+      {
+        "clip": "run",
+        "phase": 0.0,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 406
+      },
+      {
+        "clip": "run",
+        "phase": 0.041666666666666664,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 452
+      },
+      {
+        "clip": "run",
+        "phase": 0.08333333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 520
+      },
+      {
+        "clip": "run",
+        "phase": 0.125,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 536
+      },
+      {
+        "clip": "run",
+        "phase": 0.16666666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 527
+      },
+      {
+        "clip": "run",
+        "phase": 0.20833333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 496
+      },
+      {
+        "clip": "run",
+        "phase": 0.25,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 416
+      },
+      {
+        "clip": "run",
+        "phase": 0.2916666666666667,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 383
+      },
+      {
+        "clip": "run",
+        "phase": 0.3333333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 360
+      },
+      {
+        "clip": "run",
+        "phase": 0.375,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 347
+      },
+      {
+        "clip": "run",
+        "phase": 0.4166666666666667,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 368
+      },
+      {
+        "clip": "run",
+        "phase": 0.4583333333333333,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 429
+      },
+      {
+        "clip": "run",
+        "phase": 0.5,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 458
+      },
+      {
+        "clip": "run",
+        "phase": 0.5416666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 466
+      },
+      {
+        "clip": "run",
+        "phase": 0.5833333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 508
+      },
+      {
+        "clip": "run",
+        "phase": 0.625,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 543
+      },
+      {
+        "clip": "run",
+        "phase": 0.6666666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 633
+      },
+      {
+        "clip": "run",
+        "phase": 0.7083333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 532
+      },
+      {
+        "clip": "run",
+        "phase": 0.75,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 422
+      },
+      {
+        "clip": "run",
+        "phase": 0.7916666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 375
+      },
+      {
+        "clip": "run",
+        "phase": 0.8333333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 383
+      },
+      {
+        "clip": "run",
+        "phase": 0.875,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 379
+      },
+      {
+        "clip": "run",
+        "phase": 0.9166666666666666,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 379
+      },
+      {
+        "clip": "run",
+        "phase": 0.9583333333333334,
+        "pants_pants_tri_crossings": 0,
+        "robe_pants_tri_crossings": 389
+      }
+    ]
+  }
+}
