@@ -105,30 +105,28 @@ func run() -> void:
 
 
 func _rim_view(island: Node3D) -> Dictionary:
-	var outline := PackedVector2Array()
-	var mid := Vector2.ZERO
+	var rim := Vector3(-3.2, 0.0, 5.6)
+	var mid := Vector3(0.4, 0.0, -0.6)
 	if island and island.terrain:
-		for row in island.terrain.island_cache.values():
-			outline = row.get("outline", PackedVector2Array())
-			var c: Vector3 = row.get("centroid", Vector3.ZERO)
-			mid = Vector2(c.x, c.z)
-			break
-	var rim2 := Vector2(-2.4, 5.2)
-	var best := -INF
-	for p in outline:
-		# South-west rim: grass/rock, away from the pond and cottage.
-		var score := p.y - p.x * 0.15
-		if score > best:
-			best = score
-			rim2 = p
-	if mid == Vector2.ZERO:
-		mid = Vector2(0.4, -0.5)
-	var out2 := rim2 - mid
-	if out2.length_squared() < 1e-4:
-		out2 = Vector2(0.0, 1.0)
-	out2 = out2.normalized()
-	var rim := Vector3(rim2.x, 0.02, rim2.y)
+		var land := island.terrain.get_node_or_null("LandSurface") as MeshInstance3D
+		if land and land.mesh:
+			var best := -INF
+			for v in land.mesh.get_faces():
+				if absf(v.y) > 0.04:
+					continue
+				var score := v.z - v.x * 0.18
+				if score > best:
+					best = score
+					rim = Vector3(v.x, 0.0, v.z)
+		if not island.terrain.island_cache.is_empty():
+			var c: Vector3 = island.terrain.island_cache.values()[0].get("centroid", mid)
+			mid = Vector3(c.x, 0.0, c.z)
+	var out := rim - mid
+	out.y = 0.0
+	if out.length_squared() < 1e-4:
+		out = Vector3(0.0, 0.0, 1.0)
+	out = out.normalized()
 	return {
-		"from": rim + Vector3(out2.x, 0.0, out2.y) * 2.65 + Vector3(0.0, 0.78, 0.0),
-		"look": rim + Vector3(0.0, -0.06, 0.0) - Vector3(out2.x, 0.0, out2.y) * 0.28,
+		"from": rim + out * 3.25 + Vector3(0.0, 0.38, 0.0),
+		"look": rim + Vector3(0.0, -0.22, 0.0) - out * 0.12,
 	}

@@ -108,6 +108,7 @@ func _bake_clip() -> void:
 	check(RockBaker.has_no_interior_proxy(baked), "baked mesh has no interior-face proxy")
 	check(RockBaker.is_closed_enough(baked), "baked mesh is closed except the grass cut")
 	check(int(baked.get("triangles", 0)) > 12, "bake keeps an outer shell")
+	check(int(baked.get("triangles", 0)) < RockUnderside.triangle_count(state), "union drops stacked interior faces")
 	check(int(baked.get("chunks", 0)) >= 1, "bake splits large islands into chunks")
 
 

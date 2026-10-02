@@ -147,21 +147,6 @@ static func _bake(payload: Dictionary) -> Dictionary:
 
 
 static func _extract_chunk(ch: AABB, tris: Array, hulls: Array, step: float, ground: float, vertices: PackedVector3Array, normals: PackedVector3Array, colors: PackedColorArray) -> void:
-	var origin: Vector3 = ch.position
-	var nx := maxi(int(ceil(ch.size.x / step)) + 1, 2)
-	var ny := maxi(int(ceil(ch.size.y / step)) + 1, 2)
-	var nz := maxi(int(ceil(ch.size.z / step)) + 1, 2)
-	var grid := PackedByteArray()
-	grid.resize(nx * ny * nz)
-	var jit := PackedFloat32Array()
-	jit.resize(nx * ny * nz)
-	var probe := ch.grow(step * 2.0)
-	for row in hulls:
-		var hull: AABB = row[0]
-		if not hull.intersects(probe):
-			continue
-		_stamp_hull(grid, jit, origin, step, nx, ny, nz, hull, float(row[1]))
-	var dirs := [Vector3i(1, 0, 0), Vector3i(-1, 0, 0), Vector3i(0, 1, 0), Vector3i(0, -1, 0), Vector3i(0, 0, 1), Vector3i(0, 0, -1)]
 	var kept := 0
 	for tri in tris:
 		var a: Vector3 = tri[0]
@@ -179,8 +164,7 @@ static func _extract_chunk(ch: AABB, tris: Array, hulls: Array, step: float, gro
 		# Grass is the cut cap; skip nearly-flat tops on the plane.
 		if mid.y > ground - 0.02 and n.y > 0.62:
 			continue
-		var sample: Vector3 = mid + n * (step * 0.85)
-		if not _empty_voxel(grid, origin, step, nx, ny, nz, sample):
+		if _buried(mid, hulls):
 			continue
 		var col := Color(float(tri[3]), 0.0, 0.0)
 		for p in [a, b, c]:
@@ -192,6 +176,21 @@ static func _extract_chunk(ch: AABB, tris: Array, hulls: Array, step: float, gro
 		kept += 1
 	if kept > 0:
 		return
+	var origin: Vector3 = ch.position
+	var nx := maxi(int(ceil(ch.size.x / step)) + 1, 2)
+	var ny := maxi(int(ceil(ch.size.y / step)) + 1, 2)
+	var nz := maxi(int(ceil(ch.size.z / step)) + 1, 2)
+	var grid := PackedByteArray()
+	grid.resize(nx * ny * nz)
+	var jit := PackedFloat32Array()
+	jit.resize(nx * ny * nz)
+	var probe := ch.grow(step * 2.0)
+	for row in hulls:
+		var hull: AABB = row[0]
+		if not hull.intersects(probe):
+			continue
+		_stamp_hull(grid, jit, origin, step, nx, ny, nz, hull, float(row[1]))
+	var dirs := [Vector3i(1, 0, 0), Vector3i(-1, 0, 0), Vector3i(0, 1, 0), Vector3i(0, -1, 0), Vector3i(0, 0, 1), Vector3i(0, 0, -1)]
 	for z in nz:
 		for y in ny:
 			for x in nx:
@@ -242,6 +241,21 @@ static func _empty_voxel(grid: PackedByteArray, origin: Vector3, step: float, nx
 	if gx < 0 or gy < 0 or gz < 0 or gx >= nx or gy >= ny or gz >= nz:
 		return true
 	return grid[_idx(gx, gy, gz, nx, ny)] == 0
+
+
+static func _buried(mid: Vector3, hulls: Array) -> bool:
+	var inside := 0
+	for row in hulls:
+		var hull: AABB = row[0]
+		var inset := clampf(minf(minf(hull.size.x, hull.size.z), hull.size.y) * 0.16, 0.08, 0.30)
+		var inner := hull.grow(-inset)
+		if inner.size.x < 0.06 or inner.size.y < 0.06 or inner.size.z < 0.06:
+			inner = hull
+		if inner.has_point(mid):
+			inside += 1
+			if inside >= 2:
+				return true
+	return false
 
 
 static func _emit_face(vertices: PackedVector3Array, normals: PackedVector3Array, colors: PackedColorArray, origin: Vector3, step: float, v: Vector3i, dir: Vector3i, jitter: float, ground: float) -> void:
