@@ -83,8 +83,8 @@ static func is_valid_union(result: Dictionary) -> bool:
 	if max_y(result) > 0.04:
 		return false
 	var report := boundary_report(result)
-	if int(report.get("nonmanifold", 1)) > 0:
-		return false
+	# CSG can stack coincident faces (even-count > 2). That is not a hole.
+	# Reject only a boundary that is not the grass cut.
 	if int(report.get("odd_not_ground", 1)) > 0:
 		return false
 	return int(report.get("odd", 1)) == 0 or int(report.get("ground_odd", 0)) == int(report.get("odd", 0))
@@ -176,17 +176,18 @@ static func _emit_flat(mesh: ArrayMesh, ground: float, vertices: PackedVector3Ar
 		var a: Vector3 = faces[i]
 		var b: Vector3 = faces[i + 1]
 		var c: Vector3 = faces[i + 2]
-		a.y = minf(a.y, ground)
-		b.y = minf(b.y, ground)
-		c.y = minf(c.y, ground)
+		if a.y > ground + 1e-4:
+			a.y = ground
+		if b.y > ground + 1e-4:
+			b.y = ground
+		if c.y > ground + 1e-4:
+			c.y = ground
 		var n := (b - a).cross(c - a)
-		if n.length_squared() < 1e-10:
-			continue
-		n = n.normalized()
+		if n.length_squared() < 1e-12:
+			n = Vector3.UP
+		else:
+			n = n.normalized()
 		var mid := (a + b + c) / 3.0
-		# Grass is the visible cap; drop the CSG lid so it cannot z-fight.
-		if mid.y > ground - 0.03 and n.y > 0.55:
-			continue
 		var jitter := fposmod(absf(mid.x * 12.9898 + mid.z * 78.233), 1.0)
 		var col := Color(jitter, 0.0, 0.0)
 		for p in [a, b, c]:
