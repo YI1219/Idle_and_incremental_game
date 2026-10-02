@@ -82,12 +82,12 @@ void fragment() {
 		ALBEDO = earth_band(world_pos) * mix(0.78, 1.0, ao);
 		ROUGHNESS = 0.96;
 	} else {
-		float broad = noise(p * 0.28) * 0.55 + noise(vec2(p.y, -p.x) * 0.28 + 2.1) * 0.45;
-		float mid = noise(p * 0.85);
-		float detail = noise(p * 14.0);
-		vec3 grass = mix(moss_color.rgb, meadow_color.rgb, smoothstep(0.28, 0.72, broad));
-		grass = mix(grass, shade_grass.rgb, (mid - 0.5) * 0.32 + 0.08);
-		grass += (detail - 0.5) * 0.028;
+		// Two world-space scales, about ±10% brightness. Olive pair stays the hue.
+		float broad = noise(p * 0.22);
+		float mid = noise(p * 1.35 + 1.7);
+		vec3 grass = mix(moss_color.rgb, meadow_color.rgb, smoothstep(0.32, 0.68, broad));
+		float mottled = (broad - 0.5) * 0.20 + (mid - 0.5) * 0.12;
+		grass *= clamp(1.0 + mottled, 0.86, 1.14);
 		float inland = clamp(vcol.g, 0.0, 1.0);
 		float path = 0.0;
 		for (int i = 0; i < 8; i++) {
@@ -105,10 +105,12 @@ void fragment() {
 			top = mix(top, earth_color.rgb * 0.62, root * 0.85);
 			top = mix(top, shade_grass.rgb * 0.70, root * 0.35);
 		}
-		float n1 = noise(p * 0.50);
-		float n2 = noise(p * 2.05);
-		float n3 = noise(p * 8.2);
-		n = normalize(n + vec3((n1 - n2) * 0.14, 0.0, (n2 - n3) * 0.14));
+		// Added on the geometric normal. Do not replace it with straight up.
+		float n1 = noise(p * 1.8);
+		float n2 = noise(p * 6.4 + 2.2);
+		float n3 = noise(vec2(p.y * 2.4, -p.x * 2.1));
+		vec3 micro = vec3(n1 - n2, (n3 - 0.5) * 0.35, n2 - n1 * 0.55);
+		n = normalize(n + micro * 0.07);
 		ALBEDO = top * mix(0.78, 1.0, ao);
 		ROUGHNESS = mix(0.92, 0.97, inland);
 		NORMAL = n;
