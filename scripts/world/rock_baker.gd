@@ -32,7 +32,8 @@ static func bake_job(payload: Dictionary) -> Dictionary:
 	var t0 := Time.get_ticks_usec()
 	var result := _bake(payload)
 	result["bake_ms"] = float(Time.get_ticks_usec() - t0) / 1000.0
-	result["serial"] = int(payload.get("serial", 0))
+	if payload.has("serial"):
+		result["serial"] = int(payload["serial"])
 	return result
 
 

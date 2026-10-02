@@ -211,9 +211,8 @@ func _apply_bake(result: Dictionary) -> void:
 
 
 func _swap_bake() -> void:
-	if int(bake_result.get("serial", _bake_serial)) != _bake_serial and bake_result.has("serial"):
-		if int(bake_result["serial"]) != _bake_serial:
-			return
+	if bake_result.has("serial") and int(bake_result["serial"]) != _bake_serial:
+		return
 	if not bool(bake_result.get("ok", false)):
 		baked = false
 		if _baked_node:
