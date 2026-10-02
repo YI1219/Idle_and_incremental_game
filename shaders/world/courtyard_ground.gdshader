@@ -54,9 +54,6 @@ void fragment() {
 	vec3 rock = mix(earth_color.rgb, rock_color.rgb, bands);
 	rock += (noise(vec2(world_pos.y * 1.7, p.x * 0.35)) - 0.5) * 0.04;
 	float inland = COLOR.g;
-	if (inland < 0.001 && COLOR.r > 0.5) {
-		inland = 1.0;
-	}
 	float soil_w = 1.0 - smoothstep(0.10, 0.48, inland + (noise(p * 3.1) - 0.5) * 0.08);
 	float rock_w = 1.0 - smoothstep(0.00, 0.20, inland + (noise(p * 2.2) - 0.5) * 0.05);
 	vec3 rim = mix(top, earth_color.rgb, soil_w);

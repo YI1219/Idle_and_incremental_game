@@ -289,7 +289,7 @@ func _rebuild_islands() -> void:
 		else:
 			built["rocks"] = RockUnderside.assemble(built["outline"], seed, false)
 		var cover: PackedVector2Array = RockUnderside.cover_outline(built["outline"], built["rocks"])
-		built["top"] = IslandGeometry.build_top(cover, built.get("cutters", []), built["outline"])
+		built["top"] = IslandGeometry.build_top(cover, built.get("cutters", []), cover)
 		rock_ms += float(Time.get_ticks_usec() - t0) / 1000.0
 		built["rock_seed"] = seed
 		next_cache[key] = built

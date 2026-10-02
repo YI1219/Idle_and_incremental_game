@@ -300,11 +300,23 @@ static func build_top(outline: PackedVector2Array, cutters: Array, fade_rim: Pac
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	if outline.size() < 3:
 		return st.commit()
-	var indices := Geometry2D.triangulate_polygon(outline)
+	var inner := _radial_inset(outline, 0.46)
+	if inner.size() == outline.size() and Geometry2D.triangulate_polygon(inner).size() >= 3:
+		var n := outline.size()
+		for i in n:
+			var o0 := outline[i]
+			var o1 := outline[(i + 1) % n]
+			var i1 := inner[(i + 1) % n]
+			var i0 := inner[i]
+			_fill_top_w(st, Vector3(o0.x, 0.0, o0.y), Vector3(o1.x, 0.0, o1.y), Vector3(i1.x, 0.0, i1.y), 0.0, 0.0, 1.0)
+			_fill_top_w(st, Vector3(o0.x, 0.0, o0.y), Vector3(i1.x, 0.0, i1.y), Vector3(i0.x, 0.0, i0.y), 0.0, 1.0, 1.0)
+	else:
+		inner = outline
+	var indices := Geometry2D.triangulate_polygon(inner)
 	var triangles: Array[PackedVector2Array] = []
 	for i in range(0, indices.size(), 3):
 		triangles.append(PackedVector2Array([
-			outline[indices[i]], outline[indices[i + 1]], outline[indices[i + 2]]
+			inner[indices[i]], inner[indices[i + 1]], inner[indices[i + 2]]
 		]))
 	for cutter in cutters:
 		if not (cutter is PackedVector2Array) or cutter.size() < 3:
@@ -315,13 +327,43 @@ static func build_top(outline: PackedVector2Array, cutters: Array, fade_rim: Pac
 				if remain.size() >= 3 and signed_area(remain) > 0.0:
 					clipped.append(remain)
 		triangles = clipped
-	var rim: PackedVector2Array = fade_rim if fade_rim.size() >= 3 else outline
 	for piece in triangles:
 		if _centroid_in(piece, cutters):
 			continue
-		_emit_top(st, piece, cutters, rim)
+		_emit_top(st, piece, cutters, PackedVector2Array())
 	st.generate_normals()
 	return st.commit()
+
+
+static func _radial_inset(poly: PackedVector2Array, dist: float) -> PackedVector2Array:
+	var mid := Vector2.ZERO
+	for p in poly:
+		mid += p
+	mid /= float(maxi(poly.size(), 1))
+	var out := PackedVector2Array()
+	out.resize(poly.size())
+	for i in poly.size():
+		var d := poly[i] - mid
+		var r := d.length()
+		if r <= dist + 0.08:
+			out[i] = mid + d * 0.15
+		else:
+			out[i] = mid + d * ((r - dist) / r)
+	return out
+
+
+static func _fill_top_w(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, ia: float, ib: float, ic: float) -> void:
+	var normal := (b - a).cross(c - a)
+	if normal.length_squared() < 1e-10:
+		return
+	normal = normal.normalized()
+	var pts: Array = [[a, ia], [b, ib], [c, ic]]
+	for item in pts:
+		var p: Vector3 = item[0]
+		st.set_normal(normal)
+		st.set_color(Color(1.0, float(item[1]), 0.08))
+		st.set_uv(Vector2(p.x, p.z) * 0.12)
+		st.add_vertex(p)
 
 
 static func build_core(outline: PackedVector2Array, high_detail: bool = true, bottom: float = -4.35) -> ArrayMesh:
@@ -574,6 +616,21 @@ static func _emit_top(st: SurfaceTool, polygon: PackedVector2Array, cutters: Arr
 
 
 static func _tri_top(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, rim: PackedVector2Array) -> void:
+	var mid := (a + b + c) / 3.0
+	var ia := _inland(Vector2(a.x, a.z), rim)
+	var ib := _inland(Vector2(b.x, b.z), rim)
+	var ic := _inland(Vector2(c.x, c.z), rim)
+	var im := _inland(Vector2(mid.x, mid.z), rim)
+	var span := maxf(a.distance_to(b), maxf(b.distance_to(c), c.distance_to(a)))
+	if im > maxf(ia, maxf(ib, ic)) + 0.18 or (span > 1.35 and im > 0.28 and ia + ib + ic < 0.55):
+		_fill_top(st, a, b, mid, rim)
+		_fill_top(st, b, c, mid, rim)
+		_fill_top(st, c, a, mid, rim)
+		return
+	_fill_top(st, a, b, c, rim)
+
+
+static func _fill_top(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, rim: PackedVector2Array) -> void:
 	var normal := (b - a).cross(c - a)
 	if normal.length_squared() < 1e-10:
 		return
@@ -591,7 +648,7 @@ static func _inland(p: Vector2, rim: PackedVector2Array) -> float:
 	var d := _dist_to_edges(p, rim)
 	if not Geometry2D.is_point_in_polygon(p, rim):
 		return 0.0
-	return clampf(d / 0.70, 0.0, 1.0)
+	return clampf(d / 0.62, 0.0, 1.0)
 
 
 static func _dist_to_edges(p: Vector2, rim: PackedVector2Array) -> float:

@@ -127,6 +127,6 @@ func _rim_view(island: Node3D) -> Dictionary:
 		out = Vector3(0.0, 0.0, 1.0)
 	out = out.normalized()
 	return {
-		"from": rim + out * 3.25 + Vector3(0.0, 0.38, 0.0),
-		"look": rim + Vector3(0.0, -0.22, 0.0) - out * 0.12,
+		"from": rim + out * 2.85 + Vector3(0.0, 0.72, 0.0),
+		"look": rim + Vector3(0.0, 0.04, 0.0) - out * 0.45,
 	}

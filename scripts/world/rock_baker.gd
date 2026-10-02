@@ -161,8 +161,10 @@ static func _extract_chunk(ch: AABB, tris: Array, hulls: Array, step: float, gro
 		var mid: Vector3 = (a + b + c) / 3.0
 		if mid.y > ground + 0.001:
 			continue
-		# Grass is the cut cap; skip nearly-flat tops on the plane.
-		if mid.y > ground - 0.02 and n.y > 0.62:
+		# Grass is the cut cap. Drop lids, bevels, and the underside of the cut.
+		if mid.y > ground - 0.28 and n.y < -0.22:
+			continue
+		if mid.y > ground - 0.22 and n.y > 0.32:
 			continue
 		if _buried(mid, hulls):
 			continue

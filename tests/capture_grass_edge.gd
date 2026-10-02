@@ -39,9 +39,8 @@ func run() -> void:
 	if out.length_squared() < 1e-4:
 		out = Vector3(0.0, 0.0, 1.0)
 	out = out.normalized()
-	var from := rim + out * 3.25 + Vector3(0.0, 0.38, 0.0)
-	var look := rim + Vector3(0.0, -0.22, 0.0) - out * 0.12
-	print("grass_edge rim=", rim, " from=", from, " look=", look)
+	var from := rim + out * 2.85 + Vector3(0.0, 0.72, 0.0)
+	var look := rim + Vector3(0.0, 0.04, 0.0) - out * 0.45
 	rig.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
 	var camera := rig.get_node_or_null("Camera3D") as Camera3D
 	if camera:
