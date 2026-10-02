@@ -6,9 +6,10 @@ uniform vec4 moss_color : source_color = vec4(0.33, 0.42, 0.27, 1.0);
 uniform vec4 meadow_color : source_color = vec4(0.46, 0.52, 0.30, 1.0);
 uniform vec4 path_color : source_color = vec4(0.64, 0.59, 0.44, 1.0);
 uniform vec4 earth_color : source_color = vec4(0.50, 0.41, 0.32, 1.0);
-uniform vec4 rock_warm : source_color = vec4(0.58, 0.47, 0.39, 1.0);
-uniform vec4 rock_cool : source_color = vec4(0.42, 0.44, 0.47, 1.0);
-uniform vec4 fog_under : source_color = vec4(0.55, 0.62, 0.66, 1.0);
+// seed7 wall palette: warm earth under the grass lip -> cool grey at the keel.
+uniform vec4 rock_warm : source_color = vec4(0.50, 0.36, 0.26, 1.0);
+uniform vec4 rock_mid : source_color = vec4(0.42, 0.36, 0.31, 1.0);
+uniform vec4 rock_cool : source_color = vec4(0.34, 0.36, 0.38, 1.0);
 uniform vec4 path_segments[8];
 uniform int path_count = 0;
 uniform vec4 contact_patches[32];
@@ -28,16 +29,21 @@ float segment_distance(vec2 p, vec2 a, vec2 b) {
 	vec2 d = b - a;
 	return length(p - a - d * clamp(dot(p - a, d) / max(dot(d, d), 0.001), 0.0, 1.0));
 }
-vec3 triplanar_rock(vec3 p, vec3 n) {
-	float bands = smoothstep(0.28, 0.72, fract(p.y * 0.85 + noise(p.xz * 0.22) * 0.2));
-	vec3 rock = mix(rock_warm.rgb, rock_cool.rgb, bands);
-	vec3 nx = vec3(noise(p.zy * 0.55), noise(p.zy * 1.3), noise(p.zy * 0.31));
-	vec3 ny = vec3(noise(p.xz * 0.55), noise(p.xz * 1.3), noise(p.xz * 0.31));
-	vec3 nz = vec3(noise(p.xy * 0.55), noise(p.xy * 1.3), noise(p.xy * 0.31));
-	vec3 w = abs(n);
-	w = w / max(w.x + w.y + w.z, 0.001);
-	vec3 grain = nx * w.x + ny * w.y + nz * w.z;
-	return rock + (grain - vec3(0.5)) * 0.07;
+
+vec3 seed7_rock(vec3 p, vec3 n) {
+	float depth = clamp((-p.y) / 4.2, 0.0, 1.0);
+	vec3 rock = mix(rock_warm.rgb, rock_mid.rgb, smoothstep(0.06, 0.42, depth));
+	rock = mix(rock, rock_cool.rgb, smoothstep(0.40, 0.92, depth));
+	// Crisp, subtle strata — hard bands, not smeared pastel.
+	float band_y = p.y + (hash(floor(p.xz * 1.35)) - 0.5) * 0.10;
+	float strata = step(0.58, fract(band_y * 1.35));
+	rock *= mix(1.0, 0.88, strata);
+	float grain = (hash(floor(p.xz * 2.8 + p.y * 1.1)) - 0.5) * 0.05;
+	rock += grain;
+	// Ambient occlusion just under the grass lip.
+	float lip_ao = (1.0 - clamp(-p.y / 0.42, 0.0, 1.0)) * (1.0 - abs(n.y));
+	rock *= 1.0 - lip_ao * 0.28;
+	return rock;
 }
 
 void vertex() {
@@ -53,6 +59,12 @@ void fragment() {
 	}
 	float ny = clamp(n.y, -1.0, 1.0);
 	vec2 p = world_pos.xz;
+	// Vertex blue is the rock flag. Ledge faces can have high ny; they must stay rock.
+	if (vcol.b > 0.45) {
+		ALBEDO = seed7_rock(world_pos, n);
+		ROUGHNESS = 0.93;
+		return;
+	}
 	float broad = noise(p * 0.36) * 0.65 + noise(p * 0.85) * 0.35;
 	float detail = noise(p * 16.0);
 	vec3 grass = mix(moss_color.rgb, meadow_color.rgb, smoothstep(0.2, 0.8, broad));
@@ -72,16 +84,10 @@ void fragment() {
 		float root = (1.0 - smoothstep(0.1, 1.0, d + (noise(p * 4.0) - 0.5) * 0.2)) * patch.w;
 		top = mix(top, moss_color.rgb * 0.72, root);
 	}
-	vec3 rock = triplanar_rock(world_pos, n);
 	float inland = clamp(vcol.g, 0.0, 1.0);
 	float soil_w = 1.0 - smoothstep(0.10, 0.48, inland + (noise(p * 3.1) - 0.5) * 0.08);
-	float rock_w = 1.0 - smoothstep(0.00, 0.20, inland + (noise(p * 2.2) - 0.5) * 0.05);
 	vec3 rim = mix(top, earth_color.rgb, soil_w);
-	rim = mix(rim, rock, rock_w * 0.85);
 	float turf = smoothstep(0.48, 0.90, ny);
-	vec3 albedo = mix(rock, rim, turf);
-	float under = smoothstep(-2.4, -4.2, world_pos.y);
-	albedo = mix(albedo, fog_under.rgb, under * 0.22);
-	ALBEDO = albedo;
+	ALBEDO = mix(earth_color.rgb, rim, turf);
 	ROUGHNESS = mix(0.88, 0.94, turf * inland);
 }

@@ -60,10 +60,10 @@ func _terrain_queries_and_refresh() -> void:
 			cells.append(Vector2i(x, z))
 	terrain.configure(cells)
 	await process_frame
-	check(terrain.water_cells.size() > 0, "configured island receives eastern river")
+	check(terrain.water_cells.size() > 0, "configured island receives a heightfield lake")
 	var water_cell: Vector2i = terrain.water_cells.keys()[0]
 	check(not terrain.is_walkable(Vector3(water_cell.x + 0.5, 0, water_cell.y + 0.5)), "water blocks walking")
-	check(terrain.is_walkable(Vector3(4.5, 0, 1.5)), "bridge allows crossing the river")
+	check(terrain.is_walkable(Vector3(4.5, 0, 1.5)), "bridge allows crossing the lake")
 	check(terrain.is_walkable(Vector3(6.05, 0, 1.5)), "bridge reaches a dry eastern bank")
 	check(terrain.is_walkable(Vector3(6.24, 0, 1.31)), "bridge leaves clearance for a radius .2 body")
 	var bridge_faces: PackedVector3Array = terrain.get_node("RiverBridge").mesh.get_faces()
@@ -84,15 +84,12 @@ func _terrain_queries_and_refresh() -> void:
 	terrain.set_water_cell(Vector2i(1, 0), false)
 	check((int(terrain.blob_masks[center]) & Blob47.E) == 0, "removing water refreshes the western neighbor")
 	check(terrain.get_child_count() <= 8, "terrain uses a few merged nodes rather than one node per cell")
-	check(terrain.get_node("IslandCliff").mesh != null, "missing-cell boundary has one merged cliff mesh")
-	check(terrain.get_node("JadeWater").mesh.get_surface_count() == 1, "smooth river is one merged mesh surface")
-	var curved_points := 0
-	for polygon: PackedVector2Array in terrain._river_polygons:
-		for point in polygon:
-			if not is_equal_approx(point.x, roundf(point.x)) and not is_equal_approx(point.y, roundf(point.y)):
-				curved_points += 1
-	check(curved_points >= 8, "river outline contains analytic rounded-corner points")
-	check(terrain.get_node("LandSurface").mesh.get_faces().size() > 300, "land remains a filled merged top around the river cutout")
+	check(terrain.get_node("JadeWater").visible == false, "legacy jade river mesh stays hidden")
+	check(terrain.get_node("LandSurface").visible == false, "legacy land surface is unused")
+	var islands := terrain.get_node("Islands")
+	check(islands.get_child_count() >= 1, "heightfield island is present")
+	var isle: Node3D = islands.get_child(0)
+	check((isle.water_info.get("lakes", []) as Array).size() >= 1 or terrain.water_cells.size() > 0, "heightfield reports a lake")
 	terrain.land_cells.erase(Vector2i(3, 1))
 	terrain.rebuild()
 	check(terrain.get_node("RiverBridge").mesh.get_surface_count() == 0, "removing a bridge anchor removes the whole deck")
@@ -104,12 +101,8 @@ func _terrain_queries_and_refresh() -> void:
 		for z in 3: small.append(Vector2i(x, z))
 	isolated.configure(small)
 	isolated.set_water_cell(Vector2i(1, 1), true)
-	var grass_over_center := false
-	var land_faces: PackedVector3Array = isolated.get_node("LandSurface").mesh.get_faces()
-	for i in range(0, land_faces.size(), 3):
-		var tri := PackedVector2Array([Vector2(land_faces[i].x, land_faces[i].z), Vector2(land_faces[i + 1].x, land_faces[i + 1].z), Vector2(land_faces[i + 2].x, land_faces[i + 2].z)])
-		grass_over_center = grass_over_center or Geometry2D.is_point_in_polygon(Vector2(1.5, 1.5), tri)
-	check(not grass_over_center, "isolated mask 0 water center is not occluded by a filled grass hole")
-	check(isolated.get_node("JadeWater").mesh.get_faces().size() > 0, "isolated mask 0 still renders water")
+	check(isolated.water_cells.has(Vector2i(1, 1)), "set_water_cell records water")
+	check(not isolated.is_walkable(Vector3(1.5, 0, 1.5)), "isolated water still blocks walking")
+	check(isolated.get_node("JadeWater").visible == false, "isolated island does not revive the jade river")
 	isolated.queue_free()
 	terrain.queue_free()

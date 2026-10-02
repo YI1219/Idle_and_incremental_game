@@ -63,7 +63,7 @@ func _ensure_nodes() -> void:
 	_material = ShaderMaterial.new()
 	_material.shader = load("res://shaders/world/island_heightfield.gdshader")
 	_water_material = _make_water_material()
-	_fall_material = _water_material.duplicate()
+	_fall_material = _make_fall_material()
 	_water_node.material_override = _water_material
 
 
@@ -319,7 +319,7 @@ func _rebuild_water() -> void:
 		return
 	for site in water_info.get("waterfalls", []):
 		var mesh := MeshInstance3D.new()
-		mesh.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.build_waterfall(site["origin"], site["outward"], SEA_Y + 0.4))
+		mesh.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.build_waterfall(site["origin"], site["outward"], SEA_Y + 0.35, 1.45))
 		mesh.material_override = _fall_material
 		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		_fall_root.add_child(mesh)
@@ -421,6 +421,12 @@ void fragment() {
 """
 	var mat := ShaderMaterial.new()
 	mat.shader = shader
+	return mat
+
+
+func _make_fall_material() -> ShaderMaterial:
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://shaders/world/island_waterfall.gdshader")
 	return mat
 
 

@@ -37,50 +37,33 @@ func run() -> void:
 	var terrain: Node3D = island.terrain
 	if builder:
 		builder.set_active(false)
+		builder.prune_unsupported_objects()
+		builder.rebuild_objects()
 	if player:
 		player.visible = true
 		player.set_physics_process(false)
 	terrain.flush_rebuild()
 	_restore_pitch(rig)
-	_look(rig, player, Vector3(0.6, 0.0, 0.8), 22.0, 1)
+	_look(rig, player, Vector3(0.4, 0.0, 0.2), 22.0, 1)
 	await shot(OUT + "/overview.png")
 
 	_sculpt_demo(terrain)
 	terrain.flush_rebuild()
 	await frames(8)
 
-	_look(rig, player, Vector3(-3.6, 0.0, 1.5), 8.5, 2)
-	await shot(OUT + "/closeup_slope.png")
+	_restore_pitch(rig)
+	rig.near_pitch_deg = 24.0
+	_look(rig, player, Vector3(5.4, 0.0, 0.6), 8.2, 2)
+	await shot(OUT + "/low_side.png")
+	_restore_pitch(rig)
 
 	_set_house_visible(false)
-	_look(rig, player, Vector3(-1.6, 0.0, 0.6), 9.0, 2)
+	_look(rig, player, Vector3(3.6, 0.0, 0.4), 10.0, 2)
 	await shot(OUT + "/lake.png")
 
-	_look(rig, player, Vector3(-4.3, 0.0, 1.5), 8.0, 6)
-	await shot(OUT + "/hole_waterfall.png")
+	_look(rig, player, Vector3(5.1, 0.0, 1.2), 9.5, 2)
+	await shot(OUT + "/shaft_waterfall.png")
 	_set_house_visible(true)
-
-	if builder:
-		builder.set_active(true)
-		builder.commit_place("tree", Vector2i(-4, -2))
-		builder.set_active(false)
-	terrain.flush_rebuild()
-	_set_house_visible(false)
-	_look(rig, player, Vector3(-3.8, 0.0, -2.0), 8.0, 4)
-	await shot(OUT + "/placed_building.png")
-	_set_house_visible(true)
-
-	_low_side(rig, Vector3(1.2, 0.55, 9.4), Vector3(0.2, -1.9, 0.2), 36.0)
-	await shot(OUT + "/low_side.png")
-	rig.set_physics_process(true)
-	_restore_pitch(rig)
-
-	_low_side(rig, Vector3(-8.8, -1.5, 6.8), Vector3(-0.2, -2.4, 0.6), 40.0)
-	await shot(OUT + "/underside.png")
-	rig.set_physics_process(true)
-	_restore_pitch(rig)
-	if player:
-		player.visible = true
 
 	var playable: Dictionary = terrain.heightfield_stats()
 	_print_stats("playable", playable)
@@ -93,9 +76,6 @@ func run() -> void:
 	await frames(8)
 	var large: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x island", large)
-	rig.max_distance = 80.0
-	_look(rig, player, Vector3(0.0, 0.0, 0.5), 28.0, 1)
-	await shot(OUT + "/large_island.png")
 
 	var offsets := [
 		Vector2i(28, 0), Vector2i(-30, 4), Vector2i(6, 28), Vector2i(-8, -30),
@@ -175,23 +155,6 @@ func _look(rig: Node3D, player: Node3D, subject: Vector3, distance: float, yaw_i
 		rig._apply(true)
 
 
-func _low_side(rig: Node3D, from: Vector3, look: Vector3, fov: float) -> void:
-	rig.set_physics_process(false)
-	var cam := rig.get_node_or_null("Camera3D") as Camera3D
-	if cam == null:
-		return
-	var xform := Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
-	rig.global_transform = xform
-	cam.transform = Transform3D.IDENTITY
-	cam.fov = fov
-	cam.near = 1.2
-	cam.far = 240.0
-	cam.make_current()
-	var player: Node3D = get_first_node_in_group("player")
-	if player:
-		player.visible = false
-
-
 func _restore_pitch(rig: Node3D) -> void:
 	rig.near_pitch_deg = 38.0
 	rig.pitch_deg = 50.0
@@ -203,12 +166,13 @@ func _sculpt_demo(terrain: Node3D) -> void:
 	if main == null or main.field == null:
 		return
 	var field = main.field
-	field.apply_brush("raise", Vector3(-3.2, 0.0, 1.2), 2.4, 1.6, true)
-	field.apply_brush("raise", Vector3(-3.6, 0.0, 1.6), 1.4, 1.2, true)
-	for p in [Vector3(-1.6, 0.0, 0.6), Vector3(-1.2, 0.0, 1.0), Vector3(-2.0, 0.0, 1.0)]:
-		field.apply_brush("lower", p, 1.2, 1.05, true)
-	for _i in 7:
-		field.apply_brush("lower", Vector3(-4.3, 0.0, 1.5), 1.05, 1.5, true)
+	# Deepen the starter lake and keep a drain toward the east rim.
+	for p in [Vector3(3.5, 0.0, 0.4), Vector3(4.2, 0.0, 0.6), Vector3(3.8, 0.0, -0.2)]:
+		field.apply_brush("lower", p, 1.15, 1.05, true)
+	for p in [Vector3(5.6, 0.0, 0.45), Vector3(6.2, 0.0, 0.55), Vector3(6.8, 0.0, 0.50)]:
+		field.apply_brush("lower", p, 0.75, 0.70, true)
+	# 2 m vertical shaft north of the lake so walls and clouds read from play cam.
+	field.punch_shaft(Vector3(5.1, 0.0, 2.3), 1.05)
 	field.apply_coast_smooth()
 	var span := HeightfieldMesh.chunk_range(field)
 	var t0 := Time.get_ticks_usec()

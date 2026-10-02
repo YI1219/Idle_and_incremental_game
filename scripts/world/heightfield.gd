@@ -924,8 +924,22 @@ func _brush_mask(center: Vector3, radius: float, strength: float, add: bool, blo
 				set_land(cx, cz, false)
 
 
+func punch_shaft(center: Vector3, half: float = 1.0, blocked: Dictionary = {}) -> void:
+	var c0 := world_to_cell(center)
+	var reach := maxi(ceili(half / spacing), 1)
+	for cz in range(c0.y - reach, c0.y + reach + 1):
+		for cx in range(c0.x - reach, c0.x + reach + 1):
+			if not is_land(cx, cz):
+				continue
+			if _cell_blocked(cx, cz, blocked):
+				continue
+			set_land(cx, cz, false)
+	_clamp_all_land()
+
+
 func _dig_through(x0: int, z0: int, x1: int, z1: int, blocked: Dictionary) -> void:
 	var floor_h := min_surface()
+	var punched: Array[Vector2i] = []
 	for cz in range(z0, z1):
 		for cx in range(x0, x1):
 			if not is_land(cx, cz):
@@ -935,6 +949,15 @@ func _dig_through(x0: int, z0: int, x1: int, z1: int, blocked: Dictionary) -> vo
 			var mean := cell_mean_height(cx, cz)
 			if mean <= floor_h + 0.02:
 				set_land(cx, cz, false)
+				punched.append(Vector2i(cx, cz))
+	# Expand a pinhole into a readable vertical shaft.
+	for cell in punched:
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 1), Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1)]:
+			var n: Vector2i = cell + d
+			if not is_land(n.x, n.y) or _cell_blocked(n.x, n.y, blocked):
+				continue
+			if cell_mean_height(n.x, n.y) <= floor_h + 0.55:
+				set_land(n.x, n.y, false)
 
 
 func _clamp_touched(touched: Dictionary) -> void:

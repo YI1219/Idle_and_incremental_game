@@ -33,10 +33,10 @@ func _ready() -> void:
 	# Keep the original 48 cells first so existing production nourishment priority stays stable.
 	sim.cfg.raw["land"]["hard_area_cap"] = PLAYABLE_AREA_CAP
 	var initial: Dictionary = sim.to_dict()
-	for x in range(-6,7):
-		for z in range(-6,4):
-			if not sim.has_cell(Vector2i(x,z)):
-				initial.cells.append([x,z])
+	var IslandGeometry := preload("res://scripts/world/island_geometry.gd")
+	for cell in IslandGeometry.courtyard_yard_cells():
+		if not sim.has_cell(cell):
+			initial.cells.append([cell.x, cell.y])
 	sim.from_dict(initial)
 	_build_mesh()
 	_mesh_instance.hide()

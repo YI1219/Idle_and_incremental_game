@@ -69,6 +69,34 @@ static func components(cells: Dictionary) -> Array[Dictionary]:
 	return groups
 
 
+static func courtyard_yard_cells() -> Array[Vector2i]:
+	## Organic starter footprint: a freeform pebble that still contains the cottage,
+	## arena, gate, prefab cells, and the land-test rim cells. Not a rectangle.
+	var keep: Dictionary = {}
+	var center := Vector2(0.0, -1.0)
+	var rx := 7.2
+	var rz := 6.2
+	for x in range(-8, 9):
+		for z in range(-8, 6):
+			var core := x >= -4 and x <= 4 and z >= -3 and z <= 3
+			var nx := (float(x) - center.x) / rx
+			var nz := (float(z) - center.y) / rz
+			var h := fposmod(sin(Vector2(float(x), float(z)).dot(Vector2(127.1, 311.7))) * 43758.5453, 1.0)
+			var pebble := pow(absf(nx), 2.05) + pow(absf(nz), 2.15)
+			if core or pebble <= 0.78 + (h - 0.5) * 0.22:
+				keep[Vector2i(x, z)] = true
+	for cell in [
+		Vector2i(0, -6), Vector2i(6, 0), Vector2i(-2, 3), Vector2i(-6, -2),
+		Vector2i(6, -2), Vector2i(-6, -1), Vector2i(-6, 0),
+		Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1),
+	]:
+		keep[cell] = true
+	var out: Array[Vector2i] = []
+	for cell: Vector2i in keep.keys():
+		out.append(cell)
+	return out
+
+
 static func component_size_after_add(cells: Array, added: Vector2i) -> int:
 	var land: Dictionary = {}
 	for cell: Vector2i in cells:

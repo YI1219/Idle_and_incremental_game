@@ -3,6 +3,7 @@ extends SceneTree
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
+const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
 const XirangLib := preload("res://scripts/sim/xirang.gd")
 
 var checks := 0
@@ -25,6 +26,8 @@ func _initialize() -> void:
 	_determinism()
 	_winding()
 	_organic_mask()
+	_starter_pebble()
+	_shaft()
 	print("HEIGHTFIELD CHECKS: %d/%d passed, failures=%d" % [checks - failures, checks, failures])
 	quit(1 if failures else 0)
 
@@ -175,3 +178,30 @@ func _organic_mask() -> void:
 			payloads.append(HeightfieldMesh.build_chunk(field, Vector2i(x, z), "full"))
 	var closed := HeightfieldMesh.combine(payloads)
 	check(HeightfieldMesh.odd_edge_ratio(closed) < 0.02, "organic rim stays a closed mesh")
+
+
+func _starter_pebble() -> void:
+	var cells: Array[Vector2i] = IslandGeometry.courtyard_yard_cells()
+	var land: Dictionary = {}
+	var min_c := Vector2i(999, 999)
+	var max_c := Vector2i(-999, -999)
+	for cell in cells:
+		land[cell] = true
+		min_c.x = mini(min_c.x, cell.x)
+		min_c.y = mini(min_c.y, cell.y)
+		max_c.x = maxi(max_c.x, cell.x)
+		max_c.y = maxi(max_c.y, cell.y)
+	var box := (max_c.x - min_c.x + 1) * (max_c.y - min_c.y + 1)
+	check(cells.size() < box - 8, "starter yard is not a filled rectangle")
+	for must in [Vector2i(0, -6), Vector2i(6, 0), Vector2i(-2, 3), Vector2i(-6, -2), Vector2i(0, -2), Vector2i(0, 3)]:
+		check(land.has(must), "starter pebble keeps required cell %s" % must)
+	var fall := HeightfieldMesh.build_waterfall(Vector3(0.0, 0.0, 0.0), Vector3(1.0, 0.0, 0.0), -6.0, 1.2)
+	check(int(fall.get("triangles", 0)) >= 20, "waterfall ribbon emits a curved sheet")
+
+
+func _shaft() -> void:
+	var field := _rect_field(8, 8, 3)
+	field.punch_shaft(Vector3(4.0, 0.0, 4.0), 1.0)
+	check(not field.sample_land(Vector3(4.0, 0.0, 4.0)), "punch_shaft opens a vertical hole")
+	var payload := HeightfieldMesh.build_chunk(field, Vector2i(0, 0), "full")
+	check(HeightfieldMesh.odd_edge_ratio(payload) < 0.02, "shaft walls keep a closed mesh")

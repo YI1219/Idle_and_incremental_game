@@ -40,9 +40,9 @@ func configure(p_island: Node3D,p_house: Node3D,p_art: Node3D) -> void:
 	art=p_art
 func _ready() -> void:
 	add_to_group("sandbox_builder")
-	for c in island.terrain._default_river():_water[c]=true
+	_water=island.terrain.water_cells.duplicate()
 	refresh_rules()
-	for row in [["tree",Vector2i(-6,-5)],["rock",Vector2i(-5,-5)],["tree",Vector2i(-6,1)],["rock",Vector2i(-5,2)],["tree",Vector2i(5,-5)],["rock",Vector2i(6,-5)]]:
+	for row in [["tree",Vector2i(-4,-3)],["rock",Vector2i(-4,-1)],["tree",Vector2i(3,-3)],["rock",Vector2i(5,-3)],["tree",Vector2i(-3,2)],["rock",Vector2i(2,2)]]:
 		layout.place(row[0],row[1])
 	_make_preview()
 	panel=BuildPanel.new()
@@ -53,6 +53,7 @@ func _ready() -> void:
 func refresh_rules() -> void:
 	var reserved: Dictionary=island.sim.occupied.duplicate()
 	for c in [Vector2i(-4,1),Vector2i(-4,2),Vector2i(0,2),Vector2i(0,3)]:reserved[c]="fixed"
+	_water=island.terrain.water_cells.duplicate()
 	layout.configure(island.terrain.land_cells,island.terrain.water_cells,reserved)
 func active() -> bool:return island!=null and island.build_mode
 func set_active(value: bool) -> void:
@@ -168,6 +169,9 @@ func edit_land(cell: Vector2i,erase: bool) -> String:
 		return result
 	island.rebuild_instances()
 	refresh_rules()
+	if erase:
+		prune_unsupported_objects()
+		rebuild_objects()
 	_draw_grid()
 	return result
 func _flatten_for_place(kind: String,cell: Vector2i) -> String:
@@ -210,7 +214,30 @@ func reseat_objects() -> void:
 		var node: Node3D=nodes[row.id]
 		var at:=Vector3(row.cell.x+.5,0,row.cell.y+.5)
 		node.global_position=Vector3(at.x,_seat_y(at),at.z)
+func prune_unsupported_objects() -> int:
+	refresh_rules()
+	var drop: Array[int] = []
+	for row in layout.objects:
+		if row.kind=="house":
+			continue
+		var ok:=true
+		for c in layout.footprint(row.kind,row.cell):
+			if not island.terrain.land_cells.has(c):
+				ok=false
+			if island.terrain.water_cells.has(c):
+				ok=false
+			var world:=Vector3(float(c.x)+.5,0.0,float(c.y)+.5)
+			if island.terrain.has_method("island_at"):
+				var isle: Node3D=island.terrain.island_at(world)
+				if isle and isle.field and not isle.field.sample_land(world):
+					ok=false
+		if not ok:
+			drop.append(int(row.id))
+	for id in drop:
+		layout.remove(id)
+	return drop.size()
 func rebuild_objects() -> void:
+	prune_unsupported_objects()
 	art.clear_communities()
 	nodes.clear()
 	var home: Vector2i=layout.find(0).cell
@@ -422,7 +449,10 @@ func end_stroke() -> void:
 				child.end_stroke()
 		if island.terrain.has_method("flush_rebuild"):
 			island.terrain.flush_rebuild()
-		reseat_objects()
+		if prune_unsupported_objects()>0:
+			rebuild_objects()
+		else:
+			reseat_objects()
 func _input(event: InputEvent) -> void:
 	# Release must be observed even when the pointer is over UI.
 	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed:end_stroke()

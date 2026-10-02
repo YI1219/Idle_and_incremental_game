@@ -2,8 +2,8 @@ extends Object
 ## Builds closed, chunked island meshes from a Heightfield. No scene I/O.
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
-const WALL_RINGS := 4
-const LIP := 0.12
+const WALL_RINGS := 6
+const LIP := 0.10
 const ROCK_SLOPE := 0.55
 
 
@@ -161,29 +161,59 @@ static func build_water(field: Heightfield, lake: Dictionary) -> Dictionary:
 	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
 
 
-static func build_waterfall(origin: Vector3, outward: Vector3, bottom: float) -> Dictionary:
+static func build_waterfall(origin: Vector3, outward: Vector3, bottom: float, width: float = 1.35) -> Dictionary:
 	var verts := PackedVector3Array()
 	var norms := PackedVector3Array()
 	var cols := PackedColorArray()
 	var uvs := PackedVector2Array()
-	var side := Vector3(-outward.z, 0.0, outward.x) * 0.62
-	var top := origin + outward * 0.06 + Vector3(0.0, 0.05, 0.0)
-	var foot := Vector3(origin.x, bottom, origin.z) + outward * 0.7
-	var a := top - side
-	var b := top + side
-	var c := foot + side * 0.7
-	var d := foot - side * 0.7
+	if outward.length_squared() < 1e-8:
+		outward = Vector3(0.0, 0.0, 1.0)
+	outward = outward.normalized()
+	var tangent := Vector3(-outward.z, 0.0, outward.x)
+	var lip := origin + outward * 0.04 + Vector3(0.0, 0.05, 0.0)
+	var ctrl := origin + outward * 0.55 + Vector3(0.0, (bottom - origin.y) * 0.32, 0.0)
+	var foot := Vector3(origin.x, bottom, origin.z) + outward * 1.15
 	var water := Color(0.45, 0.78, 0.76, 1.0)
-	var foam := Color(0.92, 0.96, 0.94, 1.0)
-	_solid(verts, norms, cols, uvs, a, b, c, water, -outward)
-	_solid(verts, norms, cols, uvs, a, c, d, water, -outward)
-	var foam_a := top - side * 1.15 + Vector3(0.0, 0.03, 0.0) - outward * 0.08
-	var foam_b := top + side * 1.15 + Vector3(0.0, 0.03, 0.0) - outward * 0.08
-	var foam_c := top + side * 0.7 + outward * 0.12
-	var foam_d := top - side * 0.7 + outward * 0.12
-	_solid(verts, norms, cols, uvs, foam_a, foam_b, foam_c, foam, Vector3.UP)
-	_solid(verts, norms, cols, uvs, foam_a, foam_c, foam_d, foam, Vector3.UP)
+	var foam := Color(0.93, 0.96, 0.95, 1.0)
+	var n_across := 7
+	var n_down := 12
+	var rows: Array = []
+	for iv in n_down + 1:
+		var t := float(iv) / float(n_down)
+		var center := _bezier3(lip, ctrl, foot, t)
+		var half := width * 0.5 * (1.0 - 0.20 * t)
+		var row: Array = []
+		for iu in n_across:
+			var u := float(iu) / float(n_across - 1) - 0.5
+			var tuck := 1.0 - u * u * 0.55
+			var p := center + tangent * (u * half * 2.0) - outward * (1.0 - tuck) * 0.22
+			row.append(p)
+		rows.append(row)
+	for iv in n_down:
+		var v0 := float(iv) / float(n_down)
+		var v1 := float(iv + 1) / float(n_down)
+		for iu in n_across - 1:
+			var u0 := float(iu) / float(n_across - 1)
+			var u1 := float(iu + 1) / float(n_across - 1)
+			var a: Vector3 = rows[iv][iu]
+			var b: Vector3 = rows[iv][iu + 1]
+			var c: Vector3 = rows[iv + 1][iu + 1]
+			var d: Vector3 = rows[iv + 1][iu]
+			_solid_uv(verts, norms, cols, uvs, a, b, c, water, -outward, Vector2(u0, v0), Vector2(u1, v0), Vector2(u1, v1))
+			_solid_uv(verts, norms, cols, uvs, a, c, d, water, -outward, Vector2(u0, v0), Vector2(u1, v1), Vector2(u0, v1))
+	var foam_w := width * 0.72
+	var fa := lip - tangent * foam_w - outward * 0.10 + Vector3(0.0, 0.03, 0.0)
+	var fb := lip + tangent * foam_w - outward * 0.10 + Vector3(0.0, 0.03, 0.0)
+	var fc := lip + tangent * foam_w * 0.55 + outward * 0.16
+	var fd := lip - tangent * foam_w * 0.55 + outward * 0.16
+	_solid_uv(verts, norms, cols, uvs, fa, fb, fc, foam, Vector3.UP, Vector2(0.0, 0.0), Vector2(1.0, 0.0), Vector2(1.0, 0.12))
+	_solid_uv(verts, norms, cols, uvs, fa, fc, fd, foam, Vector3.UP, Vector2(0.0, 0.0), Vector2(1.0, 0.12), Vector2(0.0, 0.12))
 	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
+
+
+static func _bezier3(a: Vector3, b: Vector3, c: Vector3, t: float) -> Vector3:
+	var it := 1.0 - t
+	return a * (it * it) + b * (2.0 * it * t) + c * (t * t)
 
 
 static func _emit_top(field: Heightfield, chunk: Vector2i, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, skip_top: Dictionary, lod: bool) -> void:
@@ -270,17 +300,22 @@ static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: 
 	else:
 		a = Vector2i(cx, cz + 1)
 		b = Vector2i(cx, cz)
+	var hint := Vector3(float(dx), 0.0, float(dz))
 	var col_a: Array = _wall_post(field, a.x, a.y, rings, posts)
 	var col_b: Array = _wall_post(field, b.x, b.y, rings, posts)
 	var n := mini(col_a.size(), col_b.size())
-	var hint := Vector3(float(dx), 0.0, float(dz))
 	for r in range(n - 1):
 		var pa: Vector3 = col_a[r]
 		var pb: Vector3 = col_b[r]
 		var qa: Vector3 = col_a[r + 1]
 		var qb: Vector3 = col_b[r + 1]
+		if pa.distance_to(pb) < 0.06 and qa.distance_to(qb) < 0.06:
+			continue
+		var area := (pb - pa).cross(qb - pa).length_squared()
+		if area < 1e-5:
+			continue
 		# Lip is turf; every ring below is rock. No grass bands inside the wall.
-		var color := Color(0.0, 0.85, 0.08, 1.0) if r == 0 else Color(0.0, 0.02, 0.95, 1.0)
+		var color := Color(0.0, 0.85, 0.0, 1.0) if r == 0 else Color(0.0, 0.0, 1.0, 1.0)
 		_solid(verts, norms, cols, uvs, pa, pb, qb, color, hint)
 		_solid(verts, norms, cols, uvs, pa, qb, qa, color, hint)
 
@@ -308,23 +343,53 @@ static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: 
 		return posts[key]
 	var top := field.world_vertex(ix, iz)
 	var bot := _bottom_vert(field, ix, iz)
+	var land_n := _land_count(field, ix, iz)
 	var outward := _vertex_outward(field, ix, iz)
+	# Never invent a +Z spike. Concave / interior verts stay vertical.
+	if outward.length_squared() < 1e-6:
+		outward = Vector3.ZERO
+	var tangent := Vector3(-outward.z, 0.0, outward.x)
+	if tangent.length_squared() < 1e-8:
+		tangent = Vector3(1.0, 0.0, 0.0)
+	var concave := land_n == 3
+	var n_amp := 0.06 if concave else 0.20
 	var col: Array = []
 	col.append(top)
-	# Grass lip overhangs the wall; rings below taper inward as rock.
-	col.append(top + outward * LIP + Vector3(0.0, 0.02, 0.0))
-	var last := maxi(rings - 1, 2)
-	for r in range(2, last):
+	if outward.length_squared() > 1e-6:
+		col.append(top + outward * LIP + Vector3(0.0, 0.016, 0.0))
+	else:
+		col.append(top + Vector3(0.0, 0.012, 0.0))
+	var last := maxi(rings - 1, 3)
+	for r in range(1, last):
 		var t := float(r) / float(last)
-		var sm := t * t * (3.0 - 2.0 * t)
-		var p := top.lerp(bot, sm)
-		p += outward * (0.02 - 0.14 * t)
-		var nse := field.jitter_xz(p.x * 0.7 + float(r), p.z * 0.7)
-		p += Vector3(nse.x, 0.0, nse.y) * 0.45
+		var p := top.lerp(bot, t)
+		var nse := Heightfield._hash2(float(ix) * 1.71 + float(r) * 13.0 + float(field.seed), float(iz) * 1.37)
+		var ledge := 0.0
+		if t > 0.16 and t < 0.30:
+			ledge = 0.14 if not concave else 0.05
+		elif t > 0.46 and t < 0.62:
+			ledge = 0.08 if not concave else 0.03
+		# Only push outward so neighbouring posts cannot cross into shards.
+		var radial := ledge + maxf((nse.x - 0.35) * n_amp, 0.0) - 0.03 * t
+		p += outward * radial
+		p += tangent * (nse.y - 0.5) * n_amp * 0.7
+		p.y += (nse.x - nse.y) * (0.10 if concave else 0.18)
+		if p.y > top.y - 0.02:
+			p.y = top.y - 0.02
+		if p.y < bot.y + 0.02:
+			p.y = bot.y + 0.02
 		col.append(p)
 	col.append(bot)
 	posts[key] = col
 	return col
+
+
+static func _land_count(field: Heightfield, ix: int, iz: int) -> int:
+	var n := 0
+	for cell in [Vector2i(ix - 1, iz - 1), Vector2i(ix - 1, iz), Vector2i(ix, iz - 1), Vector2i(ix, iz)]:
+		if field.is_land(cell.x, cell.y):
+			n += 1
+	return n
 
 
 static func _chunk_loops(field: Heightfield, chunk: Vector2i) -> Array:
@@ -539,15 +604,25 @@ static func _edge_if_open_set(outgoing: Dictionary, cx: int, cz: int, dx: int, d
 
 
 static func _solid(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, outside: Vector3) -> void:
+	_solid_uv(verts, norms, cols, uvs, a, b, c, color, outside, Vector2(a.x, a.z) * 0.12, Vector2(b.x, b.z) * 0.12, Vector2(c.x, c.z) * 0.12)
+
+
+static func _solid_uv(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, outside: Vector3, ua: Vector2, ub: Vector2, uc: Vector2) -> void:
 	var n := (b - a).cross(c - a)
 	if n.length_squared() < 1e-10:
 		return
 	# Godot front faces are clockwise. A right-hand normal that agrees with
 	# `outside` is therefore the back face; flip so the play camera sees tops.
+	var uv_a := ua
+	var uv_b := ub
+	var uv_c := uc
 	if n.dot(outside) > 0.0:
 		var tmp := b
 		b = c
 		c = tmp
+		var tmp_uv := uv_b
+		uv_b = uv_c
+		uv_c = tmp_uv
 		n = -n
 	# Light with the geometric slope, facing the outside hemisphere.
 	var lit := -n.normalized()
@@ -556,11 +631,11 @@ static func _solid(verts: PackedVector3Array, norms: PackedVector3Array, cols: P
 	if lit.length_squared() < 0.25:
 		lit = outside.normalized()
 	var opaque := Color(color.r, color.g, color.b, 1.0)
-	for p in [a, b, c]:
-		verts.append(p)
+	for item in [[a, uv_a], [b, uv_b], [c, uv_c]]:
+		verts.append(item[0])
 		norms.append(lit)
 		cols.append(opaque)
-		uvs.append(Vector2(p.x, p.z) * 0.12)
+		uvs.append(item[1])
 
 
 static func _tri(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, force_down: bool) -> void:

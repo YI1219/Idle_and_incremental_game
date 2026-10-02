@@ -81,9 +81,6 @@ func _apply_cells(cells: Array[Vector2i]) -> void:
 	for cell in cells:
 		land_cells[cell] = true
 	water_cells.clear()
-	for cell in _default_river():
-		if land_cells.has(cell):
-			water_cells[cell] = true
 	bridge_cells.clear()
 	for cell in [Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1)]:
 		if land_cells.has(cell):
@@ -107,8 +104,10 @@ func rebuild() -> void:
 	_rebuild_masks()
 	_river_polygons = _make_river_polygons()
 	_rebuild_islands()
-	_water_mesh.mesh = _build_water()
-	_bank_mesh.mesh = _build_banks()
+	_water_mesh.mesh = _empty_mesh()
+	_water_mesh.visible = false
+	_bank_mesh.mesh = _empty_mesh()
+	_bank_mesh.visible = false
 	_bridge_mesh.mesh = _build_bridge()
 
 
@@ -335,9 +334,10 @@ func _rebuild_islands() -> void:
 		var seed := int(matched.get("field_seed", IslandGeometry.cells_hash(group)))
 		var t0 := Time.get_ticks_usec()
 		var field: Heightfield = matched.get("field")
+		var skip_top: Dictionary = {}
 		if field == null:
 			field = Heightfield.from_play_cells(group, Heightfield.SPACING, Heightfield.DEFAULT_BOTTOM, seed, 2)
-			_stamp_starter_relief(field, group, water_in_group)
+			skip_top = _stamp_starter_relief(field, group)
 		else:
 			field = field.duplicate_field()
 			field.apply_play_cells(group, false)
@@ -349,7 +349,7 @@ func _rebuild_islands() -> void:
 			"field_seed": seed,
 			"centroid": IslandGeometry._centroid3(group),
 			"cell_count": group.size(),
-			"skip_top": water_in_group,
+			"skip_top": skip_top,
 			"top": _empty_mesh(),
 			"volume": _empty_mesh(),
 		}
@@ -359,6 +359,7 @@ func _rebuild_islands() -> void:
 	island_cache = next_cache
 	last_rock_rebuild_ms = build_ms
 	_sync_presence()
+	_sync_lake_water()
 	_assemble_island_meshes()
 
 
@@ -524,22 +525,40 @@ func flatten_footprint(cells: Array, xirang, island_cells: int, preview_only: bo
 	return {"ok": true, "delta_volume": delta, "cost": cost, "refund": refund, "target": preview.get("target", 0.0)}
 
 
-func _stamp_starter_relief(field: Heightfield, group: Dictionary, water_in_group: Dictionary) -> void:
-	field.stamp_rounded_blob()
-	field.organicize_coast()
+func _stamp_starter_relief(field: Heightfield, group: Dictionary) -> Dictionary:
+	# Play cells are already an organic blob. Do not carve them again.
+	field.apply_coast_smooth()
 	field.stamp_gentle_hills()
-	# A closed interior pit becomes the default courtyard lake. Edge river cells stay a cut.
-	for cell: Vector2i in water_in_group:
-		var edge := false
-		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-			if not group.has(cell + d):
-				edge = true
-				break
-		if edge:
+	var skip: Dictionary = {}
+	var lake: Array[Vector2i] = [
+		Vector2i(3, 0), Vector2i(4, 0), Vector2i(3, 1), Vector2i(4, 1),
+		Vector2i(2, 1), Vector2i(5, 1), Vector2i(3, -1), Vector2i(4, -1),
+	]
+	for cell in lake:
+		if not group.has(cell):
 			continue
+		skip[cell] = true
 		var center := Vector3(float(cell.x) + 0.5, 0.0, float(cell.y) + 0.5)
 		field.apply_brush("lower", center, 1.05, 0.95, true)
+	# Notch the east rim so the pit spills as a waterfall, without carving a river.
+	for notch in [Vector3(5.6, 0.0, 0.45), Vector3(6.2, 0.0, 0.55), Vector3(6.7, 0.0, 0.50)]:
+		field.apply_brush("lower", notch, 0.72, 0.62, true)
 	field.apply_coast_smooth()
+	return skip
+
+
+func _sync_lake_water() -> void:
+	water_cells.clear()
+	for child in _islands_root.get_children():
+		if child.field == null:
+			continue
+		var lakes: Array = child.water_info.get("lakes", []) if child.get("water_info") else []
+		for lake in lakes:
+			for hf_c: Vector2i in lake.get("cells", []):
+				water_cells[child.field.play_cell_of_hf(hf_c.x, hf_c.y)] = true
+		for play in child.skip_top:
+			if land_cells.has(play):
+				water_cells[play] = true
 
 
 func _heightfield_material() -> ShaderMaterial:
