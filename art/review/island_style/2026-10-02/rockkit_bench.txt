@@ -3,29 +3,29 @@ Godot 4.7.2-stable (official)  renderer=unknown
 This is a development-machine / VM sample. It is not target-laptop evidence.
 
 === playable courtyard (~130 cells, 1 island) ===
-islands=1  pieces=95  triangles=4856  rock_draw_calls=1
-build_ms=-  last_rock_rebuild_ms=41.747  bake_ms=624.3  hitch_ms=3.094  baked_islands=1
-process_ms avg/max=617.40/617.40  physics_ms avg/max=176.21/176.21  fps_est=1.6
+islands=1  pieces=95  triangles=11344  rock_draw_calls=1
+build_ms=-  last_rock_rebuild_ms=41.518  bake_ms=422.049  hitch_ms=427.83  baked_islands=1
+process_ms avg/max=499.43/599.31  physics_ms avg/max=151.98/182.38  fps_est=2.0
 perf_draw_calls=0  primitives=0
 
 === 4x-area island (528 cells, 1 island) ===
-islands=1  pieces=180  triangles=5428  rock_draw_calls=1
-build_ms=94.346  last_rock_rebuild_ms=46.253  bake_ms=1769.706  hitch_ms=3.652  baked_islands=1
-process_ms avg/max=1681.31/1778.02  physics_ms avg/max=14.70/176.21  fps_est=0.6
+islands=1  pieces=180  triangles=21300  rock_draw_calls=1
+build_ms=93.756  last_rock_rebuild_ms=45.58  bake_ms=837.112  hitch_ms=848.383  baked_islands=1
+process_ms avg/max=1010.40/1010.40  physics_ms avg/max=0.03/0.03  fps_est=1.0
 perf_draw_calls=0  primitives=0
 
-coastline-edit rebuild: 151.61 ms (logic+mesh+respace)
-rock respace only: 78.72 ms
+coastline-edit rebuild: 150.01 ms (logic+mesh+respace)
+rock respace only: 78.15 ms
 
 === 4x island + 7 satellites (668 cells, 8 islands) ===
-islands=8  pieces=440  triangles=48133  rock_draw_calls=8
-build_ms=261.364  last_rock_rebuild_ms=133.809  bake_ms=1787.368  hitch_ms=4.691  baked_islands=8
-process_ms avg/max=2723.39/2723.39  physics_ms avg/max=0.03/0.03  fps_est=0.4
+islands=8  pieces=440  triangles=62098  rock_draw_calls=8
+build_ms=258.491  last_rock_rebuild_ms=132.043  bake_ms=829.274  hitch_ms=840.326  baked_islands=8
+process_ms avg/max=2464.18/2464.18  physics_ms avg/max=0.03/0.03  fps_est=0.4
 perf_draw_calls=0  primitives=0
 
 === same 8 islands, camera near the main island ===
-islands=8  pieces=440  triangles=48133  rock_draw_calls=8
-build_ms=-  last_rock_rebuild_ms=133.809  bake_ms=1787.368  hitch_ms=4.691  baked_islands=8
-process_ms avg/max=2723.39/2723.39  physics_ms avg/max=0.03/0.03  fps_est=0.4
+islands=8  pieces=440  triangles=62098  rock_draw_calls=8
+build_ms=-  last_rock_rebuild_ms=132.043  bake_ms=829.274  hitch_ms=840.326  baked_islands=8
+process_ms avg/max=2464.18/2464.18  physics_ms avg/max=0.03/0.03  fps_est=0.4
 perf_draw_calls=0  primitives=0
 
