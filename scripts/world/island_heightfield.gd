@@ -485,9 +485,9 @@ func _dress_draws() -> int:
 func _density_at(world: Vector2) -> float:
 	var wave := 0.5 + 0.5 * sin(world.x * 0.42 + float(field.seed) * 0.11) * sin(world.y * 0.35 - float(field.seed) * 0.07)
 	var nse := Heightfield._hash2(world.x * 0.19 + float(field.seed), world.y * 0.17)
-	var field_v := wave * 0.72 + nse.x * 0.28
-	# Strong empty-vs-clump contrast: some patches stay almost bare.
-	return clampf(pow(field_v, 1.35) * 0.82, 0.03, 0.80)
+	var field_v := wave * 0.70 + nse.x * 0.30
+	# Clumps vs gaps without collapsing to zero on the playable seed.
+	return clampf(0.10 + 0.58 * field_v * field_v, 0.08, 0.72)
 
 
 func _scatter_dressing() -> void:
@@ -511,7 +511,7 @@ func _scatter_dressing() -> void:
 			var play := field.play_cell_of_hf(cx, cz)
 			if skip_top.has(play) or _blocked.has(play) or water_cells.has(Vector2i(cx, cz)):
 				continue
-			if field.sample_inland(Vector3(field.vertex_world(cx, cz).x, 0.0, field.vertex_world(cx, cz).y)) < 0.28:
+			if field.sample_inland(Vector3(field.vertex_world(cx, cz).x, 0.0, field.vertex_world(cx, cz).y)) < 0.18:
 				continue
 			var origin := field.vertex_world(cx, cz)
 			var density := _density_at(origin)
@@ -541,7 +541,9 @@ func _scatter_dressing() -> void:
 	_fill_mm(_flower_mm, flowers)
 	var rocks := _scatter_rim_rocks(water_cells)
 	_hang_roots()
-	print("dress tufts=%d pebbles=%d flowers=%d rim_rocks=%d" % [tufts.size(), pebbles.size(), flowers.size(), rocks])
+	print("dress tufts=%d pebbles=%d flowers=%d rim_rocks=%d" % [
+		tufts.size(), pebbles.size(), flowers.size(), rocks
+	])
 
 
 func _scatter_rim_rocks(_water_cells: Dictionary) -> int:
@@ -590,8 +592,8 @@ func _place_rock_chain(loops: Array, names: PackedStringArray, by_name: Dictiona
 					var u := t / maxf(seg, 0.001)
 					var p := a.lerp(b, u)
 					var nse := Heightfield._hash2(p.x * 1.9 + float(field.seed), p.y * 1.7)
-					next_s += 0.88 + nse.x * 0.16
-					if nse.y < 0.24:
+					next_s += 1.05 + nse.x * 0.20
+					if nse.y < 0.34:
 						acc += t
 						t += 0.20
 						continue
@@ -603,8 +605,8 @@ func _place_rock_chain(loops: Array, names: PackedStringArray, by_name: Dictiona
 					var piece: Dictionary = RockKit.piece(name)
 					var src_h := maxf(float(piece.get("height", 0.35)), 0.15)
 					var src_w := maxf(float(piece.get("width", 0.40)), 0.15)
-					var unit_h := 0.38 / src_h
-					var unit_w := 0.46 / src_w
+					var unit_h := 0.22 / src_h
+					var unit_w := 0.30 / src_w
 					var h := field.sample_height(Vector3(p.x, 0.0, p.y))
 					var yaw := nse.x * TAU
 					var tilt := (nse.y - 0.5) * 0.08
@@ -644,7 +646,6 @@ func _kit_node(p_name: String) -> MultiMeshInstance3D:
 	var node := _make_mm("Kit_%s" % p_name, _sitting_mesh(piece["mesh"]), mat)
 	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_kit_mms[p_name] = node
-	print("rim kit %s h=%.2f w=%.2f" % [p_name, float(piece.get("height", 0.0)), float(piece.get("width", 0.0))])
 	return node
 
 
