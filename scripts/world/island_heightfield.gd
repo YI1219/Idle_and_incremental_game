@@ -74,7 +74,7 @@ func _ensure_nodes() -> void:
 	_water_material = _make_water_material()
 	_fall_material = _make_fall_material()
 	_water_node.material_override = _water_material
-	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("6a7548")))
+	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("586344")))
 	_tuft_mm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_pebble_mm = _make_mm("Pebbles", _pebble_mesh(), _mat(Color("6b6256")))
 	_flower_mm = _make_mm("Flowers", _flower_mesh(), _mat(Color("c4b06a")))
@@ -524,15 +524,15 @@ func _scatter_dressing() -> void:
 				if nse.y > 0.80 and density > 0.48:
 					tall = 1.7 + nse.x * 1.1
 				tufts.append(Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(0.90 + nse.y * 0.45, tall, 0.90 + nse.x * 0.35)), Vector3(at.x, h + 0.01, at.z)))
-				if nse.y > 0.93 and nse.x > 0.42:
-					flowers.append(Transform3D(Basis(Vector3.UP, yaw + 1.2).scaled(Vector3.ONE * (0.9 + nse.x * 0.35)), Vector3(at.x + 0.06, h + 0.01, at.z - 0.04)))
+				if nse.y > 0.86 and nse.x > 0.28:
+					flowers.append(Transform3D(Basis(Vector3.UP, yaw + 1.2).scaled(Vector3.ONE * (1.1 + nse.x * 0.4)), Vector3(at.x + 0.06, h + 0.01, at.z - 0.04)))
 			var clump := Heightfield._hash2(float(cx) * 0.37 + float(field.seed), float(cz) * 0.41)
-			if clump.x > 0.82 and density > 0.40:
+			if clump.x > 0.70 and density > 0.30:
 				var mid := origin + Vector2(field.spacing * 0.5, field.spacing * 0.5)
 				var h2 := field.sample_height(Vector3(mid.x, 0.0, mid.y))
-				pebbles.append(Transform3D(Basis(Vector3.UP, clump.y * TAU).scaled(Vector3(0.09, 0.055, 0.07)), Vector3(mid.x, h2 + 0.015, mid.y)))
-				if clump.y > 0.55:
-					pebbles.append(Transform3D(Basis(Vector3.UP, clump.x * 4.0).scaled(Vector3(0.06, 0.04, 0.05)), Vector3(mid.x + 0.12, h2 + 0.012, mid.y - 0.08)))
+				pebbles.append(Transform3D(Basis(Vector3.UP, clump.y * TAU).scaled(Vector3(0.11, 0.07, 0.09)), Vector3(mid.x, h2 + 0.018, mid.y)))
+				if clump.y > 0.45:
+					pebbles.append(Transform3D(Basis(Vector3.UP, clump.x * 4.0).scaled(Vector3(0.07, 0.05, 0.06)), Vector3(mid.x + 0.12, h2 + 0.014, mid.y - 0.08)))
 	_fill_mm(_tuft_mm, tufts)
 	_fill_mm(_pebble_mm, pebbles)
 	_fill_mm(_flower_mm, flowers)
@@ -599,22 +599,25 @@ func _place_rock_chain(loops: Array, names: PackedStringArray, by_name: Dictiona
 					var name := names[int(nse.x * float(names.size())) % names.size()]
 					var piece: Dictionary = RockKit.piece(name)
 					var src_h := maxf(float(piece.get("height", 0.35)), 0.15)
-					var unit := 0.52 / src_h
+					var src_w := maxf(float(piece.get("width", 0.40)), 0.15)
+					var unit_h := 0.38 / src_h
+					var unit_w := 0.46 / src_w
 					var h := field.sample_height(Vector3(p.x, 0.0, p.y))
 					var yaw := nse.x * TAU
-					var tilt := (nse.y - 0.5) * 0.10
-					var sx := unit * (0.90 + nse.x * 0.45)
-					var sy := unit * ((1.40 + nse.y * 0.80) if not lake else (1.15 + nse.y * 0.50))
-					var sz := unit * (0.95 + nse.y * 0.35)
-					var basis := Basis.from_euler(Vector3(PI + tilt, yaw, (nse.x - 0.5) * 0.10))
+					var tilt := (nse.y - 0.5) * 0.08
+					var sx := unit_w * (0.85 + nse.x * 0.40)
+					var sy := unit_h * ((1.20 + nse.y * 0.55) if not lake else (0.95 + nse.y * 0.40))
+					var sz := unit_w * (0.90 + nse.y * 0.30)
+					# Sitting mesh stands +Y from the origin. Bury the base into the shoulder.
+					var basis := Basis.from_euler(Vector3(tilt, yaw, (nse.x - 0.5) * 0.08))
 					basis = basis.scaled(Vector3(sx, sy, sz))
 					var xf := Transform3D(basis, Vector3(p.x + (nse.y - 0.5) * 0.14, h + bury, p.y + (nse.x - 0.5) * 0.14))
 					(by_name[name] as Array).append(xf)
 					placed += 1
 					if placed % 6 == 0 and names.size() > 1:
 						var small := names[int(nse.y * float(names.size())) % names.size()]
-						var sb := Basis.from_euler(Vector3(PI, yaw + 0.8, 0.0)).scaled(Vector3(sx * 0.52, sy * 0.50, sz * 0.52))
-						(by_name[small] as Array).append(Transform3D(sb, Vector3(p.x + 0.28, h + bury * 0.7, p.y - 0.16)))
+						var sb := Basis.from_euler(Vector3(0.0, yaw + 0.8, 0.0)).scaled(Vector3(sx * 0.55, sy * 0.52, sz * 0.55))
+						(by_name[small] as Array).append(Transform3D(sb, Vector3(p.x + 0.26, h + bury * 0.65, p.y - 0.14)))
 				t += 0.18
 			acc += seg
 
@@ -631,13 +634,38 @@ func _kit_node(p_name: String) -> MultiMeshInstance3D:
 	if piece.is_empty() or piece.get("mesh") == null:
 		return null
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color("6d6256")
-	mat.roughness = 0.95
+	mat.albedo_color = Color("8a7d6e")
+	mat.roughness = 0.94
 	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
-	var node := _make_mm("Kit_%s" % p_name, piece["mesh"], mat)
+	var node := _make_mm("Kit_%s" % p_name, _sitting_mesh(piece["mesh"]), mat)
 	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_kit_mms[p_name] = node
+	print("rim kit %s h=%.2f w=%.2f" % [p_name, float(piece.get("height", 0.0)), float(piece.get("width", 0.0))])
 	return node
+
+
+func _sitting_mesh(src: ArrayMesh) -> ArrayMesh:
+	## Kit bake hangs -Y from the origin. Flip to a sitting stone with origin at the base.
+	if src == null or src.get_surface_count() == 0:
+		return src
+	var faces := src.get_faces()
+	if faces.is_empty():
+		return src
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i in range(0, faces.size(), 3):
+		var a: Vector3 = Vector3(faces[i].x, -faces[i].y, faces[i].z)
+		var b: Vector3 = Vector3(faces[i + 2].x, -faces[i + 2].y, faces[i + 2].z)
+		var c: Vector3 = Vector3(faces[i + 1].x, -faces[i + 1].y, faces[i + 1].z)
+		var n := (b - a).cross(c - a)
+		if n.length_squared() < 1e-12:
+			continue
+		n = n.normalized()
+		for p in [a, b, c]:
+			st.set_normal(n)
+			st.add_vertex(p)
+	var out := st.commit()
+	return out if out.get_surface_count() > 0 else src
 
 
 func _add_lily(at: Vector3, radius: float) -> void:
@@ -696,17 +724,19 @@ func _hang_roots() -> void:
 func _tuft_mesh() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var blades := [0.0, 0.85, 1.70, 2.55, 3.40, 4.25]
-	for i in blades.size():
-		var b := Basis(Vector3.UP, blades[i])
-		var lift := 0.14 + float(i % 3) * 0.03
-		var a := b * Vector3(-0.014, 0.0, 0.0)
-		var c := b * Vector3(0.014, 0.0, 0.0)
-		var tip := b * Vector3(0.0, lift, 0.022)
-		st.set_normal(Vector3.UP)
-		st.add_vertex(a)
-		st.add_vertex(tip)
-		st.add_vertex(c)
+	for i in 3:
+		var b := Basis(Vector3.UP, float(i) * TAU / 3.0)
+		var w := 0.055
+		var lift := 0.20 + float(i % 2) * 0.04
+		var bl := b * Vector3(-w, 0.0, 0.0)
+		var br := b * Vector3(w, 0.0, 0.0)
+		var tl := b * Vector3(-w * 0.28, lift, 0.012)
+		var tr := b * Vector3(w * 0.28, lift, 0.012)
+		var n := (Vector3.UP + b * Vector3(0.0, 0.0, 1.0)).normalized()
+		for tri in [[bl, tl, tr], [bl, tr, br]]:
+			for p in tri:
+				st.set_normal(n)
+				st.add_vertex(p)
 	st.generate_normals()
 	return st.commit()
 

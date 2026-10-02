@@ -84,9 +84,9 @@ void fragment() {
 		float broad = noise(p * 0.28) * 0.55 + noise(vec2(p.y, -p.x) * 0.28 + 2.1) * 0.45;
 		float mid = noise(p * 0.85);
 		float detail = noise(p * 14.0);
-		vec3 grass = mix(moss_color.rgb, meadow_color.rgb, smoothstep(0.30, 0.70, broad));
-		grass = mix(grass, shade_grass.rgb, (mid - 0.5) * 0.22 + 0.10);
-		grass += (detail - 0.5) * 0.018;
+		vec3 grass = mix(moss_color.rgb, meadow_color.rgb, smoothstep(0.28, 0.72, broad));
+		grass = mix(grass, shade_grass.rgb, (mid - 0.5) * 0.32 + 0.08);
+		grass += (detail - 0.5) * 0.028;
 		float inland = clamp(vcol.g, 0.0, 1.0);
 		float path = 0.0;
 		for (int i = 0; i < 8; i++) {
