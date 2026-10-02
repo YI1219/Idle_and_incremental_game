@@ -270,16 +270,16 @@ static func apply_atmosphere(world_environment: WorldEnvironment, sun: Direction
 	var sky := Sky.new()
 	var sky_material := ShaderMaterial.new()
 	sky_material.shader = SKY_SHADER
-	sky_material.set_shader_parameter("zenith_color", Color("c5d8e6"))
+	sky_material.set_shader_parameter("zenith_color", Color("d2e4ee"))
 	sky_material.set_shader_parameter("horizon_color", Color("dde8ee"))
-	sky_material.set_shader_parameter("nadir_color", Color("b7c8d4"))
+	sky_material.set_shader_parameter("nadir_color", Color("d8e4ec"))
 	sky.sky_material = sky_material
 	environment.sky = sky
 	environment.background_mode = Environment.BG_SKY
 	environment.background_color = Color("dde8ee")
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.ambient_light_color = Color("c8d2da")
-	environment.ambient_light_energy = 0.26
+	environment.ambient_light_color = Color("d4dee6")
+	environment.ambient_light_energy = 0.32
 	environment.tonemap_mode = Environment.TONE_MAPPER_AGX
 	environment.tonemap_exposure = 1.12
 	environment.tonemap_white = 8.0
@@ -287,11 +287,11 @@ static func apply_atmosphere(world_environment: WorldEnvironment, sun: Direction
 	environment.adjustment_saturation = 1.04
 	environment.adjustment_contrast = 1.02
 	environment.fog_enabled = true
-	environment.fog_light_color = Color("d5e0e8")
-	environment.fog_density = 0.00018
+	environment.fog_light_color = Color("dde8ee")
+	environment.fog_density = 0.00010
 	environment.fog_sky_affect = 0.0
-	environment.fog_height = -7.4
-	environment.fog_height_density = 0.004
+	environment.fog_height = -8.2
+	environment.fog_height_density = 0.002
 	environment.ssao_enabled = true
 	environment.ssao_radius = 0.22
 	environment.ssao_intensity = 1.15

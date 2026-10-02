@@ -14,15 +14,15 @@ func _ready() -> void:
 	add_to_group("cloud_sea")
 	_sea = MeshInstance3D.new()
 	_sea.name = "SeaSheet"
-	_sea.mesh = _billow_mesh(SPAN, RES, 2.15, Color("f4f7fa"), Color("d5dee6"))
+	_sea.mesh = _billow_mesh(SPAN, RES, 1.55, Color("f7f9fb"), Color("e6eef3"))
 	_sea.position.y = SEA_Y
 	_sea.material_override = _sheet_mat()
 	_sea.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_sea)
 	_wisps = MeshInstance3D.new()
 	_wisps.name = "WispSheet"
-	_wisps.mesh = _billow_mesh(SPAN * 0.42, 28, 1.05, Color("ffffff"), Color("e8eef3"))
-	_wisps.position.y = SEA_Y + 1.35
+	_wisps.mesh = _billow_mesh(SPAN * 0.48, 28, 0.85, Color("ffffff"), Color("f0f4f8"))
+	_wisps.position.y = SEA_Y + 1.55
 	_wisps.material_override = _sheet_mat()
 	_wisps.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_wisps)
@@ -42,33 +42,35 @@ func _sheet_mat() -> ShaderMaterial:
 func _puff_mat(alpha: float) -> ShaderMaterial:
 	var mat := ShaderMaterial.new()
 	mat.shader = load("res://shaders/world/cloud_puff.gdshader")
-	mat.set_shader_parameter("tint", Color(0.95, 0.97, 0.98, alpha))
+	mat.set_shader_parameter("tint", Color(0.97, 0.98, 0.99, alpha))
 	return mat
 
 
 func _add_puffs() -> void:
 	var spots := [
-		Vector3(-10.2, -4.15, 8.4), Vector3(11.0, -4.25, 7.6), Vector3(9.2, -4.30, -8.8),
-		Vector3(-11.4, -4.20, -7.2), Vector3(2.0, -4.45, 10.6), Vector3(-3.2, -4.50, -10.2),
-		Vector3(12.8, -4.35, 1.0), Vector3(-13.4, -4.30, 2.2),
-		Vector3(-2.4, -5.55, 1.6), Vector3(2.6, -5.60, -1.4),
-		Vector3(4.8, -5.20, 2.2), Vector3(5.6, -5.35, 1.0), Vector3(-0.4, -5.25, 0.6),
-		Vector3(5.2, -5.00, 2.5), Vector3(5.8, -5.10, 2.0),
+		Vector3(-9.4, -3.15, 7.6), Vector3(10.2, -3.25, 6.8), Vector3(8.6, -3.40, -7.8),
+		Vector3(-10.6, -3.20, -6.4), Vector3(1.6, -3.55, 9.4), Vector3(-2.8, -3.60, -9.2),
+		Vector3(11.8, -3.45, 0.6), Vector3(-12.2, -3.35, 1.8),
+		Vector3(-3.8, -4.55, 2.2), Vector3(3.4, -4.65, -2.0),
+		Vector3(6.2, -4.10, 3.4), Vector3(-5.8, -4.20, -3.2),
+		Vector3(0.4, -5.15, 4.8), Vector3(4.2, -5.05, -4.6),
+		Vector3(-7.2, -2.85, 3.0), Vector3(7.8, -2.90, -2.4),
+		Vector3(-1.2, -2.70, 8.2), Vector3(2.4, -2.75, -8.6),
 	]
 	for i in spots.size():
 		var centre: Vector3 = spots[i]
-		for k in 3:
+		for k in 4:
 			var puff := MeshInstance3D.new()
 			puff.name = "Puff_%d_%d" % [i, k]
 			var sphere := SphereMesh.new()
-			sphere.radius = 0.85 + float((i + k) % 3) * 0.22 + float(k) * 0.12
-			sphere.height = sphere.radius * 1.55
-			sphere.radial_segments = 14
-			sphere.rings = 8
+			sphere.radius = 1.65 + float((i + k) % 3) * 0.42 + float(k) * 0.22
+			sphere.height = sphere.radius * 1.35
+			sphere.radial_segments = 16
+			sphere.rings = 9
 			puff.mesh = sphere
-			var jitter := Vector3(float(k - 1) * 0.45, float(k) * 0.12, float((i + k) % 2) * 0.35 - 0.18)
+			var jitter := Vector3(float(k - 1) * 0.85, float(k) * 0.18 - 0.08, float((i + k) % 3) * 0.55 - 0.40)
 			puff.position = centre + jitter
-			puff.material_override = _puff_mat(0.42 if k == 0 else 0.28)
+			puff.material_override = _puff_mat(0.72 if k == 0 else 0.48)
 			puff.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			add_child(puff)
 

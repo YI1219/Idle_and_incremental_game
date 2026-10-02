@@ -36,10 +36,13 @@ static func make_mesh(payload: Dictionary) -> ArrayMesh:
 	var verts: PackedVector3Array = payload.get("vertices", PackedVector3Array())
 	if verts.is_empty():
 		return _empty()
+	var norms: PackedVector3Array = payload.get("normals", PackedVector3Array())
+	if bool(payload.get("smooth", false)) and norms.size() == verts.size():
+		norms = _shared_normals(verts)
 	var arrays: Array = []
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = verts
-	arrays[Mesh.ARRAY_NORMAL] = payload.get("normals", PackedVector3Array())
+	arrays[Mesh.ARRAY_NORMAL] = norms
 	arrays[Mesh.ARRAY_COLOR] = payload.get("colors", PackedColorArray())
 	arrays[Mesh.ARRAY_TEX_UV] = payload.get("uvs", PackedVector2Array())
 	var mesh := ArrayMesh.new()
@@ -52,6 +55,7 @@ static func combine(payloads: Array) -> Dictionary:
 	var norms := PackedVector3Array()
 	var cols := PackedColorArray()
 	var uvs := PackedVector2Array()
+	var want_smooth := false
 	for row in payloads:
 		if row == null:
 			continue
@@ -59,7 +63,9 @@ static func combine(payloads: Array) -> Dictionary:
 		norms.append_array(row.get("normals", PackedVector3Array()))
 		cols.append_array(row.get("colors", PackedColorArray()))
 		uvs.append_array(row.get("uvs", PackedVector2Array()))
-	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
+		if bool(row.get("smooth", false)):
+			want_smooth = true
+	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3), "smooth": want_smooth}
 
 
 static func border_vertices(field: Heightfield, chunk_a: Vector2i, chunk_b: Vector2i) -> Array:
@@ -185,13 +191,12 @@ static func build_slab(field: Heightfield, skip_top: Dictionary = {}) -> Diction
 	if field.visual_loops.is_empty():
 		field.apply_coast_smooth()
 	var profile := [
-		[-1.70, 0.03, 0.88],
-		[-0.85, 0.01, 0.82],
-		[-0.28, -0.01, 0.70],
-		[0.06, -0.06, 0.48],
-		[0.28, -0.14, 0.28],
-		[0.40, -0.26, 0.16],
-		[0.22, SLAB_BOTTOM, 0.14],
+		[-1.40, 0.03, 0.88],
+		[-0.65, 0.01, 0.82],
+		[-0.16, -0.005, 0.68],
+		[0.04, -0.045, 0.46],
+		[0.11, -0.11, 0.24],
+		[0.05, SLAB_BOTTOM, 0.14],
 	]
 	for loop in field.visual_loops:
 		if loop.size() < 6:
@@ -250,12 +255,11 @@ static func build_lake_bank(field: Heightfield, lake: Dictionary) -> Dictionary:
 			if poly.size() >= 4:
 				loops.append(poly)
 	var profile := [
-		[0.22, 0.03, 0.20],
-		[0.08, -0.02, 0.16],
-		[-0.02, -0.07, 0.14],
-		[-0.12, level - 0.02, 0.12],
+		[0.18, 0.02, 0.46],
+		[0.06, -0.02, 0.34],
+		[-0.02, -0.06, 0.22],
+		[-0.10, level - 0.02, 0.18],
 	]
-	var earth := Color(0.80, 0.18, 0.0, 1.0)
 	for loop in loops:
 		var poly := PackedVector2Array()
 		if loop.size() > 0 and loop[0] is Vector3:
@@ -290,14 +294,16 @@ static func build_lake_bank(field: Heightfield, lake: Dictionary) -> Dictionary:
 			rings.append(ring)
 		var n := (rings[0] as Array).size()
 		for k in range(rings.size() - 1):
+			var grass := float(profile[k + 1][2])
+			var color := Color(0.62, grass, 0.0, 1.0)
 			for i in n:
 				var a: Vector3 = rings[k][i]
 				var b: Vector3 = rings[k][(i + 1) % n]
 				var c: Vector3 = rings[k + 1][(i + 1) % n]
 				var d: Vector3 = rings[k + 1][i]
-				_solid(verts, norms, cols, uvs, a, b, c, earth, Vector3.UP)
-				_solid(verts, norms, cols, uvs, a, c, d, earth, Vector3.UP)
-	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
+				_solid(verts, norms, cols, uvs, a, b, c, color, Vector3.UP)
+				_solid(verts, norms, cols, uvs, a, c, d, color, Vector3.UP)
+	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3), "smooth": true}
 
 
 static func build_core(field: Heightfield) -> Dictionary:
@@ -308,7 +314,7 @@ static func build_core(field: Heightfield) -> Dictionary:
 	var uvs := PackedVector2Array()
 	if field.visual_loops.is_empty():
 		field.apply_coast_smooth()
-	var color := Color(0.55, 0.0, 1.0, 1.0)
+	var color := Color(0.48, 0.0, 1.0, 1.0)
 	for loop in field.visual_loops:
 		if loop.size() < 6:
 			continue
@@ -320,9 +326,9 @@ static func build_core(field: Heightfield) -> Dictionary:
 		var bot: Array = []
 		for raw_p in loop:
 			var p: Vector2 = raw_p
-			var q: Vector2 = mid + (p - mid) * 0.90
-			top.append(Vector3(q.x, -0.70, q.y))
-			bot.append(Vector3(mid.x + (q.x - mid.x) * 0.18, field.y_bottom - 0.55, mid.y + (q.y - mid.y) * 0.18))
+			var q: Vector2 = mid + (p - mid) * 0.38
+			top.append(Vector3(q.x, -0.95, q.y))
+			bot.append(Vector3(mid.x + (q.x - mid.x) * 0.10, field.y_bottom - 0.20, mid.y + (q.y - mid.y) * 0.10))
 		var n := top.size()
 		for i in n:
 			var a: Vector3 = top[i]
@@ -547,7 +553,7 @@ static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: 
 		if concave:
 			p += outward * (-0.08 - 0.52 * t * t)
 		else:
-			p += inward * (0.10 * t + 0.55 * t * t)
+			p += inward * (0.28 * t + 0.95 * t * t)
 		if p.y > top.y - 0.02:
 			p.y = top.y - 0.02
 		if p.y < bot.y + 0.02:
@@ -876,8 +882,9 @@ static func _solid_uv(verts: PackedVector3Array, norms: PackedVector3Array, cols
 		uv_b = uv_c
 		uv_c = tmp_uv
 		n = -n
-	# Light with the geometric slope, facing the outside hemisphere.
-	var lit := -n.normalized()
+	# Tops / banks: force the authored outside so basin fans and bank wedges
+	# do not pick up per-triangle geometric lighting.
+	var lit := outside.normalized() if absf(outside.y) > 0.85 else -n.normalized()
 	if lit.dot(outside) < 0.0:
 		lit = -lit
 	if lit.length_squared() < 0.25:
@@ -907,6 +914,30 @@ static func _count_edge(counts: Dictionary, a: Vector3, b: Vector3, tol: float) 
 static func _key(p: Vector3, tol: float) -> String:
 	var s := 1.0 / maxf(tol, 1e-5)
 	return "%d,%d,%d" % [int(round(p.x * s)), int(round(p.y * s)), int(round(p.z * s))]
+
+
+static func _shared_normals(verts: PackedVector3Array) -> PackedVector3Array:
+	var acc: Dictionary = {}
+	var keys: PackedStringArray = PackedStringArray()
+	keys.resize(verts.size())
+	for i in verts.size():
+		var k := _key(verts[i], 0.025)
+		keys[i] = k
+		if not acc.has(k):
+			acc[k] = Vector3.ZERO
+	for i in range(0, verts.size(), 3):
+		var fn := (verts[i + 1] - verts[i]).cross(verts[i + 2] - verts[i])
+		if fn.length_squared() < 1e-10:
+			continue
+		fn = fn.normalized()
+		for j in 3:
+			acc[keys[i + j]] = (acc[keys[i + j]] as Vector3) + fn
+	var out := PackedVector3Array()
+	out.resize(verts.size())
+	for i in verts.size():
+		var n: Vector3 = acc[keys[i]]
+		out[i] = n.normalized() if n.length_squared() > 1e-8 else Vector3.UP
+	return out
 
 
 static func _empty() -> ArrayMesh:

@@ -171,15 +171,12 @@ func _time_stroke(terrain: Node3D) -> void:
 	if main == null or main.field == null:
 		return
 	var field = main.field
-	field.apply_brush("smooth", Vector3(2.4, 0.0, 1.8), 0.9, 0.12, true)
-	field.apply_coast_smooth()
-	var span := HeightfieldMesh.chunk_range(field)
+	var applied: Dictionary = field.apply_brush("smooth", Vector3(2.4, 0.0, 1.8), 0.9, 0.12, true)
+	main.mark_stroke(applied.get("rect", Rect2i()))
 	var t0 := Time.get_ticks_usec()
-	for z in span.y:
-		for x in span.x:
-			HeightfieldMesh.build_chunk(field, Vector2i(x, z), "top", main.skip_top)
+	main.end_stroke()
 	main.last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
-	main.rebuild_full(true)
+	main.flush_rebuild()
 
 
 func _sculpt_demo(terrain: Node3D) -> void:

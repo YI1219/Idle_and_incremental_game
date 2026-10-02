@@ -49,6 +49,8 @@ var _hang_mms: Dictionary = {}
 var _root_mmi: MultiMeshInstance3D
 var _top_dirty: Dictionary = {}
 var _shell_dirty := false
+var _rocks_deferred := false
+var _last_outline := PackedVector2Array()
 var _top_wait := 0.0
 var _tasks: Array = []
 var _job_box: Array = []
@@ -96,7 +98,8 @@ func _ensure_nodes() -> void:
 	_fall_material = _make_fall_material()
 	_water_node.material_override = _water_material
 	_slab_node.material_override = _material
-	_core_node.material_override = _material
+	RockKit.ensure()
+	_core_node.material_override = RockKit.rock_material
 	_bank_node.material_override = _material
 	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("8fb56e")))
 	_tuft_mm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -210,11 +213,19 @@ func flush_bake() -> void:
 func flush_rebuild() -> void:
 	_finish_tasks()
 	if _shell_dirty or not _top_dirty.is_empty() or _chunks.is_empty():
+		_rocks_deferred = false
 		rebuild_full(true)
+		return
+	if _rocks_deferred or rock_state.is_empty():
+		_rocks_deferred = false
+		_scatter_rocks()
 
 
 func _process(delta: float) -> void:
 	_finish_tasks()
+	if _rocks_deferred:
+		_rocks_deferred = false
+		_scatter_rocks()
 	if _top_dirty.is_empty() or _shell_dirty:
 		return
 	_top_wait -= delta
@@ -224,6 +235,7 @@ func _process(delta: float) -> void:
 
 
 func mark_stroke(rect: Rect2i) -> void:
+	## Tops only. Kit rocks wait for stroke release so a dab stays under ~16 ms.
 	var cs := Heightfield.CHUNK
 	var x0 := int(floor(float(rect.position.x) / float(cs)))
 	var z0 := int(floor(float(rect.position.y) / float(cs)))
@@ -232,13 +244,23 @@ func mark_stroke(rect: Rect2i) -> void:
 	for z in range(z0, z1 + 1):
 		for x in range(x0, x1 + 1):
 			_top_dirty[Vector2i(x, z)] = true
-	_shell_dirty = true
 	if _top_wait <= 0.0:
 		_top_wait = 1.0 / TOP_HZ
 
 
 func end_stroke() -> void:
-	rebuild_full(false)
+	if field == null:
+		return
+	var t0 := Time.get_ticks_usec()
+	field.apply_coast_smooth()
+	if not _top_dirty.is_empty():
+		_rebuild_tops(true)
+	_rebuild_water()
+	if _outline_moved():
+		_rebuild_slab()
+		_rocks_deferred = true
+	last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
+	_shell_dirty = false
 
 
 func rebuild_full(sync: bool = false) -> void:
@@ -261,6 +283,7 @@ func rebuild_full(sync: bool = false) -> void:
 		last_full_ms = float(Time.get_ticks_usec() - t0) / 1000.0
 		_top_dirty.clear()
 		_shell_dirty = false
+		_rocks_deferred = false
 		return
 	var box := [{"serial": _serial, "jobs": jobs, "mode": mode, "skip": skip_top.duplicate(), "field": field.duplicate_field(), "result": []}]
 	_job_box = box
@@ -429,7 +452,8 @@ func _rebuild_slab() -> void:
 	if _core_node:
 		var core: Dictionary = HeightfieldMesh.build_core(field)
 		_core_node.mesh = HeightfieldMesh.make_mesh(core)
-		_core_node.material_override = _material
+		RockKit.ensure()
+		_core_node.material_override = RockKit.rock_material
 		_core_node.visible = true
 
 
@@ -445,9 +469,22 @@ func _scatter_rocks() -> void:
 	if RockUnderside.any_floating(rock_state, outline):
 		rock_state = RockUnderside.assemble(outline, field.seed, far)
 	_sync_hang_mms(rock_state)
+	_last_outline = outline.duplicate()
 	last_rock_count = int(rock_state.get("piece_count", 0))
 	last_rock_tris = RockUnderside.triangle_count(rock_state)
 	print("kit rocks=%d tris=%d far=%s" % [last_rock_count, last_rock_tris, far])
+
+
+func _outline_moved() -> bool:
+	if field == null:
+		return false
+	var outline := field.primary_loop()
+	if outline.size() != _last_outline.size() or outline.size() < 4:
+		return true
+	for i in outline.size():
+		if outline[i].distance_to(_last_outline[i]) > 0.08:
+			return true
+	return false
 
 
 func _sync_hang_mms(state: Dictionary) -> void:
@@ -529,7 +566,8 @@ func _apply_material() -> void:
 	if _slab_node:
 		_slab_node.material_override = _material
 	if _core_node:
-		_core_node.material_override = _material
+		RockKit.ensure()
+		_core_node.material_override = RockKit.rock_material
 	if _bank_node:
 		_bank_node.material_override = _material
 
@@ -798,7 +836,7 @@ func _kit_node(p_name: String) -> MultiMeshInstance3D:
 	if piece.is_empty() or piece.get("mesh") == null:
 		return null
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color("b39a82")
+	mat.albedo_color = Color("6e6258")
 	mat.roughness = 0.92
 	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED

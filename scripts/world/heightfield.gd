@@ -439,7 +439,8 @@ func _snap_rim_to_loops() -> void:
 				var mid := land_centroid()
 				var radial := best - mid
 				if radial.length_squared() > 1e-6:
-					best += radial.normalized() * 0.78
+					# Thin grass overhang only. Run 6 grew 0.78 m and still left a rocky crown.
+					best += radial.normalized() * 0.06
 				rim_shift[Vector2i(ix, iz)] = best - p
 
 
@@ -915,8 +916,8 @@ func visual_bank_dip(ix: int, iz: int) -> float:
 		if not in_vertex(nx, nz):
 			continue
 		var nh := height_at(nx, nz)
-		if h - nh > 0.14:
-			dip = maxf(dip, (h - nh) * 0.32)
+		if h - nh > 0.18:
+			dip = maxf(dip, (h - nh) * 0.10)
 	return dip
 
 
