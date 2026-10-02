@@ -337,8 +337,8 @@ func _rebuild_islands() -> void:
 		else:
 			field = field.duplicate_field()
 			field.apply_play_cells(group, false)
-			field.stamp_rounded_blob()
-			field.organicize_coast()
+			## Keep sculpted H. Visual rounding is the SDF contour, not a remask.
+			field.apply_coast_smooth()
 		var built := {
 			"cells": group,
 			"field": field,

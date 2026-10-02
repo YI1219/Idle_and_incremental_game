@@ -131,11 +131,12 @@ static func build_water(field: Heightfield, lake: Dictionary) -> Dictionary:
 		var poly := PackedVector2Array()
 		if loop.size() > 0 and loop[0] is Vector3:
 			var ring: Array = _smooth_loop(loop)
-			for p in ring:
-				poly.append(Vector2(p.x, p.z))
+			for raw_p in ring:
+				var p3: Vector3 = raw_p
+				poly.append(Vector2(p3.x, p3.z))
 		else:
-			for p in loop:
-				poly.append(p)
+			for raw_p in loop:
+				poly.append(raw_p as Vector2)
 		if poly.size() < 3:
 			continue
 		var grown: Array = Geometry2D.offset_polygon(poly, 0.06, Geometry2D.JOIN_ROUND)
@@ -196,16 +197,17 @@ static func build_slab(field: Heightfield, skip_top: Dictionary = {}) -> Diction
 		if loop.size() < 6:
 			continue
 		var mid := Vector2.ZERO
-		for p in loop:
-			mid += p
+		for raw_p in loop:
+			mid += raw_p as Vector2
 		mid /= float(loop.size())
 		var rings: Array = []
 		for row in profile:
 			var ring: Array = []
-			for p in loop:
-				var radial := p - mid
-				var rlen := radial.length()
-				var q := p if rlen < 1e-4 else mid + radial * ((rlen + float(row[0])) / rlen)
+			for raw_p in loop:
+				var p: Vector2 = raw_p
+				var radial: Vector2 = p - mid
+				var rlen: float = radial.length()
+				var q: Vector2 = p if rlen < 1e-4 else mid + radial * ((rlen + float(row[0])) / rlen)
 				var h := field.sample_height(Vector3(q.x, 0.0, q.y))
 				if not is_finite(h):
 					h = 0.0
@@ -257,11 +259,12 @@ static func build_lake_bank(field: Heightfield, lake: Dictionary) -> Dictionary:
 	for loop in loops:
 		var poly := PackedVector2Array()
 		if loop.size() > 0 and loop[0] is Vector3:
-			for p in loop:
-				poly.append(Vector2(p.x, p.z))
+			for raw_p in loop:
+				var p3: Vector3 = raw_p
+				poly.append(Vector2(p3.x, p3.z))
 		else:
-			for p in loop:
-				poly.append(p)
+			for raw_p in loop:
+				poly.append(raw_p as Vector2)
 		if poly.size() < 4:
 			continue
 		poly = _resample_poly(poly, 56)
@@ -310,12 +313,13 @@ static func build_core(field: Heightfield) -> Dictionary:
 		if loop.size() < 6:
 			continue
 		var mid := Vector2.ZERO
-		for p in loop:
-			mid += p
+		for raw_p in loop:
+			mid += raw_p as Vector2
 		mid /= float(loop.size())
 		var top: Array = []
 		var bot: Array = []
-		for p in loop:
+		for raw_p in loop:
+			var p: Vector2 = raw_p
 			var q: Vector2 = mid + (p - mid) * 0.90
 			top.append(Vector3(q.x, -0.70, q.y))
 			bot.append(Vector3(mid.x + (q.x - mid.x) * 0.18, field.y_bottom - 0.55, mid.y + (q.y - mid.y) * 0.18))
