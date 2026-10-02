@@ -1,9 +1,10 @@
 extends SceneTree
-## Screenshots for the heightfield island pass. Not art acceptance.
+## Screenshots from the play camera. Not art acceptance.
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
 const OUT := "res://art/review/heightfield/2026-10-02"
+const ARTIFACTS := "/opt/cursor/artifacts"
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -12,123 +13,173 @@ func frames(n: int) -> void:
 	for i in n:
 		await process_frame
 
-var _shot_cam: Camera3D
-
 func shot(path: String) -> void:
-	if _shot_cam:
-		_shot_cam.make_current()
-	await frames(10)
-	if _shot_cam:
-		_shot_cam.make_current()
+	await frames(14)
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(path)
+	var img := root.get_texture().get_image()
+	img.save_png(path)
+	var name := String(path).get_file()
+	img.save_png(ARTIFACTS + "/" + name)
 	print("wrote ", path)
 
 func run() -> void:
 	root.size = Vector2i(1280, 720)
 	DirAccess.make_dir_recursive_absolute(OUT)
+	DirAccess.make_dir_recursive_absolute(ARTIFACTS)
 	var scene: Node = load("res://scenes/play.tscn").instantiate()
 	root.add_child(scene)
-	await frames(36)
+	await frames(40)
+	SpaceState.space_id = "outside"
 	var rig: Node3D = get_first_node_in_group("camera_rig")
 	var builder: Node3D = get_first_node_in_group("sandbox_builder")
 	var island: Node3D = get_first_node_in_group("island_shell")
+	var player: Node3D = get_first_node_in_group("player")
 	var terrain: Node3D = island.terrain
 	if builder:
 		builder.set_active(false)
+	if player:
+		player.visible = true
 	terrain.flush_rebuild()
-	rig.set_physics_process(false)
-	var play_cam := rig.get_node_or_null("Camera3D") as Camera3D
-	if play_cam:
-		play_cam.current = false
-	var arena: Node = scene.find_child("PracticeArena", true, false)
-	if arena:
-		arena.visible = false
-	var shot_cam := Camera3D.new()
-	shot_cam.name = "ShotCam"
-	shot_cam.near = 1.2
-	shot_cam.far = 240.0
-	scene.add_child(shot_cam)
-	_shot_cam = shot_cam
-	shot_cam.make_current()
-	_aim(shot_cam, Vector3(8.5, 14.0, 12.0), Vector3(0.0, -0.4, 0.0), 42)
+	_restore_pitch(rig)
+	_play_view(rig, player, Vector3(0.6, 0.0, 3.2), 22.0, 1)
 	await shot(OUT + "/overview.png")
 
-	_sculpt_demo(terrain, island)
+	_sculpt_demo(terrain)
 	terrain.flush_rebuild()
 	await frames(8)
-	if scene.get("house"):
-		(scene.house as Node3D).visible = false
-	var player: Node3D = get_first_node_in_group("player")
-	if player:
-		player.visible = false
 
-	_aim(shot_cam, Vector3(-6.4, 3.8, 4.8), Vector3(-3.4, 0.6, 1.3), 38)
+	_play_view(rig, player, Vector3(-4.2, 0.0, 2.4), 9.0, 2)
 	await shot(OUT + "/closeup_slope.png")
 
-	_aim(shot_cam, Vector3(3.4, 6.4, -6.2), Vector3(1.2, -0.4, -3.2), 40)
+	_play_view(rig, player, Vector3(1.4, 0.0, -3.6), 10.0, 6)
 	await shot(OUT + "/lake.png")
 
-	_aim(shot_cam, Vector3(3.2, 1.8, 6.6), Vector3(0.4, -1.8, 2.6), 36)
+	_play_view(rig, player, Vector3(0.2, 0.0, 4.2), 10.0, 0)
 	await shot(OUT + "/hole_waterfall.png")
 
 	if builder:
 		builder.set_active(true)
-		builder.commit_place("tree", Vector2i(-2, -5))
+		builder.commit_place("tree", Vector2i(-3, -5))
 		builder.set_active(false)
 	terrain.flush_rebuild()
-	_aim(shot_cam, Vector3(-2.0, 5.6, -9.5), Vector3(-2.0, 0.2, -5.0), 38)
+	_play_view(rig, player, Vector3(-3.0, 0.0, -4.8), 10.0, 5)
 	await shot(OUT + "/placed_building.png")
 
-	_aim(shot_cam, Vector3(-12.0, -2.8, 10.0), Vector3(0.5, -3.5, 0.8), 42)
+	_low_side(rig, player, Vector3(5.4, 0.0, 1.0), 15.0, 2)
+	await shot(OUT + "/low_side.png")
+	_restore_pitch(rig)
+
+	_side_view(rig, player, Vector3(-10.0, -1.2, 8.0), Vector3(0.4, -2.8, 0.4), 40.0)
 	await shot(OUT + "/underside.png")
+	if player:
+		player.visible = true
+	rig.set_physics_process(true)
+	_restore_pitch(rig)
 
 	var playable: Dictionary = terrain.heightfield_stats()
 	_print_stats("playable", playable)
 
-	for x in range(-12, 12):
-		for z in range(-11, 11):
-			terrain.land_cells[Vector2i(x, z)] = true
+	terrain.land_cells.clear()
+	for cell in _blob_cells(Vector2i(0, 0), 12, 10, 3):
+		terrain.land_cells[cell] = true
 	terrain.rebuild()
 	terrain.flush_rebuild()
-	await frames(6)
+	await frames(8)
 	var large: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x island", large)
-	_aim(shot_cam, Vector3(-22.0, 16.0, 26.0), Vector3(0.0, -1.0, 0.0), 38)
+	_play_view(rig, player, Vector3(0.0, 0.0, 2.0), 28.0, 1)
 	await shot(OUT + "/large_island.png")
 
 	var offsets := [
 		Vector2i(28, 0), Vector2i(-30, 4), Vector2i(6, 28), Vector2i(-8, -30),
 		Vector2i(26, 22), Vector2i(-26, -24), Vector2i(30, -20),
 	]
+	var seed_i := 11
 	for off in offsets:
-		for x in range(off.x, off.x + 5):
-			for z in range(off.y, off.y + 4):
-				terrain.land_cells[Vector2i(x, z)] = true
+		for cell in _blob_cells(off, 4, 3, seed_i):
+			terrain.land_cells[cell] = true
+		seed_i += 5
 	terrain.rebuild()
 	terrain.flush_rebuild()
-	await frames(6)
+	await frames(8)
 	var multi: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x + 7 satellites", multi)
-	_aim(shot_cam, Vector3(-8.0, 42.0, 54.0), Vector3(2.0, -1.0, 0.0), 46)
+	_play_view(rig, player, Vector3(0.0, 0.0, 2.0), 32.0, 1)
 	await shot(OUT + "/multi_island.png")
 	quit()
 
 
-func _sculpt_demo(terrain: Node3D, island: Node3D) -> void:
+func _blob_cells(center: Vector2i, rx: int, rz: int, seed: int) -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	for z in range(center.y - rz, center.y + rz + 1):
+		for x in range(center.x - rx, center.x + rx + 1):
+			var nx := float(x - center.x) / float(maxi(rx, 1))
+			var nz := float(z - center.y) / float(maxi(rz, 1))
+			var nse := Heightfield._hash2(float(x) * 0.37 + float(seed), float(z) * 0.29)
+			if pow(absf(nx), 2.1) + pow(absf(nz), 2.1) <= 0.92 + (nse.x - 0.5) * 0.22:
+				out.append(Vector2i(x, z))
+	return out
+
+
+func _play_view(rig: Node3D, player: Node3D, at: Vector3, distance: float, yaw_index: int = 1) -> void:
+	if player:
+		var y := 0.0
+		var island: Node3D = get_first_node_in_group("island_shell")
+		if island and island.terrain and island.terrain.has_method("sample_height"):
+			var h: float = island.terrain.sample_height(at)
+			if is_finite(h):
+				y = h
+		player.global_position = Vector3(at.x, y, at.z)
+		player.visible = true
+	rig._yaw_index = yaw_index
+	rig._distance = distance
+	rig._pan_goal = Vector3.ZERO
+	rig.snap_to_target()
+	for i in 8:
+		rig._apply(true)
+
+
+func _low_side(rig: Node3D, player: Node3D, at: Vector3, distance: float, yaw_index: int) -> void:
+	rig.near_pitch_deg = 16.0
+	rig.pitch_deg = 18.0
+	rig.far_pitch_deg = 20.0
+	_play_view(rig, player, at, distance, yaw_index)
+
+
+func _restore_pitch(rig: Node3D) -> void:
+	rig.near_pitch_deg = 38.0
+	rig.pitch_deg = 50.0
+	rig.far_pitch_deg = 58.0
+
+
+func _side_view(rig: Node3D, player: Node3D, from: Vector3, look: Vector3, fov: float) -> void:
+	rig.set_physics_process(false)
+	var cam := rig.get_node_or_null("Camera3D") as Camera3D
+	if cam == null:
+		return
+	var xform := Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
+	rig.global_transform = xform
+	cam.transform = Transform3D.IDENTITY
+	cam.fov = fov
+	cam.near = 1.2
+	cam.far = 240.0
+	cam.make_current()
+	if player:
+		player.visible = false
+
+
+func _sculpt_demo(terrain: Node3D) -> void:
 	var main: Node3D = terrain.get_node("Islands").get_child(0)
 	if main == null or main.field == null:
 		return
 	var field = main.field
-	# Slope for grass→rock closeup.
 	field.apply_brush("raise", Vector3(-3.2, 0.0, 1.2), 2.4, 1.6, true)
 	field.apply_brush("raise", Vector3(-3.6, 0.0, 1.6), 1.4, 1.2, true)
-	# Extra closed pit near the river for a readable lake.
 	for p in [Vector3(1.2, 0.0, -3.4), Vector3(1.6, 0.0, -3.0), Vector3(0.8, 0.0, -3.0)]:
 		field.apply_brush("lower", p, 1.3, 1.1, true)
-	# Through-hole near the south rim so water can fall into the cloud sea.
 	for _i in 6:
 		field.apply_brush("lower", Vector3(0.4, 0.0, 2.8), 1.0, 1.4, true)
+	field.apply_coast_smooth()
 	var span := HeightfieldMesh.chunk_range(field)
 	var t0 := Time.get_ticks_usec()
 	for z in span.y:
@@ -136,20 +187,6 @@ func _sculpt_demo(terrain: Node3D, island: Node3D) -> void:
 			HeightfieldMesh.build_chunk(field, Vector2i(x, z), "top", main.skip_top)
 	main.last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
 	main.rebuild_full(true)
-
-
-func _aim(cam: Camera3D, from: Vector3, look: Vector3, fov: float) -> void:
-	var forward := look - from
-	if forward.length_squared() < 1e-6:
-		look += Vector3(0.2, -0.2, 0.2)
-		forward = look - from
-	if absf(forward.normalized().dot(Vector3.UP)) > 0.92:
-		look += Vector3(0.4, 0.0, 0.4)
-	cam.fov = fov
-	cam.near = 1.2
-	cam.far = 240.0
-	cam.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
-	cam.make_current()
 
 
 func _print_stats(label: String, stats: Dictionary) -> void:

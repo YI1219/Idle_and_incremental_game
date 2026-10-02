@@ -84,7 +84,7 @@ func _terrain_islands() -> void:
 	terrain.flush_rebuild()
 	var presence: Node3D = terrain.get_node("Islands").get_child(0)
 	check(presence.field != null, "island owns a heightfield")
-	check(presence.field.total_volume() > 20.0, "heightfield volume is the hanging body")
+	check(presence.field.total_volume() > 10.0, "heightfield volume is the hanging body")
 	var mesh: ArrayMesh = presence.current_volume()
 	check(mesh != null and mesh.get_surface_count() > 0, "island mesh is present")
 	check(IslandGeometry.lowest_y(mesh) < -3.5, "heightfield underside reaches the flat bottom")

@@ -23,6 +23,8 @@ func _initialize() -> void:
 	_water()
 	_flatten()
 	_determinism()
+	_winding()
+	_organic_mask()
 	print("HEIGHTFIELD CHECKS: %d/%d passed, failures=%d" % [checks - failures, checks, failures])
 	quit(1 if failures else 0)
 
@@ -137,3 +139,39 @@ func _determinism() -> void:
 	var pa := HeightfieldMesh.build_chunk(a, Vector2i(0, 0), "top")
 	var pb := HeightfieldMesh.build_chunk(b, Vector2i(0, 0), "top")
 	check(pa["vertices"] == pb["vertices"], "mesh vertices are deterministic")
+
+
+func _winding() -> void:
+	var field := _rect_field(4, 4, 2)
+	var top := HeightfieldMesh.build_chunk(field, Vector2i(0, 0), "top")
+	var tv: PackedVector3Array = top["vertices"]
+	check(tv.size() >= 3, "flat top emits triangles")
+	if tv.size() >= 3:
+		var n: Vector3 = (tv[1] - tv[0]).cross(tv[2] - tv[0])
+		check(n.y < 0.0, "top winding is clockwise from above (Godot front)")
+	var full := HeightfieldMesh.build_chunk(field, Vector2i(0, 0), "full")
+	var fv: PackedVector3Array = full["vertices"]
+	var bottom_ok := false
+	for i in range(0, fv.size() - 2, 3):
+		if fv[i].y > -3.5:
+			continue
+		var bn: Vector3 = (fv[i + 1] - fv[i]).cross(fv[i + 2] - fv[i])
+		bottom_ok = bn.y > 0.0
+		break
+	check(bottom_ok, "bottom winding is clockwise from below")
+
+
+func _organic_mask() -> void:
+	var field := _rect_field(8, 6, 4)
+	var before := field.land_cell_count()
+	field.stamp_rounded_blob()
+	field.organicize_coast()
+	check(field.land_cell_count() <= before, "organic coast never grows past the play rectangle")
+	check(field.land_cell_count() >= 8, "blob stamp keeps a usable island")
+	var payloads: Array = []
+	var span := HeightfieldMesh.chunk_range(field)
+	for z in span.y:
+		for x in span.x:
+			payloads.append(HeightfieldMesh.build_chunk(field, Vector2i(x, z), "full"))
+	var closed := HeightfieldMesh.combine(payloads)
+	check(HeightfieldMesh.odd_edge_ratio(closed) < 0.02, "organic rim stays a closed mesh")

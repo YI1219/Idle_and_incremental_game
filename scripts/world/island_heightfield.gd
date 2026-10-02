@@ -3,7 +3,6 @@ extends Node3D
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
-const RockKit := preload("res://scripts/world/rock_kit.gd")
 
 const FAR_ENTER := 42.0
 const FAR_LEAVE := 32.0
@@ -196,6 +195,7 @@ func end_stroke() -> void:
 func rebuild_full(sync: bool = false) -> void:
 	if field == null:
 		return
+	field.apply_coast_smooth()
 	_serial += 1
 	var t0 := Time.get_ticks_usec()
 	var span := HeightfieldMesh.chunk_range(field)
@@ -324,82 +324,46 @@ func _rebuild_water() -> void:
 		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		_fall_root.add_child(mesh)
 		var dust := GPUParticles3D.new()
-		dust.amount = 24
-		dust.lifetime = 1.6
+		dust.amount = 40
+		dust.lifetime = 1.8
 		dust.position = site["origin"]
 		var mat := ParticleProcessMaterial.new()
 		mat.direction = Vector3(site["outward"].x, -1.0, site["outward"].z)
-		mat.initial_velocity_min = 1.4
-		mat.initial_velocity_max = 2.4
-		mat.gravity = Vector3(0.0, -6.0, 0.0)
-		mat.scale_min = 0.04
-		mat.scale_max = 0.09
-		mat.color = Color(0.55, 0.75, 0.72, 0.7)
+		mat.initial_velocity_min = 1.6
+		mat.initial_velocity_max = 2.8
+		mat.gravity = Vector3(0.0, -7.0, 0.0)
+		mat.scale_min = 0.05
+		mat.scale_max = 0.12
+		mat.color = Color(0.82, 0.92, 0.90, 0.75)
 		dust.process_material = mat
 		dust.draw_pass_1 = SphereMesh.new()
-		(dust.draw_pass_1 as SphereMesh).radius = 0.05
-		(dust.draw_pass_1 as SphereMesh).height = 0.1
+		(dust.draw_pass_1 as SphereMesh).radius = 0.06
+		(dust.draw_pass_1 as SphereMesh).height = 0.12
 		_fall_root.add_child(dust)
+		var mist := GPUParticles3D.new()
+		mist.amount = 36
+		mist.lifetime = 2.2
+		mist.position = Vector3(site["origin"].x, SEA_Y + 1.2, site["origin"].z) + site["outward"] * 0.4
+		var mist_mat := ParticleProcessMaterial.new()
+		mist_mat.direction = Vector3(0.0, 1.0, 0.0)
+		mist_mat.initial_velocity_min = 0.15
+		mist_mat.initial_velocity_max = 0.45
+		mist_mat.gravity = Vector3(0.0, 0.15, 0.0)
+		mist_mat.scale_min = 0.12
+		mist_mat.scale_max = 0.28
+		mist_mat.color = Color(0.90, 0.94, 0.96, 0.45)
+		mist.process_material = mist_mat
+		mist.draw_pass_1 = SphereMesh.new()
+		(mist.draw_pass_1 as SphereMesh).radius = 0.16
+		(mist.draw_pass_1 as SphereMesh).height = 0.32
+		_fall_root.add_child(mist)
 
 
 func _scatter_rocks() -> void:
-	RockKit.ensure()
 	for child in _rock_root.get_children():
 		child.free()
-	if field == null or RockKit.names.is_empty():
-		return
-	var slots: Array = []
-	for cz in field.cells_z():
-		for cx in field.cells_x():
-			if not field.is_land(cx, cz):
-				continue
-			var a := field.world_vertex(cx, cz)
-			var b := field.world_vertex(cx + 1, cz)
-			var c := field.world_vertex(cx + 1, cz + 1)
-			var n := (c - a).cross(b - a)
-			if n.length_squared() < 1e-8:
-				continue
-			n = n.normalized()
-			if n.y < 0.0:
-				n = -n
-			if n.y > 0.52:
-				continue
-			var h := Heightfield._hash_int(cx * 101 + cz * 917 + field.seed)
-			if (h % 7) != 0:
-				continue
-			var name := RockKit.names[absi(h) % RockKit.names.size()]
-			var mid := (a + b + c) / 3.0
-			var xf := Transform3D()
-			xf.origin = mid - n * 0.38
-			var scale := 0.35 + float(absi(h) % 40) * 0.004
-			var up := Vector3.UP
-			if absf((-n).dot(up)) > 0.92:
-				up = Vector3.RIGHT
-			xf.basis = Basis.looking_at(-n, up).scaled(Vector3(scale, scale, scale))
-			slots.append({"name": name, "xf": xf})
-	var grouped: Dictionary = {}
-	for slot in slots:
-		var key := String(slot["name"])
-		if not grouped.has(key):
-			grouped[key] = []
-		(grouped[key] as Array).append(slot)
-	for name in grouped.keys():
-		var rows: Array = grouped[name]
-		var info: Dictionary = RockKit.piece(name)
-		if info.is_empty():
-			continue
-		var multi := MultiMesh.new()
-		multi.transform_format = MultiMesh.TRANSFORM_3D
-		multi.mesh = info.get("mesh")
-		multi.instance_count = rows.size()
-		for i in rows.size():
-			multi.set_instance_transform(i, rows[i]["xf"])
-		var mmi := MultiMeshInstance3D.new()
-		mmi.multimesh = multi
-		mmi.material_override = RockKit.rock_material
-		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		_rock_root.add_child(mmi)
-	last_draw_calls += _rock_root.get_child_count()
+	# Kit rocks stay off until they sit 0.3–0.8 m on steep faces, 30–50% embedded,
+	# and never hang under y_bottom.
 
 
 func _compute_centroid() -> Vector3:

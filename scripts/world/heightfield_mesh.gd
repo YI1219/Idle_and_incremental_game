@@ -3,7 +3,7 @@ extends Object
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const WALL_RINGS := 4
-const LIP := 0.08
+const LIP := 0.12
 const ROCK_SLOPE := 0.55
 
 
@@ -121,20 +121,43 @@ static func build_water(field: Heightfield, lake: Dictionary) -> Dictionary:
 	var uvs := PackedVector2Array()
 	var level := float(lake.get("level", 0.0))
 	var cells: Array = lake.get("cells", [])
-	for cell in cells:
-		var c: Vector2i = cell
-		if not field.is_land(c.x, c.y):
+	var loops: Array = _lake_loops(field, cells)
+	var color := Color(0.16, 0.44, 0.42, 1.0)
+	var filled := false
+	for loop in loops:
+		var ring: Array = _smooth_loop(loop)
+		if ring.size() < 3:
 			continue
-		var p00 := field.world_vertex(c.x, c.y)
-		var p10 := field.world_vertex(c.x + 1, c.y)
-		var p01 := field.world_vertex(c.x, c.y + 1)
-		var p11 := field.world_vertex(c.x + 1, c.y + 1)
-		p00.y = level
-		p10.y = level
-		p01.y = level
-		p11.y = level
-		_tri(verts, norms, cols, uvs, p00, p10, p11, Color(0.15, 0.42, 0.40, 1.0), false)
-		_tri(verts, norms, cols, uvs, p00, p11, p01, Color(0.15, 0.42, 0.40, 1.0), false)
+		var poly := PackedVector2Array()
+		for p in ring:
+			poly.append(Vector2(p.x, p.z))
+		var grown: Array = Geometry2D.offset_polygon(poly, 0.16, Geometry2D.JOIN_ROUND)
+		if not grown.is_empty() and (grown[0] as PackedVector2Array).size() >= 3:
+			poly = grown[0]
+		var idx := Geometry2D.triangulate_polygon(poly)
+		if idx.size() < 3:
+			continue
+		filled = true
+		for i in range(0, idx.size(), 3):
+			var pa := Vector3(poly[idx[i]].x, level, poly[idx[i]].y)
+			var pb := Vector3(poly[idx[i + 1]].x, level, poly[idx[i + 1]].y)
+			var pc := Vector3(poly[idx[i + 2]].x, level, poly[idx[i + 2]].y)
+			_solid(verts, norms, cols, uvs, pa, pb, pc, color, Vector3.UP)
+	if not filled:
+		for cell in cells:
+			var c: Vector2i = cell
+			if not field.is_land(c.x, c.y):
+				continue
+			var p00 := field.world_vertex(c.x, c.y)
+			var p10 := field.world_vertex(c.x + 1, c.y)
+			var p01 := field.world_vertex(c.x, c.y + 1)
+			var p11 := field.world_vertex(c.x + 1, c.y + 1)
+			p00.y = level
+			p10.y = level
+			p01.y = level
+			p11.y = level
+			_solid(verts, norms, cols, uvs, p00, p10, p11, color, Vector3.UP)
+			_solid(verts, norms, cols, uvs, p00, p11, p01, color, Vector3.UP)
 	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
 
 
@@ -143,16 +166,23 @@ static func build_waterfall(origin: Vector3, outward: Vector3, bottom: float) ->
 	var norms := PackedVector3Array()
 	var cols := PackedColorArray()
 	var uvs := PackedVector2Array()
-	var side := Vector3(-outward.z, 0.0, outward.x) * 0.32
-	var top := origin + outward * 0.08 + Vector3(0.0, 0.04, 0.0)
-	var foot := Vector3(origin.x, bottom, origin.z) + outward * 0.55
+	var side := Vector3(-outward.z, 0.0, outward.x) * 0.95
+	var top := origin + outward * 0.06 + Vector3(0.0, 0.05, 0.0)
+	var foot := Vector3(origin.x, bottom, origin.z) + outward * 0.7
 	var a := top - side
 	var b := top + side
-	var c := foot + side
-	var d := foot - side
-	var color := Color(0.55, 0.82, 0.80, 0.92)
-	_tri(verts, norms, cols, uvs, a, b, c, color, false)
-	_tri(verts, norms, cols, uvs, a, c, d, color, false)
+	var c := foot + side * 0.7
+	var d := foot - side * 0.7
+	var water := Color(0.45, 0.78, 0.76, 1.0)
+	var foam := Color(0.92, 0.96, 0.94, 1.0)
+	_solid(verts, norms, cols, uvs, a, b, c, water, -outward)
+	_solid(verts, norms, cols, uvs, a, c, d, water, -outward)
+	var foam_a := top - side * 1.15 + Vector3(0.0, 0.03, 0.0) - outward * 0.08
+	var foam_b := top + side * 1.15 + Vector3(0.0, 0.03, 0.0) - outward * 0.08
+	var foam_c := top + side * 0.7 + outward * 0.12
+	var foam_d := top - side * 0.7 + outward * 0.12
+	_solid(verts, norms, cols, uvs, foam_a, foam_b, foam_c, foam, Vector3.UP)
+	_solid(verts, norms, cols, uvs, foam_a, foam_c, foam_d, foam, Vector3.UP)
 	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
 
 
@@ -175,11 +205,11 @@ static func _emit_top(field: Heightfield, chunk: Vector2i, verts: PackedVector3A
 			var c := _top_vert(field, mini(cx + step, field.verts_x - 1), mini(cz + step, field.verts_z - 1))
 			var d := _top_vert(field, cx, mini(cz + step, field.verts_z - 1))
 			if field.flip_diagonal(cx, cz):
-				_emit_facet(field, verts, norms, cols, uvs, a, c, b)
-				_emit_facet(field, verts, norms, cols, uvs, a, d, c)
+				_emit_facet(field, verts, norms, cols, uvs, a, b, c)
+				_emit_facet(field, verts, norms, cols, uvs, a, c, d)
 			else:
-				_emit_facet(field, verts, norms, cols, uvs, a, d, b)
-				_emit_facet(field, verts, norms, cols, uvs, b, d, c)
+				_emit_facet(field, verts, norms, cols, uvs, a, b, d)
+				_emit_facet(field, verts, norms, cols, uvs, b, c, d)
 
 
 static func _block_land(field: Heightfield, cx: int, cz: int, step: int) -> bool:
@@ -195,17 +225,9 @@ static func _top_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
 
 
 static func _emit_facet(field: Heightfield, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3) -> void:
-	# Keep authored vertex positions so rim edges match the wall posts.
-	# Chunky rock is the stylized shader + unshared per-face normals.
-	var n := (b - a).cross(c - a)
-	if n.length_squared() < 1e-10:
-		return
-	if n.y < 0.0:
-		var tmp := b
-		b = c
-		c = tmp
-		n = -n
-	_tri(verts, norms, cols, uvs, a, b, c, field.hash_color((a + b + c) / 3.0, n.normalized().y), false)
+	var mid := (a + b + c) / 3.0
+	var inland := field.sample_inland(mid)
+	_solid(verts, norms, cols, uvs, a, b, c, Color(0.0, inland, 1.0 - inland, 1.0), Vector3.UP)
 
 
 static func _emit_walls_and_bottom(field: Heightfield, chunk: Vector2i, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, lod: bool) -> void:
@@ -257,9 +279,10 @@ static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: 
 		var pb: Vector3 = col_b[r]
 		var qa: Vector3 = col_a[r + 1]
 		var qb: Vector3 = col_b[r + 1]
-		var color := field.hash_color((pa + pb + qb) / 3.0, 0.2 if r > 0 else 0.85)
-		_tri_facing(verts, norms, cols, uvs, pa, pb, qb, color, hint)
-		_tri_facing(verts, norms, cols, uvs, pa, qb, qa, color, hint)
+		# Lip is turf; every ring below is rock. No grass bands inside the wall.
+		var color := Color(0.0, 0.85, 0.08, 1.0) if r == 0 else Color(0.0, 0.02, 0.95, 1.0)
+		_solid(verts, norms, cols, uvs, pa, pb, qb, color, hint)
+		_solid(verts, norms, cols, uvs, pa, qb, qa, color, hint)
 
 
 static func _vertex_outward(field: Heightfield, ix: int, iz: int) -> Vector3:
@@ -288,15 +311,16 @@ static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: 
 	var outward := _vertex_outward(field, ix, iz)
 	var col: Array = []
 	col.append(top)
-	# Grass lip sits off the top plane so it cannot z-fight the surface.
-	col.append(top + outward * LIP + Vector3(0.0, 0.018, 0.0))
+	# Grass lip overhangs the wall; rings below taper inward as rock.
+	col.append(top + outward * LIP + Vector3(0.0, 0.02, 0.0))
 	var last := maxi(rings - 1, 2)
 	for r in range(2, last):
 		var t := float(r) / float(last)
 		var sm := t * t * (3.0 - 2.0 * t)
 		var p := top.lerp(bot, sm)
-		p += outward * (0.04 - 0.08 * t)
-		p = field.voronoi_push(p, outward)
+		p += outward * (0.02 - 0.14 * t)
+		var nse := field.jitter_xz(p.x * 0.7 + float(r), p.z * 0.7)
+		p += Vector3(nse.x, 0.0, nse.y) * 0.45
 		col.append(p)
 	col.append(bot)
 	posts[key] = col
@@ -382,7 +406,18 @@ static func _smooth_loop(loop: Array) -> Array:
 			next.append(a.lerp(b, 0.25))
 			next.append(a.lerp(b, 0.75))
 		pts = next
-	return pts
+	if pts.size() < 4:
+		return pts
+	var curve: Array = []
+	var n := pts.size()
+	for i in n:
+		var p0: Vector3 = pts[(i - 1 + n) % n]
+		var p1: Vector3 = pts[i]
+		var p2: Vector3 = pts[(i + 1) % n]
+		var p3: Vector3 = pts[(i + 2) % n]
+		curve.append(p1)
+		curve.append(0.5 * ((2.0 * p1) + (-p0 + p2) * 0.5 + (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3) * 0.25 + (-p0 + 3.0 * p1 - 3.0 * p2 + p3) * 0.125))
+	return curve
 
 
 static func _extrude_loop(field: Heightfield, loop: Array, rings: int, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array) -> void:
@@ -436,7 +471,7 @@ static func _emit_bottom(field: Heightfield, chunk: Vector2i, verts: PackedVecto
 	var z0 := chunk.y * cs
 	var x1 := mini(x0 + cs, field.cells_x())
 	var z1 := mini(z0 + cs, field.cells_z())
-	var color := Color(0.02, 0.08, 0.95, 0.35)
+	var color := Color(0.0, 0.0, 1.0, 1.0)
 	for cz in range(z0, z1):
 		for cx in range(x0, x1):
 			if not field.is_land(cx, cz):
@@ -445,15 +480,17 @@ static func _emit_bottom(field: Heightfield, chunk: Vector2i, verts: PackedVecto
 			var p10 := _bottom_vert(field, cx + 1, cz)
 			var p01 := _bottom_vert(field, cx, cz + 1)
 			var p11 := _bottom_vert(field, cx + 1, cz + 1)
-			# Downward winding so the underside lights from below.
-			_tri(verts, norms, cols, uvs, p00, p11, p10, color, true)
-			_tri(verts, norms, cols, uvs, p00, p01, p11, color, true)
+			_solid(verts, norms, cols, uvs, p00, p10, p11, color, Vector3.DOWN)
+			_solid(verts, norms, cols, uvs, p00, p11, p01, color, Vector3.DOWN)
 
 
 static func _bottom_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
-	var p := field.vertex_world(clampi(ix, 0, field.verts_x - 1), clampi(iz, 0, field.verts_z - 1))
+	var clamped_x := clampi(ix, 0, field.verts_x - 1)
+	var clamped_z := clampi(iz, 0, field.verts_z - 1)
+	var p := field.vertex_world(clamped_x, clamped_z)
 	var j := field.jitter_xz(p.x, p.y)
-	return Vector3(p.x + j.x, field.y_bottom + _bottom_noise(field, p.x, p.y), p.y + j.y)
+	var s := field.coast_shift(clamped_x, clamped_z)
+	return Vector3(p.x + j.x + s.x, field.y_bottom + _bottom_noise(field, p.x, p.y), p.y + j.y + s.y)
 
 
 static func _bottom_noise(field: Heightfield, x: float, z: float) -> float:
@@ -461,30 +498,74 @@ static func _bottom_noise(field: Heightfield, x: float, z: float) -> float:
 	return (h.x - 0.5) * 0.07
 
 
-static func _tri_facing(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, hint: Vector3) -> void:
-	var n := (b - a).cross(c - a)
-	if n.dot(hint) < 0.0:
-		var tmp := b
-		b = c
-		c = tmp
-	_tri(verts, norms, cols, uvs, a, b, c, color, false)
+static func _lake_loops(field: Heightfield, cells: Array) -> Array:
+	var lake: Dictionary = {}
+	for cell in cells:
+		var c: Vector2i = cell
+		if field.is_land(c.x, c.y):
+			lake[c] = true
+	if lake.size() < 3:
+		return []
+	var outgoing: Dictionary = {}
+	for c: Vector2i in lake:
+		for pair in [[0, -1], [1, 0], [0, 1], [-1, 0]]:
+			var nx: int = c.x + int(pair[0])
+			var nz: int = c.y + int(pair[1])
+			if lake.has(Vector2i(nx, nz)):
+				continue
+			_edge_if_open_set(outgoing, c.x, c.y, int(pair[0]), int(pair[1]))
+	return _trace_loops(field, outgoing)
 
 
-static func _tri(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, force_down: bool) -> void:
+static func _edge_if_open_set(outgoing: Dictionary, cx: int, cz: int, dx: int, dz: int) -> void:
+	var a: Vector2
+	var b: Vector2
+	if dx == 0 and dz == -1:
+		a = Vector2(cx, cz)
+		b = Vector2(cx + 1, cz)
+	elif dx == 1 and dz == 0:
+		a = Vector2(cx + 1, cz)
+		b = Vector2(cx + 1, cz + 1)
+	elif dx == 0 and dz == 1:
+		a = Vector2(cx + 1, cz + 1)
+		b = Vector2(cx, cz + 1)
+	else:
+		a = Vector2(cx, cz + 1)
+		b = Vector2(cx, cz)
+	var key := "%d,%d" % [int(a.x), int(a.y)]
+	if not outgoing.has(key):
+		outgoing[key] = []
+	(outgoing[key] as Array).append(b)
+
+
+static func _solid(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, outside: Vector3) -> void:
 	var n := (b - a).cross(c - a)
 	if n.length_squared() < 1e-10:
 		return
-	n = n.normalized()
-	if force_down and n.y > 0.0:
+	# Godot front faces are clockwise. A right-hand normal that agrees with
+	# `outside` is therefore the back face; flip so the play camera sees tops.
+	if n.dot(outside) > 0.0:
 		var tmp := b
 		b = c
 		c = tmp
 		n = -n
+	# Light with the geometric slope, facing the outside hemisphere.
+	var lit := -n.normalized()
+	if lit.dot(outside) < 0.0:
+		lit = -lit
+	if lit.length_squared() < 0.25:
+		lit = outside.normalized()
+	var opaque := Color(color.r, color.g, color.b, 1.0)
 	for p in [a, b, c]:
 		verts.append(p)
-		norms.append(n)
-		cols.append(color)
+		norms.append(lit)
+		cols.append(opaque)
 		uvs.append(Vector2(p.x, p.z) * 0.12)
+
+
+static func _tri(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, force_down: bool) -> void:
+	var outside := Vector3.DOWN if force_down else Vector3.UP
+	_solid(verts, norms, cols, uvs, a, b, c, color, outside)
 
 
 static func _count_edge(counts: Dictionary, a: Vector3, b: Vector3, tol: float) -> void:

@@ -22,6 +22,7 @@ var terrace_step := TERRACE
 var seed: int = 1
 var heights := PackedFloat32Array()
 var mask := PackedByteArray()
+var rim_shift: Dictionary = {}
 
 
 func cells_x() -> int:
@@ -85,6 +86,7 @@ func duplicate_field() -> RefCounted:
 	copy.seed = seed
 	copy.heights = heights.duplicate()
 	copy.mask = mask.duplicate()
+	copy.rim_shift = rim_shift.duplicate()
 	return copy
 
 
@@ -187,6 +189,7 @@ func apply_play_cells(cells: Dictionary, reset_new: bool = false) -> void:
 				if reset_new and was == 0:
 					_raise_cell_to_surface(cx, cz)
 	_clamp_all_land()
+	rim_shift.clear()
 
 
 func _raise_cell_to_surface(cx: int, cz: int) -> void:
@@ -243,6 +246,7 @@ func ensure_world_bounds(min_x: float, min_z: float, max_x: float, max_z: float,
 	verts_z = new_vz
 	heights = new_h
 	mask = new_m
+	rim_shift.clear()
 
 
 func land_cell_count() -> int:
@@ -303,6 +307,289 @@ func sample_height(world: Vector3) -> float:
 func sample_land(world: Vector3) -> bool:
 	var c := world_to_cell(world)
 	return is_land(c.x, c.y)
+
+
+func sample_inland(world: Vector3) -> float:
+	var c := world_to_cell(world)
+	var n := 0
+	for dz in range(-1, 2):
+		for dx in range(-1, 2):
+			if is_land(c.x + dx, c.y + dz):
+				n += 1
+	return float(n) / 9.0
+
+
+func organicize_coast() -> void:
+	if cells_x() < 3 or cells_z() < 3:
+		return
+	var loops: Array = _mask_loops()
+	if loops.is_empty():
+		return
+	var smoothed: Array = []
+	for loop in loops:
+		smoothed.append(_noise_loop(_catmull(_chaikin2(loop))))
+	var keep := mask.duplicate()
+	mask.fill(0)
+	for cz in cells_z():
+		for cx in cells_x():
+			var idx := cell_index(cx, cz)
+			if idx >= keep.size() or keep[idx] == 0:
+				continue
+			var mid := vertex_world(cx, cz) + Vector2(spacing * 0.5, spacing * 0.5)
+			# Never grow past the play footprint; only round existing land away.
+			if _inside_loops(mid, smoothed) or _interior_keep(keep, cx, cz):
+				set_land(cx, cz, true)
+	_clamp_all_land()
+	apply_coast_smooth()
+
+
+func stamp_rounded_blob() -> void:
+	## Carve the current rectangle down to an ellipse + low-frequency wobble.
+	## Only removes cells, so visible land stays inside the play footprint.
+	if land_cell_count() < 6:
+		return
+	var min_p := Vector2(1.0e9, 1.0e9)
+	var max_p := Vector2(-1.0e9, -1.0e9)
+	for cz in cells_z():
+		for cx in cells_x():
+			if not is_land(cx, cz):
+				continue
+			var mid := vertex_world(cx, cz) + Vector2(spacing * 0.5, spacing * 0.5)
+			min_p.x = minf(min_p.x, mid.x)
+			min_p.y = minf(min_p.y, mid.y)
+			max_p.x = maxf(max_p.x, mid.x)
+			max_p.y = maxf(max_p.y, mid.y)
+	var center := (min_p + max_p) * 0.5
+	var rx := maxf((max_p.x - min_p.x) * 0.5, spacing)
+	var rz := maxf((max_p.y - min_p.y) * 0.5, spacing)
+	if minf(rx, rz) < 1.75:
+		return
+	for cz in cells_z():
+		for cx in cells_x():
+			if not is_land(cx, cz):
+				continue
+			var mid := vertex_world(cx, cz) + Vector2(spacing * 0.5, spacing * 0.5)
+			var nx := (mid.x - center.x) / rx
+			var nz := (mid.y - center.y) / rz
+			var nse := _hash2(mid.x * 0.27 + float(seed), mid.y * 0.31)
+			var d := pow(absf(nx), 2.15) + pow(absf(nz), 2.15)
+			if d > 0.72 + (nse.x - 0.5) * 0.28:
+				set_land(cx, cz, false)
+	_clamp_all_land()
+	rim_shift.clear()
+
+
+func apply_coast_smooth() -> void:
+	## Pull rim vertices onto a Chaikin / Catmull loop so walls are not stairs.
+	rim_shift.clear()
+	var loops: Array = _mask_loops()
+	if loops.is_empty():
+		return
+	var smoothed: Array = []
+	for loop in loops:
+		smoothed.append(_noise_loop(_catmull(_chaikin2(loop))))
+	for iz in verts_z:
+		for ix in verts_x:
+			if not _vertex_is_rim(ix, iz):
+				continue
+			var p := vertex_world(ix, iz)
+			var best := p
+			var best_d := 1.0e9
+			for loop in smoothed:
+				var q := _closest_on_loop(p, loop)
+				var d := p.distance_to(q)
+				if d < best_d:
+					best_d = d
+					best = q
+			if best_d < spacing * 2.8:
+				rim_shift[Vector2i(ix, iz)] = (best - p) * 0.92
+
+
+func coast_shift(ix: int, iz: int) -> Vector2:
+	return rim_shift.get(Vector2i(ix, iz), Vector2.ZERO)
+
+
+func _vertex_is_rim(ix: int, iz: int) -> bool:
+	var land_n := 0
+	for cz in range(iz - 1, iz + 1):
+		for cx in range(ix - 1, ix + 1):
+			if is_land(cx, cz):
+				land_n += 1
+	return land_n > 0 and land_n < 4
+
+
+func _closest_on_loop(p: Vector2, loop: Array) -> Vector2:
+	var best := p
+	var best_d := 1.0e9
+	if loop.size() < 2:
+		return p
+	for i in loop.size():
+		var a: Vector2 = loop[i]
+		var b: Vector2 = loop[(i + 1) % loop.size()]
+		var ab := b - a
+		var t := 0.0 if ab.length_squared() < 1e-8 else clampf((p - a).dot(ab) / ab.length_squared(), 0.0, 1.0)
+		var q := a.lerp(b, t)
+		var d := p.distance_squared_to(q)
+		if d < best_d:
+			best_d = d
+			best = q
+	return best
+
+
+func _catmull(loop: Array) -> Array:
+	if loop.size() < 4:
+		return loop
+	var out: Array = []
+	var n := loop.size()
+	for i in n:
+		var p0: Vector2 = loop[(i - 1 + n) % n]
+		var p1: Vector2 = loop[i]
+		var p2: Vector2 = loop[(i + 1) % n]
+		var p3: Vector2 = loop[(i + 2) % n]
+		out.append(p1)
+		var t := 0.5
+		var t2 := t * t
+		var t3 := t2 * t
+		out.append(0.5 * ((2.0 * p1) + (-p0 + p2) * t + (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3) * t2 + (-p0 + 3.0 * p1 - 3.0 * p2 + p3) * t3))
+	return out
+
+
+func stamp_gentle_hills() -> void:
+	for iz in verts_z:
+		for ix in verts_x:
+			if not _vertex_has_land(ix, iz):
+				continue
+			var p := vertex_world(ix, iz)
+			var nse := _hash2(p.x * 0.21 + float(seed), p.y * 0.19)
+			var hill := sin(p.x * 0.46 + float(seed) * 0.07) * cos(p.y * 0.39 - float(seed) * 0.05)
+			var add := hill * 0.42 + (nse.x - 0.5) * 0.28
+			set_height(ix, iz, height_at(ix, iz) + add)
+	_clamp_all_land()
+
+
+func _interior_keep(keep: PackedByteArray, cx: int, cz: int) -> bool:
+	if cx <= 0 or cz <= 0 or cx >= cells_x() - 1 or cz >= cells_z() - 1:
+		return false
+	var idx := cell_index(cx, cz)
+	if idx >= keep.size() or keep[idx] == 0:
+		return false
+	# Keep only cells that were land and not an outer-ring corner.
+	var land_n := 0
+	for dz in range(-1, 2):
+		for dx in range(-1, 2):
+			var nidx := cell_index(cx + dx, cz + dz)
+			if nidx >= 0 and nidx < keep.size() and keep[nidx] != 0:
+				land_n += 1
+	return land_n >= 7
+
+
+func _mask_loops() -> Array:
+	var outgoing: Dictionary = {}
+	for cz in cells_z():
+		for cx in cells_x():
+			if not is_land(cx, cz):
+				continue
+			_mask_edge(outgoing, cx, cz, 0, -1)
+			_mask_edge(outgoing, cx, cz, 1, 0)
+			_mask_edge(outgoing, cx, cz, 0, 1)
+			_mask_edge(outgoing, cx, cz, -1, 0)
+	var loops: Array = []
+	for start_key in outgoing.keys():
+		while (outgoing[start_key] as Array).size() > 0:
+			var parts := String(start_key).split(",")
+			var curr := Vector2(float(parts[0]), float(parts[1]))
+			var loop: Array[Vector2] = []
+			var guard := 0
+			while guard < 20000:
+				guard += 1
+				var ix := int(round(curr.x))
+				var iz := int(round(curr.y))
+				loop.append(vertex_world(clampi(ix, 0, verts_x - 1), clampi(iz, 0, verts_z - 1)))
+				var ck := "%d,%d" % [ix, iz]
+				if not outgoing.has(ck) or (outgoing[ck] as Array).is_empty():
+					break
+				var nxt: Vector2 = (outgoing[ck] as Array).pop_back()
+				curr = nxt
+				if loop.size() > 2 and ix == int(parts[0]) and iz == int(parts[1]):
+					break
+			if loop.size() >= 4:
+				loops.append(loop)
+	return loops
+
+
+func _mask_edge(outgoing: Dictionary, cx: int, cz: int, dx: int, dz: int) -> void:
+	if is_land(cx + dx, cz + dz):
+		return
+	var a: Vector2
+	var b: Vector2
+	if dx == 0 and dz == -1:
+		a = Vector2(cx, cz)
+		b = Vector2(cx + 1, cz)
+	elif dx == 1 and dz == 0:
+		a = Vector2(cx + 1, cz)
+		b = Vector2(cx + 1, cz + 1)
+	elif dx == 0 and dz == 1:
+		a = Vector2(cx + 1, cz + 1)
+		b = Vector2(cx, cz + 1)
+	else:
+		a = Vector2(cx, cz + 1)
+		b = Vector2(cx, cz)
+	var key := "%d,%d" % [int(a.x), int(a.y)]
+	if not outgoing.has(key):
+		outgoing[key] = []
+	(outgoing[key] as Array).append(b)
+
+
+func _chaikin2(loop: Array) -> Array:
+	var pts: Array = loop
+	for _i in 2:
+		var next: Array = []
+		for i in pts.size():
+			var a: Vector2 = pts[i]
+			var b: Vector2 = pts[(i + 1) % pts.size()]
+			next.append(a.lerp(b, 0.25))
+			next.append(a.lerp(b, 0.75))
+		pts = next
+	return pts
+
+
+func _noise_loop(loop: Array) -> Array:
+	if loop.is_empty():
+		return loop
+	var c := Vector2.ZERO
+	for p in loop:
+		c += p
+	c /= float(loop.size())
+	var out: Array = []
+	for p in loop:
+		var q: Vector2 = p
+		var radial := q - c
+		var nse := _hash2(q.x * 0.33 + float(seed), q.y * 0.29)
+		if radial.length_squared() > 1e-6:
+			q += radial.normalized() * (nse.x - 0.5) * 0.55
+		out.append(q)
+	return out
+
+
+func _inside_loops(p: Vector2, loops: Array) -> bool:
+	var inside := false
+	for loop in loops:
+		if _point_in_poly(p, loop):
+			inside = not inside
+	return inside
+
+
+func _point_in_poly(p: Vector2, loop: Array) -> bool:
+	var inside := false
+	var j := loop.size() - 1
+	for i in loop.size():
+		var a: Vector2 = loop[i]
+		var b: Vector2 = loop[j]
+		var cond := ((a.y > p.y) != (b.y > p.y)) and (p.x < (b.x - a.x) * (p.y - a.y) / maxf(b.y - a.y, 1e-6) + a.x)
+		if cond:
+			inside = not inside
+		j = i
+	return inside
 
 
 func snap_height(value: float) -> float:
@@ -565,7 +852,8 @@ func jitter_xz(world_x: float, world_z: float) -> Vector2:
 func world_vertex(ix: int, iz: int) -> Vector3:
 	var p := vertex_world(ix, iz)
 	var j := jitter_xz(p.x, p.y)
-	return Vector3(p.x + j.x, height_at(ix, iz), p.y + j.y)
+	var s := coast_shift(ix, iz)
+	return Vector3(p.x + j.x + s.x, height_at(ix, iz), p.y + j.y + s.y)
 
 
 func flip_diagonal(cx: int, cz: int) -> bool:

@@ -341,6 +341,8 @@ func _rebuild_islands() -> void:
 		else:
 			field = field.duplicate_field()
 			field.apply_play_cells(group, false)
+			field.stamp_rounded_blob()
+			field.organicize_coast()
 		var built := {
 			"cells": group,
 			"field": field,
@@ -523,6 +525,9 @@ func flatten_footprint(cells: Array, xirang, island_cells: int, preview_only: bo
 
 
 func _stamp_starter_relief(field: Heightfield, group: Dictionary, water_in_group: Dictionary) -> void:
+	field.stamp_rounded_blob()
+	field.organicize_coast()
+	field.stamp_gentle_hills()
 	# A closed interior pit becomes the default courtyard lake. Edge river cells stay a cut.
 	for cell: Vector2i in water_in_group:
 		var edge := false
@@ -533,7 +538,8 @@ func _stamp_starter_relief(field: Heightfield, group: Dictionary, water_in_group
 		if edge:
 			continue
 		var center := Vector3(float(cell.x) + 0.5, 0.0, float(cell.y) + 0.5)
-		field.apply_brush("lower", center, 0.85, 0.85, true)
+		field.apply_brush("lower", center, 1.05, 0.95, true)
+	field.apply_coast_smooth()
 
 
 func _heightfield_material() -> ShaderMaterial:
