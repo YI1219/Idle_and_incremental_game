@@ -199,7 +199,7 @@ func _wood(color: Color) -> StandardMaterial3D:
 
 
 func _planter(cell: Vector2i) -> void:
-	var at := sim.cell_center(cell)
+	var at: Vector3 = sim.cell_center(cell)
 	var box := MeshInstance3D.new()
 	var mesh := BoxMesh.new()
 	mesh.size = Vector3(0.62, 0.10, 0.62)
@@ -217,7 +217,7 @@ func _planter(cell: Vector2i) -> void:
 
 
 func _crate(cell: Vector2i) -> void:
-	var at := sim.cell_center(cell)
+	var at: Vector3 = sim.cell_center(cell)
 	var box := MeshInstance3D.new()
 	var mesh := BoxMesh.new()
 	mesh.size = Vector3(0.38, 0.28, 0.38)
@@ -238,7 +238,7 @@ func _crate(cell: Vector2i) -> void:
 
 
 func _lantern(cell: Vector2i, height: float) -> void:
-	var at := sim.cell_center(cell)
+	var at: Vector3 = sim.cell_center(cell)
 	var post := MeshInstance3D.new()
 	var cyl := CylinderMesh.new()
 	cyl.top_radius = 0.07
