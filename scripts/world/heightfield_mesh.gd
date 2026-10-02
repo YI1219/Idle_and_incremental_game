@@ -2,8 +2,8 @@ extends Object
 ## Builds closed, chunked island meshes from a Heightfield. No scene I/O.
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
-const WALL_RINGS := 6
-const LIP := 0.10
+const WALL_RINGS := 7
+const LIP := 0.14
 const ROCK_SLOPE := 0.55
 
 
@@ -139,10 +139,13 @@ static func build_water(field: Heightfield, lake: Dictionary) -> Dictionary:
 			continue
 		filled = true
 		for i in range(0, idx.size(), 3):
-			var pa := Vector3(poly[idx[i]].x, level, poly[idx[i]].y)
-			var pb := Vector3(poly[idx[i + 1]].x, level, poly[idx[i + 1]].y)
-			var pc := Vector3(poly[idx[i + 2]].x, level, poly[idx[i + 2]].y)
-			_solid(verts, norms, cols, uvs, pa, pb, pc, color, Vector3.UP)
+			var qa := poly[idx[i]]
+			var qb := poly[idx[i + 1]]
+			var qc := poly[idx[i + 2]]
+			var pa := Vector3(qa.x, level, qa.y)
+			var pb := Vector3(qb.x, level, qb.y)
+			var pc := Vector3(qc.x, level, qc.y)
+			_solid_vcols(verts, norms, cols, uvs, pa, pb, pc, _shore_color(qa, poly), _shore_color(qb, poly), _shore_color(qc, poly), Vector3.UP)
 	if not filled:
 		for cell in cells:
 			var c: Vector2i = cell
@@ -257,7 +260,10 @@ static func _top_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
 static func _emit_facet(field: Heightfield, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3) -> void:
 	var mid := (a + b + c) / 3.0
 	var inland := field.sample_inland(mid)
-	_solid(verts, norms, cols, uvs, a, b, c, Color(0.0, inland, 1.0 - inland, 1.0), Vector3.UP)
+	var ao := clampf(0.68 + inland * 0.32, 0.55, 1.0)
+	# Tops stay grass all the way to the lip. vcol.b is the rock flag — never set it here
+	# or coast corners turn into the brown squares from run 3.
+	_solid(verts, norms, cols, uvs, a, b, c, Color(ao, clampf(inland, 0.35, 1.0), 0.0, 1.0), Vector3.UP)
 
 
 static func _emit_walls_and_bottom(field: Heightfield, chunk: Vector2i, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, lod: bool) -> void:
@@ -312,7 +318,8 @@ static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: 
 		if pa.distance_to(pb) < 0.03 and qa.distance_to(qb) < 0.03:
 			continue
 		# Lip is turf; every ring below is rock. No grass bands inside the wall.
-		var color := Color(0.0, 0.85, 0.0, 1.0) if r == 0 else Color(0.0, 0.0, 1.0, 1.0)
+		var ao := 0.52 if r == 0 else (0.96 if r < 3 else 0.74)
+		var color := Color(ao, 0.92, 0.0, 1.0) if r == 0 else Color(ao, 0.0, 1.0, 1.0)
 		_solid(verts, norms, cols, uvs, pa, pb, qb, color, hint)
 		_solid(verts, norms, cols, uvs, pa, qb, qa, color, hint)
 
@@ -349,28 +356,29 @@ static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: 
 	if tangent.length_squared() < 1e-8:
 		tangent = Vector3(1.0, 0.0, 0.0)
 	var concave := land_n == 3
-	var n_amp := 0.08 if concave else 0.28
 	var col: Array = []
 	col.append(top)
 	if outward.length_squared() > 1e-6:
-		col.append(top + outward * LIP + Vector3(0.0, 0.016, 0.0))
+		col.append(top + outward * LIP + Vector3(0.0, 0.02, 0.0))
 	else:
-		col.append(top + Vector3(0.0, 0.012, 0.0))
+		col.append(top + Vector3(0.0, 0.014, 0.0))
 	var last := maxi(rings - 1, 3)
 	for r in range(1, last):
 		var t := float(r) / float(last)
-		var p := top.lerp(bot, t)
-		var nse := Heightfield._hash2(float(ix) * 1.71 + float(r) * 13.0 + float(field.seed), float(iz) * 1.37)
-		var ledge := 0.0
-		if t > 0.16 and t < 0.30:
-			ledge = 0.14 if not concave else 0.05
-		elif t > 0.46 and t < 0.62:
-			ledge = 0.08 if not concave else 0.03
-		# Only push outward so neighbouring posts cannot cross into shards.
-		var radial := ledge + maxf((nse.x - 0.35) * n_amp, 0.0) - 0.03 * t
-		p += outward * radial
-		p += tangent * (nse.y - 0.5) * n_amp * 0.7
-		p.y += (nse.x - nse.y) * (0.10 if concave else 0.18)
+		var nse := Heightfield._hash2(float(ix) * 2.07 + float(r) * 17.0 + float(field.seed), float(iz) * 1.83)
+		var y := lerpf(top.y, bot.y, t) + (nse.x - 0.5) * 0.14
+		var p := Vector3(top.x, y, top.z)
+		if concave:
+			# Shaft / interior rims flare open so the hole reads the cloud sea, not a black well.
+			var flare := -0.06 - 0.58 * t * t + (nse.x - 0.5) * 0.08
+			p += outward * flare
+			p += tangent * (nse.y - 0.5) * 0.08
+		else:
+			# seed7 stacked blocks: constant per-ring stick-out, then taper to the keel.
+			var stick := 0.08 + nse.x * 0.42
+			var radial := LIP * (1.0 - t) + stick * (1.0 - t * 0.55) - 0.46 * t * t
+			p += outward * radial
+			p += tangent * (nse.y - 0.5) * 0.34
 		if p.y > top.y - 0.02:
 			p.y = top.y - 0.02
 		if p.y < bot.y + 0.02:
@@ -551,8 +559,14 @@ static func _bottom_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
 	var clamped_z := clampi(iz, 0, field.verts_z - 1)
 	var p := field.vertex_world(clamped_x, clamped_z)
 	var j := field.jitter_xz(p.x, p.y)
+	if field._vertex_is_rim(clamped_x, clamped_z):
+		j *= 0.18
 	var s := field.coast_shift(clamped_x, clamped_z)
-	return Vector3(p.x + j.x + s.x, field.y_bottom + _bottom_noise(field, p.x, p.y), p.y + j.y + s.y)
+	var inland := field.sample_inland(Vector3(p.x, 0.0, p.y))
+	var center := field.land_centroid()
+	var pulled := Vector2(p.x, p.y).lerp(center, inland * inland * 0.60)
+	var keel := field.y_bottom - inland * 2.45
+	return Vector3(pulled.x + j.x + s.x, keel + _bottom_noise(field, p.x, p.y), pulled.y + j.y + s.y)
 
 
 static func _bottom_noise(field: Heightfield, x: float, z: float) -> float:
@@ -600,8 +614,55 @@ static func _edge_if_open_set(outgoing: Dictionary, cx: int, cz: int, dx: int, d
 	(outgoing[key] as Array).append(b)
 
 
+static func _shore_color(p: Vector2, poly: PackedVector2Array) -> Color:
+	return Color(clampf(_poly_edge_dist(p, poly) / 1.15, 0.0, 1.0), 0.0, 0.0, 1.0)
+
+
+static func _poly_edge_dist(p: Vector2, poly: PackedVector2Array) -> float:
+	if poly.size() < 2:
+		return 0.0
+	var best := 1.0e9
+	for i in poly.size():
+		var a: Vector2 = poly[i]
+		var b: Vector2 = poly[(i + 1) % poly.size()]
+		var ab := b - a
+		var t := 0.0 if ab.length_squared() < 1e-8 else clampf((p - a).dot(ab) / ab.length_squared(), 0.0, 1.0)
+		best = minf(best, p.distance_to(a.lerp(b, t)))
+	return best
+
+
 static func _solid(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, outside: Vector3) -> void:
 	_solid_uv(verts, norms, cols, uvs, a, b, c, color, outside, Vector2(a.x, a.z) * 0.12, Vector2(b.x, b.z) * 0.12, Vector2(c.x, c.z) * 0.12)
+
+
+static func _solid_vcols(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, ca: Color, cb: Color, cc: Color, outside: Vector3) -> void:
+	var n := (b - a).cross(c - a)
+	if n.length_squared() < 1e-10:
+		return
+	var ua := Vector2(a.x, a.z) * 0.12
+	var ub := Vector2(b.x, b.z) * 0.12
+	var uc := Vector2(c.x, c.z) * 0.12
+	if n.dot(outside) > 0.0:
+		var tmp := b
+		b = c
+		c = tmp
+		var tmp_uv := ub
+		ub = uc
+		uc = tmp_uv
+		var tmp_c := cb
+		cb = cc
+		cc = tmp_c
+		n = -n
+	var lit := -n.normalized()
+	if lit.dot(outside) < 0.0:
+		lit = -lit
+	if lit.length_squared() < 0.25:
+		lit = outside.normalized()
+	for item in [[a, ua, ca], [b, ub, cb], [c, uc, cc]]:
+		verts.append(item[0])
+		norms.append(lit)
+		cols.append(Color((item[2] as Color).r, (item[2] as Color).g, (item[2] as Color).b, 1.0))
+		uvs.append(item[1])
 
 
 static func _solid_uv(verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3, color: Color, outside: Vector3, ua: Vector2, ub: Vector2, uc: Vector2) -> void:

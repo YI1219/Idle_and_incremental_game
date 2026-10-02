@@ -28,9 +28,14 @@ var _chunk_root: Node3D
 var _water_node: MeshInstance3D
 var _fall_root: Node3D
 var _rock_root: Node3D
+var _dress_root: Node3D
 var _material: ShaderMaterial
 var _water_material: ShaderMaterial
 var _fall_material: ShaderMaterial
+var _tuft_mm: MultiMeshInstance3D
+var _pebble_mm: MultiMeshInstance3D
+var _flower_mm: MultiMeshInstance3D
+var _shore_mm: MultiMeshInstance3D
 var _top_dirty: Dictionary = {}
 var _shell_dirty := false
 var _top_wait := 0.0
@@ -60,11 +65,18 @@ func _ensure_nodes() -> void:
 	_rock_root = Node3D.new()
 	_rock_root.name = "SlopeRocks"
 	add_child(_rock_root)
+	_dress_root = Node3D.new()
+	_dress_root.name = "Dressing"
+	add_child(_dress_root)
 	_material = ShaderMaterial.new()
 	_material.shader = load("res://shaders/world/island_heightfield.gdshader")
 	_water_material = _make_water_material()
 	_fall_material = _make_fall_material()
 	_water_node.material_override = _water_material
+	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("5d7a3a")))
+	_pebble_mm = _make_mm("Pebbles", _pebble_mesh(), _mat(Color("7a7164")))
+	_flower_mm = _make_mm("Flowers", _flower_mesh(), _mat(Color("d8c56a")))
+	_shore_mm = _make_mm("ShoreRocks", _shore_mesh(), _mat(Color("6d6458")))
 
 
 func configure(p_hash: int, p_centroid: Vector3, p_cells: int, p_field: Heightfield, p_skip: Dictionary = {}) -> void:
@@ -118,11 +130,15 @@ func update_lod(camera_origin: Vector3) -> bool:
 		_water_node.visible = false
 		_fall_root.visible = false
 		_rock_root.visible = false
+		if _dress_root:
+			_dress_root.visible = false
 		rebuild_full(true)
 	else:
 		_water_node.visible = true
 		_fall_root.visible = true
 		_rock_root.visible = true
+		if _dress_root:
+			_dress_root.visible = true
 		rebuild_full(true)
 	return true
 
@@ -287,9 +303,12 @@ func _apply_payloads(payloads: Array, with_shell: bool) -> void:
 		_rebuild_water()
 		if not far:
 			_scatter_rocks()
+			_scatter_dressing()
+		elif _dress_root:
+			_dress_root.visible = false
 	last_triangles = tris
 	last_chunks = _chunks.size()
-	last_draw_calls = draws + (1 if _water_node.visible and _water_node.mesh else 0) + _fall_root.get_child_count()
+	last_draw_calls = draws + (1 if _water_node.visible and _water_node.mesh else 0) + _fall_root.get_child_count() + _dress_draws()
 	centroid = _compute_centroid()
 
 
@@ -298,7 +317,7 @@ func _chunk_node(ch: Vector2i) -> MeshInstance3D:
 		return _chunks[ch]
 	var node := MeshInstance3D.new()
 	node.name = "Chunk_%d_%d" % [ch.x, ch.y]
-	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_chunk_root.add_child(node)
 	_chunks[ch] = node
 	return node
@@ -357,6 +376,24 @@ func _rebuild_water() -> void:
 		(mist.draw_pass_1 as SphereMesh).radius = 0.16
 		(mist.draw_pass_1 as SphereMesh).height = 0.32
 		_fall_root.add_child(mist)
+		# Still-frame mist so screenshots show a white veil at the plunge.
+		for k in 3:
+			var puff := MeshInstance3D.new()
+			var sphere := SphereMesh.new()
+			sphere.radius = 0.28 + float(k) * 0.10
+			sphere.height = sphere.radius * 1.15
+			sphere.radial_segments = 8
+			sphere.rings = 4
+			puff.mesh = sphere
+			puff.position = Vector3(site["origin"].x, SEA_Y + 0.95 + float(k) * 0.18, site["origin"].z) + site["outward"] * (0.35 + float(k) * 0.12)
+			var puff_mat := StandardMaterial3D.new()
+			puff_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			puff_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			puff_mat.albedo_color = Color(0.95, 0.97, 0.98, 0.28)
+			puff_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+			puff.material_override = puff_mat
+			puff.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			_fall_root.add_child(puff)
 
 
 func _scatter_rocks() -> void:
@@ -402,25 +439,8 @@ func stats() -> Dictionary:
 
 
 func _make_water_material() -> ShaderMaterial:
-	var shader := Shader.new()
-	shader.code = """
-shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_burley;
-uniform vec4 shallow : source_color = vec4(0.18, 0.42, 0.40, 0.82);
-uniform vec4 deep : source_color = vec4(0.08, 0.28, 0.30, 0.90);
-varying vec3 world_pos;
-void vertex() { world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz; }
-void fragment() {
-	float ripple = sin(world_pos.x * 4.2 + world_pos.z * 5.5 + TIME * 0.7) * 0.5
-		+ sin(world_pos.x * 7.1 - world_pos.z * 3.2 - TIME * 0.55) * 0.5;
-	ALBEDO = mix(deep.rgb, shallow.rgb, ripple * 0.18 + 0.5);
-	ALPHA = 0.78;
-	ROUGHNESS = 0.22;
-	SPECULAR = 0.55;
-}
-"""
 	var mat := ShaderMaterial.new()
-	mat.shader = shader
+	mat.shader = load("res://shaders/world/island_lake.gdshader")
 	return mat
 
 
@@ -428,6 +448,225 @@ func _make_fall_material() -> ShaderMaterial:
 	var mat := ShaderMaterial.new()
 	mat.shader = load("res://shaders/world/island_waterfall.gdshader")
 	return mat
+
+
+func _mat(color: Color) -> StandardMaterial3D:
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = color
+	mat.roughness = 0.92
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+	return mat
+
+
+func _make_mm(p_name: String, mesh: Mesh, material: Material) -> MultiMeshInstance3D:
+	var node := MultiMeshInstance3D.new()
+	node.name = p_name
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	node.material_override = material
+	_dress_root.add_child(node)
+	var multi := MultiMesh.new()
+	multi.transform_format = MultiMesh.TRANSFORM_3D
+	multi.mesh = mesh
+	multi.instance_count = 0
+	node.multimesh = multi
+	return node
+
+
+func _fill_mm(node: MultiMeshInstance3D, xforms: Array) -> void:
+	var multi := MultiMesh.new()
+	multi.transform_format = MultiMesh.TRANSFORM_3D
+	multi.mesh = node.multimesh.mesh
+	multi.instance_count = xforms.size()
+	for i in xforms.size():
+		multi.set_instance_transform(i, xforms[i])
+	node.multimesh = multi
+	node.visible = not xforms.is_empty() and not far
+
+
+func _dress_draws() -> int:
+	var n := 0
+	for node in [_tuft_mm, _pebble_mm, _flower_mm, _shore_mm]:
+		if node and node.visible and node.multimesh and node.multimesh.instance_count > 0:
+			n += 1
+	if _dress_root:
+		for child in _dress_root.get_children():
+			if child is MeshInstance3D and child.visible:
+				n += 1
+	return n
+
+
+func _scatter_dressing() -> void:
+	if field == null or _dress_root == null:
+		return
+	_dress_root.visible = not far
+	for child in _dress_root.get_children():
+		if child is MeshInstance3D:
+			child.queue_free()
+	var water_cells: Dictionary = {}
+	var water_level: Dictionary = {}
+	for lake in water_info.get("lakes", []):
+		var lvl := float(lake.get("level", 0.0))
+		for cell in lake.get("cells", []):
+			water_cells[cell] = true
+			water_level[cell] = lvl
+	var tufts: Array = []
+	var pebbles: Array = []
+	var flowers: Array = []
+	var shores: Array = []
+	for cz in field.cells_z():
+		for cx in field.cells_x():
+			if not field.is_land(cx, cz):
+				continue
+			var play := field.play_cell_of_hf(cx, cz)
+			if skip_top.has(play) or _blocked.has(play):
+				continue
+			var mid := field.vertex_world(cx, cz) + Vector2(field.spacing * 0.5, field.spacing * 0.5)
+			var h := field.sample_height(Vector3(mid.x, 0.0, mid.y))
+			var nse := Heightfield._hash2(float(cx) * 1.37 + float(field.seed), float(cz) * 1.91)
+			var wet := water_cells.has(Vector2i(cx, cz))
+			var shore := false
+			if not wet:
+				for pair in [[0, -1], [1, 0], [0, 1], [-1, 0]]:
+					if water_cells.has(Vector2i(cx + int(pair[0]), cz + int(pair[1]))):
+						shore = true
+						break
+			var hole_rim := false
+			if not wet:
+				for pair in [[0, -1], [1, 0], [0, 1], [-1, 0]]:
+					var nx: int = cx + int(pair[0])
+					var nz: int = cz + int(pair[1])
+					if field.is_land(nx, nz):
+						continue
+					var around := 0
+					for oz in range(-1, 2):
+						for ox in range(-1, 2):
+							if field.is_land(nx + ox, nz + oz):
+								around += 1
+					if around >= 5:
+						hole_rim = true
+			if wet:
+				if nse.x > 0.72:
+					var lvl := float(water_level.get(Vector2i(cx, cz), h + 0.04))
+					_add_lily(Vector3(mid.x + (nse.y - 0.5) * 0.18, lvl + 0.015, mid.y + (nse.x - 0.5) * 0.18), 0.10 + nse.y * 0.05)
+				continue
+			if shore or hole_rim:
+				var xf := Transform3D(Basis(Vector3.UP, nse.x * TAU).scaled(Vector3(0.22 + nse.y * 0.10, 0.16 + nse.x * 0.08, 0.20 + nse.y * 0.08)), Vector3(mid.x, h + 0.04, mid.y))
+				shores.append(xf)
+			if nse.x > 0.18:
+				var gxf := Transform3D(Basis(Vector3.UP, nse.y * TAU).scaled(Vector3.ONE * (0.85 + nse.x * 0.35)), Vector3(mid.x + (nse.y - 0.5) * 0.16, h + 0.01, mid.y + (nse.x - 0.5) * 0.16))
+				tufts.append(gxf)
+			if nse.y > 0.78:
+				pebbles.append(Transform3D(Basis(Vector3.UP, nse.x * 5.0).scaled(Vector3(0.10 + nse.x * 0.05, 0.06, 0.08 + nse.y * 0.04)), Vector3(mid.x - 0.12, h + 0.02, mid.y + 0.10)))
+			if nse.x > 0.88 and nse.y > 0.40:
+				flowers.append(Transform3D(Basis(Vector3.UP, nse.y * TAU).scaled(Vector3.ONE * 0.9), Vector3(mid.x + 0.08, h + 0.01, mid.y - 0.06)))
+	_fill_mm(_tuft_mm, tufts)
+	_fill_mm(_pebble_mm, pebbles)
+	_fill_mm(_flower_mm, flowers)
+	_fill_mm(_shore_mm, shores)
+	_hang_roots()
+
+
+func _add_lily(at: Vector3, radius: float) -> void:
+	var mesh := MeshInstance3D.new()
+	var disk := CylinderMesh.new()
+	disk.top_radius = radius
+	disk.bottom_radius = radius * 0.92
+	disk.height = 0.018
+	disk.radial_segments = 8
+	disk.rings = 1
+	mesh.mesh = disk
+	mesh.position = at
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color("4d7a3c")
+	mat.roughness = 0.88
+	mesh.material_override = mat
+	mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_dress_root.add_child(mesh)
+
+
+func _hang_roots() -> void:
+	if field == null:
+		return
+	var hung := 0
+	for cz in range(0, field.cells_z(), 2):
+		for cx in range(0, field.cells_x(), 2):
+			if hung >= 10:
+				return
+			if not field.is_land(cx, cz):
+				continue
+			var mid := field.vertex_world(cx, cz)
+			if field.sample_inland(Vector3(mid.x, 0.0, mid.y)) < 0.55:
+				continue
+			var nse := Heightfield._hash2(float(cx) * 0.71 + float(field.seed), float(cz) * 0.63)
+			if nse.x < 0.62:
+				continue
+			var root := MeshInstance3D.new()
+			var cyl := CylinderMesh.new()
+			cyl.top_radius = 0.018
+			cyl.bottom_radius = 0.006
+			cyl.height = 0.45 + nse.y * 0.55
+			cyl.radial_segments = 5
+			cyl.rings = 1
+			root.mesh = cyl
+			var bot: Vector3 = HeightfieldMesh._bottom_vert(field, cx, cz)
+			root.position = bot + Vector3((nse.x - 0.5) * 0.2, -cyl.height * 0.35, (nse.y - 0.5) * 0.2)
+			var mat := StandardMaterial3D.new()
+			mat.albedo_color = Color("4a3828")
+			mat.roughness = 0.96
+			root.material_override = mat
+			root.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			_dress_root.add_child(root)
+			hung += 1
+
+
+func _tuft_mesh() -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var blades := [0.0, 1.15, 2.25]
+	for yaw in blades:
+		var b := Basis(Vector3.UP, yaw)
+		var a := b * Vector3(-0.07, 0.0, 0.0)
+		var c := b * Vector3(0.07, 0.0, 0.0)
+		var tip := b * Vector3(0.0, 0.26, 0.02)
+		st.set_normal(Vector3.UP)
+		st.add_vertex(a)
+		st.add_vertex(tip)
+		st.add_vertex(c)
+	st.generate_normals()
+	return st.commit()
+
+
+func _pebble_mesh() -> SphereMesh:
+	var s := SphereMesh.new()
+	s.radius = 0.5
+	s.height = 0.72
+	s.radial_segments = 6
+	s.rings = 3
+	return s
+
+
+func _flower_mesh() -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st.set_normal(Vector3.UP)
+	st.add_vertex(Vector3(0.0, 0.0, 0.0))
+	st.add_vertex(Vector3(0.0, 0.16, 0.0))
+	st.add_vertex(Vector3(0.02, 0.0, 0.02))
+	st.add_vertex(Vector3(-0.05, 0.16, 0.0))
+	st.add_vertex(Vector3(0.05, 0.16, 0.0))
+	st.add_vertex(Vector3(0.0, 0.20, 0.0))
+	st.generate_normals()
+	return st.commit()
+
+
+func _shore_mesh() -> SphereMesh:
+	var s := SphereMesh.new()
+	s.radius = 0.55
+	s.height = 0.70
+	s.radial_segments = 6
+	s.rings = 3
+	return s
 
 
 func _notification(what: int) -> void:

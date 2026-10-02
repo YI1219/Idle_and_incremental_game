@@ -319,6 +319,18 @@ func sample_inland(world: Vector3) -> float:
 	return float(n) / 9.0
 
 
+func land_centroid() -> Vector2:
+	var sum := Vector2.ZERO
+	var n := 0
+	for cz in cells_z():
+		for cx in cells_x():
+			if not is_land(cx, cz):
+				continue
+			sum += vertex_world(cx, cz) + Vector2(spacing * 0.5, spacing * 0.5)
+			n += 1
+	return sum / float(maxi(n, 1)) if n > 0 else origin
+
+
 func organicize_coast() -> void:
 	if cells_x() < 3 or cells_z() < 3:
 		return
@@ -401,8 +413,8 @@ func apply_coast_smooth() -> void:
 				if d < best_d:
 					best_d = d
 					best = q
-			if best_d < spacing * 2.8:
-				rim_shift[Vector2i(ix, iz)] = (best - p) * 0.92
+			if best_d < spacing * 3.6:
+				rim_shift[Vector2i(ix, iz)] = best - p
 
 
 func coast_shift(ix: int, iz: int) -> Vector2:
@@ -852,6 +864,8 @@ func jitter_xz(world_x: float, world_z: float) -> Vector2:
 func world_vertex(ix: int, iz: int) -> Vector3:
 	var p := vertex_world(ix, iz)
 	var j := jitter_xz(p.x, p.y)
+	if _vertex_is_rim(ix, iz):
+		j *= 0.18
 	var s := coast_shift(ix, iz)
 	return Vector3(p.x + j.x + s.x, height_at(ix, iz), p.y + j.y + s.y)
 

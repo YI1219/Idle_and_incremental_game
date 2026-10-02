@@ -70,26 +70,30 @@ func _lights() -> void:
 	env.name = "WorldEnvironment"
 	var sky := Environment.new()
 	sky.background_mode = Environment.BG_COLOR
-	sky.background_color = Color("becfd4")
+	sky.background_color = Color("c5d8ea")
 	sky.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	sky.ambient_light_color = Color("dbe3d6")
-	sky.ambient_light_energy = 0.55
+	sky.ambient_light_color = Color("c9d6c4")
+	sky.ambient_light_energy = 0.28
 	sky.fog_enabled = true
-	sky.fog_light_color = Color("becfd4")
-	sky.fog_density = 0.008
+	sky.fog_light_color = Color("c8d6e4")
+	sky.fog_density = 0.004
 	env.environment = sky
 	add_child(env)
 	var sun := DirectionalLight3D.new()
 	sun.name = "Sun"
-	sun.rotation_degrees = Vector3(-50, 40, 0)
-	sun.light_color = Color("f3e4c4")
-	sun.light_energy = 1.15
+	sun.rotation_degrees = Vector3(-32, -38, 0)
+	sun.light_color = Color("ffd39a")
+	sun.light_energy = 1.55
 	sun.shadow_enabled = true
+	sun.light_angular_distance = 3.6
+	sun.shadow_blur = 2.8
+	sun.shadow_bias = 0.04
+	sun.shadow_normal_bias = 1.15
 	add_child(sun)
 	var fill := DirectionalLight3D.new()
 	fill.name = "FillLight"
-	fill.rotation_degrees = Vector3(55, 150, 0)
-	fill.light_color = Color("c9d6dc")
-	fill.light_energy = 0.62
+	fill.rotation_degrees = Vector3(28, 142, 0)
+	fill.light_color = Color("9eb4cc")
+	fill.light_energy = 0.10
 	fill.shadow_enabled = false
 	add_child(fill)

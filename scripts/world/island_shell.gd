@@ -184,22 +184,91 @@ func _rebuild_facilities() -> void:
 	if sim.craft == null:
 		return
 	for field in sim.craft.fields:
-		_marker(field["cell"], Color("4f7a3a"), 0.22)
-	_marker(sim.craft.bench["cell"], Color("8a6a2a"), 0.38)
-	_marker(sim.craft.research["cell"], Color("5b4e8c"), 0.42)
-	_marker(Vector2i(0, 3), Color("6a8a9a"), 0.95)
+		_planter(field["cell"])
+	_crate(sim.craft.bench["cell"])
+	_lantern(sim.craft.research["cell"], 0.62)
+	_lantern(Vector2i(0, 3), 0.92)
 
 
-func _marker(cell: Vector2i, color: Color, height: float) -> void:
-	var mesh := MeshInstance3D.new()
-	var box := BoxMesh.new()
-	box.size = Vector3(0.55, height, 0.55)
+func _wood(color: Color) -> StandardMaterial3D:
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = color
-	box.material = mat
-	mesh.mesh = box
-	mesh.position = sim.cell_center(cell) + Vector3(0.0, height * 0.5, 0.0)
-	_facilities.add_child(mesh)
+	mat.roughness = 0.92
+	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+	return mat
+
+
+func _planter(cell: Vector2i) -> void:
+	var at := sim.cell_center(cell)
+	var box := MeshInstance3D.new()
+	var mesh := BoxMesh.new()
+	mesh.size = Vector3(0.62, 0.10, 0.62)
+	box.mesh = mesh
+	box.material_override = _wood(Color("6b5340"))
+	box.position = at + Vector3(0.0, 0.05, 0.0)
+	_facilities.add_child(box)
+	var soil := MeshInstance3D.new()
+	var soil_mesh := BoxMesh.new()
+	soil_mesh.size = Vector3(0.50, 0.04, 0.50)
+	soil.mesh = soil_mesh
+	soil.material_override = _wood(Color("3d3226"))
+	soil.position = at + Vector3(0.0, 0.10, 0.0)
+	_facilities.add_child(soil)
+
+
+func _crate(cell: Vector2i) -> void:
+	var at := sim.cell_center(cell)
+	var box := MeshInstance3D.new()
+	var mesh := BoxMesh.new()
+	mesh.size = Vector3(0.38, 0.28, 0.38)
+	box.mesh = mesh
+	box.material_override = _wood(Color("8a6d4a"))
+	box.position = at + Vector3(0.0, 0.14, 0.0)
+	_facilities.add_child(box)
+	var jar := MeshInstance3D.new()
+	var cyl := CylinderMesh.new()
+	cyl.top_radius = 0.07
+	cyl.bottom_radius = 0.08
+	cyl.height = 0.16
+	cyl.radial_segments = 8
+	jar.mesh = cyl
+	jar.material_override = _wood(Color("b08968"))
+	jar.position = at + Vector3(0.16, 0.36, 0.04)
+	_facilities.add_child(jar)
+
+
+func _lantern(cell: Vector2i, height: float) -> void:
+	var at := sim.cell_center(cell)
+	var post := MeshInstance3D.new()
+	var cyl := CylinderMesh.new()
+	cyl.top_radius = 0.07
+	cyl.bottom_radius = 0.09
+	cyl.height = height * 0.62
+	cyl.radial_segments = 8
+	post.mesh = cyl
+	post.material_override = _wood(Color("6e675c"))
+	post.position = at + Vector3(0.0, cyl.height * 0.5, 0.0)
+	_facilities.add_child(post)
+	var cap := MeshInstance3D.new()
+	var prism := PrismMesh.new()
+	prism.size = Vector3(0.28, 0.14, 0.28)
+	cap.mesh = prism
+	cap.material_override = _wood(Color("5a5348"))
+	cap.position = at + Vector3(0.0, cyl.height + 0.08, 0.0)
+	_facilities.add_child(cap)
+	var glow := MeshInstance3D.new()
+	var bulb := SphereMesh.new()
+	bulb.radius = 0.055
+	bulb.height = 0.11
+	glow.mesh = bulb
+	var gmat := StandardMaterial3D.new()
+	gmat.albedo_color = Color("e8c888")
+	gmat.emission_enabled = true
+	gmat.emission = Color("e6b35a")
+	gmat.emission_energy_multiplier = 0.65
+	glow.material_override = gmat
+	glow.position = at + Vector3(0.0, cyl.height * 0.78, 0.0)
+	_facilities.add_child(glow)
 
 
 func _color_for(c: Vector2i) -> Color:

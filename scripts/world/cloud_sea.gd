@@ -15,14 +15,14 @@ func _ready() -> void:
 	add_to_group("cloud_sea")
 	_sea = MeshInstance3D.new()
 	_sea.name = "SeaSheet"
-	_sea.mesh = _billow_mesh(SPAN, RES, 2.15, Color("fffaf0"), Color("4e5d68"))
+	_sea.mesh = _billow_mesh(SPAN, RES, 2.15, Color("fffdf6"), Color("8fa3b4"))
 	_sea.position.y = SEA_Y
 	_sea.material_override = _solid_vertex()
 	_sea.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_sea)
 	_wisps = MeshInstance3D.new()
 	_wisps.name = "WispSheet"
-	_wisps.mesh = _billow_mesh(SPAN * 0.48, 28, 1.15, Color("ffffff"), Color("6d7c86"))
+	_wisps.mesh = _billow_mesh(SPAN * 0.48, 28, 1.15, Color("ffffff"), Color("b7c4ce"))
 	_wisps.position.y = SEA_Y + 1.55
 	_wisps.material_override = _solid_vertex()
 	_wisps.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -49,6 +49,7 @@ func _add_puffs() -> void:
 		Vector3(-11.4, -4.20, -7.2), Vector3(2.0, -4.45, 10.6), Vector3(-3.2, -4.50, -10.2),
 		Vector3(12.8, -4.35, 1.0), Vector3(-13.4, -4.30, 2.2),
 		Vector3(-2.4, -5.55, 1.6), Vector3(2.6, -5.60, -1.4),
+		Vector3(4.8, -5.35, 2.2), Vector3(5.6, -5.50, 1.0), Vector3(-0.4, -5.40, 0.6),
 	]
 	for i in spots.size():
 		var puff := MeshInstance3D.new()
@@ -63,7 +64,7 @@ func _add_puffs() -> void:
 		puff.position = spots[i]
 		var material := StandardMaterial3D.new()
 		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		material.albedo_color = Color("fffdf4") if i % 2 == 0 else Color("8f9ea8")
+		material.albedo_color = Color("fffdf6") if i % 2 == 0 else Color("c5d0d8")
 		material.cull_mode = BaseMaterial3D.CULL_DISABLED
 		puff.material_override = material
 		puff.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
