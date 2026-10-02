@@ -1,8 +1,8 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_opaque;
-uniform vec3 hi_color : source_color = vec3(0.96, 0.97, 0.99);
-uniform vec3 lo_color : source_color = vec3(0.90, 0.93, 0.96);
-uniform float fade_start = 0.34;
+uniform vec3 hi_color : source_color = vec3(0.93, 0.95, 0.97);
+uniform vec3 lo_color : source_color = vec3(0.78, 0.84, 0.90);
+uniform float fade_start = 0.52;
 varying float radial;
 varying float lift;
 

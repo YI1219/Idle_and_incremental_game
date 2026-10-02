@@ -2,11 +2,11 @@ extends Object
 ## Load, flip, and recentre the CC0 rock kit once. Game code ignores source textures.
 
 const PIECES := [
-	{"name": "K_Rock_2_H", "path": "res://assets/rockkit/kaykit/Rock_2_H_Color1.gltf", "role": "block"},
-	{"name": "K_Rock_2_E", "path": "res://assets/rockkit/kaykit/Rock_2_E_Color1.gltf", "role": "block"},
-	{"name": "K_Rock_3_Q", "path": "res://assets/rockkit/kaykit/Rock_3_Q_Color1.gltf", "role": "round"},
-	{"name": "Q_Rock_Medium_1", "path": "res://assets/rockkit/quaternius/Rock_Medium_1.gltf", "role": "round"},
-	{"name": "Q_Rock_Medium_3", "path": "res://assets/rockkit/quaternius/Rock_Medium_3.gltf", "role": "round"},
+	{"name": "K_Rock_2_H", "path": "res://assets/rockkit/kaykit/Rock_2_H_Color1.gltf", "role": "rim"},
+	{"name": "K_Rock_2_E", "path": "res://assets/rockkit/kaykit/Rock_2_E_Color1.gltf", "role": "rim"},
+	{"name": "K_Rock_3_Q", "path": "res://assets/rockkit/kaykit/Rock_3_Q_Color1.gltf", "role": "rim"},
+	{"name": "Q_Rock_Medium_1", "path": "res://assets/rockkit/quaternius/Rock_Medium_1.gltf", "role": "rim"},
+	{"name": "Q_Rock_Medium_3", "path": "res://assets/rockkit/quaternius/Rock_Medium_3.gltf", "role": "rim"},
 	{"name": "K_Rock_3_O", "path": "res://assets/rockkit/kaykit/Rock_3_O_Color1.gltf", "role": "mid"},
 	{"name": "K_Rock_3_K", "path": "res://assets/rockkit/kaykit/Rock_3_K_Color1.gltf", "role": "mid"},
 	{"name": "K_Rock_3_G", "path": "res://assets/rockkit/kaykit/Rock_3_G_Color1.gltf", "role": "mid"},
@@ -28,7 +28,6 @@ static func ensure() -> void:
 	_ready = true
 	rock_material = ShaderMaterial.new()
 	rock_material.shader = load("res://shaders/world/island_rock.gdshader")
-	rock_material.set_shader_parameter("ground_y", -0.08)
 	root_material = ShaderMaterial.new()
 	root_material.shader = load("res://shaders/world/island_root.gdshader")
 	for row in PIECES:
@@ -47,8 +46,6 @@ static func pool(spec: String) -> PackedStringArray:
 	var out := PackedStringArray()
 	for part in spec.split("+"):
 		var role := part.strip_edges()
-		if role == "rim":
-			role = "round"
 		for n in names:
 			if String(catalog[n]["role"]) == role:
 				out.append(n)

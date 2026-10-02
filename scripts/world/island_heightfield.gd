@@ -4,7 +4,6 @@ extends Node3D
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
 const RockKit := preload("res://scripts/world/rock_kit.gd")
-const RockUnderside := preload("res://scripts/world/rock_underside.gd")
 
 const FAR_ENTER := 42.0
 const FAR_LEAVE := 32.0
@@ -23,18 +22,11 @@ var last_full_ms: float = 0.0
 var last_triangles: int = 0
 var last_chunks: int = 0
 var last_draw_calls: int = 0
-var last_rock_count: int = 0
-var last_rock_tris: int = 0
-var last_tufts: int = 0
 var water_info: Dictionary = {}
-var rock_state: Dictionary = {}
 
 var _chunks: Dictionary = {}
 var _chunk_root: Node3D
 var _water_node: MeshInstance3D
-var _bank_node: MeshInstance3D
-var _slab_node: MeshInstance3D
-var _core_node: MeshInstance3D
 var _fall_root: Node3D
 var _rock_root: Node3D
 var _dress_root: Node3D
@@ -45,12 +37,8 @@ var _tuft_mm: MultiMeshInstance3D
 var _pebble_mm: MultiMeshInstance3D
 var _flower_mm: MultiMeshInstance3D
 var _kit_mms: Dictionary = {}
-var _hang_mms: Dictionary = {}
-var _root_mmi: MultiMeshInstance3D
 var _top_dirty: Dictionary = {}
 var _shell_dirty := false
-var _rocks_deferred := false
-var _last_outline := PackedVector2Array()
 var _top_wait := 0.0
 var _tasks: Array = []
 var _job_box: Array = []
@@ -72,22 +60,11 @@ func _ensure_nodes() -> void:
 	_water_node.name = "Lakes"
 	_water_node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_water_node)
-	_bank_node = MeshInstance3D.new()
-	_bank_node.name = "LakeBank"
-	_bank_node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	add_child(_bank_node)
-	_slab_node = MeshInstance3D.new()
-	_slab_node.name = "GrassSlab"
-	add_child(_slab_node)
-	_core_node = MeshInstance3D.new()
-	_core_node.name = "HiddenCore"
-	_core_node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	add_child(_core_node)
 	_fall_root = Node3D.new()
 	_fall_root.name = "Waterfalls"
 	add_child(_fall_root)
 	_rock_root = Node3D.new()
-	_rock_root.name = "RockKit"
+	_rock_root.name = "SlopeRocks"
 	add_child(_rock_root)
 	_dress_root = Node3D.new()
 	_dress_root.name = "Dressing"
@@ -97,14 +74,10 @@ func _ensure_nodes() -> void:
 	_water_material = _make_water_material()
 	_fall_material = _make_fall_material()
 	_water_node.material_override = _water_material
-	_slab_node.material_override = _material
-	RockKit.ensure()
-	_core_node.material_override = RockKit.rock_material
-	_bank_node.material_override = _material
-	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("8fb56e")))
+	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("64704a")))
 	_tuft_mm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_pebble_mm = _make_mm("Pebbles", _pebble_mesh(), _mat(Color("8a7360")))
-	_flower_mm = _make_mm("Flowers", _flower_mesh(), _mat(Color("d4c07a")))
+	_pebble_mm = _make_mm("Pebbles", _pebble_mesh(), _mat(Color("6b6256")))
+	_flower_mm = _make_mm("Flowers", _flower_mesh(), _mat(Color("c4b06a")))
 
 
 func configure(p_hash: int, p_centroid: Vector3, p_cells: int, p_field: Heightfield, p_skip: Dictionary = {}) -> void:
@@ -157,11 +130,7 @@ func update_lod(camera_origin: Vector3) -> bool:
 	if far:
 		_water_node.visible = false
 		_fall_root.visible = false
-		_rock_root.visible = true
-		if _slab_node:
-			_slab_node.visible = false
-		if _bank_node:
-			_bank_node.visible = false
+		_rock_root.visible = false
 		if _dress_root:
 			_dress_root.visible = false
 		rebuild_full(true)
@@ -169,10 +138,6 @@ func update_lod(camera_origin: Vector3) -> bool:
 		_water_node.visible = true
 		_fall_root.visible = true
 		_rock_root.visible = true
-		if _slab_node:
-			_slab_node.visible = true
-		if _bank_node:
-			_bank_node.visible = true
 		if _dress_root:
 			_dress_root.visible = true
 		rebuild_full(true)
@@ -213,19 +178,11 @@ func flush_bake() -> void:
 func flush_rebuild() -> void:
 	_finish_tasks()
 	if _shell_dirty or not _top_dirty.is_empty() or _chunks.is_empty():
-		_rocks_deferred = false
 		rebuild_full(true)
-		return
-	if _rocks_deferred or rock_state.is_empty():
-		_rocks_deferred = false
-		_scatter_rocks()
 
 
 func _process(delta: float) -> void:
 	_finish_tasks()
-	if _rocks_deferred:
-		_rocks_deferred = false
-		_scatter_rocks()
 	if _top_dirty.is_empty() or _shell_dirty:
 		return
 	_top_wait -= delta
@@ -235,7 +192,6 @@ func _process(delta: float) -> void:
 
 
 func mark_stroke(rect: Rect2i) -> void:
-	## Tops only. Kit rocks wait for stroke release so a dab stays under ~16 ms.
 	var cs := Heightfield.CHUNK
 	var x0 := int(floor(float(rect.position.x) / float(cs)))
 	var z0 := int(floor(float(rect.position.y) / float(cs)))
@@ -244,23 +200,13 @@ func mark_stroke(rect: Rect2i) -> void:
 	for z in range(z0, z1 + 1):
 		for x in range(x0, x1 + 1):
 			_top_dirty[Vector2i(x, z)] = true
+	_shell_dirty = true
 	if _top_wait <= 0.0:
 		_top_wait = 1.0 / TOP_HZ
 
 
 func end_stroke() -> void:
-	if field == null:
-		return
-	var t0 := Time.get_ticks_usec()
-	field.apply_coast_smooth()
-	if not _top_dirty.is_empty():
-		_rebuild_tops(true)
-	_rebuild_water()
-	if _outline_moved():
-		_rebuild_slab()
-		_rocks_deferred = true
-	last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
-	_shell_dirty = false
+	rebuild_full(false)
 
 
 func rebuild_full(sync: bool = false) -> void:
@@ -283,7 +229,6 @@ func rebuild_full(sync: bool = false) -> void:
 		last_full_ms = float(Time.get_ticks_usec() - t0) / 1000.0
 		_top_dirty.clear()
 		_shell_dirty = false
-		_rocks_deferred = false
 		return
 	var box := [{"serial": _serial, "jobs": jobs, "mode": mode, "skip": skip_top.duplicate(), "field": field.duplicate_field(), "result": []}]
 	_job_box = box
@@ -356,16 +301,15 @@ func _apply_payloads(payloads: Array, with_shell: bool) -> void:
 		if node.mesh and node.mesh.get_surface_count() > 0:
 			draws += 1
 	if with_shell:
-		_rebuild_slab()
 		_rebuild_water()
-		_scatter_rocks()
 		if not far:
+			_scatter_rocks()
 			_scatter_dressing()
 		elif _dress_root:
 			_dress_root.visible = false
-	last_triangles = tris + last_rock_tris
+	last_triangles = tris
 	last_chunks = _chunks.size()
-	last_draw_calls = draws + (1 if _water_node.visible and _water_node.mesh else 0) + (1 if _slab_node and _slab_node.visible and _slab_node.mesh else 0) + (1 if _core_node and _core_node.visible and _core_node.mesh else 0) + (1 if _bank_node and _bank_node.visible and _bank_node.mesh else 0) + _fall_root.get_child_count() + _dress_draws()
+	last_draw_calls = draws + (1 if _water_node.visible and _water_node.mesh else 0) + _fall_root.get_child_count() + _dress_draws()
 	centroid = _compute_centroid()
 
 
@@ -389,13 +333,6 @@ func _rebuild_water() -> void:
 		payloads.append(HeightfieldMesh.build_water(field, lake))
 	_water_node.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.combine(payloads))
 	_water_node.visible = not far and not payloads.is_empty()
-	var banks: Array = []
-	for lake in water_info.get("lakes", []):
-		banks.append(HeightfieldMesh.build_lake_bank(field, lake))
-	if _bank_node:
-		_bank_node.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.combine(banks))
-		_bank_node.material_override = _material
-		_bank_node.visible = not far and not banks.is_empty()
 	for child in _fall_root.get_children():
 		child.free()
 	if far:
@@ -442,106 +379,11 @@ func _rebuild_water() -> void:
 		_fall_root.add_child(mist)
 
 
-func _rebuild_slab() -> void:
-	if field == null or _slab_node == null:
-		return
-	var slab: Dictionary = HeightfieldMesh.build_slab(field, skip_top)
-	_slab_node.mesh = HeightfieldMesh.make_mesh(slab)
-	_slab_node.material_override = _material
-	_slab_node.visible = not far
-	if _core_node:
-		var core: Dictionary = HeightfieldMesh.build_core(field)
-		_core_node.mesh = HeightfieldMesh.make_mesh(core)
-		RockKit.ensure()
-		_core_node.material_override = RockKit.rock_material
-		_core_node.visible = true
-
-
 func _scatter_rocks() -> void:
-	if field == null or _rock_root == null:
-		return
-	var outline := field.primary_loop()
-	if outline.size() < 4:
-		last_rock_count = 0
-		last_rock_tris = 0
-		return
-	rock_state = RockUnderside.respace(rock_state, outline, field.seed, far)
-	if RockUnderside.any_floating(rock_state, outline):
-		rock_state = RockUnderside.assemble(outline, field.seed, far)
-	_sync_hang_mms(rock_state)
-	_last_outline = outline.duplicate()
-	last_rock_count = int(rock_state.get("piece_count", 0))
-	last_rock_tris = RockUnderside.triangle_count(rock_state)
-	print("kit rocks=%d tris=%d far=%s" % [last_rock_count, last_rock_tris, far])
-
-
-func _outline_moved() -> bool:
-	if field == null:
-		return false
-	var outline := field.primary_loop()
-	if outline.size() != _last_outline.size() or outline.size() < 4:
-		return true
-	for i in outline.size():
-		if outline[i].distance_to(_last_outline[i]) > 0.08:
-			return true
-	return false
-
-
-func _sync_hang_mms(state: Dictionary) -> void:
-	RockKit.ensure()
-	var grouped: Dictionary = {}
-	for slot in state.get("slots", []):
-		var name := String(slot["piece"])
-		if not grouped.has(name):
-			grouped[name] = []
-		(grouped[name] as Array).append(slot)
-	for name in RockKit.names:
-		var rows: Array = grouped.get(name, [])
-		var mmi := _hang_node(name)
-		if mmi == null:
-			continue
-		var multi := MultiMesh.new()
-		multi.transform_format = MultiMesh.TRANSFORM_3D
-		multi.use_colors = true
-		multi.mesh = RockKit.piece(name).get("mesh")
-		multi.instance_count = rows.size()
-		for i in rows.size():
-			multi.set_instance_transform(i, rows[i]["xf"])
-			multi.set_instance_color(i, Color(float(rows[i].get("jitter", 0.5)), 0.0, 0.0))
-		mmi.multimesh = multi
-		mmi.visible = rows.size() > 0
-	if _root_mmi == null:
-		_root_mmi = MultiMeshInstance3D.new()
-		_root_mmi.name = "Roots"
-		_root_mmi.material_override = RockKit.root_material
-		_root_mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		_rock_root.add_child(_root_mmi)
-	var roots: Array = [] if far else state.get("roots", [])
-	var root_multi := MultiMesh.new()
-	root_multi.transform_format = MultiMesh.TRANSFORM_3D
-	root_multi.mesh = RockKit.root_mesh
-	root_multi.instance_count = roots.size()
-	for i in roots.size():
-		root_multi.set_instance_transform(i, roots[i])
-	_root_mmi.multimesh = root_multi
-	_root_mmi.visible = roots.size() > 0
-	_rock_root.visible = true
-
-
-func _hang_node(piece_name: String) -> MultiMeshInstance3D:
-	if _hang_mms.has(piece_name) and is_instance_valid(_hang_mms[piece_name]):
-		return _hang_mms[piece_name]
-	RockKit.ensure()
-	var piece: Dictionary = RockKit.piece(piece_name)
-	if piece.is_empty() or piece.get("mesh") == null:
-		return null
-	var mmi := MultiMeshInstance3D.new()
-	mmi.name = "Hang_%s" % piece_name
-	mmi.material_override = RockKit.rock_material
-	mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
-	_rock_root.add_child(mmi)
-	_hang_mms[piece_name] = mmi
-	return mmi
+	for child in _rock_root.get_children():
+		child.free()
+	# Kit rocks stay off until they sit 0.3–0.8 m on steep faces, 30–50% embedded,
+	# and never hang under y_bottom.
 
 
 func _compute_centroid() -> Vector3:
@@ -563,13 +405,6 @@ func _apply_material() -> void:
 		var node: MeshInstance3D = _chunks[key]
 		if node:
 			node.material_override = _material
-	if _slab_node:
-		_slab_node.material_override = _material
-	if _core_node:
-		RockKit.ensure()
-		_core_node.material_override = RockKit.rock_material
-	if _bank_node:
-		_bank_node.material_override = _material
 
 
 func stats() -> Dictionary:
@@ -583,9 +418,6 @@ func stats() -> Dictionary:
 		"cells": cell_count,
 		"lakes": (water_info.get("lakes", []) as Array).size(),
 		"falls": (water_info.get("waterfalls", []) as Array).size(),
-		"rock_instances": last_rock_count,
-		"rock_tris": last_rock_tris,
-		"tufts": last_tufts,
 	}
 
 
@@ -643,11 +475,6 @@ func _dress_draws() -> int:
 	for node in _kit_mms.values():
 		if node and node.visible and node.multimesh and node.multimesh.instance_count > 0:
 			n += 1
-	for node in _hang_mms.values():
-		if node and node.visible and node.multimesh and node.multimesh.instance_count > 0:
-			n += 1
-	if _root_mmi and _root_mmi.visible and _root_mmi.multimesh and _root_mmi.multimesh.instance_count > 0:
-		n += 1
 	if _dress_root:
 		for child in _dress_root.get_children():
 			if child is MeshInstance3D and child.visible:
@@ -670,7 +497,7 @@ func _density_at(world: Vector2) -> float:
 	var wave := 0.5 + 0.5 * sin(world.x * 0.42 + salt) * sin(world.y * 0.35 - salt * 0.7)
 	var nse := _unit_hash(int(floor(world.x * 3.0)), int(floor(world.y * 3.0)))
 	var field_v := wave * 0.68 + nse.x * 0.32
-	return clampf(0.05 + 0.26 * field_v, 0.04, 0.34)
+	return clampf(0.14 + 0.52 * field_v, 0.12, 0.70)
 
 
 func _scatter_dressing() -> void:
@@ -702,7 +529,7 @@ func _scatter_dressing() -> void:
 			var density := _density_at(origin)
 			dmin = minf(dmin, density)
 			dmax = maxf(dmax, density)
-			for attempt in 3:
+			for attempt in 9:
 				var nse := _unit_hash(cx, cz, attempt + 11)
 				if nse.x > density:
 					continue
@@ -710,16 +537,11 @@ func _scatter_dressing() -> void:
 				var at := Vector3(origin.x + pos.x * field.spacing, 0.0, origin.y + pos.y * field.spacing)
 				var h := field.sample_height(at) + field.visual_relief(at)
 				var yaw := pos.y * TAU
-				var tall := 0.85 + nse.x * 0.70
-				if nse.y > 0.70 and density > 0.22:
-					tall = 1.35 + nse.x * 0.70
-				tufts.append(Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(0.95 + pos.y * 0.35, tall, 0.95 + pos.x * 0.28)), Vector3(at.x, h + 0.008, at.z)))
-				if nse.y > 0.70 and density > 0.20:
-					var mate := _unit_hash(cx + 41, cz + 7, attempt + 71)
-					tufts.append(Transform3D(Basis(Vector3.UP, yaw + 0.9).scaled(Vector3(0.80, tall * 0.72, 0.80)), Vector3(at.x + 0.10, h + 0.006, at.z - 0.08)))
-					if mate.x > 0.55:
-						tufts.append(Transform3D(Basis(Vector3.UP, yaw - 0.7).scaled(Vector3(0.70, tall * 0.58, 0.70)), Vector3(at.x - 0.08, h + 0.006, at.z + 0.11)))
-				if nse.y > 0.93 and pos.x > 0.55:
+				var tall := 0.70 + nse.x * 0.45
+				if nse.y > 0.82 and density > 0.50:
+					tall = 1.15 + nse.x * 0.55
+				tufts.append(Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(0.85 + pos.y * 0.40, tall, 0.85 + pos.x * 0.30)), Vector3(at.x, h + 0.008, at.z)))
+				if nse.y > 0.84 and pos.x > 0.35:
 					flowers.append(Transform3D(Basis(Vector3.UP, yaw + 1.2).scaled(Vector3.ONE * (1.0 + nse.x * 0.35)), Vector3(at.x + 0.05, h + 0.01, at.z - 0.04)))
 			var clump := _unit_hash(cx + 3, cz + 5, 7)
 			if clump.x > 0.70 and density > 0.30:
@@ -731,10 +553,10 @@ func _scatter_dressing() -> void:
 	_fill_mm(_tuft_mm, tufts)
 	_fill_mm(_pebble_mm, pebbles)
 	_fill_mm(_flower_mm, flowers)
-	last_tufts = tufts.size()
 	var rocks := _scatter_rim_rocks(water_cells)
-	print("dress tufts=%d pebbles=%d flowers=%d lake_rocks=%d kit=%d d=%.2f..%.2f" % [
-		tufts.size(), pebbles.size(), flowers.size(), rocks, last_rock_count, dmin, dmax
+	_hang_roots()
+	print("dress tufts=%d pebbles=%d flowers=%d rim_rocks=%d d=%.2f..%.2f" % [
+		tufts.size(), pebbles.size(), flowers.size(), rocks, dmin, dmax
 	])
 
 
@@ -746,20 +568,15 @@ func _scatter_rim_rocks(_water_cells: Dictionary) -> int:
 	if by_name.is_empty():
 		return 0
 	var names: PackedStringArray = PackedStringArray(by_name.keys())
+	_place_rock_chain(field.visual_loops, names, by_name, -0.18, false)
 	var lake_loops: Array = []
 	for lake in water_info.get("lakes", []):
-		var sdf: Array = field.water_visual_loops(lake.get("cells", []))
-		if sdf.is_empty():
-			for loop in HeightfieldMesh._lake_loops(field, lake.get("cells", [])):
-				var ring: Array = []
-				for p in HeightfieldMesh._smooth_loop(loop):
-					ring.append(Vector2(p.x, p.z))
-				if ring.size() >= 4:
-					lake_loops.append(ring)
-		else:
-			for loop in sdf:
-				if loop.size() >= 4:
-					lake_loops.append(loop)
+		for loop in HeightfieldMesh._lake_loops(field, lake.get("cells", [])):
+			var ring: Array = []
+			for p in HeightfieldMesh._smooth_loop(loop):
+				ring.append(Vector2(p.x, p.z))
+			if ring.size() >= 4:
+				lake_loops.append(ring)
 	_place_rock_chain(lake_loops, names, by_name, -0.12, true)
 	var total := 0
 	for n in by_name.keys():
@@ -789,8 +606,8 @@ func _place_rock_chain(loops: Array, names: PackedStringArray, by_name: Dictiona
 					var u := t / maxf(seg, 0.001)
 					var p := a.lerp(b, u)
 					var nse := Heightfield._hash2(p.x * 1.9 + float(field.seed), p.y * 1.7)
-					next_s += 1.55 + nse.x * 0.35
-					if nse.y < 0.42:
+					next_s += 1.05 + nse.x * 0.20
+					if nse.y < 0.34:
 						acc += t
 						t += 0.20
 						continue
@@ -836,7 +653,7 @@ func _kit_node(p_name: String) -> MultiMeshInstance3D:
 	if piece.is_empty() or piece.get("mesh") == null:
 		return null
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color("6e6258")
+	mat.albedo_color = Color("b39a82")
 	mat.roughness = 0.92
 	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED

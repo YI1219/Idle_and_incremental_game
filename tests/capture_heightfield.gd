@@ -47,30 +47,30 @@ func run() -> void:
 	_look(rig, player, Vector3(0.4, 0.0, 0.2), 22.0, 1)
 	await shot(OUT + "/overview.png")
 
-	# Low side must show the rock-kit underside.
+	# Wall and lake from the starter basin, before the shaft cut.
 	_set_house_visible(false)
 	_restore_pitch(rig)
-	rig.near_pitch_deg = -2.0
-	rig.pitch_deg = 2.0
-	_look(rig, player, Vector3(4.8, 0.0, -0.4), 16.0, 2)
+	rig.near_pitch_deg = 6.0
+	rig.pitch_deg = 10.0
+	_look(rig, player, Vector3(6.8, 0.0, -2.4), 9.0, 2)
 	await shot(OUT + "/low_side.png")
-
-	# seed7-like 3/4 of the whole island from slightly below.
-	# far_pitch must stay negative; _pitch_for_zoom lerps toward it past default distance.
-	rig.near_pitch_deg = -9.0
-	rig.pitch_deg = -7.0
-	rig.far_pitch_deg = -6.0
-	_look(rig, player, Vector3(0.2, 0.0, 0.0), 20.0, 2)
-	await shot(OUT + "/seed7_three_quarter.png")
 	_restore_pitch(rig)
 
-	_look(rig, player, Vector3(3.8, 0.0, 0.4), 10.0, 1)
+	_look(rig, player, Vector3(3.8, 0.0, 0.4), 11.0, 1)
 	await shot(OUT + "/lake.png")
+
+	_sculpt_demo(terrain)
+	terrain.flush_rebuild()
+	await frames(8)
+
+	rig.near_pitch_deg = 36.0
+	rig.pitch_deg = 42.0
+	_look(rig, player, Vector3(5.4, 0.0, 2.5), 8.0, 2)
+	await shot(OUT + "/shaft_waterfall.png")
+	_restore_pitch(rig)
 	_set_house_visible(true)
 
 	var playable: Dictionary = terrain.heightfield_stats()
-	_time_stroke(terrain)
-	playable = terrain.heightfield_stats()
 	_print_stats("playable", playable)
 
 	terrain.land_cells.clear()
@@ -166,19 +166,6 @@ func _restore_pitch(rig: Node3D) -> void:
 	rig.far_pitch_deg = 58.0
 
 
-func _time_stroke(terrain: Node3D) -> void:
-	var main: Node3D = terrain.get_node("Islands").get_child(0)
-	if main == null or main.field == null:
-		return
-	var field = main.field
-	var applied: Dictionary = field.apply_brush("smooth", Vector3(2.4, 0.0, 1.8), 0.9, 0.12, true)
-	main.mark_stroke(applied.get("rect", Rect2i()))
-	var t0 := Time.get_ticks_usec()
-	main.end_stroke()
-	main.last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
-	main.flush_rebuild()
-
-
 func _sculpt_demo(terrain: Node3D) -> void:
 	var main: Node3D = terrain.get_node("Islands").get_child(0)
 	if main == null or main.field == null:
@@ -202,8 +189,7 @@ func _sculpt_demo(terrain: Node3D) -> void:
 
 
 func _print_stats(label: String, stats: Dictionary) -> void:
-	print("PERF %s: islands=%s chunks=%s tris=%s draws=%s stroke_ms=%s rebuild_ms=%s rocks=%s rock_tris=%s tufts=%s" % [
+	print("PERF %s: islands=%s chunks=%s tris=%s draws=%s stroke_ms=%s rebuild_ms=%s" % [
 		label, stats.get("islands"), stats.get("chunks"), stats.get("triangles"),
 		stats.get("draw_calls"), stats.get("stroke_ms"), stats.get("rebuild_ms"),
-		stats.get("rock_instances"), stats.get("rock_tris"), stats.get("tufts"),
 	])

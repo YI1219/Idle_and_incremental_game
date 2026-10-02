@@ -2,16 +2,16 @@ shader_type spatial;
 // Opaque only. Writing ALPHA, even 1.0, puts the mesh on the transparent
 // pipeline and the island reads as a glass box.
 render_mode cull_back, diffuse_burley, specular_disabled;
-// seed7 / kit palette. Fresh soft green, not run-5 olive or run-4 neon.
-uniform vec4 moss_color : source_color = vec4(0.612, 0.749, 0.478, 1.0);
-uniform vec4 meadow_color : source_color = vec4(0.616, 0.725, 0.522, 1.0);
-uniform vec4 shade_grass : source_color = vec4(0.498, 0.647, 0.396, 1.0);
-uniform vec4 path_color : source_color = vec4(0.604, 0.510, 0.380, 1.0);
-uniform vec4 earth_color : source_color = vec4(0.604, 0.463, 0.337, 1.0);
-uniform vec4 earth_hi : source_color = vec4(0.560, 0.455, 0.350, 1.0);
-uniform vec4 rock_warm : source_color = vec4(0.455, 0.378, 0.322, 1.0);
-uniform vec4 rock_mid : source_color = vec4(0.388, 0.362, 0.345, 1.0);
-uniform vec4 rock_cool : source_color = vec4(0.340, 0.355, 0.380, 1.0);
+// Olive pair, ~35% saturation. Do not use the old saturated meadow greens.
+uniform vec4 moss_color : source_color = vec4(0.435, 0.478, 0.302, 1.0);
+uniform vec4 meadow_color : source_color = vec4(0.494, 0.545, 0.353, 1.0);
+uniform vec4 shade_grass : source_color = vec4(0.36, 0.40, 0.27, 1.0);
+uniform vec4 path_color : source_color = vec4(0.50, 0.43, 0.32, 1.0);
+uniform vec4 earth_color : source_color = vec4(0.38, 0.28, 0.20, 1.0);
+uniform vec4 earth_hi : source_color = vec4(0.46, 0.34, 0.24, 1.0);
+uniform vec4 rock_warm : source_color = vec4(0.58, 0.44, 0.34, 1.0);
+uniform vec4 rock_mid : source_color = vec4(0.48, 0.42, 0.38, 1.0);
+uniform vec4 rock_cool : source_color = vec4(0.40, 0.42, 0.45, 1.0);
 uniform vec4 path_segments[8];
 uniform int path_count = 0;
 uniform vec4 contact_patches[32];

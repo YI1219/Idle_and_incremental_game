@@ -2,10 +2,9 @@ extends Object
 ## Builds closed, chunked island meshes from a Heightfield. No scene I/O.
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
-const WALL_RINGS := 3
-const LIP := 0.04
+const WALL_RINGS := 7
+const LIP := 0.14
 const ROCK_SLOPE := 0.55
-const SLAB_BOTTOM := -0.52
 
 
 static func chunk_range(field: Heightfield) -> Vector2i:
@@ -36,13 +35,10 @@ static func make_mesh(payload: Dictionary) -> ArrayMesh:
 	var verts: PackedVector3Array = payload.get("vertices", PackedVector3Array())
 	if verts.is_empty():
 		return _empty()
-	var norms: PackedVector3Array = payload.get("normals", PackedVector3Array())
-	if bool(payload.get("smooth", false)) and norms.size() == verts.size():
-		norms = _shared_normals(verts)
 	var arrays: Array = []
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = verts
-	arrays[Mesh.ARRAY_NORMAL] = norms
+	arrays[Mesh.ARRAY_NORMAL] = payload.get("normals", PackedVector3Array())
 	arrays[Mesh.ARRAY_COLOR] = payload.get("colors", PackedColorArray())
 	arrays[Mesh.ARRAY_TEX_UV] = payload.get("uvs", PackedVector2Array())
 	var mesh := ArrayMesh.new()
@@ -55,7 +51,6 @@ static func combine(payloads: Array) -> Dictionary:
 	var norms := PackedVector3Array()
 	var cols := PackedColorArray()
 	var uvs := PackedVector2Array()
-	var want_smooth := false
 	for row in payloads:
 		if row == null:
 			continue
@@ -63,9 +58,7 @@ static func combine(payloads: Array) -> Dictionary:
 		norms.append_array(row.get("normals", PackedVector3Array()))
 		cols.append_array(row.get("colors", PackedColorArray()))
 		uvs.append_array(row.get("uvs", PackedVector2Array()))
-		if bool(row.get("smooth", false)):
-			want_smooth = true
-	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3), "smooth": want_smooth}
+	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
 
 
 static func border_vertices(field: Heightfield, chunk_a: Vector2i, chunk_b: Vector2i) -> Array:
@@ -128,42 +121,31 @@ static func build_water(field: Heightfield, lake: Dictionary) -> Dictionary:
 	var uvs := PackedVector2Array()
 	var level := float(lake.get("level", 0.0))
 	var cells: Array = lake.get("cells", [])
-	var loops: Array = field.water_visual_loops(cells)
-	if loops.is_empty():
-		loops = _lake_loops(field, cells)
+	var loops: Array = _lake_loops(field, cells)
 	var color := Color(0.16, 0.44, 0.42, 1.0)
 	var filled := false
 	for loop in loops:
-		var poly := PackedVector2Array()
-		if loop.size() > 0 and loop[0] is Vector3:
-			var ring: Array = _smooth_loop(loop)
-			for raw_p in ring:
-				var p3: Vector3 = raw_p
-				poly.append(Vector2(p3.x, p3.z))
-		else:
-			for raw_p in loop:
-				poly.append(raw_p as Vector2)
-		if poly.size() < 3:
+		var ring: Array = _smooth_loop(loop)
+		if ring.size() < 3:
 			continue
-		var grown: Array = Geometry2D.offset_polygon(poly, 0.06, Geometry2D.JOIN_ROUND)
+		var poly := PackedVector2Array()
+		for p in ring:
+			poly.append(Vector2(p.x, p.z))
+		var grown: Array = Geometry2D.offset_polygon(poly, 0.22, Geometry2D.JOIN_ROUND)
 		if not grown.is_empty() and (grown[0] as PackedVector2Array).size() >= 3:
 			poly = grown[0]
-		poly = _resample_poly(poly, 96)
-		if poly.size() < 3:
+		var idx := Geometry2D.triangulate_polygon(poly)
+		if idx.size() < 3:
 			continue
 		filled = true
-		var mid := Vector2.ZERO
-		for p in poly:
-			mid += p
-		mid /= float(poly.size())
-		var pc := Vector3(mid.x, level, mid.y)
-		var cc := Color(0.92, 0.0, 0.0, 1.0)
-		for i in poly.size():
-			var qa := poly[i]
-			var qb := poly[(i + 1) % poly.size()]
+		for i in range(0, idx.size(), 3):
+			var qa := poly[idx[i]]
+			var qb := poly[idx[i + 1]]
+			var qc := poly[idx[i + 2]]
 			var pa := Vector3(qa.x, level, qa.y)
 			var pb := Vector3(qb.x, level, qb.y)
-			_solid_vcols(verts, norms, cols, uvs, pa, pb, pc, _shore_color(qa, poly), _shore_color(qb, poly), cc, Vector3.UP)
+			var pc := Vector3(qc.x, level, qc.y)
+			_solid_vcols(verts, norms, cols, uvs, pa, pb, pc, _shore_color(qa, poly), _shore_color(qb, poly), _shore_color(qc, poly), Vector3.UP)
 	if not filled:
 		for cell in cells:
 			var c: Vector2i = cell
@@ -179,167 +161,6 @@ static func build_water(field: Heightfield, lake: Dictionary) -> Dictionary:
 			p11.y = level
 			_solid(verts, norms, cols, uvs, p00, p10, p11, color, Vector3.UP)
 			_solid(verts, norms, cols, uvs, p00, p11, p01, color, Vector3.UP)
-	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
-
-
-static func build_slab(field: Heightfield, skip_top: Dictionary = {}) -> Dictionary:
-	## Rounded grass shoulder + brown earth lip along the SDF contour.
-	var verts := PackedVector3Array()
-	var norms := PackedVector3Array()
-	var cols := PackedColorArray()
-	var uvs := PackedVector2Array()
-	if field.visual_loops.is_empty():
-		field.apply_coast_smooth()
-	var profile := [
-		[-1.40, 0.03, 0.88],
-		[-0.65, 0.01, 0.82],
-		[-0.16, -0.005, 0.68],
-		[0.04, -0.045, 0.46],
-		[0.11, -0.11, 0.24],
-		[0.05, SLAB_BOTTOM, 0.14],
-	]
-	for loop in field.visual_loops:
-		if loop.size() < 6:
-			continue
-		var mid := Vector2.ZERO
-		for raw_p in loop:
-			mid += raw_p as Vector2
-		mid /= float(loop.size())
-		var rings: Array = []
-		for row in profile:
-			var ring: Array = []
-			for raw_p in loop:
-				var p: Vector2 = raw_p
-				var radial: Vector2 = p - mid
-				var rlen: float = radial.length()
-				var q: Vector2 = p if rlen < 1e-4 else mid + radial * ((rlen + float(row[0])) / rlen)
-				var h := field.sample_height(Vector3(q.x, 0.0, q.y))
-				if not is_finite(h):
-					h = 0.0
-				var play := Vector2i(floori(q.x), floori(q.y))
-				if skip_top.has(play):
-					h = field.sample_height(Vector3(p.x, 0.0, p.y))
-				ring.append(Vector3(q.x, h + float(row[1]), q.y))
-			rings.append(ring)
-		var n := (rings[0] as Array).size()
-		for k in range(rings.size() - 1):
-			var grass := float(profile[k + 1][2])
-			var color := Color(0.86, grass, 0.0 if grass >= 0.32 else 0.0, 1.0)
-			if grass < 0.32:
-				color = Color(0.80, 0.18, 0.0, 1.0)
-			for i in n:
-				var a: Vector3 = rings[k][i]
-				var b: Vector3 = rings[k][(i + 1) % n]
-				var c: Vector3 = rings[k + 1][(i + 1) % n]
-				var d: Vector3 = rings[k + 1][i]
-				_solid(verts, norms, cols, uvs, a, b, c, color, Vector3.UP)
-				_solid(verts, norms, cols, uvs, a, c, d, color, Vector3.UP)
-	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
-
-
-static func build_lake_bank(field: Heightfield, lake: Dictionary) -> Dictionary:
-	## Sloped brown earth band around a smooth water contour.
-	var verts := PackedVector3Array()
-	var norms := PackedVector3Array()
-	var cols := PackedColorArray()
-	var uvs := PackedVector2Array()
-	var cells: Array = lake.get("cells", [])
-	var level := float(lake.get("level", 0.0))
-	var loops: Array = field.water_visual_loops(cells)
-	if loops.is_empty():
-		var raw: Array = _lake_loops(field, cells)
-		for loop in raw:
-			var poly := PackedVector2Array()
-			for p in _smooth_loop(loop):
-				poly.append(Vector2(p.x, p.z))
-			if poly.size() >= 4:
-				loops.append(poly)
-	var profile := [
-		[0.18, 0.02, 0.46],
-		[0.06, -0.02, 0.34],
-		[-0.02, -0.06, 0.22],
-		[-0.10, level - 0.02, 0.18],
-	]
-	for loop in loops:
-		var poly := PackedVector2Array()
-		if loop.size() > 0 and loop[0] is Vector3:
-			for raw_p in loop:
-				var p3: Vector3 = raw_p
-				poly.append(Vector2(p3.x, p3.z))
-		else:
-			for raw_p in loop:
-				poly.append(raw_p as Vector2)
-		if poly.size() < 4:
-			continue
-		poly = _resample_poly(poly, 56)
-		var mid := Vector2.ZERO
-		for p in poly:
-			mid += p
-		mid /= float(poly.size())
-		var rings: Array = []
-		for row in profile:
-			var ring: Array = []
-			for p in poly:
-				var radial := p - mid
-				var rlen := radial.length()
-				var q := p if rlen < 1e-4 else mid + radial * ((rlen + float(row[0])) / rlen)
-				var h := field.sample_height(Vector3(q.x, 0.0, q.y))
-				if not is_finite(h):
-					h = level + 0.08
-				if float(row[1]) < -0.04:
-					h = float(row[1]) if float(row[1]) < -0.5 else lerpf(h, level, 0.85)
-				else:
-					h += float(row[1])
-				ring.append(Vector3(q.x, h, q.y))
-			rings.append(ring)
-		var n := (rings[0] as Array).size()
-		for k in range(rings.size() - 1):
-			var grass := float(profile[k + 1][2])
-			var color := Color(0.62, grass, 0.0, 1.0)
-			for i in n:
-				var a: Vector3 = rings[k][i]
-				var b: Vector3 = rings[k][(i + 1) % n]
-				var c: Vector3 = rings[k + 1][(i + 1) % n]
-				var d: Vector3 = rings[k + 1][i]
-				_solid(verts, norms, cols, uvs, a, b, c, color, Vector3.UP)
-				_solid(verts, norms, cols, uvs, a, c, d, color, Vector3.UP)
-	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3), "smooth": true}
-
-
-static func build_core(field: Heightfield) -> Dictionary:
-	## Cheap hidden occluder so ring gaps show rock, not sky.
-	var verts := PackedVector3Array()
-	var norms := PackedVector3Array()
-	var cols := PackedColorArray()
-	var uvs := PackedVector2Array()
-	if field.visual_loops.is_empty():
-		field.apply_coast_smooth()
-	var color := Color(0.48, 0.0, 1.0, 1.0)
-	for loop in field.visual_loops:
-		if loop.size() < 6:
-			continue
-		var mid := Vector2.ZERO
-		for raw_p in loop:
-			mid += raw_p as Vector2
-		mid /= float(loop.size())
-		var top: Array = []
-		var bot: Array = []
-		for raw_p in loop:
-			var p: Vector2 = raw_p
-			var q: Vector2 = mid + (p - mid) * 0.38
-			top.append(Vector3(q.x, -0.95, q.y))
-			bot.append(Vector3(mid.x + (q.x - mid.x) * 0.10, field.y_bottom - 0.20, mid.y + (q.y - mid.y) * 0.10))
-		var n := top.size()
-		for i in n:
-			var a: Vector3 = top[i]
-			var b: Vector3 = top[(i + 1) % n]
-			var c: Vector3 = bot[(i + 1) % n]
-			var d: Vector3 = bot[i]
-			_solid(verts, norms, cols, uvs, a, b, c, color, Vector3.DOWN)
-			_solid(verts, norms, cols, uvs, a, c, d, color, Vector3.DOWN)
-		var tip := Vector3(mid.x, field.y_bottom - 0.60, mid.y)
-		for i in n:
-			_solid(verts, norms, cols, uvs, bot[i], bot[(i + 1) % n], tip, color, Vector3.DOWN)
 	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
 
 
@@ -498,9 +319,14 @@ static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: 
 		var qb: Vector3 = col_b[r + 1]
 		if pa.distance_to(pb) < 0.03 and qa.distance_to(qb) < 0.03:
 			continue
-		# Hidden occluder core. Visible cliffs are kit rocks.
-		var shade := 0.70 + Heightfield._hash2(float(cx) * 3.1 + float(r) * 9.0 + float(field.seed), float(cz) * 2.7).x * 0.20
-		var color := Color(clampf(shade, 0.45, 1.0), 0.0, 1.0, 1.0)
+		# r0 grass shoulder, r1 dark earth band, then rock. No grass stripes in the cliff.
+		var shade := 0.62 + Heightfield._hash2(float(cx) * 3.1 + float(r) * 9.0 + float(field.seed), float(cz) * 2.7).x * 0.55
+		var ao := (0.52 if r == 0 else (0.88 if r == 1 else (0.96 if r < 4 else 0.74))) * shade
+		var color := Color(ao, 0.92, 0.0, 1.0)
+		if r == 1:
+			color = Color(ao, 0.20, 0.0, 1.0)
+		elif r >= 2:
+			color = Color(clampf(ao, 0.40, 1.15), 0.0, 1.0, 1.0)
 		_solid(verts, norms, cols, uvs, pa, pb, qb, color, hint)
 		_solid(verts, norms, cols, uvs, pa, qb, qa, color, hint)
 
@@ -539,21 +365,29 @@ static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: 
 	var concave := land_n == 3
 	var col: Array = []
 	col.append(top)
-	var last := maxi(rings - 1, 2)
-	var inward := -outward
-	var centre := field.land_centroid()
-	if inward.length_squared() < 1e-6:
-		inward = Vector3(centre.x - top.x, 0.0, centre.y - top.z)
-		if inward.length_squared() > 1e-8:
-			inward = inward.normalized()
+	if outward.length_squared() > 1e-6:
+		col.append(top + outward * LIP + Vector3(0.0, 0.008, 0.0))
+		col.append(top + outward * (LIP + 0.18) + Vector3(0.0, -0.07, 0.0))
+	else:
+		col.append(top + Vector3(0.0, 0.008, 0.0))
+		col.append(top + Vector3(0.0, -0.05, 0.0))
+	var last := maxi(rings - 1, 3)
 	for r in range(1, last):
 		var t := float(r) / float(last)
-		var y := lerpf(top.y, bot.y, t)
+		var nse := Heightfield._hash2(float(ix) * 2.07 + float(r) * 17.0 + float(field.seed), float(iz) * 1.83)
+		var y := lerpf(top.y, bot.y, t) + (nse.x - 0.5) * 0.14
 		var p := Vector3(top.x, y, top.z)
 		if concave:
-			p += outward * (-0.08 - 0.52 * t * t)
+			# Shaft / interior rims flare open so the hole reads the cloud sea, not a black well.
+			var flare := -0.06 - 0.58 * t * t + (nse.x - 0.5) * 0.08
+			p += outward * flare
+			p += tangent * (nse.y - 0.5) * 0.08
 		else:
-			p += inward * (0.28 * t + 0.95 * t * t)
+			# seed7 stacked blocks: constant per-ring stick-out, then taper to the keel.
+			var stick := 0.22 + nse.x * 0.72
+			var radial := LIP * (1.0 - t) + stick * (1.0 - t * 0.40) - 0.62 * t * t
+			p += outward * radial
+			p += tangent * (nse.y - 0.5) * 0.48
 		if p.y > top.y - 0.02:
 			p.y = top.y - 0.02
 		if p.y < bot.y + 0.02:
@@ -637,31 +471,6 @@ static func _trace_loops(field: Heightfield, outgoing: Dictionary) -> Array:
 			if loop.size() >= 3:
 				loops.append(_smooth_loop(loop))
 	return loops
-
-
-static func _resample_poly(poly: PackedVector2Array, count: int) -> PackedVector2Array:
-	if poly.size() < 3:
-		return poly
-	var total := 0.0
-	for i in poly.size():
-		total += poly[i].distance_to(poly[(i + 1) % poly.size()])
-	if total < 0.2:
-		return poly
-	var out := PackedVector2Array()
-	var acc := 0.0
-	var i := 0
-	var seg := poly[0].distance_to(poly[1 % poly.size()])
-	for j in count:
-		var d := total * float(j) / float(count)
-		while acc + seg < d and i < poly.size() * 2:
-			acc += seg
-			i += 1
-			seg = poly[i % poly.size()].distance_to(poly[(i + 1) % poly.size()])
-		var a := poly[i % poly.size()]
-		var b := poly[(i + 1) % poly.size()]
-		var u := 0.0 if seg < 1e-6 else clampf((d - acc) / seg, 0.0, 1.0)
-		out.append(a.lerp(b, u))
-	return out
 
 
 static func _smooth_loop(loop: Array) -> Array:
@@ -882,9 +691,8 @@ static func _solid_uv(verts: PackedVector3Array, norms: PackedVector3Array, cols
 		uv_b = uv_c
 		uv_c = tmp_uv
 		n = -n
-	# Tops / banks: force the authored outside so basin fans and bank wedges
-	# do not pick up per-triangle geometric lighting.
-	var lit := outside.normalized() if absf(outside.y) > 0.85 else -n.normalized()
+	# Light with the geometric slope, facing the outside hemisphere.
+	var lit := -n.normalized()
 	if lit.dot(outside) < 0.0:
 		lit = -lit
 	if lit.length_squared() < 0.25:
@@ -914,30 +722,6 @@ static func _count_edge(counts: Dictionary, a: Vector3, b: Vector3, tol: float) 
 static func _key(p: Vector3, tol: float) -> String:
 	var s := 1.0 / maxf(tol, 1e-5)
 	return "%d,%d,%d" % [int(round(p.x * s)), int(round(p.y * s)), int(round(p.z * s))]
-
-
-static func _shared_normals(verts: PackedVector3Array) -> PackedVector3Array:
-	var acc: Dictionary = {}
-	var keys: PackedStringArray = PackedStringArray()
-	keys.resize(verts.size())
-	for i in verts.size():
-		var k := _key(verts[i], 0.025)
-		keys[i] = k
-		if not acc.has(k):
-			acc[k] = Vector3.ZERO
-	for i in range(0, verts.size(), 3):
-		var fn := (verts[i + 1] - verts[i]).cross(verts[i + 2] - verts[i])
-		if fn.length_squared() < 1e-10:
-			continue
-		fn = fn.normalized()
-		for j in 3:
-			acc[keys[i + j]] = (acc[keys[i + j]] as Vector3) + fn
-	var out := PackedVector3Array()
-	out.resize(verts.size())
-	for i in verts.size():
-		var n: Vector3 = acc[keys[i]]
-		out[i] = n.normalized() if n.length_squared() > 1e-8 else Vector3.UP
-	return out
 
 
 static func _empty() -> ArrayMesh:
