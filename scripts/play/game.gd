@@ -72,8 +72,8 @@ func _lights() -> void:
 	sky.background_mode = Environment.BG_COLOR
 	sky.background_color = Color("6ea0d0")
 	sky.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	sky.ambient_light_color = Color("c9d6c4")
-	sky.ambient_light_energy = 0.28
+	sky.ambient_light_color = Color("b0b8a8")
+	sky.ambient_light_energy = 0.12
 	sky.fog_enabled = true
 	sky.fog_light_color = Color("c8d6e4")
 	sky.fog_density = 0.004
@@ -83,7 +83,7 @@ func _lights() -> void:
 	sun.name = "Sun"
 	sun.rotation_degrees = Vector3(-32, -38, 0)
 	sun.light_color = Color("ffd39a")
-	sun.light_energy = 1.55
+	sun.light_energy = 1.85
 	sun.shadow_enabled = true
 	sun.light_angular_distance = 3.6
 	sun.shadow_blur = 2.8
@@ -94,6 +94,6 @@ func _lights() -> void:
 	fill.name = "FillLight"
 	fill.rotation_degrees = Vector3(28, 142, 0)
 	fill.light_color = Color("9eb4cc")
-	fill.light_energy = 0.10
+	fill.light_energy = 0.04
 	fill.shadow_enabled = false
 	add_child(fill)

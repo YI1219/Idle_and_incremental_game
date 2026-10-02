@@ -3,6 +3,7 @@ extends Node3D
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
+const RockKit := preload("res://scripts/world/rock_kit.gd")
 
 const FAR_ENTER := 42.0
 const FAR_LEAVE := 32.0
@@ -35,7 +36,7 @@ var _fall_material: ShaderMaterial
 var _tuft_mm: MultiMeshInstance3D
 var _pebble_mm: MultiMeshInstance3D
 var _flower_mm: MultiMeshInstance3D
-var _shore_mm: MultiMeshInstance3D
+var _kit_mms: Dictionary = {}
 var _top_dirty: Dictionary = {}
 var _shell_dirty := false
 var _top_wait := 0.0
@@ -73,10 +74,9 @@ func _ensure_nodes() -> void:
 	_water_material = _make_water_material()
 	_fall_material = _make_fall_material()
 	_water_node.material_override = _water_material
-	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("5d7a3a")))
-	_pebble_mm = _make_mm("Pebbles", _pebble_mesh(), _mat(Color("7a7164")))
-	_flower_mm = _make_mm("Flowers", _flower_mesh(), _mat(Color("d8c56a")))
-	_shore_mm = _make_mm("ShoreRocks", _shore_mesh(), _mat(Color("6d6458")))
+	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("6a7548")))
+	_pebble_mm = _make_mm("Pebbles", _pebble_mesh(), _mat(Color("6b6256")))
+	_flower_mm = _make_mm("Flowers", _flower_mesh(), _mat(Color("c4b06a")))
 
 
 func configure(p_hash: int, p_centroid: Vector3, p_cells: int, p_field: Heightfield, p_skip: Dictionary = {}) -> void:
@@ -338,7 +338,7 @@ func _rebuild_water() -> void:
 		return
 	for site in water_info.get("waterfalls", []):
 		var mesh := MeshInstance3D.new()
-		mesh.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.build_waterfall(site["origin"], site["outward"], SEA_Y + 0.35, 1.75))
+		mesh.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.build_waterfall(site["origin"], site["outward"], SEA_Y + 0.35, 1.05))
 		mesh.material_override = _fall_material
 		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		_fall_root.add_child(mesh)
@@ -376,24 +376,6 @@ func _rebuild_water() -> void:
 		(mist.draw_pass_1 as SphereMesh).radius = 0.16
 		(mist.draw_pass_1 as SphereMesh).height = 0.32
 		_fall_root.add_child(mist)
-		# Still-frame mist so screenshots show a white veil at the plunge.
-		for k in 3:
-			var puff := MeshInstance3D.new()
-			var sphere := SphereMesh.new()
-			sphere.radius = 0.28 + float(k) * 0.10
-			sphere.height = sphere.radius * 1.15
-			sphere.radial_segments = 8
-			sphere.rings = 4
-			puff.mesh = sphere
-			puff.position = Vector3(site["origin"].x, SEA_Y + 0.95 + float(k) * 0.18, site["origin"].z) + site["outward"] * (0.35 + float(k) * 0.12)
-			var puff_mat := StandardMaterial3D.new()
-			puff_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-			puff_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			puff_mat.albedo_color = Color(0.95, 0.97, 0.98, 0.28)
-			puff_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-			puff.material_override = puff_mat
-			puff.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			_fall_root.add_child(puff)
 
 
 func _scatter_rocks() -> void:
@@ -486,7 +468,10 @@ func _fill_mm(node: MultiMeshInstance3D, xforms: Array) -> void:
 
 func _dress_draws() -> int:
 	var n := 0
-	for node in [_tuft_mm, _pebble_mm, _flower_mm, _shore_mm]:
+	for node in [_tuft_mm, _pebble_mm, _flower_mm]:
+		if node and node.visible and node.multimesh and node.multimesh.instance_count > 0:
+			n += 1
+	for node in _kit_mms.values():
 		if node and node.visible and node.multimesh and node.multimesh.instance_count > 0:
 			n += 1
 	if _dress_root:
@@ -494,6 +479,12 @@ func _dress_draws() -> int:
 			if child is MeshInstance3D and child.visible:
 				n += 1
 	return n
+
+
+func _density_at(world: Vector2) -> float:
+	var wave := 0.5 + 0.5 * sin(world.x * 0.42 + float(field.seed) * 0.11) * sin(world.y * 0.35 - float(field.seed) * 0.07)
+	var nse := Heightfield._hash2(world.x * 0.19 + float(field.seed), world.y * 0.17)
+	return clampf(0.12 + 0.58 * (wave * 0.65 + nse.x * 0.35), 0.10, 0.72)
 
 
 func _scatter_dressing() -> void:
@@ -504,67 +495,138 @@ func _scatter_dressing() -> void:
 		if child is MeshInstance3D:
 			child.queue_free()
 	var water_cells: Dictionary = {}
-	var water_level: Dictionary = {}
 	for lake in water_info.get("lakes", []):
-		var lvl := float(lake.get("level", 0.0))
 		for cell in lake.get("cells", []):
 			water_cells[cell] = true
-			water_level[cell] = lvl
 	var tufts: Array = []
 	var pebbles: Array = []
 	var flowers: Array = []
-	var shores: Array = []
 	for cz in field.cells_z():
 		for cx in field.cells_x():
 			if not field.is_land(cx, cz):
 				continue
 			var play := field.play_cell_of_hf(cx, cz)
-			if skip_top.has(play) or _blocked.has(play):
+			if skip_top.has(play) or _blocked.has(play) or water_cells.has(Vector2i(cx, cz)):
 				continue
-			var mid := field.vertex_world(cx, cz) + Vector2(field.spacing * 0.5, field.spacing * 0.5)
-			var h := field.sample_height(Vector3(mid.x, 0.0, mid.y))
-			var nse := Heightfield._hash2(float(cx) * 1.37 + float(field.seed), float(cz) * 1.91)
-			var wet := water_cells.has(Vector2i(cx, cz))
-			var shore := false
-			if not wet:
-				for pair in [[0, -1], [1, 0], [0, 1], [-1, 0]]:
-					if water_cells.has(Vector2i(cx + int(pair[0]), cz + int(pair[1]))):
-						shore = true
-						break
-			var hole_rim := false
-			if not wet:
-				for pair in [[0, -1], [1, 0], [0, 1], [-1, 0]]:
-					var nx: int = cx + int(pair[0])
-					var nz: int = cz + int(pair[1])
-					if field.is_land(nx, nz):
-						continue
-					var around := 0
-					for oz in range(-1, 2):
-						for ox in range(-1, 2):
-							if field.is_land(nx + ox, nz + oz):
-								around += 1
-					if around >= 5:
-						hole_rim = true
-			if wet:
-				if nse.x > 0.72:
-					var lvl := float(water_level.get(Vector2i(cx, cz), h + 0.04))
-					_add_lily(Vector3(mid.x + (nse.y - 0.5) * 0.18, lvl + 0.015, mid.y + (nse.x - 0.5) * 0.18), 0.10 + nse.y * 0.05)
+			if field.sample_inland(Vector3(field.vertex_world(cx, cz).x, 0.0, field.vertex_world(cx, cz).y)) < 0.28:
 				continue
-			if shore or hole_rim:
-				var xf := Transform3D(Basis(Vector3.UP, nse.x * TAU).scaled(Vector3(0.22 + nse.y * 0.10, 0.16 + nse.x * 0.08, 0.20 + nse.y * 0.08)), Vector3(mid.x, h + 0.04, mid.y))
-				shores.append(xf)
-			if nse.x > 0.74:
-				var gxf := Transform3D(Basis(Vector3.UP, nse.y * TAU).scaled(Vector3(1.15, 0.70, 1.15) * (0.90 + nse.y * 0.25)), Vector3(mid.x + (nse.y - 0.5) * 0.16, h + 0.01, mid.y + (nse.x - 0.5) * 0.16))
-				tufts.append(gxf)
-			if nse.y > 0.78:
-				pebbles.append(Transform3D(Basis(Vector3.UP, nse.x * 5.0).scaled(Vector3(0.10 + nse.x * 0.05, 0.06, 0.08 + nse.y * 0.04)), Vector3(mid.x - 0.12, h + 0.02, mid.y + 0.10)))
-			if nse.x > 0.88 and nse.y > 0.40:
-				flowers.append(Transform3D(Basis(Vector3.UP, nse.y * TAU).scaled(Vector3.ONE * 0.9), Vector3(mid.x + 0.08, h + 0.01, mid.y - 0.06)))
+			var origin := field.vertex_world(cx, cz)
+			var density := _density_at(origin)
+			for attempt in 7:
+				var nse := Heightfield._hash2(float(cx) * 2.13 + float(attempt) * 17.0 + float(field.seed), float(cz) * 1.71 + float(attempt) * 5.3)
+				if nse.x > density:
+					continue
+				var at := Vector3(origin.x + nse.x * field.spacing, 0.0, origin.y + nse.y * field.spacing)
+				var h := field.sample_height(at) + field.visual_relief(at)
+				var yaw := nse.y * TAU
+				var tall := 0.70 + nse.x * 0.70
+				tufts.append(Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(0.85 + nse.y * 0.4, tall, 0.85 + nse.x * 0.3)), Vector3(at.x, h + 0.01, at.z)))
+				if nse.y > 0.92 and nse.x > 0.40:
+					flowers.append(Transform3D(Basis(Vector3.UP, yaw + 1.2).scaled(Vector3.ONE * (0.8 + nse.x * 0.3)), Vector3(at.x + 0.06, h + 0.01, at.z - 0.04)))
+			var clump := Heightfield._hash2(float(cx) * 0.37 + float(field.seed), float(cz) * 0.41)
+			if clump.x > 0.82 and density > 0.40:
+				var mid := origin + Vector2(field.spacing * 0.5, field.spacing * 0.5)
+				var h2 := field.sample_height(Vector3(mid.x, 0.0, mid.y))
+				pebbles.append(Transform3D(Basis(Vector3.UP, clump.y * TAU).scaled(Vector3(0.09, 0.055, 0.07)), Vector3(mid.x, h2 + 0.015, mid.y)))
+				if clump.y > 0.55:
+					pebbles.append(Transform3D(Basis(Vector3.UP, clump.x * 4.0).scaled(Vector3(0.06, 0.04, 0.05)), Vector3(mid.x + 0.12, h2 + 0.012, mid.y - 0.08)))
 	_fill_mm(_tuft_mm, tufts)
 	_fill_mm(_pebble_mm, pebbles)
 	_fill_mm(_flower_mm, flowers)
-	_fill_mm(_shore_mm, shores)
+	_scatter_rim_rocks(water_cells)
 	_hang_roots()
+
+
+func _scatter_rim_rocks(water_cells: Dictionary) -> void:
+	RockKit.ensure()
+	var by_name: Dictionary = {}
+	for n in RockKit.pool("rim"):
+		by_name[n] = []
+	if by_name.is_empty():
+		return
+	var names: PackedStringArray = PackedStringArray(by_name.keys())
+	_place_rock_chain(field.visual_loops, names, by_name, -0.16, false)
+	var lake_loops: Array = []
+	for lake in water_info.get("lakes", []):
+		for loop in HeightfieldMesh._lake_loops(field, lake.get("cells", [])):
+			var ring: Array = []
+			for p in HeightfieldMesh._smooth_loop(loop):
+				ring.append(Vector2(p.x, p.z))
+			if ring.size() >= 4:
+				lake_loops.append(ring)
+	_place_rock_chain(lake_loops, names, by_name, -0.10, true)
+	for n in by_name.keys():
+		var node := _kit_node(String(n))
+		if node:
+			_fill_mm(node, by_name[n])
+
+
+func _place_rock_chain(loops: Array, names: PackedStringArray, by_name: Dictionary, bury: float, lake: bool) -> void:
+	if names.is_empty():
+		return
+	for loop in loops:
+		if loop.size() < 4:
+			continue
+		var acc := 0.0
+		var next_s := 0.0
+		var placed := 0
+		for i in loop.size():
+			var a: Vector2 = loop[i]
+			var b: Vector2 = loop[(i + 1) % loop.size()]
+			var seg := a.distance_to(b)
+			var t := 0.0
+			while t < seg:
+				if acc + t >= next_s:
+					var u := t / maxf(seg, 0.001)
+					var p := a.lerp(b, u)
+					var nse := Heightfield._hash2(p.x * 1.9 + float(field.seed), p.y * 1.7)
+					next_s += 0.88 + nse.x * 0.16
+					if nse.y < 0.24:
+						acc += t
+						t += 0.20
+						continue
+					if _blocked_world(p):
+						acc += t
+						t += 0.20
+						continue
+					var name := names[int(nse.x * float(names.size())) % names.size()]
+					var h := field.sample_height(Vector3(p.x, 0.0, p.y))
+					var yaw := nse.x * TAU
+					var tilt := (nse.y - 0.5) * 0.12
+					var sx := 0.85 + nse.x * 0.55
+					var sy := (2.4 + nse.y * 1.6) if not lake else (1.8 + nse.y * 1.2)
+					var sz := 0.90 + nse.y * 0.40
+					var basis := Basis.from_euler(Vector3(PI + tilt, yaw, (nse.x - 0.5) * 0.10))
+					basis = basis.scaled(Vector3(sx, sy, sz))
+					var xf := Transform3D(basis, Vector3(p.x + (nse.y - 0.5) * 0.16, h + bury, p.y + (nse.x - 0.5) * 0.16))
+					(by_name[name] as Array).append(xf)
+					placed += 1
+					if placed % 6 == 0 and names.size() > 1:
+						var small := names[int(nse.y * float(names.size())) % names.size()]
+						var sb := Basis.from_euler(Vector3(PI, yaw + 0.8, 0.0)).scaled(Vector3(sx * 0.55, sy * 0.55, sz * 0.55))
+						(by_name[small] as Array).append(Transform3D(sb, Vector3(p.x + 0.32, h + bury * 0.7, p.y - 0.18)))
+				t += 0.18
+			acc += seg
+
+
+func _blocked_world(p: Vector2) -> bool:
+	var play := Vector2i(floori(p.x), floori(p.y))
+	return skip_top.has(play) or _blocked.has(play)
+
+
+func _kit_node(p_name: String) -> MultiMeshInstance3D:
+	if _kit_mms.has(p_name) and is_instance_valid(_kit_mms[p_name]):
+		return _kit_mms[p_name]
+	var piece: Dictionary = RockKit.piece(p_name)
+	if piece.is_empty() or piece.get("mesh") == null:
+		return null
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color("6d6256")
+	mat.roughness = 0.95
+	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+	var node := _make_mm("Kit_%s" % p_name, piece["mesh"], mat)
+	_kit_mms[p_name] = node
+	return node
 
 
 func _add_lily(at: Vector3, radius: float) -> void:
@@ -623,12 +685,12 @@ func _hang_roots() -> void:
 func _tuft_mesh() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var blades := [0.0, 1.05, 2.15]
+	var blades := [0.0, 0.95, 1.85, 2.70]
 	for yaw in blades:
 		var b := Basis(Vector3.UP, yaw)
-		var a := b * Vector3(-0.11, 0.0, 0.0)
-		var c := b * Vector3(0.11, 0.0, 0.0)
-		var tip := b * Vector3(0.0, 0.11, 0.03)
+		var a := b * Vector3(-0.012, 0.0, 0.0)
+		var c := b * Vector3(0.012, 0.0, 0.0)
+		var tip := b * Vector3(0.0, 0.11, 0.018)
 		st.set_normal(Vector3.UP)
 		st.add_vertex(a)
 		st.add_vertex(tip)

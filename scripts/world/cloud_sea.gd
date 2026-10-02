@@ -1,6 +1,5 @@
 extends Node3D
 ## Soft stylized cloud sea under the grotto islands. No distant mountains.
-## Built as an opaque vertex-colored mesh so billows still read on software render.
 
 const SEA_Y := -6.15
 const SPAN := 80.0
@@ -15,16 +14,16 @@ func _ready() -> void:
 	add_to_group("cloud_sea")
 	_sea = MeshInstance3D.new()
 	_sea.name = "SeaSheet"
-	_sea.mesh = _billow_mesh(SPAN, RES, 2.15, Color("e8eef4"), Color("6d8296"))
+	_sea.mesh = _billow_mesh(SPAN, RES, 2.15, Color("f4f7fa"), Color("d5dee6"))
 	_sea.position.y = SEA_Y
-	_sea.material_override = _solid_vertex()
+	_sea.material_override = _sheet_mat()
 	_sea.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_sea)
 	_wisps = MeshInstance3D.new()
 	_wisps.name = "WispSheet"
-	_wisps.mesh = _billow_mesh(SPAN * 0.48, 28, 1.15, Color("ffffff"), Color("b7c4ce"))
-	_wisps.position.y = SEA_Y + 1.55
-	_wisps.material_override = _solid_vertex()
+	_wisps.mesh = _billow_mesh(SPAN * 0.42, 28, 1.05, Color("ffffff"), Color("e8eef3"))
+	_wisps.position.y = SEA_Y + 1.35
+	_wisps.material_override = _sheet_mat()
 	_wisps.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_wisps)
 	_add_puffs()
@@ -34,13 +33,17 @@ func follow_islands(_bounds: Array) -> void:
 	pass
 
 
-func _solid_vertex() -> StandardMaterial3D:
-	var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.vertex_color_use_as_albedo = true
-	material.albedo_color = Color.WHITE
-	material.cull_mode = BaseMaterial3D.CULL_DISABLED
-	return material
+func _sheet_mat() -> ShaderMaterial:
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://shaders/world/cloud_sea.gdshader")
+	return mat
+
+
+func _puff_mat(alpha: float) -> ShaderMaterial:
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://shaders/world/cloud_puff.gdshader")
+	mat.set_shader_parameter("tint", Color(0.95, 0.97, 0.98, alpha))
+	return mat
 
 
 func _add_puffs() -> void:
@@ -49,27 +52,25 @@ func _add_puffs() -> void:
 		Vector3(-11.4, -4.20, -7.2), Vector3(2.0, -4.45, 10.6), Vector3(-3.2, -4.50, -10.2),
 		Vector3(12.8, -4.35, 1.0), Vector3(-13.4, -4.30, 2.2),
 		Vector3(-2.4, -5.55, 1.6), Vector3(2.6, -5.60, -1.4),
-		Vector3(4.8, -5.35, 2.2), Vector3(5.6, -5.50, 1.0), Vector3(-0.4, -5.40, 0.6),
-		Vector3(5.2, -5.05, 2.5), Vector3(5.8, -5.15, 2.0),
+		Vector3(4.8, -5.20, 2.2), Vector3(5.6, -5.35, 1.0), Vector3(-0.4, -5.25, 0.6),
+		Vector3(5.2, -5.00, 2.5), Vector3(5.8, -5.10, 2.0),
 	]
 	for i in spots.size():
-		var puff := MeshInstance3D.new()
-		puff.name = "Puff_%d" % i
-		var sphere := SphereMesh.new()
-		var under := i >= 8
-		sphere.radius = (1.25 if under else 1.75) + float(i % 3) * 0.18
-		sphere.height = sphere.radius * (1.35 if under else 1.20)
-		sphere.radial_segments = 10
-		sphere.rings = 6
-		puff.mesh = sphere
-		puff.position = spots[i]
-		var material := StandardMaterial3D.new()
-		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		material.albedo_color = Color("e4ebf2") if i % 2 == 0 else Color("7e90a2")
-		material.cull_mode = BaseMaterial3D.CULL_DISABLED
-		puff.material_override = material
-		puff.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		add_child(puff)
+		var centre: Vector3 = spots[i]
+		for k in 3:
+			var puff := MeshInstance3D.new()
+			puff.name = "Puff_%d_%d" % [i, k]
+			var sphere := SphereMesh.new()
+			sphere.radius = 0.85 + float((i + k) % 3) * 0.22 + float(k) * 0.12
+			sphere.height = sphere.radius * 1.55
+			sphere.radial_segments = 14
+			sphere.rings = 8
+			puff.mesh = sphere
+			var jitter := Vector3(float(k - 1) * 0.45, float(k) * 0.12, float((i + k) % 2) * 0.35 - 0.18)
+			puff.position = centre + jitter
+			puff.material_override = _puff_mat(0.42 if k == 0 else 0.28)
+			puff.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			add_child(puff)
 
 
 func _billow_mesh(size: float, res: int, height: float, hi: Color, lo: Color) -> ArrayMesh:

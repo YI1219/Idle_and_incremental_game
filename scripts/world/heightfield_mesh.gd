@@ -177,7 +177,6 @@ static func build_waterfall(origin: Vector3, outward: Vector3, bottom: float, wi
 	var ctrl := origin + outward * 0.55 + Vector3(0.0, (bottom - origin.y) * 0.32, 0.0)
 	var foot := Vector3(origin.x, bottom, origin.z) + outward * 1.15
 	var water := Color(0.45, 0.78, 0.76, 1.0)
-	var foam := Color(0.93, 0.96, 0.95, 1.0)
 	var n_across := 7
 	var n_down := 12
 	var rows: Array = []
@@ -204,13 +203,6 @@ static func build_waterfall(origin: Vector3, outward: Vector3, bottom: float, wi
 			var d: Vector3 = rows[iv + 1][iu]
 			_solid_uv(verts, norms, cols, uvs, a, b, c, water, -outward, Vector2(u0, v0), Vector2(u1, v0), Vector2(u1, v1))
 			_solid_uv(verts, norms, cols, uvs, a, c, d, water, -outward, Vector2(u0, v0), Vector2(u1, v1), Vector2(u0, v1))
-	var foam_w := width * 0.72
-	var fa := lip - tangent * foam_w - outward * 0.10 + Vector3(0.0, 0.03, 0.0)
-	var fb := lip + tangent * foam_w - outward * 0.10 + Vector3(0.0, 0.03, 0.0)
-	var fc := lip + tangent * foam_w * 0.55 + outward * 0.16
-	var fd := lip - tangent * foam_w * 0.55 + outward * 0.16
-	_solid_uv(verts, norms, cols, uvs, fa, fb, fc, foam, Vector3.UP, Vector2(0.0, 0.0), Vector2(1.0, 0.0), Vector2(1.0, 0.12))
-	_solid_uv(verts, norms, cols, uvs, fa, fc, fd, foam, Vector3.UP, Vector2(0.0, 0.0), Vector2(1.0, 0.12), Vector2(0.0, 0.12))
 	return {"vertices": verts, "normals": norms, "colors": cols, "uvs": uvs, "triangles": int(verts.size() / 3)}
 
 
@@ -233,10 +225,10 @@ static func _emit_top(field: Heightfield, chunk: Vector2i, verts: PackedVector3A
 			var play := field.play_cell_of_hf(cx, cz)
 			if skip_top.has(play):
 				continue
-			var a := _top_vert(field, cx, cz)
-			var b := _top_vert(field, mini(cx + step, field.verts_x - 1), cz)
-			var c := _top_vert(field, mini(cx + step, field.verts_x - 1), mini(cz + step, field.verts_z - 1))
-			var d := _top_vert(field, cx, mini(cz + step, field.verts_z - 1))
+			var a := _top_vert(field, cx, cz, skip_top)
+			var b := _top_vert(field, mini(cx + step, field.verts_x - 1), cz, skip_top)
+			var c := _top_vert(field, mini(cx + step, field.verts_x - 1), mini(cz + step, field.verts_z - 1), skip_top)
+			var d := _top_vert(field, cx, mini(cz + step, field.verts_z - 1), skip_top)
 			if field.flip_diagonal(cx, cz):
 				_emit_facet(field, verts, norms, cols, uvs, a, b, c)
 				_emit_facet(field, verts, norms, cols, uvs, a, c, d)
@@ -253,8 +245,18 @@ static func _block_land(field: Heightfield, cx: int, cz: int, step: int) -> bool
 	return false
 
 
-static func _top_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
-	return field.world_vertex(clampi(ix, 0, field.verts_x - 1), clampi(iz, 0, field.verts_z - 1))
+static func _top_vert(field: Heightfield, ix: int, iz: int, skip_top: Dictionary = {}) -> Vector3:
+	var cx := clampi(ix, 0, field.verts_x - 1)
+	var cz := clampi(iz, 0, field.verts_z - 1)
+	var p := field.world_vertex(cx, cz)
+	if field._vertex_is_rim(cx, cz):
+		return p
+	var inland := field.sample_inland(p)
+	var play := field.play_cell_of_hf(mini(cx, field.cells_x() - 1), mini(cz, field.cells_z() - 1))
+	var suppress := 0.0 if skip_top.has(play) else 1.0
+	p.y += field.visual_relief(p) * inland * inland * suppress
+	p.y -= field.visual_bank_dip(cx, cz) * suppress
+	return p
 
 
 static func _emit_facet(field: Heightfield, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3) -> void:
@@ -317,10 +319,14 @@ static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: 
 		var qb: Vector3 = col_b[r + 1]
 		if pa.distance_to(pb) < 0.03 and qa.distance_to(qb) < 0.03:
 			continue
-		# Lip is turf; every ring below is rock. No grass bands inside the wall.
+		# r0 grass shoulder, r1 dark earth band, then rock. No grass stripes in the cliff.
 		var shade := 0.62 + Heightfield._hash2(float(cx) * 3.1 + float(r) * 9.0 + float(field.seed), float(cz) * 2.7).x * 0.55
-		var ao := (0.52 if r == 0 else (0.96 if r < 3 else 0.74)) * shade
-		var color := Color(ao, 0.92, 0.0, 1.0) if r == 0 else Color(clampf(ao, 0.40, 1.15), 0.0, 1.0, 1.0)
+		var ao := (0.52 if r == 0 else (0.88 if r == 1 else (0.96 if r < 4 else 0.74))) * shade
+		var color := Color(ao, 0.92, 0.0, 1.0)
+		if r == 1:
+			color = Color(ao, 0.20, 0.0, 1.0)
+		elif r >= 2:
+			color = Color(clampf(ao, 0.40, 1.15), 0.0, 1.0, 1.0)
 		_solid(verts, norms, cols, uvs, pa, pb, qb, color, hint)
 		_solid(verts, norms, cols, uvs, pa, qb, qa, color, hint)
 
@@ -360,9 +366,11 @@ static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: 
 	var col: Array = []
 	col.append(top)
 	if outward.length_squared() > 1e-6:
-		col.append(top + outward * LIP + Vector3(0.0, 0.02, 0.0))
+		col.append(top + outward * LIP + Vector3(0.0, 0.008, 0.0))
+		col.append(top + outward * (LIP + 0.18) + Vector3(0.0, -0.07, 0.0))
 	else:
-		col.append(top + Vector3(0.0, 0.014, 0.0))
+		col.append(top + Vector3(0.0, 0.008, 0.0))
+		col.append(top + Vector3(0.0, -0.05, 0.0))
 	var last := maxi(rings - 1, 3)
 	for r in range(1, last):
 		var t := float(r) / float(last)
@@ -561,7 +569,7 @@ static func _bottom_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
 	var p := field.vertex_world(clamped_x, clamped_z)
 	var j := field.jitter_xz(p.x, p.y)
 	if field._vertex_is_rim(clamped_x, clamped_z):
-		j *= 0.18
+		j = Vector2.ZERO
 	var s := field.coast_shift(clamped_x, clamped_z)
 	var inland := field.sample_inland(Vector3(p.x, 0.0, p.y))
 	var center := field.land_centroid()

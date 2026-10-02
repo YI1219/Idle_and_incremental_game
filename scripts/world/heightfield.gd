@@ -23,6 +23,7 @@ var seed: int = 1
 var heights := PackedFloat32Array()
 var mask := PackedByteArray()
 var rim_shift: Dictionary = {}
+var visual_loops: Array = []
 var _centroid_cache := Vector2.INF
 
 
@@ -88,6 +89,7 @@ func duplicate_field() -> RefCounted:
 	copy.heights = heights.duplicate()
 	copy.mask = mask.duplicate()
 	copy.rim_shift = rim_shift.duplicate()
+	copy.visual_loops = visual_loops.duplicate(true)
 	copy._centroid_cache = _centroid_cache
 	return copy
 
@@ -400,12 +402,14 @@ func stamp_rounded_blob() -> void:
 func apply_coast_smooth() -> void:
 	## Pull rim vertices onto a Chaikin / Catmull loop so walls are not stairs.
 	rim_shift.clear()
+	visual_loops.clear()
 	var loops: Array = _mask_loops()
 	if loops.is_empty():
 		return
 	var smoothed: Array = []
 	for loop in loops:
-		smoothed.append(_noise_loop(_catmull(_chaikin2(loop))))
+		smoothed.append(_low_freq_loop(_catmull(_chaikin2(loop))))
+	visual_loops = smoothed
 	for iz in verts_z:
 		for ix in verts_x:
 			if not _vertex_is_rim(ix, iz):
@@ -587,6 +591,51 @@ func _noise_loop(loop: Array) -> Array:
 			q += radial.normalized() * (nse.x - 0.5) * 0.55
 		out.append(q)
 	return out
+
+
+func _low_freq_loop(loop: Array) -> Array:
+	## Visual coast only. Sparse sine along the ring — no per-vertex hash jitter.
+	if loop.size() < 4:
+		return loop
+	var c := Vector2.ZERO
+	for p in loop:
+		c += p
+	c /= float(loop.size())
+	var out: Array = []
+	var n := loop.size()
+	for i in n:
+		var q: Vector2 = loop[i]
+		var radial := q - c
+		if radial.length_squared() < 1e-6:
+			out.append(q)
+			continue
+		var t := float(i) / float(n)
+		var wobble := sin(t * TAU * 2.0 + float(seed) * 0.17) * 0.11
+		wobble += sin(t * TAU * 3.0 - float(seed) * 0.09) * 0.06
+		out.append(q + radial.normalized() * wobble)
+	return out
+
+
+func visual_relief(world: Vector3) -> float:
+	## Render-only. Never write this into heights.
+	var n1 := _hash2(world.x * 0.31 + float(seed) * 0.02, world.z * 0.29)
+	var n2 := _hash2(world.x * 0.95 - float(seed) * 0.01, world.z * 0.88)
+	return (n1.x - 0.5) * 0.07 + (n2.y - 0.5) * 0.018
+
+
+func visual_bank_dip(ix: int, iz: int) -> float:
+	## Render-only slope into pits. Does not change H or lakes.
+	var h := height_at(clampi(ix, 0, verts_x - 1), clampi(iz, 0, verts_z - 1))
+	var dip := 0.0
+	for pair in [[-1, 0], [1, 0], [0, -1], [0, 1]]:
+		var nx := ix + int(pair[0])
+		var nz := iz + int(pair[1])
+		if not in_vertex(nx, nz):
+			continue
+		var nh := height_at(nx, nz)
+		if h - nh > 0.14:
+			dip = maxf(dip, (h - nh) * 0.32)
+	return dip
 
 
 func _inside_loops(p: Vector2, loops: Array) -> bool:
@@ -871,7 +920,7 @@ func world_vertex(ix: int, iz: int) -> Vector3:
 	var p := vertex_world(ix, iz)
 	var j := jitter_xz(p.x, p.y)
 	if _vertex_is_rim(ix, iz):
-		j *= 0.18
+		j = Vector2.ZERO
 	var s := coast_shift(ix, iz)
 	return Vector3(p.x + j.x + s.x, height_at(ix, iz), p.y + j.y + s.y)
 

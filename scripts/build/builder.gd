@@ -249,7 +249,9 @@ func rebuild_objects() -> void:
 		nodes[row.id]=node
 		if row.kind!="grass":_collision(node,row.kind)
 		var p:=node.global_position
-		art._patches.append(Vector4(p.x, p.z, 1.25 if row.kind == "tree" else 0.72, 0.62 if row.kind == "tree" else 0.40))
+		art._patches.append(Vector4(p.x, p.z, 1.35 if row.kind == "tree" else 0.72, 0.70 if row.kind == "tree" else 0.42))
+	if house:
+		art._patches.append(Vector4(house.global_position.x, house.global_position.z, 3.4, 0.58))
 	art._sync_contacts()
 	var door: Vector3=SpaceState.house_door
 	art.set_paths(PackedVector3Array([door,door+Vector3(0,0,1.4),Vector3(0,0,2.6)]))
