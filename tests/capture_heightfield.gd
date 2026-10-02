@@ -63,8 +63,9 @@ func run() -> void:
 	terrain.flush_rebuild()
 	await frames(8)
 
-	rig.near_pitch_deg = 28.0
-	_look(rig, player, Vector3(5.0, 0.0, 1.2), 9.0, 2)
+	rig.near_pitch_deg = 36.0
+	rig.pitch_deg = 42.0
+	_look(rig, player, Vector3(5.4, 0.0, 2.5), 8.0, 2)
 	await shot(OUT + "/shaft_waterfall.png")
 	_restore_pitch(rig)
 	_set_house_visible(true)

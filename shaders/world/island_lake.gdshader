@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, unshaded;
-uniform vec4 shallow : source_color = vec4(0.22, 0.62, 0.58, 0.90);
-uniform vec4 deep : source_color = vec4(0.05, 0.32, 0.38, 0.96);
+uniform vec4 shallow : source_color = vec4(0.10, 0.48, 0.46, 0.92);
+uniform vec4 deep : source_color = vec4(0.03, 0.26, 0.32, 0.97);
 uniform vec4 foam_color : source_color = vec4(0.86, 0.94, 0.92, 0.92);
 varying vec3 world_pos;
 varying float shore;
