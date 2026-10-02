@@ -1,9 +1,9 @@
 Island prototype bench
 Godot 4.7.2-stable (official)
 Development VM sample. Not a Windows laptop or MacBook Air result.
-full_rebuild_ms 62.67
-stroke_raise_ms 39.12  dress_ms 3.00
-stroke_lower_ms 38.48  dress_ms 3.08
+full_rebuild_ms 56.40
+stroke_raise_ms 37.15  dress_ms 2.98
+stroke_lower_ms 37.06  dress_ms 2.92
 land_cells 435  chunks 4
 tris top 4548  core 324  rocks 41452  total 46324
 rocks 119  draws 9  loops 2
