@@ -3,6 +3,7 @@ extends Node3D
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
+const HeightfieldShell := preload("res://scripts/world/heightfield_shell.gd")
 const RockKit := preload("res://scripts/world/rock_kit.gd")
 
 const FAR_ENTER := 42.0
@@ -213,6 +214,9 @@ func rebuild_full(sync: bool = false) -> void:
 	if field == null:
 		return
 	field.apply_coast_smooth()
+	var coasts: Array = HeightfieldShell.visual_loops(field)
+	if not coasts.is_empty():
+		field.visual_loops = coasts
 	_serial += 1
 	var t0 := Time.get_ticks_usec()
 	var span := HeightfieldMesh.chunk_range(field)
@@ -716,6 +720,9 @@ func _hang_roots() -> void:
 			if not field.is_land(cx, cz):
 				continue
 			var mid := field.vertex_world(cx, cz)
+			var center := field.land_centroid()
+			if Vector2(mid.x, mid.y).distance_to(center) > 2.4:
+				continue
 			if field.sample_inland(Vector3(mid.x, 0.0, mid.y)) < 0.55:
 				continue
 			var nse := Heightfield._hash2(float(cx) * 0.71 + float(field.seed), float(cz) * 0.63)
@@ -729,8 +736,8 @@ func _hang_roots() -> void:
 			cyl.radial_segments = 5
 			cyl.rings = 1
 			root.mesh = cyl
-			var bot: Vector3 = HeightfieldMesh._bottom_vert(field, cx, cz)
-			root.position = bot + Vector3((nse.x - 0.5) * 0.2, -cyl.height * 0.35, (nse.y - 0.5) * 0.2)
+			var pulled := Vector2(mid.x, mid.y).lerp(center, 0.35)
+			root.position = Vector3(pulled.x, field.y_bottom - cyl.height * 0.35, pulled.y)
 			var mat := StandardMaterial3D.new()
 			mat.albedo_color = Color("4a3828")
 			mat.roughness = 0.96

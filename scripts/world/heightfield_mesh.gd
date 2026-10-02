@@ -2,6 +2,7 @@ extends Object
 ## Builds closed, chunked island meshes from a Heightfield. No scene I/O.
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
+const HeightfieldShell := preload("res://scripts/world/heightfield_shell.gd")
 const WALL_RINGS := 7
 const LIP := 0.14
 const ROCK_SLOPE := 0.55
@@ -12,23 +13,7 @@ static func chunk_range(field: Heightfield) -> Vector2i:
 
 
 static func build_chunk(field: Heightfield, chunk: Vector2i, mode: String = "full", skip_top: Dictionary = {}) -> Dictionary:
-	var verts := PackedVector3Array()
-	var norms := PackedVector3Array()
-	var cols := PackedColorArray()
-	var uvs := PackedVector2Array()
-	if mode in ["top", "full", "lod"]:
-		_emit_top(field, chunk, verts, norms, cols, uvs, skip_top, mode == "lod")
-	if mode in ["full", "shell", "lod"]:
-		_emit_walls_and_bottom(field, chunk, verts, norms, cols, uvs, mode == "lod")
-	return {
-		"vertices": verts,
-		"normals": norms,
-		"colors": cols,
-		"uvs": uvs,
-		"triangles": int(verts.size() / 3),
-		"chunk": chunk,
-		"mode": mode,
-	}
+	return HeightfieldShell.build_chunk(field, chunk, mode, skip_top)
 
 
 static func make_mesh(payload: Dictionary) -> ArrayMesh:

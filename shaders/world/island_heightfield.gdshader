@@ -73,7 +73,8 @@ void fragment() {
 	if (vcol.b > 0.45) {
 		float nx = noise(p * 0.55 + world_pos.y * 0.2);
 		float ny = noise(p * 2.1 + 3.7);
-		n = normalize(n + vec3((nx - 0.5) * 0.22, 0.0, (ny - 0.5) * 0.22));
+		// Facets stay flat. A little grain only, so the blocks keep their planes.
+		n = normalize(n + vec3((nx - 0.5) * 0.04, (ny - 0.5) * 0.03, (nx - 0.5) * 0.04));
 		ALBEDO = seed7_rock(world_pos, n, ao);
 		ROUGHNESS = 0.93;
 		NORMAL = n;

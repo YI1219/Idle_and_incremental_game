@@ -1,6 +1,6 @@
-# Heightfield islands — silhouette and material pass (run 5) 2026-10-02
+# Heightfield islands — smooth coast and procedural wall rock (2026-10-02)
 
-Same branch / PR #2. Brushes, volume cost, dig-through, lakes, and auto-flatten stayed frozen. This pass is render-only: olive grass, clustered scatter, rim-stone chains, a grass/earth shoulder, quieter lighting, and a faded cloud sea. Ideas from the 《我有一片田》 study only — no code, constants, or assets copied (that repo has no license).
+Same branch / PR #2. Brushes, volume cost, dig-through, lakes, and auto-flatten are unchanged. This pass replaces the terrain shell only. Run 5 olive grass, tufts, lake shader, rim-stone scatter, and cloud sea stay. Style references (KayKit/Quaternius contact sheet, the seed7 prototype, 《我有一片田》 frames) were not used as construction or as copied code.
 
 ## How to reproduce
 
@@ -12,63 +12,49 @@ godot --path . --rendering-driver opengl3 --script tests/sandbox_land_test.gd --
 godot --path . --rendering-driver opengl3 --script tests/capture_heightfield.gd --resolution 1280x720 --fixed-fps 30
 ```
 
-Capture locks `DongtianSpace`. Lake and wall close-ups hide the cottage so the roof does not eat the frame.
+## What changed
 
-## What changed (visual only)
-
-- No `EMISSION` on grass/cliff. Ambient 0.12, fill 0.04, sun 1.85, AgX exposure 1.24, SSAO radius 0.18 / intensity 2.4. Vertex AO stays for software GL.
-- Cliff `step(fract(y))` stripe banding deleted. Rock color uses skewed xz+y grain.
-- Grass is desaturated olive (~#6F7A4D / #7E8B5A), two-tone world-space patches, world-space normal noise. Regular pebble grid is gone.
-- Clustered MultiMesh scatter from a low-frequency density field: grass tuft cards, a few flowers, pebble clumps. Island `cells_hash` seeds are wrapped before hashing — feeding the raw seed into `sin()` made density constant and spawned zero tufts on the courtyard.
-- Contact darkening under trees / house / props.
-- Rim and lake-bank rock chains from `assets/rockkit` via MultiMesh. Hanging bakes are flipped to sitting stones and normalized to ~0.2–0.4 m (source meshes are 2–4 m). ~1.05 m spacing, ~34% gaps, big+small groupings, half-embedded.
-- Coast rim uses marching-squares + Chaikin/Catmull + low-frequency sine only (no per-vertex hash jitter). Grass lip, then a dark earth roll, then rock. Waterfall foam-cap tris and still-frame mist spheres removed (they were the white strip / '7').
-- Render-only micro-relief (continuous value noise, suppressed on pads) and a render-only bank dip into pits. Does not write H.
-- Lake shader: shallow bright band, contact dark seam, more teal than ice-blue. Still a flat disc from the play camera.
-- Cloud sea sheet fades out radially; puffs are clustered pale spheres. The hard square and ten-sided disc holes are gone.
-
-Not done: seed7 interleaved MultiMesh cliff blocks (expensive). Shared-normal indexing / soft earth risers only partly there (shader bump + bank dip; tops still facet-shaded).
+- Grass coastline is a marching-squares contour of a blurred land mask (iso 0.5, linear edge hits, five Laplacian passes). The top outline is that curve. It is not the gameplay grid and it is not a rocky silhouette.
+- Full islands subdivide render cells 2× (0.25 m). Distant LOD uses 1×. Lake banks and slopes use that finer grid with gradient normals.
+- Top undulation is render-only (neighbor blur plus a few centimetres of value noise), and it is suppressed on flat pads and building/device footprints. It does not write H.
+- Under the lip, an earth skirt shares the contour vertices, then flat-shaded block columns: varied depth, strata breaks, a small overhang, and a mild taper. Side faces close the joints. The bottom cap is at `y_bottom`. Warm-to-cool rock color is the existing shader, driven by height. Kit meshes are not the wall.
+- Run 5 rim stones remain a MultiMesh on the grass lip only.
 
 ## Tests
 
-| Suite | Result | Notes |
-| --- | --- | --- |
-| `heightfield_test.gd` | 38/38 | closed mesh / winding hold |
-| `island_volume_test.gd` | 24/24 | cache key is land only; H unchanged |
-| `terrain_test.gd` | 795/795 | brush math unchanged |
-| `sandbox_land_test.gd` | 59 checks, 0 failures | process aborted on Godot quit (llvmpipe); no failed asserts |
+| Suite | Result |
+| --- | --- |
+| `heightfield_test.gd` | 38/38 |
+| `island_volume_test.gd` | 24/24 |
+| `terrain_test.gd` | 795/795 |
+| `sandbox_land_test.gd` | 59 checks, 0 failures |
 
 ## Perf (llvmpipe, Godot 4.7, this VM — not target hardware)
 
-| Scene | Islands | Chunks | Tris | Draw calls | Top stroke | Full rebuild |
+| Scene | Islands | Chunks | Tris | Draws | Top stroke | Full rebuild |
 | --- | --- | --- | --- | --- | --- | --- |
-| Playable courtyard | 1 | 6 | 3340 | 20 | 43.3 ms | 210 ms |
-| 4× island | 1 | 12 | 4476 | 14 | — | 481 ms |
-| 4× + 7 satellites | 8 | 40 | 12956 | 100 | — | 477 ms |
+| Playable courtyard | 1 | 6 | 6156 | 20 | 65.0 ms | 199 ms |
+| 4× island | 1 | 12 | 7978 | 15 | — | 609 ms |
+| 4× + 7 satellites | 8 | 40 | 21800 | 101 | — | 392 ms |
 
-Run 4 playable was 3144 / 26 / 16.7 / 171. Extra wall ring and dressing MultiMeshes add tris and draws. Stroke is slower on this software GL box because sitting kit meshes are tessellated. User Mac (M4 Pro, Metal Forward+) already measured ~155 fps uncapped on run 4 for both playable and 4×+7 — do not treat these llvmpipe numbers as a Windows thin-laptop or MacBook Air result.
+Run 5 on this same capture path was 3340 tris, stroke about 57 ms, playable rebuild about 269 ms. The new shell is heavier. The 16 ms stroke aim was not met here (65 ms for the whole playable top). Do not read these numbers as a Mac or Windows laptop result.
 
-Playable dressing this capture: 1500 tufts, 155 pebbles, 168 flowers, 64 rim rocks. Density field ranged 0.15–0.63.
+## Views
 
-## Views (inspected before reporting)
-
-- `overview.png` — play camera. Olive top, visible tuft stipple, small dark rim stones, no pebble grid, no grey cloud discs. Pond is still a faceted grey-green plate.
-- `low_side.png` — east wall, cottage hidden. Tufts read as a meadow silhouette. Rim stones are small lumps, not a graveyard. Cliff is still a dark faceted shell; the earth shoulder does not read at this pitch. No white '7'.
-- `lake.png` — basin under the bridge, tuft texture, a few bank stones. Water is opaque grey-green, not translucent teal. No lily-pad read.
-- `shaft_waterfall.png` — lakes=1, falls=3. The punched shaft is a dark hole, not a window onto the cloud sea. Fall is easy to miss from this angle.
-- `multi_island.png` — 4× oval plus two satellites inside the 34° telephoto. Cloud sea is a pale wash (radial fade, no square). Dressing disappears at this distance.
-- `overview_compare_run4_run5.png` — same framing. Run 5 is olive instead of toy-green, has tuft speckle and rim stones, and loses the grey disc clouds. Water is greener/murkier, not clearer.
+- `overview.png` — play camera.
+- `low_side.png` — low east view, cottage hidden, walls in frame.
+- `lake.png` — basin close-up.
+- `shaft_waterfall.png` — sculpted shaft, lakes=1, falls=3.
+- `multi_island.png` — 4× island plus satellites.
+- `overview_compare_run5_new.png` — run 5 on the left, this pass on the right, same framing.
 
 ## Honest leftovers
 
-Not art acceptance. Software GL (llvmpipe) + the play HUD are in every frame. Mac Metal already proved lighting is not the main gap; these leftover gaps are still shape and material.
+Not art acceptance.
 
-- The reference island is flatter than ours and sells the read with ~30 tufts/m², 0.5–1.2 m shore stones, a rounded grass→earth shoulder, and saturated teal water. We have ~15 tufts/m² of cheap cross-cards, 0.2–0.4 m rim stones, and a shoulder that is too thin/dark to see from the play camera.
-- Cliffs are still a smooth curved shell with faceted rings. seed7 stacked blocks were not built.
-- Tops are still per-face shaded. Terrace steps can still read as triangle ridges. Shared-normal indexing and soft earth risers are incomplete.
-- Water is a flat disc. Depth/seam exist in the shader; they do not read as shallow teal with a wet sand band.
-- The shaft is a depression, not a cloud window. Soft puffs sit under the island; they do not show in these shots.
-- Contact darkening is subtle. Flowers exist in the MultiMesh counts and do not read as flowers at 22 m.
-- Kit rocks stay off the hanging underside (still waiting on embed rules).
-- Only two of seven satellites fit the play telephoto unless `max_distance` is raised.
-- Target-device 60 FPS is unmeasured here. User Mac ~155 fps is a previous-run measurement, not a new claim for this revision.
+- From the high play camera the smooth grass lip hides most of the block stack. The wall reads as a brown rim until the camera drops.
+- Many rock triangles are the downward faces between strata, so the low side stays dark under the current sun.
+- Distant islands use the coarser LOD contour.
+- Stroke cost on this VM is 65 ms, above the 16 ms aim. A 4× full rebuild is 609 ms.
+- Water is still the run 5 lake surface. Tuft density and flowers are unchanged from that pass.
+- Target-device frame rate was not measured.
