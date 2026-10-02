@@ -166,7 +166,7 @@ static func build_waterfall(origin: Vector3, outward: Vector3, bottom: float) ->
 	var norms := PackedVector3Array()
 	var cols := PackedColorArray()
 	var uvs := PackedVector2Array()
-	var side := Vector3(-outward.z, 0.0, outward.x) * 0.95
+	var side := Vector3(-outward.z, 0.0, outward.x) * 0.62
 	var top := origin + outward * 0.06 + Vector3(0.0, 0.05, 0.0)
 	var foot := Vector3(origin.x, bottom, origin.z) + outward * 0.7
 	var a := top - side

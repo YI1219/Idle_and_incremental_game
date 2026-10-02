@@ -52,26 +52,30 @@ func run() -> void:
 	_look(rig, player, Vector3(-3.6, 0.0, 1.5), 8.5, 2)
 	await shot(OUT + "/closeup_slope.png")
 
-	_look(rig, player, Vector3(-1.2, 0.0, -3.6), 10.0, 6)
+	_set_house_visible(false)
+	_look(rig, player, Vector3(-1.6, 0.0, 0.6), 9.0, 2)
 	await shot(OUT + "/lake.png")
 
-	_look(rig, player, Vector3(2.6, 0.0, -1.0), 9.5, 7)
+	_look(rig, player, Vector3(-4.3, 0.0, 1.5), 8.0, 6)
 	await shot(OUT + "/hole_waterfall.png")
+	_set_house_visible(true)
 
 	if builder:
 		builder.set_active(true)
-		builder.commit_place("tree", Vector2i(-3, -5))
+		builder.commit_place("tree", Vector2i(-4, -2))
 		builder.set_active(false)
 	terrain.flush_rebuild()
-	_look(rig, player, Vector3(-2.6, 0.0, -4.6), 10.0, 5)
+	_set_house_visible(false)
+	_look(rig, player, Vector3(-3.8, 0.0, -2.0), 8.0, 4)
 	await shot(OUT + "/placed_building.png")
+	_set_house_visible(true)
 
-	_low_side(rig, Vector3(8.6, 0.9, 3.2), Vector3(0.4, -1.6, 0.6), 36.0)
+	_low_side(rig, Vector3(1.2, 0.55, 9.4), Vector3(0.2, -1.9, 0.2), 36.0)
 	await shot(OUT + "/low_side.png")
 	rig.set_physics_process(true)
 	_restore_pitch(rig)
 
-	_low_side(rig, Vector3(-9.5, -1.4, 7.5), Vector3(0.3, -2.6, 0.5), 40.0)
+	_low_side(rig, Vector3(-8.8, -1.5, 6.8), Vector3(-0.2, -2.4, 0.6), 40.0)
 	await shot(OUT + "/underside.png")
 	rig.set_physics_process(true)
 	_restore_pitch(rig)
@@ -89,6 +93,7 @@ func run() -> void:
 	await frames(8)
 	var large: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x island", large)
+	rig.max_distance = 80.0
 	_look(rig, player, Vector3(0.0, 0.0, 0.5), 28.0, 1)
 	await shot(OUT + "/large_island.png")
 
@@ -106,9 +111,20 @@ func run() -> void:
 	await frames(8)
 	var multi: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x + 7 satellites", multi)
-	_look(rig, player, Vector3(0.0, 0.0, 0.5), 34.0, 1)
+	rig.max_distance = 80.0
+	rig.far_pitch_deg = 62.0
+	_look(rig, player, Vector3(0.0, 0.0, 0.5), 62.0, 1)
 	await shot(OUT + "/multi_island.png")
 	quit()
+
+
+func _set_house_visible(shown: bool) -> void:
+	var island: Node3D = get_first_node_in_group("island_shell")
+	if island == null:
+		return
+	for child in island.get_parent().get_children():
+		if child is DemoCottage:
+			child.visible = shown
 
 
 func _lock_courtyard() -> void:
@@ -189,10 +205,10 @@ func _sculpt_demo(terrain: Node3D) -> void:
 	var field = main.field
 	field.apply_brush("raise", Vector3(-3.2, 0.0, 1.2), 2.4, 1.6, true)
 	field.apply_brush("raise", Vector3(-3.6, 0.0, 1.6), 1.4, 1.2, true)
-	for p in [Vector3(-1.2, 0.0, -3.6), Vector3(-0.8, 0.0, -3.2), Vector3(-1.6, 0.0, -3.2)]:
-		field.apply_brush("lower", p, 1.35, 1.15, true)
-	for _i in 6:
-		field.apply_brush("lower", Vector3(2.6, 0.0, -1.0), 1.0, 1.4, true)
+	for p in [Vector3(-1.6, 0.0, 0.6), Vector3(-1.2, 0.0, 1.0), Vector3(-2.0, 0.0, 1.0)]:
+		field.apply_brush("lower", p, 1.2, 1.05, true)
+	for _i in 7:
+		field.apply_brush("lower", Vector3(-4.3, 0.0, 1.5), 1.05, 1.5, true)
 	field.apply_coast_smooth()
 	var span := HeightfieldMesh.chunk_range(field)
 	var t0 := Time.get_ticks_usec()

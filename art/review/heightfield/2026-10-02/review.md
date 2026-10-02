@@ -1,59 +1,64 @@
-# Heightfield islands — 2026-10-02
+# Heightfield islands — visual fix 2026-10-02
 
-Replaces the rock-kit CSG / profile-extruded underside with one procedural heightfield per island. Cloud sea, AgX, height fog, damped telephoto (`near` 1.2 m), and 息壤 ledger stay from `cursor/island-volume-atmosphere-c7ad`.
+Replaces the rock-kit CSG / profile-extruded underside with one procedural heightfield per island. This note is the visual pass on PR #2 after the glass-box review. Cloud sea, AgX, height fog, damped telephoto (`near` 1.2 m), and 息壤 stay from `cursor/island-volume-atmosphere-c7ad`.
 
-Base the PR on that branch (not `main`) so the diff is the heightfield swap, not the whole cloud-sea stack.
+## Cause of the glass boxes
+
+Godot 4 front faces are clockwise. Tops authored with a right-hand *up* normal were backfaces from the play camera, so the slab was hollow from above and grassy only from below. Writing `ALPHA = 1.0` also put the mesh on the transparent pass, so far walls and interior edges showed through. The dark blue-grey “ground” was the underside / fog, not turf.
+
+Fix: no `ALPHA` write, `cull_back`, clockwise winding (tops face the play camera), PR #1 moss/meadow turf from authored `world_n.y`. Old `_land_mesh` / `_cliff_mesh` stay hidden. Kit rocks stay off.
 
 ## How to reproduce
 
 ```
 godot --headless --path . --script tests/heightfield_test.gd
-godot --path . --script tests/capture_heightfield.gd --resolution 1280x720 --fixed-fps 30
+godot --headless --path . --script tests/island_volume_test.gd
+godot --path . --rendering-driver opengl3 --script tests/capture_heightfield.gd --resolution 1280x720 --fixed-fps 30
 ```
+
+Capture locks `DongtianSpace` so the player does not walk into the explore gate (z ≈ 3.85). Lake / hole / building close-ups hide the cottage roof because it ate those frames.
 
 ## Tests
 
 | Suite | Result | Notes |
 | --- | --- | --- |
-| `heightfield_test.gd` | 21/21 | volume, cracks, dig-through closed mesh, water spill, flatten, determinism |
-| `island_volume_test.gd` | 24/24 | rewritten for heightfield volume / LOD; CSG presence checks removed |
-| `xirang_test.gd` | 16/16 | includes `quote_volume` / `quote_remove_volume` |
-| `camera_test.gd` | 9/9 | added raised near-plane check |
-| `terrain_test.gd` | 794/794 | play-grid authority unchanged |
-| `rockkit_test.gd` | 23/23 | kit/baker unit tests still run; they no longer drive the live island |
-| `sandbox_land` / `layout` / `runtime` | 60 / 17 / 35 | checks passed; Godot still aborts 134 on two headless exits |
-
-`island_presence.gd` / `rock_baker.gd` / `rock_underside.gd` remain in tree for kit tests only. Live courtyard uses `IslandHeightfield`.
+| `heightfield_test.gd` | 27/27 | added clockwise winding + organic mask never grows past play cells |
+| `island_volume_test.gd` | 24/24 | hanging-body check allows a carved blob |
+| `xirang_test.gd` | 16/16 | unchanged |
+| `camera_test.gd` | 9/9 | unchanged |
 
 ## Perf (llvmpipe, Godot 4.7, this VM — not target hardware)
 
 | Scene | Islands | Chunks | Tris | Draw calls | Top stroke | Full rebuild |
 | --- | --- | --- | --- | --- | --- | --- |
-| Playable courtyard | 1 | 6 | 2552 | 23 | 4.8–5.2 ms | 38–40 ms |
-| 4× island | 1 | 12 | 9432 | 15 | — | 101–106 ms |
-| 4× + 7 satellites | 8 | 26 | 12224 | 22 | — | 101–106 ms |
+| Playable courtyard | 1 | 6 | 1364 | 31 | 5.9 ms | 81 ms |
+| 4× island | 1 | 12 | 4276 | 12 | — | 131 ms |
+| 4× + 7 satellites | 8 | 40 | 6622 | 19 | — | 110 ms |
 
-Stroke is a main-thread top-only `16×16` rebuild of the dirty field. Full rebuild includes walls, bottom, water, and rock scatter. Far islands pause (`PROCESS_MODE_DISABLED`) and emit a 2-step LOD mesh. Do not treat these numbers as a Windows thin-laptop or MacBook Air result.
+Triangle counts dropped versus the rectangular first pass because the blob carve removes corner cells. Far islands still pause + 2-step LOD. Do not treat these numbers as a Windows thin-laptop or MacBook Air result.
 
-## Views
+## Views (looked at before reporting)
 
-- `overview.png` — playable courtyard, organic coast, river still a cut
-- `closeup_slope.png` — faceted ground / kit rocks (capture often lands under the cottage eaves)
-- `lake.png` — pit water on the heightfield
-- `hole_waterfall.png` — dig-through shaft; waterfall is a thin teal ribbon
-- `placed_building.png` — trees seated on the field (flatten ramp is subtle on already-flat land)
-- `underside.png` — flat bottom, vertical hole, grass rim, wall rocks
-- `large_island.png` / `multi_island.png` — 4× and seven satellites
+- `overview.png` — play camera. Opaque green grass, solid strata walls, no see-through box. Coast is a rounded rectangle with a bitten south-east corner, not a hard square. River is still the old jade cut.
+- `closeup_slope.png` — faceted hill, grass on flats, soil/rock on steep faces. Cottage roof still crowds the frame.
+- `lake.png` — heightfield pit lake, organic teal outline, grass shore. Courtyard props sit in the water (not reseated). Cottage hidden for this frame.
+- `hole_waterfall.png` — west rim after a dig-through stroke. Reads as a cliff bite, not a clear shaft. Waterfall is easy to miss from above.
+- `placed_building.png` — trees on green land next to the pit. Flatten pad is subtle.
+- `low_side.png` — solid rock wall, strata bands, grass lip. Not glass.
+- `underside.png` — same solid wall from below; tops no longer show green through the slab. Waterfall is a tall teal quad. No kit rocks hanging under `y_bottom`.
+- `large_island.png` — 4× blob is a clear oval of green grass.
+- `multi_island.png` — same oval plus two visible satellite pads (the other five sit outside a 34° telephoto). Satellites are small rounded platforms, not dark cubes.
 
 ## Honest leftovers
 
 Not art acceptance. Software GL (llvmpipe) + the play HUD are in every frame.
 
-- Grass reads gray-olive from above; the lime rim only pops in the underside view. Slope → soil → rock is in the shader and vertex colors, but a flat courtyard barely exercises it. Steep faces no longer get per-triangle Voronoi push (that split rim edges and failed the closed-mesh test); chunky rock is shader-side only.
-- Cloud sea from PR #1 is present as low-poly puff hexagons in a fogged gray void. The billow sheet does not read as a sea on this renderer.
-- Waterfall v1 is a single ribbon plus a few particles. Easy to miss. Drain sites are capped at 8.
-- Kit rocks on steep faces are too large; several hang under the slab instead of sitting 30–50% in the wall.
-- Default islands are almost flat boxes. Satellites look like Minecraft cubes until someone sculpts them.
-- Capture cameras fight `DongtianSpace` / the play rig. Several “close” shots still clip the cottage or look down a hole from the eaves. Underside / overview / multi are the trustworthy ones.
-- `skip_top` on river cells keeps the old jade-water mesh; interior river is not a heightfield lake.
-- 4× full rebuild sits around 100 ms on this VM. Fine for stroke-end, not for every paint tick; drag already updates tops only.
+- Default starter is a *rounded rectangle*, not a freeform pebble. The 4× blob is the better organic demo.
+- River cells still `skip_top` onto the old jade-water mesh. Interior heightfield lakes work; the courtyard river is a separate cut.
+- Waterfall v1 is a single quad + foam/mist particles. From the side it reads as a teal slab. Foam/mist do not show on a still.
+- Dig-through from the play camera is a rim notch more than a vertical hole. Underside does not currently frame the shaft.
+- Kit rocks are disabled. Previous scatter hung under the slab.
+- Flatten-on-place is real but hard to see on already-flat turf.
+- Lake / hole / building shots hide the cottage. Overview / large / multi keep it.
+- Cloud sea is still low-poly puff hexagons in a fogged gray void.
+- 4× full rebuild ~130 ms on this VM. Fine for stroke-end; drag still updates tops only.
