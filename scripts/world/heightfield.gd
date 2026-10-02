@@ -373,7 +373,7 @@ func stamp_rounded_blob() -> void:
 			var nz := (mid.y - center.y) / rz
 			var nse := _hash2(mid.x * 0.27 + float(seed), mid.y * 0.31)
 			var d := pow(absf(nx), 2.15) + pow(absf(nz), 2.15)
-			if d > 0.72 + (nse.x - 0.5) * 0.28:
+			if d > 0.56 + (nse.x - 0.5) * 0.34:
 				set_land(cx, cz, false)
 	_clamp_all_land()
 	rim_shift.clear()
@@ -480,7 +480,7 @@ func _interior_keep(keep: PackedByteArray, cx: int, cz: int) -> bool:
 			var nidx := cell_index(cx + dx, cz + dz)
 			if nidx >= 0 and nidx < keep.size() and keep[nidx] != 0:
 				land_n += 1
-	return land_n >= 7
+	return land_n >= 8
 
 
 func _mask_loops() -> Array:

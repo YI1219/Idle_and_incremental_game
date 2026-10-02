@@ -5,6 +5,7 @@ const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
 const OUT := "res://art/review/heightfield/2026-10-02"
 const ARTIFACTS := "/opt/cursor/artifacts"
+const SAFE := Vector3(2.4, 0.0, 1.8)
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -18,8 +19,7 @@ func shot(path: String) -> void:
 	await RenderingServer.frame_post_draw
 	var img := root.get_texture().get_image()
 	img.save_png(path)
-	var name := String(path).get_file()
-	img.save_png(ARTIFACTS + "/" + name)
+	img.save_png(ARTIFACTS + "/" + String(path).get_file())
 	print("wrote ", path)
 
 func run() -> void:
@@ -29,9 +29,7 @@ func run() -> void:
 	var scene: Node = load("res://scenes/play.tscn").instantiate()
 	root.add_child(scene)
 	await frames(40)
-	var space_state := root.get_node_or_null("SpaceState")
-	if space_state:
-		space_state.space_id = "outside"
+	_lock_courtyard()
 	var rig: Node3D = get_first_node_in_group("camera_rig")
 	var builder: Node3D = get_first_node_in_group("sandbox_builder")
 	var island: Node3D = get_first_node_in_group("island_shell")
@@ -41,22 +39,23 @@ func run() -> void:
 		builder.set_active(false)
 	if player:
 		player.visible = true
+		player.set_physics_process(false)
 	terrain.flush_rebuild()
 	_restore_pitch(rig)
-	_play_view(rig, player, Vector3(0.6, 0.0, 3.2), 22.0, 1)
+	_look(rig, player, Vector3(0.6, 0.0, 0.8), 22.0, 1)
 	await shot(OUT + "/overview.png")
 
 	_sculpt_demo(terrain)
 	terrain.flush_rebuild()
 	await frames(8)
 
-	_play_view(rig, player, Vector3(-4.2, 0.0, 2.4), 9.0, 2)
+	_look(rig, player, Vector3(-3.6, 0.0, 1.5), 8.5, 2)
 	await shot(OUT + "/closeup_slope.png")
 
-	_play_view(rig, player, Vector3(1.4, 0.0, -3.6), 10.0, 6)
+	_look(rig, player, Vector3(-1.2, 0.0, -3.6), 10.0, 6)
 	await shot(OUT + "/lake.png")
 
-	_play_view(rig, player, Vector3(0.2, 0.0, 4.2), 10.0, 0)
+	_look(rig, player, Vector3(2.6, 0.0, -1.0), 9.5, 7)
 	await shot(OUT + "/hole_waterfall.png")
 
 	if builder:
@@ -64,19 +63,20 @@ func run() -> void:
 		builder.commit_place("tree", Vector2i(-3, -5))
 		builder.set_active(false)
 	terrain.flush_rebuild()
-	_play_view(rig, player, Vector3(-3.0, 0.0, -4.8), 10.0, 5)
+	_look(rig, player, Vector3(-2.6, 0.0, -4.6), 10.0, 5)
 	await shot(OUT + "/placed_building.png")
 
-	_low_side(rig, player, Vector3(5.4, 0.0, 1.0), 15.0, 2)
+	_low_side(rig, Vector3(8.6, 0.9, 3.2), Vector3(0.4, -1.6, 0.6), 36.0)
 	await shot(OUT + "/low_side.png")
-	_restore_pitch(rig)
-
-	_side_view(rig, player, Vector3(-10.0, -1.2, 8.0), Vector3(0.4, -2.8, 0.4), 40.0)
-	await shot(OUT + "/underside.png")
-	if player:
-		player.visible = true
 	rig.set_physics_process(true)
 	_restore_pitch(rig)
+
+	_low_side(rig, Vector3(-9.5, -1.4, 7.5), Vector3(0.3, -2.6, 0.5), 40.0)
+	await shot(OUT + "/underside.png")
+	rig.set_physics_process(true)
+	_restore_pitch(rig)
+	if player:
+		player.visible = true
 
 	var playable: Dictionary = terrain.heightfield_stats()
 	_print_stats("playable", playable)
@@ -89,7 +89,7 @@ func run() -> void:
 	await frames(8)
 	var large: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x island", large)
-	_play_view(rig, player, Vector3(0.0, 0.0, 2.0), 28.0, 1)
+	_look(rig, player, Vector3(0.0, 0.0, 0.5), 28.0, 1)
 	await shot(OUT + "/large_island.png")
 
 	var offsets := [
@@ -106,9 +106,19 @@ func run() -> void:
 	await frames(8)
 	var multi: Dictionary = terrain.heightfield_stats()
 	_print_stats("4x + 7 satellites", multi)
-	_play_view(rig, player, Vector3(0.0, 0.0, 2.0), 32.0, 1)
+	_look(rig, player, Vector3(0.0, 0.0, 0.5), 34.0, 1)
 	await shot(OUT + "/multi_island.png")
 	quit()
+
+
+func _lock_courtyard() -> void:
+	var space_state := root.get_node_or_null("SpaceState")
+	if space_state:
+		space_state.space_id = "outside"
+	var space := get_first_node_in_group("space_controller")
+	if space:
+		space.set_physics_process(false)
+		space.set_process(false)
 
 
 func _blob_cells(center: Vector2i, rx: int, rz: int, seed: int) -> Array[Vector2i]:
@@ -118,43 +128,38 @@ func _blob_cells(center: Vector2i, rx: int, rz: int, seed: int) -> Array[Vector2
 			var nx := float(x - center.x) / float(maxi(rx, 1))
 			var nz := float(z - center.y) / float(maxi(rz, 1))
 			var nse := Heightfield._hash2(float(x) * 0.37 + float(seed), float(z) * 0.29)
-			if pow(absf(nx), 2.1) + pow(absf(nz), 2.1) <= 0.92 + (nse.x - 0.5) * 0.22:
+			if pow(absf(nx), 2.1) + pow(absf(nz), 2.1) <= 0.88 + (nse.x - 0.5) * 0.26:
 				out.append(Vector2i(x, z))
 	return out
 
 
-func _play_view(rig: Node3D, player: Node3D, at: Vector3, distance: float, yaw_index: int = 1) -> void:
-	if player:
-		var y := 0.0
-		var island: Node3D = get_first_node_in_group("island_shell")
-		if island and island.terrain and island.terrain.has_method("sample_height"):
-			var h: float = island.terrain.sample_height(at)
-			if is_finite(h):
-				y = h
-		player.global_position = Vector3(at.x, y, at.z)
-		player.visible = true
+func _park_player(player: Node3D) -> void:
+	if player == null:
+		return
+	var y := 0.0
+	var island: Node3D = get_first_node_in_group("island_shell")
+	if island and island.terrain and island.terrain.has_method("sample_height"):
+		var h: float = island.terrain.sample_height(SAFE)
+		if is_finite(h):
+			y = h
+	player.global_position = Vector3(SAFE.x, y, SAFE.z)
+	player.visible = true
+
+
+func _look(rig: Node3D, player: Node3D, subject: Vector3, distance: float, yaw_index: int) -> void:
+	_park_player(player)
+	rig.set_physics_process(true)
 	rig._yaw_index = yaw_index
 	rig._distance = distance
-	rig._pan_goal = Vector3.ZERO
-	rig.snap_to_target()
+	var pan := Vector3(subject.x - SAFE.x, 0.0, subject.z - SAFE.z)
+	rig._pan_goal = pan
+	rig._smooth_pan = pan
+	rig._panning = false
 	for i in 8:
 		rig._apply(true)
 
 
-func _low_side(rig: Node3D, player: Node3D, at: Vector3, distance: float, yaw_index: int) -> void:
-	rig.near_pitch_deg = 16.0
-	rig.pitch_deg = 18.0
-	rig.far_pitch_deg = 20.0
-	_play_view(rig, player, at, distance, yaw_index)
-
-
-func _restore_pitch(rig: Node3D) -> void:
-	rig.near_pitch_deg = 38.0
-	rig.pitch_deg = 50.0
-	rig.far_pitch_deg = 58.0
-
-
-func _side_view(rig: Node3D, player: Node3D, from: Vector3, look: Vector3, fov: float) -> void:
+func _low_side(rig: Node3D, from: Vector3, look: Vector3, fov: float) -> void:
 	rig.set_physics_process(false)
 	var cam := rig.get_node_or_null("Camera3D") as Camera3D
 	if cam == null:
@@ -166,8 +171,15 @@ func _side_view(rig: Node3D, player: Node3D, from: Vector3, look: Vector3, fov: 
 	cam.near = 1.2
 	cam.far = 240.0
 	cam.make_current()
+	var player: Node3D = get_first_node_in_group("player")
 	if player:
 		player.visible = false
+
+
+func _restore_pitch(rig: Node3D) -> void:
+	rig.near_pitch_deg = 38.0
+	rig.pitch_deg = 50.0
+	rig.far_pitch_deg = 58.0
 
 
 func _sculpt_demo(terrain: Node3D) -> void:
@@ -177,10 +189,10 @@ func _sculpt_demo(terrain: Node3D) -> void:
 	var field = main.field
 	field.apply_brush("raise", Vector3(-3.2, 0.0, 1.2), 2.4, 1.6, true)
 	field.apply_brush("raise", Vector3(-3.6, 0.0, 1.6), 1.4, 1.2, true)
-	for p in [Vector3(1.2, 0.0, -3.4), Vector3(1.6, 0.0, -3.0), Vector3(0.8, 0.0, -3.0)]:
-		field.apply_brush("lower", p, 1.3, 1.1, true)
+	for p in [Vector3(-1.2, 0.0, -3.6), Vector3(-0.8, 0.0, -3.2), Vector3(-1.6, 0.0, -3.2)]:
+		field.apply_brush("lower", p, 1.35, 1.15, true)
 	for _i in 6:
-		field.apply_brush("lower", Vector3(0.4, 0.0, 2.8), 1.0, 1.4, true)
+		field.apply_brush("lower", Vector3(2.6, 0.0, -1.0), 1.0, 1.4, true)
 	field.apply_coast_smooth()
 	var span := HeightfieldMesh.chunk_range(field)
 	var t0 := Time.get_ticks_usec()
