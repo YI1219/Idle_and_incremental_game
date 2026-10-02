@@ -326,6 +326,8 @@ func end_stroke() -> void:
 	_stroke_broke=false
 	_stroke_last=Layout.NOWHERE
 	_stroke_seen.clear()
+	if island and island.terrain and island.terrain.has_method("flush_rebuild"):
+		island.terrain.flush_rebuild()
 func _input(event: InputEvent) -> void:
 	# Release must be observed even when the pointer is over UI.
 	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed:end_stroke()

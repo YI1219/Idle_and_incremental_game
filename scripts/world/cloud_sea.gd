@@ -2,7 +2,7 @@ extends Node3D
 ## Soft stylized cloud sea under the grotto islands. No distant mountains.
 ## Built as an opaque vertex-colored mesh so billows still read on software render.
 
-const SEA_Y := -4.85
+const SEA_Y := -6.15
 const SPAN := 80.0
 const RES := 48
 
@@ -45,10 +45,10 @@ func _solid_vertex() -> StandardMaterial3D:
 
 func _add_puffs() -> void:
 	var spots := [
-		Vector3(-10.2, -2.55, 8.4), Vector3(11.0, -2.65, 7.6), Vector3(9.2, -2.70, -8.8),
-		Vector3(-11.4, -2.60, -7.2), Vector3(2.0, -2.85, 10.6), Vector3(-3.2, -2.90, -10.2),
-		Vector3(12.8, -2.75, 1.0), Vector3(-13.4, -2.70, 2.2),
-		Vector3(-2.4, -4.25, 1.6), Vector3(2.6, -4.30, -1.4),
+		Vector3(-10.2, -4.15, 8.4), Vector3(11.0, -4.25, 7.6), Vector3(9.2, -4.30, -8.8),
+		Vector3(-11.4, -4.20, -7.2), Vector3(2.0, -4.45, 10.6), Vector3(-3.2, -4.50, -10.2),
+		Vector3(12.8, -4.35, 1.0), Vector3(-13.4, -4.30, 2.2),
+		Vector3(-2.4, -5.55, 1.6), Vector3(2.6, -5.60, -1.4),
 	]
 	for i in spots.size():
 		var puff := MeshInstance3D.new()

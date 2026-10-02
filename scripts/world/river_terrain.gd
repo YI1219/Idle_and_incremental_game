@@ -103,7 +103,7 @@ func rebuild() -> void:
 
 
 func island_count() -> int:
-	return island_cache.size()
+	return IslandGeometry.components(land_cells).size()
 
 
 func island_disks() -> Array[Vector4]:
@@ -315,11 +315,13 @@ func rock_stats() -> Dictionary:
 	var pieces := 0
 	var tris := 0
 	var draw := 0
-	for row in island_cache.values():
-		var rocks: Dictionary = row.get("rocks", {})
-		pieces += int(rocks.get("piece_count", 0))
-		tris += RockUnderside.triangle_count(rocks)
 	for child in _islands_root.get_children():
+		var state: Dictionary = child.get("rock_state") if child.get("rock_state") != null else {}
+		if state.is_empty():
+			var key := int(child.get("island_hash"))
+			state = island_cache.get(key, {}).get("rocks", {})
+		pieces += int(state.get("piece_count", 0))
+		tris += RockUnderside.triangle_count(state)
 		var kit := child.get_node_or_null("RockKit")
 		if kit:
 			for mmi in kit.get_children():
@@ -329,7 +331,7 @@ func rock_stats() -> Dictionary:
 		draw += 1
 		tris += int(_cliff_mesh.mesh.get_faces().size() / 3)
 	return {
-		"islands": island_cache.size(),
+		"islands": island_count(),
 		"pieces": pieces,
 		"triangles": tris,
 		"draw_calls": draw,

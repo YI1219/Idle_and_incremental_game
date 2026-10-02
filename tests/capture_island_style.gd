@@ -40,12 +40,12 @@ func run() -> void:
 	if builder:
 		builder.set_active(false)
 	rig.set_physics_process(false)
-	var look := Vector3(0.6, -3.15, -1.0)
-	var from := Vector3(-18.5, -0.85, 13.4)
+	var look := Vector3(0.4, -2.2, -0.4)
+	var from := Vector3(-17.5, 0.55, 12.8)
 	rig.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
 	var camera := rig.get_node_or_null("Camera3D") as Camera3D
 	if camera:
-		camera.fov = 42
+		camera.fov = 40
 	await shot("res://art/review/island_style/2026-10-02/underside_low.png")
 
 	var terrain: Node3D = island.terrain
@@ -62,11 +62,11 @@ func run() -> void:
 	look = Vector3(0.0, -1.2, 0.0)
 	rig.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
 	await shot("res://art/review/island_style/2026-10-02/large_island.png")
-	from = Vector3(-22.0, -0.4, 18.0)
-	look = Vector3(0.5, -3.4, 0.0)
+	from = Vector3(-24.0, 0.8, 20.0)
+	look = Vector3(0.5, -2.6, 0.0)
 	rig.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
 	if camera:
-		camera.fov = 40
+		camera.fov = 38
 	await shot("res://art/review/island_style/2026-10-02/large_island_underside.png")
 
 	var offsets := [

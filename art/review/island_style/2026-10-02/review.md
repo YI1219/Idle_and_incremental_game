@@ -23,4 +23,16 @@ godot --headless --path . --script tests/rockkit_bench.gd
 
 PNG binaries stay local (`art/**` gitignore). Copies used for review are also in the agent artifacts folder.
 
+VM sample (Godot 4.7.2, llvmpipe, not a target laptop):
+
+| Scene | Pieces | Tris | Rock draw calls | Build / rock respace |
+| --- | --- | --- | --- | --- |
+| Playable ~130 cells, 1 island | 97 | 32k | 10 | rock 6.2 ms |
+| 4× area, 528 cells, 1 island | 184 | 61k | 10 | 56 ms / 11 ms |
+| Coast edit on the 4× island | — | — | — | 88 ms full, 21 ms rocks |
+| 4× + 7 satellites, far LOD | 284 | 103k | 59 | 140 ms / 24 ms |
+| Same 8 islands, camera near | 379 | 129k | 64 | — |
+
+Headless `TIME_PROCESS` was 0 on the 1-island cases and 160–230 ms on the 8-island case; GPU draw/primitive counters stayed 0. Treat those frame times as VM noise, not a performance claim.
+
 This is not target-device performance evidence. Software-renderer captures are paler than a discrete GPU; cloud sea uses opaque vertex-colored billows plus puffs so the mounds still read there.

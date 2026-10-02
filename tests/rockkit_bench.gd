@@ -13,6 +13,7 @@ func _initialize() -> void:
 
 
 func run() -> void:
+	print("rockkit_bench: start")
 	RockKit.ensure()
 	var lines: PackedStringArray = []
 	lines.append("Rock-kit underside benchmark")
@@ -24,20 +25,23 @@ func run() -> void:
 	root.add_child(terrain)
 	await process_frame
 
+	print("rockkit_bench: playable")
 	var starter := _rect(-6, 7, -6, 4)
 	terrain.configure(starter)
-	await _settle(4)
-	var playable := terrain.rock_stats()
-	lines.append(_block("playable courtyard (~130 cells, 1 island)", playable, await _frame_sample(24)))
+	await _settle(8)
+	var playable: Dictionary = terrain.rock_stats()
+	lines.append(_block("playable courtyard (~130 cells, 1 island)", playable, await _frame_sample(12)))
 
+	print("rockkit_bench: 4x island")
 	var large := _rect(-12, 12, -11, 11)
 	var t0 := Time.get_ticks_usec()
 	terrain.configure(large)
 	var large_build_ms := float(Time.get_ticks_usec() - t0) / 1000.0
-	await _settle(4)
-	var large_stats := terrain.rock_stats()
+	print("rockkit_bench: 4x build %.1f ms" % large_build_ms)
+	await _settle(2)
+	var large_stats: Dictionary = terrain.rock_stats()
 	large_stats["build_ms"] = large_build_ms
-	lines.append(_block("4x-area island (%d cells, 1 island)" % large.size(), large_stats, await _frame_sample(24)))
+	lines.append(_block("4x-area island (%d cells, 1 island)" % large.size(), large_stats, await _frame_sample(12)))
 
 	var grow_cell := Vector2i(12, 0)
 	terrain.land_cells[grow_cell] = true
@@ -57,15 +61,17 @@ func run() -> void:
 	for off in offsets:
 		for cell in _rect(off.x, off.x + 5, off.y, off.y + 4):
 			multi.append(cell)
+	print("rockkit_bench: multi island")
 	t0 = Time.get_ticks_usec()
 	terrain.configure(multi)
 	var multi_build_ms := float(Time.get_ticks_usec() - t0) / 1000.0
-	await _settle(6)
+	print("rockkit_bench: multi build %.1f ms" % multi_build_ms)
+	await _settle(2)
 	var far := Vector3(80, 12, 80)
 	if terrain.has_method("refresh_lod"):
 		terrain.refresh_lod(far)
 	await _settle(4)
-	var multi_stats := terrain.rock_stats()
+	var multi_stats: Dictionary = terrain.rock_stats()
 	multi_stats["build_ms"] = multi_build_ms
 	lines.append(_block("4x island + 7 satellites (%d cells, %d islands)" % [multi.size(), int(multi_stats.get("islands", 0))], multi_stats, await _frame_sample(24)))
 
@@ -73,7 +79,7 @@ func run() -> void:
 	if terrain.has_method("refresh_lod"):
 		terrain.refresh_lod(near)
 	await _settle(4)
-	var near_stats := terrain.rock_stats()
+	var near_stats: Dictionary = terrain.rock_stats()
 	lines.append(_block("same 8 islands, camera near the main island", near_stats, await _frame_sample(24)))
 
 	DirAccess.make_dir_recursive_absolute("res://art/review/island_style/2026-10-02")
@@ -97,7 +103,7 @@ func _block(title: String, stats: Dictionary, frames: Dictionary) -> String:
 		"build_ms=%s  last_rock_rebuild_ms=%s" % [
 			stats.get("build_ms", "-"), stats.get("rebuild_ms", 0),
 		],
-		"process_ms avg/max=%.2f/%.2f  render_ms avg/max=%.2f/%.2f  fps_est=%.1f" % [
+		"process_ms avg/max=%.2f/%.2f  physics_ms avg/max=%.2f/%.2f  fps_est=%.1f" % [
 			frames["process_avg"], frames["process_max"],
 			frames["render_avg"], frames["render_max"],
 			frames["fps"],
@@ -118,17 +124,12 @@ func _frame_sample(n: int) -> Dictionary:
 	var prims := 0.0
 	for i in n:
 		await process_frame
-		await RenderingServer.frame_post_draw
 		var p := 1000.0 * float(Performance.get_monitor(Performance.TIME_PROCESS))
 		var r := 1000.0 * float(Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS))
-		# TIME_PHYSICS_PROCESS is not GPU. Prefer render objects as a stand-in.
-		var render_ms := p
-		if ClassDB.class_has_enum("Performance", "Monitor"):
-			pass
 		process_sum += p
 		process_max = maxf(process_max, p)
-		render_sum += render_ms
-		render_max = maxf(render_max, render_ms)
+		render_sum += r
+		render_max = maxf(render_max, r)
 		draws += float(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
 		prims += float(Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
 	var avg_p := process_sum / float(n)

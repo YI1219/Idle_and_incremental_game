@@ -5,10 +5,10 @@ const RockKit := preload("res://scripts/world/rock_kit.gd")
 
 ## s, top y, target width, scale min/max, z-stretch min/max, tilt deg, spacing, pool, protrude
 const RINGS := [
-	[1.028, -0.045, 2.50, 0.78, 1.32, 0.86, 1.22, 10.0, 0.58, "rim", 0.34],
-	[0.78, -1.20, 2.20, 0.80, 1.18, 1.00, 1.25, 16.0, 0.66, "rim+mid", 0.0],
-	[0.56, -2.25, 1.95, 0.80, 1.12, 1.00, 1.28, 20.0, 0.70, "mid+rim", 0.0],
-	[0.34, -3.25, 1.65, 0.80, 1.08, 1.05, 1.30, 24.0, 0.76, "mid", 0.0],
+	[1.04, -0.02, 2.85, 0.78, 1.34, 0.55, 0.78, 9.0, 0.52, "rim", 0.42],
+	[0.80, -1.15, 2.45, 0.80, 1.22, 0.95, 1.20, 14.0, 0.60, "rim+mid", 0.06],
+	[0.58, -2.20, 2.15, 0.80, 1.16, 1.05, 1.32, 18.0, 0.64, "mid+rim", 0.0],
+	[0.36, -3.20, 1.85, 0.80, 1.12, 1.10, 1.38, 22.0, 0.70, "mid", 0.0],
 ]
 const JITTER_ARC := 0.28
 const JITTER_RADIAL := 0.18
@@ -24,6 +24,7 @@ static func respace(prev: Dictionary, outline: PackedVector2Array, seed: int, fa
 	RockKit.ensure()
 	var mid := _centroid(outline)
 	var ring_limit := FAR_RINGS if far else RINGS.size()
+	var boost := _size_boost(outline, mid)
 	var old_slots: Array = prev.get("slots", [])
 	var by_key: Dictionary = {}
 	for slot in old_slots:
@@ -50,10 +51,10 @@ static func respace(prev: Dictionary, outline: PackedVector2Array, seed: int, fa
 			elif String(slot["piece"]) == last_piece and names.size() > 1:
 				slot["piece"] = _pick_piece(names, last_piece, seed, ri, i)
 			last_piece = String(slot["piece"])
-			slot["xf"] = _ring_transform(slot, ring, mid, start, per, count, seed, row)
+			slot["xf"] = _ring_transform(slot, ring, mid, start, per, count, seed, row, boost)
 			slot["jitter"] = _unit(seed, ri, i + 17)
 			slots.append(slot)
-	var tips := _tips(outline, mid, seed, far, _lowest_ring_top(ring_limit))
+	var tips := _tips(outline, mid, seed, far, _lowest_ring_top(ring_limit), boost)
 	for tip in tips:
 		slots.append(tip)
 	var roots: Array = []
@@ -94,7 +95,7 @@ static func triangle_count(state: Dictionary) -> int:
 	return total
 
 
-static func _ring_transform(slot: Dictionary, ring: PackedVector2Array, mid: Vector2, start: float, per: float, count: int, seed: int, row: Array) -> Transform3D:
+static func _ring_transform(slot: Dictionary, ring: PackedVector2Array, mid: Vector2, start: float, per: float, count: int, seed: int, row: Array, boost: float) -> Transform3D:
 	var i := int(slot["slot"])
 	var u0 := _unit(seed, int(slot["ring"]), i)
 	var u1 := _unit(seed, int(slot["ring"]), i + 31)
@@ -109,7 +110,7 @@ static func _ring_transform(slot: Dictionary, ring: PackedVector2Array, mid: Vec
 	var tan: Vector2 = hit[2]
 	var info: Dictionary = RockKit.piece(String(slot["piece"]))
 	var pw := float(info.get("width", 1.0))
-	var s := float(row[2]) / maxf(pw, 0.2) * lerpf(float(row[3]), float(row[4]), u1)
+	var s := float(row[2]) * boost / maxf(pw, 0.2) * lerpf(float(row[3]), float(row[4]), u1)
 	var zs := lerpf(float(row[5]), float(row[6]), u2)
 	var half := pw * s * 0.5
 	var inward := -nrm
@@ -120,7 +121,7 @@ static func _ring_transform(slot: Dictionary, ring: PackedVector2Array, mid: Vec
 	return _compose(info, Vector3(pos2.x, top_y, pos2.y), yaw, s, zs, Vector3(tan.x, 0.0, tan.y), tilt, Vector3(inward.x, 0.0, inward.y))
 
 
-static func _tips(outline: PackedVector2Array, mid: Vector2, seed: int, far: bool, lowest_top: float) -> Array:
+static func _tips(outline: PackedVector2Array, mid: Vector2, seed: int, far: bool, lowest_top: float, boost: float = 1.0) -> Array:
 	if far:
 		return []
 	var pool := RockKit.pool("mid")
@@ -142,7 +143,7 @@ static func _tips(outline: PackedVector2Array, mid: Vector2, seed: int, far: boo
 		var rad := lerpf(0.15, 0.55, u0) if i == 0 else lerpf(0.85, 1.85, u1)
 		var pos := Vector3(mid.x + cos(ang) * rad, 0.0, mid.y + sin(ang) * rad)
 		pos.y = lowest_top - (0.90 if i == 0 else lerpf(0.35, 1.15, u2))
-		var width := lerpf(1.7, 2.35, u1) * (1.0 if i == 0 else 0.68)
+		var width := lerpf(1.7, 2.35, u1) * boost * (1.0 if i == 0 else 0.68)
 		var s := width / maxf(float(info.get("width", 1.0)), 0.2)
 		var zs := lerpf(0.70, 0.92, u2) * (1.0 if i == 0 else 0.74)
 		var out_dir := Vector3(cos(ang), 0.0, sin(ang))
@@ -169,7 +170,7 @@ static func _roots(slots: Array, seed: int) -> Array:
 		var xf: Transform3D = pick["xf"]
 		var yaw := _unit(seed, 30, j + 5) * TAU
 		var scale := lerpf(0.85, 1.25, _unit(seed, 30, j + 9))
-		var origin: Vector3 = xf.origin + Vector3(0.0, -0.35, 0.0)
+		var origin: Vector3 = xf.origin + Vector3(0.0, -0.15, 0.0) + xf.basis.z * 0.15
 		var basis := Basis(Vector3.UP, yaw).scaled(Vector3(scale, scale, scale))
 		out.append(Transform3D(basis, origin))
 	return out
@@ -261,6 +262,13 @@ static func _centroid(poly: PackedVector2Array) -> Vector2:
 	for p in poly:
 		s += p
 	return s / float(maxi(poly.size(), 1))
+
+
+static func _size_boost(poly: PackedVector2Array, mid: Vector2) -> float:
+	var reach := 0.0
+	for p in poly:
+		reach = maxf(reach, p.distance_to(mid))
+	return clampf(reach / 6.5, 0.92, 2.15)
 
 
 static func _perimeter(poly: PackedVector2Array) -> float:

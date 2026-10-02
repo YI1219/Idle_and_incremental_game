@@ -322,16 +322,16 @@ static func build_top(outline: PackedVector2Array, cutters: Array) -> ArrayMesh:
 	return st.commit()
 
 
-static func build_core(outline: PackedVector2Array, high_detail: bool = true, bottom: float = -5.05) -> ArrayMesh:
+static func build_core(outline: PackedVector2Array, high_detail: bool = true, bottom: float = -4.35) -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	if outline.size() < 3:
 		return st.commit()
 	var mid := centroid2(outline)
-	var segs := 24 if high_detail else 12
-	var rim := _resample(scale_from_centroid(outline, 0.76), segs)
-	var waist := _resample(scale_from_centroid(outline, 0.40), segs)
-	var top_y := -0.62
+	var segs := 20 if high_detail else 10
+	var rim := _resample(scale_from_centroid(outline, 0.38), segs)
+	var waist := _resample(scale_from_centroid(outline, 0.16), segs)
+	var top_y := -1.15
 	var mid_y := (top_y + bottom) * 0.48
 	var tris: Array = []
 	_stitch_rings(tris, rim, top_y, 0.0, waist, mid_y, 0.0)
