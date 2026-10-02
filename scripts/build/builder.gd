@@ -174,7 +174,7 @@ func _flatten_for_place(kind: String,cell: Vector2i) -> String:
 	if island==null or island.terrain==null or not island.terrain.has_method("flatten_footprint"):
 		return "ok"
 	var cells: Array[Vector2i]=layout.footprint(kind,cell)
-	var after:=island.sim.cell_count()
+	var after: int=island.sim.cell_count()
 	var quote: Dictionary=island.terrain.flatten_footprint(cells,island.sim.xirang,after,true)
 	if not bool(quote.get("ok",false)):
 		return String(quote.get("reason","ok")) if quote.has("reason") else "ok"
@@ -357,7 +357,7 @@ func _preview_sculpt() -> Dictionary:
 	return node.field.preview_brush(tool,world,brush_radius,brush_strength,_free_brush())
 func _sculpt_at(world: Vector3) -> Dictionary:
 	island.sim.catch_up(island._clock_minutes)
-	var after:=island.sim.cell_count()
+	var after: int=island.sim.cell_count()
 	var result: Dictionary=island.terrain.apply_sculpt(tool,world,brush_radius,brush_strength,_free_brush(),island.sim.xirang,after,_blocked_cells(),_sculpt_ref)
 	last_sculpt=result
 	if bool(result.get("ok",false)):

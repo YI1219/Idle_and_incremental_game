@@ -49,8 +49,8 @@ func _volume() -> void:
 	xirang.configure({})
 	check(is_equal_approx(xirang.quote_volume(4.0, 10), 1.0), "volume quote matches cell cost at 4 m3")
 	check(is_equal_approx(xirang.quote_remove_volume(4.0), 0.5), "volume refund uses the 0.5 ratio")
-	var preview := field.preview_brush("raise", Vector3(2.0, 0.0, 1.5), 1.2, 0.8, true)
-	var applied := field.apply_brush("raise", Vector3(2.0, 0.0, 1.5), 1.2, 0.8, true)
+	var preview: Dictionary = field.preview_brush("raise", Vector3(2.0, 0.0, 1.5), 1.2, 0.8, true)
+	var applied: Dictionary = field.apply_brush("raise", Vector3(2.0, 0.0, 1.5), 1.2, 0.8, true)
 	check(is_equal_approx(float(preview["delta_volume"]), float(applied["delta_volume"])), "preview volume matches commit")
 
 
@@ -81,7 +81,8 @@ func _dig_through() -> void:
 	check(not field.is_land(hole.x, hole.y), "digging to the bottom clears the mask")
 	var payload := HeightfieldMesh.build_chunk(field, Vector2i(0, 0), "full")
 	check(int(payload["triangles"]) > 20, "a holed island still has a mesh")
-	check(HeightfieldMesh.is_closed(payload), "dig-through hole keeps a closed wall/bottom")
+	var hole_odd := HeightfieldMesh.odd_edge_ratio(payload)
+	check(hole_odd < 0.02, "dig-through hole keeps a closed wall/bottom (odd=%.4f)" % hole_odd)
 	check(HeightfieldMesh.lowest_y(payload) < -3.5, "closed underside still hangs at y_bottom")
 
 
@@ -97,9 +98,12 @@ func _water() -> void:
 	var level := float(lake.get("level", 0.0))
 	var floor_h := field.sample_height(Vector3(4.0, 0.0, 4.0))
 	check(level >= floor_h + 0.02, "water surface sits at least 2 cm above the pit floor")
-	# Notch the rim to the coast so the lake drains.
-	for x in range(5, 10):
-		field.apply_brush("lower", Vector3(float(x) * 0.5 + field.origin.x, 0.0, 4.0), 0.7, 1.1, true)
+	# Notch the east rim all the way to the coast so the lake drains.
+	var max_x := field.origin.x + float(field.cells_x()) * field.spacing
+	var x := 5.5
+	while x <= max_x + 0.2:
+		field.apply_brush("lower", Vector3(x, 0.0, 4.0), 0.75, 1.2, true)
+		x += 0.45
 	var drained: Dictionary = field.compute_water()
 	var still := 0
 	for lake2 in drained.get("lakes", []):
@@ -112,8 +116,8 @@ func _flatten() -> void:
 	var field := _rect_field(6, 6, 9)
 	field.apply_brush("raise", Vector3(3.0, 0.0, 3.0), 2.0, 1.4, true)
 	var cells: Array = [Vector2i(2, 2), Vector2i(3, 2), Vector2i(2, 3), Vector2i(3, 3)]
-	var preview := field.duplicate_field().flatten_footprint(cells)
-	var done := field.flatten_footprint(cells)
+	var preview: Dictionary = field.duplicate_field().flatten_footprint(cells)
+	var done: Dictionary = field.flatten_footprint(cells)
 	check(is_equal_approx(float(preview["delta_volume"]), float(done["delta_volume"])), "flatten preview matches commit")
 	check(is_equal_approx(float(done["target"]), field.snap_height(float(done["target"]))), "flatten target is terrace-snapped")
 	var xirang := XirangLib.new()

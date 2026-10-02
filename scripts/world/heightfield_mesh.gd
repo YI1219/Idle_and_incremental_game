@@ -86,9 +86,13 @@ static func border_vertices(field: Heightfield, chunk_a: Vector2i, chunk_b: Vect
 
 
 static func is_closed(payload: Dictionary, tolerance: float = 0.012) -> bool:
+	return odd_edge_ratio(payload, tolerance) < 0.02
+
+
+static func odd_edge_ratio(payload: Dictionary, tolerance: float = 0.012) -> float:
 	var faces: PackedVector3Array = payload.get("vertices", PackedVector3Array())
 	if faces.size() < 12:
-		return false
+		return 1.0
 	var counts: Dictionary = {}
 	for i in range(0, faces.size(), 3):
 		_count_edge(counts, faces[i], faces[i + 1], tolerance)
@@ -100,7 +104,7 @@ static func is_closed(payload: Dictionary, tolerance: float = 0.012) -> bool:
 		total += 1
 		if int(counts[key]) % 2 != 0:
 			odd += 1
-	return total > 0 and float(odd) / float(total) < 0.02
+	return 0.0 if total == 0 else float(odd) / float(total)
 
 
 static func lowest_y(payload: Dictionary) -> float:
@@ -191,36 +195,106 @@ static func _top_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
 
 
 static func _emit_facet(field: Heightfield, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, a: Vector3, b: Vector3, c: Vector3) -> void:
+	# Keep authored vertex positions so rim edges match the wall posts.
+	# Chunky rock is the stylized shader + unshared per-face normals.
 	var n := (b - a).cross(c - a)
 	if n.length_squared() < 1e-10:
 		return
-	n = n.normalized()
-	var pts := [a, b, c]
-	if n.y < ROCK_SLOPE:
-		var mid := (a + b + c) / 3.0
-		var out := Vector3(n.x, 0.0, n.z)
-		if out.length_squared() < 1e-6:
-			out = Vector3(n.x, 0.0, n.z)
-		for i in 3:
-			pts[i] = field.voronoi_push(pts[i], out.normalized() if out.length_squared() > 1e-6 else Vector3.FORWARD)
-		n = (pts[1] - pts[0]).cross(pts[2] - pts[0])
-		if n.length_squared() < 1e-10:
-			return
-		n = n.normalized()
-	var color := field.hash_color((pts[0] + pts[1] + pts[2]) / 3.0, n.y)
-	for p in pts:
-		verts.append(p)
-		norms.append(n)
-		cols.append(color)
-		uvs.append(Vector2(p.x, p.z) * 0.12)
+	_tri(verts, norms, cols, uvs, a, b, c, field.hash_color((a + b + c) / 3.0, n.normalized().y), false)
 
 
 static func _emit_walls_and_bottom(field: Heightfield, chunk: Vector2i, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, lod: bool) -> void:
-	var loops := _chunk_loops(field, chunk)
 	var rings := 3 if lod else WALL_RINGS
-	for loop in loops:
-		_extrude_loop(field, loop, rings, verts, norms, cols, uvs)
+	_emit_grid_walls(field, chunk, rings, verts, norms, cols, uvs)
 	_emit_bottom(field, chunk, verts, norms, cols, uvs)
+
+
+static func _emit_grid_walls(field: Heightfield, chunk: Vector2i, rings: int, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array) -> void:
+	var cs := Heightfield.CHUNK
+	var x0 := chunk.x * cs
+	var z0 := chunk.y * cs
+	var x1 := mini(x0 + cs, field.cells_x())
+	var z1 := mini(z0 + cs, field.cells_z())
+	var posts: Dictionary = {}
+	for cz in range(z0, z1):
+		for cx in range(x0, x1):
+			if not field.is_land(cx, cz):
+				continue
+			_wall_if_open(field, verts, norms, cols, uvs, cx, cz, 0, -1, rings, posts)
+			_wall_if_open(field, verts, norms, cols, uvs, cx, cz, 1, 0, rings, posts)
+			_wall_if_open(field, verts, norms, cols, uvs, cx, cz, 0, 1, rings, posts)
+			_wall_if_open(field, verts, norms, cols, uvs, cx, cz, -1, 0, rings, posts)
+
+
+static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: PackedVector3Array, cols: PackedColorArray, uvs: PackedVector2Array, cx: int, cz: int, dx: int, dz: int, rings: int, posts: Dictionary) -> void:
+	if field.is_land(cx + dx, cz + dz):
+		return
+	var a: Vector2i
+	var b: Vector2i
+	if dx == 0 and dz == -1:
+		a = Vector2i(cx, cz)
+		b = Vector2i(cx + 1, cz)
+	elif dx == 1 and dz == 0:
+		a = Vector2i(cx + 1, cz)
+		b = Vector2i(cx + 1, cz + 1)
+	elif dx == 0 and dz == 1:
+		a = Vector2i(cx + 1, cz + 1)
+		b = Vector2i(cx, cz + 1)
+	else:
+		a = Vector2i(cx, cz + 1)
+		b = Vector2i(cx, cz)
+	var col_a: Array = _wall_post(field, a.x, a.y, rings, posts)
+	var col_b: Array = _wall_post(field, b.x, b.y, rings, posts)
+	var n := mini(col_a.size(), col_b.size())
+	for r in range(n - 1):
+		var pa: Vector3 = col_a[r]
+		var pb: Vector3 = col_b[r]
+		var qa: Vector3 = col_a[r + 1]
+		var qb: Vector3 = col_b[r + 1]
+		var color := field.hash_color((pa + pb + qb) / 3.0, 0.2 if r > 0 else 0.85)
+		_tri(verts, norms, cols, uvs, pa, pb, qb, color, false)
+		_tri(verts, norms, cols, uvs, pa, qb, qa, color, false)
+
+
+static func _vertex_outward(field: Heightfield, ix: int, iz: int) -> Vector3:
+	var acc := Vector2.ZERO
+	var cells: Array[Vector2i] = [Vector2i(ix - 1, iz - 1), Vector2i(ix - 1, iz), Vector2i(ix, iz - 1), Vector2i(ix, iz)]
+	var dirs: Array[Vector2] = [Vector2(-0.5, -0.5), Vector2(-0.5, 0.5), Vector2(0.5, -0.5), Vector2(0.5, 0.5)]
+	var land_n := 0
+	for i in 4:
+		if field.is_land(cells[i].x, cells[i].y):
+			acc -= dirs[i]
+			land_n += 1
+		else:
+			acc += dirs[i]
+	if land_n == 0 or land_n == 4 or acc.length_squared() < 1e-8:
+		return Vector3.ZERO
+	acc = acc.normalized()
+	return Vector3(acc.x, 0.0, acc.y)
+
+
+static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: Dictionary) -> Array:
+	var key := Vector2i(ix, iz)
+	if posts.has(key):
+		return posts[key]
+	var top := field.world_vertex(ix, iz)
+	var bot := _bottom_vert(field, ix, iz)
+	var outward := _vertex_outward(field, ix, iz)
+	var col: Array = []
+	col.append(top)
+	# Grass lip sits off the top plane so it cannot z-fight the surface.
+	col.append(top + outward * LIP + Vector3(0.0, 0.018, 0.0))
+	var last := maxi(rings - 1, 2)
+	for r in range(2, last):
+		var t := float(r) / float(last)
+		var sm := t * t * (3.0 - 2.0 * t)
+		var p := top.lerp(bot, sm)
+		p += outward * (0.04 - 0.08 * t)
+		p = field.voronoi_push(p, outward)
+		col.append(p)
+	col.append(bot)
+	posts[key] = col
+	return col
 
 
 static func _chunk_loops(field: Heightfield, chunk: Vector2i) -> Array:

@@ -471,7 +471,7 @@ func apply_sculpt(op: String, world: Vector3, radius: float, strength: float, fr
 	if delta > 0.0 and xirang:
 		cost = xirang.quote_volume(delta, island_cells)
 		if not xirang.can_afford(cost):
-			var budget := xirang.points / maxf(float(xirang.cfg["cost_per_volume"]), 1e-6)
+			var budget: float = float(xirang.points) / maxf(float(xirang.cfg["cost_per_volume"]), 1e-6)
 			if island_cells > 0:
 				budget = budget / maxf(xirang.soft_multiplier(island_cells), 1e-6)
 			var applied: Dictionary = island.field.scale_brush_to_budget(op, world, radius, strength, free, h_ref, budget, blocked)

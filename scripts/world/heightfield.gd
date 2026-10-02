@@ -516,7 +516,7 @@ func compute_water() -> Dictionary:
 				heap.append([fill[cell_index(cx, cz)], cx, cz])
 	heap.sort_custom(func(a, b): return float(a[0]) < float(b[0]))
 	var cursor := 0
-	var dirs := [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+	var dirs: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
 	while cursor < heap.size():
 		var item: Array = heap[cursor]
 		cursor += 1
@@ -526,8 +526,8 @@ func compute_water() -> Dictionary:
 		if float(item[0]) > fill[idx] + 1e-6:
 			continue
 		for d: Vector2i in dirs:
-			var nx := cxi + d.x
-			var nz := czi + d.y
+			var nx: int = cxi + d.x
+			var nz: int = czi + d.y
 			if not is_land(nx, nz):
 				continue
 			var nidx := cell_index(nx, nz)
@@ -705,9 +705,10 @@ func _cell_blocked(cx: int, cz: int, blocked: Dictionary) -> bool:
 
 
 func _cell_touches_drain(cx: int, cz: int) -> bool:
-	for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-		var nx := cx + d.x
-		var nz := cz + d.y
+	var dirs: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+	for d: Vector2i in dirs:
+		var nx: int = cx + d.x
+		var nz: int = cz + d.y
 		if not in_cell(nx, nz) or not is_land(nx, nz):
 			return true
 	return false
@@ -744,16 +745,17 @@ func _waterfall_sites(fill: PackedFloat32Array, cell_h: PackedFloat32Array) -> A
 				continue
 			var idx := cell_index(cx, cz)
 			var inland := false
-			for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-				var n := Vector2i(cx, cz) + d
+			var dirs: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+			for d: Vector2i in dirs:
+				var n: Vector2i = Vector2i(cx, cz) + d
 				if is_land(n.x, n.y):
 					var nidx := cell_index(n.x, n.y)
 					if fill[nidx] > cell_h[nidx] + 0.08:
 						inland = true
 			# A notch or hole-edge that a higher basin can spill through.
 			var is_notch := false
-			for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-				var n2 := Vector2i(cx, cz) + d
+			for d2: Vector2i in dirs:
+				var n2: Vector2i = Vector2i(cx, cz) + d2
 				if is_land(n2.x, n2.y) and cell_h[cell_index(n2.x, n2.y)] > cell_h[idx] + 0.20:
 					is_notch = true
 			if inland or is_notch:
@@ -769,7 +771,8 @@ func _waterfall_sites(fill: PackedFloat32Array, cell_h: PackedFloat32Array) -> A
 
 func _drain_outward(cx: int, cz: int) -> Vector3:
 	var acc := Vector2.ZERO
-	for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+	var dirs: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+	for d: Vector2i in dirs:
 		if not is_land(cx + d.x, cz + d.y):
 			acc += Vector2(d.x, d.y)
 	if acc.length_squared() < 1e-6:
