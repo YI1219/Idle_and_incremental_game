@@ -43,11 +43,12 @@ vec3 seed7_rock(vec3 p, vec3 n, float ao) {
 	rock *= 0.90 + block * 0.22;
 	float grain = (noise(skew * 3.4) - 0.5) * 0.06;
 	rock += grain;
-	float facet = clamp(dot(normalize(n), normalize(vec3(0.48, 0.70, 0.32))) * 0.40 + 0.62, 0.50, 1.12);
+	// Keep shaded vertical faces in the grey range. Downward soffits were reading as black gaps.
+	float facet = clamp(dot(normalize(n), normalize(vec3(0.42, 0.55, 0.30))) * 0.28 + 0.80, 0.70, 1.12);
 	rock *= facet;
 	float lip_ao = (1.0 - clamp(-p.y / 0.38, 0.0, 1.0)) * (1.0 - abs(n.y));
-	rock *= 1.0 - lip_ao * 0.30;
-	rock *= mix(0.72, 1.05, clamp(ao, 0.0, 1.0));
+	rock *= 1.0 - lip_ao * 0.12;
+	rock *= mix(0.86, 1.05, clamp(ao, 0.0, 1.0));
 	return rock;
 }
 
@@ -61,6 +62,18 @@ void vertex() {
 	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	world_n = normalize((MODEL_NORMAL_MATRIX * NORMAL));
 	vcol = COLOR;
+}
+
+void light() {
+	float nd = dot(NORMAL, LIGHT);
+	if (vcol.b > 0.45) {
+		// Vertical rock stays readable on the shadow side. A pure Lambert cliff went near-black.
+		float wrap = clamp(nd * 0.62 + 0.40, 0.34, 1.0);
+		float vis = mix(0.70, 1.0, clamp(ATTENUATION, 0.0, 1.0));
+		DIFFUSE_LIGHT += ALBEDO * LIGHT_COLOR * wrap * vis;
+	} else {
+		DIFFUSE_LIGHT += ALBEDO * LIGHT_COLOR * clamp(nd, 0.0, 1.0) * ATTENUATION;
+	}
 }
 
 void fragment() {

@@ -59,6 +59,13 @@ func run() -> void:
 	_look(rig, player, Vector3(3.8, 0.0, 0.4), 11.0, 1)
 	await shot(OUT + "/lake.png")
 
+	# Close on the near lip so the shoulder, earth band, and shore stones read.
+	rig.near_pitch_deg = 20.0
+	rig.pitch_deg = 26.0
+	_look(rig, player, Vector3(1.0, 0.0, 3.4), 6.0, 0)
+	await shot(OUT + "/coast_close.png")
+	_restore_pitch(rig)
+
 	_sculpt_demo(terrain)
 	terrain.flush_rebuild()
 	await frames(8)

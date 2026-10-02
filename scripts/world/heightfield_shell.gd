@@ -8,6 +8,10 @@ const Heightfield := preload("res://scripts/world/heightfield.gd")
 const ISO := 0.5
 const SUB_FULL := 2
 const SUB_LOD := 1
+const SHOULDER_W := 0.32
+const HANG_MIN := 0.10
+const HANG_MAX := 0.30
+const EARTH_DROP := 0.09
 const META := &"hf_shell_cache"
 
 # Corner 0 SW, 1 SE, 2 NE, 3 NW. Edge 4 S, 5 E, 6 N, 7 W.
@@ -199,19 +203,39 @@ static func _emit_cached(field: Heightfield, cache: Dictionary, skip_top: Dictio
 	var subdiv := int(cache["sub"])
 	var tables := _height_tables(field)
 	var ys := _fill_ys(field, raw, gw, nx, nz, fine, skip_top, tables)
+	var lips: Array = []
+	var lip_y := {}
+	var outer_flat: Array = []
+	var hole_flat: Array = []
+	for ids in cache["loops"]:
+		var flat := PackedVector2Array()
+		for id in ids:
+			flat.append(pos[id])
+		var probe := PackedVector3Array()
+		for p in flat:
+			probe.append(Vector3(p.x, 0.0, p.y))
+		var hole := _is_hole(field, probe)
+		if hole:
+			hole_flat.append(flat)
+		else:
+			outer_flat.append(flat)
+		var lip := PackedVector3Array()
+		for i in ids.size():
+			var id = ids[i]
+			var xz: Vector2 = flat[i]
+			var y := _y_tables(field, xz, tables)
+			if not hole:
+				y -= _dip_amp(field, xz.x, xz.y)
+			lip_y[id] = y
+			lip.append(Vector3(xz.x, y, xz.y))
+		lips.append(lip)
+	_apply_shoulder(field, ys, nx, nz, fine, outer_flat, hole_flat, skip_top)
 	var cgw := nx + 1
 	var ns := _fill_ns(ys, nx, nz, fine, cgw)
-	var lips: Array = []
-	for ids in cache["loops"]:
-		var lip := PackedVector3Array()
-		for id in ids:
-			var xz: Vector2 = pos[id]
-			lip.append(Vector3(xz.x, _y_tables(field, xz, tables), xz.y))
-		lips.append(lip)
 	var top := Buf.new()
 	for j in nz:
 		for i in nx:
-			_emit_cell(field, raw, gw, i, j, nx, fine, pos, top, subdiv, ys, ns, cgw, tables)
+			_emit_cell(field, raw, gw, i, j, nx, fine, pos, top, subdiv, ys, ns, cgw, tables, lip_y)
 	var built := {"top": top.pack(), "vloops": cache["vloops"]}
 	if want_wall:
 		var wall := Buf.new()
@@ -244,7 +268,7 @@ static func _collect_cell(field: Heightfield, raw: PackedFloat32Array, gw: int, 
 		pass
 
 
-static func _emit_cell(field: Heightfield, raw: PackedFloat32Array, gw: int, i: int, j: int, nx: int, fine: float, pos: Dictionary, buf: Buf, subdiv: int, ys: PackedFloat32Array, ns: PackedVector3Array, cgw: int, tables: Array) -> void:
+static func _emit_cell(field: Heightfield, raw: PackedFloat32Array, gw: int, i: int, j: int, nx: int, fine: float, pos: Dictionary, buf: Buf, subdiv: int, ys: PackedFloat32Array, ns: PackedVector3Array, cgw: int, tables: Array, lip_y: Dictionary) -> void:
 	var vals := _corners(raw, gw, i, j)
 	var mask := _mask_of(vals)
 	if mask == 0:
@@ -258,20 +282,22 @@ static func _emit_cell(field: Heightfield, raw: PackedFloat32Array, gw: int, i: 
 		var ta := int(tri[0])
 		var tb := int(tri[1])
 		var tc := int(tri[2])
-		var pa := _cached_vert(field, i, j, ta, fine, origin, pos, nx, ys, cgw, tables)
-		var pb := _cached_vert(field, i, j, tb, fine, origin, pos, nx, ys, cgw, tables)
-		var pc := _cached_vert(field, i, j, tc, fine, origin, pos, nx, ys, cgw, tables)
+		var pa := _cached_vert(field, i, j, ta, fine, origin, pos, nx, ys, cgw, tables, lip_y)
+		var pb := _cached_vert(field, i, j, tb, fine, origin, pos, nx, ys, cgw, tables, lip_y)
+		var pc := _cached_vert(field, i, j, tc, fine, origin, pos, nx, ys, cgw, tables, lip_y)
 		var col := _grass_color((vals[0] + vals[1] + vals[2] + vals[3]) * 0.25)
 		buf.smooth(pa, pb, pc, _cached_n(i, j, ta, ns, cgw), _cached_n(i, j, tb, ns, cgw), _cached_n(i, j, tc, ns, cgw), col, Vector3.UP, chunk)
 
 
-static func _cached_vert(field: Heightfield, i: int, j: int, token: int, fine: float, origin: Vector2, pos: Dictionary, nx: int, ys: PackedFloat32Array, cgw: int, tables: Array) -> Vector3:
+static func _cached_vert(field: Heightfield, i: int, j: int, token: int, fine: float, origin: Vector2, pos: Dictionary, nx: int, ys: PackedFloat32Array, cgw: int, tables: Array, lip_y: Dictionary) -> Vector3:
 	if token < 4:
 		var ci := i + (1 if token == 1 or token == 2 else 0)
 		var cj := j + (1 if token == 2 or token == 3 else 0)
 		return Vector3(origin.x + float(ci) * fine, ys[cj * cgw + ci], origin.y + float(cj) * fine)
-	var xz: Vector2 = pos[_edge_id(i, j, token, nx)]
-	return Vector3(xz.x, _y_tables(field, xz, tables), xz.y)
+	var eid := _edge_id(i, j, token, nx)
+	var xz: Vector2 = pos[eid]
+	var y := float(lip_y[eid]) if lip_y.has(eid) else _y_tables(field, xz, tables)
+	return Vector3(xz.x, y, xz.y)
 
 
 static func _cached_n(i: int, j: int, token: int, ns: PackedVector3Array, cgw: int) -> Vector3:
@@ -723,109 +749,122 @@ static func _emit_one_wall(field: Heightfield, lip: PackedVector3Array, hole: bo
 			outward = Vector3(0.0, 0.0, 1.0)
 		outward = outward.normalized()
 		blocks.append({"i0": i0, "indices": indices, "out": outward})
-	var bands := 3 if lod else 6
-	var base: Array = []
+	var shoulder := not hole
+	var hem: Array = []
+	var ring_p: Array = []
+	var ring_n: Array = []
+	if shoulder:
+		var hangs := _smooth_hang(field, lip)
+		for _r in 4:
+			ring_p.append([])
+			ring_n.append([])
+		var tilts: Array[float] = [0.22, 0.50, 0.84, 0.97]
+		for i in n:
+			var p: Vector3 = lip[i]
+			var outward := _outward_at(lip, i)
+			var hang: float = hangs[i]
+			var r0 := p
+			var r1 := p + outward * 0.09 + Vector3(0.0, -0.028, 0.0)
+			var r2 := p + outward * 0.15 + Vector3(0.0, -hang, 0.0)
+			var r3 := p + outward * 0.17 + Vector3(0.0, -(hang + EARTH_DROP), 0.0)
+			r3.y = maxf(r3.y, field.y_bottom + 0.08)
+			if r2.y < r3.y + 0.04:
+				r2.y = r3.y + 0.04
+			if r1.y < r2.y + 0.015:
+				r1.y = r2.y + 0.015
+			var pts: Array[Vector3] = [r0, r1, r2, r3]
+			for r in 4:
+				(ring_p[r] as Array).append(pts[r])
+				(ring_n[r] as Array).append(_mix_up(outward, tilts[r]))
+			hem.append(r3)
+	else:
+		for i in n:
+			var p: Vector3 = lip[i]
+			hem.append(Vector3(p.x, _skirt_y(p.y, field.y_bottom), p.z))
+	var rows := 3 if lod else 6
+	var amp_at := PackedFloat32Array()
+	var phase_at := PackedFloat32Array()
+	var shade_at := PackedFloat32Array()
+	amp_at.resize(n)
+	phase_at.resize(n)
+	shade_at.resize(n)
+	amp_at.fill(0.36 if not hole else 0.08)
+	shade_at.fill(0.9)
 	for b in blocks.size():
-		var block: Dictionary = blocks[b]
-		var indices: Array = block["indices"]
-		var outward: Vector3 = block["out"]
-		var left: Vector3 = lip[indices[0]]
-		var right: Vector3 = lip[indices[indices.size() - 1]]
-		var corners: Array = []
-		for band in bands:
-			var t0 := _band_t(band, bands)
-			var t1 := _band_t(band + 1, bands)
-			var hn := Heightfield._hash2(float(b * 5 + field.seed) + float(band) * 0.17, float(band) * 9.2 + (2.0 if hole else 0.7))
-			var amp := lerpf(0.04, 0.14, hn.x) if hole else lerpf(0.28, 0.92, hn.x)
-			var d0 := amp * lerpf(1.0, 0.72, t0 * t0)
-			var d1 := amp * lerpf(0.82, 0.40, t1)
-			if d0 < d1 + 0.10:
-				d0 = d1 + 0.10
-			var br0 := 0.0 if band == 0 else (Heightfield._hash2(float(b) * 1.7 + float(field.seed), float(band) * 4.4).x - 0.5) * 0.28
-			var br1 := 0.0 if band + 1 == bands else (Heightfield._hash2(float(b) * 1.7 + float(field.seed), float(band + 1) * 4.4).x - 0.5) * 0.28
-			var iL := int(indices[0])
-			var iR := int(indices[indices.size() - 1])
-			var nL := _outward_at(lip, iL)
-			var nR := _outward_at(lip, iR)
-			var slide_l := _strata_slide(field.seed, iL, band)
-			var slide_r := _strata_slide(field.seed, iR, band)
-			var tl := _rock_corner(left, outward, centroid, t0, d0, pull, hole, br0, field.y_bottom, slide_l, Vector2(-nL.z, nL.x))
-			var tr := _rock_corner(right, outward, centroid, t0, d0, pull, hole, br0, field.y_bottom, slide_r, Vector2(-nR.z, nR.x))
-			var bl := _rock_corner(left, outward, centroid, t1, d1, pull, hole, br1, field.y_bottom, slide_l, Vector2(-nL.z, nL.x))
-			var br := _rock_corner(right, outward, centroid, t1, d1, pull, hole, br1, field.y_bottom, slide_r, Vector2(-nR.z, nR.x))
-			if tl.y < bl.y + 0.16:
-				tl.y = bl.y + 0.16
-				tr.y = br.y + 0.16
-			corners.append([tl, tr, bl, br, hn.x])
-		block["corners"] = corners
-		blocks[b] = block
-	# Bottom cap ring first so the closed-mesh winding check sees the underside.
-	for b in blocks.size():
-		var corners: Array = blocks[b]["corners"]
-		var last: Array = corners[corners.size() - 1]
-		base.append(last[2])
-		base.append(last[3])
+		var indices: Array = blocks[b]["indices"]
+		var hn := Heightfield._hash2(float(b * 5 + field.seed), float(b) * 2.3 + (2.0 if hole else 0.7))
+		var amp := lerpf(0.05, 0.16, hn.x) if hole else lerpf(0.28, 0.78, hn.x)
+		var phase := (hn.y - 0.5) * 0.10
+		var shade := 0.92 + hn.x * 0.16
+		# The shared cut vertex belongs to the block that starts there, so courses meet on one edge.
+		for k in indices.size() - 1:
+			var id := int(indices[k])
+			amp_at[id] = amp
+			phase_at[id] = phase
+			shade_at[id] = shade
+	var cols: Array = []
 	for i in n:
-		var a: Vector3 = lip[i]
-		var b: Vector3 = lip[(i + 1) % n]
-		var c := Vector3(a.x, _skirt_y(a.y, field.y_bottom), a.z)
-		var d := Vector3(b.x, _skirt_y(b.y, field.y_bottom), b.z)
-		var out := _outward_at(lip, i)
-		var ch := _chid(field, (a + b) * 0.5)
-		var earth := Color(0.84, 0.18, 0.0, 1.0)
-		buf.flat(a, b, d, earth, out, ch, true)
-		buf.flat(a, d, c, earth, out, ch, true)
-	for b in blocks.size():
-		var block: Dictionary = blocks[b]
-		var indices: Array = block["indices"]
-		var corners: Array = block["corners"]
-		var outward: Vector3 = block["out"]
-		var skirt: Array = []
-		for id in indices:
-			var p: Vector3 = lip[id]
-			skirt.append(Vector3(p.x, _skirt_y(p.y, field.y_bottom), p.z))
-		var topc: Array = corners[0]
-		_fan_lip(buf, skirt, topc[0], topc[1], field, outward)
-		for band in corners.size():
-			var cnr: Array = corners[band]
-			var tl: Vector3 = cnr[0]
-			var tr: Vector3 = cnr[1]
-			var bl: Vector3 = cnr[2]
-			var br: Vector3 = cnr[3]
-			var shade := 0.88 + float(cnr[4]) * 0.28
-			shade *= lerpf(1.05, 0.70, float(band) / float(maxi(bands - 1, 1)))
-			var col := Color(clampf(shade, 0.45, 1.15), 0.0, 1.0, 1.0)
-			var ch := _chid(field, (tl + br) * 0.5)
-			buf.flat(tl, tr, br, col, outward, ch, true)
-			buf.flat(tl, br, bl, col, outward, ch, true)
-			if band + 1 < corners.size():
-				var below: Array = corners[band + 1]
-				var overhangs := Vector2(tl.x - bl.x, tl.z - bl.z).length() > 0.02
-				var ledge_out := (outward * 0.25 + (Vector3.DOWN if overhangs else Vector3.UP)).normalized()
-				buf.flat(bl, br, below[1], col * Color(0.92, 1, 1), ledge_out, ch, true)
-				buf.flat(bl, below[1], below[0], col * Color(0.92, 1, 1), ledge_out, ch, true)
-		var nb: int = (b + 1) % blocks.size()
-		var nc: Array = blocks[nb]["corners"]
-		var right_id := int(indices[indices.size() - 1])
-		var sp: Vector3 = lip[right_id]
-		var skirt_pt := Vector3(sp.x, _skirt_y(sp.y, field.y_bottom), sp.z)
-		var top_tr: Vector3 = corners[0][1]
-		var next_tl: Vector3 = nc[0][0]
-		var crack := _crack_out(top_tr, next_tl, (top_tr + corners[0][0]) * 0.5)
-		buf.flat(skirt_pt, top_tr, next_tl, Color(0.72, 0.04, 0.90, 1.0), crack, _chid(field, (skirt_pt + top_tr) * 0.5), true)
-		for band in corners.size():
-			var cnr: Array = corners[band]
-			var onc: Array = nc[band]
-			var side := _crack_out(cnr[1], onc[0], (cnr[0] + cnr[1]) * 0.5)
-			var ch2 := _chid(field, (cnr[1] + onc[2]) * 0.5)
-			var col2 := Color(0.66, 0.0, 1.0, 1.0)
-			buf.flat(cnr[1], onc[0], onc[2], col2, side, ch2, true)
-			buf.flat(cnr[1], onc[2], cnr[3], col2, side, ch2, true)
-			if band + 1 < corners.size():
-				var below: Array = corners[band + 1]
-				var nbelow: Array = nc[band + 1]
-				buf.flat(cnr[3], below[1], nbelow[0], col2, side, ch2, true)
-				buf.flat(cnr[3], nbelow[0], onc[2], col2, side, ch2, true)
+		var outward := _outward_at(lip, i)
+		var tangent := Vector2(-outward.z, outward.x)
+		var cap_y: float = (hem[i] as Vector3).y
+		# How far this course stands out past the earth hem. Constant down the face, so the normal stays horizontal.
+		var extra := lerpf(0.06, 0.16, amp_at[i] / 0.78) if hole else lerpf(0.10, 0.42, clampf((amp_at[i] - 0.28) / 0.50, 0.0, 1.0))
+		# Neighboring columns differ so a block reads as a chunk, not one long plane.
+		var nse := Heightfield._hash2(float(i) * 1.91 + float(field.seed) * 0.07, amp_at[i] * 3.0 + 1.7)
+		extra *= lerpf(0.82, 1.18, nse.x)
+		var hem_xz := Vector2((hem[i] as Vector3).x, (hem[i] as Vector3).z)
+		var out_xz := Vector2(outward.x, outward.z)
+		var col: Array = []
+		col.append(hem[i])
+		for s in range(1, rows + 1):
+			var t := float(s) / float(rows)
+			var y := _course_y(cap_y, field.y_bottom, t, phase_at[i], false, s == rows)
+			var keel := smoothstep(0.70, 1.0, t)
+			var p := _rock_corner(lip[i], outward, centroid, keel, extra, pull, hole, 0.0, field.y_bottom, 0.0, tangent, cap_y)
+			# Reach the bulge over the first courses. One big step made an upward face that
+			# backface-culls from below and reads as a sky gap.
+			if keel < 0.04:
+				var reach := clampf(float(s) / 2.0, 0.0, 1.0)
+				var face := hem_xz + out_xz * extra * reach
+				p.x = face.x
+				p.z = face.y
+			p.y = y
+			col.append(p)
+		cols.append(col)
+	var base: Array = []
+	for i in n:
+		var col: Array = cols[i]
+		base.append(col[col.size() - 1])
+	if shoulder:
+		_emit_shoulder(field, buf, ring_p, ring_n)
+	else:
+		for i in n:
+			var a: Vector3 = lip[i]
+			var b: Vector3 = lip[(i + 1) % n]
+			var c := Vector3(a.x, _skirt_y(a.y, field.y_bottom), a.z)
+			var d := Vector3(b.x, _skirt_y(b.y, field.y_bottom), b.z)
+			var out := _outward_at(lip, i)
+			var ch := _chid(field, (a + b) * 0.5)
+			var earth := Color(0.84, 0.18, 0.0, 1.0)
+			buf.flat(a, b, d, earth, out, ch, true)
+			buf.flat(a, d, c, earth, out, ch, true)
+	for i in n:
+		var j := (i + 1) % n
+		var col_i: Array = cols[i]
+		var col_j: Array = cols[j]
+		var outward := (_outward_at(lip, i) + _outward_at(lip, j)).normalized()
+		if outward.length_squared() < 1e-6:
+			outward = _outward_at(lip, i)
+		for row in rows:
+			var tl: Vector3 = col_i[row]
+			var tr: Vector3 = col_j[row]
+			var bl: Vector3 = col_i[row + 1]
+			var br: Vector3 = col_j[row + 1]
+			var shade := ((shade_at[i] + shade_at[j]) * 0.5) * lerpf(1.14, 0.78, float(row) / float(maxi(rows - 1, 1)))
+			var col := Color(clampf(shade, 0.72, 1.15), 0.0, 1.0, 1.0)
+			var face_ch := _chid(field, (tl + br) * 0.5)
+			buf.flat(tl, tr, br, col, outward, face_ch, true)
+			buf.flat(tl, br, bl, col, outward, face_ch, true)
 	return base
 
 
@@ -931,7 +970,7 @@ static func _strata_slide(seed: int, lip_index: int, band: int) -> float:
 	return (h.x - 0.5) * 0.16
 
 
-static func _rock_corner(lip: Vector3, outward: Vector3, centroid: Vector2, t: float, depth: float, pull: float, hole: bool, y_break: float, y_bottom: float, slide: float, tangent: Vector2) -> Vector3:
+static func _rock_corner(lip: Vector3, outward: Vector3, centroid: Vector2, t: float, depth: float, pull: float, hole: bool, y_break: float, y_bottom: float, slide: float, tangent: Vector2, skirt_top: float) -> Vector3:
 	var xz := Vector2(lip.x, lip.z)
 	if hole:
 		xz += Vector2(outward.x, outward.z) * (0.04 + t * 0.32)
@@ -939,10 +978,123 @@ static func _rock_corner(lip: Vector3, outward: Vector3, centroid: Vector2, t: f
 		xz = xz.lerp(centroid, clampf(pull, 0.0, 0.75) * t * t)
 	xz += Vector2(outward.x, outward.z) * depth
 	xz += tangent * slide
-	var y := lerpf(_skirt_y(lip.y, y_bottom), y_bottom, t) + y_break * (1.0 - t)
-	var hi := maxf(_skirt_y(lip.y, y_bottom), y_bottom)
+	var y := lerpf(skirt_top, y_bottom, t) + y_break * (1.0 - t)
+	var hi := maxf(skirt_top, y_bottom)
 	y = clampf(y, y_bottom, hi)
 	return Vector3(xz.x, y, xz.y)
+
+
+static func _dip_amp(field: Heightfield, x: float, z: float) -> float:
+	var n := field._value_noise(x * 0.37 + float(field.seed) * 0.01, z * 0.33)
+	return lerpf(0.03, 0.06, n)
+
+
+static func _apply_shoulder(field: Heightfield, ys: PackedFloat32Array, nx: int, nz: int, fine: float, outers: Array, holes: Array, skip_top: Dictionary) -> void:
+	if outers.is_empty():
+		return
+	var cgw := nx + 1
+	var origin := field.origin
+	var sub := maxi(int(round(field.spacing / fine)), 1)
+	var cxn := maxi(field.cells_x() - 1, 0)
+	var czn := maxi(field.cells_z() - 1, 0)
+	for cj in range(nz + 1):
+		var z := origin.y + float(cj) * fine
+		var iz := clampi(int(float(cj) / float(sub)), 0, czn)
+		for ci in range(nx + 1):
+			var ix := clampi(int(float(ci) / float(sub)), 0, cxn)
+			if skip_top.has(field.play_cell_of_hf(ix, iz)):
+				continue
+			var x := origin.x + float(ci) * fine
+			var p := Vector2(x, z)
+			var d_out := _dist_loops(p, outers)
+			if d_out >= SHOULDER_W:
+				continue
+			if _dist_loops(p, holes) < d_out + 0.05:
+				continue
+			var u := 1.0 - d_out / SHOULDER_W
+			ys[cj * cgw + ci] -= _dip_amp(field, x, z) * u * u
+
+
+static func _dist_loops(p: Vector2, loops: Array) -> float:
+	var best := 1.0e9
+	for loop in loops:
+		var poly: PackedVector2Array = loop
+		var n := poly.size()
+		if n < 2:
+			continue
+		for i in n:
+			var d := _dist_seg(p, poly[i], poly[(i + 1) % n])
+			if d < best:
+				best = d
+	return best
+
+
+static func _dist_seg(p: Vector2, a: Vector2, b: Vector2) -> float:
+	var ab := b - a
+	var den := ab.length_squared()
+	if den < 1e-8:
+		return p.distance_to(a)
+	var t := clampf((p - a).dot(ab) / den, 0.0, 1.0)
+	return p.distance_to(a + ab * t)
+
+
+static func _smooth_hang(field: Heightfield, lip: PackedVector3Array) -> PackedFloat32Array:
+	var n := lip.size()
+	var raw := PackedFloat32Array()
+	raw.resize(n)
+	for i in n:
+		var p := lip[i]
+		var u := field._value_noise(p.x * 0.62 + float(field.seed) * 0.02, p.z * 0.58)
+		raw[i] = lerpf(HANG_MIN, HANG_MAX, u)
+	var out := PackedFloat32Array()
+	out.resize(n)
+	for i in n:
+		var s := raw[(i + n - 1) % n] * 0.25 + raw[i] * 0.5 + raw[(i + 1) % n] * 0.25
+		out[i] = clampf(s, HANG_MIN, HANG_MAX)
+	return out
+
+
+static func _mix_up(outward: Vector3, tilt: float) -> Vector3:
+	var n := Vector3.UP * (1.0 - tilt) + outward * tilt
+	if n.length_squared() < 1e-8:
+		return Vector3.UP
+	return n.normalized()
+
+
+static func _emit_shoulder(field: Heightfield, buf: Buf, ring_p: Array, ring_n: Array) -> void:
+	var count := (ring_p[0] as Array).size()
+	var grass := Color(0.92, 0.62, 0.0, 1.0)
+	var hem_col := Color(0.84, 0.52, 0.0, 1.0)
+	var earth := Color(1.0, 0.14, 0.0, 1.0)
+	for i in count:
+		var j := (i + 1) % count
+		var a_top: Vector3 = ring_p[0][i]
+		var b_top: Vector3 = ring_p[0][j]
+		var ch := _chid(field, (a_top + b_top) * 0.5)
+		for r in 3:
+			var col := earth if r == 2 else (hem_col if r == 1 else grass)
+			var a0: Vector3 = ring_p[r][i]
+			var a1: Vector3 = ring_p[r][j]
+			var b0: Vector3 = ring_p[r + 1][i]
+			var b1: Vector3 = ring_p[r + 1][j]
+			var na0: Vector3 = ring_n[r][i]
+			var na1: Vector3 = ring_n[r][j]
+			var nb0: Vector3 = ring_n[r + 1][i]
+			var nb1: Vector3 = ring_n[r + 1][j]
+			var hint := na0 + na1
+			if hint.length_squared() < 1e-8:
+				hint = Vector3.UP
+			buf.smooth(a0, a1, b1, na0, na1, nb1, col, hint, ch)
+			buf.smooth(a0, b1, b0, na0, nb1, nb0, col, hint, ch)
+
+
+static func _course_y(cap_y: float, y_bottom: float, t: float, phase: float, top: bool, bottom: bool) -> float:
+	if bottom or cap_y <= y_bottom + 0.02:
+		return y_bottom
+	if top:
+		return cap_y
+	var y := lerpf(cap_y, y_bottom, t) + phase * sin(t * PI)
+	return clampf(y, y_bottom, cap_y)
 
 
 static func _skirt_y(lip_y: float, y_bottom: float) -> float:

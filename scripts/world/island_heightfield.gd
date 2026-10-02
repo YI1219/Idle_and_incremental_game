@@ -4,7 +4,7 @@ extends Node3D
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
 const HeightfieldShell := preload("res://scripts/world/heightfield_shell.gd")
-const RockKit := preload("res://scripts/world/rock_kit.gd")
+const ShoreStones := preload("res://scripts/world/shore_stones.gd")
 
 const FAR_ENTER := 42.0
 const FAR_LEAVE := 32.0
@@ -37,7 +37,7 @@ var _fall_material: ShaderMaterial
 var _tuft_mm: MultiMeshInstance3D
 var _pebble_mm: MultiMeshInstance3D
 var _flower_mm: MultiMeshInstance3D
-var _kit_mms: Dictionary = {}
+var _shore_mms: Array = []
 var _top_dirty: Dictionary = {}
 var _shell_dirty := false
 var _top_wait := 0.0
@@ -476,7 +476,7 @@ func _dress_draws() -> int:
 	for node in [_tuft_mm, _pebble_mm, _flower_mm]:
 		if node and node.visible and node.multimesh and node.multimesh.instance_count > 0:
 			n += 1
-	for node in _kit_mms.values():
+	for node in _shore_mms:
 		if node and node.visible and node.multimesh and node.multimesh.instance_count > 0:
 			n += 1
 	if _dress_root:
@@ -557,138 +557,69 @@ func _scatter_dressing() -> void:
 	_fill_mm(_tuft_mm, tufts)
 	_fill_mm(_pebble_mm, pebbles)
 	_fill_mm(_flower_mm, flowers)
-	var rocks := _scatter_rim_rocks(water_cells)
+	var rocks := _scatter_shore_stones()
 	_hang_roots()
 	print("dress tufts=%d pebbles=%d flowers=%d rim_rocks=%d d=%.2f..%.2f" % [
 		tufts.size(), pebbles.size(), flowers.size(), rocks, dmin, dmax
 	])
 
 
-func _scatter_rim_rocks(_water_cells: Dictionary) -> int:
-	RockKit.ensure()
-	var by_name: Dictionary = {}
-	for n in RockKit.pool("rim"):
-		by_name[n] = []
-	if by_name.is_empty():
-		return 0
-	var names: PackedStringArray = PackedStringArray(by_name.keys())
-	_place_rock_chain(field.visual_loops, names, by_name, -0.18, false)
+func _scatter_shore_stones() -> int:
+	_ensure_shore()
+	var blocked := {}
+	for k in skip_top:
+		blocked[k] = true
+	for k in _blocked:
+		blocked[k] = true
+	var falls: Array = water_info.get("waterfalls", [])
+	var coast: Array = ShoreStones.place(field, field.visual_loops, false, falls, blocked)
 	var lake_loops: Array = []
 	for lake in water_info.get("lakes", []):
 		for loop in HeightfieldMesh._lake_loops(field, lake.get("cells", [])):
-			var ring: Array = []
-			for p in HeightfieldMesh._smooth_loop(loop):
-				ring.append(Vector2(p.x, p.z))
-			if ring.size() >= 4:
-				lake_loops.append(ring)
-	_place_rock_chain(lake_loops, names, by_name, -0.12, true)
+			if (loop as Array).size() >= 4:
+				lake_loops.append(loop)
+	var lakes: Array = ShoreStones.place(field, lake_loops, true, falls, blocked)
 	var total := 0
-	for n in by_name.keys():
-		var node := _kit_node(String(n))
-		if node:
-			_fill_mm(node, by_name[n])
-			total += (by_name[n] as Array).size()
+	var stone_tris := 0
+	for i in _shore_mms.size():
+		var items: Array = (coast[i] as Array).duplicate()
+		items.append_array(lakes[i])
+		_fill_shore(_shore_mms[i], items)
+		var mesh: Mesh = (_shore_mms[i] as MultiMeshInstance3D).multimesh.mesh
+		var one := 0
+		if mesh != null:
+			one = int(mesh.get_faces().size() / 3)
+		stone_tris += one * items.size()
+		total += items.size()
+	print("shore stones=%d stone_tris=%d" % [total, stone_tris])
 	return total
 
 
-func _place_rock_chain(loops: Array, names: PackedStringArray, by_name: Dictionary, bury: float, lake: bool) -> void:
-	if names.is_empty():
+func _ensure_shore() -> void:
+	if _shore_mms.size() == 5:
 		return
-	for loop in loops:
-		if loop.size() < 4:
-			continue
-		var acc := 0.0
-		var next_s := 0.0
-		var placed := 0
-		for i in loop.size():
-			var a: Vector2 = loop[i]
-			var b: Vector2 = loop[(i + 1) % loop.size()]
-			var seg := a.distance_to(b)
-			var t := 0.0
-			while t < seg:
-				if acc + t >= next_s:
-					var u := t / maxf(seg, 0.001)
-					var p := a.lerp(b, u)
-					var nse := Heightfield._hash2(p.x * 1.9 + float(field.seed), p.y * 1.7)
-					next_s += 1.05 + nse.x * 0.20
-					if nse.y < 0.34:
-						acc += t
-						t += 0.20
-						continue
-					if _blocked_world(p):
-						acc += t
-						t += 0.20
-						continue
-					var name := names[int(nse.x * float(names.size())) % names.size()]
-					var piece: Dictionary = RockKit.piece(name)
-					var src_h := maxf(float(piece.get("height", 0.35)), 0.15)
-					var src_w := maxf(float(piece.get("width", 0.40)), 0.15)
-					var unit_h := 0.22 / src_h
-					var unit_w := 0.30 / src_w
-					var h := field.sample_height(Vector3(p.x, 0.0, p.y))
-					var yaw := nse.x * TAU
-					var tilt := (nse.y - 0.5) * 0.08
-					var sx := unit_w * (0.85 + nse.x * 0.40)
-					var sy := unit_h * ((1.20 + nse.y * 0.55) if not lake else (0.95 + nse.y * 0.40))
-					var sz := unit_w * (0.90 + nse.y * 0.30)
-					# Sitting mesh stands +Y from the origin. Bury the base into the shoulder.
-					var basis := Basis.from_euler(Vector3(tilt, yaw, (nse.x - 0.5) * 0.08))
-					basis = basis.scaled(Vector3(sx, sy, sz))
-					var xf := Transform3D(basis, Vector3(p.x + (nse.y - 0.5) * 0.14, h + bury, p.y + (nse.x - 0.5) * 0.14))
-					(by_name[name] as Array).append(xf)
-					placed += 1
-					if placed % 6 == 0 and names.size() > 1:
-						var small := names[int(nse.y * float(names.size())) % names.size()]
-						var sb := Basis.from_euler(Vector3(0.0, yaw + 0.8, 0.0)).scaled(Vector3(sx * 0.55, sy * 0.52, sz * 0.55))
-						(by_name[small] as Array).append(Transform3D(sb, Vector3(p.x + 0.26, h + bury * 0.65, p.y - 0.14)))
-				t += 0.18
-			acc += seg
+	var shader: Shader = load("res://shaders/world/shore_stone.gdshader")
+	var built: Array = ShoreStones.meshes()
+	for i in built.size():
+		var mat := ShaderMaterial.new()
+		mat.shader = shader
+		var node := _make_mm("ShoreStone%d" % i, built[i], mat)
+		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+		_shore_mms.append(node)
 
 
-func _blocked_world(p: Vector2) -> bool:
-	var play := Vector2i(floori(p.x), floori(p.y))
-	return skip_top.has(play) or _blocked.has(play)
-
-
-func _kit_node(p_name: String) -> MultiMeshInstance3D:
-	if _kit_mms.has(p_name) and is_instance_valid(_kit_mms[p_name]):
-		return _kit_mms[p_name]
-	var piece: Dictionary = RockKit.piece(p_name)
-	if piece.is_empty() or piece.get("mesh") == null:
-		return null
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color("b39a82")
-	mat.roughness = 0.92
-	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
-	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	var node := _make_mm("Kit_%s" % p_name, _sitting_mesh(piece["mesh"]), mat)
-	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
-	_kit_mms[p_name] = node
-	return node
-
-
-func _sitting_mesh(src: ArrayMesh) -> ArrayMesh:
-	## Kit bake hangs -Y from the origin. Flip to a sitting stone with origin at the base.
-	if src == null or src.get_surface_count() == 0:
-		return src
-	var faces := src.get_faces()
-	if faces.is_empty():
-		return src
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for i in range(0, faces.size(), 3):
-		var a: Vector3 = Vector3(faces[i].x, -faces[i].y, faces[i].z)
-		var b: Vector3 = Vector3(faces[i + 2].x, -faces[i + 2].y, faces[i + 2].z)
-		var c: Vector3 = Vector3(faces[i + 1].x, -faces[i + 1].y, faces[i + 1].z)
-		var n := (b - a).cross(c - a)
-		if n.length_squared() < 1e-12:
-			continue
-		n = n.normalized()
-		for p in [a, b, c]:
-			st.set_normal(n)
-			st.add_vertex(p)
-	var out := st.commit()
-	return out if out.get_surface_count() > 0 else src
+func _fill_shore(node: MultiMeshInstance3D, items: Array) -> void:
+	var multi := MultiMesh.new()
+	multi.transform_format = MultiMesh.TRANSFORM_3D
+	multi.use_custom_data = true
+	multi.mesh = node.multimesh.mesh
+	multi.instance_count = items.size()
+	for i in items.size():
+		var item: Dictionary = items[i]
+		multi.set_instance_transform(i, item["xf"])
+		multi.set_instance_custom_data(i, Color(float(item["gain"]), 0.0, 0.0, 1.0))
+	node.multimesh = multi
+	node.visible = not items.is_empty() and not far
 
 
 func _add_lily(at: Vector3, radius: float) -> void:
