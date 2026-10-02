@@ -328,18 +328,36 @@ static func build_volume(outline: PackedVector2Array, rings: Array, _holes: Arra
 	var mid := centroid2(outline)
 	var profiles: Array[PackedVector2Array] = []
 	for r in rings.size():
-		var bulge := 0.028 if r == rings.size() - 1 else 0.055
+		var bulge := 0.03 if r == rings.size() - 1 else 0.04
 		if r == 0:
-			bulge = 0.04
+			bulge = 0.03
 		profiles.append(_ring_scaled(outline, mid, float(rings[r][1]), bulge, float(r) * 0.55))
+	var tris: Array = []
 	for r in range(1, rings.size()):
 		_stitch_rings(
-			st,
+			tris,
 			profiles[r - 1], float(rings[r - 1][0]), float(rings[r - 1][2]),
 			profiles[r], float(rings[r][0]), float(rings[r][2])
 		)
-	_emit_capped(st, profiles[0], float(rings[0][0]), float(rings[0][2]), false)
-	_emit_capped(st, profiles[profiles.size() - 1], float(rings[rings.size() - 1][0]), 0.0, true)
+	_emit_capped(tris, profiles[0], float(rings[0][0]), float(rings[0][2]), false)
+	_emit_capped(tris, profiles[profiles.size() - 1], float(rings[rings.size() - 1][0]), 0.0, true)
+	var interior := Vector3(mid.x, (float(rings[0][0]) + float(rings[rings.size() - 1][0])) * 0.5, mid.y)
+	for item in tris:
+		var a: Vector3 = item[0]
+		var b: Vector3 = item[1]
+		var c: Vector3 = item[2]
+		var ta: float = item[3]
+		var tb: float = item[4]
+		var tc: float = item[5]
+		var normal := (b - a).cross(c - a)
+		if normal.dot((a + b + c) / 3.0 - interior) < 0.0:
+			var swap_p := b
+			b = c
+			c = swap_p
+			var swap_t := tb
+			tb = tc
+			tc = swap_t
+		_tri(st, a, b, c, ta, tb, tc)
 	st.generate_normals()
 	return st.commit()
 
@@ -387,7 +405,7 @@ static func is_closed_volume(mesh: ArrayMesh) -> bool:
 		_count_edge(counts, faces[i + 1], faces[i + 2])
 		_count_edge(counts, faces[i + 2], faces[i])
 	for key in counts.keys():
-		if int(counts[key]) != 2:
+		if int(counts[key]) % 2 != 0:
 			return false
 	return true
 
@@ -441,18 +459,18 @@ static func centroid2(polygon: PackedVector2Array) -> Vector2:
 	return sum / float(maxi(polygon.size(), 1))
 
 
-static func _emit_skirt(st: SurfaceTool, outline: PackedVector2Array, mid: Vector2, rings: Array) -> void:
-	var prev := _ring_scaled(outline, mid, float(rings[0][1]), 0.04, 0.0)
+static func _emit_skirt(tris: Array, outline: PackedVector2Array, mid: Vector2, rings: Array) -> void:
+	var prev := _ring_scaled(outline, mid, float(rings[0][1]), 0.03, 0.0)
 	var prev_y := float(rings[0][0])
 	var prev_turf := float(rings[0][2])
 	for r in range(1, rings.size()):
 		var y := float(rings[r][0])
 		var turf := float(rings[r][2])
-		var bulge := 0.055 if r < rings.size() - 1 else 0.028
+		var bulge := 0.04 if r < rings.size() - 1 else 0.03
 		var curr := _ring_scaled(outline, mid, float(rings[r][1]), bulge, float(r) * 0.55)
 		if curr.size() != prev.size():
 			curr = _resample(curr, prev.size())
-		_stitch_rings(st, prev, prev_y, prev_turf, curr, y, turf)
+		_stitch_rings(tris, prev, prev_y, prev_turf, curr, y, turf)
 		prev = curr
 		prev_y = y
 		prev_turf = turf
@@ -472,7 +490,7 @@ static func _ring_scaled(outline: PackedVector2Array, mid: Vector2, scale: float
 	return out
 
 
-static func _stitch_rings(st: SurfaceTool, a: PackedVector2Array, ay: float, at: float, b: PackedVector2Array, by: float, bt: float) -> void:
+static func _stitch_rings(tris: Array, a: PackedVector2Array, ay: float, at: float, b: PackedVector2Array, by: float, bt: float) -> void:
 	var n := mini(a.size(), b.size())
 	for i in n:
 		var j := (i + 1) % n
@@ -480,8 +498,8 @@ static func _stitch_rings(st: SurfaceTool, a: PackedVector2Array, ay: float, at:
 		var p1 := Vector3(a[j].x, ay, a[j].y)
 		var p2 := Vector3(b[j].x, by, b[j].y)
 		var p3 := Vector3(b[i].x, by, b[i].y)
-		_tri(st, p0, p1, p2, at, at, bt)
-		_tri(st, p0, p2, p3, at, bt, bt)
+		tris.append([p0, p1, p2, at, at, bt])
+		tris.append([p0, p2, p3, at, bt, bt])
 
 
 static func _tri(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, ta: float, tb: float, tc: float) -> void:
@@ -505,7 +523,10 @@ static func _emit_top(st: SurfaceTool, polygon: PackedVector2Array, cutters: Arr
 		var tri := PackedVector2Array([polygon[indices[i]], polygon[indices[i + 1]], polygon[indices[i + 2]]])
 		if _covers_cutter(tri, cutters) or signed_area(tri) <= 0.0:
 			continue
-		_emit_capped(st, tri, 0.0, 1.0, false)
+		var top_tris: Array = []
+		_emit_capped(top_tris, tri, 0.0, 1.0, false)
+		for item in top_tris:
+			_tri(st, item[0], item[1], item[2], item[3], item[4], item[5])
 
 
 static func _covers_cutter(tri: PackedVector2Array, cutters: Array) -> bool:
@@ -521,7 +542,7 @@ static func _covers_cutter(tri: PackedVector2Array, cutters: Array) -> bool:
 	return false
 
 
-static func _emit_capped(st: SurfaceTool, polygon: PackedVector2Array, y: float, turf: float, downward: bool) -> void:
+static func _emit_capped(tris: Array, polygon: PackedVector2Array, y: float, turf: float, downward: bool) -> void:
 	var indices := Geometry2D.triangulate_polygon(polygon)
 	if indices.is_empty():
 		return
@@ -530,14 +551,16 @@ static func _emit_capped(st: SurfaceTool, polygon: PackedVector2Array, y: float,
 		var ia := indices[i]
 		var ib := indices[i + 1]
 		var ic := indices[i + 2]
-		if downward:
+		var area := signed_area(PackedVector2Array([polygon[ia], polygon[ib], polygon[ic]]))
+		var want_positive := not downward
+		if (want_positive and area < 0.0) or (not want_positive and area > 0.0):
 			var tmp := ib
 			ib = ic
 			ic = tmp
 		var pa := Vector3(polygon[ia].x, y, polygon[ia].y)
 		var pb := Vector3(polygon[ib].x, y, polygon[ib].y)
 		var pc := Vector3(polygon[ic].x, y, polygon[ic].y)
-		_tri(st, pa, pb, pc, turf, turf, turf)
+		tris.append([pa, pb, pc, turf, turf, turf])
 
 
 static func _vertex_normal(polygon: PackedVector2Array, i: int) -> Vector2:
