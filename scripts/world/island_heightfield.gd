@@ -74,8 +74,8 @@ func _ensure_nodes() -> void:
 	_water_material = _make_water_material()
 	_fall_material = _make_fall_material()
 	_water_node.material_override = _water_material
-	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("586344")))
-	_tuft_mm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	_tuft_mm = _make_mm("GrassTufts", _tuft_mesh(), _mat(Color("64704a")))
+	_tuft_mm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_pebble_mm = _make_mm("Pebbles", _pebble_mesh(), _mat(Color("6b6256")))
 	_flower_mm = _make_mm("Flowers", _flower_mesh(), _mat(Color("c4b06a")))
 
@@ -485,7 +485,9 @@ func _dress_draws() -> int:
 func _density_at(world: Vector2) -> float:
 	var wave := 0.5 + 0.5 * sin(world.x * 0.42 + float(field.seed) * 0.11) * sin(world.y * 0.35 - float(field.seed) * 0.07)
 	var nse := Heightfield._hash2(world.x * 0.19 + float(field.seed), world.y * 0.17)
-	return clampf(0.18 + 0.70 * (wave * 0.70 + nse.x * 0.30), 0.16, 0.88)
+	var field_v := wave * 0.72 + nse.x * 0.28
+	# Strong empty-vs-clump contrast: some patches stay almost bare.
+	return clampf(pow(field_v, 1.35) * 0.82, 0.03, 0.80)
 
 
 func _scatter_dressing() -> void:
@@ -513,19 +515,20 @@ func _scatter_dressing() -> void:
 				continue
 			var origin := field.vertex_world(cx, cz)
 			var density := _density_at(origin)
-			for attempt in 12:
+			for attempt in 9:
 				var nse := Heightfield._hash2(float(cx) * 2.13 + float(attempt) * 17.0 + float(field.seed), float(cz) * 1.71 + float(attempt) * 5.3)
 				if nse.x > density:
 					continue
-				var at := Vector3(origin.x + nse.x * field.spacing, 0.0, origin.y + nse.y * field.spacing)
+				var pos := Heightfield._hash2(float(cx) * 5.17 + float(attempt) * 3.1, float(cz) * 4.73 + float(attempt) * 8.9 + float(field.seed))
+				var at := Vector3(origin.x + pos.x * field.spacing, 0.0, origin.y + pos.y * field.spacing)
 				var h := field.sample_height(at) + field.visual_relief(at)
-				var yaw := nse.y * TAU
-				var tall := 0.90 + nse.x * 0.70
-				if nse.y > 0.80 and density > 0.48:
-					tall = 1.7 + nse.x * 1.1
-				tufts.append(Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(0.90 + nse.y * 0.45, tall, 0.90 + nse.x * 0.35)), Vector3(at.x, h + 0.01, at.z)))
-				if nse.y > 0.86 and nse.x > 0.28:
-					flowers.append(Transform3D(Basis(Vector3.UP, yaw + 1.2).scaled(Vector3.ONE * (1.1 + nse.x * 0.4)), Vector3(at.x + 0.06, h + 0.01, at.z - 0.04)))
+				var yaw := pos.y * TAU
+				var tall := 0.70 + nse.x * 0.45
+				if nse.y > 0.82 and density > 0.50:
+					tall = 1.15 + nse.x * 0.55
+				tufts.append(Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(0.85 + pos.y * 0.40, tall, 0.85 + pos.x * 0.30)), Vector3(at.x, h + 0.008, at.z)))
+				if nse.y > 0.84 and pos.x > 0.35:
+					flowers.append(Transform3D(Basis(Vector3.UP, yaw + 1.2).scaled(Vector3.ONE * (1.0 + nse.x * 0.35)), Vector3(at.x + 0.05, h + 0.01, at.z - 0.04)))
 			var clump := Heightfield._hash2(float(cx) * 0.37 + float(field.seed), float(cz) * 0.41)
 			if clump.x > 0.70 and density > 0.30:
 				var mid := origin + Vector2(field.spacing * 0.5, field.spacing * 0.5)
@@ -634,9 +637,10 @@ func _kit_node(p_name: String) -> MultiMeshInstance3D:
 	if piece.is_empty() or piece.get("mesh") == null:
 		return null
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color("8a7d6e")
-	mat.roughness = 0.94
+	mat.albedo_color = Color("b39a82")
+	mat.roughness = 0.92
 	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	var node := _make_mm("Kit_%s" % p_name, _sitting_mesh(piece["mesh"]), mat)
 	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_kit_mms[p_name] = node
@@ -726,8 +730,8 @@ func _tuft_mesh() -> ArrayMesh:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for i in 3:
 		var b := Basis(Vector3.UP, float(i) * TAU / 3.0)
-		var w := 0.055
-		var lift := 0.20 + float(i % 2) * 0.04
+		var w := 0.048
+		var lift := 0.13 + float(i % 2) * 0.03
 		var bl := b * Vector3(-w, 0.0, 0.0)
 		var br := b * Vector3(w, 0.0, 0.0)
 		var tl := b * Vector3(-w * 0.28, lift, 0.012)
