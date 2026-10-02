@@ -441,21 +441,14 @@ func _sync_presence() -> void:
 
 
 func _assemble_island_meshes() -> void:
-	var tops: Array = []
+	# IslandHeightfield chunks already draw the body. Do not rebuild every
+	# chunk just to fill hidden combined meshes.
 	var volumes: Array = []
 	for child in _islands_root.get_children():
 		if child.has_method("current_volume"):
 			volumes.append(child.current_volume())
-		if child.field:
-			var span := HeightfieldMesh.chunk_range(child.field)
-			for z in span.y:
-				for x in span.x:
-					tops.append(HeightfieldMesh.make_mesh(HeightfieldMesh.build_chunk(child.field, Vector2i(x, z), "top", child.skip_top)))
-	_land_mesh.mesh = IslandGeometry.combine_meshes(tops)
-	_land_mesh.material_override = _volume_material
 	_cliff_mesh.mesh = IslandGeometry.combine_meshes(volumes)
 	_cliff_mesh.visible = false
-	# Chunks already draw the island body. Keep the merged top for tests and path uniforms.
 	_land_mesh.visible = false
 
 

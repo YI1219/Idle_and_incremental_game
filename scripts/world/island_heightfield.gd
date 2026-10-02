@@ -356,10 +356,12 @@ func _scatter_rocks() -> void:
 			var a := field.world_vertex(cx, cz)
 			var b := field.world_vertex(cx + 1, cz)
 			var c := field.world_vertex(cx + 1, cz + 1)
-			var n := (b - a).cross(c - a)
+			var n := (c - a).cross(b - a)
 			if n.length_squared() < 1e-8:
 				continue
 			n = n.normalized()
+			if n.y < 0.0:
+				n = -n
 			if n.y > 0.52:
 				continue
 			var h := Heightfield._hash_int(cx * 101 + cz * 917 + field.seed)
@@ -370,7 +372,10 @@ func _scatter_rocks() -> void:
 			var xf := Transform3D()
 			xf.origin = mid - n * 0.38
 			var scale := 0.35 + float(absi(h) % 40) * 0.004
-			xf.basis = Basis.looking_at(-n, Vector3.UP).scaled(Vector3(scale, scale, scale))
+			var up := Vector3.UP
+			if absf((-n).dot(up)) > 0.92:
+				up = Vector3.RIGHT
+			xf.basis = Basis.looking_at(-n, up).scaled(Vector3(scale, scale, scale))
 			slots.append({"name": name, "xf": xf})
 	var grouped: Dictionary = {}
 	for slot in slots:
