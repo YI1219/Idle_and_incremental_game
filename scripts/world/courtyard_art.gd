@@ -36,7 +36,7 @@ func attach(to_terrain: Node3D, to_cottage: Node3D) -> void:
 	var water := ShaderMaterial.new()
 	water.shader = WATER
 	_override("JadeWater", water)
-	_override("RiverBank", _solid(Color("60685a")))
+	_override("RiverBank", ground_material)
 	_override("IslandCliff", ground_material)
 	_load_models()
 	_refine_cottage(cottage)
@@ -268,11 +268,11 @@ static func apply_atmosphere(world_environment: WorldEnvironment, sun: Direction
 	environment.adjustment_saturation = 1.08
 	environment.adjustment_contrast = 1.06
 	environment.fog_enabled = true
-	environment.fog_light_color = Color("c9d4d0")
-	environment.fog_density = 0.0022
-	environment.fog_sky_affect = 0.18
-	environment.fog_height = -2.4
-	environment.fog_height_density = 0.055
+	environment.fog_light_color = Color("d5ddd8")
+	environment.fog_density = 0.0014
+	environment.fog_sky_affect = 0.10
+	environment.fog_height = -7.2
+	environment.fog_height_density = 0.018
 	environment.ssao_enabled = true
 	environment.ssao_radius = 0.22
 	environment.ssao_intensity = 1.35

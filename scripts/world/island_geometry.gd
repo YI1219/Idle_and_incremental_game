@@ -1,29 +1,32 @@
 extends Object
 ## Grid cells stay the play/cost unit. This file only builds the visible landmass.
-## Outline comes from boundary edges (not a copied bank profile).
+## Outline is a simplified, large-radius smooth of the grid boundary — not local-normal spikes.
 
 const COST_THICKNESS := 4.0
-const COAST_NOISE := 0.18
-const CHAIKIN_HIGH := 2
-const CHAIKIN_LOW := 1
+const COAST_WOBBLE := 0.42
+const CHAIKIN_HIGH := 3
+const CHAIKIN_LOW := 2
+const CATMULL_HIGH := 3
+const CATMULL_LOW := 2
+const OVERHANG := 1.06
 
-## y, outward offset in meters, grass weight 1..0
+## y, radial scale from the 2D centroid, grass weight 1..0
 const RINGS_HIGH := [
-	[0.00, 0.00, 1.00],
-	[-0.08, 0.11, 0.82],
-	[-0.22, 0.22, 0.40],
-	[-0.55, 0.28, 0.10],
-	[-1.25, 0.08, 0.00],
-	[-2.40, -0.42, 0.00],
-	[-3.80, -1.05, 0.00],
-	[-5.20, -1.70, 0.00],
-	[-6.40, -2.20, 0.00],
+	[0.00, 1.06, 1.00],
+	[-0.16, 1.13, 0.72],
+	[-0.40, 1.04, 0.28],
+	[-0.82, 0.92, 0.06],
+	[-1.55, 0.78, 0.00],
+	[-2.55, 0.58, 0.00],
+	[-3.70, 0.40, 0.00],
+	[-4.90, 0.26, 0.00],
+	[-6.05, 0.18, 0.00],
 ]
 const RINGS_LOW := [
-	[0.00, 0.00, 1.00],
-	[-0.40, 0.22, 0.28],
-	[-2.60, -0.55, 0.00],
-	[-6.20, -2.00, 0.00],
+	[0.00, 1.05, 1.00],
+	[-0.45, 1.02, 0.22],
+	[-2.40, 0.56, 0.00],
+	[-6.00, 0.20, 0.00],
 ]
 
 
@@ -111,17 +114,17 @@ static func build_island(cells: Dictionary, river_polygons: Array, high_detail: 
 	var outline := outers[0]
 	for extra in range(1, outers.size()):
 		outline = _largest(outline, outers[extra])
-	var smooth_high := noise_coast(chaikin(outline, CHAIKIN_HIGH), COAST_NOISE)
-	var smooth_low := noise_coast(chaikin(outline, CHAIKIN_LOW), COAST_NOISE * 0.45)
+	var smooth_high := visual_outline(outline, true)
+	var smooth_low := visual_outline(outline, false)
 	var hole_cutters: Array = river_polygons.duplicate()
 	for hole in holes:
-		hole_cutters.append(chaikin(hole, 1))
+		hole_cutters.append(visual_outline(hole, false))
 	for cell: Vector2i in water_cells:
 		if cells.has(cell):
 			hole_cutters.append(cell_quad(cell))
-	var top := build_top(smooth_high, hole_cutters)
-	var volume := build_volume(smooth_high, RINGS_HIGH, holes)
-	var low := build_volume(smooth_low, RINGS_LOW, [])
+	var top := build_top(scale_from_centroid(smooth_high, OVERHANG), hole_cutters)
+	var volume := build_volume(smooth_high, RINGS_HIGH)
+	var low := build_volume(smooth_low, RINGS_LOW)
 	var centroid := _centroid3(cells)
 	return {
 		"top": top,
@@ -132,6 +135,29 @@ static func build_island(cells: Dictionary, river_polygons: Array, high_detail: 
 		"cell_count": cells.size(),
 		"outline": smooth_high,
 	}
+
+
+static func visual_outline(raw: PackedVector2Array, high_detail: bool = true) -> PackedVector2Array:
+	if raw.size() < 3:
+		return raw
+	var simple := simplify_colinear(raw)
+	var radius := _corner_radius(simple)
+	var rounded := round_corners(simple, radius)
+	var iterations := CHAIKIN_HIGH if high_detail else CHAIKIN_LOW
+	var samples := CATMULL_HIGH if high_detail else CATMULL_LOW
+	var smooth := catmull_rom(chaikin(rounded, iterations), samples)
+	return wobble_coast(smooth, COAST_WOBBLE if high_detail else COAST_WOBBLE * 0.55)
+
+
+static func outline_from_cells(cells: Dictionary, high_detail: bool = true) -> PackedVector2Array:
+	var loops := boundary_loops(cells)
+	var best := PackedVector2Array()
+	for loop in loops:
+		if signed_area(loop) >= 0.0:
+			best = loop if best.is_empty() else _largest(best, loop)
+	if best.is_empty():
+		return best
+	return visual_outline(best, high_detail)
 
 
 static func boundary_loops(cells: Dictionary) -> Array[PackedVector2Array]:
@@ -169,6 +195,40 @@ static func boundary_loops(cells: Dictionary) -> Array[PackedVector2Array]:
 	return loops
 
 
+static func simplify_colinear(polygon: PackedVector2Array, turn_dot: float = 0.992) -> PackedVector2Array:
+	if polygon.size() < 4:
+		return polygon
+	var kept := PackedVector2Array()
+	for i in polygon.size():
+		var prev := polygon[(i - 1 + polygon.size()) % polygon.size()]
+		var curr := polygon[i]
+		var next := polygon[(i + 1) % polygon.size()]
+		var a := (curr - prev).normalized()
+		var b := (next - curr).normalized()
+		if a.dot(b) < turn_dot or a.length_squared() < 1e-8 or b.length_squared() < 1e-8:
+			kept.append(curr)
+	return kept if kept.size() >= 3 else polygon
+
+
+static func round_corners(polygon: PackedVector2Array, radius: float) -> PackedVector2Array:
+	if polygon.size() < 3 or radius <= 0.02:
+		return polygon
+	var grown: Array = Geometry2D.offset_polygon(polygon, radius, Geometry2D.JOIN_ROUND)
+	if grown.is_empty():
+		return polygon
+	var outer: PackedVector2Array = grown[0]
+	for extra in range(1, grown.size()):
+		if extra < grown.size() and absf(signed_area(grown[extra])) > absf(signed_area(outer)):
+			outer = grown[extra]
+	var shrunk: Array = Geometry2D.offset_polygon(outer, -radius * 0.82, Geometry2D.JOIN_ROUND)
+	if shrunk.is_empty():
+		return outer
+	var result: PackedVector2Array = shrunk[0]
+	for extra in range(1, shrunk.size()):
+		result = _largest(result, shrunk[extra])
+	return result if result.size() >= 3 else polygon
+
+
 static func chaikin(polygon: PackedVector2Array, iterations: int) -> PackedVector2Array:
 	var result := polygon
 	for _i in maxi(iterations, 0):
@@ -184,16 +244,52 @@ static func chaikin(polygon: PackedVector2Array, iterations: int) -> PackedVecto
 	return result
 
 
-static func noise_coast(polygon: PackedVector2Array, amount: float) -> PackedVector2Array:
+static func catmull_rom(polygon: PackedVector2Array, samples: int) -> PackedVector2Array:
+	if polygon.size() < 3 or samples <= 1:
+		return polygon
+	var n := polygon.size()
+	var out := PackedVector2Array()
+	for i in n:
+		var p0 := polygon[(i - 1 + n) % n]
+		var p1 := polygon[i]
+		var p2 := polygon[(i + 1) % n]
+		var p3 := polygon[(i + 2) % n]
+		for s in samples:
+			var t := float(s) / float(samples)
+			out.append(_catmull_point(p0, p1, p2, p3, t))
+	return out
+
+
+static func wobble_coast(polygon: PackedVector2Array, amount: float) -> PackedVector2Array:
 	if polygon.size() < 3 or amount <= 0.0:
 		return polygon
+	var mid := centroid2(polygon)
+	var seed := mid.x * 0.19 + mid.y * 0.11
 	var out := PackedVector2Array()
 	out.resize(polygon.size())
 	for i in polygon.size():
-		var normal := _vertex_normal(polygon, i)
-		var n := _hash2(polygon[i])
-		out[i] = polygon[i] + normal * ((n - 0.5) * 2.0 * amount)
+		var d := polygon[i] - mid
+		var radial := d.length()
+		if radial < 1e-4:
+			out[i] = polygon[i]
+			continue
+		var ang := atan2(d.y, d.x)
+		var n := sin(ang * 2.0 + seed) * 0.62 + sin(ang * 3.0 - seed * 1.4) * 0.28
+		out[i] = mid + d * ((radial + n * amount) / radial)
 	return out
+
+
+static func scale_from_centroid(polygon: PackedVector2Array, scale: float) -> PackedVector2Array:
+	var mid := centroid2(polygon)
+	var out := PackedVector2Array()
+	out.resize(polygon.size())
+	for i in polygon.size():
+		out[i] = mid + (polygon[i] - mid) * scale
+	return out
+
+
+static func noise_coast(polygon: PackedVector2Array, amount: float) -> PackedVector2Array:
+	return wobble_coast(polygon, amount)
 
 
 static func build_top(outline: PackedVector2Array, cutters: Array) -> ArrayMesh:
@@ -224,21 +320,26 @@ static func build_top(outline: PackedVector2Array, cutters: Array) -> ArrayMesh:
 	return st.commit()
 
 
-static func build_volume(outline: PackedVector2Array, rings: Array, holes: Array) -> ArrayMesh:
+static func build_volume(outline: PackedVector2Array, rings: Array, _holes: Array = []) -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	if outline.size() < 3 or rings.size() < 2:
 		return st.commit()
-	_emit_skirt(st, outline, rings, false)
-	var tip: PackedVector2Array = _ring_at(outline, float(rings[rings.size() - 1][1]))
-	_emit_top_colored(st, tip, float(rings[rings.size() - 1][0]), 0.0, Vector3.DOWN)
-	for hole in holes:
-		if hole.size() < 3:
-			continue
-		var inverted: Array = []
-		for row in rings:
-			inverted.append([row[0], -float(row[1]) * 0.65, row[2]])
-		_emit_skirt(st, hole, inverted, true)
+	var mid := centroid2(outline)
+	var profiles: Array[PackedVector2Array] = []
+	for r in rings.size():
+		var bulge := 0.028 if r == rings.size() - 1 else 0.055
+		if r == 0:
+			bulge = 0.04
+		profiles.append(_ring_scaled(outline, mid, float(rings[r][1]), bulge, float(r) * 0.55))
+	for r in range(1, rings.size()):
+		_stitch_rings(
+			st,
+			profiles[r - 1], float(rings[r - 1][0]), float(rings[r - 1][2]),
+			profiles[r], float(rings[r][0]), float(rings[r][2])
+		)
+	_emit_capped(st, profiles[0], float(rings[0][0]), float(rings[0][2]), false)
+	_emit_capped(st, profiles[profiles.size() - 1], float(rings[rings.size() - 1][0]), 0.0, true)
 	st.generate_normals()
 	return st.commit()
 
@@ -274,6 +375,45 @@ static func lowest_y(mesh: ArrayMesh) -> float:
 	return lowest
 
 
+static func is_closed_volume(mesh: ArrayMesh) -> bool:
+	if mesh == null or mesh.get_surface_count() == 0:
+		return false
+	var faces := mesh.get_faces()
+	if faces.size() < 12:
+		return false
+	var counts: Dictionary = {}
+	for i in range(0, faces.size(), 3):
+		_count_edge(counts, faces[i], faces[i + 1])
+		_count_edge(counts, faces[i + 1], faces[i + 2])
+		_count_edge(counts, faces[i + 2], faces[i])
+	for key in counts.keys():
+		if int(counts[key]) != 2:
+			return false
+	return true
+
+
+static func outward_normal_ratio(mesh: ArrayMesh) -> float:
+	if mesh == null or mesh.get_surface_count() == 0:
+		return 0.0
+	var faces := mesh.get_faces()
+	var box := _bounds_of(mesh)
+	var mid: Vector3 = box.position + box.size * 0.5
+	var good := 0
+	var total := 0
+	for i in range(0, faces.size(), 3):
+		var a: Vector3 = faces[i]
+		var b: Vector3 = faces[i + 1]
+		var c: Vector3 = faces[i + 2]
+		var normal := (b - a).cross(c - a)
+		if normal.length_squared() < 1e-10:
+			continue
+		var center := (a + b + c) / 3.0
+		total += 1
+		if normal.dot(center - mid) > 0.0:
+			good += 1
+	return float(good) / float(maxi(total, 1))
+
+
 static func _centroid_in(piece: PackedVector2Array, cutters: Array) -> bool:
 	var mid := Vector2.ZERO
 	for p in piece:
@@ -294,33 +434,45 @@ static func signed_area(polygon: PackedVector2Array) -> float:
 	return area * 0.5
 
 
-static func _emit_skirt(st: SurfaceTool, outline: PackedVector2Array, rings: Array, hole: bool) -> void:
-	var prev := outline
+static func centroid2(polygon: PackedVector2Array) -> Vector2:
+	var sum := Vector2.ZERO
+	for p in polygon:
+		sum += p
+	return sum / float(maxi(polygon.size(), 1))
+
+
+static func _emit_skirt(st: SurfaceTool, outline: PackedVector2Array, mid: Vector2, rings: Array) -> void:
+	var prev := _ring_scaled(outline, mid, float(rings[0][1]), 0.04, 0.0)
 	var prev_y := float(rings[0][0])
 	var prev_turf := float(rings[0][2])
-	var limit := _inset_limit(outline)
 	for r in range(1, rings.size()):
 		var y := float(rings[r][0])
-		var offset := clampf(float(rings[r][1]), -limit, limit * 1.4)
 		var turf := float(rings[r][2])
-		var curr := _ring_at(outline, offset)
+		var bulge := 0.055 if r < rings.size() - 1 else 0.028
+		var curr := _ring_scaled(outline, mid, float(rings[r][1]), bulge, float(r) * 0.55)
 		if curr.size() != prev.size():
 			curr = _resample(curr, prev.size())
-		_stitch_rings(st, prev, prev_y, prev_turf, curr, y, turf, hole)
+		_stitch_rings(st, prev, prev_y, prev_turf, curr, y, turf)
 		prev = curr
 		prev_y = y
 		prev_turf = turf
 
 
-static func _ring_at(outline: PackedVector2Array, offset: float) -> PackedVector2Array:
+static func _ring_scaled(outline: PackedVector2Array, mid: Vector2, scale: float, bulge: float, phase: float) -> PackedVector2Array:
 	var out := PackedVector2Array()
 	out.resize(outline.size())
 	for i in outline.size():
-		out[i] = outline[i] + _vertex_normal(outline, i) * offset
+		var d := outline[i] - mid
+		if d.length_squared() < 1e-8:
+			out[i] = mid
+			continue
+		var ang := atan2(d.y, d.x)
+		var s := scale * (1.0 + bulge * sin(ang * 2.0 + phase) + bulge * 0.4 * sin(ang * 3.0 - phase * 0.65))
+		out[i] = mid + d * s
 	return out
 
 
-static func _stitch_rings(st: SurfaceTool, a: PackedVector2Array, ay: float, at: float, b: PackedVector2Array, by: float, bt: float, hole: bool) -> void:
+static func _stitch_rings(st: SurfaceTool, a: PackedVector2Array, ay: float, at: float, b: PackedVector2Array, by: float, bt: float) -> void:
 	var n := mini(a.size(), b.size())
 	for i in n:
 		var j := (i + 1) % n
@@ -328,12 +480,8 @@ static func _stitch_rings(st: SurfaceTool, a: PackedVector2Array, ay: float, at:
 		var p1 := Vector3(a[j].x, ay, a[j].y)
 		var p2 := Vector3(b[j].x, by, b[j].y)
 		var p3 := Vector3(b[i].x, by, b[i].y)
-		if hole:
-			_tri(st, p0, p3, p2, at, bt, bt)
-			_tri(st, p0, p2, p1, at, bt, at)
-		else:
-			_tri(st, p0, p1, p2, at, at, bt)
-			_tri(st, p0, p2, p3, at, bt, bt)
+		_tri(st, p0, p1, p2, at, at, bt)
+		_tri(st, p0, p2, p3, at, bt, bt)
 
 
 static func _tri(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, ta: float, tb: float, tc: float) -> void:
@@ -357,7 +505,7 @@ static func _emit_top(st: SurfaceTool, polygon: PackedVector2Array, cutters: Arr
 		var tri := PackedVector2Array([polygon[indices[i]], polygon[indices[i + 1]], polygon[indices[i + 2]]])
 		if _covers_cutter(tri, cutters) or signed_area(tri) <= 0.0:
 			continue
-		_emit_top_colored(st, tri, 0.0, 1.0, Vector3.UP)
+		_emit_capped(st, tri, 0.0, 1.0, false)
 
 
 static func _covers_cutter(tri: PackedVector2Array, cutters: Array) -> bool:
@@ -373,16 +521,23 @@ static func _covers_cutter(tri: PackedVector2Array, cutters: Array) -> bool:
 	return false
 
 
-static func _emit_top_colored(st: SurfaceTool, polygon: PackedVector2Array, y: float, turf: float, normal: Vector3) -> void:
+static func _emit_capped(st: SurfaceTool, polygon: PackedVector2Array, y: float, turf: float, downward: bool) -> void:
 	var indices := Geometry2D.triangulate_polygon(polygon)
 	if indices.is_empty():
 		return
-	for index: int in indices:
-		var p := polygon[index]
-		st.set_normal(normal)
-		st.set_color(Color(turf, 0.12, 0.06))
-		st.set_uv(p * 0.12)
-		st.add_vertex(Vector3(p.x, y, p.y))
+	var n := indices.size()
+	for i in range(0, n, 3):
+		var ia := indices[i]
+		var ib := indices[i + 1]
+		var ic := indices[i + 2]
+		if downward:
+			var tmp := ib
+			ib = ic
+			ic = tmp
+		var pa := Vector3(polygon[ia].x, y, polygon[ia].y)
+		var pb := Vector3(polygon[ib].x, y, polygon[ib].y)
+		var pc := Vector3(polygon[ic].x, y, polygon[ic].y)
+		_tri(st, pa, pb, pc, turf, turf, turf)
 
 
 static func _vertex_normal(polygon: PackedVector2Array, i: int) -> Vector2:
@@ -398,9 +553,14 @@ static func _vertex_normal(polygon: PackedVector2Array, i: int) -> Vector2:
 	return normal.normalized()
 
 
-static func _inset_limit(polygon: PackedVector2Array) -> float:
+static func vertex_outward(polygon: PackedVector2Array, i: int) -> Vector2:
+	var inward := _vertex_normal(polygon, i)
+	return -inward if signed_area(polygon) >= 0.0 else inward
+
+
+static func _corner_radius(polygon: PackedVector2Array) -> float:
 	var area := absf(signed_area(polygon))
-	return maxf(0.22, minf(1.8, sqrt(maxf(area, 0.25) / PI) * 0.42))
+	return clampf(sqrt(maxf(area, 0.25) / PI) * 0.34, 0.65, 1.85)
 
 
 static func _resample(polygon: PackedVector2Array, count: int) -> PackedVector2Array:
@@ -448,8 +608,26 @@ static func _push_edge(outgoing: Dictionary, a: Vector2, b: Vector2) -> void:
 	(outgoing[key] as Array).append(b)
 
 
-static func _hash2(p: Vector2) -> float:
-	return fposmod(sin(p.x * 127.1 + p.y * 311.7) * 43758.5453, 1.0)
+static func _count_edge(counts: Dictionary, a: Vector3, b: Vector3) -> void:
+	var ka := _vert_key(a)
+	var kb := _vert_key(b)
+	var key := ka + "|" + kb if ka < kb else kb + "|" + ka
+	counts[key] = int(counts.get(key, 0)) + 1
+
+
+static func _vert_key(p: Vector3) -> String:
+	return "%d,%d,%d" % [int(round(p.x * 80.0)), int(round(p.y * 80.0)), int(round(p.z * 80.0))]
+
+
+static func _catmull_point(p0: Vector2, p1: Vector2, p2: Vector2, p3: Vector2, t: float) -> Vector2:
+	var t2 := t * t
+	var t3 := t2 * t
+	return 0.5 * (
+		(2.0 * p1)
+		+ (-p0 + p2) * t
+		+ (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3) * t2
+		+ (-p0 + 3.0 * p1 - 3.0 * p2 + p3) * t3
+	)
 
 
 static func _empty_mesh() -> ArrayMesh:

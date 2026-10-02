@@ -36,4 +36,14 @@ func run() -> void:
 	rig._distance = rig.min_distance
 	rig.snap_to_target()
 	await shot("res://art/review/island_style/2026-10-02/closeup_build.png")
+	if builder:
+		builder.set_active(false)
+	rig.set_physics_process(false)
+	var look := Vector3(1.6, -2.6, 0.4)
+	var from := Vector3(-16.5, -0.25, 12.2)
+	rig.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
+	var camera := rig.get_node_or_null("Camera3D") as Camera3D
+	if camera:
+		camera.fov = 38
+	await shot("res://art/review/island_style/2026-10-02/underside_low.png")
 	quit()

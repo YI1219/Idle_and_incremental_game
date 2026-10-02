@@ -6,9 +6,11 @@ extends Node3D
 const Blob47 := preload("res://scripts/world/blob47.gd")
 const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
 const IslandPresence := preload("res://scripts/world/island_presence.gd")
-const WATER_DROP := 0.15
+const WATER_DROP := 0.18
 const CLIFF_BOTTOM := -0.72
-const BANK_INSET := 0.20
+const BANK_INSET := 0.28
+const BANK_WIDTH := 0.40
+const COAST_MARGIN := 0.38
 
 var land_cells: Dictionary = {}
 var water_cells: Dictionary = {}
@@ -152,16 +154,35 @@ func _make_river_polygons() -> Array[PackedVector2Array]:
 	var unioned: Array[PackedVector2Array] = []
 	for cell: Vector2i in water_cells:
 		unioned = _union_shape(unioned, _cell_polygon(cell))
+	var coast := IslandGeometry.outline_from_cells(land_cells, true)
+	var keepers: Array[PackedVector2Array] = [coast]
+	if coast.size() >= 3:
+		var inset_coast: Array = Geometry2D.offset_polygon(coast, -COAST_MARGIN, Geometry2D.JOIN_ROUND)
+		if not inset_coast.is_empty():
+			keepers = []
+			for piece: PackedVector2Array in inset_coast:
+				if piece.size() >= 3:
+					keepers.append(piece)
 	var rounded: Array[PackedVector2Array] = []
 	for polygon in unioned:
+		var body := polygon
 		for inset: PackedVector2Array in Geometry2D.offset_polygon(polygon, -BANK_INSET, Geometry2D.JOIN_ROUND):
 			if inset.size() >= 3:
-				rounded.append(_chaikin(inset, 1))
-	# At an island edge, the cliff terminates water rather than a grassy beach.
-	for cell: Vector2i in water_cells:
-		for side in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]:
-			if not land_cells.has(cell + side):
-				rounded = _union_shape(rounded, _edge_strip(cell, side))
+				body = inset
+				break
+		body = IslandGeometry.catmull_rom(IslandGeometry.chaikin(IslandGeometry.simplify_colinear(body), 3), 3)
+		if keepers.is_empty():
+			if body.size() >= 3:
+				rounded.append(body)
+			continue
+		for keeper in keepers:
+			for clipped: PackedVector2Array in Geometry2D.intersect_polygons(body, keeper):
+				if clipped.size() >= 3 and IslandGeometry.signed_area(clipped) > 0.0:
+					rounded.append(clipped)
+	if rounded.is_empty():
+		for polygon in unioned:
+			if polygon.size() >= 3:
+				rounded.append(IslandGeometry.chaikin(polygon, 2))
 	return rounded
 
 
@@ -198,16 +219,6 @@ func _cell_polygon(cell: Vector2i) -> PackedVector2Array:
 		Vector2(cell.x, cell.y), Vector2(cell.x, cell.y + 1),
 		Vector2(cell.x + 1, cell.y + 1), Vector2(cell.x + 1, cell.y),
 	])
-
-
-func _edge_strip(cell: Vector2i, side: Vector2i) -> PackedVector2Array:
-	if side.x < 0:
-		return PackedVector2Array([Vector2(cell.x, cell.y), Vector2(cell.x, cell.y + 1), Vector2(cell.x + BANK_INSET + .01, cell.y + 1), Vector2(cell.x + BANK_INSET + .01, cell.y)])
-	if side.x > 0:
-		return PackedVector2Array([Vector2(cell.x + 1 - BANK_INSET - .01, cell.y), Vector2(cell.x + 1 - BANK_INSET - .01, cell.y + 1), Vector2(cell.x + 1, cell.y + 1), Vector2(cell.x + 1, cell.y)])
-	if side.y < 0:
-		return PackedVector2Array([Vector2(cell.x, cell.y), Vector2(cell.x, cell.y + BANK_INSET + .01), Vector2(cell.x + 1, cell.y + BANK_INSET + .01), Vector2(cell.x + 1, cell.y)])
-	return PackedVector2Array([Vector2(cell.x, cell.y + 1 - BANK_INSET - .01), Vector2(cell.x, cell.y + 1), Vector2(cell.x + 1, cell.y + 1), Vector2(cell.x + 1, cell.y + 1 - BANK_INSET - .01)])
 
 
 func _rebuild_islands() -> void:
@@ -324,12 +335,38 @@ func _build_banks() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for polygon in _river_polygons:
+		if polygon.size() < 3:
+			continue
+		var lip := PackedVector2Array()
+		lip.resize(polygon.size())
 		for i in polygon.size():
-			var a := polygon[i]
-			var b := polygon[(i + 1) % polygon.size()]
-			if not _segment_on_island_edge(a, b):
-				_add_wall(st, a, b, 0.0, -WATER_DROP)
+			lip[i] = polygon[i] + IslandGeometry.vertex_outward(polygon, i) * BANK_WIDTH
+		for i in polygon.size():
+			var j := (i + 1) % polygon.size()
+			var water_a := Vector3(polygon[i].x, -WATER_DROP, polygon[i].y)
+			var water_b := Vector3(polygon[j].x, -WATER_DROP, polygon[j].y)
+			var mid_a := Vector3(lerpf(polygon[i].x, lip[i].x, 0.55), -WATER_DROP * 0.35, lerpf(polygon[i].y, lip[i].y, 0.55))
+			var mid_b := Vector3(lerpf(polygon[j].x, lip[j].x, 0.55), -WATER_DROP * 0.35, lerpf(polygon[j].y, lip[j].y, 0.55))
+			var grass_a := Vector3(lip[i].x, 0.012, lip[i].y)
+			var grass_b := Vector3(lip[j].x, 0.012, lip[j].y)
+			_bank_tri(st, water_a, water_b, mid_b, 0.08)
+			_bank_tri(st, water_a, mid_b, mid_a, 0.08)
+			_bank_tri(st, mid_a, mid_b, grass_b, 0.55)
+			_bank_tri(st, mid_a, grass_b, grass_a, 0.72)
+	st.generate_normals()
 	return st.commit()
+
+
+func _bank_tri(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, turf: float) -> void:
+	var normal := (b - a).cross(c - a)
+	if normal.length_squared() < 1e-10:
+		return
+	normal = normal.normalized()
+	for p in [a, b, c]:
+		st.set_normal(normal)
+		st.set_color(Color(turf, 0.16, 0.08))
+		st.set_uv(Vector2(p.x, p.z) * 0.12)
+		st.add_vertex(p)
 
 
 func _build_cliffs() -> ArrayMesh:

@@ -36,6 +36,8 @@ func _geometry() -> void:
 	check(built.outline.size() > 8, "smoothed coastline has more than the raw rectangle corners")
 	check(not IslandGeometry.has_rectangular_top(built.top), "top outline is not a raw rectangle")
 	check(IslandGeometry.lowest_y(built.volume) < -3.0, "volume hangs an inverted rocky underside")
+	check(IslandGeometry.is_closed_volume(built.volume), "underside is a closed watertight volume")
+	check(IslandGeometry.outward_normal_ratio(built.volume) > 0.88, "volume triangle windings face outward")
 	check(built.low_volume.get_surface_count() > 0, "low-detail mesh is produced")
 	var two: Dictionary = {}
 	for cell in [Vector2i(0, 0), Vector2i(8, 8)]:

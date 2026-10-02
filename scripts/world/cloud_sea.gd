@@ -1,19 +1,22 @@
 extends Node3D
 ## Soft stylized cloud sea under the grotto islands. No distant mountains.
 
-const SEA_Y := -4.35
+const SEA_Y := -3.85
 const SPAN := 220.0
 
 var _sea: MeshInstance3D
+var _mid: MeshInstance3D
 var _wisps: MeshInstance3D
 
 
 func _ready() -> void:
 	name = "CloudSea"
 	add_to_group("cloud_sea")
-	_sea = _plane("SeaSheet", SEA_Y, SPAN, _sea_material())
-	_wisps = _plane("WispSheet", SEA_Y + 0.85, SPAN * 0.72, _wisp_material())
+	_sea = _plane("SeaSheet", SEA_Y, SPAN, 40, _sea_material(Color("f7f4ea"), Color("6d7f8a"), 1.0))
+	_mid = _plane("MidSheet", SEA_Y - 1.15, SPAN * 0.88, 28, _sea_material(Color("efe8d8"), Color("5d6f7a"), 0.96))
+	_wisps = _plane("WispSheet", SEA_Y + 1.05, SPAN * 0.62, 24, _wisp_material())
 	add_child(_sea)
+	add_child(_mid)
 	add_child(_wisps)
 
 
@@ -33,11 +36,11 @@ func follow_islands(bounds: Array) -> void:
 	material.set_shader_parameter("island_count", count)
 
 
-func _plane(node_name: String, y: float, size: float, material: Material) -> MeshInstance3D:
+func _plane(node_name: String, y: float, size: float, subdiv: int, material: Material) -> MeshInstance3D:
 	var mesh := PlaneMesh.new()
 	mesh.size = Vector2(size, size)
-	mesh.subdivide_width = 8
-	mesh.subdivide_depth = 8
+	mesh.subdivide_width = subdiv
+	mesh.subdivide_depth = subdiv
 	var node := MeshInstance3D.new()
 	node.name = node_name
 	node.mesh = mesh
@@ -47,19 +50,20 @@ func _plane(node_name: String, y: float, size: float, material: Material) -> Mes
 	return node
 
 
-func _sea_material() -> ShaderMaterial:
+func _sea_material(base: Color, shade: Color, density: float) -> ShaderMaterial:
 	var material := ShaderMaterial.new()
 	material.shader = preload("res://shaders/world/cloud_sea.gdshader")
-	material.set_shader_parameter("base_color", Color("e7e4d6"))
-	material.set_shader_parameter("shade_color", Color("b7c4c8"))
-	material.set_shader_parameter("sun_tint", Color("f3e2c0"))
-	material.set_shader_parameter("density", 0.72)
-	material.set_shader_parameter("scroll", 0.012)
+	material.set_shader_parameter("base_color", base)
+	material.set_shader_parameter("shade_color", shade)
+	material.set_shader_parameter("sun_tint", Color("ffe7b8"))
+	material.set_shader_parameter("density", density)
+	material.set_shader_parameter("scroll", 0.010)
 	return material
 
 
 func _wisp_material() -> ShaderMaterial:
 	var material := ShaderMaterial.new()
 	material.shader = preload("res://shaders/world/cloud_wisps.gdshader")
-	material.set_shader_parameter("wisp_color", Color("f4f1e6"))
+	material.set_shader_parameter("wisp_color", Color("fffaf0"))
+	material.set_shader_parameter("shade_color", Color("9aaab0"))
 	return material

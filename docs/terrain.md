@@ -61,11 +61,11 @@ Tiny Glade–style stroke auto-join is left for later roofs and paths, not as th
 
 ## Cliffs and cloud sea
 
-Logic cells stay a sparse 1 m grid (play, cost, footprints). The visible courtyard is not that grid. Each connected land component is built as its own floating volume: a smoothed, slightly noised coastline, a rounded shoulder, and an inverted-cone rocky underside hanging in the cloud sea. Grass top and earth/rock sides blend in the ground shader by normal and vertex color. Islands do not need to stay connected; any number of independent landmasses may exist.
+Logic cells stay a sparse 1 m grid (play, cost, footprints). The visible courtyard is not that grid. Each connected land component is built as its own floating volume: a large-radius Chaikin/Catmull-Rom coastline with low-frequency wobble, a grass overhang into a rounded shoulder, and one closed inverted-cone rocky underside (centroid-scaled rings, no local-normal spikes) hanging in the cloud sea. Grass top and earth/rock sides blend in the ground shader by normal and vertex color. Islands do not need to stay connected; any number of independent landmasses may exist.
 
-Cloud sea is a viewing layer under/outside the island (animated fog planes plus height fog). It is not a cell and does not join the bitmask. Walking stops on the side with no neighbor. Distant mountains and distant islands are not drawn.
+Cloud sea is a viewing layer under/outside the island (high-contrast unshaded billow planes plus mild height fog). It is not a cell and does not join the bitmask. Walking stops on the side with no neighbor. Distant mountains and distant islands are not drawn.
 
-Rivers are not walkable, but river cells **have land**: if their outer edge meets the cloud sea, they also hang with the volume. Do not draw a shallow bay as a bite taken out of the island.
+Rivers are not walkable, but river cells **have land**: the water surface is clipped to the organic coast with sloped earth banks and no grey slab rim. Do not draw a shallow bay as a bite taken out of the island.
 
 Shrinking land that still supports a placed object is blocked, with a Chinese sandbox reason. Only islands whose cell set changed rebuild.
 
