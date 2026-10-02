@@ -215,6 +215,9 @@ func _apply(snap: bool, delta: float = 0.01667) -> void:
 				break
 	if camera:
 		camera.fov = lens_fov
+		# Telephoto + distant dolly: a tiny near plane wastes depth precision.
+		if camera.near < 0.8:
+			camera.near = 1.2
 	var pitch := deg_to_rad(_smooth_pitch)
 	var offset := Vector3(sin(_smooth_yaw) * cos(pitch), sin(pitch), cos(_smooth_yaw) * cos(pitch)) * _smooth_distance
 	global_transform = Transform3D(Basis.looking_at(-offset, Vector3.UP), _last_focus + _smooth_pan + offset)

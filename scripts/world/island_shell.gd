@@ -224,16 +224,25 @@ func _pick_cell() -> Vector2i:
 
 
 func pick_cell_at(mouse: Vector2) -> Vector2i:
+	return sim.world_to_cell(pick_world_at(mouse))
+
+
+func pick_world_at(mouse: Vector2) -> Vector3:
 	var cam := get_viewport().get_camera_3d()
+	if cam == null:
+		return Vector3.ZERO
 	var origin := cam.project_ray_origin(mouse)
 	var dir := cam.project_ray_normal(mouse)
+	if terrain and terrain.has_method("intersect_ray"):
+		var hit: Vector3 = terrain.intersect_ray(origin, dir)
+		if hit.is_finite():
+			return hit
 	if absf(dir.y) < 0.0001:
-		return Vector2i(9999, 9999)
+		return Vector3.ZERO
 	var dist: float = -origin.y / dir.y
 	if dist < 0.0:
-		return Vector2i(9999, 9999)
-	var hit: Vector3 = origin + dir * dist
-	return sim.world_to_cell(hit)
+		return Vector3.ZERO
+	return origin + dir * dist
 
 
 func _build_mesh() -> void:

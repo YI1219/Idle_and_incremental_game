@@ -5,8 +5,9 @@ extends Node3D
 
 const Blob47 := preload("res://scripts/world/blob47.gd")
 const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
-const IslandPresence := preload("res://scripts/world/island_presence.gd")
-const RockUnderside := preload("res://scripts/world/rock_underside.gd")
+const IslandHeightfield := preload("res://scripts/world/island_heightfield.gd")
+const Heightfield := preload("res://scripts/world/heightfield.gd")
+const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
 const RockKit := preload("res://scripts/world/rock_kit.gd")
 const WATER_DROP := 0.18
 const CLIFF_BOTTOM := -0.72
@@ -21,6 +22,7 @@ var blob_masks: Dictionary = {}
 var island_rebuilds: int = 0
 var island_cache: Dictionary = {}
 var last_rock_rebuild_ms: float = 0.0
+var last_stroke_ms: float = 0.0
 var _pending_rebuild := false
 var _pending_wait := 0.0
 const REBUILD_DEBOUNCE := 0.055
@@ -143,7 +145,57 @@ func is_walkable(world: Vector3) -> bool:
 		return false
 	if _has_bridge() and _over_bridge(world):
 		return true
-	return not water_cells.has(cell)
+	if water_cells.has(cell):
+		return false
+	var island := island_at(world)
+	if island and island.field and island.field.sample_land(world) == false:
+		return false
+	return true
+
+
+func sample_height(world: Vector3) -> float:
+	var island := island_at(world)
+	if island == null or island.field == null:
+		return 0.0 if land_cells.has(world_to_cell(world)) else NAN
+	var h: float = island.field.sample_height(world)
+	return h if is_finite(h) else 0.0
+
+
+func island_at(world: Vector3) -> Node3D:
+	for child in _islands_root.get_children():
+		if child.field and child.field.sample_land(world):
+			return child
+	return null
+
+
+func intersect_ray(origin: Vector3, dir: Vector3, max_dist: float = 120.0) -> Vector3:
+	if absf(dir.y) < 1e-5 and dir.length_squared() < 1e-8:
+		return Vector3(NAN, NAN, NAN)
+	var step := 0.35
+	var t := 0.0
+	var prev := origin
+	while t <= max_dist:
+		var p := origin + dir * t
+		var h := sample_height(p)
+		if is_finite(h) and p.y <= h + 0.04 and land_cells.has(world_to_cell(p)):
+			var lo := 0.0 if t <= step else t - step
+			var hi := t
+			for _i in 10:
+				var mid := (lo + hi) * 0.5
+				var q := origin + dir * mid
+				var qh := sample_height(q)
+				if is_finite(qh) and q.y <= qh + 0.04:
+					hi = mid
+				else:
+					lo = mid
+			return origin + dir * hi
+		prev = p
+		t += step
+	if absf(dir.y) > 1e-4:
+		var dist := -origin.y / dir.y
+		if dist > 0.0 and dist < max_dist:
+			return origin + dir * dist
+	return Vector3(NAN, NAN, NAN)
 
 
 func _default_river() -> Array[Vector2i]:
@@ -160,7 +212,7 @@ func _ensure_nodes() -> void:
 	if _land_mesh.get_parent() == self:
 		return
 	RockKit.ensure()
-	_volume_material = RockKit.rock_material if RockKit.rock_material else _land_material()
+	_volume_material = _heightfield_material()
 	for pair in [
 		[_land_mesh, "LandSurface", _volume_material],
 		[_water_mesh, "JadeWater", _water_material()],
@@ -268,7 +320,7 @@ func _rebuild_islands() -> void:
 	var next_cache: Dictionary = {}
 	island_rebuilds = 0
 	var used_old: Dictionary = {}
-	var rock_ms := 0.0
+	var build_ms := 0.0
 	for group in IslandGeometry.components(land_cells):
 		var water_in_group: Dictionary = {}
 		for cell: Vector2i in water_cells:
@@ -279,23 +331,31 @@ func _rebuild_islands() -> void:
 			next_cache[key] = island_cache[key]
 			used_old[key] = true
 			continue
-		var built: Dictionary = IslandGeometry.build_island(group, _river_polygons, true, water_cells)
-		built["cells"] = group
 		var matched := _match_island(group, used_old)
-		var seed := int(matched.get("rock_seed", IslandGeometry.cells_hash(group)))
+		var seed := int(matched.get("field_seed", IslandGeometry.cells_hash(group)))
 		var t0 := Time.get_ticks_usec()
-		if matched.has("rocks") and (matched["rocks"] as Dictionary).has("slots"):
-			built["rocks"] = RockUnderside.respace(matched["rocks"], built["outline"], seed, false)
+		var field: Heightfield = matched.get("field")
+		if field == null:
+			field = Heightfield.from_play_cells(group, Heightfield.SPACING, Heightfield.DEFAULT_BOTTOM, seed, 2)
+			_stamp_starter_relief(field, group, water_in_group)
 		else:
-			built["rocks"] = RockUnderside.assemble(built["outline"], seed, false)
-		var cover: PackedVector2Array = RockUnderside.cover_outline(built["outline"], built["rocks"])
-		built["top"] = IslandGeometry.build_top(cover, built.get("cutters", []), cover)
-		rock_ms += float(Time.get_ticks_usec() - t0) / 1000.0
-		built["rock_seed"] = seed
+			field = field.duplicate_field()
+			field.apply_play_cells(group, false)
+		var built := {
+			"cells": group,
+			"field": field,
+			"field_seed": seed,
+			"centroid": IslandGeometry._centroid3(group),
+			"cell_count": group.size(),
+			"skip_top": water_in_group,
+			"top": _empty_mesh(),
+			"volume": _empty_mesh(),
+		}
+		build_ms += float(Time.get_ticks_usec() - t0) / 1000.0
 		next_cache[key] = built
 		island_rebuilds += 1
 	island_cache = next_cache
-	last_rock_rebuild_ms = rock_ms
+	last_rock_rebuild_ms = build_ms
 	_sync_presence()
 	_assemble_island_meshes()
 
@@ -323,45 +383,40 @@ func _match_island(group: Dictionary, used_old: Dictionary) -> Dictionary:
 
 
 func rock_stats() -> Dictionary:
-	var pieces := 0
+	return heightfield_stats()
+
+
+func heightfield_stats() -> Dictionary:
 	var tris := 0
 	var draw := 0
-	var bake_ms := 0.0
-	var hitch_ms := 0.0
-	var baked_n := 0
+	var chunks := 0
+	var stroke := last_stroke_ms
+	var rebuild := last_rock_rebuild_ms
 	for child in _islands_root.get_children():
-		var state: Dictionary = child.get("rock_state") if child.get("rock_state") != null else {}
-		if state.is_empty():
-			var key := int(child.get("island_hash"))
-			state = island_cache.get(key, {}).get("rocks", {})
-		pieces += int(state.get("piece_count", 0))
-		if bool(child.get("baked")):
-			baked_n += 1
-			tris += int(child.baked_triangles()) if child.has_method("baked_triangles") else 0
-			bake_ms = maxf(bake_ms, float(child.get("last_bake_ms")))
-			hitch_ms = maxf(hitch_ms, float(child.get("last_hitch_ms")))
-			var baked_node := child.get_node_or_null("BakedUnderside")
-			if baked_node and baked_node.visible:
-				draw += 1
-		else:
-			tris += RockUnderside.triangle_count(state)
-			var kit := child.get_node_or_null("RockKit")
-			if kit:
-				for mmi in kit.get_children():
-					if mmi is MultiMeshInstance3D and (mmi as MultiMeshInstance3D).visible:
-						draw += 1
-	if _cliff_mesh and _cliff_mesh.visible and _cliff_mesh.mesh and _cliff_mesh.mesh.get_surface_count() > 0:
+		if child.has_method("stats"):
+			var row: Dictionary = child.stats()
+			tris += int(row.get("triangles", 0))
+			draw += int(row.get("draw_calls", 0))
+			chunks += int(row.get("chunks", 0))
+			stroke = maxf(stroke, float(row.get("stroke_ms", 0.0)))
+			rebuild = maxf(rebuild, float(row.get("rebuild_ms", 0.0)))
+	if _land_mesh and _land_mesh.visible and _land_mesh.mesh:
 		draw += 1
-		tris += int(_cliff_mesh.mesh.get_faces().size() / 3)
+	if _water_mesh and _water_mesh.mesh and _water_mesh.mesh.get_surface_count() > 0:
+		draw += 1
+	if _bridge_mesh and _bridge_mesh.mesh and _bridge_mesh.mesh.get_surface_count() > 0:
+		draw += 1
 	return {
 		"islands": island_count(),
-		"pieces": pieces,
+		"chunks": chunks,
 		"triangles": tris,
 		"draw_calls": draw,
-		"rebuild_ms": last_rock_rebuild_ms,
-		"bake_ms": bake_ms,
-		"hitch_ms": hitch_ms,
-		"baked_islands": baked_n,
+		"rebuild_ms": rebuild,
+		"stroke_ms": stroke,
+		"pieces": 0,
+		"bake_ms": 0.0,
+		"hitch_ms": 0.0,
+		"baked_islands": 0,
 	}
 
 
@@ -376,36 +431,128 @@ func _sync_presence() -> void:
 		var row: Dictionary = island_cache[key]
 		var node: Node3D = kept.get(key)
 		if node == null:
-			node = IslandPresence.new()
+			node = IslandHeightfield.new()
 			node.name = "Island_%s" % key
 			_islands_root.add_child(node)
-		node.configure(int(key), row.get("centroid", Vector3.ZERO), int(row.get("cell_count", 0)), row.get("volume"), row.get("low_volume"), row.get("top"))
+		node.configure(int(key), row.get("centroid", Vector3.ZERO), int(row.get("cell_count", 0)), row.get("field"), row.get("skip_top", {}))
 		if node.has_method("set_material"):
 			node.set_material(_volume_material)
-		if node.has_method("apply_rocks"):
-			node.apply_rocks(row.get("rocks", {}))
+		row["node"] = node
 
 
 func _assemble_island_meshes() -> void:
 	var tops: Array = []
 	var volumes: Array = []
 	for child in _islands_root.get_children():
-		var key := int(child.get("island_hash"))
-		if not island_cache.has(key):
-			continue
-		var row: Dictionary = island_cache[key]
-		tops.append(row.get("top"))
 		if child.has_method("current_volume"):
 			volumes.append(child.current_volume())
-		else:
-			volumes.append(row.get("volume"))
-	if tops.is_empty():
-		for key in island_cache.keys():
-			tops.append(island_cache[key].get("top"))
-			volumes.append(island_cache[key].get("volume"))
+		if child.field:
+			var span := HeightfieldMesh.chunk_range(child.field)
+			for z in span.y:
+				for x in span.x:
+					tops.append(HeightfieldMesh.make_mesh(HeightfieldMesh.build_chunk(child.field, Vector2i(x, z), "top", child.skip_top)))
 	_land_mesh.mesh = IslandGeometry.combine_meshes(tops)
+	_land_mesh.material_override = _volume_material
 	_cliff_mesh.mesh = IslandGeometry.combine_meshes(volumes)
 	_cliff_mesh.visible = false
+	# Chunks already draw the island body. Keep the merged top for tests and path uniforms.
+	_land_mesh.visible = false
+
+
+func apply_sculpt(op: String, world: Vector3, radius: float, strength: float, free: bool, xirang, island_cells: int, blocked: Dictionary = {}, h_ref: float = NAN) -> Dictionary:
+	var island := island_at(world)
+	if island == null or island.field == null:
+		return {"ok": false, "reason": "no_land", "delta_volume": 0.0, "cost": 0.0, "refund": 0.0}
+	island.set_blocked_cells(blocked)
+	var preview: Dictionary = island.field.preview_brush(op, world, radius, strength, free, h_ref, blocked)
+	var delta := float(preview.get("delta_volume", 0.0))
+	var cost := 0.0
+	var refund := 0.0
+	if delta > 0.0 and xirang:
+		cost = xirang.quote_volume(delta, island_cells)
+		if not xirang.can_afford(cost):
+			var budget := xirang.points / maxf(float(xirang.cfg["cost_per_volume"]), 1e-6)
+			if island_cells > 0:
+				budget = budget / maxf(xirang.soft_multiplier(island_cells), 1e-6)
+			var applied: Dictionary = island.field.scale_brush_to_budget(op, world, radius, strength, free, h_ref, budget, blocked)
+			delta = float(applied.get("delta_volume", 0.0))
+			cost = xirang.quote_volume(maxf(delta, 0.0), island_cells)
+			if delta < 0.0:
+				refund = xirang.quote_remove_volume(-delta)
+				xirang.credit(refund)
+				cost = 0.0
+			elif cost > 0.0:
+				xirang.try_spend(cost)
+			island.mark_stroke(applied.get("rect", Rect2i()))
+			last_stroke_ms = island.last_stroke_ms
+			return {"ok": true, "delta_volume": delta, "cost": cost, "refund": refund, "scaled": true, "island": island}
+	var applied: Dictionary = island.field.apply_brush(op, world, radius, strength, free, h_ref, 1.0, blocked)
+	delta = float(applied.get("delta_volume", 0.0))
+	if delta > 0.0 and xirang:
+		cost = xirang.quote_volume(delta, island_cells)
+		if not xirang.try_spend(cost):
+			island.field.restore_rect(applied.get("snapshot", {}))
+			return {"ok": false, "reason": "no_xirang", "delta_volume": 0.0, "cost": cost, "refund": 0.0}
+	elif delta < 0.0 and xirang:
+		refund = xirang.quote_remove_volume(-delta)
+		xirang.credit(refund)
+	island.mark_stroke(applied.get("rect", Rect2i()))
+	last_stroke_ms = island.last_stroke_ms
+	return {"ok": true, "delta_volume": delta, "cost": cost, "refund": refund, "scaled": false, "island": island}
+
+
+func flatten_footprint(cells: Array, xirang, island_cells: int, preview_only: bool = false) -> Dictionary:
+	if cells.is_empty():
+		return {"ok": false, "delta_volume": 0.0, "cost": 0.0, "refund": 0.0}
+	var mid: Vector2i = cells[0]
+	var island := island_at(Vector3(float(mid.x) + 0.5, 0.0, float(mid.y) + 0.5))
+	if island == null or island.field == null:
+		return {"ok": false, "delta_volume": 0.0, "cost": 0.0, "refund": 0.0}
+	var scratch: Heightfield = island.field.duplicate_field()
+	var preview := scratch.flatten_footprint(cells)
+	var delta := float(preview.get("delta_volume", 0.0))
+	var cost := 0.0
+	var refund := 0.0
+	if delta > 0.0 and xirang:
+		cost = xirang.quote_volume(delta, island_cells)
+	elif delta < 0.0 and xirang:
+		refund = xirang.quote_remove_volume(-delta)
+	if preview_only:
+		return {"ok": true, "delta_volume": delta, "cost": cost, "refund": refund, "target": preview.get("target", 0.0)}
+	if cost > 0.0 and xirang and not xirang.try_spend(cost):
+		return {"ok": false, "reason": "no_xirang", "delta_volume": delta, "cost": cost, "refund": 0.0}
+	if refund > 0.0 and xirang:
+		xirang.credit(refund)
+	island.field.flatten_footprint(cells)
+	island.rebuild_full(true)
+	_assemble_island_meshes()
+	return {"ok": true, "delta_volume": delta, "cost": cost, "refund": refund, "target": preview.get("target", 0.0)}
+
+
+func _stamp_starter_relief(field: Heightfield, group: Dictionary, water_in_group: Dictionary) -> void:
+	# A closed interior pit becomes the default courtyard lake. Edge river cells stay a cut.
+	for cell: Vector2i in water_in_group:
+		var edge := false
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if not group.has(cell + d):
+				edge = true
+				break
+		if edge:
+			continue
+		var center := Vector3(float(cell.x) + 0.5, 0.0, float(cell.y) + 0.5)
+		field.apply_brush("lower", center, 0.85, 0.85, true)
+
+
+func _heightfield_material() -> ShaderMaterial:
+	var material := ShaderMaterial.new()
+	material.shader = load("res://shaders/world/island_heightfield.gdshader")
+	return material
+
+
+func _empty_mesh() -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	return st.commit()
 
 
 func _build_land() -> ArrayMesh:

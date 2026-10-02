@@ -53,6 +53,15 @@ func quote_remove(cell_count: int = 1) -> float:
 	return volume_per_cell() * float(cfg["cost_per_volume"]) * float(cfg["refund_ratio"]) * float(cell_count)
 
 
+func quote_volume(volume: float, island_cells_after: int = 0) -> float:
+	var soft := 1.0 if island_cells_after <= 0 else soft_multiplier(island_cells_after)
+	return maxf(volume, 0.0) * float(cfg["cost_per_volume"]) * soft
+
+
+func quote_remove_volume(volume: float) -> float:
+	return maxf(volume, 0.0) * float(cfg["cost_per_volume"]) * float(cfg["refund_ratio"])
+
+
 func can_afford(cost: float) -> bool:
 	return cost <= points + 1e-6
 

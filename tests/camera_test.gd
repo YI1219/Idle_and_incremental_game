@@ -44,5 +44,7 @@ func run() -> void:
 	for i in 100:
 		rig._apply(false, 1.0 / 60)
 	check(rig._smooth_pan.length() < 0.001, "回中平滑收敛")
+	var cam := rig.get_node_or_null("Camera3D") as Camera3D
+	check(cam != null and cam.near >= 0.8, "telephoto camera uses a raised near plane")
 	print("CAMERA CHECKS: %d/%d passed, failures=%d" % [checks - failures, checks, failures])
 	quit(1 if failures else 0)

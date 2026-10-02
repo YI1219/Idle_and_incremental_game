@@ -123,24 +123,21 @@ func _incremental() -> void:
 			cells.append(Vector2i(x, z))
 	terrain.configure(cells)
 	await process_frame
-	terrain.flush_bakes()
+	terrain.flush_rebuild()
 	var first: Dictionary = terrain.island_cache.values()[0]
-	var seed := int(first.get("rock_seed", 0))
-	var count := int(first.get("rocks", {}).get("piece_count", 0))
+	var seed := int(first.get("field_seed", 0))
+	var field = first.get("field")
+	var vol := float(field.total_volume()) if field else 0.0
+	field.apply_brush("raise", Vector3(1.5, 0.0, 1.0), 1.0, 0.6, true)
+	var raised := float(field.total_volume())
 	terrain.land_cells[Vector2i(4, 1)] = true
 	terrain.rebuild()
 	var second: Dictionary = terrain.island_cache.values()[0]
-	check(int(second.get("rock_seed", -1)) == seed, "growing the same island keeps its seed")
-	check(int(second.get("rocks", {}).get("piece_count", 0)) >= count, "growth adds or keeps slots instead of reshuffling from scratch")
-	var kept := 0
-	var old_keys: Dictionary = {}
-	for slot in first["rocks"]["slots"]:
-		old_keys[int(slot["ring"]) * 10007 + int(slot["slot"])] = String(slot["piece"])
-	for slot in second["rocks"]["slots"]:
-		var key := int(slot["ring"]) * 10007 + int(slot["slot"])
-		if old_keys.get(key, "") == String(slot["piece"]):
-			kept += 1
-	check(kept >= 3, "incremental respace keeps existing slot pieces")
+	check(int(second.get("field_seed", -1)) == seed, "growing the same island keeps its heightfield seed")
+	var field2 = second.get("field")
+	check(field2 != null, "grown island still has a heightfield")
+	check(float(field2.total_volume()) > vol, "growth plus a prior raise keeps extra volume instead of resetting")
+	check(float(field2.total_volume()) >= raised - 0.5, "existing sculpted height survives a coast expand")
 	terrain.queue_free()
 
 

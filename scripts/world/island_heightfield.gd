@@ -1,0 +1,463 @@
+extends Node3D
+## One independent floating island: heightfield data, chunked meshes, cheap far LOD.
+
+const Heightfield := preload("res://scripts/world/heightfield.gd")
+const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
+const RockKit := preload("res://scripts/world/rock_kit.gd")
+
+const FAR_ENTER := 42.0
+const FAR_LEAVE := 32.0
+const TOP_HZ := 30.0
+const SEA_Y := -6.15
+
+var island_hash: int = 0
+var cell_count: int = 0
+var centroid := Vector3.ZERO
+var far: bool = false
+var last_settled_minutes: float = 0.0
+var field: Heightfield
+var skip_top: Dictionary = {}
+var last_stroke_ms: float = 0.0
+var last_full_ms: float = 0.0
+var last_triangles: int = 0
+var last_chunks: int = 0
+var last_draw_calls: int = 0
+var water_info: Dictionary = {}
+
+var _chunks: Dictionary = {}
+var _chunk_root: Node3D
+var _water_node: MeshInstance3D
+var _fall_root: Node3D
+var _rock_root: Node3D
+var _material: ShaderMaterial
+var _water_material: ShaderMaterial
+var _fall_material: ShaderMaterial
+var _top_dirty: Dictionary = {}
+var _shell_dirty := false
+var _top_wait := 0.0
+var _tasks: Array = []
+var _job_box: Array = []
+var _serial := 0
+var _blocked: Dictionary = {}
+
+
+func _ready() -> void:
+	_ensure_nodes()
+
+
+func _ensure_nodes() -> void:
+	if _chunk_root != null:
+		return
+	_chunk_root = Node3D.new()
+	_chunk_root.name = "Chunks"
+	add_child(_chunk_root)
+	_water_node = MeshInstance3D.new()
+	_water_node.name = "Lakes"
+	_water_node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(_water_node)
+	_fall_root = Node3D.new()
+	_fall_root.name = "Waterfalls"
+	add_child(_fall_root)
+	_rock_root = Node3D.new()
+	_rock_root.name = "SlopeRocks"
+	add_child(_rock_root)
+	_material = ShaderMaterial.new()
+	_material.shader = load("res://shaders/world/island_heightfield.gdshader")
+	_water_material = _make_water_material()
+	_fall_material = _water_material.duplicate()
+	_water_node.material_override = _water_material
+
+
+func configure(p_hash: int, p_centroid: Vector3, p_cells: int, p_field: Heightfield, p_skip: Dictionary = {}) -> void:
+	_ensure_nodes()
+	island_hash = p_hash
+	centroid = p_centroid
+	cell_count = p_cells
+	field = p_field
+	skip_top = p_skip.duplicate()
+	rebuild_full(true)
+
+
+func set_material(material: Material) -> void:
+	if material is ShaderMaterial:
+		_material = material
+		_apply_material()
+
+
+func set_blocked_cells(cells: Dictionary) -> void:
+	_blocked = cells.duplicate()
+
+
+func blocked_cells() -> Dictionary:
+	return _blocked
+
+
+func set_active(active: bool) -> void:
+	if active:
+		process_mode = Node.PROCESS_MODE_INHERIT
+		return
+	far = true
+	process_mode = Node.PROCESS_MODE_DISABLED
+
+
+func is_active() -> bool:
+	return process_mode != Node.PROCESS_MODE_DISABLED and not far
+
+
+func update_lod(camera_origin: Vector3) -> bool:
+	var distance := Vector2(camera_origin.x - centroid.x, camera_origin.z - centroid.z).length()
+	var next_far := far
+	if far and distance < FAR_LEAVE:
+		next_far = false
+	elif not far and distance > FAR_ENTER:
+		next_far = true
+	if next_far == far:
+		return false
+	far = next_far
+	process_mode = Node.PROCESS_MODE_DISABLED if far else Node.PROCESS_MODE_INHERIT
+	if far:
+		_water_node.visible = false
+		_fall_root.visible = false
+		_rock_root.visible = false
+		rebuild_full(true)
+	else:
+		_water_node.visible = true
+		_fall_root.visible = true
+		_rock_root.visible = true
+		rebuild_full(true)
+	return true
+
+
+func settle(now_minutes: float) -> float:
+	var dt := now_minutes - last_settled_minutes
+	if dt < 0.0:
+		dt = 0.0
+	last_settled_minutes = now_minutes
+	return dt
+
+
+func mark_settled(now_minutes: float) -> void:
+	last_settled_minutes = now_minutes
+
+
+func current_volume() -> ArrayMesh:
+	var payloads: Array = []
+	for key in _chunks:
+		var node: MeshInstance3D = _chunks[key]
+		if node and node.mesh:
+			payloads.append({"mesh": node.mesh})
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for key in _chunks:
+		var node: MeshInstance3D = _chunks[key]
+		if node and node.mesh and node.mesh.get_surface_count() > 0:
+			st.append_from(node.mesh, 0, Transform3D.IDENTITY)
+	return st.commit()
+
+
+func flush_bake() -> void:
+	flush_rebuild()
+
+
+func flush_rebuild() -> void:
+	_finish_tasks()
+	if _shell_dirty or not _top_dirty.is_empty() or _chunks.is_empty():
+		rebuild_full(true)
+
+
+func _process(delta: float) -> void:
+	_finish_tasks()
+	if _top_dirty.is_empty() or _shell_dirty:
+		return
+	_top_wait -= delta
+	if _top_wait <= 0.0:
+		_rebuild_tops(false)
+		_top_wait = 1.0 / TOP_HZ
+
+
+func mark_stroke(rect: Rect2i) -> void:
+	var cs := Heightfield.CHUNK
+	var x0 := int(floor(float(rect.position.x) / float(cs)))
+	var z0 := int(floor(float(rect.position.y) / float(cs)))
+	var x1 := int(floor(float(rect.position.x + rect.size.x) / float(cs)))
+	var z1 := int(floor(float(rect.position.y + rect.size.y) / float(cs)))
+	for z in range(z0, z1 + 1):
+		for x in range(x0, x1 + 1):
+			_top_dirty[Vector2i(x, z)] = true
+	_shell_dirty = true
+	if _top_wait <= 0.0:
+		_top_wait = 1.0 / TOP_HZ
+
+
+func end_stroke() -> void:
+	rebuild_full(false)
+
+
+func rebuild_full(sync: bool = false) -> void:
+	if field == null:
+		return
+	_serial += 1
+	var t0 := Time.get_ticks_usec()
+	var span := HeightfieldMesh.chunk_range(field)
+	var jobs: Array = []
+	for z in span.y:
+		for x in span.x:
+			jobs.append(Vector2i(x, z))
+	var mode := "lod" if far else "full"
+	if sync or far:
+		var payloads: Array = []
+		for ch in jobs:
+			payloads.append(HeightfieldMesh.build_chunk(field, ch, mode, skip_top))
+		_apply_payloads(payloads, true)
+		last_full_ms = float(Time.get_ticks_usec() - t0) / 1000.0
+		_top_dirty.clear()
+		_shell_dirty = false
+		return
+	var box := [{"serial": _serial, "jobs": jobs, "mode": mode, "skip": skip_top.duplicate(), "field": field.duplicate_field(), "result": []}]
+	_job_box = box
+	var task := WorkerThreadPool.add_task(_worker_build.bind(box), true)
+	_tasks.append(task)
+
+
+func _rebuild_tops(sync: bool) -> void:
+	if field == null:
+		return
+	var t0 := Time.get_ticks_usec()
+	var jobs: Array = _top_dirty.keys()
+	if jobs.is_empty():
+		return
+	if sync:
+		var payloads: Array = []
+		for ch in jobs:
+			payloads.append(HeightfieldMesh.build_chunk(field, ch, "top", skip_top))
+		_apply_payloads(payloads, false)
+		last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
+		_top_dirty.clear()
+		return
+	var box := [{"serial": _serial, "jobs": jobs, "mode": "top", "skip": skip_top.duplicate(), "field": field.duplicate_field(), "result": []}]
+	_job_box = box
+	var task := WorkerThreadPool.add_task(_worker_build.bind(box), true)
+	_tasks.append(task)
+	_top_dirty.clear()
+
+
+static func _worker_build(box: Array) -> void:
+	var job: Dictionary = box[0]
+	var f: Heightfield = job["field"]
+	var skip: Dictionary = job["skip"]
+	var mode: String = job["mode"]
+	var out: Array = []
+	for ch in job["jobs"]:
+		out.append(HeightfieldMesh.build_chunk(f, ch, mode, skip))
+	job["result"] = out
+
+
+func _finish_tasks() -> void:
+	var left: Array = []
+	for task in _tasks:
+		if WorkerThreadPool.is_task_completed(task):
+			WorkerThreadPool.wait_for_task_completion(task)
+			if _job_box.size() > 0:
+				var job: Dictionary = _job_box[0]
+				if int(job.get("serial", -1)) == _serial:
+					_apply_payloads(job.get("result", []), String(job.get("mode", "")) != "top")
+					if String(job.get("mode", "")) == "top":
+						last_stroke_ms = 0.0
+		else:
+			left.append(task)
+	_tasks = left
+
+
+func _apply_payloads(payloads: Array, with_shell: bool) -> void:
+	_ensure_nodes()
+	var tris := 0
+	var draws := 0
+	for row in payloads:
+		if row == null:
+			continue
+		var ch: Vector2i = row.get("chunk", Vector2i.ZERO)
+		var node := _chunk_node(ch)
+		node.mesh = HeightfieldMesh.make_mesh(row)
+		node.material_override = _material
+		node.visible = true
+		tris += int(row.get("triangles", 0))
+		if node.mesh and node.mesh.get_surface_count() > 0:
+			draws += 1
+	if with_shell:
+		_rebuild_water()
+		if not far:
+			_scatter_rocks()
+	last_triangles = tris
+	last_chunks = _chunks.size()
+	last_draw_calls = draws + (1 if _water_node.visible and _water_node.mesh else 0) + _fall_root.get_child_count()
+	centroid = _compute_centroid()
+
+
+func _chunk_node(ch: Vector2i) -> MeshInstance3D:
+	if _chunks.has(ch) and is_instance_valid(_chunks[ch]):
+		return _chunks[ch]
+	var node := MeshInstance3D.new()
+	node.name = "Chunk_%d_%d" % [ch.x, ch.y]
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_chunk_root.add_child(node)
+	_chunks[ch] = node
+	return node
+
+
+func _rebuild_water() -> void:
+	if field == null:
+		return
+	water_info = field.compute_water()
+	var payloads: Array = []
+	for lake in water_info.get("lakes", []):
+		payloads.append(HeightfieldMesh.build_water(field, lake))
+	_water_node.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.combine(payloads))
+	_water_node.visible = not far and not payloads.is_empty()
+	for child in _fall_root.get_children():
+		child.free()
+	if far:
+		return
+	for site in water_info.get("waterfalls", []):
+		var mesh := MeshInstance3D.new()
+		mesh.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.build_waterfall(site["origin"], site["outward"], SEA_Y + 0.4))
+		mesh.material_override = _fall_material
+		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_fall_root.add_child(mesh)
+		var dust := GPUParticles3D.new()
+		dust.amount = 24
+		dust.lifetime = 1.6
+		dust.position = site["origin"]
+		var mat := ParticleProcessMaterial.new()
+		mat.direction = Vector3(site["outward"].x, -1.0, site["outward"].z)
+		mat.initial_velocity_min = 1.4
+		mat.initial_velocity_max = 2.4
+		mat.gravity = Vector3(0.0, -6.0, 0.0)
+		mat.scale_min = 0.04
+		mat.scale_max = 0.09
+		mat.color = Color(0.55, 0.75, 0.72, 0.7)
+		dust.process_material = mat
+		dust.draw_pass_1 = SphereMesh.new()
+		(dust.draw_pass_1 as SphereMesh).radius = 0.05
+		(dust.draw_pass_1 as SphereMesh).height = 0.1
+		_fall_root.add_child(dust)
+
+
+func _scatter_rocks() -> void:
+	RockKit.ensure()
+	for child in _rock_root.get_children():
+		child.free()
+	if field == null or RockKit.names.is_empty():
+		return
+	var slots: Array = []
+	for cz in field.cells_z():
+		for cx in field.cells_x():
+			if not field.is_land(cx, cz):
+				continue
+			var a := field.world_vertex(cx, cz)
+			var b := field.world_vertex(cx + 1, cz)
+			var c := field.world_vertex(cx + 1, cz + 1)
+			var n := (b - a).cross(c - a)
+			if n.length_squared() < 1e-8:
+				continue
+			n = n.normalized()
+			if n.y > 0.52:
+				continue
+			var h := Heightfield._hash_int(cx * 101 + cz * 917 + field.seed)
+			if (h % 7) != 0:
+				continue
+			var name := RockKit.names[absi(h) % RockKit.names.size()]
+			var mid := (a + b + c) / 3.0
+			var xf := Transform3D()
+			xf.origin = mid - n * 0.38
+			var scale := 0.35 + float(absi(h) % 40) * 0.004
+			xf.basis = Basis.looking_at(-n, Vector3.UP).scaled(Vector3(scale, scale, scale))
+			slots.append({"name": name, "xf": xf})
+	var grouped: Dictionary = {}
+	for slot in slots:
+		var key := String(slot["name"])
+		if not grouped.has(key):
+			grouped[key] = []
+		(grouped[key] as Array).append(slot)
+	for name in grouped.keys():
+		var rows: Array = grouped[name]
+		var info: Dictionary = RockKit.piece(name)
+		if info.is_empty():
+			continue
+		var multi := MultiMesh.new()
+		multi.transform_format = MultiMesh.TRANSFORM_3D
+		multi.mesh = info.get("mesh")
+		multi.instance_count = rows.size()
+		for i in rows.size():
+			multi.set_instance_transform(i, rows[i]["xf"])
+		var mmi := MultiMeshInstance3D.new()
+		mmi.multimesh = multi
+		mmi.material_override = RockKit.rock_material
+		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_rock_root.add_child(mmi)
+	last_draw_calls += _rock_root.get_child_count()
+
+
+func _compute_centroid() -> Vector3:
+	if field == null:
+		return centroid
+	var sum := Vector3.ZERO
+	var n := 0
+	for cz in field.cells_z():
+		for cx in field.cells_x():
+			if field.is_land(cx, cz):
+				var p := field.vertex_world(cx, cz)
+				sum += Vector3(p.x, 0.0, p.y)
+				n += 1
+	return sum / float(maxi(n, 1)) if n > 0 else centroid
+
+
+func _apply_material() -> void:
+	for key in _chunks:
+		var node: MeshInstance3D = _chunks[key]
+		if node:
+			node.material_override = _material
+
+
+func stats() -> Dictionary:
+	return {
+		"chunks": last_chunks,
+		"triangles": last_triangles,
+		"draw_calls": last_draw_calls,
+		"stroke_ms": last_stroke_ms,
+		"rebuild_ms": last_full_ms,
+		"far": far,
+		"cells": cell_count,
+		"lakes": (water_info.get("lakes", []) as Array).size(),
+		"falls": (water_info.get("waterfalls", []) as Array).size(),
+	}
+
+
+func _make_water_material() -> ShaderMaterial:
+	var shader := Shader.new()
+	shader.code = """
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_burley;
+uniform vec4 shallow : source_color = vec4(0.18, 0.42, 0.40, 0.82);
+uniform vec4 deep : source_color = vec4(0.08, 0.28, 0.30, 0.90);
+varying vec3 world_pos;
+void vertex() { world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz; }
+void fragment() {
+	float ripple = sin(world_pos.x * 4.2 + world_pos.z * 5.5 + TIME * 0.7) * 0.5
+		+ sin(world_pos.x * 7.1 - world_pos.z * 3.2 - TIME * 0.55) * 0.5;
+	ALBEDO = mix(deep.rgb, shallow.rgb, ripple * 0.18 + 0.5);
+	ALPHA = 0.78;
+	ROUGHNESS = 0.22;
+	SPECULAR = 0.55;
+}
+"""
+	var mat := ShaderMaterial.new()
+	mat.shader = shader
+	return mat
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		for task in _tasks:
+			if WorkerThreadPool.is_task_completed(task):
+				WorkerThreadPool.wait_for_task_completion(task)
+		_tasks.clear()

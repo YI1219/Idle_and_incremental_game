@@ -27,6 +27,11 @@ var _stroke_last:=Layout.NOWHERE
 var _stroke_seen: Dictionary={}
 var _stroke_count:=0
 var _stroke_broke:=false
+var brush_radius:=2.4
+var brush_strength:=0.55
+var last_sculpt: Dictionary={}
+var _sculpting:=false
+var _sculpt_ref:=NAN
 var _preview_material: StandardMaterial3D
 var _tile_material: StandardMaterial3D
 func configure(p_island: Node3D,p_house: Node3D,p_art: Node3D) -> void:
@@ -79,6 +84,7 @@ func choose(kind: String) -> void:
 	_clear_ghost()
 	notice="点击地面放置" if Layout.CATALOG.has(kind) else "点击占地选择物件"
 	if kind in ["land","erase_land"]:notice="按住左键拖动，连续"+("铺地" if kind=="land" else "收地")
+	if kind in ["raise","lower","flatten","smooth"]:notice="按住塑形 · Alt 自由高度 · 息壤按体积预扣"
 func start_move() -> void:
 	if selected<0:return
 	moving=selected
@@ -101,6 +107,7 @@ func placement_reason(kind: String,cell: Vector2i,ignore: int=-1) -> String:
 func commit_place(kind: String,cell: Vector2i) -> String:
 	refresh_rules()
 	var result:=placement_reason(kind,cell)
+	if result=="ok":result=_flatten_for_place(kind,cell)
 	if result=="ok":result=layout.place(kind,cell,_player_cell())
 	if result=="ok":rebuild_objects()
 	return result
@@ -109,6 +116,7 @@ func commit_move(id: int,cell: Vector2i) -> String:
 	var row: Dictionary=layout.find(id)
 	if row.is_empty():return "missing"
 	var result:=placement_reason(row.kind,cell,id)
+	if result=="ok":result=_flatten_for_place(row.kind,cell)
 	if result=="ok":result=layout.move(id,cell,_player_cell())
 	if result=="ok":rebuild_objects()
 	return result
@@ -162,11 +170,51 @@ func edit_land(cell: Vector2i,erase: bool) -> String:
 	refresh_rules()
 	_draw_grid()
 	return result
+func _flatten_for_place(kind: String,cell: Vector2i) -> String:
+	if island==null or island.terrain==null or not island.terrain.has_method("flatten_footprint"):
+		return "ok"
+	var cells: Array[Vector2i]=layout.footprint(kind,cell)
+	var after:=island.sim.cell_count()
+	var quote: Dictionary=island.terrain.flatten_footprint(cells,island.sim.xirang,after,true)
+	if not bool(quote.get("ok",false)):
+		return String(quote.get("reason","ok")) if quote.has("reason") else "ok"
+	var cost:=float(quote.get("cost",0.0))
+	if cost>0.0 and island.sim.xirang and not island.sim.xirang.can_afford(cost):
+		return "no_xirang"
+	var done: Dictionary=island.terrain.flatten_footprint(cells,island.sim.xirang,after,false)
+	return "ok" if bool(done.get("ok",true)) else String(done.get("reason","no_xirang"))
+func _blocked_cells() -> Dictionary:
+	var blocked: Dictionary={}
+	for row in layout.objects:
+		for c in layout.footprint(row.kind,row.cell):
+			blocked[c]=true
+	for c in layout.reserved:
+		blocked[c]=true
+	return blocked
+func _free_brush() -> bool:
+	return Input.is_key_pressed(KEY_ALT)
+func _seat_y(world: Vector3) -> float:
+	if island and island.terrain and island.terrain.has_method("sample_height"):
+		var h: float=island.terrain.sample_height(world)
+		if is_finite(h):
+			return h
+	return 0.0
+func reseat_objects() -> void:
+	for row in layout.objects:
+		if row.kind=="house":
+			house.position=Vector3(row.cell.x,_seat_y(Vector3(row.cell.x,0,row.cell.y-.2)),row.cell.y-.2)
+			SpaceState.house_door=house.to_global(Vector3(0,0,2.2))
+			continue
+		if not nodes.has(row.id):
+			continue
+		var node: Node3D=nodes[row.id]
+		var at:=Vector3(row.cell.x+.5,0,row.cell.y+.5)
+		node.global_position=Vector3(at.x,_seat_y(at),at.z)
 func rebuild_objects() -> void:
 	art.clear_communities()
 	nodes.clear()
 	var home: Vector2i=layout.find(0).cell
-	house.position=Vector3(home.x,0,home.y-.2)
+	house.position=Vector3(home.x,_seat_y(Vector3(home.x,0,home.y-.2)),home.y-.2)
 	SpaceState.house_door=house.to_global(Vector3(0,0,2.2))
 	for row in layout.objects:
 		if row.kind=="house":continue
@@ -182,9 +230,10 @@ func rebuild_objects() -> void:
 func _render(kind: String,cell: Vector2i,parent: Node3D) -> Node3D:
 	var pivot:=Node3D.new()
 	parent.add_child(pivot)
-	pivot.global_position=Vector3(cell.x+.5,0,cell.y+.5)
+	var y:=_seat_y(Vector3(cell.x+.5,0,cell.y+.5))
+	pivot.global_position=Vector3(cell.x+.5,y,cell.y+.5)
 	if kind=="house":
-		pivot.global_position=Vector3(cell.x,0,cell.y-.2)
+		pivot.global_position=Vector3(cell.x,_seat_y(Vector3(cell.x,0,cell.y-.2)),cell.y-.2)
 		var model=preload("res://assets/buildings/cottage/cottage_tripo.glb").instantiate()
 		pivot.add_child(model)
 		model.rotation.y=-PI/2
@@ -255,6 +304,10 @@ func preview_at(cell: Vector2i) -> void:
 	if Layout.CATALOG.has(kind):
 		hover_reason=placement_reason(kind,cell,moving)
 		cells=layout.footprint(kind,cell)
+		if hover_reason=="ok" and island.terrain and island.terrain.has_method("flatten_footprint"):
+			var quote: Dictionary=island.terrain.flatten_footprint(cells,island.sim.xirang,island.sim.cell_count(),true)
+			if float(quote.get("cost",0.0))>0.0 or float(quote.get("refund",0.0))>0.0:
+				notice="安放将平整地面 · 息壤 %+.2f" % [-(float(quote.get("cost",0.0))-float(quote.get("refund",0.0)))]
 		if _ghost_key!=kind:
 			_clear_ghost()
 			_ghost=_render(kind,cell,self)
@@ -264,6 +317,13 @@ func preview_at(cell: Vector2i) -> void:
 	elif tool=="land" or tool=="erase_land":
 		_clear_ghost()
 		hover_reason=land_reason(cell,tool=="erase_land")
+		cells.append(cell)
+	elif tool in ["raise","lower","flatten","smooth"]:
+		_clear_ghost()
+		hover_reason="ok"
+		var quote:=_preview_sculpt()
+		if quote.has("cost"):
+			notice="预估息壤 %.2f（体积 %+.2f）" % [float(quote.get("cost",0.0))-float(quote.get("refund",0.0)),float(quote.get("delta_volume",0.0))]
 		cells.append(cell)
 	else:
 		_clear_ghost()
@@ -287,8 +347,37 @@ func click_cell(cell: Vector2i) -> void:
 		if result=="ok":cancel()
 	elif tool=="land" or tool=="erase_land":notice=explain(edit_land(cell,tool=="erase_land"))
 	else:notice=explain(commit_place(tool,cell))
+func _preview_sculpt() -> Dictionary:
+	if island==null or island.terrain==null or not island.terrain.has_method("island_at"):
+		return {}
+	var world: Vector3=island.pick_world_at(get_viewport().get_mouse_position()) if island.has_method("pick_world_at") else Vector3(hover_cell.x+.5,0,hover_cell.y+.5)
+	var node=island.terrain.island_at(world)
+	if node==null or node.field==null:
+		return {}
+	return node.field.preview_brush(tool,world,brush_radius,brush_strength,_free_brush())
+func _sculpt_at(world: Vector3) -> Dictionary:
+	island.sim.catch_up(island._clock_minutes)
+	var after:=island.sim.cell_count()
+	var result: Dictionary=island.terrain.apply_sculpt(tool,world,brush_radius,brush_strength,_free_brush(),island.sim.xirang,after,_blocked_cells(),_sculpt_ref)
+	last_sculpt=result
+	if bool(result.get("ok",false)):
+		reseat_objects()
+		var net:=float(result.get("cost",0.0))-float(result.get("refund",0.0))
+		notice="塑形 息壤 %+.2f  体积 %+.2f%s" % [-net,float(result.get("delta_volume",0.0))," · 已按点数缩笔" if bool(result.get("scaled",false)) else ""]
+	else:
+		notice=explain(String(result.get("reason","no_land")))
+	return result
 func begin_stroke(cell: Vector2i) -> void:
-	if not active() or tool not in ["land","erase_land"]:return
+	if not active():return
+	if tool in ["raise","lower","flatten","smooth"]:
+		_sculpting=true
+		_sculpt_ref=NAN
+		var world: Vector3=island.pick_world_at(get_viewport().get_mouse_position())
+		if tool=="flatten":
+			_sculpt_ref=island.terrain.sample_height(world)
+		_sculpt_at(world)
+		return
+	if tool not in ["land","erase_land"]:return
 	_painting=true
 	_stroke_last=cell
 	_stroke_seen.clear()
@@ -323,17 +412,31 @@ func _paint_cell(cell: Vector2i) -> void:
 	hover_cell=Layout.NOWHERE
 func end_stroke() -> void:
 	_painting=false
+	_sculpting=false
 	_stroke_broke=false
 	_stroke_last=Layout.NOWHERE
 	_stroke_seen.clear()
-	if island and island.terrain and island.terrain.has_method("flush_rebuild"):
-		island.terrain.flush_rebuild()
+	if island and island.terrain:
+		for child in island.terrain.get_node("Islands").get_children() if island.terrain.get_node_or_null("Islands") else []:
+			if child.has_method("end_stroke"):
+				child.end_stroke()
+		if island.terrain.has_method("flush_rebuild"):
+			island.terrain.flush_rebuild()
+		reseat_objects()
 func _input(event: InputEvent) -> void:
 	# Release must be observed even when the pointer is over UI.
 	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed:end_stroke()
 	if _painting and event is InputEventMouseMotion and panel.contains_point(event.position):end_stroke()
 	if get_tree().paused:return
 	if event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode==KEY_BRACKETLEFT:
+			brush_radius=maxf(0.6,brush_radius-0.3)
+			notice="笔刷半径 %.1f 尺" % brush_radius
+			get_viewport().set_input_as_handled()
+		elif event.physical_keycode==KEY_BRACKETRIGHT:
+			brush_radius=minf(8.0,brush_radius+0.3)
+			notice="笔刷半径 %.1f 尺" % brush_radius
+			get_viewport().set_input_as_handled()
 		if event.physical_keycode==KEY_B:
 			var space:=get_tree().get_first_node_in_group("space_controller")
 			if SpaceState.is_courtyard() and (space==null or not space.is_transitioning()):set_active(not active())
@@ -346,7 +449,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not active():return
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index==MOUSE_BUTTON_LEFT:
-			if tool in ["land","erase_land"]:begin_stroke(island.pick_cell_at(event.position))
+			if tool in ["land","erase_land","raise","lower","flatten","smooth"]:begin_stroke(island.pick_cell_at(event.position))
 			else:click_cell(island.pick_cell_at(event.position))
 			get_viewport().set_input_as_handled()
 		elif event.button_index==MOUSE_BUTTON_RIGHT:
@@ -354,6 +457,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 	if event is InputEventMouseMotion and _painting:
 		continue_stroke(island.pick_cell_at(event.position))
+		get_viewport().set_input_as_handled()
+	if event is InputEventMouseMotion and _sculpting:
+		_sculpt_at(island.pick_world_at(event.position))
 		get_viewport().set_input_as_handled()
 	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_DELETE:
 		remove_selected()
@@ -434,4 +540,4 @@ func load_layout(path: String=SAVE_PATH) -> String:
 	if file==null or file.get_length()>1024*1024:return "bad_save"
 	return restore_snapshot(JSON.parse_string(file.get_as_text()))
 static func explain(reason: String) -> String:
-	return {"ok":"已完成", "overlap":"占地被物件使用", "land_support":"此处承托着物件，请先搬移再收地", "water":"不能放在水面上", "no_land":"需要完整陆地支撑", "reserved":"请避开泉眼、设施或云口", "entrance":"请留出小屋门前通路", "player":"请先让人物离开此处", "protected":"小屋可以搬迁，不能拆除", "missing":"请先选择物件", "empty":"空地", "bridge":"请保留桥梁及桥头的支撑地块", "already_land":"这里已有陆地", "not_adjacent":"新地块须与陆地边缘相邻", "area_cap":"已达到土地上限", "no_land_delete":"此处没有地块", "occupied":"地块上有固定设施", "seep_cap":"土地养护额度不足", "no_xirang":"息壤不足，无法继续铺地", "object_cap":"本轮物件上限为 128 个", "bad_save":"布局文件无效，当前庭院保持不变", "io_error":"无法写入布局文件", "no_save":"还没有保存的庭院布局"}.get(reason,"无法执行："+reason)
+	return {"ok":"已完成", "overlap":"占地被物件使用", "land_support":"此处承托着物件，请先搬移再收地", "water":"不能放在水面上", "no_land":"需要完整陆地支撑", "reserved":"请避开泉眼、设施或云口", "entrance":"请留出小屋门前通路", "player":"请先让人物离开此处", "protected":"小屋可以搬迁，不能拆除", "missing":"请先选择物件", "empty":"空地", "bridge":"请保留桥梁及桥头的支撑地块", "already_land":"这里已有陆地", "not_adjacent":"新地块须与陆地边缘相邻", "area_cap":"已达到土地上限", "no_land_delete":"此处没有地块", "occupied":"地块上有固定设施", "seep_cap":"土地养护额度不足", "no_xirang":"息壤不足，无法继续铺地或塑形", "object_cap":"本轮物件上限为 128 个", "bad_save":"布局文件无效，当前庭院保持不变", "io_error":"无法写入布局文件", "no_save":"还没有保存的庭院布局"}.get(reason,"无法执行："+reason)

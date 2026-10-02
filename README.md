@@ -56,6 +56,7 @@ godot --headless --path . --script tests/terrain_test.gd
 godot --headless --path . --script tests/island_volume_test.gd
 godot --headless --path . --script tests/rockkit_test.gd
 godot --headless --path . --script tests/xirang_test.gd
+godot --headless --path . --script tests/heightfield_test.gd
 python3 tests/run_preview.py tests/sim_kernel_test.gd --headless
 python3 tests/run_preview.py tests/sim_loop_test.gd --headless
 python3 tests/run_preview.py tests/sim_research_test.gd --headless

@@ -16,7 +16,7 @@ func _ready() -> void:
 	panel.offset_left=-294
 	panel.offset_right=-20
 	panel.offset_top=118
-	panel.offset_bottom=630
+	panel.offset_bottom=760
 	var paper:=StyleBoxFlat.new()
 	paper.bg_color=Color("eee9da")
 	paper.border_color=Color("9daea2")
@@ -39,7 +39,7 @@ func _ready() -> void:
 	grid.add_theme_constant_override("h_separation",8)
 	grid.add_theme_constant_override("v_separation",7)
 	column.add_child(grid)
-	for item in [["tree","乔木"],["rock","山石"],["bush","灌木"],["grass","草丛"],["land","铺设陆地"],["erase_land","收回陆地"]]:
+	for item in [["tree","乔木"],["rock","山石"],["bush","灌木"],["grass","草丛"],["land","铺设陆地"],["erase_land","收回陆地"],["raise","抬升"],["lower","下压"],["flatten","平整"],["smooth","平滑"]]:
 		var key: String=item[0]
 		buttons[key]=_button(grid,item[1],func():builder.choose(key))
 	area=_label(column,"",13)
@@ -61,7 +61,7 @@ func _ready() -> void:
 		var result: String=builder.load_layout()
 		builder.notice="已读取上次保存的布局" if result=="ok" else builder.explain(result))
 	_label(column,"布局仅保存摆放与土地，不回退资源。",12)
-	_label(column,"按住左键拖动铺地 / 收地\n右键取消 · B 完成 · 中键拖动视野",13)
+	_label(column,"按住左键拖动铺地 / 收地 / 塑形\nAlt 自由高度 · [ ] 半径 · 右键取消 · B 完成",13)
 	_label(column,"草木试摆暂不收费；泉眼与生产设施保留。",12)
 	_button(column,"完成营造",func():builder.set_active(false))
 func _label(parent: Node,text: String,size: int) -> Label:
@@ -100,7 +100,7 @@ func refresh() -> void:
 	status.text="已选："+builder.Layout.CATALOG[row.kind].label if not row.is_empty() else "选中物件后可搬移或移除"
 	move_button.disabled=row.is_empty() or builder.moving>=0
 	remove_button.disabled=row.is_empty() or builder.selected==0 or builder.moving>=0
-	var allowed: String={"land":"可以铺设","erase_land":"可以收回"}.get(builder.tool,"可以放置")
+	var allowed: String={"land":"可以铺设","erase_land":"可以收回","raise":"抬升地形","lower":"下压或挖穿","flatten":"平整到台地","smooth":"平滑"}.get(builder.tool,"可以放置")
 	var hint: String="点击占地选择物件" if builder.tool=="select" else (allowed if builder.hover_reason=="ok" else builder.explain(builder.hover_reason))
 	feedback.text=builder.notice+"\n"+hint
 	for key in buttons:

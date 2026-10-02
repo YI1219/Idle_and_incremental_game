@@ -1,10 +1,10 @@
 extends SceneTree
 
 const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
-const IslandPresence := preload("res://scripts/world/island_presence.gd")
+const IslandHeightfield := preload("res://scripts/world/island_heightfield.gd")
+const Heightfield := preload("res://scripts/world/heightfield.gd")
+const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
 const RiverTerrain := preload("res://scripts/world/river_terrain.gd")
-const RockUnderside := preload("res://scripts/world/rock_underside.gd")
-const RockBaker := preload("res://scripts/world/rock_baker.gd")
 
 var checks := 0
 var failures := 0
@@ -34,17 +34,13 @@ func _geometry() -> void:
 	for x in range(0, 4):
 		for z in range(0, 3):
 			rect[Vector2i(x, z)] = true
-	var built: Dictionary = IslandGeometry.build_island(rect, [], true)
-	check(built.outline.size() > 8, "smoothed coastline has more than the raw rectangle corners")
-	check(not IslandGeometry.has_rectangular_top(built.top), "top outline is not a raw rectangle")
-	var rocks: Dictionary = RockUnderside.assemble(built.outline, 7)
-	var baked: Dictionary = RockBaker.bake(rocks)
-	check(int(rocks.piece_count) > 8, "rock kit hangs under the top")
-	check(bool(baked.get("ok", false)), "underside bake produces a mesh")
-	check(float(baked.get("max_y", 1.0)) <= 0.03, "baked rock stays at or below the grass plane")
-	check(RockBaker.is_valid_union(baked), "baked underside is manifold except the grass cut")
-	check(int(RockBaker.boundary_report(baked).get("odd_not_ground", 1)) == 0, "baked underside has no side holes")
-	check(IslandGeometry.lowest_y(RockBaker.make_mesh(baked)) < -1.6, "baked volume hangs below the slab")
+	var field: Heightfield = Heightfield.from_play_cells(rect, 0.5, -4.0, 7, 1)
+	check(field.land_cell_count() >= 4 * 3 * 4, "play cells expand to a 0.5 m height mask")
+	check(is_equal_approx(field.total_volume(), 48.0), "starter 4x3x4 m island is 48 m3")
+	var payload: Dictionary = HeightfieldMesh.build_chunk(field, Vector2i(0, 0), "full")
+	check(int(payload.get("triangles", 0)) > 20, "heightfield emits a closed body")
+	check(HeightfieldMesh.lowest_y(payload) < -3.5, "flat bottom hangs at y_bottom")
+	check(HeightfieldMesh.is_closed(payload), "island body is a closed mesh")
 	var two: Dictionary = {}
 	for cell in [Vector2i(0, 0), Vector2i(8, 8)]:
 		two[cell] = true
@@ -55,16 +51,20 @@ func _geometry() -> void:
 
 
 func _presence() -> void:
-	var node: Node3D = IslandPresence.new()
+	var node: Node3D = IslandHeightfield.new()
 	root.add_child(node)
-	var dummy := ArrayMesh.new()
-	node.configure(1, Vector3.ZERO, 4, dummy, dummy)
+	var cells: Dictionary = {}
+	for x in 3:
+		for z in 3:
+			cells[Vector2i(x, z)] = true
+	var field: Heightfield = Heightfield.from_play_cells(cells, 0.5, -4.0, 1, 1)
+	node.configure(1, Vector3.ZERO, 9, field)
 	node.mark_settled(10.0)
 	check(is_equal_approx(node.settle(16.0), 6.0), "revisit settles by elapsed minutes")
-	check(node.update_lod(Vector3(40, 4, 0)), "far camera switches LOD")
+	check(node.update_lod(Vector3(50, 4, 0)), "far camera switches LOD")
 	check(node.far, "far flag latches past the enter distance")
 	check(node.process_mode == Node.PROCESS_MODE_DISABLED, "far island pauses processing")
-	check(not node.update_lod(Vector3(40, 4, 0)), "unchanged LOD does not rebuild")
+	check(not node.update_lod(Vector3(50, 4, 0)), "unchanged LOD does not rebuild")
 	node.set_active(false)
 	check(node.process_mode == Node.PROCESS_MODE_DISABLED, "inactive island pauses processing")
 	node.free()
@@ -81,14 +81,13 @@ func _terrain_islands() -> void:
 	await process_frame
 	var first_rebuilds: int = terrain.island_rebuilds
 	check(terrain.island_count() == 1, "starter block is one island")
-	terrain.flush_bakes()
+	terrain.flush_rebuild()
 	var presence: Node3D = terrain.get_node("Islands").get_child(0)
-	if bool(presence.get("baked")):
-		check(RockBaker.is_valid_union(presence.bake_result), "swapped bake passed union validation")
-		check(IslandGeometry.lowest_y(presence.current_volume()) < -1.6, "baked cliff is a hanging volume")
-	else:
-		check(presence.get_node("RockKit").visible, "invalid bake keeps the MultiMesh assembly")
-		check(int(presence.rock_state.get("piece_count", 0)) > 0, "MultiMesh fallback still hangs rocks under the slab")
+	check(presence.field != null, "island owns a heightfield")
+	check(presence.field.total_volume() > 20.0, "heightfield volume is the hanging body")
+	var mesh: ArrayMesh = presence.current_volume()
+	check(mesh != null and mesh.get_surface_count() > 0, "island mesh is present")
+	check(IslandGeometry.lowest_y(mesh) < -3.5, "heightfield underside reaches the flat bottom")
 	terrain.land_cells[Vector2i(12, 12)] = true
 	terrain.rebuild()
 	check(terrain.island_count() == 2, "a distant cell is a second island")

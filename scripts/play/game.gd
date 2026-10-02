@@ -50,6 +50,7 @@ func _ready() -> void:
 	cam.name = "Camera3D"
 	cam.current = true
 	cam.fov = 34
+	cam.near = 1.2
 	cam.far = 240
 	rig.add_child(cam)
 	add_child(rig)
