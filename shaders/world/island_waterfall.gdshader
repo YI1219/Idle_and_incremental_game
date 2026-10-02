@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_disabled, unshaded;
-uniform vec4 water : source_color = vec4(0.42, 0.72, 0.70, 0.78);
-uniform vec4 foam : source_color = vec4(0.93, 0.96, 0.95, 0.92);
+uniform vec4 water : source_color = vec4(0.55, 0.82, 0.80, 0.92);
+uniform vec4 foam : source_color = vec4(0.95, 0.97, 0.96, 0.97);
 uniform float scroll = 0.85;
 varying vec2 uvv;
 

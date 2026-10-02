@@ -349,7 +349,7 @@ static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: 
 	if tangent.length_squared() < 1e-8:
 		tangent = Vector3(1.0, 0.0, 0.0)
 	var concave := land_n == 3
-	var n_amp := 0.06 if concave else 0.20
+	var n_amp := 0.08 if concave else 0.28
 	var col: Array = []
 	col.append(top)
 	if outward.length_squared() > 1e-6:

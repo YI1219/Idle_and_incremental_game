@@ -51,17 +51,19 @@ func run() -> void:
 	terrain.flush_rebuild()
 	await frames(8)
 
+	# Outer south wall from the play rig, pitched down the face.
 	_restore_pitch(rig)
-	rig.near_pitch_deg = 24.0
-	_look(rig, player, Vector3(5.4, 0.0, 0.6), 8.2, 2)
+	rig.near_pitch_deg = 12.0
+	rig.pitch_deg = 16.0
+	_look(rig, player, Vector3(0.2, 0.0, -5.1), 8.0, 4)
 	await shot(OUT + "/low_side.png")
 	_restore_pitch(rig)
 
 	_set_house_visible(false)
-	_look(rig, player, Vector3(3.6, 0.0, 0.4), 10.0, 2)
+	_look(rig, player, Vector3(3.8, 0.0, 0.5), 11.0, 2)
 	await shot(OUT + "/lake.png")
 
-	_look(rig, player, Vector3(5.1, 0.0, 1.2), 9.5, 2)
+	_look(rig, player, Vector3(5.0, 0.0, 1.6), 10.0, 2)
 	await shot(OUT + "/shaft_waterfall.png")
 	_set_house_visible(true)
 
@@ -166,13 +168,13 @@ func _sculpt_demo(terrain: Node3D) -> void:
 	if main == null or main.field == null:
 		return
 	var field = main.field
-	# Deepen the starter lake and keep a drain toward the east rim.
+	# Deepen the closed lake basin; do not punch it through.
 	for p in [Vector3(3.5, 0.0, 0.4), Vector3(4.2, 0.0, 0.6), Vector3(3.8, 0.0, -0.2)]:
-		field.apply_brush("lower", p, 1.15, 1.05, true)
-	for p in [Vector3(5.6, 0.0, 0.45), Vector3(6.2, 0.0, 0.55), Vector3(6.8, 0.0, 0.50)]:
-		field.apply_brush("lower", p, 0.75, 0.70, true)
-	# 2 m vertical shaft north of the lake so walls and clouds read from play cam.
-	field.punch_shaft(Vector3(5.1, 0.0, 2.3), 1.05)
+		field.apply_brush("lower", p, 1.05, 0.55, true)
+	for p in [Vector3(5.7, 0.0, 0.45), Vector3(6.2, 0.0, 0.50)]:
+		field.apply_brush("lower", p, 0.55, 0.28, true)
+	# Separate 2 m shaft north of the lake — walls inside, clouds below.
+	field.punch_shaft(Vector3(5.2, 0.0, 2.5), 1.05)
 	field.apply_coast_smooth()
 	var span := HeightfieldMesh.chunk_range(field)
 	var t0 := Time.get_ticks_usec()

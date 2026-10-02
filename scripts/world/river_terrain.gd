@@ -533,12 +533,11 @@ func _stamp_starter_relief(field: Heightfield, group: Dictionary) -> Dictionary:
 	for cell in lake:
 		if not group.has(cell):
 			continue
-		skip[cell] = true
 		var center := Vector3(float(cell.x) + 0.5, 0.0, float(cell.y) + 0.5)
-		field.apply_brush("lower", center, 1.05, 0.95, true)
-	# Notch the east rim so the pit spills as a waterfall, without carving a river.
-	for notch in [Vector3(5.6, 0.0, 0.45), Vector3(6.2, 0.0, 0.55), Vector3(6.7, 0.0, 0.50)]:
-		field.apply_brush("lower", notch, 0.72, 0.62, true)
+		field.apply_brush("lower", center, 0.95, 0.52, true)
+	# Spill lip only — keep land so the basin stays a lake, not a through-cut.
+	for notch in [Vector3(5.7, 0.0, 0.45), Vector3(6.15, 0.0, 0.50)]:
+		field.apply_brush("lower", notch, 0.55, 0.28, true)
 	field.apply_coast_smooth()
 	return skip
 

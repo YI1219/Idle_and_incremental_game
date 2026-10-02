@@ -319,7 +319,7 @@ func _rebuild_water() -> void:
 		return
 	for site in water_info.get("waterfalls", []):
 		var mesh := MeshInstance3D.new()
-		mesh.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.build_waterfall(site["origin"], site["outward"], SEA_Y + 0.35, 1.45))
+		mesh.mesh = HeightfieldMesh.make_mesh(HeightfieldMesh.build_waterfall(site["origin"], site["outward"], SEA_Y + 0.35, 1.75))
 		mesh.material_override = _fall_material
 		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		_fall_root.add_child(mesh)
