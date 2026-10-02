@@ -1,7 +1,7 @@
 shader_type sky;
-uniform vec3 zenith_color : source_color = vec3(0.58, 0.76, 0.94);
-uniform vec3 horizon_color : source_color = vec3(0.93, 0.88, 0.78);
-uniform vec3 nadir_color : source_color = vec3(0.62, 0.70, 0.78);
+uniform vec3 zenith_color : source_color = vec3(0.36, 0.60, 0.88);
+uniform vec3 horizon_color : source_color = vec3(0.70, 0.80, 0.90);
+uniform vec3 nadir_color : source_color = vec3(0.42, 0.54, 0.66);
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p) {

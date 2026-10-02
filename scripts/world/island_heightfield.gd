@@ -553,8 +553,8 @@ func _scatter_dressing() -> void:
 			if shore or hole_rim:
 				var xf := Transform3D(Basis(Vector3.UP, nse.x * TAU).scaled(Vector3(0.22 + nse.y * 0.10, 0.16 + nse.x * 0.08, 0.20 + nse.y * 0.08)), Vector3(mid.x, h + 0.04, mid.y))
 				shores.append(xf)
-			if nse.x > 0.18:
-				var gxf := Transform3D(Basis(Vector3.UP, nse.y * TAU).scaled(Vector3.ONE * (0.85 + nse.x * 0.35)), Vector3(mid.x + (nse.y - 0.5) * 0.16, h + 0.01, mid.y + (nse.x - 0.5) * 0.16))
+			if nse.x > 0.74:
+				var gxf := Transform3D(Basis(Vector3.UP, nse.y * TAU).scaled(Vector3(1.15, 0.70, 1.15) * (0.90 + nse.y * 0.25)), Vector3(mid.x + (nse.y - 0.5) * 0.16, h + 0.01, mid.y + (nse.x - 0.5) * 0.16))
 				tufts.append(gxf)
 			if nse.y > 0.78:
 				pebbles.append(Transform3D(Basis(Vector3.UP, nse.x * 5.0).scaled(Vector3(0.10 + nse.x * 0.05, 0.06, 0.08 + nse.y * 0.04)), Vector3(mid.x - 0.12, h + 0.02, mid.y + 0.10)))
@@ -623,12 +623,12 @@ func _hang_roots() -> void:
 func _tuft_mesh() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var blades := [0.0, 1.15, 2.25]
+	var blades := [0.0, 1.05, 2.15]
 	for yaw in blades:
 		var b := Basis(Vector3.UP, yaw)
-		var a := b * Vector3(-0.07, 0.0, 0.0)
-		var c := b * Vector3(0.07, 0.0, 0.0)
-		var tip := b * Vector3(0.0, 0.26, 0.02)
+		var a := b * Vector3(-0.11, 0.0, 0.0)
+		var c := b * Vector3(0.11, 0.0, 0.0)
+		var tip := b * Vector3(0.0, 0.11, 0.03)
 		st.set_normal(Vector3.UP)
 		st.add_vertex(a)
 		st.add_vertex(tip)

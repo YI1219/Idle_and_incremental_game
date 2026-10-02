@@ -50,9 +50,9 @@ func run() -> void:
 	# Wall and lake from the starter basin, before the shaft cut.
 	_set_house_visible(false)
 	_restore_pitch(rig)
-	rig.near_pitch_deg = 12.0
-	rig.pitch_deg = 16.0
-	_look(rig, player, Vector3(6.4, 0.0, -2.2), 8.0, 2)
+	rig.near_pitch_deg = 6.0
+	rig.pitch_deg = 10.0
+	_look(rig, player, Vector3(6.8, 0.0, -2.4), 9.0, 2)
 	await shot(OUT + "/low_side.png")
 	_restore_pitch(rig)
 
@@ -170,12 +170,12 @@ func _sculpt_demo(terrain: Node3D) -> void:
 	if main == null or main.field == null:
 		return
 	var field = main.field
-	# Closed east lake — no rim cut, so the basin keeps water.
+	# Keep the east lake. Shaft sits north of it. A shallow east lip lets one fall
+	# leave without emptying the basin.
 	for p in [Vector3(3.5, 0.0, 0.4), Vector3(4.2, 0.0, 0.6), Vector3(3.8, 0.0, -0.2)]:
-		field.apply_brush("lower", p, 0.95, 0.42, true)
-	# Shaft north of the east lake, plus a shallow east spill for a waterfall.
-	field.punch_shaft(Vector3(4.8, 0.0, 2.4), 1.15)
-	field.apply_brush("lower", Vector3(6.35, 0.0, 0.55), 0.48, 0.20, true)
+		field.apply_brush("lower", p, 0.85, 0.28, true)
+	field.punch_shaft(Vector3(5.4, 0.0, 2.6), 0.95)
+	field.apply_brush("lower", Vector3(6.55, 0.0, 0.15), 0.38, 0.12, true)
 	field.apply_coast_smooth()
 	var span := HeightfieldMesh.chunk_range(field)
 	var t0 := Time.get_ticks_usec()

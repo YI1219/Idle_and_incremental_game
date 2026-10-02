@@ -45,7 +45,7 @@ vec3 seed7_rock(vec3 p, vec3 n, float ao) {
 	rock *= facet;
 	float lip_ao = (1.0 - clamp(-p.y / 0.38, 0.0, 1.0)) * (1.0 - abs(n.y));
 	rock *= 1.0 - lip_ao * 0.34;
-	rock *= mix(0.58, 1.0, clamp(ao, 0.0, 1.0));
+	rock *= mix(0.70, 1.15, clamp(ao, 0.0, 1.0));
 	return rock;
 }
 
@@ -65,7 +65,7 @@ void fragment() {
 	if (vcol.b > 0.45) {
 		ALBEDO = seed7_rock(world_pos, n, ao);
 		ROUGHNESS = 0.92;
-		EMISSION = ALBEDO * 0.015;
+		EMISSION = ALBEDO * 0.08;
 	} else {
 		float broad = noise(p * 0.22) * 0.55 + noise(p * 0.62) * 0.30 + noise(p * 1.4) * 0.15;
 		float detail = noise(p * 12.0);

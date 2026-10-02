@@ -15,7 +15,7 @@ func _ready() -> void:
 	add_to_group("cloud_sea")
 	_sea = MeshInstance3D.new()
 	_sea.name = "SeaSheet"
-	_sea.mesh = _billow_mesh(SPAN, RES, 2.15, Color("fffdf6"), Color("8fa3b4"))
+	_sea.mesh = _billow_mesh(SPAN, RES, 2.15, Color("e8eef4"), Color("6d8296"))
 	_sea.position.y = SEA_Y
 	_sea.material_override = _solid_vertex()
 	_sea.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -64,7 +64,7 @@ func _add_puffs() -> void:
 		puff.position = spots[i]
 		var material := StandardMaterial3D.new()
 		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		material.albedo_color = Color("fffdf6") if i % 2 == 0 else Color("c5d0d8")
+		material.albedo_color = Color("e4ebf2") if i % 2 == 0 else Color("7e90a2")
 		material.cull_mode = BaseMaterial3D.CULL_DISABLED
 		puff.material_override = material
 		puff.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

@@ -318,8 +318,9 @@ static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: 
 		if pa.distance_to(pb) < 0.03 and qa.distance_to(qb) < 0.03:
 			continue
 		# Lip is turf; every ring below is rock. No grass bands inside the wall.
-		var ao := 0.52 if r == 0 else (0.96 if r < 3 else 0.74)
-		var color := Color(ao, 0.92, 0.0, 1.0) if r == 0 else Color(ao, 0.0, 1.0, 1.0)
+		var shade := 0.62 + Heightfield._hash2(float(cx) * 3.1 + float(r) * 9.0 + float(field.seed), float(cz) * 2.7).x * 0.55
+		var ao := (0.52 if r == 0 else (0.96 if r < 3 else 0.74)) * shade
+		var color := Color(ao, 0.92, 0.0, 1.0) if r == 0 else Color(clampf(ao, 0.40, 1.15), 0.0, 1.0, 1.0)
 		_solid(verts, norms, cols, uvs, pa, pb, qb, color, hint)
 		_solid(verts, norms, cols, uvs, pa, qb, qa, color, hint)
 
@@ -375,10 +376,10 @@ static func _wall_post(field: Heightfield, ix: int, iz: int, rings: int, posts: 
 			p += tangent * (nse.y - 0.5) * 0.08
 		else:
 			# seed7 stacked blocks: constant per-ring stick-out, then taper to the keel.
-			var stick := 0.08 + nse.x * 0.42
-			var radial := LIP * (1.0 - t) + stick * (1.0 - t * 0.55) - 0.46 * t * t
+			var stick := 0.22 + nse.x * 0.72
+			var radial := LIP * (1.0 - t) + stick * (1.0 - t * 0.40) - 0.62 * t * t
 			p += outward * radial
-			p += tangent * (nse.y - 0.5) * 0.34
+			p += tangent * (nse.y - 0.5) * 0.48
 		if p.y > top.y - 0.02:
 			p.y = top.y - 0.02
 		if p.y < bot.y + 0.02:

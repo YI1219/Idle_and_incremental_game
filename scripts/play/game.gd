@@ -70,7 +70,7 @@ func _lights() -> void:
 	env.name = "WorldEnvironment"
 	var sky := Environment.new()
 	sky.background_mode = Environment.BG_COLOR
-	sky.background_color = Color("c5d8ea")
+	sky.background_color = Color("6ea0d0")
 	sky.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	sky.ambient_light_color = Color("c9d6c4")
 	sky.ambient_light_energy = 0.28

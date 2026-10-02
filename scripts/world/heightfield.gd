@@ -23,6 +23,7 @@ var seed: int = 1
 var heights := PackedFloat32Array()
 var mask := PackedByteArray()
 var rim_shift: Dictionary = {}
+var _centroid_cache := Vector2.INF
 
 
 func cells_x() -> int:
@@ -87,6 +88,7 @@ func duplicate_field() -> RefCounted:
 	copy.heights = heights.duplicate()
 	copy.mask = mask.duplicate()
 	copy.rim_shift = rim_shift.duplicate()
+	copy._centroid_cache = _centroid_cache
 	return copy
 
 
@@ -121,6 +123,7 @@ func is_land(cx: int, cz: int) -> bool:
 func set_land(cx: int, cz: int, land: bool) -> void:
 	if in_cell(cx, cz):
 		mask[cell_index(cx, cz)] = 1 if land else 0
+		_centroid_cache = Vector2.INF
 
 
 func vertex_world(ix: int, iz: int) -> Vector2:
@@ -320,6 +323,8 @@ func sample_inland(world: Vector3) -> float:
 
 
 func land_centroid() -> Vector2:
+	if _centroid_cache != Vector2.INF:
+		return _centroid_cache
 	var sum := Vector2.ZERO
 	var n := 0
 	for cz in cells_z():
@@ -328,7 +333,8 @@ func land_centroid() -> Vector2:
 				continue
 			sum += vertex_world(cx, cz) + Vector2(spacing * 0.5, spacing * 0.5)
 			n += 1
-	return sum / float(maxi(n, 1)) if n > 0 else origin
+	_centroid_cache = sum / float(maxi(n, 1)) if n > 0 else origin
+	return _centroid_cache
 
 
 func organicize_coast() -> void:
