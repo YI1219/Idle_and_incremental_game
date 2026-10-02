@@ -1,6 +1,6 @@
 # Heightfield islands — smooth coast and procedural wall rock (2026-10-02)
 
-Same branch / PR #2. Brushes, volume cost, dig-through, lakes, and auto-flatten are unchanged. This pass replaces the terrain shell only. Run 5 olive grass, tufts, lake shader, rim-stone scatter, and cloud sea stay. Style references (KayKit/Quaternius contact sheet, the seed7 prototype, 《我有一片田》 frames) were not used as construction or as copied code.
+Same branch / PR #2. Brushes, volume cost, dig-through, lakes, and auto-flatten are unchanged. The shell pass below is still the mesh. A later lighting pass only retuned materials: foliage no longer adds emission, and grass mottling is two world-space brightness scales of about ±10% on the existing grey-olive pair, with a small normal bump added on the geometric normal. Ambient 0.12, key light 1.85, AgX exposure 1.24, saturation 1.08, and SSAO radius 0.18 / intensity 2.4 were already in range. No reference-repo code or assets were copied. Shoulder, shore-stone chains, clumped tufts, lake-shore bands, and prop contact blends are not in this pass.
 
 ## How to reproduce
 
@@ -57,4 +57,6 @@ Not art acceptance.
 - Distant islands use the coarser LOD contour.
 - Stroke cost on this VM is 65 ms, above the 16 ms aim. A 4× full rebuild is 609 ms.
 - Water is still the run 5 lake surface. Tuft density and flowers are unchanged from that pass.
-- Target-device frame rate was not measured.
+- Grass mottling is intentionally mild. It will not read as clumps or as a rounded earth shoulder; those are later passes.
+- Tree cards no longer self-light. The rest of the lighting stack was already low ambient, AgX, and small-radius SSAO, so the frame stays close to the previous shot.
+- Target-device frame rate was not measured. Playable stroke on this VM after the shader change was 75 ms.
