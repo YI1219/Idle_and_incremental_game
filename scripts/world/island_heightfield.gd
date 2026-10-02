@@ -514,24 +514,17 @@ func _scatter_dressing() -> void:
 	var tufts: Array = []
 	var pebbles: Array = []
 	var flowers: Array = []
-	var n_land := 0
-	var n_gate := 0
-	var n_ok := 0
 	var dmin := 99.0
 	var dmax := -1.0
 	for cz in field.cells_z():
 		for cx in field.cells_x():
 			if not field.is_land(cx, cz):
 				continue
-			n_land += 1
 			var play := field.play_cell_of_hf(cx, cz)
 			if skip_top.has(play) or _blocked.has(play) or water_cells.has(Vector2i(cx, cz)):
-				n_gate += 1
 				continue
 			if field.sample_inland(Vector3(field.vertex_world(cx, cz).x, 0.0, field.vertex_world(cx, cz).y)) < 0.18:
-				n_gate += 1
 				continue
-			n_ok += 1
 			var origin := field.vertex_world(cx, cz)
 			var density := _density_at(origin)
 			dmin = minf(dmin, density)
@@ -562,9 +555,8 @@ func _scatter_dressing() -> void:
 	_fill_mm(_flower_mm, flowers)
 	var rocks := _scatter_rim_rocks(water_cells)
 	_hang_roots()
-	print("dress tufts=%d pebbles=%d flowers=%d rim_rocks=%d land=%d gated=%d ok=%d d=%.3f..%.3f skip=%d blocked=%d" % [
-		tufts.size(), pebbles.size(), flowers.size(), rocks,
-		n_land, n_gate, n_ok, dmin, dmax, skip_top.size(), _blocked.size()
+	print("dress tufts=%d pebbles=%d flowers=%d rim_rocks=%d d=%.2f..%.2f" % [
+		tufts.size(), pebbles.size(), flowers.size(), rocks, dmin, dmax
 	])
 
 
