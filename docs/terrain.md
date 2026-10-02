@@ -61,11 +61,17 @@ Tiny Glade–style stroke auto-join is left for later roofs and paths, not as th
 
 ## Cliffs and cloud sea
 
-Outer edges and inner hole edges use the same cliff set. Cloud sea is a viewing layer under/outside the island (fog or a plane). It is not a cell and does not join the bitmask. Walking stops on the side with no neighbor.
+Logic cells stay a sparse 1 m grid (play, cost, footprints). The visible courtyard is not that grid. Each connected land component is built as its own floating volume: a smoothed, slightly noised coastline, a rounded shoulder, and an inverted-cone rocky underside hanging in the cloud sea. Grass top and earth/rock sides blend in the ground shader by normal and vertex color. Islands do not need to stay connected; any number of independent landmasses may exist.
 
-Rivers are not walkable, but river cells **have land**: if their outer edge meets the cloud sea, they also hang cliffs. Do not draw a shallow bay as a bite taken out of the island.
+Cloud sea is a viewing layer under/outside the island (animated fog planes plus height fog). It is not a cell and does not join the bitmask. Walking stops on the side with no neighbor. Distant mountains and distant islands are not drawn.
 
-The starting shallow bay is edge-attached and must not split walkable area into two pieces. That is a layout rule, not a render rule; rendering still joins by neighbors.
+Rivers are not walkable, but river cells **have land**: if their outer edge meets the cloud sea, they also hang with the volume. Do not draw a shallow bay as a bite taken out of the island.
+
+Shrinking land that still supports a placed object is blocked, with a Chinese sandbox reason. Only islands whose cell set changed rebuild.
+
+## 息壤 (terrain-expansion points)
+
+Painting land spends **息壤**, a data-driven point container (`docs/design_v0_2/prototype_config.json` → `xirang`). It accumulates from the same idle/offline `catch_up` as the economy kernel. Cost is newly added volume (`cell_area × island_thickness × cost_per_volume`), charged per brush step, and stops at zero. Removing land refunds `refund_ratio` of the base volume cost. Past `soft_cap_cells` on one island the cost multiplier rises; there is no hard wall. Exploration terrain pieces (`kind: terrain_piece`) can later be placed or decomposed into 息壤; only the data shape exists now.
 
 ## Show the grid only in Build
 

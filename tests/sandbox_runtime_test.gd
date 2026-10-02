@@ -44,7 +44,7 @@ func run():
 	for i in 2:await physics_frame
 	var ray:=PhysicsRayQueryParameters3D.create(Vector3(3.5,.4,-.9),Vector3(3.5,.4,-2),1)
 	check(not player.get_world_3d().direct_space_state.intersect_ray(ray).is_empty(),"Placed solid prop has physical collision")
-	check(builder.edit_land(cell,true)=="overlap","Cannot delete support under placed prop")
+	check(builder.edit_land(cell,true)=="land_support","Cannot delete support under placed prop")
 	builder.selected=id
 	builder.start_move()
 	builder.preview_at(Vector2i(40,40))
@@ -94,7 +94,8 @@ func run():
 	check(builder.island.terrain.land_cells.has(Vector2i(0,4)),"Expansion updates terrain")
 	check(builder.edit_land(Vector2i(0,4),true)=="ok","Delete empty added land")
 	check(not builder.island.terrain.land_cells.has(Vector2i(0,4)),"Deleted land disappears")
-	check(builder.edit_land(Vector2i(90,90),false)=="not_adjacent","Cannot lay isolated land")
+	check(builder.edit_land(Vector2i(90,90),false)=="ok","Disconnected islands are allowed")
+	check(builder.island.terrain.island_count()>=2,"Isolated cell becomes its own island")
 	builder.set_active(false)
 	check(not builder.island.build_mode and not builder.panel.visible,"Build closes")
 	state.space_id="inside"

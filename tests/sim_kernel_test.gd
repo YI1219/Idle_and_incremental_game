@@ -96,7 +96,8 @@ func _world_prefab_and_events() -> void:
 	check(world.try_delete(Vector2i(0, 0)) == "occupied", "cannot delete spring cell")
 	check(world.is_occupied(Vector2i(0, 3)), "gate occupies a cell")
 	check(world.try_delete(Vector2i(0, 3)) == "occupied", "cannot delete gate cell")
-	check(world.try_place(Vector2i(20, 20)) == "not_adjacent", "no island jumping")
+	check(world.try_place(Vector2i(20, 20)) == "ok", "disconnected islands are allowed")
+	check(world.try_delete(Vector2i(20, 20)) == "ok", "isolated cell can be removed")
 	check(world.try_place(Vector2i(4, 0)) == "ok", "place on rim")
 	check(world.cell_count() == 49, "placed one")
 	world.policy = "strict_capacity"

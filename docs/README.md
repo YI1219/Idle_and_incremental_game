@@ -7,7 +7,7 @@ Systems lock. Implementation specs follow [Core design](core_design.md), [Courty
 | File | Contents |
 |------|------|
 | [Core design](core_design.md) | Product positioning, wells and production land, spirit stones, offline, two slices, and the experience-slice loop |
-| [Terrain](terrain.md) | Sparse grid, connection textures, cliffs, chunk dirty regions |
+| [Terrain](terrain.md) | Sparse grid, floating-island volumes, 息壤, cloud sea, dirty rebuilds |
 | [Courtyard operations](courtyard_ops.md) | HUD, living/production cells and river, clicking, why a facility is stopped |
 | [Exploration](exploration.md) | Three questions, knowledge layers, retreat, shallow-ravine fork |
 | [Spirit beasts](spirit_beasts.md) | Few hard gates, many soft preferences; Bamboo Ravine beast and fluff loom |

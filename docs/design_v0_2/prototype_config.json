@@ -43,6 +43,19 @@
       }
     }
   },
+  "xirang": {
+    "label": "息壤",
+    "initial_points": 96.0,
+    "idle_points_per_minute": 1.2,
+    "offline_points_per_minute": 1.2,
+    "cell_area": 1.0,
+    "island_thickness": 4.0,
+    "cost_per_volume": 0.25,
+    "refund_ratio": 0.5,
+    "soft_cap_cells": 80,
+    "soft_cap_exponent": 1.5,
+    "soft_cap_extra": 1.0
+  },
   "spring": {
     "base_seep_qi_per_minute": 10.0,
     "pool_capacity_qi": 600.0,

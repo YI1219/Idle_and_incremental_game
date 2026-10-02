@@ -37,15 +37,20 @@ func _ready() -> void:
 	var player: CharacterBody3D = preload("res://scenes/player.tscn").instantiate()
 	player.position = Vector3(0.0, 0.0, 2.4)
 	add_child(player)
+	var clouds := preload("res://scripts/world/cloud_sea.gd").new()
+	homestead.add_child(clouds)
 	var rig: Node3D = CameraRig.new()
 	rig.name = "CameraRig"
-	rig.default_distance = 16.5
-	rig.min_distance = 6.0
-	rig.max_distance = 23.0
+	rig.default_distance = 22.0
+	rig.min_distance = 8.0
+	rig.max_distance = 32.0
+	rig.lens_fov = 34.0
+	rig.spring_omega = 12.0
 	var cam := Camera3D.new()
+	cam.name = "Camera3D"
 	cam.current = true
-	cam.fov = 46
-	cam.far = 160
+	cam.fov = 34
+	cam.far = 240
 	rig.add_child(cam)
 	add_child(rig)
 	rig.set_target(player)

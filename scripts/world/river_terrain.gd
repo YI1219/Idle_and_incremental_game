@@ -1,8 +1,11 @@
 class_name RiverTerrain
 extends Node3D
 ## Sparse island top with a smooth, eight-neighbour river and walkable bridge.
+## Land and cliffs are organic volume meshes; the grid stays the play unit.
 
 const Blob47 := preload("res://scripts/world/blob47.gd")
+const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
+const IslandPresence := preload("res://scripts/world/island_presence.gd")
 const WATER_DROP := 0.15
 const CLIFF_BOTTOM := -0.72
 const BANK_INSET := 0.20
@@ -11,13 +14,17 @@ var land_cells: Dictionary = {}
 var water_cells: Dictionary = {}
 var bridge_cells: Dictionary = {}
 var blob_masks: Dictionary = {}
+var island_rebuilds: int = 0
+var island_cache: Dictionary = {}
 
 var _land_mesh := MeshInstance3D.new()
 var _water_mesh := MeshInstance3D.new()
 var _bank_mesh := MeshInstance3D.new()
 var _cliff_mesh := MeshInstance3D.new()
 var _bridge_mesh := MeshInstance3D.new()
+var _islands_root := Node3D.new()
 var _river_polygons: Array[PackedVector2Array] = []
+var _volume_material: ShaderMaterial
 
 
 func _ready() -> void:
@@ -54,11 +61,33 @@ func rebuild() -> void:
 	_ensure_nodes()
 	_rebuild_masks()
 	_river_polygons = _make_river_polygons()
-	_land_mesh.mesh = _build_land()
+	_rebuild_islands()
 	_water_mesh.mesh = _build_water()
 	_bank_mesh.mesh = _build_banks()
-	_cliff_mesh.mesh = _build_cliffs()
 	_bridge_mesh.mesh = _build_bridge()
+
+
+func island_count() -> int:
+	return island_cache.size()
+
+
+func island_disks() -> Array[Vector4]:
+	var disks: Array[Vector4] = []
+	for key in island_cache.keys():
+		var row: Dictionary = island_cache[key]
+		var center: Vector3 = row.get("centroid", Vector3.ZERO)
+		var radius := 4.0 + sqrt(float(int(row.get("cell_count", 1)))) * 0.85
+		disks.append(Vector4(center.x, center.z, radius, 0.0))
+	return disks
+
+
+func refresh_lod(camera_origin: Vector3) -> void:
+	var changed := false
+	for child in _islands_root.get_children():
+		if child.has_method("update_lod") and child.update_lod(camera_origin):
+			changed = true
+	if changed:
+		_assemble_island_meshes()
 
 
 func world_to_cell(world: Vector3) -> Vector2i:
@@ -87,17 +116,20 @@ func _default_river() -> Array[Vector2i]:
 func _ensure_nodes() -> void:
 	if _land_mesh.get_parent() == self:
 		return
+	_volume_material = _land_material()
 	for pair in [
-		[_land_mesh, "LandSurface", _land_material()],
+		[_land_mesh, "LandSurface", _volume_material],
 		[_water_mesh, "JadeWater", _water_material()],
 		[_bank_mesh, "RiverBank", _bank_material()],
-		[_cliff_mesh, "IslandCliff", _cliff_material()],
+		[_cliff_mesh, "IslandCliff", _volume_material],
 		[_bridge_mesh, "RiverBridge", _bridge_material()],
 	]:
 		var mesh_instance: MeshInstance3D = pair[0]
 		mesh_instance.name = pair[1]
 		mesh_instance.material_override = pair[2]
 		add_child(mesh_instance)
+	_islands_root.name = "Islands"
+	add_child(_islands_root)
 
 
 func _rebuild_masks() -> void:
@@ -176,6 +208,63 @@ func _edge_strip(cell: Vector2i, side: Vector2i) -> PackedVector2Array:
 	if side.y < 0:
 		return PackedVector2Array([Vector2(cell.x, cell.y), Vector2(cell.x, cell.y + BANK_INSET + .01), Vector2(cell.x + 1, cell.y + BANK_INSET + .01), Vector2(cell.x + 1, cell.y)])
 	return PackedVector2Array([Vector2(cell.x, cell.y + 1 - BANK_INSET - .01), Vector2(cell.x, cell.y + 1), Vector2(cell.x + 1, cell.y + 1), Vector2(cell.x + 1, cell.y + 1 - BANK_INSET - .01)])
+
+
+func _rebuild_islands() -> void:
+	var next_cache: Dictionary = {}
+	island_rebuilds = 0
+	for group in IslandGeometry.components(land_cells):
+		var key: int = IslandGeometry.cells_hash(group)
+		if island_cache.has(key):
+			next_cache[key] = island_cache[key]
+			continue
+		var built: Dictionary = IslandGeometry.build_island(group, _river_polygons, true)
+		built["cells"] = group
+		next_cache[key] = built
+		island_rebuilds += 1
+	island_cache = next_cache
+	_sync_presence()
+	_assemble_island_meshes()
+
+
+func _sync_presence() -> void:
+	var kept: Dictionary = {}
+	for child in _islands_root.get_children():
+		if int(child.get("island_hash")) in island_cache:
+			kept[int(child.get("island_hash"))] = child
+		else:
+			child.free()
+	for key in island_cache.keys():
+		var row: Dictionary = island_cache[key]
+		var node: Node3D = kept.get(key)
+		if node == null:
+			node = IslandPresence.new()
+			node.name = "Island_%s" % key
+			_islands_root.add_child(node)
+		node.configure(int(key), row.get("centroid", Vector3.ZERO), int(row.get("cell_count", 0)), row.get("volume"), row.get("low_volume"), row.get("top"))
+		if node.has_method("set_material"):
+			node.set_material(_volume_material)
+
+
+func _assemble_island_meshes() -> void:
+	var tops: Array = []
+	var volumes: Array = []
+	for child in _islands_root.get_children():
+		var key := int(child.get("island_hash"))
+		if not island_cache.has(key):
+			continue
+		var row: Dictionary = island_cache[key]
+		tops.append(row.get("top"))
+		if child.has_method("current_volume"):
+			volumes.append(child.current_volume())
+		else:
+			volumes.append(row.get("volume"))
+	if tops.is_empty():
+		for key in island_cache.keys():
+			tops.append(island_cache[key].get("top"))
+			volumes.append(island_cache[key].get("volume"))
+	_land_mesh.mesh = IslandGeometry.combine_meshes(tops)
+	_cliff_mesh.mesh = IslandGeometry.combine_meshes(volumes)
 
 
 func _build_land() -> ArrayMesh:

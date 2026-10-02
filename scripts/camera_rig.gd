@@ -9,7 +9,11 @@ extends Node3D
 @export var near_pitch_deg := 38.0
 @export var far_pitch_deg := 58.0
 @export var look_height := 0.72
-@export var zoom_response := 8.0
+@export var zoom_response := 12.0
+@export var spring_omega := 12.0
+@export var yaw_omega := 12.0
+@export var pan_omega := 12.0
+@export var lens_fov := 34.0
 @export var pan_limit := 12.0
 
 const YAW_STEP := TAU / 8.0
@@ -23,6 +27,12 @@ var _smooth_pitch := 50.0
 var _pan_goal := Vector3.ZERO
 var _smooth_pan := Vector3.ZERO
 var _panning := false
+var _vel_distance := 0.0
+var _vel_pitch := 0.0
+var _vel_yaw := 0.0
+var _vel_pan := Vector3.ZERO
+var _vel_focus := Vector3.ZERO
+var _transition_id := 0
 
 
 func _ready() -> void:
@@ -108,6 +118,14 @@ func nudge_zoom(amount: float) -> void:
 func recenter() -> void:
 	_pan_goal = Vector3.ZERO
 	_panning = false
+	_transition_id += 1
+
+
+func begin_transition(distance: float = _distance, pan := Vector3.ZERO) -> int:
+	_distance = clampf(distance, min_distance, max_distance)
+	_pan_goal = pan
+	_transition_id += 1
+	return _transition_id
 
 
 func pan_by_pixels(point: Vector2, relative: Vector2) -> void:
@@ -160,20 +178,68 @@ func _apply(snap: bool, delta: float = 0.01667) -> void:
 	var desired_pitch := _pitch_for_zoom(_distance)
 	if _inside():
 		desired_pitch = maxf(44.0, desired_pitch)
-	var follow := 1.0 - exp(-delta * 10.0)
-	var zoom := 1.0 - exp(-delta * zoom_response)
+	var omega := spring_omega if spring_omega > 0.0 else zoom_response
 	if snap or not _last_focus.is_finite():
 		_last_focus = focus
 		_smooth_yaw = yaw
 		_smooth_distance = desired_distance
 		_smooth_pitch = desired_pitch
 		_smooth_pan = _pan_goal
+		_vel_distance = 0.0
+		_vel_pitch = 0.0
+		_vel_yaw = 0.0
+		_vel_pan = Vector3.ZERO
+		_vel_focus = Vector3.ZERO
 	else:
-		_last_focus = _last_focus.lerp(focus, follow)
-		_smooth_yaw = lerp_angle(_smooth_yaw, yaw, follow)
-		_smooth_distance = lerpf(_smooth_distance, desired_distance, zoom)
-		_smooth_pitch = lerpf(_smooth_pitch, desired_pitch, zoom)
-		_smooth_pan = _smooth_pan.lerp(_pan_goal, zoom)
+		var focus_step := _spring_vector(_last_focus, focus, _vel_focus, omega, delta)
+		_last_focus = focus_step[0]
+		_vel_focus = focus_step[1]
+		var yaw_unwrapped := _smooth_yaw + wrapf(yaw - _smooth_yaw, -PI, PI)
+		var yaw_step := _spring_scalar(_smooth_yaw, yaw_unwrapped, _vel_yaw, yaw_omega, delta)
+		_smooth_yaw = yaw_step[0]
+		_vel_yaw = yaw_step[1]
+		var zoom_step := _spring_scalar(_smooth_distance, desired_distance, _vel_distance, omega, delta)
+		_smooth_distance = zoom_step[0]
+		_vel_distance = zoom_step[1]
+		var pitch_step := _spring_scalar(_smooth_pitch, desired_pitch, _vel_pitch, omega, delta)
+		_smooth_pitch = pitch_step[0]
+		_vel_pitch = pitch_step[1]
+		var pan_step := _spring_vector(_smooth_pan, _pan_goal, _vel_pan, pan_omega, delta)
+		_smooth_pan = pan_step[0]
+		_vel_pan = pan_step[1]
+	var camera := get_node_or_null("Camera3D") as Camera3D
+	if camera == null:
+		for child in get_children():
+			if child is Camera3D:
+				camera = child
+				break
+	if camera:
+		camera.fov = lens_fov
 	var pitch := deg_to_rad(_smooth_pitch)
 	var offset := Vector3(sin(_smooth_yaw) * cos(pitch), sin(pitch), cos(_smooth_yaw) * cos(pitch)) * _smooth_distance
 	global_transform = Transform3D(Basis.looking_at(-offset, Vector3.UP), _last_focus + _smooth_pan + offset)
+
+
+func _spring_scalar(current: float, target: float, velocity: float, omega: float, dt: float) -> Array:
+	var damped := _damp(current, target, velocity, omega, dt)
+	return [damped[0], damped[1]]
+
+
+func _spring_vector(current: Vector3, target: Vector3, velocity: Vector3, omega: float, dt: float) -> Array:
+	var x := _damp(current.x, target.x, velocity.x, omega, dt)
+	var y := _damp(current.y, target.y, velocity.y, omega, dt)
+	var z := _damp(current.z, target.z, velocity.z, omega, dt)
+	return [Vector3(x[0], y[0], z[0]), Vector3(x[1], y[1], z[1])]
+
+
+func _damp(current: float, target: float, velocity: float, omega: float, dt: float) -> Array:
+	# Implicit critically-damped spring. New targets replace the old goal and keep velocity.
+	var w := maxf(omega, 0.0001)
+	var f := 1.0 + 2.0 * dt * w
+	var oo := w * w
+	var hoo := dt * oo
+	var hhoo := dt * hoo
+	var inv := 1.0 / (f + hhoo)
+	var next := (f * current + dt * velocity + hhoo * target) * inv
+	var next_v := (velocity + hoo * (target - current)) * inv
+	return [next, next_v]

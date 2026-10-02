@@ -62,6 +62,17 @@ func _process(delta: float) -> void:
 		sim.catch_up(_clock_minutes)
 		_refresh_hud()
 	_lerp_colors(delta)
+	var camera := get_viewport().get_camera_3d()
+	if camera and terrain and terrain.has_method("refresh_lod"):
+		terrain.refresh_lod(camera.global_position)
+	var clouds := get_tree().get_first_node_in_group("cloud_sea")
+	if clouds and clouds.has_method("follow_islands") and terrain and terrain.has_method("island_disks"):
+		clouds.follow_islands(terrain.island_disks())
+	var islands_root := terrain.get_node_or_null("Islands") if terrain else null
+	if islands_root:
+		for child in islands_root.get_children():
+			if child.has_method("settle") and child.has_method("is_active") and child.is_active():
+				child.settle(_clock_minutes)
 
 
 func _unhandled_input(event: InputEvent) -> void:

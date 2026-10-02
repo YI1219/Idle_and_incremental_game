@@ -18,6 +18,10 @@ func land() -> Dictionary:
 	return raw["land"]
 
 
+func xirang() -> Dictionary:
+	return raw.get("xirang", {}) as Dictionary
+
+
 func spring() -> Dictionary:
 	return raw["spring"]
 

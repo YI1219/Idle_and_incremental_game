@@ -37,7 +37,7 @@ func attach(to_terrain: Node3D, to_cottage: Node3D) -> void:
 	water.shader = WATER
 	_override("JadeWater", water)
 	_override("RiverBank", _solid(Color("60685a")))
-	_override("IslandCliff", _solid(Color("556360")))
+	_override("IslandCliff", ground_material)
 	_load_models()
 	_refine_cottage(cottage)
 
@@ -155,6 +155,8 @@ func clear_communities() -> void:
 		child.free()
 	_patches.clear()
 	_canopies.clear()
+	if grass_chunks:
+		grass_chunks.clear()
 	_sync_contacts()
 
 func _point_allowed(at: Vector3, padding: float = 0.2) -> bool:
@@ -229,6 +231,23 @@ func dress_default() -> void:
 	var door := cottage.to_global(Vector3(0,0,2.2))
 	set_paths(PackedVector3Array([door,door+cottage.global_basis.z*1.5,Vector3(0,0,2.6)]))
 
+const DecorChunks := preload("res://scripts/world/decor_chunks.gd")
+var grass_chunks := DecorChunks.new()
+var _grass_mesh: Mesh
+
+func sync_grass_chunks(items: Array, dirty: Array = []) -> void:
+	if _communities == null:
+		return
+	if _grass_mesh == null:
+		var quad := QuadMesh.new()
+		quad.size = Vector2(0.34, 0.28)
+		_grass_mesh = quad
+	var material := ShaderMaterial.new()
+	material.shader = FOLIAGE
+	material.set_shader_parameter("shade_color", Color("586943"))
+	material.set_shader_parameter("sun_color", Color("9caa62"))
+	grass_chunks.sync(_communities, _grass_mesh, material, items, dirty)
+
 static func apply_atmosphere(world_environment: WorldEnvironment, sun: DirectionalLight3D) -> void:
 	# Caller can retain the original Environment resource to restore its prior look.
 	var environment := world_environment.environment.duplicate() as Environment
@@ -240,19 +259,31 @@ static func apply_atmosphere(world_environment: WorldEnvironment, sun: Direction
 	environment.sky = sky
 	environment.background_mode = Environment.BG_SKY
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.ambient_light_color = Color("adc5cd")
-	environment.ambient_light_energy = 0.46
-	environment.tonemap_mode = Environment.TONE_MAPPER_ACES
+	environment.ambient_light_color = Color("9eb4bd")
+	environment.ambient_light_energy = 0.72
+	environment.tonemap_mode = Environment.TONE_MAPPER_AGX
+	environment.tonemap_exposure = 1.18
+	environment.tonemap_white = 8.0
+	environment.adjustment_enabled = true
+	environment.adjustment_saturation = 1.06
+	environment.adjustment_contrast = 1.03
 	environment.fog_enabled = true
-	environment.fog_light_color = Color("c3d4d1")
-	environment.fog_density = 0.0045
-	environment.fog_sky_affect = 0.16
+	environment.fog_light_color = Color("d5ddd6")
+	environment.fog_density = 0.006
+	environment.fog_sky_affect = 0.28
+	environment.fog_height = 1.2
+	environment.fog_height_density = 0.22
 	environment.ssao_enabled = true
-	environment.ssao_radius = 1.0
-	environment.ssao_intensity = 1.15
-	environment.ssao_power = 1.2
-	sun.rotation_degrees = Vector3(-48,-32,0)
-	sun.light_color = Color("fff0ca")
-	sun.light_energy = 1.0
-	sun.light_angular_distance = 1.6
-	sun.shadow_blur = 1.5
+	environment.ssao_radius = 0.22
+	environment.ssao_intensity = 1.35
+	environment.ssao_power = 1.4
+	environment.ssil_enabled = false
+	environment.sdfgi_enabled = false
+	environment.glow_enabled = true
+	environment.glow_intensity = 0.18
+	environment.glow_hdr_threshold = 1.35
+	sun.rotation_degrees = Vector3(-42,-28,0)
+	sun.light_color = Color("f7e6c4")
+	sun.light_energy = 0.92
+	sun.light_angular_distance = 2.4
+	sun.shadow_blur = 2.2

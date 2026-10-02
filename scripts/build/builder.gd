@@ -2,6 +2,7 @@ extends Node3D
 ## Main-scene build transactions. Economy remains owned by IslandShell.
 const Layout := preload("res://scripts/build/layout.gd")
 const BuildPanel :=  preload("res://scripts/build/build_panel.gd")
+const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
 const SAVE_PATH := "user://courtyard_layout_v1.json"
 const MODEL := {"tree":["CommonTree_1",3.0],"rock":["Rock_Medium_1",.55],"bush":["Bush_Common",.65],"grass":["Grass_Common_Short",.3]}
 var island: Node3D
@@ -25,6 +26,7 @@ var _painting:=false
 var _stroke_last:=Layout.NOWHERE
 var _stroke_seen: Dictionary={}
 var _stroke_count:=0
+var _stroke_broke:=false
 var _preview_material: StandardMaterial3D
 var _tile_material: StandardMaterial3D
 func configure(p_island: Node3D,p_house: Node3D,p_art: Node3D) -> void:
@@ -127,20 +129,38 @@ func land_reason(cell: Vector2i,erase: bool) -> String:
 		if layout.reserved.has(cell):return "reserved"
 		if island.terrain.bridge_cells.has(cell):return "bridge"
 		for row in layout.objects:
-			if cell in layout.footprint(row.kind,row.cell) or (row.kind=="house" and cell in layout.approach(row.cell)):return "overlap"
+			if cell in layout.footprint(row.kind,row.cell) or (row.kind=="house" and cell in layout.approach(row.cell)):return "land_support"
+	if not erase:
+		var cost:=_xirang_cost(cell)
+		if island.sim.xirang and not island.sim.xirang.can_afford(cost):return "no_xirang"
 	var scratch=preload("res://scripts/sim/world_sim.gd").new(island.sim.cfg)
 	scratch.from_dict(island.sim.to_dict())
 	return scratch.try_delete(cell) if erase else scratch.try_place(cell)
+func _xirang_cost(cell: Vector2i) -> float:
+	if island.sim.xirang==null:return 0.0
+	var after:=IslandGeometry.component_size_after_add(island.sim.cells_in_order,cell)
+	return island.sim.xirang.quote_add(after)
 func edit_land(cell: Vector2i,erase: bool) -> String:
 	refresh_rules()
 	var result:=land_reason(cell,erase)
 	if result!="ok":return result
 	island.sim.catch_up(island._clock_minutes)
+	var spent:=0.0
+	var refund:=0.0
+	if erase and island.sim.xirang:
+		refund=island.sim.xirang.quote_remove()
+		island.sim.xirang.credit(refund)
+	elif island.sim.xirang:
+		spent=_xirang_cost(cell)
+		if not island.sim.xirang.try_spend(spent):return "no_xirang"
 	result=island.sim.try_delete(cell) if erase else island.sim.try_place(cell)
-	if result=="ok":
-		island.rebuild_instances()
-		refresh_rules()
-		_draw_grid()
+	if result!="ok":
+		if erase and island.sim.xirang:island.sim.xirang.try_spend(refund)
+		elif island.sim.xirang:island.sim.xirang.credit(spent)
+		return result
+	island.rebuild_instances()
+	refresh_rules()
+	_draw_grid()
 	return result
 func rebuild_objects() -> void:
 	art.clear_communities()
@@ -204,7 +224,7 @@ func _make_preview() -> void:
 	var material:=StandardMaterial3D.new()
 	material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.albedo_color=Color(.84,.9,.8,.25)
+	material.albedo_color=Color(.84,.9,.8,.14)
 	_grid.material_override=material
 	_grid.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_grid)
@@ -273,6 +293,7 @@ func begin_stroke(cell: Vector2i) -> void:
 	_stroke_last=cell
 	_stroke_seen.clear()
 	_stroke_count=0
+	_stroke_broke=false
 	_paint_cell(cell)
 func continue_stroke(cell: Vector2i) -> void:
 	if not _painting:return
@@ -289,16 +310,20 @@ func continue_stroke(cell: Vector2i) -> void:
 		previous=point
 	_stroke_last=cell
 func _paint_cell(cell: Vector2i) -> void:
-	if _stroke_seen.has(cell):return
+	if _stroke_broke or _stroke_seen.has(cell):return
 	_stroke_seen[cell]=true
 	var result:=edit_land(cell,tool=="erase_land")
 	if result=="ok":
 		_stroke_count+=1
 		notice=("已铺设 %d 格" if tool=="land" else "已收回 %d 格") % _stroke_count
+	elif result=="no_xirang":
+		_stroke_broke=true
+		notice=explain(result)
 	elif result not in ["already_land","no_land","no_land_delete"] or _stroke_count==0:notice=explain(result)
 	hover_cell=Layout.NOWHERE
 func end_stroke() -> void:
 	_painting=false
+	_stroke_broke=false
 	_stroke_last=Layout.NOWHERE
 	_stroke_seen.clear()
 func _input(event: InputEvent) -> void:
@@ -407,4 +432,4 @@ func load_layout(path: String=SAVE_PATH) -> String:
 	if file==null or file.get_length()>1024*1024:return "bad_save"
 	return restore_snapshot(JSON.parse_string(file.get_as_text()))
 static func explain(reason: String) -> String:
-	return {"ok":"已完成", "overlap":"占地被物件使用", "water":"不能放在水面上", "no_land":"需要完整陆地支撑", "reserved":"请避开泉眼、设施或云口", "entrance":"请留出小屋门前通路", "player":"请先让人物离开此处", "protected":"小屋可以搬迁，不能拆除", "missing":"请先选择物件", "empty":"空地", "bridge":"请保留桥梁及桥头的支撑地块", "already_land":"这里已有陆地", "not_adjacent":"新地块须与陆地边缘相邻", "area_cap":"已达到土地上限", "no_land_delete":"此处没有地块", "occupied":"地块上有固定设施", "seep_cap":"土地养护额度不足", "object_cap":"本轮物件上限为 128 个", "bad_save":"布局文件无效，当前庭院保持不变", "io_error":"无法写入布局文件", "no_save":"还没有保存的庭院布局"}.get(reason,"无法执行："+reason)
+	return {"ok":"已完成", "overlap":"占地被物件使用", "land_support":"此处承托着物件，请先搬移再收地", "water":"不能放在水面上", "no_land":"需要完整陆地支撑", "reserved":"请避开泉眼、设施或云口", "entrance":"请留出小屋门前通路", "player":"请先让人物离开此处", "protected":"小屋可以搬迁，不能拆除", "missing":"请先选择物件", "empty":"空地", "bridge":"请保留桥梁及桥头的支撑地块", "already_land":"这里已有陆地", "not_adjacent":"新地块须与陆地边缘相邻", "area_cap":"已达到土地上限", "no_land_delete":"此处没有地块", "occupied":"地块上有固定设施", "seep_cap":"土地养护额度不足", "no_xirang":"息壤不足，无法继续铺地", "object_cap":"本轮物件上限为 128 个", "bad_save":"布局文件无效，当前庭院保持不变", "io_error":"无法写入布局文件", "no_save":"还没有保存的庭院布局"}.get(reason,"无法执行："+reason)

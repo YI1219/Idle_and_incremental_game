@@ -14,6 +14,7 @@ const CraftLoopLib := preload("res://scripts/sim/craft_loop.gd")
 const ItemStoreLib := preload("res://scripts/sim/item_store.gd")
 const ItemMath := preload("res://scripts/sim/item_math.gd")
 const ExploreTripLib := preload("res://scripts/sim/explore_trip.gd")
+const XirangLib := preload("res://scripts/sim/xirang.gd")
 
 const CELL := 1.0
 const PREFAB_X0 := -4
@@ -40,6 +41,7 @@ var craft: RefCounted
 var items: RefCounted
 var knowledge: Dictionary = {}
 var trip: RefCounted
+var xirang: RefCounted
 var _dirty_ledger: bool = true
 
 
@@ -51,6 +53,8 @@ func _init(p_cfg: RefCounted = null) -> void:
 	show_desaturation = bool(land.get("show_desaturation", true))
 	phi_min = float(land.get("dormant_productivity_floor", 0.35))
 	trip = ExploreTripLib.new()
+	xirang = XirangLib.new()
+	xirang.configure(cfg.xirang() if cfg.has_method("xirang") else {})
 
 
 func reset_prefab() -> void:
@@ -83,6 +87,9 @@ func reset_prefab() -> void:
 	craft = CraftLoopLib.new()
 	craft.setup_starter(cfg)
 	craft.occupy(self)
+	if xirang == null:
+		xirang = XirangLib.new()
+	xirang.configure(cfg.xirang() if cfg.has_method("xirang") else {})
 	_mark_ledger_dirty()
 	recompute()
 
@@ -133,6 +140,8 @@ func catch_up(now_minutes: float, offline: bool = false) -> void:
 		craft.advance(self, dt)
 	else:
 		_apply_pool(dt)
+	if xirang:
+		xirang.advance(dt, offline)
 	apply_steps += 1
 	sim_minutes = now_minutes
 
@@ -202,8 +211,6 @@ func try_place(c: Vector2i) -> String:
 		return "already_land"
 	if cell_count() >= int(cfg.land()["hard_area_cap"]):
 		return "area_cap"
-	if cell_count() > 0 and not _is_edge_adjacent(c):
-		return "not_adjacent"
 	if policy == "strict_capacity" and not _strict_allows(cell_count() + 1):
 		return "seep_cap"
 	_insert_cell(c)
@@ -274,6 +281,7 @@ func to_dict() -> Dictionary:
 		"items": items.to_dict() if items else {},
 		"knowledge": knowledge.duplicate(true),
 		"trip": trip.to_dict() if trip else {},
+		"xirang": xirang.to_dict() if xirang else {},
 	}
 
 
@@ -310,6 +318,11 @@ func from_dict(data: Dictionary) -> void:
 		trip = ExploreTripLib.new()
 	if data.has("trip") and not (data["trip"] as Dictionary).is_empty():
 		trip.from_dict(data["trip"])
+	if xirang == null:
+		xirang = XirangLib.new()
+		xirang.configure(cfg.xirang() if cfg.has_method("xirang") else {})
+	if data.has("xirang") and data["xirang"] is Dictionary:
+		xirang.from_dict(data["xirang"])
 	craft.occupy(self)
 	_mark_ledger_dirty()
 	recompute()

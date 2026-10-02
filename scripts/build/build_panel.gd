@@ -93,7 +93,9 @@ func _button(parent: Node,text: String,action: Callable) -> Button:
 	parent.add_child(button)
 	return button
 func refresh() -> void:
-	area.text="土地 %d / %d 格" % [builder.island.sim.cell_count(),int(builder.island.sim.cfg.land().hard_area_cap)]
+	var xirang_points:=0.0
+	if builder.island.sim.xirang:xirang_points=builder.island.sim.xirang.points
+	area.text="土地 %d / %d 格\n息壤 %.1f" % [builder.island.sim.cell_count(),int(builder.island.sim.cfg.land().hard_area_cap),xirang_points]
 	var row: Dictionary=builder.layout.find(builder.selected)
 	status.text="已选："+builder.Layout.CATALOG[row.kind].label if not row.is_empty() else "选中物件后可搬移或移除"
 	move_button.disabled=row.is_empty() or builder.moving>=0
