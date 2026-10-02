@@ -50,6 +50,7 @@ func _add_puffs() -> void:
 		Vector3(12.8, -4.35, 1.0), Vector3(-13.4, -4.30, 2.2),
 		Vector3(-2.4, -5.55, 1.6), Vector3(2.6, -5.60, -1.4),
 		Vector3(4.8, -5.35, 2.2), Vector3(5.6, -5.50, 1.0), Vector3(-0.4, -5.40, 0.6),
+		Vector3(5.2, -5.05, 2.5), Vector3(5.8, -5.15, 2.0),
 	]
 	for i in spots.size():
 		var puff := MeshInstance3D.new()
