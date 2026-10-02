@@ -321,11 +321,7 @@ func _rebuild_islands() -> void:
 	var used_old: Dictionary = {}
 	var build_ms := 0.0
 	for group in IslandGeometry.components(land_cells):
-		var water_in_group: Dictionary = {}
-		for cell: Vector2i in water_cells:
-			if group.has(cell):
-				water_in_group[cell] = true
-		var key: int = IslandGeometry.cells_hash(group) * 10007 + IslandGeometry.cells_hash(water_in_group)
+		var key: int = IslandGeometry.cells_hash(group)
 		if island_cache.has(key):
 			next_cache[key] = island_cache[key]
 			used_old[key] = true
@@ -548,14 +544,18 @@ func _stamp_starter_relief(field: Heightfield, group: Dictionary) -> Dictionary:
 
 
 func _sync_lake_water() -> void:
-	water_cells.clear()
+	for cell: Vector2i in water_cells.keys():
+		if not land_cells.has(cell):
+			water_cells.erase(cell)
 	for child in _islands_root.get_children():
 		if child.field == null:
 			continue
 		var lakes: Array = child.water_info.get("lakes", []) if child.get("water_info") else []
 		for lake in lakes:
 			for hf_c: Vector2i in lake.get("cells", []):
-				water_cells[child.field.play_cell_of_hf(hf_c.x, hf_c.y)] = true
+				var play: Vector2i = child.field.play_cell_of_hf(hf_c.x, hf_c.y)
+				if land_cells.has(play):
+					water_cells[play] = true
 		for play in child.skip_top:
 			if land_cells.has(play):
 				water_cells[play] = true

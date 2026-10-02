@@ -91,6 +91,11 @@ static func courtyard_yard_cells() -> Array[Vector2i]:
 		Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1),
 	]:
 		keep[cell] = true
+	for x in range(-3, 2):
+		for z in range(-4, 1):
+			keep[Vector2i(x, z)] = true
+	for cell in [Vector2i(0, -7), Vector2i(7, -2), Vector2i(-2, 4), Vector2i(-7, -2)]:
+		keep.erase(cell)
 	var out: Array[Vector2i] = []
 	for cell: Vector2i in keep.keys():
 		out.append(cell)

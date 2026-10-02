@@ -309,10 +309,7 @@ static func _wall_if_open(field: Heightfield, verts: PackedVector3Array, norms: 
 		var pb: Vector3 = col_b[r]
 		var qa: Vector3 = col_a[r + 1]
 		var qb: Vector3 = col_b[r + 1]
-		if pa.distance_to(pb) < 0.06 and qa.distance_to(qb) < 0.06:
-			continue
-		var area := (pb - pa).cross(qb - pa).length_squared()
-		if area < 1e-5:
+		if pa.distance_to(pb) < 0.03 and qa.distance_to(qb) < 0.03:
 			continue
 		# Lip is turf; every ring below is rock. No grass bands inside the wall.
 		var color := Color(0.0, 0.85, 0.0, 1.0) if r == 0 else Color(0.0, 0.0, 1.0, 1.0)

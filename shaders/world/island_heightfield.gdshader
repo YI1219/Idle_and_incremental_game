@@ -63,31 +63,31 @@ void fragment() {
 	if (vcol.b > 0.45) {
 		ALBEDO = seed7_rock(world_pos, n);
 		ROUGHNESS = 0.93;
-		return;
+	} else {
+		float broad = noise(p * 0.36) * 0.65 + noise(p * 0.85) * 0.35;
+		float detail = noise(p * 16.0);
+		vec3 grass = mix(moss_color.rgb, meadow_color.rgb, smoothstep(0.2, 0.8, broad));
+		grass += (detail - 0.5) * 0.025;
+		float path = 0.0;
+		for (int i = 0; i < 8; i++) {
+			if (i >= path_count) break;
+			float d = segment_distance(p, path_segments[i].xy, path_segments[i].zw);
+			path = max(path, 1.0 - smoothstep(0.35, 1.15, d + (noise(p * 2.8) - 0.5) * 0.42));
+		}
+		vec3 soil = mix(earth_color.rgb, path_color.rgb, path * 0.7);
+		vec3 top = mix(grass, soil, path * 0.78);
+		for (int i = 0; i < 32; i++) {
+			if (i >= contact_count) break;
+			vec4 patch = contact_patches[i];
+			float d = length(p - patch.xy) / max(patch.z, 0.001);
+			float root = (1.0 - smoothstep(0.1, 1.0, d + (noise(p * 4.0) - 0.5) * 0.2)) * patch.w;
+			top = mix(top, moss_color.rgb * 0.72, root);
+		}
+		float inland = clamp(vcol.g, 0.0, 1.0);
+		float soil_w = 1.0 - smoothstep(0.10, 0.48, inland + (noise(p * 3.1) - 0.5) * 0.08);
+		vec3 rim = mix(top, earth_color.rgb, soil_w);
+		float turf = smoothstep(0.48, 0.90, ny);
+		ALBEDO = mix(earth_color.rgb, rim, turf);
+		ROUGHNESS = mix(0.88, 0.94, turf * inland);
 	}
-	float broad = noise(p * 0.36) * 0.65 + noise(p * 0.85) * 0.35;
-	float detail = noise(p * 16.0);
-	vec3 grass = mix(moss_color.rgb, meadow_color.rgb, smoothstep(0.2, 0.8, broad));
-	grass += (detail - 0.5) * 0.025;
-	float path = 0.0;
-	for (int i = 0; i < 8; i++) {
-		if (i >= path_count) break;
-		float d = segment_distance(p, path_segments[i].xy, path_segments[i].zw);
-		path = max(path, 1.0 - smoothstep(0.35, 1.15, d + (noise(p * 2.8) - 0.5) * 0.42));
-	}
-	vec3 soil = mix(earth_color.rgb, path_color.rgb, path * 0.7);
-	vec3 top = mix(grass, soil, path * 0.78);
-	for (int i = 0; i < 32; i++) {
-		if (i >= contact_count) break;
-		vec4 patch = contact_patches[i];
-		float d = length(p - patch.xy) / max(patch.z, 0.001);
-		float root = (1.0 - smoothstep(0.1, 1.0, d + (noise(p * 4.0) - 0.5) * 0.2)) * patch.w;
-		top = mix(top, moss_color.rgb * 0.72, root);
-	}
-	float inland = clamp(vcol.g, 0.0, 1.0);
-	float soil_w = 1.0 - smoothstep(0.10, 0.48, inland + (noise(p * 3.1) - 0.5) * 0.08);
-	vec3 rim = mix(top, earth_color.rgb, soil_w);
-	float turf = smoothstep(0.48, 0.90, ny);
-	ALBEDO = mix(earth_color.rgb, rim, turf);
-	ROUGHNESS = mix(0.88, 0.94, turf * inland);
 }
