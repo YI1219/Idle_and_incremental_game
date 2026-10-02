@@ -47,24 +47,26 @@ func run() -> void:
 	_look(rig, player, Vector3(0.4, 0.0, 0.2), 22.0, 1)
 	await shot(OUT + "/overview.png")
 
+	# Wall and lake from the starter basin, before the shaft cut.
+	_set_house_visible(false)
+	_restore_pitch(rig)
+	rig.near_pitch_deg = 12.0
+	rig.pitch_deg = 16.0
+	_look(rig, player, Vector3(6.4, 0.0, -2.2), 8.0, 2)
+	await shot(OUT + "/low_side.png")
+	_restore_pitch(rig)
+
+	_look(rig, player, Vector3(3.8, 0.0, 0.4), 11.0, 1)
+	await shot(OUT + "/lake.png")
+
 	_sculpt_demo(terrain)
 	terrain.flush_rebuild()
 	await frames(8)
 
-	# Outer south wall from the play rig, pitched down the face.
-	_restore_pitch(rig)
-	rig.near_pitch_deg = 12.0
-	rig.pitch_deg = 16.0
-	_look(rig, player, Vector3(0.2, 0.0, -5.1), 8.0, 4)
-	await shot(OUT + "/low_side.png")
-	_restore_pitch(rig)
-
-	_set_house_visible(false)
-	_look(rig, player, Vector3(3.8, 0.0, 0.5), 11.0, 2)
-	await shot(OUT + "/lake.png")
-
-	_look(rig, player, Vector3(5.0, 0.0, 1.6), 10.0, 2)
+	rig.near_pitch_deg = 28.0
+	_look(rig, player, Vector3(5.0, 0.0, 1.2), 9.0, 2)
 	await shot(OUT + "/shaft_waterfall.png")
+	_restore_pitch(rig)
 	_set_house_visible(true)
 
 	var playable: Dictionary = terrain.heightfield_stats()
@@ -168,13 +170,12 @@ func _sculpt_demo(terrain: Node3D) -> void:
 	if main == null or main.field == null:
 		return
 	var field = main.field
-	# Deepen the closed lake basin; do not punch it through.
+	# Closed east lake — no rim cut, so the basin keeps water.
 	for p in [Vector3(3.5, 0.0, 0.4), Vector3(4.2, 0.0, 0.6), Vector3(3.8, 0.0, -0.2)]:
-		field.apply_brush("lower", p, 1.05, 0.55, true)
-	for p in [Vector3(5.7, 0.0, 0.45), Vector3(6.2, 0.0, 0.50)]:
-		field.apply_brush("lower", p, 0.55, 0.28, true)
-	# Separate 2 m shaft north of the lake — walls inside, clouds below.
-	field.punch_shaft(Vector3(5.2, 0.0, 2.5), 1.05)
+		field.apply_brush("lower", p, 0.95, 0.42, true)
+	# Shaft north of the east lake, plus a shallow east spill for a waterfall.
+	field.punch_shaft(Vector3(4.8, 0.0, 2.4), 1.15)
+	field.apply_brush("lower", Vector3(6.35, 0.0, 0.55), 0.48, 0.20, true)
 	field.apply_coast_smooth()
 	var span := HeightfieldMesh.chunk_range(field)
 	var t0 := Time.get_ticks_usec()
@@ -183,6 +184,7 @@ func _sculpt_demo(terrain: Node3D) -> void:
 			HeightfieldMesh.build_chunk(field, Vector2i(x, z), "top", main.skip_top)
 	main.last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
 	main.rebuild_full(true)
+	print("sculpt lakes=", (main.water_info.get("lakes", []) as Array).size(), " falls=", (main.water_info.get("waterfalls", []) as Array).size())
 
 
 func _print_stats(label: String, stats: Dictionary) -> void:

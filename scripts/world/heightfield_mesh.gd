@@ -131,7 +131,7 @@ static func build_water(field: Heightfield, lake: Dictionary) -> Dictionary:
 		var poly := PackedVector2Array()
 		for p in ring:
 			poly.append(Vector2(p.x, p.z))
-		var grown: Array = Geometry2D.offset_polygon(poly, 0.16, Geometry2D.JOIN_ROUND)
+		var grown: Array = Geometry2D.offset_polygon(poly, 0.22, Geometry2D.JOIN_ROUND)
 		if not grown.is_empty() and (grown[0] as PackedVector2Array).size() >= 3:
 			poly = grown[0]
 		var idx := Geometry2D.triangulate_polygon(poly)
