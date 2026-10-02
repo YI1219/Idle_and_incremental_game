@@ -105,11 +105,14 @@ func _bake_clip() -> void:
 	check(bool(baked.get("ok", false)), "bake succeeds for a seeded island")
 	check(float(baked.get("max_y", 1.0)) <= 0.03, "no baked rock geometry sits above ground height")
 	check(RockBaker.max_y(baked) <= 0.03, "baker max_y agrees no geometry is above ground")
-	check(RockBaker.has_no_interior_proxy(baked), "baked mesh has no interior-face proxy")
-	check(RockBaker.is_closed_enough(baked), "baked mesh is closed except the grass cut")
+	check(RockBaker.is_valid_union(baked), "baked union is manifold except the grass cut")
+	var report: Dictionary = RockBaker.boundary_report(baked)
+	check(int(report.get("nonmanifold", 1)) == 0, "baked union has no non-manifold edges")
+	check(int(report.get("odd_not_ground", 1)) == 0, "boundary edges sit only on the grass cut")
 	check(int(baked.get("triangles", 0)) > 12, "bake keeps an outer shell")
 	check(int(baked.get("triangles", 0)) < RockUnderside.triangle_count(state), "union drops stacked interior faces")
-	check(int(baked.get("chunks", 0)) >= 1, "bake splits large islands into chunks")
+	check(int(baked.get("chunks", 0)) >= 1, "bake reports island sectors")
+	check(not RockBaker.is_valid_union(_open_box_result()), "validation rejects a mesh with a side hole")
 
 
 func _incremental() -> void:
@@ -140,3 +143,34 @@ func _incremental() -> void:
 			kept += 1
 	check(kept >= 3, "incremental respace keeps existing slot pieces")
 	terrain.queue_free()
+
+
+func _open_box_result() -> Dictionary:
+	var verts := PackedVector3Array()
+	var norms := PackedVector3Array()
+	var cols := PackedColorArray()
+	var faces := [
+		[Vector3(0, -1, 0), Vector3(1, -1, 0), Vector3(1, -1, 1)],
+		[Vector3(0, -1, 0), Vector3(1, -1, 1), Vector3(0, -1, 1)],
+		[Vector3(0, -1, 0), Vector3(0, -2, 0), Vector3(1, -2, 0)],
+		[Vector3(0, -1, 0), Vector3(1, -2, 0), Vector3(1, -1, 0)],
+		[Vector3(1, -1, 0), Vector3(1, -2, 0), Vector3(1, -2, 1)],
+		[Vector3(1, -1, 0), Vector3(1, -2, 1), Vector3(1, -1, 1)],
+	]
+	for face in faces:
+		var a: Vector3 = face[0]
+		var b: Vector3 = face[1]
+		var c: Vector3 = face[2]
+		var n := (b - a).cross(c - a).normalized()
+		for p in [a, b, c]:
+			verts.append(p)
+			norms.append(n)
+			cols.append(Color(0.5, 0.0, 0.0))
+	return {
+		"ok": true,
+		"vertices": verts,
+		"normals": norms,
+		"colors": cols,
+		"triangles": int(verts.size() / 3),
+		"max_y": 0.0,
+	}

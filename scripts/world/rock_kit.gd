@@ -111,10 +111,31 @@ static func _bake_piece(path: String) -> Dictionary:
 	var width := maxf(max_xz.x - min_xz.x, max_xz.y - min_xz.y)
 	return {
 		"mesh": mesh,
+		"hull": _convex_hull_mesh(mesh),
 		"width": maxf(width, 0.2),
 		"height": maxf(top_y - min_y, 0.2),
 		"tris": int(faces.size() / 3),
 	}
+
+
+static func _convex_hull_mesh(src: ArrayMesh) -> ArrayMesh:
+	var pts := PackedVector3Array()
+	for v in src.get_faces():
+		pts.append(v)
+	if pts.size() < 4:
+		return src
+	var shape := ConvexPolygonShape3D.new()
+	shape.points = pts
+	var raw: ArrayMesh = shape.get_debug_mesh()
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	if raw:
+		for s in raw.get_surface_count():
+			if raw.surface_get_primitive_type(s) != Mesh.PRIMITIVE_TRIANGLES:
+				continue
+			st.append_from(raw, s, Transform3D.IDENTITY)
+	var hull := st.commit()
+	return hull if hull.get_surface_count() > 0 else src
 
 
 static func _emit_node(st: SurfaceTool, node: Node, parent: Transform3D) -> void:

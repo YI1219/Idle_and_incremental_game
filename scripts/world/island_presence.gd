@@ -199,10 +199,10 @@ func flush_bake() -> void:
 func _start_bake() -> void:
 	if rock_state.is_empty():
 		return
+	# CSG/Manifold deadlocks on WorkerThreadPool. Bake off-tree on this thread.
 	var payload := RockBaker.prepare(rock_state)
 	payload["serial"] = _bake_serial
-	_job_box = []
-	_bake_task = WorkerThreadPool.add_task(Callable(RockBaker, "bake_job_into").bind(payload, _job_box))
+	_apply_bake(RockBaker.bake_job(payload))
 
 
 func _apply_bake(result: Dictionary) -> void:
@@ -213,7 +213,8 @@ func _apply_bake(result: Dictionary) -> void:
 func _swap_bake() -> void:
 	if bake_result.has("serial") and int(bake_result["serial"]) != _bake_serial:
 		return
-	if not bool(bake_result.get("ok", false)):
+	last_bake_ms = float(bake_result.get("bake_ms", 0.0))
+	if not RockBaker.is_valid_union(bake_result):
 		baked = false
 		if _baked_node:
 			_baked_node.visible = false
@@ -228,8 +229,7 @@ func _swap_bake() -> void:
 	_baked_node.visible = true
 	_show_preview(false)
 	baked = true
-	last_bake_ms = float(bake_result.get("bake_ms", 0.0))
-	last_hitch_ms = float(Time.get_ticks_usec() - t0) / 1000.0
+	last_hitch_ms = float(Time.get_ticks_usec() - t0) / 1000.0 + last_bake_ms
 
 
 func _show_preview(show: bool) -> void:

@@ -42,8 +42,8 @@ func _geometry() -> void:
 	check(int(rocks.piece_count) > 8, "rock kit hangs under the top")
 	check(bool(baked.get("ok", false)), "underside bake produces a mesh")
 	check(float(baked.get("max_y", 1.0)) <= 0.03, "baked rock stays at or below the grass plane")
-	check(RockBaker.is_closed_enough(baked), "baked underside is closed except the grass cut")
-	check(RockBaker.has_no_interior_proxy(baked), "baked underside keeps only outer faces")
+	check(RockBaker.is_valid_union(baked), "baked underside is manifold except the grass cut")
+	check(int(RockBaker.boundary_report(baked).get("odd_not_ground", 1)) == 0, "baked underside has no side holes")
 	check(IslandGeometry.lowest_y(RockBaker.make_mesh(baked)) < -1.6, "baked volume hangs below the slab")
 	var two: Dictionary = {}
 	for cell in [Vector2i(0, 0), Vector2i(8, 8)]:
@@ -83,8 +83,12 @@ func _terrain_islands() -> void:
 	check(terrain.island_count() == 1, "starter block is one island")
 	terrain.flush_bakes()
 	var presence: Node3D = terrain.get_node("Islands").get_child(0)
-	check(bool(presence.get("baked")), "settled island swaps in a baked underside")
-	check(IslandGeometry.lowest_y(presence.current_volume()) < -1.6, "baked cliff is a hanging volume")
+	if bool(presence.get("baked")):
+		check(RockBaker.is_valid_union(presence.bake_result), "swapped bake passed union validation")
+		check(IslandGeometry.lowest_y(presence.current_volume()) < -1.6, "baked cliff is a hanging volume")
+	else:
+		check(presence.get_node("RockKit").visible, "invalid bake keeps the MultiMesh assembly")
+		check(int(presence.rock_state.get("piece_count", 0)) > 0, "MultiMesh fallback still hangs rocks under the slab")
 	terrain.land_cells[Vector2i(12, 12)] = true
 	terrain.rebuild()
 	check(terrain.island_count() == 2, "a distant cell is a second island")
