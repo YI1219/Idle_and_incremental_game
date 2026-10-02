@@ -482,12 +482,22 @@ func _dress_draws() -> int:
 	return n
 
 
+func _salt() -> float:
+	## Huge cells_hash seeds destroy sin() variation. Keep a small phase.
+	return float(absi(field.seed) % 97) * 0.13
+
+
+func _unit_hash(x: int, y: int, extra: int = 0) -> Vector2:
+	var h := Heightfield._hash_int(x * 73856093 ^ y * 19349663 ^ extra * 83492791 ^ field.seed)
+	return Vector2(float(h & 0xffff) / 65535.0, float((h >> 16) & 0xffff) / 65535.0)
+
+
 func _density_at(world: Vector2) -> float:
-	var wave := 0.5 + 0.5 * sin(world.x * 0.42 + float(field.seed) * 0.11) * sin(world.y * 0.35 - float(field.seed) * 0.07)
-	var nse := Heightfield._hash2(world.x * 0.19 + float(field.seed), world.y * 0.17)
-	var field_v := wave * 0.70 + nse.x * 0.30
-	# Clumps vs gaps without collapsing to zero on the playable seed.
-	return clampf(0.10 + 0.58 * field_v * field_v, 0.08, 0.72)
+	var salt := _salt()
+	var wave := 0.5 + 0.5 * sin(world.x * 0.42 + salt) * sin(world.y * 0.35 - salt * 0.7)
+	var nse := _unit_hash(int(floor(world.x * 3.0)), int(floor(world.y * 3.0)))
+	var field_v := wave * 0.68 + nse.x * 0.32
+	return clampf(0.14 + 0.52 * field_v, 0.12, 0.70)
 
 
 func _scatter_dressing() -> void:
@@ -504,22 +514,33 @@ func _scatter_dressing() -> void:
 	var tufts: Array = []
 	var pebbles: Array = []
 	var flowers: Array = []
+	var n_land := 0
+	var n_gate := 0
+	var n_ok := 0
+	var dmin := 99.0
+	var dmax := -1.0
 	for cz in field.cells_z():
 		for cx in field.cells_x():
 			if not field.is_land(cx, cz):
 				continue
+			n_land += 1
 			var play := field.play_cell_of_hf(cx, cz)
 			if skip_top.has(play) or _blocked.has(play) or water_cells.has(Vector2i(cx, cz)):
+				n_gate += 1
 				continue
 			if field.sample_inland(Vector3(field.vertex_world(cx, cz).x, 0.0, field.vertex_world(cx, cz).y)) < 0.18:
+				n_gate += 1
 				continue
+			n_ok += 1
 			var origin := field.vertex_world(cx, cz)
 			var density := _density_at(origin)
+			dmin = minf(dmin, density)
+			dmax = maxf(dmax, density)
 			for attempt in 9:
-				var nse := Heightfield._hash2(float(cx) * 2.13 + float(attempt) * 17.0 + float(field.seed), float(cz) * 1.71 + float(attempt) * 5.3)
+				var nse := _unit_hash(cx, cz, attempt + 11)
 				if nse.x > density:
 					continue
-				var pos := Heightfield._hash2(float(cx) * 5.17 + float(attempt) * 3.1, float(cz) * 4.73 + float(attempt) * 8.9 + float(field.seed))
+				var pos := _unit_hash(cx + 17, cz + 29, attempt + 53)
 				var at := Vector3(origin.x + pos.x * field.spacing, 0.0, origin.y + pos.y * field.spacing)
 				var h := field.sample_height(at) + field.visual_relief(at)
 				var yaw := pos.y * TAU
@@ -529,7 +550,7 @@ func _scatter_dressing() -> void:
 				tufts.append(Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(0.85 + pos.y * 0.40, tall, 0.85 + pos.x * 0.30)), Vector3(at.x, h + 0.008, at.z)))
 				if nse.y > 0.84 and pos.x > 0.35:
 					flowers.append(Transform3D(Basis(Vector3.UP, yaw + 1.2).scaled(Vector3.ONE * (1.0 + nse.x * 0.35)), Vector3(at.x + 0.05, h + 0.01, at.z - 0.04)))
-			var clump := Heightfield._hash2(float(cx) * 0.37 + float(field.seed), float(cz) * 0.41)
+			var clump := _unit_hash(cx + 3, cz + 5, 7)
 			if clump.x > 0.70 and density > 0.30:
 				var mid := origin + Vector2(field.spacing * 0.5, field.spacing * 0.5)
 				var h2 := field.sample_height(Vector3(mid.x, 0.0, mid.y))
@@ -541,8 +562,9 @@ func _scatter_dressing() -> void:
 	_fill_mm(_flower_mm, flowers)
 	var rocks := _scatter_rim_rocks(water_cells)
 	_hang_roots()
-	print("dress tufts=%d pebbles=%d flowers=%d rim_rocks=%d" % [
-		tufts.size(), pebbles.size(), flowers.size(), rocks
+	print("dress tufts=%d pebbles=%d flowers=%d rim_rocks=%d land=%d gated=%d ok=%d d=%.3f..%.3f skip=%d blocked=%d" % [
+		tufts.size(), pebbles.size(), flowers.size(), rocks,
+		n_land, n_gate, n_ok, dmin, dmax, skip_top.size(), _blocked.size()
 	])
 
 
