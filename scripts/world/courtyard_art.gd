@@ -9,6 +9,7 @@ const GROUND := preload("res://shaders/world/island_heightfield.gdshader")
 const CLIFF := preload("res://shaders/world/island_heightfield.gdshader")
 const RockKit := preload("res://scripts/world/rock_kit.gd")
 const COTTAGE_SHADER := preload("res://shaders/world/courtyard_cottage.gdshader")
+const PROP_SHADER := preload("res://shaders/world/prop_surface.gdshader")
 const WATER := preload("res://shaders/world/courtyard_water.gdshader")
 const SKY_SHADER := preload("res://shaders/world/courtyard_sky.gdshader")
 const MODEL_IDS := ["CommonTree_1", "CommonTree_3", "Rock_Medium_1", "Rock_Medium_2", "Grass_Common_Short", "Bush_Common", "Grass_Wispy_Short", "Flower_3_Group"]
@@ -43,6 +44,8 @@ func attach(to_terrain: Node3D, to_cottage: Node3D) -> void:
 	_bind_island_materials()
 	_load_models()
 	_refine_cottage(cottage)
+	if cottage:
+		stamp_contact(cottage, cottage.global_position.y)
 
 func _refine_cottage(node: Node) -> void:
 	if node is MeshInstance3D:
@@ -118,10 +121,12 @@ func _refine_materials(node: Node) -> void:
 					material.set_shader_parameter("sun_color", Color("9caa62"))
 				node.set_surface_override_material(index, material)
 			else:
-				var material := original.duplicate() as StandardMaterial3D
-				material.roughness = 0.94
-				material.normal_scale = 0.45
-				material.albedo_color = Color("b6bfb9") if "bark" in label else Color("b5c7c3")
+				var material := ShaderMaterial.new()
+				material.shader = PROP_SHADER
+				material.set_shader_parameter("albedo", Color("b6bfb9") if "bark" in label else Color("b5c7c3"))
+				if original.albedo_texture:
+					material.set_shader_parameter("albedo_tex", original.albedo_texture)
+					material.set_shader_parameter("use_tex", 1.0)
 				node.set_surface_override_material(index, material)
 	for child in node.get_children():
 		_refine_materials(child)
@@ -151,6 +156,7 @@ func add_model(id: String, at: Vector3, height: float, yaw: float = 0.0, parent:
 	pivot.add_child(model)
 	model.scale *= factor
 	model.position.y -= box.position.y * factor
+	stamp_contact(pivot, at.y)
 	return pivot
 
 func clear_communities() -> void:
@@ -221,6 +227,13 @@ func _bind_island_materials() -> void:
 	for child in root.get_children():
 		if child.has_method("set_material"):
 			child.set_material(ground_material)
+
+
+func stamp_contact(root: Node, ground_y: float) -> void:
+	if root is GeometryInstance3D:
+		(root as GeometryInstance3D).set_instance_shader_parameter("ground_y", ground_y)
+	for child in root.get_children():
+		stamp_contact(child, ground_y)
 
 
 func _sync_contacts() -> void:

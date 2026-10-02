@@ -187,6 +187,16 @@ func _flatten_for_place(kind: String,cell: Vector2i) -> String:
 		return "no_xirang"
 	var done: Dictionary=island.terrain.flatten_footprint(cells,island.sim.xirang,after,false)
 	return "ok" if bool(done.get("ok",true)) else String(done.get("reason","no_xirang"))
+func _cover_cells() -> Dictionary:
+	var cells: Dictionary={}
+	for row in layout.objects:
+		if row.kind!="house":
+			continue
+		for c in layout.footprint(row.kind, row.cell):
+			cells[c]=true
+	for c in layout.reserved:
+		cells[c]=true
+	return cells
 func _blocked_cells() -> Dictionary:
 	var blocked: Dictionary={}
 	for row in layout.objects:
@@ -214,6 +224,9 @@ func reseat_objects() -> void:
 		var node: Node3D=nodes[row.id]
 		var at:=Vector3(row.cell.x+.5,0,row.cell.y+.5)
 		node.global_position=Vector3(at.x,_seat_y(at),at.z)
+		art.stamp_contact(node, node.global_position.y)
+	if house:
+		art.stamp_contact(house, house.global_position.y)
 func prune_unsupported_objects() -> int:
 	refresh_rules()
 	var drop: Array[int] = []
@@ -254,7 +267,16 @@ func rebuild_objects() -> void:
 		art._patches.append(Vector4(house.global_position.x, house.global_position.z, 3.4, 0.58))
 	art._sync_contacts()
 	var door: Vector3=SpaceState.house_door
-	art.set_paths(PackedVector3Array([door,door+Vector3(0,0,1.4),Vector3(0,0,2.6)]))
+	var path:=PackedVector3Array([door,door+Vector3(0,0,1.4),Vector3(0,0,2.6)])
+	art.set_paths(path)
+	if island.terrain and island.terrain.has_method("set_ground_cover"):
+		island.terrain.set_ground_cover(_cover_cells(), path)
+	if house:
+		art.stamp_contact(house, house.global_position.y)
+	for id in nodes:
+		var placed: Node=nodes[id]
+		if placed is Node3D:
+			art.stamp_contact(placed, (placed as Node3D).global_position.y)
 	if is_instance_valid(_grid):_draw_grid()
 func _render(kind: String,cell: Vector2i,parent: Node3D) -> Node3D:
 	var pivot:=Node3D.new()

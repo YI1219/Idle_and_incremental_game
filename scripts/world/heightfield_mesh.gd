@@ -6,6 +6,8 @@ const HeightfieldShell := preload("res://scripts/world/heightfield_shell.gd")
 const WALL_RINGS := 7
 const LIP := 0.14
 const ROCK_SLOPE := 0.55
+## Water sheet extends past the waterline so it cuts a sloped bank.
+const WATER_OVERLAP := 0.48
 
 
 static func chunk_range(field: Heightfield) -> Vector2i:
@@ -116,7 +118,7 @@ static func build_water(field: Heightfield, lake: Dictionary) -> Dictionary:
 		var poly := PackedVector2Array()
 		for p in ring:
 			poly.append(Vector2(p.x, p.z))
-		var grown: Array = Geometry2D.offset_polygon(poly, 0.22, Geometry2D.JOIN_ROUND)
+		var grown: Array = Geometry2D.offset_polygon(poly, WATER_OVERLAP, Geometry2D.JOIN_ROUND)
 		if not grown.is_empty() and (grown[0] as PackedVector2Array).size() >= 3:
 			poly = grown[0]
 		var idx := Geometry2D.triangulate_polygon(poly)
@@ -566,6 +568,17 @@ static func _bottom_vert(field: Heightfield, ix: int, iz: int) -> Vector3:
 static func _bottom_noise(field: Heightfield, x: float, z: float) -> float:
 	var h := Heightfield._hash2(x * 0.31 + float(field.seed), z * 0.29)
 	return (h.x - 0.5) * 0.07
+
+
+static func lake_rings(field: Heightfield, cells: Array) -> Array:
+	var rings: Array = []
+	for loop in _lake_loops(field, cells):
+		var poly := PackedVector2Array()
+		for p in loop:
+			poly.append(Vector2(p.x, p.z))
+		if poly.size() >= 3:
+			rings.append(poly)
+	return rings
 
 
 static func _lake_loops(field: Heightfield, cells: Array) -> Array:

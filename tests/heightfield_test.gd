@@ -3,6 +3,7 @@ extends SceneTree
 
 const Heightfield := preload("res://scripts/world/heightfield.gd")
 const HeightfieldMesh := preload("res://scripts/world/heightfield_mesh.gd")
+const LakeShore := preload("res://scripts/world/lake_shore.gd")
 const IslandGeometry := preload("res://scripts/world/island_geometry.gd")
 const XirangLib := preload("res://scripts/sim/xirang.gd")
 
@@ -103,6 +104,25 @@ func _water() -> void:
 	var level := float(lake.get("level", 0.0))
 	var floor_h := field.sample_height(Vector3(4.0, 0.0, 4.0))
 	check(level >= floor_h + 0.02, "water surface sits at least 2 cm above the pit floor")
+	var rings: Array = HeightfieldMesh.lake_rings(field, lake.get("cells", []))
+	check(not rings.is_empty(), "lake exposes a waterline ring")
+	var baked: Dictionary = LakeShore.bake(rings)
+	var shore_p: Vector2 = rings[0][0]
+	var shore_d := LakeShore.sample(baked, shore_p)
+	check(shore_d < 0.2, "shore field is near zero on the waterline (%.3f)" % shore_d)
+	var centroid := Vector2.ZERO
+	for p in rings[0]:
+		centroid += p
+	centroid /= float(maxi(rings[0].size(), 1))
+	check(LakeShore.sample(baked, centroid) > shore_d + 0.12, "shore field grows toward the lake interior")
+	var sheet: Dictionary = HeightfieldMesh.build_water(field, lake)
+	var ring_r := 0.0
+	var mesh_r := 0.0
+	for p in rings[0]:
+		ring_r = maxf(ring_r, p.distance_to(centroid))
+	for v in sheet.get("vertices", PackedVector3Array()):
+		mesh_r = maxf(mesh_r, Vector2(v.x, v.z).distance_to(centroid))
+	check(mesh_r > ring_r + 0.2, "water sheet overlaps the bank past the waterline")
 	# Notch the east rim all the way to the coast so the lake drains.
 	var max_x := field.origin.x + float(field.cells_x()) * field.spacing
 	var x := 5.5

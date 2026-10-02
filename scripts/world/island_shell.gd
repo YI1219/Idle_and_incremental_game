@@ -190,12 +190,15 @@ func _rebuild_facilities() -> void:
 	_lantern(Vector2i(0, 3), 0.92)
 
 
-func _wood(color: Color) -> StandardMaterial3D:
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = color
-	mat.roughness = 0.92
-	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+func _wood(color: Color) -> ShaderMaterial:
+	var mat := ShaderMaterial.new()
+	mat.shader = preload("res://shaders/world/prop_surface.gdshader")
+	mat.set_shader_parameter("albedo", color)
 	return mat
+
+
+func _seat_prop(mesh: MeshInstance3D, ground_y: float) -> void:
+	mesh.set_instance_shader_parameter("ground_y", ground_y)
 
 
 func _planter(cell: Vector2i) -> void:
@@ -206,6 +209,7 @@ func _planter(cell: Vector2i) -> void:
 	box.mesh = mesh
 	box.material_override = _wood(Color("6b5340"))
 	box.position = at + Vector3(0.0, 0.05, 0.0)
+	_seat_prop(box, at.y)
 	_facilities.add_child(box)
 	var soil := MeshInstance3D.new()
 	var soil_mesh := BoxMesh.new()
@@ -213,6 +217,7 @@ func _planter(cell: Vector2i) -> void:
 	soil.mesh = soil_mesh
 	soil.material_override = _wood(Color("3d3226"))
 	soil.position = at + Vector3(0.0, 0.10, 0.0)
+	_seat_prop(soil, at.y)
 	_facilities.add_child(soil)
 
 
@@ -224,6 +229,7 @@ func _crate(cell: Vector2i) -> void:
 	box.mesh = mesh
 	box.material_override = _wood(Color("8a6d4a"))
 	box.position = at + Vector3(0.0, 0.14, 0.0)
+	_seat_prop(box, at.y)
 	_facilities.add_child(box)
 	var jar := MeshInstance3D.new()
 	var cyl := CylinderMesh.new()
@@ -234,6 +240,7 @@ func _crate(cell: Vector2i) -> void:
 	jar.mesh = cyl
 	jar.material_override = _wood(Color("b08968"))
 	jar.position = at + Vector3(0.16, 0.36, 0.04)
+	_seat_prop(jar, at.y)
 	_facilities.add_child(jar)
 
 
@@ -248,6 +255,7 @@ func _lantern(cell: Vector2i, height: float) -> void:
 	post.mesh = cyl
 	post.material_override = _wood(Color("6e675c"))
 	post.position = at + Vector3(0.0, cyl.height * 0.5, 0.0)
+	_seat_prop(post, at.y)
 	_facilities.add_child(post)
 	var cap := MeshInstance3D.new()
 	var prism := PrismMesh.new()
@@ -255,6 +263,7 @@ func _lantern(cell: Vector2i, height: float) -> void:
 	cap.mesh = prism
 	cap.material_override = _wood(Color("5a5348"))
 	cap.position = at + Vector3(0.0, cyl.height + 0.08, 0.0)
+	_seat_prop(cap, at.y)
 	_facilities.add_child(cap)
 	var glow := MeshInstance3D.new()
 	var bulb := SphereMesh.new()

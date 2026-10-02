@@ -5,6 +5,8 @@ uniform vec4 shade_color : source_color = vec4(0.19, 0.36, 0.28, 1.0);
 uniform vec4 sun_color : source_color = vec4(0.57, 0.67, 0.37, 1.0);
 uniform float wind_strength = 0.05;
 uniform float preserve_color = 0.0;
+instance uniform float ground_y = 0.0;
+#include "res://shaders/world/ground_contact.gdshaderinc"
 varying vec3 world_pos;
 varying float local_height;
 void vertex() {
@@ -25,7 +27,7 @@ void fragment() {
     float crown = smoothstep(0.25, 4.0, local_height);
     float variation = sin(world_pos.x * 0.95 + world_pos.z * 0.72) * 0.07;
     vec3 leaf = mix(shade_color.rgb, sun_color.rgb, clamp(value * 0.62 + crown * 0.25 + variation, 0.0, 1.0));
-    ALBEDO = mix(leaf, tex.rgb, preserve_color);
+    ALBEDO = blend_ground_contact(mix(leaf, tex.rgb, preserve_color), world_pos);
     ROUGHNESS = 0.95;
     BACKLIGHT = ALBEDO * 0.36;
 }

@@ -385,6 +385,14 @@ func rock_stats() -> Dictionary:
 	return heightfield_stats()
 
 
+func set_ground_cover(footprints: Dictionary, paths: PackedVector3Array) -> void:
+	if _islands_root == null:
+		return
+	for child in _islands_root.get_children():
+		if child.has_method("set_ground_cover"):
+			child.set_ground_cover(footprints, paths)
+
+
 func heightfield_stats() -> Dictionary:
 	var tris := 0
 	var draw := 0
