@@ -39,11 +39,11 @@ func run() -> void:
 	if builder:
 		builder.set_active(false)
 	rig.set_physics_process(false)
-	var look := Vector3(1.2, -2.1, 0.2)
-	var from := Vector3(-19.5, -3.15, 15.8)
+	var look := Vector3(0.6, -3.15, -1.0)
+	var from := Vector3(-18.5, -0.85, 13.4)
 	rig.global_transform = Transform3D(Basis.looking_at(look - from, Vector3.UP), from)
 	var camera := rig.get_node_or_null("Camera3D") as Camera3D
 	if camera:
-		camera.fov = 40
+		camera.fov = 42
 	await shot("res://art/review/island_style/2026-10-02/underside_low.png")
 	quit()

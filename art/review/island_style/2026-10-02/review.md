@@ -18,4 +18,4 @@ godot --path . --script tests/capture_island_style.gd --resolution 1280x720 --fi
 
 PNG binaries stay local (`art/**` gitignore). Copies used for review are also in the agent artifacts folder.
 
-This is not target-device performance evidence. Software-renderer captures are paler than a discrete GPU; cloud albedo/alpha is tuned so billows still read there.
+This is not target-device performance evidence. Software-renderer captures are paler than a discrete GPU; cloud sea uses opaque vertex-colored billows plus puffs so the mounds still read there.

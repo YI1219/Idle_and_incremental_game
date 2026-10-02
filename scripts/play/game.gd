@@ -85,3 +85,10 @@ func _lights() -> void:
 	sun.light_energy = 1.15
 	sun.shadow_enabled = true
 	add_child(sun)
+	var fill := DirectionalLight3D.new()
+	fill.name = "FillLight"
+	fill.rotation_degrees = Vector3(55, 150, 0)
+	fill.light_color = Color("c9d6dc")
+	fill.light_energy = 0.62
+	fill.shadow_enabled = false
+	add_child(fill)

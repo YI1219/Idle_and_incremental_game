@@ -6,6 +6,7 @@ extends Node3D
 const SOURCE_DIR := "res://assets/nature/quaternius/"
 const FOLIAGE := preload("res://shaders/world/courtyard_foliage.gdshader")
 const GROUND := preload("res://shaders/world/courtyard_ground.gdshader")
+const CLIFF := preload("res://shaders/world/island_cliff.gdshader")
 const COTTAGE_SHADER := preload("res://shaders/world/courtyard_cottage.gdshader")
 const WATER := preload("res://shaders/world/courtyard_water.gdshader")
 const SKY_SHADER := preload("res://shaders/world/courtyard_sky.gdshader")
@@ -37,7 +38,9 @@ func attach(to_terrain: Node3D, to_cottage: Node3D) -> void:
 	water.shader = WATER
 	_override("JadeWater", water)
 	_override("RiverBank", ground_material)
-	_override("IslandCliff", ground_material)
+	var cliff := ShaderMaterial.new()
+	cliff.shader = CLIFF
+	_override("IslandCliff", cliff)
 	_load_models()
 	_refine_cottage(cottage)
 
@@ -259,8 +262,8 @@ static func apply_atmosphere(world_environment: WorldEnvironment, sun: Direction
 	environment.sky = sky
 	environment.background_mode = Environment.BG_SKY
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	environment.ambient_light_color = Color("8fa6b0")
-	environment.ambient_light_energy = 0.48
+	environment.ambient_light_color = Color("7e94a0")
+	environment.ambient_light_energy = 0.42
 	environment.tonemap_mode = Environment.TONE_MAPPER_AGX
 	environment.tonemap_exposure = 1.05
 	environment.tonemap_white = 8.0
@@ -268,11 +271,11 @@ static func apply_atmosphere(world_environment: WorldEnvironment, sun: Direction
 	environment.adjustment_saturation = 1.08
 	environment.adjustment_contrast = 1.06
 	environment.fog_enabled = true
-	environment.fog_light_color = Color("d5ddd8")
-	environment.fog_density = 0.0014
-	environment.fog_sky_affect = 0.10
-	environment.fog_height = -7.2
-	environment.fog_height_density = 0.018
+	environment.fog_light_color = Color("9aabb4")
+	environment.fog_density = 0.0011
+	environment.fog_sky_affect = 0.08
+	environment.fog_height = -8.4
+	environment.fog_height_density = 0.012
 	environment.ssao_enabled = true
 	environment.ssao_radius = 0.22
 	environment.ssao_intensity = 1.35

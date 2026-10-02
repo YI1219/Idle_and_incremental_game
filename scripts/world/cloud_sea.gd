@@ -2,8 +2,8 @@ extends Node3D
 ## Soft stylized cloud sea under the grotto islands. No distant mountains.
 ## Built as an opaque vertex-colored mesh so billows still read on software render.
 
-const SEA_Y := -3.55
-const SPAN := 72.0
+const SEA_Y := -4.85
+const SPAN := 80.0
 const RES := 48
 
 var _sea: MeshInstance3D
@@ -15,15 +15,15 @@ func _ready() -> void:
 	add_to_group("cloud_sea")
 	_sea = MeshInstance3D.new()
 	_sea.name = "SeaSheet"
-	_sea.mesh = _billow_mesh(SPAN, RES, 2.8, Color("fff8ec"), Color("6a7b86"))
+	_sea.mesh = _billow_mesh(SPAN, RES, 2.15, Color("fffaf0"), Color("4e5d68"))
 	_sea.position.y = SEA_Y
 	_sea.material_override = _solid_vertex()
 	_sea.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_sea)
 	_wisps = MeshInstance3D.new()
 	_wisps.name = "WispSheet"
-	_wisps.mesh = _billow_mesh(SPAN * 0.55, 28, 1.35, Color("fffdf6"), Color("8b9aa3"))
-	_wisps.position.y = SEA_Y + 1.15
+	_wisps.mesh = _billow_mesh(SPAN * 0.48, 28, 1.15, Color("ffffff"), Color("6d7c86"))
+	_wisps.position.y = SEA_Y + 1.55
 	_wisps.material_override = _solid_vertex()
 	_wisps.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(_wisps)
@@ -45,23 +45,25 @@ func _solid_vertex() -> StandardMaterial3D:
 
 func _add_puffs() -> void:
 	var spots := [
-		Vector3(-7.5, -2.15, 6.5), Vector3(8.2, -2.35, 5.8), Vector3(6.4, -2.55, -7.2),
-		Vector3(-8.8, -2.45, -5.4), Vector3(1.2, -3.05, 8.6), Vector3(-2.4, -3.2, -8.0),
-		Vector3(10.5, -2.7, 0.6), Vector3(-11.0, -2.6, 1.8), Vector3(0.4, -3.6, 0.2),
+		Vector3(-10.2, -2.55, 8.4), Vector3(11.0, -2.65, 7.6), Vector3(9.2, -2.70, -8.8),
+		Vector3(-11.4, -2.60, -7.2), Vector3(2.0, -2.85, 10.6), Vector3(-3.2, -2.90, -10.2),
+		Vector3(12.8, -2.75, 1.0), Vector3(-13.4, -2.70, 2.2),
+		Vector3(-2.4, -4.25, 1.6), Vector3(2.6, -4.30, -1.4),
 	]
 	for i in spots.size():
 		var puff := MeshInstance3D.new()
 		puff.name = "Puff_%d" % i
 		var sphere := SphereMesh.new()
-		sphere.radius = 2.1 + float(i % 3) * 0.45
-		sphere.height = 1.35 + float(i % 4) * 0.22
+		var under := i >= 8
+		sphere.radius = (1.25 if under else 1.75) + float(i % 3) * 0.18
+		sphere.height = sphere.radius * (1.35 if under else 1.20)
 		sphere.radial_segments = 10
 		sphere.rings = 6
 		puff.mesh = sphere
 		puff.position = spots[i]
 		var material := StandardMaterial3D.new()
 		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		material.albedo_color = Color("fff6e4") if i % 2 == 0 else Color("c5d0d4")
+		material.albedo_color = Color("fffdf4") if i % 2 == 0 else Color("8f9ea8")
 		material.cull_mode = BaseMaterial3D.CULL_DISABLED
 		puff.material_override = material
 		puff.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
