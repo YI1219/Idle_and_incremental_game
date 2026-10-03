@@ -33,6 +33,12 @@ var _top_mat: ShaderMaterial
 var _rock_mat: ShaderMaterial
 var _defer_dress := false
 var _dress_core := false
+var _skip_rocks := false
+var _rock_full := true
+var _rock_dirty := Rect2()
+var _asm = Rocks.new()
+var _chunk_payloads: Dictionary = {}
+var _top_node: MeshInstance3D
 
 
 func _ready() -> void:
@@ -47,9 +53,11 @@ func _process(_delta: float) -> void:
 		var t0 := Time.get_ticks_usec()
 		if _dress_core:
 			_apply_core()
-		_apply_rocks()
+		if not _skip_rocks:
+			_apply_rocks()
 		last_dress_ms = float(Time.get_ticks_usec() - t0) / 1000.0
 		_dress_core = false
+		_skip_rocks = false
 		_recount()
 
 
@@ -82,6 +90,7 @@ func rebuild_full(_sync_dress: bool = true) -> float:
 	var built := _build_payload(field)
 	_apply_full(built)
 	_apply_core()
+	_rock_full = true
 	_apply_rocks()
 	last_full_ms = float(Time.get_ticks_usec() - t0) / 1000.0
 	_recount()
@@ -89,18 +98,37 @@ func rebuild_full(_sync_dress: bool = true) -> float:
 
 
 func stroke(op: String, center: Vector3, radius: float, strength: float) -> float:
-	## Sync cost is dirty chunks plus the heightmap shape. Rocks wait one frame.
+	## Sync cost is the dirty top cells plus the heightmap. Rock dress waits one frame
+	## and only restamps the coast segment the brush touched.
 	var t0 := Time.get_ticks_usec()
 	var before := _hash_mask()
+	var origin_before := field.origin
+	var vx_before := field.verts_x
+	var vz_before := field.verts_z
 	var applied: Dictionary = field.apply_brush(op, center, radius, strength, false)
-	var mask_changed := _hash_mask() != before
+	var grew := field.origin != origin_before or field.verts_x != vx_before or field.verts_z != vz_before
+	var mask_changed := grew or _hash_mask() != before
 	var rect: Rect2i = applied.get("rect", Rect2i())
-	if mask_changed or _ctx.is_empty():
+	var hit_rim := mask_changed or _rect_hits_rim(rect)
+	if grew or _ctx.is_empty():
 		_rebuild_tops_all()
 		_dress_core = true
+	elif mask_changed:
+		# The grid did not grow. New faces are the brush neighbourhood; other
+		# chunks only refresh the skirt that follows the smoothed coast.
+		_ctx = Mesher.refresh_mask(field, _ctx, rect)
+		_loops = _ctx["loops"]
+		_rebuild_tops_rect(rect, true)
+		_refresh_skirts()
+		_publish_top()
+		_mask_key = _hash_mask()
+		_dress_core = true
 	else:
-		_rebuild_tops_rect(rect)
-		_dress_core = _rect_hits_rim(rect)
+		_rebuild_tops_rect(rect, hit_rim)
+		_dress_core = hit_rim
+	_rock_dirty = Rect2(center.x - radius, center.z - radius, radius * 2.0, radius * 2.0)
+	_rock_full = grew or _asm.slots.is_empty()
+	_skip_rocks = not hit_rim and not _rock_full
 	_update_collision()
 	_defer_dress = true
 	last_stroke_ms = float(Time.get_ticks_usec() - t0) / 1000.0
@@ -111,9 +139,11 @@ func flush_dress() -> float:
 	var t0 := Time.get_ticks_usec()
 	if _dress_core or _loops.is_empty():
 		_apply_core()
-	_apply_rocks()
+	if not _skip_rocks:
+		_apply_rocks()
 	_defer_dress = false
 	_dress_core = false
+	_skip_rocks = false
 	last_dress_ms = float(Time.get_ticks_usec() - t0) / 1000.0
 	_recount()
 	return last_dress_ms
@@ -172,11 +202,8 @@ func _apply_full(built: Dictionary) -> void:
 	_ctx = built["ctx"]
 	_loops = built["loops"]
 	_mask_key = _hash_mask()
-	for key in _chunk_nodes.keys():
-		var node: MeshInstance3D = _chunk_nodes[key]
-		node.mesh = null
-	for key in built["chunks"].keys():
-		_set_chunk(key, built["chunks"][key])
+	_chunk_payloads = built["chunks"]
+	_publish_top()
 	_set_core_payload(built["core"])
 	_update_collision()
 	_tune_gradient()
@@ -185,16 +212,22 @@ func _apply_full(built: Dictionary) -> void:
 func _rebuild_tops_all() -> void:
 	_ctx = Mesher.prepare(field)
 	_loops = Mesher.collect_loops(field, _ctx)
+	_chunk_payloads.clear()
 	for z in int(_ctx["chunks_z"]):
 		for x in int(_ctx["chunks_x"]):
 			var key := Vector2i(x, z)
-			_set_chunk(key, Mesher.build_chunk(field, key, _ctx))
+			_chunk_payloads[key] = Mesher.build_chunk(field, key, _ctx)
+	_publish_top()
 	_mask_key = _hash_mask()
 
 
-func _rebuild_tops_rect(rect: Rect2i) -> void:
-	var seen: Dictionary = {}
-	var cs := Heightfield.CHUNK
+func _refresh_skirts() -> void:
+	for key in _chunk_payloads.keys():
+		_patch_chunk(key, [], true)
+
+
+func _rebuild_tops_rect(rect: Rect2i, rebuild_skirt: bool) -> void:
+	var dirty: Dictionary = {}
 	var x0 := mini(rect.position.x, rect.position.x + rect.size.x)
 	var x1 := maxi(rect.position.x, rect.position.x + rect.size.x)
 	var z0 := mini(rect.position.y, rect.position.y + rect.size.y)
@@ -204,10 +237,101 @@ func _rebuild_tops_rect(rect: Rect2i) -> void:
 			if not field.in_cell(cx, cz):
 				continue
 			var key := Mesher.chunk_of_cell(cx, cz)
-			if seen.has(key):
-				continue
-			seen[key] = true
-			_set_chunk(key, Mesher.build_chunk(field, key, _ctx))
+			if not dirty.has(key):
+				dirty[key] = []
+			(dirty[key] as Array).append(Vector2i(cx, cz))
+	for key in dirty.keys():
+		_patch_chunk(key, dirty[key], rebuild_skirt)
+	_publish_top()
+
+
+func _patch_chunk(key: Vector2i, cells: Array, rebuild_skirt: bool) -> void:
+	var payload: Dictionary = _chunk_payloads.get(key, {})
+	if payload.is_empty() or not payload.has("spans"):
+		_chunk_payloads[key] = Mesher.build_chunk(field, key, _ctx)
+		return
+	var fresh: Dictionary = {}
+	for cell in cells:
+		var c: Vector2i = cell
+		fresh[c] = Mesher.cell_geometry(field, c.x, c.y, _ctx)
+	var old_v: PackedVector3Array = payload["vertices"]
+	var old_n: PackedVector3Array = payload["normals"]
+	var old_c: PackedColorArray = payload["colors"]
+	var spans: Dictionary = payload["spans"]
+	var x0: int = payload["x0"]
+	var z0: int = payload["z0"]
+	var x1: int = payload["x1"]
+	var z1: int = payload["z1"]
+	var verts := PackedVector3Array()
+	var norms := PackedVector3Array()
+	var cols := PackedColorArray()
+	var new_spans: Dictionary = {}
+	for cz in range(z0, z1):
+		for cx in range(x0, x1):
+			var cell := Vector2i(cx, cz)
+			var begin := verts.size()
+			if fresh.has(cell):
+				var part: Dictionary = fresh[cell]
+				var pv: PackedVector3Array = part.get("vertices", PackedVector3Array())
+				if not pv.is_empty():
+					verts.append_array(pv)
+					norms.append_array(part["normals"])
+					cols.append_array(part["colors"])
+			elif spans.has(cell):
+				var span: Vector2i = spans[cell]
+				verts.append_array(old_v.slice(span.x, span.y))
+				norms.append_array(old_n.slice(span.x, span.y))
+				cols.append_array(old_c.slice(span.x, span.y))
+			var end := verts.size()
+			if end > begin:
+				new_spans[cell] = Vector2i(begin, end)
+	var skirt_from := verts.size()
+	if rebuild_skirt:
+		var skirt: Dictionary = Mesher.skirt_geometry(field, key, _ctx)
+		var sv: PackedVector3Array = skirt.get("vertices", PackedVector3Array())
+		if not sv.is_empty():
+			verts.append_array(sv)
+			norms.append_array(skirt["normals"])
+			cols.append_array(skirt["colors"])
+	else:
+		var sf: int = int(payload.get("skirt_from", old_v.size()))
+		if sf < old_v.size():
+			verts.append_array(old_v.slice(sf, old_v.size()))
+			norms.append_array(old_n.slice(sf, old_n.size()))
+			cols.append_array(old_c.slice(sf, old_c.size()))
+	payload["vertices"] = verts
+	payload["normals"] = norms
+	payload["colors"] = cols
+	payload["triangles"] = int(verts.size() / 3)
+	payload["spans"] = new_spans
+	payload["skirt_from"] = skirt_from
+	_chunk_payloads[key] = payload
+
+
+func _publish_top() -> void:
+	var verts := PackedVector3Array()
+	var norms := PackedVector3Array()
+	var cols := PackedColorArray()
+	var chunks := 0
+	for key in _chunk_payloads.keys():
+		var payload: Dictionary = _chunk_payloads[key]
+		var v: PackedVector3Array = payload.get("vertices", PackedVector3Array())
+		if v.is_empty():
+			continue
+		verts.append_array(v)
+		norms.append_array(payload.get("normals", PackedVector3Array()))
+		cols.append_array(payload.get("colors", PackedColorArray()))
+		chunks += 1
+	last_chunks = chunks
+	last_top_tris = int(verts.size() / 3)
+	if _top_node == null:
+		_top_node = MeshInstance3D.new()
+		_top_node.name = "TopMesh"
+		_top_node.material_override = _top_mat
+		_top_node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+		_top_root.add_child(_top_node)
+	_top_node.mesh = _mesh_from({"vertices": verts, "normals": norms, "colors": cols})
+	_top_node.visible = not verts.is_empty()
 
 
 func _apply_core() -> void:
@@ -220,9 +344,10 @@ func _apply_core() -> void:
 
 
 func _apply_rocks() -> void:
-	var placed: Dictionary = Rocks.place(field, _loops)
-	var by_piece: Dictionary = placed["by_piece"]
-	last_rock_count = int(placed["count"])
+	_asm.rebuild(field, _loops, _rock_dirty, _rock_full or _asm.slots.is_empty())
+	_rock_full = false
+	var by_piece: Dictionary = _asm.batches()
+	last_rock_count = _asm.rock_count
 	var rock_tris := 0
 	var used: Dictionary = {}
 	for piece_name in by_piece.keys():
@@ -239,7 +364,7 @@ func _apply_rocks() -> void:
 		for i in xforms.size():
 			mm.set_instance_transform(i, xforms[i])
 			mm.set_instance_custom_data(i, Color(bright[i], 0.0, 0.0, 1.0))
-		rock_tris += int(piece["tris"]) * xforms.size()
+		rock_tris += int(row["tris"]) * xforms.size()
 		used[piece_name] = true
 		node.visible = true
 	for piece_name in _rocks.keys():
@@ -354,18 +479,10 @@ func _hash_mask() -> int:
 
 
 func _recount() -> void:
-	var tris := 0
 	var draws := 0
-	var chunks := 0
-	for key in _chunk_nodes.keys():
-		var node: MeshInstance3D = _chunk_nodes[key]
-		if node.mesh and node.mesh.get_surface_count() > 0 and node.visible:
-			tris += int(node.mesh.get_faces().size() / 3)
-			draws += 1
-			chunks += 1
-	last_top_tris = tris
-	last_chunks = chunks
-	if _core.mesh and _core.mesh.get_surface_count() > 0:
+	if _top_node and _top_node.visible and _top_node.mesh and _top_node.mesh.get_surface_count() > 0:
+		draws += 1
+	if _core.mesh and _core.mesh.get_surface_count() > 0 and _core.visible:
 		draws += 1
 	for piece_name in _rocks.keys():
 		var node: MultiMeshInstance3D = _rocks[piece_name]

@@ -986,8 +986,14 @@ func hash_color(world: Vector3, slope: float) -> Color:
 
 
 func _brush_mask(center: Vector3, radius: float, strength: float, add: bool, blocked: Dictionary) -> void:
+	# Stamp the disk. A weight*strength cutoff of 0.35 left a coast stroke at
+	# ordinary sculpt strength sitting entirely on cells that were already land,
+	# so the mask (and the cell count) did not grow.
+	if strength <= 0.02 or radius <= 0.05:
+		return
+	var reach_r := radius * lerpf(0.82, 1.0, clampf(strength, 0.0, 1.0))
 	var c0 := world_to_cell(center)
-	var reach := ceili(radius / spacing) + 1
+	var reach := ceili(reach_r / spacing) + 1
 	for cz in range(c0.y - reach, c0.y + reach + 1):
 		for cx in range(c0.x - reach, c0.x + reach + 1):
 			if not in_cell(cx, cz):
@@ -996,8 +1002,7 @@ func _brush_mask(center: Vector3, radius: float, strength: float, add: bool, blo
 				continue
 			var mid := vertex_world(cx, cz) + Vector2(spacing * 0.5, spacing * 0.5)
 			var d := Vector2(mid.x - center.x, mid.y - center.z).length()
-			var w := brush_weight(d, radius) * strength
-			if w < 0.35:
+			if d > reach_r:
 				continue
 			if add:
 				if not is_land(cx, cz):

@@ -10,6 +10,9 @@ const Heightfield := preload("res://scripts/world/heightfield.gd")
 
 const ISO := 0.5
 const SKIRT := 0.14
+## Earth lip under the grass. Deep enough that a slightly tilted shore rock
+## still meets it, so the side view does not show sky between them.
+const COAST_SKIRT := 0.36
 const BLUR_PASSES := 3
 
 # Bit 0 SW, 1 SE, 2 NE, 3 NW. Local ids: 0 SW, 1 SE, 2 NE, 3 NW, 4 S, 5 E, 6 N, 7 W.
@@ -49,12 +52,26 @@ const BOUNDARY := {
 
 
 static func prepare(field: Heightfield) -> Dictionary:
-	var occ := _occupancy(field)
+	var grid := _occupancy_grid(field)
+	return _seal(field, grid["occ"], grid["raw"])
+
+
+static func refresh_mask(field: Heightfield, ctx: Dictionary, rect: Rect2i) -> Dictionary:
+	## Blur only the edited neighbourhood. The seam walk stays global so the
+	## smoothed coast stays one loop.
+	if not ctx.has("raw") or not ctx.has("occ"):
+		return prepare(field)
+	var grid := _patch_grid(field, ctx["raw"], ctx["occ"], rect)
+	return _seal(field, grid["occ"], grid["raw"])
+
+
+static func _seal(field: Heightfield, occ: PackedFloat32Array, raw: PackedFloat32Array) -> Dictionary:
 	var seams: Dictionary = {}
 	var chunks_x := ceili(float(field.cells_x()) / float(Heightfield.CHUNK))
 	var chunks_z := ceili(float(field.cells_z()) / float(Heightfield.CHUNK))
 	var ctx := {
 		"occ": occ,
+		"raw": raw,
 		"seams": seams,
 		"chunks_x": chunks_x,
 		"chunks_z": chunks_z,
@@ -64,6 +81,7 @@ static func prepare(field: Heightfield) -> Dictionary:
 			_emit_cell(field, occ, cx, cz, null, seams, false, ctx)
 	ctx["loops"] = _trace_loops(field, seams)
 	ctx["edge_buckets"] = _bucket_edges(field, ctx["loops"])
+	ctx["seams_ready"] = true
 	return ctx
 
 
@@ -75,12 +93,38 @@ static func build_chunk(field: Heightfield, chunk: Vector2i, ctx: Dictionary) ->
 	var x1 := mini(x0 + Heightfield.CHUNK, field.cells_x())
 	var z1 := mini(z0 + Heightfield.CHUNK, field.cells_z())
 	var seams: Dictionary = ctx.get("seams", {})
+	var spans: Dictionary = {}
 	for cz in range(z0, z1):
 		for cx in range(x0, x1):
+			var begin := buf.verts.size()
 			# Void cells still emit when blur pulls a corner across the iso,
 			# so the coast polyline stays connected.
 			_emit_cell(field, occ, cx, cz, buf, seams, true, ctx)
+			var end := buf.verts.size()
+			if end > begin:
+				spans[Vector2i(cx, cz)] = Vector2i(begin, end)
+	var skirt_from := buf.verts.size()
 	_emit_skirts(field, chunk, ctx, buf)
+	var payload := buf.payload()
+	payload["spans"] = spans
+	payload["skirt_from"] = skirt_from
+	payload["x0"] = x0
+	payload["z0"] = z0
+	payload["x1"] = x1
+	payload["z1"] = z1
+	return payload
+
+
+static func skirt_geometry(field: Heightfield, chunk: Vector2i, ctx: Dictionary) -> Dictionary:
+	var buf := _Buf.new()
+	_emit_skirts(field, chunk, ctx, buf)
+	return buf.payload()
+
+
+static func cell_geometry(field: Heightfield, cx: int, cz: int, ctx: Dictionary) -> Dictionary:
+	var buf := _Buf.new()
+	var occ: PackedFloat32Array = ctx["occ"]
+	_emit_cell(field, occ, cx, cz, buf, {}, true, ctx)
 	return buf.payload()
 
 
@@ -112,6 +156,10 @@ static func chunk_of_cell(cx: int, cz: int) -> Vector2i:
 
 
 static func _occupancy(field: Heightfield) -> PackedFloat32Array:
+	return _occupancy_grid(field)["occ"]
+
+
+static func _occupancy_grid(field: Heightfield) -> Dictionary:
 	# Cell-centred mask, sampled twice per cell, blurred, then read back at
 	# vertices. Outside samples stay 0, so the 0.5 iso is a curve around the
 	# stair-step land mask instead of the grid itself.
@@ -126,19 +174,17 @@ static func _occupancy(field: Heightfield) -> PackedFloat32Array:
 			var gx := int(float(i) / float(subdiv))
 			var gz := int(float(j) / float(subdiv))
 			raw[(j + 1) * gw + (i + 1)] = 1.0 if field.is_land(gx, gz) else 0.0
+	# Same 3x3 kernel as before (center 1/4, edge 1/8, corner 1/16). Weights sum to 1.
 	for _pass in BLUR_PASSES:
 		var nxt := raw.duplicate()
 		for j in nz:
+			var row := (j + 1) * gw
 			for i in nx:
-				var c := (j + 1) * gw + (i + 1)
-				var acc := 0.0
-				var wsum := 0.0
-				for dj in range(-1, 2):
-					for di in range(-1, 2):
-						var w := 0.25 if di == 0 and dj == 0 else (0.125 if di == 0 or dj == 0 else 0.0625)
-						acc += raw[c + dj * gw + di] * w
-						wsum += w
-				nxt[c] = acc / wsum
+				var c := row + (i + 1)
+				var acc := raw[c] * 0.25
+				acc += (raw[c - 1] + raw[c + 1] + raw[c - gw] + raw[c + gw]) * 0.125
+				acc += (raw[c - gw - 1] + raw[c - gw + 1] + raw[c + gw - 1] + raw[c + gw + 1]) * 0.0625
+				nxt[c] = acc
 		raw = nxt
 	var occ := PackedFloat32Array()
 	occ.resize(field.verts_x * field.verts_z)
@@ -152,29 +198,92 @@ static func _occupancy(field: Heightfield) -> PackedFloat32Array:
 			if not field._vertex_has_land(ix, iz):
 				v = 0.0
 			occ[iz * field.verts_x + ix] = v
-	return occ
+	return {"occ": occ, "raw": raw}
+
+
+static func _patch_grid(field: Heightfield, old_raw: PackedFloat32Array, old_occ: PackedFloat32Array, rect: Rect2i) -> Dictionary:
+	var subdiv := 2
+	var nx := field.cells_x() * subdiv
+	var nz := field.cells_z() * subdiv
+	var gw := nx + 2
+	if old_raw.size() != gw * (nz + 2) or old_occ.size() != field.verts_x * field.verts_z:
+		return _occupancy_grid(field)
+	var raw := old_raw.duplicate()
+	var x0 := clampi(mini(rect.position.x, rect.position.x + rect.size.x), 0, field.cells_x())
+	var x1 := clampi(maxi(rect.position.x, rect.position.x + rect.size.x), 0, field.cells_x())
+	var z0 := clampi(mini(rect.position.y, rect.position.y + rect.size.y), 0, field.cells_z())
+	var z1 := clampi(maxi(rect.position.y, rect.position.y + rect.size.y), 0, field.cells_z())
+	for cz in range(z0, z1):
+		for cx in range(x0, x1):
+			var land := 1.0 if field.is_land(cx, cz) else 0.0
+			for dj in subdiv:
+				var j := cz * subdiv + dj
+				var row := (j + 1) * gw
+				for di in subdiv:
+					raw[row + (cx * subdiv + di + 1)] = land
+	var i0 := clampi(x0 * subdiv - BLUR_PASSES, 0, nx)
+	var i1 := clampi(x1 * subdiv + BLUR_PASSES, 0, nx)
+	var j0 := clampi(z0 * subdiv - BLUR_PASSES, 0, nz)
+	var j1 := clampi(z1 * subdiv + BLUR_PASSES, 0, nz)
+	for _pass in BLUR_PASSES:
+		var nxt := raw.duplicate()
+		for j in range(j0, j1):
+			var row := (j + 1) * gw
+			for i in range(i0, i1):
+				var c := row + (i + 1)
+				var acc := raw[c] * 0.25
+				acc += (raw[c - 1] + raw[c + 1] + raw[c - gw] + raw[c + gw]) * 0.125
+				acc += (raw[c - gw - 1] + raw[c - gw + 1] + raw[c + gw - 1] + raw[c + gw + 1]) * 0.0625
+				nxt[c] = acc
+		raw = nxt
+	var occ := old_occ.duplicate()
+	var vx0 := clampi(int(float(i0) / float(subdiv)), 0, field.verts_x)
+	var vx1 := clampi(ceili(float(i1) / float(subdiv)) + 1, 0, field.verts_x)
+	var vz0 := clampi(int(float(j0) / float(subdiv)), 0, field.verts_z)
+	var vz1 := clampi(ceili(float(j1) / float(subdiv)) + 1, 0, field.verts_z)
+	for iz in range(vz0, vz1):
+		for ix in range(vx0, vx1):
+			var i := ix * subdiv
+			var j := iz * subdiv
+			var v := 0.0
+			if i >= 0 and j >= 0 and i < nx and j < nz:
+				v = raw[(j + 1) * gw + (i + 1)]
+			if not field._vertex_has_land(ix, iz):
+				v = 0.0
+			occ[iz * field.verts_x + ix] = v
+	return {"occ": occ, "raw": raw}
 
 
 static func _emit_cell(field: Heightfield, occ: PackedFloat32Array, cx: int, cz: int, buf: RefCounted, seams: Dictionary, emit_faces: bool, ctx: Dictionary) -> void:
+	var vx := field.verts_x
 	var corner_i := [Vector2i(cx, cz), Vector2i(cx + 1, cz), Vector2i(cx + 1, cz + 1), Vector2i(cx, cz + 1)]
-	var xz: Array[Vector2] = []
 	var o := PackedFloat32Array()
 	o.resize(4)
+	var mask := 0
+	for i in 4:
+		var ix: int = corner_i[i].x
+		var iz: int = corner_i[i].y
+		var ov := occ[iz * vx + ix] if field.in_vertex(ix, iz) else 0.0
+		o[i] = ov
+		if ov >= ISO:
+			mask |= 1 << i
+	if mask == 0:
+		return
+	# Full cells add no coast edge. The seam pass can ignore them.
+	if not emit_faces and mask == 15:
+		return
+	var xz: Array[Vector2] = []
 	var h := PackedFloat32Array()
 	h.resize(4)
-	var mask := 0
 	var land_max := -1.0e9
 	var land_n := 0
 	for i in 4:
 		var ix: int = corner_i[i].x
 		var iz: int = corner_i[i].y
 		xz.append(_corner_xz(field, ix, iz))
-		var ov := occ[iz * field.verts_x + ix] if field.in_vertex(ix, iz) else 0.0
-		o[i] = ov
 		var hv := field.snap_height(field.height_at(ix, iz)) if field.in_vertex(ix, iz) else field.y_bottom
 		h[i] = hv
-		if ov >= ISO:
-			mask |= 1 << i
+		if o[i] >= ISO:
 			land_max = maxf(land_max, hv)
 			land_n += 1
 	if land_n == 0:
@@ -182,6 +291,11 @@ static func _emit_cell(field: Heightfield, occ: PackedFloat32Array, cx: int, cz:
 	for i in 4:
 		if o[i] < ISO:
 			h[i] = land_max
+	# Interior terraces have no coast edge. Skip the clipper and the seam insert.
+	if mask == 15 and (not emit_faces or _cell_edges(ctx, cx, cz).is_empty()):
+		if emit_faces and buf != null:
+			_emit_full_fast(buf, xz, h)
+		return
 	var pts: Array[Vector2] = []
 	pts.resize(8)
 	for i in 4:
@@ -235,7 +349,38 @@ static func _emit_cell(field: Heightfield, occ: PackedFloat32Array, cx: int, cz:
 				clipped.append(cut)
 				_fan_y(buf, cut, h[i], Color(1.0, 0.55, 0.15))
 		_emit_quadrant_walls(buf, xz, h, clipped, false)
-	_add_boundary(pts, mask, seams)
+	if not bool(ctx.get("seams_ready", false)):
+		_add_boundary(pts, mask, seams)
+
+
+static func _emit_full_fast(buf: RefCounted, xz: Array[Vector2], h: PackedFloat32Array) -> void:
+	## Same terraces as the quadrant path, without per-cell polygon allocations.
+	var mid_s := (xz[0] + xz[1]) * 0.5
+	var mid_e := (xz[1] + xz[2]) * 0.5
+	var mid_n := (xz[2] + xz[3]) * 0.5
+	var mid_w := (xz[3] + xz[0]) * 0.5
+	var center := (xz[0] + xz[1] + xz[2] + xz[3]) * 0.25
+	var mids: Array[Vector2] = [mid_s, mid_e, mid_n, mid_w]
+	var grass := Color(1.0, 0.55, 0.15)
+	var earth := Color(0.55, 0.45, 0.2)
+	for i in 4:
+		var corner: Vector2 = xz[i]
+		var nxt: Vector2 = mids[i]
+		var prv: Vector2 = mids[(i + 3) % 4]
+		var y: float = h[i]
+		var a := Vector3(corner.x, y, corner.y)
+		var b := Vector3(nxt.x, y, nxt.y)
+		var c := Vector3(center.x, y, center.y)
+		var d := Vector3(prv.x, y, prv.y)
+		buf.tri_up(a, b, c, grass)
+		buf.tri_up(a, c, d, grass)
+	var step := Heightfield.TERRACE
+	for i in 4:
+		var ib := (i + 1) % 4
+		if absf(h[i] - h[ib]) < step * 0.5:
+			continue
+		var side: Vector2 = xz[i] if h[i] <= h[ib] else xz[ib]
+		_wall(buf, mids[i], center, h[i], h[ib], earth, side)
 
 
 static func _emit_quadrants(buf: RefCounted, xz: Array[Vector2], h: PackedFloat32Array, land_polys: Array, full: bool) -> void:
@@ -308,15 +453,15 @@ static func _emit_skirts(field: Heightfield, chunk: Vector2i, ctx: Dictionary, b
 			var yb := _coast_y(field, b)
 			var a0 := Vector3(a.x, ya, a.y)
 			var b0 := Vector3(b.x, yb, b.y)
-			var a1 := Vector3(a.x, ya - SKIRT, a.y)
-			var b1 := Vector3(b.x, yb - SKIRT, b.y)
+			var a1 := Vector3(a.x, ya - COAST_SKIRT, a.y)
+			var b1 := Vector3(b.x, yb - COAST_SKIRT, b.y)
 			var dir := b - a
 			if dir.length_squared() < 1.0e-8:
 				continue
 			dir = dir.normalized()
 			# Loops are oriented so the right side is outside (air).
 			var outward := Vector2(dir.y, -dir.x)
-			var prefer := Vector3(mid.x, (ya + yb) * 0.5 - SKIRT * 0.5, mid.y) + Vector3(outward.x, 0.0, outward.y)
+			var prefer := Vector3(mid.x, (ya + yb) * 0.5 - COAST_SKIRT * 0.5, mid.y) + Vector3(outward.x, 0.0, outward.y)
 			buf.quad(a0, b0, b1, a1, Color(0.0, 0.4, 0.2), prefer)
 
 
@@ -498,14 +643,13 @@ static func _emit_belly(field: Heightfield, loop: Dictionary, buf: RefCounted) -
 		var y := _coast_y(field, ring_xz[i])
 		top_y[i] = y
 		min_top = minf(min_top, y)
-	# t, radial scale. A cone behind the rocks, ending in a short stalk.
+	# t, radial scale. Sits inside the rock shell and ends blunt, with no stalk.
 	var profile := [
-		[0.00, 0.70],
-		[0.20, 0.52],
-		[0.42, 0.34],
-		[0.64, 0.18],
-		[0.82, 0.07],
-		[0.94, 0.035],
+		[0.00, 0.34],
+		[0.30, 0.22],
+		[0.58, 0.14],
+		[0.82, 0.08],
+		[1.00, 0.04],
 	]
 	var rings: Array[PackedVector3Array] = []
 	for row in profile:
@@ -516,14 +660,14 @@ static func _emit_belly(field: Heightfield, loop: Dictionary, buf: RefCounted) -
 		for i in segs:
 			var p: Vector2 = c2 + (ring_xz[i] - c2) * sc
 			var depth: float = top_y[i] - field.y_bottom
-			var y := top_y[i] - 0.05 - pow(t, 1.2) * depth
+			var y := top_y[i] - 0.55 - pow(t, 1.1) * depth * 0.55
 			var wob := Heightfield._hash2(p.x * 0.47 + float(field.seed), p.y * 0.39)
-			var amp := 0.02 + t * 0.06
+			var amp := 0.02 + t * 0.05
 			var inward := (c2 - ring_xz[i])
 			if inward.length_squared() > 1.0e-6:
 				p += inward.normalized() * (wob.x - 0.5) * amp
-			y += (wob.y - 0.5) * amp * 0.25
-			y = clampf(y, field.y_bottom - 0.35, top_y[i] - 0.08)
+			y += (wob.y - 0.5) * amp * 0.2
+			y = clampf(y, field.y_bottom + 0.85, top_y[i] - 0.45)
 			ring[i] = Vector3(p.x, y, p.y)
 		rings.append(ring)
 	var interior := Vector3(c2.x, (min_top + field.y_bottom) * 0.5, c2.y)
@@ -535,11 +679,13 @@ static func _emit_belly(field: Heightfield, loop: Dictionary, buf: RefCounted) -
 			buf.tri_out(upper[i], upper[j], lower[j], Color(0.5, 0.5, 0.5), interior)
 			buf.tri_out(upper[i], lower[j], lower[i], Color(0.5, 0.5, 0.5), interior)
 	var last: PackedVector3Array = rings[rings.size() - 1]
-	var tip_y := field.y_bottom - 0.55
-	var tip := Vector3(c2.x, tip_y, c2.y)
+	var cap_y := last[0].y
+	for i in segs:
+		cap_y = minf(cap_y, last[i].y)
+	var cap := Vector3(c2.x, cap_y, c2.y)
 	for i in segs:
 		var j := (i + 1) % segs
-		buf.tri_out(last[i], last[j], tip, Color(0.5, 0.5, 0.5), interior)
+		buf.tri_out(last[i], last[j], cap, Color(0.5, 0.5, 0.5), interior)
 
 
 static func _emit_shaft(field: Heightfield, loop: Dictionary, buf: RefCounted) -> void:

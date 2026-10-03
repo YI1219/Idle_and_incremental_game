@@ -30,9 +30,9 @@ void fragment() {
 	if (world_y > clip_above) {
 		discard;
 	}
-	vec3 warm = vec3(0.70, 0.50, 0.34);
-	vec3 midc = vec3(0.52, 0.44, 0.38);
-	vec3 cool = vec3(0.40, 0.42, 0.45);
+	vec3 warm = vec3(0.62, 0.49, 0.39);
+	vec3 midc = vec3(0.525, 0.475, 0.435);
+	vec3 cool = vec3(0.435, 0.447, 0.475);
 	vec3 base = mix(warm, midc, smoothstep(0.08, 0.48, t));
 	base = mix(base, cool, smoothstep(0.42, 0.92, t));
 	float cell = hash(floor(world_pos * vec3(1.15, 0.85, 1.15)));

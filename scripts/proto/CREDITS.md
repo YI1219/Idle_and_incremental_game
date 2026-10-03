@@ -8,6 +8,7 @@ New code in `scripts/proto/` and `shaders/proto/`. No third-party source files a
 | --- | --- | --- |
 | Terraced marching-squares cells, with mask-0 cells treated as empty so one pass cuts the coast and hole rims | [Yūgen's Terrain Authoring Toolkit](https://github.com/ToumaKamijou/Yugens-Terrain-Authoring-Toolkit) by ToumaKamijou | MIT |
 | Underside as an inverted, stretched, tapered reading of the top height | [Flylands](https://github.com/sugarshock/flylands) by sugarshock | MIT |
+| Ring spacing, overlap, yaw and inward tilt for the kit rocks | In-repo study `notes/rockkit-test/rockkit_island.py` | Project notes, not a third-party license |
 
 MIT notice: these works are used as references only. Their copyright stays with the authors. This folder does not include their source.
 

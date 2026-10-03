@@ -46,8 +46,13 @@ func run() -> void:
 	_look(cam, mid + Vector3(r * 1.75, 0.45, r * 0.22), mid + Vector3(0.0, -1.65, 0.0))
 	await shot(OUT + "/low_side.png")
 
-	_look(cam, mid + Vector3(r * 1.15, -4.8, r * 1.05), mid + Vector3(0.0, -2.4, 0.0))
+	# Straight up the axis. A small Z offset keeps the up vector off the view ray.
+	cam.fov = 55.0
+	var below := Vector3(mid.x, box.position.y - 2.8, mid.z)
+	cam.position = below
+	cam.look_at(Vector3(mid.x, mid.y - 0.4, mid.z), Vector3(0.0, 0.0, -1.0))
 	await shot(OUT + "/underside.png")
+	cam.fov = 40.0
 
 	_look(cam, mid + Vector3(r * 1.55, -2.15, r * 1.45), mid + Vector3(0.0, -1.7, 0.0))
 	await shot(OUT + "/three_quarter_below.png")
