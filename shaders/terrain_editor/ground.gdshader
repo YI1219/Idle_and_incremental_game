@@ -9,7 +9,12 @@ void fragment(){
 	float broad=sin(p.x*0.51+p.y*0.22)*sin(p.y*0.47-p.x*0.18)*0.5+0.5;
 	float flecks=step(0.965,hash(floor(p*13.0)));
 	vec3 base=mix(vec3(0.24,0.39,0.035),vec3(0.49,0.60,0.12),broad);
-	base=mix(base,vec3(0.64,0.68,0.20),flecks*0.45);
+	vec2 lawn=p*1.8+vec2(sin(p.y*.7),sin(p.x*.8))*.28;
+	vec2 tile=floor(lawn);vec2 local=fract(lawn);
+	float triangle=step(1.0,local.x+local.y);
+	float patch=hash(tile+vec2(triangle*31.0,triangle*97.0));
+	base*=.94+patch*.12;
+	base=mix(base,vec3(0.64,0.68,0.20),flecks*0.35);
 	if(show_grid){vec2 g=abs(fract(p)-0.5);float edge=step(0.486,max(g.x,g.y));base=mix(base,vec3(0.91,0.95,0.66),edge*0.35);}
 	ALBEDO=base*COLOR.rgb;
 	ROUGHNESS=0.95;

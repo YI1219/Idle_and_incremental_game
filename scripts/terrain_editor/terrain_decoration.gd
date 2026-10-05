@@ -30,12 +30,12 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var angle:=random_at(cell,data.seed,1)*TAU
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
 			var house_clear:=p.distance_to(Vector2(-11,-7))<3.4
-			if not house_clear and cluster>-.25 and random_at(cell,data.seed,4)<.55:
+			if not house_clear and cluster>-.25 and random_at(cell,data.seed,4)<.38:
 				for tuft in 2:
 					var offset:=Vector2(random_at(cell,data.seed,110+tuft*2)-.5,random_at(cell,data.seed,111+tuft*2)-.5)*.75
 					var ground:Dictionary=field.surface_at(p+offset)
 					if ground.is_empty() or ground.water>=0 or absf(ground.height-h)>.01:continue
-					result.grass.append(_transform(origin+Vector3(offset.x,0,offset.y),angle+tuft*2.4,Vector3.ONE*(1.5+random_at(cell,data.seed,120+tuft)*1.3)))
+					result.grass.append(_transform(origin+Vector3(offset.x,0,offset.y),angle+tuft*2.4,Vector3(1,.52,1)*(1.5+random_at(cell,data.seed,120+tuft)*1.3)))
 				if random_at(cell,data.seed,13)<.40:result.flower.append(_transform(origin,angle,Vector3.ONE*.9))
 			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.20:
 				result.bush.append(_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2)))
@@ -80,7 +80,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						y-=1.8+random_at(cell,data.seed,130+layer)*.35
 						layer+=1
 				if random_at(cell,data.seed,80)>.65:continue
-				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3.ONE*1.8))
+				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3(1.8,.94,1.8)))
 				for leaf in range(4+int(random_at(cell,data.seed,84)*5)):
 					var y:=h-.12-leaf*.23
 					var bend:=out*(.07-leaf*.025)
@@ -101,12 +101,16 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if sample.is_empty() or sample.water>=0 or absf(sample.height-level*.5)>.1:continue
 				var angle:=atan2(next.y-loop[i].y,next.x-loop[i].x)
 				var edge:=next-loop[i]
-				var count:=maxi(1,ceili(edge.length()/.85))
+				var count:=maxi(1,ceili(edge.length()/.95))
 				for block in count:
 					var bank:=loop[i]+edge*float(block)/count+out*.22
 					var support:Dictionary=field.surface_at(bank)
 					if support.is_empty() or support.water>=0 or absf(support.height-level*.5)>.1:continue
-					result.shore_rock.append(_transform(Vector3(bank.x,level*.5-.07,bank.y),-angle,Vector3(1.15,2.1,.75)))
+					var cell:=Vector2i(bank.floor())
+					var turn:float=(random_at(cell,data.seed,1000+block)-.5)*.40
+					var width:float=.92+random_at(cell,data.seed,1020+block)*.20
+					var rise:float=1.10+random_at(cell,data.seed,1040+block)*.25
+					result.shore_rock.append(_transform(Vector3(bank.x,level*.5-.07,bank.y),-angle+turn,Vector3(width,rise,.64)))
 				var cell:=Vector2i(p.floor())
 				if random_at(cell,data.seed,95)<.18:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*2.5))
 				var lily:=p-out*.8
