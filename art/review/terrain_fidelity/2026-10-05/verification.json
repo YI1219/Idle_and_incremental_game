@@ -1,7 +1,49 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Blade-shape-only refinement of retained pointed grass clump: narrower middles,moderate outward bend and height tint,retaining original normalization bounds and root vertices. Fresh five-script checks,final actual Metal full/detail/four-edit renders,49 original non-clump arrays/root/support probe and standalone benchmark. User visual acceptance pending.",
+  "scope": "Boundary-wall continuity correction only. Emit the occupied row boundary without reclassifying it through independently smoothed higher contours. Failing/passing actual-triangle regression, ten fresh scripts, full/detail/four-edit Metal captures,60 exact non-cliff arrays and standalone benchmark. Styling trials rejected/restored; user acceptance pending.",
   "suite": [
+    {
+      "test": "terrain_boundary_wall_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "samples": 416
+    },
+    {
+      "test": "terrain_narrow_cliff_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "samples": 794
+    },
+    {
+      "test": "terrain_cliff_taper_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 2
+    },
+    {
+      "test": "terrain_waterfall_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 35
+    },
+    {
+      "test": "terrain_contour_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 1025
+    },
+    {
+      "test": "terrain_editor_render_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 339
+    },
     {
       "test": "terrain_editor_decoration_test.gd",
       "ok": true,
@@ -29,13 +71,6 @@
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed60Hz)",
       "checks": 8
-    },
-    {
-      "test": "terrain_model_bounds_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
-      "checks": 9
     }
   ],
   "regression": {
@@ -43,7 +78,7 @@
     "after": "30/30 passed; zero blocked reference samples after wet-mouth shoulder limits",
     "retained": "Wide-outlet physical folds, mixed-height receivers, narrow strip clearance and incremental reconstruction checks remain passing",
     "limitations": "Finite reference sampling, not exhaustive arbitrary-layout or entire-surface clearance coverage.",
-    "revision": "afea19c reference regression; last retained in 2db8ed9 waterfall suite, not rerun this lighting-only pass"
+    "revision": "afea19c original reference regression; waterfall35/35 rerun during current boundary-wall correction"
   },
   "render_verification": {
     "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
@@ -59,15 +94,9 @@
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
-    "quaternius_source_files_unchanged": 24,
-    "kenney_source_glbs_unchanged": 11,
-    "cottage_glbs_unchanged": 2,
-    "refined_cottage_matches_HEAD": true,
-    "sky_pngs_unchanged": 2,
-    "sky_import_matches_HEAD": true,
-    "unchanged_other_terrain_camera_placement_lighting_shader_sources": 20
+    "tracked_runtime_sources_assets": "Compared tracked terrain-editor scripts/shaders,nature resources,cottage resources and terrain-editor resources to96e0788,excluding .import files. Only contour_terrain.gd differs. Eight unrelated local hashes preserve existing cottage/character imports. File equality evidence,not a fresh resource-array probe."
   },
-  "review": "Independent source/probe/still review found no confirmed Critical/Important defect. Original normalization bounds,deterministic deformation,recomputed flat normals and skipped-triangle color guard are sound. Slightly more splayed and less upright,but a small directional gain; rigid triangular fans/star-shaped clumps still differ from slender reference blades. No obvious new floating bases or edit-related failures. Axis classification is source-specific. Reviewer did not run Godot or assess temporal quality,upper-blade/full-footprint clearance,performance or overall acceptance.",
+  "review": "Independent source/test/still review found no confirmed new Critical/Important issue. Baseline lower-edit missing wall is visibly closed; rejected styling-trial slit absent. Removing both filters is justified by refresh selecting the occupied row boundary. Default/detail views retain baseline appearance. Rays may hit a different wall within six units; midpoint sampling atY=-2 in five fixtures is not general watertightness. Reviewer did not run Godot,benchmark or assess temporal/arbitrary-layout behavior.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -1081,24 +1110,61 @@
       ],
       "review": "Independent read-only source/probe/still review found no confirmed Critical/Important defect. Fuller accents/fewer wiry tall tufts give a modest positive gain, with full-scene readability retained in all four edits. Clumps remain rigid angular spikes compared with the reference's slender,splayed,less repeated blades. No obvious floating bases or waterfall obstruction in reviewed stills. Original arrays do not imply unchanged shading; curved-grass palette intentionally changes. Reviewer did not run Godot or assess temporal/arbitrary-footprint/upper-blade/platform performance/full acceptance.",
       "verification_sequence": "Nonempty-clump assertion fails with baseline81/82. Final short/wider/clump-support settings pass decoration99/99,incremental20/20,runtime22/22,camera8/8,model-bounds9/9; final actual capture,model/base-support probe and standalone three-run benchmark exit0. Taller/narrower reed-like trial excluded from final evidence."
+    },
+    "96e0788": {
+      "scope": "Blade-shape-only refinement of retained pointed grass clump: narrower middles,moderate outward bend and height tint,retaining original normalization bounds and root vertices. Fresh five-script checks,final actual Metal full/detail/four-edit renders,49 original non-clump arrays/root/support probe and standalone benchmark. User visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 99
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 8
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 9
+        }
+      ],
+      "review": "Independent source/probe/still review found no confirmed Critical/Important defect. Original normalization bounds,deterministic deformation,recomputed flat normals and skipped-triangle color guard are sound. Slightly more splayed and less upright,but a small directional gain; rigid triangular fans/star-shaped clumps still differ from slender reference blades. No obvious new floating bases or edit-related failures. Axis classification is source-specific. Reviewer did not run Godot or assess temporal quality,upper-blade/full-footprint clearance,performance or overall acceptance.",
+      "preservation": {
+        "unrelated_local_files_unchanged": 8,
+        "quaternius_source_files_unchanged": 24,
+        "kenney_source_glbs_unchanged": 11,
+        "cottage_glbs_unchanged": 2,
+        "refined_cottage_matches_HEAD": true,
+        "sky_pngs_unchanged": 2,
+        "sky_import_matches_HEAD": true,
+        "unchanged_other_terrain_camera_placement_lighting_shader_sources": 20
+      },
+      "verification_sequence": "Initial strong.30 bend/10% lowering trial rejected as agave-wide. One inferred-variable parse error corrected to explicit start:int; error-bearing capture/runtime/incremental outputs and interrupted model-bounds process excluded despite some exit0 labels. Clean final reruns pass decoration99/99,incremental20/20,runtime22/22,model-bounds9/9; independent camera8/8 clean. Final capture61611,blade probe and standalone benchmark93351 exit0."
     }
   },
-  "limitations": [
-    "Broad upper cliff walls remain smooth/simple rather than clustered reference rocks; horizontal lower folds remain. Finite taper/narrow checks do not prove arbitrary layouts.",
-    "Temporal shimmer and cross-platform rendering unverified.",
-    "M4 Pro short samples do not prove target-laptop or long-idle performance.",
-    "Five contact selectors cover four unique vertices, not entire branches/clusters. Foreground-right crown remains umbrella-like, large lobes repeat, and the trunk is still simpler than the reference.",
-    "Sky softness is verified at the captured resolution only; startup mip generation and alternate-resolution appearance remain unmeasured. Lower-left clouds wash out and upper sky is flatter than the reference.",
-    "Width lookup retains polygon-containment scaling with total contour complexity, despite cached winding signs; large-map scaling is unmeasured.",
-    "Bank stones retain a similar silhouette and anchor-only support checks; rare planted gaps and size variation improve the captured scene but do not establish arbitrary-edit footprint support.",
-    "New curved grass is cleaner but remains thinner/darker and more isolated than the target. Interior four-point and retained edge-contour support are finite, not every blade footprint or temporal aliasing proof.",
-    "Cooler/calm cliff shading is a modest material improvement, not correction of deep recesses, broad smooth patches or horizontal lower folds. Rejected gradient-normal trials are absent.",
-    "Pointed foliage is closer to target but remains narrow and regularly repeated, with occasional detached-looking occluded tips and sparse flat rim sprays. Full placed vertices clear the global cliff minimum in three8x8 fixtures only; local contact/arbitrary footprints remain unproven.",
-    "Waterfall run metadata preserves tested published gradients; wrapped-run/sentinel/seam numerical equality is source-reviewed rather than exhaustively tested. Vertex-color precision limits extreme widths. Temporal transparency and arbitrary outlets remain unverified; straight crest, patterned curtain and mound-like foam remain visual gaps.",
-    "Wider daylight penumbrae show visible stippling in close-ups; temporal shadow noise and alternate quality/backends unmeasured.",
-    "Current pointed grass clumps are fuller but rigid/angular; near-base support probe does not prove upper-blade intersections or arbitrary terrain.",
-    "Blade deformation is specific to retained plant_flatTall axis groups; no general deformer or arbitrary-asset compatibility claim."
-  ],
+  "limitations": "User acceptance pending. Closes a reproduced edit gap,not the larger fidelity gaps. Finite rays/stills do not prove watertightness,arbitrary edits,temporal behavior,target-laptop performance or long-idle power/stability. Historical evidence retains revision.",
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
     "probe": "canopy_contact_probe.gd",
@@ -1358,7 +1424,16 @@
     "limits": "Five unchanged selected non-cliff pixels are finite separation evidence, not whole-image identity. Material cannot fix deep recesses, broad smooth patches or horizontal lower folds; temporal behavior and alternate-device rendering unverified.",
     "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
   },
-  "verification_sequence": "Initial strong.30 bend/10% lowering trial rejected as agave-wide. One inferred-variable parse error corrected to explicit start:int; error-bearing capture/runtime/incremental outputs and interrupted model-bounds process excluded despite some exit0 labels. Clean final reruns pass decoration99/99,incremental20/20,runtime22/22,model-bounds9/9; independent camera8/8 clean. Final capture61611,blade probe and standalone benchmark93351 exit0.",
+  "verification_sequence": {
+    "baseline": "96e0788",
+    "trials": "Rejected/restored; trial runs excluded from retained-fix verification.",
+    "regression": "416 rays: one missing at baseline(exit1),zero after fix(exit0).",
+    "tests": "Ten scripts clean,exit0.",
+    "capture": "Metal1672x940,exit0,full/three details/four edits/editor. All final full/details/four edits inspected.",
+    "benchmark": "Standalone Metal1280x720,three12s samples after2s warmups,exit0.",
+    "preservation": "Eight unrelatedSHA256s unchanged; contour_terrain.gd is sole changed compared tracked runtime source/asset(imports excluded).",
+    "components": "60 exact non-cliff arrays across five fixtures,exit0."
+  },
   "compact_cliff_refinement": {
     "baseline": "12ce140",
     "geometry": "Cellular relief amplitude/offset1.02/-.16 to.75/-.10; broad-profile horizontal noise.10 to.04, vertical.25 to.09, foot.04 to.02, profile Y wave.16 to.06. Narrow base-profile coefficients unchanged.",
@@ -1634,6 +1709,69 @@
       "detail_shoreline_before_blade_refinement.png",
       "detail_vegetation_before_blade_refinement.png"
     ],
-    "limits": "Source-specific axis interpretation; small directional gain only. Still angular fans/star shapes versus reference slender blades. Original assets unchanged."
+    "limits": "Source-specific axis interpretation; small directional gain only. Still angular fans/star shapes versus reference slender blades. Original assets unchanged.",
+    "revision": "96e0788 historical resource/near-base probe; sources unchanged this correction,probe not rerun"
+  },
+  "boundary_wall_correction": {
+    "baseline": "96e0788",
+    "root_cause": "Independently smoothed upper contours can cross lower contours. surface_at outside sampling then erroneously omitted an already-selected wall. Lower fixture midpoint(14.725,8.5) had its nearestY=-2 cliff intersection18.419687 units away.",
+    "fix": "Remove redundant inside/outside height filters in _cliffs; retain profiles,taper,wet-clearance,models and shaders.",
+    "before": {
+      "samples": 416,
+      "failures": 1,
+      "exit": 1
+    },
+    "after": {
+      "samples": 416,
+      "failures": 0,
+      "exit": 0
+    },
+    "method": "Lowest-boundary edge midpoints in default/four capture fixtures,rayY=-2 from3 units outward toward cliff; require a cliff triangle within6 units.",
+    "limits": "Another nearby wall can satisfy the ray. Finite midpoint/depth fixtures do not prove all heights,contour nesting,watertightness or arbitrary edits.",
+    "components": {
+      "probe": "/tmp/terrain_boundary_components.gd",
+      "exit": 0,
+      "exact_arrays": 60,
+      "properties": [
+        "vertices",
+        "normals",
+        "colors"
+      ],
+      "surfaces": [
+        "grass",
+        "bank",
+        "water",
+        "waterfall"
+      ],
+      "fixture_count": 5,
+      "cliff_vertex_entries": {
+        "default": [
+          17760,
+          17760
+        ],
+        "raise": [
+          17910,
+          17910
+        ],
+        "lower": [
+          17700,
+          17898
+        ],
+        "expand": [
+          18624,
+          18624
+        ],
+        "contract": [
+          18336,
+          18336
+        ]
+      },
+      "limits": "Count equality does not establish cliff-array equality; comparisons use global source surfaces,not every runtime instance."
+    },
+    "rejected_trials": [
+      "Additional normalized stones looked attached; model/placement sources restored.",
+      "Broad dry relief gain and taller/sheared sites remained puffy and exposed a new diagonal slit; entire geometry/shader trial restored before retained fix."
+    ],
+    "baseline_images": "Matched96e0788 screenshots locally preserved as *_before_mass_refinement.png; these are baseline,not rejected-trial screenshots."
   }
 }

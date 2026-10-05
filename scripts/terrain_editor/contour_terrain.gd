@@ -267,12 +267,9 @@ func _cliffs(loop:PackedVector2Array,top:float,bottom:float)->void:
 	for i in loop.size():
 		var a:=loop[i]
 		var b:=loop[(i+1)%loop.size()]
-		var outward:=Vector2(b.y-a.y,a.x-b.x).normalized()
-		var middle:=(a+b)*.5
-		var inside:=surface_at(middle-outward*.25)
-		if inside.is_empty() or inside.height<top-.01:continue
-		var outside:=surface_at(middle+outward*.30)
-		if outside.get("height",BOTTOM)>=top-.01:continue
+		# refresh already selected the occupied outline for this height row.
+		# Upper contours are smoothed independently and can cross a lower one;
+		# sampling them here incorrectly removes an authoritative boundary wall.
 		var before:=loop[(i-1+loop.size())%loop.size()]
 		var after:=loop[(i+2)%loop.size()]
 		var normal_a:=Vector2(b.y-before.y,before.x-b.x).normalized()
