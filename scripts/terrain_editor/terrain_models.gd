@@ -9,7 +9,7 @@ func load_assets()->void:
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=[]
-	var wood_shape:=Transform3D(Basis.IDENTITY.scaled(Vector3(1.10,.84,1.10)),Vector3.ZERO)
+	var wood_shape:=Transform3D(Basis.IDENTITY.scaled(Vector3(1.24,1.07,1.24)),Vector3.ZERO)
 	for part:Dictionary in wood:tree.append({"mesh":part.mesh,"pose":wood_shape*part.pose})
 	for i in 14:
 		var angle:=i*2.39996
@@ -22,10 +22,10 @@ func load_assets()->void:
 		if i==13:
 			center=Vector3(-.05,1.05,.04)
 			size=Vector3(1.08,.84,1.04)
-		center=Vector3(center.x*1.12,center.y*.84,center.z*1.12)
+		center=Vector3(center.x*1.12,(center.y+.18)*.84,center.z*1.12)
 		for part:Dictionary in leaf:
 			var box:AABB=part.mesh.get_aabb()
-			var basis:=Basis(Vector3.UP,angle*.43).scaled(size*Vector3(1.12,.84,1.12))
+			var basis:=Basis(Vector3.UP,angle*.43).scaled(size*Vector3(1.12,.756,1.12))
 			var pose:=Transform3D(basis,center-basis*(box.position+box.size*.5))
 			var tint:=Color(.94+.08*sin(i*2.1),.98+.045*cos(i*1.7),.94+.06*sin(i*.6),1)
 			tree.append({"mesh":part.mesh,"pose":pose,"tint":tint})
@@ -85,6 +85,8 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 				var a:=vertices[indices[i] if not indices.is_empty() else i]
 				var b:=vertices[indices[i+1] if not indices.is_empty() else i+1]
 				var c:=vertices[indices[i+2] if not indices.is_empty() else i+2]
+				if kind=="tree_wood":
+					a=_lift_branches(a);b=_lift_branches(b);c=_lift_branches(c)
 				if kind=="shore_rock":
 					a.y=minf(a.y,.27);b.y=minf(b.y,.27);c.y=minf(c.y,.27)
 				var shade:=.90+.13*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
@@ -98,7 +100,8 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 					var ca:=(c+a)*.5
 					var faces:=[[a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]]
 					for face in faces:
-						builder.triangle(_round_leaf(face[0],box),_round_leaf(face[1],box),_round_leaf(face[2],box),color)
+						var blend:=.48 if kind=="tree_leaf" else .68
+						builder.triangle(_round_leaf(face[0],box,blend),_round_leaf(face[1],box,blend),_round_leaf(face[2],box,blend),color)
 				else:builder.triangle(a,b,c,color)
 
 			mesh=builder.mesh()
@@ -128,7 +131,14 @@ func _merge(parts:Array)->Dictionary:
 	mesh.surface_set_material(0,material)
 	return {"mesh":mesh,"pose":Transform3D.IDENTITY}
 
-func _round_leaf(point:Vector3,box:AABB)->Vector3:
+func _lift_branches(point:Vector3)->Vector3:
+	# Lift the two low forks of the retained CC0 detailed-tree mesh into the
+	# raised crown. Base vertices at Y<=.18 stay fixed; shared vertices deform identically.
+	var lift:=maxf(0,-point.z-.055)*1.50+maxf(0,point.x-.12)*.95
+	point.y+=lift*smoothstep(.18,.35,point.y)
+	return point
+
+func _round_leaf(point:Vector3,box:AABB,blend:float=.68)->Vector3:
 	# Derive a rounder faceted lobe from the existing CC0 leaf mesh. Source files
 	# stay intact; one subdivision replaces its broad flat faces with smaller facets.
 	var center:=box.position+box.size*.5
@@ -136,4 +146,4 @@ func _round_leaf(point:Vector3,box:AABB)->Vector3:
 	var unit:=(point-center)/radius.max(Vector3.ONE*.0001)
 	var direction:=unit.normalized()
 	var uneven:=1.0+.055*sin(direction.x*7.1+direction.y*4.3)*sin(direction.z*6.7-direction.y*3.1)
-	return point.lerp(center+direction*radius*uneven,.68)
+	return point.lerp(center+direction*radius*uneven,blend)

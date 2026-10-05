@@ -2,7 +2,7 @@
   "source": "https://kenney.nl/assets/nature-kit",
   "license": "CC0-1.0",
   "original_local": "art/source/third_party/kenney_nature_kit/2026-09-20/original",
-  "integration": "Original GLBs retained. Runtime materials recolored; 14 overlapping crown lobes assemble original oak leaf parts and detailed-tree wood parts with broader, lower proportions. Leaf surfaces receive one triangle subdivision and a partial irregular ellipsoid blend for rounder facets; bounds use surface-referenced vertices. Pond edging uses flattened stone_largeD parts. Source files are unmodified.",
+  "integration": "Original GLBs retained. Runtime materials recolored; 14 overlapping crown lobes assemble original oak leaf parts above taller, broader detailed-tree wood parts to reveal existing forks. Original low forks receive a runtime upward lift into the raised crown, preserving source topology and ground-contact vertices. Leaf surfaces receive one triangle subdivision and a partial irregular ellipsoid blend (.48 for tree crowns, .68 for bushes/vines); bounds use surface-referenced vertices. Pond edging uses flattened stone_largeD parts. Source files are unmodified.",
   "files": {
     "tree_oak.glb": "d7fd8773674928c50c11b66d12c636d49bdcc15a8b1c7fbb98e6f63a3439a3f3",
     "tree_detailed.glb": "c041daf2f0fb1d49e4325227cbcd58667adbe51e9b55e8c1f0a94b74cc521b3b",
