@@ -11,6 +11,7 @@ var _pending_chunks:Dictionary={}
 var _pending_faces:Dictionary={}
 var _pending_bounds:Dictionary={}
 var _build_queue:Array=[]
+var _pending_shore:Dictionary={}
 var _build_data:Data
 var _published_data:Data
 var props:Node3D
@@ -33,7 +34,9 @@ func configure(source:Data)->void:
 		var ground:=ShaderMaterial.new()
 		ground.shader=load("res://shaders/terrain_editor/ground.gdshader")
 		materials.grass=ground
-		materials.cliff=_solid(Color.WHITE,true)
+		var cliff:=ShaderMaterial.new()
+		cliff.shader=load("res://shaders/terrain_editor/cliff.gdshader")
+		materials.cliff=cliff
 		materials.bank=_solid(Color("e2fcff"))
 		var water:=ShaderMaterial.new()
 		water.shader=load("res://shaders/terrain_editor/water.gdshader")
@@ -67,6 +70,7 @@ func flush_dirty(max_chunks:int=2)->int:
 		contours.refresh(_build_data)
 		_contour_revision=data.revision
 		_discard_pending()
+		_pending_shore=preload("res://scripts/terrain_editor/water_shore_field.gd").build(_build_data)
 		# Shared cap triangulation can cross distant chunks. Reconstruct the owning
 		# chunks under the ordinary two-chunk budget, including removed geometry.
 		# The triangle index avoids scanning the whole island per chunk.
@@ -114,6 +118,7 @@ func _rebuild(chunk:Vector2i)->void:
 	rebuild_count+=1
 
 func _discard_pending()->void:
+	_pending_shore.clear()
 	for node in _pending_chunks.values():
 		if node!=null:node.free()
 	_pending_chunks.clear()
@@ -142,6 +147,11 @@ func _publish()->void:
 	_pending_faces.clear()
 	_pending_bounds.clear()
 	_published_data=_build_data
+	if not _pending_shore.is_empty():
+		materials.water.set_shader_parameter("shore_field",_pending_shore.texture)
+		materials.water.set_shader_parameter("shore_origin",_pending_shore.origin)
+		materials.water.set_shader_parameter("shore_extent",_pending_shore.extent)
+		_pending_shore.clear()
 	props.sync(contours)
 
 func _exit_tree()->void:_discard_pending()

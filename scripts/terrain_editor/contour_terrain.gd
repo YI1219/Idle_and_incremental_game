@@ -240,15 +240,9 @@ func _cliffs(loop:PackedVector2Array,top:float,bottom:float)->void:
 		var q:=_profile_point(b,top,normal_b,profile_b)
 		var r:=_profile_point(b,bottom,normal_b,profile_b)
 		var s:=_profile_point(a,bottom,normal_a,profile_a)
-		var center:Vector3=(p+q+r+s)*.25
-		var out:=Vector3(outward.x,0,outward.y)
-		center+=out*(.04+.055*sin(a.x*2.93+a.y*4.19+top*3.1))
-		var tint:=Color("a8aba8")*(.94+.055*sin(a.x*2.1+a.y*3.2+floor((top+a.x*.14)/1.5)*4.9))
-		tint.a=1
-		surfaces.cliff.triangle(p,center,q,tint)
-		surfaces.cliff.triangle(q,center,r,tint*.98)
-		surfaces.cliff.triangle(r,center,s,tint*.96)
-		surfaces.cliff.triangle(s,center,p,tint*1.02)
+		# The supporting mass stays joined and un-ribbed. Its material supplies
+		# broad anchored facets; occasional embedded models supply silhouette relief.
+		surfaces.cliff.quad(p,s,r,q,Color("a8aba8"))
 
 func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 	# Keep opposing walls apart on single cells and narrow editable necks.
@@ -264,7 +258,13 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	var inset:=normal*(inset_limit*pow(f,1.5) if base else 0.0)
 	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*.38*sin(PI*f)
 	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(.62*sin(PI*f)+(.22*pow(f,4.0) if base else 0.0))
-	return Vector3(p.x-inset.x+noise,y+vertical_noise*relief,p.y-inset.y+noise*.7)
+	# Physical shoulders vary along the contour and at world heights. Their
+	# relief fades to zero at true boundaries, preserving joined caps and steps.
+	var ledge:float=(sin(y*1.7+p.x*.41+p.y*.57)*.32+sin(y*.6-p.x*.9+p.y*.43)*.16)*sin(PI*f)*relief
+	# Narrow necks already spend their available width on taper and noise.
+	# Fade extra shoulders out before they can push opposing walls together.
+	ledge*=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
+	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
 
 func _falls(loop:PackedVector2Array,water_y:float)->void:
 	if _area(loop)<0:return

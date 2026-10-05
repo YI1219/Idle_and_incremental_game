@@ -29,7 +29,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var origin:=Vector3(p.x,h,p.y)
 			var angle:=random_at(cell,data.seed,1)*TAU
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
-			var house_clear:=p.distance_to(Vector2(-10,-7))<3.4
+			var house_clear:=p.distance_to(Vector2(-11,-7))<3.4
 			if not house_clear and cluster>-.25 and random_at(cell,data.seed,4)<.55:
 				for tuft in 2:
 					var offset:=Vector2(random_at(cell,data.seed,110+tuft*2)-.5,random_at(cell,data.seed,111+tuft*2)-.5)*.75
@@ -40,10 +40,10 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.20:
 				result.bush.append(_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2)))
 			if not house_clear and random_at(cell,data.seed,140)<.045:
-				result.reeds.append(_transform(origin,angle,Vector3(3.2,3.8,3.2)))
+				result.grass.append(_transform(origin,angle,Vector3(1.5,3.8,1.5)))
 			if not house_clear and random_at(cell,data.seed,7)<.018:result.surface_rock.append(_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7))
 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
-	for spec in [[Vector2(-14,-6),3.1],[Vector2(-5,-8),1.8],[Vector2(1,-5),2.6],[Vector2(15,4),3.5]]:
+	for spec in [[Vector2(-16,-3),3.5],[Vector2(-5,-8),1.8],[Vector2(6.3,-3.3),2.6],[Vector2(15.6,2),3.5]]:
 		var p:Vector2=spec[0]
 		if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
 		var sample:Dictionary=field.surface_at(p)
@@ -63,17 +63,17 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if inside.is_empty() or inside.water>=0 or absf(inside.height-h)>.1:continue
 				var profile:Dictionary=field._cliff_profile(p,out)
 				var landing:float=profile.bottom
-				if random_at(cell,data.seed,80)<.86:
+				if random_at(cell,data.seed,80)<.24:
 					var y:float=h-1.1-random_at(cell,data.seed,81)*.30
 					var layer:=0
-					while y>landing+.6:
+					while y>landing+.6 and layer<1:
 						var thickness:float=clampf(profile.inset, .25,1.0) if profile.base else 1.0
 						var anchor:Vector3=field._profile_point(p,y,out,profile)-Vector3(out.x,0,out.y)*.50*thickness
 						var tangent:=Vector3(out.y,0,-out.x)
 						var normal:=Vector3(out.x,0,out.y)
 						var basis:=Basis(tangent,normal,Vector3.DOWN)
 						basis=basis*Basis(Vector3.UP,(random_at(cell,data.seed,82+layer)-.5)*.65)
-						var size:=Vector3(3.0+random_at(cell,data.seed,91+layer)*.9,4.2,2.0+random_at(cell,data.seed,101+layer)*.4)
+						var size:=Vector3(2.8+random_at(cell,data.seed,91+layer)*.6,3.0,1.8+random_at(cell,data.seed,101+layer)*.3)
 						size.x*=thickness
 						size.y*=thickness
 						result.cliff_rock.append(Transform3D(basis.scaled_local(size),anchor))
@@ -99,8 +99,14 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
 				var sample:Dictionary=field.surface_at(p)
 				if sample.is_empty() or sample.water>=0 or absf(sample.height-level*.5)>.1:continue
-				var angle:=atan2(next.y-p.y,next.x-p.x)
-				result.shore_rock.append(_transform(Vector3(p.x,level*.5-.07,p.y),-angle,Vector3(1.4,.55,1.2)))
+				var angle:=atan2(next.y-loop[i].y,next.x-loop[i].x)
+				var edge:=next-loop[i]
+				var count:=maxi(1,ceili(edge.length()/.85))
+				for block in count:
+					var bank:=loop[i]+edge*float(block)/count+out*.22
+					var support:Dictionary=field.surface_at(bank)
+					if support.is_empty() or support.water>=0 or absf(support.height-level*.5)>.1:continue
+					result.shore_rock.append(_transform(Vector3(bank.x,level*.5-.07,bank.y),-angle,Vector3(1.15,2.1,.75)))
 				var cell:=Vector2i(p.floor())
 				if random_at(cell,data.seed,95)<.18:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*2.5))
 				var lily:=p-out*.8
@@ -115,7 +121,7 @@ func _stable(field,p:Vector2,h:float,radius:float)->bool:
 		if sample.is_empty() or sample.water>=0 or absf(sample.height-h)>.01:return false
 	return true
 func _path(result:Dictionary,field,chunk:Vector2i)->void:
-	var points:=[Vector2(-10,-5),Vector2(-11,-3),Vector2(-12,0),Vector2(-10,3),Vector2(-6,5)]
+	var points:=[Vector2(-11,-5),Vector2(-12,-3),Vector2(-13,0),Vector2(-11,3),Vector2(-7,5)]
 	for i in points.size()-1:
 		var a:Vector2=points[i]
 		var b:Vector2=points[i+1]

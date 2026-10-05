@@ -9,17 +9,28 @@ func load_assets()->void:
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=wood
-	for i in 13:
+	for i in 10:
 		var angle:=i*2.39996
-		var radius:=.56+.08*sin(i*4.1)
-		var center:=Vector3(0,1.38,0) if i==12 else Vector3(cos(angle)*radius,.90+float(i%3)*.16+sin(i*2.7)*.07,sin(angle)*radius*.82)
-		var size:=Vector3(.76,.62,.78) if i==12 else Vector3(.77+sin(i*1.7)*.08,.62,.79)
+		var radius:=.48+.07*sin(i*4.1)
+		var center:=Vector3(.1,1.43,0) if i==8 else Vector3(cos(angle)*radius,.90+float(i%3)*.16+sin(i*2.7)*.07,sin(angle)*radius*.82)
+		var size:=Vector3(.84,.60,.84) if i==8 else Vector3(.90+sin(i*1.7)*.12,.70,.92)
+		if i==9:
+			center=Vector3(-.06,1.03,.02)
+			size=Vector3(.92,.76,.92)
 		for part:Dictionary in leaf:
 			var box:AABB=part.mesh.get_aabb()
 			var basis:=Basis(Vector3.UP,angle*.43).scaled(size)
 			var pose:=Transform3D(basis,center-basis*(box.position+box.size*.5))
 			tree.append({"mesh":part.mesh,"pose":pose})
 	assets.tree=tree
+	var spray:Array=[]
+	for spec in [[Vector3(-.24,.17,0),-.65],[Vector3(.22,.28,.03),.65],[Vector3(-.04,.05,.06),-.1]]:
+		for part:Dictionary in assets.vine:
+			var box:AABB=part.mesh.get_aabb()
+			var basis:=Basis(Vector3.FORWARD,float(spec[1])).scaled_local(Vector3(.62,.64,.25))
+			var pose:=Transform3D(basis,spec[0]-basis*(box.position+box.size*.5))
+			spray.append({"mesh":part.mesh,"pose":pose})
+	assets.vine=spray
 	for kind in assets:assets[kind]=[_merge(assets[kind])]
 
 func _load(id:String,kind:String)->Array:
@@ -65,14 +76,18 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 				var a:=vertices[indices[i] if not indices.is_empty() else i]
 				var b:=vertices[indices[i+1] if not indices.is_empty() else i+1]
 				var c:=vertices[indices[i+2] if not indices.is_empty() else i+2]
+				if kind=="shore_rock":
+					a.y=minf(a.y,.18);b.y=minf(b.y,.18);c.y=minf(c.y,.18)
 				var shade:=.90+.13*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
+				if kind in ["tree_leaf","bush","vine"]:shade=.97+.07*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
 				var color:=Color(tint.r*shade,tint.g*shade,tint.b*shade,1)
 				if kind in ["tree_leaf","bush","vine"]:
 					var box:AABB=leaf_box
 					var ab:=(a+b)*.5
 					var bc:=(b+c)*.5
 					var ca:=(c+a)*.5
-					for face in [[a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]]:
+					var faces:=[[a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]]
+					for face in faces:
 						builder.triangle(_round_leaf(face[0],box),_round_leaf(face[1],box),_round_leaf(face[2],box),color)
 				else:builder.triangle(a,b,c,color)
 

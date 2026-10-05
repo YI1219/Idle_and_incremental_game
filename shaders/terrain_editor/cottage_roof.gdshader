@@ -15,7 +15,7 @@ void fragment(){
 	}
 	if(local_position.y>.35 && local_position.y<=2.3){
 		float brightness=max(base.r,max(base.g,base.b));
-		float neutral=1.0-smoothstep(.10,.25,brightness-min(base.r,min(base.g,base.b)));
+		float neutral=1.0-smoothstep(.25,.50,brightness-min(base.r,min(base.g,base.b)));
 		float wall=smoothstep(.48,.72,brightness)*neutral;
 		float along=mix(local_position.x,local_position.z,step(.5,abs(NORMAL.x)));
 		float seam=1.0-smoothstep(.01,.045,abs(fract(local_position.y*3.3)-.5));

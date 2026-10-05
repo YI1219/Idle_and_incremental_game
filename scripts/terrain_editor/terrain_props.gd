@@ -7,7 +7,7 @@ func _ready()->void:
 	var cottage:=Cottage.new()
 	add_child(cottage)
 	cottage.name="ReferenceCottage"
-	cottage.scale=Vector3.ONE*.82
+	cottage.scale=Vector3(1.05,.70,.82)
 	_roof_detail(cottage)
 	var door_wood:=_material(Color("936943"))
 	var dark_wood:=_material(Color("65492f"))
@@ -15,7 +15,7 @@ func _ready()->void:
 	for x in [-.55,-.19,.19,.55]:_box(cottage,Vector3(x,.92,2.28),Vector3(.025,1.77,.025),dark_wood)
 	for y in [.42,1.28]:_box(cottage,Vector3(0,y,2.29),Vector3(1.52,.055,.03),dark_wood)
 	for x in [-.10,.10]:_box(cottage,Vector3(x,.94,2.33),Vector3(.035,.12,.04),dark_wood)
-	entries.append({"node":cottage,"at":Vector2(-10,-7),"radius":2.5})
+	entries.append({"node":cottage,"at":Vector2(-11,-7),"radius":2.7})
 	var bench:=Node3D.new()
 	bench.name="BenchPlaceholder"
 	add_child(bench)

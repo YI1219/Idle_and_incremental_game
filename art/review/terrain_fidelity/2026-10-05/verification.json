@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh checks for the cliff, decoration, cottage and waterfall visual refinement; unchanged gameplay suite was last verified at 461ed14.",
+  "scope": "Fresh checks for continuous cliff relief/material, atomic shoreline shading, revised foliage and reference layout. Unchanged gameplay suite was last verified at 461ed14.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
@@ -49,20 +49,38 @@
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+    },
+    {
+      "test": "terrain_shoreline_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+    },
+    {
+      "test": "terrain_narrow_cliff_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
     }
   ],
   "targeted_checks": {
     "terrain_contour_test": 1025,
     "terrain_incremental_test": 20,
     "terrain_editor_data_test": 301,
-    "terrain_editor_decoration_test": 171,
+    "terrain_editor_decoration_test": 146,
     "terrain_editor_render_test": 339,
     "terrain_editor_runtime_test": 22,
     "camera_test": 8,
-    "terrain_waterfall_test": 24
+    "terrain_waterfall_test": 24,
+    "terrain_shoreline_test": 9,
+    "terrain_narrow_cliff_test": {
+      "slices": 794,
+      "failures": 0,
+      "smallest_gap": 0.0306
+    }
   },
-  "regression": "Mixed-height waterfall receiving geometry, lower and contract edits: 12/24 failed before the world-height profile fix; 24/24 passed after.",
-  "review": "Independent review cleared the mixed-height waterfall slit after rerunning its regression. No other important correctness issue found. Visual reference fidelity and user acceptance are not established.",
+  "regression": "Atomic shoreline test failed before terrain-derived shading and passed 9/9 afterward. Actual narrow-strip mesh slicing found 2 overlaps after added cliff shoulders; no shoulders passed as control; width fade passes 794 slices with no overlaps. Existing mixed-height waterfall regression remains 24/24.",
+  "review": "Independent review verified the narrow-wall triangle classification and reran 794 slices with no overlaps; no remaining important correctness issue found in this pass. Visual reference fidelity and user acceptance are not established.",
   "limitations": [
     "Target Windows thin laptop/MacBook Air and long-idle performance are unmeasured this round.",
     "Legacy unrelated gameplay suite is historical evidence for the previous revision, not a fresh full-suite claim."
