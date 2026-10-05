@@ -1,128 +1,15 @@
 {
   "engine": "Godot 4.7.2",
+  "scope": "Fresh checks for the cliff, decoration, cottage and waterfall visual refinement; unchanged gameplay suite was last verified at 461ed14.",
   "suite": [
     {
-      "test": "animation_refinement_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "camera_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "combat_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "courtyard_study_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "demo_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "gait_context_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "garment_motion_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "running_turn_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sandbox_land_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sandbox_layout_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sandbox_runtime_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "scene_art_integration_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sim_explore_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sim_kernel_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sim_loop_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sim_research_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "space_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sword_rules_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "sword_runtime_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "template_motion_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
       "test": "terrain_contour_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+    },
+    {
+      "test": "terrain_incremental_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
@@ -152,19 +39,13 @@
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
     },
     {
-      "test": "terrain_test.gd",
+      "test": "camera_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
     },
     {
-      "test": "turn_transition_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_incremental_test.gd",
+      "test": "terrain_waterfall_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
@@ -174,13 +55,16 @@
     "terrain_contour_test": 1025,
     "terrain_incremental_test": 20,
     "terrain_editor_data_test": 301,
+    "terrain_editor_decoration_test": 171,
     "terrain_editor_render_test": 339,
-    "terrain_editor_decoration_test": 74,
-    "terrain_editor_runtime_test": 22
+    "terrain_editor_runtime_test": 22,
+    "camera_test": 8,
+    "terrain_waterfall_test": 24
   },
-  "review": "Independent review cleared demonstrated functional blockers; user visual acceptance remains pending.",
+  "regression": "Mixed-height waterfall receiving geometry, lower and contract edits: 12/24 failed before the world-height profile fix; 24/24 passed after.",
+  "review": "Independent review cleared the mixed-height waterfall slit after rerunning its regression. No other important correctness issue found. Visual reference fidelity and user acceptance are not established.",
   "limitations": [
-    "The legacy doorway test is timing-sensitive without the repository fixed-60-Hz runner; direct uncapped runs failed a cover-frame assertion. Canonical fixed-step run passed.",
-    "Target Windows thin laptop/MacBook Air and long-idle performance are unmeasured this round."
+    "Target Windows thin laptop/MacBook Air and long-idle performance are unmeasured this round.",
+    "Legacy unrelated gameplay suite is historical evidence for the previous revision, not a fresh full-suite claim."
   ]
 }

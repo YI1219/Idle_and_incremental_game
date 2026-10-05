@@ -74,9 +74,11 @@ func _roof_detail(node:Node)->void:
 	if node is MeshInstance3D:
 		for surface in node.mesh.get_surface_count():
 			var original:Material=node.get_active_material(surface)
-			if not original is StandardMaterial3D or original.albedo_texture==null:continue
+			if not original is StandardMaterial3D:continue
 			var material:=ShaderMaterial.new()
 			material.shader=load("res://shaders/terrain_editor/cottage_roof.gdshader")
-			material.set_shader_parameter("albedo_tex",original.albedo_texture)
+			material.set_shader_parameter("base_color",original.albedo_color)
+			material.set_shader_parameter("use_texture",original.albedo_texture!=null)
+			if original.albedo_texture!=null:material.set_shader_parameter("albedo_tex",original.albedo_texture)
 			node.set_surface_override_material(surface,material)
 	for child in node.get_children():_roof_detail(child)

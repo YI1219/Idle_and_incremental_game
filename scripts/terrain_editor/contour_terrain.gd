@@ -59,6 +59,7 @@ func refresh(data:Data)->void:
 	for level:int in water_regions:
 		_cap(surfaces.water,water_regions[level],level*.5+.045,Color.WHITE)
 		for loop:PackedVector2Array in water_regions[level]:_falls(loop,level*.5+.045)
+	_smooth_cliff_normals()
 	_index_triangles()
 
 static func _area(p:PackedVector2Array)->float:
@@ -242,7 +243,7 @@ func _cliffs(loop:PackedVector2Array,top:float,bottom:float)->void:
 		var center:Vector3=(p+q+r+s)*.25
 		var out:=Vector3(outward.x,0,outward.y)
 		center+=out*(.04+.055*sin(a.x*2.93+a.y*4.19+top*3.1))
-		var tint:=Color("aaa99e")*(.94+.055*sin(a.x*2.1+a.y*3.2+floor((top+a.x*.14)/1.5)*4.9))
+		var tint:=Color("a8aba8")*(.94+.055*sin(a.x*2.1+a.y*3.2+floor((top+a.x*.14)/1.5)*4.9))
 		tint.a=1
 		surfaces.cliff.triangle(p,center,q,tint)
 		surfaces.cliff.triangle(q,center,r,tint*.98)
@@ -274,25 +275,81 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 		var sample:=surface_at((a+b)*.5+out*.25)
 		var low:float=sample.get("height",-12.0)
 		if low>=water_y-.1:continue
+		var before:=loop[(i-1+loop.size())%loop.size()]
+		var after:=loop[(i+2)%loop.size()]
+		var normal_a:=Vector2(b.y-before.y,before.x-b.x).normalized()
+		var normal_b:=Vector2(after.y-a.y,a.x-after.x).normalized()
 		var apron_a:=Vector3(a.x,water_y,a.y)
 		var apron_b:=Vector3(b.x,water_y,b.y)
-		var p:=apron_a+Vector3(out.x,0,out.y)*.36
-		var q:=apron_b+Vector3(out.x,0,out.y)*.36
-		var r:=Vector3(b.x+out.x*.49,low+.07,b.y+out.y*.49)
-		var s:=Vector3(a.x+out.x*.49,low+.07,a.y+out.y*.49)
+		var p:=_fall_point(a,normal_a,water_y,water_y)
+		var q:=_fall_point(b,normal_b,water_y,water_y)
+		var r:=_fall_point(b,normal_b,water_y,low+.07)
+		var s:=_fall_point(a,normal_a,water_y,low+.07)
 		surfaces.water.quad(apron_a,apron_b,q,p,Color.WHITE,true)
-		surfaces.waterfall.quad(q,p,s,r,Color.WHITE)
+		# Both curtains sample the same world-height lattice. Terminal points
+		# interpolate that lattice too, so different landing heights cannot slit
+		# their common edge or move the upper flow when a receiver is edited.
+		var rows:Array=[]
+		var height:=floorf(water_y*2)*.5
+		while height>low+.07:
+			rows.append(height)
+			height-=.5
+		rows.append(low+.07)
+		var previous_a:=p
+		var previous_b:=q
+		for y:float in rows:
+			var current_a:=_fall_point(a,normal_a,water_y,y)
+			var current_b:=_fall_point(b,normal_b,water_y,y)
+			surfaces.waterfall.quad(previous_b,previous_a,current_a,current_b,Color.WHITE)
+			previous_a=current_a
+			previous_b=current_b
 		var back:=Vector3(out.x,0,out.y)*.18
 		surfaces.bank.quad(p-back+Vector3(0,.012,0),q-back+Vector3(0,.012,0),q+Vector3(0,.012,0),p+Vector3(0,.012,0),Color.WHITE,true)
 		if not sample.is_empty() and sample.water>=0:
-			var center:=(r+s)*.5+Vector3(out.x*.15,.015,out.y*.15)
-			for j in 10:
-				var angle:=j*TAU/10.0
-				var angle2:=(j+1)*TAU/10.0
-				var size:=.3+.12*sin(i*3.7+j*2.9)
+			var center:=(r+s)*.5+Vector3(out.x*.24,.015,out.y*.24)
+			for j in 14:
+				var angle:=j*TAU/14.0
+				var angle2:=(j+1)*TAU/14.0
+				var size:=.54+.18*sin(i*3.7+j*2.9)
 				var v:=center+Vector3(cos(angle)*size,0,sin(angle)*size)
 				var w:=center+Vector3(cos(angle2)*size,0,sin(angle2)*size)
 				surfaces.bank.triangle(center,v,w,Color.WHITE,true)
+
+static func _fall_point(p:Vector2,normal:Vector2,water_y:float,y:float)->Vector3:
+	var lower:=floorf(y*2)*.5
+	var offset:=lerpf(_fall_offset(water_y,lower),_fall_offset(water_y,lower+.5),(y-lower)*2)
+	return Vector3(p.x+normal.x*offset,y,p.y+normal.y*offset)
+
+static func _fall_offset(water_y:float,y:float)->float:
+	var drop:=maxf(0,water_y-y)
+	return .36+.13*(1-exp(-drop*.8))+.08*sin(drop*1.5)*minf(1,drop)
+
+func _smooth_cliff_normals()->void:
+	# Smooth only the supporting cliff body. Embedded stone models retain their
+	# flat facets, while construction strips no longer form horizontal stripes.
+	var surface=surfaces.cliff
+	var sums:Dictionary={}
+	for i in range(0,surface.vertices.size(),3):
+		var a:Vector3=surface.vertices[i]
+		var b:Vector3=surface.vertices[i+1]
+		var c:Vector3=surface.vertices[i+2]
+		var weighted:=-(b-a).cross(c-a)
+		for point in [a,b,c]:
+			var key:Vector3=(point*10000.0).round()
+			sums[key]=sums.get(key,Vector3.ZERO)+weighted
+	for i in surface.vertices.size():
+		var key:Vector3=(surface.vertices[i]*10000.0).round()
+		surface.normals[i]=sums[key].normalized()
+
+static func _interpolated_normal(point:Vector3,a:Vector3,b:Vector3,c:Vector3,na:Vector3,nb:Vector3,nc:Vector3)->Vector3:
+	var ab:=b-a
+	var ac:=c-a
+	var ap:=point-a
+	var denominator:=ab.dot(ab)*ac.dot(ac)-ab.dot(ac)*ab.dot(ac)
+	if absf(denominator)<.00000001:return na
+	var u:float=(ac.dot(ac)*ap.dot(ab)-ab.dot(ac)*ap.dot(ac))/denominator
+	var v:float=(ab.dot(ab)*ap.dot(ac)-ab.dot(ac)*ap.dot(ab))/denominator
+	return (na*(1-u-v)+nb*u+nc*v).normalized()
 
 func _index_triangles()->void:
 	triangle_chunks.clear()
@@ -315,6 +372,7 @@ func build(chunk:Vector2i)->Dictionary:
 		var local:=Legacy.Surface.new()
 		var vertices:PackedVector3Array=surfaces[kind].vertices
 		var colors:PackedColorArray=surfaces[kind].colors
+		var normals:PackedVector3Array=surfaces[kind].normals
 		for i:int in triangle_chunks.get(chunk,{}).get(kind,[]):
 			var polygon:Array[Vector3]=[vertices[i],vertices[i+1],vertices[i+2]]
 			for plane in 4:
@@ -323,8 +381,11 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
+				if kind=="cliff":
+					for index in range(before,local.vertices.size()):
+						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
 				if kind=="waterfall" and local.vertices.size()>before:
-					var normal:Vector3=local.normals[before]
+					var normal:Vector3=normals[i]
 					var axis:=0 if absf(normal.z)>=absf(normal.x) else 2
 					for index in range(before,local.vertices.size()):local.uv[index]=Vector2(local.vertices[index][axis],local.vertices[index].y)
 		result[kind]=local.mesh()

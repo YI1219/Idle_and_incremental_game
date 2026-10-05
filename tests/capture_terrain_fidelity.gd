@@ -36,6 +36,7 @@ func run()->void:
 		await shot(editor,"detail_"+spec[0])
 	editor.camera.wheel(log(21.0/editor.camera.height_goal)/log(1.12))
 	editor.camera.recenter(Vector2(0,-1))
+	editor.set_process(true)
 	editor.hud.show()
 	await shot(editor,"editor_ui")
 	var manifest:=FileAccess.open(OUT+"captures.json",FileAccess.WRITE)

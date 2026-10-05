@@ -2,7 +2,7 @@ class_name TerrainModels
 extends RefCounted
 ## CC0 model parts and material palette. Canopies assemble existing oak mesh modules.
 var assets:Dictionary={}
-const IDS={"grass":"grass_large","bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeD","shore_rock":"stone_largeB","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
+const IDS={"grass":"grass_large","bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeB","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
 	if not assets.is_empty():return
 	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
@@ -47,10 +47,10 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			if kind in ["bush","vine"] and not name_value.contains("leaf"):continue
 			var tint:=Color("839b39")
 			if kind in ["tree_wood","fence"]:tint=Color("956844") if not name_value.contains("Dark") else Color("704d35")
-			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("b5b5a3")
-			elif kind=="tree_leaf" or kind=="bush":tint=Color("8ca73f")
+			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("b6b8b1")
+			elif kind=="tree_leaf" or kind=="bush":tint=Color("a4bb45")
 			elif kind=="vine":tint=Color("668837")
-			elif kind=="grass" or kind=="reeds":tint=Color("9baa36")
+			elif kind=="grass" or kind=="reeds":tint=Color("b3c541")
 			elif kind=="lily":tint=Color("abc444")
 			elif kind=="flower":tint=Color("e4d46d") if name_value.contains("yellow") else Color("8d9d36")
 			var arrays:Array=node.mesh.surface_get_arrays(surface)
@@ -84,7 +84,7 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			mesh.surface_set_material(0,material)
 			if kind in ["bush","vine"]:
 				var box:=mesh.get_aabb()
-				pose.origin=-box.position
+				pose.origin=Vector3(-box.position.x-box.size.x*.5,-box.position.y,-box.position.z-box.size.z*.5)
 			parts.append({"mesh":mesh,"pose":pose})
 	for child in node.get_children():_extract(child,pose,parts,kind)
 

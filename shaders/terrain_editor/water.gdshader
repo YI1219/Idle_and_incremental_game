@@ -28,8 +28,10 @@ void fragment(){
 		vec2 flow=vec2(UV.x*1.65,UV.y*1.25-TIME*0.85);
 		flow.x+=sin(UV.y*4.1-TIME*.8)*.13+sin(UV.x*5.2+UV.y*1.7)*.08;
 		float line=veins(flow);
-		float streak=pow(0.5+0.5*sin(UV.x*28.0+sin(UV.y*1.8-TIME*2.0)),10.0);
-		color=mix(vec3(0.07,0.46,0.68),vec3(0.73,0.94,1.0),max(line*0.72,streak*.16));
+		float broad=0.5+0.5*sin(UV.x*7.5+sin(UV.y*.75-TIME*.7)*.55);
+		float streak=pow(0.5+0.5*sin(UV.x*28.0+sin(UV.y*1.8-TIME*2.0)),7.0);
+		float glint=max(line*.16,max(streak*.65,pow(broad,4.0)*.76));
+		color=mix(vec3(0.045,0.46,0.69),vec3(0.73,0.94,1.0),glint);
 		EMISSION=color*.2;
 	}
 	ALBEDO=color;

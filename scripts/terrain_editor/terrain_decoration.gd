@@ -30,11 +30,17 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var angle:=random_at(cell,data.seed,1)*TAU
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
 			var house_clear:=p.distance_to(Vector2(-10,-7))<3.4
-			if not house_clear and cluster>.03 and random_at(cell,data.seed,4)<.48:
-				result.grass.append(_transform(origin,angle,Vector3.ONE*(1.1+random_at(cell,data.seed,5)*1.2)))
-				if random_at(cell,data.seed,13)<.27:result.flower.append(_transform(origin,angle,Vector3.ONE*.65))
-			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.15:
+			if not house_clear and cluster>-.25 and random_at(cell,data.seed,4)<.55:
+				for tuft in 2:
+					var offset:=Vector2(random_at(cell,data.seed,110+tuft*2)-.5,random_at(cell,data.seed,111+tuft*2)-.5)*.75
+					var ground:Dictionary=field.surface_at(p+offset)
+					if ground.is_empty() or ground.water>=0 or absf(ground.height-h)>.01:continue
+					result.grass.append(_transform(origin+Vector3(offset.x,0,offset.y),angle+tuft*2.4,Vector3.ONE*(1.5+random_at(cell,data.seed,120+tuft)*1.3)))
+				if random_at(cell,data.seed,13)<.40:result.flower.append(_transform(origin,angle,Vector3.ONE*.9))
+			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.20:
 				result.bush.append(_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2)))
+			if not house_clear and random_at(cell,data.seed,140)<.045:
+				result.reeds.append(_transform(origin,angle,Vector3(3.2,3.8,3.2)))
 			if not house_clear and random_at(cell,data.seed,7)<.018:result.surface_rock.append(_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7))
 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
 	for spec in [[Vector2(-14,-6),3.1],[Vector2(-5,-8),1.8],[Vector2(1,-5),2.6],[Vector2(15,4),3.5]]:
@@ -50,21 +56,37 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				var p:=loop[i]
 				if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
 				var cell:=Vector2i(p.floor())
-				if random_at(cell,data.seed,80)>.77:continue
+				if random_at(cell,data.seed,80)>.90:continue
 				var next:Vector2=loop[(i+1)%loop.size()]
 				var out:=Vector2(next.y-p.y,p.x-next.x).normalized()
 				var inside:Dictionary=field.surface_at(p-out*.45)
 				if inside.is_empty() or inside.water>=0 or absf(inside.height-h)>.1:continue
-				var inward:=-out*.18
-				var depth:=1.0+random_at(cell,data.seed,81)*1.3
-				if random_at(cell,data.seed,80)<.36:result.cliff_rock.append(_transform(Vector3(p.x+inward.x,h-depth,p.y+inward.y),random_at(cell,data.seed,82)*TAU,Vector3(1.6,1.45,1.4)))
+				var profile:Dictionary=field._cliff_profile(p,out)
+				var landing:float=profile.bottom
+				if random_at(cell,data.seed,80)<.86:
+					var y:float=h-1.1-random_at(cell,data.seed,81)*.30
+					var layer:=0
+					while y>landing+.6:
+						var thickness:float=clampf(profile.inset, .25,1.0) if profile.base else 1.0
+						var anchor:Vector3=field._profile_point(p,y,out,profile)-Vector3(out.x,0,out.y)*.50*thickness
+						var tangent:=Vector3(out.y,0,-out.x)
+						var normal:=Vector3(out.x,0,out.y)
+						var basis:=Basis(tangent,normal,Vector3.DOWN)
+						basis=basis*Basis(Vector3.UP,(random_at(cell,data.seed,82+layer)-.5)*.65)
+						var size:=Vector3(3.0+random_at(cell,data.seed,91+layer)*.9,4.2,2.0+random_at(cell,data.seed,101+layer)*.4)
+						size.x*=thickness
+						size.y*=thickness
+						result.cliff_rock.append(Transform3D(basis.scaled_local(size),anchor))
+						y-=1.8+random_at(cell,data.seed,130+layer)*.35
+						layer+=1
+				if random_at(cell,data.seed,80)>.65:continue
 				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3.ONE*1.8))
 				for leaf in range(4+int(random_at(cell,data.seed,84)*5)):
-					var y:=h-.12-leaf*.30
+					var y:=h-.12-leaf*.23
 					var bend:=out*(.07-leaf*.025)
 					var tangent:=Vector2(-out.y,out.x)*sin(leaf*2.9)*.18
-					result.vine.append(_transform(Vector3(p.x+bend.x+tangent.x,y,p.y+bend.y+tangent.y),leaf*.81,Vector3(.55,.40,.50)))
-					if leaf<3:result.bush.append(_transform(Vector3(p.x-out.x*.18+tangent.x,h-.08,p.y-out.y*.18+tangent.y),leaf*.83,Vector3(.62,.37,.58)))
+					result.vine.append(_transform(Vector3(p.x+bend.x+tangent.x,y,p.y+bend.y+tangent.y),leaf*.81,Vector3(.67,.47,.62)))
+					if leaf<3:result.bush.append(_transform(Vector3(p.x-out.x*.18+tangent.x,h-.08,p.y-out.y*.18+tangent.y),leaf*.83,Vector3(.88,.37,.80)))
 
 	for level:int in field.water_regions:
 		for loop:PackedVector2Array in field.water_regions[level]:
