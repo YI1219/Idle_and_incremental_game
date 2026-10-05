@@ -24,7 +24,7 @@ void fragment(){
 	// coordinates are site-relative and world anchored, never screen dependent.
 	vec3 face=step(vec3(0.0),vec3(dot(local,vec3(.78,.21,.58)),dot(local,vec3(-.42,.86,.29)),dot(local,vec3(.35,.38,-.85))));
 	vec3 face_variation=rock_hash(selected+face*vec3(7.0,13.0,19.0)+vec3(31.0));
-	vec3 perturb=(variation-.5)*.50+(face_variation-.5)*.38;
+	vec3 perturb=(variation-.5)*.24+(face_variation-.5)*.20;
 	// Let the rock faces dominate broad height-row curvature, keeping the
 	// silhouette/picking mesh intact while reducing horizontal shading bands.
 	vec3 planar_normal=normalize(vec3(world_normal.x,world_normal.y*.30,world_normal.z));
