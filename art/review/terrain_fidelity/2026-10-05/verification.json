@@ -1,13 +1,27 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh cottage material-role and model-space projection refinement; original model geometry unchanged. Actual full/detail/four-edit Metal captures regenerated.",
+  "scope": "Fresh final cliff angular shading and matching embedded-model palette; authoritative contour geometry and picking unchanged. Actual full/detail/four-edit Metal captures regenerated.",
   "suite": [
     {
-      "test": "terrain_cottage_material_test.gd",
+      "test": "terrain_incremental_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py (Metal Forward+, fixed 60 Hz)",
-      "checks": 7
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 20
+    },
+    {
+      "test": "terrain_editor_decoration_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 118
+    },
+    {
+      "test": "terrain_editor_render_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 339
     },
     {
       "test": "terrain_editor_runtime_test.gd",
@@ -22,36 +36,41 @@
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
       "checks": 8
+    },
+    {
+      "test": "terrain_model_bounds_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 9
     }
   ],
-  "regression": {
-    "before_role_fix": "5/6 passed; plaster gable brightened into roof finish above height threshold",
-    "final_wall_gable_red": [
-      0.6906,
-      0.6885
-    ],
-    "view_space_normal_mutation": "6/7 passed; same panel post moved from .5451 to .6837 red under oblique view",
-    "final_post_red": [
-      0.5451,
-      0.5451
-    ],
-    "coverage": "Real retained plaster material on rendered synthetic patches, plus actual full-cottage capture review. Not exhaustive cottage-surface coverage."
+  "render_verification": {
+    "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
+    "backend": "Metal Forward+",
+    "exit": 0,
+    "operations_changed_cells": {
+      "raise": 16,
+      "lower": 12,
+      "expand": 14,
+      "contract": 16
+    },
+    "output": "Actual full scene, three details, four edits and editor UI"
   },
-  "preceding_terrain_suite": {
-    "revision": "2535c6e",
-    "scripts_passed": 11,
-    "scope": "Contour, incremental, data, decoration, rendering, runtime, camera, waterfall, shoreline, narrow cliffs and model bounds. Fresh at preceding revision; unchanged terrain pipeline not rerun this material-only pass."
+  "previous_revision_checks": {
+    "fed1ca3": "Cottage material 7/7; runtime 22/22 and camera 8/8",
+    "2535c6e": "Eleven terrain scripts freshly passed at this revision; retained geometry-specific suite not fully rerun for the shader-only pass."
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
     "kenney_source_glbs_unchanged": 11,
-    "refined_cottage_matches_HEAD": true,
-    "received_cottage_originals_unchanged": 2
+    "refined_cottage_matches_HEAD": true
   },
-  "review": "Independent read-only reviewer found no Critical/Important issue, reran 7/7 and inspected before/after actual cottage captures. Warmer gable is more consistent, while layered timber, windows and eaves remain visual gaps. User visual acceptance is pending.",
+  "review": "Independent read-only review of final code and actual before/after captures found no Critical/Important issue. Normal quantization was removed after stretched-patch feedback. Body facets stay world anchored; embedded stones share palette, retain physical normals and receive material after merge. Review did not rerun Godot during reserved benchmark window. Some elongated patches and broad physical shell remain; whole-scene visual acceptance pending.",
   "limitations": [
-    "Performance measured only on M4 Pro; target laptops and long idle unmeasured.",
-    "This focused material check is not exhaustive surface coverage.",
-    "Previous gameplay suite and preceding terrain suite remain revision-specific evidence."
+    "Shading improvement does not establish physical rock-volume fidelity.",
+    "Temporal shimmer and target-device rendering unverified.",
+    "Current M4 Pro frame-time samples higher than preceding cottage pass; no performance improvement claimed.",
+    "Target laptops and long idle remain unmeasured."
   ]
 }

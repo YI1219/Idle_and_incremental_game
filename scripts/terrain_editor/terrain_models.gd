@@ -39,6 +39,10 @@ func load_assets()->void:
 			spray.append({"mesh":part.mesh,"pose":pose})
 	assets.vine=spray
 	for kind in assets:assets[kind]=[_merge(assets[kind])]
+	# Apply after merging, which intentionally replaces individual source materials.
+	var rock_material:=ShaderMaterial.new()
+	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
+	assets.cliff_rock[0].mesh.surface_set_material(0,rock_material)
 
 func _load(id:String,kind:String)->Array:
 	var document:=GLTFDocument.new()
