@@ -208,6 +208,7 @@ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
 	var inside:=surface_at(p-normal*.25)
 	var outside:=surface_at(p+normal*.30)
 	var top:float=inside.get("height",levels[0])
+	var rock_top:float=top
 	var bottom:float=outside.get("height",BOTTOM)
 	if outside.is_empty():
 		# The outer body stays vertical through nearby terrace joins, then tapers
@@ -237,7 +238,7 @@ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
 					var receiver:Dictionary=source.cells.get(nearby+direction,{})
 					var height:float=receiver.water*.5 if receiver.get("water",-1)>=0 else receiver.get("height",BOTTOM)
 					if height<level*.5-.1:water=maxi(water,level);break
-	var profile:={"top":top,"bottom":bottom,"base":outside.is_empty(),"inset":_inset_limit(p,normal,top) if outside.is_empty() else 0.0,"water":water}
+	var profile:={"top":top,"rock_top":rock_top,"bottom":bottom,"base":outside.is_empty(),"inset":_inset_limit(p,normal,top) if outside.is_empty() else 0.0,"water":water}
 	_profiles[key]=profile
 	return profile
 
@@ -252,7 +253,14 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 		var key:=Vector3(p.x,y,p.y)
 		if not _rock_relief_cache.has(key):_rock_relief_cache[key]=_rock_relief(key)
 		rounded=_rock_relief_cache[key]
-	var point:=_rock_point(p,y,f,profile.base,minf(1.0,depth/2.2),normal,profile.inset,rounded)
+	var rock_depth:float=depth
+	var rock_f:=f
+	# Both exposed terrace edges stay pinned to their cap contours.
+	# Only the wall above the neighboring lower terrace gets a new envelope.
+	if profile.rock_top>profile.top+.001 and y>profile.top:
+		rock_depth=profile.rock_top-profile.top
+		rock_f=clampf((profile.rock_top-y)/rock_depth,0,1)
+	var point:=_rock_point(p,y,f,profile.base,minf(1.0,rock_depth/2.2),normal,profile.inset,rounded,rock_f)
 	if profile.water>=0 and point.y<=profile.water*.5+.045:
 		# Exposed wet walls sit behind the shared stream envelope. Limit only
 		# protruding shoulders; inland and dry cliff masses keep their full relief.
@@ -308,7 +316,7 @@ func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 		if not contains(loops,p-normal*distance,signs):return minf(1.5,distance*.28)
 	return 1.5
 
-static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,normal:Vector2=Vector2.ZERO,inset_limit:float=1.5,rounded_relief:float=NAN)->Vector3:
+static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,normal:Vector2=Vector2.ZERO,inset_limit:float=1.5,rounded_relief:float=NAN,rock_fraction:float=NAN)->Vector3:
 	var inset:=normal*(inset_limit*pow(f,1.5) if base else 0.0)
 	var width_weight:=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
 	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,.04,width_weight)*sin(PI*f)
@@ -318,8 +326,10 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	if is_nan(rounded_relief):rounded_relief=_rock_relief(Vector3(p.x,y,p.y)) if width_weight>0.0 else 0.0
 	# Keep shoulders above, then settle into a compact base instead of deep
 	# scallops. The lower envelope reaches the foot with a finite slope.
-	var envelope:=pow(maxf(0.0,sin(PI*f)),lerpf(.65,1.0,smoothstep(.50,.85,f)))
-	if base:envelope*=lerpf(1.0,.25,smoothstep(.55,.95,f))
+	var shoulder_f:=f if is_nan(rock_fraction) else rock_fraction
+	# Nearby lower land controls base taper, not the upper rock shoulders.
+	var envelope:=pow(maxf(0.0,sin(PI*shoulder_f)),lerpf(lerpf(.65,.32,width_weight),1.0,smoothstep(.50,.85,shoulder_f)))
+	if base:envelope*=lerpf(1.0,.25,smoothstep(.55,.95,shoulder_f))
 	var ledge:=rounded_relief*envelope*relief*width_weight
 	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
 

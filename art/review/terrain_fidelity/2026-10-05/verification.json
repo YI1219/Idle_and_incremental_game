@@ -1,41 +1,86 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Tree-canopy-only reconstruction from retained CC0 parts:13unequal lobes instead of17,moderate central peak,taller side masses and stronger tree-only rounding. Fresh five-script checks,actual matched full/details/four edits,finite actual-wood contact/resource probes and standalone benchmark. Terrain,placement,camera and other models retained; overall visual acceptance pending.",
+  "scope": "Cliff shoulder and joint refinement against fc8e09a: separate upper terrace relief from lower base taper, retain actual contour endpoints, broaden relief onset by existing thickness weight and darken world-site joins. Actual matched full/details/four edits; fresh eleven-script checks, finite geometry preservation probe and standalone benchmark. Overall visual acceptance pending.",
   "suite": [
+    {
+      "test": "terrain_upper_rock_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+      "ray_samples": 15,
+      "shoulders": 11,
+      "nearby_join_vertices": 25,
+      "failures": 0
+    },
+    {
+      "test": "terrain_narrow_cliff_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+      "checks": 794
+    },
+    {
+      "test": "terrain_cliff_taper_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+      "checks": 2
+    },
+    {
+      "test": "terrain_boundary_wall_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+      "checks": 416
+    },
+    {
+      "test": "terrain_waterfall_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+      "checks": 35
+    },
+    {
+      "test": "terrain_contour_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+      "checks": 1025
+    },
+    {
+      "test": "terrain_editor_render_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+      "checks": 339
+    },
     {
       "test": "terrain_editor_decoration_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
       "checks": 99
     },
     {
       "test": "terrain_incremental_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
       "checks": 20
     },
     {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
       "checks": 22
     },
     {
       "test": "camera_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
       "checks": 8
-    },
-    {
-      "test": "terrain_model_bounds_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
-      "checks": 9
     }
   ],
   "regression": {
@@ -59,17 +104,16 @@
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
-    "tracked_runtime_sources_assets": "Compared tracked terrain-editor scripts/shaders,nature,cottage and terrain-editor resources to4ab3968,excluding .import files. Only terrain_models.gd differs. Eight unrelated local hashes preserve existing cottage/character imports.",
-    "resource_probe": {
-      "non_tree_non_null_arrays_exact": 61,
-      "wood_triangle_entries_identical": 360,
-      "source_wood_poses_identical": true,
-      "failures": 0,
-      "exit": 0,
-      "limits": "Non-null geometry-channel comparisons,not complete material/resource identity. Wood entries include duplicate triangle positions; world transform unchanged in source."
+    "tracked_runtime_sources_assets": "Compared tracked terrain-editor scripts/shaders, nature, cottage and terrain-editor resources against fc8e09a, excluding imports. Only contour_terrain.gd and cliff.gdshader differ; original models/textures remain identical. Eight unrelated local hashes retained.",
+    "component_probe": {
+      "exact_non_cliff_vertex_normal_color_arrays": 60,
+      "fixtures": "default and four capture edits",
+      "exact_narrow_cliff_vertex_normal_color_arrays": 3,
+      "narrow_fixture": "11-cell strip x24..34,z2,height1.5",
+      "limitations": "Finite exact geometry arrays, not all metadata/materials or arbitrary layouts. Broad cliff positions/normals and decoration profile anchors intentionally change. Equal cliff counts do not imply array identity."
     }
   },
-  "review": "Independent source/probe/still review found no confirmed Critical/Important defect. Deterministic tree-leaf-only assembly/rounding; merged bounds rebuild correctly. Modest improvement: less flattened/repeated skirt,clearer left forks,fuller unequal foreground-right masses and comfortable framing. Still overlapping rounded balls with small bumps; right crown lacks reference central peak/side separation and left remains dense. No visible detached crown,exposed tip,new clipping or framing failure in full/four edits. Finite contact selectors and resource comparisons are not whole-branch,lobe-support or material-identity proof. Reviewer did not run Godot/benchmark or assess temporal behavior.",
+  "review": "Independent read-only source/test/final-still review found no confirmed Critical/Important defect. Terrace slit closed; repaired lower-edit wall intact; no new obvious waterfall obstruction/open boundary in four edits. Worthwhile but modest gain: upper-left cliff faces read as connected masses rather than nearly flat wall. Joins still soft outlined cobbles; lower folds and attached stone inserts remain. Reviewer did not run Godot, benchmark or verify arbitrary layouts/temporal behavior. Added join coverage threshold after review; affected test rerun clean.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -1225,9 +1269,72 @@
         "preservation": "Eight unrelatedSHA256s unchanged; contour_terrain.gd is sole changed compared tracked runtime source/asset(imports excluded).",
         "components": "60 exact non-cliff arrays across five fixtures,exit0."
       }
+    },
+    "fc8e09a": {
+      "scope": "Tree-canopy-only reconstruction from retained CC0 parts:13unequal lobes instead of17,moderate central peak,taller side masses and stronger tree-only rounding. Fresh five-script checks,actual matched full/details/four edits,finite actual-wood contact/resource probes and standalone benchmark. Terrain,placement,camera and other models retained; overall visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 99
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 8
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 9
+        }
+      ],
+      "preservation": {
+        "unrelated_local_files_unchanged": 8,
+        "tracked_runtime_sources_assets": "Compared tracked terrain-editor scripts/shaders,nature,cottage and terrain-editor resources to4ab3968,excluding .import files. Only terrain_models.gd differs. Eight unrelated local hashes preserve existing cottage/character imports.",
+        "resource_probe": {
+          "non_tree_non_null_arrays_exact": 61,
+          "wood_triangle_entries_identical": 360,
+          "source_wood_poses_identical": true,
+          "failures": 0,
+          "exit": 0,
+          "limits": "Non-null geometry-channel comparisons,not complete material/resource identity. Wood entries include duplicate triangle positions; world transform unchanged in source."
+        }
+      },
+      "review": "Independent source/probe/still review found no confirmed Critical/Important defect. Deterministic tree-leaf-only assembly/rounding; merged bounds rebuild correctly. Modest improvement: less flattened/repeated skirt,clearer left forks,fuller unequal foreground-right masses and comfortable framing. Still overlapping rounded balls with small bumps; right crown lacks reference central peak/side separation and left remains dense. No visible detached crown,exposed tip,new clipping or framing failure in full/four edits. Finite contact selectors and resource comparisons are not whole-branch,lobe-support or material-identity proof. Reviewer did not run Godot/benchmark or assess temporal behavior.",
+      "verification_sequence": {
+        "baseline": "4ab3968",
+        "trials": "Initial rear-fork contact3/5 failed; supporting lobe correction gives5/5. Tall crown/cylindrical trial superseded by final moderated13-lobe/.60rounding version.",
+        "final_tests": "Five scripts clean,exit0.",
+        "final_capture": "Metal1672x940,exit0; full/three details/four edits/editor. Full/details/four edits visually inspected.",
+        "final_probes": "Contact5/5 selectors(four unique);61exactnon-tree arrays/360identicalwoodentries;zero failures,exit0.",
+        "benchmark": "Standalone Metal1280x720,three12s runs after2s warmups,no concurrent Godot runs,exit0.",
+        "preservation": "Eight unrelatedSHA256s unchanged; terrain_models.gd sole changed compared tracked runtime source/asset(imports excluded)."
+      },
+      "limitations": "User visual acceptance pending. Modest canopy gain does not resolve the reference. Finite resource/contact/still evidence excludes all-branch/lobe support,arbitrary layouts,temporal behavior,target-laptop performance and long-idle power/stability. Historical evidence retains revision."
     }
   },
-  "limitations": "User visual acceptance pending. Modest canopy gain does not resolve the reference. Finite resource/contact/still evidence excludes all-branch/lobe support,arbitrary layouts,temporal behavior,target-laptop performance and long-idle power/stability. Historical evidence retains revision.",
+  "limitations": "User visual acceptance pending. Cliff gain does not resolve larger angular rock planes, lower folds or attached inserts. Fifteen rays and nearest join vertices do not prove triangle incidence, watertightness or arbitrary layouts. Target laptops, long idle and temporal shading remain unmeasured. Historical evidence retains revision.",
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
     "probe": "canopy_contact_probe.gd",
@@ -1488,13 +1595,13 @@
     "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
   },
   "verification_sequence": {
-    "baseline": "4ab3968",
-    "trials": "Initial rear-fork contact3/5 failed; supporting lobe correction gives5/5. Tall crown/cylindrical trial superseded by final moderated13-lobe/.60rounding version.",
-    "final_tests": "Five scripts clean,exit0.",
-    "final_capture": "Metal1672x940,exit0; full/three details/four edits/editor. Full/details/four edits visually inspected.",
-    "final_probes": "Contact5/5 selectors(four unique);61exactnon-tree arrays/360identicalwoodentries;zero failures,exit0.",
+    "baseline": "fc8e09a",
+    "trials": "Distance-gap physical clefts looked too folded and were discarded. A single envelope continuing across the lower terrace opened a slit and was superseded by two pinned-height envelopes. Final shader uses second-nearest site darkening, geometry retains original field.",
+    "final_tests": "Eleven scripts exit0 with clean output. Join-coverage assertion added afterward; upper-rock test rerun exit0,15rays/11shoulders/25nearbyjoinvertices.",
+    "final_capture": "Metal1672x940,exit0. Full/three details/four edits/editor; full/details/four edits visually inspected.",
+    "final_probes": "63 exact component arrays,zero failures,exit0.",
     "benchmark": "Standalone Metal1280x720,three12s runs after2s warmups,no concurrent Godot runs,exit0.",
-    "preservation": "Eight unrelatedSHA256s unchanged; terrain_models.gd sole changed compared tracked runtime source/asset(imports excluded)."
+    "preservation": "Eight unrelated SHA256s unchanged. Two changed compared tracked runtime sources/assets; imports excluded."
   },
   "compact_cliff_refinement": {
     "baseline": "12ce140",
@@ -1893,6 +2000,19 @@
     },
     "trials": "First crown was too tall/cylindrical. Final increased rounding and moderated peak,height/width for framing. Error-free final captures/tests supersede trial captures. One patch attempt failed to match its expected source line before any write; corrected against actual source.",
     "matched_before": "Locally retained *_before_crown_refinement.png are4ab3968 baseline screenshots.",
-    "remaining": "Modest directional gain,not finished tree fidelity; rounded balls/attached bumps and branch density remain."
+    "remaining": "Modest directional gain,not finished tree fidelity; rounded balls/attached bumps and branch density remain.",
+    "revision": "fc8e09a historical canopy pass; not rerun tree contact/resource probes this cliff round"
+  },
+  "upper_cliff_refinement": {
+    "baseline": "fc8e09a",
+    "geometry": "Remember actual inside rock_top before reducing base taper top for nearby lower terrain. Above lower top use an independent envelope pinned at both terrace heights; below retain previous fraction. Broader onset exponent .65 to .32 weighted by existing width_weight; width-zero narrow profiles retain legacy exponent. Field metric/sites/relief amplitude, inset limits and wet clearance unchanged.",
+    "shader": "Second-nearest site distance gives bounded .80 to1.0 gray multiplier at joins. Same27-site world-anchored metric; no new pixel-site loop.",
+    "regression": {
+      "test": "tests/terrain_upper_rock_test.gd",
+      "baseline": "0 of15 rendered upper ray samples have shoulder protrusion;25 contour join vertex checks pass; one suppression failure,exit1.",
+      "final": "11 of15 upper rays have protrusion greater than.04;25 nearby vertices at actual contour endpoints match within.0001;zero failures,exit0. Minimum10rays/5shoulders/20joins protects coverage.",
+      "limitations": "Default finite samples selected from actual cliff profiles. Nearest mesh vertex does not establish incident triangle continuity/watertightness. Projected absent upper caps excluded."
+    },
+    "visual": "Worthwhile but modest connected-mass gain; soft outlined cobbles, lower folds, attached inserts and reference larger planes remain."
   }
 }

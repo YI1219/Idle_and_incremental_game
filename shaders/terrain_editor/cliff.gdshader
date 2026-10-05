@@ -11,13 +11,14 @@ void fragment(){
 	// One world-space rock field across the joined cliff volume. Broad facets
 	// stay anchored through edits instead of exposing the mesh's height rows.
 	vec3 p=world_position/vec3(2.2,1.8,2.2);
-	vec3 cell=floor(p);vec3 f=fract(p);float nearest=10.0;vec3 selected=cell;vec3 local=vec3(0.0);
+	vec3 cell=floor(p);vec3 f=fract(p);float nearest=10.0;float second=10.0;vec3 selected=cell;vec3 local=vec3(0.0);
 	for(int z=-1;z<=1;z++)for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
 		vec3 offset=vec3(float(x),float(y),float(z));
 		vec3 delta=offset+rock_hash(cell+offset)*.72+.14-f;
 		vec3 axis=abs(delta);
 		float d=max(max(axis.x,max(axis.y,axis.z)),dot(axis,vec3(.57)));
-		if(d<nearest){nearest=d;selected=cell+offset;local=-delta;}
+		if(d<nearest){second=nearest;nearest=d;selected=cell+offset;local=-delta;}
+		else if(d<second){second=d;}
 	}
 	vec3 variation=rock_hash(selected+vec3(17.0));
 	// Three oblique planes split each rock into smaller angular faces. Their
@@ -32,6 +33,8 @@ void fragment(){
 	NORMAL=normalize((VIEW_MATRIX*vec4(facet_normal,0.0)).xyz);
 	vec3 gray=cliff_gray(variation.x);
 	gray*=.94+.10*face_variation.y;
+	// Recessed joins follow the same cells as the physical shoulders.
+	gray*=mix(.80,1.0,smoothstep(.015,.16,second-nearest));
 	ALBEDO=gray;
 	ROUGHNESS=.96;
 	SPECULAR=.15;

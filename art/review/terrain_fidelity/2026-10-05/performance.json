@@ -8,215 +8,215 @@
   "runs": [
     {
       "cells": 593,
-      "draw_calls": 529.0,
-      "duration_seconds": 12.000592,
+      "draw_calls": 531.0,
+      "duration_seconds": 12.002408,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 202.396
+          "visible_response_ms": 209.574
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 209.342
+          "visible_response_ms": 215.146
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 207.95
+          "visible_response_ms": 219.221
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 221.764
+          "visible_response_ms": 230.032
         }
       ],
-      "frame_count": 996,
-      "max_ms": 128.751,
-      "median_ms": 9.326,
-      "p95_ms": 18.594,
+      "frame_count": 1001,
+      "max_ms": 136.87,
+      "median_ms": 9.316,
+      "p95_ms": 18.661,
       "run": 1,
-      "static_memory_mib": 61.2389240264893,
+      "static_memory_mib": 61.2783842086792,
       "video_memory_mib": 211.0
     },
     {
       "cells": 593,
-      "draw_calls": 529.0,
-      "duration_seconds": 12.001651,
+      "draw_calls": 531.0,
+      "duration_seconds": 12.006721,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 205.401
+          "visible_response_ms": 195.643
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 218.887
+          "visible_response_ms": 218.515
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 218.533
+          "visible_response_ms": 204.706
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 229.443
+          "visible_response_ms": 238.51
         }
       ],
       "frame_count": 1004,
-      "max_ms": 133.572,
-      "median_ms": 9.114,
-      "p95_ms": 18.583,
+      "max_ms": 140.044,
+      "median_ms": 9.28,
+      "p95_ms": 18.611,
       "run": 2,
-      "static_memory_mib": 61.2452526092529,
+      "static_memory_mib": 61.2847127914429,
       "video_memory_mib": 211.0
     },
     {
       "cells": 593,
-      "draw_calls": 529.0,
-      "duration_seconds": 12.016154,
+      "draw_calls": 531.0,
+      "duration_seconds": 12.011134,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 207.962
+          "visible_response_ms": 211.915
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 205.787
+          "visible_response_ms": 211.805
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 198.386
+          "visible_response_ms": 219.061
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 215.19
+          "visible_response_ms": 232.952
         }
       ],
-      "frame_count": 999,
-      "max_ms": 114.776,
-      "median_ms": 9.405,
-      "p95_ms": 18.486,
+      "frame_count": 992,
+      "max_ms": 135.981,
+      "median_ms": 9.282,
+      "p95_ms": 18.652,
       "run": 3,
-      "static_memory_mib": 61.2487812042236,
+      "static_memory_mib": 61.2882413864136,
       "video_memory_mib": 211.0
     }
   ],
-  "scope": "13-lobe canopy refinement after4ab3968; normal two-chunk publication,hiddenHUD,no concurrent Godot runs. Three12-second samples after2-second warmups. Separate samples do not prove speedup; target laptops/larger maps/long idle unmeasured.",
+  "scope": "Cliff shoulder/joint pass after fc8e09a; three standalone12-second samples after2-second warmups with normal two-chunk publication. Target laptops, larger layouts, temporal quality and long-idle power/stability unmeasured.",
   "shadows": true,
   "ssao": true,
   "vsync": "disabled",
   "previous_revision": {
-    "revision": "4ab3968",
+    "revision": "fc8e09a",
     "runs": [
       {
         "cells": 593,
         "draw_calls": 529.0,
-        "duration_seconds": 12.018771,
+        "duration_seconds": 12.000592,
         "edits": [
           {
             "changed_cells": 16,
             "operation": "raise",
-            "visible_response_ms": 203.213
+            "visible_response_ms": 202.396
           },
           {
             "changed_cells": 12,
             "operation": "lower",
-            "visible_response_ms": 217.782
+            "visible_response_ms": 209.342
           },
           {
             "changed_cells": 14,
             "operation": "expand",
-            "visible_response_ms": 209.86
+            "visible_response_ms": 207.95
           },
           {
             "changed_cells": 16,
             "operation": "contract",
-            "visible_response_ms": 229.327
+            "visible_response_ms": 221.764
           }
         ],
-        "frame_count": 1003,
-        "max_ms": 132.067,
-        "median_ms": 9.362,
-        "p95_ms": 18.729,
+        "frame_count": 996,
+        "max_ms": 128.751,
+        "median_ms": 9.326,
+        "p95_ms": 18.594,
         "run": 1,
-        "static_memory_mib": 61.2388820648193,
-        "video_memory_mib": 211.09375
+        "static_memory_mib": 61.2389240264893,
+        "video_memory_mib": 211.0
       },
       {
         "cells": 593,
         "draw_calls": 529.0,
-        "duration_seconds": 12.006907,
+        "duration_seconds": 12.001651,
         "edits": [
           {
             "changed_cells": 16,
             "operation": "raise",
-            "visible_response_ms": 196.923
+            "visible_response_ms": 205.401
           },
           {
             "changed_cells": 12,
             "operation": "lower",
-            "visible_response_ms": 205.934
+            "visible_response_ms": 218.887
           },
           {
             "changed_cells": 14,
             "operation": "expand",
-            "visible_response_ms": 219.263
+            "visible_response_ms": 218.533
           },
           {
             "changed_cells": 16,
             "operation": "contract",
-            "visible_response_ms": 225.834
+            "visible_response_ms": 229.443
           }
         ],
-        "frame_count": 1000,
-        "max_ms": 132.101,
-        "median_ms": 9.17,
-        "p95_ms": 18.619,
+        "frame_count": 1004,
+        "max_ms": 133.572,
+        "median_ms": 9.114,
+        "p95_ms": 18.583,
         "run": 2,
-        "static_memory_mib": 61.245210647583,
-        "video_memory_mib": 211.09375
+        "static_memory_mib": 61.2452526092529,
+        "video_memory_mib": 211.0
       },
       {
         "cells": 593,
         "draw_calls": 529.0,
-        "duration_seconds": 12.001058,
+        "duration_seconds": 12.016154,
         "edits": [
           {
             "changed_cells": 16,
             "operation": "raise",
-            "visible_response_ms": 209.227
+            "visible_response_ms": 207.962
           },
           {
             "changed_cells": 12,
             "operation": "lower",
-            "visible_response_ms": 210.609
+            "visible_response_ms": 205.787
           },
           {
             "changed_cells": 14,
             "operation": "expand",
-            "visible_response_ms": 218.908
+            "visible_response_ms": 198.386
           },
           {
             "changed_cells": 16,
             "operation": "contract",
-            "visible_response_ms": 232.847
+            "visible_response_ms": 215.19
           }
         ],
         "frame_count": 999,
-        "max_ms": 133.607,
-        "median_ms": 9.218,
-        "p95_ms": 18.538,
+        "max_ms": 114.776,
+        "median_ms": 9.405,
+        "p95_ms": 18.486,
         "run": 3,
-        "static_memory_mib": 61.2487392425537,
-        "video_memory_mib": 211.09375
+        "static_memory_mib": 61.2487812042236,
+        "video_memory_mib": 211.0
       }
     ]
   }
