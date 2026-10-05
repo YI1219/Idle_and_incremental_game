@@ -102,7 +102,11 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 				if kind=="tree_wood":
 					a=_lift_branches(a);b=_lift_branches(b);c=_lift_branches(c)
 				if kind=="shore_rock":
-					a.y=minf(a.y,.27);b.y=minf(b.y,.27);c.y=minf(c.y,.27)
+					# Keep the retained stone's shoulders and crown facets. A hard
+					# height clamp collapsed its upper faces into a thin paving slab.
+					a.y=minf(a.y,.30)+maxf(a.y-.30,0.0)*.12
+					b.y=minf(b.y,.30)+maxf(b.y-.30,0.0)*.12
+					c.y=minf(c.y,.30)+maxf(c.y-.30,0.0)*.12
 				var shade:=.90+.13*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
 				if kind=="shore_rock":shade=.97+.04*sin((a.x+b.x+c.x)*6.13+(a.z+b.z+c.z)*3.7)
 				if kind in ["tree_leaf","bush","vine"]:shade=.97+.07*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)

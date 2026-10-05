@@ -107,10 +107,19 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					var support:Dictionary=field.surface_at(bank)
 					if support.is_empty() or support.water>=0 or absf(support.height-level*.5)>.1:continue
 					var cell:=Vector2i(bank.floor())
+					# World-anchored gaps leave short grassy banks between stone
+					# groups instead of drawing one uniform masonry ring.
+					var gap:=sin(bank.x*.82+sin(bank.y*.65)*1.2)
+					if gap>.92 and random_at(cell,data.seed,1080+block)<.15:
+						var plant:=bank+out*.25
+						if _stable(field,plant,level*.5,.18):
+							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*2.2))
+						continue
 					var turn:float=(random_at(cell,data.seed,1000+block)-.5)*.40
-					var width:float=.92+random_at(cell,data.seed,1020+block)*.20
-					var rise:float=1.10+random_at(cell,data.seed,1040+block)*.25
-					result.shore_rock.append(_transform(Vector3(bank.x,level*.5-.07,bank.y),-angle+turn,Vector3(width,rise,.64)))
+					var width:float=.82+random_at(cell,data.seed,1020+block)*.35
+					var rise:float=1.45+random_at(cell,data.seed,1040+block)*.60
+					var depth:float=.64+random_at(cell,data.seed,1060+block)*.20
+					result.shore_rock.append(_transform(Vector3(bank.x,level*.5-.07,bank.y),-angle+turn,Vector3(width,rise,depth)))
 				var cell:=Vector2i(p.floor())
 				if random_at(cell,data.seed,95)<.18:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*2.5))
 				var lily:=p-out*.8

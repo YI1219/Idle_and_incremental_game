@@ -1,69 +1,13 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh contour-derived thickness correction and snapshot-local winding-cache optimization. All twelve relevant scripts plus actual final full/detail/four-edit Metal captures regenerated.",
+  "scope": "Fresh shore-only runtime stone shaping, size variation and rare planted gaps; eight relevant scripts and actual final full/detail/four-edit Metal captures regenerated. Terrain contours, data, camera, canopy and originals are unchanged.",
   "suite": [
-    {
-      "test": "terrain_contour_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 1025
-    },
-    {
-      "test": "terrain_incremental_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 20
-    },
-    {
-      "test": "terrain_editor_data_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 301
-    },
     {
       "test": "terrain_editor_decoration_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
       "checks": 118
-    },
-    {
-      "test": "terrain_editor_render_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 339
-    },
-    {
-      "test": "terrain_editor_runtime_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 22
-    },
-    {
-      "test": "camera_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 8
-    },
-    {
-      "test": "terrain_waterfall_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 33
-    },
-    {
-      "test": "terrain_shoreline_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 9
     },
     {
       "test": "terrain_model_bounds_test.gd",
@@ -73,22 +17,46 @@
       "checks": 9
     },
     {
-      "test": "terrain_narrow_cliff_test.gd",
+      "test": "terrain_editor_render_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "slices": 794,
-      "failures": 0,
-      "minimum_gap": 0.0306
+      "checks": 339
     },
     {
-      "test": "terrain_cliff_taper_test.gd",
+      "test": "terrain_incremental_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 2,
-      "sampled_foot_vertices": 30,
-      "furthest_x_plus_z": 5.5244
+      "checks": 20
+    },
+    {
+      "test": "terrain_editor_runtime_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 22
+    },
+    {
+      "test": "terrain_shoreline_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 9
+    },
+    {
+      "test": "terrain_waterfall_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 33
+    },
+    {
+      "test": "camera_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 8
     }
   ],
   "regression": {
@@ -118,7 +86,7 @@
     "sky_pngs_unchanged": 2,
     "sky_import_matches_HEAD": true
   },
-  "review": "Final independent read-only source/capture review found no Critical/Important issue. Contour-based width fixes a confirmed raw-cell/smoothed-edge mismatch; prominent left/foreground blades join a compact silhouette closer to the reference. No obvious new cap separation across all four edits. Height keys originate from effective source heights; contains preserves hole winding. Cached signs clear onrefresh, derive from final per-height loops and have correct sole-caller pairing with size-mismatch fallback. Reviewer did not run Godot or benchmark and declined arbitrary self-intersections, contour scaling, target-device performance and human visual acceptance.",
+  "review": "Final independent read-only source/still-capture review found no Critical/Important issue: retained stone topology has a monotonic crown compression with rebuilt face normals; taller shoulders, varied sizes and sparse planted gaps move toward the reference. No obvious floating replacement reeds, new blocked spills or materially worse bank exposure in full/detail/four-edit renders. Placement is deterministic. Reviewer did not run engine tests or benchmark. Stones still validate the anchor rather than enlarged footprint; arbitrary edit support, temporal behavior, target hardware and whole-scene acceptance remain open.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -229,16 +197,111 @@
       "scope": "Fresh lower-cliff envelope and curved wet-mouth support correction, including intact-bank preservation. All eleven relevant scripts and actual full/detail/four-edit Metal captures regenerated.",
       "counts": "eleven scripts: contours1025 incremental20 data301 decoration118 render339 runtime22 camera8 waterfall33 shoreline9 bounds9 narrow794/min.0306",
       "review": "Final independent read-only source/capture review found no Critical/Important issue in the bounded lower-envelope/wet-mouth correction and no new cap gap. The lookup is local, bounded and profile-cached. Actual lower shoulders are modestly calmer; pointed feet remain and likely depend on inset/normal/taper relationships. Remaining contracted-spill concealment is consistent with valid foreground land. Reviewer validated the two-way crossing probe and suggested nonzero inspected-curtain coverage; that assertion was added and passes 33/33. Reviewer did not independently run Godot, benchmark, or establish arbitrary-layout/full-fidelity acceptance. User visual acceptance remains pending."
+    },
+    "b70d322": {
+      "scope": "Fresh contour-derived thickness correction and snapshot-local winding-cache optimization. All twelve relevant scripts plus actual final full/detail/four-edit Metal captures regenerated.",
+      "suite": [
+        {
+          "test": "terrain_contour_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 1025
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_data_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 301
+        },
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 118
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 339
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 8
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 33
+        },
+        {
+          "test": "terrain_shoreline_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 9
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 9
+        },
+        {
+          "test": "terrain_narrow_cliff_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "slices": 794,
+          "failures": 0,
+          "minimum_gap": 0.0306
+        },
+        {
+          "test": "terrain_cliff_taper_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 2,
+          "sampled_foot_vertices": 30,
+          "furthest_x_plus_z": 5.5244
+        }
+      ],
+      "review": "Final independent read-only source/capture review found no Critical/Important issue. Contour-based width fixes a confirmed raw-cell/smoothed-edge mismatch; prominent left/foreground blades join a compact silhouette closer to the reference. No obvious new cap separation across all four edits. Height keys originate from effective source heights; contains preserves hole winding. Cached signs clear onrefresh, derive from final per-height loops and have correct sole-caller pairing with size-mismatch fallback. Reviewer did not run Godot or benchmark and declined arbitrary self-intersections, contour scaling, target-device performance and human visual acceptance."
     }
   },
   "limitations": [
-    "Cliff faces still have deeper recesses and broader continuous patches than the target; finite taper and waterfall regressions do not prove arbitrary-layout safety.",
+    "Deep cliff recesses and broad continuous face patches still differ from the target; earlier finite taper evidence does not prove arbitrary-layout safety.",
     "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
     "Temporal shimmer and cross-platform rendering unverified.",
     "M4 Pro short samples do not prove target-laptop or long-idle performance.",
     "Finite canopy extremal-vertex coverage does not prove every branch segment; large crowns hide more branching than the reference and small crowns remain nearly spherical.",
     "Sky softness is verified at the captured resolution only; startup mip generation and alternate-resolution appearance remain unmeasured. Lower-left clouds wash out and upper sky is flatter than the reference.",
-    "Width lookup retains polygon-containment scaling with total contour complexity, despite cached winding signs; large-map scaling is unmeasured."
+    "Width lookup retains polygon-containment scaling with total contour complexity, despite cached winding signs; large-map scaling is unmeasured.",
+    "Bank stones retain a similar silhouette and anchor-only support checks; rare planted gaps and size variation improve the captured scene but do not establish arbitrary-edit footprint support."
   ],
   "canopy_contact": {
     "source": "temporary actual-mesh ray-parity probe using unmerged retained source parts and their final transforms",
@@ -268,7 +331,7 @@
       ]
     ],
     "limitations": "Finite extremal-vertex coverage; not every branch segment or all views.",
-    "revision": "800e55c; crown geometry unchanged this round"
+    "revision": "800e55c; canopy geometry remains unchanged in current shore-only pass"
   },
   "sky": {
     "sampling": "Runtime mipmaps from retained bitmap; five samples at LOD2.5 with UV spread.0020",
@@ -296,7 +359,8 @@
     "before": "1/2 passed; actual broad diagonal plateau foot reached x+z7.201 because raw cell corners were treated as nearly zero-width",
     "after": "2/2 passed; furthest deep foot x+z5.5244, 30 sampled vertices; prominent default left/foreground blades join a compact silhouette",
     "method": "Actual cliff foot vertices on a wide diagonal plateau, nonzero sample coverage and an independently chosen inward-foot limit",
-    "limits": "Finite plateau/reference fixtures, not every narrow/concave layout or self-intersection."
+    "limits": "Finite plateau/reference fixtures, not every narrow/concave layout or self-intersection.",
+    "revision": "b70d322; contour source unchanged, taper test not rerun for shore-only pass"
   },
   "geometry_equivalence": {
     "comparison": "Contour lookup before vs after winding-sign optimization in this round",
@@ -320,6 +384,24 @@
     ],
     "matching_sha256_hashes": 50,
     "match": true,
-    "limits": "Selected source geometry only; not arbitrary maps, all prop transforms or rendered-pixel identity."
+    "limits": "Selected source geometry only; not arbitrary maps, all prop transforms or rendered-pixel identity.",
+    "revision": "b70d322; previous contour winding optimization evidence, not rerun for shore-only pass"
+  },
+  "shore_stones": {
+    "source": "retained Kenney CC0 stone_largeD, original unchanged",
+    "runtime_shape": "Y below .30 retained; upper crown compressed with slope .12 instead of a hard .27 clamp",
+    "instance_variation": "width .82\u20131.17, height scale1.45\u20132.05, depth .64\u2013.84, existing seeded yaw",
+    "groups": "rare gaps from world-anchored sine>.92 and seeded probability<.15; replacement reeds use four dry/equal-height support samples at radius .18",
+    "evidence": [
+      "composition_wip_before_bank_refinement.png",
+      "detail_shoreline_before_bank_refinement.png",
+      "composition_wip.png",
+      "detail_shoreline.png",
+      "edit_raise.png",
+      "edit_lower.png",
+      "edit_expand.png",
+      "edit_contract.png"
+    ],
+    "limits": "Matched captures support improved bulk and less uniform edging, not arbitrary footprints. Higher gap probability rejected because it exposed long angular bank edges."
   }
 }
