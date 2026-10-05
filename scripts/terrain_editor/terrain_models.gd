@@ -18,18 +18,19 @@ func load_assets()->void:
 	var crown:Array=[
 		[Vector3(-.30,1.08,.02),Vector3(.73,.61,.72)],
 		[Vector3(.31,1.08,.04),Vector3(.73,.66,.72)],
-		[Vector3(-.08,1.30,-.08),Vector3(.66,.65,.65)],
+		[Vector3(-.08,1.25,-.08),Vector3(.66,.80,.65)],
 		[Vector3(-.08,1.15,-.30),Vector3(.58,.64,.58)],
 		[Vector3(.27,1.13,.26),Vector3(.54,.54,.58)],
 		[Vector3(-.22,1.06,.23),Vector3(.55,.55,.56)],
-		[Vector3(.23,1.25,-.23),Vector3(.50,.48,.52)],
+		[Vector3(.23,1.16,-.23),Vector3(.50,.48,.52)],
 		[Vector3(-.59,1.06,.05),Vector3(.38,.39,.40)],
 		[Vector3(.57,1.03,.19),Vector3(.42,.40,.41)],
 		[Vector3(-.36,1.22,-.38),Vector3(.35,.43,.36)],
 		[Vector3(.43,1.19,-.30),Vector3(.37,.40,.38)],
 		[Vector3(-.15,1.02,.50),Vector3(.40,.32,.39)],
-		[Vector3(.07,1.43,.12),Vector3(.33,.31,.34)],
+		[Vector3(.07,1.34,.12),Vector3(.33,.31,.34)],
 	]
+	var crown_parts:Array=[]
 	for i in crown.size():
 		var center:Vector3=crown[i][0]
 		var size:Vector3=crown[i][1]
@@ -40,7 +41,8 @@ func load_assets()->void:
 			var pose:=Transform3D(basis,center-basis*(box.position+box.size*.5))
 			var light:=clampf((center.y-.82)/.5,0.0,1.0)
 			var tint:=Color(.82+.20*light+.08*sin(i*2.1),.94+.08*light+.04*cos(i*1.7),.95+.04*sin(i*.6),1)
-			tree.append({"mesh":part.mesh,"pose":pose,"tint":tint})
+			crown_parts.append({"mesh":part.mesh,"pose":pose,"tint":tint})
+	tree.append_array(_join_crown(crown_parts))
 	assets.tree=tree
 	var spray:Array=[]
 	# Flatten retained oak lobes into pointed leaf blades. Unequal paired
@@ -69,6 +71,80 @@ func load_assets()->void:
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
 	assets.cliff_rock[0].mesh.surface_set_material(0,rock_material)
+
+func _join_crown(parts:Array)->Array:
+	# Group indices describe the current single-surface oak assembly.
+	# Keep an unfamiliar source assembly intact rather than misindex it.
+	if parts.size()!=13:return parts
+	# Wrap neighboring retained leaf parts into larger connected masses. This
+	# removes the small attached-lobe seams while keeping peak/side separation.
+	var groups:Array=[[0,7],[1,8],[2,12],[3,9],[4],[5,11],[6,10]]
+	var result:Array=[]
+	for group:Array in groups:
+		var source_parts:Array=[]
+		for index:int in group:source_parts.append(parts[index])
+		result.append(_crown_hull(source_parts))
+	return result
+
+func _crown_hull(parts:Array)->Dictionary:
+	var points:=PackedVector3Array()
+	var shades:=PackedColorArray()
+	var seen:Dictionary={}
+	for part:Dictionary in parts:
+		var arrays:Array=part.mesh.surface_get_arrays(0)
+		var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
+		var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR]
+		for i in vertices.size():
+			var point:Vector3=part.pose*vertices[i]
+			if seen.has(point):continue
+			seen[point]=points.size()
+			points.append(point)
+			shades.append(colors[i]*part.get("tint",Color.WHITE))
+	# The native convex shape provides an indexed solid
+	# surface alongside its debug lines. Copy only the solid triangles into
+	# our normal render resource; no physics node or debug material is used.
+	var shape:=ConvexPolygonShape3D.new()
+	shape.points=points
+	var hull:Mesh=shape.get_debug_mesh()
+	var builder=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
+	for surface in hull.get_surface_count():
+		if hull.surface_get_primitive_type(surface)!=Mesh.PRIMITIVE_TRIANGLES:continue
+		var arrays:Array=hull.surface_get_arrays(surface)
+		var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
+		var indices:PackedInt32Array=arrays[Mesh.ARRAY_INDEX]
+		var count:int=indices.size() if not indices.is_empty() else vertices.size()
+		# The native hull approximates nearly coplanar source points. Expand
+		# uniformly by the measured supporting-plane deficit to limit clipping
+		# of leaf tips. Rebuilt float normals retain a small numerical tolerance.
+		var center:=Vector3.ZERO
+		for vertex:Vector3 in vertices:center+=vertex
+		center/=vertices.size()
+		var inflation:=1.0
+		for i in range(0,count,3):
+			var a:int=indices[i] if not indices.is_empty() else i
+			var b:int=indices[i+1] if not indices.is_empty() else i+1
+			var c:int=indices[i+2] if not indices.is_empty() else i+2
+			var normal:Vector3=-(vertices[b]-vertices[a]).cross(vertices[c]-vertices[a]).normalized()
+			var distance:float=normal.dot(vertices[a]-center)
+			if distance<=.00001:continue
+			for point:Vector3 in points:inflation=maxf(inflation,normal.dot(point-center)/distance)
+		if inflation>1.0:
+			for i in vertices.size():vertices[i]=center+(vertices[i]-center)*(inflation+.000001)
+		var hull_shades:=PackedColorArray()
+		for vertex:Vector3 in vertices:
+			var nearest:=0;var distance:=INF
+			for i in points.size():
+				var candidate:float=vertex.distance_squared_to(points[i])
+				if candidate<distance:nearest=i;distance=candidate
+			hull_shades.append(shades[nearest])
+		for i in range(0,count,3):
+			var a:int=indices[i] if not indices.is_empty() else i
+			var b:int=indices[i+1] if not indices.is_empty() else i+1
+			var c:int=indices[i+2] if not indices.is_empty() else i+2
+			builder.triangle(vertices[a],vertices[b],vertices[c],(hull_shades[a]+hull_shades[b]+hull_shades[c])/3.0)
+	if builder.vertices.is_empty():return _merge(parts)
+
+	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
 
 func _grass_clump_models()->Array:
 	# Assemble retained pointed plant parts into one solid, short tuft. Source

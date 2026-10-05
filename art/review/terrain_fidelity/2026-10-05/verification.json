@@ -1,41 +1,55 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Automatic separate cliff insert removal against d6cb48e. Current suite/render/preservation/review fields describe this round; other named refinement/regression fields remain historical revision evidence. Overall visual acceptance pending.",
+  "scope": "Seven joined crown masses against1c12cee. Current suite/render/preservation/review/joined_crown fields describe this round; other named refinements and verification_sequence remain historical evidence. Overall acceptance pending.",
   "suite": [
+    {
+      "test": "terrain_crown_integrity_test.gd",
+      "exit": 0,
+      "ok": true,
+      "checks": "7 closed/outward;9984 contained;4470 exact published entries",
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+    },
+    {
+      "test": "terrain_canopy_contact_test.gd",
+      "exit": 0,
+      "ok": true,
+      "checks": 5,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+    },
+    {
+      "test": "terrain_model_bounds_test.gd",
+      "exit": 0,
+      "ok": true,
+      "checks": 9,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+    },
     {
       "test": "terrain_editor_decoration_test.gd",
       "exit": 0,
       "ok": true,
       "checks": 89,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_incremental_test.gd",
       "exit": 0,
       "ok": true,
       "checks": 20,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_editor_runtime_test.gd",
       "exit": 0,
       "ok": true,
       "checks": 22,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "camera_test.gd",
       "exit": 0,
       "ok": true,
       "checks": 8,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_waterfall_test.gd",
-      "exit": 0,
-      "ok": true,
-      "checks": 35,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     }
   ],
   "regression": {
@@ -55,49 +69,32 @@
       "expand": 14,
       "contract": 16
     },
-    "output": "Actual full scene, three details, four edits and editor UI"
+    "output": "Actual full scene, three details, four edits and editor UI",
+    "matched_baseline": "composition_wip_before_joined_crown.png and corresponding three detail/four edit files"
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
-    "tracked_runtime_sources_assets": "Against d6cb48e only terrain_decoration.gd differs among tracked terrain-editor scripts/shaders/nature/cottage/resources excluding imports. Original selected resources retain bytes. Test change removes obsolete insert-specific expectations.",
+    "tracked_runtime_sources_assets": "Against1c12cee only terrain_models.gd differs among tracked terrain-editor scripts/shaders/nature/cottage/resources excluding imports. Original files unchanged. Crown/contact tests use actual render arrays.",
     "component_probe": {
+      "exact_non_tree_non_null_arrays": 61,
+      "exact_non_tree_part_poses": 12,
       "failures": 0,
-      "reports": [
-        {
-          "exact_other_chunk_kind_arrays": 228,
-          "fixture": "default",
-          "remaining_cliff_insert_instances": 0,
-          "removed_cliff_insert_instances": 25
-        },
-        {
-          "exact_other_chunk_kind_arrays": 228,
-          "fixture": "raise",
-          "remaining_cliff_insert_instances": 0,
-          "removed_cliff_insert_instances": 25
-        },
-        {
-          "exact_other_chunk_kind_arrays": 228,
-          "fixture": "lower",
-          "remaining_cliff_insert_instances": 0,
-          "removed_cliff_insert_instances": 26
-        },
-        {
-          "exact_other_chunk_kind_arrays": 228,
-          "fixture": "expand",
-          "remaining_cliff_insert_instances": 0,
-          "removed_cliff_insert_instances": 23
-        },
-        {
-          "exact_other_chunk_kind_arrays": 228,
-          "fixture": "contract",
-          "remaining_cliff_insert_instances": 0,
-          "removed_cliff_insert_instances": 27
-        }
-      ],
-      "scope": "Actual Transform3D arrays for all populated chunks in default/four captures. Includes empty arrays; no arbitrary layout or foliage footprint proof."
+      "leaf_triangle_entries_after": 4470,
+      "leaf_triangle_entries_before": 9984,
+      "limitations": "Packed geometry/color array comparison excludes material identity; entries include duplicates; new crown bounds/layout are deliberately changed.",
+      "tree_bounds_after": {
+        "position": "(-0.782052, -0.0535, -0.593499)",
+        "size": "(1.544132, 1.721352, 1.31167)"
+      },
+      "tree_bounds_before": {
+        "position": "(-0.781939, -0.0535, -0.593436)",
+        "size": "(1.543997, 1.697791, 1.311522)"
+      },
+      "wood_entries": 360,
+      "wood_vertex_normal_color_arrays_equal": true
     }
   },
-  "review": "Independent read-only source/full/cliff/four-edit review found no confirmed Critical/Important defect. Retain cleanup: attached slabs gone, continuous landform; no newly exposed hole in finite captures, repaired lower-edit wall closed. Round cobbles/horizontal courses/broad smooth faces remain. Some isolated-looking vine tips more exposed; placement unchanged. No engine jobs run by reviewer; arbitrary contact/temporal/performance/full acceptance not established.",
+  "review": "Independent source/final full/three detail/four edit review: no confirmed Critical/Important defect. Modest mixed gain worth retaining; fewer attached bumps and clearer main grouping, but elongated bean-shaped groups/broad faces remain. No obvious new detached branch/framing failure. Part-count assumption guarded after review, with unchanged integrity/contact results. Reviewer ran no engine jobs/benchmark; no overall acceptance.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -1551,9 +1548,103 @@
         }
       },
       "review": "Independent read-only final source/full/three details/four edit review found no confirmed Critical/Important defect. Small positive gain in upper outline/facet irregularity without coarse cuboid lobes. Overlapping round masses, attached bumps and branch readability remain. Height fade preserves lower source-space deformation; AABB normalization can move assembled lower vertices. Reviewer ran no engine jobs/benchmark; overall acceptance remains open."
+    },
+    "1c12cee": {
+      "scope": "Automatic separate cliff insert removal against d6cb48e. Current suite/render/preservation/review fields describe this round; other named refinement/regression fields remain historical revision evidence. Overall visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 89,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 20,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 22,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+        },
+        {
+          "test": "camera_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 8,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 35,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+        }
+      ],
+      "preservation": {
+        "unrelated_local_files_unchanged": 8,
+        "tracked_runtime_sources_assets": "Against d6cb48e only terrain_decoration.gd differs among tracked terrain-editor scripts/shaders/nature/cottage/resources excluding imports. Original selected resources retain bytes. Test change removes obsolete insert-specific expectations.",
+        "component_probe": {
+          "failures": 0,
+          "reports": [
+            {
+              "exact_other_chunk_kind_arrays": 228,
+              "fixture": "default",
+              "remaining_cliff_insert_instances": 0,
+              "removed_cliff_insert_instances": 25
+            },
+            {
+              "exact_other_chunk_kind_arrays": 228,
+              "fixture": "raise",
+              "remaining_cliff_insert_instances": 0,
+              "removed_cliff_insert_instances": 25
+            },
+            {
+              "exact_other_chunk_kind_arrays": 228,
+              "fixture": "lower",
+              "remaining_cliff_insert_instances": 0,
+              "removed_cliff_insert_instances": 26
+            },
+            {
+              "exact_other_chunk_kind_arrays": 228,
+              "fixture": "expand",
+              "remaining_cliff_insert_instances": 0,
+              "removed_cliff_insert_instances": 23
+            },
+            {
+              "exact_other_chunk_kind_arrays": 228,
+              "fixture": "contract",
+              "remaining_cliff_insert_instances": 0,
+              "removed_cliff_insert_instances": 27
+            }
+          ],
+          "scope": "Actual Transform3D arrays for all populated chunks in default/four captures. Includes empty arrays; no arbitrary layout or foliage footprint proof."
+        }
+      },
+      "review": "Independent read-only source/full/cliff/four-edit review found no confirmed Critical/Important defect. Retain cleanup: attached slabs gone, continuous landform; no newly exposed hole in finite captures, repaired lower-edit wall closed. Round cobbles/horizontal courses/broad smooth faces remain. Some isolated-looking vine tips more exposed; placement unchanged. No engine jobs run by reviewer; arbitrary contact/temporal/performance/full acceptance not established.",
+      "render_verification": {
+        "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
+        "backend": "Metal Forward+",
+        "exit": 0,
+        "edits_changed_cells": {
+          "raise": 16,
+          "lower": 12,
+          "expand": 14,
+          "contract": 16
+        },
+        "output": "Actual full scene, three details, four edits and editor UI",
+        "matched_baseline": "composition_wip_before_joined_crown.png and corresponding three detail/four edit files"
+      }
     }
   },
-  "limitations": "User visual acceptance pending. Waterfall gain is modest; straight crest and mound-like foam remain. Sparse five-frame sampling does not prove smooth animation,absence of brief sorting artifacts or arbitrary-layout/platform behavior. Target laptops and long-idle performance remain unmeasured. Historical tests retain their revisions.",
+  "limitations": "User visual acceptance pending. Seven closed hulls do not prove a connected crown union; source-vertex containment and four unique branch selectors do not prove every branch, continuous volume or arbitrary inputs. Actual render arrays avoid get_faces rounding in new crown/contact checks. Still renders do not prove temporal/platform behavior. Target laptops, larger maps, startup and long idle unmeasured.",
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
     "probe": "canopy_contact_probe.gd",
@@ -2296,5 +2387,63 @@
     "small_scene": "free_rock_comparison.png: retained original Kenney CC0 sources, 10 tall stones/6 large rocks/1 cliff module; normalized maxdimension2.4 for shape comparison. No new runtime asset retained.",
     "failed_probe_attempts": "Wrong waterfall test filename and a temporary comparison missing make_preset argument were corrected. Error-bearing/terminated outputs excluded; valid waterfall35 and corrected placement probe exit0.",
     "limitations": "Does not resolve primary cliff silhouette mismatch; finite screenshots and transform comparisons do not prove every foliage footprint or arbitrary layout."
+  },
+  "joined_crown": {
+    "baseline": "1c12cee",
+    "groups": [
+      [
+        0,
+        7
+      ],
+      [
+        1,
+        8
+      ],
+      [
+        2,
+        12
+      ],
+      [
+        3,
+        9
+      ],
+      [
+        4
+      ],
+      [
+        5,
+        11
+      ],
+      [
+        6,
+        10
+      ]
+    ],
+    "closed_surfaces": 7,
+    "outward_surfaces": 7,
+    "source_vertex_entries": 9984,
+    "contained_entries": 9984,
+    "max_plane_violation": -3.57627868652344e-07,
+    "tolerance": 1e-05,
+    "published_leaf_entries": 4470,
+    "published_max_difference": 0,
+    "leaf_triangles_before": 3328,
+    "leaf_triangles_after": 1490,
+    "red_green": {
+      "without_supporting_plane_expansion": {
+        "exit": 1,
+        "contained_entries": 8966,
+        "max_plane_violation": 9.70363616943359e-05
+      },
+      "restored": {
+        "exit": 0,
+        "contained_entries": 9984
+      }
+    },
+    "rejected_trials": "Tetrahedron boundary extraction:0/7 closed/outward; four large hull groups too elongated. Both discarded.",
+    "small_scene": "free_tree_comparison.png: six existing Kenney and four Quaternius trees; no replacement retained.",
+    "probe_correction": "get_faces rounds positions through TriangleMesh; new integrity/contact tests use surface ARRAY_VERTEX. Provisional rounded-array failures excluded.",
+    "final_guard": "parts.size()!=13 retains original assembly; integrity/contact clean after guard. Captures/benchmark use same current13part path.",
+    "native_api": "ConvexPolygonShape3D.get_debug_mesh solid surface copied to normal mesh; no physics node retained."
   }
 }
