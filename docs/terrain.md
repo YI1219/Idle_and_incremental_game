@@ -1,88 +1,24 @@
-# Terrain
+# Editable terrain workshop
 
-2026-09-17. How ground is stored, joined, and drawn. Economy still follows [Core design](core_design.md). Clicking and walking follow [Courtyard operations](courtyard_ops.md). Look: [current courtyard style](art/style/README.md).
+The active demo uses `TerrainData`: a sparse dictionary of land cells, height and optional water elevation. All visible terrain is generated from this data. Missing cells are off-island or holes. The retained legacy gameplay scene has separate historical terrain rules.
 
-Data is a 2D sparse grid. Land uses fill plus seams. **Rivers use 2D connection textures that can join many shapes** (blob / 8-neighbor bitmask). This is not column voxels.
+Raise/lower move an existing cell by 0.5 units per stroke; height is bounded from -4 to 12. Expand fills absent cells at the selected height. Contract removes cells, water and automatic decoration. Drag strokes interpolate their path and change each visited cell once. Undo/redo retain the latest 64 strokes.
 
-## Three layers; do not mix them
+Snapping aligns the brush center to cell centers. With snapping off, circular coverage follows the cursor continuously; underlying terrain still uses cells and 0.5 height increments. The construction grid is optional and does not define ground materials.
 
-| Layer | What it is | What it is not |
-| --- | --- | --- |
-| Logic cells | Sparse dictionary: whether this cell has land, and which logic type | Cloud sea, wells, trees, pens |
-| Surface | How the top face is drawn: land fill/seams; river blob connection textures | One Node per cell |
-| Entities | Wells, houses, crops on ridges, pens, trees, cloud gates | A ground type |
+Water painting selects one of exactly eight absolute elevations: 0, 0.5, 1, 1.5, 2, 2.5, 3 or 3.5. Only lower floors accept water; raising the floor through its water surface removes that water. Equal-elevation neighbors join using all 47 normalized eight-neighbor blob states; a diagonal needs both adjacent orthogonal neighbors. Banks distinguish convex corners, straight edges and concave corners. This is editable pond geometry, not fluid simulation. Higher water adjacent to lower water or missing land generates a waterfall.
 
-Cloud sea = coordinates missing from the dictionary. A hole and off-island are the same thing. Do not make a `cloud` type.
+8×8 chunks merge grass, bank, cliff, water and waterfall surfaces. Changed cells invalidate their chunk and affected neighboring boundary chunks. Rebuilds are bounded to two chunks per frame; idle frames do not rebuild terrain. Picking follows the same authoritative cell heights and sides.
 
-## Logic types and skins
+Existing CC0 Quaternius grass, bush, tree and rock meshes use chunk-local MultiMeshes. Coordinate/seed hashing places independent kinds deterministically. Surface grass follows ground height; surface rocks partly embed; cliff rocks anchor inside exposed faces. Submerged cells suppress surface vegetation and rocks. Original sources are unmodified. Runtime foliage materials adapt the pack to the scene palette.
 
-The experience slice opens only three **logic types**. Skins may be added later without opening a second economy ledger.
+Layout JSON under `user://terrain_editor/layout.json` preserves terrain and seed separately from legacy gameplay saves. Loading validates the complete candidate before replacement, rejecting corrupt data, nonfinite values, coordinates beyond ±1024, more than 65536 cells, duplicate cells and invalid water levels.
 
-| Logic type | Walkable | Uses seepage | Top height | Experience-slice skin |
-| --- | --- | --- | --- | --- |
-| Living | Yes | No | 0 | Grass soil (start) |
-| Cultivated | Yes | Yes | 0 | Ridges (start) |
-| River | No | Yes | One step lower (~0.15 m) | Shallow water |
+Verification commands:
 
-Later stone paths, wood decks, and brick yards are **living skins** and still do not use seepage. Formation eyes and special terrain are the new logic types.
-
-Changing logic type = Build. Changing skin = decoration; it does not change water-adjacency or seepage.
-
-## What connection textures join
-
-When a cell changes, ask its eight neighbors. Land and river are not the same atlas.
-
-**Land (living, cultivated):** same types join into a continuous field, world-space UVs. Do not use one repeating texture per cell that paints 1 m grid lines. Living and cultivated use 4-neighbor seams. Qinglan uses large color masses; land should not look like pixel fields.
-
-**River: use the 2D connection-texture set that can join many shapes.** 8-neighbor bitmask (usually collapsed to 47 looks; or one compact atlas cut into quarter tiles and reassembled — RPG Maker water and Godot Terrain peering are this kind). Must join: isolated water, dead ends, straight runs, corners, T-junctions, crosses, interiors of wide water, inner and outer corners. The starting shallow bay is a small patch of water; a one-cell-wide ravine must also look right.
-
-Do not join rivers with 16 four-way “pipe” tiles. Pipe tiles draw T-junction pipes on sheets of water and fake a shallow bay.
-
-Banks are drawn **on river cells**; they are the edge of this connection set. Do not stack extra “grass–river” or “ridge–river” seams (double banks). Water-adjacency play still uses 4 neighbors; diagonal water is not adjacent and cannot cheat a hard gate. River **looks** at 8 neighbors (inner corners round); **play** only uses 4 neighbors.
-
-| Neighbor | Which set | How many neighbors |
-| --- | --- | --- |
-| Same land type | Continuous fill | — |
-| Living / cultivated meeting | Seam edge | 4 neighbors |
-| River / non-river | River blob edge = bank | River looks at 8; water-adjacency play looks at 4 |
-| No cell (island edge or hole) | Cliff mesh: straight, outer corner, inner corner | 8 neighbors. Missing-cell cliffs override river banks; do not paint a beach ring against the cloud sea |
-
-Look still follows Qinglan. Borrow this **joining method**, not the pixel-field look. Quarter tiles are fine; 47 whole tiles are also fine. Choose what is easy to paint and swap.
-
-**Do not:**
-
-- Join shallow bays with 16 pipe tiles.
-- Recompute the whole-map bitmask every frame. Only dirty the chunk of the changed cell and chunks intersecting its eight neighbors.
-- Use one MeshInstance per cell. Rivers and land go into chunk meshes; cliffs use a small number of MultiMesh kinds.
-- Use a 2D TileMap as the courtyard's main renderer. Bitmasks may be computed like 2D tiles, then drawn on 3D top faces.
-- Use column voxels to “also” get connection textures. Height only needs the river one step lower.
-
-Tiny Glade–style stroke auto-join is left for later roofs and paths, not as the ground base. Ground must share the same cells with Assist, footprints, and pathfinding.
-
-## Cliffs and cloud sea
-
-Outer edges and inner hole edges use the same cliff set. Cloud sea is a viewing layer under/outside the island (fog or a plane). It is not a cell and does not join the bitmask. Walking stops on the side with no neighbor.
-
-Rivers are not walkable, but river cells **have land**: if their outer edge meets the cloud sea, they also hang cliffs. Do not draw a shallow bay as a bite taken out of the island.
-
-The starting shallow bay is edge-attached and must not split walkable area into two pieces. That is a layout rule, not a render rule; rendering still joins by neighbors.
-
-## Show the grid only in Build
-
-Everyday top-down should read as a courtyard, not a chessboard. Connection textures exist to hide the grid. Entering Build / laying ground overlays a light grid for click alignment. The grid is a tool, not a ground material.
-
-## Chunks and dirty regions
-
-Suggest 8×8 as a chunk. Changing one cell rebuilds that cell's chunk plus neighbor chunks intersecting its eight neighbors. At a hard area cap of 128 cells, the whole island can also rebuild as one piece. Chunking is reserved for later growth, not required for the experience slice.
-
-The logic layer takes effect immediately (walkability, seepage, water-adjacency). Surface may lag a few frames. Do not use visual interpolation to delay the economy.
-
-## Art the experience slice needs
-
-- Two land fills: grass soil and ridges (world-space, weak tiling), plus a grass–ridge seam.
-- One river blob connection set (quarter tiles or equivalent 47 looks), banks drawn on river cells.
-- One cliff set: straight, outer corner, inner corner (shared inner/outer edges; overrides river banks facing the cloud sea).
-- One cloud-sea layer.
-- One tree or house corner next to the starting shallow bay; shelter is an entity.
-
-When changing look, swap fills and the river atlas first. Do not split logic types first.
+```sh
+python3 tests/run_preview.py tests/terrain_editor_data_test.gd --headless
+python3 tests/run_preview.py tests/terrain_editor_render_test.gd --headless
+python3 tests/run_preview.py tests/terrain_editor_decoration_test.gd --headless
+python3 tests/run_preview.py tests/terrain_editor_runtime_test.gd --headless
+```

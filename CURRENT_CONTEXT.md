@@ -1,71 +1,31 @@
 # Current project consensus and handoff entry
-Updated: 2026-10-05. This file is the current goals, production priority, and handoff entry. Later explicit user requests take precedence. Obsolete notes, plans, and concept drafts have been deleted. Valid review reports remain as implementation evidence only. Implementation status must still be judged from code, runtime assets, and actual inspection.
+Updated: 2026-10-05. Latest explicit user instructions take precedence. Read this before code and related design. Source assets and review reports are evidence, not automatic todos.
 
-## Product and current priority
+## Current priority and approved scope
 
-This is an ancient-style xianxia idle incremental game with sandbox building. Resource production, management, long-term growth, and exploration are the core; combat serves exploration and must not expand the project into an action-combat game. Keep the existing economy kernel and original asset sources. The latest request replaces the active demo with a dedicated freely editable floating-island terrain scene; the old terrain and placed scene objects need not be preserved.
+The project remains an ancient-style xianxia idle incremental game, with management, production, growth and exploration as its core. The active demo is now being replaced by a freely editable floating-island terrain workshop. The latest user image guides layered grassy land, faceted rock cliffs, blue ponds, waterfalls and coherent stylized vegetation; it does not lock every future courtyard to one layout.
 
-The user has returned to a 3D production pipeline, referencing 尘之回声 (DustEcho) for the desired presentation but explicitly rejecting pixelated rendering in favor of a non-pixel ancient-Chinese palette and stylized finish. Stop 2D directional-character and Spine production. Current priority is SANDBOX BUILDING FUNCTIONALITY, ahead of further static scene/art refinement. The first placement/move/remove/save/load loop is now integrated into the playable courtyard. Character modeling, garment and combat-animation work remain deferred; keep existing characters for traversal and scale. Preserve the independent art study as a secondary reference; do not resume expensive garment refinement or rebuild all assets. Preserve gameplay, modular courtyard requirements and performance validation. See [3D art direction](docs/art/three_d_art_direction.md).
+The user approved the [design](docs/superpowers/specs/2026-10-05-terrain-sandbox-design.md) and [implementation plan](docs/superpowers/plans/2026-10-05-terrain-sandbox.md), choosing native execution in this chat. The old terrain and placed scene objects need not be preserved. Original asset sources and economy code remain available. No paid assets, custom original model generation, character/combat expansion or village/exploration expansion is included.
 
-## Three scene types and sandbox premises
+Camera orientation is fixed. Keyboard and middle-drag movement pan horizontally, preserving height. Only the scroll wheel changes height and zoom. Vertical movement, fly navigation and orbit are disabled. Recenter, reset and preset changes preserve camera height.
 
-The user explicitly distinguishes three scene types: the Sea of Consciousness Courtyard, the village, and exploration scenes. They share a unified art style and reusable assets, but must not be mixed into a single courtyard map.
+## Implemented workshop
 
-| Scene | Confirmed direction | Current design boundary |
-| --- | --- | --- |
-| Sea of Consciousness Courtyard | Sandbox building; terrain, buildings, facilities, and landscape are designed for placement and combination | Art must not depend on preset coordinates, specific neighbors, or a unique camera |
-| Village | A scene type independent of the courtyard, keeping an ancient-style settlement look | Player remodeling scope and village generation are not yet decided; do not assume it is fully editable or fully fixed |
-| Exploration scenes | Designed toward procedural generation, using combinable terrain, vegetation, resource, and event modules | Exact algorithm, map scale, and whether a visit resets are not yet decided; the existing exploration demo is not completed procedural generation |
+The isolated branch `codex/terrain-sandbox` now contains TerrainData, chunk geometry, automatic decoration, camera and editor UI. Active-entry switching is in progress. The workshop has raise/lower/expand/contract drag brushes, snap toggle, eight water elevations, 47 normalized neighbor states, water painting/removal, undo/redo, isolated layout save/load, three presets and optional grid. Grass and surface rocks follow the terrain; cliff rocks are procedurally embedded using existing free models. 8×8 chunk meshes and chunk-local MultiMeshes rebuild only dirty regions. Every visible terrain cell is authoritative and editable.
 
-Sandbox placement is not unconstrained: existing footprint, traversal, and resource rules still apply. Whether every type may be freely rotated, scaled, or stacked is not confirmed; do not add those abilities automatically. Art should first stay coherent when objects are placed independently, rotated in allowed directions, and given new neighbors.
+Fresh tests currently pass: data 301/301, geometry 273/273, decoration 290/290 and runtime/camera 14/14. These prove their specific functional coverage, not visual acceptance or performance. A real engine probe shows the scene and interface; cliff faceting/rock repetition and foliage finish still need visual review. Three edited-layout captures, three real-time 4096-cell benchmarks and a 30-minute stability run remain pending. Original gameplay tests are baseline evidence only.
 
-## Art judgment baseline
+Workshop terrain and camera behavior are specified in [terrain](docs/terrain.md) and [camera](docs/camera.md). Native execution continues through verification without extra task-by-task approval.
 
-Current presentation reference: [DustEcho developer rendering/combat demo](https://www.bilibili.com/video/BV1XuorB2E1P/). Its public description identifies a top-down 3D game with pixelated rendering. Only that description has been verified here, not a frame-by-frame visual analysis or its shader implementation. The user wants comparable overall presentation with non-pixel guofeng rendering; do not infer adoption of its ARPG scope.
+## Scene and asset boundaries
 
-The user also approves [墨境 / Realm of Ink](https://store.steampowered.com/app/2597080/Realm_of_Ink/?l=schinese) as a reference for combat presentation, character motion, and art style. Future observation should cover pose transitions, attack movement, timing and feedback, and ink-inspired color/readability. This records the user’s preference, not completed footage analysis or a decision to copy its rendering pipeline. Sandbox building remains the priority; character/combat production stays deferred.
+The Sea of Consciousness Courtyard is a sandbox with combinable modules. Village scope remains undecided and separate; exploration is intended for procedural layouts. Do not merge these three scene types. Nature kinds remain independent; no bundled tree/rock placement tool or locked decorative ground.
 
-Keep lessons from the 2D concept exploration: small head, slender adult silhouette, graceful and dashing demeanor, minimal facial detail and restrained blue-gray/ivory/cyan palette. The user liked the poetic style but rejected cute proportions, grounded repetitive martial poses and unnatural hovering. These images remain references, not new sprite/Spine production tasks. Footwear permission was specific to the 2D trial; do not silently change existing 3D knee-trouser/barefoot sources.
+Use 3D modular scenes and non-pixel ancient-Chinese stylization. The new floating-island picture is the workshop target; 尘之回声 remains a presentation reference, and 墨境 / Realm of Ink remains a character-motion/combat/art reference without expanding gameplay scope. Character, garment and combat-animation work is deferred; existing Qinglan v06 is visually unaccepted and need not appear in the workshop. Preserve originals and existing playable sources; do not restart 2D directional/Spine production.
 
-The user finds the look of the [courtyard concept image](art/source/visual_targets/2026-09-20/courtyard_user_target.png) usable. It is a reference for color, materials, atmosphere, and finish only — not a layout, asset list, terrain, or landscape reproduction requirement, and not the only style source.
+The cottage and starter sword already use refined Tripo assets; do not ask to regenerate them. Existing CC0 Quaternius and Kenney sources are available; first validate pairing in a small rendered scene before increasing density. Asset details remain in [art/README.md](art/README.md), and module acceptance in [scene art spec](docs/art/scene_art_and_module_spec.md).
 
-Additional art references from the user: Spark in the Dark: Automated Adventure, Craftopia, Wildmender, V Rising, The Magistrate, and Mountain Gate & Illusion. Distill a unified ancient-style look from these references; do not paste together each game's different scale, materials, and subject matter. Official links and observation notes are in [Scene art and module spec](docs/art/scene_art_and_module_spec.md).
-
-- Ancient-style pairing, natural space, flowing silhouettes, and overall finish matter most; pine trees are not required assets.
-- Large color masses, abstraction, and beauty mean summarized silhouettes, coordinated palettes, and clear hierarchy. Moderate material variation, leaf clusters, moss, and ground detail are allowed; do not reduce this to empty lots, flat color planes, and scattered primitives.
-- Vegetation, rocks, paths, water, bridges, and distant views are optional combinable elements; not every courtyard must have all of them. Sparse, open layouts must also work. Unify module scale, palette, materials, and lighting so both player layouts and procedural layouts look natural. Default top-down readability is required; near-zoom should still hold together.
-- GRIS, Journey, and Sky are atmosphere and finish references; keep this project's ancient-style language and do not copy desert forms.
-- The character has black hair, a natural warm skin tone, white knee-length trousers, and simple cloth shoes allowed for the new 2D version (preserved 3D sources retain bare feet); blue-gray outer robe, ivory inner lining, and a restrained cyan sash and ribbons. Cuffs, hems, and motion must stay flexible and flowing; check intersections.
-- The cottage keeps a blue-gray curved dual-pitch roof, ivory walls, simplified timber, and a small window, with no door curtain. The character must actually pass through the doorway.
-
-## Asset pipeline
-
-Use 3D characters, skeletal animation and spatial scene modules as the main pipeline. Rendering targets non-pixel stylization with a unified ancient-Chinese palette; this is not a return to realistic material detail. Conventional 2D textures, particles, UI and concept art remain useful. Stop the mandatory camera-facing 2D/four-direction character and Spine approach.
-
-Preserve existing Tripo/Quaternius/CMU sources, ten original tracks, runtime assets and playable systems. First reuse them for style and camera studies; v06 remains visually unaccepted and is not automatically the final character. Choose whether to repair or replace individual sources only after inspection.
-
-Custom 3D workflow: approved design → four separate consistent front/left/right/back references when generation is needed → user-operated Tripo → user-led model/rig refinement → texturing and Godot acceptance. Reuse qualified assets rather than regenerate them. Codex handles art direction, reference images, parameters and agreed engine/rendering work; the user's earlier ownership of 3D modeling and animation design is not silently reassigned. Never operate Tripo or purchase assets without authorization.
-
-User account feedback: retries with the same parameters are free; changing parameters may cost credits; texturing costs 10 credits and cannot be retried afterward. Inspect the untextured model first and finish retries before deciding to texture. This is account feedback, not a universal price guarantee. Keep originals. Do not write suggested settings as known actual settings.
-
-There are currently no generation tasks for the user to submit. The unsuitable nature-asset four-view batch has been deleted; do not generate from that list. See [Generation tasks](art/generation_tasks.md).
-
-## Current implementation and boundaries
-
-| Item | Current status |
-| --- | --- |
-| Qinglan | Retained as an unaccepted playable reference for the restored 3D pipeline; no new refinement or replacement selected yet. Runtime still uses `qinglan_garment_v06.glb`: v05 textile finish retained; knee-length trousers and v03 calf surfaces restored without a new body mask. Ten garment-only sleeve/cuff/hem controls add damped acceleration, stride and turn response, retaining ribbon chains. All ten original clip time/value data, original rest transforms and bind matrices are preserved; contextual gaits and CMU step turns remain. Fresh functional tests pass, but residual garment/leg intersections, folded hems and broad angular cuffs remain; visual acceptance is incomplete. No cloth solver or target-device performance claim. |
-| Starter sword | The Tripo original has been refined and bound to the right hand, 1068 triangles. Basic swing, directional parry, and movement-art practice are integrated. |
-| Cottage | The running asset is the refined Tripo version, 2966 triangles, doorway about 1.608 × 1.829 m. The old direct-modeled version remains as history only. |
-| River tiles | 47-state connection logic exists; visible terrain, bridge, and facilities still include prototype looks. 47 states does not mean 47 independent models must be generated. |
-| Sandbox and scene coverage | Main play scene now supports B-key building: footprint selection, real green/red previews, nature placement/move/remove, unique cottage relocation with updated entrance/return, guarded land edits and manual layout save/load without resource rollback. See [sandbox review](art/review/sandbox/2026-09-21/review.md). Production facilities remain fixed; no object rotation, river editing, full routing, undo or full construction economy. All 130 visible starting cells now share authoritative build/render data; empty land can be erased and all outer edges expanded, with a 256-cell playable cap and drag painting. Nature objects are independent; no tree/rock bundle tool. v2 layout files preserve outer holes, and v1 files migrate implicit land and split bundles on read. See [land refinement](art/review/sandbox_land/2026-09-21/review.md). Original doorway/facility coordinate overlap remains grandfathered only at the initial house site. Bridge remains fixed. Runtime spaces remain courtyard, interior and a fixed exploration fork; no village scene. |
-| Combat | Single dummy practice, vitality/ward, and close-range spiritual pressure. Three enemy attack types, multi-enemy, growth, and sword flight are not a complete playable system. |
-| Overall look | Has not passed user art acceptance. The independent [courtyard study](art/review/courtyard_study/2026-09-21/review.md) now has two dry layouts, moved/rotated cottage, restrained ground/path materials, grouped vegetation and six actual engine views. Fresh study/scene-art/terrain/camera checks pass; original gameplay/assets are unchanged. Tree crowns, flat terrain boundaries and paving joins remain visible limitations; target-device performance is unmeasured. |
-| Free assets | Kenney Nature Kit 2.1 and Quaternius Standard originals are downloaded and CC0 checked. Earlier five-model samples were compared across three layouts. Eight unchanged Quaternius models now dress the runtime courtyard with coordinated materials, wind, ground contact and atmosphere; six new static views cover sparse water and relocated dry layouts. Final art, placement acceptance, and target-device performance remain open. |
-
-Detailed sources, work files, and runtime paths are in [Asset status](art/README.md). The original systems-doc entry is [Design index](docs/README.md); keep its economy, exploration, and other rules. Do not infer completed features from historical plans.
-
-The 2026-09-20 [handoff inspection](art/review/handoff/2026-09-20/review.md) records runtime-asset hashes, functional checks, current engine screenshots, and the high-frame-rate transition-test sampling limitation. The [Quaternius comparison](art/review/module_probe/2026-09-20/quaternius/review.md) records source contents, nine views, and short development-machine render samples. The earlier [visual and motion pass](art/review/animation_refinement/review.md) records rejected procedural body motion and retained scene dressing. The current [human-template replacement](art/review/animation_template/review.md) includes source/target previews and actual traversal, with fresh functional and source-preservation checks. The earlier [running and clothing pass](art/review/running_cloth/review.md) records v04 tailoring and steering. The [gait, turn and fabric pass](art/review/gait_v05/review.md) adds actual stepping transitions, contextual gaits and textile refinement. The current [garment v06 pass](art/review/garment_v06/review.md) restores the intended knee hems/calves and adds garment-only secondary motion, with fresh source-preservation checks and actual before/after engine captures; residual intersections and cloth finish remain open. Original files remain preserved.
+Custom selected assets retain concept → four independent consistent front/left/right/back views → user-operated Tripo → user-led Blender inspection/refinement → textures/baking → engine acceptance. Do not operate Tripo or build replacement original model geometry in code. User account feedback about retries/texturing is account-specific; unknown parameters remain unknown. No currently submittable generation task exists. Do not purchase assets without authorization.
 
 ## Confirmed combat principles (kept, not the current expansion focus)
 
@@ -73,24 +33,12 @@ Early game uses a held sword; later, sword flight may be considered. One-on-one 
 
 Any positive ward before a hit grants full damage reduction determined by realm relation, envisioned as 60%–95%. The reduced portion is paid by ward, floored at zero; any reduction ward cannot cover is not transferred to vitality. If ward is zero on the next hit, there is no reduction. Active qi damage drains ward first and overflows to vitality; passive close-range spiritual pressure drains ward only. Exact numbers, recovery times, and skill parameters are tunable prototype values, not all locked. Details: [Combat rules and trial values](docs/combat.md).
 
-## Performance goals and acceptance
+## Performance and acceptance
 
-Low quality on a Windows thin-and-light laptop and a MacBook Air should aim for about 60 FPS. Minimum hardware is unspecified and target devices have not been measured; do not claim the target is met. An idle game also cares about long-session power, heat, and stability.
+Accept function, art and performance separately. Concepts are not engine screenshots; historical tests are not current-round verification. About 60 FPS on a Windows thin-and-light laptop and a MacBook Air remains a target that needs actual device measurements. Development-device results cannot prove it.
 
-Optimization should first inspect instance reuse, LOD, culling, material count, shadows, water, and transparent stacking, then decide renderer and quality tiers. Low quality still keeps composition, main vegetation silhouettes, the ancient-style palette, and spatial layers. Record device, resolution, backend, quality, frame time, and variance. Do not substitute development-machine results for thin-laptop results.
+Measure the workshop at 4096 cells, 1280×720 low quality, with three runs of at least 60 seconds: median ≤16.7 ms and p95 ≤25 ms. Record hardware/backend, draw calls, memory and edit-response latency, and run 30-minute stability. Low quality retains composition and style. Consider long-idle heat/power; do not claim power acceptance from short frame benchmarks.
 
-## Next steps
+## Next actions
 
-The user approved the [floating-island terrain design](docs/superpowers/specs/2026-10-05-terrain-sandbox-design.md) on 2026-10-05. The new target is the latest attached layered grassy floating-island image, with faceted cliffs, blue ponds, waterfalls and terrain-adapting vegetation. Replace the active demo with freely editable raise/lower/expand/contract terrain, toggleable snapping, eight water elevations and the existing 47 normalized neighbor connection states. Use free existing models or identified placeholders and procedurally embed cliff rocks. Old terrain and scene objects are not preservation requirements; original asset sources and economy remain.
-
-Camera orientation stays fixed. Keyboard and drag movement pan horizontally while preserving height; only the scroll wheel changes height and zoom. Vertical movement, fly navigation and orbit are disabled, including during reset/recenter and preset changes.
-
-Implementation has not started. The [implementation plan](docs/superpowers/plans/2026-10-05-terrain-sandbox.md) covers data, chunk meshes, decoration, editor controls, active entry and fresh visual/performance verification. Existing terrain checks passed 794/794 and camera checks passed 8/8 before implementation; these are baseline checks, not new-demo acceptance. The old implementation-status table describes the retained legacy scene only. Review implementation-plan execution before proceeding.
-
-Functional, art and performance acceptance remain separate. Verify three edited layouts and real-time 4096-cell development-device benchmarks (three 60-second runs at 1280×720, median ≤16.7 ms and p95 ≤25 ms) plus a 30-minute stability run. Thin-laptop and MacBook Air performance remains unmeasured. No character/combat expansion, paid assets or current generation submission task.
-
-Ask only when information is truly missing, user action is required, or a key direction conflicts. Continue reversible work within the approved execution scope. Do not restore obsolete plans item by item.
-
-## Maintenance
-
-Sync new explicit decisions into this file and related current entries. Replace old status; do not keep appending contradictory “latest status” notes. Delete obsolete, misleading content outright. Do not keep wrong requirements under history labels or backups. Keep generation inputs, originals, and review reports for valid assets as evidence.
+Finish active entry and launchers, inspect three substantially different edited layouts, address functional/visual defects, measure performance and stability, and perform a fresh whole-branch review. Preserve unrelated primary-checkout changes when delivering work. Replace stale status in current docs instead of appending conflicting versions. Do not restore obsolete collaboration folders, claims or messaging.

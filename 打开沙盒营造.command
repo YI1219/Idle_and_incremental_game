@@ -1,3 +1,4 @@
 #!/bin/zsh
-cd "$(dirname "$0")" || exit 1
-exec /Applications/Godot.app/Contents/MacOS/Godot --path . res://scenes/play.tscn -- --build
+set -e
+cd -- "${0:A:h}"
+exec ./Play\ Demo.command

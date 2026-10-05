@@ -8,4 +8,4 @@ if ! command -v godot >/dev/null; then
   exit 1
 fi
 godot --headless --editor --path . --import --log-file /tmp/yunlu-demo-import.log
-exec godot --path . res://scenes/play.tscn
+exec godot --path . res://scenes/terrain_editor.tscn

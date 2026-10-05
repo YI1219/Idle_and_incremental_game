@@ -8,8 +8,8 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Yunlu Village"
-config/description="A grotto-heaven courtyard on a cloud sea. Base playtest: Qinglan, an ancient-style cottage, a river bridge, and sword practice."
-run/main_scene="res://scenes/play.tscn"
+config/description="An editable floating-island terrain workshop with procedural cliffs, water and vegetation."
+run/main_scene="res://scenes/terrain_editor.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
