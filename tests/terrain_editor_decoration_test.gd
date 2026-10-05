@@ -20,16 +20,12 @@ func run()->void:
 	var first:Dictionary=deco.placements(d,Vector2i.ZERO)
 	check(first.grass.size()>8,"dry land has generated grass")
 	check(first.get("grass_clump",[]).size()>0,"dry land has solid grass clumps")
-	check(first.cliff_rock.size()>0,"exposed cliffs have embedded rock models")
 	check(first.surface_rock.size()>0,"dry surface has individual rocks")
 	check(first==deco.placements(d,Vector2i.ZERO),"placement is deterministic")
 	for transform:Transform3D in first.grass:
 		check(is_equal_approx(transform.origin.y,1.0),"grass follows ground height")
 	for transform:Transform3D in first.surface_rock:
 		check(transform.origin.y<1.0,"surface rock origin embeds below ground")
-	for transform:Transform3D in first.cliff_rock:
-		check(transform.origin.y<1.0 and transform.origin.y>-6.0,"cliff rock anchored within exposed vertical face")
-		check(transform.origin.x>-0.01 and transform.origin.x<8.01 and transform.origin.z>-0.01 and transform.origin.z<8.01,"cliff rock center embedded inside island boundary")
 	for cell in d.cells:d.cells[cell].height=1.5
 	var raised:Dictionary=deco.placements(d,Vector2i.ZERO)
 	check(raised.grass.size()==first.grass.size(),"raise preserves deterministic population count")

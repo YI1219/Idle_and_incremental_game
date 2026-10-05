@@ -67,22 +67,8 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if inside.is_empty() or inside.water>=0 or absf(inside.height-h)>.1:continue
 				var profile:Dictionary=field._cliff_profile(p,out)
 				var landing:float=profile.bottom
-				if random_at(cell,data.seed,80)<.24:
-					var y:float=h-1.1-random_at(cell,data.seed,81)*.30
-					var layer:=0
-					while y>landing+.6 and layer<1:
-						var thickness:float=clampf(profile.inset, .25,1.0) if profile.base else 1.0
-						var anchor:Vector3=field._profile_point(p,y,out,profile)-Vector3(out.x,0,out.y)*.50*thickness
-						var tangent:=Vector3(out.y,0,-out.x)
-						var normal:=Vector3(out.x,0,out.y)
-						var basis:=Basis(tangent,normal,Vector3.DOWN)
-						basis=basis*Basis(Vector3.UP,(random_at(cell,data.seed,82+layer)-.5)*.65)
-						var size:=Vector3(2.8+random_at(cell,data.seed,91+layer)*.6,3.0,1.8+random_at(cell,data.seed,101+layer)*.3)
-						size.x*=thickness
-						size.y*=thickness
-						result.cliff_rock.append(Transform3D(basis.scaled_local(size),anchor))
-						y-=1.8+random_at(cell,data.seed,130+layer)*.35
-						layer+=1
+				# Rock volume belongs to the shared cliff mesh. Separate inserts read
+				# as attached slabs instead of integrated cliff faces.
 				if random_at(cell,data.seed,80)>.65:continue
 				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3(.65,.19,.65)))
 				var tuft:=p-out*.70
