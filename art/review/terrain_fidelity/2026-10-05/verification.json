@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh final broad-span cliff subdivision, clipped-octahedron shoulders and wet-wall stream clearance; actual full/detail/four-edit Metal renders regenerated.",
+  "scope": "Fresh final 17-part irregular retained CC0 canopy assembly, source-bound normalization, local three-axis tilt and height-varied tint; actual full/detail/four-edit Metal captures refreshed.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
@@ -86,7 +86,8 @@
     "before": "29/30 passed; six of 242 reference curtain triangle-center rays encountered cliff triangles in front of the falling water",
     "after": "30/30 passed; zero blocked reference samples after wet-mouth shoulder limits",
     "retained": "Wide-outlet physical folds, mixed-height receivers, narrow strip clearance and incremental reconstruction checks remain passing",
-    "limitations": "Finite reference sampling, not exhaustive arbitrary-layout or entire-surface clearance coverage."
+    "limitations": "Finite reference sampling, not exhaustive arbitrary-layout or entire-surface clearance coverage.",
+    "revision": "afea19c cliff-clearance regression retained unchanged and freshly passing this round"
   },
   "render_verification": {
     "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
@@ -106,7 +107,7 @@
     "refined_cottage_matches_HEAD": true,
     "cottage_glbs_unchanged": 2
   },
-  "review": "Independent read-only reviewer inspected source and actual full/detail/four-edit captures. Initial Important issue (opaque cliff tongue through lower waterfall) was corrected and cleared in final review. Crest connection remains intact; no new Important issue found. Stronger clustered rock depth improves on the flatter baseline, but deep scallops, pointed lower projections and elongated patches remain reference gaps. Reviewer did not independently run final tests/benchmark; finite reference-ray coverage is not arbitrary-layout clearance proof. Human visual acceptance remains pending.",
+  "review": "Independent read-only reviewer inspected source, actual full/detail/four-edit captures and the temporary extremal-vertex probe. No Critical/Important issue found. Unequal masses and tilted rim clusters improve on flat repeated tiers, with no visible detached clusters in inspected captures. Bounds normalization/centering, positive scales/winding and regenerated merge bounds/normals are consistent. Minor gaps remain: dense rounded lobes, more hidden branching on the large left tree and nearly spherical small crowns. Reviewer did not independently repeat final tests/benchmark or prove all branch segments/cluster connections. Human visual acceptance remains pending.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence."
   },
@@ -114,6 +115,36 @@
     "Deep cliff scallops, pointed lower projections and elongated patches remain reference differences; finite curtain rays do not prove arbitrary-layout clearance.",
     "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
     "Temporal shimmer and cross-platform rendering unverified.",
-    "M4 Pro short samples do not prove target-laptop or long-idle performance."
-  ]
+    "M4 Pro short samples do not prove target-laptop or long-idle performance.",
+    "Finite canopy extremal-vertex coverage does not prove every branch segment; large crowns hide more branching than the reference and small crowns remain nearly spherical."
+  ],
+  "canopy_contact": {
+    "source": "temporary actual-mesh ray-parity probe using unmerged retained source parts and their final transforms",
+    "selected_vertices": "transformed wood extrema at X minimum, X maximum, Z minimum, Y maximum",
+    "covered": 4,
+    "sampled": 4,
+    "coordinates": [
+      [
+        -0.434868,
+        0.847333,
+        -0.146816
+      ],
+      [
+        0.377952,
+        0.787199,
+        -0.110112
+      ],
+      [
+        0.033232,
+        0.822723,
+        -0.376092
+      ],
+      [
+        -0.036704,
+        0.885104,
+        -0.047368
+      ]
+    ],
+    "limitations": "Finite extremal-vertex coverage; not every branch segment or all views."
+  }
 }

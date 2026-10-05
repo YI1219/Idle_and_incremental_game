@@ -9,104 +9,104 @@
 		{
 			"cells": 593,
 			"draw_calls": 492.0,
-			"duration_seconds": 12.00052,
+			"duration_seconds": 12.000798,
 			"edits": [
 				{
 					"changed_cells": 16,
 					"operation": "raise",
-					"visible_response_ms": 197.288
+					"visible_response_ms": 197.465
 				},
 				{
 					"changed_cells": 12,
 					"operation": "lower",
-					"visible_response_ms": 193.123
+					"visible_response_ms": 209.634
 				},
 				{
 					"changed_cells": 14,
 					"operation": "expand",
-					"visible_response_ms": 201.981
+					"visible_response_ms": 211.057
 				},
 				{
 					"changed_cells": 16,
 					"operation": "contract",
-					"visible_response_ms": 217.646
+					"visible_response_ms": 217.886
 				}
 			],
-			"frame_count": 1005,
-			"max_ms": 127.769,
-			"median_ms": 9.202,
-			"p95_ms": 18.632,
+			"frame_count": 989,
+			"max_ms": 123.714,
+			"median_ms": 9.35,
+			"p95_ms": 18.698,
 			"run": 1,
-			"static_memory_mib": 60.1040487289429,
-			"video_memory_mib": 207.25
+			"static_memory_mib": 60.1088895797729,
+			"video_memory_mib": 207.3125
 		},
 		{
 			"cells": 593,
 			"draw_calls": 492.0,
-			"duration_seconds": 12.008459,
+			"duration_seconds": 12.000712,
 			"edits": [
 				{
 					"changed_cells": 16,
 					"operation": "raise",
-					"visible_response_ms": 198.324
+					"visible_response_ms": 202.203
 				},
 				{
 					"changed_cells": 12,
 					"operation": "lower",
-					"visible_response_ms": 210.135
+					"visible_response_ms": 200.54
 				},
 				{
 					"changed_cells": 14,
 					"operation": "expand",
-					"visible_response_ms": 200.576
+					"visible_response_ms": 209.613
 				},
 				{
 					"changed_cells": 16,
 					"operation": "contract",
-					"visible_response_ms": 221.067
+					"visible_response_ms": 221.453
 				}
 			],
-			"frame_count": 1013,
-			"max_ms": 126.27,
-			"median_ms": 9.158,
-			"p95_ms": 18.554,
+			"frame_count": 996,
+			"max_ms": 123.776,
+			"median_ms": 9.294,
+			"p95_ms": 18.601,
 			"run": 2,
-			"static_memory_mib": 60.1103773117065,
-			"video_memory_mib": 207.25
+			"static_memory_mib": 60.1152181625366,
+			"video_memory_mib": 207.3125
 		},
 		{
 			"cells": 593,
 			"draw_calls": 492.0,
-			"duration_seconds": 12.017214,
+			"duration_seconds": 12.000422,
 			"edits": [
 				{
 					"changed_cells": 16,
 					"operation": "raise",
-					"visible_response_ms": 202.022
+					"visible_response_ms": 202.415
 				},
 				{
 					"changed_cells": 12,
 					"operation": "lower",
-					"visible_response_ms": 202.998
+					"visible_response_ms": 219.544
 				},
 				{
 					"changed_cells": 14,
 					"operation": "expand",
-					"visible_response_ms": 209.92
+					"visible_response_ms": 192.265
 				},
 				{
 					"changed_cells": 16,
 					"operation": "contract",
-					"visible_response_ms": 217.841
+					"visible_response_ms": 210.977
 				}
 			],
-			"frame_count": 1005,
-			"max_ms": 125.173,
-			"median_ms": 9.357,
-			"p95_ms": 18.606,
+			"frame_count": 987,
+			"max_ms": 125.372,
+			"median_ms": 9.335,
+			"p95_ms": 18.589,
 			"run": 3,
-			"static_memory_mib": 60.1139059066772,
-			"video_memory_mib": 207.25
+			"static_memory_mib": 60.1187467575073,
+			"video_memory_mib": 207.3125
 		}
 	],
 	"scope": "current reference demo, 12-second measurement per run; target laptops and long idle stability unmeasured this round",

@@ -11,23 +11,33 @@ func load_assets()->void:
 	var tree:Array=[]
 	var wood_shape:=Transform3D(Basis.IDENTITY.scaled(Vector3(1.24,1.07,1.24)),Vector3.ZERO)
 	for part:Dictionary in wood:tree.append({"mesh":part.mesh,"pose":wood_shape*part.pose})
-	for i in 14:
+	# Unequal overlapping core masses, then smaller edge clusters. Normalize
+	# source bounds so the retained leaf mesh does not impose flat repeated tiers.
+	var crown:Array=[
+		[Vector3(-.29,.94,.10),Vector3(.77,.64,.77)],
+		[Vector3(.28,1.02,.02),Vector3(.81,.69,.78)],
+		[Vector3(-.10,1.22,-.08),Vector3(.68,.64,.70)],
+		[Vector3(-.22,1.10,-.35),Vector3(.62,.60,.63)],
+		[Vector3(.22,.90,.34),Vector3(.61,.57,.62)],
+		[Vector3(-.14,.84,.29),Vector3(.61,.54,.62)],
+		[Vector3(.27,1.21,-.25),Vector3(.48,.48,.52)],
+	]
+	for i in 10:
 		var angle:=i*2.39996
-		var radius:=.43+.09*sin(i*4.1)
-		var center:=Vector3(cos(angle)*radius,.92+.13*sin(i*2.7)+.07*cos(i*.79),sin(angle)*radius*.82)
-		var size:=Vector3(.82+.10*sin(i*1.7),.72+.08*cos(i*2.3),.88+.10*cos(i*1.1))
-		if i==12:
-			center=Vector3(.08,1.30,-.03)
-			size=Vector3(.98,.76,.96)
-		if i==13:
-			center=Vector3(-.05,1.05,.04)
-			size=Vector3(1.08,.84,1.04)
-		center=Vector3(center.x*1.12,(center.y+.18)*.84,center.z*1.12)
+		var radius:=.54+.07*sin(i*3.7)
+		var center:=Vector3(cos(angle)*radius,1.02+.19*sin(i*2.1),sin(angle)*radius*.86)
+		var size:=Vector3(.42+.07*sin(i*1.7),.43+.06*cos(i*2.3),.45+.07*cos(i*1.1))
+		crown.append([center,size])
+	for i in crown.size():
+		var center:Vector3=crown[i][0]
+		var size:Vector3=crown[i][1]
+		var rotation:=Basis.from_euler(Vector3(.21*sin(i*1.9),i*1.031,.25*cos(i*2.7)))
 		for part:Dictionary in leaf:
 			var box:AABB=part.mesh.get_aabb()
-			var basis:=Basis(Vector3.UP,angle*.43).scaled(size*Vector3(1.12,.756,1.12))
+			var basis:=rotation.scaled_local(size/box.size.max(Vector3.ONE*.0001))
 			var pose:=Transform3D(basis,center-basis*(box.position+box.size*.5))
-			var tint:=Color(.94+.08*sin(i*2.1),.98+.045*cos(i*1.7),.94+.06*sin(i*.6),1)
+			var light:=clampf((center.y-.82)/.5,0.0,1.0)
+			var tint:=Color(.84+.16*light+.04*sin(i*2.1),.94+.08*light+.035*cos(i*1.7),.90+.04*sin(i*.6),1)
 			tree.append({"mesh":part.mesh,"pose":pose,"tint":tint})
 	assets.tree=tree
 	var spray:Array=[]
