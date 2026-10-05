@@ -10,7 +10,8 @@ void vertex(){
 void fragment(){
 	// One world-space rock field across the joined cliff volume. Broad facets
 	// stay anchored through edits instead of exposing the mesh's height rows.
-	vec3 p=world_position/vec3(2.2,1.8,2.2);
+	vec3 frame=vec3(world_position.x+world_position.y*.16,world_position.y+world_position.x*.28+world_position.z*.19,world_position.z-world_position.y*.12);
+	vec3 p=frame/vec3(2.2,1.8,2.2);
 	vec3 cell=floor(p);vec3 f=fract(p);float nearest=10.0;float second=10.0;vec3 selected=cell;vec3 local=vec3(0.0);
 	for(int z=-1;z<=1;z++)for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
 		vec3 offset=vec3(float(x),float(y),float(z));

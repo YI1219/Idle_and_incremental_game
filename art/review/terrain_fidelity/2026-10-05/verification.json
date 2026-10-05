@@ -1,55 +1,97 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Seven joined crown masses against1c12cee. Current suite/render/preservation/review/joined_crown fields describe this round; other named refinements and verification_sequence remain historical evidence. Overall acceptance pending.",
+  "scope": "Oblique physical/material rock field and bounded actual-triangle hanging foliage fitting against31ea610. Current suite/render/preservation/review/oblique_rock_and_vine_support fields describe this round. Other named refinements and verification_sequence remain historical. Overall user acceptance pending.",
   "suite": [
     {
-      "test": "terrain_crown_integrity_test.gd",
+      "test": "terrain_contour_test.gd",
       "exit": 0,
       "ok": true,
-      "checks": "7 closed/outward;9984 contained;4470 exact published entries",
-      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
     },
     {
-      "test": "terrain_canopy_contact_test.gd",
+      "test": "terrain_waterfall_test.gd",
       "exit": 0,
       "ok": true,
-      "checks": 5,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
     },
     {
-      "test": "terrain_model_bounds_test.gd",
+      "test": "terrain_shoreline_test.gd",
       "exit": 0,
       "ok": true,
-      "checks": 9,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_narrow_cliff_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 794 slices, 0 failures, smallest gap 0.0306\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_cliff_taper_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CLIFF TAPER: 2/2 passed, sampled 30 foot vertices, furthest 5.5244\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_boundary_wall_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOUNDARY WALL default: 0 missing\nBOUNDARY WALL raise: 0 missing\nBOUNDARY WALL lower: 0 missing\nBOUNDARY WALL expand: 0 missing\nBOUNDARY WALL contract: 0 missing\nTERRAIN BOUNDARY WALL: 416 samples, 0 failures\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_upper_rock_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 15 rays, 14 shoulders, 25 nearby join vertices, 0 failures\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_editor_render_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RENDER: 339/339 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
     },
     {
       "test": "terrain_editor_decoration_test.gd",
       "exit": 0,
       "ok": true,
-      "checks": 89,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 89/89 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
     },
     {
       "test": "terrain_incremental_test.gd",
       "exit": 0,
       "ok": true,
-      "checks": 20,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
     },
     {
       "test": "terrain_editor_runtime_test.gd",
       "exit": 0,
       "ok": true,
-      "checks": 22,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
     },
     {
       "test": "camera_test.gd",
       "exit": 0,
       "ok": true,
-      "checks": 8,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)"
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CHECKS: 8/8 passed, failures=0\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_vine_contact_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":320,\"fixture\":\"default\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":328,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":343,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":350,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":351,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
     }
   ],
   "regression": {
@@ -70,31 +112,49 @@
       "contract": 16
     },
     "output": "Actual full scene, three details, four edits and editor UI",
-    "matched_baseline": "composition_wip_before_joined_crown.png and corresponding three detail/four edit files"
+    "matched_baseline": "31ea610 *_before_oblique_rock.png full/three detail/four edit images"
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
-    "tracked_runtime_sources_assets": "Against1c12cee only terrain_models.gd differs among tracked terrain-editor scripts/shaders/nature/cottage/resources excluding imports. Original files unchanged. Crown/contact tests use actual render arrays.",
+    "tracked_runtime_sources_assets": "Against31ea610 only contour_terrain.gd,terrain_decoration.gd,cliff.gdshader differ among compared tracked terrain-editor scripts/shaders/nature/cottage/resources excluding imports; original model/texture bytes retained. New test task-owned.",
     "component_probe": {
-      "exact_non_tree_non_null_arrays": 61,
-      "exact_non_tree_part_poses": 12,
       "failures": 0,
-      "leaf_triangle_entries_after": 4470,
-      "leaf_triangle_entries_before": 9984,
-      "limitations": "Packed geometry/color array comparison excludes material identity; entries include duplicates; new crown bounds/layout are deliberately changed.",
-      "tree_bounds_after": {
-        "position": "(-0.782052, -0.0535, -0.593499)",
-        "size": "(1.544132, 1.721352, 1.31167)"
-      },
-      "tree_bounds_before": {
-        "position": "(-0.781939, -0.0535, -0.593436)",
-        "size": "(1.543997, 1.697791, 1.311522)"
-      },
-      "wood_entries": 360,
-      "wood_vertex_normal_color_arrays_equal": true
+      "reports": [
+        {
+          "chunks_with_changed_vine_transforms": 15,
+          "exact_non_cliff_arrays": 12,
+          "exact_non_vine_chunk_kind_arrays": 228,
+          "fixture": "default"
+        },
+        {
+          "chunks_with_changed_vine_transforms": 15,
+          "exact_non_cliff_arrays": 12,
+          "exact_non_vine_chunk_kind_arrays": 228,
+          "fixture": "raise"
+        },
+        {
+          "chunks_with_changed_vine_transforms": 16,
+          "exact_non_cliff_arrays": 12,
+          "exact_non_vine_chunk_kind_arrays": 228,
+          "fixture": "lower"
+        },
+        {
+          "chunks_with_changed_vine_transforms": 15,
+          "exact_non_cliff_arrays": 12,
+          "exact_non_vine_chunk_kind_arrays": 228,
+          "fixture": "expand"
+        },
+        {
+          "chunks_with_changed_vine_transforms": 15,
+          "exact_non_cliff_arrays": 12,
+          "exact_non_vine_chunk_kind_arrays": 228,
+          "fixture": "contract"
+        }
+      ],
+      "scope": "Actual source vertex/normal/color arrays and pose arrays for default/four capture fixtures; empty pose arrays included. Does not prove foliage contact or all published clipping/platforms."
     }
   },
-  "review": "Independent source/final full/three detail/four edit review: no confirmed Critical/Important defect. Modest mixed gain worth retaining; fewer attached bumps and clearer main grouping, but elongated bean-shaped groups/broad faces remain. No obvious new detached branch/framing failure. Part-count assumption guarded after review, with unchanged integrity/contact results. Reviewer ran no engine jobs/benchmark; no overall acceptance.",
+  "review": "Independent source/final full/details/four edit review supports modest oblique course alignment and fuller visible central/right vine growth. Initial forward-most wall selection Important issue corrected using closest-center rank plus.60bound; actual-plane regression added and strengthened to place both nearby planes inside bound. No remaining confirmed Critical/Important. Sparse repeated garlands/isolated tips,rounded walls/lower folds remain. No engine jobs/benchmark run by reviewer; no general wall ownership/wholeleaf contact/overall acceptance claim.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -1642,9 +1702,99 @@
         "output": "Actual full scene, three details, four edits and editor UI",
         "matched_baseline": "composition_wip_before_joined_crown.png and corresponding three detail/four edit files"
       }
+    },
+    "31ea610": {
+      "scope": "Seven joined crown masses against1c12cee. Current suite/render/preservation/review/joined_crown fields describe this round; other named refinements and verification_sequence remain historical evidence. Overall acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_crown_integrity_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": "7 closed/outward;9984 contained;4470 exact published entries",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_canopy_contact_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 5,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 9,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 89,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 20,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 22,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "camera_test.gd",
+          "exit": 0,
+          "ok": true,
+          "checks": 8,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        }
+      ],
+      "render_verification": {
+        "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
+        "backend": "Metal Forward+",
+        "exit": 0,
+        "edits_changed_cells": {
+          "raise": 16,
+          "lower": 12,
+          "expand": 14,
+          "contract": 16
+        },
+        "output": "Actual full scene, three details, four edits and editor UI",
+        "matched_baseline": "31ea610 *_before_oblique_rock.png full/three detail/four edit images"
+      },
+      "preservation": {
+        "unrelated_local_files_unchanged": 8,
+        "tracked_runtime_sources_assets": "Against1c12cee only terrain_models.gd differs among tracked terrain-editor scripts/shaders/nature/cottage/resources excluding imports. Original files unchanged. Crown/contact tests use actual render arrays.",
+        "component_probe": {
+          "exact_non_tree_non_null_arrays": 61,
+          "exact_non_tree_part_poses": 12,
+          "failures": 0,
+          "leaf_triangle_entries_after": 4470,
+          "leaf_triangle_entries_before": 9984,
+          "limitations": "Packed geometry/color array comparison excludes material identity; entries include duplicates; new crown bounds/layout are deliberately changed.",
+          "tree_bounds_after": {
+            "position": "(-0.782052, -0.0535, -0.593499)",
+            "size": "(1.544132, 1.721352, 1.31167)"
+          },
+          "tree_bounds_before": {
+            "position": "(-0.781939, -0.0535, -0.593436)",
+            "size": "(1.543997, 1.697791, 1.311522)"
+          },
+          "wood_entries": 360,
+          "wood_vertex_normal_color_arrays_equal": true
+        }
+      },
+      "review": "Independent source/final full/three detail/four edit review: no confirmed Critical/Important defect. Modest mixed gain worth retaining; fewer attached bumps and clearer main grouping, but elongated bean-shaped groups/broad faces remain. No obvious new detached branch/framing failure. Part-count assumption guarded after review, with unchanged integrity/contact results. Reviewer ran no engine jobs/benchmark; no overall acceptance."
     }
   },
-  "limitations": "User visual acceptance pending. Seven closed hulls do not prove a connected crown union; source-vertex containment and four unique branch selectors do not prove every branch, continuous volume or arbitrary inputs. Actual render arrays avoid get_faces rounding in new crown/contact checks. Still renders do not prove temporal/platform behavior. Target laptops, larger maps, startup and long idle unmeasured.",
+  "limitations": "Overall user visual acceptance pending. Finite centroids/nearby planes do not prove full leaf contact,connected chains,visibility or arbitrary cliff ownership. Cliff coverage checks are finite ray/vertex samples,not watertightness. Actual stills do not prove temporal/platform behavior. Target laptops,larger maps,long idle and startup remain unmeasured.",
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
     "probe": "canopy_contact_probe.gd",
@@ -2445,5 +2595,171 @@
     "probe_correction": "get_faces rounds positions through TriangleMesh; new integrity/contact tests use surface ARRAY_VERTEX. Provisional rounded-array failures excluded.",
     "final_guard": "parts.size()!=13 retains original assembly; integrity/contact clean after guard. Captures/benchmark use same current13part path.",
     "native_api": "ConvexPolygonShape3D.get_debug_mesh solid surface copied to normal mesh; no physics node retained."
+  },
+  "oblique_rock_and_vine_support": {
+    "baseline": "31ea610",
+    "world_frame": [
+      "x+.16y",
+      "y+.28x+.19z",
+      "z-.12y"
+    ],
+    "scale": [
+      2.2,
+      1.8,
+      2.2
+    ],
+    "retained": "Shared geometry/material frame; existing taper/envelopes/thickness/wet-clearance logic. Actual-triangle hanging spray fitting; closest intended center,correction<=.60,lift.025,tangent frame. Original foliage/rim sprays/other placement retained.",
+    "centroid_checks": [
+      320,
+      328,
+      343,
+      350,
+      351
+    ],
+    "max_centroid_distance": 0.0250013992190361,
+    "missing_or_separated_over_010": 0,
+    "omitted_contract_sprays": 2,
+    "red_green_contact": {
+      "scope": "Corrected Euclidean centroid proximity test before nearby-plane fixture addition; saved31ea610 decoration with oblique field.",
+      "exit_before": 1,
+      "missing_local_candidates": [
+        8,
+        13,
+        12,
+        8,
+        9
+      ],
+      "separated_over_010": [
+        84,
+        84,
+        92,
+        94,
+        87
+      ],
+      "exit_after": 0
+    },
+    "red_green_wall_selection": {
+      "initial_unbounded_first_hit": "closest=false,bounded=false,exit1",
+      "final_both_near_planes_with_wrong_rank_mutant": "closest=false,bounded=true,exit1",
+      "corrected": "closest=true,bounded=true,exit0",
+      "near_planes_z": [
+        0,
+        0.4
+      ],
+      "far_only_plane_z": -1
+    },
+    "verifier_correction": "Initial first-ray distance treated nearer foreground surfaces as unsupported contact. Corrected to nearest Euclidean actual triangle distance via plane projection/barycentric containment and segment distances; rerun red/green. Parse-error shadowed test variable corrected; error-bearing outputs excluded.",
+    "prior_blade_center_diagnostic": {
+      "reports": [
+        {
+          "baseline": {
+            "ahead_more_than_015": 59,
+            "behind_more_than_015": 339,
+            "blade_center_checks": 2240,
+            "hanging_poses": 320,
+            "max_gap": 0.533443689346313,
+            "min_gap": -0.453049898147583,
+            "ray_hits": 2240
+          },
+          "fixture": "default",
+          "oblique": {
+            "ahead_more_than_015": 67,
+            "behind_more_than_015": 398,
+            "blade_center_checks": 2240,
+            "hanging_poses": 320,
+            "max_gap": 0.581545114517212,
+            "min_gap": -0.522258281707764,
+            "ray_hits": 2240
+          }
+        },
+        {
+          "baseline": {
+            "ahead_more_than_015": 59,
+            "behind_more_than_015": 372,
+            "blade_center_checks": 2296,
+            "hanging_poses": 328,
+            "max_gap": 0.533443689346313,
+            "min_gap": -0.453049898147583,
+            "ray_hits": 2296
+          },
+          "fixture": "raise",
+          "oblique": {
+            "ahead_more_than_015": 67,
+            "behind_more_than_015": 434,
+            "blade_center_checks": 2296,
+            "hanging_poses": 328,
+            "max_gap": 0.581545114517212,
+            "min_gap": -0.522258281707764,
+            "ray_hits": 2296
+          }
+        },
+        {
+          "baseline": {
+            "ahead_more_than_015": 84,
+            "behind_more_than_015": 425,
+            "blade_center_checks": 2401,
+            "hanging_poses": 343,
+            "max_gap": 1.82558509707451,
+            "min_gap": -0.713656425476074,
+            "ray_hits": 2401
+          },
+          "fixture": "lower",
+          "oblique": {
+            "ahead_more_than_015": 97,
+            "behind_more_than_015": 470,
+            "blade_center_checks": 2401,
+            "hanging_poses": 343,
+            "max_gap": 1.85330080986023,
+            "min_gap": -0.593413829803467,
+            "ray_hits": 2401
+          }
+        },
+        {
+          "baseline": {
+            "ahead_more_than_015": 59,
+            "behind_more_than_015": 444,
+            "blade_center_checks": 2450,
+            "hanging_poses": 350,
+            "max_gap": 0.533443689346313,
+            "min_gap": -0.55225396156311,
+            "ray_hits": 2450
+          },
+          "fixture": "expand",
+          "oblique": {
+            "ahead_more_than_015": 69,
+            "behind_more_than_015": 459,
+            "blade_center_checks": 2450,
+            "hanging_poses": 350,
+            "max_gap": 0.581545114517212,
+            "min_gap": -0.522258281707764,
+            "ray_hits": 2450
+          }
+        },
+        {
+          "baseline": {
+            "ahead_more_than_015": 69,
+            "behind_more_than_015": 334,
+            "blade_center_checks": 2471,
+            "hanging_poses": 353,
+            "max_gap": 0.533443689346313,
+            "min_gap": -0.453049898147583,
+            "ray_hits": 2471
+          },
+          "fixture": "contract",
+          "oblique": {
+            "ahead_more_than_015": 82,
+            "behind_more_than_015": 412,
+            "blade_center_checks": 2471,
+            "hanging_poses": 353,
+            "max_gap": 0.581545114517212,
+            "min_gap": -0.522258281707764,
+            "ray_hits": 2471
+          }
+        }
+      ],
+      "scope": "Mean actual transformed source vertices for seven blades per hanging spray; horizontal rays to actual source cliff triangles. Excludes horizontal rim sprays, continuous leaf geometry, visibility, intersections and arbitrary layouts. Gap is signed distance along spray outward axis; threshold .15 is diagnostic, not acceptance."
+    },
+    "api_reference": "https://docs.godotengine.org/en/stable/classes/class_geometry3d.html",
+    "limitations": "Centroids are mean duplicated render entries; proximity to any local triangle is not whole-leaf contact or wall ownership. Actual-plane test verifies closest-center selection in its finite fixture only. Render response is slower in separate samples; query cost not isolated."
   }
 }

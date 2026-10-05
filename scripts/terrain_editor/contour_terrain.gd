@@ -334,7 +334,10 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
 
 static func _rock_relief(point:Vector3)->float:
-	var p:=point/Vector3(2.2,1.8,2.2)
+	# Oblique world coordinates stagger joints through elevation instead of
+	# forming horizontal courses. The material uses the same linear frame.
+	var frame:=Vector3(point.x+point.y*.16,point.y+point.x*.28+point.z*.19,point.z-point.y*.12)
+	var p:=frame/Vector3(2.2,1.8,2.2)
 	var cell:=p.floor()
 	var f:=p-cell
 	var nearest:=10.0

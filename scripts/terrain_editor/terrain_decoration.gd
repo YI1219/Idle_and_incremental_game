@@ -7,6 +7,7 @@ const Models=preload("res://scripts/terrain_editor/terrain_models.gd")
 var model_library:=Models.new()
 var assets:Dictionary={}
 var contours:RefCounted
+var _vine_center:=Vector3.ZERO
 static func random_at(cell:Vector2i,seed_value:int,salt:int)->float:
 	var value:int=(cell.x*374761393+cell.y*668265263+seed_value*69069+salt*144269)&0x7fffffff
 	value=((value^(value>>13))*1274126177)&0x7fffffff
@@ -14,7 +15,12 @@ static func random_at(cell:Vector2i,seed_value:int,salt:int)->float:
 func load_assets()->void:
 	model_library.load_assets()
 	assets=model_library.assets
+	var vertices:PackedVector3Array=assets.vine[0].mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	_vine_center=Vector3.ZERO
+	for point:Vector3 in vertices:_vine_center+=point
+	_vine_center/=vertices.size()
 func placements(data:Data,chunk:Vector2i)->Dictionary:
+	if assets.is_empty():load_assets()
 	var field=contours
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
@@ -88,7 +94,8 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					var anchor:Vector3=field._profile_point(p,y,out,profile)+Vector3(bend.x+tangent.x,0,bend.y+tangent.y)
 					var turn:=atan2(out.x,out.y)+(random_at(cell,data.seed,150+leaf)-.5)*.30
 					var width:=1.0-leaf*.055
-					result.vine.append(_transform(anchor,turn,Vector3(.95*width,.65,.90)))
+					var draped:=_drape_vine(field,_transform(anchor,turn,Vector3(.95*width,.65,.90)),out)
+					if not draped.is_empty():result.vine.append(draped.pose)
 
 	for level:int in field.water_regions:
 		for loop:PackedVector2Array in field.water_regions[level]:
@@ -130,6 +137,42 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	_path(result,field,chunk)
 	_fences(result,field,chunk)
 	return result
+func _drape_vine(field,pose:Transform3D,out:Vector2)->Dictionary:
+	# The profile is continuous, but the visible cliff is its sampled triangle
+	# mesh. Fit the spray center and tangent frame to that actual surface.
+	var center:Vector3=pose*_vine_center
+	var outward:=Vector3(out.x,0,out.y)
+	var origin:=center+outward*2
+	var candidates:Dictionary={}
+	for z in range(floori((center.z-2)/8),floori((center.z+2)/8)+1):
+		for x in range(floori((center.x-2)/8),floori((center.x+2)/8)+1):
+			for i:int in field.triangle_chunks.get(Vector2i(x,z),{}).get("cliff",[]):candidates[i]=true
+	var vertices:PackedVector3Array=field.surfaces.cliff.vertices
+	var nearest:=INF
+	var contact:=Vector3.ZERO
+	var normal:=Vector3.ZERO
+	for i:int in candidates:
+		var a:=vertices[i];var b:=vertices[i+1];var c:=vertices[i+2]
+		if center.y<minf(a.y,minf(b.y,c.y)) or center.y>maxf(a.y,maxf(b.y,c.y)):continue
+		var face_normal:=-(b-a).cross(c-a).normalized()
+		if face_normal.dot(outward)<.25:continue
+		var hit=Geometry3D.ray_intersects_triangle(origin,-outward,a,b,c)
+		if hit==null:continue
+		# Rank from the intended center, not the outward ray origin: a nearby
+		# foreground wall must not steal a spray from its own cliff. Bound the
+		# correction so missing local support cannot relocate it across a gap.
+		var correction:float=center.distance_to(hit)
+		if correction<=.60 and correction<nearest:nearest=correction;contact=hit;normal=face_normal
+	if nearest==INF:return {}
+	var right:=pose.basis.x.normalized()
+	right=(right-normal*right.dot(normal)).normalized()
+	var up:=normal.cross(right).normalized()
+	if up.y<.2:
+		up=(Vector3.UP-normal*normal.y).normalized()
+		right=up.cross(normal).normalized()
+	var basis:=Basis(right,up,normal).scaled_local(pose.basis.get_scale())
+	# A small lift lets the solid blades overlap the rock without hovering.
+	return {"pose":Transform3D(basis,contact+normal*.025-basis*_vine_center)}
 func _stable(field,p:Vector2,h:float,radius:float)->bool:
 	for side in Geometry.SIDES:
 		var sample:Dictionary=field.surface_at(p+Vector2(side)*radius)
