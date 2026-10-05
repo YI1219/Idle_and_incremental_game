@@ -25,6 +25,8 @@ func _initialize()->void:
 	stability=args.size()>2 and args[2]=="stability"
 	call_deferred("setup")
 func setup()->void:
+	# A measurement must reach its deadline instead of accepting a test-window close.
+	set_auto_accept_quit(false)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if stability else DisplayServer.VSYNC_DISABLED)
 	Engine.max_fps=60 if stability else 0
 	editor=load("res://scenes/terrain_editor.tscn").instantiate()

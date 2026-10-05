@@ -14,7 +14,7 @@ Audited the primary project at a0f2c30 and corresponding corrected engine eviden
 | Three substantially different edited engine layouts | refreshed edited_layout_0/1/2.png and saved authoritative layout JSON; captures metadata counts 19/26/76 changed cells | Passed |
 | Reference-consistent demonstration | Inspected sunny floating grassy terraces, faceted rock edges, blue ponds/spill, vegetation and embedded rocks across all three captures | Passed as demo; final art polish/user acceptance separate |
 | 4096 cells, 1280×720 low quality, 3 real-time runs ≥60 s | benchmark_1/2/3.json: median 5.564/5.452/5.820 ms; p95 16.685/16.302/16.708 ms; draw calls, memory, edit latency and full samples recorded | Passed on M4 Pro; target laptops unmeasured |
-| 30-minute stability with edits, undo/redo and horizontal camera movement | Live process PID 72190 / session 8369; corrected harness and checkpoints; final JSON not yet emitted | Pending |
+| 30-minute stability with edits, undo/redo and horizontal camera movement | Protected rerun / session 74060; earlier terminal attempt ended before deadline without final JSON and is excluded; final JSON not yet emitted | Pending |
 | Existing assets/gameplay and unrelated local work preserved | Branch diff excludes original assets and gameplay production sources; unchanged local file SHA-256 hashes | Passed |
 | Fresh verification and independent review | All 26 functional scripts clean in worktree and primary; independent review’s two important issues reproduced then fixed; no second review required | Passed |
 
