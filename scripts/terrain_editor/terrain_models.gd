@@ -228,7 +228,9 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 						var blend:=.60 if kind=="tree_leaf" else .68
 						if kind=="vine":
 							builder.triangle(_vine_leaf(face[0],box),_vine_leaf(face[1],box),_vine_leaf(face[2],box),color)
-						else:builder.triangle(_round_leaf(face[0],box,blend),_round_leaf(face[1],box,blend),_round_leaf(face[2],box,blend),color)
+						else:
+							var irregularity:=.13 if kind=="tree_leaf" else .055
+							builder.triangle(_round_leaf(face[0],box,blend,irregularity),_round_leaf(face[1],box,blend,irregularity),_round_leaf(face[2],box,blend,irregularity),color)
 				else:builder.triangle(a,b,c,color)
 
 			mesh=builder.mesh()
@@ -265,14 +267,17 @@ func _lift_branches(point:Vector3)->Vector3:
 	point.y+=lift*smoothstep(.18,.35,point.y)
 	return point
 
-func _round_leaf(point:Vector3,box:AABB,blend:float=.68)->Vector3:
+func _round_leaf(point:Vector3,box:AABB,blend:float=.68,irregularity:float=.055)->Vector3:
 	# Derive a rounder faceted lobe from the existing CC0 leaf mesh. Source files
 	# stay intact; one subdivision replaces its broad flat faces with smaller facets.
 	var center:=box.position+box.size*.5
 	var radius:=box.size*.5
 	var unit:=(point-center)/radius.max(Vector3.ONE*.0001)
 	var direction:=unit.normalized()
-	var uneven:=1.0+.055*sin(direction.x*7.1+direction.y*4.3)*sin(direction.z*6.7-direction.y*3.1)
+	# Keep the lower branch-covering region stable while the upper crown
+	# gains irregular planar shoulders. Default shrub/vine shape is unchanged.
+	var strength:=lerpf(.055,irregularity,smoothstep(-.20,.35,direction.y))
+	var uneven:=1.0+strength*sin(direction.x*7.1+direction.y*4.3)*sin(direction.z*6.7-direction.y*3.1)
 	return point.lerp(center+direction*radius*uneven,blend)
 
 func _vine_leaf(point:Vector3,box:AABB)->Vector3:
