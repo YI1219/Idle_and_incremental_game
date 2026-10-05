@@ -1,6 +1,6 @@
 # Terrain workshop verification — 2026-10-05
 
-Function, visuals and performance are separate acceptance dimensions. This report is current stage evidence; the fresh 30-minute stability session remains pending.
+Function, visuals and performance are separate acceptance dimensions. This report is current stage evidence; all required development-device checks are complete.
 
 ## Functional evidence
 
@@ -16,7 +16,7 @@ Observed: the same module rules generate layered grass, water banks, waterfalls,
 
 ## Development-device benchmark
 
-Apple M4 Pro, Godot 4.7.2, Metal/Forward+, 1280×720, low quality with shadows disabled and instanced CC0 nature. Exactly 4096 terrain cells. Five-second warmup, three separate real-time 60-second runs with vsync disabled; no fixed-FPS or headless-render substitutes. The benchmark includes periodic edits/undo and records complete frame-time samples.
+Apple M4 Pro, Godot 4.7.2, Metal/Forward+, 1280×720, low quality with shadows disabled and instanced CC0 nature. Exactly 4096 terrain cells. Five-second warmup, three separate real-time 60-second runs with vsync disabled; no fixed-FPS or headless-render substitutes. The benchmark includes periodic edits/undo and records complete frame-time samples. Edit response is measured from data mutation to completion of dirty chunk rebuilds; it includes frame scheduling and mesh population, but not physical display latency.
 
 | Run | Seconds | Median ms | p95 ms | Edit response p95 ms | Draw calls | End static memory MiB |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -26,6 +26,12 @@ Apple M4 Pro, Godot 4.7.2, Metal/Forward+, 1280×720, low quality with shadows d
 
 All three final runs meet median ≤16.7 ms and p95 ≤25 ms. Godot static allocator and video-memory monitors are the recorded memory methods; they are not total process RSS. Earlier runs were superseded after the final review fixes. This development device does not prove Windows thin-laptop or MacBook Air performance, or long-idle power acceptance.
 
-## Pending stability and delivery
+## Completed stability and delivery
 
-The protected 1800-second real-time session is active with FPS capped to 60, periodic edit/undo/redo cycles and horizontal camera movement. The earlier attempt exited cleanly before the deadline without a final result and is excluded from acceptance (stability_interrupted.txt); the cause was not established. The harness now ignores ordinary window-close requests so only a completed duration produces the required evidence. Its result must establish no runtime errors/crash, no accumulating scene nodes, bounded memory and restored terrain data before completion is claimed. Final independent review is complete; both important findings are fixed with failing-then-passing regressions. The corrected demo has been delivered to the primary checkout, preserving all unrelated local file contents; actual PNG evidence and the original user reference were copied there. Source models and legacy economy code remain intact.
+The protected real-time run completed 1800.004 seconds with 4096 cells, a 60 FPS cap, horizontal camera movement and 359 periodic edit/undo/redo cycles. It recorded 107,473 frame samples. Median frame time was 16.686 ms; p95 was 18.429 ms; edit-response p95 was 17.944 ms. The layout returned to its initial data and the dirty queue was empty. Scene nodes began and ended at 604; the transient peak was 605. No runtime errors or crash were logged.
+
+Godot static allocator usage was 60.39 MiB after warmup, peaked at 62.50 MiB during measurement and was 64.94 MiB while constructing the result. The last value includes the additional Array copy of 107,473 frame samples made by finish(); bounded stroke history and continuous sample recording are included throughout. This is a 30-minute observation with no accumulating scene nodes, not a claim of zero future memory growth or long-idle power acceptance. Video memory at the end was 226.84 MiB.
+
+The earlier attempt exited cleanly before its deadline without a final result and is excluded (stability_interrupted.txt); its cause was not established. Ordinary window-close requests are now ignored by the measurement harness. The completed result and log are stability_30min.json and stability_completed.txt.
+
+Final independent review is complete; both important findings were corrected using failing-then-passing regressions. The corrected demo is delivered to the primary checkout, preserving unrelated local file contents and original asset/gameplay sources. Actual engine PNGs and the user reference are also preserved there. Target-laptop performance, subjective final art acceptance and long-idle power remain separate future measurements.

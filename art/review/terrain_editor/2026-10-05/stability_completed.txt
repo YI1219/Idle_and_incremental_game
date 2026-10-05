@@ -1,0 +1,37 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-10-05 16:31:06.574 godot[3331:66343540] +[IMKClient subclass]: chose IMKClient_Modern
+READY stability_30min cells=4096 pid=3331 duration=1800.0
+2026-10-05 16:31:07.161 godot[3331:66343540] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+CHECKPOINT stability_30min seconds=0.0 memory_mib=60.4 nodes=604.0
+CHECKPOINT stability_30min seconds=60.0 memory_mib=60.5 nodes=604.0
+CHECKPOINT stability_30min seconds=120.0 memory_mib=60.7 nodes=604.0
+CHECKPOINT stability_30min seconds=180.0 memory_mib=60.8 nodes=604.0
+CHECKPOINT stability_30min seconds=240.0 memory_mib=60.9 nodes=604.0
+CHECKPOINT stability_30min seconds=300.0 memory_mib=61.0 nodes=604.0
+CHECKPOINT stability_30min seconds=360.0 memory_mib=61.2 nodes=604.0
+CHECKPOINT stability_30min seconds=420.1 memory_mib=61.3 nodes=604.0
+CHECKPOINT stability_30min seconds=480.1 memory_mib=61.5 nodes=604.0
+CHECKPOINT stability_30min seconds=540.1 memory_mib=61.6 nodes=604.0
+CHECKPOINT stability_30min seconds=600.1 memory_mib=61.7 nodes=604.0
+CHECKPOINT stability_30min seconds=660.1 memory_mib=61.7 nodes=604.0
+CHECKPOINT stability_30min seconds=720.1 memory_mib=61.9 nodes=604.0
+CHECKPOINT stability_30min seconds=780.1 memory_mib=61.9 nodes=604.0
+CHECKPOINT stability_30min seconds=840.1 memory_mib=61.9 nodes=604.0
+CHECKPOINT stability_30min seconds=900.1 memory_mib=61.9 nodes=604.0
+CHECKPOINT stability_30min seconds=960.1 memory_mib=61.9 nodes=604.0
+CHECKPOINT stability_30min seconds=1020.1 memory_mib=61.9 nodes=604.0
+CHECKPOINT stability_30min seconds=1080.1 memory_mib=62.1 nodes=604.0
+CHECKPOINT stability_30min seconds=1140.2 memory_mib=62.1 nodes=604.0
+CHECKPOINT stability_30min seconds=1200.2 memory_mib=62.1 nodes=604.0
+CHECKPOINT stability_30min seconds=1260.2 memory_mib=62.1 nodes=604.0
+CHECKPOINT stability_30min seconds=1320.2 memory_mib=62.1 nodes=604.0
+CHECKPOINT stability_30min seconds=1380.2 memory_mib=62.1 nodes=604.0
+CHECKPOINT stability_30min seconds=1440.2 memory_mib=62.1 nodes=604.0
+CHECKPOINT stability_30min seconds=1500.2 memory_mib=62.1 nodes=604.0
+CHECKPOINT stability_30min seconds=1560.2 memory_mib=62.5 nodes=604.0
+CHECKPOINT stability_30min seconds=1620.2 memory_mib=62.5 nodes=604.0
+CHECKPOINT stability_30min seconds=1680.3 memory_mib=62.5 nodes=604.0
+CHECKPOINT stability_30min seconds=1740.3 memory_mib=62.5 nodes=604.0
+RESULT stability_30min median_ms=16.686 p95_ms=18.429 edit_p95_ms=17.944 nodes=604.0 restored=true
