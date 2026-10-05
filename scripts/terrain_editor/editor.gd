@@ -51,7 +51,11 @@ func _setup_environment()->void:
 	var sky:=Sky.new()
 	var sky_material:=ShaderMaterial.new()
 	sky_material.shader=load("res://shaders/terrain_editor/sky.gdshader")
-	sky_material.set_shader_parameter("cloud_backdrop",load("res://assets/terrain_editor/cloud_backdrop_v01.png"))
+	# Derived mipmaps soften only the background; retain the original bitmap/import.
+	var backdrop:Texture2D=load("res://assets/terrain_editor/cloud_backdrop_v01.png")
+	var backdrop_image:=backdrop.get_image()
+	if backdrop_image.generate_mipmaps()==OK:backdrop=ImageTexture.create_from_image(backdrop_image)
+	sky_material.set_shader_parameter("cloud_backdrop",backdrop)
 	sky.sky_material=sky_material
 	sky.process_mode=Sky.PROCESS_MODE_QUALITY
 	env.environment.sky=sky

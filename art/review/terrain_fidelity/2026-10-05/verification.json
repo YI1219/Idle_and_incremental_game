@@ -1,42 +1,7 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh final 17-part irregular retained CC0 canopy assembly, source-bound normalization, local three-axis tilt and height-varied tint; actual full/detail/four-edit Metal captures refreshed.",
+  "scope": "Fresh sky-only runtime mipmap/filter/contrast treatment, neutral lighting preserved; actual full/detail/four-edit Metal captures regenerated.",
   "suite": [
-    {
-      "test": "terrain_contour_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 1025
-    },
-    {
-      "test": "terrain_incremental_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 20
-    },
-    {
-      "test": "terrain_editor_data_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 301
-    },
-    {
-      "test": "terrain_editor_decoration_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 118
-    },
-    {
-      "test": "terrain_editor_render_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 339
-    },
     {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
@@ -50,36 +15,6 @@
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
       "checks": 8
-    },
-    {
-      "test": "terrain_waterfall_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 30
-    },
-    {
-      "test": "terrain_shoreline_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 9
-    },
-    {
-      "test": "terrain_model_bounds_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 9
-    },
-    {
-      "test": "terrain_narrow_cliff_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "slices": 794,
-      "failures": 0,
-      "minimum_gap": 0.0306
     }
   ],
   "regression": {
@@ -87,7 +22,7 @@
     "after": "30/30 passed; zero blocked reference samples after wet-mouth shoulder limits",
     "retained": "Wide-outlet physical folds, mixed-height receivers, narrow strip clearance and incremental reconstruction checks remain passing",
     "limitations": "Finite reference sampling, not exhaustive arbitrary-layout or entire-surface clearance coverage.",
-    "revision": "afea19c cliff-clearance regression retained unchanged and freshly passing this round"
+    "revision": "afea19c regression, last freshly rerun at800e55c; cliff/waterfall geometry unchanged in the sky-only round"
   },
   "render_verification": {
     "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
@@ -105,18 +40,105 @@
     "unrelated_local_files_unchanged": 8,
     "kenney_source_glbs_unchanged": 11,
     "refined_cottage_matches_HEAD": true,
-    "cottage_glbs_unchanged": 2
+    "cottage_glbs_unchanged": 2,
+    "sky_pngs_unchanged": 2,
+    "sky_import_matches_HEAD": true
   },
-  "review": "Independent read-only reviewer inspected source, actual full/detail/four-edit captures and the temporary extremal-vertex probe. No Critical/Important issue found. Unequal masses and tilted rim clusters improve on flat repeated tiers, with no visible detached clusters in inspected captures. Bounds normalization/centering, positive scales/winding and regenerated merge bounds/normals are consistent. Minor gaps remain: dense rounded lobes, more hidden branching on the large left tree and nearly spherical small crowns. Reviewer did not independently repeat final tests/benchmark or prove all branch segments/cluster connections. Human visual acceptance remains pending.",
+  "review": "Independent read-only reviewer inspected source and actual full/detail captures. No Critical/Important issue found: derived image mipmaps preserve the imported fallback, shader material retains the runtime texture, five taps sum to one and edge sampling clamps; cubemap lighting remains unchanged. Softer clouds and paler cyan improve reference coherence. Minor gaps: washed lower-left cloud detail and a flatter upper sky than the reference gradient. Reviewer did not independently run tests or judge startup cost, alternate resolutions, target-device rendering or performance. This clears the bounded sky pass; human visual acceptance of the scene remains pending.",
   "previous_revision_checks": {
-    "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence."
+    "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
+    "800e55c": {
+      "suite": [
+        {
+          "test": "terrain_contour_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 1025
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_data_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 301
+        },
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 118
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 339
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 8
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 30
+        },
+        {
+          "test": "terrain_shoreline_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 9
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 9
+        },
+        {
+          "test": "terrain_narrow_cliff_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "slices": 794,
+          "failures": 0,
+          "minimum_gap": 0.0306
+        }
+      ],
+      "scope": "Full terrain/canopy eleven-script verification before the sky-only treatment; code for those modules unchanged this round."
+    }
   },
   "limitations": [
     "Deep cliff scallops, pointed lower projections and elongated patches remain reference differences; finite curtain rays do not prove arbitrary-layout clearance.",
     "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
     "Temporal shimmer and cross-platform rendering unverified.",
     "M4 Pro short samples do not prove target-laptop or long-idle performance.",
-    "Finite canopy extremal-vertex coverage does not prove every branch segment; large crowns hide more branching than the reference and small crowns remain nearly spherical."
+    "Finite canopy extremal-vertex coverage does not prove every branch segment; large crowns hide more branching than the reference and small crowns remain nearly spherical.",
+    "Sky softness is verified at the captured resolution only; startup mip generation and alternate-resolution appearance remain unmeasured. Lower-left clouds wash out and upper sky is flatter than the reference."
   ],
   "canopy_contact": {
     "source": "temporary actual-mesh ray-parity probe using unmerged retained source parts and their final transforms",
@@ -145,6 +167,21 @@
         -0.047368
       ]
     ],
-    "limitations": "Finite extremal-vertex coverage; not every branch segment or all views."
+    "limitations": "Finite extremal-vertex coverage; not every branch segment or all views.",
+    "revision": "800e55c; crown geometry unchanged this round"
+  },
+  "sky": {
+    "sampling": "Runtime mipmaps from retained bitmap; five samples at LOD2.5 with UV spread.0020",
+    "treatment": "20% low-contrast cloud tint and paler cyan clear-sky blend",
+    "unchanged": "Original source/runtime PNGs and import metadata; AT_CUBEMAP_PASS gradient, sunlight/environment, camera, terrain, model assembly",
+    "opaque_pixel_samples_equal": [
+      "roof",
+      "grass",
+      "crown",
+      "cliff",
+      "fence",
+      "wall"
+    ],
+    "limitation": "Six static pixel samples plus unchanged source settings support lighting separation, not whole-image identity or exhaustive platform behavior."
   }
 }
