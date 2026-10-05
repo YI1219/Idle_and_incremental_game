@@ -13,23 +13,23 @@ func load_assets()->void:
 	var tree:Array=[]
 	var wood_shape:=Transform3D(Basis.IDENTITY.scaled(Vector3(1.24,1.07,1.24)),Vector3.ZERO)
 	for part:Dictionary in wood:tree.append({"mesh":part.mesh,"pose":wood_shape*part.pose})
-	# Unequal overlapping core masses, then smaller edge clusters. Normalize
-	# source bounds and keep the low skirt shallow so the existing forks show.
+	# A raised central crown and unequal side masses expose the retained forks.
+	# Sparse edge clusters interrupt the outline without a uniform lobe ring.
 	var crown:Array=[
-		[Vector3(-.29,1.01,.03),Vector3(.77,.48,.77)],
-		[Vector3(.28,1.10,.02),Vector3(.81,.50,.78)],
-		[Vector3(-.10,1.22,-.08),Vector3(.68,.64,.70)],
-		[Vector3(-.22,1.10,-.35),Vector3(.62,.60,.63)],
-		[Vector3(.27,1.04,.28),Vector3(.58,.44,.60)],
-		[Vector3(-.21,.99,.24),Vector3(.56,.43,.56)],
-		[Vector3(.27,1.21,-.25),Vector3(.48,.48,.52)],
+		[Vector3(-.30,1.08,.02),Vector3(.73,.61,.72)],
+		[Vector3(.31,1.08,.04),Vector3(.73,.66,.72)],
+		[Vector3(-.08,1.30,-.08),Vector3(.66,.65,.65)],
+		[Vector3(-.08,1.15,-.30),Vector3(.58,.64,.58)],
+		[Vector3(.27,1.13,.26),Vector3(.54,.54,.58)],
+		[Vector3(-.22,1.06,.23),Vector3(.55,.55,.56)],
+		[Vector3(.23,1.25,-.23),Vector3(.50,.48,.52)],
+		[Vector3(-.59,1.06,.05),Vector3(.38,.39,.40)],
+		[Vector3(.57,1.03,.19),Vector3(.42,.40,.41)],
+		[Vector3(-.36,1.22,-.38),Vector3(.35,.43,.36)],
+		[Vector3(.43,1.19,-.30),Vector3(.37,.40,.38)],
+		[Vector3(-.15,1.02,.50),Vector3(.40,.32,.39)],
+		[Vector3(.07,1.43,.12),Vector3(.33,.31,.34)],
 	]
-	for i in 10:
-		var angle:=i*2.39996
-		var radius:=.54+.07*sin(i*3.7)
-		var center:=Vector3(cos(angle)*radius,1.08+.12*sin(i*2.1),sin(angle)*radius*.86)
-		var size:=Vector3(.42+.07*sin(i*1.7),.35+.04*cos(i*2.3),.45+.07*cos(i*1.1))
-		crown.append([center,size])
 	for i in crown.size():
 		var center:Vector3=crown[i][0]
 		var size:Vector3=crown[i][1]
@@ -225,7 +225,7 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 					var ca:=(c+a)*.5
 					var faces:=[[a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]]
 					for face in faces:
-						var blend:=.26 if kind=="tree_leaf" else .68
+						var blend:=.60 if kind=="tree_leaf" else .68
 						if kind=="vine":
 							builder.triangle(_vine_leaf(face[0],box),_vine_leaf(face[1],box),_vine_leaf(face[2],box),color)
 						else:builder.triangle(_round_leaf(face[0],box,blend),_round_leaf(face[1],box,blend),_round_leaf(face[2],box,blend),color)
