@@ -213,7 +213,15 @@ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
 				if record.is_empty():continue
 				var height:float=record.water*.5 if record.water>=0 else record.height
 				top=minf(top,height)
-	var profile:={"top":top,"bottom":bottom,"base":outside.is_empty(),"inset":_inset_limit(p,normal,top) if outside.is_empty() else 0.0}
+	var water:int=inside.get("water",-1)
+	# Mouth-side rock vertices may belong to dry shoreline cells. Include the
+	# immediate wet neighbor along the contour so a shoulder cannot enter a spill.
+	if water<0:
+		var tangent:=Vector2(-normal.y,normal.x)
+		for side in [-1.0,1.0]:
+			var neighbor:=surface_at(p-normal*.25+tangent*side*.8)
+			if neighbor.get("water",-1)>=0 and neighbor.height<=top+.05:water=maxi(water,neighbor.water)
+	var profile:={"top":top,"bottom":bottom,"base":outside.is_empty(),"inset":_inset_limit(p,normal,top) if outside.is_empty() else 0.0,"water":water}
 	_profiles[key]=profile
 	return profile
 
@@ -227,7 +235,16 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 		var key:=Vector3(p.x,y,p.y)
 		if not _rock_relief_cache.has(key):_rock_relief_cache[key]=_rock_relief(key)
 		rounded=_rock_relief_cache[key]
-	return _rock_point(p,y,f,profile.base,minf(1.0,depth/2.2),normal,profile.inset,rounded)
+	var point:=_rock_point(p,y,f,profile.base,minf(1.0,depth/2.2),normal,profile.inset,rounded)
+	if profile.water>=0 and point.y<=profile.water*.5+.045:
+		# Exposed wet walls sit behind the shared stream envelope. Limit only
+		# protruding shoulders; inland and dry cliff masses keep their full relief.
+		var water_y:float=profile.water*.5+.045
+		var stream:=_fall_point(p,normal,water_y,point.y)
+		var clearance:float=.50*clampf((water_y-point.y)*2.0,0.0,1.0)
+		var excess:float=(Vector2(point.x-stream.x,point.z-stream.z)).dot(normal)+clearance
+		if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess
+	return point
 
 func _cliffs(loop:PackedVector2Array,top:float,bottom:float)->void:
 	for i in loop.size():
@@ -245,13 +262,26 @@ func _cliffs(loop:PackedVector2Array,top:float,bottom:float)->void:
 		var normal_b:=Vector2(after.y-a.y,a.x-after.x).normalized()
 		var profile_a:=_cliff_profile(a,normal_a)
 		var profile_b:=_cliff_profile(b,normal_b)
-		var p:=_profile_point(a,top,normal_a,profile_a)
-		var q:=_profile_point(b,top,normal_b,profile_b)
-		var r:=_profile_point(b,bottom,normal_b,profile_b)
-		var s:=_profile_point(a,bottom,normal_a,profile_a)
-		# The supporting mass stays joined and un-ribbed. Its material supplies
-		# broad anchored facets; occasional embedded models supply silhouette relief.
-		surfaces.cliff.quad(p,s,r,q,Color("a8aba8"))
+		# Keep the authoritative cap contour, but resolve rock shoulders within
+		# each stable span. Narrow necks retain their proven unsplit profile.
+		var broad:bool=(not profile_a.base or profile_a.inset>.8) and (not profile_b.base or profile_b.inset>.8)
+		var columns:=maxi(1,ceili(a.distance_to(b)/.65)) if broad else 1
+		var left:=a
+		var left_normal:=normal_a
+		var left_profile:=profile_a
+		for column in columns:
+			var weight:float=float(column+1)/columns
+			var right:=a.lerp(b,weight)
+			var right_normal:=normal_a.lerp(normal_b,weight).normalized()
+			var right_profile:Dictionary=profile_b if column==columns-1 else _cliff_profile(right,right_normal)
+			var p:=_profile_point(left,top,left_normal,left_profile)
+			var q:=_profile_point(right,top,right_normal,right_profile)
+			var r:=_profile_point(right,bottom,right_normal,right_profile)
+			var s:=_profile_point(left,bottom,left_normal,left_profile)
+			surfaces.cliff.quad(p,s,r,q,Color("a8aba8"))
+			left=right
+			left_normal=right_normal
+			left_profile=right_profile
 
 func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 	# Keep opposing walls apart on single cells and narrow editable necks.
@@ -271,7 +301,7 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	# Rounded rock shoulders share a world-anchored field with the material.
 	# Preserve the proven narrow-wall profile and fade relief at true boundaries.
 	if is_nan(rounded_relief):rounded_relief=_rock_relief(Vector3(p.x,y,p.y)) if width_weight>0.0 else 0.0
-	var ledge:=rounded_relief*sin(PI*f)*relief*width_weight
+	var ledge:=rounded_relief*pow(maxf(0.0,sin(PI*f)),.65)*relief*width_weight
 	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
 
 static func _rock_relief(point:Vector3)->float:
@@ -284,8 +314,12 @@ static func _rock_relief(point:Vector3)->float:
 			for x in range(-1,2):
 				var offset:=Vector3(x,y,z)
 				var delta:=offset+_rock_hash(cell+offset)*.72+Vector3.ONE*.14-f
-				nearest=minf(nearest,delta.length_squared())
-	return .72*(1.0-smoothstep(.16,.80,sqrt(nearest)))-.10
+				var axis:Vector3=delta.abs()
+				# A clipped octahedron gives each shoulder planar faces rather
+				# than a smooth mound. Minimum distance keeps site joins continuous.
+				var distance:=maxf(maxf(axis.x,maxf(axis.y,axis.z)),(axis.x+axis.y+axis.z)*.57)
+				nearest=minf(nearest,distance)
+	return 1.02*clampf((.76-nearest)/.55,0.0,1.0)-.16
 
 static func _rock_hash(point:Vector3)->Vector3:
 	var q:=point*Vector3(.123,.117,.139)

@@ -92,6 +92,32 @@ func run()->void:
 		for i in range(0,colors.size(),3):
 			if absf(colors[i].a-colors[i+1].a)>.3 or absf(colors[i].a-colors[i+2].a)>.3:gradient=true
 	check(gradient,"published chunk triangles preserve the splash opacity gradient")
+	# Trace through actual curtain triangles toward the island. A rock in front
+	# of a curtain interrupts the stream even when both meshes are individually valid.
+	var reference_data:=Data.new()
+	reference_data.make_preset(0)
+	var reference:=Contours.new()
+	reference.refresh(reference_data)
+	var cliffs:PackedVector3Array=reference.surfaces.cliff.vertices
+	var falls:PackedVector3Array=reference.surfaces.waterfall.vertices
+	var blocked:=0
+	var samples:=0
+	for i in range(0,falls.size(),3):
+		var point:Vector3=(falls[i]+falls[i+1]+falls[i+2])/3.0
+		if point.y< -4.4:continue
+		var normal:Vector3=reference.surfaces.waterfall.normals[i]
+		normal=Vector3(normal.x,0,normal.z).normalized()
+		if normal.length_squared()<.5:continue
+		var origin:=point+normal*3.0
+		samples+=1
+		for j in range(0,cliffs.size(),3):
+			var a:=cliffs[j];var b:=cliffs[j+1];var c:=cliffs[j+2]
+			if point.y<minf(a.y,minf(b.y,c.y)) or point.y>maxf(a.y,maxf(b.y,c.y)):continue
+			var hit=Geometry3D.ray_intersects_triangle(origin,-normal,a,b,c)
+			if hit!=null and origin.distance_to(hit)<2.99:
+				blocked+=1
+				break
+	check(samples>150 and blocked==0,"Reference waterfall clears actual cliff triangles (%d blocked of %d samples)"%[blocked,samples])
 
 	print("TERRAIN WATERFALL: %d/%d passed"%[checks-failures,checks])
 	quit(1 if failures else 0)

@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh final physical waterfall folds, translucent directional flow and preserved opaque pond shading. Actual full/detail/four-edit Metal captures regenerated.",
+  "scope": "Fresh final broad-span cliff subdivision, clipped-octahedron shoulders and wet-wall stream clearance; actual full/detail/four-edit Metal renders regenerated.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
@@ -56,7 +56,7 @@
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 29
+      "checks": 30
     },
     {
       "test": "terrain_shoreline_test.gd",
@@ -83,10 +83,10 @@
     }
   ],
   "regression": {
-    "before": "27/29 passed; wide outlet was an under-subdivided bowed plane",
-    "after": "29/29 passed; lateral resolution and repeated physical folds verified",
-    "retained": "Mixed-height receivers, lowered/contracted landing terrain and splash gradient checks retain their original pass conditions",
-    "limitations": "Not exhaustive outlet-orientation, mixed-height normal or transparent-overlap coverage."
+    "before": "29/30 passed; six of 242 reference curtain triangle-center rays encountered cliff triangles in front of the falling water",
+    "after": "30/30 passed; zero blocked reference samples after wet-mouth shoulder limits",
+    "retained": "Wide-outlet physical folds, mixed-height receivers, narrow strip clearance and incremental reconstruction checks remain passing",
+    "limitations": "Finite reference sampling, not exhaustive arbitrary-layout or entire-surface clearance coverage."
   },
   "render_verification": {
     "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
@@ -103,13 +103,15 @@
   "preservation": {
     "unrelated_local_files_unchanged": 8,
     "kenney_source_glbs_unchanged": 11,
-    "refined_cottage_matches_HEAD": true
+    "refined_cottage_matches_HEAD": true,
+    "cottage_glbs_unchanged": 2
   },
-  "review": "Independent read-only reviewer found no Critical/Important issue in the bounded waterfall change. Shared-height fold interpolation, neighboring column endpoints, chunk normals, picking, pond math and downward flow were checked from source and captures. Vertical flow/translucency improves on opaque net baseline; rectangular outline and repeated foam remain gaps. Reviewer did not rerun Godot during benchmark reservation. Overall visual acceptance remains pending.",
+  "review": "Independent read-only reviewer inspected source and actual full/detail/four-edit captures. Initial Important issue (opaque cliff tongue through lower waterfall) was corrected and cleared in final review. Crest connection remains intact; no new Important issue found. Stronger clustered rock depth improves on the flatter baseline, but deep scallops, pointed lower projections and elongated patches remain reference gaps. Reviewer did not independently run final tests/benchmark; finite reference-ray coverage is not arbitrary-layout clearance proof. Human visual acceptance remains pending.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence."
   },
   "limitations": [
+    "Deep cliff scallops, pointed lower projections and elongated patches remain reference differences; finite curtain rays do not prove arbitrary-layout clearance.",
     "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
     "Temporal shimmer and cross-platform rendering unverified.",
     "M4 Pro short samples do not prove target-laptop or long-idle performance."

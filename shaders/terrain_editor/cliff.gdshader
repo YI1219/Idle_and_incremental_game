@@ -15,7 +15,8 @@ void fragment(){
 	for(int z=-1;z<=1;z++)for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
 		vec3 offset=vec3(float(x),float(y),float(z));
 		vec3 delta=offset+rock_hash(cell+offset)*.72+.14-f;
-		float d=dot(delta,delta);
+		vec3 axis=abs(delta);
+		float d=max(max(axis.x,max(axis.y,axis.z)),dot(axis,vec3(.57)));
 		if(d<nearest){nearest=d;selected=cell+offset;local=-delta;}
 	}
 	vec3 variation=rock_hash(selected+vec3(17.0));
