@@ -1,13 +1,13 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh cliff-material-only cooler shared palette and reduced normal perturbation. Five relevant scripts and actual final full/detail/four-edit Metal captures regenerated. Metric-gradient normal trials at .42/.22 were rejected for visual noise and removed. Terrain/data/picking, camera, other assemblies, lighting/sky and originals unchanged.",
+  "scope": "Fresh compact cliff geometry and terrain-following foliage: reduced broad-profile displacement and cellular relief, matching contour-vertex normals for edge decoration, deformed-profile vine anchors and minimum-height chain truncation. Twelve relevant scripts, final Metal full/detail/four-edit captures, finite actual-array/contact probe and standalone benchmark. Sources preserved; user visual acceptance pending.",
   "suite": [
     {
-      "test": "terrain_editor_render_test.gd",
+      "test": "terrain_contour_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 339
+      "checks": 1025
     },
     {
       "test": "terrain_incremental_test.gd",
@@ -17,11 +17,39 @@
       "checks": 20
     },
     {
+      "test": "terrain_editor_data_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 301
+    },
+    {
+      "test": "terrain_editor_decoration_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 80
+    },
+    {
+      "test": "terrain_editor_render_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 339
+    },
+    {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
       "checks": 22
+    },
+    {
+      "test": "camera_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 8
     },
     {
       "test": "terrain_waterfall_test.gd",
@@ -31,11 +59,36 @@
       "checks": 33
     },
     {
-      "test": "camera_test.gd",
+      "test": "terrain_shoreline_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 8
+      "checks": 9
+    },
+    {
+      "test": "terrain_model_bounds_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 9
+    },
+    {
+      "test": "terrain_narrow_cliff_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "slices": 794,
+      "failures": 0,
+      "minimum_gap": 0.0306
+    },
+    {
+      "test": "terrain_cliff_taper_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 2,
+      "sampled_foot_vertices": 30,
+      "furthest_x_plus_z": 5.5244
     }
   ],
   "regression": {
@@ -66,7 +119,7 @@
     "sky_import_matches_HEAD": true,
     "quaternius_source_files_unchanged": 24
   },
-  "review": "Independent read-only source/final-still review found no Critical/Important issue in the palette/reduced-perturbation diff. Added metric-gradient directions are absent. Bounded perturbation cannot cancel normalized base normal; world anchoring and view conversion remain unchanged. Cooler gray and restored calm large masses are a modest fidelity improvement, with no obvious new chunk seam or stretched strip in full/details/four edits. Deeper recesses, broad smooth patches and horizontal lower folds remain geometry gaps. Reviewer did not run Godot or benchmark. Temporal quality, target devices and user visual acceptance remain open.",
+  "review": "Independent read-only source/probe/still review found no Critical/Important issue in the compact body/profile-anchor changes and a modest improvement in calmer cliff shape and closer foliage attachment. Shared endpoints, width taper, relief cache and wet-mouth clearance remain; narrow coefficients preserved. No obvious new cap seam or blocked falls in the four edits. Broad upper walls remain smooth/simple, lower folds and bead-like vines remain. Both root placement variants are measured against the current cliff mesh, isolating placement support. Reviewer did not run Godot or benchmark; full leaf footprints, arbitrary layouts, temporal quality and user acceptance remain open. Final leaf-floor guard follow-up found no new Critical/Important issue and no obvious foliage loss or blocked waterfall in refreshed captures. Global-floor assertion covers root centers, not local contact or entire modules.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -574,10 +627,152 @@
         "limits": "Array comparison does not prove all material/transform/pixel identity. Grass remains thinner/darker and tall tufts wirier than target; four-point/edge placement is not exhaustive footprint support.",
         "revision": "6d12cfb: previous lawn resource/population evidence; grass source and placements unchanged, probe not rerun this material pass"
       }
+    },
+    "12ce140": {
+      "scope": "Fresh cliff-material-only cooler shared palette and reduced normal perturbation. Five relevant scripts and actual final full/detail/four-edit Metal captures regenerated. Metric-gradient normal trials at .42/.22 were rejected for visual noise and removed. Terrain/data/picking, camera, other assemblies, lighting/sky and originals unchanged.",
+      "suite": [
+        {
+          "test": "terrain_editor_render_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 339
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 22
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 33
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 8
+        }
+      ],
+      "review": "Independent read-only source/final-still review found no Critical/Important issue in the palette/reduced-perturbation diff. Added metric-gradient directions are absent. Bounded perturbation cannot cancel normalized base normal; world anchoring and view conversion remain unchanged. Cooler gray and restored calm large masses are a modest fidelity improvement, with no obvious new chunk seam or stretched strip in full/details/four edits. Deeper recesses, broad smooth patches and horizontal lower folds remain geometry gaps. Reviewer did not run Godot or benchmark. Temporal quality, target devices and user visual acceptance remain open.",
+      "cliff_material_refinement": {
+        "baseline": "6d12cfb",
+        "palette": "Shared cliff body/embedded-rock RGB range (.38,.41,.45) to(.50,.51,.50), replacing(.36,.38,.38) to(.48,.47,.41)",
+        "normal_treatment": "Existing world-site/oblique-face perturbation strength .50/.38 reduced to .24/.20; original normalized geometric direction with Y scale.30 retained. No added metric-gradient normal remains.",
+        "rejected_trial": "Added clipped-octahedron field-gradient normal blends .42 then .22 created noisy wedges/fractured appearance. Both were removed; final performance and captures belong to palette/reduced-perturbation only.",
+        "preservation": "Seven terrain/data/renderer/decoration/models/editor/camera source files match HEAD6d12cfb byte for byte; source models and unrelated local files unchanged",
+        "matched_before": [
+          "composition_wip_before_facet_refinement.png",
+          "detail_cliffs_before_facet_refinement.png",
+          "detail_shoreline_before_facet_refinement.png"
+        ],
+        "non_cliff_pixel_samples": {
+          "roof": {
+            "xy": [
+              510,
+              181
+            ],
+            "before": [
+              109,
+              102,
+              89
+            ],
+            "after": [
+              109,
+              102,
+              89
+            ],
+            "equal": true
+          },
+          "grass": {
+            "xy": [
+              850,
+              267
+            ],
+            "before": [
+              161,
+              182,
+              85
+            ],
+            "after": [
+              161,
+              182,
+              85
+            ],
+            "equal": true
+          },
+          "crown": {
+            "xy": [
+              344,
+              151
+            ],
+            "before": [
+              143,
+              170,
+              75
+            ],
+            "after": [
+              143,
+              170,
+              75
+            ],
+            "equal": true
+          },
+          "sky": {
+            "xy": [
+              1030,
+              170
+            ],
+            "before": [
+              181,
+              224,
+              244
+            ],
+            "after": [
+              181,
+              224,
+              244
+            ],
+            "equal": true
+          },
+          "wall": {
+            "xy": [
+              550,
+              236
+            ],
+            "before": [
+              94,
+              74,
+              54
+            ],
+            "after": [
+              94,
+              74,
+              54
+            ],
+            "equal": true
+          }
+        },
+        "limits": "Five unchanged selected non-cliff pixels are finite separation evidence, not whole-image identity. Material cannot fix deep recesses, broad smooth patches or horizontal lower folds; temporal behavior and alternate-device rendering unverified.",
+        "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
+      }
     }
   },
   "limitations": [
-    "Deep cliff recesses and broad continuous face patches still differ from the target; earlier finite taper evidence does not prove arbitrary-layout safety.",
+    "Broad upper cliff walls remain smooth/simple rather than clustered reference rocks; horizontal lower folds remain. Finite taper/narrow checks do not prove arbitrary layouts.",
     "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
     "Temporal shimmer and cross-platform rendering unverified.",
     "M4 Pro short samples do not prove target-laptop or long-idle performance.",
@@ -586,7 +781,8 @@
     "Width lookup retains polygon-containment scaling with total contour complexity, despite cached winding signs; large-map scaling is unmeasured.",
     "Bank stones retain a similar silhouette and anchor-only support checks; rare planted gaps and size variation improve the captured scene but do not establish arbitrary-edit footprint support.",
     "New curved grass is cleaner but remains thinner/darker and more isolated than the target. Interior four-point and retained edge-contour support are finite, not every blade footprint or temporal aliasing proof.",
-    "Cooler/calm cliff shading is a modest material improvement, not correction of deep recesses, broad smooth patches or horizontal lower folds. Rejected gradient-normal trials are absent."
+    "Cooler/calm cliff shading is a modest material improvement, not correction of deep recesses, broad smooth patches or horizontal lower folds. Rejected gradient-normal trials are absent.",
+    "Profile-following hanging foliage improves root proximity on the default layout and stops below-floor chains on minimum-height land; whole leaf footprints and all landing shapes remain unproven."
   ],
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
@@ -632,7 +828,7 @@
     ],
     "initial_trial": "Raised/shallow crown with old fork lift:2/4 extrema covered; Xmax and Zmin were outside. Stronger retained fork lift restores their contact; central stem top is additionally checked.",
     "limits": "Five selectors cover four unique vertices; no exhaustive branch, leaf connectivity or view coverage.",
-    "revision": "f8999e1: earlier contact probe; tree source unchanged, not rerun for this lawn pass"
+    "revision": "f8999e1 historical contact probe; retained tree assembly unchanged, not rerun this round"
   },
   "sky": {
     "sampling": "Runtime mipmaps from retained bitmap; five samples at LOD2.5 with UV spread.0020",
@@ -661,7 +857,7 @@
     "after": "2/2 passed; furthest deep foot x+z5.5244, 30 sampled vertices; prominent default left/foreground blades join a compact silhouette",
     "method": "Actual cliff foot vertices on a wide diagonal plateau, nonzero sample coverage and an independently chosen inward-foot limit",
     "limits": "Finite plateau/reference fixtures, not every narrow/concave layout or self-intersection.",
-    "revision": "b70d322; contour source unchanged, taper test not rerun for shore-only pass"
+    "revision": "b70d322 original reproduction; current actual-mesh taper rerun passes2/2"
   },
   "geometry_equivalence": {
     "comparison": "Contour lookup before vs after winding-sign optimization in this round",
@@ -686,7 +882,7 @@
     "matching_sha256_hashes": 50,
     "match": true,
     "limits": "Selected source geometry only; not arbitrary maps, all prop transforms or rendered-pixel identity.",
-    "revision": "b70d322; previous contour winding optimization evidence, not rerun for shore-only pass"
+    "revision": "b70d322 historical winding-cache comparison; not a new geometry-identity claim"
   },
   "shore_stones": {
     "source": "retained Kenney CC0 stone_largeD, original unchanged",
@@ -744,7 +940,7 @@
       "detail_shoreline_before_lawn_refinement.png"
     ],
     "limits": "Array comparison does not prove all material/transform/pixel identity. Grass remains thinner/darker and tall tufts wirier than target; four-point/edge placement is not exhaustive footprint support.",
-    "revision": "6d12cfb: previous lawn resource/population evidence; grass source and placements unchanged, probe not rerun this material pass"
+    "revision": "6d12cfb historical grass resource/population evidence; resource probe not rerun this round; contour-edge direction now matches cliff vertex normals"
   },
   "cliff_material_refinement": {
     "baseline": "6d12cfb",
@@ -844,6 +1040,42 @@
         "equal": true
       }
     },
-    "limits": "Five unchanged selected non-cliff pixels are finite separation evidence, not whole-image identity. Material cannot fix deep recesses, broad smooth patches or horizontal lower folds; temporal behavior and alternate-device rendering unverified."
+    "limits": "Five unchanged selected non-cliff pixels are finite separation evidence, not whole-image identity. Material cannot fix deep recesses, broad smooth patches or horizontal lower folds; temporal behavior and alternate-device rendering unverified.",
+    "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
+  },
+  "verification_sequence": "All twelve scripts pass after final cliff/profile-anchor changes. After adding the final leaf-floor guard, decoration80, incremental20 and runtime22 rerun and pass; final actual captures, contact/array probe and standalone benchmark also rerun. Other nine scripts are unchanged by the leaf-floor guard.",
+  "compact_cliff_refinement": {
+    "baseline": "12ce140",
+    "geometry": "Cellular relief amplitude/offset1.02/-.16 to.75/-.10; broad-profile horizontal noise.10 to.04, vertical.25 to.09, foot.04 to.02, profile Y wave.16 to.06. Narrow base-profile coefficients unchanged.",
+    "foliage": "Contour-vertex previous/next normal matches cliff construction. Hanging roots use the same deformed profile before small bend/tangent offsets; stop chains below landing+.08.",
+    "probe": {
+      "source": "temporary /tmp/terrain_compact_probe.gd actual resource arrays and shortest root-to-cliff-triangle distance",
+      "exit": 0,
+      "exact_component_arrays": 42,
+      "comparison": "40 vertex/normal arrays across grass/bank/water/waterfall for default and four edit fixtures;2 cliff vertex/normal arrays on an11x1 narrow strip",
+      "root_surface": "Both baseline and current placements measured against the current cliff triangles, isolating anchor correction",
+      "root_count_each": 321,
+      "before": {
+        "maximum_distance": 0.420788317918777,
+        "mean_distance": 0.093658648628228,
+        "over_035": 2
+      },
+      "after": {
+        "maximum_distance": 0.219327181577682,
+        "mean_distance": 0.0557497664994119,
+        "over_035": 0
+      }
+    },
+    "minimum_height_regression": {
+      "fixture": "8x8 plateau at allowed minimum height-4; compare rootY against actual generated cliff floor",
+      "before": "79/80 decoration checks; foliage root floor assertion fails",
+      "after": "80/80; nonzero vines retained and all roots above actual floor"
+    },
+    "matched_before": [
+      "composition_wip_before_compact_refinement.png",
+      "detail_cliffs_before_compact_refinement.png",
+      "detail_shoreline_before_compact_refinement.png"
+    ],
+    "limits": "42 exact arrays are finite component comparisons, not hashes/pixel identity or arbitrary layouts. Root centers do not prove whole leaf footprints or chain connectivity. Captures show modest compaction; upper walls remain smooth/simple and lower folds/bead-like foliage remain."
   }
 }

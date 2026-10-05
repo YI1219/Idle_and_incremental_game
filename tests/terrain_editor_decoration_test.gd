@@ -47,6 +47,19 @@ func run()->void:
 	check(deco.placements(d,Vector2i.ZERO)==first,"undo restores original automatic decoration")
 	deco.load_assets()
 	check(deco.assets.has("tree") and deco.assets.has("grass") and deco.assets.has("cliff_rock") and deco.assets.has("shore_rock") and deco.assets.has("fence"),"terrain and supporting CC0 model parts loaded")
+	var low:=Data.new()
+	for z in 8:
+		for x in 8:low.cells[Vector2i(x,z)]={"height":-4.0,"water":-1}
+	var low_field=load("res://scripts/terrain_editor/contour_terrain.gd").new()
+	low_field.refresh(low)
+	var floor_y:=INF
+	for point:Vector3 in low_field.surfaces.cliff.vertices:floor_y=minf(floor_y,point.y)
+	var low_vines:Array=deco.placements(low,Vector2i.ZERO).vine
+	check(not low_vines.is_empty(),"minimum-height terrain still supplies hanging foliage")
+	var supported:=true
+	for pose:Transform3D in low_vines:
+		if pose.origin.y<floor_y:supported=false
+	check(supported,"hanging foliage roots stay above the actual cliff floor on minimum-height terrain")
 	var parent:=Node3D.new()
 	root.add_child(parent)
 	deco.populate(parent,d,Vector2i.ZERO)

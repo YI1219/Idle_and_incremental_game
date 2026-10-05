@@ -59,7 +59,8 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				var cell:=Vector2i(p.floor())
 				if random_at(cell,data.seed,80)>.90:continue
 				var next:Vector2=loop[(i+1)%loop.size()]
-				var out:=Vector2(next.y-p.y,p.x-next.x).normalized()
+				var previous:Vector2=loop[(i-1+loop.size())%loop.size()]
+				var out:=Vector2(next.y-previous.y,previous.x-next.x).normalized()
 				var inside:Dictionary=field.surface_at(p-out*.45)
 				if inside.is_empty() or inside.water>=0 or absf(inside.height-h)>.1:continue
 				var profile:Dictionary=field._cliff_profile(p,out)
@@ -84,9 +85,11 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3(.65,.19,.65)))
 				for leaf in range(4+int(random_at(cell,data.seed,84)*5)):
 					var y:=h-.12-leaf*.23
+					if y<landing+.08:break
 					var bend:=out*(.07-leaf*.025)
 					var tangent:=Vector2(-out.y,out.x)*sin(leaf*2.9)*.18
-					result.vine.append(_transform(Vector3(p.x+bend.x+tangent.x,y,p.y+bend.y+tangent.y),leaf*.81,Vector3(.67,.47,.62)))
+					var anchor:Vector3=field._profile_point(p,y,out,profile)+Vector3(bend.x+tangent.x,0,bend.y+tangent.y)
+					result.vine.append(_transform(anchor,leaf*.81,Vector3(.67,.47,.62)))
 					if leaf<3:result.bush.append(_transform(Vector3(p.x-out.x*.18+tangent.x,h-.08,p.y-out.y*.18+tangent.y),leaf*.83,Vector3(.88,.37,.80)))
 
 	for level:int in field.water_regions:

@@ -244,7 +244,8 @@ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
 func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector3:
 	var depth:float=maxf(.001,profile.top-profile.bottom)
 	var edge_weight:=clampf((profile.top-y)*2,0,1)*clampf((y-profile.bottom)*2,0,1)
-	y+=sin(p.x*1.17+p.y*.91+y*1.73)*.16*edge_weight
+	var broad_weight:=clampf((profile.inset-.35)/.45,0,1) if profile.base else .5
+	y+=sin(p.x*1.17+p.y*.91+y*1.73)*lerpf(.16,.06,broad_weight)*edge_weight
 	var f:=clampf((profile.top-y)/depth,0,1)
 	var rounded:=0.0
 	if not profile.base or profile.inset>.35:
@@ -313,8 +314,8 @@ func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,normal:Vector2=Vector2.ZERO,inset_limit:float=1.5,rounded_relief:float=NAN)->Vector3:
 	var inset:=normal*(inset_limit*pow(f,1.5) if base else 0.0)
 	var width_weight:=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
-	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,.10,width_weight)*sin(PI*f)
-	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(lerpf(.62,.25,width_weight)*sin(PI*f)+(lerpf(.22,.04,width_weight)*pow(f,4.0) if base else 0.0))
+	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,.04,width_weight)*sin(PI*f)
+	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(lerpf(.62,.09,width_weight)*sin(PI*f)+(lerpf(.22,.02,width_weight)*pow(f,4.0) if base else 0.0))
 	# Rounded rock shoulders share a world-anchored field with the material.
 	# Preserve the proven narrow-wall profile and fade relief at true boundaries.
 	if is_nan(rounded_relief):rounded_relief=_rock_relief(Vector3(p.x,y,p.y)) if width_weight>0.0 else 0.0
@@ -340,7 +341,7 @@ static func _rock_relief(point:Vector3)->float:
 				# than a smooth mound. Minimum distance keeps site joins continuous.
 				var distance:=maxf(maxf(axis.x,maxf(axis.y,axis.z)),(axis.x+axis.y+axis.z)*.57)
 				nearest=minf(nearest,distance)
-	return 1.02*clampf((.76-nearest)/.55,0.0,1.0)-.16
+	return .75*clampf((.76-nearest)/.55,0.0,1.0)-.10
 
 static func _rock_hash(point:Vector3)->Vector3:
 	var q:=point*Vector3(.123,.117,.139)

@@ -1,136 +1,133 @@
 {
-	"backend": "Metal Forward+",
-	"device": "Apple M4 Pro (Apple9)",
-	"resolution": [
-		1280,
-		720
-	],
-	"runs": [
-		{
-			"cells": 593,
-			"draw_calls": 495.0,
-			"duration_seconds": 12.008071,
-			"edits": [
-				{
-					"changed_cells": 16,
-					"operation": "raise",
-					"visible_response_ms": 212.496
-				},
-				{
-					"changed_cells": 12,
-					"operation": "lower",
-					"visible_response_ms": 218.896
-				},
-				{
-					"changed_cells": 14,
-					"operation": "expand",
-					"visible_response_ms": 218.116
-				},
-				{
-					"changed_cells": 16,
-					"operation": "contract",
-					"visible_response_ms": 240.331
-				}
-			],
-			"frame_count": 999,
-			"max_ms": 137.998,
-			"median_ms": 9.389,
-			"p95_ms": 18.643,
-			"run": 1,
-			"static_memory_mib": 61.0215320587158,
-			"video_memory_mib": 211.046875
-		},
-		{
-			"cells": 593,
-			"draw_calls": 495.0,
-			"duration_seconds": 12.001647,
-			"edits": [
-				{
-					"changed_cells": 16,
-					"operation": "raise",
-					"visible_response_ms": 208.537
-				},
-				{
-					"changed_cells": 12,
-					"operation": "lower",
-					"visible_response_ms": 217.168
-				},
-				{
-					"changed_cells": 14,
-					"operation": "expand",
-					"visible_response_ms": 215.254
-				},
-				{
-					"changed_cells": 16,
-					"operation": "contract",
-					"visible_response_ms": 228.731
-				}
-			],
-			"frame_count": 982,
-			"max_ms": 131.759,
-			"median_ms": 9.467,
-			"p95_ms": 18.608,
-			"run": 2,
-			"static_memory_mib": 61.0278606414795,
-			"video_memory_mib": 211.046875
-		},
-		{
-			"cells": 593,
-			"draw_calls": 495.0,
-			"duration_seconds": 12.018109,
-			"edits": [
-				{
-					"changed_cells": 16,
-					"operation": "raise",
-					"visible_response_ms": 215.978
-				},
-				{
-					"changed_cells": 12,
-					"operation": "lower",
-					"visible_response_ms": 219.831
-				},
-				{
-					"changed_cells": 14,
-					"operation": "expand",
-					"visible_response_ms": 220.065
-				},
-				{
-					"changed_cells": 16,
-					"operation": "contract",
-					"visible_response_ms": 238.161
-				}
-			],
-			"frame_count": 1000,
-			"max_ms": 139.324,
-			"median_ms": 9.255,
-			"p95_ms": 18.638,
-			"run": 3,
-			"static_memory_mib": 61.0313892364502,
-			"video_memory_mib": 211.046875
-		}
-	],
-	"scope": "current reference demo, 12-second measurement per run; target laptops and long idle stability unmeasured this round",
-	"shadows": true,
-	"ssao": true,
-	"vsync": "disabled",
-	"revision": "current final cliff-palette/reduced-perturbation pass against6d12cfb; rejected gradient trials excluded",
-	"previous_revision_summary": {
-		"revision": "6d12cfb",
-		"median_ms": [
-			9.222,
-			9.28
-		],
-		"p95_ms": [
-			18.602,
-			18.73
-		],
-		"max_ms": 140.387,
-		"visible_edit_ms": [
-			204.365,
-			242.953
-		],
-		"draw_calls": 495,
-		"video_memory_mib": 211.046875,
-		"limit": "Separate short samples, not controlled speedup comparison"
-	}
+  "backend": "Metal Forward+",
+  "device": "Apple M4 Pro (Apple9)",
+  "resolution": [
+    1280,
+    720
+  ],
+  "runs": [
+    {
+      "cells": 593,
+      "draw_calls": 496.0,
+      "duration_seconds": 12.001002,
+      "edits": [
+        {
+          "changed_cells": 16,
+          "operation": "raise",
+          "visible_response_ms": 212.867
+        },
+        {
+          "changed_cells": 12,
+          "operation": "lower",
+          "visible_response_ms": 209.67
+        },
+        {
+          "changed_cells": 14,
+          "operation": "expand",
+          "visible_response_ms": 222.12
+        },
+        {
+          "changed_cells": 16,
+          "operation": "contract",
+          "visible_response_ms": 236.233
+        }
+      ],
+      "frame_count": 997,
+      "max_ms": 136.768,
+      "median_ms": 9.293,
+      "p95_ms": 18.661,
+      "run": 1,
+      "static_memory_mib": 60.9495582580566,
+      "video_memory_mib": 211.046875
+    },
+    {
+      "cells": 593,
+      "draw_calls": 496.0,
+      "duration_seconds": 12.008551,
+      "edits": [
+        {
+          "changed_cells": 16,
+          "operation": "raise",
+          "visible_response_ms": 210.382
+        },
+        {
+          "changed_cells": 12,
+          "operation": "lower",
+          "visible_response_ms": 210.184
+        },
+        {
+          "changed_cells": 14,
+          "operation": "expand",
+          "visible_response_ms": 218.504
+        },
+        {
+          "changed_cells": 16,
+          "operation": "contract",
+          "visible_response_ms": 236.544
+        }
+      ],
+      "frame_count": 1011,
+      "max_ms": 139.27,
+      "median_ms": 9.277,
+      "p95_ms": 18.424,
+      "run": 2,
+      "static_memory_mib": 60.9558868408203,
+      "video_memory_mib": 211.046875
+    },
+    {
+      "cells": 593,
+      "draw_calls": 496.0,
+      "duration_seconds": 12.000749,
+      "edits": [
+        {
+          "changed_cells": 16,
+          "operation": "raise",
+          "visible_response_ms": 204.95
+        },
+        {
+          "changed_cells": 12,
+          "operation": "lower",
+          "visible_response_ms": 218.044
+        },
+        {
+          "changed_cells": 14,
+          "operation": "expand",
+          "visible_response_ms": 227.265
+        },
+        {
+          "changed_cells": 16,
+          "operation": "contract",
+          "visible_response_ms": 235.132
+        }
+      ],
+      "frame_count": 1012,
+      "max_ms": 139.703,
+      "median_ms": 9.269,
+      "p95_ms": 18.544,
+      "run": 3,
+      "static_memory_mib": 60.959415435791,
+      "video_memory_mib": 211.046875
+    }
+  ],
+  "scope": "Final compact-cliff/profile-following foliage and leaf-floor guard;593-cell reference demo, three standalone12-second measurements after2-second warmups; normal two-chunk publication, hiddenHUD, vsync off. Target laptops, larger maps and long-idle stability unmeasured.",
+  "shadows": true,
+  "ssao": true,
+  "vsync": "disabled",
+  "previous_revision_summary": {
+    "revision": "12ce140",
+    "median_ms": [
+      9.255,
+      9.467
+    ],
+    "p95_ms": [
+      18.608,
+      18.643
+    ],
+    "visible_edit_response_ms": [
+      208.537,
+      240.331
+    ],
+    "draw_calls": 495,
+    "limits": "Separate short samples, not a controlled speedup or scaling measurement."
+  }
 }
