@@ -1,12 +1,12 @@
 # Terrain workshop verification — 2026-10-05
 
-Function, visuals and performance are separate acceptance dimensions. This report is current stage evidence; stability and final independent review remain pending.
+Function, visuals and performance are separate acceptance dimensions. This report is current stage evidence; the fresh 30-minute stability session and primary-checkout delivery remain pending.
 
 ## Functional evidence
 
-Fresh editor checks: data 301/301, geometry 306/306, decoration 164/164 and runtime/camera 16/16. The full 26-script suite passes cleanly with headless fixed-step timing. The legacy running-turn test fixture needed its missing `build_mode` field; no character production behavior changed.
+Fresh editor checks: data 301/301, geometry 339/339, decoration 164/164 and runtime/camera 20/20. The full 26-script suite passes cleanly with headless fixed-step timing. The legacy running-turn test fixture needed its missing `build_mode` field; no character production behavior changed.
 
-Coverage includes raise/lower/expand/contract, stroke deduplication, snap coverage differences, 8 water elevations, all 47 bank contours, exact joined-edge matching, dirty neighbors, diagonal corner picking, deterministic terrain-adapting decoration, viewport GUI routing, horizontal pan height invariance, wheel-only height/zoom, undo/redo and validated isolated layout save/load. Tests were written and observed failing before the new modules; seam/corner regressions reproduced 17 failures before correction.
+Coverage includes raise/lower/expand/contract, stroke deduplication, snap coverage differences, 8 water elevations, all 47 bank contours, exact joined-edge matching, dirty neighbors, diagonal corner picking, deterministic terrain-adapting decoration, viewport GUI routing, horizontal pan height invariance, wheel-only height/zoom, undo/redo and validated isolated layout save/load. Tests were written and observed failing before the new modules; seam/corner regressions reproduced 17 failures before correction. Independent review found two additional boundary defects; actual cliff clicks and 8-level deep-water support tests reproduced 34 failures before correction. Direct rebuilt mesh/MultiMesh state now verifies queued edit/undo. See independent_review.md.
 
 ## Actual engine views
 
@@ -20,12 +20,12 @@ Apple M4 Pro, Godot 4.7.2, Metal/Forward+, 1280×720, low quality with shadows d
 
 | Run | Seconds | Median ms | p95 ms | Edit response p95 ms | Draw calls | End static memory MiB |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 60.0 | 5.441 | 16.902 | 17.731 | 505 | 60.81 |
-| 2 | 60.0 | 5.420 | 16.517 | 9.313 | 505 | 60.81 |
-| 3 | 60.0 | 5.693 | 16.534 | 18.306 | 505 | 60.81 |
+| 1 | 60.0 | 5.564 | 16.685 | 7.770 | 503 | 60.80 |
+| 2 | 60.0 | 5.452 | 16.302 | 9.078 | 503 | 60.80 |
+| 3 | 60.0 | 5.820 | 16.708 | 9.842 | 503 | 60.79 |
 
-All three final runs meet median ≤16.7 ms and p95 ≤25 ms. Godot static allocator and video-memory monitors are the recorded memory methods; they are not total process RSS. Earlier runs were superseded after bank/picking corrections. This development device does not prove Windows thin-laptop or MacBook Air performance, or long-idle power acceptance.
+All three final runs meet median ≤16.7 ms and p95 ≤25 ms. Godot static allocator and video-memory monitors are the recorded memory methods; they are not total process RSS. Earlier runs were superseded after the final review fixes. This development device does not prove Windows thin-laptop or MacBook Air performance, or long-idle power acceptance.
 
 ## Pending stability and delivery
 
-The 1800-second real-time session is active with FPS capped to 60, periodic edit/undo cycles and horizontal camera movement. Its result must establish no runtime errors/crash, no accumulating scene nodes, bounded memory and restored terrain data before completion is claimed. Final independent review and transfer to the primary checkout are still pending. Source models and legacy economy code remain intact.
+The 1800-second real-time session is active with FPS capped to 60, periodic edit/undo/redo cycles and horizontal camera movement. Its result must establish no runtime errors/crash, no accumulating scene nodes, bounded memory and restored terrain data before completion is claimed. Final independent review is complete; both important findings are fixed with failing-then-passing regressions. Transfer to the primary checkout is pending. Source models and legacy economy code remain intact.

@@ -7,6 +7,15 @@ func check(ok:bool,message:String)->void:
 	if not ok:
 		failures+=1
 		push_error(message)
+func chunk_state(node:Node3D)->Dictionary:
+	var result:Dictionary={}
+	for child in node.get_children():
+		if child is MeshInstance3D:result[child.name]=child.mesh.get_faces()
+		elif child is MultiMeshInstance3D:
+			var transforms:Array[Transform3D]=[]
+			for i in child.multimesh.instance_count:transforms.append(child.multimesh.get_instance_transform(i))
+			result[child.name]=transforms
+	return result
 func _initialize()->void: call_deferred("run")
 func run()->void:
 	if not ResourceLoader.exists("res://scripts/terrain_editor/terrain_renderer.gd"):
@@ -73,6 +82,20 @@ func run()->void:
 	d.cells[Vector2i.RIGHT]={"height":0.0,"water":1}
 	g=geom.build(d,Vector2i.ZERO)
 	check(g.waterfall.get_faces().size()>0,"high water spills toward lower water")
+	# Every allowed water elevation must have supported banks above a deep floor.
+	for level in 8:
+		var deep=Data.new()
+		for z in range(-1,2):
+			for x in range(-1,2):deep.cells[Vector2i(x,z)]={"height":-4.0,"water":-1}
+		deep.cells[Vector2i.ZERO].water=level
+		var deep_geometry:Dictionary=geom.build(deep,Vector2i.ZERO)
+		for side_index in 4:
+			var connected:=false
+			for vertex in deep_geometry.cliff.get_faces():
+				var on_edge:bool=(is_equal_approx(vertex.z,0) if side_index==0 else is_equal_approx(vertex.x,1) if side_index==1 else is_equal_approx(vertex.z,1) if side_index==2 else is_equal_approx(vertex.x,0))
+				if on_edge and is_equal_approx(vertex.y,level*0.5+0.018):connected=true
+			check(connected,"deep water bank has a supporting wall for level %d side %d"%[level,side_index])
+	renderer.decoration=load("res://scripts/terrain_editor/terrain_decoration.gd").new()
 	renderer.configure(d)
 	renderer.rebuild_all()
 	var hit:Dictionary=renderer.pick(Vector3(0.5,10,0.5),Vector3.DOWN)
@@ -88,11 +111,13 @@ func run()->void:
 	check(renderer.flush_dirty()==0,"idle renderer does not rebuild")
 	d.invalidate(Vector2i(7,7))
 	check(d.dirty_chunks.size()==4,"chunk corner includes three neighbor chunks")
+	var original_chunk:Dictionary=chunk_state(renderer.chunks[Vector2i.ZERO])
 	d.begin_stroke()
 	d.apply_brush(Vector2(0.5,0.5),0.49,"contract",true,0,0)
 	d.end_stroke()
 	d.undo()
-	renderer.rebuild_all()
+	while not d.dirty_chunks.is_empty():renderer.flush_dirty(1)
+	check(chunk_state(renderer.chunks[Vector2i.ZERO])==original_chunk,"queued edit/undo restores actual chunk meshes and MultiMesh transforms")
 	hit=renderer.pick(Vector3(0.5,10,0.5),Vector3.DOWN)
 	check(not hit.is_empty() and hit.position.y==1.5,"queued edit and undo converge to latest data")
 	check(renderer.get_child_count()<=4,"renderer creates chunks rather than per-cell nodes")

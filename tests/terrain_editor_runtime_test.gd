@@ -81,6 +81,24 @@ func run()->void:
 	press.pressed=false
 	root.push_input(press,true)
 	check(editor.data.cells[picked_cell].height==old_height+0.5,"viewport world click edits the pointed cell")
+	# Actual pointer routing must retain ownership on exact east/south cliff boundaries.
+	camera.recenter(Vector2.ZERO)
+	camera.advance(10.0)
+	for face in [Vector3(1,1,0.5),Vector3(0.5,1,1)]:
+		editor.data.cells.clear()
+		editor.data.cells[Vector2i.ZERO]={"height":1.5,"water":-1}
+		editor.renderer.rebuild_all()
+		editor.tool="contract"
+		editor.snap=true
+		press.position=camera.unproject_position(face)
+		var owner:Dictionary=editor._pointer(press.position)
+		check(not owner.is_empty() and owner.cell==Vector2i.ZERO,"cliff pointer identifies owning cell")
+		press.pressed=true
+		root.push_input(press,true)
+		press.pressed=false
+		root.push_input(press,true)
+		check(not editor.data.cells.has(Vector2i.ZERO),"snapped viewport brush edits east/south cliff owner")
+	editor.select_preset(0)
 	var saved:Dictionary=editor.data.serialize()
 	check(editor.save_layout("user://terrain_editor/runtime_test.json")==OK,"layout save succeeds")
 	editor.select_preset(1)

@@ -79,6 +79,10 @@ static func _world_polygon(local:PackedVector2Array,cell:Vector2i)->PackedVector
 	for p in local: result.append(p+Vector2(cell))
 	return result
 
+static func _solid_top(record:Dictionary)->float:
+	# A water cell is a filled basin: its bank cap needs walls up to the water level.
+	return record.water*0.5+0.018 if record.water>=0 else record.height
+
 static func build(data:Data,chunk:Vector2i)->Dictionary:
 	var cliff_edges:Dictionary={}
 	var surfaces := {"grass":Surface.new(),"cliff":Surface.new(),"bank":Surface.new(),"water":Surface.new(),"waterfall":Surface.new()}
@@ -87,7 +91,7 @@ static func build(data:Data,chunk:Vector2i)->Dictionary:
 			var cell := Vector2i(x,z)
 			if not data.cells.has(cell): continue
 			var record:Dictionary=data.cells[cell]
-			var height:float=record.height
+			var height:float=_solid_top(record)
 			var square := PackedVector2Array([Vector2(x,z),Vector2(x+1,z),Vector2(x+1,z+1),Vector2(x,z+1)])
 			var tint := Color.WHITE * (0.98 + 0.02*sin(x*7.13+z*3.91))
 			tint.a=1.0
@@ -101,7 +105,7 @@ static func build(data:Data,chunk:Vector2i)->Dictionary:
 					surfaces.bank.polygon(bank,surface_y+0.018,Color.WHITE)
 			for side in 4:
 				var neighbor:Vector2i=cell+SIDES[side]
-				var neighbor_height:float=data.cells[neighbor].height if data.cells.has(neighbor) else BOTTOM
+				var neighbor_height:float=_solid_top(data.cells[neighbor]) if data.cells.has(neighbor) else BOTTOM
 				var ends := _edge(cell,side)
 				var a:Vector3=ends[0]
 				var b:Vector3=ends[1]

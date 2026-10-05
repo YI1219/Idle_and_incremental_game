@@ -115,7 +115,7 @@ func continue_paint(screen:Vector2)->void:
 	if not painting or hud.is_over_panel(screen):return
 	var hit:=_pointer(screen)
 	if hit.is_empty():return
-	var center:=Vector2(hit.position.x,hit.position.z)
+	var center:=Vector2(hit.cell)+Vector2(0.5,0.5) if snap else Vector2(hit.position.x,hit.position.z)
 	# Interpolate fast drags so there are no holes between input samples.
 	var start:Vector2=center if not _last_paint.is_finite() else _last_paint
 	var steps:=maxi(1,ceili(start.distance_to(center)/maxf(0.25,radius*0.45)))
@@ -131,8 +131,8 @@ func _update_brush(screen:Vector2)->void:
 	if not brush.visible:return
 	var position3:Vector3=hit.position
 	if snap:
-		position3.x=floorf(position3.x)+0.5
-		position3.z=floorf(position3.z)+0.5
+		position3.x=hit.cell.x+0.5
+		position3.z=hit.cell.y+0.5
 	brush.position=position3+Vector3(0,0.06,0)
 	var mesh:=ImmediateMesh.new()
 	mesh.surface_begin(Mesh.PRIMITIVE_LINES)

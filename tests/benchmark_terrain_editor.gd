@@ -79,7 +79,11 @@ func _process(delta:float)->bool:
 		editor.data.begin_stroke()
 		editor.data.apply_brush(Vector2(20.5,20.5),2.2,operation,false,1.5,7)
 		editor.data.end_stroke()
-		if edit_count%4 in [2,3]:editor.data.undo()
+		if edit_count%4 in [2,3]:
+			editor.data.undo()
+			if stability:
+				editor.data.redo()
+				editor.data.undo()
 		edit_count+=1
 		edit_started=Time.get_ticks_usec()
 		next_edit=elapsed+5.0
