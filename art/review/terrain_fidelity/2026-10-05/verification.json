@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh final checks for world-space cellular cliff shoulders, reduced broad-wall wave noise, matching material classification and per-refresh exact-position relief cache. Includes contour, shoreline, waterfall, incremental publication, leaf bounds and camera checks. Unrelated gameplay suite was last verified at 461ed14.",
+  "scope": "Fresh final checks for finer advected waterfall material with varied line brightness, pixel-footprint smoothing, lighter blue palette and lower emission. Actual Metal captures compile/render the shader; geometry remains unchanged. Includes contour, shoreline, waterfall, incremental publication, leaf bounds and camera checks. Unrelated gameplay suite was last verified at 461ed14.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
@@ -87,7 +87,7 @@
     "terrain_model_bounds_test": 9
   },
   "regression": "Existing mixed-height waterfall joins remain 24/24. New splash checks failed 24/26 before raised/faded foam, then 26/27 when chunk clipping lost vertex opacity; final gradient preservation passes 27/27. Narrow cliff separation remains 794 slices with no overlaps; atomic shoreline remains 9/9. Indexed leaf-bounds invariance failed 4/9 before restricting bounds to referenced vertices and passes 9/9 afterward. Godot importer probe reports current tree_oak leaf surface 114 vertices, 114 referenced, full and active bounds identical: this regression protects other inputs and is not a demonstrated current-asset fix.",
-  "review": "Independent cliff review found no Important correctness issue and reran incremental20/20 and narrow794 without overlaps. Actual captures break long folds into more distinct regions, but broad smooth bulges remain. Independent cache review cleared invalidation and output equivalence: the exact warped position fully determines relief, and every refresh clears cached values. Existing foliage/sky/water reviews cover preceding changes. Visual user acceptance remains pending.",
+  "review": "Independent finer-flow review found no Important correctness issue. World-Y advection has velocity \u22121.45/2.6 (about \u22120.56 world units/second), with both distortions in the same advected field. Geometry, picking and camera are unchanged. Review flagged a bright net; glint strength was reduced .86\u2192.55 and final actual captures regenerated. The material still reads as a patterned sheet. Existing cliff/cache and foliage reviews cover preceding changes. Still captures do not establish temporal shimmer quality. Visual user acceptance remains pending.",
   "limitations": [
     "Target Windows thin laptop/MacBook Air and long-idle performance are unmeasured this round.",
     "Legacy unrelated gameplay suite is historical evidence for the previous revision, not a fresh full-suite claim."

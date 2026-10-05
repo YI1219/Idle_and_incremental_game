@@ -13,7 +13,11 @@ vec2 veins(vec2 p){
 		vec2 offset=vec2(float(x),float(y));vec2 d=offset+hash2(cell+offset)-f;float v=dot(d,d);
 		if(v<first){second=first;first=v;selected=cell+offset;}else if(v<second){second=v;}
 	}
-	return vec2(1.0-smoothstep(0.018,0.075,second-first),hash2(selected).x);
+	float border=second-first;
+	float softness=max(.022,fwidth(border)*.9);
+	float edge=1.0-smoothstep(.010,.010+softness,border);
+	float brightness=mix(.48,1.0,smoothstep(.18,.82,hash2(selected+vec2(17.0)).y));
+	return vec2(edge*brightness,hash2(selected).x);
 }
 void fragment(){
 	vec2 p=world_position.xz;
@@ -38,16 +42,16 @@ void fragment(){
 		color=mix(color,vec3(.58,.76,.78),glint*.14);
 	}
 	if(fall){
-		vec2 flow=vec2(UV.x*2.8,UV.y*1.1+TIME*0.85);
-		flow.x+=sin(UV.y*4.1+TIME*.8)*.13+sin(UV.x*5.2+UV.y*1.7)*.08;
+		vec2 flow=vec2(UV.x*5.2,UV.y*2.6+TIME*1.45);
+		flow.x+=sin(flow.y*1.8)*.20+sin(flow.x*.93+flow.y*.73)*.10;
 		vec2 field=veins(flow);
 		float line=field.x;
-		// Broad polygonal sheets with fine moving veins, rather than parallel bars.
+		// Finer advected facets with varied vein brightness, avoiding a wire cage.
 		float sheet=field.y;
-		float glint=line*.78;
-		color=mix(vec3(.065,.49,.72),vec3(.17,.66,.86),sheet*.65);
-		color=mix(color,vec3(.75,.94,.96),glint);
-		EMISSION=color*.08;
+		float glint=line*.55;
+		color=mix(vec3(.055,.47,.76),vec3(.27,.75,.90),sheet*.85);
+		color=mix(color,vec3(.84,.98,1.0),glint);
+		EMISSION=color*.06;
 	}
 	ALBEDO=color;
 	ROUGHNESS=fall?.6:.32;
