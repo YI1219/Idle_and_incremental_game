@@ -12,7 +12,7 @@ Qinglan, an enterable cottage, riverbank and small bridge, plus the starter swor
 
 ## Launch
 
-Double-click **Play Demo.command**. Requires Godot 4.7; the script imports models, then starts. **Play Indoor Transition.command** opens the same scene without the import pass (faster if assets are already imported). You can also open `project.godot` in Godot and run.
+Double-click **Play Demo.command**, or open `project.godot` in Godot and press Play. Both follow the project main scene, `scenes/play.tscn`, which is the floating-island courtyard. Requires Godot 4.7. **Play Indoor Transition.command** starts that same main scene without the import pass. **打开沙盒营造.command** starts it with build mode already open.
 
 `试玩基础Demo.command` and `试玩进出屋.command` remain as shortcuts to those two files, so existing Finder or Dock items keep working.
 

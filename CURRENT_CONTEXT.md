@@ -81,10 +81,10 @@ Optimization should first inspect instance reuse, LOD, culling, material count, 
 
 ## Next steps
 
-1. Prioritize the sandbox building loop over further static art. Run `打开沙盒营造.command` or press B in the main demo; review actual placement, move/cancel/remove, terrain feedback and layout save/load.
+1. Prioritize the sandbox building loop over further static art. Open the project in Godot and press Play, or run `Play Demo.command`; both use the main scene. Press B, or run `打开沙盒营造.command`, to review placement, move/cancel/remove, terrace brushes and layout save/load.
 2. Ground/build data are now unified and tree/rock bundles removed. Next resolve legacy facility coordinates, then scope production-facility relocation and traversal/connectivity validation. Do not assume unconfirmed rotation, scaling or stacking permissions.
 3. Keep management, production and economy constraints as the basis for later building costs and placement effects. Current nature trial is free and yield-neutral; layout saves do not replace a full game save.
-4. Use the independent art study for later tree crown, terrain boundary and paving refinement, after the build workflow is usable. Character work remains deferred.
+4. The separate courtyard-study scene is no longer a launch target. Tree crown, terrain boundary and paving refinement stay on the main floating-island scene. Character work remains deferred.
 5. Preserve scene separation and existing movement. Accept function, art and target-device performance independently. No current generation submission task.
 
 Ask only when information is truly missing, user action is required, or a key direction conflicts. Continue reversible daily work autonomously. Do not purchase assets automatically. Do not restore old plans item by item, and do not substitute “continue progressing” language for actual work.

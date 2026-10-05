@@ -9,6 +9,8 @@ func check(ok: bool,label: String):
 func _initialize():call_deferred("run")
 func run():
 	root.size=Vector2i(1280,720)
+	check(str(ProjectSettings.get_setting("application/run/main_scene"))=="res://scenes/play.tscn","Godot Play uses the floating-island scene")
+	check(not ResourceLoader.exists("res://scenes/courtyard_study.tscn"),"No separate study level remains")
 	var game=load("res://scenes/play.tscn").instantiate()
 	root.add_child(game)
 	for i in 8:await process_frame
