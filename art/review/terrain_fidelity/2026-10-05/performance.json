@@ -8,124 +8,124 @@
   "runs": [
     {
       "cells": 593,
-      "draw_calls": 482.0,
-      "duration_seconds": 12.000253,
+      "draw_calls": 529.0,
+      "duration_seconds": 12.009465,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 212.628
+          "visible_response_ms": 197.714
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 217.947
+          "visible_response_ms": 217.366
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 218.097
+          "visible_response_ms": 219.313
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 236.314
+          "visible_response_ms": 239.31
         }
       ],
-      "frame_count": 1008,
-      "max_ms": 144.611,
-      "median_ms": 9.147,
-      "p95_ms": 18.697,
+      "frame_count": 996,
+      "max_ms": 140.241,
+      "median_ms": 9.415,
+      "p95_ms": 18.669,
       "run": 1,
-      "static_memory_mib": 60.9314975738525,
+      "static_memory_mib": 61.1930656433105,
       "video_memory_mib": 211.09375
     },
     {
       "cells": 593,
-      "draw_calls": 482.0,
-      "duration_seconds": 12.000509,
+      "draw_calls": 529.0,
+      "duration_seconds": 12.015681,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 217.674
+          "visible_response_ms": 211.367
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 217.399
+          "visible_response_ms": 217.095
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 224.772
+          "visible_response_ms": 221.44
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 213.768
+          "visible_response_ms": 233.506
         }
       ],
-      "frame_count": 1003,
-      "max_ms": 130.328,
-      "median_ms": 9.156,
-      "p95_ms": 18.659,
+      "frame_count": 995,
+      "max_ms": 141.374,
+      "median_ms": 9.407,
+      "p95_ms": 18.618,
       "run": 2,
-      "static_memory_mib": 60.9378261566162,
+      "static_memory_mib": 61.1993942260742,
       "video_memory_mib": 211.09375
     },
     {
       "cells": 593,
-      "draw_calls": 482.0,
-      "duration_seconds": 12.006655,
+      "draw_calls": 529.0,
+      "duration_seconds": 12.001191,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 205.128
+          "visible_response_ms": 213.503
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 217.922
+          "visible_response_ms": 217.216
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 218.88
+          "visible_response_ms": 222.316
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 234.432
+          "visible_response_ms": 234.936
         }
       ],
-      "frame_count": 989,
-      "max_ms": 140.211,
-      "median_ms": 9.392,
-      "p95_ms": 18.603,
+      "frame_count": 981,
+      "max_ms": 134.537,
+      "median_ms": 9.404,
+      "p95_ms": 18.645,
       "run": 3,
-      "static_memory_mib": 60.9413547515869,
+      "static_memory_mib": 61.2029228210449,
       "video_memory_mib": 211.09375
     }
   ],
-  "scope": "Final daylight-only sun/angular/ambient/SSAO revision;593-cell reference demo,three standalone12-second samples after2-second warmups,1280x720 Metal Forward+,normal two-chunk publication,hiddenHUD,vsync off. Target laptops,larger maps and long idle unmeasured.",
+  "scope": "Final short/wider solid grass-clump revision and lighter curved-grass dark remap;593-cell reference demo,three standalone12-second samples after2-second warmups,1280x720 Metal Forward+,normal two-chunk publication,hiddenHUD,vsync off. Excludes taller/narrower trial. Target laptops,larger maps and long idle unmeasured.",
   "shadows": true,
   "ssao": true,
   "vsync": "disabled",
   "previous_revision_summary": {
-    "revision": "2db8ed9",
+    "revision": "d87d33b",
     "median_ms": [
-      9.189,
-      9.339
+      9.147,
+      9.392
     ],
     "p95_ms": [
-      18.37,
-      18.657
+      18.603,
+      18.697
     ],
     "visible_edit_response_ms": [
-      196.676,
-      238.547
+      205.128,
+      236.314
     ],
     "draw_calls": 482,
     "limits": "Separate short samples; no controlled speedup or scaling claim."

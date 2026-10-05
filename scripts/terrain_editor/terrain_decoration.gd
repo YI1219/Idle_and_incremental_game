@@ -18,7 +18,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	var field=contours
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
-	for kind in ["grass","bush","tree","surface_rock","cliff_rock","shore_rock","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
+	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
 			var cell:=Vector2i(x,z)
@@ -40,8 +40,10 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if random_at(cell,data.seed,13)<.40:result.flower.append(_transform(origin,angle,Vector3.ONE*.9))
 			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.20:
 				result.bush.append(_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2)))
-			if not house_clear and random_at(cell,data.seed,140)<.045 and _stable(field,p,h,.40):
-				result.grass.append(_transform(origin,angle,Vector3(1.30,.66,1.30)))
+			if not house_clear and cluster>-.20 and random_at(cell,data.seed,141)<.13 and _stable(field,p,h,.52):
+				result.grass_clump.append(_transform(origin,angle,Vector3.ONE*(.85+random_at(cell,data.seed,142)*.25)))
+			if not house_clear and random_at(cell,data.seed,140)<.030 and _stable(field,p,h,.65):
+				result.grass_clump.append(_transform(origin,angle,Vector3(1.35,1.65,1.35)))
 			if not house_clear and random_at(cell,data.seed,7)<.018:result.surface_rock.append(_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7))
 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
 	for spec in [[Vector2(-16,-3),3.5],[Vector2(-5,-8),1.8],[Vector2(6.3,-3.3),2.6],[Vector2(15.6,2),3.5]]:
@@ -83,6 +85,10 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						layer+=1
 				if random_at(cell,data.seed,80)>.65:continue
 				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3(.65,.19,.65)))
+				var tuft:=p-out*.70
+				var tuft_ground:Dictionary=field.surface_at(tuft)
+				if random_at(cell,data.seed,80)<.20 and not tuft_ground.is_empty() and tuft_ground.water<0 and absf(tuft_ground.height-h)<.01 and _stable(field,tuft,h,.52):
+					result.grass_clump.append(_transform(Vector3(tuft.x,h,tuft.y),p.x+p.y,Vector3.ONE*.95))
 				for crown in 2:
 					var spread:=Vector2(-out.y,out.x)*(float(crown)-.5)*.34
 					var root_position:=Vector3(p.x-out.x*.18+spread.x,h+.025,p.y-out.y*.18+spread.y)

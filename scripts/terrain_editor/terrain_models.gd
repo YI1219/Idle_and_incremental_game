@@ -7,6 +7,7 @@ func load_assets()->void:
 	if not assets.is_empty():return
 	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
 	assets.grass=_grass_models()
+	assets.grass_clump=_grass_clump_models()
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=[]
@@ -68,6 +69,21 @@ func load_assets()->void:
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
 	assets.cliff_rock[0].mesh.surface_set_material(0,rock_material)
+
+func _grass_clump_models()->Array:
+	# Assemble retained pointed plant parts into one solid, short tuft. Source
+	# geometry stays intact; unequal rotations avoid a flat crossed-plane look.
+	var source:Dictionary=_merge(_load("plant_flatTall","grass"))
+	var box:AABB=source.mesh.get_aabb()
+	var parts:Array=[]
+	for i in 3:
+		var angle:=i*2.39996
+		var size:=Vector3(.56,.40+float(i)*.055,.52)
+		var basis:=Basis(Vector3.UP,angle).scaled_local(size/box.size.max(Vector3.ONE*.0001))
+		var foot:=Vector3(box.position.x+box.size.x*.5,box.position.y,box.position.z+box.size.z*.5)
+		var center:=Vector3(cos(angle)*.10,0,sin(angle)*.10)
+		parts.append({"mesh":source.mesh,"pose":Transform3D(basis,center-basis*foot),"tint":Color(.82+float(i)*.035,.94+float(i)*.025,.78,1)})
+	return parts
 
 func _grass_models()->Array:
 	var source:Node=load("res://assets/nature/quaternius/Grass_Common_Short.gltf").instantiate()

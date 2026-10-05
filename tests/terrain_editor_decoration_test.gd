@@ -19,6 +19,7 @@ func run()->void:
 		for x in 8:d.cells[Vector2i(x,z)]={"height":1.0,"water":-1}
 	var first:Dictionary=deco.placements(d,Vector2i.ZERO)
 	check(first.grass.size()>8,"dry land has generated grass")
+	check(first.get("grass_clump",[]).size()>0,"dry land has solid grass clumps")
 	check(first.cliff_rock.size()>0,"exposed cliffs have embedded rock models")
 	check(first.surface_rock.size()>0,"dry surface has individual rocks")
 	check(first==deco.placements(d,Vector2i.ZERO),"placement is deterministic")
@@ -34,9 +35,14 @@ func run()->void:
 	check(raised.grass.size()==first.grass.size(),"raise preserves deterministic population count")
 	for i in first.grass.size():
 		check(is_equal_approx(raised.grass[i].origin.y-first.grass[i].origin.y,0.5),"raise moves grass with terrain")
+	for pose:Transform3D in first.get("grass_clump",[]):
+		check(is_equal_approx(pose.origin.y,1.0),"solid grass clumps follow ground height")
+	check(raised.get("grass_clump",[]).size()==first.get("grass_clump",[]).size(),"raise retains deterministic clump population")
+	for i in first.get("grass_clump",[]).size():
+		check(is_equal_approx(raised.grass_clump[i].origin.y-first.grass_clump[i].origin.y,.5),"raise moves solid clumps with terrain")
 	for cell in d.cells:d.cells[cell].water=4
 	var wet:Dictionary=deco.placements(d,Vector2i.ZERO)
-	check(wet.grass.is_empty() and wet.tree.is_empty() and wet.bush.is_empty() and wet.surface_rock.is_empty(),"water removes surface vegetation and rocks")
+	check(wet.get("grass_clump",[]).is_empty() and wet.grass.is_empty() and wet.tree.is_empty() and wet.bush.is_empty() and wet.surface_rock.is_empty(),"water removes surface vegetation and rocks")
 	for cell in d.cells:
 		d.cells[cell].water=-1
 		d.cells[cell].height=1.0

@@ -1,7 +1,21 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Daylight-only refinement of sun energy/angular size, ambient fill and SSAO strength. Fresh runtime/camera checks, actual Metal full/detail/four-edit renders, original/source preservation and standalone benchmark. Geometry/assembly/shaders unchanged against2db8ed9. User visual acceptance pending.",
+  "scope": "Fuller grass accents assembled from retained Kenney pointed plants, short/tall/edge terrain-supported placement, and lighter dark-tone curved grass. Fresh five-script checks, final actual Metal full/detail/four-edit renders, source preservation,49 original model array comparisons and near-base support probe across five layouts,plus standalone benchmark. User visual acceptance pending.",
   "suite": [
+    {
+      "test": "terrain_editor_decoration_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 99
+    },
+    {
+      "test": "terrain_incremental_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 20
+    },
     {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
@@ -15,6 +29,13 @@
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed60Hz)",
       "checks": 8
+    },
+    {
+      "test": "terrain_model_bounds_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 9
     }
   ],
   "regression": {
@@ -44,9 +65,9 @@
     "refined_cottage_matches_HEAD": true,
     "sky_pngs_unchanged": 2,
     "sky_import_matches_HEAD": true,
-    "unchanged_terrain_camera_assembly_shader_sources": 20
+    "unchanged_other_terrain_camera_lighting_shader_sources": 18
   },
-  "review": "Independent read-only source/still review found no confirmed Critical/Important defect. Tree/eave shadows modestly soften; cliffs, terraces and pond edging retain readable depth. Minor tradeoff: wider penumbrae make stippling more noticeable on cottage gable and broad cliff faces. Reviewer did not run Godot or assess temporal noise, other quality settings, target devices or full visual acceptance.",
+  "review": "Independent read-only source/probe/still review found no confirmed Critical/Important defect. Fuller accents/fewer wiry tall tufts give a modest positive gain, with full-scene readability retained in all four edits. Clumps remain rigid angular spikes compared with the reference's slender,splayed,less repeated blades. No obvious floating bases or waterfall obstruction in reviewed stills. Original arrays do not imply unchanged shading; curved-grass palette intentionally changes. Reviewer did not run Godot or assess temporal/arbitrary-footprint/upper-blade/platform performance/full acceptance.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -997,6 +1018,27 @@
       ],
       "review": "Independent read-only source/probe/final-still review found no confirmed Critical/Important defect. Non-spill stop joins wrapping runs and flushes them; closed rings retain WHITE bypass. Linear across/worlddrop coordinates and constant run-width code survive barycentric clipping. Reciprocal decoding recovers inverse width before quantization, with positive guards and capped normalized fade preserving a center on narrow streams. Brighter cyan and vertical highlights improve over the heavy-net trial. Straight crest, patterned curtain and mound-like foam remain gaps. No obvious new interruption/seam in refreshed captures. Reviewer did not run Godot, benchmark or establish temporal/platform/arbitrary-range/full-acceptance coverage.",
       "verification_sequence": "All eight affected scripts pass after final reciprocal-width encoding and quieter-net/stronger-strand shader. Final capture63745 and temporary geometry probe exit0. Final standalone benchmark18142 exits0 with three terminal runs; intermediate color-only/strong-net capture and benchmark are not final evidence."
+    },
+    "d87d33b": {
+      "scope": "Daylight-only refinement of sun energy/angular size, ambient fill and SSAO strength. Fresh runtime/camera checks, actual Metal full/detail/four-edit renders, original/source preservation and standalone benchmark. Geometry/assembly/shaders unchanged against2db8ed9. User visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 8
+        }
+      ],
+      "review": "Independent read-only source/still review found no confirmed Critical/Important defect. Tree/eave shadows modestly soften; cliffs, terraces and pond edging retain readable depth. Minor tradeoff: wider penumbrae make stippling more noticeable on cottage gable and broad cliff faces. Reviewer did not run Godot or assess temporal noise, other quality settings, target devices or full visual acceptance.",
+      "verification_sequence": "Final bounded daylight settings captured successfully; runtime22/22 and camera8/8 exit0; standalone three-run benchmark exit0. Stronger ambient.50/angular4.5/SSAO.75 trial rejected for flatter cliffs and excluded from final evidence."
     }
   },
   "limitations": [
@@ -1011,7 +1053,8 @@
     "Cooler/calm cliff shading is a modest material improvement, not correction of deep recesses, broad smooth patches or horizontal lower folds. Rejected gradient-normal trials are absent.",
     "Pointed foliage is closer to target but remains narrow and regularly repeated, with occasional detached-looking occluded tips and sparse flat rim sprays. Full placed vertices clear the global cliff minimum in three8x8 fixtures only; local contact/arbitrary footprints remain unproven.",
     "Waterfall run metadata preserves tested published gradients; wrapped-run/sentinel/seam numerical equality is source-reviewed rather than exhaustively tested. Vertex-color precision limits extreme widths. Temporal transparency and arbitrary outlets remain unverified; straight crest, patterned curtain and mound-like foam remain visual gaps.",
-    "Wider daylight penumbrae show visible stippling in close-ups; temporal shadow noise and alternate quality/backends unmeasured."
+    "Wider daylight penumbrae show visible stippling in close-ups; temporal shadow noise and alternate quality/backends unmeasured.",
+    "Current pointed grass clumps are fuller but rigid/angular; near-base support probe does not prove upper-blade intersections or arbitrary terrain."
   ],
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
@@ -1272,7 +1315,7 @@
     "limits": "Five unchanged selected non-cliff pixels are finite separation evidence, not whole-image identity. Material cannot fix deep recesses, broad smooth patches or horizontal lower folds; temporal behavior and alternate-device rendering unverified.",
     "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
   },
-  "verification_sequence": "Final bounded daylight settings captured successfully; runtime22/22 and camera8/8 exit0; standalone three-run benchmark exit0. Stronger ambient.50/angular4.5/SSAO.75 trial rejected for flatter cliffs and excluded from final evidence.",
+  "verification_sequence": "Nonempty-clump assertion fails with baseline81/82. Final short/wider/clump-support settings pass decoration99/99,incremental20/20,runtime22/22,camera8/8,model-bounds9/9; final actual capture,model/base-support probe and standalone three-run benchmark exit0. Taller/narrower reed-like trial excluded from final evidence.",
   "compact_cliff_refinement": {
     "baseline": "12ce140",
     "geometry": "Cellular relief amplitude/offset1.02/-.16 to.75/-.10; broad-profile horizontal noise.10 to.04, vertical.25 to.09, foot.04 to.02, profile Y wave.16 to.06. Narrow base-profile coefficients unchanged.",
@@ -1435,6 +1478,64 @@
       "edit_contract.png"
     ],
     "limits": "Modest static lighting improvement, not a major fidelity gain; shadow stippling remains and temporal quality/other backends are unmeasured. Original 15b0c0e sky pixel comparison is historical; new lighting intentionally changes opaque pixels.",
-    "docs": "https://docs.godotengine.org/en/stable/classes/class_light3d.html#class-light3d-property-light-angular-distance"
+    "docs": "https://docs.godotengine.org/en/stable/classes/class_light3d.html#class-light3d-property-light-angular-distance",
+    "revision": "d87d33b: historical daylight refinement; lighting source unchanged this grass pass"
+  },
+  "tuft_refinement": {
+    "baseline": "d87d33b",
+    "source": "Retained Kenney CC0 plant_flatTall,original unchanged. Three existing part copies normalized to .56\u00d7(.40+.055*i)\u00d7.52,rotated by2.39996*i,offset .10 and tinted unequally,merged into one grass_clump mesh. Retained Quaternius short grass remains unchanged as a resource.",
+    "placement": "Interior cluster>-.20/probability.13,scale.85..1.10,four-point support radius.52. Rare tall clump probability.030,scale(1.35,1.65,1.35),radius.65 replaces old curved tall grass. Edge candidate .70 inward,probability.20,scale.95,center dry/equal-height plus four-point radius.52.",
+    "palette": "Curved-grass dark remap RGB(.20,.34,.035) to(.25,.38,.065),light end unchanged(.58,.69,.12). Pointed clumps retain vertex-color shading.",
+    "regression": {
+      "before": "Baseline81/82: missing nonempty solid clumps",
+      "after": "Final99/99: nonempty clumps,height following,deterministic raised counts and flood removal plus retained decoration behavior",
+      "limits": "Assertion counts depend on generated population; finite8\u00d78 plateau fixture,not every terrain shape."
+    },
+    "probe": {
+      "source": "Temporary /tmp/terrain_tuft_probe.gd",
+      "exit": 0,
+      "unchanged_existing_model_arrays": 49,
+      "channels": "non-null vertex/normal/color/UV/index arrays across existing model resources; excludes new clump resource; shader intentionally changes",
+      "base_fixtures": [
+        {
+          "layout": "initial",
+          "clumps": 51,
+          "base_vertex_entries": 4284,
+          "unsupported_entries": 0
+        },
+        {
+          "layout": "raise",
+          "clumps": 49,
+          "base_vertex_entries": 4116,
+          "unsupported_entries": 0
+        },
+        {
+          "layout": "lower",
+          "clumps": 50,
+          "base_vertex_entries": 4200,
+          "unsupported_entries": 0
+        },
+        {
+          "layout": "expand",
+          "clumps": 52,
+          "base_vertex_entries": 4368,
+          "unsupported_entries": 0
+        },
+        {
+          "layout": "contract",
+          "clumps": 51,
+          "base_vertex_entries": 4284,
+          "unsupported_entries": 0
+        }
+      ],
+      "limits": "Actual transformed clump vertices with localY<=.025 only; entries include duplicates. Tests dry/equal-height surface underneath near-base entries,not upper blades,all prop intersections or arbitrary terrain."
+    },
+    "matched_before": [
+      "composition_wip_before_tuft_refinement.png",
+      "detail_cliffs_before_tuft_refinement.png",
+      "detail_shoreline_before_tuft_refinement.png",
+      "detail_vegetation_before_tuft_refinement.png"
+    ],
+    "limits": "Fuller accents are a modest fidelity gain; rigid/angular/repeated clumps still differ from slender splayed reference grass. No exact-match or acceptance claim."
   }
 }
