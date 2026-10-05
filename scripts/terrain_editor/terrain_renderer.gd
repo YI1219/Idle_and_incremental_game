@@ -43,8 +43,8 @@ func configure(source:Data)->void:
 		var water:=ShaderMaterial.new()
 		water.shader=load("res://shaders/terrain_editor/water.gdshader")
 		materials.water=water
-		var fall:=water.duplicate()
-		fall.set_shader_parameter("fall",true)
+		var fall:=ShaderMaterial.new()
+		fall.shader=load("res://shaders/terrain_editor/waterfall.gdshader")
 		materials.waterfall=fall
 	for cell:Vector2i in data.cells:
 		for z in range(-1,2):
@@ -111,7 +111,7 @@ func _rebuild(chunk:Vector2i)->void:
 		instance.name=key
 		instance.mesh=geometry[key]
 		instance.material_override=materials[key]
-		instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+		instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if key=="waterfall" else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 		node.add_child(instance)
 	_pending_chunks[chunk]=node
 	if decoration!=null:

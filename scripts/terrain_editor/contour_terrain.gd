@@ -63,6 +63,7 @@ func refresh(data:Data)->void:
 		for loop:PackedVector2Array in water_regions[level]:_falls(loop,level*.5+.045)
 	_smooth_normals(surfaces.cliff)
 	_smooth_normals(surfaces.bank)
+	_smooth_normals(surfaces.waterfall)
 	_index_triangles()
 
 static func _area(p:PackedVector2Array)->float:
@@ -306,32 +307,37 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 		var after:=loop[(i+2)%loop.size()]
 		var normal_a:=Vector2(b.y-before.y,before.x-b.x).normalized()
 		var normal_b:=Vector2(after.y-a.y,a.x-after.x).normalized()
-		var apron_a:=Vector3(a.x,water_y,a.y)
-		var apron_b:=Vector3(b.x,water_y,b.y)
-		var p:=_fall_point(a,normal_a,water_y,water_y)
-		var q:=_fall_point(b,normal_b,water_y,water_y)
-		var r:=_fall_point(b,normal_b,water_y,low+.07)
-		var s:=_fall_point(a,normal_a,water_y,low+.07)
-		surfaces.water.quad(apron_a,apron_b,q,p,Color.WHITE,true)
-		# Both curtains sample the same world-height lattice. Terminal points
-		# interpolate that lattice too, so different landing heights cannot slit
-		# their common edge or move the upper flow when a receiver is edited.
+		# Fixed world-height rows preserve joins over different receiver heights.
 		var rows:Array=[]
 		var height:=floorf(water_y*2)*.5
 		while height>low+.07:
 			rows.append(height)
 			height-=.5
 		rows.append(low+.07)
-		var previous_a:=p
-		var previous_b:=q
-		for y:float in rows:
-			var current_a:=_fall_point(a,normal_a,water_y,y)
-			var current_b:=_fall_point(b,normal_b,water_y,y)
-			surfaces.waterfall.quad(previous_b,previous_a,current_a,current_b,Color.WHITE)
-			previous_a=current_a
-			previous_b=current_b
-		var back:=Vector3(out.x,0,out.y)*.18
-		surfaces.bank.quad(p-back+Vector3(0,.012,0),q-back+Vector3(0,.012,0),q+Vector3(0,.012,0),p+Vector3(0,.012,0),Color.WHITE,true)
+		# Subdivide long outlets laterally so physical folds survive triangulation.
+		var columns:=maxi(1,ceili(a.distance_to(b)/.32))
+		for column in columns:
+			var t0:=float(column)/columns
+			var t1:=float(column+1)/columns
+			var a0:=a.lerp(b,t0)
+			var b0:=a.lerp(b,t1)
+			var n0:=normal_a.lerp(normal_b,t0).normalized()
+			var n1:=normal_a.lerp(normal_b,t1).normalized()
+			var p:=_fall_point(a0,n0,water_y,water_y)
+			var q:=_fall_point(b0,n1,water_y,water_y)
+			surfaces.water.quad(Vector3(a0.x,water_y,a0.y),Vector3(b0.x,water_y,b0.y),q,p,Color.WHITE,true)
+			var previous_a:=p
+			var previous_b:=q
+			for y:float in rows:
+				var current_a:=_fall_point(a0,n0,water_y,y)
+				var current_b:=_fall_point(b0,n1,water_y,y)
+				surfaces.waterfall.quad(previous_b,previous_a,current_a,current_b,Color.WHITE)
+				previous_a=current_a
+				previous_b=current_b
+			var back:=Vector3(out.x,0,out.y)*.09
+			surfaces.bank.quad(p-back+Vector3(0,.012,0),q-back+Vector3(0,.012,0),q+Vector3(0,.012,0),p+Vector3(0,.012,0),Color.WHITE,true)
+		var r:=_fall_point(b,normal_b,water_y,low+.07)
+		var s:=_fall_point(a,normal_a,water_y,low+.07)
 		if not sample.is_empty() and sample.water>=0:
 			var center:=(r+s)*.5+Vector3(out.x*.24,.015,out.y*.24)
 			_splash(center,out,i)
@@ -365,15 +371,19 @@ func _foam_triangle(a:Vector3,b:Vector3,c:Vector3,base:float)->void:
 
 static func _fall_point(p:Vector2,normal:Vector2,water_y:float,y:float)->Vector3:
 	var lower:=floorf(y*2)*.5
-	var offset:=lerpf(_fall_offset(water_y,lower),_fall_offset(water_y,lower+.5),(y-lower)*2)
+	var offset:=lerpf(_fall_offset(water_y,lower)+_fall_fold(p,water_y,lower),_fall_offset(water_y,lower+.5)+_fall_fold(p,water_y,lower+.5),(y-lower)*2)
 	return Vector3(p.x+normal.x*offset,y,p.y+normal.y*offset)
+
+static func _fall_fold(p:Vector2,water_y:float,y:float)->float:
+	var drop:=maxf(0,water_y-y)
+	return .12*sin(p.x*6.2+p.y*4.3+drop*.18)*(1-exp(-drop*4.0))
 
 static func _fall_offset(water_y:float,y:float)->float:
 	var drop:=maxf(0,water_y-y)
 	return .36+.13*(1-exp(-drop*.8))+.08*sin(drop*1.5)*minf(1,drop)
 
 func _smooth_normals(surface)->void:
-	# Smooth generated cliff/foam surfaces. Embedded stone models retain their
+	# Smooth generated cliff, foam and waterfall surfaces. Embedded stone models retain their
 	# original flat facets. Shared positions also join normals across chunks.
 	var sums:Dictionary={}
 	for i in range(0,surface.vertices.size(),3):
@@ -441,7 +451,7 @@ func build(chunk:Vector2i)->Dictionary:
 				if kind=="bank":
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
-				if kind in ["cliff","bank"]:
+				if kind in ["cliff","bank","waterfall"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
 				if kind=="waterfall" and local.vertices.size()>before:

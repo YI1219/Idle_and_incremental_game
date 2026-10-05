@@ -42,6 +42,34 @@ func run()->void:
 	data.end_stroke()
 	field.refresh(data)
 	shared_edge(field,"partially removed receiving terrain")
+	var wide_data:=Data.new()
+	for z in range(-3,4):
+		for x in range(-8,8):wide_data.cells[Vector2i(x,z)]={"height":1.0 if z<0 else 3.0,"water":3 if z<0 else 7}
+	var wide:=Contours.new()
+	wide.refresh(wide_data)
+	wide.surfaces.waterfall=Geometry.Surface.new()
+	wide._falls(PackedVector2Array([Vector2(-8,0),Vector2(8,0),Vector2(8,3),Vector2(-8,3)]),3.545)
+	var largest_span:=0.0
+	var row:Dictionary={}
+	var wide_vertices:PackedVector3Array=wide.surfaces.waterfall.vertices
+	for i in range(0,wide_vertices.size(),3):
+		for side in 3:
+			var a:=wide_vertices[i+side]
+			var b:=wide_vertices[i+(side+1)%3]
+			largest_span=maxf(largest_span,Vector2(a.x,a.z).distance_to(Vector2(b.x,b.z)))
+	for v in wide_vertices:
+		if absf(v.y-2.0)<.00001 and v.z<0 and absf(v.x)<6.0:row[v.x]=v.z
+	check(largest_span<1.0,"Wide outlet triangles have enough lateral resolution to follow folded flow")
+	var columns:=row.keys()
+	columns.sort()
+	var turns:=0
+	var previous_slope:=0.0
+	for i in range(1,columns.size()):
+		var slope:float=row[columns[i]]-row[columns[i-1]]
+		if absf(slope)<.0001:continue
+		if previous_slope*slope<0:turns+=1
+		previous_slope=slope
+	check(turns>=4,"Wide outlet has repeated physical folds rather than one bowed plane")
 	var splash_data:=Data.new()
 	for z in range(-3,4):
 		for x in 4:splash_data.cells[Vector2i(x,z)]={"height":1.0 if z<0 else 3.0,"water":3 if z<0 else 7}

@@ -1,13 +1,27 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh final cliff angular shading and matching embedded-model palette; authoritative contour geometry and picking unchanged. Actual full/detail/four-edit Metal captures regenerated.",
+  "scope": "Fresh final physical waterfall folds, translucent directional flow and preserved opaque pond shading. Actual full/detail/four-edit Metal captures regenerated.",
   "suite": [
+    {
+      "test": "terrain_contour_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 1025
+    },
     {
       "test": "terrain_incremental_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
       "checks": 20
+    },
+    {
+      "test": "terrain_editor_data_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 301
     },
     {
       "test": "terrain_editor_decoration_test.gd",
@@ -38,18 +52,47 @@
       "checks": 8
     },
     {
+      "test": "terrain_waterfall_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 29
+    },
+    {
+      "test": "terrain_shoreline_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 9
+    },
+    {
       "test": "terrain_model_bounds_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
       "checks": 9
+    },
+    {
+      "test": "terrain_narrow_cliff_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "slices": 794,
+      "failures": 0,
+      "minimum_gap": 0.0306
     }
   ],
+  "regression": {
+    "before": "27/29 passed; wide outlet was an under-subdivided bowed plane",
+    "after": "29/29 passed; lateral resolution and repeated physical folds verified",
+    "retained": "Mixed-height receivers, lowered/contracted landing terrain and splash gradient checks retain their original pass conditions",
+    "limitations": "Not exhaustive outlet-orientation, mixed-height normal or transparent-overlap coverage."
+  },
   "render_verification": {
     "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
     "backend": "Metal Forward+",
     "exit": 0,
-    "operations_changed_cells": {
+    "edits_changed_cells": {
       "raise": 16,
       "lower": 12,
       "expand": 14,
@@ -57,20 +100,18 @@
     },
     "output": "Actual full scene, three details, four edits and editor UI"
   },
-  "previous_revision_checks": {
-    "fed1ca3": "Cottage material 7/7; runtime 22/22 and camera 8/8",
-    "2535c6e": "Eleven terrain scripts freshly passed at this revision; retained geometry-specific suite not fully rerun for the shader-only pass."
-  },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
     "kenney_source_glbs_unchanged": 11,
     "refined_cottage_matches_HEAD": true
   },
-  "review": "Independent read-only review of final code and actual before/after captures found no Critical/Important issue. Normal quantization was removed after stretched-patch feedback. Body facets stay world anchored; embedded stones share palette, retain physical normals and receive material after merge. Review did not rerun Godot during reserved benchmark window. Some elongated patches and broad physical shell remain; whole-scene visual acceptance pending.",
+  "review": "Independent read-only reviewer found no Critical/Important issue in the bounded waterfall change. Shared-height fold interpolation, neighboring column endpoints, chunk normals, picking, pond math and downward flow were checked from source and captures. Vertical flow/translucency improves on opaque net baseline; rectangular outline and repeated foam remain gaps. Reviewer did not rerun Godot during benchmark reservation. Overall visual acceptance remains pending.",
+  "previous_revision_checks": {
+    "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence."
+  },
   "limitations": [
-    "Shading improvement does not establish physical rock-volume fidelity.",
-    "Temporal shimmer and target-device rendering unverified.",
-    "Current M4 Pro frame-time samples higher than preceding cottage pass; no performance improvement claimed.",
-    "Target laptops and long idle remain unmeasured."
+    "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
+    "Temporal shimmer and cross-platform rendering unverified.",
+    "M4 Pro short samples do not prove target-laptop or long-idle performance."
   ]
 }
