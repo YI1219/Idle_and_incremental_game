@@ -11,10 +11,12 @@ var surfaces:Dictionary={}
 var source:Data
 var triangle_chunks:Dictionary={}
 var _profiles:Dictionary={}
+var _rock_relief_cache:Dictionary={}
 
 func refresh(data:Data)->void:
 	source=data
 	_profiles.clear()
+	_rock_relief_cache.clear()
 	land_regions.clear()
 	water_regions.clear()
 	levels.clear()
@@ -219,7 +221,12 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 	var edge_weight:=clampf((profile.top-y)*2,0,1)*clampf((y-profile.bottom)*2,0,1)
 	y+=sin(p.x*1.17+p.y*.91+y*1.73)*.16*edge_weight
 	var f:=clampf((profile.top-y)/depth,0,1)
-	return _rock_point(p,y,f,profile.base,minf(1.0,depth/2.2),normal,profile.inset)
+	var rounded:=0.0
+	if not profile.base or profile.inset>.35:
+		var key:=Vector3(p.x,y,p.y)
+		if not _rock_relief_cache.has(key):_rock_relief_cache[key]=_rock_relief(key)
+		rounded=_rock_relief_cache[key]
+	return _rock_point(p,y,f,profile.base,minf(1.0,depth/2.2),normal,profile.inset,rounded)
 
 func _cliffs(loop:PackedVector2Array,top:float,bottom:float)->void:
 	for i in loop.size():
@@ -255,17 +262,36 @@ func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 		if top<height:return minf(1.5,distance*.28)
 	return 1.5
 
-static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,normal:Vector2=Vector2.ZERO,inset_limit:float=1.5)->Vector3:
+static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,normal:Vector2=Vector2.ZERO,inset_limit:float=1.5,rounded_relief:float=NAN)->Vector3:
 	var inset:=normal*(inset_limit*pow(f,1.5) if base else 0.0)
-	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*.38*sin(PI*f)
-	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(.62*sin(PI*f)+(.22*pow(f,4.0) if base else 0.0))
-	# Physical shoulders vary along the contour and at world heights. Their
-	# relief fades to zero at true boundaries, preserving joined caps and steps.
-	var ledge:float=(sin(y*1.7+p.x*.41+p.y*.57)*.32+sin(y*.6-p.x*.9+p.y*.43)*.16)*sin(PI*f)*relief
-	# Narrow necks already spend their available width on taper and noise.
-	# Fade extra shoulders out before they can push opposing walls together.
-	ledge*=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
+	var width_weight:=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
+	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,.10,width_weight)*sin(PI*f)
+	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(lerpf(.62,.25,width_weight)*sin(PI*f)+(lerpf(.22,.11,width_weight)*pow(f,4.0) if base else 0.0))
+	# Rounded rock shoulders share a world-anchored field with the material.
+	# Preserve the proven narrow-wall profile and fade relief at true boundaries.
+	if is_nan(rounded_relief):rounded_relief=_rock_relief(Vector3(p.x,y,p.y)) if width_weight>0.0 else 0.0
+	var ledge:=rounded_relief*sin(PI*f)*relief*width_weight
 	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
+
+static func _rock_relief(point:Vector3)->float:
+	var p:=point/Vector3(2.2,1.8,2.2)
+	var cell:=p.floor()
+	var f:=p-cell
+	var nearest:=10.0
+	for z in range(-1,2):
+		for y in range(-1,2):
+			for x in range(-1,2):
+				var offset:=Vector3(x,y,z)
+				var delta:=offset+_rock_hash(cell+offset)*.72+Vector3.ONE*.14-f
+				nearest=minf(nearest,delta.length_squared())
+	return .72*(1.0-smoothstep(.16,.80,sqrt(nearest)))-.10
+
+static func _rock_hash(point:Vector3)->Vector3:
+	var q:=point*Vector3(.123,.117,.139)
+	q-=q.floor()
+	q+=Vector3.ONE*q.dot(Vector3(q.z,q.x,q.y)+Vector3.ONE*19.19)
+	var value:=Vector3((q.x+q.y)*q.z,(q.y+q.z)*q.x,(q.z+q.x)*q.y)
+	return value-value.floor()
 
 func _falls(loop:PackedVector2Array,water_y:float)->void:
 	if _area(loop)<0:return

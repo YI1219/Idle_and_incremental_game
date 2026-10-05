@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh final checks for fuller irregular crowns, shorter grass, varied flattened pond edging and ground color facets. Includes unchanged contour, shoreline, waterfall, incremental publication and camera checks. Unrelated gameplay suite was last verified at 461ed14.",
+  "scope": "Fresh final checks for world-space cellular cliff shoulders, reduced broad-wall wave noise, matching material classification and per-refresh exact-position relief cache. Includes contour, shoreline, waterfall, incremental publication, leaf bounds and camera checks. Unrelated gameplay suite was last verified at 461ed14.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
@@ -87,7 +87,7 @@
     "terrain_model_bounds_test": 9
   },
   "regression": "Existing mixed-height waterfall joins remain 24/24. New splash checks failed 24/26 before raised/faded foam, then 26/27 when chunk clipping lost vertex opacity; final gradient preservation passes 27/27. Narrow cliff separation remains 794 slices with no overlaps; atomic shoreline remains 9/9. Indexed leaf-bounds invariance failed 4/9 before restricting bounds to referenced vertices and passes 9/9 afterward. Godot importer probe reports current tree_oak leaf surface 114 vertices, 114 referenced, full and active bounds identical: this regression protects other inputs and is not a demonstrated current-asset fix.",
-  "review": "Independent final foliage review found no Important correctness issue. Deterministic placement, terrain support and atomic publication are unchanged; fuller crowns reduce flattening but visible assembled lobes remain. Existing sky/water review cleared chunk joins, opacity/normal interpolation and corrected downward flow. Visual user acceptance remains pending.",
+  "review": "Independent cliff review found no Important correctness issue and reran incremental20/20 and narrow794 without overlaps. Actual captures break long folds into more distinct regions, but broad smooth bulges remain. Independent cache review cleared invalidation and output equivalence: the exact warped position fully determines relief, and every refresh clears cached values. Existing foliage/sky/water reviews cover preceding changes. Visual user acceptance remains pending.",
   "limitations": [
     "Target Windows thin laptop/MacBook Air and long-idle performance are unmeasured this round.",
     "Legacy unrelated gameplay suite is historical evidence for the previous revision, not a fresh full-suite claim."

@@ -14,7 +14,7 @@ vec3 rock_hash(vec3 p){
 void fragment(){
 	// One world-space rock field across the joined cliff volume. Broad facets
 	// stay anchored through edits instead of exposing the mesh's height rows.
-	vec3 p=world_position/vec3(2.5,2.1,2.5);
+	vec3 p=world_position/vec3(2.2,1.8,2.2);
 	vec3 cell=floor(p);vec3 f=fract(p);float nearest=10.0;vec3 selected=cell;
 	for(int z=-1;z<=1;z++)for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
 		vec3 offset=vec3(float(x),float(y),float(z));
@@ -23,10 +23,10 @@ void fragment(){
 		if(d<nearest){nearest=d;selected=cell+offset;}
 	}
 	vec3 variation=rock_hash(selected+vec3(17.0));
-	vec3 perturb=(variation-.5)*.55;
+	vec3 perturb=(variation-.5)*.90;
 	vec3 facet_normal=normalize(world_normal+perturb);
 	NORMAL=normalize((VIEW_MATRIX*vec4(facet_normal,0.0)).xyz);
-	vec3 gray=mix(vec3(.34,.365,.365),vec3(.46,.465,.425),variation.x);
+	vec3 gray=mix(vec3(.32,.345,.345),vec3(.49,.49,.435),variation.x);
 	ALBEDO=gray;
 	ROUGHNESS=.96;
 	SPECULAR=.15;
