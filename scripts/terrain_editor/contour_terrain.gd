@@ -214,13 +214,23 @@ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
 				var height:float=record.water*.5 if record.water>=0 else record.height
 				top=minf(top,height)
 	var water:int=inside.get("water",-1)
-	# Mouth-side rock vertices may belong to dry shoreline cells. Include the
-	# immediate wet neighbor along the contour so a shoulder cannot enter a spill.
+	# A curved mouth's dry-side tangent can miss the nearby pond. Use the
+	# authoritative wet support around the bend to protect its rock shoulders.
 	if water<0:
-		var tangent:=Vector2(-normal.y,normal.x)
-		for side in [-1.0,1.0]:
-			var neighbor:=surface_at(p-normal*.25+tangent*side*.8)
-			if neighbor.get("water",-1)>=0 and neighbor.height<=top+.05:water=maxi(water,neighbor.water)
+		var cell:=Vector2i(p.floor())
+		for z in range(-2,3):
+			for x in range(-2,3):
+				var nearby:=cell+Vector2i(x,z)
+				var record:Dictionary=source.cells.get(nearby,{})
+				var level:int=record.get("water",-1)
+				if level<0 or level*.5>top+.05:continue
+				if p.distance_squared_to(Vector2(nearby)+Vector2.ONE*.5)>1.6*1.6:continue
+				# An intact dry bank separates enclosed ponds from the outer
+				# cliff. Only neighboring water with an exposed drop can spill.
+				for direction:Vector2i in Legacy.SIDES:
+					var receiver:Dictionary=source.cells.get(nearby+direction,{})
+					var height:float=receiver.water*.5 if receiver.get("water",-1)>=0 else receiver.get("height",BOTTOM)
+					if height<level*.5-.1:water=maxi(water,level);break
 	var profile:={"top":top,"bottom":bottom,"base":outside.is_empty(),"inset":_inset_limit(p,normal,top) if outside.is_empty() else 0.0,"water":water}
 	_profiles[key]=profile
 	return profile
@@ -297,11 +307,15 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	var inset:=normal*(inset_limit*pow(f,1.5) if base else 0.0)
 	var width_weight:=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
 	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,.10,width_weight)*sin(PI*f)
-	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(lerpf(.62,.25,width_weight)*sin(PI*f)+(lerpf(.22,.11,width_weight)*pow(f,4.0) if base else 0.0))
+	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(lerpf(.62,.25,width_weight)*sin(PI*f)+(lerpf(.22,.04,width_weight)*pow(f,4.0) if base else 0.0))
 	# Rounded rock shoulders share a world-anchored field with the material.
 	# Preserve the proven narrow-wall profile and fade relief at true boundaries.
 	if is_nan(rounded_relief):rounded_relief=_rock_relief(Vector3(p.x,y,p.y)) if width_weight>0.0 else 0.0
-	var ledge:=rounded_relief*pow(maxf(0.0,sin(PI*f)),.65)*relief*width_weight
+	# Keep shoulders above, then settle into a compact base instead of deep
+	# scallops. The lower envelope reaches the foot with a finite slope.
+	var envelope:=pow(maxf(0.0,sin(PI*f)),lerpf(.65,1.0,smoothstep(.50,.85,f)))
+	if base:envelope*=lerpf(1.0,.25,smoothstep(.55,.95,f))
+	var ledge:=rounded_relief*envelope*relief*width_weight
 	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
 
 static func _rock_relief(point:Vector3)->float:

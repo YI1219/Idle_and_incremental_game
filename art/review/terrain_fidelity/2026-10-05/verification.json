@@ -1,7 +1,42 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh sky-only runtime mipmap/filter/contrast treatment, neutral lighting preserved; actual full/detail/four-edit Metal captures regenerated.",
+  "scope": "Fresh lower-cliff envelope and curved wet-mouth support correction, including intact-bank preservation. All eleven relevant scripts and actual full/detail/four-edit Metal captures regenerated.",
   "suite": [
+    {
+      "test": "terrain_contour_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 1025
+    },
+    {
+      "test": "terrain_incremental_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 20
+    },
+    {
+      "test": "terrain_editor_data_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 301
+    },
+    {
+      "test": "terrain_editor_decoration_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 118
+    },
+    {
+      "test": "terrain_editor_render_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 339
+    },
     {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
@@ -15,6 +50,36 @@
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
       "checks": 8
+    },
+    {
+      "test": "terrain_waterfall_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 33
+    },
+    {
+      "test": "terrain_shoreline_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 9
+    },
+    {
+      "test": "terrain_model_bounds_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 9
+    },
+    {
+      "test": "terrain_narrow_cliff_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "slices": 794,
+      "failures": 0,
+      "minimum_gap": 0.0306
     }
   ],
   "regression": {
@@ -22,7 +87,7 @@
     "after": "30/30 passed; zero blocked reference samples after wet-mouth shoulder limits",
     "retained": "Wide-outlet physical folds, mixed-height receivers, narrow strip clearance and incremental reconstruction checks remain passing",
     "limitations": "Finite reference sampling, not exhaustive arbitrary-layout or entire-surface clearance coverage.",
-    "revision": "afea19c regression, last freshly rerun at800e55c; cliff/waterfall geometry unchanged in the sky-only round"
+    "revision": "afea19c default reference regression, freshly retained in this round"
   },
   "render_verification": {
     "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
@@ -44,7 +109,7 @@
     "sky_pngs_unchanged": 2,
     "sky_import_matches_HEAD": true
   },
-  "review": "Independent read-only reviewer inspected source and actual full/detail captures. No Critical/Important issue found: derived image mipmaps preserve the imported fallback, shader material retains the runtime texture, five taps sum to one and edge sampling clamps; cubemap lighting remains unchanged. Softer clouds and paler cyan improve reference coherence. Minor gaps: washed lower-left cloud detail and a flatter upper sky than the reference gradient. Reviewer did not independently run tests or judge startup cost, alternate resolutions, target-device rendering or performance. This clears the bounded sky pass; human visual acceptance of the scene remains pending.",
+  "review": "Final independent read-only source/capture review found no Critical/Important issue in the bounded lower-envelope/wet-mouth correction and no new cap gap. The lookup is local, bounded and profile-cached. Actual lower shoulders are modestly calmer; pointed feet remain and likely depend on inset/normal/taper relationships. Remaining contracted-spill concealment is consistent with valid foreground land. Reviewer validated the two-way crossing probe and suggested nonzero inspected-curtain coverage; that assertion was added and passes 33/33. Reviewer did not independently run Godot, benchmark, or establish arbitrary-layout/full-fidelity acceptance. User visual acceptance remains pending.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -130,10 +195,30 @@
         }
       ],
       "scope": "Full terrain/canopy eleven-script verification before the sky-only treatment; code for those modules unchanged this round."
+    },
+    "15b0c0e": {
+      "scope": "Fresh sky-only runtime mipmap/filter/contrast treatment, neutral lighting preserved; actual full/detail/four-edit Metal captures regenerated.",
+      "suite": [
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 8
+        }
+      ],
+      "review": "Independent read-only reviewer inspected source and actual full/detail captures. No Critical/Important issue found: derived image mipmaps preserve the imported fallback, shader material retains the runtime texture, five taps sum to one and edge sampling clamps; cubemap lighting remains unchanged. Softer clouds and paler cyan improve reference coherence. Minor gaps: washed lower-left cloud detail and a flatter upper sky than the reference gradient. Reviewer did not independently run tests or judge startup cost, alternate resolutions, target-device rendering or performance. This clears the bounded sky pass; human visual acceptance of the scene remains pending."
     }
   },
   "limitations": [
-    "Deep cliff scallops, pointed lower projections and elongated patches remain reference differences; finite curtain rays do not prove arbitrary-layout clearance.",
+    "Pointed cliff feet and elongated patches remain reference differences. The lower envelope is only a modest refinement; finite default rays and contracted-mouth intersections do not prove arbitrary-layout clearance.",
     "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
     "Temporal shimmer and cross-platform rendering unverified.",
     "M4 Pro short samples do not prove target-laptop or long-idle performance.",
@@ -183,5 +268,12 @@
       "wall"
     ],
     "limitation": "Six static pixel samples plus unchanged source settings support lighting separation, not whole-image identity or exhaustive platform behavior."
+  },
+  "curved_mouth_regression": {
+    "before": "30/31: two interior curtain/cliff triangle-pair crossings in the contracted reference mouth",
+    "after": "33/33: zero contracted-mouth interior crossings; inspected curtain count is nonzero; intact enclosed-pond bank leaves dry outer cliff vertices unchanged",
+    "secondary_failure": "31/32: unrestricted radial wet support recessed a dry cliff behind an intact pond bank; exposed cardinal drop predicate corrected it",
+    "method": "Actual segment/triangle intersections in both edge directions, AABB-filtered around the edited mouth; excludes crest, foot and near-endpoint contacts; nonzero inspected-curtain count prevents a vacuous pass",
+    "limitations": "Finite selected geometry, not exhaustive intersections, coplanar overlap or every mouth orientation; legitimate foreground rim occlusion remains."
   }
 }

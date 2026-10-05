@@ -8,6 +8,32 @@ func check(ok:bool,message:String)->void:
 	checks+=1
 	if not ok:failures+=1;push_error(message)
 func _initialize()->void:call_deferred("run")
+func contracted_mouth_crossings(field:Contours)->Dictionary:
+	var cliffs:PackedVector3Array=field.surfaces.cliff.vertices
+	var falls:PackedVector3Array=field.surfaces.waterfall.vertices
+	var crossings:=0
+	var sampled:=0
+	for i in range(0,falls.size(),3):
+		var center:Vector3=(falls[i]+falls[i+1]+falls[i+2])/3.0
+		# Inspect the new curved mouth below its crest and above the island foot.
+		if Vector2(center.x-3,center.z-7).length()>4 or center.y>1.4 or center.y< -4.4:continue
+		sampled+=1
+		var fall_box:=AABB(falls[i],Vector3.ZERO).expand(falls[i+1]).expand(falls[i+2]).grow(.001)
+		for j in range(0,cliffs.size(),3):
+			var cliff_box:=AABB(cliffs[j],Vector3.ZERO).expand(cliffs[j+1]).expand(cliffs[j+2])
+			if not fall_box.intersects(cliff_box):continue
+			var intersects:=false
+			# Check both sets of edges. Foreground occlusion is legitimate; an
+			# actual interior segment/triangle crossing interrupts the stream.
+			for side in 3:
+				var a:=falls[i+side];var b:=falls[i+(side+1)%3]
+				var hit=Geometry3D.segment_intersects_triangle(a,b,cliffs[j],cliffs[j+1],cliffs[j+2])
+				if hit!=null and hit.distance_to(a)>.01 and hit.distance_to(b)>.01:intersects=true;break
+				var c:=cliffs[j+side];var d:=cliffs[j+(side+1)%3]
+				var reverse_hit=Geometry3D.segment_intersects_triangle(c,d,falls[i],falls[i+1],falls[i+2])
+				if reverse_hit!=null and reverse_hit.distance_to(c)>.01 and reverse_hit.distance_to(d)>.01:intersects=true;break
+			if intersects:crossings+=1
+	return {"crossings":crossings,"sampled":sampled}
 func shared_edge(field:Contours,label:String)->void:
 	field.surfaces.waterfall=Geometry.Surface.new()
 	# A straight outlet with a shared vertex over differently edited receivers.
@@ -118,6 +144,22 @@ func run()->void:
 				blocked+=1
 				break
 	check(samples>150 and blocked==0,"Reference waterfall clears actual cliff triangles (%d blocked of %d samples)"%[blocked,samples])
+	reference_data.begin_stroke()
+	reference_data.apply_brush(Vector2(3,7),2.2,"contract",false,1.5,3)
+	reference_data.end_stroke()
+	reference.refresh(reference_data)
+	var intersection_evidence:=contracted_mouth_crossings(reference)
+	check(intersection_evidence.sampled>0,"Contracted mouth produces curtains in the inspected region")
+	check(intersection_evidence.crossings==0,"Contracted curved mouth has no interior curtain/cliff crossings (%d triangle pairs)"%intersection_evidence.crossings)
+	var enclosed_data:=Data.new()
+	for z in range(-3,4):
+		for x in range(-3,4):enclosed_data.cells[Vector2i(x,z)]={"height":1.5,"water":-1}
+	var enclosed:=Contours.new()
+	enclosed.refresh(enclosed_data)
+	var dry_cliffs:PackedVector3Array=enclosed.surfaces.cliff.vertices.duplicate()
+	enclosed_data.cells[Vector2i(2,0)]={"height":1.0,"water":3}
+	enclosed.refresh(enclosed_data)
+	check(enclosed.surfaces.cliff.vertices==dry_cliffs,"An enclosed pond does not recess the dry outer cliff through its intact bank")
 
 	print("TERRAIN WATERFALL: %d/%d passed"%[checks-failures,checks])
 	quit(1 if failures else 0)
