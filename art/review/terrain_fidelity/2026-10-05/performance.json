@@ -9,103 +9,103 @@
 		{
 			"cells": 593,
 			"draw_calls": 496.0,
-			"duration_seconds": 12.001103,
+			"duration_seconds": 12.004473,
 			"edits": [
 				{
 					"changed_cells": 16,
 					"operation": "raise",
-					"visible_response_ms": 138.056
+					"visible_response_ms": 128.088
 				},
 				{
 					"changed_cells": 12,
 					"operation": "lower",
-					"visible_response_ms": 117.733
+					"visible_response_ms": 119.081
 				},
 				{
 					"changed_cells": 14,
 					"operation": "expand",
-					"visible_response_ms": 113.556
+					"visible_response_ms": 132.695
 				},
 				{
 					"changed_cells": 16,
 					"operation": "contract",
-					"visible_response_ms": 142.569
+					"visible_response_ms": 145.84
 				}
 			],
-			"frame_count": 1877,
-			"max_ms": 60.433,
-			"median_ms": 5.907,
-			"p95_ms": 15.354,
+			"frame_count": 1786,
+			"max_ms": 66.532,
+			"median_ms": 6.488,
+			"p95_ms": 15.864,
 			"run": 1,
-			"static_memory_mib": 57.8876066207886,
+			"static_memory_mib": 57.8910751342773,
 			"video_memory_mib": 206.875
 		},
 		{
 			"cells": 593,
 			"draw_calls": 496.0,
-			"duration_seconds": 12.007043,
+			"duration_seconds": 12.001058,
 			"edits": [
 				{
 					"changed_cells": 16,
 					"operation": "raise",
-					"visible_response_ms": 135.233
+					"visible_response_ms": 128.335
 				},
 				{
 					"changed_cells": 12,
 					"operation": "lower",
-					"visible_response_ms": 138.259
+					"visible_response_ms": 148.857
 				},
 				{
 					"changed_cells": 14,
 					"operation": "expand",
-					"visible_response_ms": 143.548
+					"visible_response_ms": 142.8
 				},
 				{
 					"changed_cells": 16,
 					"operation": "contract",
-					"visible_response_ms": 171.387
+					"visible_response_ms": 150.647
 				}
 			],
-			"frame_count": 1850,
-			"max_ms": 76.994,
-			"median_ms": 5.695,
-			"p95_ms": 15.43,
+			"frame_count": 1845,
+			"max_ms": 77.427,
+			"median_ms": 5.433,
+			"p95_ms": 15.899,
 			"run": 2,
-			"static_memory_mib": 57.8939352035522,
+			"static_memory_mib": 57.897403717041,
 			"video_memory_mib": 206.875
 		},
 		{
 			"cells": 593,
 			"draw_calls": 496.0,
-			"duration_seconds": 12.000949,
+			"duration_seconds": 12.003129,
 			"edits": [
 				{
 					"changed_cells": 16,
 					"operation": "raise",
-					"visible_response_ms": 137.428
+					"visible_response_ms": 137.037
 				},
 				{
 					"changed_cells": 12,
 					"operation": "lower",
-					"visible_response_ms": 144.07
+					"visible_response_ms": 142.895
 				},
 				{
 					"changed_cells": 14,
 					"operation": "expand",
-					"visible_response_ms": 141.392
+					"visible_response_ms": 143.496
 				},
 				{
 					"changed_cells": 16,
 					"operation": "contract",
-					"visible_response_ms": 155.188
+					"visible_response_ms": 151.499
 				}
 			],
-			"frame_count": 1829,
-			"max_ms": 78.323,
-			"median_ms": 6.055,
-			"p95_ms": 15.546,
+			"frame_count": 1854,
+			"max_ms": 77.175,
+			"median_ms": 5.615,
+			"p95_ms": 15.458,
 			"run": 3,
-			"static_memory_mib": 57.8974637985229,
+			"static_memory_mib": 57.9009323120117,
 			"video_memory_mib": 206.875
 		}
 	],

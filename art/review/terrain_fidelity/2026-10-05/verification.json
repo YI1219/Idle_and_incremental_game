@@ -1,139 +1,57 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh final checks for raised, more angular crowns above taller CC0 trunks with original low forks lifted into the crown at runtime. Geometry topology and ground-contact vertices remain unchanged. Actual Metal full/detail/four-edit captures regenerated. Includes contour, shoreline, waterfall, incremental publication, leaf bounds and camera checks. Unrelated gameplay suite was last verified at 461ed14.",
+  "scope": "Fresh cottage material-role and model-space projection refinement; original model geometry unchanged. Actual full/detail/four-edit Metal captures regenerated.",
   "suite": [
     {
-      "test": "terrain_contour_test.gd",
+      "test": "terrain_cottage_material_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_incremental_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_editor_data_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_editor_decoration_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_editor_render_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+      "runner": "tests/run_preview.py (Metal Forward+, fixed 60 Hz)",
+      "checks": 7
     },
     {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 22
     },
     {
       "test": "camera_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_waterfall_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_shoreline_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_narrow_cliff_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
-    },
-    {
-      "test": "terrain_model_bounds_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)"
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 8
     }
   ],
-  "targeted_checks": {
-    "terrain_contour_test": 1025,
-    "terrain_incremental_test": 20,
-    "terrain_editor_data_test": 301,
-    "terrain_editor_decoration_test": 118,
-    "terrain_editor_render_test": 339,
-    "terrain_editor_runtime_test": 22,
-    "camera_test": 8,
-    "terrain_waterfall_test": 27,
-    "terrain_shoreline_test": 9,
-    "terrain_narrow_cliff_test": {
-      "slices": 794,
-      "failures": 0,
-      "smallest_gap": 0.0306
-    },
-    "terrain_model_bounds_test": 9,
-    "branch_tip_probe": {
-      "method": "Temporary ray-parity tests against each final transformed leaf mesh, independent reviewer rerun",
-      "sampled_tips": 4,
-      "covered_tips": 4,
-      "source_points": [
-        [
-          -0.3507,
-          0.6967,
-          -0.1184
-        ],
-        [
-          0.3048,
-          0.5095,
-          -0.0888
-        ],
-        [
-          0,
-          0.3964,
-          -0.3033
-        ],
-        [
-          0,
-          0.8272,
-          0
-        ]
-      ],
-      "final_lobes": [
-        [
-          4,
-          9
-        ],
-        [
-          0,
-          5
-        ],
-        [
-          2
-        ],
-        [
-          13
-        ]
-      ],
-      "limitations": "Chosen points only; not exhaustive branch coverage."
-    }
+  "regression": {
+    "before_role_fix": "5/6 passed; plaster gable brightened into roof finish above height threshold",
+    "final_wall_gable_red": [
+      0.6906,
+      0.6885
+    ],
+    "view_space_normal_mutation": "6/7 passed; same panel post moved from .5451 to .6837 red under oblique view",
+    "final_post_red": [
+      0.5451,
+      0.5451
+    ],
+    "coverage": "Real retained plaster material on rendered synthetic patches, plus actual full-cottage capture review. Not exhaustive cottage-surface coverage."
   },
-  "regression": "Existing mixed-height waterfall joins remain 24/24. New splash checks failed 24/26 before raised/faded foam, then 26/27 when chunk clipping lost vertex opacity; final gradient preservation passes 27/27. Narrow cliff separation remains 794 slices with no overlaps; atomic shoreline remains 9/9. Indexed leaf-bounds invariance failed 4/9 before restricting bounds to referenced vertices and passes 9/9 afterward. Godot importer probe reports current tree_oak leaf surface 114 vertices, 114 referenced, full and active bounds identical: this regression protects other inputs and is not a demonstrated current-asset fix.",
-  "review": "Independent final branch-lift review found no Important correctness issue, reran model-bounds9/9 and actual-mesh tip containment. Four sampled fork/stem tips are inside crown lobes after lifting; XZ coordinates and base vertices below the threshold remain fixed, shared vertices deform identically and normals rebuild from transformed faces. Final captures improve on baseline and the discarded low-cluster pass, with clearer forks. Crowns remain visibly modular, and branching/root flare are simpler than the target. Four tip samples do not prove exhaustive branch-surface coverage. Previous cliff/cache and water reviews cover retained changes. Visual user acceptance remains pending.",
+  "preceding_terrain_suite": {
+    "revision": "2535c6e",
+    "scripts_passed": 11,
+    "scope": "Contour, incremental, data, decoration, rendering, runtime, camera, waterfall, shoreline, narrow cliffs and model bounds. Fresh at preceding revision; unchanged terrain pipeline not rerun this material-only pass."
+  },
+  "preservation": {
+    "unrelated_local_files_unchanged": 8,
+    "kenney_source_glbs_unchanged": 11,
+    "refined_cottage_matches_HEAD": true,
+    "received_cottage_originals_unchanged": 2
+  },
+  "review": "Independent read-only reviewer found no Critical/Important issue, reran 7/7 and inspected before/after actual cottage captures. Warmer gable is more consistent, while layered timber, windows and eaves remain visual gaps. User visual acceptance is pending.",
   "limitations": [
-    "Target Windows thin laptop/MacBook Air and long-idle performance are unmeasured this round.",
-    "Legacy unrelated gameplay suite is historical evidence for the previous revision, not a fresh full-suite claim."
+    "Performance measured only on M4 Pro; target laptops and long idle unmeasured.",
+    "This focused material check is not exhaustive surface coverage.",
+    "Previous gameplay suite and preceding terrain suite remain revision-specific evidence."
   ]
 }

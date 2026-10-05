@@ -78,6 +78,13 @@ func _roof_detail(node:Node)->void:
 			var material:=ShaderMaterial.new()
 			material.shader=load("res://shaders/terrain_editor/cottage_roof.gdshader")
 			material.set_shader_parameter("base_color",original.albedo_color)
+			# Corrected materials include high gables and low timber; height cannot identify them.
+			var role:=0
+			match original.resource_name:
+				"Timber_corrected":role=1
+				"Plaster_corrected":role=2
+				"Stone_corrected":role=3
+			material.set_shader_parameter("surface_role",role)
 			material.set_shader_parameter("use_texture",original.albedo_texture!=null)
 			if original.albedo_texture!=null:material.set_shader_parameter("albedo_tex",original.albedo_texture)
 			node.set_surface_override_material(surface,material)
