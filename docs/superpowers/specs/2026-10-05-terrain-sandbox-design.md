@@ -2,7 +2,7 @@
 
 ## Outcome and boundaries
 
-Replace the active demo entry with a terrain editor whose appearance targets the user's attached floating-island picture: sunny grass, faceted stone cliffs, layered land, blue ponds, waterfalls and coherent vegetation. The picture guides materials, lighting, silhouette and finish; editing must support other layouts. Existing gameplay scenes, original models and economy sources remain available. No character, combat, village, exploration or paid-asset work is included.
+Replace the active demo entry with a terrain editor whose appearance targets the user's attached floating-island picture: sunny grass, faceted stone cliffs, layered land, blue ponds, waterfalls and coherent vegetation. The picture guides materials, lighting, silhouette and finish; editing must support other layouts. The old terrain and placed scene objects may be removed or replaced; they are not preservation requirements. Original asset source files and economy sources remain available. No character, combat, village, exploration or paid-asset work is included.
 
 ## Architecture and alternatives
 
@@ -30,13 +30,13 @@ A starting composition supplies two terraces, ponds, a connecting spill and scat
 
 ## Camera and UI
 
-Default navigation is middle-mouse pan, Alt-left orbit, wheel dolly and Home frame island. Right-mouse capture enables Godot-style WASD fly navigation with Q/E vertical movement and Shift speed boost; releasing right mouse restores the cursor. Smooth movement uses time-based exponential easing. Pitch and distance are bounded, UI captures do not edit terrain, and focus loss cancels input capture and active strokes.
+Camera orientation stays fixed. WASD/arrow keys and middle-mouse drag pan forward, backward, left and right on the horizontal XZ plane, preserving camera height regardless of terrain elevation. Vertical movement, fly mode and orbit are disabled. Only the scroll wheel adjusts camera height and zoom along a bounded dolly path. Smooth movement uses time-based exponential easing with height changes driven exclusively by wheel input. Reset/preset changes and horizontal recentering preserve the current camera height. UI captures do not edit terrain, and focus loss cancels active navigation and strokes.
 
 A compact panel exposes terrain tools, brush radius, snap toggle, water elevation, grid toggle, undo/redo, save/load and reset/preset selection. An on-screen legend explains camera controls. Diagnostics report cells, dirty chunks, edit time, frame time and draw calls. Low quality disables costly shadow/detail work while retaining major composition, grass color, cliffs and tree silhouettes.
 
 ## Verification and completion
 
-Fresh data tests exercise all four edits, snap coverage differences, brush stroke deduplication, undo/redo, serialization, all eight water levels, all 256 input masks yielding exactly 47 normalized states, same-height connectivity and neighbor invalidation. Runtime checks verify camera pan/orbit/zoom/fly, input cancellation, dirty chunk updates, water/cliff changes and deterministic decoration. Inspect actual engine captures for three substantially different edited layouts, including holes, elevated banks and a waterfall.
+Fresh data tests exercise all four edits, snap coverage differences, brush stroke deduplication, undo/redo, serialization, all eight water levels, all 256 input masks yielding exactly 47 normalized states, same-height connectivity and neighbor invalidation. Runtime checks verify horizontal keyboard/drag panning preserves camera height, vertical/orbit inputs have no effect, only wheel input changes height/zoom, reset and preset changes preserve height, input cancellation, dirty chunk updates, water/cliff changes and deterministic decoration. Inspect actual engine captures for three substantially different edited layouts, including holes, elevated banks and a waterfall.
 
 Benchmark 4096 cells at 1280×720 low quality, without fixed-FPS simulation or headless-render substitutes: three runs of at least 60 seconds, median frame time ≤16.7 ms and p95 ≤25 ms. Record hardware, rendering backend, draw calls, memory and edit response latency, then run a 30-minute stability session. Missed thresholds remain unresolved. Development measurements do not prove Windows thin-laptop or MacBook Air acceptance; those remain separately pending. Visual acceptance requires actual rendered evidence consistent with the reference, not a concept image or functional test alone.
 

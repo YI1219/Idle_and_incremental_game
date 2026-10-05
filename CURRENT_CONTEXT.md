@@ -1,9 +1,9 @@
 # Current project consensus and handoff entry
-Updated: 2026-09-21. This file is the current goals, production priority, and handoff entry. Later explicit user requests take precedence. Obsolete notes, plans, and concept drafts have been deleted. Valid review reports remain as implementation evidence only. Implementation status must still be judged from code, runtime assets, and actual inspection.
+Updated: 2026-10-05. This file is the current goals, production priority, and handoff entry. Later explicit user requests take precedence. Obsolete notes, plans, and concept drafts have been deleted. Valid review reports remain as implementation evidence only. Implementation status must still be judged from code, runtime assets, and actual inspection.
 
 ## Product and current priority
 
-This is an ancient-style xianxia idle incremental game with sandbox building. Resource production, management, long-term growth, and exploration are the core; combat serves exploration and must not expand the project into an action-combat game. Keep the existing economy kernel and playable demo; do not rebuild from scratch.
+This is an ancient-style xianxia idle incremental game with sandbox building. Resource production, management, long-term growth, and exploration are the core; combat serves exploration and must not expand the project into an action-combat game. Keep the existing economy kernel and original asset sources. The latest request replaces the active demo with a dedicated freely editable floating-island terrain scene; the old terrain and placed scene objects need not be preserved.
 
 The user has returned to a 3D production pipeline, referencing 尘之回声 (DustEcho) for the desired presentation but explicitly rejecting pixelated rendering in favor of a non-pixel ancient-Chinese palette and stylized finish. Stop 2D directional-character and Spine production. Current priority is SANDBOX BUILDING FUNCTIONALITY, ahead of further static scene/art refinement. The first placement/move/remove/save/load loop is now integrated into the playable courtyard. Character modeling, garment and combat-animation work remain deferred; keep existing characters for traversal and scale. Preserve the independent art study as a secondary reference; do not resume expensive garment refinement or rebuild all assets. Preserve gameplay, modular courtyard requirements and performance validation. See [3D art direction](docs/art/three_d_art_direction.md).
 
@@ -81,13 +81,15 @@ Optimization should first inspect instance reuse, LOD, culling, material count, 
 
 ## Next steps
 
-1. Prioritize the sandbox building loop over further static art. Run `打开沙盒营造.command` or press B in the main demo; review actual placement, move/cancel/remove, terrain feedback and layout save/load.
-2. Ground/build data are now unified and tree/rock bundles removed. Next resolve legacy facility coordinates, then scope production-facility relocation and traversal/connectivity validation. Do not assume unconfirmed rotation, scaling or stacking permissions.
-3. Keep management, production and economy constraints as the basis for later building costs and placement effects. Current nature trial is free and yield-neutral; layout saves do not replace a full game save.
-4. Use the independent art study for later tree crown, terrain boundary and paving refinement, after the build workflow is usable. Character work remains deferred.
-5. Preserve scene separation and existing movement. Accept function, art and target-device performance independently. No current generation submission task.
+The user approved the [floating-island terrain design](docs/superpowers/specs/2026-10-05-terrain-sandbox-design.md) on 2026-10-05. The new target is the latest attached layered grassy floating-island image, with faceted cliffs, blue ponds, waterfalls and terrain-adapting vegetation. Replace the active demo with freely editable raise/lower/expand/contract terrain, toggleable snapping, eight water elevations and the existing 47 normalized neighbor connection states. Use free existing models or identified placeholders and procedurally embed cliff rocks. Old terrain and scene objects are not preservation requirements; original asset sources and economy remain.
 
-Ask only when information is truly missing, user action is required, or a key direction conflicts. Continue reversible daily work autonomously. Do not purchase assets automatically. Do not restore old plans item by item, and do not substitute “continue progressing” language for actual work.
+Camera orientation stays fixed. Keyboard and drag movement pan horizontally while preserving height; only the scroll wheel changes height and zoom. Vertical movement, fly navigation and orbit are disabled, including during reset/recenter and preset changes.
+
+Implementation has not started. The [implementation plan](docs/superpowers/plans/2026-10-05-terrain-sandbox.md) covers data, chunk meshes, decoration, editor controls, active entry and fresh visual/performance verification. Existing terrain checks passed 794/794 and camera checks passed 8/8 before implementation; these are baseline checks, not new-demo acceptance. The old implementation-status table describes the retained legacy scene only. Review implementation-plan execution before proceeding.
+
+Functional, art and performance acceptance remain separate. Verify three edited layouts and real-time 4096-cell development-device benchmarks (three 60-second runs at 1280×720, median ≤16.7 ms and p95 ≤25 ms) plus a 30-minute stability run. Thin-laptop and MacBook Air performance remains unmeasured. No character/combat expansion, paid assets or current generation submission task.
+
+Ask only when information is truly missing, user action is required, or a key direction conflicts. Continue reversible work within the approved execution scope. Do not restore obsolete plans item by item.
 
 ## Maintenance
 
