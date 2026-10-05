@@ -18,6 +18,12 @@ var _bank_mesh := MeshInstance3D.new()
 var _cliff_mesh := MeshInstance3D.new()
 var _bridge_mesh := MeshInstance3D.new()
 var _river_polygons: Array[PackedVector2Array] = []
+var _river_bounds: Array[Rect2] = []
+var _river_key := ""
+var _river_ready := false
+var _shared_shader: Shader
+## Counts river outline rebuilds. Land edits that do not touch water reuse the last outline.
+var river_geometry_builds := 0
 
 
 func _ready() -> void:
@@ -46,17 +52,24 @@ func set_water_cell(cell: Vector2i, enabled: bool) -> void:
 		water_cells[cell] = true
 	else:
 		water_cells.erase(cell)
-	_refresh_masks_around(cell)
 	rebuild()
 
 
 func rebuild() -> void:
 	_ensure_nodes()
 	_rebuild_masks()
-	_river_polygons = _make_river_polygons()
+	var key := _river_dependency_key()
+	if not _river_ready or key != _river_key:
+		_river_ready = true
+		_river_key = key
+		river_geometry_builds += 1
+		_river_polygons = _make_river_polygons()
+		_river_bounds.clear()
+		for polygon in _river_polygons:
+			_river_bounds.append(_polygon_bounds(polygon).grow(0.02))
+		_water_mesh.mesh = _build_water()
+		_bank_mesh.mesh = _build_banks()
 	_land_mesh.mesh = _build_land()
-	_water_mesh.mesh = _build_water()
-	_bank_mesh.mesh = _build_banks()
 	_cliff_mesh.mesh = _build_cliffs()
 	_bridge_mesh.mesh = _build_bridge()
 
@@ -106,14 +119,24 @@ func _rebuild_masks() -> void:
 		blob_masks[cell] = Blob47.from_cells(cell, water_cells)
 
 
-func _refresh_masks_around(cell: Vector2i) -> void:
-	for z in range(cell.y - 1, cell.y + 2):
-		for x in range(cell.x - 1, cell.x + 2):
-			var neighbor := Vector2i(x, z)
-			if water_cells.has(neighbor):
-				blob_masks[neighbor] = Blob47.from_cells(neighbor, water_cells)
-			else:
-				blob_masks.erase(neighbor)
+func _river_dependency_key() -> String:
+	var cells: Array = water_cells.keys()
+	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return a.y < b.y or (a.y == b.y and a.x < b.x)
+	)
+	var parts := PackedStringArray()
+	for cell: Vector2i in cells:
+		var border := 0
+		if land_cells.has(cell + Vector2i(0, -1)):
+			border |= 1
+		if land_cells.has(cell + Vector2i(1, 0)):
+			border |= 2
+		if land_cells.has(cell + Vector2i(0, 1)):
+			border |= 4
+		if land_cells.has(cell + Vector2i(-1, 0)):
+			border |= 8
+		parts.append("%d,%d,%d" % [cell.x, cell.y, border])
+	return "|".join(parts)
 
 
 func _make_river_polygons() -> Array[PackedVector2Array]:
@@ -186,28 +209,126 @@ func _build_land() -> ArrayMesh:
 			_add_cut_land_cell(st, cell)
 		else:
 			_add_polygon_top(st, _cell_polygon(cell), 0.0)
-	return st.commit()
+	return _commit_indexed(st)
 
 
 func _add_cut_land_cell(st: SurfaceTool, cell: Vector2i) -> void:
-	# Clip small convex patches. A river contour cannot be wholly enclosed by
-	# these patches, so each remainder is a simple polygon with no hole contour.
+	if not _add_boolean_land(st, _cell_polygon(cell)):
+		_add_grid_land(st, cell)
+
+
+func _add_boolean_land(st: SurfaceTool, polygon: PackedVector2Array) -> bool:
+	var pieces := _subtract_rivers(polygon)
+	if pieces.is_empty():
+		return true
+	var areas: PackedFloat32Array = PackedFloat32Array()
+	var centroids: PackedVector2Array = PackedVector2Array()
+	areas.resize(pieces.size())
+	centroids.resize(pieces.size())
+	for i in pieces.size():
+		areas[i] = _polygon_area(pieces[i])
+		centroids[i] = _centroid(pieces[i])
+	var outers: Array[int] = []
+	var holes: Array[int] = []
+	for i in pieces.size():
+		var nested := false
+		for j in pieces.size():
+			if i == j or areas[j] <= areas[i]:
+				continue
+			if Geometry2D.is_point_in_polygon(centroids[i], pieces[j]):
+				nested = true
+				break
+		if nested:
+			holes.append(i)
+		else:
+			outers.append(i)
+	var accepted: Array[PackedVector2Array] = []
+	for outer_index in outers:
+		var shape := pieces[outer_index]
+		for hole_index in holes:
+			if Geometry2D.is_point_in_polygon(centroids[hole_index], shape):
+				shape = _bridge_hole(shape, pieces[hole_index])
+		if Geometry2D.triangulate_polygon(shape).is_empty():
+			return false
+		accepted.append(shape)
+	for shape in accepted:
+		_add_polygon_top(st, shape, 0.0)
+	return true
+
+
+func _add_grid_land(st: SurfaceTool, cell: Vector2i) -> void:
+	# Fallback when a river contour encloses a patch. Small convex pieces cannot
+	# contain that hole, so each remainder stays a simple polygon.
 	const CUTS := 4
 	var step := 1.0 / CUTS
 	for z in CUTS:
 		for x in CUTS:
 			var lo := Vector2(cell.x + x * step, cell.y + z * step)
 			var hi := lo + Vector2(step, step)
-			var pieces: Array[PackedVector2Array] = [PackedVector2Array([lo, Vector2(lo.x, hi.y), hi, Vector2(hi.x, lo.y)])]
-			for river in _river_polygons:
-				var clipped: Array[PackedVector2Array] = []
-				for piece in pieces:
-					for remainder: PackedVector2Array in Geometry2D.clip_polygons(piece, river):
-						if remainder.size() >= 3:
-							clipped.append(remainder)
-				pieces = clipped
-			for piece in pieces:
+			for piece in _subtract_rivers(PackedVector2Array([lo, Vector2(lo.x, hi.y), hi, Vector2(hi.x, lo.y)])):
 				_add_polygon_top(st, piece, 0.0)
+
+
+func _subtract_rivers(polygon: PackedVector2Array) -> Array[PackedVector2Array]:
+	var pieces: Array[PackedVector2Array] = [polygon]
+	var bounds := _polygon_bounds(polygon)
+	for i in _river_polygons.size():
+		if not bounds.intersects(_river_bounds[i]):
+			continue
+		var next: Array[PackedVector2Array] = []
+		for piece in pieces:
+			for remainder: PackedVector2Array in Geometry2D.clip_polygons(piece, _river_polygons[i]):
+				if remainder.size() >= 3:
+					next.append(remainder)
+		pieces = next
+		if pieces.is_empty():
+			return pieces
+	return pieces
+
+
+func _bridge_hole(outer: PackedVector2Array, hole: PackedVector2Array) -> PackedVector2Array:
+	var best_o := 0
+	var best_h := 0
+	var best_d := INF
+	for i in hole.size():
+		for j in outer.size():
+			var distance := outer[j].distance_squared_to(hole[i])
+			if distance < best_d:
+				best_d = distance
+				best_o = j
+				best_h = i
+	var bridged := PackedVector2Array()
+	for j in best_o + 1:
+		bridged.append(outer[j])
+	for k in hole.size():
+		bridged.append(hole[(best_h + k) % hole.size()])
+	bridged.append(hole[best_h])
+	for j in range(best_o, outer.size()):
+		bridged.append(outer[j])
+	return bridged
+
+
+func _centroid(polygon: PackedVector2Array) -> Vector2:
+	var center := Vector2.ZERO
+	for point in polygon:
+		center += point
+	return center / polygon.size()
+
+
+func _polygon_area(polygon: PackedVector2Array) -> float:
+	var sum := 0.0
+	for i in polygon.size():
+		var a := polygon[i]
+		var b: Vector2 = polygon[(i + 1) % polygon.size()]
+		sum += a.x * b.y - b.x * a.y
+	return absf(sum) * 0.5
+
+
+func _polygon_bounds(polygon: PackedVector2Array) -> Rect2:
+	var bounds := Rect2(polygon[0], Vector2.ZERO)
+	for point in polygon:
+		bounds = bounds.expand(point)
+	return bounds
 
 
 func _build_water() -> ArrayMesh:
@@ -215,7 +336,7 @@ func _build_water() -> ArrayMesh:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for polygon in _river_polygons:
 		_add_polygon_top(st, polygon, -WATER_DROP)
-	return st.commit()
+	return _commit_indexed(st)
 
 
 func _add_polygon_top(st: SurfaceTool, polygon: PackedVector2Array, y: float) -> void:
@@ -236,24 +357,63 @@ func _build_banks() -> ArrayMesh:
 			var b := polygon[(i + 1) % polygon.size()]
 			if not _segment_on_island_edge(a, b):
 				_add_wall(st, a, b, 0.0, -WATER_DROP)
-	return st.commit()
+	return _commit_indexed(st)
 
 
 func _build_cliffs() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var groups: Dictionary = {}
 	for cell: Vector2i in land_cells:
+		var top := -WATER_DROP if water_cells.has(cell) else 0.0
 		for side in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]:
 			if land_cells.has(cell + side):
 				continue
-			var a: Vector2
-			var b: Vector2
-			if side == Vector2i(0, -1): a = Vector2(cell.x + 1, cell.y); b = Vector2(cell.x, cell.y)
-			elif side == Vector2i(1, 0): a = Vector2(cell.x + 1, cell.y + 1); b = Vector2(cell.x + 1, cell.y)
-			elif side == Vector2i(0, 1): a = Vector2(cell.x, cell.y + 1); b = Vector2(cell.x + 1, cell.y + 1)
-			else: a = Vector2(cell.x, cell.y); b = Vector2(cell.x, cell.y + 1)
-			_add_wall(st, a, b, -WATER_DROP if water_cells.has(cell) else 0.0, CLIFF_BOTTOM)
-	return st.commit()
+			var line := cell.x if side.x != 0 else cell.y
+			var origin := cell.y if side.x != 0 else cell.x
+			var key := "%d,%d,%d,%d" % [side.x, side.y, line, 1 if water_cells.has(cell) else 0]
+			if not groups.has(key):
+				groups[key] = []
+			(groups[key] as Array).append(origin)
+	for key: String in groups:
+		var parts := key.split(",")
+		var side := Vector2i(int(parts[0]), int(parts[1]))
+		var line := int(parts[2])
+		var top := -WATER_DROP if parts[3] == "1" else 0.0
+		var origins: Array = groups[key]
+		origins.sort()
+		var run_start: int = origins[0]
+		var run_end := run_start + 1
+		for i in range(1, origins.size()):
+			var origin: int = origins[i]
+			if origin < run_end:
+				continue
+			if origin == run_end:
+				run_end = origin + 1
+			else:
+				_add_cliff_run(st, side, line, run_start, run_end, top)
+				run_start = origin
+				run_end = origin + 1
+		_add_cliff_run(st, side, line, run_start, run_end, top)
+	return _commit_indexed(st)
+
+
+func _add_cliff_run(st: SurfaceTool, side: Vector2i, line: int, start: int, end: int, top: float) -> void:
+	var a: Vector2
+	var b: Vector2
+	if side == Vector2i(0, -1):
+		a = Vector2(end, line)
+		b = Vector2(start, line)
+	elif side == Vector2i(1, 0):
+		a = Vector2(line + 1, end)
+		b = Vector2(line + 1, start)
+	elif side == Vector2i(0, 1):
+		a = Vector2(start, line + 1)
+		b = Vector2(end, line + 1)
+	else:
+		a = Vector2(line, start)
+		b = Vector2(line, end)
+	_add_wall(st, a, b, top, CLIFF_BOTTOM)
 
 
 func _segment_on_island_edge(a: Vector2, b: Vector2) -> bool:
@@ -288,6 +448,16 @@ func _build_bridge() -> ArrayMesh:
 	for i in 13:
 		_add_box(st, Vector3(2.9 + i * .265, .003, 1.5), Vector3(.022, .006, .72))
 	st.generate_normals()
+	return _commit_indexed(st)
+
+
+func _commit_indexed(st: SurfaceTool) -> ArrayMesh:
+	var arrays := st.commit_to_arrays()
+	var vertices = arrays[Mesh.ARRAY_VERTEX]
+	if vertices == null or vertices.is_empty():
+		return ArrayMesh.new()
+	st.index()
+	st.optimize_indices_for_cache()
 	return st.commit()
 
 
@@ -324,8 +494,9 @@ func _bridge_material() -> ShaderMaterial: return _shader_material(Color("#956f4
 
 
 func _shader_material(low: Color, high: Color, variation: float, shimmer: float) -> ShaderMaterial:
-	var shader := Shader.new()
-	shader.code = """
+	if _shared_shader == null:
+		_shared_shader = Shader.new()
+		_shared_shader.code = """
 shader_type spatial;
 render_mode diffuse_burley, specular_schlick_ggx;
 uniform vec4 low_color : source_color;
@@ -345,7 +516,7 @@ void fragment() {
 }
 """
 	var material := ShaderMaterial.new()
-	material.shader = shader
+	material.shader = _shared_shader
 	material.set_shader_parameter("low_color", low)
 	material.set_shader_parameter("high_color", high)
 	material.set_shader_parameter("variation", variation)

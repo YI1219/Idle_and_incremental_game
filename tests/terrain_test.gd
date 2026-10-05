@@ -93,6 +93,14 @@ func _terrain_queries_and_refresh() -> void:
 				curved_points += 1
 	check(curved_points >= 8, "river outline contains analytic rounded-corner points")
 	check(terrain.get_node("LandSurface").mesh.get_faces().size() > 300, "land remains a filled merged top around the river cutout")
+	var land_arrays: Array = terrain.get_node("LandSurface").mesh.surface_get_arrays(0)
+	check(land_arrays[Mesh.ARRAY_INDEX].size() > land_arrays[Mesh.ARRAY_VERTEX].size(), "courtyard land welds shared corners")
+	var cliff_arrays: Array = terrain.get_node("IslandCliff").mesh.surface_get_arrays(0)
+	check(cliff_arrays[Mesh.ARRAY_VERTEX].size() < 80, "straight cliff runs collapse to a few quads, verts=%d" % cliff_arrays[Mesh.ARRAY_VERTEX].size())
+	var cached_builds: int = terrain.river_geometry_builds
+	terrain.rebuild()
+	check(terrain.river_geometry_builds == cached_builds, "repeating a rebuild reuses the river outline")
+	_mesh_budget()
 	terrain.land_cells.erase(Vector2i(3, 1))
 	terrain.rebuild()
 	check(terrain.get_node("RiverBridge").mesh.get_surface_count() == 0, "removing a bridge anchor removes the whole deck")
@@ -111,5 +119,40 @@ func _terrain_queries_and_refresh() -> void:
 		grass_over_center = grass_over_center or Geometry2D.is_point_in_polygon(Vector2(1.5, 1.5), tri)
 	check(not grass_over_center, "isolated mask 0 water center is not occluded by a filled grass hole")
 	check(isolated.get_node("JadeWater").mesh.get_faces().size() > 0, "isolated mask 0 still renders water")
+	check(not _point_on_land(terrain.get_node("LandSurface").mesh, Vector2(4.5, 2.5)), "river center stays clear of the land mesh")
+	check(_point_on_land(terrain.get_node("LandSurface").mesh, Vector2(-1.5, 2.5)), "dry courtyard cells stay covered")
 	isolated.queue_free()
 	terrain.queue_free()
+
+
+func _mesh_budget() -> void:
+	var strip: Node3D = RiverTerrain.new()
+	root.add_child(strip)
+	var cells: Array[Vector2i] = []
+	for x in 8:
+		cells.append(Vector2i(x, 8))
+	strip.configure(cells)
+	var faces: int = strip.get_node("IslandCliff").mesh.get_faces().size()
+	check(faces == 24, "a straight rim merges into four cliff quads, faces=%d" % faces)
+	var land_arrays: Array = strip.get_node("LandSurface").mesh.surface_get_arrays(0)
+	check(land_arrays[Mesh.ARRAY_INDEX].size() == 48, "dry cells keep two triangles each")
+	check(land_arrays[Mesh.ARRAY_VERTEX].size() < land_arrays[Mesh.ARRAY_INDEX].size(), "dry land welds shared corners")
+	var builds: int = strip.river_geometry_builds
+	strip.rebuild()
+	strip.land_cells.erase(Vector2i(0, 8))
+	strip.rebuild()
+	check(strip.river_geometry_builds == builds, "dry land edits reuse the cached river outline")
+	strip.queue_free()
+
+
+func _point_on_land(mesh: Mesh, point: Vector2) -> bool:
+	var faces: PackedVector3Array = mesh.get_faces()
+	for i in range(0, faces.size(), 3):
+		var tri := PackedVector2Array([
+			Vector2(faces[i].x, faces[i].z),
+			Vector2(faces[i + 1].x, faces[i + 1].z),
+			Vector2(faces[i + 2].x, faces[i + 2].z),
+		])
+		if Geometry2D.is_point_in_polygon(point, tri):
+			return true
+	return false
