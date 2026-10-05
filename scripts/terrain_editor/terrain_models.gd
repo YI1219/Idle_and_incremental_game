@@ -2,10 +2,11 @@ class_name TerrainModels
 extends RefCounted
 ## CC0 model parts and material palette. Canopies assemble existing oak mesh modules.
 var assets:Dictionary={}
-const IDS={"grass":"grass_large","bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
+const IDS={"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
 	if not assets.is_empty():return
 	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
+	assets.grass=_grass_models()
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=[]
@@ -48,11 +49,36 @@ func load_assets()->void:
 			var pose:=Transform3D(basis,spec[0]-basis*(box.position+box.size*.5))
 			spray.append({"mesh":part.mesh,"pose":pose})
 	assets.vine=spray
-	for kind in assets:assets[kind]=[_merge(assets[kind])]
+	for kind in assets:
+		# Retain the curved grass mesh's UVs/normals and palette texture.
+		if kind!="grass":assets[kind]=[_merge(assets[kind])]
 	# Apply after merging, which intentionally replaces individual source materials.
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
 	assets.cliff_rock[0].mesh.surface_set_material(0,rock_material)
+
+func _grass_models()->Array:
+	var source:Node=load("res://assets/nature/quaternius/Grass_Common_Short.gltf").instantiate()
+	var parts:Array=[]
+	_grass_parts(source,Transform3D.IDENTITY,parts)
+	source.free()
+	return parts
+
+func _grass_parts(node:Node,parent:Transform3D,parts:Array)->void:
+	var pose:=parent
+	if node is Node3D:pose=parent*node.transform
+	if node is MeshInstance3D:
+		for surface in node.mesh.get_surface_count():
+			var mesh:=ArrayMesh.new()
+			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,node.mesh.surface_get_arrays(surface))
+			var material:=ShaderMaterial.new()
+			material.shader=load("res://shaders/terrain_editor/foliage.gdshader")
+			material.set_shader_parameter("albedo_tex",load("res://assets/nature/quaternius/Grass.png"))
+			mesh.surface_set_material(0,material)
+			var grounded:=pose
+			grounded.origin.y-=(pose*mesh.get_aabb()).position.y
+			parts.append({"mesh":mesh,"pose":grounded})
+	for child in node.get_children():_grass_parts(child,pose,parts)
 
 func _load(id:String,kind:String)->Array:
 	var document:=GLTFDocument.new()

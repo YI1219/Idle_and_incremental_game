@@ -1,13 +1,13 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh tree-only runtime crown/fork/palette refinement. Eight relevant scripts plus actual final full/detail/four-edit Metal captures regenerated. Terrain, camera, prop anchors, non-tree modules and imported originals unchanged.",
+  "scope": "Fresh lawn-only source pairing, warmer grass palette, fewer broader short tufts and interior support checks. Eight relevant scripts plus actual final full/detail/four-edit Metal captures regenerated. Terrain, camera, other model assemblies and imported originals unchanged.",
   "suite": [
     {
       "test": "terrain_editor_decoration_test.gd",
       "ok": true,
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 118
+      "checks": 78
     },
     {
       "test": "terrain_model_bounds_test.gd",
@@ -84,9 +84,10 @@
     "refined_cottage_matches_HEAD": true,
     "cottage_glbs_unchanged": 2,
     "sky_pngs_unchanged": 2,
-    "sky_import_matches_HEAD": true
+    "sky_import_matches_HEAD": true,
+    "quaternius_source_files_unchanged": 24
   },
-  "review": "Independent read-only source/probe/still-capture review found no Critical/Important issue and a modest reference-fidelity improvement: the shallow raised skirt exposes recognizable forks, greener/angular clusters retain top volume rather than flattening to plates, and no obvious detached crown or new support failure appears across the four edits. Foreground-right canopy remains umbrella-like; lobe sizes repeat and the trunk remains simpler than the reference. Reviewer did not run Godot or benchmark. Contact samples cover four unique vertices, not all branches or clusters; whole-scene acceptance remains pending.",
+  "review": "Independent read-only source/still-capture review found no Critical/Important issue in the bounded grass pass. Matching source palette and grounded single surface are retained; other module paths unchanged. Cleaner lawn and recognizable curved blades improve on blocky fragments, with no obvious floating grass or newly obstructed spill across four edits. Grass remains darker, thinner and more isolated than the reference, and tall examples are wiry. Reviewer did not run Godot or benchmark. Finite interior support checks and contour-based edge placement do not establish all blade support; temporal aliasing and full visual acceptance remain open.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -383,6 +384,128 @@
         }
       ],
       "review": "Final independent read-only source/still-capture review found no Critical/Important issue: retained stone topology has a monotonic crown compression with rebuilt face normals; taller shoulders, varied sizes and sparse planted gaps move toward the reference. No obvious floating replacement reeds, new blocked spills or materially worse bank exposure in full/detail/four-edit renders. Placement is deterministic. Reviewer did not run engine tests or benchmark. Stones still validate the anchor rather than enlarged footprint; arbitrary edit support, temporal behavior, target hardware and whole-scene acceptance remain open."
+    },
+    "f8999e1": {
+      "scope": "Fresh tree-only runtime crown/fork/palette refinement. Eight relevant scripts plus actual final full/detail/four-edit Metal captures regenerated. Terrain, camera, prop anchors, non-tree modules and imported originals unchanged.",
+      "suite": [
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 78
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 9
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 339
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 22
+        },
+        {
+          "test": "terrain_shoreline_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 9
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 33
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 8
+        }
+      ],
+      "review": "Independent read-only source/probe/still-capture review found no Critical/Important issue and a modest reference-fidelity improvement: the shallow raised skirt exposes recognizable forks, greener/angular clusters retain top volume rather than flattening to plates, and no obvious detached crown or new support failure appears across the four edits. Foreground-right canopy remains umbrella-like; lobe sizes repeat and the trunk remains simpler than the reference. Reviewer did not run Godot or benchmark. Contact samples cover four unique vertices, not all branches or clusters; whole-scene acceptance remains pending.",
+      "canopy_contact": {
+        "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
+        "probe": "canopy_contact_probe.gd",
+        "runner": "tests/run_preview.py art/review/terrain_fidelity/2026-10-05/canopy_contact_probe.gd --headless",
+        "exit": 0,
+        "selectors": [
+          "wood X minimum",
+          "wood X maximum",
+          "wood Z minimum",
+          "wood Y maximum",
+          "highest central stem vertex (abs X/Z < .1)"
+        ],
+        "covered": 5,
+        "sampled": 5,
+        "unique_vertices": 4,
+        "coordinates": [
+          [
+            -0.434868,
+            0.867663,
+            -0.146816
+          ],
+          [
+            0.377952,
+            0.877079,
+            -0.110112
+          ],
+          [
+            0.033232,
+            0.902438,
+            -0.376092
+          ],
+          [
+            0.033232,
+            0.902438,
+            -0.376092
+          ],
+          [
+            -0.036704,
+            0.885104,
+            -0.047368
+          ]
+        ],
+        "initial_trial": "Raised/shallow crown with old fork lift:2/4 extrema covered; Xmax and Zmin were outside. Stronger retained fork lift restores their contact; central stem top is additionally checked.",
+        "limits": "Five selectors cover four unique vertices; no exhaustive branch, leaf connectivity or view coverage.",
+        "revision": "f8999e1: earlier contact probe; tree source unchanged, not rerun for this lawn pass"
+      },
+      "canopy_refinement": {
+        "baseline": "d3d1901",
+        "retained_parts": "17 oak leaf lobes (7 core,10rim), retained detailed-tree wood; imported originals unchanged",
+        "shape": "raised/shallow lower core and rim skirt, ellipsoid blend .48\u2192.26 for tree leaves only; bush/vine remains .68",
+        "palette": "tree-leaf base99b449 with stronger cluster tint variation; other module colors unchanged",
+        "forks": "local negative-Z lift1.50\u21921.80 and positive-X lift.95\u21921.35, multiplied by original smoothstep .18\u2013.35",
+        "matched_before": [
+          "composition_wip_before_canopy_refinement.png",
+          "detail_vegetation_before_canopy_refinement.png"
+        ],
+        "preservation_probe": "Temporary comparison against d3d1901 source:33 exact non-tree vertex/normal/color arrays across11 kinds and42 unchanged base triangle entries; exit0",
+        "limits": "Base-entry counts include repeated triangle vertices. Non-tree arrays do not cover arbitrary materials, every runtime transform or rendered-pixel identity.",
+        "revision": "f8999e1: earlier tree pass; retained assembly unchanged this round"
+      }
     }
   },
   "limitations": [
@@ -393,7 +516,8 @@
     "Five contact selectors cover four unique vertices, not entire branches/clusters. Foreground-right crown remains umbrella-like, large lobes repeat, and the trunk is still simpler than the reference.",
     "Sky softness is verified at the captured resolution only; startup mip generation and alternate-resolution appearance remain unmeasured. Lower-left clouds wash out and upper sky is flatter than the reference.",
     "Width lookup retains polygon-containment scaling with total contour complexity, despite cached winding signs; large-map scaling is unmeasured.",
-    "Bank stones retain a similar silhouette and anchor-only support checks; rare planted gaps and size variation improve the captured scene but do not establish arbitrary-edit footprint support."
+    "Bank stones retain a similar silhouette and anchor-only support checks; rare planted gaps and size variation improve the captured scene but do not establish arbitrary-edit footprint support.",
+    "New curved grass is cleaner but remains thinner/darker and more isolated than the target. Interior four-point and retained edge-contour support are finite, not every blade footprint or temporal aliasing proof."
   ],
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
@@ -438,7 +562,8 @@
       ]
     ],
     "initial_trial": "Raised/shallow crown with old fork lift:2/4 extrema covered; Xmax and Zmin were outside. Stronger retained fork lift restores their contact; central stem top is additionally checked.",
-    "limits": "Five selectors cover four unique vertices; no exhaustive branch, leaf connectivity or view coverage."
+    "limits": "Five selectors cover four unique vertices; no exhaustive branch, leaf connectivity or view coverage.",
+    "revision": "f8999e1: earlier contact probe; tree source unchanged, not rerun for this lawn pass"
   },
   "sky": {
     "sampling": "Runtime mipmaps from retained bitmap; five samples at LOD2.5 with UV spread.0020",
@@ -522,6 +647,33 @@
       "detail_vegetation_before_canopy_refinement.png"
     ],
     "preservation_probe": "Temporary comparison against d3d1901 source:33 exact non-tree vertex/normal/color arrays across11 kinds and42 unchanged base triangle entries; exit0",
-    "limits": "Base-entry counts include repeated triangle vertices. Non-tree arrays do not cover arbitrary materials, every runtime transform or rendered-pixel identity."
+    "limits": "Base-entry counts include repeated triangle vertices. Non-tree arrays do not cover arbitrary materials, every runtime transform or rendered-pixel identity.",
+    "revision": "f8999e1: earlier tree pass; retained assembly unchanged this round"
+  },
+  "grass_refinement": {
+    "baseline": "f8999e1",
+    "source": "Retained Quaternius CC0 Grass_Common_Short.gltf/bin and matching Grass.png; original 24-file pack hashes unchanged",
+    "runtime": "Copied single indexed curved-blade surface keeps vertices, UVs, colors and indices exactly; runtime shader remaps the matching palette. Normals undergo normal ArrayMesh re-encoding, maximum measured vector error .00006404440501. Ground offset places the source surface minimum Y at zero.",
+    "palette": "low RGB(.20,.34,.035), high RGB(.58,.69,.12); sampled Grass.png minimum alpha1.0, so silhouette comes from mesh geometry",
+    "population": "One short tuft per selected dry cell instead of two; short scale(.70,.20,.70) times seeded .85\u20131.30. Rare accent scale(1.30,.66,1.30), edge scale(.65,.19,.65). Interior short/accent four-point dry/equal-height checks at radius.18/.40; edge contour support unchanged.",
+    "probe": {
+      "kind": "temporary actual resource-array/ground comparison against saved f8999e1 loader",
+      "exit": 0,
+      "unchanged_non_grass_arrays": 33,
+      "non_grass_kinds": 11,
+      "channels": "vertex/normal/color",
+      "exact_grass_channels": 4,
+      "exact_channels": "vertex/UV/color/index",
+      "maximum_normal_vector_error": 6.404440501e-05,
+      "grounded_surfaces": 1,
+      "minimum_palette_alpha": 1.0,
+      "initial_probe": "Exact-normal comparison failed because ArrayMesh re-encodes normals; measured error and .0002 bound distinguish precision from topology changes."
+    },
+    "matched_before": [
+      "composition_wip_before_lawn_refinement.png",
+      "detail_vegetation_before_lawn_refinement.png",
+      "detail_shoreline_before_lawn_refinement.png"
+    ],
+    "limits": "Array comparison does not prove all material/transform/pixel identity. Grass remains thinner/darker and tall tufts wirier than target; four-point/edge placement is not exhaustive footprint support."
   }
 }

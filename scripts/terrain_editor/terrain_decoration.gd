@@ -31,16 +31,17 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
 			var house_clear:=p.distance_to(Vector2(-11,-7))<3.4
 			if not house_clear and cluster>-.25 and random_at(cell,data.seed,4)<.38:
-				for tuft in 2:
+				for tuft in 1:
 					var offset:=Vector2(random_at(cell,data.seed,110+tuft*2)-.5,random_at(cell,data.seed,111+tuft*2)-.5)*.75
 					var ground:Dictionary=field.surface_at(p+offset)
 					if ground.is_empty() or ground.water>=0 or absf(ground.height-h)>.01:continue
-					result.grass.append(_transform(origin+Vector3(offset.x,0,offset.y),angle+tuft*2.4,Vector3(1,.52,1)*(1.5+random_at(cell,data.seed,120+tuft)*1.3)))
+					if not _stable(field,p+offset,h,.18):continue
+					result.grass.append(_transform(origin+Vector3(offset.x,0,offset.y),angle+tuft*2.4,Vector3(.70,.20,.70)*(.85+random_at(cell,data.seed,120+tuft)*.45)))
 				if random_at(cell,data.seed,13)<.40:result.flower.append(_transform(origin,angle,Vector3.ONE*.9))
 			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.20:
 				result.bush.append(_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2)))
-			if not house_clear and random_at(cell,data.seed,140)<.045:
-				result.grass.append(_transform(origin,angle,Vector3(1.5,3.8,1.5)))
+			if not house_clear and random_at(cell,data.seed,140)<.045 and _stable(field,p,h,.40):
+				result.grass.append(_transform(origin,angle,Vector3(1.30,.66,1.30)))
 			if not house_clear and random_at(cell,data.seed,7)<.018:result.surface_rock.append(_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7))
 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
 	for spec in [[Vector2(-16,-3),3.5],[Vector2(-5,-8),1.8],[Vector2(6.3,-3.3),2.6],[Vector2(15.6,2),3.5]]:
@@ -80,7 +81,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						y-=1.8+random_at(cell,data.seed,130+layer)*.35
 						layer+=1
 				if random_at(cell,data.seed,80)>.65:continue
-				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3(1.8,.94,1.8)))
+				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3(.65,.19,.65)))
 				for leaf in range(4+int(random_at(cell,data.seed,84)*5)):
 					var y:=h-.12-leaf*.23
 					var bend:=out*(.07-leaf*.025)
