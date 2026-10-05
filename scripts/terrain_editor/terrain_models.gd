@@ -12,21 +12,21 @@ func load_assets()->void:
 	var wood_shape:=Transform3D(Basis.IDENTITY.scaled(Vector3(1.24,1.07,1.24)),Vector3.ZERO)
 	for part:Dictionary in wood:tree.append({"mesh":part.mesh,"pose":wood_shape*part.pose})
 	# Unequal overlapping core masses, then smaller edge clusters. Normalize
-	# source bounds so the retained leaf mesh does not impose flat repeated tiers.
+	# source bounds and keep the low skirt shallow so the existing forks show.
 	var crown:Array=[
-		[Vector3(-.29,.94,.10),Vector3(.77,.64,.77)],
-		[Vector3(.28,1.02,.02),Vector3(.81,.69,.78)],
+		[Vector3(-.29,1.01,.03),Vector3(.77,.48,.77)],
+		[Vector3(.28,1.10,.02),Vector3(.81,.50,.78)],
 		[Vector3(-.10,1.22,-.08),Vector3(.68,.64,.70)],
 		[Vector3(-.22,1.10,-.35),Vector3(.62,.60,.63)],
-		[Vector3(.22,.90,.34),Vector3(.61,.57,.62)],
-		[Vector3(-.14,.84,.29),Vector3(.61,.54,.62)],
+		[Vector3(.27,1.04,.28),Vector3(.58,.44,.60)],
+		[Vector3(-.21,.99,.24),Vector3(.56,.43,.56)],
 		[Vector3(.27,1.21,-.25),Vector3(.48,.48,.52)],
 	]
 	for i in 10:
 		var angle:=i*2.39996
 		var radius:=.54+.07*sin(i*3.7)
-		var center:=Vector3(cos(angle)*radius,1.02+.19*sin(i*2.1),sin(angle)*radius*.86)
-		var size:=Vector3(.42+.07*sin(i*1.7),.43+.06*cos(i*2.3),.45+.07*cos(i*1.1))
+		var center:=Vector3(cos(angle)*radius,1.08+.12*sin(i*2.1),sin(angle)*radius*.86)
+		var size:=Vector3(.42+.07*sin(i*1.7),.35+.04*cos(i*2.3),.45+.07*cos(i*1.1))
 		crown.append([center,size])
 	for i in crown.size():
 		var center:Vector3=crown[i][0]
@@ -37,7 +37,7 @@ func load_assets()->void:
 			var basis:=rotation.scaled_local(size/box.size.max(Vector3.ONE*.0001))
 			var pose:=Transform3D(basis,center-basis*(box.position+box.size*.5))
 			var light:=clampf((center.y-.82)/.5,0.0,1.0)
-			var tint:=Color(.84+.16*light+.04*sin(i*2.1),.94+.08*light+.035*cos(i*1.7),.90+.04*sin(i*.6),1)
+			var tint:=Color(.82+.20*light+.08*sin(i*2.1),.94+.08*light+.04*cos(i*1.7),.95+.04*sin(i*.6),1)
 			tree.append({"mesh":part.mesh,"pose":pose,"tint":tint})
 	assets.tree=tree
 	var spray:Array=[]
@@ -80,7 +80,8 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			var tint:=Color("839b39")
 			if kind in ["tree_wood","fence"]:tint=Color("956844") if not name_value.contains("Dark") else Color("704d35")
 			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("b6b8b1")
-			elif kind=="tree_leaf" or kind=="bush":tint=Color("a4bb45")
+			elif kind=="tree_leaf":tint=Color("99b449")
+			elif kind=="bush":tint=Color("a4bb45")
 			elif kind=="vine":tint=Color("668837")
 			elif kind=="grass" or kind=="reeds":tint=Color("b3c541")
 			elif kind=="lily":tint=Color("abc444")
@@ -118,7 +119,7 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 					var ca:=(c+a)*.5
 					var faces:=[[a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]]
 					for face in faces:
-						var blend:=.48 if kind=="tree_leaf" else .68
+						var blend:=.26 if kind=="tree_leaf" else .68
 						builder.triangle(_round_leaf(face[0],box,blend),_round_leaf(face[1],box,blend),_round_leaf(face[2],box,blend),color)
 				else:builder.triangle(a,b,c,color)
 
@@ -152,7 +153,7 @@ func _merge(parts:Array)->Dictionary:
 func _lift_branches(point:Vector3)->Vector3:
 	# Lift the two low forks of the retained CC0 detailed-tree mesh into the
 	# raised crown. Base vertices at Y<=.18 stay fixed; shared vertices deform identically.
-	var lift:=maxf(0,-point.z-.055)*1.50+maxf(0,point.x-.12)*.95
+	var lift:=maxf(0,-point.z-.055)*1.80+maxf(0,point.x-.12)*1.35
 	point.y+=lift*smoothstep(.18,.35,point.y)
 	return point
 
