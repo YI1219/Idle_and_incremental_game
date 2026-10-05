@@ -1,0 +1,79 @@
+extends SceneTree
+var checks:=0
+var failures:=0
+const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
+func check(ok:bool,message:String)->void:
+	checks+=1
+	if not ok:
+		failures+=1
+		push_error(message)
+func _initialize()->void: call_deferred("run")
+func run()->void:
+	if not ResourceLoader.exists("res://scripts/terrain_editor/terrain_renderer.gd"):
+		check(false,"chunk renderer implementation missing")
+		quit(1)
+		return
+	var geom=load("res://scripts/terrain_editor/chunk_geometry.gd")
+	var renderer=load("res://scripts/terrain_editor/terrain_renderer.gd").new()
+	root.add_child(renderer)
+	var d=Data.new()
+	d.cells[Vector2i.ZERO]={"height":1.0,"water":-1}
+	d.cells[Vector2i.RIGHT]={"height":0.0,"water":-1}
+	d.invalidate(Vector2i.ZERO)
+	var g:Dictionary=geom.build(d,Vector2i.ZERO)
+	check(g.grass.get_faces().size()>0,"dry cells generate merged grass")
+	var step:=false
+	for v in g.cliff.get_faces():
+		if is_equal_approx(v.x,1.0) and v.y>=0 and v.y<=1: step=true
+	check(step,"height difference exposes shared-side cliff")
+	check(g.cliff.get_faces().size()>18,"outer edges generate cliff faces")
+	d.cells[Vector2i.ZERO]={"height":-0.5,"water":0}
+	g=geom.build(d,Vector2i.ZERO)
+	check(g.water.get_faces().size()>0,"isolated water renders")
+	check(g.bank.get_faces().size()>0,"isolated water has rounded bank")
+	var land_over_water:=false
+	for v in g.grass.get_faces():
+		if v.x<1 and v.z<1 and v.y>=0: land_over_water=true
+	check(not land_over_water,"grass does not cover water cell")
+	var offsets=[Vector2i(0,-1),Vector2i(1,0),Vector2i(0,1),Vector2i(-1,0),Vector2i(1,-1),Vector2i(1,1),Vector2i(-1,1),Vector2i(-1,-1)]
+	var polys:Dictionary={}
+	for mask in 256:
+		var m=Data.new()
+		m.cells[Vector2i.ZERO]={"height":-0.5,"water":0}
+		for bit in 8:
+			if mask&(1<<bit): m.cells[offsets[bit]]={"height":-0.5,"water":0}
+		var shape:PackedVector2Array=geom.water_polygon(m.water_mask(Vector2i.ZERO))
+		polys[m.water_mask(Vector2i.ZERO)]=str(shape)
+		check(Geometry2D.triangulate_polygon(shape).size()>0,"connection state triangulates")
+	check(polys.size()==47,"all 47 rendered states exercised")
+	var unique:Dictionary={}
+	for p in polys.values(): unique[p]=true
+	check(unique.size()==47,"47 states have distinct bank contours")
+	d.cells[Vector2i.ZERO]={"height":1.0,"water":3}
+	d.cells[Vector2i.RIGHT]={"height":0.0,"water":1}
+	g=geom.build(d,Vector2i.ZERO)
+	check(g.waterfall.get_faces().size()>0,"high water spills toward lower water")
+	renderer.configure(d)
+	renderer.rebuild_all()
+	var hit:Dictionary=renderer.pick(Vector3(0.5,10,0.5),Vector3.DOWN)
+	check(not hit.is_empty() and absf(hit.position.y-1.5)<0.01,"pick uses water height")
+	check(renderer.pick(Vector3(6,10,6),Vector3.DOWN).is_empty(),"pick misses absent cells")
+	var side:Dictionary=renderer.pick(Vector3(-3,0.5,0.5),Vector3.RIGHT)
+	check(not side.is_empty() and side.cell==Vector2i.ZERO,"pick hits vertical island side")
+	d.dirty_chunks.clear()
+	d.invalidate(Vector2i(3,3))
+	check(renderer.flush_dirty(1)==1 and d.dirty_chunks.is_empty(),"interior edit only rebuilds one chunk")
+	check(renderer.flush_dirty()==0,"idle renderer does not rebuild")
+	d.invalidate(Vector2i(7,7))
+	check(d.dirty_chunks.size()==4,"chunk corner includes three neighbor chunks")
+	d.begin_stroke()
+	d.apply_brush(Vector2(0.5,0.5),0.49,"contract",true,0,0)
+	d.end_stroke()
+	d.undo()
+	renderer.rebuild_all()
+	hit=renderer.pick(Vector3(0.5,10,0.5),Vector3.DOWN)
+	check(not hit.is_empty() and hit.position.y==1.5,"queued edit and undo converge to latest data")
+	check(renderer.get_child_count()<=4,"renderer creates chunks rather than per-cell nodes")
+	renderer.free()
+	print("TERRAIN EDITOR RENDER: %d/%d passed"%[checks-failures,checks])
+	quit(1 if failures else 0)
