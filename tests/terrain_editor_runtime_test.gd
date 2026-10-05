@@ -57,6 +57,30 @@ func run()->void:
 	editor.continue_paint(Vector2(900,400))
 	check(editor.data.serialize()==before,"drag from UI cannot modify terrain")
 	editor.select_preset(0)
+	# Exercise actual viewport routing, not just the UI-origin guard argument.
+	await process_frame
+	await process_frame
+	var ui_before:Dictionary=editor.data.serialize()
+	var press:=InputEventMouseButton.new()
+	press.button_index=MOUSE_BUTTON_LEFT
+	press.pressed=true
+	press.position=Vector2(30,30)
+	root.push_input(press,true)
+	editor.continue_paint(Vector2(900,400))
+	check(not editor.painting and editor.data.serialize()==ui_before,"viewport UI click cannot paint when dragged onto terrain")
+	press.pressed=false
+	root.push_input(press,true)
+	for i in 100:camera.advance(1.0/60.0)
+	editor.tool="raise"
+	editor.radius=0.49
+	var picked_cell:=Vector2i(9,-6)
+	var old_height:float=editor.data.cells[picked_cell].height
+	press.position=camera.unproject_position(Vector3(9.5,old_height,-5.5))
+	press.pressed=true
+	root.push_input(press,true)
+	press.pressed=false
+	root.push_input(press,true)
+	check(editor.data.cells[picked_cell].height==old_height+0.5,"viewport world click edits the pointed cell")
 	var saved:Dictionary=editor.data.serialize()
 	check(editor.save_layout("user://terrain_editor/runtime_test.json")==OK,"layout save succeeds")
 	editor.select_preset(1)

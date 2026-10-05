@@ -45,8 +45,13 @@ func _setup_environment()->void:
 	add_child(sun)
 	var env:=WorldEnvironment.new()
 	env.environment=Environment.new()
-	env.environment.background_mode=Environment.BG_COLOR
-	env.environment.background_color=Color("a8d8ee")
+	env.environment.background_mode=Environment.BG_SKY
+	var sky:=Sky.new()
+	var sky_material:=ShaderMaterial.new()
+	sky_material.shader=load("res://shaders/terrain_editor/sky.gdshader")
+	sky.sky_material=sky_material
+	sky.process_mode=Sky.PROCESS_MODE_REALTIME
+	env.environment.sky=sky
 	env.environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color=Color("daeaf1")
 	env.environment.ambient_light_energy=0.48

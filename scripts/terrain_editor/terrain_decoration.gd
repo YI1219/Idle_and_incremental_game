@@ -73,14 +73,14 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				var neighbor:=cell+offset
 				var low:float=data.cells[neighbor].height if data.cells.has(neighbor) else Geometry.BOTTOM
 				if h-low<0.7:continue
-				var bands:=maxi(1,floori((h-low)/1.7))
+				var bands:=maxi(1,floori((h-low)/2.6))
 				for band in bands:
-					if random_at(cell,data.seed,10+band*7+side)>0.68:continue
+					if random_at(cell,data.seed,10+band*7+side)>0.45:continue
 					var y:=lerpf(h-0.35,low+0.35,(band+0.25+random_at(cell,data.seed,77+side+band)*0.5)/bands)
 					var origin:=Vector3(x+0.5,y,z+0.5)+Vector3(offset.x,0,offset.y)*0.32
 					var tangent:=Vector3(-offset.y,0,offset.x)
 					origin+=tangent*(random_at(cell,data.seed,91+side+band)-0.5)*0.5
-					var size:=0.46+random_at(cell,data.seed,40+side+band)*0.22
+					var size:=0.65+random_at(cell,data.seed,40+side+band)*0.30
 					result.cliff_rock.append(_transform(origin,angle+side,Vector3(size,size*0.92,size)))
 	return result
 

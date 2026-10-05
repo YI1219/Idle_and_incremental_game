@@ -71,7 +71,7 @@ static func water_polygon(mask:int)->PackedVector2Array:
 				var angle := j*PI/8.0
 				result.append(center-0.23*(next*cos(angle)+prev*sin(angle)))
 		else:
-			result.append(corner+(next*0.12 if not a else prev*0.12))
+			result.append(corner+(next*0.22 if not a else prev*0.22))
 	return result
 
 static func _world_polygon(local:PackedVector2Array,cell:Vector2i)->PackedVector2Array:
@@ -80,6 +80,7 @@ static func _world_polygon(local:PackedVector2Array,cell:Vector2i)->PackedVector
 	return result
 
 static func build(data:Data,chunk:Vector2i)->Dictionary:
+	var cliff_edges:Dictionary={}
 	var surfaces := {"grass":Surface.new(),"cliff":Surface.new(),"bank":Surface.new(),"water":Surface.new(),"waterfall":Surface.new()}
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
@@ -105,7 +106,12 @@ static func build(data:Data,chunk:Vector2i)->Dictionary:
 				var a:Vector3=ends[0]
 				var b:Vector3=ends[1]
 				if height>neighbor_height:
-					_cliff(surfaces.cliff,a,b,height,neighbor_height,cell,side)
+					var line:float=a.z if side in [0,2] else a.x
+					var axis_a:float=a.x if side in [0,2] else a.z
+					var axis_b:float=b.x if side in [0,2] else b.z
+					var key:=Vector4(side,line,height,neighbor_height)
+					if not cliff_edges.has(key):cliff_edges[key]=[]
+					cliff_edges[key].append(Vector2(minf(axis_a,axis_b),maxf(axis_a,axis_b)))
 				if record.water<0: continue
 				var water_y:float=record.water*0.5
 				var target_y:=BOTTOM
@@ -127,6 +133,30 @@ static func build(data:Data,chunk:Vector2i)->Dictionary:
 					bottom_left.y=target_y+0.03
 					bottom_right.y=target_y+0.03
 					surfaces.waterfall.quad(left,right,bottom_right,bottom_left,Color.WHITE)
+	for key:Vector4 in cliff_edges:
+		var segments:Array=cliff_edges[key]
+		segments.sort_custom(func(a:Vector2,b:Vector2):return a.x<b.x)
+		var begin:float=segments[0].x
+		var end:float=segments[0].y
+		for i in range(1,segments.size()+1):
+			if i<segments.size() and is_equal_approx(segments[i].x,end):
+				end=segments[i].y
+				continue
+			var parts:=maxi(1,ceili((end-begin)/2.7))
+			for part in parts:
+				var lo:=lerpf(begin,end,float(part)/parts)
+				var hi:=lerpf(begin,end,float(part+1)/parts)
+				var side:=int(key.x)
+				var a:=Vector3(lo,0,key.y) if side in [0,2] else Vector3(key.y,0,lo)
+				var b:=Vector3(hi,0,key.y) if side in [0,2] else Vector3(key.y,0,hi)
+				if side in [2,3]:
+					var swap:=a
+					a=b
+					b=swap
+				_cliff(surfaces.cliff,a,b,key.z,key.w,Vector2i(floori(a.x),floori(a.z)),side)
+			if i<segments.size():
+				begin=segments[i].x
+				end=segments[i].y
 	var result := {}
 	for key in surfaces: result[key]=surfaces[key].mesh()
 	return result
@@ -141,7 +171,7 @@ static func _edge(cell:Vector2i,side:int)->Array[Vector3]:
 	return [Vector3(x,0,z+1),Vector3(x,0,z)]
 
 static func _cliff(surface:Surface,a:Vector3,b:Vector3,top:float,bottom:float,cell:Vector2i,side:int)->void:
-	var bands:=maxi(1,ceili((top-bottom)/1.2))
+	var bands:=maxi(1,ceili((top-bottom)/2.2))
 	var out:=Vector3(SIDES[side].x,0,SIDES[side].y)
 	for band in bands:
 		var y1:=lerpf(top,bottom,float(band)/bands)

@@ -1,0 +1,106 @@
+[
+  {
+    "test": "tests/animation_refinement_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/camera_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/combat_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/courtyard_study_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/demo_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/gait_context_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/garment_motion_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/running_turn_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sandbox_land_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sandbox_layout_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sandbox_runtime_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/scene_art_integration_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sim_explore_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sim_kernel_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sim_loop_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sim_research_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/space_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sword_rules_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/sword_runtime_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/template_motion_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/terrain_editor_data_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/terrain_editor_decoration_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/terrain_editor_render_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/terrain_editor_runtime_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/terrain_test.gd",
+    "passed": true
+  },
+  {
+    "test": "tests/turn_transition_test.gd",
+    "passed": true
+  }
+]

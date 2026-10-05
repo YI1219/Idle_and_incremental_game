@@ -79,20 +79,34 @@ func rebuild_all()->void:
 func pick(ray_origin:Vector3,ray_direction:Vector3)->Dictionary:
 	if data==null or ray_direction.length_squared()<0.001:return {}
 	var direction:=ray_direction.normalized()
-	var horizontal:=Vector2(direction.x,direction.z).length()
-	var step:=0.4/maxf(horizontal,0.001)
-	var seen:Dictionary={}
+	# Exact grid traversal: sampling the ray can skip narrow corner crossings.
+	var cell:=Vector2i(floori(ray_origin.x),floori(ray_origin.z))
+	var step_x:=1 if direction.x>0 else -1
+	var step_z:=1 if direction.z>0 else -1
+	var delta_x:=absf(1.0/direction.x) if absf(direction.x)>0.000001 else INF
+	var delta_z:=absf(1.0/direction.z) if absf(direction.z)>0.000001 else INF
+	var next_x:=((cell.x+1 if step_x>0 else cell.x)-ray_origin.x)/direction.x if is_finite(delta_x) else INF
+	var next_z:=((cell.y+1 if step_z>0 else cell.y)-ray_origin.z)/direction.z if is_finite(delta_z) else INF
 	var distance:=0.0
 	while distance<=500.0:
-		var p:=ray_origin+direction*distance
-		var cell:=Vector2i(floori(p.x),floori(p.z))
-		if not seen.has(cell) and data.cells.has(cell):
-			seen[cell]=true
+		if data.cells.has(cell):
 			var record:Dictionary=data.cells[cell]
 			var top:float=record.water*0.5 if record.water>=0 else record.height
 			var box:=AABB(Vector3(cell.x,Geometry.BOTTOM,cell.y),Vector3(1,top-Geometry.BOTTOM,1))
 			var hit:Variant=box.intersects_ray(ray_origin,direction)
 			if hit is Vector3:return {"position":hit,"cell":cell}
-		if horizontal<0.001:break
-		distance+=step
+		if not is_finite(next_x) and not is_finite(next_z):break
+		if next_x<next_z:
+			distance=next_x
+			next_x+=delta_x
+			cell.x+=step_x
+		elif next_z<next_x:
+			distance=next_z
+			next_z+=delta_z
+			cell.y+=step_z
+		else:
+			distance=next_x
+			next_x+=delta_x
+			next_z+=delta_z
+			cell+=Vector2i(step_x,step_z)
 	return {}

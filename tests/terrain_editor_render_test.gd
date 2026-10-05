@@ -49,6 +49,26 @@ func run()->void:
 	var unique:Dictionary={}
 	for p in polys.values(): unique[p]=true
 	check(unique.size()==47,"47 states have distinct bank contours")
+	# Adjacent blob contours must meet exactly, including concave-to-straight banks.
+	for configuration in 16:
+		var paired=Data.new()
+		paired.cells[Vector2i.ZERO]={"height":-0.5,"water":0}
+		paired.cells[Vector2i.RIGHT]={"height":-0.5,"water":0}
+		var around=[Vector2i(0,-1),Vector2i(1,-1),Vector2i(0,1),Vector2i(1,1)]
+		for bit in 4:
+			if configuration&(1<<bit):paired.cells[around[bit]]={"height":-0.5,"water":0}
+		var left:PackedVector2Array=geom.water_polygon(paired.water_mask(Vector2i.ZERO))
+		var right:PackedVector2Array=geom.water_polygon(paired.water_mask(Vector2i.RIGHT))
+		var left_edge:PackedFloat32Array=[]
+		var right_edge:PackedFloat32Array=[]
+		for point in left:
+			if is_equal_approx(point.x,1.0):left_edge.append(point.y)
+		for point in right:
+			if is_equal_approx(point.x,0.0):right_edge.append(point.y)
+		left_edge.sort()
+		right_edge.sort()
+		check(is_equal_approx(left_edge[0],right_edge[0]),"joined north bank endpoints match for configuration %d"%configuration)
+		check(is_equal_approx(left_edge[-1],right_edge[-1]),"joined south bank endpoints match for configuration %d"%configuration)
 	d.cells[Vector2i.ZERO]={"height":1.0,"water":3}
 	d.cells[Vector2i.RIGHT]={"height":0.0,"water":1}
 	g=geom.build(d,Vector2i.ZERO)
@@ -57,6 +77,8 @@ func run()->void:
 	renderer.rebuild_all()
 	var hit:Dictionary=renderer.pick(Vector3(0.5,10,0.5),Vector3.DOWN)
 	check(not hit.is_empty() and absf(hit.position.y-1.5)<0.01,"pick uses water height")
+	var corner_hit:Dictionary=renderer.pick(Vector3(-0.1,0.5,0.88),Vector3(1,0,1))
+	check(not corner_hit.is_empty(),"picking cannot skip a short diagonal crossing of an occupied cell")
 	check(renderer.pick(Vector3(6,10,6),Vector3.DOWN).is_empty(),"pick misses absent cells")
 	var side:Dictionary=renderer.pick(Vector3(-3,0.5,0.5),Vector3.RIGHT)
 	check(not side.is_empty() and side.cell==Vector2i.ZERO,"pick hits vertical island side")

@@ -10,6 +10,7 @@ class InputGate extends Node:
 	func is_input_blocked() -> bool: return blocked
 
 class GroundEdge extends Node:
+	var build_mode := false
 	func is_walkable(at: Vector3) -> bool: return at.z < 0.5
 
 func check(ok: bool, message: String) -> void:
