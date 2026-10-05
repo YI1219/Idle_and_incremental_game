@@ -6,17 +6,25 @@ const Blob47 := preload("res://scripts/world/blob47.gd")
 const WATER_DROP := 0.15
 const CLIFF_BOTTOM := -0.72
 const BANK_INSET := 0.20
+const STEP := 0.28
+const MAX_LEVEL := 3
+const FALL_DROP := 1.65
 
 var land_cells: Dictionary = {}
 var water_cells: Dictionary = {}
 var bridge_cells: Dictionary = {}
 var blob_masks: Dictionary = {}
+var heights: Dictionary = {}
+var custom_water: Dictionary = {}
+var use_custom_water := false
+var sculpted := false
 
 var _land_mesh := MeshInstance3D.new()
 var _water_mesh := MeshInstance3D.new()
 var _bank_mesh := MeshInstance3D.new()
 var _cliff_mesh := MeshInstance3D.new()
 var _bridge_mesh := MeshInstance3D.new()
+var _fall_mesh := MeshInstance3D.new()
 var _river_polygons: Array[PackedVector2Array] = []
 
 
@@ -28,10 +36,23 @@ func configure(cells: Array[Vector2i]) -> void:
 	land_cells.clear()
 	for cell in cells:
 		land_cells[cell] = true
-	water_cells.clear()
-	for cell in _default_river():
+	var kept_heights: Dictionary = {}
+	for cell in heights.keys():
 		if land_cells.has(cell):
-			water_cells[cell] = true
+			kept_heights[cell] = clampi(int(heights[cell]), 0, MAX_LEVEL)
+	heights = kept_heights
+	water_cells.clear()
+	if use_custom_water:
+		var kept_water: Dictionary = {}
+		for cell in custom_water.keys():
+			if land_cells.has(cell):
+				kept_water[cell] = true
+				water_cells[cell] = true
+		custom_water = kept_water
+	else:
+		for cell in _default_river():
+			if land_cells.has(cell):
+				water_cells[cell] = true
 	bridge_cells.clear()
 	for cell in [Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1)]:
 		if land_cells.has(cell):
@@ -39,13 +60,54 @@ func configure(cells: Array[Vector2i]) -> void:
 	rebuild()
 
 
+func level_of(cell: Vector2i) -> int:
+	return clampi(int(heights.get(cell, 0)), 0, MAX_LEVEL)
+
+
+func surface_y(cell: Vector2i) -> float:
+	return float(level_of(cell)) * STEP
+
+
+func water_y(cell: Vector2i) -> float:
+	return surface_y(cell) - WATER_DROP
+
+
+func ground_y(world: Vector3) -> float:
+	var cell := world_to_cell(world)
+	if not land_cells.has(cell) or water_cells.has(cell):
+		return 0.0
+	return surface_y(cell)
+
+
+func has_step_fall() -> bool:
+	for cell in water_cells:
+		for side in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]:
+			var neighbor: Vector2i = cell + side
+			if water_cells.has(neighbor) and level_of(cell) > level_of(neighbor):
+				return true
+	return false
+
+
+func has_edge_fall() -> bool:
+	if not sculpted:
+		return false
+	for cell in water_cells:
+		for side in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]:
+			if not land_cells.has(cell + side):
+				return true
+	return false
+
+
 func set_water_cell(cell: Vector2i, enabled: bool) -> void:
 	if not land_cells.has(cell):
 		return
 	if enabled:
 		water_cells[cell] = true
+		if use_custom_water:
+			custom_water[cell] = true
 	else:
 		water_cells.erase(cell)
+		custom_water.erase(cell)
 	_refresh_masks_around(cell)
 	rebuild()
 
@@ -53,12 +115,13 @@ func set_water_cell(cell: Vector2i, enabled: bool) -> void:
 func rebuild() -> void:
 	_ensure_nodes()
 	_rebuild_masks()
-	_river_polygons = _make_river_polygons()
+	_river_polygons = _make_river_polygons(water_cells)
 	_land_mesh.mesh = _build_land()
 	_water_mesh.mesh = _build_water()
 	_bank_mesh.mesh = _build_banks()
 	_cliff_mesh.mesh = _build_cliffs()
 	_bridge_mesh.mesh = _build_bridge()
+	_fall_mesh.mesh = _build_falls()
 
 
 func world_to_cell(world: Vector3) -> Vector2i:
@@ -93,6 +156,7 @@ func _ensure_nodes() -> void:
 		[_bank_mesh, "RiverBank", _bank_material()],
 		[_cliff_mesh, "IslandCliff", _cliff_material()],
 		[_bridge_mesh, "RiverBridge", _bridge_material()],
+		[_fall_mesh, "Waterfall", _water_material()],
 	]:
 		var mesh_instance: MeshInstance3D = pair[0]
 		mesh_instance.name = pair[1]
@@ -116,9 +180,19 @@ func _refresh_masks_around(cell: Vector2i) -> void:
 				blob_masks.erase(neighbor)
 
 
-func _make_river_polygons() -> Array[PackedVector2Array]:
-	var unioned: Array[PackedVector2Array] = []
+func _water_groups() -> Dictionary:
+	var groups: Dictionary = {}
 	for cell: Vector2i in water_cells:
+		var level := level_of(cell)
+		if not groups.has(level):
+			groups[level] = {}
+		groups[level][cell] = true
+	return groups
+
+
+func _make_river_polygons(cells: Dictionary) -> Array[PackedVector2Array]:
+	var unioned: Array[PackedVector2Array] = []
+	for cell: Vector2i in cells:
 		unioned = _union_shape(unioned, _cell_polygon(cell))
 	var rounded: Array[PackedVector2Array] = []
 	for polygon in unioned:
@@ -126,7 +200,7 @@ func _make_river_polygons() -> Array[PackedVector2Array]:
 			if inset.size() >= 3:
 				rounded.append(_chaikin(inset, 1))
 	# At an island edge, the cliff terminates water rather than a grassy beach.
-	for cell: Vector2i in water_cells:
+	for cell: Vector2i in cells:
 		for side in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]:
 			if not land_cells.has(cell + side):
 				rounded = _union_shape(rounded, _edge_strip(cell, side))
@@ -185,7 +259,7 @@ func _build_land() -> ArrayMesh:
 		if water_cells.has(cell):
 			_add_cut_land_cell(st, cell)
 		else:
-			_add_polygon_top(st, _cell_polygon(cell), 0.0)
+			_add_polygon_top(st, _cell_polygon(cell), surface_y(cell))
 	return st.commit()
 
 
@@ -207,14 +281,17 @@ func _add_cut_land_cell(st: SurfaceTool, cell: Vector2i) -> void:
 							clipped.append(remainder)
 				pieces = clipped
 			for piece in pieces:
-				_add_polygon_top(st, piece, 0.0)
+				_add_polygon_top(st, piece, surface_y(cell))
 
 
 func _build_water() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for polygon in _river_polygons:
-		_add_polygon_top(st, polygon, -WATER_DROP)
+	var groups := _water_groups()
+	for level in groups:
+		var y := float(level) * STEP - WATER_DROP
+		for polygon in _make_river_polygons(groups[level]):
+			_add_polygon_top(st, polygon, y)
 	return st.commit()
 
 
@@ -230,13 +307,26 @@ func _add_polygon_top(st: SurfaceTool, polygon: PackedVector2Array, y: float) ->
 func _build_banks() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for polygon in _river_polygons:
-		for i in polygon.size():
-			var a := polygon[i]
-			var b := polygon[(i + 1) % polygon.size()]
-			if not _segment_on_island_edge(a, b):
-				_add_wall(st, a, b, 0.0, -WATER_DROP)
+	var groups := _water_groups()
+	for level in groups:
+		var top := float(level) * STEP
+		for polygon in _make_river_polygons(groups[level]):
+			for i in polygon.size():
+				var a := polygon[i]
+				var b := polygon[(i + 1) % polygon.size()]
+				if not _segment_on_island_edge(a, b):
+					_add_wall(st, a, b, top, top - WATER_DROP)
 	return st.commit()
+
+
+func _edge(cell: Vector2i, side: Vector2i) -> PackedVector2Array:
+	if side == Vector2i(0, -1):
+		return PackedVector2Array([Vector2(cell.x + 1, cell.y), Vector2(cell.x, cell.y)])
+	if side == Vector2i(1, 0):
+		return PackedVector2Array([Vector2(cell.x + 1, cell.y + 1), Vector2(cell.x + 1, cell.y)])
+	if side == Vector2i(0, 1):
+		return PackedVector2Array([Vector2(cell.x, cell.y + 1), Vector2(cell.x + 1, cell.y + 1)])
+	return PackedVector2Array([Vector2(cell.x, cell.y), Vector2(cell.x, cell.y + 1)])
 
 
 func _build_cliffs() -> ArrayMesh:
@@ -244,16 +334,41 @@ func _build_cliffs() -> ArrayMesh:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for cell: Vector2i in land_cells:
 		for side in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]:
-			if land_cells.has(cell + side):
+			var edge := _edge(cell, side)
+			var neighbor: Vector2i = cell + side
+			if not land_cells.has(neighbor):
+				var top := water_y(cell) if water_cells.has(cell) else surface_y(cell)
+				_add_wall(st, edge[0], edge[1], top, CLIFF_BOTTOM)
+			elif water_cells.has(cell) and water_cells.has(neighbor):
 				continue
-			var a: Vector2
-			var b: Vector2
-			if side == Vector2i(0, -1): a = Vector2(cell.x + 1, cell.y); b = Vector2(cell.x, cell.y)
-			elif side == Vector2i(1, 0): a = Vector2(cell.x + 1, cell.y + 1); b = Vector2(cell.x + 1, cell.y)
-			elif side == Vector2i(0, 1): a = Vector2(cell.x, cell.y + 1); b = Vector2(cell.x + 1, cell.y + 1)
-			else: a = Vector2(cell.x, cell.y); b = Vector2(cell.x, cell.y + 1)
-			_add_wall(st, a, b, -WATER_DROP if water_cells.has(cell) else 0.0, CLIFF_BOTTOM)
+			elif surface_y(cell) > surface_y(neighbor) + 0.001:
+				_add_wall(st, edge[0], edge[1], surface_y(cell), surface_y(neighbor))
 	return st.commit()
+
+
+func _build_falls() -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	if sculpted:
+		for cell: Vector2i in water_cells:
+			var top := water_y(cell)
+			for side in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]:
+				var edge := _edge(cell, side)
+				var neighbor: Vector2i = cell + side
+				if water_cells.has(neighbor):
+					var lower := water_y(neighbor)
+					if top > lower + 0.02:
+						_add_fall_sheet(st, edge[0], edge[1], Vector2(side) * 0.04, top, lower)
+				elif not land_cells.has(neighbor):
+					_add_fall_sheet(st, edge[0], edge[1], Vector2(side) * 0.35, top, top - FALL_DROP)
+	return st.commit()
+
+
+func _add_fall_sheet(st: SurfaceTool, a: Vector2, b: Vector2, outward: Vector2, top: float, bottom: float) -> void:
+	var left := a + outward
+	var right := b + outward
+	_add_wall(st, left, right, top, bottom)
+	_add_wall(st, right, left, top, bottom)
 
 
 func _segment_on_island_edge(a: Vector2, b: Vector2) -> bool:

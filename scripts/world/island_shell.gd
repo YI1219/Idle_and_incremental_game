@@ -54,6 +54,12 @@ func is_walkable(world: Vector3) -> bool:
 	return terrain.is_walkable(world) if terrain else sim.has_cell(sim.world_to_cell(world))
 
 
+func ground_y(world: Vector3) -> float:
+	if terrain and terrain.has_method("ground_y"):
+		return float(terrain.ground_y(world))
+	return 0.0
+
+
 func _process(delta: float) -> void:
 	_clock_minutes += delta / 60.0
 	_hud_accum += delta
@@ -182,7 +188,8 @@ func _marker(cell: Vector2i, color: Color, height: float) -> void:
 	mat.albedo_color = color
 	box.material = mat
 	mesh.mesh = box
-	mesh.position = sim.cell_center(cell) + Vector3(0.0, height * 0.5, 0.0)
+	var lift: float = terrain.surface_y(cell) if terrain and terrain.has_method("surface_y") else 0.0
+	mesh.position = sim.cell_center(cell) + Vector3(0.0, lift + height * 0.5, 0.0)
 	_facilities.add_child(mesh)
 
 

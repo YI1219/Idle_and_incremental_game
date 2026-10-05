@@ -371,7 +371,7 @@ func _physics_process(delta: float) -> void:
 		var collision := move_and_collide(motion)
 		if collision:
 			move_and_collide(collision.get_remainder().slide(collision.get_normal()))
-	global_position.y = 0.0
+	global_position.y = _stand_y()
 	if _walkable(global_position):
 		_last_land = global_position
 	else:
@@ -386,6 +386,14 @@ func _physics_process(delta: float) -> void:
 	_update_locomotion(delta)
 	SpaceState.player_x = global_position.x
 	SpaceState.player_z = global_position.z
+
+func _stand_y() -> float:
+	if not SpaceState.is_courtyard():
+		return 0.0
+	var ground := get_tree().get_first_node_in_group("island_shell")
+	if ground and ground.has_method("ground_y"):
+		return float(ground.ground_y(global_position))
+	return 0.0
 
 func _walkable(at: Vector3) -> bool:
 	if SpaceState.is_inside():

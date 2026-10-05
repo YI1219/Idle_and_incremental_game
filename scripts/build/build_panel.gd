@@ -16,7 +16,7 @@ func _ready() -> void:
 	panel.offset_left=-294
 	panel.offset_right=-20
 	panel.offset_top=118
-	panel.offset_bottom=630
+	panel.offset_bottom=708
 	var paper:=StyleBoxFlat.new()
 	paper.bg_color=Color("eee9da")
 	paper.border_color=Color("9daea2")
@@ -39,9 +39,10 @@ func _ready() -> void:
 	grid.add_theme_constant_override("h_separation",8)
 	grid.add_theme_constant_override("v_separation",7)
 	column.add_child(grid)
-	for item in [["tree","乔木"],["rock","山石"],["bush","灌木"],["grass","草丛"],["land","铺设陆地"],["erase_land","收回陆地"]]:
+	for item in [["tree","乔木"],["rock","山石"],["bush","灌木"],["grass","草丛"],["land","扩建岛屿"],["erase_land","收缩岛屿"],["raise_land","抬升"],["sink_land","下沉"]]:
 		var key: String=item[0]
 		buttons[key]=_button(grid,item[1],func():builder.choose(key))
+	buttons["snap"]=_button(column,"吸附线",func():builder.toggle_snap())
 	area=_label(column,"",13)
 	status=_label(column,"",15)
 	status.custom_minimum_size.y=30
@@ -61,7 +62,7 @@ func _ready() -> void:
 		var result: String=builder.load_layout()
 		builder.notice="已读取上次保存的布局" if result=="ok" else builder.explain(result))
 	_label(column,"布局仅保存摆放与土地，不回退资源。",12)
-	_label(column,"按住左键拖动铺地 / 收地\n右键取消 · B 完成 · 中键拖动视野",13)
+	_label(column,"扩建、抬升、下沉默认贴齐吸附线，可手动关闭。\n右键取消 · B 完成 · 中键拖动视野",13)
 	_label(column,"草木试摆暂不收费；泉眼与生产设施保留。",12)
 	_button(column,"完成营造",func():builder.set_active(false))
 func _label(parent: Node,text: String,size: int) -> Label:
@@ -98,11 +99,13 @@ func refresh() -> void:
 	status.text="已选："+builder.Layout.CATALOG[row.kind].label if not row.is_empty() else "选中物件后可搬移或移除"
 	move_button.disabled=row.is_empty() or builder.moving>=0
 	remove_button.disabled=row.is_empty() or builder.selected==0 or builder.moving>=0
-	var allowed: String={"land":"可以铺设","erase_land":"可以收回"}.get(builder.tool,"可以放置")
+	var allowed: String={"land":"可以扩建","erase_land":"可以收缩","raise_land":"可以抬升","sink_land":"可以下沉"}.get(builder.tool,"可以放置")
 	var hint: String="点击占地选择物件" if builder.tool=="select" else (allowed if builder.hover_reason=="ok" else builder.explain(builder.hover_reason))
 	feedback.text=builder.notice+"\n"+hint
 	for key in buttons:
-		buttons[key].modulate=Color("82bda7") if key==builder.tool else Color.WHITE
+		if key=="snap":buttons[key].modulate=Color("82bda7") if builder.snap_line else Color("c8c2b4")
+		else:buttons[key].modulate=Color("82bda7") if key==builder.tool else Color.WHITE
+	buttons["snap"].text="吸附线：开" if builder.snap_line else "吸附线：关"
 
 func contains_point(point: Vector2) -> bool:
 	return visible and surface.get_global_rect().has_point(point)

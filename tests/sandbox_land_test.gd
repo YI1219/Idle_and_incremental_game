@@ -34,7 +34,7 @@ func run():
 	# Persist a removed former background cell, rather than regenerating it on load.
 	builder.edit_land(Vector2i(-6,-2),true)
 	var saved: Dictionary=builder.snapshot()
-	check(saved.version==2,"New format marks authoritative whole-yard land")
+	check(saved.version==3,"New format marks authoritative whole-yard land and terrace heights")
 	builder.edit_land(Vector2i(-6,-2),false)
 	check(builder.restore_snapshot(saved)=="ok","New layout restores")
 	check(not builder.island.terrain.land_cells.has(Vector2i(-6,-2)),"Removed background stays absent after restore")

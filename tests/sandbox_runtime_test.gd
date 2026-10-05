@@ -42,7 +42,8 @@ func run():
 	var id: int=builder.layout.last_id
 	check(builder.nodes.has(id),"Placed mesh registered")
 	for i in 2:await physics_frame
-	var ray:=PhysicsRayQueryParameters3D.create(Vector3(3.5,.4,-.9),Vector3(3.5,.4,-2),1)
+	var planted: Vector3=builder.nodes[id].global_position
+	var ray:=PhysicsRayQueryParameters3D.create(planted+Vector3(0,.4,.6),planted+Vector3(0,.4,-.6),1)
 	check(not player.get_world_3d().direct_space_state.intersect_ray(ray).is_empty(),"Placed solid prop has physical collision")
 	check(builder.edit_land(cell,true)=="overlap","Cannot delete support under placed prop")
 	builder.selected=id

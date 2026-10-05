@@ -33,11 +33,12 @@ func run() -> void:
 	# Test capsule physically traverses the true doorway before the teleport is allowed.
 	space.set_physics_process(false)
 	player.set_physics_process(false)
+	var floor_y: float=game.house.global_position.y
 	for x in [-.45,0.0,.45]:
-		player.global_position=Vector3(x,0,.8)
+		player.global_position=Vector3(x,floor_y,.8)
 		for i in 16: player.move_and_collide(Vector3(0,0,-.1))
 		check(player.global_position.z < -.5,"门洞不同横向位置均可通过")
-	player.global_position=Vector3(1.2,0,.8)
+	player.global_position=Vector3(1.2,floor_y,.8)
 	for i in 16:player.move_and_collide(Vector3(0,0,-.1))
 	check(player.global_position.z>=.15,"门旁墙体阻挡穿墙")
 	player.global_position=Vector3(-3.8,0,.55)
@@ -101,6 +102,8 @@ func run() -> void:
 	state.player_z=state.gate_return().z
 	state.enter("outside")
 	await frames(4)
-	check(player.global_position.distance_to(state.gate_return())<.1,"跨空间返回后不会被旧落点拉回")
+	var returned:=Vector2(player.global_position.x,player.global_position.z)
+	var gate: Vector3=state.gate_return()
+	check(returned.distance_to(Vector2(gate.x,gate.z))<.1,"跨空间返回后不会被旧落点拉回")
 	print("DEMO CHECKS %d/%d failures=%d" % [checks-failures,checks,failures])
 	quit(1 if failures else 0)

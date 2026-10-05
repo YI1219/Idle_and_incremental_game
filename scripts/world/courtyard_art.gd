@@ -36,6 +36,7 @@ func attach(to_terrain: Node3D, to_cottage: Node3D) -> void:
 	var water := ShaderMaterial.new()
 	water.shader = WATER
 	_override("JadeWater", water)
+	_override("Waterfall", water.duplicate())
 	_override("RiverBank", _solid(Color("60685a")))
 	_override("IslandCliff", _solid(Color("556360")))
 	_load_models()
