@@ -1,61 +1,61 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh runtime vine-only resource reshaping and terrain-edge placement: seven unequal pointed leaf blades, two horizontal rim sprays, outward-facing descending sprays, lighter green palette, receiving-floor margin. Eight relevant scripts, final actual Metal full/detail/four-edit capture, finite resource/placed-mesh probe and standalone benchmark. Contour geometry, originals and unrelated local work preserved; user visual acceptance pending.",
+  "scope": "Fresh waterfall spill-run shading coordinates, barycentric publication through chunk clipping, brighter vertical cyan/white flow with bounded irregular side fade, and higher irregular landing foam. Eight affected scripts, final actual Metal full/detail/four-edit captures,40 exact source geometry arrays and final standalone benchmark. Models, foliage, camera, pond/foam shaders and originals preserved. User visual acceptance pending.",
   "suite": [
     {
-      "test": "terrain_editor_decoration_test.gd",
+      "test": "terrain_contour_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 80
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 1025
     },
     {
-      "test": "terrain_model_bounds_test.gd",
+      "test": "terrain_waterfall_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 9
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 35
     },
     {
       "test": "terrain_editor_render_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
       "checks": 339
     },
     {
       "test": "terrain_incremental_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
       "checks": 20
     },
     {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
       "checks": 22
     },
     {
       "test": "camera_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
       "checks": 8
     },
     {
-      "test": "terrain_waterfall_test.gd",
+      "test": "terrain_editor_decoration_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
-      "checks": 33
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
+      "checks": 80
     },
     {
       "test": "terrain_shoreline_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "runner": "tests/run_preview.py --headless (fixed60Hz)",
       "checks": 9
     }
   ],
@@ -87,7 +87,7 @@
     "sky_import_matches_HEAD": true,
     "quaternius_source_files_unchanged": 24
   },
-  "review": "Independent read-only source/probe/still review found no confirmed Critical/Important defect. Positive scales preserve winding, merged geometry rebuilds normals, taper and source-bound normalization are coherent. Outward orientation, seeded yaw and positive lower-chain width remain deterministic. Actual full/detail/four-edit captures read as pointed hanging leaves, a clear improvement over rounded beads, with no obvious spill obstruction. Chains remain narrow/regular; rock can obscure intervening leaves so some tips appear detached. Horizontal sprays are flatter/sparser than reference foliage mats. Reviewer did not run Godot; whole footprints, arbitrary layouts, temporal quality, target hardware and user acceptance remain open.",
+  "review": "Independent read-only source/probe/final-still review found no confirmed Critical/Important defect. Non-spill stop joins wrapping runs and flushes them; closed rings retain WHITE bypass. Linear across/worlddrop coordinates and constant run-width code survive barycentric clipping. Reciprocal decoding recovers inverse width before quantization, with positive guards and capped normalized fade preserving a center on narrow streams. Brighter cyan and vertical highlights improve over the heavy-net trial. Straight crest, patterned curtain and mound-like foam remain gaps. No obvious new interruption/seam in refreshed captures. Reviewer did not run Godot, benchmark or establish temporal/platform/arbitrary-range/full-acceptance coverage.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -867,11 +867,118 @@
         "limits": "42 exact arrays are finite component comparisons, not hashes/pixel identity or arbitrary layouts. Root centers do not prove whole leaf footprints or chain connectivity. Captures show modest compaction; upper walls remain smooth/simple and lower folds/bead-like foliage remain.",
         "revision": "04087b4 historical physical body/profile-anchor/floor-guard evidence; contour geometry unchanged. Current vine modules, rim placement, orientation and receiving-floor margin differ; root-distance probe not rerun."
       }
+    },
+    "a5900c9": {
+      "scope": "Fresh runtime vine-only resource reshaping and terrain-edge placement: seven unequal pointed leaf blades, two horizontal rim sprays, outward-facing descending sprays, lighter green palette, receiving-floor margin. Eight relevant scripts, final actual Metal full/detail/four-edit capture, finite resource/placed-mesh probe and standalone benchmark. Contour geometry, originals and unrelated local work preserved; user visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 80
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 9
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 339
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 8
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 33
+        },
+        {
+          "test": "terrain_shoreline_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+          "checks": 9
+        }
+      ],
+      "verification_sequence": "Eight relevant scripts and final resource/support probe pass after all vine shape/placement/palette changes. Final actual Metal captures and subsequent standalone benchmark exit0. Twelve-script contour/taper verification and root-distance comparison belong to04087b4; contour source matches that revision byte-for-byte.",
+      "review": "Independent read-only source/probe/still review found no confirmed Critical/Important defect. Positive scales preserve winding, merged geometry rebuilds normals, taper and source-bound normalization are coherent. Outward orientation, seeded yaw and positive lower-chain width remain deterministic. Actual full/detail/four-edit captures read as pointed hanging leaves, a clear improvement over rounded beads, with no obvious spill obstruction. Chains remain narrow/regular; rock can obscure intervening leaves so some tips appear detached. Horizontal sprays are flatter/sparser than reference foliage mats. Reviewer did not run Godot; whole footprints, arbitrary layouts, temporal quality, target hardware and user acceptance remain open.",
+      "vine_refinement": {
+        "baseline": "04087b4",
+        "source": "Retained Kenney CC0 tree_oak leaf surface; imported originals unchanged",
+        "shape": "One source-face subdivision, .26 irregular ellipsoid blend, width taper1 to.12 at local-Y ends. Seven unequal flattened normalized blades replace three rounded lobes; blade tint variation and green7d9b39 replace668837.",
+        "placement": "Two horizontal sprays straddle each selected rim root instead of three flattened bushes. Hanging sprays face contour outward with seeded yaw +/- .15, X width .95*(1-leaf*.055), Y .65, Z .90. Root positions retain deformed cliff profile. Receiving-floor margin .08 to.36 for longer modules.",
+        "probe": {
+          "source": "temporary /tmp/terrain_vines_probe.gd actual resource-array and full placed-vertex comparison",
+          "exit": 0,
+          "exact_non_vine_arrays": 33,
+          "kinds": 11,
+          "channels": "vertex/normal/color",
+          "floor_fixtures": [
+            {
+              "height": -4.0,
+              "instances": 18,
+              "vertex_entries": 66744,
+              "minimum_y": -4.45026111602783,
+              "cliff_floor_y": -4.50454521179199
+            },
+            {
+              "height": -3.5,
+              "instances": 30,
+              "vertex_entries": 111240,
+              "minimum_y": -4.44121360778809,
+              "cliff_floor_y": -4.50909042358398
+            },
+            {
+              "height": 1.5,
+              "instances": 44,
+              "vertex_entries": 163152,
+              "minimum_y": -0.342176795005798,
+              "cliff_floor_y": -4.5199990272522
+            }
+          ],
+          "method": "Each8x8 plateau requires nonempty sampled placements. Transform every merged vine vertex through its actual part/instance transform and compare minimumY to actual global cliff-mesh minimumY. Entries include duplicated triangle vertices."
+        },
+        "matched_before": [
+          "composition_wip_before_vine_refinement.png",
+          "detail_cliffs_before_vine_refinement.png",
+          "detail_shoreline_before_vine_refinement.png",
+          "detail_vegetation_before_vine_refinement.png"
+        ],
+        "limits": "33 arrays are finite resource equality, not all placements/materials/pixels. Three global-floor fixtures do not prove local contact or entire footprints on arbitrary terrain. Narrow/repeated chains, detached-looking occluded tips and sparse flat rim mats remain visual gaps.",
+        "revision": "a5900c9 historical resource/full-vertex support probe. Foliage source unchanged in this waterfall pass; probe not rerun."
+      }
     }
   },
   "limitations": [
     "Broad upper cliff walls remain smooth/simple rather than clustered reference rocks; horizontal lower folds remain. Finite taper/narrow checks do not prove arbitrary layouts.",
-    "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
     "Temporal shimmer and cross-platform rendering unverified.",
     "M4 Pro short samples do not prove target-laptop or long-idle performance.",
     "Five contact selectors cover four unique vertices, not entire branches/clusters. Foreground-right crown remains umbrella-like, large lobes repeat, and the trunk is still simpler than the reference.",
@@ -880,7 +987,8 @@
     "Bank stones retain a similar silhouette and anchor-only support checks; rare planted gaps and size variation improve the captured scene but do not establish arbitrary-edit footprint support.",
     "New curved grass is cleaner but remains thinner/darker and more isolated than the target. Interior four-point and retained edge-contour support are finite, not every blade footprint or temporal aliasing proof.",
     "Cooler/calm cliff shading is a modest material improvement, not correction of deep recesses, broad smooth patches or horizontal lower folds. Rejected gradient-normal trials are absent.",
-    "Pointed foliage is closer to target but remains narrow and regularly repeated, with occasional detached-looking occluded tips and sparse flat rim sprays. Full placed vertices clear the global cliff minimum in three8x8 fixtures only; local contact/arbitrary footprints remain unproven."
+    "Pointed foliage is closer to target but remains narrow and regularly repeated, with occasional detached-looking occluded tips and sparse flat rim sprays. Full placed vertices clear the global cliff minimum in three8x8 fixtures only; local contact/arbitrary footprints remain unproven.",
+    "Waterfall run metadata preserves tested published gradients; wrapped-run/sentinel/seam numerical equality is source-reviewed rather than exhaustively tested. Vertex-color precision limits extreme widths. Temporal transparency and arbitrary outlets remain unverified; straight crest, patterned curtain and mound-like foam remain visual gaps."
   ],
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
@@ -1141,7 +1249,7 @@
     "limits": "Five unchanged selected non-cliff pixels are finite separation evidence, not whole-image identity. Material cannot fix deep recesses, broad smooth patches or horizontal lower folds; temporal behavior and alternate-device rendering unverified.",
     "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
   },
-  "verification_sequence": "Eight relevant scripts and final resource/support probe pass after all vine shape/placement/palette changes. Final actual Metal captures and subsequent standalone benchmark exit0. Twelve-script contour/taper verification and root-distance comparison belong to04087b4; contour source matches that revision byte-for-byte.",
+  "verification_sequence": "All eight affected scripts pass after final reciprocal-width encoding and quieter-net/stronger-strand shader. Final capture63745 and temporary geometry probe exit0. Final standalone benchmark18142 exits0 with three terminal runs; intermediate color-only/strong-net capture and benchmark are not final evidence.",
   "compact_cliff_refinement": {
     "baseline": "12ce140",
     "geometry": "Cellular relief amplitude/offset1.02/-.16 to.75/-.10; broad-profile horizontal noise.10 to.04, vertical.25 to.09, foot.04 to.02, profile Y wave.16 to.06. Narrow base-profile coefficients unchanged.",
@@ -1219,6 +1327,49 @@
       "detail_shoreline_before_vine_refinement.png",
       "detail_vegetation_before_vine_refinement.png"
     ],
-    "limits": "33 arrays are finite resource equality, not all placements/materials/pixels. Three global-floor fixtures do not prove local contact or entire footprints on arbitrary terrain. Narrow/repeated chains, detached-looking occluded tips and sparse flat rim mats remain visual gaps."
+    "limits": "33 arrays are finite resource equality, not all placements/materials/pixels. Three global-floor fixtures do not prove local contact or entire footprints on arbitrary terrain. Narrow/repeated chains, detached-looking occluded tips and sparse flat rim mats remain visual gaps.",
+    "revision": "a5900c9 historical resource/full-vertex support probe. Foliage source unchanged in this waterfall pass; probe not rerun."
+  },
+  "flow_refinement": {
+    "baseline": "a5900c9",
+    "metadata": "Spill runs span adjacent falling contour edges including loop-index wrap. Vertex colorR normalized run distance,G worlddrop/16,B1/(1+run_width),A0 marker. Fully exposed rings and legacy WHITE bypass side fade. Bank and waterfall publication barycentrically interpolate source colors.",
+    "shader": "Brighter cyan/white range, emission .10 to.18; final strand/vein weights .82/.34. Side fade uses inverse widthB/(1-B), world inset .025+.028*min(drop,5) plus .022 moving ripple; normalized inset/softness caps.20/.12 preserve a center region. Pond/foam shader source unchanged.",
+    "foam": "Existing footprint retained; inner-ring rise .10..19 and center rise .19..29 replace .07/.12. Normals rebuilt and opacity gradient retained.",
+    "regression": {
+      "before": "33/35: source and published across-stream gradient assertions fail",
+      "after": "35/35: source/published gradients present, prior mixed receivers/physical folds/splash/clearance/intersection checks pass",
+      "limits": "New assertions do not directly prove wrapped-run equality, closed-ring bypass or exact numerical equality at all chunk seams."
+    },
+    "probe": {
+      "source": "temporary /tmp/terrain_flow_probe.gd",
+      "exit": 0,
+      "exact_component_arrays": 40,
+      "layouts": [
+        "initial",
+        "raise",
+        "lower",
+        "expand",
+        "contract"
+      ],
+      "surfaces": [
+        "grass",
+        "cliff",
+        "water",
+        "waterfall"
+      ],
+      "channels": [
+        "vertices",
+        "normals"
+      ],
+      "method": "Exact actual-source arrays against saved a5900c9 contour; intentionally changed bank/foam excluded",
+      "limits": "Not hashes, colors, arbitrary maps, all mesh components or whole-image identity."
+    },
+    "revised_trials": "Initial vein weight.58 read as a prominent net; reduced to.34 and vertical strands raised.68 to.82. Initial width/64 encoding saturated large runs; replaced by reciprocal encoding. Final metrics exclude those intermediate versions.",
+    "matched_before": [
+      "composition_wip_before_flow_refinement.png",
+      "detail_shoreline_before_flow_refinement.png",
+      "detail_cliffs_before_flow_refinement.png"
+    ],
+    "limits": "Finite vertex-color precision at extreme widths; still-capture checks do not prove temporal transparency/shimmer, all outlets, platform behavior or visual acceptance. Crest remains straight, pattern remains evident and foam still reads as mounds."
   }
 }

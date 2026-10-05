@@ -9,125 +9,125 @@
     {
       "cells": 593,
       "draw_calls": 482.0,
-      "duration_seconds": 12.000214,
+      "duration_seconds": 12.017926,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 218.549
+          "visible_response_ms": 196.676
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 227.698
+          "visible_response_ms": 213.748
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 217.04
+          "visible_response_ms": 222.597
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 228.276
+          "visible_response_ms": 238.547
         }
       ],
-      "frame_count": 996,
-      "max_ms": 140.46,
-      "median_ms": 9.271,
-      "p95_ms": 18.606,
+      "frame_count": 994,
+      "max_ms": 143.758,
+      "median_ms": 9.326,
+      "p95_ms": 18.657,
       "run": 1,
-      "static_memory_mib": 60.9066257476807,
+      "static_memory_mib": 60.9314823150635,
       "video_memory_mib": 211.09375
     },
     {
       "cells": 593,
       "draw_calls": 482.0,
-      "duration_seconds": 12.007277,
+      "duration_seconds": 12.008158,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 210.646
+          "visible_response_ms": 211.597
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 218.05
+          "visible_response_ms": 216.917
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 223.309
+          "visible_response_ms": 220.559
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 237.727
+          "visible_response_ms": 214.162
         }
       ],
-      "frame_count": 991,
-      "max_ms": 141.046,
-      "median_ms": 9.211,
-      "p95_ms": 18.715,
+      "frame_count": 1011,
+      "max_ms": 128.118,
+      "median_ms": 9.189,
+      "p95_ms": 18.614,
       "run": 2,
-      "static_memory_mib": 60.9129543304443,
+      "static_memory_mib": 60.9378108978271,
       "video_memory_mib": 211.09375
     },
     {
       "cells": 593,
       "draw_calls": 482.0,
-      "duration_seconds": 12.000627,
+      "duration_seconds": 12.014037,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 209.34
+          "visible_response_ms": 214.493
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 217.649
+          "visible_response_ms": 221.026
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 217.6
+          "visible_response_ms": 218.705
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 231.862
+          "visible_response_ms": 228.969
         }
       ],
       "frame_count": 983,
-      "max_ms": 140.765,
-      "median_ms": 9.349,
-      "p95_ms": 18.608,
+      "max_ms": 126.389,
+      "median_ms": 9.339,
+      "p95_ms": 18.37,
       "run": 3,
-      "static_memory_mib": 60.916482925415,
+      "static_memory_mib": 60.9413394927979,
       "video_memory_mib": 211.09375
     }
   ],
-  "scope": "Final pointed-vine/horizontal-rim spray revision;593-cell reference demo, three standalone12-second measurements after2-second warmups,1280x720 Metal Forward+, normal two-chunk publication, hiddenHUD, vsync off. Target laptops, large maps and long idle unmeasured.",
+  "scope": "Final shared-flow/reciprocal-width/vertical-highlight and raised-foam revision;593-cell reference demo, three standalone12-second samples after2-second warmups,1280x720 Metal Forward+, normal two-chunk publication, hiddenHUD, vsync off. Excludes intermediate strong-net/width64 treatment. Target laptops, larger maps and long idle unmeasured.",
   "shadows": true,
   "ssao": true,
   "vsync": "disabled",
   "previous_revision_summary": {
-    "revision": "04087b4",
+    "revision": "a5900c9",
     "median_ms": [
-      9.269,
-      9.293
+      9.211,
+      9.349
     ],
     "p95_ms": [
-      18.424,
-      18.661
+      18.606,
+      18.715
     ],
     "visible_edit_response_ms": [
-      204.95,
-      236.544
+      209.34,
+      237.727
     ],
-    "draw_calls": 496,
+    "draw_calls": 482,
     "limits": "Separate short samples; no controlled speedup or scaling claim."
   }
 }

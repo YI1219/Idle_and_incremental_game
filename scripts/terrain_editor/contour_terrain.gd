@@ -352,11 +352,12 @@ static func _rock_hash(point:Vector3)->Vector3:
 
 func _falls(loop:PackedVector2Array,water_y:float)->void:
 	if _area(loop)<0:return
+	var flow_edges:=_flow_edges(loop,water_y)
 	for i in loop.size():
 		var a:=loop[i]
 		var b:=loop[(i+1)%loop.size()]
 		var out:=Vector2(b.y-a.y,a.x-b.x).normalized()
-		var sample:=surface_at((a+b)*.5+out*.25)
+		var sample:Dictionary=flow_edges[i].sample
 		var low:float=sample.get("height",-12.0)
 		if low>=water_y-.1:continue
 		var before:=loop[(i-1+loop.size())%loop.size()]
@@ -387,7 +388,17 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 			for y:float in rows:
 				var current_a:=_fall_point(a0,n0,water_y,y)
 				var current_b:=_fall_point(b0,n1,water_y,y)
+				var start:int=surfaces.waterfall.vertices.size()
 				surfaces.waterfall.quad(previous_b,previous_a,current_a,current_b,Color.WHITE)
+				var width:float=flow_edges[i].width
+				if width>0:
+					for index in range(start,surfaces.waterfall.vertices.size()):
+						var vertex:Vector3=surfaces.waterfall.vertices[index]
+						var t:float=t0 if vertex==previous_a or vertex==current_a else t1
+						var across:float=(flow_edges[i].start+a.distance_to(b)*t)/width
+						# Linear run coordinates and world drop survive triangle clipping.
+						# Alpha zero marks metadata; legacy/closed-ring white stays valid.
+						surfaces.waterfall.colors[index]=Color(across,clampf((water_y-vertex.y)/16,0,1),1.0/(1.0+width),0)
 				previous_a=current_a
 				previous_b=current_b
 			var back:=Vector3(out.x,0,out.y)*.09
@@ -397,6 +408,32 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 		if not sample.is_empty() and sample.water>=0:
 			var center:=(r+s)*.5+Vector3(out.x*.24,.015,out.y*.24)
 			_splash(center,out,i)
+
+func _flow_edges(loop:PackedVector2Array,water_y:float)->Array:
+	var result:Array=[]
+	var stop:=-1
+	for i in loop.size():
+		var a:=loop[i];var b:=loop[(i+1)%loop.size()]
+		var out:=Vector2(b.y-a.y,a.x-b.x).normalized()
+		var sample:=surface_at((a+b)*.5+out*.25)
+		var spill:bool=float(sample.get("height",-12.0))<water_y-.1
+		result.append({"sample":sample,"spill":spill,"start":0.0,"width":0.0,"length":a.distance_to(b)})
+		if not spill:stop=i
+	# A fully exposed closed perimeter has no lateral ends to fade.
+	if stop<0:return result
+	var run:Array=[]
+	var width:=0.0
+	for step in range(1,loop.size()+1):
+		var i:=(stop+step)%loop.size()
+		if result[i].spill:
+			result[i].start=width
+			width+=float(result[i].length)
+			run.append(i)
+		else:
+			for index:int in run:result[index].width=width
+			run.clear()
+			width=0.0
+	return result
 
 func _splash(center:Vector3,out:Vector2,phase:int)->void:
 	var rings:Array=[]
@@ -408,10 +445,10 @@ func _splash(center:Vector3,out:Vector2,phase:int)->void:
 			var angle:=j*TAU/16.0
 			var size:=.62+.11*sin(phase*3.7+j*2.9)
 			var radius:=.55 if ring==0 else 1.0
-			var rise:=.07 if ring==0 else 0.0
+			var rise:=.10+.09*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
 			points.append(center+tangent*cos(angle)*size*radius+forward*sin(angle)*size*radius+Vector3(0,rise,0))
 		rings.append(points)
-	var peak:=center+Vector3(0,.12,0)
+	var peak:=center+Vector3(0,.24+.05*sin(phase*2.7),0)
 	for j in 16:
 		var k:=(j+1)%16
 		_foam_triangle(peak,rings[0][j],rings[0][k],center.y)
@@ -504,7 +541,7 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind=="bank":
+				if kind in ["bank","waterfall"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
 				if kind in ["cliff","bank","waterfall"]:

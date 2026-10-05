@@ -96,6 +96,19 @@ func run()->void:
 		if previous_slope*slope<0:turns+=1
 		previous_slope=slope
 	check(turns>=4,"Wide outlet has repeated physical folds rather than one bowed plane")
+	wide.refresh(wide_data)
+	var flow_gradient:=false
+	for color:Color in wide.surfaces.waterfall.colors:
+		if color.a<.5 and color.r>.05 and color.r<.95:flow_gradient=true
+	check(flow_gradient,"Continuous outlets carry across-stream shading coordinates")
+	var published_flow_gradient:=false
+	for chunk in [Vector2i(-1,-1),Vector2i(0,-1)]:
+		var flow_mesh:ArrayMesh=wide.build(chunk).waterfall
+		if flow_mesh.get_surface_count()==0:continue
+		var flow_colors:PackedColorArray=flow_mesh.surface_get_arrays(0)[Mesh.ARRAY_COLOR]
+		for i in range(0,flow_colors.size(),3):
+			if absf(flow_colors[i].r-flow_colors[i+1].r)>.001 or absf(flow_colors[i].r-flow_colors[i+2].r)>.001:published_flow_gradient=true
+	check(published_flow_gradient,"Published waterfall triangles preserve the across-stream gradient")
 	var splash_data:=Data.new()
 	for z in range(-3,4):
 		for x in 4:splash_data.cells[Vector2i(x,z)]={"height":1.0 if z<0 else 3.0,"water":3 if z<0 else 7}

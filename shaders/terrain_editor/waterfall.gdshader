@@ -31,11 +31,21 @@ void fragment(){
 	// Blend two world projections instead of switching UV axes on a folded face.
 	float across=abs(world_normal.x)/(abs(world_normal.x)+abs(world_normal.z)+.0001);
 	vec3 field=mix(flow_at(world_position.xy),flow_at(world_position.zy),across);
-	vec3 color=mix(vec3(.045,.40,.69),vec3(.22,.66,.84),field.y*.70);
-	color=mix(color,vec3(.70,.92,.98),field.z*.55+field.x*.19);
+	vec3 color=mix(vec3(.06,.48,.75),vec3(.30,.78,.92),field.y*.70);
+	color=mix(color,vec3(.88,.98,1.0),clamp(field.z*.82+field.x*.34,0.0,1.0));
+	float side=1.0;
+	if(COLOR.a<.5){
+		float edge=min(COLOR.r,1.0-COLOR.r);
+		float inverse_width=COLOR.b/max(1.0-COLOR.b,.0001);
+		float drop=COLOR.g*16.0;
+		float irregular=sin(world_position.y*4.3+world_position.x*2.1+world_position.z*1.7+TIME*.6)*.022;
+		float inset=clamp((.025+min(drop,5.0)*.028+irregular)*inverse_width,0.0,.20);
+		float softness=min(max(.055*inverse_width,fwidth(edge)*1.5),.12);
+		side=smoothstep(inset,inset+max(softness,.0001),edge);
+	}
 	ALBEDO=color;
-	EMISSION=color*.10;
-	ALPHA=clamp(.74+field.y*.14+field.z*.12+field.x*.08,.74,.97);
+	EMISSION=color*.18;
+	ALPHA=clamp(.72+field.y*.14+field.z*.12+field.x*.08,.72,.97)*side;
 	ROUGHNESS=.46;
 	SPECULAR=.30;
 }
