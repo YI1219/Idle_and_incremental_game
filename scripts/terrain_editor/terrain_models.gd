@@ -42,12 +42,24 @@ func load_assets()->void:
 			tree.append({"mesh":part.mesh,"pose":pose,"tint":tint})
 	assets.tree=tree
 	var spray:Array=[]
-	for spec in [[Vector3(-.24,.17,0),-.65],[Vector3(.22,.28,.03),.65],[Vector3(-.04,.05,.06),-.1]]:
+	# Flatten retained oak lobes into pointed leaf blades. Unequal paired
+	# leaves form one overlapping spray rather than three rounded beads.
+	var blades:Array=[
+		[Vector3(-.15,.01,.025),-.62,Vector3(.24,.42,.075)],
+		[Vector3(.16,.025,.01),.70,Vector3(.23,.40,.07)],
+		[Vector3(-.12,-.13,.045),-.46,Vector3(.21,.37,.07)],
+		[Vector3(.13,-.16,.03),.51,Vector3(.22,.36,.075)],
+		[Vector3(-.075,-.27,.055),-.28,Vector3(.17,.32,.06)],
+		[Vector3(.065,-.30,.02),.30,Vector3(.16,.30,.06)],
+		[Vector3(.01,-.37,.035),.06,Vector3(.13,.26,.055)],
+	]
+	for i in blades.size():
+		var spec:Array=blades[i]
 		for part:Dictionary in assets.vine:
 			var box:AABB=part.mesh.get_aabb()
-			var basis:=Basis(Vector3.FORWARD,float(spec[1])).scaled_local(Vector3(.62,.64,.25))
+			var basis:=Basis(Vector3.FORWARD,float(spec[1])).scaled_local(spec[2]/box.size.max(Vector3.ONE*.0001))
 			var pose:=Transform3D(basis,spec[0]-basis*(box.position+box.size*.5))
-			spray.append({"mesh":part.mesh,"pose":pose})
+			spray.append({"mesh":part.mesh,"pose":pose,"tint":Color(.94+.10*sin(i*2.1),1.0+.06*cos(i*1.7),.94,1)})
 	assets.vine=spray
 	for kind in assets:
 		# Retain the curved grass mesh's UVs/normals and palette texture.
@@ -108,7 +120,7 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("b6b8b1")
 			elif kind=="tree_leaf":tint=Color("99b449")
 			elif kind=="bush":tint=Color("a4bb45")
-			elif kind=="vine":tint=Color("668837")
+			elif kind=="vine":tint=Color("7d9b39")
 			elif kind=="grass" or kind=="reeds":tint=Color("b3c541")
 			elif kind=="lily":tint=Color("abc444")
 			elif kind=="flower":tint=Color("e4d46d") if name_value.contains("yellow") else Color("8d9d36")
@@ -146,7 +158,9 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 					var faces:=[[a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]]
 					for face in faces:
 						var blend:=.26 if kind=="tree_leaf" else .68
-						builder.triangle(_round_leaf(face[0],box,blend),_round_leaf(face[1],box,blend),_round_leaf(face[2],box,blend),color)
+						if kind=="vine":
+							builder.triangle(_vine_leaf(face[0],box),_vine_leaf(face[1],box),_vine_leaf(face[2],box),color)
+						else:builder.triangle(_round_leaf(face[0],box,blend),_round_leaf(face[1],box,blend),_round_leaf(face[2],box,blend),color)
 				else:builder.triangle(a,b,c,color)
 
 			mesh=builder.mesh()
@@ -192,3 +206,11 @@ func _round_leaf(point:Vector3,box:AABB,blend:float=.68)->Vector3:
 	var direction:=unit.normalized()
 	var uneven:=1.0+.055*sin(direction.x*7.1+direction.y*4.3)*sin(direction.z*6.7-direction.y*3.1)
 	return point.lerp(center+direction*radius*uneven,blend)
+
+func _vine_leaf(point:Vector3,box:AABB)->Vector3:
+	var center:=box.position+box.size*.5
+	var radius:=box.size*.5
+	var leaf:=_round_leaf(point,box,.26)-center
+	var along:=clampf(absf(leaf.y)/maxf(radius.y,.0001),0,1)
+	leaf.x*=lerpf(1.0,.12,pow(along,1.4))
+	return center+leaf

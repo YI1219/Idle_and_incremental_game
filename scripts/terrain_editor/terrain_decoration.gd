@@ -83,14 +83,20 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						layer+=1
 				if random_at(cell,data.seed,80)>.65:continue
 				result.grass.append(_transform(Vector3(p.x-out.x*.22,h,p.y-out.y*.22),p.x+p.y,Vector3(.65,.19,.65)))
+				for crown in 2:
+					var spread:=Vector2(-out.y,out.x)*(float(crown)-.5)*.34
+					var root_position:=Vector3(p.x-out.x*.18+spread.x,h+.025,p.y-out.y*.18+spread.y)
+					var basis:=Basis(Vector3.UP,atan2(out.x,out.y)+(float(crown)-.5)*.55)*Basis(Vector3.RIGHT,-PI*.5)
+					result.vine.append(Transform3D(basis.scaled_local(Vector3(.95,.95,.85)),root_position))
 				for leaf in range(4+int(random_at(cell,data.seed,84)*5)):
 					var y:=h-.12-leaf*.23
-					if y<landing+.08:break
+					if y<landing+.36:break
 					var bend:=out*(.07-leaf*.025)
 					var tangent:=Vector2(-out.y,out.x)*sin(leaf*2.9)*.18
 					var anchor:Vector3=field._profile_point(p,y,out,profile)+Vector3(bend.x+tangent.x,0,bend.y+tangent.y)
-					result.vine.append(_transform(anchor,leaf*.81,Vector3(.67,.47,.62)))
-					if leaf<3:result.bush.append(_transform(Vector3(p.x-out.x*.18+tangent.x,h-.08,p.y-out.y*.18+tangent.y),leaf*.83,Vector3(.88,.37,.80)))
+					var turn:=atan2(out.x,out.y)+(random_at(cell,data.seed,150+leaf)-.5)*.30
+					var width:=1.0-leaf*.055
+					result.vine.append(_transform(anchor,turn,Vector3(.95*width,.65,.90)))
 
 	for level:int in field.water_regions:
 		for loop:PackedVector2Array in field.water_regions[level]:

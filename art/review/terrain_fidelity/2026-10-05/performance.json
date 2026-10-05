@@ -8,126 +8,126 @@
   "runs": [
     {
       "cells": 593,
-      "draw_calls": 496.0,
-      "duration_seconds": 12.001002,
+      "draw_calls": 482.0,
+      "duration_seconds": 12.000214,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 212.867
+          "visible_response_ms": 218.549
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 209.67
+          "visible_response_ms": 227.698
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 222.12
+          "visible_response_ms": 217.04
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 236.233
+          "visible_response_ms": 228.276
         }
       ],
-      "frame_count": 997,
-      "max_ms": 136.768,
-      "median_ms": 9.293,
-      "p95_ms": 18.661,
+      "frame_count": 996,
+      "max_ms": 140.46,
+      "median_ms": 9.271,
+      "p95_ms": 18.606,
       "run": 1,
-      "static_memory_mib": 60.9495582580566,
-      "video_memory_mib": 211.046875
+      "static_memory_mib": 60.9066257476807,
+      "video_memory_mib": 211.09375
     },
     {
       "cells": 593,
-      "draw_calls": 496.0,
-      "duration_seconds": 12.008551,
+      "draw_calls": 482.0,
+      "duration_seconds": 12.007277,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 210.382
+          "visible_response_ms": 210.646
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 210.184
+          "visible_response_ms": 218.05
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 218.504
+          "visible_response_ms": 223.309
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 236.544
+          "visible_response_ms": 237.727
         }
       ],
-      "frame_count": 1011,
-      "max_ms": 139.27,
-      "median_ms": 9.277,
-      "p95_ms": 18.424,
+      "frame_count": 991,
+      "max_ms": 141.046,
+      "median_ms": 9.211,
+      "p95_ms": 18.715,
       "run": 2,
-      "static_memory_mib": 60.9558868408203,
-      "video_memory_mib": 211.046875
+      "static_memory_mib": 60.9129543304443,
+      "video_memory_mib": 211.09375
     },
     {
       "cells": 593,
-      "draw_calls": 496.0,
-      "duration_seconds": 12.000749,
+      "draw_calls": 482.0,
+      "duration_seconds": 12.000627,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 204.95
+          "visible_response_ms": 209.34
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 218.044
+          "visible_response_ms": 217.649
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 227.265
+          "visible_response_ms": 217.6
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 235.132
+          "visible_response_ms": 231.862
         }
       ],
-      "frame_count": 1012,
-      "max_ms": 139.703,
-      "median_ms": 9.269,
-      "p95_ms": 18.544,
+      "frame_count": 983,
+      "max_ms": 140.765,
+      "median_ms": 9.349,
+      "p95_ms": 18.608,
       "run": 3,
-      "static_memory_mib": 60.959415435791,
-      "video_memory_mib": 211.046875
+      "static_memory_mib": 60.916482925415,
+      "video_memory_mib": 211.09375
     }
   ],
-  "scope": "Final compact-cliff/profile-following foliage and leaf-floor guard;593-cell reference demo, three standalone12-second measurements after2-second warmups; normal two-chunk publication, hiddenHUD, vsync off. Target laptops, larger maps and long-idle stability unmeasured.",
+  "scope": "Final pointed-vine/horizontal-rim spray revision;593-cell reference demo, three standalone12-second measurements after2-second warmups,1280x720 Metal Forward+, normal two-chunk publication, hiddenHUD, vsync off. Target laptops, large maps and long idle unmeasured.",
   "shadows": true,
   "ssao": true,
   "vsync": "disabled",
   "previous_revision_summary": {
-    "revision": "12ce140",
+    "revision": "04087b4",
     "median_ms": [
-      9.255,
-      9.467
+      9.269,
+      9.293
     ],
     "p95_ms": [
-      18.608,
-      18.643
+      18.424,
+      18.661
     ],
     "visible_edit_response_ms": [
-      208.537,
-      240.331
+      204.95,
+      236.544
     ],
-    "draw_calls": 495,
-    "limits": "Separate short samples, not a controlled speedup or scaling measurement."
+    "draw_calls": 496,
+    "limits": "Separate short samples; no controlled speedup or scaling claim."
   }
 }
