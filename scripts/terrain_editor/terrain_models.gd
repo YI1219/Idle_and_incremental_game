@@ -72,9 +72,10 @@ func load_assets()->void:
 
 func _grass_clump_models()->Array:
 	# Assemble retained pointed plant parts into one solid, short tuft. Source
-	# geometry stays intact; unequal rotations avoid a flat crossed-plane look.
+	# files stay intact; unequal rotations avoid a flat crossed-plane look.
 	var source:Dictionary=_merge(_load("plant_flatTall","grass"))
 	var box:AABB=source.mesh.get_aabb()
+	source.mesh=_splay_grass(source.mesh)
 	var parts:Array=[]
 	for i in 3:
 		var angle:=i*2.39996
@@ -84,6 +85,57 @@ func _grass_clump_models()->Array:
 		var center:=Vector3(cos(angle)*.10,0,sin(angle)*.10)
 		parts.append({"mesh":source.mesh,"pose":Transform3D(basis,center-basis*foot),"tint":Color(.82+float(i)*.035,.94+float(i)*.025,.78,1)})
 	return parts
+
+func _splay_grass(source:ArrayMesh)->ArrayMesh:
+	# Derive each retained blade's root/tip from its axis. Slim its middle and
+	# bend the tip outward, keeping ground-contact vertices exactly in place.
+	var arrays:Array=source.surface_get_arrays(0)
+	var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
+	var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR]
+	var box:=source.get_aabb()
+	var center:=Vector2(box.position.x+box.size.x*.5,box.position.z+box.size.z*.5)
+	var roots:Dictionary={}
+	var tips:Dictionary={}
+	for point:Vector3 in vertices:
+		var radial:=Vector2(point.x,point.z)-center
+		if radial.length()<.001:continue
+		var axis:=0 if absf(radial.x)>absf(radial.y) else 1
+		var side:=1 if radial[axis]>0 else -1
+		var key:=Vector2i(axis,side)
+		if not roots.has(key) or point.y<roots[key].y:roots[key]=point
+		if not tips.has(key) or point.y>tips[key].y:tips[key]=point
+	var shaped:=PackedVector3Array()
+	var shades:=PackedColorArray()
+	for i in vertices.size():
+		var point:=vertices[i]
+		var radial:=Vector2(point.x,point.z)-center
+		var h:=clampf((point.y-box.position.y)/maxf(box.size.y,.0001),0,1)
+		if radial.length()>.001:
+			var axis:=0 if absf(radial.x)>absf(radial.y) else 1
+			var side:=1 if radial[axis]>0 else -1
+			var key:=Vector2i(axis,side)
+			var root:Vector3=roots[key]
+			var tip:Vector3=tips[key]
+			var along:=clampf((point.y-root.y)/maxf(tip.y-root.y,.0001),0,1)
+			var root_r:=absf(root[axis*2]-center[axis])
+			var tip_r:=absf(tip[axis*2]-center[axis])
+			var spine:=lerpf(root_r,tip_r,along)
+			var slender:=lerpf(absf(radial[axis]),spine,smoothstep(.08,.30,along)*.68)
+			radial[axis]=float(side)*(slender+box.size.x*.16*along*along)
+			point.x=center.x+radial.x
+			point.z=center.y+radial.y
+			point.y-=maxf(point.y-root.y,0)*.05*along*along
+		shaped.append(point)
+		shades.append(colors[i]*Color(.94+.16*h, .97+.10*h, .92+.15*h,1))
+	var builder=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
+	for i in range(0,shaped.size(),3):
+		var start:int=builder.colors.size()
+		builder.triangle(shaped[i],shaped[i+1],shaped[i+2],Color.WHITE)
+		if builder.colors.size()!=start+3:continue
+		for j in 3:builder.colors[builder.colors.size()-3+j]=shades[i+j]
+	var mesh:ArrayMesh=builder.mesh()
+	mesh.surface_set_material(0,source.surface_get_material(0))
+	return mesh
 
 func _grass_models()->Array:
 	var source:Node=load("res://assets/nature/quaternius/Grass_Common_Short.gltf").instantiate()

@@ -9,125 +9,125 @@
     {
       "cells": 593,
       "draw_calls": 529.0,
-      "duration_seconds": 12.009465,
+      "duration_seconds": 12.012368,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 197.714
+          "visible_response_ms": 211.86
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 217.366
+          "visible_response_ms": 223.999
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 219.313
+          "visible_response_ms": 219.23
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 239.31
+          "visible_response_ms": 234.391
         }
       ],
-      "frame_count": 996,
-      "max_ms": 140.241,
-      "median_ms": 9.415,
-      "p95_ms": 18.669,
+      "frame_count": 1015,
+      "max_ms": 139.666,
+      "median_ms": 9.168,
+      "p95_ms": 18.619,
       "run": 1,
-      "static_memory_mib": 61.1930656433105,
+      "static_memory_mib": 61.2122898101807,
       "video_memory_mib": 211.09375
     },
     {
       "cells": 593,
       "draw_calls": 529.0,
-      "duration_seconds": 12.015681,
+      "duration_seconds": 12.000549,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 211.367
+          "visible_response_ms": 225.252
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 217.095
+          "visible_response_ms": 218.18
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 221.44
+          "visible_response_ms": 220.852
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 233.506
+          "visible_response_ms": 238.672
         }
       ],
-      "frame_count": 995,
-      "max_ms": 141.374,
-      "median_ms": 9.407,
-      "p95_ms": 18.618,
+      "frame_count": 999,
+      "max_ms": 145.527,
+      "median_ms": 9.248,
+      "p95_ms": 18.713,
       "run": 2,
-      "static_memory_mib": 61.1993942260742,
+      "static_memory_mib": 61.2186183929443,
       "video_memory_mib": 211.09375
     },
     {
       "cells": 593,
       "draw_calls": 529.0,
-      "duration_seconds": 12.001191,
+      "duration_seconds": 12.000502,
       "edits": [
         {
           "changed_cells": 16,
           "operation": "raise",
-          "visible_response_ms": 213.503
+          "visible_response_ms": 213.223
         },
         {
           "changed_cells": 12,
           "operation": "lower",
-          "visible_response_ms": 217.216
+          "visible_response_ms": 218.663
         },
         {
           "changed_cells": 14,
           "operation": "expand",
-          "visible_response_ms": 222.316
+          "visible_response_ms": 229.793
         },
         {
           "changed_cells": 16,
           "operation": "contract",
-          "visible_response_ms": 234.936
+          "visible_response_ms": 246.82
         }
       ],
-      "frame_count": 981,
-      "max_ms": 134.537,
-      "median_ms": 9.404,
-      "p95_ms": 18.645,
+      "frame_count": 1004,
+      "max_ms": 144.873,
+      "median_ms": 9.207,
+      "p95_ms": 18.625,
       "run": 3,
-      "static_memory_mib": 61.2029228210449,
+      "static_memory_mib": 61.222146987915,
       "video_memory_mib": 211.09375
     }
   ],
-  "scope": "Final short/wider solid grass-clump revision and lighter curved-grass dark remap;593-cell reference demo,three standalone12-second samples after2-second warmups,1280x720 Metal Forward+,normal two-chunk publication,hiddenHUD,vsync off. Excludes taller/narrower trial. Target laptops,larger maps and long idle unmeasured.",
+  "scope": "Final moderate blade-bend/slender-middle/height-tint revision;593-cell reference demo,three standalone12-second samples after2-second warmups,1280x720 Metal Forward+,normal two-chunk publication,hiddenHUD,vsync off. Excludes strong-bend and parse-error runs. Target laptops,larger maps and long idle unmeasured.",
   "shadows": true,
   "ssao": true,
   "vsync": "disabled",
   "previous_revision_summary": {
-    "revision": "d87d33b",
+    "revision": "34f205b",
     "median_ms": [
-      9.147,
-      9.392
+      9.404,
+      9.415
     ],
     "p95_ms": [
-      18.603,
-      18.697
+      18.618,
+      18.669
     ],
     "visible_edit_response_ms": [
-      205.128,
-      236.314
+      197.714,
+      239.31
     ],
-    "draw_calls": 482,
+    "draw_calls": 529,
     "limits": "Separate short samples; no controlled speedup or scaling claim."
   }
 }

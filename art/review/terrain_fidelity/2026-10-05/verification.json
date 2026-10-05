@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fuller grass accents assembled from retained Kenney pointed plants, short/tall/edge terrain-supported placement, and lighter dark-tone curved grass. Fresh five-script checks, final actual Metal full/detail/four-edit renders, source preservation,49 original model array comparisons and near-base support probe across five layouts,plus standalone benchmark. User visual acceptance pending.",
+  "scope": "Blade-shape-only refinement of retained pointed grass clump: narrower middles,moderate outward bend and height tint,retaining original normalization bounds and root vertices. Fresh five-script checks,final actual Metal full/detail/four-edit renders,49 original non-clump arrays/root/support probe and standalone benchmark. User visual acceptance pending.",
   "suite": [
     {
       "test": "terrain_editor_decoration_test.gd",
@@ -65,9 +65,9 @@
     "refined_cottage_matches_HEAD": true,
     "sky_pngs_unchanged": 2,
     "sky_import_matches_HEAD": true,
-    "unchanged_other_terrain_camera_lighting_shader_sources": 18
+    "unchanged_other_terrain_camera_placement_lighting_shader_sources": 20
   },
-  "review": "Independent read-only source/probe/still review found no confirmed Critical/Important defect. Fuller accents/fewer wiry tall tufts give a modest positive gain, with full-scene readability retained in all four edits. Clumps remain rigid angular spikes compared with the reference's slender,splayed,less repeated blades. No obvious floating bases or waterfall obstruction in reviewed stills. Original arrays do not imply unchanged shading; curved-grass palette intentionally changes. Reviewer did not run Godot or assess temporal/arbitrary-footprint/upper-blade/platform performance/full acceptance.",
+  "review": "Independent source/probe/still review found no confirmed Critical/Important defect. Original normalization bounds,deterministic deformation,recomputed flat normals and skipped-triangle color guard are sound. Slightly more splayed and less upright,but a small directional gain; rigid triangular fans/star-shaped clumps still differ from slender reference blades. No obvious new floating bases or edit-related failures. Axis classification is source-specific. Reviewer did not run Godot or assess temporal quality,upper-blade/full-footprint clearance,performance or overall acceptance.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -1039,6 +1039,48 @@
       ],
       "review": "Independent read-only source/still review found no confirmed Critical/Important defect. Tree/eave shadows modestly soften; cliffs, terraces and pond edging retain readable depth. Minor tradeoff: wider penumbrae make stippling more noticeable on cottage gable and broad cliff faces. Reviewer did not run Godot or assess temporal noise, other quality settings, target devices or full visual acceptance.",
       "verification_sequence": "Final bounded daylight settings captured successfully; runtime22/22 and camera8/8 exit0; standalone three-run benchmark exit0. Stronger ambient.50/angular4.5/SSAO.75 trial rejected for flatter cliffs and excluded from final evidence."
+    },
+    "34f205b": {
+      "scope": "Fuller grass accents assembled from retained Kenney pointed plants, short/tall/edge terrain-supported placement, and lighter dark-tone curved grass. Fresh five-script checks, final actual Metal full/detail/four-edit renders, source preservation,49 original model array comparisons and near-base support probe across five layouts,plus standalone benchmark. User visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 99
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 8
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 9
+        }
+      ],
+      "review": "Independent read-only source/probe/still review found no confirmed Critical/Important defect. Fuller accents/fewer wiry tall tufts give a modest positive gain, with full-scene readability retained in all four edits. Clumps remain rigid angular spikes compared with the reference's slender,splayed,less repeated blades. No obvious floating bases or waterfall obstruction in reviewed stills. Original arrays do not imply unchanged shading; curved-grass palette intentionally changes. Reviewer did not run Godot or assess temporal/arbitrary-footprint/upper-blade/platform performance/full acceptance.",
+      "verification_sequence": "Nonempty-clump assertion fails with baseline81/82. Final short/wider/clump-support settings pass decoration99/99,incremental20/20,runtime22/22,camera8/8,model-bounds9/9; final actual capture,model/base-support probe and standalone three-run benchmark exit0. Taller/narrower reed-like trial excluded from final evidence."
     }
   },
   "limitations": [
@@ -1054,7 +1096,8 @@
     "Pointed foliage is closer to target but remains narrow and regularly repeated, with occasional detached-looking occluded tips and sparse flat rim sprays. Full placed vertices clear the global cliff minimum in three8x8 fixtures only; local contact/arbitrary footprints remain unproven.",
     "Waterfall run metadata preserves tested published gradients; wrapped-run/sentinel/seam numerical equality is source-reviewed rather than exhaustively tested. Vertex-color precision limits extreme widths. Temporal transparency and arbitrary outlets remain unverified; straight crest, patterned curtain and mound-like foam remain visual gaps.",
     "Wider daylight penumbrae show visible stippling in close-ups; temporal shadow noise and alternate quality/backends unmeasured.",
-    "Current pointed grass clumps are fuller but rigid/angular; near-base support probe does not prove upper-blade intersections or arbitrary terrain."
+    "Current pointed grass clumps are fuller but rigid/angular; near-base support probe does not prove upper-blade intersections or arbitrary terrain.",
+    "Blade deformation is specific to retained plant_flatTall axis groups; no general deformer or arbitrary-asset compatibility claim."
   ],
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
@@ -1315,7 +1358,7 @@
     "limits": "Five unchanged selected non-cliff pixels are finite separation evidence, not whole-image identity. Material cannot fix deep recesses, broad smooth patches or horizontal lower folds; temporal behavior and alternate-device rendering unverified.",
     "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
   },
-  "verification_sequence": "Nonempty-clump assertion fails with baseline81/82. Final short/wider/clump-support settings pass decoration99/99,incremental20/20,runtime22/22,camera8/8,model-bounds9/9; final actual capture,model/base-support probe and standalone three-run benchmark exit0. Taller/narrower reed-like trial excluded from final evidence.",
+  "verification_sequence": "Initial strong.30 bend/10% lowering trial rejected as agave-wide. One inferred-variable parse error corrected to explicit start:int; error-bearing capture/runtime/incremental outputs and interrupted model-bounds process excluded despite some exit0 labels. Clean final reruns pass decoration99/99,incremental20/20,runtime22/22,model-bounds9/9; independent camera8/8 clean. Final capture61611,blade probe and standalone benchmark93351 exit0.",
   "compact_cliff_refinement": {
     "baseline": "12ce140",
     "geometry": "Cellular relief amplitude/offset1.02/-.16 to.75/-.10; broad-profile horizontal noise.10 to.04, vertical.25 to.09, foot.04 to.02, profile Y wave.16 to.06. Narrow base-profile coefficients unchanged.",
@@ -1536,6 +1579,61 @@
       "detail_shoreline_before_tuft_refinement.png",
       "detail_vegetation_before_tuft_refinement.png"
     ],
-    "limits": "Fuller accents are a modest fidelity gain; rigid/angular/repeated clumps still differ from slender splayed reference grass. No exact-match or acceptance claim."
+    "limits": "Fuller accents are a modest fidelity gain; rigid/angular/repeated clumps still differ from slender splayed reference grass. No exact-match or acceptance claim.",
+    "revision": "34f205b: historical clump assembly/placement pass. Current blade resource is deformed; placement and curved-grass shader remain unchanged."
+  },
+  "blade_refinement": {
+    "baseline": "34f205b",
+    "shape": "Four signed dominant X/Z groups derive roots/tips from retained plant_flatTall vertices. Middle radius pulls68% toward a root-tip spine via smoothstep(.08,.30). Outward tip bend is originalBoxWidth*.16*along\u00b2; height lowers5%*along\u00b2. Central points remain geometrically unchanged. Original bounds normalize the three assembled copies,so bend is not compressed away.",
+    "color": "Local height tint RGB(.94+.16h,.97+.10h,.92+.15h); existing curved-grass shader unchanged.",
+    "normal_topology": "Rebuild retained triangle order with flat normals and per-vertex colors; skipped-triangle guard protects color writes. Current assembled resource has288triangle vertex entries,matching baseline count.",
+    "probe": {
+      "path": "temporary /tmp/terrain_blade_probe.gd",
+      "exit": 0,
+      "unchanged_non_clump_arrays": 49,
+      "channels": "non-null vertex/normal/color/UV/index arrays",
+      "corresponding_near_base_entries_within_1e_6": 84,
+      "triangle_vertex_entries": 288,
+      "base_fixtures": [
+        {
+          "layout": "initial",
+          "clumps": 51,
+          "base_vertex_entries": 4284,
+          "unsupported_entries": 0
+        },
+        {
+          "layout": "raise",
+          "clumps": 49,
+          "base_vertex_entries": 4116,
+          "unsupported_entries": 0
+        },
+        {
+          "layout": "lower",
+          "clumps": 50,
+          "base_vertex_entries": 4200,
+          "unsupported_entries": 0
+        },
+        {
+          "layout": "expand",
+          "clumps": 52,
+          "base_vertex_entries": 4368,
+          "unsupported_entries": 0
+        },
+        {
+          "layout": "contract",
+          "clumps": 51,
+          "base_vertex_entries": 4284,
+          "unsupported_entries": 0
+        }
+      ],
+      "limits": "Entry counts include duplicates; near-base localY<=.025 only,selected layouts. Does not prove upper blades,all intersections or arbitrary terrain. Non-clump arrays do not prove all materials/transforms/pixels."
+    },
+    "matched_before": [
+      "composition_wip_before_blade_refinement.png",
+      "detail_cliffs_before_blade_refinement.png",
+      "detail_shoreline_before_blade_refinement.png",
+      "detail_vegetation_before_blade_refinement.png"
+    ],
+    "limits": "Source-specific axis interpretation; small directional gain only. Still angular fans/star shapes versus reference slender blades. Original assets unchanged."
   }
 }
