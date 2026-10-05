@@ -1,0 +1,19 @@
+{
+  "source": "https://kenney.nl/assets/nature-kit",
+  "license": "CC0-1.0",
+  "original_local": "art/source/third_party/kenney_nature_kit/2026-09-20/original",
+  "integration": "Original GLBs retained. Runtime materials recolored; tree canopies assemble original oak leaf parts and detailed-tree wood parts. Leaf surfaces receive one triangle subdivision and an ellipsoid projection for rounder facets at runtime. Source files are unmodified.",
+  "files": {
+    "tree_oak.glb": "d7fd8773674928c50c11b66d12c636d49bdcc15a8b1c7fbb98e6f63a3439a3f3",
+    "tree_detailed.glb": "c041daf2f0fb1d49e4325227cbcd58667adbe51e9b55e8c1f0a94b74cc521b3b",
+    "fence_simple.glb": "ecaf6c29532aa9fd305a8ef71df769d60748bd797f2eb1c63bdefc4edb8062a7",
+    "plant_flatTall.glb": "b192523736f32754788de4dc7a5dcf30a58322b260ec8969120c91432a10b633",
+    "lily_large.glb": "c8f7080df0ae3166e9d33f523b66360c2ac7556dff36cc9c8ee78b6a676c7db2",
+    "flower_yellowA.glb": "8a3b08cd2ca411c21f9c581d5bda651d78b13c50cba45ad8fa0389398ead6d1d",
+    "grass_large.glb": "af49a595624abca7249824eeefb944d4baf974abeeb5b16110d175da3563d6cd",
+    "stone_largeA.glb": "fe486a13775e833b1aca99413a89e013f300841de80f42ecd44ceaf43720f17b",
+    "stone_largeB.glb": "2b6b96b701b42d96efaa92ad4aba0cc8d23417f1bc07f0e996ee1a5acd52b4b8",
+    "stone_largeD.glb": "db945df5cc1fb3113777dc208bac3f46d3fb970aaf39f2c517612f99fbf3532b",
+    "stone_smallFlatA.glb": "04f2d1bf9dba77426a5fa076a07d7b1319fb78021b7fe619a6ca3599d96d762a"
+  }
+}

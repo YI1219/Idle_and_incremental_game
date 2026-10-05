@@ -156,28 +156,33 @@ func make_preset(kind: int) -> void:
 	cells.clear()
 	_undo.clear()
 	_redo.clear()
-	var width := 21 if kind==1 else 16
-	var depth := 8 if kind==1 else 12
-	for z in range(-depth,depth+1):
+	var width := 21 if kind==1 else 19
+	for z in range(-14,15):
 		for x in range(-width,width+1):
-			var contour := pow(float(x)/width,2)+pow(float(z)/depth,2)
-			if contour > 1.0+0.065*sin(x*0.9+z*0.7): continue
-			if kind==2 and Vector2(x+4,z).length()<3.0: continue
-			var upper := x < -2
-			var height := 3.5 if upper else 1.5
-			var water := -1
-			var pond_center := Vector2(-8,-2) if upper else Vector2(5,2)
-			var p := (Vector2(x,z)-pond_center)/Vector2(4.7,3.4)
-			if kind!=2 and p.length()<1.0:
-				height-=0.5
+			var at:=Vector2(x+.5,z+.5)
+			var upper_shape:=((at-Vector2(-7,-3))/Vector2(11,9)).length()
+			var lower_shape:=((at-Vector2(7,3))/Vector2(11,8)).length()
+			if kind==1:
+				upper_shape=((at-Vector2(-9,-2))/Vector2(12,7)).length()
+				lower_shape=((at-Vector2(9,2))/Vector2(12,7)).length()
+			var ripple:=.025*sin(at.x*.74+at.y*.81)+.018*sin(at.x*1.3-at.y*.6)
+			if minf(upper_shape,lower_shape)>1.0+ripple:continue
+			if kind==2 and (at-Vector2(-4,0)).length()<2.8:continue
+			var upper:=upper_shape<1.0+ripple and (at.y < -at.x*.6+1.5 or lower_shape>1.0)
+			var height:=3.5 if upper else 1.5
+			var water:=-1
+			var pond_center:=Vector2(-6,0) if upper else Vector2(7,3)
+			var pond_shape:=((at-pond_center)/Vector2(5.5,3.3 if upper else 3.6)).length()
+			if kind!=2 and pond_shape<1.0 and (not upper or at.y < -at.x*.6+1.5-1.25):
+				height-=.5
 				water=7 if upper else 3
-			# Outlets connect terraces and lead to the lower island boundary.
-			if kind!=2 and z==0 and x>=-8 and x<=5:
+			# Wide outlets become continuous ribbons, then adaptive waterfalls at the drops.
+			if kind!=2 and at.x>-6 and at.x<7 and absf(at.y-1.0)<1.05:
 				height=3.0 if upper else 1.0
 				water=7 if upper else 3
-			if kind!=2 and x==7 and z>=2:
+			if kind!=2 and absf(at.x-10.5)<1.6 and at.y>3:
 				height=1.0
 				water=3
-			var cell := Vector2i(x,z)
+			var cell:=Vector2i(x,z)
 			cells[cell]={"height":height,"water":water}
 			invalidate(cell)

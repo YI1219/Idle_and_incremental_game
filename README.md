@@ -23,13 +23,14 @@ Camera orientation is fixed. Vertical movement, fly navigation and orbit are dis
 
 ## Current limits
 
-This is a terrain demo. Water is an eight-level editing system, not a fluid simulation. Free Quaternius models and adapted runtime materials provide surface objects; cliff geometry is generated in code. Original source models are preserved. Economy, character and combat sources remain available but are not part of the active workshop. The legacy scene can be opened directly as `scenes/play.tscn`; `Play Indoor Transition.command` remains its launcher.
+This is a terrain demo. Water is an eight-level editing system, not a fluid simulation. Free Kenney model parts and adapted runtime materials provide solid surface objects; shared organic contours and cliff geometry are generated in code. The refined cottage is reused; bench and lantern use placeholders. Original source models are preserved. Economy, character and combat sources remain available but are not part of the active workshop. The legacy scene can be opened directly as `scenes/play.tscn`; `Play Indoor Transition.command` remains its launcher.
 
-Visual finish and target-device performance remain under verification. The development target is 4096 cells at 1280×720 low quality, median frame time ≤16.7 ms and p95 ≤25 ms, plus a 30-minute stability run. Windows thin-laptop and MacBook Air results remain unmeasured.
+The active revision prioritizes visual fidelity to the supplied floating-island image and coherent editing. Actual reference comparisons and user art acceptance are pending. Current-renderer performance is reported separately from previous benchmarks; Windows thin-laptop and MacBook Air results remain unmeasured.
 
 ## Verification
 
 ```sh
+python3 tests/run_preview.py tests/terrain_contour_test.gd --headless
 python3 tests/run_preview.py tests/terrain_editor_data_test.gd --headless
 python3 tests/run_preview.py tests/terrain_editor_render_test.gd --headless
 python3 tests/run_preview.py tests/terrain_editor_decoration_test.gd --headless

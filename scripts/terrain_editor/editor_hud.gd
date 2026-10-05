@@ -100,4 +100,4 @@ func is_over_panel(screen:Vector2)->bool:
 func _file_status(error:Error,success:String)->void:
 	status.text=success+" layout" if error==OK else "Layout: "+error_string(error)
 func update_diagnostics()->void:
-	diagnostics.text="%d cells · %d chunks · %d pending\n%d FPS · edit %.2f ms\n%d draw calls"%[editor.data.cells.size(),editor.renderer.chunks.size(),editor.data.dirty_chunks.size(),Engine.get_frames_per_second(),editor.last_edit_ms,Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)]
+	diagnostics.text="%d cells · %d chunks · %d pending\n%d FPS · edit %.2f ms\n%d draw calls"%[editor.data.cells.size(),editor.renderer.chunks.size(),editor.renderer.pending_chunk_count(),Engine.get_frames_per_second(),editor.last_edit_ms,Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)]

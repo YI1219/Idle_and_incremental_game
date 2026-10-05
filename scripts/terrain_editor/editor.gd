@@ -11,7 +11,7 @@ var camera:=Camera.new()
 var hud:CanvasLayer
 var tool:="raise"
 var radius:=1.6
-var snap:=true
+var snap:=false
 var build_height:=1.5
 var water_level:=3
 var painting:=false
@@ -40,8 +40,10 @@ func _setup_environment()->void:
 	var sun:=DirectionalLight3D.new()
 	sun.rotation_degrees=Vector3(-50,-30,0)
 	sun.light_color=Color("fff2ce")
-	sun.light_energy=1.0
-	sun.shadow_enabled=false
+	sun.light_energy=1.15
+	sun.shadow_enabled=true
+	sun.directional_shadow_max_distance=90
+	sun.light_angular_distance=2.4
 	add_child(sun)
 	var env:=WorldEnvironment.new()
 	env.environment=Environment.new()
@@ -50,12 +52,16 @@ func _setup_environment()->void:
 	var sky_material:=ShaderMaterial.new()
 	sky_material.shader=load("res://shaders/terrain_editor/sky.gdshader")
 	sky.sky_material=sky_material
-	sky.process_mode=Sky.PROCESS_MODE_REALTIME
+	sky.process_mode=Sky.PROCESS_MODE_QUALITY
 	env.environment.sky=sky
 	env.environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color=Color("daeaf1")
-	env.environment.ambient_light_energy=0.48
-	env.environment.tonemap_mode=Environment.TONE_MAPPER_FILMIC
+	env.environment.ambient_light_energy=0.36
+	env.environment.tonemap_mode=Environment.TONE_MAPPER_LINEAR
+	env.environment.ssao_enabled=true
+	env.environment.ssao_radius=.85
+	env.environment.ssao_intensity=1.1
+	env.environment.ssao_power=1.3
 	add_child(env)
 func _process(delta:float)->void:
 	renderer.flush_dirty(2)
@@ -89,7 +95,7 @@ func _unhandled_input(event:InputEvent)->void:
 			cancel_input()
 			if event.shift_pressed:data.redo()
 			else:data.undo()
-		elif event.keycode==KEY_HOME:camera.recenter(Vector2(-3,3))
+		elif event.keycode==KEY_HOME:camera.recenter(Vector2(0,-1))
 		elif event.keycode==KEY_ESCAPE:cancel_input()
 func _pointer(screen:Vector2)->Dictionary:
 	var origin:=camera.project_ray_origin(screen)
@@ -144,7 +150,7 @@ func select_preset(kind:int)->void:
 	cancel_input()
 	data.make_preset(kind)
 	renderer.rebuild_all()
-	camera.recenter(Vector2(-3,3))
+	camera.recenter(Vector2(0,-1))
 func save_layout(path:String)->Error:
 	data.end_stroke()
 	var error:=DirAccess.make_dir_recursive_absolute(path.get_base_dir())

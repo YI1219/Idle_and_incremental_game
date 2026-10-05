@@ -73,9 +73,9 @@ func run()->void:
 	for i in 100:camera.advance(1.0/60.0)
 	editor.tool="raise"
 	editor.radius=0.49
-	var picked_cell:=Vector2i(9,-6)
+	var picked_cell:=Vector2i(9,-3)
 	var old_height:float=editor.data.cells[picked_cell].height
-	press.position=camera.unproject_position(Vector3(9.5,old_height,-5.5))
+	press.position=camera.unproject_position(Vector3(9.5,old_height,-2.5))
 	press.pressed=true
 	root.push_input(press,true)
 	press.pressed=false
@@ -84,12 +84,25 @@ func run()->void:
 	# Actual pointer routing must retain ownership on exact east/south cliff boundaries.
 	camera.recenter(Vector2.ZERO)
 	camera.advance(10.0)
-	for face in [Vector3(1,1,0.5),Vector3(0.5,1,1)]:
+	for axis in [0,2]:
 		editor.data.cells.clear()
 		editor.data.cells[Vector2i.ZERO]={"height":1.5,"water":-1}
 		editor.renderer.rebuild_all()
 		editor.tool="contract"
 		editor.snap=true
+		var face:=Vector3.ZERO
+		var found:=false
+		for chunk in editor.renderer.chunks.values():
+			var cliff=chunk.get_node_or_null("cliff")
+			if cliff==null:continue
+			var faces:PackedVector3Array=cliff.mesh.get_faces()
+			for i in range(0,faces.size(),3):
+				var normal:=-(faces[i+1]-faces[i]).cross(faces[i+2]-faces[i]).normalized()
+				var center:Vector3=(faces[i]+faces[i+1]+faces[i+2])/3.0
+				if normal[axis]>.7 and center.y>0 and center.y<1.3:
+					face=center;found=true;break
+			if found:break
+		check(found,"actual visible cliff face available for viewport routing")
 		press.position=camera.unproject_position(face)
 		var owner:Dictionary=editor._pointer(press.position)
 		check(not owner.is_empty() and owner.cell==Vector2i.ZERO,"cliff pointer identifies owning cell")

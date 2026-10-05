@@ -1,0 +1,116 @@
+{
+	"backend": "Metal Forward+",
+	"device": "Apple M4 Pro (Apple9)",
+	"resolution": [
+		1280,
+		720
+	],
+	"runs": [
+		{
+			"cells": 543,
+			"draw_calls": 498.0,
+			"duration_seconds": 12.001803,
+			"edits": [
+				{
+					"changed_cells": 15,
+					"operation": "raise",
+					"visible_response_ms": 124.354
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 124.078
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 113.881
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 151.762
+				}
+			],
+			"frame_count": 2091,
+			"max_ms": 61.334,
+			"median_ms": 4.006,
+			"p95_ms": 13.226,
+			"run": 1,
+			"static_memory_mib": 58.4359569549561,
+			"video_memory_mib": 194.703125
+		},
+		{
+			"cells": 543,
+			"draw_calls": 498.0,
+			"duration_seconds": 12.002433,
+			"edits": [
+				{
+					"changed_cells": 15,
+					"operation": "raise",
+					"visible_response_ms": 96.294
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 95.78
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 99.813
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 104.247
+				}
+			],
+			"frame_count": 2192,
+			"max_ms": 41.167,
+			"median_ms": 3.239,
+			"p95_ms": 14.048,
+			"run": 2,
+			"static_memory_mib": 58.4422855377197,
+			"video_memory_mib": 194.703125
+		},
+		{
+			"cells": 543,
+			"draw_calls": 498.0,
+			"duration_seconds": 12.003902,
+			"edits": [
+				{
+					"changed_cells": 15,
+					"operation": "raise",
+					"visible_response_ms": 102.903
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 133.871
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 126.446
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 143.319
+				}
+			],
+			"frame_count": 2077,
+			"max_ms": 60.798,
+			"median_ms": 4.225,
+			"p95_ms": 13.174,
+			"run": 3,
+			"static_memory_mib": 58.4458141326904,
+			"video_memory_mib": 194.703125
+		}
+	],
+	"scope": "current reference demo, 12-second measurement per run; target laptops and long idle stability unmeasured this round",
+	"shadows": true,
+	"ssao": true,
+	"vsync": "disabled"
+}

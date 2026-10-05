@@ -1,17 +1,17 @@
 class_name EditorCamera
 extends Camera3D
 ## Height is a separate state changed exclusively by wheel input.
-var height_goal:=34.0
-var _height:=34.0
-var _center:=Vector2(-3,3)
-var _center_goal:=Vector2(-3,3)
+var height_goal:=21.0
+var _height:=21.0
+var _center:=Vector2(0,-1)
+var _center_goal:=Vector2(0,-1)
 var _dragging:=false
 const MIN_HEIGHT:=6.0
 const MAX_HEIGHT:=100.0
-const PITCH:=42.0
-const YAW:=43.0
+const PITCH:=27.0
+const YAW:=16.0
 func _ready()->void:
-	fov=38.0
+	fov=31.0
 	near=0.1
 	far=600.0
 	rotation_degrees=Vector3(-PITCH,YAW,0)

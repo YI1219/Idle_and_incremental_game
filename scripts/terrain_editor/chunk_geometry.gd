@@ -11,7 +11,9 @@ class Surface:
 	var colors := PackedColorArray()
 	var uv := PackedVector2Array()
 	func triangle(a: Vector3,b: Vector3,c: Vector3,color:Color,up:bool=false) -> void:
-		var normal := (b-a).cross(c-a).normalized()
+		var cross := -(b-a).cross(c-a)
+		if cross.length_squared()<0.00000001:return
+		var normal := cross.normalized()
 		if up and normal.y<0.0:
 			var temp := b
 			b=c

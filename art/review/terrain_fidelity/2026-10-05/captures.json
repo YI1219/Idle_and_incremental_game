@@ -1,0 +1,46 @@
+{
+	"edits": [
+		{
+			"center": [
+				-13.0,
+				2.0
+			],
+			"changed_cells": 15,
+			"operation": "raise",
+			"radius": 2.3
+		},
+		{
+			"center": [
+				13.0,
+				7.0
+			],
+			"changed_cells": 12,
+			"operation": "lower",
+			"radius": 2.0
+		},
+		{
+			"center": [
+				18.0,
+				4.0
+			],
+			"changed_cells": 14,
+			"operation": "expand",
+			"radius": 2.6
+		},
+		{
+			"center": [
+				3.0,
+				7.0
+			],
+			"changed_cells": 16,
+			"operation": "contract",
+			"radius": 2.2
+		}
+	],
+	"resolution": [
+		1672,
+		940
+	],
+	"source": "actual Godot 4.7.2 Metal Forward+ renders",
+	"status": "work in progress, user visual acceptance pending"
+}
