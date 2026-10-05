@@ -23,16 +23,16 @@ vec3 flow_at(vec2 coordinates){
 	vec2 flow=coordinates*vec2(4.4,1.7)+vec2(0.0,TIME*1.25);
 	flow.x+=sin(flow.y*1.8)*.20+sin(flow.x*.93+flow.y*.73)*.10;
 	vec2 field=veins(flow);
-	float strand=pow(.5+.5*sin(flow.x*4.5+sin(flow.y*.45)*.22),7.0);
-	strand*=.65+.35*sin(flow.y*.8+flow.x*2.3);
+	float strand=pow(.5+.5*sin(flow.x*3.1+sin(flow.y*.45)*.36),6.0);
+	strand*=(.70+.30*sin(flow.x*.73+flow.y*.17))*(.70+.30*sin(flow.y*.8+flow.x*2.3));
 	return vec3(field,strand);
 }
 void fragment(){
 	// Blend two world projections instead of switching UV axes on a folded face.
 	float across=abs(world_normal.x)/(abs(world_normal.x)+abs(world_normal.z)+.0001);
 	vec3 field=mix(flow_at(world_position.xy),flow_at(world_position.zy),across);
-	vec3 color=mix(vec3(.06,.48,.75),vec3(.30,.78,.92),field.y*.70);
-	color=mix(color,vec3(.88,.98,1.0),clamp(field.z*.82+field.x*.34,0.0,1.0));
+	vec3 color=mix(vec3(.10,.60,.83),vec3(.36,.84,.96),field.y*.70);
+	color=mix(color,vec3(.88,.98,1.0),clamp(field.z*.96+field.x*.22,0.0,1.0));
 	float side=1.0;
 	if(COLOR.a<.5){
 		float edge=min(COLOR.r,1.0-COLOR.r);
@@ -45,7 +45,7 @@ void fragment(){
 	}
 	ALBEDO=color;
 	EMISSION=color*.18;
-	ALPHA=clamp(.72+field.y*.14+field.z*.12+field.x*.08,.72,.97)*side;
+	ALPHA=clamp(.80+field.y*.10+field.z*.09+field.x*.05,.80,.97)*side;
 	ROUGHNESS=.46;
 	SPECULAR=.30;
 }

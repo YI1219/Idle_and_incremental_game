@@ -409,7 +409,10 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 				previous_a=current_a
 				previous_b=current_b
 			var back:=Vector3(out.x,0,out.y)*.09
+			var crest_start:int=surfaces.bank.vertices.size()
 			surfaces.bank.quad(p-back+Vector3(0,.012,0),q-back+Vector3(0,.012,0),q+Vector3(0,.012,0),p+Vector3(0,.012,0),Color.WHITE,true)
+			# Blue zero marks crest foam; landing foam retains its original white.
+			for index in range(crest_start,surfaces.bank.vertices.size()):surfaces.bank.colors[index]=Color(1,1,0,1)
 		var r:=_fall_point(b,normal_b,water_y,low+.07)
 		var s:=_fall_point(a,normal_a,water_y,low+.07)
 		if not sample.is_empty() and sample.water>=0:

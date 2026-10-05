@@ -1,0 +1,32 @@
+{
+  "frames": [
+    {
+      "file": "flow_time_0.png",
+      "frames_after_start": 0,
+      "wall_seconds": 0.16789
+    },
+    {
+      "file": "flow_time_1.png",
+      "frames_after_start": 15,
+      "wall_seconds": 0.448804
+    },
+    {
+      "file": "flow_time_2.png",
+      "frames_after_start": 30,
+      "wall_seconds": 0.742275
+    },
+    {
+      "file": "flow_time_3.png",
+      "frames_after_start": 45,
+      "wall_seconds": 1.033072
+    },
+    {
+      "file": "flow_time_4.png",
+      "frames_after_start": 60,
+      "wall_seconds": 1.325152
+    }
+  ],
+  "limits": "Single fixed camera/default layout; not all temporal behavior or frame pacing",
+  "source": "actual Metal Forward+ render, fixed60Hz timestep, five still frames across60drawn frames",
+  "runner": "python3 tests/run_preview.py tests/capture_terrain_flow.gd --resolution 1672x940"
+}

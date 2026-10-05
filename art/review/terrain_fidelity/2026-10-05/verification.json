@@ -1,86 +1,48 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Cliff shoulder and joint refinement against fc8e09a: separate upper terrace relief from lower base taper, retain actual contour endpoints, broaden relief onset by existing thickness weight and darken world-site joins. Actual matched full/details/four edits; fresh eleven-script checks, finite geometry preservation probe and standalone benchmark. Overall visual acceptance pending.",
+  "scope": "Waterfall flow/crest shading pass against1b63017. Crest-only color tag, softer/broken crest opacity, brighter cyan, quieter vein network and less uniform vertical strands. No geometry positions/normals change. Fresh six-script checks, actual matched full/details/four edits plus five motion samples, source/published preservation probes and standalone benchmark. Overall visual acceptance pending.",
   "suite": [
-    {
-      "test": "terrain_upper_rock_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "ray_samples": 15,
-      "shoulders": 11,
-      "nearby_join_vertices": 25,
-      "failures": 0
-    },
-    {
-      "test": "terrain_narrow_cliff_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 794
-    },
-    {
-      "test": "terrain_cliff_taper_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 2
-    },
-    {
-      "test": "terrain_boundary_wall_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 416
-    },
     {
       "test": "terrain_waterfall_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 35
-    },
-    {
-      "test": "terrain_contour_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 1025
+      "checks": 35,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_editor_render_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 339
+      "checks": 339,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_editor_decoration_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 99
+      "checks": 99,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_incremental_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 20
+      "checks": 20,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 22
+      "checks": 22,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "camera_test.gd",
       "ok": true,
       "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed 60Hz)",
-      "checks": 8
+      "checks": 8,
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     }
   ],
   "regression": {
@@ -88,7 +50,7 @@
     "after": "30/30 passed; zero blocked reference samples after wet-mouth shoulder limits",
     "retained": "Wide-outlet physical folds, mixed-height receivers, narrow strip clearance and incremental reconstruction checks remain passing",
     "limitations": "Finite reference sampling, not exhaustive arbitrary-layout or entire-surface clearance coverage.",
-    "revision": "afea19c original waterfall regression; last rerun at4ab3968,not rerun this canopy-only pass"
+    "revision": "afea19c original regression; waterfall35-script rerun this crest pass; geometry preserved against1b63017 in five fixtures"
   },
   "render_verification": {
     "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
@@ -104,16 +66,27 @@
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
-    "tracked_runtime_sources_assets": "Compared tracked terrain-editor scripts/shaders, nature, cottage and terrain-editor resources against fc8e09a, excluding imports. Only contour_terrain.gd and cliff.gdshader differ; original models/textures remain identical. Eight unrelated local hashes retained.",
+    "tracked_runtime_sources_assets": "Compared terrain-editor scripts/shaders,nature,cottage and terrain-editor resources against1b63017, excluding imports. Only contour_terrain.gd,foam.gdshader,waterfall.gdshader differ; original models/textures retain bytes.",
     "component_probe": {
-      "exact_non_cliff_vertex_normal_color_arrays": 60,
-      "fixtures": "default and four capture edits",
-      "exact_narrow_cliff_vertex_normal_color_arrays": 3,
-      "narrow_fixture": "11-cell strip x24..34,z2,height1.5",
-      "limitations": "Finite exact geometry arrays, not all metadata/materials or arbitrary layouts. Broad cliff positions/normals and decoration profile anchors intentionally change. Equal cliff counts do not imply array identity."
+      "source": "temporary /tmp/terrain_crest_published.gd actual source and clipped ArrayMesh comparison",
+      "fixtures": "default plus raise/lower/expand/contract capture fixtures",
+      "exact_source_arrays": 70,
+      "channels": "all five surface vertex/normal arrays plus all non-bank color arrays",
+      "source_crest_tag_entries": [
+        78,
+        78,
+        162,
+        78,
+        162
+      ],
+      "source_color_limit": "Bank colors differ only WHITE to(1,1,0,1). Landing color entries retain values.",
+      "exact_published_bank_vertex_normal_uv_arrays": 33,
+      "published_crest_tag_entries": 570,
+      "published_color_limit": "Every changed clipped bank color is WHITE to(1,1,0,1); no other channels change.",
+      "limitations": "Finite fixture component equality, not all shader outputs/platforms/metadata or arbitrary layouts."
     }
   },
-  "review": "Independent read-only source/test/final-still review found no confirmed Critical/Important defect. Terrace slit closed; repaired lower-edit wall intact; no new obvious waterfall obstruction/open boundary in four edits. Worthwhile but modest gain: upper-left cliff faces read as connected masses rather than nearly flat wall. Joins still soft outlined cobbles; lower folds and attached stone inserts remain. Reviewer did not run Godot, benchmark or verify arbitrary layouts/temporal behavior. Added join coverage threshold after review; affected test rerun clean.",
+  "review": "Independent read-only source/final full/four-edit/five-motion-frame review found no confirmed Critical/Important defect. Crest tags remain isolated and barycentric publication preserves them; blue-one landing opacity and downward shader advection retained. Modest gain: less dominant crest/quieter crosswise veins/clearer cyan vertical flow. Brighter/more opaque sheet,straight crests,repeated broad streaks,mound-like foam remain. All five motion frames retain curtain/splash with changing highlights/crest opacity; no obvious dropout/seam in samples. Reviewer ran no engine jobs or benchmark. A subsequent actual published-bank probe adds finite color preservation evidence.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -1332,9 +1305,116 @@
         "preservation": "Eight unrelatedSHA256s unchanged; terrain_models.gd sole changed compared tracked runtime source/asset(imports excluded)."
       },
       "limitations": "User visual acceptance pending. Modest canopy gain does not resolve the reference. Finite resource/contact/still evidence excludes all-branch/lobe support,arbitrary layouts,temporal behavior,target-laptop performance and long-idle power/stability. Historical evidence retains revision."
+    },
+    "1b63017": {
+      "scope": "Cliff shoulder and joint refinement against fc8e09a: separate upper terrace relief from lower base taper, retain actual contour endpoints, broaden relief onset by existing thickness weight and darken world-site joins. Actual matched full/details/four edits; fresh eleven-script checks, finite geometry preservation probe and standalone benchmark. Overall visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_upper_rock_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "ray_samples": 15,
+          "shoulders": 11,
+          "nearby_join_vertices": 25,
+          "failures": 0
+        },
+        {
+          "test": "terrain_narrow_cliff_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 794
+        },
+        {
+          "test": "terrain_cliff_taper_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 2
+        },
+        {
+          "test": "terrain_boundary_wall_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 416
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 35
+        },
+        {
+          "test": "terrain_contour_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 1025
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 339
+        },
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 99
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed 60Hz)",
+          "checks": 8
+        }
+      ],
+      "preservation": {
+        "unrelated_local_files_unchanged": 8,
+        "tracked_runtime_sources_assets": "Compared tracked terrain-editor scripts/shaders, nature, cottage and terrain-editor resources against fc8e09a, excluding imports. Only contour_terrain.gd and cliff.gdshader differ; original models/textures remain identical. Eight unrelated local hashes retained.",
+        "component_probe": {
+          "exact_non_cliff_vertex_normal_color_arrays": 60,
+          "fixtures": "default and four capture edits",
+          "exact_narrow_cliff_vertex_normal_color_arrays": 3,
+          "narrow_fixture": "11-cell strip x24..34,z2,height1.5",
+          "limitations": "Finite exact geometry arrays, not all metadata/materials or arbitrary layouts. Broad cliff positions/normals and decoration profile anchors intentionally change. Equal cliff counts do not imply array identity."
+        }
+      },
+      "review": "Independent read-only source/test/final-still review found no confirmed Critical/Important defect. Terrace slit closed; repaired lower-edit wall intact; no new obvious waterfall obstruction/open boundary in four edits. Worthwhile but modest gain: upper-left cliff faces read as connected masses rather than nearly flat wall. Joins still soft outlined cobbles; lower folds and attached stone inserts remain. Reviewer did not run Godot, benchmark or verify arbitrary layouts/temporal behavior. Added join coverage threshold after review; affected test rerun clean.",
+      "verification_sequence": {
+        "baseline": "fc8e09a",
+        "trials": "Distance-gap physical clefts looked too folded and were discarded. A single envelope continuing across the lower terrace opened a slit and was superseded by two pinned-height envelopes. Final shader uses second-nearest site darkening, geometry retains original field.",
+        "final_tests": "Eleven scripts exit0 with clean output. Join-coverage assertion added afterward; upper-rock test rerun exit0,15rays/11shoulders/25nearbyjoinvertices.",
+        "final_capture": "Metal1672x940,exit0. Full/three details/four edits/editor; full/details/four edits visually inspected.",
+        "final_probes": "63 exact component arrays,zero failures,exit0.",
+        "benchmark": "Standalone Metal1280x720,three12s runs after2s warmups,no concurrent Godot runs,exit0.",
+        "preservation": "Eight unrelated SHA256s unchanged. Two changed compared tracked runtime sources/assets; imports excluded."
+      },
+      "limitations": "User visual acceptance pending. Cliff gain does not resolve larger angular rock planes, lower folds or attached inserts. Fifteen rays and nearest join vertices do not prove triangle incidence, watertightness or arbitrary layouts. Target laptops, long idle and temporal shading remain unmeasured. Historical evidence retains revision."
     }
   },
-  "limitations": "User visual acceptance pending. Cliff gain does not resolve larger angular rock planes, lower folds or attached inserts. Fifteen rays and nearest join vertices do not prove triangle incidence, watertightness or arbitrary layouts. Target laptops, long idle and temporal shading remain unmeasured. Historical evidence retains revision.",
+  "limitations": "User visual acceptance pending. Waterfall gain is modest; straight crest and mound-like foam remain. Sparse five-frame sampling does not prove smooth animation,absence of brief sorting artifacts or arbitrary-layout/platform behavior. Target laptops and long-idle performance remain unmeasured. Historical tests retain their revisions.",
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
     "probe": "canopy_contact_probe.gd",
@@ -1595,13 +1675,15 @@
     "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
   },
   "verification_sequence": {
-    "baseline": "fc8e09a",
-    "trials": "Distance-gap physical clefts looked too folded and were discarded. A single envelope continuing across the lower terrace opened a slit and was superseded by two pinned-height envelopes. Final shader uses second-nearest site darkening, geometry retains original field.",
-    "final_tests": "Eleven scripts exit0 with clean output. Join-coverage assertion added afterward; upper-rock test rerun exit0,15rays/11shoulders/25nearbyjoinvertices.",
-    "final_capture": "Metal1672x940,exit0. Full/three details/four edits/editor; full/details/four edits visually inspected.",
-    "final_probes": "63 exact component arrays,zero failures,exit0.",
+    "baseline": "1b63017",
+    "invalid_run": "Initial crest-tag indentation parse error corrected; failing capture21262 terminated and excluded. Clean intermediate92162 and final70577 complete.",
+    "trials": "Initial strand2.1frequency/power5 too broad; final3.1/power6 with continuous modulation.",
+    "final_tests": "Six scripts clean,exit0.",
+    "final_capture": "Metal1672x940,exit0;full/three details/four edits/editor. All full/details/four edits visually inspected.",
+    "motion_capture": "Five fixed-camera actual frames at0/15/30/45/60drawn frames; exit0. Sparse samples only.",
+    "final_probes": "70exact source arrays;33exact published-bank vertex/normal/UV arrays;570publishedcresttags only;zero failures,exit0.",
     "benchmark": "Standalone Metal1280x720,three12s runs after2s warmups,no concurrent Godot runs,exit0.",
-    "preservation": "Eight unrelated SHA256s unchanged. Two changed compared tracked runtime sources/assets; imports excluded."
+    "preservation": "Eight unrelated SHA256s unchanged; three changed compared runtime sources/assets excluding imports."
   },
   "compact_cliff_refinement": {
     "baseline": "12ce140",
@@ -2013,6 +2095,15 @@
       "final": "11 of15 upper rays have protrusion greater than.04;25 nearby vertices at actual contour endpoints match within.0001;zero failures,exit0. Minimum10rays/5shoulders/20joins protects coverage.",
       "limitations": "Default finite samples selected from actual cliff profiles. Nearest mesh vertex does not establish incident triangle continuity/watertightness. Projected absent upper caps excluded."
     },
-    "visual": "Worthwhile but modest connected-mass gain; soft outlined cobbles, lower folds, attached inserts and reference larger planes remain."
+    "visual": "Worthwhile but modest connected-mass gain; soft outlined cobbles, lower folds, attached inserts and reference larger planes remain.",
+    "revision": "1b63017 historical shoulder/joint pass; upper/narrow/taper/boundary scripts not rerun this shading-only round"
+  },
+  "crest_flow_refinement": {
+    "baseline": "1b63017",
+    "crest": "COLOR.b0 marks only new crest triangles; other bank foam retains blue1. Bounded world-XZ oscillation multiplies crest opacity by.18\u2013.78, preserving landing alpha.",
+    "flow": "Spatial strand multiplier4.5\u21923.1,power7\u21926,continuous sinusoidal modulation; brighter cyan; strandwhiteweight.82\u2192.96,veinweight.34\u2192.22,minopacity.72\u2192.80. Downward advection/sidefade/depth and shadow modes retained.",
+    "motion_manifest": "flow_temporal.json",
+    "proof_limit": "Five sampled frames,not smooth playback/all temporal behavior",
+    "visual": "Modest gain with brighter/more opaque sheet tradeoff; straight crest,repeated bands and mound-like landing remain."
   }
 }
