@@ -1,35 +1,7 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh waterfall spill-run shading coordinates, barycentric publication through chunk clipping, brighter vertical cyan/white flow with bounded irregular side fade, and higher irregular landing foam. Eight affected scripts, final actual Metal full/detail/four-edit captures,40 exact source geometry arrays and final standalone benchmark. Models, foliage, camera, pond/foam shaders and originals preserved. User visual acceptance pending.",
+  "scope": "Daylight-only refinement of sun energy/angular size, ambient fill and SSAO strength. Fresh runtime/camera checks, actual Metal full/detail/four-edit renders, original/source preservation and standalone benchmark. Geometry/assembly/shaders unchanged against2db8ed9. User visual acceptance pending.",
   "suite": [
-    {
-      "test": "terrain_contour_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
-      "checks": 1025
-    },
-    {
-      "test": "terrain_waterfall_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
-      "checks": 35
-    },
-    {
-      "test": "terrain_editor_render_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
-      "checks": 339
-    },
-    {
-      "test": "terrain_incremental_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
-      "checks": 20
-    },
     {
       "test": "terrain_editor_runtime_test.gd",
       "ok": true,
@@ -43,20 +15,6 @@
       "exit": 0,
       "runner": "tests/run_preview.py --headless (fixed60Hz)",
       "checks": 8
-    },
-    {
-      "test": "terrain_editor_decoration_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
-      "checks": 80
-    },
-    {
-      "test": "terrain_shoreline_test.gd",
-      "ok": true,
-      "exit": 0,
-      "runner": "tests/run_preview.py --headless (fixed60Hz)",
-      "checks": 9
     }
   ],
   "regression": {
@@ -64,7 +22,7 @@
     "after": "30/30 passed; zero blocked reference samples after wet-mouth shoulder limits",
     "retained": "Wide-outlet physical folds, mixed-height receivers, narrow strip clearance and incremental reconstruction checks remain passing",
     "limitations": "Finite reference sampling, not exhaustive arbitrary-layout or entire-surface clearance coverage.",
-    "revision": "afea19c default reference regression, freshly retained in this round"
+    "revision": "afea19c reference regression; last retained in 2db8ed9 waterfall suite, not rerun this lighting-only pass"
   },
   "render_verification": {
     "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
@@ -80,14 +38,15 @@
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
+    "quaternius_source_files_unchanged": 24,
     "kenney_source_glbs_unchanged": 11,
-    "refined_cottage_matches_HEAD": true,
     "cottage_glbs_unchanged": 2,
+    "refined_cottage_matches_HEAD": true,
     "sky_pngs_unchanged": 2,
     "sky_import_matches_HEAD": true,
-    "quaternius_source_files_unchanged": 24
+    "unchanged_terrain_camera_assembly_shader_sources": 20
   },
-  "review": "Independent read-only source/probe/final-still review found no confirmed Critical/Important defect. Non-spill stop joins wrapping runs and flushes them; closed rings retain WHITE bypass. Linear across/worlddrop coordinates and constant run-width code survive barycentric clipping. Reciprocal decoding recovers inverse width before quantization, with positive guards and capped normalized fade preserving a center on narrow streams. Brighter cyan and vertical highlights improve over the heavy-net trial. Straight crest, patterned curtain and mound-like foam remain gaps. No obvious new interruption/seam in refreshed captures. Reviewer did not run Godot, benchmark or establish temporal/platform/arbitrary-range/full-acceptance coverage.",
+  "review": "Independent read-only source/still review found no confirmed Critical/Important defect. Tree/eave shadows modestly soften; cliffs, terraces and pond edging retain readable depth. Minor tradeoff: wider penumbrae make stippling more noticeable on cottage gable and broad cliff faces. Reviewer did not run Godot or assess temporal noise, other quality settings, target devices or full visual acceptance.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -975,6 +934,69 @@
         "limits": "33 arrays are finite resource equality, not all placements/materials/pixels. Three global-floor fixtures do not prove local contact or entire footprints on arbitrary terrain. Narrow/repeated chains, detached-looking occluded tips and sparse flat rim mats remain visual gaps.",
         "revision": "a5900c9 historical resource/full-vertex support probe. Foliage source unchanged in this waterfall pass; probe not rerun."
       }
+    },
+    "2db8ed9": {
+      "scope": "Fresh waterfall spill-run shading coordinates, barycentric publication through chunk clipping, brighter vertical cyan/white flow with bounded irregular side fade, and higher irregular landing foam. Eight affected scripts, final actual Metal full/detail/four-edit captures,40 exact source geometry arrays and final standalone benchmark. Models, foliage, camera, pond/foam shaders and originals preserved. User visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_contour_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 1025
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 35
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 339
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 20
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 22
+        },
+        {
+          "test": "camera_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 8
+        },
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 80
+        },
+        {
+          "test": "terrain_shoreline_test.gd",
+          "ok": true,
+          "exit": 0,
+          "runner": "tests/run_preview.py --headless (fixed60Hz)",
+          "checks": 9
+        }
+      ],
+      "review": "Independent read-only source/probe/final-still review found no confirmed Critical/Important defect. Non-spill stop joins wrapping runs and flushes them; closed rings retain WHITE bypass. Linear across/worlddrop coordinates and constant run-width code survive barycentric clipping. Reciprocal decoding recovers inverse width before quantization, with positive guards and capped normalized fade preserving a center on narrow streams. Brighter cyan and vertical highlights improve over the heavy-net trial. Straight crest, patterned curtain and mound-like foam remain gaps. No obvious new interruption/seam in refreshed captures. Reviewer did not run Godot, benchmark or establish temporal/platform/arbitrary-range/full-acceptance coverage.",
+      "verification_sequence": "All eight affected scripts pass after final reciprocal-width encoding and quieter-net/stronger-strand shader. Final capture63745 and temporary geometry probe exit0. Final standalone benchmark18142 exits0 with three terminal runs; intermediate color-only/strong-net capture and benchmark are not final evidence."
     }
   },
   "limitations": [
@@ -988,7 +1010,8 @@
     "New curved grass is cleaner but remains thinner/darker and more isolated than the target. Interior four-point and retained edge-contour support are finite, not every blade footprint or temporal aliasing proof.",
     "Cooler/calm cliff shading is a modest material improvement, not correction of deep recesses, broad smooth patches or horizontal lower folds. Rejected gradient-normal trials are absent.",
     "Pointed foliage is closer to target but remains narrow and regularly repeated, with occasional detached-looking occluded tips and sparse flat rim sprays. Full placed vertices clear the global cliff minimum in three8x8 fixtures only; local contact/arbitrary footprints remain unproven.",
-    "Waterfall run metadata preserves tested published gradients; wrapped-run/sentinel/seam numerical equality is source-reviewed rather than exhaustively tested. Vertex-color precision limits extreme widths. Temporal transparency and arbitrary outlets remain unverified; straight crest, patterned curtain and mound-like foam remain visual gaps."
+    "Waterfall run metadata preserves tested published gradients; wrapped-run/sentinel/seam numerical equality is source-reviewed rather than exhaustively tested. Vertex-color precision limits extreme widths. Temporal transparency and arbitrary outlets remain unverified; straight crest, patterned curtain and mound-like foam remain visual gaps.",
+    "Wider daylight penumbrae show visible stippling in close-ups; temporal shadow noise and alternate quality/backends unmeasured."
   ],
   "canopy_contact": {
     "source": "Saved review probe using actual unmerged retained meshes and final transforms; ray-parity containment with deduplicated ray hits",
@@ -1249,7 +1272,7 @@
     "limits": "Five unchanged selected non-cliff pixels are finite separation evidence, not whole-image identity. Material cannot fix deep recesses, broad smooth patches or horizontal lower folds; temporal behavior and alternate-device rendering unverified.",
     "revision": "12ce140 historical material/pixel comparison; shaders unchanged this round, sampled pixels not rerun after geometry change"
   },
-  "verification_sequence": "All eight affected scripts pass after final reciprocal-width encoding and quieter-net/stronger-strand shader. Final capture63745 and temporary geometry probe exit0. Final standalone benchmark18142 exits0 with three terminal runs; intermediate color-only/strong-net capture and benchmark are not final evidence.",
+  "verification_sequence": "Final bounded daylight settings captured successfully; runtime22/22 and camera8/8 exit0; standalone three-run benchmark exit0. Stronger ambient.50/angular4.5/SSAO.75 trial rejected for flatter cliffs and excluded from final evidence.",
   "compact_cliff_refinement": {
     "baseline": "12ce140",
     "geometry": "Cellular relief amplitude/offset1.02/-.16 to.75/-.10; broad-profile horizontal noise.10 to.04, vertical.25 to.09, foot.04 to.02, profile Y wave.16 to.06. Narrow base-profile coefficients unchanged.",
@@ -1370,6 +1393,48 @@
       "detail_shoreline_before_flow_refinement.png",
       "detail_cliffs_before_flow_refinement.png"
     ],
-    "limits": "Finite vertex-color precision at extreme widths; still-capture checks do not prove temporal transparency/shimmer, all outlets, platform behavior or visual acceptance. Crest remains straight, pattern remains evident and foam still reads as mounds."
+    "limits": "Finite vertex-color precision at extreme widths; still-capture checks do not prove temporal transparency/shimmer, all outlets, platform behavior or visual acceptance. Crest remains straight, pattern remains evident and foam still reads as mounds.",
+    "revision": "2db8ed9: historical waterfall refinement; terrain and shader source unchanged in daylight pass"
+  },
+  "daylight_refinement": {
+    "baseline": "2db8ed9",
+    "sun_energy": [
+      1.15,
+      1.1
+    ],
+    "angular_degrees": [
+      2.4,
+      3.5
+    ],
+    "ambient_energy": [
+      0.36,
+      0.42
+    ],
+    "ssao_intensity": [
+      1.1,
+      0.95
+    ],
+    "ssao_power": [
+      1.3,
+      1.2
+    ],
+    "ssao_radius": 0.85,
+    "sun_orientation_color": "unchanged",
+    "evidence": [
+      "composition_wip_before_daylight_refinement.png",
+      "detail_cliffs_before_daylight_refinement.png",
+      "detail_shoreline_before_daylight_refinement.png",
+      "detail_vegetation_before_daylight_refinement.png",
+      "composition_wip.png",
+      "detail_cliffs.png",
+      "detail_shoreline.png",
+      "detail_vegetation.png",
+      "edit_raise.png",
+      "edit_lower.png",
+      "edit_expand.png",
+      "edit_contract.png"
+    ],
+    "limits": "Modest static lighting improvement, not a major fidelity gain; shadow stippling remains and temporal quality/other backends are unmeasured. Original 15b0c0e sky pixel comparison is historical; new lighting intentionally changes opaque pixels.",
+    "docs": "https://docs.godotengine.org/en/stable/classes/class_light3d.html#class-light3d-property-light-angular-distance"
   }
 }

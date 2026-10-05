@@ -40,10 +40,10 @@ func _setup_environment()->void:
 	var sun:=DirectionalLight3D.new()
 	sun.rotation_degrees=Vector3(-50,-30,0)
 	sun.light_color=Color("fff2ce")
-	sun.light_energy=1.15
+	sun.light_energy=1.10
 	sun.shadow_enabled=true
 	sun.directional_shadow_max_distance=90
-	sun.light_angular_distance=2.4
+	sun.light_angular_distance=3.5
 	add_child(sun)
 	var env:=WorldEnvironment.new()
 	env.environment=Environment.new()
@@ -61,12 +61,12 @@ func _setup_environment()->void:
 	env.environment.sky=sky
 	env.environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
 	env.environment.ambient_light_color=Color("daeaf1")
-	env.environment.ambient_light_energy=0.36
+	env.environment.ambient_light_energy=0.42
 	env.environment.tonemap_mode=Environment.TONE_MAPPER_LINEAR
 	env.environment.ssao_enabled=true
 	env.environment.ssao_radius=.85
-	env.environment.ssao_intensity=1.1
-	env.environment.ssao_power=1.3
+	env.environment.ssao_intensity=.95
+	env.environment.ssao_power=1.2
 	add_child(env)
 func _process(delta:float)->void:
 	renderer.flush_dirty(2)
