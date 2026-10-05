@@ -1,6 +1,6 @@
 # Terrain workshop verification — 2026-10-05
 
-Function, visuals and performance are separate acceptance dimensions. This report is current stage evidence; the fresh 30-minute stability session and primary-checkout delivery remain pending.
+Function, visuals and performance are separate acceptance dimensions. This report is current stage evidence; the fresh 30-minute stability session remains pending.
 
 ## Functional evidence
 
@@ -28,4 +28,4 @@ All three final runs meet median ≤16.7 ms and p95 ≤25 ms. Godot static alloc
 
 ## Pending stability and delivery
 
-The 1800-second real-time session is active with FPS capped to 60, periodic edit/undo/redo cycles and horizontal camera movement. Its result must establish no runtime errors/crash, no accumulating scene nodes, bounded memory and restored terrain data before completion is claimed. Final independent review is complete; both important findings are fixed with failing-then-passing regressions. Transfer to the primary checkout is pending. Source models and legacy economy code remain intact.
+The 1800-second real-time session is active with FPS capped to 60, periodic edit/undo/redo cycles and horizontal camera movement. Its result must establish no runtime errors/crash, no accumulating scene nodes, bounded memory and restored terrain data before completion is claimed. Final independent review is complete; both important findings are fixed with failing-then-passing regressions. The corrected demo has been delivered to the primary checkout, preserving all unrelated local file contents; actual PNG evidence and the original user reference were copied there. Source models and legacy economy code remain intact.
