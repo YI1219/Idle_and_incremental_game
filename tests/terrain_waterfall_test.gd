@@ -42,5 +42,28 @@ func run()->void:
 	data.end_stroke()
 	field.refresh(data)
 	shared_edge(field,"partially removed receiving terrain")
+	var splash_data:=Data.new()
+	for z in range(-3,4):
+		for x in 4:splash_data.cells[Vector2i(x,z)]={"height":1.0 if z<0 else 3.0,"water":3 if z<0 else 7}
+	var splash:=Contours.new()
+	splash.refresh(splash_data)
+	var raised:=false
+	var faded:=false
+	for i in splash.surfaces.bank.vertices.size():
+		var v:Vector3=splash.surfaces.bank.vertices[i]
+		if v.y>1.65 and v.y<2.0:raised=true
+		if v.y<2.0 and splash.surfaces.bank.colors[i].a<.1:faded=true
+	check(raised,"fall into water has raised splash volume above receiving surface")
+	check(faded,"splash perimeter fades into receiving water")
+	var gradient:=false
+	for chunk in [Vector2i(0,-1),Vector2i.ZERO]:
+		var mesh:ArrayMesh=splash.build(chunk).bank
+		if mesh.get_surface_count()==0:continue
+		var arrays:Array=mesh.surface_get_arrays(0)
+		var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR]
+		for i in range(0,colors.size(),3):
+			if absf(colors[i].a-colors[i+1].a)>.3 or absf(colors[i].a-colors[i+2].a)>.3:gradient=true
+	check(gradient,"published chunk triangles preserve the splash opacity gradient")
+
 	print("TERRAIN WATERFALL: %d/%d passed"%[checks-failures,checks])
 	quit(1 if failures else 0)

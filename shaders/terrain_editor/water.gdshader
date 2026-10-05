@@ -7,13 +7,13 @@ uniform vec2 shore_extent=vec2(1.0);
 varying vec3 world_position;
 void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;}
 vec2 hash2(vec2 p){return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);}
-float veins(vec2 p){
-	vec2 cell=floor(p);vec2 f=fract(p);float first=10.0;float second=10.0;
+vec2 veins(vec2 p){
+	vec2 cell=floor(p);vec2 f=fract(p);float first=10.0;float second=10.0;vec2 selected=vec2(0.0);
 	for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
 		vec2 offset=vec2(float(x),float(y));vec2 d=offset+hash2(cell+offset)-f;float v=dot(d,d);
-		if(v<first){second=first;first=v;}else if(v<second){second=v;}
+		if(v<first){second=first;first=v;selected=cell+offset;}else if(v<second){second=v;}
 	}
-	return 1.0-smoothstep(0.018,0.075,second-first);
+	return vec2(1.0-smoothstep(0.018,0.075,second-first),hash2(selected).x);
 }
 void fragment(){
 	vec2 p=world_position.xz;
@@ -38,16 +38,18 @@ void fragment(){
 		color=mix(color,vec3(.58,.76,.78),glint*.14);
 	}
 	if(fall){
-		vec2 flow=vec2(UV.x*1.65,UV.y*1.25-TIME*0.85);
-		flow.x+=sin(UV.y*4.1-TIME*.8)*.13+sin(UV.x*5.2+UV.y*1.7)*.08;
-		float line=veins(flow);
-		float broad=0.5+0.5*sin(UV.x*7.5+sin(UV.y*.75-TIME*.7)*.55);
-		float streak=pow(0.5+0.5*sin(UV.x*28.0+sin(UV.y*1.8-TIME*2.0)),7.0);
-		float glint=max(line*.16,max(streak*.65,pow(broad,4.0)*.76));
-		color=mix(vec3(0.045,0.46,0.69),vec3(0.73,0.94,1.0),glint);
-		EMISSION=color*.2;
+		vec2 flow=vec2(UV.x*2.8,UV.y*1.1+TIME*0.85);
+		flow.x+=sin(UV.y*4.1+TIME*.8)*.13+sin(UV.x*5.2+UV.y*1.7)*.08;
+		vec2 field=veins(flow);
+		float line=field.x;
+		// Broad polygonal sheets with fine moving veins, rather than parallel bars.
+		float sheet=field.y;
+		float glint=line*.78;
+		color=mix(vec3(.065,.49,.72),vec3(.17,.66,.86),sheet*.65);
+		color=mix(color,vec3(.75,.94,.96),glint);
+		EMISSION=color*.08;
 	}
 	ALBEDO=color;
-	ROUGHNESS=0.32;
-	SPECULAR=0.45;
+	ROUGHNESS=fall?.6:.32;
+	SPECULAR=fall?.2:.45;
 }

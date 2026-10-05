@@ -1,0 +1,10 @@
+{
+  "asset": "cloud_backdrop_v01",
+  "method": "built-in image_gen tool, single generated background image",
+  "source": "art/source/skies/2026-10-05/cloud_backdrop_v01.png",
+  "runtime": "assets/terrain_editor/cloud_backdrop_v01.png",
+  "original_output": "/Users/yi/.codex/generated_images/01a10acc-57c1-7602-be44-7ae09ef1b33f/exec-94b51a75-4374-42f8-b309-314d37c27861.png",
+  "sha256": "edbaf875323c0be26136c1798508af24eca32f62b6902c9c0bac0621fcff3362",
+  "scope": "Sky/cloud backdrop only; terrain and scene elements are actual interactive 3D geometry. No purchase or Tripo operation.",
+  "prompt": "Use case: stylized-concept. Asset type: sky and cloud background texture for a stylized 3D floating-island game, wide 16:9 composition. Create ONLY a bright pale cyan-blue sky with softly sunlit, voluminous white cumulus clouds. View from high in the sky, looking slightly downward over a cloud sea: upper half mostly open blue sky with a few distant small cloud clusters near the left and right edges; lower half has larger billowing cloud banks, especially bottom-left and bottom-right, with open blue gaps. Rich natural rounded billows with delicate fluffy edges, subtle warm ivory sunlight from upper left, pale blue-gray shaded undersides, soft atmospheric depth. Polished cozy stylized 3D diorama render quality, gentle detail, not cartoon outlines. Center area should remain mostly open blue so an interactive floating island can be drawn there. No land, no floating islands, no water, no buildings, no trees, no objects, no sun disk, no text, no frame, no vignette. The entire image is only sky and clouds; avoid flat oval cloud shapes and repeating clouds."
+}

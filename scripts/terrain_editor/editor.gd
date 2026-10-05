@@ -51,6 +51,7 @@ func _setup_environment()->void:
 	var sky:=Sky.new()
 	var sky_material:=ShaderMaterial.new()
 	sky_material.shader=load("res://shaders/terrain_editor/sky.gdshader")
+	sky_material.set_shader_parameter("cloud_backdrop",load("res://assets/terrain_editor/cloud_backdrop_v01.png"))
 	sky.sky_material=sky_material
 	sky.process_mode=Sky.PROCESS_MODE_QUALITY
 	env.environment.sky=sky

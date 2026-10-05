@@ -37,7 +37,9 @@ func configure(source:Data)->void:
 		var cliff:=ShaderMaterial.new()
 		cliff.shader=load("res://shaders/terrain_editor/cliff.gdshader")
 		materials.cliff=cliff
-		materials.bank=_solid(Color("e2fcff"))
+		var foam:=ShaderMaterial.new()
+		foam.shader=load("res://shaders/terrain_editor/foam.gdshader")
+		materials.bank=foam
 		var water:=ShaderMaterial.new()
 		water.shader=load("res://shaders/terrain_editor/water.gdshader")
 		materials.water=water

@@ -59,7 +59,8 @@ func refresh(data:Data)->void:
 	for level:int in water_regions:
 		_cap(surfaces.water,water_regions[level],level*.5+.045,Color.WHITE)
 		for loop:PackedVector2Array in water_regions[level]:_falls(loop,level*.5+.045)
-	_smooth_cliff_normals()
+	_smooth_normals(surfaces.cliff)
+	_smooth_normals(surfaces.bank)
 	_index_triangles()
 
 static func _area(p:PackedVector2Array)->float:
@@ -307,13 +308,34 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 		surfaces.bank.quad(p-back+Vector3(0,.012,0),q-back+Vector3(0,.012,0),q+Vector3(0,.012,0),p+Vector3(0,.012,0),Color.WHITE,true)
 		if not sample.is_empty() and sample.water>=0:
 			var center:=(r+s)*.5+Vector3(out.x*.24,.015,out.y*.24)
-			for j in 14:
-				var angle:=j*TAU/14.0
-				var angle2:=(j+1)*TAU/14.0
-				var size:=.54+.18*sin(i*3.7+j*2.9)
-				var v:=center+Vector3(cos(angle)*size,0,sin(angle)*size)
-				var w:=center+Vector3(cos(angle2)*size,0,sin(angle2)*size)
-				surfaces.bank.triangle(center,v,w,Color.WHITE,true)
+			_splash(center,out,i)
+
+func _splash(center:Vector3,out:Vector2,phase:int)->void:
+	var rings:Array=[]
+	var tangent:=Vector3(out.y,0,-out.x)
+	var forward:=Vector3(out.x,0,out.y)
+	for ring in 2:
+		var points:=PackedVector3Array()
+		for j in 16:
+			var angle:=j*TAU/16.0
+			var size:=.62+.11*sin(phase*3.7+j*2.9)
+			var radius:=.55 if ring==0 else 1.0
+			var rise:=.07 if ring==0 else 0.0
+			points.append(center+tangent*cos(angle)*size*radius+forward*sin(angle)*size*radius+Vector3(0,rise,0))
+		rings.append(points)
+	var peak:=center+Vector3(0,.12,0)
+	for j in 16:
+		var k:=(j+1)%16
+		_foam_triangle(peak,rings[0][j],rings[0][k],center.y)
+		_foam_triangle(rings[0][j],rings[1][j],rings[1][k],center.y)
+		_foam_triangle(rings[0][j],rings[1][k],rings[0][k],center.y)
+
+func _foam_triangle(a:Vector3,b:Vector3,c:Vector3,base:float)->void:
+	var start:int=surfaces.bank.vertices.size()
+	surfaces.bank.triangle(a,b,c,Color.WHITE,true)
+	for i in range(start,surfaces.bank.vertices.size()):
+		var opacity:=clampf((surfaces.bank.vertices[i].y-base)/.10,0.0,1.0)
+		surfaces.bank.colors[i]=Color(1,1,1,opacity)
 
 static func _fall_point(p:Vector2,normal:Vector2,water_y:float,y:float)->Vector3:
 	var lower:=floorf(y*2)*.5
@@ -324,10 +346,9 @@ static func _fall_offset(water_y:float,y:float)->float:
 	var drop:=maxf(0,water_y-y)
 	return .36+.13*(1-exp(-drop*.8))+.08*sin(drop*1.5)*minf(1,drop)
 
-func _smooth_cliff_normals()->void:
-	# Smooth only the supporting cliff body. Embedded stone models retain their
-	# flat facets, while construction strips no longer form horizontal stripes.
-	var surface=surfaces.cliff
+func _smooth_normals(surface)->void:
+	# Smooth generated cliff/foam surfaces. Embedded stone models retain their
+	# original flat facets. Shared positions also join normals across chunks.
 	var sums:Dictionary={}
 	for i in range(0,surface.vertices.size(),3):
 		var a:Vector3=surface.vertices[i]
@@ -350,6 +371,16 @@ static func _interpolated_normal(point:Vector3,a:Vector3,b:Vector3,c:Vector3,na:
 	var u:float=(ac.dot(ac)*ap.dot(ab)-ab.dot(ac)*ap.dot(ac))/denominator
 	var v:float=(ab.dot(ab)*ap.dot(ac)-ab.dot(ac)*ap.dot(ab))/denominator
 	return (na*(1-u-v)+nb*u+nc*v).normalized()
+
+static func _interpolated_color(point:Vector3,a:Vector3,b:Vector3,c:Vector3,ca:Color,cb:Color,cc:Color)->Color:
+	var ab:=b-a
+	var ac:=c-a
+	var ap:=point-a
+	var denominator:=ab.dot(ab)*ac.dot(ac)-ab.dot(ac)*ab.dot(ac)
+	if absf(denominator)<.00000001:return ca
+	var u:float=(ac.dot(ac)*ap.dot(ab)-ab.dot(ac)*ap.dot(ac))/denominator
+	var v:float=(ab.dot(ab)*ap.dot(ac)-ab.dot(ac)*ap.dot(ab))/denominator
+	return ca*(1-u-v)+cb*u+cc*v
 
 func _index_triangles()->void:
 	triangle_chunks.clear()
@@ -381,7 +412,10 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind=="cliff":
+				if kind=="bank":
+					for index in range(before,local.vertices.size()):
+						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
+				if kind in ["cliff","bank"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
 				if kind=="waterfall" and local.vertices.size()>before:
