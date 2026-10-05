@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh lower-cliff envelope and curved wet-mouth support correction, including intact-bank preservation. All eleven relevant scripts and actual full/detail/four-edit Metal captures regenerated.",
+  "scope": "Fresh contour-derived thickness correction and snapshot-local winding-cache optimization. All twelve relevant scripts plus actual final full/detail/four-edit Metal captures regenerated.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
@@ -80,6 +80,15 @@
       "slices": 794,
       "failures": 0,
       "minimum_gap": 0.0306
+    },
+    {
+      "test": "terrain_cliff_taper_test.gd",
+      "ok": true,
+      "exit": 0,
+      "runner": "tests/run_preview.py --headless (fixed 60 Hz)",
+      "checks": 2,
+      "sampled_foot_vertices": 30,
+      "furthest_x_plus_z": 5.5244
     }
   ],
   "regression": {
@@ -109,7 +118,7 @@
     "sky_pngs_unchanged": 2,
     "sky_import_matches_HEAD": true
   },
-  "review": "Final independent read-only source/capture review found no Critical/Important issue in the bounded lower-envelope/wet-mouth correction and no new cap gap. The lookup is local, bounded and profile-cached. Actual lower shoulders are modestly calmer; pointed feet remain and likely depend on inset/normal/taper relationships. Remaining contracted-spill concealment is consistent with valid foreground land. Reviewer validated the two-way crossing probe and suggested nonzero inspected-curtain coverage; that assertion was added and passes 33/33. Reviewer did not independently run Godot, benchmark, or establish arbitrary-layout/full-fidelity acceptance. User visual acceptance remains pending.",
+  "review": "Final independent read-only source/capture review found no Critical/Important issue. Contour-based width fixes a confirmed raw-cell/smoothed-edge mismatch; prominent left/foreground blades join a compact silhouette closer to the reference. No obvious new cap separation across all four edits. Height keys originate from effective source heights; contains preserves hole winding. Cached signs clear onrefresh, derive from final per-height loops and have correct sole-caller pairing with size-mismatch fallback. Reviewer did not run Godot or benchmark and declined arbitrary self-intersections, contour scaling, target-device performance and human visual acceptance.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -194,7 +203,7 @@
           "minimum_gap": 0.0306
         }
       ],
-      "scope": "Full terrain/canopy eleven-script verification before the sky-only treatment; code for those modules unchanged this round."
+      "scope": "Historical full terrain/canopy eleven-script verification before the sky-only treatment; not fresh evidence for the later cliff changes."
     },
     "15b0c0e": {
       "scope": "Fresh sky-only runtime mipmap/filter/contrast treatment, neutral lighting preserved; actual full/detail/four-edit Metal captures regenerated.",
@@ -215,15 +224,21 @@
         }
       ],
       "review": "Independent read-only reviewer inspected source and actual full/detail captures. No Critical/Important issue found: derived image mipmaps preserve the imported fallback, shader material retains the runtime texture, five taps sum to one and edge sampling clamps; cubemap lighting remains unchanged. Softer clouds and paler cyan improve reference coherence. Minor gaps: washed lower-left cloud detail and a flatter upper sky than the reference gradient. Reviewer did not independently run tests or judge startup cost, alternate resolutions, target-device rendering or performance. This clears the bounded sky pass; human visual acceptance of the scene remains pending."
+    },
+    "471e12e": {
+      "scope": "Fresh lower-cliff envelope and curved wet-mouth support correction, including intact-bank preservation. All eleven relevant scripts and actual full/detail/four-edit Metal captures regenerated.",
+      "counts": "eleven scripts: contours1025 incremental20 data301 decoration118 render339 runtime22 camera8 waterfall33 shoreline9 bounds9 narrow794/min.0306",
+      "review": "Final independent read-only source/capture review found no Critical/Important issue in the bounded lower-envelope/wet-mouth correction and no new cap gap. The lookup is local, bounded and profile-cached. Actual lower shoulders are modestly calmer; pointed feet remain and likely depend on inset/normal/taper relationships. Remaining contracted-spill concealment is consistent with valid foreground land. Reviewer validated the two-way crossing probe and suggested nonzero inspected-curtain coverage; that assertion was added and passes 33/33. Reviewer did not independently run Godot, benchmark, or establish arbitrary-layout/full-fidelity acceptance. User visual acceptance remains pending."
     }
   },
   "limitations": [
-    "Pointed cliff feet and elongated patches remain reference differences. The lower envelope is only a modest refinement; finite default rays and contracted-mouth intersections do not prove arbitrary-layout clearance.",
+    "Cliff faces still have deeper recesses and broader continuous patches than the target; finite taper and waterfall regressions do not prove arbitrary-layout safety.",
     "Arbitrary transparent overlaps, every outlet orientation and every mixed-height normal junction are not established.",
     "Temporal shimmer and cross-platform rendering unverified.",
     "M4 Pro short samples do not prove target-laptop or long-idle performance.",
     "Finite canopy extremal-vertex coverage does not prove every branch segment; large crowns hide more branching than the reference and small crowns remain nearly spherical.",
-    "Sky softness is verified at the captured resolution only; startup mip generation and alternate-resolution appearance remain unmeasured. Lower-left clouds wash out and upper sky is flatter than the reference."
+    "Sky softness is verified at the captured resolution only; startup mip generation and alternate-resolution appearance remain unmeasured. Lower-left clouds wash out and upper sky is flatter than the reference.",
+    "Width lookup retains polygon-containment scaling with total contour complexity, despite cached winding signs; large-map scaling is unmeasured."
   ],
   "canopy_contact": {
     "source": "temporary actual-mesh ray-parity probe using unmerged retained source parts and their final transforms",
@@ -267,7 +282,8 @@
       "fence",
       "wall"
     ],
-    "limitation": "Six static pixel samples plus unchanged source settings support lighting separation, not whole-image identity or exhaustive platform behavior."
+    "limitation": "Six static pixel samples plus unchanged source settings support lighting separation, not whole-image identity or exhaustive platform behavior.",
+    "revision": "15b0c0e: earlier sky-only pixel comparison; not renewed after cliff changes"
   },
   "curved_mouth_regression": {
     "before": "30/31: two interior curtain/cliff triangle-pair crossings in the contracted reference mouth",
@@ -275,5 +291,35 @@
     "secondary_failure": "31/32: unrestricted radial wet support recessed a dry cliff behind an intact pond bank; exposed cardinal drop predicate corrected it",
     "method": "Actual segment/triangle intersections in both edge directions, AABB-filtered around the edited mouth; excludes crest, foot and near-endpoint contacts; nonzero inspected-curtain count prevents a vacuous pass",
     "limitations": "Finite selected geometry, not exhaustive intersections, coplanar overlap or every mouth orientation; legitimate foreground rim occlusion remains."
+  },
+  "cliff_taper_regression": {
+    "before": "1/2 passed; actual broad diagonal plateau foot reached x+z7.201 because raw cell corners were treated as nearly zero-width",
+    "after": "2/2 passed; furthest deep foot x+z5.5244, 30 sampled vertices; prominent default left/foreground blades join a compact silhouette",
+    "method": "Actual cliff foot vertices on a wide diagonal plateau, nonzero sample coverage and an independently chosen inward-foot limit",
+    "limits": "Finite plateau/reference fixtures, not every narrow/concave layout or self-intersection."
+  },
+  "geometry_equivalence": {
+    "comparison": "Contour lookup before vs after winding-sign optimization in this round",
+    "layouts": [
+      "initial",
+      "raise",
+      "lower",
+      "expand",
+      "contract"
+    ],
+    "surfaces": [
+      "grass",
+      "cliff",
+      "bank",
+      "water",
+      "waterfall"
+    ],
+    "components": [
+      "vertices",
+      "normals"
+    ],
+    "matching_sha256_hashes": 50,
+    "match": true,
+    "limits": "Selected source geometry only; not arbitrary maps, all prop transforms or rendered-pixel identity."
   }
 }

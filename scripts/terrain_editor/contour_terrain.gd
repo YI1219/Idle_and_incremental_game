@@ -12,11 +12,13 @@ var source:Data
 var triangle_chunks:Dictionary={}
 var _profiles:Dictionary={}
 var _rock_relief_cache:Dictionary={}
+var _land_winding_signs:Dictionary={}
 
 func refresh(data:Data)->void:
 	source=data
 	_profiles.clear()
 	_rock_relief_cache.clear()
+	_land_winding_signs.clear()
 	land_regions.clear()
 	water_regions.clear()
 	levels.clear()
@@ -38,6 +40,9 @@ func refresh(data:Data)->void:
 			var top:float=record.water*.5 if record.water>=0 else record.height
 			if top>=h:occupied[cell]=true
 		land_regions[h]=_outlines(occupied)
+		var signs:=PackedInt32Array()
+		for loop:PackedVector2Array in land_regions[h]:signs.append(1 if _area(loop)>0 else -1)
+		_land_winding_signs[h]=signs
 	var water_levels:=wet.keys()
 	water_levels.sort()
 	for level:int in water_levels:water_regions[level]=_outlines(wet[level])
@@ -142,10 +147,11 @@ static func _smooth(raw:PackedVector2Array)->PackedVector2Array:
 	if result.size()>1 and result[0].distance_squared_to(result[-1])<.000001:result.remove_at(result.size()-1)
 	return result
 
-static func contains(loops:Array,p:Vector2)->bool:
+static func contains(loops:Array,p:Vector2,signs:PackedInt32Array=PackedInt32Array())->bool:
 	var winding:=0
-	for loop:PackedVector2Array in loops:
-		if Geometry2D.is_point_in_polygon(p,loop):winding+=1 if _area(loop)>0 else -1
+	for i in loops.size():
+		var loop:PackedVector2Array=loops[i]
+		if Geometry2D.is_point_in_polygon(p,loop):winding+=signs[i] if signs.size()==loops.size() else (1 if _area(loop)>0 else -1)
 	return winding>0
 
 func surface_at(p:Vector2)->Dictionary:
@@ -294,13 +300,14 @@ func _cliffs(loop:PackedVector2Array,top:float,bottom:float)->void:
 			left_profile=right_profile
 
 func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
-	# Keep opposing walls apart on single cells and narrow editable necks.
+	# Measure the same filled outline that owns the cap and cliff boundary.
+	# Raw cell corners can be empty beneath a broad smoothed edge; treating
+	# those as thin land creates untapered blades between neighboring shoulders.
+	var loops:Array=land_regions.get(height,[])
+	var signs:PackedInt32Array=_land_winding_signs.get(height,PackedInt32Array())
 	for step in range(1,45):
 		var distance:=step*.125
-		var cell:=Vector2i((p-normal*distance).floor())
-		var record:Dictionary=source.cells.get(cell,{})
-		var top:float=record.get("water",-1)*.5 if record.get("water",-1)>=0 else record.get("height",-99.0)
-		if top<height:return minf(1.5,distance*.28)
+		if not contains(loops,p-normal*distance,signs):return minf(1.5,distance*.28)
 	return 1.5
 
 static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,normal:Vector2=Vector2.ZERO,inset_limit:float=1.5,rounded_relief:float=NAN)->Vector3:
