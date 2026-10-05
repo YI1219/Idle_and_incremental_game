@@ -1,6 +1,6 @@
 # Requirement audit — terrain workshop
 
-Audited the primary project at a0f2c30 and corresponding corrected engine evidence. The latest explicit camera restriction supersedes the older goal text requesting orbit/fly movement. The accepted scope permits replacement of the old terrain/scene objects while preserving asset and gameplay sources.
+Audited the delivered primary project and corresponding corrected engine evidence; production workshop code is unchanged since the reviewed fixes. Final fresh editor checks and complete benchmark/stability gates are recorded in editor_checks.txt. The latest explicit camera restriction supersedes the older goal text requesting orbit/fly movement. The accepted scope permits replacement of the old terrain/scene objects while preserving asset and gameplay sources.
 
 | Requirement | Current authoritative evidence | Result |
 | --- | --- | --- |
