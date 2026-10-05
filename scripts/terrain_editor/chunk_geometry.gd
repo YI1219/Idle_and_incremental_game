@@ -88,7 +88,7 @@ static func build(data:Data,chunk:Vector2i)->Dictionary:
 			var record:Dictionary=data.cells[cell]
 			var height:float=record.height
 			var square := PackedVector2Array([Vector2(x,z),Vector2(x+1,z),Vector2(x+1,z+1),Vector2(x,z+1)])
-			var tint := Color.WHITE * (0.92 + 0.08*sin(x*7.13+z*3.91))
+			var tint := Color.WHITE * (0.98 + 0.02*sin(x*7.13+z*3.91))
 			tint.a=1.0
 			if record.water<0:
 				surfaces.grass.polygon(square,height,tint)
