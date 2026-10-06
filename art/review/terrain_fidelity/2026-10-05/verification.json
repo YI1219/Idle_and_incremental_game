@@ -1,146 +1,146 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Current compact crown grouping/assembly against 3df0d6f. Current twenty-script suite, gallery, preservation and review describe this round; earlier refinements retain historical revision scope. Overall user visual acceptance pending.",
+  "scope": "Current crest/landing foam refinement against ee8a89f; current twenty-script suite, gallery, flow stills, preservation and review describe this round. Earlier refinements retain historical implementation scope. Overall user visual acceptance pending.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_waterfall_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_shoreline_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_model_bounds_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN MODEL BOUNDS: 9/9 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_broad_facet_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBROAD CLIFF FACETS: 1381 large faces; 1381 planar normals\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_cliff_interface_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLIFF INTERFACES: 96 boundary points; 0 separated; max=0.0\nMULTI-ELEVATION CLIFF EDGES: 2004 points; 0 separated; max=0.0\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_shrub_support_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: shrubs=21 base_points=6636 unsupported=0\nraise: shrubs=19 base_points=6004 unsupported=0\nlower: shrubs=20 base_points=6320 unsupported=0\nexpand: shrubs=22 base_points=6952 unsupported=0\ncontract: shrubs=21 base_points=6636 unsupported=0\nSHRUB SUPPORT: 32548 actual base points; 0 unsupported; coverage=true\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_vine_contact_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":365,\"fixture\":\"default\",\"max_absolute_gap\":0.0250012129545212,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":365,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250012129545212,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":378,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250012129545212,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":380,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250013321638107,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":392,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250012129545212,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_crown_integrity_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":10,\"contained_source_entries\":9984,\"max_plane_violation\":-0.000000178813934326172,\"outward_surfaces\":10,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":9984,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":224,\"vertices\":114},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":204,\"vertices\":104},{\"closed\":true,\"outward\":true,\"triangles\":216,\"vertices\":110},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}\nPUBLISHED CROWN MATCH: true, entries=5880, max_difference=0.0, different_entries=0\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_canopy_contact_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTUAL WOOD EXTREMUM (-0.434883, 0.867647, -0.146833) covered by leaf lobes [0]\nACTUAL WOOD EXTREMUM (0.377939, 0.877121, -0.110059) covered by leaf lobes [1]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (-0.036714, 0.885095, -0.047428) covered by leaf lobes [0]\nTERRAIN CANOPY CONTACT: 5/5\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_narrow_cliff_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 794 slices, 0 failures, smallest gap 0.0306\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_cliff_taper_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CLIFF TAPER: 2/2 passed, sampled 45 foot vertices, furthest 5.6198\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_boundary_wall_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOUNDARY WALL default: 0 missing\nBOUNDARY WALL raise: 0 missing\nBOUNDARY WALL lower: 0 missing\nBOUNDARY WALL expand: 0 missing\nBOUNDARY WALL contract: 0 missing\nTERRAIN BOUNDARY WALL: 416 samples, 0 failures\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_upper_rock_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 15 rays, 14 shoulders, 25 nearby join vertices, 0 failures\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "camera_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CHECKS: 8/8 passed, failures=0\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_incremental_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_editor_data_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_editor_render_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RENDER: 339/339 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_editor_decoration_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 89/89 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     },
     {
       "test": "terrain_editor_runtime_test.gd",
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+      "runner": "tests/run_preview.py --headless (fixed60Hz)"
     }
   ],
   "regression": {
@@ -160,44 +160,85 @@
       "expand": 14,
       "contract": 16
     },
-    "output": "Actual full scene, three details, four edits and editor UI",
-    "matched_baseline": "3df0d6f *_before_compact_crown.png full/three details/four edits"
+    "output": "Actual full/three details/four edits/editor UI",
+    "matched_baseline": "ee8a89f *_before_flat_foam.png full/three details/four edits",
+    "flow_runner": "tests/run_preview.py tests/capture_terrain_flow.gd --resolution 1672x940",
+    "flow_exit": 0,
+    "flow_record": {
+      "frames": [
+        {
+          "file": "flow_time_0.png",
+          "frames_after_start": 0,
+          "wall_seconds": 0.181692
+        },
+        {
+          "file": "flow_time_1.png",
+          "frames_after_start": 15,
+          "wall_seconds": 0.472754
+        },
+        {
+          "file": "flow_time_2.png",
+          "frames_after_start": 30,
+          "wall_seconds": 0.746699
+        },
+        {
+          "file": "flow_time_3.png",
+          "frames_after_start": 45,
+          "wall_seconds": 1.022667
+        },
+        {
+          "file": "flow_time_4.png",
+          "frames_after_start": 60,
+          "wall_seconds": 1.30121
+        }
+      ],
+      "limits": "Single fixed camera/default layout; not all temporal behavior or frame pacing",
+      "source": "actual Metal Forward+ render, fixed60Hz timestep, five still frames across60drawn frames"
+    },
+    "motion_scope": "Fresh 1672×940 actual Metal full/three-detail/four-edit captures exit cleanly, with matched ee8a89f baselines retained as *_before_flat_foam.png. Edits reset the default layout and change 16/12/14/16 cells. Five fresh flow stills at frames 0/15/30/45/60 show changing curtain highlights with continuous visible curtain/landing foam in those samples. They use a fixed 60Hz timestep and one default-layout camera; they do not prove smooth playback, arbitrary transparent sorting or frame pacing."
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
-    "tracked_runtime_sources_assets": "Only terrain_models.gd differs among compared tracked runtime resources excluding imports against 3df0d6f; originals retained.",
+    "tracked_runtime_sources_assets": "Only contour_terrain.gd differs among compared tracked runtime resources excluding imports against ee8a89f. Originals retained.",
     "component_probe": {
-      "exact_non_tree_model_array_slots": 156,
-      "exact_wood_vertex_normal_color_entries": 360,
+      "baseline": "ee8a89f",
       "failures": 0,
-      "new_tree_triangles": 2080,
-      "old_tree_triangles": 1610,
       "reports": [
         {
-          "exact_all_placement_arrays": 247,
+          "exact_all_kind_placement_arrays": 247,
+          "exact_non_bank_published_array_slots": 598,
+          "exact_non_bank_source_arrays": 12,
           "fixture": "default"
         },
         {
-          "exact_all_placement_arrays": 247,
+          "exact_all_kind_placement_arrays": 247,
+          "exact_non_bank_published_array_slots": 598,
+          "exact_non_bank_source_arrays": 12,
           "fixture": "raise"
         },
         {
-          "exact_all_placement_arrays": 247,
+          "exact_all_kind_placement_arrays": 247,
+          "exact_non_bank_published_array_slots": 611,
+          "exact_non_bank_source_arrays": 12,
           "fixture": "lower"
         },
         {
-          "exact_all_placement_arrays": 247,
+          "exact_all_kind_placement_arrays": 247,
+          "exact_non_bank_published_array_slots": 598,
+          "exact_non_bank_source_arrays": 12,
           "fixture": "expand"
         },
         {
-          "exact_all_placement_arrays": 247,
+          "exact_all_kind_placement_arrays": 247,
+          "exact_non_bank_published_array_slots": 598,
+          "exact_non_bank_source_arrays": 12,
           "fixture": "contract"
         }
       ],
-      "scope": "Finite actual array slots (including null), non-tree part poses, palette-selected wood arrays and all kind placement arrays (including empty) in default/four edits. Excludes material identity, arbitrary inputs and overall visual acceptance."
+      "scope": "Actual grass/cliff/pond/curtain vertex-normal-color arrays and published array slots including null; all kind placement arrays including empty, over default/four edits. Bank/foam intentionally excluded; not material identity, complete prop footprints, arbitrary layouts or art acceptance."
     }
   },
-  "review": "Independent final source/full/vegetation/shoreline/four-edit review recommends retaining the revision as a modest improvement and found no confirmed Critical/Important defect; it ran no engine jobs. Compact side grouping and fork readability improve, and the first trial's attached balls/top knob are reduced. Large smooth convex faces, a bulky central peak, conspicuous front lobes and similar tree silhouettes still differ from the reference. Individually closed hulls and finite tip checks do not establish a connected canopy union or whole-branch coverage. Overall user visual acceptance is pending.",
+  "review": "Independent final source/full/shoreline/four-edit review recommends retaining this bounded refinement and found no confirmed Critical/Important defect; it ran no engine jobs. Lower/wider foam reads as resting on the receiving pond, and the crest is less conspicuously outlined. Full/four-edit captures show no obvious new detached splash, gap or spill obstruction. Remaining gaps include a soft white landing patch with limited sharper splash tips/broken froth, straight crests and patterned curtains. Overall user visual acceptance is pending.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -2604,6 +2645,199 @@
         }
       },
       "review": "Independent final source/full/cliff/lower/contract review recommends retaining the revised candidate and found no confirmed Critical/Important defect; it ran no engine jobs. Root also inspected final shoreline, vegetation, raise and expand captures. The broad/short mix improves on uniform garlands and the first trial's bare rim. Repeated tapered patch shapes, tightly layered leaves and occasional disconnected-looking tips still differ from the reference. Overall visual acceptance remains pending."
+    },
+    "ee8a89f": {
+      "scope": "Current compact crown grouping/assembly against 3df0d6f. Current twenty-script suite, gallery, preservation and review describe this round; earlier refinements retain historical revision scope. Overall user visual acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_contour_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_shoreline_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN MODEL BOUNDS: 9/9 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_broad_facet_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBROAD CLIFF FACETS: 1381 large faces; 1381 planar normals\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_cliff_interface_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLIFF INTERFACES: 96 boundary points; 0 separated; max=0.0\nMULTI-ELEVATION CLIFF EDGES: 2004 points; 0 separated; max=0.0\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_shrub_support_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: shrubs=21 base_points=6636 unsupported=0\nraise: shrubs=19 base_points=6004 unsupported=0\nlower: shrubs=20 base_points=6320 unsupported=0\nexpand: shrubs=22 base_points=6952 unsupported=0\ncontract: shrubs=21 base_points=6636 unsupported=0\nSHRUB SUPPORT: 32548 actual base points; 0 unsupported; coverage=true\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_vine_contact_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":365,\"fixture\":\"default\",\"max_absolute_gap\":0.0250012129545212,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":365,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250012129545212,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":378,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250012129545212,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":380,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250013321638107,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":392,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250012129545212,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_crown_integrity_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":10,\"contained_source_entries\":9984,\"max_plane_violation\":-0.000000178813934326172,\"outward_surfaces\":10,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":9984,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":224,\"vertices\":114},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":204,\"vertices\":104},{\"closed\":true,\"outward\":true,\"triangles\":216,\"vertices\":110},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}\nPUBLISHED CROWN MATCH: true, entries=5880, max_difference=0.0, different_entries=0\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_canopy_contact_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTUAL WOOD EXTREMUM (-0.434883, 0.867647, -0.146833) covered by leaf lobes [0]\nACTUAL WOOD EXTREMUM (0.377939, 0.877121, -0.110059) covered by leaf lobes [1]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (-0.036714, 0.885095, -0.047428) covered by leaf lobes [0]\nTERRAIN CANOPY CONTACT: 5/5\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_narrow_cliff_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 794 slices, 0 failures, smallest gap 0.0306\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_cliff_taper_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CLIFF TAPER: 2/2 passed, sampled 45 foot vertices, furthest 5.6198\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_boundary_wall_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOUNDARY WALL default: 0 missing\nBOUNDARY WALL raise: 0 missing\nBOUNDARY WALL lower: 0 missing\nBOUNDARY WALL expand: 0 missing\nBOUNDARY WALL contract: 0 missing\nTERRAIN BOUNDARY WALL: 416 samples, 0 failures\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_upper_rock_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 15 rays, 14 shoulders, 25 nearby join vertices, 0 failures\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "camera_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CHECKS: 8/8 passed, failures=0\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_data_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RENDER: 339/339 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 89/89 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        }
+      ],
+      "render_verification": {
+        "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
+        "backend": "Metal Forward+",
+        "exit": 0,
+        "edits_changed_cells": {
+          "raise": 16,
+          "lower": 12,
+          "expand": 14,
+          "contract": 16
+        },
+        "output": "Actual full scene, three details, four edits and editor UI",
+        "matched_baseline": "3df0d6f *_before_compact_crown.png full/three details/four edits"
+      },
+      "preservation": {
+        "unrelated_local_files_unchanged": 8,
+        "tracked_runtime_sources_assets": "Only terrain_models.gd differs among compared tracked runtime resources excluding imports against 3df0d6f; originals retained.",
+        "component_probe": {
+          "exact_non_tree_model_array_slots": 156,
+          "exact_wood_vertex_normal_color_entries": 360,
+          "failures": 0,
+          "new_tree_triangles": 2080,
+          "old_tree_triangles": 1610,
+          "reports": [
+            {
+              "exact_all_placement_arrays": 247,
+              "fixture": "default"
+            },
+            {
+              "exact_all_placement_arrays": 247,
+              "fixture": "raise"
+            },
+            {
+              "exact_all_placement_arrays": 247,
+              "fixture": "lower"
+            },
+            {
+              "exact_all_placement_arrays": 247,
+              "fixture": "expand"
+            },
+            {
+              "exact_all_placement_arrays": 247,
+              "fixture": "contract"
+            }
+          ],
+          "scope": "Finite actual array slots (including null), non-tree part poses, palette-selected wood arrays and all kind placement arrays (including empty) in default/four edits. Excludes material identity, arbitrary inputs and overall visual acceptance."
+        }
+      },
+      "review": "Independent final source/full/vegetation/shoreline/four-edit review recommends retaining the revision as a modest improvement and found no confirmed Critical/Important defect; it ran no engine jobs. Compact side grouping and fork readability improve, and the first trial's attached balls/top knob are reduced. Large smooth convex faces, a bulky central peak, conspicuous front lobes and similar tree silhouettes still differ from the reference. Individually closed hulls and finite tip checks do not establish a connected canopy union or whole-branch coverage. Overall user visual acceptance is pending."
     }
   },
   "limitations": "Overall user visual acceptance pending. Finite centroids/nearby planes do not prove full leaf contact,connected chains,visibility or arbitrary cliff ownership. Cliff coverage checks are finite ray/vertex samples,not watertightness. Actual stills do not prove temporal/platform behavior. Target laptops,larger maps,long idle and startup remain unmeasured.",
@@ -3693,6 +3927,51 @@
     "whole_tree_triangles_after": 2080,
     "leaf_triangles_before": 1490,
     "leaf_triangles_after": 1960,
-    "limits": "Ten individually closed hulls and finite actual-tip coverage, not connected canopy union, every branch/footprint, arbitrary inputs or accepted final art."
+    "limits": "Ten individually closed hulls and finite actual-tip coverage, not connected canopy union, every branch/footprint, arbitrary inputs or accepted final art.",
+    "status": "Historical ee8a89f implementation/trial evidence; source unchanged and integrity/contact tests rerun in current twenty-script suite."
+  },
+  "previous_temporal_record": {
+    "scope": "Historical pre-foam flow record, not a fresh matched ee8a89f baseline capture. Original five PNGs retained as flow_time_*_before_flat_foam.png.",
+    "record": {
+      "frames": [
+        {
+          "file": "flow_time_0.png",
+          "frames_after_start": 0,
+          "wall_seconds": 0.16789
+        },
+        {
+          "file": "flow_time_1.png",
+          "frames_after_start": 15,
+          "wall_seconds": 0.448804
+        },
+        {
+          "file": "flow_time_2.png",
+          "frames_after_start": 30,
+          "wall_seconds": 0.742275
+        },
+        {
+          "file": "flow_time_3.png",
+          "frames_after_start": 45,
+          "wall_seconds": 1.033072
+        },
+        {
+          "file": "flow_time_4.png",
+          "frames_after_start": 60,
+          "wall_seconds": 1.325152
+        }
+      ],
+      "limits": "Single fixed camera/default layout; not all temporal behavior or frame pacing",
+      "source": "actual Metal Forward+ render, fixed60Hz timestep, five still frames across60drawn frames",
+      "runner": "python3 tests/run_preview.py tests/capture_terrain_flow.gd --resolution 1672x940"
+    }
+  },
+  "foam_refinement": {
+    "baseline": "ee8a89f",
+    "implementation": "The current foam pass lowers the landing splash into uneven spreading swells instead of pointed mounds. Two joined 16-point rings remain, with wider tangential and shorter forward dimensions; inner rises are .045–.080 and the center .053–.077 above its retained landing anchor. A world-position phase replaces contour-index dependence. Height-derived opacity reaches white over the low swell and fades to zero at the perimeter. Crest strips now use shared endpoint normals, world-varying .12–.24 upstream width and zero upstream alpha, retaining the exact spill edge. Foam shader, curtain/pond geometry, original models and all decoration sources are unchanged.",
+    "preservation": "A comparison against ee8a89f preserves all twelve grass/cliff/pond/curtain source vertex-normal-color arrays per fixture, 598 exact non-bank published array slots in default/raise/expand/contract and 611 in lower (null slots included), plus 247 exact all-kind placement arrays per default/four-edit fixture (empty arrays included). Bank/foam changes are intentional. Only contour_terrain.gd differs among compared tracked runtime resources excluding imports; original assets and eight unrelated local file hashes remain unchanged. Material identity, complete footprints and arbitrary layouts are excluded.",
+    "tests": "Twenty documented terrain scripts pass this foam round. Waterfall 35/35 covers mixed receiver joins, physical folds, raised/faded splash, published color gradients, reference clearance and the contracted mouth; it does not establish every new crest footprint or arbitrary outlet. Contours 1025/1025, shoreline 9/9, model bounds 9/9, broad facets 1381/1381 planar, interfaces 96/0 and multi-height 2004/0 separated, narrow 794 slices/zero failures, taper 2/2, boundary 416/zero missing, upper rock 15 rays/14 shoulders/25 joins, shrub support 32548 actual base points/zero unsupported, vine contact 1880 centroids/zero missing or gap over .10 (max .025002), crown ten closed/outward groups with 9984 contained and 5880 exact published entries, canopy contact 5/5, data 301/301, render 339/339, decoration 89/89, incremental 20/20, runtime 22/22 and camera 8/8 also pass. These finite checks do not establish arbitrary topology, every footprint, connected canopy union, whole-branch coverage or art acceptance. Grass/sky refinement evidence remains historical.",
+    "review": "Independent final source/full/shoreline/four-edit review recommends retaining this bounded refinement and found no confirmed Critical/Important defect; it ran no engine jobs. Lower/wider foam reads as resting on the receiving pond, and the crest is less conspicuously outlined. Full/four-edit captures show no obvious new detached splash, gap or spill obstruction. Remaining gaps include a soft white landing patch with limited sharper splash tips/broken froth, straight crests and patterned curtains. Overall user visual acceptance is pending.",
+    "motion": "Fresh 1672×940 actual Metal full/three-detail/four-edit captures exit cleanly, with matched ee8a89f baselines retained as *_before_flat_foam.png. Edits reset the default layout and change 16/12/14/16 cells. Five fresh flow stills at frames 0/15/30/45/60 show changing curtain highlights with continuous visible curtain/landing foam in those samples. They use a fixed 60Hz timestep and one default-layout camera; they do not prove smooth playback, arbitrary transparent sorting or frame pacing.",
+    "limits": "Finite default/four edit fixtures and one camera temporal stills. No proof of complete new footprints, arbitrary outlets/sorting, smooth playback, target hardware or final art acceptance."
   }
 }

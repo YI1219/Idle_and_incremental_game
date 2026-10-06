@@ -519,16 +519,23 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 						surfaces.waterfall.colors[index]=Color(across,clampf((water_y-vertex.y)/16,0,1),1.0/(1.0+width),0)
 				previous_a=current_a
 				previous_b=current_b
-			var back:=Vector3(out.x,0,out.y)*.09
+			# A varying upstream apron fades into the pond instead of drawing a
+			# constant-width white ruler along the whole spill edge.
+			var back_a:=Vector3(n0.x,0,n0.y)*(.18+.06*sin(a0.x*3.1+a0.y*2.7))
+			var back_b:=Vector3(n1.x,0,n1.y)*(.18+.06*sin(b0.x*3.1+b0.y*2.7))
+			var lift:=Vector3(0,.012,0)
 			var crest_start:int=surfaces.bank.vertices.size()
-			surfaces.bank.quad(p-back+Vector3(0,.012,0),q-back+Vector3(0,.012,0),q+Vector3(0,.012,0),p+Vector3(0,.012,0),Color.WHITE,true)
-			# Blue zero marks crest foam; landing foam retains its original white.
-			for index in range(crest_start,surfaces.bank.vertices.size()):surfaces.bank.colors[index]=Color(1,1,0,1)
+			surfaces.bank.quad(p-back_a+lift,q-back_b+lift,q+lift,p+lift,Color.WHITE,true)
+			# Blue zero marks crest foam. Fade only its upstream vertices;
+			# clipping interpolates the opacity along with its position.
+			for index in range(crest_start,surfaces.bank.vertices.size()):
+				var vertex:Vector3=surfaces.bank.vertices[index]
+				surfaces.bank.colors[index]=Color(1,1,0,1 if vertex==p+lift or vertex==q+lift else 0)
 		var r:=_fall_point(b,normal_b,water_y,low+.07)
 		var s:=_fall_point(a,normal_a,water_y,low+.07)
 		if not sample.is_empty() and sample.water>=0:
 			var center:=(r+s)*.5+Vector3(out.x*.24,.015,out.y*.24)
-			_splash(center,out,i)
+			_splash(center,out)
 
 func _flow_edges(loop:PackedVector2Array,water_y:float)->Array:
 	var result:Array=[]
@@ -556,20 +563,23 @@ func _flow_edges(loop:PackedVector2Array,water_y:float)->Array:
 			width=0.0
 	return result
 
-func _splash(center:Vector3,out:Vector2,phase:int)->void:
+func _splash(center:Vector3,out:Vector2)->void:
 	var rings:Array=[]
 	var tangent:=Vector3(out.y,0,-out.x)
 	var forward:=Vector3(out.x,0,out.y)
+	# Low uneven swells spread across receiving water. World phase avoids
+	# changing a remote patch when edits add earlier contour edges.
+	var phase:=center.x*1.7+center.z*2.3
 	for ring in 2:
 		var points:=PackedVector3Array()
 		for j in 16:
 			var angle:=j*TAU/16.0
 			var size:=.62+.11*sin(phase*3.7+j*2.9)
 			var radius:=.55 if ring==0 else 1.0
-			var rise:=.10+.09*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
-			points.append(center+tangent*cos(angle)*size*radius+forward*sin(angle)*size*radius+Vector3(0,rise,0))
+			var rise:=.045+.035*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
+			points.append(center+tangent*cos(angle)*size*radius*1.16+forward*sin(angle)*size*radius*.80+Vector3(0,rise,0))
 		rings.append(points)
-	var peak:=center+Vector3(0,.24+.05*sin(phase*2.7),0)
+	var peak:=center+Vector3(0,.065+.012*sin(phase*2.7),0)
 	for j in 16:
 		var k:=(j+1)%16
 		_foam_triangle(peak,rings[0][j],rings[0][k],center.y)
@@ -580,7 +590,7 @@ func _foam_triangle(a:Vector3,b:Vector3,c:Vector3,base:float)->void:
 	var start:int=surfaces.bank.vertices.size()
 	surfaces.bank.triangle(a,b,c,Color.WHITE,true)
 	for i in range(start,surfaces.bank.vertices.size()):
-		var opacity:=clampf((surfaces.bank.vertices[i].y-base)/.10,0.0,1.0)
+		var opacity:=clampf((surfaces.bank.vertices[i].y-base)/.055,0.0,1.0)
 		surfaces.bank.colors[i]=Color(1,1,1,opacity)
 
 static func _fall_point(p:Vector2,normal:Vector2,water_y:float,y:float)->Vector3:
