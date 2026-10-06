@@ -13,8 +13,11 @@ func run()->void:
  var smallest:=100.0
  # Ray slices test actual opposing triangles, including displaced X and Y.
  # Adding relief without a width limit can reverse their order midway down.
+ var lowest:=INF
+ for point in faces:lowest=minf(lowest,point.y)
+ var first_row:=ceili(lowest*4+.01)
  for xi in range(98,134):
-  for yi in range(-17,6):
+  for yi in range(first_row,6):
    var front:=-INF
    var back:=INF
    var origin:=Vector3(xi*.25,yi*.25,0)
@@ -33,8 +36,8 @@ func run()->void:
    if front>=back:
     failures+=1
     push_error("Opposing rendered cliff walls overlap at %s: %s >= %s"%[origin,front,back])
- if checked<700:
+ if checked<int(36*(6-first_row)*.85):
   failures+=1
-  push_error("Full-height narrow-strip sampling did not cover both walls")
+  push_error("Full actual-height narrow-strip sampling did not cover both walls")
  print("TERRAIN NARROW CLIFF: %d slices, %d failures, smallest gap %.4f"%[checked,failures,smallest])
  quit(1 if failures else 0)

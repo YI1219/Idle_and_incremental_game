@@ -2,7 +2,7 @@ class_name WaterShoreField
 extends RefCounted
 const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
 const SIDES=[Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]
-static func build(data:Data)->Dictionary:
+static func build(data:Data,contours=null)->Dictionary:
 	var wet:Dictionary={}
 	var distance:Dictionary={}
 	var queue:Array[Vector2i]=[]
@@ -59,6 +59,13 @@ static func build(data:Data)->Dictionary:
 	var image:=Image.create(size.x,size.y,false,Image.FORMAT_RGBA8)
 	image.fill(Color(0,0,0,0))
 	for cell:Vector2i in wet:
+		if contours!=null:
+			var nearest:=3.0
+			var center:=Vector2(cell)+Vector2.ONE*.5
+			for loop:PackedVector2Array in contours.water_regions[wet[cell]]:
+				for index in loop.size():
+					nearest=minf(nearest,center.distance_to(Geometry2D.get_closest_point_to_segment(center,loop[index],loop[(index+1)%loop.size()])))
+			distance[cell]=nearest
 		var bed:float=clampf((wet[cell]*.5-data.cells[cell].height)/4.0,0,1)
 		image.set_pixel(cell.x-lo.x,cell.y-lo.y,Color(distance[cell]/3.0,bed,1.0-impact_distance[cell]/4.0,1))
 	return {"texture":ImageTexture.create_from_image(image),"origin":Vector2(lo),"extent":Vector2(size)}

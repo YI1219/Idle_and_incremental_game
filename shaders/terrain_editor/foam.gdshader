@@ -3,14 +3,19 @@ render_mode cull_disabled, shadows_disabled;
 varying vec2 world_xz;
 void vertex(){
  world_xz=(MODEL_MATRIX*vec4(VERTEX,1.0)).xz;
- VERTEX.y+=sin(world_xz.x*8.0+world_xz.y*6.0+TIME*3.0)*.025*COLOR.a;
+ VERTEX.y+=sin(world_xz.x*8.0+world_xz.y*6.0+TIME*3.0)*.012*COLOR.a;
 }
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float noise(vec2 p){vec2 i=floor(p);vec2 f=fract(p);vec2 u=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}
 void fragment(){
- float churn=.5+.5*sin(world_xz.x*11.0+sin(world_xz.y*9.0-TIME*2.0));
- ALBEDO=mix(vec3(.66,.87,.90),vec3(.96,.985,.98),churn*.35+.65);
+ float churn=noise(world_xz*7.0+vec2(TIME*.35,-TIME*.55));
+ float patch=noise(world_xz*3.8+vec2(-TIME*.18,TIME*.26));
  float crest=1.0-COLOR.b;
- float breakup=smoothstep(.18,.72,.5+.5*sin(world_xz.x*5.7+world_xz.y*4.9+sin(world_xz.x*2.1-world_xz.y*1.7-TIME*.7)));
- ALPHA=COLOR.a*.90*mix(1.0,mix(.18,.78,breakup),crest);
+ ALBEDO=mix(vec3(.60,.84,.87),vec3(.96,.985,.98),churn*.35+.65);
+ // Broken low froth remains connected to the impact rather than a white pad.
+ float lace=1.0-smoothstep(.035,.105,abs(churn-.5));
+ float broken=max(.25+.60*lace+.10*patch,smoothstep(.60,.95,COLOR.a)*.75);
+ ALPHA=COLOR.a*mix(broken,mix(.12,.62,smoothstep(.25,.65,churn)),crest);
  ROUGHNESS=.78;
  SPECULAR=.15;
 }

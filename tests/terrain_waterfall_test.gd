@@ -45,11 +45,16 @@ func shared_edge(field:Contours,label:String)->void:
 			for side in 3:
 				var a:=vertices[i+side]
 				var b:=vertices[i+(side+1)%3]
-				if absf(a.x-2)>.00001 or absf(b.x-2)>.00001 or a.z>0 or b.z>0:continue
+				var expected_a:Vector3=Contours._fall_point(Vector2(2,0),Vector2(0,-1),3.545,a.y)
+				var expected_b:Vector3=Contours._fall_point(Vector2(2,0),Vector2(0,-1),3.545,b.y)
+				if a.distance_to(expected_a)>.00001 or b.distance_to(expected_b)>.00001:continue
 				if absf(a.y-b.y)<.00001 or height<minf(a.y,b.y) or height>maxf(a.y,b.y):continue
-				crossings.append(a.lerp(b,(height-a.y)/(b.y-a.y)).z)
+				crossings.append(a.lerp(b,(height-a.y)/(b.y-a.y)))
 		check(crossings.size()>=2,label+": both curtains reach the shared edge")
-		if crossings.size()>=2:check(float(crossings.max())-float(crossings.min())<.00001,label+": curtains agree at the same world height")
+		if crossings.size()>=2:
+			var max_gap:=0.0
+			for point:Vector3 in crossings:max_gap=maxf(max_gap,point.distance_to(crossings[0]))
+			check(max_gap<.00001,label+": curtains agree in XYZ at the same world height")
 func run()->void:
 	var data:=Data.new()
 	for z in range(-3,4):
@@ -118,7 +123,8 @@ func run()->void:
 	var faded:=false
 	for i in splash.surfaces.bank.vertices.size():
 		var v:Vector3=splash.surfaces.bank.vertices[i]
-		if v.y>1.65 and v.y<2.0:raised=true
+		# Low integrated churn is raised at least 55 mm above the 1.545 m water.
+		if v.y>1.60 and v.y<2.0:raised=true
 		if v.y<2.0 and splash.surfaces.bank.colors[i].a<.1:faded=true
 	check(raised,"fall into water has raised splash volume above receiving surface")
 	check(faded,"splash perimeter fades into receiving water")

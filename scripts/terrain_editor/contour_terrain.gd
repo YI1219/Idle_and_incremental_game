@@ -12,6 +12,7 @@ var source:Data
 var triangle_chunks:Dictionary={}
 var _profiles:Dictionary={}
 var _rock_relief_cache:Dictionary={}
+var _mass_site_cache:Dictionary={}
 var _land_winding_signs:Dictionary={}
 var _broad_faces:=PackedInt32Array()
 var _cliff_bands:Dictionary={}
@@ -24,12 +25,13 @@ func refresh(data:Data)->void:
 	_broad_faces.clear()
 	_profiles.clear()
 	_rock_relief_cache.clear()
+	_mass_site_cache.clear()
 	_land_winding_signs.clear()
 	land_regions.clear()
 	water_regions.clear()
 	levels.clear()
 	surfaces.clear()
-	for kind in ["grass","cliff","bank","water","waterfall"]:surfaces[kind]=Legacy.Surface.new()
+	for kind in ["grass","cliff","bank","water","waterfall","shore"]:surfaces[kind]=Legacy.Surface.new()
 	var wet:Dictionary={}
 	for cell:Vector2i in data.cells:
 		var record:Dictionary=data.cells[cell]
@@ -71,14 +73,23 @@ func refresh(data:Data)->void:
 	_generate_cliff_bands()
 	for level:int in water_regions:
 		_cap(surfaces.water,water_regions[level],level*.5+.045,Color.WHITE)
-		for loop:PackedVector2Array in water_regions[level]:_falls(loop,level*.5+.045)
+		for loop:PackedVector2Array in water_regions[level]:
+			_shores(loop,level*.5)
+			_falls(loop,level*.5+.045)
 	_smooth_normals(surfaces.cliff)
 	for i:int in _broad_faces:
 		var a:Vector3=surfaces.cliff.vertices[i]
 		var b:Vector3=surfaces.cliff.vertices[i+1]
 		var c:Vector3=surfaces.cliff.vertices[i+2]
 		var normal:=-(b-a).cross(c-a).normalized()
-		for j in 3:surfaces.cliff.normals[i+j]=normal
+		# Preserve pronounced plane breaks, while adjacent shallow triangles
+		# share their true averaged normals instead of each reading as a rock.
+		var crease:=false
+		for j in 3:
+			if normal.dot(surfaces.cliff.normals[i+j])<.75:crease=true
+		if crease:
+			for j in 3:surfaces.cliff.normals[i+j]=normal
+	_smooth_normals(surfaces.shore)
 	_smooth_normals(surfaces.bank)
 	_smooth_normals(surfaces.waterfall)
 	_index_triangles()
@@ -243,7 +254,7 @@ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
 				var record:Dictionary=source.cells.get(nearby,{})
 				var level:int=record.get("water",-1)
 				if level<0 or level*.5>top+.05:continue
-				if p.distance_squared_to(Vector2(nearby)+Vector2.ONE*.5)>1.6*1.6:continue
+				if p.distance_squared_to(Vector2(nearby)+Vector2.ONE*.5)>2.0*2.0:continue
 				# An intact dry bank separates enclosed ponds from the outer
 				# cliff. Only neighboring water with an exposed drop can spill.
 				for direction:Vector2i in Legacy.SIDES:
@@ -258,14 +269,17 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 	var depth:float=maxf(.001,profile.top-profile.bottom)
 	var edge_weight:=clampf((profile.top-y)*2,0,1)*clampf((y-profile.bottom)*2,0,1)
 	var broad_weight:=clampf((profile.inset-.35)/.45,0,1) if profile.base else .5
-	y+=sin(p.x*1.17+p.y*.91+y*1.73)*lerpf(.16,.06,broad_weight)*edge_weight
+	y+=sin(p.x*1.17+p.y*.91+y*1.73)*lerpf(.16,0.0,broad_weight)*edge_weight
 	var f:=clampf((profile.top-y)/depth,0,1)
 	var rounded:=0.0
 	if not profile.base or profile.inset>.35:
 		# Width edits blend into broad masses without changing constrained walls.
 		# Cache raw fields separately; their blend varies with this profile's width.
 		var mass_weight:float=1.0 if not profile.base else smoothstep(.8,1.2,profile.inset)
-		var point:=Vector3(p.x,y,p.y)
+		var field_y:=y
+		if profile.base and y<profile.top:
+			field_y=lerpf(profile.top,_shell_floor(p,profile.top),clampf((profile.top-y)/depth,0,1))
+		var point:=Vector3(p.x,field_y,p.y)
 		var old_relief:=0.0
 		var mass_relief:=0.0
 		if mass_weight<1.0:
@@ -285,15 +299,42 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 		rock_depth=profile.rock_top-profile.top
 		rock_f=clampf((profile.rock_top-y)/rock_depth,0,1)
 	var point:=_rock_point(p,y,f,profile.base,minf(1.0,rock_depth/2.2),normal,profile.inset,rounded,rock_f)
+	if profile.base and y<profile.top:
+		# Legal height constrains playable land, not one global visual floor.
+		# Map the supporting shell continuously: low edited land still has a
+		# half-unit body, while normal terraces retain a broadly shallow foot.
+		var floor_y:float=_shell_floor(p,profile.top)
+		var weight:float=clampf((profile.top-y)/maxf(.001,profile.top-profile.bottom),0,1)
+		point.y=lerpf(profile.top,floor_y,weight)
 	if profile.water>=0 and point.y<=profile.water*.5+.045:
 		# Exposed wet walls sit behind the shared stream envelope. Limit only
 		# protruding shoulders; inland and dry cliff masses keep their full relief.
 		var water_y:float=profile.water*.5+.045
 		var stream:=_fall_point(p,normal,water_y,point.y)
-		var clearance:float=.50*clampf((water_y-point.y)*2.0,0.0,1.0)
+		var clearance:float=.65*clampf((water_y-point.y)*2.0,0.0,1.0)
 		var excess:float=(Vector2(point.x-stream.x,point.z-stream.z)).dot(normal)+clearance
 		if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess
 	return point
+
+static func _shell_floor(p:Vector2,top:float)->float:
+	# Unequal shallow feet, continuous at shared columns; minimum-height land
+	# retains its half-unit supporting body without changing legal data.
+	var variation:float=.18*sin(p.x*.43+p.y*.31)+.09*sin(p.x*.87-p.y*.57)
+	return minf(-2.8,top-.5)+variation*clampf((top+4.0)/4.0,0,1)
+
+func _outer_profile(p:Vector2,normal:Vector2,profile:Dictionary)->void:
+	# Membership of the outer contour owns the supporting shell. A near-corner
+	# outward probe can touch adjacent low land; that must not leave a single
+	# column at the obsolete global floor while its neighbors are shallow.
+	profile.base=true
+	profile.bottom=BOTTOM
+	var cell:=Vector2i(p.floor())
+	for z in range(-2,3):
+		for x in range(-2,3):
+			var record:Dictionary=source.cells.get(cell+Vector2i(x,z),{})
+			if record.is_empty():continue
+			profile.top=minf(profile.top,record.water*.5 if record.water>=0 else record.height)
+	profile.inset=_inset_limit(p,normal,levels[0])
 
 func _collect_cliff_bands(loop:PackedVector2Array,top:float,bottom:float)->void:
 	for i in loop.size():
@@ -305,6 +346,9 @@ func _collect_cliff_bands(loop:PackedVector2Array,top:float,bottom:float)->void:
 		var normal_b:=Vector2(after.y-a.y,a.x-after.x).normalized()
 		var profile_a:=_cliff_profile(a,normal_a)
 		var profile_b:=_cliff_profile(b,normal_b)
+		if bottom==BOTTOM:
+			_outer_profile(a,normal_a,profile_a)
+			_outer_profile(b,normal_b,profile_b)
 		var key:Array=[Vector4(a.x,a.y,b.x,b.y),Vector4(normal_a.x,normal_a.y,normal_b.x,normal_b.y)]
 		if not _cliff_bands.has(key):_cliff_bands[key]={"a":a,"b":b,"normal_a":normal_a,"normal_b":normal_b,"profile_a":profile_a,"profile_b":profile_b,"ranges":[]}
 		_cliff_bands[key].ranges.append(Vector2(bottom,top))
@@ -347,13 +391,14 @@ func _cliff_band(span:Dictionary,top:float,bottom:float)->void:
 		# Terrace joins keep their finer horizontal samples. Other broad walls
 		# use larger spans, with the same exact shared contour endpoints.
 		var join:bool=profile_a.rock_top>profile_a.top+.001 or profile_b.rock_top>profile_b.top+.001
-		var columns:=maxi(1,ceili(a.distance_to(b)/(.65 if join else 1.15)))
+		var columns:=maxi(1,ceili(a.distance_to(b)/(.65 if join else .85)))
 		var left:=_rock_chain(a,normal_a,profile_a,top,bottom)
 		for column in columns:
 			var weight:float=float(column+1)/columns
 			var point:=b if column==columns-1 else a.lerp(b,weight)
 			var normal:=normal_b if column==columns-1 else normal_a.lerp(normal_b,weight).normalized()
 			var profile:Dictionary=profile_b if column==columns-1 else _cliff_profile(point,normal)
+			if bottom==BOTTOM:_outer_profile(point,normal,profile)
 			var right:=_rock_chain(point,normal,profile,top,bottom)
 			_join_rock_chains(left,right)
 			left=right
@@ -363,11 +408,16 @@ func _cliff_band(span:Dictionary,top:float,bottom:float)->void:
 
 func _rock_chain(p:Vector2,normal:Vector2,profile:Dictionary,top:float,bottom:float)->PackedVector3Array:
 	var heights:Array[float]=[top,bottom]
+	var constraint:Dictionary=_chain_constraints.get(Vector4(p.x,p.y,normal.x,normal.y),{})
+	# A narrow neighbor owns a half-unit polyline. Extra bevel knots on only
+	# the broad side would bow that shared edge apart between matching ends.
+	if not constraint.get("fine",false) and (not profile.base or profile.inset>1.0):
+		for height:float in _mass_rock_rows(p,profile):
+			if height>bottom and height<top and not heights.has(height):heights.append(height)
 	# World-anchored stagger avoids a horizontal lattice. Exact local terrace
 	# joins are mandatory, while edit-added unrelated elevations do not shift it.
 	for boundary:float in [profile.top,profile.rock_top]:
 		if boundary>bottom+.001 and boundary<top-.001 and not heights.has(boundary):heights.append(boundary)
-	var constraint:Dictionary=_chain_constraints.get(Vector4(p.x,p.y,normal.x,normal.y),{})
 	# Broad and narrow neighbors must share the same geometric edge. A fine
 	# neighbor promotes this boundary column; adjacent interval ends are also
 	# mandatory, preventing gaps caused by different interior triangulations.
@@ -381,8 +431,8 @@ func _rock_chain(p:Vector2,normal:Vector2,profile:Dictionary,top:float,bottom:fl
 		# This world-anchored sample set is canonical for the column. Only
 		# clip to the requested interval: an end buffer would drop a row on a
 		# split neighbor while retaining it on a merged neighbor's same edge.
-		for step in range(floori(bottom/1.35)-1,ceili(top/1.35)+1):
-			var height:float=step*1.35+.24*sin(p.x*.77+p.y*.61+step*4.19)
+		for step in range(floori(bottom/.95)-1,ceili(top/.95)+1):
+			var height:float=step*.95+.07*sin(p.x*.23+p.y*.19+step*1.31)
 			if height>bottom and height<top and not heights.has(height):heights.append(height)
 	heights.sort()
 	heights.reverse()
@@ -437,10 +487,14 @@ func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 	return 1.5
 
 static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,normal:Vector2=Vector2.ZERO,inset_limit:float=1.5,rounded_relief:float=NAN,rock_fraction:float=NAN)->Vector3:
-	var inset:=normal*(inset_limit*pow(f,1.5) if base else 0.0)
+	# Broad feet keep blunt shoulders rather than converging into a bowl.
+	# Thickness-limited profiles preserve their proven narrow shell.
+	var broad:float=smoothstep(.35,.85,inset_limit)
+	var retreat:float=lerpf(pow(f,1.5),.12*smoothstep(.18,.40,f)+.26*smoothstep(.68,.92,f),broad)
+	var inset:=normal*(inset_limit*retreat if base else 0.0)
 	var width_weight:=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
-	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,.04,width_weight)*sin(PI*f)
-	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(lerpf(.62,.09,width_weight)*sin(PI*f)+(lerpf(.22,.02,width_weight)*pow(f,4.0) if base else 0.0))
+	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,0.0,width_weight)*sin(PI*f)
+	var vertical_noise:=sin(p.x*.91+p.y*1.47)*(lerpf(.62,0.0,width_weight)*sin(PI*f)+(lerpf(.22,0.0,width_weight)*pow(f,4.0) if base else 0.0))
 	# Rounded rock shoulders share a world-anchored field with the material.
 	# Preserve the proven narrow-wall profile and fade relief at true boundaries.
 	if is_nan(rounded_relief):rounded_relief=_rock_relief(Vector3(p.x,y,p.y)) if width_weight>0.0 else 0.0
@@ -449,8 +503,10 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	var shoulder_f:=f if is_nan(rock_fraction) else rock_fraction
 	# Nearby lower land controls base taper, not the upper rock shoulders.
 	var envelope:=pow(maxf(0.0,sin(PI*shoulder_f)),lerpf(lerpf(.65,.32,width_weight),1.0,smoothstep(.50,.85,shoulder_f)))
-	if base:envelope*=lerpf(1.0,.25,smoothstep(.55,.95,shoulder_f))
-	var ledge:=rounded_relief*envelope*relief*width_weight
+	if base:
+		var shoulder:=smoothstep(0.0,.14,shoulder_f)*(.95-.55*smoothstep(.66,1.0,shoulder_f))
+		envelope=lerpf(envelope*lerpf(1.0,.25,smoothstep(.55,.95,shoulder_f)),shoulder,smoothstep(.8,1.2,inset_limit))
+	var ledge:=rounded_relief*envelope*relief*width_weight*lerpf(1.0,1.30,smoothstep(.8,1.2,inset_limit))
 	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
 
 static func _rock_relief(point:Vector3)->float:
@@ -473,25 +529,54 @@ static func _rock_relief(point:Vector3)->float:
 				nearest=minf(nearest,distance)
 	return .75*clampf((.76-nearest)/.55,0.0,1.0)-.10
 
-static func _mass_rock_relief(point:Vector3)->float:
-	# Larger unequal regions shape the shared body. Rotated clipped-octahedron
-	# shoulders remain continuous where neighboring rock regions meet.
-	var frame:=Vector3(point.x+point.y*.16,point.y+point.x*.28+point.z*.19,point.z-point.y*.12)
-	var p:=frame/Vector3(3.2,2.7,3.2)
-	var cell:=p.floor()
-	var f:=p-cell
-	var nearest:=10.0
+static func _mass_sites(p:Vector2,layer:int)->Array:
+	# Sparse, unequal beveled slabs form real shoulders and intervening recesses.
+	# World anchors stay stable through edits; height breaks are shared by every
+	# contour column touching a slab, rather than arbitrary triangle color.
+	var cell:Vector2i=Vector2i((p/3.6).floor())
+	var result:Array=[]
 	for z in range(-1,2):
-		for y in range(-1,2):
-			for x in range(-1,2):
-				var offset:=Vector3(x,y,z)
-				var delta:=offset+_rock_hash(cell+offset)*.72+Vector3.ONE*.14-f
-				var shape:=_rock_hash(cell+offset+Vector3.ONE*31.0)
-				var angle:float=(shape.z-.5)*1.1
-				var rotated:=Vector3(delta.x*cos(angle)-delta.z*sin(angle),delta.y,delta.x*sin(angle)+delta.z*cos(angle))
-				var axis:Vector3=rotated.abs()/(Vector3.ONE*.85+shape*.25)
-				nearest=minf(nearest,maxf(maxf(axis.x,maxf(axis.y,axis.z)),(axis.x+axis.y+axis.z)*.57))
-	return clampf((.78-nearest)/.53,0.0,1.0)-.10
+		for x in range(-1,2):
+			var key:=Vector3(cell.x+x,layer,cell.y+z)
+			var shape:=_rock_hash(key+Vector3.ONE*11.0)
+			var center:Vector2=(Vector2(key.x,key.z)+Vector2(.20,.20)+Vector2(shape.x,shape.z)*.60)*3.6
+			var delta:Vector2=(p-center)/3.6
+			var angle:float=(shape.z-.5)*.8
+			var rotated:=Vector2(delta.x*cos(angle)-delta.y*sin(angle),delta.x*sin(angle)+delta.y*cos(angle))
+			var axes:Vector2=rotated.abs()/Vector2(.85+shape.x*.25,.85+shape.z*.25)
+			var distance:=maxf(maxf(axes.x,axes.y),(axes.x+axes.y)*.68)
+			var weight:=clampf((.72-distance)/.32,0,1)
+			if weight>0:result.append({"weight":weight,"phase":(shape.y-.5)*1.8+(p.x-center.x)*(shape.x-.5)*.18+(p.y-center.y)*(shape.z-.5)*.18,"reach":.85+shape.x*.50})
+	return result
+
+func _cached_mass_sites(p:Vector2,layer:int)->Array:
+	var key:=Vector3(p.x,layer,p.y)
+	if not _mass_site_cache.has(key):_mass_site_cache[key]=_mass_sites(p,layer)
+	return _mass_site_cache[key]
+
+func _mass_rock_relief(point:Vector3)->float:
+	var relief:=0.0
+	var row:=floori(point.y/2.4)
+	for layer in range(row-2,row+3):
+		for site:Dictionary in _cached_mass_sites(Vector2(point.x,point.z),layer):
+			var center:float=layer*2.4+site.phase
+			var vertical:=clampf((site.reach-absf(point.y-center))/.35,0,1)
+			relief=maxf(relief,minf(site.weight,vertical))
+	return -.12+.94*relief
+
+func _mass_rock_rows(p:Vector2,profile:Dictionary)->Array[float]:
+	var rows:Array[float]=[]
+	var floor_y:float=_shell_floor(p,profile.top) if profile.base else profile.bottom
+	for layer in range(floori(floor_y/2.4)-2,ceili(profile.rock_top/2.4)+2):
+		for site:Dictionary in _cached_mass_sites(p,layer):
+			if site.weight<.45:continue
+			var center:float=layer*2.4+site.phase
+			for offset:float in [-site.reach,-site.reach+.35,site.reach-.35,site.reach]:
+				var y:float=center+offset
+				if y<=floor_y or y>=profile.rock_top:continue
+				if profile.base and y<profile.top:y=profile.top+(y-profile.top)*(profile.top-profile.bottom)/maxf(.001,profile.top-floor_y)
+				if not rows.has(y):rows.append(y)
+	return rows
 
 static func _rock_hash(point:Vector3)->Vector3:
 	var q:=point*Vector3(.123,.117,.139)
@@ -500,9 +585,45 @@ static func _rock_hash(point:Vector3)->Vector3:
 	var value:=Vector3((q.x+q.y)*q.z,(q.y+q.z)*q.x,(q.z+q.x)*q.y)
 	return value-value.floor()
 
+func _shores(loop:PackedVector2Array,height:float)->void:
+	# Supported gentle stretches become graded earth/stone shelves, not empty
+	# gaps in a decorative stone ring. The shelf belongs to terrain publication.
+	for i in loop.size():
+		var a:=loop[i];var b:=loop[(i+1)%loop.size()]
+		var edge:=b-a
+		var out:=Vector2(edge.y,-edge.x).normalized()
+		var previous:=loop[(i-1+loop.size())%loop.size()]
+		var bend:=1.0-edge.normalized().dot((a-previous).normalized())
+		var midpoint:=(a+b)*.5
+		var gap:=sin(midpoint.x*.38+cos(midpoint.y*.31)*1.3+height*1.40)
+		if gap<.35 or bend>.08:continue
+		var columns:=maxi(1,ceili(edge.length()/.45))
+		for column in columns:
+			var p:=a.lerp(b,float(column)/columns)
+			var q:=a.lerp(b,float(column+1)/columns)
+			var width_p:=.75+.25*sin(p.x*.61+p.y*.43)
+			var width_q:=.75+.25*sin(q.x*.61+q.y*.43)
+			var supported:=true
+			for point in [p+out*width_p,q+out*width_q,(p+q)*.5+out*.60]:
+				var sample:=surface_at(point)
+				if sample.is_empty() or sample.water>=0 or absf(sample.height-height)>.01:supported=false
+			for point in [p-out*.30,q-out*.30]:
+				var sample:=surface_at(point)
+				if sample.is_empty() or sample.water<0 or absf(sample.height-height)>.01:supported=false
+			if not supported:continue
+			var outer_p:=Vector3(p.x+out.x*width_p,height+.004,p.y+out.y*width_p)
+			var outer_q:=Vector3(q.x+out.x*width_q,height+.004,q.y+out.y*width_q)
+			var rim_p:=Vector3(p.x+out.x*.025,height+.14,p.y+out.y*.025)
+			var rim_q:=Vector3(q.x+out.x*.025,height+.14,q.y+out.y*.025)
+			var inner_p:=Vector3(p.x-out.x*.30,height-.16,p.y-out.y*.30)
+			var inner_q:=Vector3(q.x-out.x*.30,height-.16,q.y-out.y*.30)
+			surfaces.shore.quad(outer_p,outer_q,rim_q,rim_p,Color(.44,.42,.27),true)
+			surfaces.shore.quad(rim_p,rim_q,inner_q,inner_p,Color(.55,.52,.36),true)
+
 func _falls(loop:PackedVector2Array,water_y:float)->void:
 	if _area(loop)<0:return
 	var flow_edges:=_flow_edges(loop,water_y)
+	var impacts:Dictionary={}
 	for i in loop.size():
 		var a:=loop[i]
 		var b:=loop[(i+1)%loop.size()]
@@ -520,9 +641,13 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 		while height>low+.07:
 			rows.append(height)
 			height-=.5
+		for drop in [.10,.24,.42]:
+			if water_y-drop>low+.07 and not rows.has(water_y-drop):rows.append(water_y-drop)
+		rows.sort()
+		rows.reverse()
 		rows.append(low+.07)
 		# Subdivide long outlets laterally so physical folds survive triangulation.
-		var columns:=maxi(1,ceili(a.distance_to(b)/.32))
+		var columns:=maxi(1,ceili(a.distance_to(b)/.26))
 		for column in columns:
 			var t0:=float(column)/columns
 			var t1:=float(column+1)/columns
@@ -541,14 +666,17 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 				var start:int=surfaces.waterfall.vertices.size()
 				surfaces.waterfall.quad(previous_b,previous_a,current_a,current_b,Color.WHITE)
 				var width:float=flow_edges[i].width
-				if width>0:
-					for index in range(start,surfaces.waterfall.vertices.size()):
-						var vertex:Vector3=surfaces.waterfall.vertices[index]
-						var t:float=t0 if vertex==previous_a or vertex==current_a else t1
+				for index in range(start,surfaces.waterfall.vertices.size()):
+					var vertex:Vector3=surfaces.waterfall.vertices[index]
+					var t:float=t0 if vertex==previous_a or vertex==current_a else t1
+					var drop:float=clampf((water_y-vertex.y)/16,0,1)
+					var landing:float=.4*clampf((water_y-vertex.y)/maxf(.001,water_y-low-.07),0,1) if not sample.is_empty() and sample.water>=0 else 0.0
+					# Closed exposed rings keep world coordinates and skip side fade.
+					# B=0 marks their receiver metadata; legacy white stays valid.
+					if width<=0:surfaces.waterfall.colors[index]=Color(landing,drop,0,1)
+					else:
 						var across:float=(flow_edges[i].start+a.distance_to(b)*t)/width
-						# Linear run coordinates and world drop survive triangle clipping.
-						# Alpha zero marks metadata; legacy/closed-ring white stays valid.
-						surfaces.waterfall.colors[index]=Color(across,clampf((water_y-vertex.y)/16,0,1),1.0/(1.0+width),0)
+						surfaces.waterfall.colors[index]=Color(across,drop,1.0/(1.0+width),landing)
 				previous_a=current_a
 				previous_b=current_b
 			# A varying upstream apron fades into the pond instead of drawing a
@@ -567,7 +695,26 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 		var s:=_fall_point(a,normal_a,water_y,low+.07)
 		if not sample.is_empty() and sample.water>=0:
 			var center:=(r+s)*.5+Vector3(out.x*.24,.015,out.y*.24)
-			_splash(center,out)
+			# One connected impact per receiving elevation/run, rather than a
+			# row of overlapping independent foam mounds at each contour segment.
+			var key:=Vector3i(flow_edges[i].run,sample.water,i if flow_edges[i].width<=0 else -1)
+			if not impacts.has(key):impacts[key]={"center":Vector3.ZERO,"direction":Vector2.ZERO,"weight":0.0,"width":flow_edges[i].width if flow_edges[i].width>0 else a.distance_to(b),"samples":[]}
+			var weight:float=a.distance_to(b)
+			impacts[key].center+=center*weight
+			impacts[key].direction+=out*weight
+			impacts[key].weight+=weight
+			impacts[key].samples.append({"center":center,"direction":out,"width":a.distance_to(b)})
+	for key:Vector3i in impacts:
+		var impact:Dictionary=impacts[key]
+		var center:Vector3=impact.center/maxf(.001,impact.weight)
+		var support:Dictionary=surface_at(Vector2(center.x,center.z))
+		if not support.is_empty() and support.water==key.y and impact.direction.length_squared()>.001:
+			_splash(center,impact.direction.normalized(),maxf(.62,impact.width*.53))
+		else:
+			# A strongly bent receiving run can average into dry/upper terrain.
+			# Keep its supported local landings instead of losing the entire foam.
+			for landing:Dictionary in impact.samples:
+				_splash(landing.center,landing.direction,maxf(.62,landing.width*.53))
 
 func _flow_edges(loop:PackedVector2Array,water_y:float)->Array:
 	var result:Array=[]
@@ -577,7 +724,7 @@ func _flow_edges(loop:PackedVector2Array,water_y:float)->Array:
 		var out:=Vector2(b.y-a.y,a.x-b.x).normalized()
 		var sample:=surface_at((a+b)*.5+out*.25)
 		var spill:bool=float(sample.get("height",-12.0))<water_y-.1
-		result.append({"sample":sample,"spill":spill,"start":0.0,"width":0.0,"length":a.distance_to(b)})
+		result.append({"sample":sample,"spill":spill,"start":0.0,"width":0.0,"run":0,"length":a.distance_to(b)})
 		if not spill:stop=i
 	# A fully exposed closed perimeter has no lateral ends to fade.
 	if stop<0:return result
@@ -590,12 +737,14 @@ func _flow_edges(loop:PackedVector2Array,water_y:float)->Array:
 			width+=float(result[i].length)
 			run.append(i)
 		else:
-			for index:int in run:result[index].width=width
+			for index:int in run:
+				result[index].width=width
+				result[index].run=i
 			run.clear()
 			width=0.0
 	return result
 
-func _splash(center:Vector3,out:Vector2)->void:
+func _splash(center:Vector3,out:Vector2,half_width:float=.62)->void:
 	var rings:Array=[]
 	var tangent:=Vector3(out.y,0,-out.x)
 	var forward:=Vector3(out.x,0,out.y)
@@ -608,10 +757,10 @@ func _splash(center:Vector3,out:Vector2)->void:
 			var angle:=j*TAU/16.0
 			var size:=.62+.11*sin(phase*3.7+j*2.9)
 			var radius:=.55 if ring==0 else 1.0
-			var rise:=.045+.035*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
-			points.append(center+tangent*cos(angle)*size*radius*1.16+forward*sin(angle)*size*radius*.80+Vector3(0,rise,0))
+			var rise:=.018+.018*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
+			points.append(center+tangent*cos(angle)*size*radius*half_width/.62+forward*sin(angle)*size*radius*1.40+Vector3(0,rise,0))
 		rings.append(points)
-	var peak:=center+Vector3(0,.065+.012*sin(phase*2.7),0)
+	var peak:=center+Vector3(0,.043+.008*sin(phase*2.7),0)
 	for j in 16:
 		var k:=(j+1)%16
 		_foam_triangle(peak,rings[0][j],rings[0][k],center.y)
@@ -619,6 +768,9 @@ func _splash(center:Vector3,out:Vector2)->void:
 		_foam_triangle(rings[0][j],rings[1][k],rings[0][k],center.y)
 
 func _foam_triangle(a:Vector3,b:Vector3,c:Vector3,base:float)->void:
+	for point:Vector3 in [a,b,c]:
+		var sample:=surface_at(Vector2(point.x,point.z))
+		if sample.is_empty() or sample.water<0 or absf(sample.height-base)>.20:return
 	var start:int=surfaces.bank.vertices.size()
 	surfaces.bank.triangle(a,b,c,Color.WHITE,true)
 	for i in range(start,surfaces.bank.vertices.size()):
@@ -626,17 +778,30 @@ func _foam_triangle(a:Vector3,b:Vector3,c:Vector3,base:float)->void:
 		surfaces.bank.colors[i]=Color(1,1,1,opacity)
 
 static func _fall_point(p:Vector2,normal:Vector2,water_y:float,y:float)->Vector3:
+	# Canonical lip rows make the turn round while terminal interpolation keeps
+	# neighboring curtains joined at different receiving heights.
 	var lower:=floorf(y*2)*.5
-	var offset:=lerpf(_fall_offset(water_y,lower)+_fall_fold(p,water_y,lower),_fall_offset(water_y,lower+.5)+_fall_fold(p,water_y,lower+.5),(y-lower)*2)
-	return Vector3(p.x+normal.x*offset,y,p.y+normal.y*offset)
+	var upper:=lower+.5
+	for drop in [0.0,.10,.24,.42]:
+		var row:float=water_y-drop
+		if row<=y and row>lower:lower=row
+		if row>=y and row<upper:upper=row
+	var offset:=lerpf(_fall_offset(water_y,lower)+_fall_fold(p,water_y,lower),_fall_offset(water_y,upper)+_fall_fold(p,water_y,upper),(y-lower)/maxf(.00001,upper-lower))
+	var lateral:=lerpf(_fall_sway(p,water_y,lower),_fall_sway(p,water_y,upper),(y-lower)/maxf(.00001,upper-lower))
+	var tangent:=Vector2(-normal.y,normal.x)
+	return Vector3(p.x+normal.x*offset+tangent.x*lateral,y,p.y+normal.y*offset+tangent.y*lateral)
+
+static func _fall_sway(p:Vector2,water_y:float,y:float)->float:
+	var drop:=maxf(0,water_y-y)
+	return .18*sin(p.x*.91+p.y*1.37+drop*.8)*smoothstep(.05,.60,drop)
 
 static func _fall_fold(p:Vector2,water_y:float,y:float)->float:
 	var drop:=maxf(0,water_y-y)
-	return .12*sin(p.x*6.2+p.y*4.3+drop*.18)*(1-exp(-drop*4.0))
+	return .055*sin(p.x*1.13+p.y*1.71)*exp(-drop*.7)+.085*sin(p.x*6.2+p.y*4.3+drop*.18)*(1-exp(-drop*4.0))
 
 static func _fall_offset(water_y:float,y:float)->float:
 	var drop:=maxf(0,water_y-y)
-	return .36+.13*(1-exp(-drop*.8))+.08*sin(drop*1.5)*minf(1,drop)
+	return .15+.11*exp(-drop*6.0)+.48*(1-exp(-drop*2.8))+.035*sin(drop*1.5)*minf(1,drop)
 
 func _smooth_normals(surface)->void:
 	# Smooth generated cliff, foam and waterfall surfaces. Embedded stone models retain their
@@ -704,10 +869,10 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind in ["bank","waterfall"]:
+				if kind in ["shore","bank","waterfall"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
-				if kind in ["cliff","bank","waterfall"]:
+				if kind in ["cliff","shore","bank","waterfall"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
 				if kind=="waterfall" and local.vertices.size()>before:

@@ -1,0 +1,92 @@
+{
+  "runtime_source_sha256": {
+    "scripts/terrain_editor/contour_terrain.gd": "424120fd73c10c68b8f73ec5f9bea4c545eca72db491a74ed09766d8f11d6846",
+    "scripts/terrain_editor/editor.gd": "263c5f9f426c4f51c02883d6287e88ee644b337046e5181e7953a3237adb3bb1",
+    "scripts/terrain_editor/terrain_decoration.gd": "a6bc4cc3b322de90bfab21bfb63875ff2d8d9b0025bb018a88e055c7958b7ff7",
+    "scripts/terrain_editor/terrain_models.gd": "4c13f273ea6b8d6e0b299c7481970077ddf31f440e00f224d9c78a03190150d3",
+    "scripts/terrain_editor/terrain_renderer.gd": "b2bcdb4558e2110cdac50ad89eb617c1bcdb55d621594d32863cea5fbdea7311",
+    "scripts/terrain_editor/water_shore_field.gd": "2544418cdae1fd28180d5a4b6c22f8a3bbeb07ea594e493bc067edfb1dbf399d",
+    "shaders/terrain_editor/water.gdshader": "4c0432347e86c5750b78d645d6f717ed6b33bd436efbb7fb14f51594c6c4c586",
+    "shaders/terrain_editor/waterfall.gdshader": "afaadc41e3a5c307b00af7bc11c704ea3bd547d63b387c36e770420c81100894",
+    "shaders/terrain_editor/foam.gdshader": "d375a7177cdb5e91b6865d265aedb27872d588564cb0307633507720d5e5741b",
+    "shaders/terrain_editor/shore.gdshader": "26d15ffe40258110d2b13bd7de09cb6c98cd8e63643d43f1cd5408bafa1dbc73"
+  },
+  "unrelated_tracked_files_preserved": {
+    "assets/buildings/cottage/cottage_tripo_cottage_raw_v01_with_color_basecolor.jpg.import": "a5f49da76003f0ba154b5181d06a17a34147b365029bc3560e47b57d08d4c1f1",
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_ivory_albedo.png.import": "ce252c59ca437d2452a762c0df12c6cd3b75c14672e8c0c2ebd840d68d9137a6",
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_pants_albedo.png.import": "9871f0a360a0f14846c3e461f6080a74b46a128d16697ff3a834993548fe0fab",
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_plainweave_normal.png.import": "3efeae161452301d58f117f2fa1617a0209d8b70d676a8969f24b3c4610fe4b1",
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_plainweave_orm.png.import": "0b7c10e4f7ff0ea2be487f60107c2d3ebb915b99871333eb19001af804716f36",
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_robe_albedo.png.import": "4b7fa0d56a559aea26cd2253c9706e899d420956f700c315177ff7de80f167cb",
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_teal_albedo.png.import": "7bb06e5693ebe0ef227b569c45550a20b7dfb5860321c2bd204fde47680f22ea",
+    "project.godot": "f6aeee46c029bb0c2bd54dd5e132a419eded92fdc0f234ee3fd9362814fe7262"
+  },
+  "baseline_restored_byte_for_byte": true,
+  "checks": "25 scripts, exit0/no errors; checks_final.json",
+  "actual_metal_runtime": "22/22; runtime_metal.json",
+  "motion": [
+    {
+      "tag": "baseline",
+      "source": "4d891bd",
+      "frame_count": 300,
+      "duration_seconds": 5,
+      "nominal_hz": 60,
+      "resolution": [
+        1280,
+        720
+      ],
+      "input_frame_sample_hashes": {
+        "0": "54c21158e6c2a65d0354298dde18ab74b3961b2f0dc70c749f7659506b9663ab",
+        "60": "cc6fa3a6f3d3cfb28bd795b9b8958a87b409c4dc79246b6b7f21e13bbefd6ea0",
+        "120": "e6c52b4b2f3e1d3b04182e71ba1e39396d1c7b40c8dbfeb3029716bc65f1aff5",
+        "180": "06727841cb9345ac4d0b9dac89411e3e2b23666ad668a2f34a736fc00485d218",
+        "240": "f2511be439b279d025d3ae8f6f02f501a1fb895d462a988412e15ee309484450",
+        "280": "a029370ff41afc48013c577ddbdd2ae3d2fcce2e599f755ec4f1bdcd5a7bc389",
+        "299": "dc8440f5b7f990dbfdf0310016a7b54e24bea9138a3cb80098f49bc92cb31d9d"
+      },
+      "clip_sha256": "fd602d6eefc1c211aaed4581f1a34d8afd5956c3ca6ca00104ca4dc29bf4f831",
+      "encoding": "H.264 directly from unmodified runtime PNGs; lossy compression; no visual grading"
+    },
+    {
+      "tag": "rework_final",
+      "source": "current rework runtime source fingerprints below",
+      "frame_count": 300,
+      "duration_seconds": 5,
+      "nominal_hz": 60,
+      "resolution": [
+        1280,
+        720
+      ],
+      "input_frame_sample_hashes": {
+        "0": "3867530e3b3b7a0fe5db5b330d58be803db5cc4a54d0338bf88eadfbe136d834",
+        "60": "80c7efe3f7963839234f117b92a4a45fe0ddda58417ec31b951f852f0493e666",
+        "120": "cc3c3a6f7c35c29e87aa94ff688d236a4320e9f6054627c61f5309d45281af10",
+        "180": "e5d0acdad2eef40dda1394706ef0e9f1ea5c21b6fea20a80c16c5b0d0a20bf17",
+        "240": "b313a01104d606d8c5f50fd4ff43104b6f7b22fcee135c93bf636e3b360c437f",
+        "280": "853263302132a9689ec838947870f3f1bf1edce3bd3c29e201424150303107ee",
+        "299": "bd05dbb818f883e1243331ab3988113d6b4ce00fcc9286e47e54f2b95f7d9b67"
+      },
+      "clip_sha256": "20f92ab22d8b7636c474b472f6afc8ac98962d04738afdf1b04a6b0d6865b73b",
+      "encoding": "H.264 directly from unmodified runtime PNGs; lossy compression; no visual grading"
+    }
+  ],
+  "motion_inspection": {
+    "final_frames": [
+      0,
+      60,
+      120,
+      180,
+      240,
+      280,
+      299
+    ],
+    "baseline_frames": [
+      0,
+      120,
+      299
+    ],
+    "full_uninterrupted_playback": "unverified"
+  },
+  "art_status": "Targeted user visual review; not artistically accepted",
+  "performance_status": "Measured current-host submission/editing trade-off; GPU times/target laptops unmeasured"
+}

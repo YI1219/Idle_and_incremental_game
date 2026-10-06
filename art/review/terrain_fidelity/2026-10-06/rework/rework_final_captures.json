@@ -1,0 +1,184 @@
+{
+	"edits": [
+		{
+			"changed_cells": 16,
+			"operation": "raise"
+		},
+		{
+			"changed_cells": 12,
+			"operation": "lower"
+		},
+		{
+			"changed_cells": 14,
+			"operation": "expand"
+		},
+		{
+			"changed_cells": 16,
+			"operation": "contract"
+		}
+	],
+	"engine": "4.7.2-stable (official)",
+	"renderer": "forward_plus",
+	"resolution": [
+		1672,
+		940
+	],
+	"rotation": "inspection only; gameplay controls preserved",
+	"source": "actual Godot runtime; real SubViewport, native window focus independent",
+	"views": [
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "composition",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "left",
+			"pitch": 27,
+			"yaw": -22.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "right",
+			"pitch": 27,
+			"yaw": 50.0
+		},
+		{
+			"center": [
+				7.19999980926514,
+				-1.79999995231628
+			],
+			"fov": 31,
+			"height": 11.9159639700906,
+			"name": "contact",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "raise",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "lower",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "expand",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "contract",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "regenerated",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "minimum_height",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "irregular",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "irregular_rotated",
+			"pitch": 27,
+			"yaw": 50.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "reopened_irregular",
+			"pitch": 27,
+			"yaw": 16.0
+		},
+		{
+			"center": [
+				0.0,
+				-1.0
+			],
+			"fov": 31,
+			"height": 21.0,
+			"name": "reopened_default",
+			"pitch": 27,
+			"yaw": 16.0
+		}
+	]
+}

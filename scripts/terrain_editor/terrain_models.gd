@@ -14,34 +14,25 @@ func load_assets()->void:
 	var tree:Array=[]
 	var wood_shape:=Transform3D(Basis.IDENTITY.scaled(Vector3(1.24,1.07,1.24)),Vector3.ZERO)
 	for part:Dictionary in wood:tree.append({"mesh":part.mesh,"pose":wood_shape*part.pose})
-	# A raised central crown and unequal side masses expose the retained forks.
-	# Sparse edge clusters interrupt the outline without a uniform lobe ring.
+	# Four compact masses derive from the retained oak surface: a dominant
+	# raised crown, unequal lower fork masses and a small rear support.
+	# Their lower edges expose branch space rather than filling every shoulder.
 	var crown:Array=[
-		[Vector3(-.29,1.05,.04),Vector3(.62,.66,.60)],
-		[Vector3(.29,1.11,.04),Vector3(.64,.65,.61)],
-		[Vector3(-.06,1.33,-.10),Vector3(.65,.73,.62)],
-		[Vector3(-.08,1.10,-.28),Vector3(.54,.57,.52)],
-		[Vector3(.27,1.13,.26),Vector3(.54,.54,.58)],
-		[Vector3(-.22,1.06,.23),Vector3(.55,.55,.56)],
-		[Vector3(.23,1.16,-.23),Vector3(.50,.48,.52)],
-		[Vector3(-.51,1.06,.05),Vector3(.43,.45,.44)],
-		[Vector3(.50,1.06,.13),Vector3(.44,.43,.43)],
-		[Vector3(-.36,1.22,-.38),Vector3(.35,.43,.36)],
-		[Vector3(.43,1.19,-.30),Vector3(.37,.40,.38)],
-		[Vector3(-.15,1.02,.50),Vector3(.40,.32,.39)],
-		[Vector3(.07,1.44,.10),Vector3(.35,.34,.35)],
+		[Vector3(0,1.21,.02),Vector3(.71,.70,.65)],
+		[Vector3(-.37,1.02,-.13),Vector3(.54,.46,.54)],
+		[Vector3(.35,1.01,.04),Vector3(.55,.46,.58)],
+		[Vector3(.01,1.055,-.34),Vector3(.44,.38,.43)],
 	]
 	var crown_parts:Array=[]
 	for i in crown.size():
 		var center:Vector3=crown[i][0]
 		var size:Vector3=crown[i][1]
-		var rotation:=Basis.from_euler(Vector3(.21*sin(i*1.9),i*1.031,.25*cos(i*2.7)))
+		var rotation:=Basis.from_euler(Vector3(.10*sin(i*1.9),i*.83,.10*cos(i*2.7)))
 		for part:Dictionary in leaf:
 			var box:AABB=part.mesh.get_aabb()
 			var basis:=rotation.scaled_local(size/box.size.max(Vector3.ONE*.0001))
 			var pose:=Transform3D(basis,center-basis*(box.position+box.size*.5))
-			var light:=clampf((center.y-.82)/.5,0.0,1.0)
-			var tint:=Color(.82+.20*light+.08*sin(i*2.1),.94+.08*light+.04*cos(i*1.7),.95+.04*sin(i*.6),1)
+			var tint:Color=[Color(1.04,1.04,1.0),Color(.90,.95,.92),Color(.95,.99,.94),Color(.86,.92,.90)][i]
 			crown_parts.append({"mesh":part.mesh,"pose":pose,"tint":tint})
 	tree.append_array(_join_crown(crown_parts))
 	assets.tree=tree
@@ -102,18 +93,11 @@ func _shrub_clusters(source:Array)->Array:
 	return result
 
 func _join_crown(parts:Array)->Array:
-	# Group indices describe the current single-surface oak assembly.
-	# Keep an unfamiliar source assembly intact rather than misindex it.
-	if parts.size()!=13:return parts
-	# Keep the outer side clusters and peak separate from the main masses.
-	# Joining those distant parts made long convex lobes; compact overlapping
-	# groups retain unequal crown clusters and expose the original fork shape.
-	var groups:Array=[[0],[1],[2],[3,9],[4],[5,11],[6,10],[7],[8],[12]]
+	# The current oak source has one active foliage surface per arranged mass.
+	# Preserve an unfamiliar source assembly rather than assume its indexing.
+	if parts.size()!=4:return parts
 	var result:Array=[]
-	for group:Array in groups:
-		var source_parts:Array=[]
-		for index:int in group:source_parts.append(parts[index])
-		result.append(_crown_hull(source_parts))
+	for part:Dictionary in parts:result.append(_crown_hull([part]))
 	return result
 
 func _crown_hull(parts:Array)->Dictionary:
@@ -177,12 +161,12 @@ func _crown_hull(parts:Array)->Dictionary:
 	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
 
 func _grass_clump_models()->Array:
-	# Retain the CC0 wispy blades, UVs and palette instead of broad plant fans.
-	# Normalize this single-part asset; existing support radii and poses remain.
-	var parts:=_grass_models("Grass_Wispy_Short")
+	# Reuse the retained broad common blades as a low compact accent. Fine
+	# wispy fans read as wiry noise at gameplay framing; source files stay intact.
+	var parts:=_grass_models("Grass_Common_Short")
 	for part:Dictionary in parts:
 		var box:AABB=part.pose*part.mesh.get_aabb()
-		var basis:=Basis.IDENTITY.scaled(Vector3(.85,.55,.75)/box.size.max(Vector3.ONE*.0001))
+		var basis:=Basis.IDENTITY.scaled(Vector3(.85,.32,.75)/box.size.max(Vector3.ONE*.0001))
 		var foot:=Vector3(box.position.x+box.size.x*.5,box.position.y,box.position.z+box.size.z*.5)
 		part.pose=Transform3D(basis,-(basis*foot))*part.pose
 		var material:ShaderMaterial=part.mesh.surface_get_material(0)

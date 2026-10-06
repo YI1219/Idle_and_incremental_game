@@ -37,6 +37,22 @@ func shared_broad_edges(field:Field)->Array:
 					worst=maxf(worst,distance)
 					if distance>.00001:misses+=1
 	return [total,misses,worst]
+func shared_mixed_edges(field:Field)->Array:
+	var total:=0
+	var misses:=0
+	var worst:=0.0
+	for key in field.narrow_points:
+		if not field.broad_edges.has(key):continue
+		var narrow:Array=field.narrow_points[key].duplicate()
+		narrow.sort_custom(func(a:Vector3,b:Vector3)->bool:return a.y>b.y)
+		for chain:PackedVector3Array in field.broad_edges[key]:
+			for point:Vector3 in chain:
+				if point.y<narrow[-1].y-.00001 or point.y>narrow[0].y+.00001:continue
+				var distance:=INF
+				for i in narrow.size()-1:distance=minf(distance,point.distance_to(Geometry3D.get_closest_point_to_segment(point,narrow[i],narrow[i+1])))
+				total+=1;worst=maxf(worst,distance)
+				if distance>.00001:misses+=1
+	return [total,misses,worst]
 func run()->void:
 	var total:=0
 	var separated:=0
@@ -77,5 +93,19 @@ func run()->void:
 		shared+=report[0]
 		gaps+=report[1]
 		max_gap=maxf(max_gap,report[2])
+	var irregular:=Data.new()
+	irregular.make_preset(0)
+	irregular.begin_stroke()
+	for spec in [[Vector2(-13,-3),1.9],[Vector2(12,4),2.0],[Vector2(-3,3),1.7]]:irregular.apply_brush(spec[0],spec[1],"contract",false,1.5,3)
+	irregular.apply_brush(Vector2(19,4),2.5,"expand",false,1.5,3)
+	irregular.end_stroke()
+	var irregular_field:=Field.new()
+	irregular_field.refresh(irregular)
+	var irregular_report:=shared_broad_edges(irregular_field)
+	shared+=irregular_report[0];gaps+=irregular_report[1];max_gap=maxf(max_gap,irregular_report[2])
+	print("IRREGULAR CLIFF EDGES: ",irregular_report)
+	var mixed_report:=shared_mixed_edges(irregular_field)
+	print("IRREGULAR BROAD/NARROW POLYLINES: ",mixed_report)
+	gaps+=mixed_report[1];max_gap=maxf(max_gap,mixed_report[2])
 	print("MULTI-ELEVATION CLIFF EDGES: ",shared," points; ",gaps," separated; max=",max_gap)
 	quit(0 if total>=50 and separated==0 and shared>=200 and gaps==0 else 1)

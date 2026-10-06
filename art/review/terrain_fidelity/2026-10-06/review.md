@@ -1,6 +1,6 @@
 # Floating-island look-development candidate — 2026-10-06
 
-**READY FOR ART REVIEW.** The retained candidate improves material continuity and shore treatment in the existing scene; it is not an exact replica or user-approved art. The native goal follows the user-supplied `FLOATING_ISLAND_LOOKDEV_BRIEF.md`. Original target: `art/source/visual_targets/2026-10-05/terrain_user_target.png`. No separate supplied night reference was found; night work is optional and deferred.
+**Historical submission: READY FOR ART REVIEW at 4d891bd. User review: NOT ACCEPTED — substantive visual rework required (2026-10-06).** The retained candidate improves material continuity and shore treatment in the existing scene; it is not an exact replica or user-approved art. The native goal follows the user-supplied `FLOATING_ISLAND_LOOKDEV_BRIEF.md`. Original target: `art/source/visual_targets/2026-10-05/terrain_user_target.png`. No separate supplied night reference was found; night work is optional and deferred.
 
 Terrain uses a sparse 2D height grid, not 3D voxels. Connected contours generate the surface and cliffs. [Tiny Glade](https://pouncelight.games/tiny-glade/) informs coherent procedural detail; its internal representation is not claimed. Seven runtime files change from `a41382f`: lake/fall/ground/cliff/sky materials, shore-field impact data and supported bank gaps. Geometry, layout, model sources, camera and unrelated systems retain baseline sources. Originals and eight unrelated local hashes are preserved; see [evidence](evidence.json).
 

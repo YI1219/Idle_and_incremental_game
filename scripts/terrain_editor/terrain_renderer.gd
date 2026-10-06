@@ -46,6 +46,9 @@ func configure(source:Data)->void:
 		var fall:=ShaderMaterial.new()
 		fall.shader=load("res://shaders/terrain_editor/waterfall.gdshader")
 		materials.waterfall=fall
+		var shore:=ShaderMaterial.new()
+		shore.shader=load("res://shaders/terrain_editor/shore.gdshader")
+		materials.shore=shore
 	for cell:Vector2i in data.cells:
 		for z in range(-1,2):
 			for x in range(-1,2):data.dirty_chunks[Data.chunk_of(cell+Vector2i(x,z))]=true
@@ -72,7 +75,7 @@ func flush_dirty(max_chunks:int=2)->int:
 		contours.refresh(_build_data)
 		_contour_revision=data.revision
 		_discard_pending()
-		_pending_shore=preload("res://scripts/terrain_editor/water_shore_field.gd").build(_build_data)
+		_pending_shore=preload("res://scripts/terrain_editor/water_shore_field.gd").build(_build_data,contours)
 		# Shared cap triangulation can cross distant chunks. Reconstruct the owning
 		# chunks under the ordinary two-chunk budget, including removed geometry.
 		# The triangle index avoids scanning the whole island per chunk.
@@ -93,7 +96,7 @@ func _rebuild(chunk:Vector2i)->void:
 	_pending_faces.erase(chunk)
 	_pending_bounds.erase(chunk)
 	var faces:=PackedVector3Array()
-	for kind in ["grass","cliff","water","waterfall"]:faces.append_array(geometry[kind].get_faces())
+	for kind in ["grass","cliff","water","waterfall","shore"]:faces.append_array(geometry[kind].get_faces())
 	if not faces.is_empty():
 		_pending_faces[chunk]=faces
 		var bounds:=AABB(faces[0],Vector3.ZERO)
