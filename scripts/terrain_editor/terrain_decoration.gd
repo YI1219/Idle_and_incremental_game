@@ -8,17 +8,27 @@ var model_library:=Models.new()
 var assets:Dictionary={}
 var contours:RefCounted
 var _vine_center:=Vector3.ZERO
+var _shrub_base:=PackedVector3Array()
 static func random_at(cell:Vector2i,seed_value:int,salt:int)->float:
 	var value:int=(cell.x*374761393+cell.y*668265263+seed_value*69069+salt*144269)&0x7fffffff
 	value=((value^(value>>13))*1274126177)&0x7fffffff
 	return float(value)/2147483647.0
 func load_assets()->void:
+	if not assets.is_empty():return
 	model_library.load_assets()
 	assets=model_library.assets
 	var vertices:PackedVector3Array=assets.vine[0].mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	_vine_center=Vector3.ZERO
 	for point:Vector3 in vertices:_vine_center+=point
 	_vine_center/=vertices.size()
+	var shrub:Mesh=assets.bush[0].mesh
+	var box:AABB=shrub.get_aabb()
+	var unique:Dictionary={}
+	_shrub_base.clear()
+	for point:Vector3 in shrub.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]:
+		if point.y<=box.position.y+box.size.y*.08 and not unique.has(point):
+			unique[point]=true
+			_shrub_base.append(point)
 func placements(data:Data,chunk:Vector2i)->Dictionary:
 	if assets.is_empty():load_assets()
 	var field=contours
@@ -45,7 +55,8 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					result.grass.append(_transform(origin+Vector3(offset.x,0,offset.y),angle+tuft*2.4,Vector3(.70,.20,.70)*(.85+random_at(cell,data.seed,120+tuft)*.45)))
 				if random_at(cell,data.seed,13)<.40:result.flower.append(_transform(origin,angle,Vector3.ONE*.9))
 			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.20:
-				result.bush.append(_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2)))
+				var pose:=_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2))
+				if _supported_shrub(field,pose,h):result.bush.append(pose)
 			if not house_clear and cluster>-.20 and random_at(cell,data.seed,141)<.13 and _stable(field,p,h,.52):
 				result.grass_clump.append(_transform(origin,angle,Vector3.ONE*(.85+random_at(cell,data.seed,142)*.25)))
 			if not house_clear and random_at(cell,data.seed,140)<.030 and _stable(field,p,h,.65):
@@ -137,6 +148,14 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	_path(result,field,chunk)
 	_fences(result,field,chunk)
 	return result
+func _supported_shrub(field,pose:Transform3D,height:float)->bool:
+	# Check the actual lower mesh vertices after yaw/scale. Four cardinal
+	# probes miss diagonal holes and narrow lips at pond/terrace boundaries.
+	for point:Vector3 in _shrub_base:
+		var world:Vector3=pose*point
+		var support:Dictionary=field.surface_at(Vector2(world.x,world.z))
+		if support.is_empty() or support.water>=0 or absf(support.height-height)>.01:return false
+	return not _shrub_base.is_empty()
 func _drape_vine(field,pose:Transform3D,out:Vector2)->Dictionary:
 	# The profile is continuous, but the visible cliff is its sampled triangle
 	# mesh. Fit the spray center and tangent frame to that actual surface.

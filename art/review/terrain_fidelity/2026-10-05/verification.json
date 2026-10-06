@@ -1,7 +1,49 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Oblique physical/material rock field and bounded actual-triangle hanging foliage fitting against31ea610. Current suite/render/preservation/review/oblique_rock_and_vine_support fields describe this round. Other named refinements and verification_sequence remain historical. Overall user acceptance pending.",
+  "scope": "Current six-part shrub assembly and actual lower-render-vertex support against9429d74; cached derived data. Current suite/render/preservation/review/shrub_cluster fields describe this round. Other refinements retain revision-specific historical status. Overall user acceptance pending.",
   "suite": [
+    {
+      "test": "terrain_shrub_support_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: shrubs=21 base_points=6636 unsupported=0\nraise: shrubs=19 base_points=6004 unsupported=0\nlower: shrubs=20 base_points=6320 unsupported=0\nexpand: shrubs=22 base_points=6952 unsupported=0\ncontract: shrubs=21 base_points=6636 unsupported=0\nSHRUB SUPPORT: 32548 actual base points; 0 unsupported; coverage=true\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_model_bounds_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN MODEL BOUNDS: 9/9 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_editor_decoration_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 89/89 passed\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_canopy_contact_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTUAL WOOD EXTREMUM (-0.434883, 0.867647, -0.146833) covered by leaf lobes [0]\nACTUAL WOOD EXTREMUM (0.377939, 0.877121, -0.110059) covered by leaf lobes [1]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (-0.036714, 0.885095, -0.047428) covered by leaf lobes [0, 2]\nTERRAIN CANOPY CONTACT: 5/5\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_crown_integrity_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":7,\"contained_source_entries\":9984,\"max_plane_violation\":-0.000000357627868652344,\"outward_surfaces\":7,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":9984,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":220,\"vertices\":112},{\"closed\":true,\"outward\":true,\"triangles\":226,\"vertices\":115},{\"closed\":true,\"outward\":true,\"triangles\":208,\"vertices\":106},{\"closed\":true,\"outward\":true,\"triangles\":228,\"vertices\":116},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":204,\"vertices\":104},{\"closed\":true,\"outward\":true,\"triangles\":216,\"vertices\":110}]}\nPUBLISHED CROWN MATCH: true, entries=4470, max_difference=0.0, different_entries=0\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
+    {
+      "test": "terrain_vine_contact_test.gd",
+      "exit": 0,
+      "ok": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":320,\"fixture\":\"default\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":328,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":343,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":350,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":351,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n",
+      "runner": "tests/run_preview.py --headless(fixed60Hz)"
+    },
     {
       "test": "terrain_contour_test.gd",
       "exit": 0,
@@ -59,13 +101,6 @@
       "runner": "tests/run_preview.py --headless(fixed60Hz)"
     },
     {
-      "test": "terrain_editor_decoration_test.gd",
-      "exit": 0,
-      "ok": true,
-      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 89/89 passed\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
-    },
-    {
       "test": "terrain_incremental_test.gd",
       "exit": 0,
       "ok": true,
@@ -84,13 +119,6 @@
       "exit": 0,
       "ok": true,
       "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CHECKS: 8/8 passed, failures=0\n",
-      "runner": "tests/run_preview.py --headless(fixed60Hz)"
-    },
-    {
-      "test": "terrain_vine_contact_test.gd",
-      "exit": 0,
-      "ok": true,
-      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":320,\"fixture\":\"default\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":328,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":343,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":350,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":351,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n",
       "runner": "tests/run_preview.py --headless(fixed60Hz)"
     }
   ],
@@ -112,49 +140,79 @@
       "contract": 16
     },
     "output": "Actual full scene, three details, four edits and editor UI",
-    "matched_baseline": "31ea610 *_before_oblique_rock.png full/three detail/four edit images"
+    "matched_baseline": "9429d74 *_before_shrub_cluster.png full/three detail/four edit images",
+    "final_cache_guard": "Final capture exits0 with same changed-cell counts; geometry/other placements exact in final probe."
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
-    "tracked_runtime_sources_assets": "Against31ea610 only contour_terrain.gd,terrain_decoration.gd,cliff.gdshader differ among compared tracked terrain-editor scripts/shaders/nature/cottage/resources excluding imports; original model/texture bytes retained. New test task-owned.",
+    "tracked_runtime_sources_assets": "Against9429d74 only terrain_models.gd and terrain_decoration.gd differ among compared tracked runtime resources excluding imports; original model/texture bytes preserved. New support test task-owned.",
     "component_probe": {
+      "exact_non_shrub_model_arrays": 60,
       "failures": 0,
       "reports": [
         {
-          "chunks_with_changed_vine_transforms": 15,
-          "exact_non_cliff_arrays": 12,
-          "exact_non_vine_chunk_kind_arrays": 228,
-          "fixture": "default"
+          "exact_non_shrub_chunk_kind_arrays": 228,
+          "fixture": "default",
+          "new_shrubs": 21,
+          "old_shrubs": 25
         },
         {
-          "chunks_with_changed_vine_transforms": 15,
-          "exact_non_cliff_arrays": 12,
-          "exact_non_vine_chunk_kind_arrays": 228,
-          "fixture": "raise"
+          "exact_non_shrub_chunk_kind_arrays": 228,
+          "fixture": "raise",
+          "new_shrubs": 19,
+          "old_shrubs": 25
         },
         {
-          "chunks_with_changed_vine_transforms": 16,
-          "exact_non_cliff_arrays": 12,
-          "exact_non_vine_chunk_kind_arrays": 228,
-          "fixture": "lower"
+          "exact_non_shrub_chunk_kind_arrays": 228,
+          "fixture": "lower",
+          "new_shrubs": 20,
+          "old_shrubs": 25
         },
         {
-          "chunks_with_changed_vine_transforms": 15,
-          "exact_non_cliff_arrays": 12,
-          "exact_non_vine_chunk_kind_arrays": 228,
-          "fixture": "expand"
+          "exact_non_shrub_chunk_kind_arrays": 228,
+          "fixture": "expand",
+          "new_shrubs": 22,
+          "old_shrubs": 26
         },
         {
-          "chunks_with_changed_vine_transforms": 15,
-          "exact_non_cliff_arrays": 12,
-          "exact_non_vine_chunk_kind_arrays": 228,
-          "fixture": "contract"
+          "exact_non_shrub_chunk_kind_arrays": 228,
+          "fixture": "contract",
+          "new_shrubs": 21,
+          "old_shrubs": 25
         }
       ],
-      "scope": "Actual source vertex/normal/color arrays and pose arrays for default/four capture fixtures; empty pose arrays included. Does not prove foliage contact or all published clipping/platforms."
+      "scope": "Actual source model arrays/part poses and all non-shrub chunk/kind poses across five capture layouts, empty arrays included. No other terrain sources changed; finite base support tested separately.",
+      "shrub": {
+        "after": {
+          "position": [
+            -0.555956125259399,
+            0.0,
+            -0.4410120844841
+          ],
+          "size": [
+            1.00866055488586,
+            0.601623773574829,
+            0.920332789421082
+          ],
+          "triangles": 1536
+        },
+        "before": {
+          "position": [
+            -0.305723935365677,
+            0.0,
+            -0.353818535804749
+          ],
+          "size": [
+            0.611447870731354,
+            0.733960568904877,
+            0.707637071609497
+          ],
+          "triangles": 256
+        }
+      }
     }
   },
-  "review": "Independent source/final full/details/four edit review supports modest oblique course alignment and fuller visible central/right vine growth. Initial forward-most wall selection Important issue corrected using closest-center rank plus.60bound; actual-plane regression added and strengthened to place both nearby planes inside bound. No remaining confirmed Critical/Important. Sparse repeated garlands/isolated tips,rounded walls/lower folds remain. No engine jobs/benchmark run by reviewer; no general wall ownership/wholeleaf contact/overall acceptance claim.",
+  "review": "Independent source/full/detail/four-edit review: retain; no confirmed Critical/Important. Lower unequal clusters closer to reference; some rounded-stone-like forms and wider foreground path overlap remain. Reviewer approves once-per-object asset/cache guard; final relevant checks and preservation probe pass after it. Reviewer ran no engine jobs or benchmark. No overall acceptance/whole-canopy support claim.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -1792,6 +1850,157 @@
         }
       },
       "review": "Independent source/final full/three detail/four edit review: no confirmed Critical/Important defect. Modest mixed gain worth retaining; fewer attached bumps and clearer main grouping, but elongated bean-shaped groups/broad faces remain. No obvious new detached branch/framing failure. Part-count assumption guarded after review, with unchanged integrity/contact results. Reviewer ran no engine jobs/benchmark; no overall acceptance."
+    },
+    "9429d74": {
+      "scope": "Oblique physical/material rock field and bounded actual-triangle hanging foliage fitting against31ea610. Current suite/render/preservation/review/oblique_rock_and_vine_support fields describe this round. Other named refinements and verification_sequence remain historical. Overall user acceptance pending.",
+      "suite": [
+        {
+          "test": "terrain_contour_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_shoreline_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_narrow_cliff_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 794 slices, 0 failures, smallest gap 0.0306\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_cliff_taper_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CLIFF TAPER: 2/2 passed, sampled 30 foot vertices, furthest 5.5244\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_boundary_wall_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOUNDARY WALL default: 0 missing\nBOUNDARY WALL raise: 0 missing\nBOUNDARY WALL lower: 0 missing\nBOUNDARY WALL expand: 0 missing\nBOUNDARY WALL contract: 0 missing\nTERRAIN BOUNDARY WALL: 416 samples, 0 failures\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_upper_rock_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 15 rays, 14 shoulders, 25 nearby join vertices, 0 failures\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RENDER: 339/339 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 89/89 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "camera_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CHECKS: 8/8 passed, failures=0\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        },
+        {
+          "test": "terrain_vine_contact_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":320,\"fixture\":\"default\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":328,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":343,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":350,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":351,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250013992190361,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n",
+          "runner": "tests/run_preview.py --headless(fixed60Hz)"
+        }
+      ],
+      "render_verification": {
+        "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
+        "backend": "Metal Forward+",
+        "exit": 0,
+        "edits_changed_cells": {
+          "raise": 16,
+          "lower": 12,
+          "expand": 14,
+          "contract": 16
+        },
+        "output": "Actual full scene, three details, four edits and editor UI",
+        "matched_baseline": "9429d74 *_before_shrub_cluster.png full/three detail/four edit images",
+        "final_cache_guard": "Final capture exits0 with same changed-cell counts; geometry/other placements exact in final probe."
+      },
+      "preservation": {
+        "unrelated_local_files_unchanged": 8,
+        "tracked_runtime_sources_assets": "Against31ea610 only contour_terrain.gd,terrain_decoration.gd,cliff.gdshader differ among compared tracked terrain-editor scripts/shaders/nature/cottage/resources excluding imports; original model/texture bytes retained. New test task-owned.",
+        "component_probe": {
+          "failures": 0,
+          "reports": [
+            {
+              "chunks_with_changed_vine_transforms": 15,
+              "exact_non_cliff_arrays": 12,
+              "exact_non_vine_chunk_kind_arrays": 228,
+              "fixture": "default"
+            },
+            {
+              "chunks_with_changed_vine_transforms": 15,
+              "exact_non_cliff_arrays": 12,
+              "exact_non_vine_chunk_kind_arrays": 228,
+              "fixture": "raise"
+            },
+            {
+              "chunks_with_changed_vine_transforms": 16,
+              "exact_non_cliff_arrays": 12,
+              "exact_non_vine_chunk_kind_arrays": 228,
+              "fixture": "lower"
+            },
+            {
+              "chunks_with_changed_vine_transforms": 15,
+              "exact_non_cliff_arrays": 12,
+              "exact_non_vine_chunk_kind_arrays": 228,
+              "fixture": "expand"
+            },
+            {
+              "chunks_with_changed_vine_transforms": 15,
+              "exact_non_cliff_arrays": 12,
+              "exact_non_vine_chunk_kind_arrays": 228,
+              "fixture": "contract"
+            }
+          ],
+          "scope": "Actual source vertex/normal/color arrays and pose arrays for default/four capture fixtures; empty pose arrays included. Does not prove foliage contact or all published clipping/platforms."
+        }
+      },
+      "review": "Independent source/final full/details/four edit review supports modest oblique course alignment and fuller visible central/right vine growth. Initial forward-most wall selection Important issue corrected using closest-center rank plus.60bound; actual-plane regression added and strengthened to place both nearby planes inside bound. No remaining confirmed Critical/Important. Sparse repeated garlands/isolated tips,rounded walls/lower folds remain. No engine jobs/benchmark run by reviewer; no general wall ownership/wholeleaf contact/overall acceptance claim."
     }
   },
   "limitations": "Overall user visual acceptance pending. Finite centroids/nearby planes do not prove full leaf contact,connected chains,visibility or arbitrary cliff ownership. Cliff coverage checks are finite ray/vertex samples,not watertightness. Actual stills do not prove temporal/platform behavior. Target laptops,larger maps,long idle and startup remain unmeasured.",
@@ -2760,6 +2969,38 @@
       "scope": "Mean actual transformed source vertices for seven blades per hanging spray; horizontal rays to actual source cliff triangles. Excludes horizontal rim sprays, continuous leaf geometry, visibility, intersections and arbitrary layouts. Gap is signed distance along spray outward axis; threshold .15 is diagnostic, not acceptance."
     },
     "api_reference": "https://docs.godotengine.org/en/stable/classes/class_geometry3d.html",
-    "limitations": "Centroids are mean duplicated render entries; proximity to any local triangle is not whole-leaf contact or wall ownership. Actual-plane test verifies closest-center selection in its finite fixture only. Render response is slower in separate samples; query cost not isolated."
+    "limitations": "Centroids are mean duplicated render entries; proximity to any local triangle is not whole-leaf contact or wall ownership. Actual-plane test verifies closest-center selection in its finite fixture only. Render response is slower in separate samples; query cost not isolated.",
+    "revision": "9429d74 historical; source retained, vine-contact script rerun this shrub pass"
+  },
+  "shrub_cluster": {
+    "baseline": "9429d74",
+    "parts": 6,
+    "small_scene": "shrub_pair.png",
+    "source": "retained Kenney CC0 oak leaf parts, runtime transforms/tints; originals unchanged",
+    "base_threshold": "lower8%of final actual vertex height, unique exact positions after merge; yaw/scale transformed support",
+    "regression": {
+      "before_exit": 1,
+      "before_points": 5544,
+      "before_unsupported": 92,
+      "after_exit": 0,
+      "after_points": 32548,
+      "after_unsupported": 0,
+      "plants_before": [
+        25,
+        25,
+        25,
+        26,
+        25
+      ],
+      "plants_after": [
+        21,
+        19,
+        20,
+        22,
+        21
+      ],
+      "coverage": "at least10shrubs/fixture and3basevertices; final test loads assets twice"
+    },
+    "limits": "Finite lower vertices and five capture layouts, not continuous footprint/every canopy point/general support. Shrub triangle count rises256to1536; separate timings slower than prior revision."
   }
 }

@@ -6,6 +6,7 @@ const IDS={"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_l
 func load_assets()->void:
 	if not assets.is_empty():return
 	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
+	assets.bush=_shrub_clusters(assets.bush)
 	assets.grass=_grass_models()
 	assets.grass_clump=_grass_clump_models()
 	var wood:Array=_load("tree_detailed","tree_wood")
@@ -71,6 +72,34 @@ func load_assets()->void:
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
 	assets.cliff_rock[0].mesh.surface_set_material(0,rock_material)
+
+func _shrub_clusters(source:Array)->Array:
+	# Assemble existing CC0 leaf parts into a low, unequal leafy group.
+	# Ground each transformed part using its actual vertices, not its AABB.
+	var clusters:Array=[
+		[Vector2(-.20,-.02),Vector3(.46,.46,.48)],
+		[Vector2(.20,.04),Vector3(.48,.40,.50)],
+		[Vector2(.00,-.08),Vector3(.42,.60,.42)],
+		[Vector2(-.40,.06),Vector3(.31,.27,.32)],
+		[Vector2(.02,.28),Vector3(.36,.28,.37)],
+		[Vector2(.02,-.27),Vector3(.32,.29,.34)],
+	]
+	var result:Array=[]
+	for i in clusters.size():
+		var center:Vector2=clusters[i][0]
+		var size:Vector3=clusters[i][1]
+		var rotation:=Basis.from_euler(Vector3(.12*sin(i*1.9),i*1.031,.16*cos(i*2.7)))
+		for part:Dictionary in source:
+			var box:AABB=part.mesh.get_aabb()
+			var basis:=rotation.scaled_local(size/box.size.max(Vector3.ONE*.0001))
+			var pose:=Transform3D(basis,Vector3(center.x,0,center.y)-basis*(box.position+box.size*.5))
+			var vertices:PackedVector3Array=part.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+			var lowest:=INF
+			for point:Vector3 in vertices:lowest=minf(lowest,(pose*point).y)
+			pose.origin.y-=lowest
+			var tint:=Color(.87+.09*sin(i*2.1),.94+.06*cos(i*1.7),.98,1)
+			result.append({"mesh":part.mesh,"pose":pose,"tint":tint})
+	return result
 
 func _join_crown(parts:Array)->Array:
 	# Group indices describe the current single-surface oak assembly.
