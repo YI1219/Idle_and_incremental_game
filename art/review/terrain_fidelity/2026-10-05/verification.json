@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Current crest/landing foam refinement against ee8a89f; current twenty-script suite, gallery, flow stills, preservation and review describe this round. Earlier refinements retain historical implementation scope. Overall user visual acceptance pending.",
+  "scope": "Current round evaluates and rejects two denser cliff sampling trials. No runtime change retained: exact4ae06da source and displayed gallery restored. Existing suite/motion/preservation results describe the retained4ae06da revision, not fresh full verification this round. Overall user acceptance pending.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
@@ -3972,6 +3972,79 @@
     "tests": "Twenty documented terrain scripts pass this foam round. Waterfall 35/35 covers mixed receiver joins, physical folds, raised/faded splash, published color gradients, reference clearance and the contracted mouth; it does not establish every new crest footprint or arbitrary outlet. Contours 1025/1025, shoreline 9/9, model bounds 9/9, broad facets 1381/1381 planar, interfaces 96/0 and multi-height 2004/0 separated, narrow 794 slices/zero failures, taper 2/2, boundary 416/zero missing, upper rock 15 rays/14 shoulders/25 joins, shrub support 32548 actual base points/zero unsupported, vine contact 1880 centroids/zero missing or gap over .10 (max .025002), crown ten closed/outward groups with 9984 contained and 5880 exact published entries, canopy contact 5/5, data 301/301, render 339/339, decoration 89/89, incremental 20/20, runtime 22/22 and camera 8/8 also pass. These finite checks do not establish arbitrary topology, every footprint, connected canopy union, whole-branch coverage or art acceptance. Grass/sky refinement evidence remains historical.",
     "review": "Independent final source/full/shoreline/four-edit review recommends retaining this bounded refinement and found no confirmed Critical/Important defect; it ran no engine jobs. Lower/wider foam reads as resting on the receiving pond, and the crest is less conspicuously outlined. Full/four-edit captures show no obvious new detached splash, gap or spill obstruction. Remaining gaps include a soft white landing patch with limited sharper splash tips/broken froth, straight crests and patterned curtains. Overall user visual acceptance is pending.",
     "motion": "Fresh 1672×940 actual Metal full/three-detail/four-edit captures exit cleanly, with matched ee8a89f baselines retained as *_before_flat_foam.png. Edits reset the default layout and change 16/12/14/16 cells. Five fresh flow stills at frames 0/15/30/45/60 show changing curtain highlights with continuous visible curtain/landing foam in those samples. They use a fixed 60Hz timestep and one default-layout camera; they do not prove smooth playback, arbitrary transparent sorting or frame pacing.",
-    "limits": "Finite default/four edit fixtures and one camera temporal stills. No proof of complete new footprints, arbitrary outlets/sorting, smooth playback, target hardware or final art acceptance."
+    "limits": "Finite default/four edit fixtures and one camera temporal stills. No proof of complete new footprints, arbitrary outlets/sorting, smooth playback, target hardware or final art acceptance.",
+    "status": "Retained4ae06da implementation and evidence; no change retained in current rejected cliff sampling investigation."
+  },
+  "suite_status": "Retained4ae06da twenty-script evidence; not rerun this investigation. See rejected_cliff_sampling for actual partial tests and captures from this round.",
+  "rejected_cliff_sampling": {
+    "baseline": "4ae06da",
+    "runtime_change_retained": false,
+    "source_restored_exact_sha256": "7a835d918f48af95ad2823b3bbaff4e5f7c9ba1b610facc1f58e89d390f1c1b5",
+    "capture_runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
+    "backend": "Godot4.7.2 Metal Forward+ Apple M4 Pro; fixed60Hz capture, not performance measurement",
+    "edits_changed_cells": {
+      "raise": 16,
+      "lower": 12,
+      "expand": 14,
+      "contract": 16
+    },
+    "dense_trial": {
+      "horizontal_maximum_before": 1.15,
+      "horizontal_maximum_trial": 0.7,
+      "terrace_join_horizontal": 0.65,
+      "vertical_before": "1.35±.24",
+      "vertical_trial": ".70±.10",
+      "capture_exit": 0,
+      "retained_images": [
+        "composition_wip_dense_rock_trial.png",
+        "detail_cliffs_dense_rock_trial.png",
+        "edit_raise_dense_rock_trial.png",
+        "edit_lower_dense_rock_trial.png",
+        "edit_expand_dense_rock_trial.png",
+        "edit_contract_dense_rock_trial.png"
+      ],
+      "observed_partial_test": {
+        "script": "terrain_broad_facet_test.gd",
+        "exit": 0,
+        "output": "BROAD CLIFF FACETS: 1041 large faces; 1041 planar normals"
+      },
+      "decision": "Rejected by root and independent reviewer: shorter triangles produce crumpled surface noise and continuous light/dark height bands, farther from substantial irregular reference masses."
+    },
+    "horizontal_only_trial": {
+      "horizontal_maximum_trial": 0.7,
+      "terrace_join_horizontal": 0.65,
+      "vertical": "restored1.35±.24",
+      "capture_exit": 0,
+      "retained_images": [
+        "composition_wip_horizontal_rock_trial.png",
+        "detail_cliffs_horizontal_rock_trial.png",
+        "detail_shoreline_horizontal_rock_trial.png",
+        "detail_vegetation_horizontal_rock_trial.png",
+        "edit_raise_horizontal_rock_trial.png",
+        "edit_lower_horizontal_rock_trial.png",
+        "edit_expand_horizontal_rock_trial.png",
+        "edit_contract_horizontal_rock_trial.png"
+      ],
+      "observed_partial_test": {
+        "script": "terrain_cliff_interface_test.gd",
+        "exit": 0,
+        "output": "CLIFF INTERFACES: 96 boundary points; 0 separated; max=0.0\nMULTI-ELEVATION CLIFF EDGES: 2004 points; 0 separated; max=0.0"
+      },
+      "decision": "Rejected by root and independent reviewer: calmer than dense trial but repeated narrow vertical prisms subdivide the wall without forming distinct substantial rock masses."
+    },
+    "review_scope": "Independent source/full/cliff/allfour edit review for each trial; no engine jobs by reviewer and no new confirmed Critical/Important correctness defect. Passing planar/interface subsets do not prove art fidelity or comprehensive clearance/support.",
+    "restored_current_gallery_sha256": {
+      "composition_wip": "d91c023cf5e815ffaaf3f8452e18a4a9f0ee0387ab242ad2b6d26f19351055f4",
+      "detail_cliffs": "209aa4e926ce392487eac68da1df4467793ccee14d5a01901d2d3f46fe3f8d56",
+      "detail_shoreline": "cb2605ab390ce17812282bd5d490eb77182711bdf2f7ada53e7e46141d99f388",
+      "detail_vegetation": "265ac795ad559042d369fb791ff824bb6e623f670f8ca943dd98830eaf8ab185",
+      "edit_raise": "5e4f0f891be5b8b672486afe65ef4ce9a203f7d2c498f73789c8e93945e920fc",
+      "edit_lower": "7030d72e9123875a9c2b0813e555d6e78c3b840b7b08a16f595c33d9976a8668",
+      "edit_expand": "2043bbf0fb5a1984b8e6285bbbb45074c73b63464c9a0d935328715179aa01ad",
+      "edit_contract": "c38cdb6d57ce2a53a4c9b562fb40697e1d82a92c9e21dd582941b6edc2380306"
+    },
+    "unrelated_local_files_unchanged": 8,
+    "verification_limits": "Neither trial received a complete twenty-script suite or benchmark because neither met the visual retention criterion. Restored runtime source and all eight displayed capture pairs are exact4ae06da. Its prior tests, motion stills and performance remain revision-scoped historical evidence; no fresh full verification is claimed this round.",
+    "next_direction": "Model fewer irregular substantial rock volumes within the authoritative cliff body; preserve cap/terrace boundaries, narrow-wall constraints, wet clearance and adaptive foliage. Do not repeat uniform sampling-density trials or add locked decorative cliffs."
   }
 }
