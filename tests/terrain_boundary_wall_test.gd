@@ -5,7 +5,7 @@ var samples:=0
 var failures:=0
 func _initialize()->void:call_deferred("run")
 func run()->void:
- # Every boundary of the lowest occupied level must own a deep cliff wall.
+ # Every boundary of the lowest occupied level must own a supporting wall.
  # Independently smoothed upper outlines can extend past this boundary;
  # querying them to decide whether a deep wall is exposed used to omit it.
  for operation in ["default","raise","lower","expand","contract"]:
@@ -21,7 +21,12 @@ func run()->void:
    for i in loop.size():
     var a:=loop[i];var b:=loop[(i+1)%loop.size()];var p:=(a+b)*.5
     var out:=Vector2(b.y-a.y,a.x-b.x).normalized()
-    var origin:=Vector3(p.x+out.x*3,-2,p.y+out.y*3)
+    # Probe halfway below the local supporting terrace. A fixed -2 world
+    # plane lies below the deliberately shortened shell in the homestead pass.
+    var profile:=field._cliff_profile(p,out)
+    field._outer_profile(p,out,profile)
+    var probe_y:float=lerpf(profile.top,field._shell_floor(p,profile.top),.5)
+    var origin:=Vector3(p.x+out.x*3,probe_y,p.y+out.y*3)
     var direction:=Vector3(-out.x,0,-out.y)
     var nearest:=INF
     for j in range(0,faces.size(),3):

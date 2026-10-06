@@ -1,0 +1,205 @@
+[
+  {
+    "test": "terrain_boundary_wall_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.99,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_broad_facet_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.25,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_canopy_contact_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.25,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_cliff_interface_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.56,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_cliff_taper_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.24,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_closed_flow_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.25,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_contour_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.44,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_cottage_material_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.77,
+    "renderer": "Metal Forward+"
+  },
+  {
+    "test": "terrain_crown_integrity_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.25,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_editor_data_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.14,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_editor_decoration_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.35,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_editor_render_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.34,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_editor_runtime_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 1.86,
+    "renderer": "Metal Forward+"
+  },
+  {
+    "test": "terrain_homestead_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.86,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_incremental_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 2.14,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_model_bounds_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.15,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_narrow_cliff_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.24,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_rework_shape_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.25,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_rock_transition_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.14,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_shell_floor_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.73,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_shore_transition_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.35,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_shoreline_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.45,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_shrub_support_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 1.05,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.15,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_turf_transition_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.35,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_upper_rock_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.35,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_vine_contact_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.96,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_water_impact_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 0.14,
+    "renderer": "headless logic/geometry"
+  },
+  {
+    "test": "terrain_waterfall_test.gd",
+    "passed": true,
+    "exit": 0,
+    "seconds": 1.44,
+    "renderer": "headless logic/geometry"
+  }
+]

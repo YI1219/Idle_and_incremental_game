@@ -38,33 +38,15 @@ void fragment() {
 	float body = flow_noise(flow*vec2(2.4,.65));
 	float lifetime = flow_noise(flow*vec2(3.1,1.8)+vec2(11.3,7.8));
 	float bend = flow_noise(flow*vec2(1.7,1.15)+vec2(29.1,3.2))-.5;
-	// Finite aerated seams move downward with broader flow pockets. Their
-	// similar horizontal/vertical scale avoids full-height parallel filaments.
-	vec2 foam_cell = vec2(flow.x*7.0+bend*.32,flow.y*3.0);
-	vec2 cell = floor(foam_cell);
-	vec2 f = fract(foam_cell);
-	float nearest = 10.0;
-	float second = 10.0;
-	float seed = 0.0;
-	for(int y=-1;y<=1;y++) for(int x=-1;x<=1;x++) {
-		vec2 offset = vec2(float(x),float(y));
-		vec2 anchor = vec2(hash_flow(cell+offset),hash_flow(cell+offset+vec2(17.2,43.8)));
-		vec2 delta = offset+.15+anchor*.70-f;
-		float distance = dot(delta,delta);
-		if(distance<nearest) {second=nearest; nearest=distance; seed=anchor.x;}
-		else if(distance<second) {second=distance;}
-	}
-	float line_width = max(.025,fwidth(second-nearest));
-	float seam = 1.0-smoothstep(.025,.025+line_width,second-nearest);
-	seam *= smoothstep(.46,.72,lifetime)*mix(.25,1.0,seed);
 	float receiver = COLOR.a<.5 ? COLOR.a : (COLOR.b<.001 ? COLOR.r : 0.0);
 	float landing = smoothstep(.52,1.0,receiver/.4);
 	float drop = COLOR.g*16.0;
 	float turn = smoothstep(.12,.65,drop);
-	float bubbles = (1.0-smoothstep(.04,.18,nearest))*smoothstep(.54,.82,seed)*smoothstep(.25,.65,lifetime);
-	float aeration = clamp(max(seam*mix(.18,.55,turn),bubbles*.55*turn)+landing*(.65+.35*body),0.0,1.0);
-	vec3 color = mix(vec3(.060,.42,.58),vec3(.14,.58,.69),body*.7);
-	color = mix(color,vec3(.86,.96,.97),aeration);
+	float strand = flow_noise(vec2(flow.x*7.0+bend*.40,flow.y*.65));
+	float streak = smoothstep(.48,.78,strand)*smoothstep(.24,.65,lifetime);
+	float aeration = clamp(streak*mix(.28,.80,turn)+landing*(.65+.35*body),0.0,1.0);
+	vec3 color = mix(vec3(.25,.40,.39),vec3(.39,.54,.51),body*.7);
+	color = mix(color,vec3(.78,.84,.79),aeration);
 	float side = 1.0;
 	if (COLOR.a<.5) {
 		float edge = min(COLOR.r,1.0-COLOR.r);
@@ -88,6 +70,6 @@ void fragment() {
 	// Restrained local fill approximates light scattered inside terminal froth.
 	EMISSION = vec3(.045,.065,.070)*aeration*landing;
 	ALPHA = opacity*side;
-	ROUGHNESS = .28;
-	SPECULAR = .30;
+	ROUGHNESS = .65;
+	SPECULAR = .10;
 }

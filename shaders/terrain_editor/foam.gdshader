@@ -11,7 +11,7 @@ void fragment(){
  float churn=noise(world_xz*7.0+vec2(TIME*.35,-TIME*.55));
  float patch=noise(world_xz*3.8+vec2(-TIME*.18,TIME*.26));
  float crest=1.0-COLOR.b;
- ALBEDO=mix(vec3(.60,.84,.87),vec3(.96,.985,.98),churn*.35+.65);
+ ALBEDO=mix(vec3(.45,.60,.58),vec3(.78,.82,.75),churn*.35+.65);
  // Broken low froth remains connected to the impact rather than a white pad.
  float froth=smoothstep(.28,.68,churn*.65+patch*.35);
  float broken=mix(.34+.60*froth,.97,smoothstep(.45,.85,COLOR.a));

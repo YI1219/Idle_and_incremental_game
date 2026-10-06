@@ -170,8 +170,8 @@ func _grass_clump_models()->Array:
 		var foot:=Vector3(box.position.x+box.size.x*.5,box.position.y,box.position.z+box.size.z*.5)
 		part.pose=Transform3D(basis,-(basis*foot))*part.pose
 		var material:ShaderMaterial=part.mesh.surface_get_material(0)
-		material.set_shader_parameter("dark_color",Vector3(.30,.43,.075))
-		material.set_shader_parameter("light_color",Vector3(.63,.74,.15))
+		material.set_shader_parameter("dark_color",Vector3(.15,.19,.10))
+		material.set_shader_parameter("light_color",Vector3(.35,.38,.22))
 	return parts
 
 func _grass_models(id:String="Grass_Common_Short")->Array:
@@ -220,15 +220,15 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			if kind=="tree_wood" and not name_value.contains("wood"):continue
 			if kind=="tree_leaf" and not name_value.contains("leaf"):continue
 			if kind in ["bush","vine"] and not name_value.contains("leaf"):continue
-			var tint:=Color("839b39")
-			if kind in ["tree_wood","fence"]:tint=Color("956844") if not name_value.contains("Dark") else Color("704d35")
-			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("b6b8b1")
-			elif kind=="tree_leaf":tint=Color("99b449")
-			elif kind=="bush":tint=Color("a4bb45")
-			elif kind=="vine":tint=Color("7d9b39")
-			elif kind=="grass" or kind=="reeds":tint=Color("b3c541")
-			elif kind=="lily":tint=Color("abc444")
-			elif kind=="flower":tint=Color("e4d46d") if name_value.contains("yellow") else Color("8d9d36")
+			var tint:=Color("728060")
+			if kind in ["tree_wood","fence"]:tint=Color("79634e") if not name_value.contains("Dark") else Color("615447")
+			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("a4a59a")
+			elif kind=="tree_leaf":tint=Color("728060")
+			elif kind=="bush":tint=Color("7c8868")
+			elif kind=="vine":tint=Color("68785c")
+			elif kind=="grass" or kind=="reeds":tint=Color("939b72")
+			elif kind=="lily":tint=Color("89956c")
+			elif kind=="flower":tint=Color("e2dcc1") if name_value.to_lower().contains("yellow") else Color("788665")
 			var arrays:Array=node.mesh.surface_get_arrays(surface)
 			var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
 			var indices:PackedInt32Array=arrays[Mesh.ARRAY_INDEX]

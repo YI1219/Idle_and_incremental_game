@@ -5,6 +5,9 @@ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
+@export var sunlight_energy := 0.95
+@export var ambient_energy := 0.52
+@export_range(0.0,1.0) var background_haze := 0.65
 var data:=Data.new()
 var renderer:=Renderer.new()
 var camera:=Camera.new()
@@ -38,12 +41,13 @@ func _ready()->void:
 	add_child(hud)
 func _setup_environment()->void:
 	var sun:=DirectionalLight3D.new()
-	sun.rotation_degrees=Vector3(-42,-48,0)
-	sun.light_color=Color("fff1d5")
-	sun.light_energy=1.28
+	sun.rotation_degrees=Vector3(-38,48,0)
+	sun.light_color=Color("fff1dd")
+	sun.light_energy=sunlight_energy
 	sun.shadow_enabled=true
 	sun.directional_shadow_max_distance=90
-	sun.light_angular_distance=2.0
+	sun.light_angular_distance=1.8
+	sun.shadow_opacity=.72
 	sun.directional_shadow_blend_splits=true
 	add_child(sun)
 	var env:=WorldEnvironment.new()
@@ -52,22 +56,22 @@ func _setup_environment()->void:
 	var sky:=Sky.new()
 	var sky_material:=ShaderMaterial.new()
 	sky_material.shader=load("res://shaders/terrain_editor/sky.gdshader")
-	# Derived mipmaps soften only the background; retain the original bitmap/import.
+	sky_material.set_shader_parameter("haze",background_haze)
 	var backdrop:Texture2D=load("res://assets/terrain_editor/cloud_backdrop_v01.png")
-	var backdrop_image:=backdrop.get_image()
-	if backdrop_image.generate_mipmaps()==OK:backdrop=ImageTexture.create_from_image(backdrop_image)
+	var bitmap:=backdrop.get_image()
+	if bitmap.generate_mipmaps()==OK:backdrop=ImageTexture.create_from_image(bitmap)
 	sky_material.set_shader_parameter("cloud_backdrop",backdrop)
 	sky.sky_material=sky_material
 	sky.process_mode=Sky.PROCESS_MODE_QUALITY
 	env.environment.sky=sky
 	env.environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-	env.environment.ambient_light_color=Color("cedfea")
-	env.environment.ambient_light_energy=0.32
+	env.environment.ambient_light_color=Color("cedada")
+	env.environment.ambient_light_energy=ambient_energy
 	env.environment.tonemap_mode=Environment.TONE_MAPPER_LINEAR
 	env.environment.ssao_enabled=true
 	env.environment.ssao_radius=.85
-	env.environment.ssao_intensity=.95
-	env.environment.ssao_power=1.2
+	env.environment.ssao_intensity=.65
+	env.environment.ssao_power=1.1
 	add_child(env)
 func _process(delta:float)->void:
 	renderer.flush_dirty(2)

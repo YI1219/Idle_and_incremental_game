@@ -4,6 +4,7 @@ const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
 const Geometry=preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours=preload("res://scripts/terrain_editor/contour_terrain.gd")
 const Models=preload("res://scripts/terrain_editor/terrain_models.gd")
+const COMMON_TREE_HEIGHT := 4.15
 var model_library:=Models.new()
 var assets:Dictionary={}
 var contours:RefCounted
@@ -45,7 +46,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var origin:=Vector3(p.x,h,p.y)
 			var angle:=random_at(cell,data.seed,1)*TAU
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
-			var house_clear:=p.distance_to(Vector2(-11,-7))<3.4
+			var house_clear:=_near_path(p) or p.distance_to(Vector2(-11,-7))<2.4 or (p.x> -10.5 and p.x< -6.9 and p.y> -6.1 and p.y< -3.1)
 			if not house_clear and cluster>.12 and random_at(cell,data.seed,4)<.38:
 				for tuft in 1:
 					var offset:=Vector2(random_at(cell,data.seed,110+tuft*2)-.5,random_at(cell,data.seed,111+tuft*2)-.5)*.75
@@ -63,13 +64,15 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				result.grass_clump.append(_transform(origin,angle,Vector3(1.10,1.18,1.05)))
 			if not house_clear and random_at(cell,data.seed,7)<.018:result.surface_rock.append(_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7))
 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
-	for spec in [[Vector2(-16,-3),Vector3.ONE*3.5],[Vector2(-5,-8),Vector3(1.70,1.85,1.70)],[Vector2(6.3,-3.3),Vector3(2.35,2.45,2.25)],[Vector2(15.6,2),Vector3(2.70,2.90,2.60)]]:
+	for spec in [[Vector2(-16,-3),Vector3(1.05,1.02,1.0)],[Vector2(-5,-8),Vector3(.96,.98,1.04)],[Vector2(6.3,-3.3),Vector3(1.0,1.0,.97)],[Vector2(15.6,2),Vector3(1.03,1.01,.96)]]:
 		var p:Vector2=spec[0]
 		if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
 		var sample:Dictionary=field.surface_at(p)
 		if sample.is_empty() or sample.water>=0:continue
 		if not _stable(field,p,float(sample.height),.6):continue
-		result.tree.append(_transform(Vector3(p.x,sample.height,p.y),p.x*.13,spec[1]))
+		var box:AABB=assets.tree[0].mesh.get_aabb()
+		var size:Vector3=spec[1]*(COMMON_TREE_HEIGHT/box.size.y)
+		result.tree.append(_transform(Vector3(p.x,sample.height-box.position.y*size.y,p.y),p.x*.13,size))
 	var foliage_anchors:Dictionary={}
 	for h:float in field.land_regions:
 		for loop:PackedVector2Array in field.land_regions[h]:
@@ -155,8 +158,8 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*2.2))
 						continue
 					var turn:float=(random_at(cell,data.seed,1000+block)-.5)*.40
-					var width:float=.82+random_at(cell,data.seed,1020+block)*.35
-					var rise:float=1.45+random_at(cell,data.seed,1040+block)*.60
+					var width:float=.68+random_at(cell,data.seed,1020+block)*.58
+					var rise:float=1.15+random_at(cell,data.seed,1040+block)*.95
 					var depth:float=.64+random_at(cell,data.seed,1060+block)*.20
 					result.shore_rock.append(_transform(Vector3(bank.x,level*.5-.07,bank.y),-angle+turn,Vector3(width,rise,depth)))
 				var cell:=Vector2i(p.floor())
@@ -165,6 +168,14 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				var wet:Dictionary=field.surface_at(lily)
 				if not wet.is_empty() and wet.water==level and random_at(cell,data.seed,96)<.22:result.lily.append(_transform(Vector3(lily.x,level*.5+.06,lily.y),angle,Vector3.ONE*1.2))
 	_path(result,field,chunk)
+	# Three small pale flower groups at path margins, with open ground between.
+	for at:Vector2 in [Vector2(-12.8,-2.9),Vector2(-12.7,1.6),Vector2(-9.4,4.5)]:
+		for j in 3:
+			var point:=at+Vector2(sin(j*2.4),cos(j*2.4))*.20
+			if Data.chunk_of(Vector2i(point.floor()))!=chunk:continue
+			var support:Dictionary=field.surface_at(point)
+			if support.is_empty() or support.water>=0 or not _stable(field,point,support.height,.16):continue
+			result.flower.append(_transform(Vector3(point.x,support.height,point.y),j*1.7,Vector3.ONE*(1.1+j*.13)))
 	_fences(result,field,chunk)
 	return result
 func _supported_shrub(field,pose:Transform3D,height:float)->bool:
@@ -216,8 +227,15 @@ func _stable(field,p:Vector2,h:float,radius:float)->bool:
 		var sample:Dictionary=field.surface_at(p+Vector2(side)*radius)
 		if sample.is_empty() or sample.water>=0 or absf(sample.height-h)>.01:return false
 	return true
+func _path_points()->Array:
+	return [Vector2(-11,-7+2.24*.82*preload("res://scripts/terrain_editor/terrain_props.gd").COTTAGE_SCALE),Vector2(-12,-3),Vector2(-13,0),Vector2(-11,3),Vector2(-7,5)]
+func _near_path(p:Vector2)->bool:
+	var points:=_path_points()
+	for i in points.size()-1:
+		if p.distance_to(Geometry2D.get_closest_point_to_segment(p,points[i],points[i+1]))<.75:return true
+	return false
 func _path(result:Dictionary,field,chunk:Vector2i)->void:
-	var points:=[Vector2(-11,-5),Vector2(-12,-3),Vector2(-13,0),Vector2(-11,3),Vector2(-7,5)]
+	var points:=_path_points()
 	for i in points.size()-1:
 		var a:Vector2=points[i]
 		var b:Vector2=points[i+1]

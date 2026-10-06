@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "land_palette.gdshaderinc"
 render_mode cull_disabled;
 #include "cliff_palette.gdshaderinc"
 varying vec3 world_position;
@@ -32,7 +33,7 @@ void fragment(){
 	float fringe=.5+.5*sin(world_position.x*9.3+world_position.z*7.1);
 	float turf=smoothstep(.80+fringe*.09,.96,COLOR.a)*smoothstep(.05,.55,patch);
 	float lawn=sin(world_position.x*.51+world_position.z*.22)*sin(world_position.z*.47-world_position.x*.18)*.5+.5;
-	vec3 grass=mix(vec3(.23,.37,.045),vec3(.45,.57,.12),lawn);
+	vec3 grass=mix(grass_base,grass_highlight,lawn);
 	ALBEDO=mix(gray,grass,turf);
 	ROUGHNESS=.96;
 	SPECULAR=.15;

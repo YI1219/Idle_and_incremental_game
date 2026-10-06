@@ -4,6 +4,8 @@ extends RefCounted
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Legacy = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const BOTTOM := -4.5
+# Only the shell below its local supporting terrace is shortened.
+const UNDERSIDE_THICKNESS := 0.60
 var land_regions:Dictionary={}
 var water_regions:Dictionary={}
 var levels:Array=[]
@@ -302,7 +304,7 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 		# protruding shoulders; inland and dry cliff masses keep their full relief.
 		var water_y:float=profile.water*.5+.045
 		var stream:=_fall_point(p,normal,water_y,point.y)
-		var clearance:float=.65*clampf((water_y-point.y)*2.0,0.0,1.0)
+		var clearance:float=(.80 if profile.base else .65)*clampf((water_y-point.y)*2.0,0.0,1.0)
 		var excess:float=(Vector2(point.x-stream.x,point.z-stream.z)).dot(normal)+clearance
 		if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess
 	return point
@@ -311,7 +313,8 @@ static func _shell_floor(p:Vector2,top:float)->float:
 	# Unequal shallow feet, continuous at shared columns; minimum-height land
 	# retains its half-unit supporting body without changing legal data.
 	var variation:float=.18*sin(p.x*.43+p.y*.31)+.09*sin(p.x*.87-p.y*.57)
-	return minf(-2.8,top-.5)+variation*clampf((top+4.0)/4.0,0,1)
+	var original_floor:=minf(-2.8,top-.5)+variation*clampf((top+4.0)/4.0,0,1)
+	return top-maxf(.5,(top-original_floor)*UNDERSIDE_THICKNESS)
 
 func _outer_profile(p:Vector2,normal:Vector2,profile:Dictionary)->void:
 	# Membership of the outer contour owns the supporting shell. A near-corner
