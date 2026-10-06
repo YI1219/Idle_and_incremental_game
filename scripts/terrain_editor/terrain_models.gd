@@ -18,10 +18,10 @@ func load_assets()->void:
 	# raised crown, unequal lower fork masses and a small rear support.
 	# Their lower edges expose branch space rather than filling every shoulder.
 	var crown:Array=[
-		[Vector3(0,1.21,.02),Vector3(.71,.70,.65)],
-		[Vector3(-.37,1.02,-.13),Vector3(.54,.46,.54)],
-		[Vector3(.35,1.01,.04),Vector3(.55,.46,.58)],
-		[Vector3(.01,1.055,-.34),Vector3(.44,.38,.43)],
+		[Vector3(-.085,1.12,.035),Vector3(.85,.60,.64)],
+		[Vector3(-.39,1.02,-.14),Vector3(.52,.38,.52)],
+		[Vector3(.35,1.005,.075),Vector3(.50,.39,.48)],
+		[Vector3(.045,1.025,-.345),Vector3(.35,.38,.38)],
 	]
 	var crown_parts:Array=[]
 	for i in crown.size():

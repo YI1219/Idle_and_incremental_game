@@ -12,20 +12,22 @@ var source:Data
 var triangle_chunks:Dictionary={}
 var _profiles:Dictionary={}
 var _rock_relief_cache:Dictionary={}
-var _mass_site_cache:Dictionary={}
+var _volume_site_cache:Dictionary={}
 var _land_winding_signs:Dictionary={}
 var _broad_faces:=PackedInt32Array()
 var _cliff_bands:Dictionary={}
 var _chain_constraints:Dictionary={}
+var _cliff_turf:Dictionary={}
 
 func refresh(data:Data)->void:
 	source=data
 	_chain_constraints.clear()
+	_cliff_turf.clear()
 	_cliff_bands.clear()
 	_broad_faces.clear()
 	_profiles.clear()
 	_rock_relief_cache.clear()
-	_mass_site_cache.clear()
+	_volume_site_cache.clear()
 	_land_winding_signs.clear()
 	land_regions.clear()
 	water_regions.clear()
@@ -77,18 +79,7 @@ func refresh(data:Data)->void:
 			_shores(loop,level*.5)
 			_falls(loop,level*.5+.045)
 	_smooth_normals(surfaces.cliff)
-	for i:int in _broad_faces:
-		var a:Vector3=surfaces.cliff.vertices[i]
-		var b:Vector3=surfaces.cliff.vertices[i+1]
-		var c:Vector3=surfaces.cliff.vertices[i+2]
-		var normal:=-(b-a).cross(c-a).normalized()
-		# Preserve pronounced plane breaks, while adjacent shallow triangles
-		# share their true averaged normals instead of each reading as a rock.
-		var crease:=false
-		for j in 3:
-			if normal.dot(surfaces.cliff.normals[i+j])<.75:crease=true
-		if crease:
-			for j in 3:surfaces.cliff.normals[i+j]=normal
+	_rock_plane_normals()
 	_smooth_normals(surfaces.shore)
 	_smooth_normals(surfaces.bank)
 	_smooth_normals(surfaces.waterfall)
@@ -427,7 +418,7 @@ func _rock_chain(p:Vector2,normal:Vector2,profile:Dictionary,top:float,bottom:fl
 		for step in range(floori(bottom*2)+1,ceili(top*2)):
 			var height:float=step*.5
 			if height>bottom and height<top and not heights.has(height):heights.append(height)
-	else:
+	elif not (not profile.base or profile.inset>1.0):
 		# This world-anchored sample set is canonical for the column. Only
 		# clip to the requested interval: an end buffer would drop a row on a
 		# split neighbor while retaining it on a merged neighbor's same edge.
@@ -437,7 +428,12 @@ func _rock_chain(p:Vector2,normal:Vector2,profile:Dictionary,top:float,bottom:fl
 	heights.sort()
 	heights.reverse()
 	var result:=PackedVector3Array()
-	for height:float in heights:result.append(_profile_point(p,height,normal,profile))
+	var land:=surface_at(p-normal*.25)
+	var dry:bool=not land.is_empty() and land.water<0
+	for height:float in heights:
+		var point:=_profile_point(p,height,normal,profile)
+		result.append(point)
+		_cliff_turf[point]=clampf(1.0-(profile.rock_top-height)/.5,0,1) if dry else 0.0
 	return result
 
 func _join_rock_chains(left:PackedVector3Array,right:PackedVector3Array)->void:
@@ -445,13 +441,16 @@ func _join_rock_chains(left:PackedVector3Array,right:PackedVector3Array)->void:
 	var b:=0
 	while a<left.size()-1 or b<right.size()-1:
 		var start:int=surfaces.cliff.vertices.size()
-		if b==right.size()-1 or (a<left.size()-1 and left[a+1].y>=right[b+1].y):
+		# Shorter diagonals avoid thin folds when adjacent feature heights differ.
+		if b==right.size()-1 or (a<left.size()-1 and left[a+1].distance_squared_to(right[b])<=right[b+1].distance_squared_to(left[a])):
 			surfaces.cliff.triangle(left[a],left[a+1],right[b],Color("a8aba8"))
 			a+=1
 		else:
 			surfaces.cliff.triangle(left[a],right[b+1],right[b],Color("a8aba8"))
 			b+=1
-		if surfaces.cliff.vertices.size()==start+3:_broad_faces.append(start)
+		if surfaces.cliff.vertices.size()==start+3:
+			_broad_faces.append(start)
+			for index in range(start,start+3):surfaces.cliff.colors[index].a=_cliff_turf.get(surfaces.cliff.vertices[index],0.0)
 
 func _cliff_span(a:Vector2,b:Vector2,normal_a:Vector2,normal_b:Vector2,profile_a:Dictionary,profile_b:Dictionary,top:float,bottom:float)->void:
 	# Keep the authoritative cap contour, but resolve rock shoulders within
@@ -470,7 +469,7 @@ func _cliff_span(a:Vector2,b:Vector2,normal_a:Vector2,normal_b:Vector2,profile_a
 		var q:=_profile_point(right,top,right_normal,right_profile)
 		var r:=_profile_point(right,bottom,right_normal,right_profile)
 		var s:=_profile_point(left,bottom,left_normal,left_profile)
-		surfaces.cliff.quad(p,s,r,q,Color("a8aba8"))
+		surfaces.cliff.quad(p,s,r,q,Color("a8aba800"))
 		left=right
 		left_normal=right_normal
 		left_profile=right_profile
@@ -491,6 +490,7 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	# Thickness-limited profiles preserve their proven narrow shell.
 	var broad:float=smoothstep(.35,.85,inset_limit)
 	var retreat:float=lerpf(pow(f,1.5),.12*smoothstep(.18,.40,f)+.26*smoothstep(.68,.92,f),broad)
+	retreat=lerpf(retreat,.38*f,broad)
 	var inset:=normal*(inset_limit*retreat if base else 0.0)
 	var width_weight:=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
 	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,0.0,width_weight)*sin(PI*f)
@@ -506,6 +506,8 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	if base:
 		var shoulder:=smoothstep(0.0,.14,shoulder_f)*(.95-.55*smoothstep(.66,1.0,shoulder_f))
 		envelope=lerpf(envelope*lerpf(1.0,.25,smoothstep(.55,.95,shoulder_f)),shoulder,smoothstep(.8,1.2,inset_limit))
+	var volume_envelope:=minf(1.0,shoulder_f*7.0)*(.98-.36*maxf(0,(shoulder_f-.65)/.35))
+	envelope=lerpf(envelope,volume_envelope,smoothstep(.8,1.2,inset_limit) if base else 1.0)
 	var ledge:=rounded_relief*envelope*relief*width_weight*lerpf(1.0,1.30,smoothstep(.8,1.2,inset_limit))
 	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
 
@@ -529,54 +531,64 @@ static func _rock_relief(point:Vector3)->float:
 				nearest=minf(nearest,distance)
 	return .75*clampf((.76-nearest)/.55,0.0,1.0)-.10
 
-static func _mass_sites(p:Vector2,layer:int)->Array:
-	# Sparse, unequal beveled slabs form real shoulders and intervening recesses.
-	# World anchors stay stable through edits; height breaks are shared by every
-	# contour column touching a slab, rather than arbitrary triangle color.
-	var cell:Vector2i=Vector2i((p/3.6).floor())
-	var result:Array=[]
-	for z in range(-1,2):
-		for x in range(-1,2):
-			var key:=Vector3(cell.x+x,layer,cell.y+z)
-			var shape:=_rock_hash(key+Vector3.ONE*11.0)
-			var center:Vector2=(Vector2(key.x,key.z)+Vector2(.20,.20)+Vector2(shape.x,shape.z)*.60)*3.6
-			var delta:Vector2=(p-center)/3.6
-			var angle:float=(shape.z-.5)*.8
-			var rotated:=Vector2(delta.x*cos(angle)-delta.y*sin(angle),delta.x*sin(angle)+delta.y*cos(angle))
-			var axes:Vector2=rotated.abs()/Vector2(.85+shape.x*.25,.85+shape.z*.25)
-			var distance:=maxf(maxf(axes.x,axes.y),(axes.x+axes.y)*.68)
-			var weight:=clampf((.72-distance)/.32,0,1)
-			if weight>0:result.append({"weight":weight,"phase":(shape.y-.5)*1.8+(p.x-center.x)*(shape.x-.5)*.18+(p.y-center.y)*(shape.z-.5)*.18,"reach":.85+shape.x*.50})
-	return result
-
-func _cached_mass_sites(p:Vector2,layer:int)->Array:
-	var key:=Vector3(p.x,layer,p.y)
-	if not _mass_site_cache.has(key):_mass_site_cache[key]=_mass_sites(p,layer)
-	return _mass_site_cache[key]
-
 func _mass_rock_relief(point:Vector3)->float:
-	var relief:=0.0
-	var row:=floori(point.y/2.4)
-	for layer in range(row-2,row+3):
-		for site:Dictionary in _cached_mass_sites(Vector2(point.x,point.z),layer):
-			var center:float=layer*2.4+site.phase
-			var vertical:=clampf((site.reach-absf(point.y-center))/.35,0,1)
-			relief=maxf(relief,minf(site.weight,vertical))
-	return -.12+.94*relief
+	return _volume_relief(point)
+
+func _volume_relief(point:Vector3)->float:
+	# Unequal three-dimensional cells cut obliquely through the wall. A mass
+	# can cross old course heights; no layer of aligned slab centers remains.
+	var frame:=Vector3(point.x,point.y+point.x*.37+point.z*.29,point.z)/Vector3(2.9,3.4,2.9)
+	var cell:=frame.floor()
+	if not _volume_site_cache.has(cell):
+		var sites:Array[Vector3]=[]
+		for z in range(-1,2):
+			for y in range(-1,2):
+				for x in range(-1,2):
+					var key:=cell+Vector3(x,y,z)
+					var hash:=_rock_hash(key+Vector3(31,7,19))
+					sites.append(key);sites.append(hash)
+					sites.append(Vector3(.78+hash.y*.36,.85+hash.z*.40,.78+hash.x*.36))
+		_volume_site_cache[cell]=sites
+	# Cache only invariant site data; preserve the original arithmetic order
+	# so edits and regeneration publish byte-identical mesh attributes.
+	var sites:Array[Vector3]=_volume_site_cache[cell]
+	var nearest:=10.0
+	for i in range(0,sites.size(),3):
+		var delta:Vector3=(frame-sites[i]-Vector3.ONE*.1-sites[i+1]*.8).abs()
+		delta/=sites[i+2]
+		var distance:=maxf(maxf(delta.x,delta.y),maxf(delta.z,(delta.x+delta.y+delta.z)*.54))
+		nearest=minf(nearest,distance)
+	return .98*clampf((.60-nearest)/.30,0,1)-.15
 
 func _mass_rock_rows(p:Vector2,profile:Dictionary)->Array[float]:
+	# Resolve actual changes in the column profile, rather than every candidate
+	# slab bevel. These canonical points are independent of the requested band.
+	var heights:Array[float]=[profile.bottom]
+	for i in range(floori(profile.bottom*4)+1,ceili(profile.rock_top*4)):
+		heights.append(i*.25)
+	heights.append(profile.rock_top)
+	var points:=PackedVector3Array()
+	for y:float in heights:points.append(_profile_point(p,y,Vector2.RIGHT,profile))
+	var keep:Dictionary={0:true,heights.size()-1:true}
+	_reduce_column(points,0,points.size()-1,keep)
 	var rows:Array[float]=[]
-	var floor_y:float=_shell_floor(p,profile.top) if profile.base else profile.bottom
-	for layer in range(floori(floor_y/2.4)-2,ceili(profile.rock_top/2.4)+2):
-		for site:Dictionary in _cached_mass_sites(p,layer):
-			if site.weight<.45:continue
-			var center:float=layer*2.4+site.phase
-			for offset:float in [-site.reach,-site.reach+.35,site.reach-.35,site.reach]:
-				var y:float=center+offset
-				if y<=floor_y or y>=profile.rock_top:continue
-				if profile.base and y<profile.top:y=profile.top+(y-profile.top)*(profile.top-profile.bottom)/maxf(.001,profile.top-floor_y)
-				if not rows.has(y):rows.append(y)
+	for index:int in keep:rows.append(heights[index])
 	return rows
+
+static func _reduce_column(points:PackedVector3Array,first:int,last:int,keep:Dictionary)->void:
+	if last-first<2:return
+	var worst:=0.0
+	var selected:=-1
+	for i in range(first+1,last):
+		var error:float=points[i].distance_to(Geometry3D.get_closest_point_to_segment(points[i],points[first],points[last]))
+		if error>worst:worst=error;selected=i
+	if worst<.045:
+		if points[first].distance_to(points[last])<1.35:return
+		selected=(first+last)/2
+	if selected<=first or selected>=last:return
+	keep[selected]=true
+	_reduce_column(points,first,selected,keep)
+	_reduce_column(points,selected,last,keep)
 
 static func _rock_hash(point:Vector3)->Vector3:
 	var q:=point*Vector3(.123,.117,.139)
@@ -585,40 +597,48 @@ static func _rock_hash(point:Vector3)->Vector3:
 	var value:=Vector3((q.x+q.y)*q.z,(q.y+q.z)*q.x,(q.z+q.x)*q.y)
 	return value-value.floor()
 
+static func shore_weight(p:Vector2,height:float)->float:
+	return smoothstep(.05,.65,sin(p.x*.38+cos(p.y*.31)*1.3+height*1.40))
+
+func shore_support(p:Vector2,out:Vector2,height:float,width:float)->bool:
+	for point in [p+out*width,p+out*.20]:
+		var sample:=surface_at(point)
+		if sample.is_empty() or sample.water>=0 or absf(sample.height-height)>.01:return false
+	var wet:=surface_at(p-out*.30)
+	return not wet.is_empty() and wet.water>=0 and absf(wet.height-height)<.01
+
 func _shores(loop:PackedVector2Array,height:float)->void:
-	# Supported gentle stretches become graded earth/stone shelves, not empty
-	# gaps in a decorative stone ring. The shelf belongs to terrain publication.
+	# Selected contiguous banks taper into the terrain. Shared corner normals
+	# and a grass-colored outer feather remove isolated khaki strip ends.
 	for i in loop.size():
 		var a:=loop[i];var b:=loop[(i+1)%loop.size()]
-		var edge:=b-a
-		var out:=Vector2(edge.y,-edge.x).normalized()
-		var previous:=loop[(i-1+loop.size())%loop.size()]
-		var bend:=1.0-edge.normalized().dot((a-previous).normalized())
-		var midpoint:=(a+b)*.5
-		var gap:=sin(midpoint.x*.38+cos(midpoint.y*.31)*1.3+height*1.40)
-		if gap<.35 or bend>.08:continue
-		var columns:=maxi(1,ceili(edge.length()/.45))
+		var before:=loop[(i-1+loop.size())%loop.size()]
+		var after:=loop[(i+2)%loop.size()]
+		var na:=Vector2(b.y-before.y,before.x-b.x).normalized()
+		var nb:=Vector2(after.y-a.y,a.x-after.x).normalized()
+		var columns:=maxi(1,ceili(a.distance_to(b)/.45))
 		for column in columns:
-			var p:=a.lerp(b,float(column)/columns)
-			var q:=a.lerp(b,float(column+1)/columns)
-			var width_p:=.75+.25*sin(p.x*.61+p.y*.43)
-			var width_q:=.75+.25*sin(q.x*.61+q.y*.43)
-			var supported:=true
-			for point in [p+out*width_p,q+out*width_q,(p+q)*.5+out*.60]:
-				var sample:=surface_at(point)
-				if sample.is_empty() or sample.water>=0 or absf(sample.height-height)>.01:supported=false
-			for point in [p-out*.30,q-out*.30]:
-				var sample:=surface_at(point)
-				if sample.is_empty() or sample.water<0 or absf(sample.height-height)>.01:supported=false
-			if not supported:continue
-			var outer_p:=Vector3(p.x+out.x*width_p,height+.004,p.y+out.y*width_p)
-			var outer_q:=Vector3(q.x+out.x*width_q,height+.004,q.y+out.y*width_q)
-			var rim_p:=Vector3(p.x+out.x*.025,height+.14,p.y+out.y*.025)
-			var rim_q:=Vector3(q.x+out.x*.025,height+.14,q.y+out.y*.025)
-			var inner_p:=Vector3(p.x-out.x*.30,height-.16,p.y-out.y*.30)
-			var inner_q:=Vector3(q.x-out.x*.30,height-.16,q.y-out.y*.30)
-			surfaces.shore.quad(outer_p,outer_q,rim_q,rim_p,Color(.44,.42,.27),true)
-			surfaces.shore.quad(rim_p,rim_q,inner_q,inner_p,Color(.55,.52,.36),true)
+			var t:float=float(column)/columns
+			var u:float=float(column+1)/columns
+			var p:=a.lerp(b,t);var q:=a.lerp(b,u)
+			var np:=na.lerp(nb,t).normalized();var nq:=na.lerp(nb,u).normalized()
+			var wp:=shore_weight(p,height);var wq:=shore_weight(q,height)
+			if maxf(wp,wq)<.02:continue
+			var width_p:float=(.55+.18*sin(p.x*.61+p.y*.43))*wp+.04
+			var width_q:float=(.55+.18*sin(q.x*.61+q.y*.43))*wq+.04
+			if not shore_support(p,np,height,width_p) or not shore_support(q,nq,height,width_q):continue
+			var outer_p:=Vector3(p.x+np.x*width_p,height+.007,p.y+np.y*width_p)
+			var outer_q:=Vector3(q.x+nq.x*width_q,height+.007,q.y+nq.y*width_q)
+			var rim_p:=Vector3(p.x+np.x*.025,height+.09*wp,p.y+np.y*.025)
+			var rim_q:=Vector3(q.x+nq.x*.025,height+.09*wq,q.y+nq.y*.025)
+			var inner_p:=Vector3(p.x-np.x*.30,height-.16,p.y-np.y*.30)
+			var inner_q:=Vector3(q.x-nq.x*.30,height-.16,q.y-nq.y*.30)
+			var start:int=surfaces.shore.vertices.size()
+			surfaces.shore.quad(outer_p,outer_q,rim_q,rim_p,Color(.30,.32,.14),true)
+			surfaces.shore.quad(rim_p,rim_q,inner_q,inner_p,Color(.30,.35,.24),true)
+			for index in range(start,surfaces.shore.vertices.size()):
+				var point:Vector3=surfaces.shore.vertices[index]
+				surfaces.shore.colors[index].a=0 if point==outer_p or point==outer_q else (wp if point==rim_p or point==inner_p else wq)
 
 func _falls(loop:PackedVector2Array,water_y:float)->void:
 	if _area(loop)<0:return
@@ -679,6 +699,11 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 						surfaces.waterfall.colors[index]=Color(across,drop,1.0/(1.0+width),landing)
 				previous_a=current_a
 				previous_b=current_b
+			if not sample.is_empty() and sample.water>=0:
+				var width:float=flow_edges[i].width
+				var across_a:float=(flow_edges[i].start+a.distance_to(b)*t0)/width if width>0 else .5
+				var across_b:float=(flow_edges[i].start+a.distance_to(b)*t1)/width if width>0 else .5
+				_landing_roll(previous_a,previous_b,n0,n1,low,across_a,across_b)
 			# A varying upstream apron fades into the pond instead of drawing a
 			# constant-width white ruler along the whole spill edge.
 			var back_a:=Vector3(n0.x,0,n0.y)*(.18+.06*sin(a0.x*3.1+a0.y*2.7))
@@ -744,6 +769,27 @@ func _flow_edges(loop:PackedVector2Array,water_y:float)->Array:
 			width=0.0
 	return result
 
+func _landing_roll(a:Vector3,b:Vector3,na:Vector2,nb:Vector2,level:float,across_a:float,across_b:float)->void:
+	# Continuous receiving roll begins at the actual curtain foot. It spreads
+	# into the lake, instead of placing a white line decal in front of a sheet.
+	var left:=a+Vector3.UP*.018
+	var right:=b+Vector3.UP*.018
+	var fade_a:=smoothstep(0,.18,across_a)*smoothstep(0,.18,1-across_a)
+	var fade_b:=smoothstep(0,.18,across_b)*smoothstep(0,.18,1-across_b)
+	for step in 2:
+		var extent:float=.20 if step==0 else .90
+		var lift_a:float=.15+.055*sin(a.x*4.3+a.z*3.1) if step==0 else .004
+		var lift_b:float=.15+.055*sin(b.x*4.3+b.z*3.1) if step==0 else .004
+		var next_a:=Vector3(a.x+na.x*extent*(.85+.15*sin(a.x*4.3+a.z*3.1)),level+.045+lift_a*fade_a,a.z+na.y*extent*(.85+.15*sin(a.x*4.3+a.z*3.1)))
+		var next_b:=Vector3(b.x+nb.x*extent*(.85+.15*sin(b.x*4.3+b.z*3.1)),level+.045+lift_b*fade_b,b.z+nb.y*extent*(.85+.15*sin(b.x*4.3+b.z*3.1)))
+		var start:int=surfaces.bank.vertices.size()
+		_foam_triangle(left,right,next_b,level+.045)
+		_foam_triangle(left,next_b,next_a,level+.045)
+		for index in range(start,surfaces.bank.vertices.size()):
+			var point:Vector3=surfaces.bank.vertices[index]
+			surfaces.bank.colors[index].a*=fade_a if point==left or point==next_a else fade_b
+		left=next_a;right=next_b
+
 func _splash(center:Vector3,out:Vector2,half_width:float=.62)->void:
 	var rings:Array=[]
 	var tangent:=Vector3(out.y,0,-out.x)
@@ -757,10 +803,10 @@ func _splash(center:Vector3,out:Vector2,half_width:float=.62)->void:
 			var angle:=j*TAU/16.0
 			var size:=.62+.11*sin(phase*3.7+j*2.9)
 			var radius:=.55 if ring==0 else 1.0
-			var rise:=.018+.018*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
+			var rise:=.045+.020*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
 			points.append(center+tangent*cos(angle)*size*radius*half_width/.62+forward*sin(angle)*size*radius*1.40+Vector3(0,rise,0))
 		rings.append(points)
-	var peak:=center+Vector3(0,.043+.008*sin(phase*2.7),0)
+	var peak:=center+Vector3(0,.075+.012*sin(phase*2.7),0)
 	for j in 16:
 		var k:=(j+1)%16
 		_foam_triangle(peak,rings[0][j],rings[0][k],center.y)
@@ -797,11 +843,35 @@ static func _fall_sway(p:Vector2,water_y:float,y:float)->float:
 
 static func _fall_fold(p:Vector2,water_y:float,y:float)->float:
 	var drop:=maxf(0,water_y-y)
-	return .055*sin(p.x*1.13+p.y*1.71)*exp(-drop*.7)+.085*sin(p.x*6.2+p.y*4.3+drop*.18)*(1-exp(-drop*4.0))
+	return .055*sin(p.x*1.13+p.y*1.71)*exp(-drop*.7)+(.11*sin(p.x*2.1+p.y*1.43+drop*.47)+.025*sin(p.x*6.2+p.y*4.3+drop*.18))*(1-exp(-drop*4.0))
 
 static func _fall_offset(water_y:float,y:float)->float:
 	var drop:=maxf(0,water_y-y)
 	return .15+.11*exp(-drop*6.0)+.48*(1-exp(-drop*2.8))+.035*sin(drop*1.5)*minf(1,drop)
+
+func _rock_plane_normals()->void:
+	# Average only incident faces in the same shallow plane group. The old
+	# all-face vertex average bridged deep recesses, then flattened an entire
+	# triangle when just one corner exceeded its threshold, producing pinches.
+	var surface=surfaces.cliff
+	var incident:Dictionary={}
+	for i in range(0,surface.vertices.size(),3):
+		var a:Vector3=surface.vertices[i]
+		var weighted:Vector3=-(surface.vertices[i+1]-a).cross(surface.vertices[i+2]-a)
+		for j in 3:
+			var key:Vector3=(surface.vertices[i+j]*10000.0).round()
+			if not incident.has(key):incident[key]=[]
+			incident[key].append(weighted)
+	for i:int in _broad_faces:
+		var a:Vector3=surface.vertices[i]
+		var face:Vector3=-(surface.vertices[i+1]-a).cross(surface.vertices[i+2]-a).normalized()
+		for j in 3:
+			var p:Vector3=surface.vertices[i+j]
+			var key:Vector3=(p*10000.0).round()
+			var sum:=Vector3.ZERO
+			for weighted:Vector3 in incident[key]:
+				if face.dot(weighted.normalized())>.94:sum+=weighted
+			surface.normals[i+j]=sum.normalized() if sum.length_squared()>.00000001 else face
 
 func _smooth_normals(surface)->void:
 	# Smooth generated cliff, foam and waterfall surfaces. Embedded stone models retain their
@@ -869,7 +939,7 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind in ["shore","bank","waterfall"]:
+				if kind in ["cliff","shore","bank","waterfall"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
 				if kind in ["cliff","shore","bank","waterfall"]:

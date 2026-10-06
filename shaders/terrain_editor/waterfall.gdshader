@@ -38,42 +38,56 @@ void fragment() {
 	float body = flow_noise(flow*vec2(2.4,.65));
 	float lifetime = flow_noise(flow*vec2(3.1,1.8)+vec2(11.3,7.8));
 	float bend = flow_noise(flow*vec2(1.7,1.15)+vec2(29.1,3.2))-.5;
-	// Narrow contours, rather than broad maxima, form irregular connected
-	// downflow. Strong anisotropy gives them length; the envelope varies their
-	// width and lifetime without a repeating across-stream sine lattice.
-	float strand_field = flow_noise(vec2(flow.x*13.5+bend*1.2,flow.y*.48)+vec2(7.3,19.1));
-	float envelope = smoothstep(.24,.68,lifetime);
-	float width = mix(.030,.085,envelope);
-	float strand_softness = max(.045,fwidth(strand_field)*.7);
-	float strand = 1.0-smoothstep(width,width+strand_softness,abs(strand_field-.5));
-	// Low aeration actually ends a bright strand; a nonzero envelope floor
-	// would preserve full-height white filaments and read as striped fabric.
-	strand *= envelope;
-	float fine_field = flow_noise(vec2(flow.x*25.0-bend*.7,flow.y*.86)+vec2(31.4,5.6));
-	float thread_softness = max(.045,fwidth(fine_field)*.7);
-	float thread = 1.0-smoothstep(.018,.018+thread_softness,abs(fine_field-.5));
-	float fine_visibility = 1.0-smoothstep(.018,.060,fwidth(flow.x));
-	thread *= smoothstep(.35,.75,lifetime)*fine_visibility;
-	// Broad, finite patches interrupt fine filaments. A wet receiver alone
-	// increases aeration through the last part of the fall, joining its foam.
+	// Finite aerated seams move downward with broader flow pockets. Their
+	// similar horizontal/vertical scale avoids full-height parallel filaments.
+	vec2 foam_cell = vec2(flow.x*7.0+bend*.32,flow.y*3.0);
+	vec2 cell = floor(foam_cell);
+	vec2 f = fract(foam_cell);
+	float nearest = 10.0;
+	float second = 10.0;
+	float seed = 0.0;
+	for(int y=-1;y<=1;y++) for(int x=-1;x<=1;x++) {
+		vec2 offset = vec2(float(x),float(y));
+		vec2 anchor = vec2(hash_flow(cell+offset),hash_flow(cell+offset+vec2(17.2,43.8)));
+		vec2 delta = offset+.15+anchor*.70-f;
+		float distance = dot(delta,delta);
+		if(distance<nearest) {second=nearest; nearest=distance; seed=anchor.x;}
+		else if(distance<second) {second=distance;}
+	}
+	float line_width = max(.025,fwidth(second-nearest));
+	float seam = 1.0-smoothstep(.025,.025+line_width,second-nearest);
+	seam *= smoothstep(.46,.72,lifetime)*mix(.25,1.0,seed);
 	float receiver = COLOR.a<.5 ? COLOR.a : (COLOR.b<.001 ? COLOR.r : 0.0);
-	float landing = smoothstep(.60,1.0,receiver/.4);
-	float patches = smoothstep(.36,.76,body)*smoothstep(.25,.70,lifetime);
-	float aeration = clamp(strand*.28+thread*.08+patches*.35+landing*(.30+.28*body),0.0,.84);
-	vec3 color = mix(vec3(.050,.40,.58),vec3(.15,.61,.74),body*.55);
-	color = mix(color,vec3(.78,.93,.97),aeration);
+	float landing = smoothstep(.52,1.0,receiver/.4);
+	float drop = COLOR.g*16.0;
+	float turn = smoothstep(.12,.65,drop);
+	float bubbles = (1.0-smoothstep(.04,.18,nearest))*smoothstep(.54,.82,seed)*smoothstep(.25,.65,lifetime);
+	float aeration = clamp(max(seam*mix(.18,.55,turn),bubbles*.55*turn)+landing*(.65+.35*body),0.0,1.0);
+	vec3 color = mix(vec3(.060,.42,.58),vec3(.14,.58,.69),body*.7);
+	color = mix(color,vec3(.86,.96,.97),aeration);
 	float side = 1.0;
 	if (COLOR.a<.5) {
 		float edge = min(COLOR.r,1.0-COLOR.r);
-		float drop = COLOR.g*16.0;
-		float irregular = (body-.5)*.065;
-		float inset = clamp((.025+min(drop,5.0)*.028+irregular)*inverse_width,0.0,.20);
-		float softness = min(max(.055*inverse_width,fwidth(edge)*1.5),.12);
+		float irregular = (body-.5)*.10;
+		float inset = clamp((.018+min(drop,5.0)*.036+irregular)*inverse_width,0.0,.20);
+		float softness = min(max(.035*inverse_width,fwidth(edge)*1.5),.12);
 		side = smoothstep(inset,inset+max(softness,.0001),edge);
 	}
+	float opacity = .99;
+	// The existing light/sky response follows moving shallow surface folds.
+	// Screen derivatives reconstruct the same world-space height gradient
+	// for every inspection camera; this is not a painted highlight.
+	vec3 dx = dFdx(VERTEX);
+	vec3 dy = dFdy(VERTEX);
+	vec3 r1 = cross(dy,NORMAL);
+	vec3 r2 = cross(NORMAL,dx);
+	float determinant = dot(dx,r1);
+	vec3 gradient = sign(determinant)*(dFdx(body)*r1+dFdy(body)*r2);
+	if(abs(determinant)>.00000001) NORMAL = normalize(abs(determinant)*NORMAL-gradient*.055);
 	ALBEDO = color;
-	EMISSION = vec3(0.0);
-	ALPHA = clamp(.80+body*.06+aeration*.12,.80,.97)*side;
-	ROUGHNESS = .46;
+	// Restrained local fill approximates light scattered inside terminal froth.
+	EMISSION = vec3(.045,.065,.070)*aeration*landing;
+	ALPHA = opacity*side;
+	ROUGHNESS = .28;
 	SPECULAR = .30;
 }

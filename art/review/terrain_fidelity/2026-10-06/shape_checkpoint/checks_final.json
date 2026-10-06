@@ -1,0 +1,158 @@
+[
+  {
+    "script": "terrain_waterfall",
+    "exit": 0,
+    "seconds": 1.887,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n"
+  },
+  {
+    "script": "terrain_shore_transition",
+    "exit": 0,
+    "seconds": 0.375,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples\nSHORE TRANSITION: 240 triangles, wet/dry continuity true/true, 0 failures\n"
+  },
+  {
+    "script": "terrain_rework_shape",
+    "exit": 0,
+    "seconds": 0.37,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHAPE DIAGNOSTIC: 0 wedges / 1151 substantial cliff triangles, max edge 1.539\nREWORK SHAPE: failures 0; default foot (9.34286, -2.898004, 6.0); minimum foot (9.410195, -4.5, 6.0)\n"
+  },
+  {
+    "script": "terrain_contour",
+    "exit": 0,
+    "seconds": 0.591,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n"
+  },
+  {
+    "script": "terrain_editor_data",
+    "exit": 0,
+    "seconds": 0.217,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n"
+  },
+  {
+    "script": "terrain_editor_render",
+    "exit": 0,
+    "seconds": 0.378,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RENDER: 339/339 passed\n"
+  },
+  {
+    "script": "terrain_editor_decoration",
+    "exit": 0,
+    "seconds": 0.485,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 57/57 passed\n"
+  },
+  {
+    "script": "terrain_incremental",
+    "exit": 0,
+    "seconds": 2.421,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n"
+  },
+  {
+    "script": "terrain_cliff_interface",
+    "exit": 0,
+    "seconds": 0.582,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLIFF INTERFACES: 96 boundary points; 0 separated; max=0.0\nIRREGULAR CLIFF EDGES: [2314, 0, 0.0]\nIRREGULAR BROAD/NARROW POLYLINES: [96, 0, 0.0]\nMULTI-ELEVATION CLIFF EDGES: 5112 points; 0 separated; max=0.0\n"
+  },
+  {
+    "script": "terrain_cliff_taper",
+    "exit": 0,
+    "seconds": 0.269,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CLIFF TAPER: 2/2 passed, sampled 21 foot vertices, furthest 7.3363\n"
+  },
+  {
+    "script": "terrain_narrow_cliff",
+    "exit": 0,
+    "seconds": 0.319,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 568 slices, 0 failures, smallest gap 0.0171\n"
+  },
+  {
+    "script": "terrain_boundary_wall",
+    "exit": 0,
+    "seconds": 0.863,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOUNDARY WALL default: 0 missing\nBOUNDARY WALL raise: 0 missing\nBOUNDARY WALL lower: 0 missing\nBOUNDARY WALL expand: 0 missing\nBOUNDARY WALL contract: 0 missing\nTERRAIN BOUNDARY WALL: 416 samples, 0 failures\n"
+  },
+  {
+    "script": "terrain_upper_rock",
+    "exit": 0,
+    "seconds": 0.375,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 15 rays, 12 shoulders, 25 nearby join vertices, 0 failures\n"
+  },
+  {
+    "script": "terrain_rock_transition",
+    "exit": 0,
+    "seconds": 0.272,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROCK WIDTH TRANSITION: 2 samples, 0 failures, largest displacement 0.00001091\n"
+  },
+  {
+    "script": "terrain_broad_facet",
+    "exit": 0,
+    "seconds": 0.374,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBROAD CLIFF FACETS: 1836 large faces; 182 planar normals\nBROAD NORMAL VALIDITY: 0 invalid entries\n"
+  },
+  {
+    "script": "terrain_canopy_contact",
+    "exit": 0,
+    "seconds": 0.275,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTUAL WOOD EXTREMUM (-0.434883, 0.867647, -0.146833) covered by leaf lobes [1]\nACTUAL WOOD EXTREMUM (0.377939, 0.877121, -0.110059) covered by leaf lobes [2]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (-0.036714, 0.885095, -0.047428) covered by leaf lobes [0]\nTERRAIN CANOPY CONTACT: 5/5\n"
+  },
+  {
+    "script": "terrain_crown_integrity",
+    "exit": 0,
+    "seconds": 0.321,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":4,\"contained_source_entries\":3072,\"max_plane_violation\":-0.000000119209289550781,\"outward_surfaces\":4,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":3072,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}\nPUBLISHED CROWN MATCH: true, entries=2256, max_difference=0.0, different_entries=0\n"
+  },
+  {
+    "script": "terrain_shrub_support",
+    "exit": 0,
+    "seconds": 1.133,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: shrubs=21 base_points=6636 unsupported=0\nraise: shrubs=19 base_points=6004 unsupported=0\nlower: shrubs=20 base_points=6320 unsupported=0\nexpand: shrubs=22 base_points=6952 unsupported=0\ncontract: shrubs=21 base_points=6636 unsupported=0\nSHRUB SUPPORT: 32548 actual base points; 0 unsupported; coverage=true\n"
+  },
+  {
+    "script": "terrain_vine_contact",
+    "exit": 0,
+    "seconds": 1.076,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":27,\"fixture\":\"default\",\"max_absolute_gap\":0.0250006448477507,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":27,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250006448477507,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":27,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250006448477507,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":27,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250008106231689,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":27,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250006448477507,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n"
+  },
+  {
+    "script": "terrain_model_bounds",
+    "exit": 0,
+    "seconds": 0.325,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN MODEL BOUNDS: 9/9 passed\n"
+  },
+  {
+    "script": "terrain_water_impact",
+    "exit": 0,
+    "seconds": 0.219,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nWATER IMPACT: 8/8 passed\n"
+  },
+  {
+    "script": "terrain_shoreline",
+    "exit": 0,
+    "seconds": 0.587,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n"
+  },
+  {
+    "script": "terrain_shell_floor",
+    "exit": 0,
+    "seconds": 0.86,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHELL FLOOR default: low=-3.06379961967468, below intended floor=0\nSHELL FLOOR lower: low=-3.06379961967468, below intended floor=0\nSHELL FLOOR contract: low=-3.06379961967468, below intended floor=0\nSHELL FLOOR raise: low=-3.06379961967468, below intended floor=0\nSHELL FLOOR expand: low=-3.06379961967468, below intended floor=0\n"
+  },
+  {
+    "script": "terrain_closed_flow",
+    "exit": 0,
+    "seconds": 0.378,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLOSED FLOW: impact vertices=1554, receiving sectors=4, wet feet=129, dry feet=23406, failures=0\n"
+  },
+  {
+    "script": "terrain_editor_runtime",
+    "exit": 0,
+    "seconds": 1.45,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n"
+  },
+  {
+    "script": "terrain_turf_transition",
+    "exit": 0,
+    "seconds": 0.375,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nPUBLISHED TURF TRANSITION: 552 gradient faces, 412 cap faces, 0 invalid\n"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "before": {
+    "contract": "ef67d7aa89e5e700b1229d22b24c1d7b11b7b64e04b3f9dc14304122bffbfac0",
+    "default": "442710d47fbbe25398a3a29b0ca015c8601b00749e8120cf51a22e28451a4ef2",
+    "expand": "1ea8aef4b74c7c9793d94978308cba3a548c09cc96b42232b22883128fc19b91",
+    "lower": "af05d19d25a25506f76d2b2810a150f02a2483c125b94ddf86005f88954f252a",
+    "raise": "c9372a5078b7a4694d71e26b1a8b206cb4c1fe7327bee4f8feffc389a0185f3e"
+  },
+  "after": {
+    "contract": "ef67d7aa89e5e700b1229d22b24c1d7b11b7b64e04b3f9dc14304122bffbfac0",
+    "default": "442710d47fbbe25398a3a29b0ca015c8601b00749e8120cf51a22e28451a4ef2",
+    "expand": "1ea8aef4b74c7c9793d94978308cba3a548c09cc96b42232b22883128fc19b91",
+    "lower": "af05d19d25a25506f76d2b2810a150f02a2483c125b94ddf86005f88954f252a",
+    "raise": "c9372a5078b7a4694d71e26b1a8b206cb4c1fe7327bee4f8feffc389a0185f3e"
+  },
+  "byte_identical": true,
+  "scope": "all generated vertex, normal and color bytes, default and four independent edits; caching only invariant site data"
+}

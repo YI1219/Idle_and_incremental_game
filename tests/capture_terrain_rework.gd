@@ -1,5 +1,5 @@
 extends SceneTree
-const OUT := "res://art/review/terrain_fidelity/2026-10-06/rework/"
+var OUT := "res://art/review/terrain_fidelity/2026-10-06/rework/"
 var tag := "baseline"
 var movie := false
 var views: Array = []
@@ -8,6 +8,7 @@ var render_view: SubViewport
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg == "motion": movie = true
+		elif arg.begins_with("out="): OUT=arg.trim_prefix("out=")
 		else: tag = arg
 	call_deferred("run")
 
@@ -32,6 +33,12 @@ func shot(editor, label: String, center: Vector2, height: float, yaw: float) -> 
 					clay.albedo_color=Color(.50,.53,.56)
 					clay.roughness=1.0
 					node.material_override=clay
+				if "controlled" in tag and node.name=="cliff":
+					var material:=ShaderMaterial.new()
+					var shader:=Shader.new()
+					shader.code="shader_type spatial; render_mode cull_disabled; void fragment(){ ALBEDO=vec3(.5); ROUGHNESS=1.0; SPECULAR=0.0; " + ("vec3 n=normalize(cross(dFdx(VERTEX),dFdy(VERTEX))); NORMAL=dot(n,NORMAL)<0.0 ? -n:n;" if "facets" in tag else "") + "}"
+					material.shader=shader
+					node.material_override=material
 	pose(editor.camera, center, height, yaw)
 	for i in 60:
 		RenderingServer.force_draw(false)
@@ -67,6 +74,17 @@ func run() -> void:
 	editor.set_process_unhandled_input(false)
 	editor.camera.set_process_input(false)
 	editor.camera.set_process_unhandled_input(false)
+	if "controlled" in tag:
+		for node in editor.get_children():
+			if node is DirectionalLight3D:
+				node.rotation_degrees=Vector3(-35,-35,0)
+				node.light_color=Color.WHITE
+				node.light_energy=1.0
+				node.shadow_enabled=false
+			if node is WorldEnvironment:
+				node.environment.ssao_enabled=false
+				node.environment.ambient_light_color=Color.WHITE
+				node.environment.ambient_light_energy=.22
 	if "flat_normal" in tag or "flat_color" in tag:
 		var shader:=Shader.new()
 		var code:String=editor.renderer.materials.water.shader.code
@@ -93,14 +111,17 @@ func run() -> void:
 		# presentation/skipped swaps. This is a fixed 60 Hz inspection sequence.
 		var folder:=OUT+tag+"_motion_frames/"
 		DirAccess.make_dir_recursive_absolute(folder)
-		pose(editor.camera,Vector2(0,-1),21,16)
+		var close_flow:bool="flow" in tag
+		var motion_center:=Vector2(7.2,-1.8) if close_flow else Vector2(0,-1)
+		var motion_height:float=21*pow(1.12,-5) if close_flow else 21.0
+		pose(editor.camera,motion_center,motion_height,16)
 		for warmup in 60:
 			await process_frame
 			RenderingServer.force_draw(false)
 		for frame in 300:
 			var t := float(frame)/60.0
-			var center := Vector2(1.4*sin(t*.7),-1+sin(t*.5))
-			pose(editor.camera,center,21.0-2.0*sin(t*.6),16.0+24.0*sin(t*.8))
+			var center := motion_center+Vector2(1.4*sin(t*.7),sin(t*.5))*(.25 if close_flow else 1.0)
+			pose(editor.camera,center,motion_height-(.5 if close_flow else 2.0)*sin(t*.6),16.0 if close_flow else 16.0+24.0*sin(t*.8))
 			await process_frame
 			RenderingServer.force_draw(false)
 			var error:=render_view.get_texture().get_image().save_png(folder+"frame_%04d.png"%frame)
@@ -112,7 +133,7 @@ func run() -> void:
 	await shot(editor,"left",Vector2(0,-1),21,-22)
 	await shot(editor,"right",Vector2(0,-1),21,50)
 	await shot(editor,"contact",Vector2(7.2,-1.8),21*pow(1.12,-5),16)
-	if "flat_normal" in tag or "flat_color" in tag or ("clay" in tag and not "stress" in tag) or "no_shadow" in tag:
+	if "sample" in tag or "controlled" in tag or "flat_normal" in tag or "flat_color" in tag or ("clay" in tag and not "stress" in tag) or "no_shadow" in tag:
 		print("REWORK DIAGNOSTIC CAPTURES: ",tag)
 		quit()
 		return

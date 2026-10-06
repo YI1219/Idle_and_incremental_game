@@ -1,0 +1,247 @@
+{
+	"backend": "Metal Forward+",
+	"controlled_lookdev": true,
+	"device": "Apple M4 Pro (Apple9)",
+	"lookdev_conditions": "nonfocused window, input and live pointer picking disabled, manual normal two-chunk/frame publication; time-based inspection pan/zoom/yaw path; 2s warmup then 12s x 3 runs",
+	"resolution": [
+		1280,
+		720
+	],
+	"runs": [
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 480.0,
+			"duration_seconds": 12.005354,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 258.942
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 271.802
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 315.127
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 318.931
+				}
+			],
+			"focused_frame_fraction": 0.0,
+			"frame_count": 1614,
+			"gpu_time": "viewport measured GPU timer; zero values mean unavailable on this backend",
+			"max_ms": 195.024,
+			"median_ms": 6.901,
+			"msaa_3d": 2,
+			"offscreen": true,
+			"p95_ms": 7.461,
+			"process_seconds_sample": 0.003557,
+			"render_cpu_median_ms": 0.316000014543533,
+			"render_cpu_p95_ms": 0.940999984741211,
+			"render_gpu_median_ms": 0.0,
+			"render_gpu_p95_ms": 0.0,
+			"render_setup_cpu_median_ms": 0.009,
+			"render_setup_cpu_p95_ms": 0.028,
+			"rendered_primitives_sample": 342884.0,
+			"run": 1,
+			"static_memory_mib": 61.5594530105591,
+			"submission": "minimized native window; actual Forward+ SubViewport rendered via force_draw(false), same 4x MSAA; intervals are not presentation FPS",
+			"video_memory_mib": 210.828125
+		},
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 480.0,
+			"duration_seconds": 12.004309,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 259.068
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 307.81
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 309.142
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 331.336
+				}
+			],
+			"focused_frame_fraction": 0.0,
+			"frame_count": 1608,
+			"gpu_time": "viewport measured GPU timer; zero values mean unavailable on this backend",
+			"max_ms": 208.95,
+			"median_ms": 6.902,
+			"msaa_3d": 2,
+			"offscreen": true,
+			"p95_ms": 7.536,
+			"process_seconds_sample": 0.000817,
+			"render_cpu_median_ms": 0.293999999761581,
+			"render_cpu_p95_ms": 0.828000009059906,
+			"render_gpu_median_ms": 0.0,
+			"render_gpu_p95_ms": 0.0,
+			"render_setup_cpu_median_ms": 0.008,
+			"render_setup_cpu_p95_ms": 0.024,
+			"rendered_primitives_sample": 342884.0,
+			"run": 2,
+			"static_memory_mib": 61.5722055435181,
+			"submission": "minimized native window; actual Forward+ SubViewport rendered via force_draw(false), same 4x MSAA; intervals are not presentation FPS",
+			"video_memory_mib": 210.953125
+		},
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 480.0,
+			"duration_seconds": 12.003752,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 286.261
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 300.616
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 313.461
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 306.779
+				}
+			],
+			"focused_frame_fraction": 0.0,
+			"frame_count": 1606,
+			"gpu_time": "viewport measured GPU timer; zero values mean unavailable on this backend",
+			"max_ms": 199.064,
+			"median_ms": 6.903,
+			"msaa_3d": 2,
+			"offscreen": true,
+			"p95_ms": 7.971,
+			"process_seconds_sample": 0.004394,
+			"render_cpu_median_ms": 0.381000012159348,
+			"render_cpu_p95_ms": 1.00100004673004,
+			"render_gpu_median_ms": 0.0,
+			"render_gpu_p95_ms": 0.0,
+			"render_setup_cpu_median_ms": 0.01,
+			"render_setup_cpu_p95_ms": 0.03,
+			"rendered_primitives_sample": 342884.0,
+			"run": 3,
+			"static_memory_mib": 61.5795488357544,
+			"submission": "minimized native window; actual Forward+ SubViewport rendered via force_draw(false), same 4x MSAA; intervals are not presentation FPS",
+			"video_memory_mib": 210.953125
+		}
+	],
+	"scope": "current reference demo, 12-second measurement per run; target laptops and long idle stability unmeasured this round",
+	"shadows": true,
+	"ssao": true,
+	"vsync": "disabled"
+}

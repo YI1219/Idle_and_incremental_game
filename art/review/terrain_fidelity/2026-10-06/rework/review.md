@@ -1,6 +1,8 @@
 # Substantive floating-island rework
 
-2026-10-06 — **Implemented candidate for targeted user visual review; artistic acceptance pending.**
+2026-10-06 — **Historical candidate `3a73663`: NOT ACCEPTED.**
+
+The latest user review recognizes substantive progress in reduced vegetation noise, restrained trees, calmer lake bands and curved waterfall lips, but rejects the cliff shape language and incomplete boundary/water relationships. Preserve those gains. The [subsequent shape checkpoint](../shape_checkpoint/review.md) is current evidence; this report retains the original implementation and verification record below.
 
 The starting candidate is `4d891bd`, which the user explicitly **did not accept**. Its [report](../review.md) remains historical evidence. This pass changes the existing editable scene, including shared geometry and integrated daylight. Sparse 2D XZ data, two flat terraces/two lakes and flow sequence, modest cottage, legal heights, editing/persistence/picking and horizontal pan/wheel-only height controls remain. No voxel conversion, separate showcase, renderer/dependency change or purchase occurred.
 

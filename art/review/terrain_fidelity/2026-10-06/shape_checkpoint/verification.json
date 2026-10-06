@@ -1,0 +1,103 @@
+{
+  "status": "Intermediate checkpoint; art not accepted; overall task open",
+  "baseline_commit": "3a7366350ab466e2a6bd532831ced934cefd3cbe",
+  "engine": "Godot 4.7.2 Metal Forward+",
+  "device": "Apple M4 Pro",
+  "sources_sha256": {
+    "scripts/terrain_editor/contour_terrain.gd": "3860e2a8959300f5e603c0ae9cc5690206ee3fee5382961f8d332a14a9057991",
+    "scripts/terrain_editor/terrain_decoration.gd": "d0a5b6c35628443020fdb29d73f4271dafbadc8a599a18613f3e9c5ea16e5d9d",
+    "scripts/terrain_editor/terrain_models.gd": "5104e12d92877657026ab63bfa2c8ed0e8973a391e8d4c5912eef2e47014cce2",
+    "shaders/terrain_editor/cliff.gdshader": "b9ba2adfa8d09cf923ee5d1ae95c7225f0b59f170560fa0e59a8f086ac79a0bf",
+    "shaders/terrain_editor/foam.gdshader": "b900bc445d116367833c440e5bf7a4fb5fb517e5b7228b0a658b2a15673189b7",
+    "shaders/terrain_editor/shore.gdshader": "b9e42c05a021f878b54e2367dc70a71c2f6f773ceba9ab48e7114274ddd399e4",
+    "shaders/terrain_editor/waterfall.gdshader": "bc5b801f818179227b5a37ed43f8ba3d9ac1d132a41f014043bff85f1fef8c4a",
+    "tests/capture_terrain_rework.gd": "bde8394a187fe317cf32bf690d9e8ff92509f9e68dd09bbfc922709d50f513e2",
+    "tests/terrain_turf_transition_test.gd": "b85c829b3dac30649713d65f2fe72c667431bcebe62408cc241bcd55448c9d4d"
+  },
+  "evidence_sha256": {
+    "checkpoint_controlled_composition.png": "6005eadc3644b6604126d44788d8dff53430efe23e9f8c6d44c413a4e8a77863",
+    "checkpoint_controlled_contact.png": "cbbc9eb9bf8a8df26b566df414c5a183884d0cf4759944c4e9b493685724aa5d",
+    "checkpoint_controlled_left.png": "89f44e87b916009b5ce449aade25b993676dd7cf999f499c454b77b1604fefae",
+    "checkpoint_controlled_right.png": "c5486481d4c2a51e2cb6143fcc5f706d55883201b6194809d1cb627fa3148608",
+    "checkpoint_final_captures.json": "d06799b3442b12ec6f7293d0661ae06be8165b68ef35b1b2a744cd856e335d08",
+    "checkpoint_final_composition.png": "3159badbe57928f0b07524f418d4f8b826f2aff5ae19c35b1eb1270c605ad4e8",
+    "checkpoint_final_contact.png": "8891ff3e035b45f12702e4d63fb1248221abe5976b432a830141233eeaf7b0fc",
+    "checkpoint_final_contract.png": "bb3117dffbb61e3b2484ff30ed93bd8208e9d37253e4efe1959db935e48c15c8",
+    "checkpoint_final_expand.png": "759c0e22f4c1d31bc03f88fd9fe61833fba03e686e964af5cf862fb3bf5c12ae",
+    "checkpoint_final_irregular.png": "030be0764f3392c6df07b08d9c98bb880a31aa2de962d6fbe551706df3bab056",
+    "checkpoint_final_irregular_rotated.png": "185586b9cd1c9bfaa2edbac4a1cb3b597af55202f687a9a932aa1f0aabd059d7",
+    "checkpoint_final_left.png": "eefc0ed678f833471534013366d675aa6887a3da19679eeabb23efd0514afc16",
+    "checkpoint_final_lower.png": "d939308d5a2919ee2080a7d11d0d7ad7b5495dceb86f228a593a84044d868ca0",
+    "checkpoint_final_minimum_height.png": "b2ebecc79cc98c3cab48ac045cc63c2700b5acb425ec2f3a4ff98fbfc39f5d8b",
+    "checkpoint_final_motion.mp4": "25619e982eb36a9d13ce828fe68c22d96c1acf208ff46d74b90b475c3b1b2423",
+    "checkpoint_final_raise.png": "d6a557acc8a1c55ce3fc0dd71aa7cda5f812472df0f2b01fa3c6f4482ec10855",
+    "checkpoint_final_regenerated.png": "2e1f03e4a84b1b9195e79952c89d8641d50edf15f0f808d15b4f07e58d8a40df",
+    "checkpoint_final_reopened_default.png": "52cec3ef0750a2e9b6a920be34b37d65072ac4909bf6990e68dedf2075fc50cd",
+    "checkpoint_final_reopened_irregular.png": "f14ac625347d3ea72b134da0a5697f4dcf4f3be03815dd5abbf4506e93854b27",
+    "checkpoint_final_right.png": "3f9435b3ab426b9a1608e569c81116c5165308e078760dc33691b1530d9b90e7",
+    "checkpoint_flow_motion.mp4": "388595b7b9415f0824a13ce10ed3e84c3343e9e9f88d5893ae50bd9bb421a3b6"
+  },
+  "unrelated_starting_files_preserved": {
+    "assets/buildings/cottage/cottage_tripo_cottage_raw_v01_with_color_basecolor.jpg.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_ivory_albedo.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_pants_albedo.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_plainweave_normal.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_plainweave_orm.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_robe_albedo.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_teal_albedo.png.import": true,
+    "project.godot": true
+  },
+  "checks": {
+    "scripts": 26,
+    "all_exit_zero": true,
+    "rendered_runtime_passed": 22
+  },
+  "motion": [
+    {
+      "file": "checkpoint_final_motion.mp4",
+      "actual_frames": 300,
+      "encoded_fps": 60,
+      "size": [
+        1280,
+        720
+      ],
+      "visually_inspected_frame_indices": [
+        0,
+        150,
+        299
+      ],
+      "uninterrupted_playback_verified": false,
+      "inspection_yaw": true
+    },
+    {
+      "file": "checkpoint_flow_motion.mp4",
+      "actual_frames": 300,
+      "encoded_fps": 60,
+      "size": [
+        1280,
+        720
+      ],
+      "visually_inspected_frame_indices": [
+        0,
+        150,
+        299
+      ],
+      "uninterrupted_playback_verified": false,
+      "inspection_yaw": false
+    }
+  ],
+  "capture_cache_scope": "Final captures and clips preceded invariant site caching. Final tests, Metal runtime, controlled-material captures and performance followed it. Default and four independent edits retain byte-identical generated vertices/normals/colors; shaders unchanged after motion capture.",
+  "cache_equivalence": "cache_equivalence.json",
+  "art_limits": [
+    "local pointed cliff facets and thin recesses",
+    "broad flat terrace walls",
+    "outlined cellular water highlights",
+    "repetitive polygon-tracing shoreline stones"
+  ],
+  "performance_limits": [
+    "process/submission intervals are not presentation FPS or GPU time",
+    "GPU timing unavailable",
+    "target laptops, larger maps and long idle unmeasured"
+  ],
+  "reference": "art/source/visual_targets/2026-10-05/terrain_user_target.png; supplementary night reference unavailable"
+}

@@ -26,7 +26,14 @@ void fragment(){
 	// The staggered render mesh now supplies the actual broad rock planes.
 	// Keep its geometric normal and let real relief light the recesses.
 	vec3 gray=cliff_gray(variation.x);
-	ALBEDO=gray;
+	// A few short turf lips join the flat cap to the same cliff mesh. The
+	// published alpha describes true dry-cap proximity, never hidden ground.
+	float patch=sin(world_position.x*.81+sin(world_position.z*.59)*1.7);
+	float fringe=.5+.5*sin(world_position.x*9.3+world_position.z*7.1);
+	float turf=smoothstep(.80+fringe*.09,.96,COLOR.a)*smoothstep(.05,.55,patch);
+	float lawn=sin(world_position.x*.51+world_position.z*.22)*sin(world_position.z*.47-world_position.x*.18)*.5+.5;
+	vec3 grass=mix(vec3(.23,.37,.045),vec3(.45,.57,.12),lawn);
+	ALBEDO=mix(gray,grass,turf);
 	ROUGHNESS=.96;
 	SPECULAR=.15;
 }

@@ -13,8 +13,8 @@ void fragment(){
  float crest=1.0-COLOR.b;
  ALBEDO=mix(vec3(.60,.84,.87),vec3(.96,.985,.98),churn*.35+.65);
  // Broken low froth remains connected to the impact rather than a white pad.
- float lace=1.0-smoothstep(.035,.105,abs(churn-.5));
- float broken=max(.25+.60*lace+.10*patch,smoothstep(.60,.95,COLOR.a)*.75);
+ float froth=smoothstep(.28,.68,churn*.65+patch*.35);
+ float broken=mix(.34+.60*froth,.97,smoothstep(.45,.85,COLOR.a));
  ALPHA=COLOR.a*mix(broken,mix(.12,.62,smoothstep(.25,.65,churn)),crest);
  ROUGHNESS=.78;
  SPECULAR=.15;
