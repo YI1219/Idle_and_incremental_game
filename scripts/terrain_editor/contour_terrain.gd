@@ -13,9 +13,15 @@ var triangle_chunks:Dictionary={}
 var _profiles:Dictionary={}
 var _rock_relief_cache:Dictionary={}
 var _land_winding_signs:Dictionary={}
+var _broad_faces:=PackedInt32Array()
+var _cliff_bands:Dictionary={}
+var _chain_constraints:Dictionary={}
 
 func refresh(data:Data)->void:
 	source=data
+	_chain_constraints.clear()
+	_cliff_bands.clear()
+	_broad_faces.clear()
 	_profiles.clear()
 	_rock_relief_cache.clear()
 	_land_winding_signs.clear()
@@ -55,18 +61,24 @@ func refresh(data:Data)->void:
 				subtract.reverse()
 				exposed.append(subtract)
 		_cap(surfaces.grass,exposed,h,Color.WHITE)
-	# Fixed vertical samples keep remote cliff geometry stable when an edit adds
-	# an elevation. Reuse the shared outline of the next occupied threshold.
-	for step in range(-8,25):
-		var height:=step*.5
-		for h:float in levels:
-			if h<height:continue
-			for loop:PackedVector2Array in land_regions[h]:_cliffs(loop,height,height-.5)
-			break
+	# Every occupied elevation retains its exact contour boundary. Broad
+	# walls span the interval with staggered interior samples; narrow walls
+	# retain the half-unit rows used by the constrained profile.
+	for i in levels.size():
+		var high:float=levels[i]
+		var low:float=levels[i-1] if i>0 else BOTTOM
+		for loop:PackedVector2Array in land_regions[high]:_collect_cliff_bands(loop,high,low)
+	_generate_cliff_bands()
 	for level:int in water_regions:
 		_cap(surfaces.water,water_regions[level],level*.5+.045,Color.WHITE)
 		for loop:PackedVector2Array in water_regions[level]:_falls(loop,level*.5+.045)
 	_smooth_normals(surfaces.cliff)
+	for i:int in _broad_faces:
+		var a:Vector3=surfaces.cliff.vertices[i]
+		var b:Vector3=surfaces.cliff.vertices[i+1]
+		var c:Vector3=surfaces.cliff.vertices[i+2]
+		var normal:=-(b-a).cross(c-a).normalized()
+		for j in 3:surfaces.cliff.normals[i+j]=normal
 	_smooth_normals(surfaces.bank)
 	_smooth_normals(surfaces.waterfall)
 	_index_triangles()
@@ -271,39 +283,135 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 		if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess
 	return point
 
-func _cliffs(loop:PackedVector2Array,top:float,bottom:float)->void:
+func _collect_cliff_bands(loop:PackedVector2Array,top:float,bottom:float)->void:
 	for i in loop.size():
 		var a:=loop[i]
 		var b:=loop[(i+1)%loop.size()]
-		# refresh already selected the occupied outline for this height row.
-		# Upper contours are smoothed independently and can cross a lower one;
-		# sampling them here incorrectly removes an authoritative boundary wall.
 		var before:=loop[(i-1+loop.size())%loop.size()]
 		var after:=loop[(i+2)%loop.size()]
 		var normal_a:=Vector2(b.y-before.y,before.x-b.x).normalized()
 		var normal_b:=Vector2(after.y-a.y,a.x-after.x).normalized()
 		var profile_a:=_cliff_profile(a,normal_a)
 		var profile_b:=_cliff_profile(b,normal_b)
-		# Keep the authoritative cap contour, but resolve rock shoulders within
-		# each stable span. Narrow necks retain their proven unsplit profile.
-		var broad:bool=(not profile_a.base or profile_a.inset>.8) and (not profile_b.base or profile_b.inset>.8)
-		var columns:=maxi(1,ceili(a.distance_to(b)/.65)) if broad else 1
-		var left:=a
-		var left_normal:=normal_a
-		var left_profile:=profile_a
+		var key:Array=[Vector4(a.x,a.y,b.x,b.y),Vector4(normal_a.x,normal_a.y,normal_b.x,normal_b.y)]
+		if not _cliff_bands.has(key):_cliff_bands[key]={"a":a,"b":b,"normal_a":normal_a,"normal_b":normal_b,"profile_a":profile_a,"profile_b":profile_b,"ranges":[]}
+		_cliff_bands[key].ranges.append(Vector2(bottom,top))
+
+func _generate_cliff_bands()->void:
+	for key in _cliff_bands:
+		var span:Dictionary=_cliff_bands[key]
+		var merged:Array[Vector2]=[]
+		# Collection visits elevations in ascending order. Identical contour
+		# spans merge through unrelated global thresholds, preserving remote mesh.
+		for band:Vector2 in span.ranges:
+			if not merged.is_empty() and is_equal_approx(merged[-1].y,band.x):merged[-1].y=band.y
+			else:merged.append(band)
+		span.merged=merged
+		var pa:Dictionary=span.profile_a
+		var pb:Dictionary=span.profile_b
+		var fine:bool=not ((not pa.base or pa.inset>.8) and (not pb.base or pb.inset>.8))
+		for pair in [[span.a,span.normal_a],[span.b,span.normal_b]]:
+			var p:Vector2=pair[0]
+			var n:Vector2=pair[1]
+			var column:=Vector4(p.x,p.y,n.x,n.y)
+			if not _chain_constraints.has(column):_chain_constraints[column]={"fine":false,"heights":[]}
+			_chain_constraints[column].fine=_chain_constraints[column].fine or fine
+			for band:Vector2 in merged:
+				for height:float in [band.x,band.y]:
+					if not _chain_constraints[column].heights.has(height):_chain_constraints[column].heights.append(height)
+	for key in _cliff_bands:
+		var span:Dictionary=_cliff_bands[key]
+		for band:Vector2 in span.merged:_cliff_band(span,band.y,band.x)
+
+func _cliff_band(span:Dictionary,top:float,bottom:float)->void:
+	var a:Vector2=span.a
+	var b:Vector2=span.b
+	var normal_a:Vector2=span.normal_a
+	var normal_b:Vector2=span.normal_b
+	var profile_a:Dictionary=span.profile_a
+	var profile_b:Dictionary=span.profile_b
+	var broad:bool=(not profile_a.base or profile_a.inset>.8) and (not profile_b.base or profile_b.inset>.8)
+	if broad:
+		# Terrace joins keep their finer horizontal samples. Other broad walls
+		# use larger spans, with the same exact shared contour endpoints.
+		var join:bool=profile_a.rock_top>profile_a.top+.001 or profile_b.rock_top>profile_b.top+.001
+		var columns:=maxi(1,ceili(a.distance_to(b)/(.65 if join else 1.15)))
+		var left:=_rock_chain(a,normal_a,profile_a,top,bottom)
 		for column in columns:
 			var weight:float=float(column+1)/columns
-			var right:=a.lerp(b,weight)
-			var right_normal:=normal_a.lerp(normal_b,weight).normalized()
-			var right_profile:Dictionary=profile_b if column==columns-1 else _cliff_profile(right,right_normal)
-			var p:=_profile_point(left,top,left_normal,left_profile)
-			var q:=_profile_point(right,top,right_normal,right_profile)
-			var r:=_profile_point(right,bottom,right_normal,right_profile)
-			var s:=_profile_point(left,bottom,left_normal,left_profile)
-			surfaces.cliff.quad(p,s,r,q,Color("a8aba8"))
+			var point:=b if column==columns-1 else a.lerp(b,weight)
+			var normal:=normal_b if column==columns-1 else normal_a.lerp(normal_b,weight).normalized()
+			var profile:Dictionary=profile_b if column==columns-1 else _cliff_profile(point,normal)
+			var right:=_rock_chain(point,normal,profile,top,bottom)
+			_join_rock_chains(left,right)
 			left=right
-			left_normal=right_normal
-			left_profile=right_profile
+	else:
+		for step in range(floori(bottom*2)+1,floori(top*2)+1):
+			_cliff_span(a,b,normal_a,normal_b,profile_a,profile_b,step*.5,step*.5-.5)
+
+func _rock_chain(p:Vector2,normal:Vector2,profile:Dictionary,top:float,bottom:float)->PackedVector3Array:
+	var heights:Array[float]=[top,bottom]
+	# World-anchored stagger avoids a horizontal lattice. Exact local terrace
+	# joins are mandatory, while edit-added unrelated elevations do not shift it.
+	for boundary:float in [profile.top,profile.rock_top]:
+		if boundary>bottom+.001 and boundary<top-.001 and not heights.has(boundary):heights.append(boundary)
+	var constraint:Dictionary=_chain_constraints.get(Vector4(p.x,p.y,normal.x,normal.y),{})
+	# Broad and narrow neighbors must share the same geometric edge. A fine
+	# neighbor promotes this boundary column; adjacent interval ends are also
+	# mandatory, preventing gaps caused by different interior triangulations.
+	for height:float in constraint.get("heights",[]):
+		if height>bottom+.001 and height<top-.001 and not heights.has(height):heights.append(height)
+	if constraint.get("fine",false):
+		for step in range(floori(bottom*2)+1,ceili(top*2)):
+			var height:float=step*.5
+			if height>bottom and height<top and not heights.has(height):heights.append(height)
+	else:
+		# This world-anchored sample set is canonical for the column. Only
+		# clip to the requested interval: an end buffer would drop a row on a
+		# split neighbor while retaining it on a merged neighbor's same edge.
+		for step in range(floori(bottom/1.35)-1,ceili(top/1.35)+1):
+			var height:float=step*1.35+.24*sin(p.x*.77+p.y*.61+step*4.19)
+			if height>bottom and height<top and not heights.has(height):heights.append(height)
+	heights.sort()
+	heights.reverse()
+	var result:=PackedVector3Array()
+	for height:float in heights:result.append(_profile_point(p,height,normal,profile))
+	return result
+
+func _join_rock_chains(left:PackedVector3Array,right:PackedVector3Array)->void:
+	var a:=0
+	var b:=0
+	while a<left.size()-1 or b<right.size()-1:
+		var start:int=surfaces.cliff.vertices.size()
+		if b==right.size()-1 or (a<left.size()-1 and left[a+1].y>=right[b+1].y):
+			surfaces.cliff.triangle(left[a],left[a+1],right[b],Color("a8aba8"))
+			a+=1
+		else:
+			surfaces.cliff.triangle(left[a],right[b+1],right[b],Color("a8aba8"))
+			b+=1
+		if surfaces.cliff.vertices.size()==start+3:_broad_faces.append(start)
+
+func _cliff_span(a:Vector2,b:Vector2,normal_a:Vector2,normal_b:Vector2,profile_a:Dictionary,profile_b:Dictionary,top:float,bottom:float)->void:
+	# Keep the authoritative cap contour, but resolve rock shoulders within
+	# each stable span. Narrow necks retain their proven unsplit profile.
+	var broad:bool=(not profile_a.base or profile_a.inset>.8) and (not profile_b.base or profile_b.inset>.8)
+	var columns:=maxi(1,ceili(a.distance_to(b)/.65)) if broad else 1
+	var left:=a
+	var left_normal:=normal_a
+	var left_profile:=profile_a
+	for column in columns:
+		var weight:float=float(column+1)/columns
+		var right:=a.lerp(b,weight)
+		var right_normal:=normal_a.lerp(normal_b,weight).normalized()
+		var right_profile:Dictionary=profile_b if column==columns-1 else _cliff_profile(right,right_normal)
+		var p:=_profile_point(left,top,left_normal,left_profile)
+		var q:=_profile_point(right,top,right_normal,right_profile)
+		var r:=_profile_point(right,bottom,right_normal,right_profile)
+		var s:=_profile_point(left,bottom,left_normal,left_profile)
+		surfaces.cliff.quad(p,s,r,q,Color("a8aba8"))
+		left=right
+		left_normal=right_normal
+		left_profile=right_profile
 
 func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 	# Measure the same filled outline that owns the cap and cliff boundary.
