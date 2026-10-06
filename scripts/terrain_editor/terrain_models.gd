@@ -17,19 +17,19 @@ func load_assets()->void:
 	# A raised central crown and unequal side masses expose the retained forks.
 	# Sparse edge clusters interrupt the outline without a uniform lobe ring.
 	var crown:Array=[
-		[Vector3(-.30,1.08,.02),Vector3(.73,.61,.72)],
-		[Vector3(.31,1.08,.04),Vector3(.73,.66,.72)],
-		[Vector3(-.08,1.25,-.08),Vector3(.66,.80,.65)],
-		[Vector3(-.08,1.15,-.30),Vector3(.58,.64,.58)],
+		[Vector3(-.29,1.05,.04),Vector3(.62,.66,.60)],
+		[Vector3(.29,1.11,.04),Vector3(.64,.65,.61)],
+		[Vector3(-.06,1.33,-.10),Vector3(.65,.73,.62)],
+		[Vector3(-.08,1.10,-.28),Vector3(.54,.57,.52)],
 		[Vector3(.27,1.13,.26),Vector3(.54,.54,.58)],
 		[Vector3(-.22,1.06,.23),Vector3(.55,.55,.56)],
 		[Vector3(.23,1.16,-.23),Vector3(.50,.48,.52)],
-		[Vector3(-.59,1.06,.05),Vector3(.38,.39,.40)],
-		[Vector3(.57,1.03,.19),Vector3(.42,.40,.41)],
+		[Vector3(-.51,1.06,.05),Vector3(.43,.45,.44)],
+		[Vector3(.50,1.06,.13),Vector3(.44,.43,.43)],
 		[Vector3(-.36,1.22,-.38),Vector3(.35,.43,.36)],
 		[Vector3(.43,1.19,-.30),Vector3(.37,.40,.38)],
 		[Vector3(-.15,1.02,.50),Vector3(.40,.32,.39)],
-		[Vector3(.07,1.34,.12),Vector3(.33,.31,.34)],
+		[Vector3(.07,1.44,.10),Vector3(.35,.34,.35)],
 	]
 	var crown_parts:Array=[]
 	for i in crown.size():
@@ -105,9 +105,10 @@ func _join_crown(parts:Array)->Array:
 	# Group indices describe the current single-surface oak assembly.
 	# Keep an unfamiliar source assembly intact rather than misindex it.
 	if parts.size()!=13:return parts
-	# Wrap neighboring retained leaf parts into larger connected masses. This
-	# removes the small attached-lobe seams while keeping peak/side separation.
-	var groups:Array=[[0,7],[1,8],[2,12],[3,9],[4],[5,11],[6,10]]
+	# Keep the outer side clusters and peak separate from the main masses.
+	# Joining those distant parts made long convex lobes; compact overlapping
+	# groups retain unequal crown clusters and expose the original fork shape.
+	var groups:Array=[[0],[1],[2],[3,9],[4],[5,11],[6,10],[7],[8],[12]]
 	var result:Array=[]
 	for group:Array in groups:
 		var source_parts:Array=[]

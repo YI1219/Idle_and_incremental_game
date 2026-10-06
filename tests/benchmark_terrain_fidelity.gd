@@ -3,9 +3,17 @@ const OUT:="res://art/review/terrain_fidelity/2026-10-05/"
 var _sampling:=false
 var _frames:Array=[]
 var _last_frame:=0
+var _window_samples:Array=[]
 func _initialize()->void:
 	process_frame.connect(_record_frame)
+	root.size_changed.connect(_record_window_size)
 	call_deferred("run")
+func _record_window_size()->void:
+	if not _sampling:return
+	var window:=DisplayServer.window_get_size()
+	var viewport:=root.size
+	var texture:=root.get_texture().get_size()
+	_window_samples.append({"window_size":[window.x,window.y],"viewport_size":[viewport.x,viewport.y],"render_texture_size":[texture.x,texture.y]})
 func _record_frame()->void:
 	if not _sampling:return
 	var now:=Time.get_ticks_usec()
@@ -30,8 +38,10 @@ func run()->void:
 		var warm_start:=Time.get_ticks_usec()
 		while Time.get_ticks_usec()-warm_start<2000000:await process_frame
 		_frames.clear()
+		_window_samples.clear()
 		_last_frame=Time.get_ticks_usec()
 		_sampling=true
+		_record_window_size()
 		var edits:Array=[]
 		var start:=Time.get_ticks_usec()
 		var next_edit:=4.0
@@ -52,9 +62,11 @@ func run()->void:
 				edits.append({"operation":spec[0],"changed_cells":changed,"visible_response_ms":(Time.get_ticks_usec()-edit_start)/1000.0})
 				operation+=1
 				next_edit+=1.5
+		_record_window_size()
 		_sampling=false
 		var frames:=_frames.duplicate()
 		var report:={"run":pass_index+1,"duration_seconds":(Time.get_ticks_usec()-start)/1000000.0,"frame_count":frames.size(),"median_ms":percentile(frames,.5),"p95_ms":percentile(frames,.95),"max_ms":frames.max(),"cells":editor.data.cells.size(),"draw_calls":Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),"static_memory_mib":Performance.get_monitor(Performance.MEMORY_STATIC)/1048576.0,"video_memory_mib":Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED)/1048576.0,"edits":edits}
+		report["actual_size_samples"]=_window_samples.duplicate(true)
 		reports.append(report)
 		print("FIDELITY BENCH: ",JSON.stringify(report))
 	DirAccess.make_dir_recursive_absolute(OUT)
