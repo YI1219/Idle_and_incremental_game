@@ -92,21 +92,37 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				var tuft_ground:Dictionary=field.surface_at(tuft)
 				if random_at(cell,data.seed,80)<.20 and not tuft_ground.is_empty() and tuft_ground.water<0 and absf(tuft_ground.height-h)<.01 and _stable(field,tuft,h,.52):
 					result.grass_clump.append(_transform(Vector3(tuft.x,h,tuft.y),p.x+p.y,Vector3.ONE*.95))
-				for crown in 2:
-					var spread:=Vector2(-out.y,out.x)*(float(crown)-.5)*.34
+				# World-space patches leave exposed rock between broad overlapping
+				# foliage. Neighboring roots share a growth field, not a regular row.
+				var growth:=sin(p.x*.58+sin(p.y*.37)*1.4)*cos(p.y*.43-p.x*.17)
+				var wide_patch:bool=growth>=-.25 and random_at(cell,data.seed,81)<=.48
+				var short_patch:bool=not wide_patch and random_at(cell,data.seed,81)<.76
+				var tangent:=Vector2(-out.y,out.x)
+				var patch_width:=.90+random_at(cell,data.seed,82)*.45
+				# Small supported rim sprays remain on short ledges even where the
+				# growth field omits a hanging patch or there is no vertical room.
+				var crowns:=3 if wide_patch else (2 if short_patch else 1)
+				for crown in crowns:
+					var side:float=float(crown)-float(crowns-1)*.5
+					var spread:=tangent*side*patch_width*.34
 					var root_position:=Vector3(p.x-out.x*.18+spread.x,h+.025,p.y-out.y*.18+spread.y)
-					var basis:=Basis(Vector3.UP,atan2(out.x,out.y)+(float(crown)-.5)*.55)*Basis(Vector3.RIGHT,-PI*.5)
-					result.vine.append(Transform3D(basis.scaled_local(Vector3(.95,.95,.85)),root_position))
-				for leaf in range(4+int(random_at(cell,data.seed,84)*5)):
-					var y:=h-.12-leaf*.23
-					if y<landing+.36:break
-					var bend:=out*(.07-leaf*.025)
-					var tangent:=Vector2(-out.y,out.x)*sin(leaf*2.9)*.18
-					var anchor:Vector3=field._profile_point(p,y,out,profile)+Vector3(bend.x+tangent.x,0,bend.y+tangent.y)
-					var turn:=atan2(out.x,out.y)+(random_at(cell,data.seed,150+leaf)-.5)*.30
-					var width:=1.0-leaf*.055
-					var draped:=_drape_vine(field,_transform(anchor,turn,Vector3(.95*width,.65,.90)),out)
-					if not draped.is_empty():result.vine.append(draped.pose)
+					var basis:=Basis(Vector3.UP,atan2(out.x,out.y)+side*.40)*Basis(Vector3.RIGHT,-PI*.5)
+					var size:=Vector3(1.20,1.05,.85) if wide_patch else Vector3(.75,.75,.80)
+					result.vine.append(Transform3D(basis.scaled_local(size),root_position))
+				if not wide_patch and not short_patch:continue
+				var strands:=2 if wide_patch else 1
+				for strand in strands:
+					var length:=5+int(random_at(cell,data.seed,84+strand)*5) if wide_patch else 2+int(random_at(cell,data.seed,84)*3)
+					var offset:float=(float(strand)-float(strands-1)*.5)*patch_width*.50
+					for leaf in length:
+						var y:=h-.10-leaf*.23-random_at(cell,data.seed,160+strand)*.13
+						if y<landing+.44:break
+						var spread:=tangent*(offset+sin(leaf*1.7+strand*2.1)*.09)
+						var anchor:Vector3=field._profile_point(p,y,out,profile)+Vector3(spread.x,0,spread.y)
+						var turn:=atan2(out.x,out.y)+(random_at(cell,data.seed,150+leaf+strand*11)-.5)*.42
+						var width:float=patch_width*((1.20-leaf*.070) if wide_patch else (.80-leaf*.090))
+						var draped:=_drape_vine(field,_transform(anchor,turn,Vector3(width,.80 if wide_patch else .65,.90)),out)
+						if not draped.is_empty():result.vine.append(draped.pose)
 
 	for level:int in field.water_regions:
 		for loop:PackedVector2Array in field.water_regions[level]:
