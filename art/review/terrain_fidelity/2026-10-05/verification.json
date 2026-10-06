@@ -1,6 +1,6 @@
 {
   "engine": "Godot 4.7.2",
-  "scope": "Fresh larger irregular cliff-region geometry and matching material classification, with continuous narrow/broad width blend. Twenty-one scripts, actual full/three-detail/four-edit captures, preservation probe and standalone benchmark regenerated. Overall user visual acceptance remains pending.",
+  "scope": "Fresh wispy grass-clump integration from retained Quaternius CC0 source, palette parameters and same terrain support/placements. Cliff join and two profile-simplification trials rejected and exact42e75df cliff source restored. Final21suite/full-details-four-edits/pair/preservation/standalone benchmark refreshed; user visual acceptance pending.",
   "suite": [
     {
       "test": "terrain_contour_test.gd",
@@ -171,52 +171,64 @@
       "expand": 14,
       "contract": 16
     },
-    "output": "Actual full/three details/four edits/editor UI; fixed60Hz capture, not performance evidence",
-    "matched_baseline": "5bc596c runtime4ae06da *_before_rock_masses.png full/three details/four edits",
-    "motion_scope": "No new motion capture this round; five flow stills remain historical4ae06da evidence. Water geometry/shader sources are preserved, but temporal occlusion by changed cliffs was not sampled."
+    "output": "Actual full/three details/four edits/editor UI after final palette; fixed60Hz, not performance measurement",
+    "matched_baseline": "42e75df *_before_wispy_grass.png full/three details/four edits",
+    "pair": "wispy_grass_pair.png actual1280\u00d7720 lit small scene: left42e75df fans/rightfinalwispy; finalcleanexit0",
+    "motion_scope": "No motion recapture this grass round; five flow stills remain historical4ae06da evidence, not fresh temporal verification."
   },
   "preservation": {
     "unrelated_local_files_unchanged": 8,
-    "tracked_runtime_sources_assets": "Only contour_terrain.gd and cliff.gdshader differ among tracked scripts/shaders/assets excluding imports against5bc596c. Original assets retained.",
+    "tracked_runtime_sources_assets": "Only terrain_models.gd+foliage.gdshader differ among compared tracked scripts/shaders/assets excluding imports against42e75df. Cliff source restored byte-exact. Originals retained.",
     "component_probe": {
-      "baseline": "5bc596c",
+      "baseline": "42e75df",
+      "exact_non_clump_model_array_slots": 156,
+      "exact_non_clump_part_poses": 12,
+      "exact_wispy_source_array_slots": 13,
       "failures": 0,
-      "reports": [
+      "fixtures": [
         {
-          "exact_non_cliff_published_array_slots": 390,
-          "exact_non_cliff_source_arrays": 12,
-          "exact_non_vine_kind_placement_arrays": 228,
-          "fixture": "default"
+          "clumps": 51,
+          "exact_all_kind_placement_arrays": 247,
+          "fixture": "default",
+          "near_base_entries": 9792,
+          "unsupported": 0
         },
         {
-          "exact_non_cliff_published_array_slots": 390,
-          "exact_non_cliff_source_arrays": 12,
-          "exact_non_vine_kind_placement_arrays": 228,
-          "fixture": "raise"
+          "clumps": 49,
+          "exact_all_kind_placement_arrays": 247,
+          "fixture": "raise",
+          "near_base_entries": 9408,
+          "unsupported": 0
         },
         {
-          "exact_non_cliff_published_array_slots": 416,
-          "exact_non_cliff_source_arrays": 12,
-          "exact_non_vine_kind_placement_arrays": 228,
-          "fixture": "lower"
+          "clumps": 50,
+          "exact_all_kind_placement_arrays": 247,
+          "fixture": "lower",
+          "near_base_entries": 9600,
+          "unsupported": 0
         },
         {
-          "exact_non_cliff_published_array_slots": 390,
-          "exact_non_cliff_source_arrays": 12,
-          "exact_non_vine_kind_placement_arrays": 228,
-          "fixture": "expand"
+          "clumps": 52,
+          "exact_all_kind_placement_arrays": 247,
+          "fixture": "expand",
+          "near_base_entries": 9984,
+          "unsupported": 0
         },
         {
-          "exact_non_cliff_published_array_slots": 390,
-          "exact_non_cliff_source_arrays": 12,
-          "exact_non_vine_kind_placement_arrays": 228,
-          "fixture": "contract"
+          "clumps": 51,
+          "exact_all_kind_placement_arrays": 247,
+          "fixture": "contract",
+          "near_base_entries": 9792,
+          "unsupported": 0
         }
       ],
-      "scope": "Actual grass/foam/pond/curtain vertex-normal-color arrays and published array slots including null; all non-vine kind placement arrays including empty, over default/four edits. Cliff and vine poses intentionally excluded; not material identity, complete prop footprints, arbitrary layouts or art acceptance."
+      "previous_clump_triangle_entries": 288,
+      "scope": "Actual source arrays including null slots; transformed lower8% used triangle entries and dry same-height support across default/four edits; all kind placement arrays including empty; not whole blade footprints, every layout, material identity or accepted art.",
+      "wispy_raw_vertex_entries": 559,
+      "wispy_triangle_entries": 1482
     }
   },
-  "review": "Independent final source/full/cliff/shoreline/four-edit review recommends retaining a modest improvement; no further confirmed Critical/Important defect after correcting the width pop. Broader, calmer masses and no obvious new open seam/interrupted waterfall in final stills. Remaining elongated wedges, broad recesses, plain wall sections and smoother contracted front wall; exposed side leaves retain whole-spray uncertainty. Reviewer ran no engine jobs; finite tests/stills do not establish arbitrary topology, every leaf, temporal quality, target performance or user art acceptance.",
+  "review": "Independent final source/full/vegetation/shoreline/four-edit review supports retaining this bounded pass and finds no confirmed Critical/Important defect. Slender uneven wispy blades replace conspicuous folded fans, with a warmer lawn palette and less cluttered composition; final edits show no obvious new floating clump/spill obstruction. Remaining tufts are finer and more wiry than the fuller bright reference clusters, with some regular spacing and rigid shoreline plants. Normalization is correct for the current single-part source; a future multi-part replacement would need combined bounds. Reviewer ran no engine jobs; finite support/stills do not prove whole blades, arbitrary layouts, temporal aliasing, target performance or overall art acceptance.",
   "previous_revision_checks": {
     "fed1ca3": "Cottage material 7/7; unrelated gameplay suite remains older evidence.",
     "800e55c": {
@@ -3051,6 +3063,219 @@
         }
       },
       "review": "Independent final source/full/shoreline/four-edit review recommends retaining this bounded refinement and found no confirmed Critical/Important defect; it ran no engine jobs. Lower/wider foam reads as resting on the receiving pond, and the crest is less conspicuously outlined. Full/four-edit captures show no obvious new detached splash, gap or spill obstruction. Remaining gaps include a soft white landing patch with limited sharper splash tips/broken froth, straight crests and patterned curtains. Overall user visual acceptance is pending."
+    },
+    "42e75df": {
+      "scope": "Fresh larger irregular cliff-region geometry and matching material classification, with continuous narrow/broad width blend. Twenty-one scripts, actual full/three-detail/four-edit captures, preservation probe and standalone benchmark regenerated. Overall user visual acceptance remains pending.",
+      "suite": [
+        {
+          "test": "terrain_contour_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_waterfall_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_shoreline_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_model_bounds_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN MODEL BOUNDS: 9/9 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_broad_facet_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBROAD CLIFF FACETS: 1381 large faces; 1381 planar normals\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_cliff_interface_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLIFF INTERFACES: 96 boundary points; 0 separated; max=0.0\nMULTI-ELEVATION CLIFF EDGES: 2004 points; 0 separated; max=0.0\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_shrub_support_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: shrubs=21 base_points=6636 unsupported=0\nraise: shrubs=19 base_points=6004 unsupported=0\nlower: shrubs=20 base_points=6320 unsupported=0\nexpand: shrubs=22 base_points=6952 unsupported=0\ncontract: shrubs=21 base_points=6636 unsupported=0\nSHRUB SUPPORT: 32548 actual base points; 0 unsupported; coverage=true\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_vine_contact_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":358,\"fixture\":\"default\",\"max_absolute_gap\":0.0250010043382645,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":358,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250010043382645,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":371,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250010043382645,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":373,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250010192394257,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":385,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250010043382645,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_crown_integrity_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":10,\"contained_source_entries\":9984,\"max_plane_violation\":-0.000000178813934326172,\"outward_surfaces\":10,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":9984,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":224,\"vertices\":114},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":204,\"vertices\":104},{\"closed\":true,\"outward\":true,\"triangles\":216,\"vertices\":110},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}\nPUBLISHED CROWN MATCH: true, entries=5880, max_difference=0.0, different_entries=0\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_canopy_contact_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTUAL WOOD EXTREMUM (-0.434883, 0.867647, -0.146833) covered by leaf lobes [0]\nACTUAL WOOD EXTREMUM (0.377939, 0.877121, -0.110059) covered by leaf lobes [1]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (-0.036714, 0.885095, -0.047428) covered by leaf lobes [0]\nTERRAIN CANOPY CONTACT: 5/5\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_narrow_cliff_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 794 slices, 0 failures, smallest gap 0.0306\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_cliff_taper_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CLIFF TAPER: 2/2 passed, sampled 45 foot vertices, furthest 5.6423\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_boundary_wall_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOUNDARY WALL default: 0 missing\nBOUNDARY WALL raise: 0 missing\nBOUNDARY WALL lower: 0 missing\nBOUNDARY WALL expand: 0 missing\nBOUNDARY WALL contract: 0 missing\nTERRAIN BOUNDARY WALL: 416 samples, 0 failures\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_upper_rock_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 15 rays, 5 shoulders, 25 nearby join vertices, 0 failures\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "camera_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCAMERA CHECKS: 8/8 passed, failures=0\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_incremental_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_data_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_render_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RENDER: 339/339 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_decoration_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 89/89 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_editor_runtime_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        },
+        {
+          "test": "terrain_rock_transition_test.gd",
+          "exit": 0,
+          "ok": true,
+          "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROCK WIDTH TRANSITION: 2 samples, 0 failures, largest displacement 0.00001277\n",
+          "runner": "tests/run_preview.py --headless (fixed60Hz)"
+        }
+      ],
+      "suite_status": "Fresh final blended-source 21-script suite; all exit0 and no SCRIPT ERROR/ERROR output.",
+      "render_verification": {
+        "runner": "tests/run_preview.py tests/capture_terrain_fidelity.gd --resolution 1672x940",
+        "backend": "Godot4.7.2 Metal Forward+ Apple M4 Pro",
+        "exit": 0,
+        "resolution": [
+          1672,
+          940
+        ],
+        "edits_changed_cells": {
+          "raise": 16,
+          "lower": 12,
+          "expand": 14,
+          "contract": 16
+        },
+        "output": "Actual full/three details/four edits/editor UI; fixed60Hz capture, not performance evidence",
+        "matched_baseline": "5bc596c runtime4ae06da *_before_rock_masses.png full/three details/four edits",
+        "motion_scope": "No new motion capture this round; five flow stills remain historical4ae06da evidence. Water geometry/shader sources are preserved, but temporal occlusion by changed cliffs was not sampled."
+      },
+      "preservation": {
+        "unrelated_local_files_unchanged": 8,
+        "tracked_runtime_sources_assets": "Only contour_terrain.gd and cliff.gdshader differ among tracked scripts/shaders/assets excluding imports against5bc596c. Original assets retained.",
+        "component_probe": {
+          "baseline": "5bc596c",
+          "failures": 0,
+          "reports": [
+            {
+              "exact_non_cliff_published_array_slots": 390,
+              "exact_non_cliff_source_arrays": 12,
+              "exact_non_vine_kind_placement_arrays": 228,
+              "fixture": "default"
+            },
+            {
+              "exact_non_cliff_published_array_slots": 390,
+              "exact_non_cliff_source_arrays": 12,
+              "exact_non_vine_kind_placement_arrays": 228,
+              "fixture": "raise"
+            },
+            {
+              "exact_non_cliff_published_array_slots": 416,
+              "exact_non_cliff_source_arrays": 12,
+              "exact_non_vine_kind_placement_arrays": 228,
+              "fixture": "lower"
+            },
+            {
+              "exact_non_cliff_published_array_slots": 390,
+              "exact_non_cliff_source_arrays": 12,
+              "exact_non_vine_kind_placement_arrays": 228,
+              "fixture": "expand"
+            },
+            {
+              "exact_non_cliff_published_array_slots": 390,
+              "exact_non_cliff_source_arrays": 12,
+              "exact_non_vine_kind_placement_arrays": 228,
+              "fixture": "contract"
+            }
+          ],
+          "scope": "Actual grass/foam/pond/curtain vertex-normal-color arrays and published array slots including null; all non-vine kind placement arrays including empty, over default/four edits. Cliff and vine poses intentionally excluded; not material identity, complete prop footprints, arbitrary layouts or art acceptance."
+        }
+      },
+      "review": "Independent final source/full/cliff/shoreline/four-edit review recommends retaining a modest improvement; no further confirmed Critical/Important defect after correcting the width pop. Broader, calmer masses and no obvious new open seam/interrupted waterfall in final stills. Remaining elongated wedges, broad recesses, plain wall sections and smoother contracted front wall; exposed side leaves retain whole-spray uncertainty. Reviewer ran no engine jobs; finite tests/stills do not establish arbitrary topology, every leaf, temporal quality, target performance or user art acceptance."
     }
   },
   "limitations": "Overall user visual acceptance pending. Finite centroids/nearby planes do not prove full leaf contact,connected chains,visibility or arbitrary cliff ownership. Cliff coverage checks are finite ray/vertex samples,not watertightness. Actual stills do not prove temporal/platform behavior. Target laptops,larger maps,long idle and startup remain unmeasured.",
@@ -4188,7 +4413,7 @@
     "limits": "Finite default/four edit fixtures and one camera temporal stills. No proof of complete new footprints, arbitrary outlets/sorting, smooth playback, target hardware or final art acceptance.",
     "status": "Retained4ae06da implementation and evidence; no change retained in current rejected cliff sampling investigation."
   },
-  "suite_status": "Fresh final blended-source 21-script suite; all exit0 and no SCRIPT ERROR/ERROR output.",
+  "suite_status": "Fresh final plain-linear palette 21-script suite; all exit0 with no SCRIPT ERROR/ERROR output. Rejected cliff trials are excluded.",
   "rejected_cliff_sampling": {
     "baseline": "4ae06da",
     "runtime_change_retained": false,
@@ -4310,5 +4535,185 @@
       "scope": "Existing triangle fitting omits seven modules per fixture when no nearby support is found; no foliage placement/source code change. Centroids only, not whole leaf vertices or every rim spray."
     },
     "review": "Independent final source/full/cliff/shoreline/four-edit review recommends retaining a modest improvement; no further confirmed Critical/Important defect after correcting the width pop. Broader, calmer masses and no obvious new open seam/interrupted waterfall in final stills. Remaining elongated wedges, broad recesses, plain wall sections and smoother contracted front wall; exposed side leaves retain whole-spray uncertainty. Reviewer ran no engine jobs; finite tests/stills do not establish arbitrary topology, every leaf, temporal quality, target performance or user art acceptance."
+  },
+  "wispy_grass": {
+    "baseline": "42e75df",
+    "source": "Existing assets/nature/quaternius/Grass_Wispy_Short.gltf+bin, Grass.png; retained enclosedCC0 source, no new generation/purchase",
+    "normalized_size": [
+      0.85,
+      0.55,
+      0.75
+    ],
+    "linear_palette_endpoints": [
+      [
+        0.3,
+        0.43,
+        0.075
+      ],
+      [
+        0.63,
+        0.74,
+        0.15
+      ]
+    ],
+    "regular_shortgrass_defaults": [
+      [
+        0.25,
+        0.38,
+        0.065
+      ],
+      [
+        0.58,
+        0.69,
+        0.12
+      ]
+    ],
+    "implementation": "Normalize the current single-part source bounds and ground the part; preserve indexed copied arrays/UVs/normals/palette. Grass+grass_clump bypass generic merging. Single copied source surface remains chunk-instanced. Old fan assembly/_splay removed. Placement/support code unchanged.",
+    "scope": "Actual source arrays including null slots; transformed lower8% used triangle entries and dry same-height support across default/four edits; all kind placement arrays including empty; not whole blade footprints, every layout, material identity or accepted art.",
+    "pair_sequence": "Temporary pair first failed unaryBasis parse, then pre-tree look_at output; both corrected and excluded. Final actual1280\u00d7720 pair cleanexit0. Final full21suite and gallery after plain-linear palette corrected are clean.",
+    "review": "Independent final source/full/vegetation/shoreline/four-edit review supports retaining this bounded pass and finds no confirmed Critical/Important defect. Slender uneven wispy blades replace conspicuous folded fans, with a warmer lawn palette and less cluttered composition; final edits show no obvious new floating clump/spill obstruction. Remaining tufts are finer and more wiry than the fuller bright reference clusters, with some regular spacing and rigid shoreline plants. Normalization is correct for the current single-part source; a future multi-part replacement would need combined bounds. Reviewer ran no engine jobs; finite support/stills do not prove whole blades, arbitrary layouts, temporal aliasing, target performance or overall art acceptance."
+  },
+  "rejected_cliff_join_and_profiles": {
+    "baseline": "42e75df",
+    "runtime_change_retained": false,
+    "balanced_join": {
+      "method": "Dynamic-programming strip triangulation minimizes summed inverse actual triangle quality; same boundary chains and counts",
+      "baseline_shape": [
+        {
+          "broad_triangles": 1882,
+          "fixture": "default",
+          "quality_mean": 0.707067457809145,
+          "quality_p10": 0.472111455543859,
+          "thin_below_025": 78
+        },
+        {
+          "broad_triangles": 1932,
+          "fixture": "raise",
+          "quality_mean": 0.703121572914218,
+          "quality_p10": 0.463325693893184,
+          "thin_below_025": 88
+        },
+        {
+          "broad_triangles": 2032,
+          "fixture": "lower",
+          "quality_mean": 0.699862862607026,
+          "quality_p10": 0.452154434146637,
+          "thin_below_025": 79
+        },
+        {
+          "broad_triangles": 1970,
+          "fixture": "expand",
+          "quality_mean": 0.706560222635736,
+          "quality_p10": 0.468129346034848,
+          "thin_below_025": 80
+        },
+        {
+          "broad_triangles": 1886,
+          "fixture": "contract",
+          "quality_mean": 0.710953923452279,
+          "quality_p10": 0.472386451012885,
+          "thin_below_025": 70
+        }
+      ],
+      "trial_shape": [
+        {
+          "broad_triangles": 1882,
+          "fixture": "default",
+          "quality_mean": 0.724185173061995,
+          "quality_p10": 0.488932245256341,
+          "thin_below_025": 69
+        },
+        {
+          "broad_triangles": 1932,
+          "fixture": "raise",
+          "quality_mean": 0.720371530967213,
+          "quality_p10": 0.472331031822577,
+          "thin_below_025": 79
+        },
+        {
+          "broad_triangles": 2032,
+          "fixture": "lower",
+          "quality_mean": 0.71758741896594,
+          "quality_p10": 0.46776784178906,
+          "thin_below_025": 69
+        },
+        {
+          "broad_triangles": 1970,
+          "fixture": "expand",
+          "quality_mean": 0.724144564858455,
+          "quality_p10": 0.481292798608019,
+          "thin_below_025": 70
+        },
+        {
+          "broad_triangles": 1886,
+          "fixture": "contract",
+          "quality_mean": 0.728730032604191,
+          "quality_p10": 0.492275912583797,
+          "thin_below_025": 60
+        }
+      ],
+      "capture_exit": 0,
+      "images": "*_balanced_face_trial.png full/three details/four edits",
+      "decision": "Root+independent review reject: modest aspect improvement introduces needle-like dark upright faces and creases, further from substantial reference rock forms. No engine jobs by reviewer; nofullsuite/benchmark for rejected trial."
+    },
+    "profile_006": {
+      "method": "Whole-column world.25 actual-profile inputs, simplified to.06 deviation, canonical clipped shared chains/fine boundary fallback",
+      "shape": [
+        {
+          "broad_triangles": 2494,
+          "fixture": "default",
+          "quality_mean": 0.727103359572753,
+          "quality_p10": 0.442330699506699,
+          "thin_below_025": 65
+        },
+        {
+          "broad_triangles": 2552,
+          "fixture": "raise",
+          "quality_mean": 0.723345311800763,
+          "quality_p10": 0.438883004233324,
+          "thin_below_025": 66
+        },
+        {
+          "broad_triangles": 2642,
+          "fixture": "lower",
+          "quality_mean": 0.720106850332749,
+          "quality_p10": 0.434952593061606,
+          "thin_below_025": 74
+        },
+        {
+          "broad_triangles": 2610,
+          "fixture": "expand",
+          "quality_mean": 0.727524199399672,
+          "quality_p10": 0.444591922257579,
+          "thin_below_025": 68
+        },
+        {
+          "broad_triangles": 2478,
+          "fixture": "contract",
+          "quality_mean": 0.72500885018527,
+          "quality_p10": 0.445014601299306,
+          "thin_below_025": 62
+        }
+      ],
+      "capture_exit": 0,
+      "images": "*_profile_006_trial.png full/three details/four edits",
+      "observed_partial_test": {
+        "script": "terrain_cliff_interface_test.gd",
+        "exit": 0,
+        "boundary_points": 96,
+        "separated": 0,
+        "multi_height_points": 2560,
+        "multi_height_separated": 0
+      },
+      "decision": "Root+reviewer reject crumpled facets and pronounced folds; nofullsuite/benchmark."
+    },
+    "profile_012": {
+      "method": "Same whole-column approach with.12 deviation",
+      "capture_exit": 0,
+      "images": "*_profile_012_trial.png full/three details/four edits",
+      "decision": "Root+reviewer reject: calmer but still sharp zigzag recesses/long wedges; no functional subset/fullsuite/benchmark for this trial."
+    },
+    "review_scope": "Source/full/cliff/four edits. Independent-column curve deviation does not control connecting surface quality. No new confirmed Critical/Important source issue, but not overall topology/support/performance acceptance. Reviewer ran no engine jobs.",
+    "restored_cliff_sha256": "2d486bbe2c63fb27688391395f059267517a1a389117b25999ad773bf6e614f0"
   }
 }
