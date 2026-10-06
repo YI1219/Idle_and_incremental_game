@@ -262,9 +262,21 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 	var f:=clampf((profile.top-y)/depth,0,1)
 	var rounded:=0.0
 	if not profile.base or profile.inset>.35:
-		var key:=Vector3(p.x,y,p.y)
-		if not _rock_relief_cache.has(key):_rock_relief_cache[key]=_rock_relief(key)
-		rounded=_rock_relief_cache[key]
+		# Width edits blend into broad masses without changing constrained walls.
+		# Cache raw fields separately; their blend varies with this profile's width.
+		var mass_weight:float=1.0 if not profile.base else smoothstep(.8,1.2,profile.inset)
+		var point:=Vector3(p.x,y,p.y)
+		var old_relief:=0.0
+		var mass_relief:=0.0
+		if mass_weight<1.0:
+			var key:=Vector4(p.x,y,p.y,0)
+			if not _rock_relief_cache.has(key):_rock_relief_cache[key]=_rock_relief(point)
+			old_relief=_rock_relief_cache[key]
+		if mass_weight>0.0:
+			var key:=Vector4(p.x,y,p.y,1)
+			if not _rock_relief_cache.has(key):_rock_relief_cache[key]=_mass_rock_relief(point)
+			mass_relief=_rock_relief_cache[key]
+		rounded=lerpf(old_relief,mass_relief,mass_weight)
 	var rock_depth:float=depth
 	var rock_f:=f
 	# Both exposed terrace edges stay pinned to their cap contours.
@@ -460,6 +472,26 @@ static func _rock_relief(point:Vector3)->float:
 				var distance:=maxf(maxf(axis.x,maxf(axis.y,axis.z)),(axis.x+axis.y+axis.z)*.57)
 				nearest=minf(nearest,distance)
 	return .75*clampf((.76-nearest)/.55,0.0,1.0)-.10
+
+static func _mass_rock_relief(point:Vector3)->float:
+	# Larger unequal regions shape the shared body. Rotated clipped-octahedron
+	# shoulders remain continuous where neighboring rock regions meet.
+	var frame:=Vector3(point.x+point.y*.16,point.y+point.x*.28+point.z*.19,point.z-point.y*.12)
+	var p:=frame/Vector3(3.2,2.7,3.2)
+	var cell:=p.floor()
+	var f:=p-cell
+	var nearest:=10.0
+	for z in range(-1,2):
+		for y in range(-1,2):
+			for x in range(-1,2):
+				var offset:=Vector3(x,y,z)
+				var delta:=offset+_rock_hash(cell+offset)*.72+Vector3.ONE*.14-f
+				var shape:=_rock_hash(cell+offset+Vector3.ONE*31.0)
+				var angle:float=(shape.z-.5)*1.1
+				var rotated:=Vector3(delta.x*cos(angle)-delta.z*sin(angle),delta.y,delta.x*sin(angle)+delta.z*cos(angle))
+				var axis:Vector3=rotated.abs()/(Vector3.ONE*.85+shape*.25)
+				nearest=minf(nearest,maxf(maxf(axis.x,maxf(axis.y,axis.z)),(axis.x+axis.y+axis.z)*.57))
+	return clampf((.78-nearest)/.53,0.0,1.0)-.10
 
 static func _rock_hash(point:Vector3)->Vector3:
 	var q:=point*Vector3(.123,.117,.139)
