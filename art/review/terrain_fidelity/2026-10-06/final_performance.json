@@ -1,0 +1,215 @@
+{
+	"backend": "Metal Forward+",
+	"device": "Apple M4 Pro (Apple9)",
+	"resolution": [
+		1280,
+		720
+	],
+	"runs": [
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 510.0,
+			"duration_seconds": 12.002429,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 201.671
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 225.874
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 209.013
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 246.813
+				}
+			],
+			"frame_count": 1204,
+			"gpu_time": "unavailable through this runner; wall-clock frame intervals reported",
+			"max_ms": 93.044,
+			"median_ms": 8.026,
+			"p95_ms": 17.386,
+			"process_seconds_sample": 0.018424,
+			"rendered_primitives_sample": 2260231.0,
+			"run": 1,
+			"static_memory_mib": 59.5491247177124,
+			"video_memory_mib": 210.5625
+		},
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 511.0,
+			"duration_seconds": 12.000369,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 201.481
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 196.509
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 222.964
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 251.009
+				}
+			],
+			"frame_count": 1006,
+			"gpu_time": "unavailable through this runner; wall-clock frame intervals reported",
+			"max_ms": 106.563,
+			"median_ms": 9.228,
+			"p95_ms": 18.104,
+			"process_seconds_sample": 0.019175,
+			"rendered_primitives_sample": 2260375.0,
+			"run": 2,
+			"static_memory_mib": 59.8952627182007,
+			"video_memory_mib": 210.5625
+		},
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 511.0,
+			"duration_seconds": 12.00793,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 196.484
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 195.6
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 219.587
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 242.993
+				}
+			],
+			"frame_count": 987,
+			"gpu_time": "unavailable through this runner; wall-clock frame intervals reported",
+			"max_ms": 106.623,
+			"median_ms": 9.473,
+			"p95_ms": 18.437,
+			"process_seconds_sample": 0.018906,
+			"rendered_primitives_sample": 2260375.0,
+			"run": 3,
+			"static_memory_mib": 59.9027280807495,
+			"video_memory_mib": 210.5625
+		}
+	],
+	"scope": "current reference demo, 12-second measurement per run; target laptops and long idle stability unmeasured this round",
+	"shadows": true,
+	"ssao": true,
+	"vsync": "disabled"
+}

@@ -1,0 +1,236 @@
+{
+	"backend": "Metal Forward+",
+	"device": "Apple M4 Pro (Apple9)",
+	"resolution": [
+		1280,
+		720
+	],
+	"runs": [
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 511.0,
+			"duration_seconds": 12.001968,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 202.853
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 208.072
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 213.769
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 238.461
+				}
+			],
+			"focused_frame_fraction": 0.0,
+			"frame_count": 1658,
+			"gpu_time": "viewport measured GPU timer; zero values mean unavailable on this backend",
+			"max_ms": 104.36,
+			"median_ms": 6.903,
+			"p95_ms": 7.515,
+			"process_seconds_sample": 0.006315,
+			"render_cpu_median_ms": 0.361999988555908,
+			"render_cpu_p95_ms": 1.14900004863739,
+			"render_gpu_median_ms": 0.0,
+			"render_gpu_p95_ms": 0.0,
+			"render_setup_cpu_median_ms": 0.011,
+			"render_setup_cpu_p95_ms": 0.043,
+			"rendered_primitives_sample": 2260807.0,
+			"run": 1,
+			"static_memory_mib": 59.7493228912354,
+			"video_memory_mib": 210.5625
+		},
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 511.0,
+			"duration_seconds": 12.006044,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 201.672
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 198.104
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 192.794
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 245.982
+				}
+			],
+			"focused_frame_fraction": 0.0,
+			"frame_count": 1662,
+			"gpu_time": "viewport measured GPU timer; zero values mean unavailable on this backend",
+			"max_ms": 102.053,
+			"median_ms": 6.901,
+			"p95_ms": 7.525,
+			"process_seconds_sample": 0.003638,
+			"render_cpu_median_ms": 0.340000003576279,
+			"render_cpu_p95_ms": 1.16400003433228,
+			"render_gpu_median_ms": 0.0,
+			"render_gpu_p95_ms": 0.0,
+			"render_setup_cpu_median_ms": 0.01,
+			"render_setup_cpu_p95_ms": 0.043,
+			"rendered_primitives_sample": 2260807.0,
+			"run": 2,
+			"static_memory_mib": 59.7615146636963,
+			"video_memory_mib": 210.5625
+		},
+		{
+			"actual_size_samples": [
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				},
+				{
+					"render_texture_size": [
+						1280.0,
+						720.0
+					],
+					"viewport_size": [
+						1280,
+						720
+					],
+					"window_size": [
+						1280,
+						720
+					]
+				}
+			],
+			"cells": 593,
+			"draw_calls": 510.0,
+			"duration_seconds": 12.0054,
+			"edits": [
+				{
+					"changed_cells": 16,
+					"operation": "raise",
+					"visible_response_ms": 187.634
+				},
+				{
+					"changed_cells": 12,
+					"operation": "lower",
+					"visible_response_ms": 207.967
+				},
+				{
+					"changed_cells": 14,
+					"operation": "expand",
+					"visible_response_ms": 216.207
+				},
+				{
+					"changed_cells": 16,
+					"operation": "contract",
+					"visible_response_ms": 234.067
+				}
+			],
+			"focused_frame_fraction": 0.0,
+			"frame_count": 1661,
+			"gpu_time": "viewport measured GPU timer; zero values mean unavailable on this backend",
+			"max_ms": 86.7,
+			"median_ms": 6.89,
+			"p95_ms": 7.529,
+			"process_seconds_sample": 0.003769,
+			"render_cpu_median_ms": 0.372000008821487,
+			"render_cpu_p95_ms": 0.808000028133392,
+			"render_gpu_median_ms": 0.0,
+			"render_gpu_p95_ms": 0.0,
+			"render_setup_cpu_median_ms": 0.015,
+			"render_setup_cpu_p95_ms": 0.034,
+			"rendered_primitives_sample": 2260663.0,
+			"run": 3,
+			"static_memory_mib": 59.7671070098877,
+			"video_memory_mib": 210.5625
+		}
+	],
+	"scope": "current reference demo, 12-second measurement per run; target laptops and long idle stability unmeasured this round",
+	"shadows": true,
+	"ssao": true,
+	"vsync": "disabled"
+}

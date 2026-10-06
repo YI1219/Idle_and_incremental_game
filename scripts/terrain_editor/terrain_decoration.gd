@@ -137,6 +137,8 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if sample.is_empty() or sample.water>=0 or absf(sample.height-level*.5)>.1:continue
 				var angle:=atan2(next.y-loop[i].y,next.x-loop[i].x)
 				var edge:=next-loop[i]
+				var previous:=loop[(i-1+loop.size())%loop.size()]
+				var bend:=1.0-edge.normalized().dot((loop[i]-previous).normalized())
 				var count:=maxi(1,ceili(edge.length()/.95))
 				for block in count:
 					var bank:=loop[i]+edge*float(block)/count+out*.22
@@ -145,10 +147,14 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					var cell:=Vector2i(bank.floor())
 					# World-anchored gaps leave short grassy banks between stone
 					# groups instead of drawing one uniform masonry ring.
-					var gap:=sin(bank.x*.82+sin(bank.y*.65)*1.2)
-					if gap>.92 and random_at(cell,data.seed,1080+block)<.15:
+					var gap:=sin(bank.x*.38+cos(bank.y*.31)*1.3+level*.70)
+					var outside_bank:Dictionary=field.surface_at(bank+out*1.4)
+					var near_drop:bool=outside_bank.is_empty() or float(outside_bank.height)<level*.5-.1
+					# Quiet, gently curving stretches expose grass banks. Retain
+					# stone anchors at sharper bends and around exposed outlets.
+					if gap>.60 and bend<.06 and not near_drop:
 						var plant:=bank+out*.25
-						if _stable(field,plant,level*.5,.18):
+						if random_at(cell,data.seed,1080+block)<.18 and _stable(field,plant,level*.5,.18):
 							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*2.2))
 						continue
 					var turn:float=(random_at(cell,data.seed,1000+block)-.5)*.40

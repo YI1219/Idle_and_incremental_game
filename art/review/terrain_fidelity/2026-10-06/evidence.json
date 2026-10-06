@@ -1,0 +1,75 @@
+{
+  "status": "READY FOR ART REVIEW; user aesthetic approval separate",
+  "baseline": "a41382f",
+  "runtime_sha256": {
+    "scripts/terrain_editor/terrain_decoration.gd": "3fcca32127dab7ad914016b54acaf6f3afd2e33fc602a0362a1d111df3bb2b16",
+    "scripts/terrain_editor/water_shore_field.gd": "995d731fba634c7c7e53db262fbab69020cda5f885c029c1b2a2533100222f0a",
+    "shaders/terrain_editor/cliff_palette.gdshaderinc": "55c51e121d3cf3d56bb91afe65d1cb3985d45fd9e2ed708a903e5f073c2aabaa",
+    "shaders/terrain_editor/ground.gdshader": "1bccbe4414a49cb2ebca30e2703991d578ae5fea91e491c7c1ae33bd0473d678",
+    "shaders/terrain_editor/sky.gdshader": "34b156d03ff2bd038e76afbda948045d8931ab2aa21f7984d230dd7be21add5d",
+    "shaders/terrain_editor/water.gdshader": "4042087a12c4732f85e7eec3a0b18cb2d598f9931aa6563df038012f50f12527",
+    "shaders/terrain_editor/waterfall.gdshader": "56f1d12cae41c5f10beff3d7e9e8dbcdf56a7a26fbd083ade2de3891e24a5db4"
+  },
+  "unchanged_baseline_sources": {
+    "scripts/terrain_editor/contour_terrain.gd": true,
+    "scripts/terrain_editor/editor_camera.gd": true,
+    "scripts/terrain_editor/terrain_data.gd": true,
+    "scripts/terrain_editor/terrain_models.gd": true,
+    "scripts/terrain_editor/editor.gd": true,
+    "scenes/terrain_editor.tscn": true
+  },
+  "unrelated_worktree_hashes_preserved": {
+    "project.godot": true,
+    "assets/buildings/cottage/cottage_tripo_cottage_raw_v01_with_color_basecolor.jpg.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_robe_albedo.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_pants_albedo.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_teal_albedo.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_plainweave_orm.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_ivory_albedo.png.import": true,
+    "assets/characters/qinglan/qinglan_garment_v06_fabric_plainweave_normal.png.import": true
+  },
+  "tests": "verification.json",
+  "accepted_stills": [
+    "baseline_captures.json",
+    "final_captures.json"
+  ],
+  "accepted_performance": [
+    "baseline_isolated_performance.json",
+    "final_isolated_performance.json"
+  ],
+  "motion": {
+    "baseline": "baseline_motion.mp4",
+    "final": "final_motion.mp4",
+    "source": "300 unmodified actual Godot runtime PNG frames per clip, H264 encoded through native AVFoundation",
+    "resolution": [
+      1280,
+      720
+    ],
+    "fps": 60,
+    "duration_seconds": 5,
+    "inspected_final_frames": [
+      0,
+      60,
+      120,
+      180,
+      240,
+      280,
+      290,
+      299
+    ],
+    "limits": "Sampled frame inspection, not proof of entire-clip smooth playback or every angle. Inspection pan/zoom/yaw is scripted; gameplay controls remain fixed orientation."
+  },
+  "excluded_performance": {
+    "baseline_performance.json / final_performance.json": "Initial window measurements; desktop focus/timing conditions did not reliably match.",
+    "baseline_recheck_performance.json / final_recheck_performance.json": "Focus and live-input conditions were not isolated. No valid incremental cost claim.",
+    "baseline_controlled_performance.json / final_controlled_performance.json": "No-focus request did not reliably fix desktop focus across runs.",
+    "baseline_offscreen_performance.json / final_offscreen_performance.json": "Unsupported root.hide() call produced an error. Excluded, not accepted evidence."
+  },
+  "experiments": {
+    "continuous/radiance/horizon/ripple/warped/bank_ground": "Progressive actual-render trials; final resources only are accepted.",
+    "shallow_base": "Incomplete capture timed out; bottom -3.5 conflicts with existing height floor -4. Original geometry restored.",
+    "probe_water": "Once-mode probe did not give useful geometry reflection, altered ambient response and leaked seven texture RIDs on shutdown. Removed.",
+    "offscreen_harness": "Initial type-inference parse failure corrected; unsupported root.hide corrected; one accidentally overlapping baseline job stopped and excluded. Clean isolated pair has no overlap."
+  },
+  "media_storage": "PNG/MP4 remain local ignored review artifacts, not repository source. Manifests and reproducible harness are tracked."
+}

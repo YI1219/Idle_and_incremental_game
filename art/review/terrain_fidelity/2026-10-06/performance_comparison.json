@@ -1,0 +1,138 @@
+{
+  "accepted_method": "Actual Metal Forward+ 1280x720 SubViewport; minimized window; force_draw(false); intervals are submission/process wall time, not presented FPS. Same quality/path/593 cells/four edits; 2s warmup + 12s x3, sequential engine runs.",
+  "outcome": "No material regression beyond observed repeatability in this isolated current-host method. GPU timer unavailable. This does not establish presented FPS or target-laptop support.",
+  "settings": {
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "device": "Apple M4 Pro (Apple9)",
+    "msaa": "4x (enum 2)",
+    "shadows": true,
+    "ssao": true,
+    "vsync": false,
+    "terrain_publication": "2 chunks/frame",
+    "input": "disabled for matched measurement"
+  },
+  "results": {
+    "baseline": {
+      "median_ms": [
+        6.901,
+        6.901,
+        6.904
+      ],
+      "p95_ms": [
+        7.525,
+        7.516,
+        7.482
+      ],
+      "max_ms": [
+        106.244,
+        102.812,
+        103.104
+      ],
+      "render_cpu_median_ms": [
+        0.328000009059906,
+        0.324000000953674,
+        0.347000002861023
+      ],
+      "render_cpu_p95_ms": [
+        1.14900004863739,
+        1.12800002098083,
+        1.18700003623962
+      ],
+      "publication_response_ms": [
+        194.039,
+        213.878,
+        202.323,
+        242.499,
+        207.718,
+        213.132,
+        216.725,
+        241.172,
+        200.104,
+        211.78,
+        218.764,
+        242.8
+      ],
+      "draw_calls": [
+        510.0,
+        510.0,
+        510.0
+      ],
+      "static_memory_mib": [
+        59.77370262146,
+        59.7864551544189,
+        59.7937984466553
+      ],
+      "video_memory_mib": [
+        217.890625,
+        217.890625,
+        217.890625
+      ],
+      "rendered_primitives": [
+        2260663.0,
+        2260663.0,
+        2260663.0
+      ]
+    },
+    "final": {
+      "median_ms": [
+        6.9,
+        6.903,
+        6.898
+      ],
+      "p95_ms": [
+        7.523,
+        7.523,
+        7.489
+      ],
+      "max_ms": [
+        106.922,
+        103.161,
+        91.77
+      ],
+      "render_cpu_median_ms": [
+        0.316000014543533,
+        0.337999999523163,
+        0.342000007629395
+      ],
+      "render_cpu_p95_ms": [
+        1.12699997425079,
+        1.182000041008,
+        1.08500003814697
+      ],
+      "publication_response_ms": [
+        197.244,
+        215.303,
+        215.655,
+        242.792,
+        199.831,
+        211.264,
+        216.614,
+        245.166,
+        195.132,
+        202.579,
+        200.341,
+        239.052
+      ],
+      "draw_calls": [
+        510.0,
+        510.0,
+        510.0
+      ],
+      "static_memory_mib": [
+        59.7767019271851,
+        59.789454460144,
+        59.7967977523804
+      ],
+      "video_memory_mib": [
+        217.890625,
+        217.890625,
+        217.890625
+      ],
+      "rendered_primitives": [
+        2260231.0,
+        2260231.0,
+        2260231.0
+      ]
+    }
+  }
+}

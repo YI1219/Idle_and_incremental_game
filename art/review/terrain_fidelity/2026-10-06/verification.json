@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-06",
+  "method": "Sequential fresh headless functional checks; visual Forward+ captures are separate.",
+  "checks": [
+    {
+      "script": "tests/terrain_water_impact_test.gd",
+      "exit_code": 0,
+      "seconds": 0.39,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nWATER IMPACT: 8/8 passed\n",
+      "stderr": ""
+    },
+    {
+      "script": "tests/terrain_shoreline_test.gd",
+      "exit_code": 0,
+      "seconds": 0.353,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n",
+      "stderr": ""
+    },
+    {
+      "script": "tests/terrain_waterfall_test.gd",
+      "exit_code": 0,
+      "seconds": 0.649,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n",
+      "stderr": ""
+    },
+    {
+      "script": "tests/terrain_contour_test.gd",
+      "exit_code": 0,
+      "seconds": 0.349,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n",
+      "stderr": ""
+    },
+    {
+      "script": "tests/terrain_editor_data_test.gd",
+      "exit_code": 0,
+      "seconds": 0.15,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n",
+      "stderr": ""
+    },
+    {
+      "script": "tests/terrain_editor_render_test.gd",
+      "exit_code": 0,
+      "seconds": 0.339,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RENDER: 339/339 passed\n",
+      "stderr": ""
+    },
+    {
+      "script": "tests/terrain_editor_decoration_test.gd",
+      "exit_code": 0,
+      "seconds": 0.337,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 89/89 passed\n",
+      "stderr": ""
+    },
+    {
+      "script": "tests/terrain_incremental_test.gd",
+      "exit_code": 0,
+      "seconds": 2.027,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n",
+      "stderr": ""
+    },
+    {
+      "script": "tests/terrain_editor_runtime_test.gd",
+      "exit_code": 0,
+      "seconds": 1.162,
+      "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n",
+      "stderr": ""
+    }
+  ]
+}
