@@ -9,6 +9,9 @@ func load_assets()->void:
 	assets.bush=_shrub_clusters(assets.bush)
 	assets.grass=_grass_models()
 	assets.grass_clump=_grass_clump_models()
+	assets.reeds=_reed_models()
+	assets.lily=_lily_models()
+	assets.path=_path_models()
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=[]
@@ -18,9 +21,9 @@ func load_assets()->void:
 	# raised crown, unequal lower fork masses and a small rear support.
 	# Their lower edges expose branch space rather than filling every shoulder.
 	var crown:Array=[
-		[Vector3(-.085,1.12,.035),Vector3(.85,.60,.64)],
-		[Vector3(-.39,1.02,-.14),Vector3(.52,.38,.52)],
-		[Vector3(.35,1.005,.075),Vector3(.50,.39,.48)],
+		[Vector3(-.085,1.12,.035),Vector3(.90,.74,.70)],
+		[Vector3(-.39,1.02,-.14),Vector3(.62,.40,.55)],
+		[Vector3(.35,1.005,.075),Vector3(.57,.41,.54)],
 		[Vector3(.045,1.025,-.345),Vector3(.35,.38,.38)],
 	]
 	var crown_parts:Array=[]
@@ -58,7 +61,7 @@ func load_assets()->void:
 	assets.vine=spray
 	for kind in assets:
 		# Retain the curved grass mesh's UVs/normals and palette texture.
-		if kind not in ["grass","grass_clump"]:assets[kind]=[_merge(assets[kind])]
+		if kind not in ["grass","grass_clump","reeds"]:assets[kind]=[_merge(assets[kind])]
 	# Apply after merging, which intentionally replaces individual source materials.
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
@@ -220,14 +223,14 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			if kind=="tree_wood" and not name_value.contains("wood"):continue
 			if kind=="tree_leaf" and not name_value.contains("leaf"):continue
 			if kind in ["bush","vine"] and not name_value.contains("leaf"):continue
-			var tint:=Color("728060")
+			var tint:=Color("697547")
 			if kind in ["tree_wood","fence"]:tint=Color("79634e") if not name_value.contains("Dark") else Color("615447")
-			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("a4a59a")
-			elif kind=="tree_leaf":tint=Color("728060")
-			elif kind=="bush":tint=Color("7c8868")
+			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("aaa89b")
+			elif kind=="tree_leaf":tint=Color("697547")
+			elif kind=="bush":tint=Color("73844e")
 			elif kind=="vine":tint=Color("68785c")
 			elif kind=="grass" or kind=="reeds":tint=Color("939b72")
-			elif kind=="lily":tint=Color("89956c")
+			elif kind=="lily":tint=Color("a8ad55")
 			elif kind=="flower":tint=Color("e2dcc1") if name_value.to_lower().contains("yellow") else Color("788665")
 			var arrays:Array=node.mesh.surface_get_arrays(surface)
 			var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
@@ -248,12 +251,12 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 				if kind=="shore_rock":
 					# Keep the retained stone's shoulders and crown facets. A hard
 					# height clamp collapsed its upper faces into a thin paving slab.
-					a.y=minf(a.y,.30)+maxf(a.y-.30,0.0)*.12
-					b.y=minf(b.y,.30)+maxf(b.y-.30,0.0)*.12
-					c.y=minf(c.y,.30)+maxf(c.y-.30,0.0)*.12
+					a.y=minf(a.y,.30)+maxf(a.y-.30,0.0)*.72
+					b.y=minf(b.y,.30)+maxf(b.y-.30,0.0)*.72
+					c.y=minf(c.y,.30)+maxf(c.y-.30,0.0)*.72
 				var shade:=.90+.13*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
 				if kind=="shore_rock":shade=.97+.04*sin((a.x+b.x+c.x)*6.13+(a.z+b.z+c.z)*3.7)
-				if kind in ["tree_leaf","bush","vine"]:shade=.97+.07*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
+				if kind in ["tree_leaf","bush","vine"]:shade=.92+.14*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
 				var color:=Color(tint.r*shade,tint.g*shade,tint.b*shade,1)
 				if kind in ["tree_leaf","bush","vine"]:
 					var box:AABB=leaf_box
@@ -324,3 +327,42 @@ func _vine_leaf(point:Vector3,box:AABB)->Vector3:
 	var along:=clampf(absf(leaf.y)/maxf(radius.y,.0001),0,1)
 	leaf.x*=lerpf(1.0,.12,pow(along,1.4))
 	return center+leaf
+
+func _reed_models()->Array:
+	var parts:=_grass_models("Grass_Common_Short")
+	for part:Dictionary in parts:
+		var box:AABB=part.pose*part.mesh.get_aabb()
+		var basis:=Basis.IDENTITY.scaled(Vector3(.32,.29,.32)/box.size.max(Vector3.ONE*.0001))
+		var foot:=Vector3(box.get_center().x,box.position.y,box.get_center().z)
+		part.pose=Transform3D(basis,-(basis*foot))*part.pose
+		var mat:ShaderMaterial=part.mesh.surface_get_material(0)
+		mat.set_shader_parameter("dark_color",Vector3(.16,.20,.075))
+		mat.set_shader_parameter("light_color",Vector3(.46,.50,.20))
+	return parts
+
+func _lily_models()->Array:
+	var surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
+	for pad in 5:
+		var center:=Vector3(sin(pad*2.4)*.18,0,cos(pad*2.4)*.19)
+		var radius:=.065+pad*.012
+		for side in range(1,12):
+			var a:=TAU*side/12.0+pad
+			var b:=TAU*(side+1)/12.0+pad
+			surface.triangle(center,center+Vector3(cos(a),0,sin(a))*radius,center+Vector3(cos(b),0,sin(b))*radius,Color("afb45e"),true)
+	var mesh:ArrayMesh=surface.mesh()
+	return [{"mesh":mesh,"pose":Transform3D.IDENTITY}]
+
+func _path_models()->Array:
+	var surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
+	var top:=PackedVector3Array()
+	var bottom:=PackedVector3Array()
+	for i in 8:
+		var a:=TAU*i/8.0
+		var r:=.28*(1+.08*sin(i*2.7))
+		top.append(Vector3(cos(a)*r,.065,sin(a)*r*.84))
+		bottom.append(Vector3(cos(a)*(r+.018),0,sin(a)*(r+.018)*.84))
+	for i in 8:
+		var j:=(i+1)%8
+		surface.triangle(Vector3(0,.065,0),top[i],top[j],Color("a4a18d"),true)
+		surface.quad(top[j],top[i],bottom[i],bottom[j],Color("969384"))
+	return [{"mesh":surface.mesh(),"pose":Transform3D.IDENTITY}]

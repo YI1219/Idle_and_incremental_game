@@ -540,7 +540,7 @@ func _mass_rock_relief(point:Vector3)->float:
 func _volume_relief(point:Vector3)->float:
 	# Unequal three-dimensional cells cut obliquely through the wall. A mass
 	# can cross old course heights; no layer of aligned slab centers remains.
-	var frame:=Vector3(point.x,point.y+point.x*.37+point.z*.29,point.z)/Vector3(2.9,3.4,2.9)
+	var frame:=Vector3(point.x,point.y+point.x*.12+point.z*.09,point.z)/Vector3(1.25,1.65,1.25)
 	var cell:=frame.floor()
 	if not _volume_site_cache.has(cell):
 		var sites:Array[Vector3]=[]
@@ -561,7 +561,7 @@ func _volume_relief(point:Vector3)->float:
 		delta/=sites[i+2]
 		var distance:=maxf(maxf(delta.x,delta.y),maxf(delta.z,(delta.x+delta.y+delta.z)*.54))
 		nearest=minf(nearest,distance)
-	return .98*clampf((.60-nearest)/.30,0,1)-.15
+	return .52*clampf((.62-nearest)/.35,0,1)-.03
 
 func _mass_rock_rows(p:Vector2,profile:Dictionary)->Array[float]:
 	# Resolve actual changes in the column profile, rather than every candidate
@@ -652,7 +652,7 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 		var b:=loop[(i+1)%loop.size()]
 		var out:=Vector2(b.y-a.y,a.x-b.x).normalized()
 		var sample:Dictionary=flow_edges[i].sample
-		var low:float=sample.get("height",-12.0)
+		var low:float=sample.get("height",_shell_floor((a+b)*.5,water_y)-2.2)
 		if low>=water_y-.1:continue
 		var before:=loop[(i-1+loop.size())%loop.size()]
 		var after:=loop[(i+2)%loop.size()]
@@ -815,6 +815,19 @@ func _splash(center:Vector3,out:Vector2,half_width:float=.62)->void:
 		_foam_triangle(peak,rings[0][j],rings[0][k],center.y)
 		_foam_triangle(rings[0][j],rings[1][j],rings[1][k],center.y)
 		_foam_triangle(rings[0][j],rings[1][k],rings[0][k],center.y)
+
+
+	for ripple in 3:
+		for j in 40:
+			var points:=PackedVector3Array()
+			for pair in [[j,0],[j+1,0],[j+1,1],[j,1]]:
+				var angle:=float(pair[0])*TAU/40.0
+				var radius:=1.12+ripple*.29+float(pair[1])*.024
+				points.append(center+tangent*cos(angle)*radius*half_width+forward*sin(angle)*radius*.90+Vector3(0,.045,0))
+			var start:int=surfaces.bank.vertices.size()
+			_foam_triangle(points[0],points[1],points[2],center.y)
+			_foam_triangle(points[0],points[2],points[3],center.y)
+			for k in range(start,surfaces.bank.vertices.size()):surfaces.bank.colors[k]=Color(0,1,1,.62-ripple*.13)
 
 func _foam_triangle(a:Vector3,b:Vector3,c:Vector3,base:float)->void:
 	for point:Vector3 in [a,b,c]:

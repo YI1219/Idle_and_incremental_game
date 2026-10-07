@@ -1,0 +1,89 @@
+{
+  "manifest": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/manifest.json",
+  "started_local": "2026-10-02T10:07:43",
+  "mode": "dry_run",
+  "requested": {
+    "route": "smart_mesh",
+    "topology": "triangles",
+    "target_faces": 2000,
+    "texture": false
+  },
+  "events": [
+    {
+      "t": 4.2,
+      "msg": "workbench ready",
+      "balance": 25200
+    },
+    {
+      "t": 5.4,
+      "msg": "multiview selected"
+    },
+    {
+      "t": 5.4,
+      "msg": "uploaded",
+      "slot": "前",
+      "file": "front.png"
+    },
+    {
+      "t": 6.9,
+      "msg": "uploaded",
+      "slot": "左侧",
+      "file": "left.png"
+    },
+    {
+      "t": 8.4,
+      "msg": "uploaded",
+      "slot": "右侧",
+      "file": "right.png"
+    },
+    {
+      "t": 9.9,
+      "msg": "uploaded",
+      "slot": "后",
+      "file": "back.png"
+    },
+    {
+      "t": 17.6,
+      "msg": "ready to generate",
+      "button": "生成模型 100 65",
+      "cost": 65
+    },
+    {
+      "t": 17.6,
+      "msg": "dry-run: stop before 生成模型"
+    }
+  ],
+  "balance_before": 25200,
+  "actual_ui": {
+    "topology_clicked": "三角面",
+    "faces_input_value": "2000",
+    "topology_buttons": [
+      {
+        "t": "四边面",
+        "state": "off"
+      },
+      {
+        "t": "三角面",
+        "state": "on"
+      }
+    ],
+    "panel_screenshot": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/tripo/studio_20261002_100743/02_topology_panel.png",
+    "faces_after_reopen": "2000",
+    "topology_after_reopen": [
+      {
+        "t": "四边面",
+        "state": "off"
+      },
+      {
+        "t": "三角面",
+        "state": "on"
+      }
+    ],
+    "ai_model_block": "通用设置\n\n拓扑\n\n订阅专享\n\n模型私密性\n\n仅分享\n\nAI 模型\n\nP2.0 - 抢先体验\n\n生成模型\n100\n65",
+    "generate_button_text": "生成模型 100 65",
+    "cost_shown": 65,
+    "left_panel_screenshot": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/tripo/studio_20261002_100743/03_parameter_panel.png"
+  },
+  "finished_local": "2026-10-02T10:08:01",
+  "elapsed_s": 17.6
+}

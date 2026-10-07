@@ -1,0 +1,78 @@
+{
+  "manifest": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/manifest.json",
+  "started_local": "2026-10-02T10:06:57",
+  "mode": "dry_run",
+  "requested": {
+    "route": "smart_mesh",
+    "topology": "triangles",
+    "target_faces": 2000,
+    "texture": false
+  },
+  "events": [
+    {
+      "t": 4.2,
+      "msg": "workbench ready",
+      "balance": 25200
+    },
+    {
+      "t": 5.4,
+      "msg": "multiview selected"
+    },
+    {
+      "t": 5.4,
+      "msg": "uploaded",
+      "slot": "前",
+      "file": "front.png"
+    },
+    {
+      "t": 6.9,
+      "msg": "uploaded",
+      "slot": "左侧",
+      "file": "left.png"
+    },
+    {
+      "t": 8.4,
+      "msg": "uploaded",
+      "slot": "右侧",
+      "file": "right.png"
+    },
+    {
+      "t": 10.0,
+      "msg": "uploaded",
+      "slot": "后",
+      "file": "back.png"
+    },
+    {
+      "t": 16.2,
+      "msg": "ready to generate",
+      "button": "生成模型 100 65",
+      "cost": 65
+    },
+    {
+      "t": 16.2,
+      "msg": "dry-run: stop before 生成模型"
+    }
+  ],
+  "balance_before": 25200,
+  "actual_ui": {
+    "topology_clicked": "三角面",
+    "faces_input_value": "2000",
+    "topology_buttons": [
+      {
+        "t": "四边面\nNew",
+        "cls": "flex transition items-center box-border justify-center text-3 c-gray-400 border border-white-10 data-[state=on]:c-gray-100 data-[state=on]:border-purple-1 data-"
+      },
+      {
+        "t": "三角面",
+        "cls": "flex transition items-center box-border justify-center text-3 c-gray-400 border border-white-10 data-[state=on]:c-gray-100 data-[state=on]:border-purple-1 data-"
+      }
+    ],
+    "panel_screenshot": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/tripo/studio_20261002_100657/02_topology_panel.png",
+    "ai_model_block": "通用设置\n\n拓扑\n\n订阅专享\n\n模型私密性\n\n仅分享\n\nAI 模型\n\nP2.0 - 抢先体验\n\n生成模型\n100\n65",
+    "generate_button_text": "生成模型 100 65",
+    "cost_shown": 65,
+    "left_panel_screenshot": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/tripo/studio_20261002_100657/03_parameter_panel.png"
+  },
+  "finished_local": "2026-10-02T10:07:13",
+  "elapsed_s": 16.2
+}

@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SHAPE DIAGNOSTIC: 20 wedges / 1384 substantial cliff triangles, max edge 2.356
+REWORK SHAPE: failures 1; default foot (8.5, -4.516027, 6.0); minimum foot (8.5, -4.503643, 6.0)
+ERROR: Default-height shell still contracts to an unnecessarily deep global floor
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] run (res://tests/terrain_rework_shape_test.gd:29)

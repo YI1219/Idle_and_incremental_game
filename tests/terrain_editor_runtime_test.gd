@@ -35,7 +35,7 @@ func run()->void:
 	motion.relative=Vector2(100,100)
 	motion.button_mask=MOUSE_BUTTON_MASK_LEFT|MOUSE_BUTTON_MASK_RIGHT
 	camera._unhandled_input(motion)
-	check(camera.rotation==orientation and camera.position.y==initial.y,"vertical and orbit inputs disabled")
+	check(camera.rotation==orientation and camera.position.y==initial.y,"unpressed orbit motion does not change camera")
 	camera.wheel(-2.0)
 	check(camera.position.y==initial.y,"wheel changes target without height jump")
 	camera.advance(1.0/60.0)

@@ -1,0 +1,43 @@
+{
+  "final.png": {
+    "sha256": "e0d4ecc579e0d67e4d2e8a3e4064cdbf36b00acca543efbf9af7b564af229413",
+    "bytes": 1152475
+  },
+  "orbit_left.png": {
+    "sha256": "b6b8fb68a73aec72685aa52a2bb97716f56ab7269735a1fafe721eb7ce3f0baa",
+    "bytes": 1101993
+  },
+  "orbit_right.png": {
+    "sha256": "f7eef13257e3dd60d2fd4b2c80d37170691b155edba04cf81719d9e8ed43271b",
+    "bytes": 1177463
+  },
+  "orbit_back.png": {
+    "sha256": "41a4ae01cb0d1afd18ece0980cb4b3fa804da5606747f339d166d0c927ced538",
+    "bytes": 1288836
+  },
+  "garden_close.png": {
+    "sha256": "7df5303c7cf8d6f5cc1f9e12eca78023ec9227df5fa07b58cec73c970c3d289b",
+    "bytes": 1219177
+  },
+  "water_close.png": {
+    "sha256": "c0b1064431f8f53f34ec99cf34d9bf1ba1b600548cd15b65cebcf1ff65eed4ce",
+    "bytes": 1234426
+  },
+  "zoom_out.png": {
+    "sha256": "914b1958b5543937ad03abaca0211882e934cebfea0805b1f40d621d84c2a849",
+    "bytes": 968384
+  },
+  "gameplay_ui.png": {
+    "sha256": "beab9410aeab50eda2a17e3121b6db09792c487936e61754adc20afcd92f0080",
+    "bytes": 1151432
+  },
+  "before.png": {
+    "sha256": "c50322075dd1dd9bc1afee00f26b080466e2e738c0c5bd7919caf3139daf606b",
+    "bytes": 788239
+  },
+  "target": {
+    "path": "art/source/visual_targets/2026-10-06/target.png",
+    "sha256": "2b861ae1a9a7ae7b706ec7603a15b933388235902060e0748e3a5230a56795c9",
+    "role": "User supplied target; reference only, not runtime asset."
+  }
+}

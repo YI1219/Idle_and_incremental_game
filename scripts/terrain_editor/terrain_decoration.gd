@@ -54,8 +54,11 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					if ground.is_empty() or ground.water>=0 or absf(ground.height-h)>.01:continue
 					if not _stable(field,p+offset,h,.18):continue
 					result.grass.append(_transform(origin+Vector3(offset.x,0,offset.y),angle+tuft*2.4,Vector3(.70,.20,.70)*(.85+random_at(cell,data.seed,120+tuft)*.45)))
-				if random_at(cell,data.seed,13)<.24:result.flower.append(_transform(origin,angle,Vector3.ONE*.9))
-			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.20:
+				if random_at(cell,data.seed,13)<.66:
+					for bloom in 4:
+						var flower_at:=p+Vector2(sin(bloom*2.4+angle),cos(bloom*2.4+angle))*.24
+						if _stable(field,flower_at,h,.12):result.flower.append(_transform(Vector3(flower_at.x,h,flower_at.y),angle+bloom,Vector3.ONE*(1.1+bloom*.12)))
+			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.36:
 				var pose:=_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2))
 				if _supported_shrub(field,pose,h):result.bush.append(pose)
 			if not house_clear and cluster>.26 and random_at(cell,data.seed,141)<.13 and _stable(field,p,h,.52):
@@ -64,7 +67,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				result.grass_clump.append(_transform(origin,angle,Vector3(1.10,1.18,1.05)))
 			if not house_clear and random_at(cell,data.seed,7)<.018:result.surface_rock.append(_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7))
 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
-	for spec in [[Vector2(-16,-3),Vector3(1.05,1.02,1.0)],[Vector2(-5,-8),Vector3(.96,.98,1.04)],[Vector2(6.3,-3.3),Vector3(1.0,1.0,.97)],[Vector2(15.6,2),Vector3(1.03,1.01,.96)]]:
+	for spec in [[Vector2(-16,-3),Vector3(1.28,1.02,1.16)],[Vector2(-5,-8),Vector3(.96,.98,1.04)],[Vector2(6.3,-3.3),Vector3(1.0,1.0,.97)],[Vector2(15.6,2),Vector3(1.03,1.01,.96)]]:
 		var p:Vector2=spec[0]
 		if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
 		var sample:Dictionary=field.surface_at(p)
@@ -94,14 +97,14 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if foliage_anchors.has(anchor_key):continue
 				foliage_anchors[anchor_key]=true
 				var growth:=sin(p.x*.58+sin(p.y*.37)*1.4)*cos(p.y*.43-p.x*.17)
-				if growth<.18 or random_at(cell,data.seed,81)>.56:continue
+				if growth<-.35 or random_at(cell,data.seed,81)>.82:continue
 				var tuft:=p-out*.70
 				var tuft_ground:Dictionary=field.surface_at(tuft)
 				if not tuft_ground.is_empty() and tuft_ground.water<0 and absf(tuft_ground.height-h)<.01 and _stable(field,tuft,h,.52):
 					result.grass_clump.append(_transform(Vector3(tuft.x,h,tuft.y),p.x+p.y,Vector3.ONE*.90))
 				# Compact root groups and short, unequal drapes leave quiet rock
 				# between patches. The existing blade module remains unchanged.
-				var wide_patch:bool=growth>.48 and random_at(cell,data.seed,82)<.44
+				var wide_patch:bool=growth>.05 and random_at(cell,data.seed,82)<.70
 				var tangent:=Vector2(-out.y,out.x)
 				var patch_width:=.78+random_at(cell,data.seed,83)*.38
 				var crowns:=2 if wide_patch else 1
@@ -113,7 +116,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					result.vine.append(Transform3D(basis.scaled_local(Vector3(.94,.80,.78) if wide_patch else Vector3(.70,.65,.70)),root_position))
 				var strands:=2 if wide_patch and random_at(cell,data.seed,84)<.18 else 1
 				for strand in strands:
-					var length:=3+int(random_at(cell,data.seed,85+strand)*3) if wide_patch else 1+int(random_at(cell,data.seed,85)*2)
+					var length:=11+int(random_at(cell,data.seed,85+strand)*5) if wide_patch else 4+int(random_at(cell,data.seed,85)*4)
 					var offset:float=(float(strand)-float(strands-1)*.5)*patch_width*.42
 					var drop:=.12+random_at(cell,data.seed,160+strand)*.08
 					for leaf in length:
@@ -122,7 +125,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						var spread:=tangent*(offset+sin(leaf*1.7+strand*2.1)*.08)
 						var anchor:Vector3=field._profile_point(p,y,out,profile)+Vector3(spread.x,0,spread.y)
 						var turn:=atan2(out.x,out.y)+(random_at(cell,data.seed,150+leaf+strand*11)-.5)*.54
-						var width:float=patch_width*((1.12-leaf*.11) if wide_patch else (.80-leaf*.13))
+						var width:float=patch_width*(maxf(.30,1.12-leaf*.075) if wide_patch else maxf(.22,.80-leaf*.075))
 						var draped:=_drape_vine(field,_transform(anchor,turn,Vector3(width,.70 if wide_patch else .60,.85)),out)
 						if not draped.is_empty():result.vine.append(draped.pose)
 						drop+=.25+random_at(cell,data.seed,170+leaf+strand*11)*.11
@@ -155,7 +158,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					if field.shore_weight(bank-out*.22,level*.5)>.5 and not near_drop and field.shore_support(bank-out*.22,out,level*.5,.70):
 						var plant:=bank+out*.25
 						if random_at(cell,data.seed,1080+block)<.18 and _stable(field,plant,level*.5,.18):
-							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*2.2))
+							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*3.8))
 						continue
 					var turn:float=(random_at(cell,data.seed,1000+block)-.5)*.40
 					var width:float=.68+random_at(cell,data.seed,1020+block)*.58
@@ -163,10 +166,10 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					var depth:float=.64+random_at(cell,data.seed,1060+block)*.20
 					result.shore_rock.append(_transform(Vector3(bank.x,level*.5-.07,bank.y),-angle+turn,Vector3(width,rise,depth)))
 				var cell:=Vector2i(p.floor())
-				if random_at(cell,data.seed,95)<.18:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*2.5))
+				if random_at(cell,data.seed,95)<.66:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*4.2))
 				var lily:=p-out*.8
 				var wet:Dictionary=field.surface_at(lily)
-				if not wet.is_empty() and wet.water==level and random_at(cell,data.seed,96)<.22:result.lily.append(_transform(Vector3(lily.x,level*.5+.06,lily.y),angle,Vector3.ONE*1.2))
+				if not wet.is_empty() and wet.water==level and random_at(cell,data.seed,96)<.62:result.lily.append(_transform(Vector3(lily.x,level*.5+.06,lily.y),angle,Vector3.ONE*1.9))
 	_path(result,field,chunk)
 	# Three small pale flower groups at path margins, with open ground between.
 	for at:Vector2 in [Vector2(-12.8,-2.9),Vector2(-12.7,1.6),Vector2(-9.4,4.5)]:
@@ -239,15 +242,15 @@ func _path(result:Dictionary,field,chunk:Vector2i)->void:
 	for i in points.size()-1:
 		var a:Vector2=points[i]
 		var b:Vector2=points[i+1]
-		var count:=ceili(a.distance_to(b)/.8)
+		var count:=ceili(a.distance_to(b)/.90)
 		for j in count:
 			var p:=a.lerp(b,float(j)/count)
 			if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
 			var sample:Dictionary=field.surface_at(p)
 			if sample.is_empty() or sample.water>=0:continue
-			result.path.append(_transform(Vector3(p.x,sample.height+.015,p.y),i*.4+j*.13,Vector3(1.4,.7,1.6)))
+			result.path.append(_transform(Vector3(p.x,sample.height+.015,p.y),i*.4+j*.13,Vector3(1.55,.65,1.70)))
 func _fences(result:Dictionary,field,chunk:Vector2i)->void:
-	for spec in [[Vector2(-16,-5),.1,3],[Vector2(-7,-9),0.0,3],[Vector2(-7,4),.18,3],[Vector2(10,-4),-.1,3],[Vector2(16,7),.7,2]]:
+	for spec in [[Vector2(-10.4,-2.9),0.0,3],[Vector2(-10.6,-6.1),PI*.5,2],[Vector2(-16,-5),.1,3],[Vector2(-7,-9),0.0,3],[Vector2(-7,4),.18,3],[Vector2(10,-4),-.1,3],[Vector2(16,7),.7,2]]:
 		for i in int(spec[2]):
 			var p:Vector2=spec[0]+Vector2(cos(spec[1]),sin(spec[1]))*i*1.45
 			if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue

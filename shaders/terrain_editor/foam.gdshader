@@ -16,6 +16,7 @@ void fragment(){
  float froth=smoothstep(.28,.68,churn*.65+patch*.35);
  float broken=mix(.34+.60*froth,.97,smoothstep(.45,.85,COLOR.a));
  ALPHA=COLOR.a*mix(broken,mix(.12,.62,smoothstep(.25,.65,churn)),crest);
+ if(COLOR.r<.5){ALBEDO=vec3(.80,.87,.82); ALPHA=COLOR.a*(.65+churn*.35);}
  ROUGHNESS=.78;
  SPECULAR=.15;
 }

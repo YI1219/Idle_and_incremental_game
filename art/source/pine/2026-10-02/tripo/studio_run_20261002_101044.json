@@ -1,0 +1,41 @@
+{
+  "manifest": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/manifest.json",
+  "started_local": "2026-10-02T10:10:44",
+  "mode": "download_only",
+  "requested": {
+    "route": "smart_mesh",
+    "topology": "triangles",
+    "target_faces": 2000,
+    "texture": false
+  },
+  "events": [
+    {
+      "t": 4.3,
+      "msg": "workbench ready",
+      "balance": 25135
+    },
+    {
+      "t": 4.5,
+      "msg": "selected newest asset card",
+      "index": 5
+    },
+    {
+      "t": 12.9,
+      "msg": "downloaded",
+      "file": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/tripo/pine_raw_v01.glb",
+      "suggested": "树形3d模型.glb",
+      "bytes": 53232
+    }
+  ],
+  "balance_before": 25135,
+  "result_screenshot": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/tripo/studio_20261002_101044/04_result.png",
+  "export_panel_text": "导出\n\n文件名\n\n格式\n\nGLB\n\n底部中心轴点\n\n发送至\n\n导出",
+  "export_panel_screenshot": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/tripo/studio_20261002_101044/05_export_panel.png",
+  "download": {
+    "file": "/Users/yi/Projects/games/Idle_and_incremental_game/art/source/pine/2026-10-02/tripo/pine_raw_v01.glb",
+    "suggested_filename": "树形3d模型.glb",
+    "bytes": 53232
+  },
+  "finished_local": "2026-10-02T10:10:57",
+  "elapsed_s": 12.9
+}

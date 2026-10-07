@@ -25,7 +25,8 @@ void fragment(){
 		vec3 timber=mix(vec3(.18,.125,.083),vec3(.28,.20,.13),.5+.15*sin(along*21.0+local_position.y*3.0));
 		timber*=1.0-seam*.16;
 		timber=mix(timber,vec3(.12,.095,.068),max(post,beam)*.85);
-		base=mix(base,timber,.94);
+		vec3 plaster=vec3(.66,.61,.48)*(1.0-seam*.04);
+		base=mix(plaster,timber,max(post,beam)*.92);
 	}
 	ALBEDO=base;
 	ROUGHNESS=.93;

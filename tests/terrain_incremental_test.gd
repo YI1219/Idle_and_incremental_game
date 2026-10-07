@@ -92,7 +92,8 @@ func run()->void:
 		var faces:PackedVector3Array=fall.mesh.get_faces()
 		for i in range(0,faces.size(),3):
 			var center:Vector3=(faces[i]+faces[i+1]+faces[i+2])/3.0
-			if center.y>=-6:continue
+			# Probe the visible tail below this local shell, independent of its old -12 m endpoint.
+			if center.y>=preload("res://scripts/terrain_editor/contour_terrain.gd")._shell_floor(Vector2(center.x,center.z),1.5)-.3:continue
 			var normal:Vector3=(faces[i+1]-faces[i]).cross(faces[i+2]-faces[i]).normalized()
 			fall_hit=renderer.pick(center+normal*3,-normal)
 			if not fall_hit.is_empty():break

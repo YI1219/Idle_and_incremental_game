@@ -77,7 +77,7 @@ func _ready()->void:
 	column.add_child(preset)
 	_button(column,"Reset selected layout",func():editor.select_preset(preset.selected))
 	column.add_child(HSeparator.new())
-	column.add_child(_label("Drag left: edit terrain\nWASD / arrows: horizontal pan\nMiddle drag: horizontal pan\nWheel: height & zoom\nHome: recenter · Ctrl+Z: undo",12))
+	column.add_child(_label("Drag left: edit terrain\nWASD / arrows: horizontal pan\nMiddle drag: horizontal pan\nRight drag / Q E: orbit\nWheel: height & zoom\nHome: recenter · Ctrl+Z: undo",12))
 	status=_label("All visible land is editable",11)
 	column.add_child(status)
 	diagnostics=_label("",11)

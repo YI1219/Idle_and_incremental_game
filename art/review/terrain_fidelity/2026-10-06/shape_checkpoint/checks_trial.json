@@ -1,0 +1,50 @@
+[
+  {
+    "name": "terrain_cliff_interface",
+    "exit": 0,
+    "seconds": 0.95,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLIFF INTERFACES: 96 boundary points; 0 separated; max=0.0\nIRREGULAR CLIFF EDGES: [2306, 0, 0.0]\nIRREGULAR BROAD/NARROW POLYLINES: [96, 0, 0.0]\nMULTI-ELEVATION CLIFF EDGES: 5104 points; 0 separated; max=0.0\n"
+  },
+  {
+    "name": "terrain_broad_facet",
+    "exit": 0,
+    "seconds": 0.38,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBROAD CLIFF FACETS: 1836 large faces; 184 planar normals\nBROAD NORMAL VALIDITY: 0 invalid entries\n"
+  },
+  {
+    "name": "terrain_upper_rock",
+    "exit": 0,
+    "seconds": 0.38,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 15 rays, 12 shoulders, 25 nearby join vertices, 0 failures\n"
+  },
+  {
+    "name": "terrain_narrow_cliff",
+    "exit": 0,
+    "seconds": 0.32,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 568 slices, 0 failures, smallest gap 0.0171\n"
+  },
+  {
+    "name": "terrain_waterfall",
+    "exit": 0,
+    "seconds": 1.77,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n"
+  },
+  {
+    "name": "terrain_shore_transition",
+    "exit": 0,
+    "seconds": 0.37,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples\nSHORE TRANSITION: 240 triangles, wet/dry continuity true/true, 0 failures\n"
+  },
+  {
+    "name": "terrain_rework_shape",
+    "exit": 0,
+    "seconds": 0.37,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHAPE DIAGNOSTIC: 0 wedges / 1158 substantial cliff triangles, max edge 1.539\nREWORK SHAPE: failures 0; default foot (9.34286, -2.898004, 6.0); minimum foot (9.410195, -4.5, 6.0)\n"
+  },
+  {
+    "name": "terrain_crown_integrity",
+    "exit": 0,
+    "seconds": 0.37,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":4,\"contained_source_entries\":3072,\"max_plane_violation\":-0.000000119209289550781,\"outward_surfaces\":4,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":3072,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}\nPUBLISHED CROWN MATCH: true, entries=2256, max_difference=0.0, different_entries=0\n"
+  }
+]

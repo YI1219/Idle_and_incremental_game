@@ -1,0 +1,161 @@
+{
+  "asset": "xianxia_pine_v01",
+  "status": "raw_received_refined_candidate",
+  "purpose": "End-to-end Tripo multiview pipeline test: stylized 仙松 with twisted trunk and 5 clumped cloud-shelf canopy pads, ~2.7-3.0 m tall in game, read at ~45-50 deg isometric camera.",
+  "views": {
+    "front": {
+      "file": "front.png",
+      "source": "art/work/pine/refviews_b/front_rgba.png (Blender procedural blockout render, tools/pine/render_pine_refviews.py)",
+      "sha256": "6f3edef638170705947f6e9181a464da586a700cfdb8081a80dfac4eff41ade3",
+      "size": [
+        1024,
+        1024
+      ],
+      "colored_structure_bounds": [
+        133,
+        186,
+        862,
+        885
+      ]
+    },
+    "left": {
+      "file": "left.png",
+      "source": "art/work/pine/refviews_b/left_rgba.png (Blender procedural blockout render, tools/pine/render_pine_refviews.py)",
+      "sha256": "0a74e815092f3a2a6bcbe6afc3663f69e0d639c78c8518b8c482c85a4af0a450",
+      "size": [
+        1024,
+        1024
+      ],
+      "colored_structure_bounds": [
+        278,
+        186,
+        791,
+        885
+      ]
+    },
+    "right": {
+      "file": "right.png",
+      "source": "art/work/pine/refviews_b/right_rgba.png (Blender procedural blockout render, tools/pine/render_pine_refviews.py)",
+      "sha256": "944788bfb93534136dfbf63abfda46fcf18d4fcc75a10f3f000e12ddf1bcd53f",
+      "size": [
+        1024,
+        1024
+      ],
+      "colored_structure_bounds": [
+        233,
+        187,
+        746,
+        885
+      ]
+    },
+    "back": {
+      "file": "back.png",
+      "source": "art/work/pine/refviews_b/back_rgba.png (Blender procedural blockout render, tools/pine/render_pine_refviews.py)",
+      "sha256": "99127849909a2e472b2544dbcc242738884a5d7da9d01b8e39b61c1e37c265a8",
+      "size": [
+        1024,
+        1024
+      ],
+      "colored_structure_bounds": [
+        162,
+        187,
+        891,
+        885
+      ]
+    }
+  },
+  "view_convention": "Tree front faces -Y. Orthographic, same scale/framing (ortho 4.8 m, camera height 1.6 m) for all four. left = camera on the tree's own left (+X), front at image-left; right = camera on -X, front at image-right. Lighting is fixed relative to each camera (upper-left key + soft sky).",
+  "studio": {
+    "route": "smart_mesh",
+    "model": "P2.0 Smart Mesh",
+    "mode": "multiview (four separate slots 前/左侧/右侧/后)",
+    "topology": "triangles",
+    "target_faces": 2000,
+    "texture": false,
+    "export": "GLB"
+  },
+  "suggested_settings": {
+    "model": "P2.0 Smart Mesh",
+    "mode": "four separate multiview slots",
+    "topology": "triangles",
+    "target_faces": 2000,
+    "texture": false,
+    "export": "GLB",
+    "texture_stage": "none - geometry only; palette/vertex colors applied in Blender"
+  },
+  "download_directory": "tripo/",
+  "suggested_filename": "pine_raw_v01.glb",
+  "review": "Four views rendered from one procedural Blender blockout, so they are mutually consistent by construction (same tree, rotated 90 deg). The GenerateImage tool was not available to the executing agent, so AI-painted concept views were replaced by blockout renders.",
+  "runtime_targets": {
+    "height_m": [
+      2.5,
+      3.2
+    ],
+    "face_budget": [
+      300,
+      1500
+    ],
+    "origin": "trunk base center, Y-up in Godot"
+  },
+  "tripo_task_id": null,
+  "received_exports": [
+    {
+      "file": "pine_raw_v01.glb",
+      "sha256": "3e049f083d9aec4673130774155fe6f7ad11d32e4ba2fca5209849fbebffde1d",
+      "bytes": 53232,
+      "meshes": [
+        {
+          "vertices": 1094,
+          "triangles": 2141,
+          "connected_islands": "10 (5 canopy pads are separate islands)",
+          "boundary_edges": 12,
+          "nonmanifold_edges": 13,
+          "dimensions_normalized": [
+            0.704,
+            1.0,
+            0.958
+          ]
+        }
+      ],
+      "images": [],
+      "orientation_note": "raw front faces +X in Blender/glTF; refine rotates yaw 270 so front faces -Y (Blender) / +Z (Godot)"
+    }
+  ],
+  "actual_studio_parameters": {
+    "date_local": "2026-10-02 10:08 HKT",
+    "tool": "tools/tripo/studio_generate.py (Playwright, headed, profile ~/.tripo-studio-profile)",
+    "route": "智能网格 (smart mesh)",
+    "ai_model": "P2.0 - 抢先体验",
+    "input": "multiview 前/左侧/右侧/后",
+    "topology": "三角面 (data-state=on)",
+    "face_limit": 2000,
+    "texture": "none (smart mesh outputs geometry only; 贴图生成 not clicked)",
+    "generate_button": "生成模型 100 65",
+    "credits_shown": 65,
+    "balance_before": 25200,
+    "balance_after": 25135,
+    "generation_seconds_approx": 19,
+    "export": "toolbar 导出 -> format GLB, 底部中心轴点 off (default), filename default 树形3d模型.glb; export cost 0 credits",
+    "logs": [
+      "tripo/studio_run_20261002_100808.json",
+      "tripo/studio_run_20261002_101044.json"
+    ],
+    "screenshots": "tripo/studio_20261002_100808/ (02_topology_panel, 03_parameter_panel, 04_result), tripo/studio_20261002_101044/05_export_panel.png"
+  },
+  "refinement": {
+    "script": "../../../../tools/pine/refine_tripo_pine.py",
+    "glb": "../../../work/pine/pine_refined_v01.glb",
+    "blend": "../../../work/pine/pine_refined_v01.blend",
+    "report": "../../../review/pine/2026-10-02/refine_report.json",
+    "triangles": 1199,
+    "height_m": 3.0,
+    "material": "single PinePalette material, colours in COLOR_0 (palette ramp x vertex AO)",
+    "review": [
+      "../../../review/pine/2026-10-02/review.png",
+      "../../../review/pine/2026-10-02/review_close.png",
+      "../../../review/pine/2026-10-02/compare.png",
+      "../../../review/pine/2026-10-02/godot_review.png"
+    ],
+    "runtime_integrated": false
+  }
+}

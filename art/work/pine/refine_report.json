@@ -1,0 +1,42 @@
+{
+  "source": "art/source/pine/2026-10-02/tripo/pine_raw_v01.glb",
+  "source_sha256": "3e049f083d9aec4673130774155fe6f7ad11d32e4ba2fca5209849fbebffde1d",
+  "raw_faces": 2141,
+  "target_tris": 1200,
+  "height_m": 3.0,
+  "scale_applied": 3.1331,
+  "yaw_fix_deg": 270,
+  "yaw_scores_mean_nn_m": {
+    "0": 0.3431,
+    "90": 0.3566,
+    "180": 0.2954,
+    "270": 0.1764
+  },
+  "dimensions_m": [
+    3.136,
+    2.206,
+    3.0
+  ],
+  "palette": {
+    "bark_dark": "#4f4640",
+    "bark": "#6e6258",
+    "bark_light": "#8a7d70",
+    "leaf_dark": "#3e5f57",
+    "leaf": "#5d8273",
+    "leaf_light": "#8fb09c"
+  },
+  "islands": 10,
+  "triangles": 1199,
+  "vertices": 623,
+  "leaf_faces": 897,
+  "boundary_edges": 12,
+  "nonmanifold_edges": 13,
+  "ao_mean": 0.895,
+  "output_glb": "art/work/pine/pine_refined_v01.glb",
+  "output_glb_bytes": 28356,
+  "notes": [
+    "canopy/bark split = height>36% and ray thickness>0.20 m, 1-ring majority smoothed, then per connected island majority (>=60% -> all leaf, <=40% -> all bark)",
+    "colour = palette ramp x hemisphere vertex AO (32 rays, 0.9 m), stored in COLOR_0; materials have no textures",
+    "front faces -Y in Blender (= +Z in glTF/Godot)"
+  ]
+}

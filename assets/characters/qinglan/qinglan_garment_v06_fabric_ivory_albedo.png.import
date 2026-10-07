@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://brmmyhy7lna64"
-path="res://.godot/imported/qinglan_garment_v06_fabric_ivory_albedo.png-36278e4ed9f37f4b531afd96ef9b761f.ctex"
+path.s3tc="res://.godot/imported/qinglan_garment_v06_fabric_ivory_albedo.png-36278e4ed9f37f4b531afd96ef9b761f.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "b02396e4eac61965e825da032d7e831b"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/characters/qinglan/qinglan_garment_v06_fabric_ivory_albedo.png"
-dest_files=["res://.godot/imported/qinglan_garment_v06_fabric_ivory_albedo.png-36278e4ed9f37f4b531afd96ef9b761f.ctex"]
+dest_files=["res://.godot/imported/qinglan_garment_v06_fabric_ivory_albedo.png-36278e4ed9f37f4b531afd96ef9b761f.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

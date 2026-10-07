@@ -42,11 +42,13 @@ void fragment() {
 	float landing = smoothstep(.52,1.0,receiver/.4);
 	float drop = COLOR.g*16.0;
 	float turn = smoothstep(.12,.65,drop);
-	float strand = flow_noise(vec2(flow.x*7.0+bend*.40,flow.y*.65));
-	float streak = smoothstep(.48,.78,strand)*smoothstep(.24,.65,lifetime);
-	float aeration = clamp(streak*mix(.28,.80,turn)+landing*(.65+.35*body),0.0,1.0);
-	vec3 color = mix(vec3(.25,.40,.39),vec3(.39,.54,.51),body*.7);
-	color = mix(color,vec3(.78,.84,.79),aeration);
+	float strand = flow_noise(vec2(flow.x*13.0+bend*.65,flow.y*.65));
+	float streak = smoothstep(.36,.67,strand)*smoothstep(.14,.48,lifetime);
+	float filament=pow(.5+.5*sin(across*42.0+bend*.9),12.0);
+	streak=max(streak*.65,filament*(.5+.5*lifetime));
+	float aeration = clamp(.30+streak*mix(.45,.75,turn)+landing*(.50+.25*body),0.0,1.0);
+	vec3 color = mix(vec3(.22,.39,.46),vec3(.41,.59,.63),body*.7);
+	color = mix(color,vec3(.88,.91,.84),aeration);
 	float side = 1.0;
 	if (COLOR.a<.5) {
 		float edge = min(COLOR.r,1.0-COLOR.r);
@@ -68,8 +70,9 @@ void fragment() {
 	if(abs(determinant)>.00000001) NORMAL = normalize(abs(determinant)*NORMAL-gradient*.055);
 	ALBEDO = color;
 	// Restrained local fill approximates light scattered inside terminal froth.
-	EMISSION = vec3(.045,.065,.070)*aeration*landing;
+	EMISSION = color*.12+vec3(.11,.13,.13)*aeration;
 	ALPHA = opacity*side;
+	if(COLOR.a<.001) ALPHA*=1.0-smoothstep(3.2,5.5,drop);
 	ROUGHNESS = .65;
 	SPECULAR = .10;
 }

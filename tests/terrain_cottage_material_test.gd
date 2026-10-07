@@ -1,5 +1,5 @@
 extends SceneTree
-# Real retained cottage plaster at wall/gable heights must share warm timber treatment.
+# Real retained cottage plaster at wall/gable heights must share light plaster with timber posts.
 const Props=preload("res://scripts/terrain_editor/terrain_props.gd")
 var failures:=0
 var checks:=0
@@ -77,9 +77,9 @@ func run()->void:
 	var wall:=sample(image,camera,centers[0])
 	var gable:=sample(image,camera,centers[1])
 	print("COTTAGE MATERIAL SAMPLES wall=",wall," gable=",gable)
-	check(wall.r-wall.g>.06,"Wall plaster must receive a warm timber finish")
-	check(gable.r-gable.g>.06,"Gable plaster must receive timber, not height-based roof shading")
-	check(absf((wall.r-wall.g)-(gable.r-gable.g))<.055,"Wall and gable timber should have consistent warmth")
+	check(wall.r>.55 and wall.r-wall.g>.015,"Wall plaster stays light and warm")
+	check(gable.r>.55 and gable.r-gable.g>.015,"Gable plaster stays light, without height-based roof shading")
+	check(absf((wall.r-wall.g)-(gable.r-gable.g))<.055,"Wall and gable plaster should have consistent warmth")
 	check(absf(wall.r-gable.r)<.07,"Plaster gable must not switch to a brighter roof finish above 2.3 metres")
 	check(plaster.albedo_color==original_color,"Workshop shading must not modify retained source material")
 	# The same panel post must remain on its local coordinates as the view changes.

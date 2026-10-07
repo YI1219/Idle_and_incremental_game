@@ -1,0 +1,688 @@
+{
+ "url": "https://studio.tripo3d.com/workspace/generate",
+ "buttons": [
+  {
+   "t": "3D 工作台",
+   "cls": "bg-gray-4! group c-yellow-1 px-3 py-2 rounded-25 flex gap-1 hover:bg-white-5",
+   "r": {
+    "x": 140.7734375,
+    "y": 19,
+    "width": 102.703125,
+    "height": 34,
+    "top": 19,
+    "right": 243.4765625,
+    "bottom": 53,
+    "left": 140.7734375
+   }
+  },
+  {
+   "t": "",
+   "cls": "",
+   "r": {
+    "x": 1388,
+    "y": 20,
+    "width": 32,
+    "height": 32,
+    "top": 20,
+    "right": 1420,
+    "bottom": 52,
+    "left": 1388
+   }
+  },
+  {
+   "t": "ICP",
+   "cls": "text-3.5 px-3 border border-white-5 rounded-25 h-8 truncate transition box-borde",
+   "r": {
+    "x": 1331.7890625,
+    "y": 20,
+    "width": 48.2109375,
+    "height": 32,
+    "top": 20,
+    "right": 1380,
+    "bottom": 52,
+    "left": 1331.7890625
+   }
+  },
+  {
+   "t": "18",
+   "cls": "border border-white-5 rounded-25 shrink-0 size-8.5 relative",
+   "r": {
+    "x": 1249.7890625,
+    "y": 19,
+    "width": 34,
+    "height": 34,
+    "top": 19,
+    "right": 1283.7890625,
+    "bottom": 53,
+    "left": 1249.7890625
+   }
+  },
+  {
+   "t": "升级",
+   "cls": "tripo-button group font-500 rounded-25 cursor-pointer box-border text-3 c-gray-5",
+   "r": {
+    "x": 1178.7578125,
+    "y": 25,
+    "width": 57.03125,
+    "height": 22,
+    "top": 25,
+    "right": 1235.7890625,
+    "bottom": 47,
+    "left": 1178.7578125
+   }
+  },
+  {
+   "t": "发送至 3D 软件",
+   "cls": "px-2.25 border border-white-5 rounded-25 flex gap-1 h-8 cursor-pointer whitespac",
+   "r": {
+    "x": 951.1640625,
+    "y": 20,
+    "width": 140.5703125,
+    "height": 32,
+    "top": 20,
+    "right": 1091.734375,
+    "bottom": 52,
+    "left": 951.1640625
+   }
+  },
+  {
+   "t": "高精度模型",
+   "cls": "c-gray-100 text-3 flex h-full w-full cursor-pointer transition items-center just",
+   "r": {
+    "x": 79,
+    "y": 112,
+    "width": 112,
+    "height": 32,
+    "top": 112,
+    "right": 191,
+    "bottom": 144,
+    "left": 79
+   }
+  },
+  {
+   "t": "智能网格",
+   "cls": "text-3 flex h-full w-full cursor-pointer transition items-center justify-center ",
+   "r": {
+    "x": 191,
+    "y": 112,
+    "width": 112,
+    "height": 32,
+    "top": 112,
+    "right": 303,
+    "bottom": 144,
+    "left": 191
+   }
+  },
+  {
+   "t": "",
+   "cls": "text-3 rounded-32 flex h-full w-1/2 transition items-center justify-center z-1 c",
+   "r": {
+    "x": 94,
+    "y": 175,
+    "width": 48.5,
+    "height": 28,
+    "top": 175,
+    "right": 142.5,
+    "bottom": 203,
+    "left": 94
+   }
+  },
+  {
+   "t": "",
+   "cls": "text-3 rounded-32 flex h-full w-1/2 transition items-center justify-center z-1 c",
+   "r": {
+    "x": 142.5,
+    "y": 175,
+    "width": 48.5,
+    "height": 28,
+    "top": 175,
+    "right": 191,
+    "bottom": 203,
+    "left": 142.5
+   }
+  },
+  {
+   "t": "",
+   "cls": "text-3 rounded-32 flex h-full w-1/2 transition items-center justify-center z-1 c",
+   "r": {
+    "x": 191,
+    "y": 175,
+    "width": 48.5,
+    "height": 28,
+    "top": 175,
+    "right": 239.5,
+    "bottom": 203,
+    "left": 191
+   }
+  },
+  {
+   "t": "",
+   "cls": "text-3 rounded-32 flex h-full w-1/2 transition items-center justify-center z-1 c",
+   "r": {
+    "x": 239.5,
+    "y": 175,
+    "width": 48.5,
+    "height": 28,
+    "top": 175,
+    "right": 288,
+    "bottom": 203,
+    "left": 239.5
+   }
+  },
+  {
+   "t": "",
+   "cls": "",
+   "r": {
+    "x": 152.578125,
+    "y": 552,
+    "width": 16,
+    "height": 16,
+    "top": 552,
+    "right": 168.578125,
+    "bottom": 568,
+    "left": 152.578125
+   }
+  },
+  {
+   "t": "仅分享",
+   "cls": "group w-full flex items-center gap-1 border border-white-10 rounded-3 [&>span]:l",
+   "r": {
+    "x": 212.453125,
+    "y": 552,
+    "width": 78.546875,
+    "height": 16,
+    "top": 552,
+    "right": 291,
+    "bottom": 568,
+    "left": 212.453125
+   }
+  },
+  {
+   "t": "P2.0 - 抢先体验",
+   "cls": "group items-center justify-center gap-1 [&>span]:line-clamp-1 focus:outline-none",
+   "r": {
+    "x": 79,
+    "y": 628,
+    "width": 224,
+    "height": 56,
+    "top": 628,
+    "right": 303,
+    "bottom": 684,
+    "left": 79
+   }
+  },
+  {
+   "t": "生成模型\n100\n65",
+   "cls": "animate-button group text-3.5 font-500 rounded-25 cursor-pointer box-border rela",
+   "r": {
+    "x": 79,
+    "y": 896,
+    "width": 224,
+    "height": 40,
+    "top": 896,
+    "right": 303,
+    "bottom": 936,
+    "left": 79
+   }
+  },
+  {
+   "t": "New\n智能拓扑网格 P2.0 抢先体验\n现在试试",
+   "cls": "flex gap-3 items-center",
+   "r": {
+    "x": 554.33984375,
+    "y": 80,
+    "width": 360.3203125,
+    "height": 32,
+    "top": 80,
+    "right": 914.66015625,
+    "bottom": 112,
+    "left": 554.33984375
+   }
+  },
+  {
+   "t": "",
+   "cls": "flex flex-shrink-0 items-center justify-center",
+   "r": {
+    "x": 926.66015625,
+    "y": 87,
+    "width": 18,
+    "height": 18,
+    "top": 87,
+    "right": 944.66015625,
+    "bottom": 105,
+    "left": 926.66015625
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-2 rounded-4 size-8 data-[state=open]:text-purple-1 hover:bg-white-5",
+   "r": {
+    "x": 1116,
+    "y": 164,
+    "width": 32,
+    "height": 32,
+    "top": 164,
+    "right": 1148,
+    "bottom": 196,
+    "left": 1116
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-2 rounded-25 hover:bg-white-5",
+   "r": {
+    "x": 1116,
+    "y": 213,
+    "width": 32,
+    "height": 32,
+    "top": 213,
+    "right": 1148,
+    "bottom": 245,
+    "left": 1116
+   }
+  },
+  {
+   "t": "",
+   "cls": "flex transition items-center box-border justify-center hover:bg-white-5 data-[st",
+   "r": {
+    "x": 1116,
+    "y": 262,
+    "width": 32,
+    "height": 32,
+    "top": 262,
+    "right": 1148,
+    "bottom": 294,
+    "left": 1116
+   }
+  },
+  {
+   "t": "资产",
+   "cls": "focus-visible:outline-none group flex flex-1 gap-1 h-full items-center justify-c",
+   "r": {
+    "x": 1180,
+    "y": 72,
+    "width": 82.6640625,
+    "height": 32,
+    "top": 72,
+    "right": 1262.6640625,
+    "bottom": 104,
+    "left": 1180
+   }
+  },
+  {
+   "t": "",
+   "cls": "focus-visible:outline-none group flex flex-1 gap-1 h-full items-center justify-c",
+   "r": {
+    "x": 1262.6640625,
+    "y": 72,
+    "width": 82.671875,
+    "height": 32,
+    "top": 72,
+    "right": 1345.3359375,
+    "bottom": 104,
+    "left": 1262.6640625
+   }
+  },
+  {
+   "t": "",
+   "cls": "focus-visible:outline-none group flex flex-1 gap-1 h-full items-center justify-c",
+   "r": {
+    "x": 1345.3359375,
+    "y": 72,
+    "width": 82.6640625,
+    "height": 32,
+    "top": 72,
+    "right": 1428,
+    "bottom": 104,
+    "left": 1345.3359375
+   }
+  },
+  {
+   "t": "",
+   "cls": "focus-visible:outline-none c-gray-400 p-1.5 rounded-full data-[state=active]:c-b",
+   "r": {
+    "x": 1192,
+    "y": 116,
+    "width": 28,
+    "height": 28,
+    "top": 116,
+    "right": 1220,
+    "bottom": 144,
+    "left": 1192
+   }
+  },
+  {
+   "t": "",
+   "cls": "focus-visible:outline-none p-1.5 rounded-full data-[state=active]:c-black data-[",
+   "r": {
+    "x": 1220,
+    "y": 116,
+    "width": 28,
+    "height": 28,
+    "top": 116,
+    "right": 1248,
+    "bottom": 144,
+    "left": 1220
+   }
+  },
+  {
+   "t": "",
+   "cls": "tripo-button group text-3.5 font-500 cursor-pointer box-border relative rounded-",
+   "r": {
+    "x": 1256,
+    "y": 116,
+    "width": 28,
+    "height": 28,
+    "top": 116,
+    "right": 1284,
+    "bottom": 144,
+    "left": 1256
+   }
+  },
+  {
+   "t": "管理",
+   "cls": "px-3 py-1.5 rounded-full bg-white-5 hover-data-[state=closed]:bg-white-10 data-[",
+   "r": {
+    "x": 1352.7890625,
+    "y": 116,
+    "width": 63.2109375,
+    "height": 28,
+    "top": 116,
+    "right": 1416,
+    "bottom": 144,
+    "left": 1352.7890625
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-1 absolute hover:",
+   "r": {
+    "x": 1391,
+    "y": 237,
+    "width": 20,
+    "height": 20,
+    "top": 237,
+    "right": 1411,
+    "bottom": 257,
+    "left": 1391
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-7 absolute hover:",
+   "r": {
+    "x": 1367,
+    "y": 237,
+    "width": 20,
+    "height": 20,
+    "top": 237,
+    "right": 1387,
+    "bottom": 257,
+    "left": 1367
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 bottom-1 left-1 absolute z-1 hover:bg-white-5",
+   "r": {
+    "x": 1315,
+    "y": 237,
+    "width": 20,
+    "height": 20,
+    "top": 237,
+    "right": 1335,
+    "bottom": 257,
+    "left": 1315
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-1 absolute hover:",
+   "r": {
+    "x": 1273,
+    "y": 355,
+    "width": 20,
+    "height": 20,
+    "top": 355,
+    "right": 1293,
+    "bottom": 375,
+    "left": 1273
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-7 absolute hover:",
+   "r": {
+    "x": 1249,
+    "y": 355,
+    "width": 20,
+    "height": 20,
+    "top": 355,
+    "right": 1269,
+    "bottom": 375,
+    "left": 1249
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 bottom-1 left-1 absolute z-1 hover:bg-white-5",
+   "r": {
+    "x": 1197,
+    "y": 355,
+    "width": 20,
+    "height": 20,
+    "top": 355,
+    "right": 1217,
+    "bottom": 375,
+    "left": 1197
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-1 absolute hover:",
+   "r": {
+    "x": 1391,
+    "y": 355,
+    "width": 20,
+    "height": 20,
+    "top": 355,
+    "right": 1411,
+    "bottom": 375,
+    "left": 1391
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-7 absolute hover:",
+   "r": {
+    "x": 1367,
+    "y": 355,
+    "width": 20,
+    "height": 20,
+    "top": 355,
+    "right": 1387,
+    "bottom": 375,
+    "left": 1367
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 bottom-1 left-1 absolute z-1 hover:bg-white-5",
+   "r": {
+    "x": 1315,
+    "y": 355,
+    "width": 20,
+    "height": 20,
+    "top": 355,
+    "right": 1335,
+    "bottom": 375,
+    "left": 1315
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-1 absolute hover:",
+   "r": {
+    "x": 1273,
+    "y": 473,
+    "width": 20,
+    "height": 20,
+    "top": 473,
+    "right": 1293,
+    "bottom": 493,
+    "left": 1273
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-7 absolute hover:",
+   "r": {
+    "x": 1249,
+    "y": 473,
+    "width": 20,
+    "height": 20,
+    "top": 473,
+    "right": 1269,
+    "bottom": 493,
+    "left": 1249
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 bottom-1 left-1 absolute z-1 hover:bg-white-5",
+   "r": {
+    "x": 1197,
+    "y": 473,
+    "width": 20,
+    "height": 20,
+    "top": 473,
+    "right": 1217,
+    "bottom": 493,
+    "left": 1197
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-1 absolute hover:",
+   "r": {
+    "x": 1391,
+    "y": 473,
+    "width": 20,
+    "height": 20,
+    "top": 473,
+    "right": 1411,
+    "bottom": 493,
+    "left": 1391
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-7 absolute hover:",
+   "r": {
+    "x": 1367,
+    "y": 473,
+    "width": 20,
+    "height": 20,
+    "top": 473,
+    "right": 1387,
+    "bottom": 493,
+    "left": 1367
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 bottom-1 left-1 absolute z-1 hover:bg-white-5",
+   "r": {
+    "x": 1315,
+    "y": 473,
+    "width": 20,
+    "height": 20,
+    "top": 473,
+    "right": 1335,
+    "bottom": 493,
+    "left": 1315
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-1 absolute hover:",
+   "r": {
+    "x": 1273,
+    "y": 591,
+    "width": 20,
+    "height": 20,
+    "top": 591,
+    "right": 1293,
+    "bottom": 611,
+    "left": 1273
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 opacity-0 transition bottom-1 right-7 absolute hover:",
+   "r": {
+    "x": 1249,
+    "y": 591,
+    "width": 20,
+    "height": 20,
+    "top": 591,
+    "right": 1269,
+    "bottom": 611,
+    "left": 1249
+   }
+  },
+  {
+   "t": "",
+   "cls": "p-1 rounded-full bg-gray-3 bottom-1 left-1 absolute z-1 hover:bg-white-5",
+   "r": {
+    "x": 1197,
+    "y": 591,
+    "width": 20,
+    "height": 20,
+    "top": 591,
+    "right": 1217,
+    "bottom": 611,
+    "left": 1197
+   }
+  }
+ ],
+ "inputs": [
+  {
+   "type": "file",
+   "accept": "image/png,image/webp,image/jpg,image/jpeg",
+   "val": "",
+   "ph": "",
+   "vis": true
+  },
+  {
+   "type": "file",
+   "accept": "image/png,image/webp,image/jpg,image/jpeg",
+   "val": "",
+   "ph": "",
+   "vis": true
+  },
+  {
+   "type": "file",
+   "accept": "image/png,image/webp,image/jpg,image/jpeg",
+   "val": "",
+   "ph": "",
+   "vis": true
+  },
+  {
+   "type": "file",
+   "accept": "image/png,image/webp,image/jpg,image/jpeg",
+   "val": "",
+   "ph": "",
+   "vis": true
+  },
+  {
+   "type": "file",
+   "accept": ".fbx,.obj,.stl,.glb",
+   "val": "",
+   "ph": "",
+   "vis": true
+  }
+ ],
+ "switches": [],
+ "text": "3D 工作台\n\n首页\n\n资产\n\nICP\n18\n\n25200\n\n升级\n\n发送至 3D 软件\n\n模型\n智能拆分\n部件补全\n重拓扑\n贴图生成\n编辑\n贴图放大\nPBR\n动画\n生成模型\n高精度模型\n智能网格\n前\nJPG,PNG,WEBP 图片大小 ≤ 20MB\n左侧\nJPG,PNG,WEBP 图片大小 ≤ 20MB\n右侧\nJPG,PNG,WEBP 图片大小 ≤ 20MB\n后\nJPG,PNG,WEBP 图片大小 ≤ 20MB\n\n通用设置\n\n拓扑\n\n订阅专享\n\n模型私密性\n\n仅分享\n\nAI 模型\n\nP2.0 - 抢先体验\n\n生成模型\n100\n65\nNew\n智能拓扑网格 P2.0 抢先体验\n现在试试\n内容由AI生成\n\n极速生成专业级拓扑网格！\n\n实时网格编辑即将上线\n\n资产\n管理\n上传 3D 模型\n支持 GLB, OBJ, FBX, STL 格式，文件大小 ≤100MB，面数 ≤150万\n\n09-20 13:38\n\n09-20 12:51\n\n09-16 14:13\n\n09-16 11:04\n\n09-15 17:27\n\n09-15 17:20"
+}

@@ -1,0 +1,17 @@
+{
+	"camera_position": "(11.36034, 21.0, 38.61823)",
+	"camera_rotation": "(-27.0, 16.0, 0.0)",
+	"capture": 0,
+	"cottage_scale": "(0.6825, 0.455, 0.533)",
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"trees_world_height": [
+		4.23299980163574,
+		4.0669994354248,
+		4.14999961853027,
+		4.19149971008301
+	]
+}

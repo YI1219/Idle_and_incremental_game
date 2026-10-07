@@ -1,0 +1,142 @@
+[
+  {
+    "test": "terrain_boundary_wall_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_broad_facet_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_canopy_contact_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_cliff_interface_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_cliff_taper_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_closed_flow_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_contour_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_crown_integrity_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_editor_data_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_editor_decoration_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_editor_render_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_homestead_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_incremental_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_model_bounds_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_narrow_cliff_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_orbit_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_rework_shape_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_rock_transition_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_shell_floor_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_shore_transition_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_shoreline_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_shrub_support_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_turf_transition_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_upper_rock_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_vine_contact_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_water_impact_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "terrain_waterfall_test",
+    "ok": true,
+    "exit": 0
+  }
+]

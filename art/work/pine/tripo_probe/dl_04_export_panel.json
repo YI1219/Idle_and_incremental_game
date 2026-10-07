@@ -1,0 +1,1154 @@
+[
+{
+"tag": "IMG",
+"t": "tripo-logo",
+"icon": [],
+"r": [
+53,
+26,
+58,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "3D 工作台",
+"icon": [
+"i-tripo:caret"
+],
+"r": [
+141,
+19,
+103,
+34
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+1388,
+20,
+32,
+32
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+1389,
+21,
+30,
+30
+]
+},
+{
+"tag": "BUTTON",
+"t": "ICP",
+"icon": [],
+"r": [
+1332,
+20,
+48,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "19",
+"icon": [
+"i-tripo:bell"
+],
+"r": [
+1250,
+19,
+34,
+34
+]
+},
+{
+"tag": "BUTTON",
+"t": "升级",
+"icon": [
+"i-tripo:rocket"
+],
+"r": [
+1179,
+25,
+57,
+22
+]
+},
+{
+"tag": "IMG",
+"t": "loading",
+"icon": [],
+"r": [
+1191,
+20,
+21,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "发送至 3D 软件",
+"icon": [
+"i-tripo:switch",
+"i-tripo:blender",
+"i-tripo:3ds-max"
+],
+"r": [
+953,
+20,
+141,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "智能拓扑网格 P2.0 抢先体验",
+"icon": [],
+"r": [
+911,
+19,
+34,
+34
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+920,
+28,
+16,
+16
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+46,
+314,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "高精度模型",
+"icon": [],
+"r": [
+79,
+112,
+112,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "智能网格",
+"icon": [
+"i-tripo:speed-bolt"
+],
+"r": [
+191,
+112,
+112,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:add-image"
+],
+"r": [
+94,
+175,
+49,
+28
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:multi-view"
+],
+"r": [
+143,
+175,
+49,
+28
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:images"
+],
+"r": [
+191,
+175,
+49,
+28
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:pen"
+],
+"r": [
+240,
+175,
+49,
+28
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:lightbulb"
+],
+"r": [
+266,
+225,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:tips"
+],
+"r": [
+187,
+553,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+257,
+552,
+34,
+18
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:tips"
+],
+"r": [
+172,
+587,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+257,
+586,
+34,
+18
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:tips"
+],
+"r": [
+153,
+620,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "仅分享",
+"icon": [
+"i-tripo:sharing-only",
+"i-tripo:angle",
+"i-tripo:angle"
+],
+"r": [
+212,
+620,
+79,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "v3.1 – 最高质量\n\n预计等待更久",
+"icon": [
+"i-tripo:good-star",
+"i-tripo:angle"
+],
+"r": [
+79,
+696,
+224,
+56
+]
+},
+{
+"tag": "BUTTON",
+"t": "v3.1 – 最高质量\n\n预计等待更久",
+"icon": [
+"i-tripo:good-star",
+"i-tripo:angle"
+],
+"r": [
+79,
+696,
+224,
+56
+]
+},
+{
+"tag": "BUTTON",
+"t": "生成模型\n50",
+"icon": [
+"i-tripo:bolt"
+],
+"r": [
+79,
+896,
+224,
+40
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:arrow-forward"
+],
+"r": [
+454,
+908,
+32,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:arrow-forward"
+],
+"r": [
+494,
+908,
+32,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "免费重试",
+"icon": [
+"i-tripo:restore",
+"i-tripo:subscribe"
+],
+"r": [
+543,
+908,
+82,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:deliver"
+],
+"r": [
+740,
+908,
+32,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "3D 打印",
+"icon": [
+"i-tripo:3d-print"
+],
+"r": [
+789,
+908,
+79,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+885,
+908,
+32,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "导出",
+"icon": [
+"i-tripo:download"
+],
+"r": [
+974,
+908,
+67,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+583,
+848,
+32,
+32
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+591,
+856,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+632,
+848,
+32,
+32
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+640,
+856,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+672,
+848,
+32,
+32
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+680,
+856,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+761,
+848,
+32,
+32
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+769,
+856,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+801,
+848,
+32,
+32
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+809,
+856,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+841,
+848,
+32,
+32
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+849,
+856,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+881,
+848,
+32,
+32
+]
+},
+{
+"tag": "IMG",
+"t": "",
+"icon": [],
+"r": [
+889,
+856,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:env"
+],
+"r": [
+1116,
+164,
+32,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:camera-reset"
+],
+"r": [
+1116,
+213,
+32,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:line-invisible"
+],
+"r": [
+1116,
+262,
+32,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "资产",
+"icon": [
+"i-tripo:assets"
+],
+"r": [
+1180,
+72,
+83,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:properties"
+],
+"r": [
+1263,
+72,
+83,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:time-past"
+],
+"r": [
+1345,
+72,
+83,
+32
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:menu"
+],
+"r": [
+1192,
+116,
+28,
+28
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+1220,
+116,
+28,
+28
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:filter"
+],
+"r": [
+1256,
+116,
+28,
+28
+]
+},
+{
+"tag": "BUTTON",
+"t": "管理",
+"icon": [
+"i-tripo:manage"
+],
+"r": [
+1353,
+116,
+63,
+28
+]
+},
+{
+"tag": "IMG",
+"t": "树形3d模型",
+"icon": [],
+"r": [
+1311,
+157,
+104,
+104
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:more-horizontal"
+],
+"r": [
+1391,
+237,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+1367,
+237,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:info"
+],
+"r": [
+1315,
+237,
+20,
+20
+]
+},
+{
+"tag": "IMG",
+"t": "中式小屋3d模型",
+"icon": [],
+"r": [
+1193,
+275,
+104,
+104
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:more-horizontal"
+],
+"r": [
+1273,
+355,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+1249,
+355,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:info"
+],
+"r": [
+1197,
+355,
+20,
+20
+]
+},
+{
+"tag": "IMG",
+"t": "剑3d模型",
+"icon": [],
+"r": [
+1311,
+275,
+104,
+104
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:more-horizontal"
+],
+"r": [
+1391,
+355,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+1367,
+355,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:info"
+],
+"r": [
+1315,
+355,
+20,
+20
+]
+},
+{
+"tag": "IMG",
+"t": "蓝色长袍3d模型",
+"icon": [],
+"r": [
+1193,
+393,
+104,
+104
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:more-horizontal"
+],
+"r": [
+1273,
+473,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+1249,
+473,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:info"
+],
+"r": [
+1197,
+473,
+20,
+20
+]
+},
+{
+"tag": "IMG",
+"t": "人体3d模型",
+"icon": [],
+"r": [
+1311,
+393,
+104,
+104
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:more-horizontal"
+],
+"r": [
+1391,
+473,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+1367,
+473,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:info"
+],
+"r": [
+1315,
+473,
+20,
+20
+]
+},
+{
+"tag": "IMG",
+"t": "3d 人物服装模型",
+"icon": [],
+"r": [
+1193,
+511,
+104,
+104
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:more-horizontal"
+],
+"r": [
+1273,
+591,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+1249,
+591,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:info"
+],
+"r": [
+1197,
+591,
+20,
+20
+]
+},
+{
+"tag": "IMG",
+"t": "汉服人像3d模型",
+"icon": [],
+"r": [
+1311,
+511,
+104,
+104
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:more-horizontal"
+],
+"r": [
+1391,
+591,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:favorite"
+],
+"r": [
+1367,
+591,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:info"
+],
+"r": [
+1315,
+591,
+20,
+20
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:close"
+],
+"r": [
+1135,
+606,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "GLB",
+"icon": [
+"i-tripo:angle"
+],
+"r": [
+863,
+736,
+288,
+34
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [
+"i-tripo:tips"
+],
+"r": [
+936,
+787,
+16,
+16
+]
+},
+{
+"tag": "BUTTON",
+"t": "",
+"icon": [],
+"r": [
+1117,
+786,
+34,
+18
+]
+},
+{
+"tag": "BUTTON",
+"t": "发送至",
+"icon": [
+"i-tripo:blender",
+"i-tripo:3ds-max",
+"i-tripo:unity"
+],
+"r": [
+863,
+836,
+84,
+40
+]
+},
+{
+"tag": "BUTTON",
+"t": "导出",
+"icon": [
+"i-tripo:subscribe"
+],
+"r": [
+959,
+836,
+192,
+40
+]
+}
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "test": "terrain_editor_runtime_test",
+    "exit": 0,
+    "ok": true
+  },
+  {
+    "test": "terrain_cottage_material_test",
+    "exit": 0,
+    "ok": true
+  }
+]

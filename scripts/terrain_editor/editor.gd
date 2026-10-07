@@ -5,12 +5,13 @@ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
-@export var sunlight_energy := 0.95
-@export var ambient_energy := 0.52
+@export var sunlight_energy := 1.55
+@export var ambient_energy := 0.60
 @export_range(0.0,1.0) var background_haze := 0.65
 var data:=Data.new()
 var renderer:=Renderer.new()
 var camera:=Camera.new()
+var landscape:=preload("res://scripts/terrain_editor/distant_landscape.gd").new()
 var hud:CanvasLayer
 var tool:="raise"
 var radius:=1.6
@@ -30,6 +31,7 @@ func _ready()->void:
 	renderer.rebuild_all()
 	add_child(camera)
 	_setup_environment()
+	add_child(landscape)
 	add_child(brush)
 	var marker:=StandardMaterial3D.new()
 	marker.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -41,15 +43,23 @@ func _ready()->void:
 	add_child(hud)
 func _setup_environment()->void:
 	var sun:=DirectionalLight3D.new()
-	sun.rotation_degrees=Vector3(-38,48,0)
-	sun.light_color=Color("fff1dd")
+	sun.rotation_degrees=Vector3(-40,125,0)
+	sun.light_color=Color("ffe6bd")
 	sun.light_energy=sunlight_energy
 	sun.shadow_enabled=true
 	sun.directional_shadow_max_distance=90
-	sun.light_angular_distance=1.8
-	sun.shadow_opacity=.72
+	sun.light_angular_distance=3.2
+	sun.shadow_opacity=.68
 	sun.directional_shadow_blend_splits=true
 	add_child(sun)
+	# Broad cool bounce keeps the front cliff planes readable under the warm
+	# back-right sun. No extra shadow map or baked data on editable terrain.
+	var fill:=DirectionalLight3D.new()
+	fill.rotation_degrees=Vector3(-45,-28,0)
+	fill.light_color=Color("e1dfd5")
+	fill.light_energy=.48
+	fill.shadow_enabled=false
+	add_child(fill)
 	var env:=WorldEnvironment.new()
 	env.environment=Environment.new()
 	env.environment.background_mode=Environment.BG_SKY
@@ -65,15 +75,16 @@ func _setup_environment()->void:
 	sky.process_mode=Sky.PROCESS_MODE_QUALITY
 	env.environment.sky=sky
 	env.environment.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-	env.environment.ambient_light_color=Color("cedada")
+	env.environment.ambient_light_color=Color("bccbde")
 	env.environment.ambient_light_energy=ambient_energy
 	env.environment.tonemap_mode=Environment.TONE_MAPPER_LINEAR
 	env.environment.ssao_enabled=true
-	env.environment.ssao_radius=.85
-	env.environment.ssao_intensity=.65
+	env.environment.ssao_radius=1.15
+	env.environment.ssao_intensity=1.25
 	env.environment.ssao_power=1.1
 	add_child(env)
 func _process(delta:float)->void:
+	landscape.position=Vector3(camera._center.x,0,camera._center.y)
 	renderer.flush_dirty(2)
 	var mouse:=get_viewport().get_mouse_position()
 	if hud.is_over_panel(mouse):brush.visible=false
