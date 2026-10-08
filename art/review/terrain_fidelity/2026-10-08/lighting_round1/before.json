@@ -1,0 +1,46 @@
+{
+	"adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"captures": [
+		{
+			"draw_calls": 547.0,
+			"error": 0,
+			"file": "before_default.png",
+			"host_frame_ms": 671.189375,
+			"position": "(11.36034, 21.0, 38.61823)",
+			"primitives": 1957367.0,
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 614.0,
+			"error": 0,
+			"file": "before_orbit_left.png",
+			"host_frame_ms": 665.30875,
+			"position": "(-16.76358, 21.0, 36.65161)",
+			"primitives": 2066403.0,
+			"rotation": "(-27.0, -24.0, 0.0)"
+		},
+		{
+			"draw_calls": 532.0,
+			"error": 0,
+			"file": "before_orbit_right.png",
+			"host_frame_ms": 636.55075,
+			"position": "(34.16864, 21.0, 22.04704)",
+			"primitives": 1897991.0,
+			"rotation": "(-27.0, 56.0, 0.0)"
+		},
+		{
+			"draw_calls": 601.0,
+			"error": 0,
+			"file": "before_orbit_back.png",
+			"host_frame_ms": 705.982625,
+			"position": "(10.32486, 21.0, -24.19002)",
+			"primitives": 2058951.0,
+			"rotation": "(-39.6, 156.0, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	]
+}
