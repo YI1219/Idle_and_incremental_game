@@ -14,7 +14,7 @@ void vertex(){
 void fragment(){
  vec3 normal=normalize(world_normal);
  float light=clamp(dot(normal,normalize(sun_direction))*.6+.4,0.0,1.0);
- vec3 stone=mix(vec3(.19,.21,.22),vec3(.50,.46,.39),light*light);
+ vec3 stone=mix(vec3(.17,.21,.23),vec3(.46,.45,.40),light*light);
  stone*=.90+COLOR.r*.16;
  float trees=step(.90,COLOR.r);
  stone=mix(stone,mix(vec3(.12,.16,.12),vec3(.27,.30,.19),light),trees);

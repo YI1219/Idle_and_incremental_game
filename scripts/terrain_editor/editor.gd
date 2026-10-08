@@ -6,8 +6,8 @@ const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
 @export var sunlight_energy := 1.75
-@export var fill_energy := 0.20
-@export var ambient_energy := 0.50
+@export var fill_energy := 0.16
+@export var ambient_energy := 0.40
 @export_range(0.0,1.0) var background_haze := 0.65
 var data:=Data.new()
 var renderer:=Renderer.new()
@@ -94,21 +94,26 @@ func _setup_environment()->void:
 	settings.ssao_power=1.6
 	settings.ssao_detail=.5
 	settings.ssao_light_affect=.25
-	# Glow only blooms HDR values: the sun core and bright water glints.
+	# Glow blooms only near-white values: the sun disc and bright water glints.
 	settings.glow_enabled=true
 	settings.glow_intensity=.55
 	settings.glow_bloom=0.0
-	settings.glow_hdr_threshold=1.0
+	settings.glow_hdr_threshold=.92
 	settings.glow_blend_mode=Environment.GLOW_BLEND_MODE_SOFTLIGHT
 	for level in 7:settings.set_glow_level(level,[0.0,0.0,.6,1.0,.8,.5,0.0][level])
 	# Thin warm haze over the island; distant mountains and cloud decks fade
 	# into the sky colour in their own shaders and ignore this fog.
+	# Gentle grade restores island contrast and colour lost to the bright
+	# backdrop; warmth comes from the sun, sky and fog colours, not a tint.
+	settings.adjustment_enabled=true
+	settings.adjustment_contrast=1.08
+	settings.adjustment_saturation=1.06
 	settings.fog_enabled=true
 	settings.fog_mode=Environment.FOG_MODE_EXPONENTIAL
-	settings.fog_light_color=Color("e6cfae")
+	settings.fog_light_color=Color("ebc58f")
 	settings.fog_light_energy=1.0
 	settings.fog_sun_scatter=.30
-	settings.fog_density=.0008
+	settings.fog_density=.0004
 	settings.fog_sky_affect=0.0
 	add_child(env)
 func _process(delta:float)->void:
