@@ -5,7 +5,10 @@ const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Legacy = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const BOTTOM := -4.5
 # Only the shell below its local supporting terrace is shortened.
-const UNDERSIDE_THICKNESS := 0.60
+const UNDERSIDE_THICKNESS := 0.80
+# World-anchored stepped lobes hang below the slab; the keel never passes this floor.
+const KEEL_DEPTH := 1.1
+const KEEL_LIMIT := -3.0
 var land_regions:Dictionary={}
 var water_regions:Dictionary={}
 var levels:Array=[]
@@ -299,9 +302,20 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 		# Legal height constrains playable land, not one global visual floor.
 		# Map the supporting shell continuously: low edited land still has a
 		# half-unit body, while normal terraces retain a broadly shallow foot.
-		var floor_y:float=_shell_floor(p,profile.top)
+		var mass:=smoothstep(.8,1.2,profile.inset)
+		var floor_y:float=_keel_floor(p,profile.top,mass)
 		var weight:float=clampf((profile.top-y)/maxf(.001,profile.top-profile.bottom),0,1)
 		point.y=lerpf(profile.top,floor_y,weight)
+		if profile.water<0 and mass>0.0:
+			# Broad outer faces step in and out as blocky buttresses, with a
+			# shallow notch under the lip so the turf edge overhangs. Forward
+			# masses settle back before the foot; narrow necks and walls beside
+			# falls keep their proven profile.
+			var below:float=profile.top-point.y
+			var notch:=smoothstep(0.0,.18,below)*(1.0-smoothstep(.45,.95,below))
+			var buttress:=_buttress(p)*smoothstep(.25,.85,below)
+			if buttress>0.0:buttress*=1.0-smoothstep(.55,.95,weight)
+			point+=Vector3(normal.x,0,normal.y)*(buttress*.50-notch*.24)*mass
 	if profile.water>=0 and point.y<=profile.water*.5+.045:
 		# Exposed wet walls sit behind the shared stream envelope. Limit only
 		# protruding shoulders; inland and dry cliff masses keep their full relief.
@@ -318,6 +332,32 @@ static func _shell_floor(p:Vector2,top:float)->float:
 	var variation:float=.18*sin(p.x*.43+p.y*.31)+.09*sin(p.x*.87-p.y*.57)
 	var original_floor:=minf(-2.8,top-.5)+variation*clampf((top+4.0)/4.0,0,1)
 	return top-maxf(.5,(top-original_floor)*UNDERSIDE_THICKNESS)
+
+static func _keel_floor(p:Vector2,top:float,mass:float=1.0)->float:
+	# Broad outer walls hang stepped lobes below the slab, so the underside
+	# edge is uneven but stays one mass. Low edited land keeps its thin body.
+	var slab:=_shell_floor(p,top)
+	var keel:=(_step_field(p,3.1,Vector2(17.0,3.0))*.5+.5)*KEEL_DEPTH*clampf((top+4.0)/4.0,0,1)*mass
+	return maxf(slab-keel,minf(KEEL_LIMIT,slab))
+
+static func _buttress(p:Vector2)->float:
+	return _step_field(p,2.3,Vector2.ZERO)
+
+static func _step_field(p:Vector2,size:float,salt:Vector2)->float:
+	# Plateaus with short ramps: blocky masses rather than smooth waves.
+	var q:=Vector2(p.x*.83+p.y*.56,p.y*.83-p.x*.56)/size+salt
+	var cell:=q.floor()
+	var f:=q-cell
+	var w:=Vector2(smoothstep(.36,.64,f.x),smoothstep(.36,.64,f.y))
+	var a:=_step_level(cell)
+	var b:=_step_level(cell+Vector2(1,0))
+	var c:=_step_level(cell+Vector2(0,1))
+	var d:=_step_level(cell+Vector2(1,1))
+	return lerpf(lerpf(a,b,w.x),lerpf(c,d,w.x),w.y)
+
+static func _step_level(cell:Vector2)->float:
+	var h:=fposmod(sin(cell.x*127.1+cell.y*311.7)*43758.5453,1.0)
+	return [-1.0,-.35,.40,1.0][mini(3,int(h*4.0))]
 
 func _outer_profile(p:Vector2,normal:Vector2,profile:Dictionary)->void:
 	# Membership of the outer contour owns the supporting shell. A near-corner
