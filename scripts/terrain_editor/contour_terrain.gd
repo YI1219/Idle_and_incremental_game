@@ -20,11 +20,14 @@ var _broad_faces:=PackedInt32Array()
 var _cliff_bands:Dictionary={}
 var _chain_constraints:Dictionary={}
 var _cliff_turf:Dictionary={}
+## Plunge centres for the renderer's mist; rebuilt with the outlines.
+var splash_points:Array=[]
 
 func refresh(data:Data)->void:
 	source=data
 	_chain_constraints.clear()
 	_cliff_turf.clear()
+	splash_points.clear()
 	_cliff_bands.clear()
 	_broad_faces.clear()
 	_profiles.clear()
@@ -794,6 +797,7 @@ func _landing_roll(a:Vector3,b:Vector3,na:Vector2,nb:Vector2,level:float,across_
 		left=next_a;right=next_b
 
 func _splash(center:Vector3,out:Vector2,half_width:float=.62)->void:
+	splash_points.append({"center":center,"out":out,"half_width":half_width})
 	var rings:Array=[]
 	var tangent:=Vector3(out.y,0,-out.x)
 	var forward:=Vector3(out.x,0,out.y)
@@ -806,10 +810,10 @@ func _splash(center:Vector3,out:Vector2,half_width:float=.62)->void:
 			var angle:=j*TAU/16.0
 			var size:=.62+.11*sin(phase*3.7+j*2.9)
 			var radius:=.55 if ring==0 else 1.0
-			var rise:=.045+.020*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
+			var rise:=.065+.030*pow(.5+.5*sin(j*2.1+phase*1.3),3) if ring==0 else 0.0
 			points.append(center+tangent*cos(angle)*size*radius*half_width/.62+forward*sin(angle)*size*radius*1.40+Vector3(0,rise,0))
 		rings.append(points)
-	var peak:=center+Vector3(0,.075+.012*sin(phase*2.7),0)
+	var peak:=center+Vector3(0,.13+.02*sin(phase*2.7),0)
 	for j in 16:
 		var k:=(j+1)%16
 		_foam_triangle(peak,rings[0][j],rings[0][k],center.y)

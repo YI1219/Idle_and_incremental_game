@@ -15,6 +15,7 @@ var _pending_shore:Dictionary={}
 var _build_data:Data
 var _published_data:Data
 var props:Node3D
+var mist:MultiMeshInstance3D
 var data:Data
 var chunks:Dictionary={}
 var materials:Dictionary={}
@@ -30,6 +31,9 @@ func configure(source:Data)->void:
 	if props==null:
 		props=preload("res://scripts/terrain_editor/terrain_props.gd").new()
 		add_child(props)
+	if mist==null:
+		mist=preload("res://scripts/terrain_editor/waterfall_mist.gd").new()
+		add_child(mist)
 	if materials.is_empty():
 		var ground:=ShaderMaterial.new()
 		ground.shader=load("res://shaders/terrain_editor/ground.gdshader")
@@ -158,6 +162,7 @@ func _publish()->void:
 		materials.water.set_shader_parameter("shore_extent",_pending_shore.extent)
 		_pending_shore.clear()
 	props.sync(contours)
+	mist.sync(contours.splash_points)
 
 func _exit_tree()->void:_discard_pending()
 

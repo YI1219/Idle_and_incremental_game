@@ -11,12 +11,15 @@ void fragment(){
  float churn=noise(world_xz*7.0+vec2(TIME*.35,-TIME*.55));
  float patch=noise(world_xz*3.8+vec2(-TIME*.18,TIME*.26));
  float crest=1.0-COLOR.b;
- ALBEDO=mix(vec3(.45,.60,.58),vec3(.78,.82,.75),churn*.35+.65);
+ float core=smoothstep(.45,.95,COLOR.a)*(1.0-crest);
+ ALBEDO=mix(vec3(.55,.68,.66),vec3(.93,.94,.90),mix(churn*.35+.65,1.0,core));
  // Broken low froth remains connected to the impact rather than a white pad.
  float froth=smoothstep(.28,.68,churn*.65+patch*.35);
- float broken=mix(.34+.60*froth,.97,smoothstep(.45,.85,COLOR.a));
+ float broken=mix(.46+.52*froth,1.0,smoothstep(.40,.80,COLOR.a));
  ALPHA=COLOR.a*mix(broken,mix(.12,.62,smoothstep(.25,.65,churn)),crest);
- if(COLOR.r<.5){ALBEDO=vec3(.80,.87,.82); ALPHA=COLOR.a*(.65+churn*.35);}
+ // Aerated plunge water scatters light; keeps the core white on the shaded side.
+ EMISSION=vec3(.20,.20,.18)*core;
+ if(COLOR.r<.5){ALBEDO=vec3(.84,.90,.86); ALPHA=COLOR.a*(.50+churn*.35); EMISSION=vec3(0.0);}
  ROUGHNESS=.78;
  SPECULAR=.15;
 }
