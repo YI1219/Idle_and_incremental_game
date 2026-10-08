@@ -2,7 +2,7 @@ class_name TerrainModels
 extends RefCounted
 ## CC0 model parts and material palette. Canopies assemble existing oak mesh modules.
 var assets:Dictionary={}
-const IDS={"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
+const IDS={"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
 	if not assets.is_empty():return
 	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
@@ -225,7 +225,7 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			if kind in ["bush","vine"] and not name_value.contains("leaf"):continue
 			var tint:=Color("697547")
 			if kind in ["tree_wood","fence"]:tint=Color("79634e") if not name_value.contains("Dark") else Color("615447")
-			elif kind in ["surface_rock","cliff_rock","shore_rock","path"]:tint=Color("aaa89b")
+			elif kind in ["surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","path"]:tint=Color("aaa89b")
 			elif kind=="tree_leaf":tint=Color("697547")
 			elif kind=="bush":tint=Color("73844e")
 			elif kind=="vine":tint=Color("68785c")
@@ -255,7 +255,8 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 					b.y=minf(b.y,.30)+maxf(b.y-.30,0.0)*.72
 					c.y=minf(c.y,.30)+maxf(c.y-.30,0.0)*.72
 				var shade:=.90+.13*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
-				if kind=="shore_rock":shade=.97+.04*sin((a.x+b.x+c.x)*6.13+(a.z+b.z+c.z)*3.7)
+				# Per-facet value steps keep shore stones faceted under soft light.
+				if kind in ["shore_rock","shore_boulder","shore_pebble"]:shade=.91+.09*sin((a.x+b.x+c.x)*9.13+(a.y+b.y+c.y)*5.3+(a.z+b.z+c.z)*7.7)
 				if kind in ["tree_leaf","bush","vine"]:shade=.92+.14*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
 				var color:=Color(tint.r*shade,tint.g*shade,tint.b*shade,1)
 				if kind in ["tree_leaf","bush","vine"]:

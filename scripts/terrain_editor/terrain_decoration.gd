@@ -35,7 +35,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	var field=contours
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
-	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
+	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
 			var cell:=Vector2i(x,z)
@@ -143,7 +143,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if sample.is_empty() or sample.water>=0 or absf(sample.height-level*.5)>.1:continue
 				var angle:=atan2(next.y-loop[i].y,next.x-loop[i].x)
 				var edge:=next-loop[i]
-				var count:=maxi(1,ceili(edge.length()/.95))
+				var count:=maxi(1,ceili(edge.length()/.85))
 				for block in count:
 					var bank:=loop[i]+edge*float(block)/count+out*.22
 					var support:Dictionary=field.surface_at(bank)
@@ -160,11 +160,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						if random_at(cell,data.seed,1080+block)<.18 and _stable(field,plant,level*.5,.18):
 							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*3.8))
 						continue
-					var turn:float=(random_at(cell,data.seed,1000+block)-.5)*.40
-					var width:float=.68+random_at(cell,data.seed,1020+block)*.58
-					var rise:float=1.15+random_at(cell,data.seed,1040+block)*.95
-					var depth:float=.64+random_at(cell,data.seed,1060+block)*.20
-					result.shore_rock.append(_transform(Vector3(bank.x,level*.5-.07,bank.y),-angle+turn,Vector3(width,rise,depth)))
+					_shore_stones(result,field,data.seed,cell,block,bank,out,angle,level*.5)
 				var cell:=Vector2i(p.floor())
 				if random_at(cell,data.seed,95)<.66:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*4.2))
 				var lily:=p-out*.8
@@ -181,6 +177,49 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			result.flower.append(_transform(Vector3(point.x,support.height,point.y),j*1.7,Vector3.ONE*(1.1+j*.13)))
 	_fences(result,field,chunk)
 	return result
+func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:int,bank:Vector2,out:Vector2,angle:float,water_y:float)->void:
+	# Mixed shoreline: world-anchored groups of large shouldered boulders,
+	# medium stones and small clusters, some standing out in the water.
+	var choose:=random_at(cell,seed_value,1100+block)
+	var group:=sin(bank.x*.71+bank.y*.37)*cos(bank.y*.53-bank.x*.23)
+	if choose<.05:return
+	var kind:="shore_rock"
+	if group>.25 and choose<.62:kind="shore_boulder"
+	elif choose>.78:kind="shore_pebble"
+	# Keep the plunge and its curtain clear of stones set into the lake.
+	var wet_reach:=1.0
+	for splash:Dictionary in field.splash_points:
+		var centre:Vector2=Vector2(splash.center.x,splash.center.z)
+		wet_reach=minf(wet_reach,smoothstep(1.2,2.4,bank.distance_to(centre)))
+	var tangent:=Vector2(-out.y,out.x)
+	var count:=1 if kind!="shore_pebble" else 2+int(random_at(cell,seed_value,1120+block)*2.0)
+	for stone in count:
+		var salt:=block*7+stone
+		var along:=(random_at(cell,seed_value,1140+salt)-.5)*(.30 if kind!="shore_pebble" else .80)
+		var across:float
+		var size:Vector3
+		var sink:float
+		match kind:
+			"shore_boulder":
+				across=lerpf(-.22,.12,random_at(cell,seed_value,1160+salt))
+				size=Vector3(lerpf(1.35,1.95,random_at(cell,seed_value,1180+salt)),lerpf(1.85,2.75,random_at(cell,seed_value,1200+salt)),lerpf(1.05,1.45,random_at(cell,seed_value,1220+salt)))
+				sink=.12
+			"shore_pebble":
+				across=lerpf(-.62,-.05,random_at(cell,seed_value,1160+salt))
+				size=Vector3.ONE*lerpf(.42,.78,random_at(cell,seed_value,1180+salt))*Vector3(1.0,lerpf(.9,1.5,random_at(cell,seed_value,1200+salt)),1.0)
+				sink=.06
+			_:
+				across=lerpf(-.38,.10,random_at(cell,seed_value,1160+salt))
+				size=Vector3(lerpf(.70,1.20,random_at(cell,seed_value,1180+salt)),lerpf(1.00,1.75,random_at(cell,seed_value,1200+salt)),lerpf(.62,.90,random_at(cell,seed_value,1220+salt)))
+				sink=.08
+		across=across*wet_reach if across<0 else across
+		var at:=bank+tangent*along+out*across
+		# Stones placed into the lake sit lower, partly submerged.
+		var depth:=maxf(0.0,-across)*.22
+		var yaw:=-angle+(random_at(cell,seed_value,1240+salt)-.5)*(.6 if kind=="shore_rock" else TAU)
+		var tilt:=(random_at(cell,seed_value,1260+salt)-.5)*.22
+		var basis:=Basis(Vector3(out.x,0,out.y),tilt)*Basis(Vector3.UP,yaw).scaled(size)
+		result[kind].append(Transform3D(basis,Vector3(at.x,water_y-sink-depth,at.y)))
 func _supported_shrub(field,pose:Transform3D,height:float)->bool:
 	# Check the actual lower mesh vertices after yaw/scale. Four cardinal
 	# probes miss diagonal holes and narrow lips at pond/terrace boundaries.
@@ -273,10 +312,21 @@ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
 			var mm:=MultiMesh.new()
 			mm.transform_format=MultiMesh.TRANSFORM_3D
 			mm.mesh=part.mesh
+			mm.use_colors=kind.begins_with("shore_")
 			mm.instance_count=transforms.size()
-			for i in transforms.size():mm.set_instance_transform(i,transforms[i]*part.pose)
+			for i in transforms.size():
+				mm.set_instance_transform(i,transforms[i]*part.pose)
+				if mm.use_colors:mm.set_instance_color(i,_stone_tone(transforms[i].origin))
 			var instance:=MultiMeshInstance3D.new()
 			instance.name=kind+"_%d"%index
 			instance.multimesh=mm
 			instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			parent.add_child(instance)
+static func _stone_tone(origin:Vector3)->Color:
+	# Deterministic per-stone value and hue: warm ochre, cool slate and moss-dark.
+	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)
+	var b:=fposmod(sin(origin.x*39.346+origin.z*11.135)*24634.6345,1.0)
+	var value:=lerpf(.68,1.08,a)
+	var warm:=Color(1.04,.98,.88).lerp(Color(.88,.92,.96),b)
+	if b>.82:warm=Color(.86,.92,.78)
+	return Color(warm.r*value,warm.g*value,warm.b*value,1.0)
