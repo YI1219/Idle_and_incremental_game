@@ -1,7 +1,7 @@
 extends SceneTree
 ## Actual runtime scene and gameplay camera for the lighting/atmosphere round.
-## Usage: godot --path . -s res://tests/capture_lighting_round.gd -- <tag>
-const OUT := "res://art/review/terrain_fidelity/2026-10-08/lighting_round1/"
+## Usage: godot --path . -s res://tests/capture_lighting_round.gd -- <tag> [quick] [out=<review dir>]
+var OUT := "res://art/review/terrain_fidelity/2026-10-08/lighting_round1/"
 var viewport:SubViewport
 var editor:Node3D
 var captures:Array=[]
@@ -25,6 +25,8 @@ func rotate(relative:Vector2)->void:
  editor.camera._input(press)
  editor.camera.advance(2.0)
 func run()->void:
+ for arg in OS.get_cmdline_user_args():
+  if arg.begins_with("out="):OUT="res://art/review/terrain_fidelity/"+arg.trim_prefix("out=")+"/"
  DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
  viewport=SubViewport.new()
  viewport.size=Vector2i(1671,941)

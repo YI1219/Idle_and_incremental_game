@@ -1,7 +1,7 @@
 extends SceneTree
 ## Isolated cost of the lighting-round features at the default camera.
 ## Toggles one feature at a time in the same running scene and view.
-## Usage: godot --path . -s res://tests/benchmark_lighting_round.gd
+## Usage: godot --path . -s res://tests/benchmark_lighting_round.gd -- <tag> [out=<review dir>]
 var viewport:SubViewport
 var editor:Node3D
 func _initialize()->void:call_deferred("run")
@@ -50,9 +50,18 @@ func run()->void:
  sun.shadow_enabled=false
  results.sun_shadow_off=await measure()
  sun.shadow_enabled=true
+ var mist:Node3D=editor.renderer.get_node_or_null("WaterfallMist")
+ if mist!=null:
+  mist.visible=false
+  results.waterfall_mist_off=await measure()
+  mist.visible=true
  results.all_on_again=await measure()
- var tag:="after" if OS.get_cmdline_user_args().is_empty() else OS.get_cmdline_user_args()[0]
- var out:="res://art/review/terrain_fidelity/2026-10-08/lighting_round1/feature_cost_%s.json"%tag
+ var args:=OS.get_cmdline_user_args()
+ var tag:="after" if args.is_empty() else args[0]
+ var dir:="2026-10-08/lighting_round1"
+ for arg in args:
+  if arg.begins_with("out="):dir=arg.trim_prefix("out=")
+ var out:="res://art/review/terrain_fidelity/%s/feature_cost_%s.json"%[dir,tag]
  var file:=FileAccess.open(out,FileAccess.WRITE)
  file.store_string(JSON.stringify({"adapter":RenderingServer.get_video_adapter_name(),"resolution":[1280,720],"results":results},"\t"))
  print("FEATURE COST: ",JSON.stringify(results))
