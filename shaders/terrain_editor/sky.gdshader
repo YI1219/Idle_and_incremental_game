@@ -1,4 +1,5 @@
 shader_type sky;
+#include "sky_palette.gdshaderinc"
 uniform sampler2D cloud_backdrop : source_color, filter_linear_mipmap, repeat_enable;
 uniform float haze : hint_range(0.0,1.0) = .65;
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -10,20 +11,18 @@ void sky(){
   float cloud=noise(EYEDIR.xz*17.0);
   COLOR=mix(blue,ivory,smoothstep(-.3,.1,-EYEDIR.y))*(.76+.32*cloud);
  }else{
-  vec2 p=vec2(.5+(atan(EYEDIR.x,-EYEDIR.z)+.279253)/.96,.5-(asin(EYEDIR.y)+.471239)/.54);
-  vec3 color=mix(vec3(.52,.55,.57),vec3(.96,.73,.46),smoothstep(-.15,.50,p.y));
-  color=mix(color,ivory,smoothstep(.30,.80,p.y));
-  vec2 sunpoint=(p-vec2(.88,.15))*vec2(1.7768,1.0);
-  float sun=1.0-smoothstep(.061,.063,length(sunpoint));
-  color=mix(color,vec3(1.0,.85,.52),sun);
+  vec2 p=sky_coord(EYEDIR);
+  vec3 color=sky_gradient(p);
   float cirrus=smoothstep(.55,.69,noise(p*vec2(8,110))+noise(p*vec2(23,210))*.15);
-  color=mix(color,vec3(.97,.79,.53),cirrus*.13*(1.0-smoothstep(.3,.5,p.y)));
+  color=mix(color,vec3(1.0,.86,.62),cirrus*.16*(1.0-smoothstep(.3,.5,p.y)));
   vec2 uv=vec2(p.x*.85,.20+p.y*.80);
   vec3 source=textureLod(cloud_backdrop,uv,1.0).rgb;
   float density=smoothstep(.10,.65,source.r);
   float cloud_light=smoothstep(.24,.88,source.r);
-  vec3 cloud_color=mix(vec3(.57,.63,.65),vec3(.98,.86,.67),cloud_light);
+  vec3 cloud_color=mix(vec3(.66,.63,.64),vec3(1.0,.88,.69),cloud_light);
+  float sun=sky_sun_distance(p);
+  cloud_color+=vec3(.30,.20,.08)*exp(-sun*5.0);
   color=mix(color,cloud_color,density*smoothstep(.14,.60,p.y)*(.92+(haze-.65)*.12));
-  COLOR=color;
+  COLOR=mix(color,SKY_SUN_CORE,sky_sun_disc(p));
  }
 }

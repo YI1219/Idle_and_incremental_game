@@ -2,11 +2,19 @@ class_name DistantLandscape
 extends Node3D
 ## Distant, non-interactive mountain scenery. It never supplies courtyard land.
 ## Three mesh resources in cullable angular sectors; no shadows or colliders.
+## Flat cloud decks between the mountain rings form the layered cloud sea.
+const CLOUD_DECKS:=[
+ {"height":-150.0,"uv_scale":.0021,"coverage":.53,"opacity":.88,"offset":Vector2(.13,.71)},
+ {"height":-270.0,"uv_scale":.0015,"coverage":.50,"opacity":.92,"offset":Vector2(.58,.29)},
+ {"height":-420.0,"uv_scale":.0011,"coverage":.45,"opacity":.96,"offset":Vector2(.81,.47)},
+]
+var material:=ShaderMaterial.new()
+var cloud_materials:Array[ShaderMaterial]=[]
 func _ready()->void:
  var rng:=RandomNumberGenerator.new()
  rng.seed=721035
- var material:=ShaderMaterial.new()
  material.shader=load("res://shaders/terrain_editor/distant_mountain.gdshader")
+ _cloud_decks()
  for variant in 3:
   var mesh:=_mountain(variant)
   mesh.surface_set_material(0,material)
@@ -33,6 +41,40 @@ func _ready()->void:
    instance.multimesh=mm
    instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
    add_child(instance)
+func set_sun_direction(toward_sun:Vector3)->void:
+ material.set_shader_parameter("sun_direction",toward_sun)
+ for deck in cloud_materials:deck.set_shader_parameter("sun_direction",toward_sun)
+func _cloud_decks()->void:
+ var noise:=FastNoiseLite.new()
+ noise.noise_type=FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+ noise.seed=4127
+ noise.frequency=.018
+ noise.fractal_type=FastNoiseLite.FRACTAL_FBM
+ noise.fractal_octaves=5
+ noise.fractal_gain=.52
+ # Generated synchronously: an async NoiseTexture2D reads as a solid deck
+ # until its worker thread finishes.
+ var image:=noise.get_seamless_image(256,256)
+ image.generate_mipmaps()
+ var billow:=ImageTexture.create_from_image(image)
+ var plane:=PlaneMesh.new()
+ plane.size=Vector2(3000,3000)
+ var shader:=load("res://shaders/terrain_editor/cloud_deck.gdshader")
+ for spec:Dictionary in CLOUD_DECKS:
+  var deck_material:=ShaderMaterial.new()
+  deck_material.shader=shader
+  deck_material.set_shader_parameter("billow",billow)
+  deck_material.set_shader_parameter("uv_scale",spec.uv_scale)
+  deck_material.set_shader_parameter("coverage",spec.coverage)
+  deck_material.set_shader_parameter("opacity",spec.opacity)
+  deck_material.set_shader_parameter("uv_offset",spec.offset)
+  cloud_materials.append(deck_material)
+  var deck:=MeshInstance3D.new()
+  deck.mesh=plane
+  deck.material_override=deck_material
+  deck.position.y=spec.height
+  deck.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+  add_child(deck)
 func _mountain(variant:int)->ArrayMesh:
  var surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
  const SIDES=12
