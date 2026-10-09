@@ -44,8 +44,10 @@ void fragment(){
 	float shoulder=dry*facing*(1.0-smoothstep(.10+.18*ragged,.28+.26*ragged,below));
 	float footprint=length(fwidth(along))*9.0;
 	float detail=1.0-smoothstep(.35,1.0,footprint);
-	vec2 slope;
-	vec3 lawn=ground_cover(along,detail,slope);
+	vec2 slope=vec2(0.0);
+	vec3 lawn=color;
+	// Most cliff fragments are bare rock; skip the lawn there.
+	if(shoulder>0.0)lawn=ground_cover(along,detail,slope);
 	ALBEDO=mix(color,lawn,shoulder);
 	// The shoulder is lit like the cap, so the rim turns rather than folds.
 	vec3 lawn_normal=normalize(vec3(-slope.x*cover_relief*detail,1.0,-slope.y*cover_relief*detail));

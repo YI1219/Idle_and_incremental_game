@@ -58,9 +58,10 @@ void fragment(){
 	// The crown is the lawn itself, lit like the cap beside it.
 	float footprint=length(fwidth(world_position.xz))*9.0;
 	float detail=1.0-smoothstep(.35,1.0,footprint);
-	vec2 slope;
-	vec3 lawn=ground_cover(world_position.xz,detail,slope);
+	vec2 slope=vec2(0.0);
+	vec3 lawn=color;
 	float crown=smoothstep(.45,.78,up)*(1.0-smoothstep(.30,.60,below));
+	if(crown>0.0)lawn=ground_cover(world_position.xz,detail,slope);
 	ALBEDO=mix(color,lawn,crown);
 	vec3 lawn_normal=normalize(vec3(-slope.x*cover_relief*detail,1.0,-slope.y*cover_relief*detail));
 	NORMAL=normalize(mix(NORMAL,(VIEW_MATRIX*vec4(lawn_normal,0.0)).xyz,crown));
