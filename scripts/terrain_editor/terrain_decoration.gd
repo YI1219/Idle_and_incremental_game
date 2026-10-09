@@ -237,7 +237,6 @@ func _column_layout(field,seed_value:int)->void:
 				if length<.42:continue
 				var out:=Vector2(b.y-a.y,a.x-b.x).normalized()
 				var supported:=true
-				var step:=false
 				for p:Vector2 in [a,(a+b)*.5,b]:
 					var profile:Dictionary=field._cliff_profile(p,out)
 					# Every elevation's outline repeats shared outer edges; only
@@ -245,8 +244,7 @@ func _column_layout(field,seed_value:int)->void:
 					if absf(profile.rock_top-h)>.01:supported=false
 					elif profile.base:
 						if profile.water>=0 or profile.inset<.9:supported=false
-					elif profile.step:step=true
-					else:supported=false
+					elif not profile.step:supported=false
 					var cell:=Vector2i(p.floor())
 					for z in range(-1,2):
 						for x in range(-1,2):
@@ -263,12 +261,13 @@ func _column_layout(field,seed_value:int)->void:
 					if width<.32:continue
 					var top:float=h+lerpf(.03,.15,random_at(cell,seed_value,3001))
 					var height:float
-					# Each block follows its own wall: a step block stands on the
-					# lower terrace, an outer block hangs over the shell.
-					if profile.step!=step or (not profile.step and not profile.base):continue
-					if step:
-						# Step blocks stand on the lower terrace.
+					# Each block follows its own wall, even where a segment turns
+					# from a terrace step onto an outer wall: a step block stands
+					# on the lower terrace, an outer block hangs over the shell.
+					if absf(profile.rock_top-h)>.01:continue
+					if profile.step:
 						height=top-profile.bottom+.15
+					elif not profile.base or profile.water>=0 or profile.inset<.9:continue
 					else:
 						var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
 						height=maxf(.8,(h-foot.y)*lerpf(.35,.80,random_at(cell,seed_value,3002)))
