@@ -55,6 +55,13 @@ func run()->void:
   mist.visible=false
   results.waterfall_mist_off=await measure()
   mist.visible=true
+ var rim:Array=[]
+ for chunk in editor.renderer.chunks.values():
+  for child in chunk.get_children():
+   if String(child.name).begins_with("cliff_column"):rim.append(child)
+ for block in rim:block.visible=false
+ results.rim_blocks_off=await measure()
+ for block in rim:block.visible=true
  results.all_on_again=await measure()
  var args:=OS.get_cmdline_user_args()
  var tag:="after" if args.is_empty() else args[0]
