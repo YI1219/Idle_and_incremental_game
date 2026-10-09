@@ -344,11 +344,11 @@ static func _buttress(p:Vector2)->float:
 	return _step_field(p,2.3,Vector2.ZERO)
 
 static func _step_field(p:Vector2,size:float,salt:Vector2)->float:
-	# Plateaus with short ramps: blocky masses rather than smooth waves.
+	# Rounded lobes: full-cell easing, so masses swell without hard ramps.
 	var q:=Vector2(p.x*.83+p.y*.56,p.y*.83-p.x*.56)/size+salt
 	var cell:=q.floor()
 	var f:=q-cell
-	var w:=Vector2(smoothstep(.36,.64,f.x),smoothstep(.36,.64,f.y))
+	var w:=Vector2(smoothstep(0.0,1.0,f.x),smoothstep(0.0,1.0,f.y))
 	var a:=_step_level(cell)
 	var b:=_step_level(cell+Vector2(1,0))
 	var c:=_step_level(cell+Vector2(0,1))

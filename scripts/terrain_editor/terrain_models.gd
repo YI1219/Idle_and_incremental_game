@@ -12,6 +12,8 @@ func load_assets()->void:
 	assets.reeds=_reed_models()
 	assets.lily=_lily_models()
 	assets.path=_path_models()
+	assets.underside_rock=_hanging_rock_models("Rock_Medium_1")
+	assets.underside_rock_b=_hanging_rock_models("Rock_Medium_2")
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=[]
@@ -61,7 +63,7 @@ func load_assets()->void:
 	assets.vine=spray
 	for kind in assets:
 		# Retain the curved grass mesh's UVs/normals and palette texture.
-		if kind not in ["grass","grass_clump","reeds"]:assets[kind]=[_merge(assets[kind])]
+		if kind not in ["grass","grass_clump","reeds","underside_rock","underside_rock_b"]:assets[kind]=[_merge(assets[kind])]
 	# Apply after merging, which intentionally replaces individual source materials.
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
@@ -176,6 +178,41 @@ func _grass_clump_models()->Array:
 		material.set_shader_parameter("dark_color",Vector3(.15,.19,.10))
 		material.set_shader_parameter("light_color",Vector3(.35,.38,.22))
 	return parts
+
+func _hanging_rock_models(id:String)->Array:
+	# Retained CC0 boulders turned crown-down: their rounded tops become the
+	# hanging underside. Normalized to unit width, top centre at the origin,
+	# so a placement's origin is its attachment inside the shell.
+	var source:Node=load("res://assets/nature/quaternius/"+id+".gltf").instantiate()
+	var parts:Array=[]
+	for node:MeshInstance3D in source.find_children("*","MeshInstance3D",true,false):
+		var pose:Transform3D=Transform3D(Basis(Vector3.RIGHT,PI),Vector3.ZERO)*_global_pose(node,source)
+		for surface in node.mesh.get_surface_count():
+			var mesh:=ArrayMesh.new()
+			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,node.mesh.surface_get_arrays(surface))
+			var material:=ShaderMaterial.new()
+			material.shader=load("res://shaders/terrain_editor/underside_rock.gdshader")
+			material.set_shader_parameter("detail_tex",load("res://assets/nature/quaternius/Rocks_Diffuse.png"))
+			mesh.surface_set_material(0,material)
+			parts.append({"mesh":mesh,"pose":pose})
+	source.free()
+	var box:=AABB()
+	for i in parts.size():
+		var part_box:AABB=parts[i].pose*parts[i].mesh.get_aabb()
+		box=part_box if i==0 else box.merge(part_box)
+	var width:=maxf(box.size.x,box.size.z)
+	var normalize:=Transform3D(Basis.IDENTITY.scaled(Vector3.ONE/maxf(width,.0001)),Vector3.ZERO)
+	normalize=normalize.translated_local(-Vector3(box.get_center().x,box.end.y,box.get_center().z))
+	for part:Dictionary in parts:part.pose=normalize*part.pose
+	return parts
+
+static func _global_pose(node:Node,root:Node)->Transform3D:
+	var pose:=Transform3D.IDENTITY
+	var current:=node
+	while current!=null and current!=root:
+		if current is Node3D:pose=(current as Node3D).transform*pose
+		current=current.get_parent()
+	return pose
 
 func _grass_models(id:String="Grass_Common_Short")->Array:
 	var source:Node=load("res://assets/nature/quaternius/"+id+".gltf").instantiate()

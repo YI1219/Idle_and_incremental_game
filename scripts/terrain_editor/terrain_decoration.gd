@@ -35,7 +35,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	var field=contours
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
-	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
+	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
 			var cell:=Vector2i(x,z)
@@ -130,6 +130,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						if not draped.is_empty():result.vine.append(draped.pose)
 						drop+=.25+random_at(cell,data.seed,170+leaf+strand*11)*.11
 
+	_underside_rocks(result,field,data.seed,chunk)
 	for level:int in field.water_regions:
 		for loop:PackedVector2Array in field.water_regions[level]:
 			for i in loop.size():
@@ -177,6 +178,61 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			result.flower.append(_transform(Vector3(point.x,support.height,point.y),j*1.7,Vector3.ONE*(1.1+j*.13)))
 	_fences(result,field,chunk)
 	return result
+func _underside_rocks(result:Dictionary,field,seed_value:int,chunk:Vector2i)->void:
+	# Broad outer walls are clad below the lip by rounded boulder masses:
+	# a large hanging stone at the shell foot (larger at convex corners) and
+	# often a smaller one bulging from the middle of the wall. Walls beside
+	# falls stay clear so curtains keep their path.
+	var falls:Dictionary={}
+	for point:Vector3 in field.surfaces.waterfall.vertices:falls[Vector2i(floori(point.x),floori(point.z))]=true
+	var anchors:Dictionary={}
+	for h:float in field.land_regions:
+		for loop:PackedVector2Array in field.land_regions[h]:
+			for i in loop.size():
+				var p:=loop[i]
+				if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
+				var anchor:=Vector2i(floori(p.x/1.45),floori(p.y/1.45))
+				if anchors.has(anchor):continue
+				var next:Vector2=loop[(i+1)%loop.size()]
+				var previous:Vector2=loop[(i-1+loop.size())%loop.size()]
+				var out:=Vector2(next.y-previous.y,previous.x-next.x).normalized()
+				var profile:Dictionary=field._cliff_profile(p,out)
+				if not profile.base or profile.water>=0 or profile.inset<.8:continue
+				var near_fall:=false
+				for z in range(-2,3):
+					for x in range(-2,3):
+						if falls.has(Vector2i(floori(p.x)+x,floori(p.y)+z)):near_fall=true
+				if near_fall:continue
+				anchors[anchor]=true
+				var cell:=Vector2i(p.floor())
+				var turn:float=absf((next-p).angle_to(p-previous))
+				var corner:=1.0+.35*smoothstep(.15,.55,turn)
+				var foot:Vector3=field._profile_point(p,Contours.BOTTOM,out,profile)
+				var depth:float=maxf(1.0,profile.top-foot.y)
+				var outward:=Vector3(out.x,0,out.y)
+				var width:=lerpf(2.6,3.5,random_at(cell,seed_value,2000))*corner*clampf(depth/3.4,.75,1.15)
+				var hang:=lerpf(.85,1.20,random_at(cell,seed_value,2001))
+				var yaw:=random_at(cell,seed_value,2002)*TAU
+				var tilt:=(random_at(cell,seed_value,2003)-.5)*.30
+				# Top sits inside the shell; the rounded crown hangs below its floor.
+				var origin:=foot+Vector3.UP*width*.70*hang*.70-outward*width*.30
+				var basis:=Basis(Vector3(-out.y,0,out.x),tilt)*Basis(Vector3.UP,yaw).scaled(Vector3(width,width*hang,width))
+				var kind:="underside_rock" if random_at(cell,seed_value,2004)<.6 else "underside_rock_b"
+				result[kind].append(Transform3D(basis,origin))
+				if turn>.22:
+					# Convex corners get a rounded shoulder mass high on the wall.
+					var shoulder:Vector3=field._profile_point(p,lerpf(profile.top,Contours.BOTTOM,.30),out,profile)
+					var size:=lerpf(2.0,2.7,random_at(cell,seed_value,2012))
+					# Crown up: only the rounded top shows below the turf lip.
+					var corner_basis:=Basis(Vector3.UP,random_at(cell,seed_value,2013)*TAU)*Basis(Vector3.RIGHT,PI).scaled(Vector3(size,size*.95,size))
+					result["underside_rock_b"].append(Transform3D(corner_basis,shoulder-Vector3.UP*size*.30-outward*size*.26))
+				if random_at(cell,seed_value,2005)<.45:
+					var mid:Vector3=field._profile_point(p,lerpf(profile.top,Contours.BOTTOM,lerpf(.38,.58,random_at(cell,seed_value,2006))),out,profile)
+					var small:=lerpf(1.7,2.4,random_at(cell,seed_value,2007))
+					var along:=Vector3(-out.y,0,out.x)*(random_at(cell,seed_value,2008)-.5)*.9
+					var mid_origin:=mid-Vector3.UP*small*.30-outward*small*.22+along
+					var mid_basis:=Basis(Vector3(-out.y,0,out.x),(random_at(cell,seed_value,2009)-.5)*.5)*Basis(Vector3.UP,random_at(cell,seed_value,2010)*TAU)*Basis(Vector3.RIGHT,PI).scaled(Vector3(small,small*lerpf(.9,1.2,random_at(cell,seed_value,2011)),small))
+					result["underside_rock_b" if kind=="underside_rock" else "underside_rock"].append(Transform3D(mid_basis,mid_origin))
 func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:int,bank:Vector2,out:Vector2,angle:float,water_y:float)->void:
 	# Mixed shoreline: world-anchored groups of large shouldered boulders,
 	# medium stones and small clusters, some standing out in the water.
@@ -312,7 +368,7 @@ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
 			var mm:=MultiMesh.new()
 			mm.transform_format=MultiMesh.TRANSFORM_3D
 			mm.mesh=part.mesh
-			mm.use_colors=kind.begins_with("shore_")
+			mm.use_colors=kind.begins_with("shore_") or kind.begins_with("underside_")
 			mm.instance_count=transforms.size()
 			for i in transforms.size():
 				mm.set_instance_transform(i,transforms[i]*part.pose)
