@@ -27,8 +27,8 @@ void fragment(){
 	float footprint=length(fwidth(p))*9.0;
 	float detail=1.0-smoothstep(.35,1.0,footprint);
 	// Soft mottling: low-contrast, no cell edges.
-	vec3 dry=base*vec3(1.04,1.02,.90);
-	vec3 lush=base*vec3(.70,.82,.58);
+	vec3 dry=base*vec3(1.02,1.01,.98);
+	vec3 lush=base*vec3(.88,.92,.86);
 	vec3 color=mix(dry,lush,clamp(cover*.75+(height-.5)*1.3*detail,0.0,1.0));
 	// Two overlapping layers of irregular low tufts: darker green and
 	// yellow-green, each lit as a gentle dome so the sun picks out its side.
@@ -50,8 +50,8 @@ void fragment(){
 			if(tuft>best){best=tuft;lean=-d/r;tone=hash(id+vec2(1.0,7.0));}
 			if(layer==1)bloom=max(bloom,step(.94,hash(id+vec2(17.0,3.0)))*(1.0-smoothstep(.04,.08,length(d))));
 		}
-		vec3 dark=mix(base*vec3(.56,.68,.48),vec3(.22,.27,.15),.25);
-		vec3 light=base*vec3(.96,.97,.84);
+		vec3 dark=mix(base*vec3(.78,.83,.75),vec3(.34,.36,.29),.18);
+		vec3 light=base*vec3(1.04,1.02,.94);
 		vec3 tuft_color=mix(dark,light,tone*tone)*(.92+.14*best);
 		color=mix(color,tuft_color,smoothstep(0.0,.35,best)*(layer==0?.82:.55)*detail);
 		slope_tuft-=lean*smoothstep(0.0,.6,best)*(layer==0?.35:.25);

@@ -177,8 +177,8 @@ func _grass_clump_models()->Array:
 		var foot:=Vector3(box.position.x+box.size.x*.5,box.position.y,box.position.z+box.size.z*.5)
 		part.pose=Transform3D(basis,-(basis*foot))*part.pose
 		var material:ShaderMaterial=part.mesh.surface_get_material(0)
-		material.set_shader_parameter("dark_color",Vector3(.15,.19,.10))
-		material.set_shader_parameter("light_color",Vector3(.35,.38,.22))
+		material.set_shader_parameter("dark_color",Vector3(.17,.19,.12))
+		material.set_shader_parameter("light_color",Vector3(.38,.39,.27))
 	return parts
 
 func _hanging_rock_models(id:String)->Array:
