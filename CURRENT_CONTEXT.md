@@ -1,5 +1,5 @@
 # Current project consensus and handoff entry
-Updated: 2026-10-06. Latest explicit user instructions take precedence. Read this before code and related design. Source assets and review reports are evidence, not automatic todos.
+Updated: 2026-10-09. Latest explicit user instructions take precedence. Read this before code and related design. Source assets and review reports are evidence, not automatic todos.
 
 ## Current priority and approved scope
 

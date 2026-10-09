@@ -49,7 +49,7 @@ Captures are actual Godot 4.7.2 Forward+ renders of `scenes/terrain_editor.tscn`
 
 **Shared lawn.** The ground cap's colour logic moved unchanged into `ground_cover.gdshaderinc`. The cap, block crowns and the cliff shoulder all call it, so the lawn continues onto rock without a seam in tone or tuft pattern. The grass tone itself is unchanged from round 4.
 
-**Stone tone.** `cliff_palette.gdshaderinc` grey moves from (.40, .39, .36)–(.55, .53, .48) to (.43, .42, .39)–(.58, .56, .51), about 10–15% lighter and cooler, matching sampled concept rock. Cliff, blocks, shore and underside stones share it.
+**Stone tone.** `cliff_palette.gdshaderinc` grey moves from (.38, .36, .32)–(.52, .49, .42) to (.43, .42, .39)–(.58, .56, .51), about 10–15% lighter and cooler, matching sampled concept rock. Cliff, blocks, shore and underside stones share it.
 
 Underside boulders are kept as they were (rounded mass at the shell foot). Shore stones are unchanged at 0.62 scale.
 
