@@ -5,6 +5,9 @@ const Geometry=preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours=preload("res://scripts/terrain_editor/contour_terrain.gd")
 const Models=preload("res://scripts/terrain_editor/terrain_models.gd")
 const COMMON_TREE_HEIGHT := 4.15
+# Shore stones read as bank stones at gameplay framing, not as boulders that
+# dominate the lake rim.
+const SHORE_STONE_SCALE := .62
 var model_library:=Models.new()
 var assets:Dictionary={}
 var contours:RefCounted
@@ -340,6 +343,8 @@ func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:in
 				across=lerpf(-.38,.10,random_at(cell,seed_value,1160+salt))
 				size=Vector3(lerpf(.70,1.20,random_at(cell,seed_value,1180+salt)),lerpf(1.00,1.75,random_at(cell,seed_value,1200+salt)),lerpf(.62,.90,random_at(cell,seed_value,1220+salt)))
 				sink=.08
+		size*=SHORE_STONE_SCALE
+		sink*=SHORE_STONE_SCALE
 		across=across*wet_reach if across<0 else across
 		var at:=bank+tangent*along+out*across
 		# Stones placed into the lake sit lower, partly submerged.
