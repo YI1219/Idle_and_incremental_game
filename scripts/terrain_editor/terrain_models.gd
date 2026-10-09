@@ -14,6 +14,8 @@ func load_assets()->void:
 	assets.path=_path_models()
 	assets.underside_rock=_hanging_rock_models("Rock_Medium_1")
 	assets.underside_rock_b=_hanging_rock_models("Rock_Medium_2")
+	assets.cliff_column=_column_models("stone_smallFlatA")
+	assets.cliff_column_b=_column_models("stone_largeD")
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=[]
@@ -63,7 +65,7 @@ func load_assets()->void:
 	assets.vine=spray
 	for kind in assets:
 		# Retain the curved grass mesh's UVs/normals and palette texture.
-		if kind not in ["grass","grass_clump","reeds","underside_rock","underside_rock_b"]:assets[kind]=[_merge(assets[kind])]
+		if kind not in ["grass","grass_clump","reeds","underside_rock","underside_rock_b","cliff_column","cliff_column_b"]:assets[kind]=[_merge(assets[kind])]
 	# Apply after merging, which intentionally replaces individual source materials.
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
@@ -205,6 +207,30 @@ func _hanging_rock_models(id:String)->Array:
 	normalize=normalize.translated_local(-Vector3(box.get_center().x,box.end.y,box.get_center().z))
 	for part:Dictionary in parts:part.pose=normalize*part.pose
 	return parts
+
+func _column_models(id:String)->Array:
+	# Retained CC0 stones stood upright and stretched into standing columns.
+	# Baked into a unit box: x/z in [-.5,.5], y in [-1,0], top centre at the
+	# origin, so a placement scales it to width, height and thickness.
+	var parts:=_load(id,"surface_rock")
+	var box:=AABB()
+	for i in parts.size():
+		var part_box:AABB=parts[i].pose*parts[i].mesh.get_aabb()
+		box=part_box if i==0 else box.merge(part_box)
+	var normalize:=Transform3D(Basis.IDENTITY.scaled(Vector3.ONE/box.size.max(Vector3.ONE*.0001)),Vector3.ZERO)
+	normalize=normalize.translated_local(-Vector3(box.get_center().x,box.end.y,box.get_center().z))
+	var builder=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
+	for part:Dictionary in parts:
+		var arrays:Array=part.mesh.surface_get_arrays(0)
+		var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
+		var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR]
+		var pose:Transform3D=normalize*part.pose
+		for i in range(0,vertices.size(),3):builder.triangle(pose*vertices[i],pose*vertices[i+1],pose*vertices[i+2],colors[i])
+	var mesh:ArrayMesh=builder.mesh()
+	var material:=ShaderMaterial.new()
+	material.shader=load("res://shaders/terrain_editor/cliff_column.gdshader")
+	mesh.surface_set_material(0,material)
+	return [{"mesh":mesh,"pose":Transform3D.IDENTITY}]
 
 static func _global_pose(node:Node,root:Node)->Transform3D:
 	var pose:=Transform3D.IDENTITY

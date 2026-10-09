@@ -9,6 +9,11 @@ const UNDERSIDE_THICKNESS := 0.80
 # World-anchored stepped lobes hang below the slab; the keel never passes this floor.
 const KEEL_DEPTH := 1.1
 const KEEL_LIMIT := -3.0
+# Standing columns clad broad dry outer walls below the lip. The rock behind
+# them stays at least this far inside the lip line, so joints read as crevices.
+const COLUMN_RECESS := .30
+## Increments on every refresh; decoration caches whole-outline layouts by it.
+var revision:=0
 var land_regions:Dictionary={}
 var water_regions:Dictionary={}
 var levels:Array=[]
@@ -28,6 +33,7 @@ var splash_points:Array=[]
 
 func refresh(data:Data)->void:
 	source=data
+	revision+=1
 	_chain_constraints.clear()
 	_cliff_turf.clear()
 	splash_points.clear()
@@ -308,14 +314,18 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 		point.y=lerpf(profile.top,floor_y,weight)
 		if profile.water<0 and mass>0.0:
 			# Broad outer faces step in and out as blocky buttresses, with a
-			# shallow notch under the lip so the turf edge overhangs. Forward
-			# masses settle back before the foot; narrow necks and walls beside
-			# falls keep their proven profile.
+			# shallow notch under the lip so the turf edge overhangs. Below the
+			# lip the rock stays behind the standing-column plane; forward masses
+			# settle back before the foot; narrow necks and walls beside falls
+			# keep their proven profile.
 			var below:float=profile.top-point.y
 			var notch:=smoothstep(0.0,.18,below)*(1.0-smoothstep(.45,.95,below))
 			var buttress:=_buttress(p)*smoothstep(.25,.85,below)
 			if buttress>0.0:buttress*=1.0-smoothstep(.55,.95,weight)
 			point+=Vector3(normal.x,0,normal.y)*(buttress*.50-notch*.24)*mass
+			var band:=smoothstep(.02,.30,below)*(1.0-smoothstep(2.4,3.4,below))
+			var excess:=Vector2(point.x-p.x,point.z-p.y).dot(normal)+COLUMN_RECESS
+			if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess*band*mass
 	if profile.water>=0 and point.y<=profile.water*.5+.045:
 		# Exposed wet walls sit behind the shared stream envelope. Limit only
 		# protruding shoulders; inland and dry cliff masses keep their full relief.

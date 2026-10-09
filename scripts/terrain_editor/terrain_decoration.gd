@@ -10,6 +10,12 @@ var assets:Dictionary={}
 var contours:RefCounted
 var _vine_center:=Vector3.ZERO
 var _shrub_base:=PackedVector3Array()
+# Standing columns for the whole outline, rebuilt per contour revision so a
+# vine near a chunk edge can hang over a neighboring chunk's column.
+var _columns:Array=[]
+var _column_cells:Dictionary={}
+var _column_field:RefCounted
+var _column_key:=Vector2i(-1,-1)
 static func random_at(cell:Vector2i,seed_value:int,salt:int)->float:
 	var value:int=(cell.x*374761393+cell.y*668265263+seed_value*69069+salt*144269)&0x7fffffff
 	value=((value^(value>>13))*1274126177)&0x7fffffff
@@ -35,7 +41,10 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	var field=contours
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
-	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
+	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","cliff_column","cliff_column_b","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
+	_column_layout(field,data.seed)
+	for column:Dictionary in _columns:
+		if Data.chunk_of(column.cell)==chunk:result[column.kind].append(column.pose)
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
 			var cell:=Vector2i(x,z)
@@ -178,11 +187,88 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			result.flower.append(_transform(Vector3(point.x,support.height,point.y),j*1.7,Vector3.ONE*(1.1+j*.13)))
 	_fences(result,field,chunk)
 	return result
+func _column_layout(field,seed_value:int)->void:
+	# Broad dry outer walls are clad from the turf lip down by tall standing
+	# stone columns, one run per contour segment with narrow joints between
+	# blocks. Segment ends are world-anchored, so edits only move nearby blocks.
+	var key:=Vector2i(field.revision,seed_value)
+	if _column_field==field and _column_key==key:return
+	_column_field=field
+	_column_key=key
+	_columns.clear()
+	_column_cells.clear()
+	for h:float in field.land_regions:
+		for loop:PackedVector2Array in field.land_regions[h]:
+			var size:=loop.size()
+			for i in size:
+				# A block may span two nearly straight segments. The decision
+				# belongs to the shared vertex, never to two consecutive vertices.
+				if _column_joins(loop,i,seed_value):continue
+				var a:=loop[i]
+				var b:=loop[(i+1)%size]
+				if _column_joins(loop,(i+1)%size,seed_value):b=loop[(i+2)%size]
+				var length:=a.distance_to(b)
+				if length<.42:continue
+				var out:=Vector2(b.y-a.y,a.x-b.x).normalized()
+				var supported:=true
+				for p:Vector2 in [a,(a+b)*.5,b]:
+					var profile:Dictionary=field._cliff_profile(p,out)
+					if not profile.base or profile.water>=0 or profile.inset<.9:supported=false
+				if not supported:continue
+				var outward:=Vector3(out.x,0,out.y)
+				var tangent:=Vector3(out.y,0,-out.x)
+				var count:=maxi(1,roundi(length/1.6))
+				for k in count:
+					var c:=a.lerp(b,(k+.5)/count)
+					var profile:Dictionary=field._cliff_profile(c,out)
+					var cell:=Vector2i(roundi(c.x*8.0),roundi(c.y*8.0))
+					var width:=length/count-lerpf(.07,.17,random_at(cell,seed_value,3000))
+					if width<.32:continue
+					var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
+					var depth:float=profile.top-foot.y
+					var top:float=profile.top-lerpf(.03,.13,random_at(cell,seed_value,3001))
+					var height:=minf(depth*lerpf(.45,.86,random_at(cell,seed_value,3002)),top-foot.y-.25)
+					if height<.8:continue
+					var thickness:=lerpf(.85,1.10,random_at(cell,seed_value,3003))
+					var proud:=lerpf(-.03,.09,random_at(cell,seed_value,3004))
+					var yaw:=(random_at(cell,seed_value,3005)-.5)*.10+(PI if random_at(cell,seed_value,3006)<.5 else 0.0)
+					var lean:=(random_at(cell,seed_value,3007)-.5)*.05
+					var basis:=Basis(tangent,Vector3.UP,outward)*Basis(Vector3.RIGHT,lean)*Basis(Vector3.UP,yaw)
+					var pose:=Transform3D(basis.scaled_local(Vector3(width,height,thickness)),Vector3(c.x,top,c.y)+outward*(proud-thickness*.5))
+					var kind:="cliff_column" if random_at(cell,seed_value,3008)<.68 else "cliff_column_b"
+					var index:=_columns.size()
+					_columns.append({"kind":kind,"pose":pose,"cell":Vector2i(c.floor())})
+					var bounds:AABB=pose*AABB(Vector3(-.5,-1,-.5),Vector3.ONE)
+					for z in range(floori(bounds.position.z/2.0),floori(bounds.end.z/2.0)+1):
+						for x in range(floori(bounds.position.x/2.0),floori(bounds.end.x/2.0)+1):
+							var bucket:=Vector2i(x,z)
+							if not _column_cells.has(bucket):_column_cells[bucket]=[]
+							_column_cells[bucket].append(index)
+func _column_joins(loop:PackedVector2Array,i:int,seed_value:int)->bool:
+	return _column_join_wanted(loop,i,seed_value) and not _column_join_wanted(loop,(i-1+loop.size())%loop.size(),seed_value)
+func _column_join_wanted(loop:PackedVector2Array,i:int,seed_value:int)->bool:
+	var p:=loop[i]
+	var previous:=loop[(i-1+loop.size())%loop.size()]
+	var next:=loop[(i+1)%loop.size()]
+	if absf((next-p).angle_to(p-previous))>.22:return false
+	return random_at(Vector2i(roundi(p.x*8.0),roundi(p.y*8.0)),seed_value,3010)<.5
+func column_faces_near(point:Vector3)->PackedVector3Array:
+	# World triangles of standing columns around a point; vines hang on these.
+	var faces:=PackedVector3Array()
+	var seen:Dictionary={}
+	for z in range(floori((point.z-1.0)/2.0),floori((point.z+1.0)/2.0)+1):
+		for x in range(floori((point.x-1.0)/2.0),floori((point.x+1.0)/2.0)+1):
+			for index:int in _column_cells.get(Vector2i(x,z),[]):
+				if seen.has(index):continue
+				seen[index]=true
+				var column:Dictionary=_columns[index]
+				var vertices:PackedVector3Array=assets[column.kind][0].mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+				for vertex:Vector3 in vertices:faces.append(column.pose*vertex)
+	return faces
 func _underside_rocks(result:Dictionary,field,seed_value:int,chunk:Vector2i)->void:
-	# Broad outer walls are clad below the lip by rounded boulder masses:
-	# a large hanging stone at the shell foot (larger at convex corners) and
-	# often a smaller one bulging from the middle of the wall. Walls beside
-	# falls stay clear so curtains keep their path.
+	# The shell foot of broad outer walls hangs rounded boulder masses below
+	# the standing columns (larger at convex corners). Walls beside falls
+	# stay clear so curtains keep their path.
 	var falls:Dictionary={}
 	for point:Vector3 in field.surfaces.waterfall.vertices:falls[Vector2i(floori(point.x),floori(point.z))]=true
 	var anchors:Dictionary={}
@@ -219,20 +305,6 @@ func _underside_rocks(result:Dictionary,field,seed_value:int,chunk:Vector2i)->vo
 				var basis:=Basis(Vector3(-out.y,0,out.x),tilt)*Basis(Vector3.UP,yaw).scaled(Vector3(width,width*hang,width))
 				var kind:="underside_rock" if random_at(cell,seed_value,2004)<.6 else "underside_rock_b"
 				result[kind].append(Transform3D(basis,origin))
-				if turn>.22:
-					# Convex corners get a rounded shoulder mass high on the wall.
-					var shoulder:Vector3=field._profile_point(p,lerpf(profile.top,Contours.BOTTOM,.30),out,profile)
-					var size:=lerpf(2.0,2.7,random_at(cell,seed_value,2012))
-					# Crown up: only the rounded top shows below the turf lip.
-					var corner_basis:=Basis(Vector3.UP,random_at(cell,seed_value,2013)*TAU)*Basis(Vector3.RIGHT,PI).scaled(Vector3(size,size*.95,size))
-					result["underside_rock_b"].append(Transform3D(corner_basis,shoulder-Vector3.UP*size*.30-outward*size*.26))
-				if random_at(cell,seed_value,2005)<.45:
-					var mid:Vector3=field._profile_point(p,lerpf(profile.top,Contours.BOTTOM,lerpf(.38,.58,random_at(cell,seed_value,2006))),out,profile)
-					var small:=lerpf(1.7,2.4,random_at(cell,seed_value,2007))
-					var along:=Vector3(-out.y,0,out.x)*(random_at(cell,seed_value,2008)-.5)*.9
-					var mid_origin:=mid-Vector3.UP*small*.30-outward*small*.22+along
-					var mid_basis:=Basis(Vector3(-out.y,0,out.x),(random_at(cell,seed_value,2009)-.5)*.5)*Basis(Vector3.UP,random_at(cell,seed_value,2010)*TAU)*Basis(Vector3.RIGHT,PI).scaled(Vector3(small,small*lerpf(.9,1.2,random_at(cell,seed_value,2011)),small))
-					result["underside_rock_b" if kind=="underside_rock" else "underside_rock"].append(Transform3D(mid_basis,mid_origin))
 func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:int,bank:Vector2,out:Vector2,angle:float,water_y:float)->void:
 	# Mixed shoreline: world-anchored groups of large shouldered boulders,
 	# medium stones and small clusters, some standing out in the water.
@@ -310,6 +382,19 @@ func _drape_vine(field,pose:Transform3D,out:Vector2)->Dictionary:
 		# correction so missing local support cannot relocate it across a gap.
 		var correction:float=center.distance_to(hit)
 		if correction<=.60 and correction<nearest:nearest=correction;contact=hit;normal=face_normal
+	# A standing column in front of the wall is the visible support: the
+	# spray hangs on its outer face instead of on the recessed rock behind.
+	if _column_field==field:
+		var faces:=column_faces_near(center)
+		var front:=INF
+		for i in range(0,faces.size(),3):
+			var a:=faces[i];var b:=faces[i+1];var c:=faces[i+2]
+			var face_normal:=-(b-a).cross(c-a).normalized()
+			if face_normal.dot(outward)<.25:continue
+			var hit=Geometry3D.ray_intersects_triangle(origin,-outward,a,b,c)
+			if hit==null:continue
+			var along:float=origin.distance_to(hit)
+			if along<front and center.distance_to(hit)<=1.2:front=along;contact=hit;normal=face_normal;nearest=0.0
 	if nearest==INF:return {}
 	var right:=pose.basis.x.normalized()
 	right=(right-normal*right.dot(normal)).normalized()
@@ -368,7 +453,7 @@ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
 			var mm:=MultiMesh.new()
 			mm.transform_format=MultiMesh.TRANSFORM_3D
 			mm.mesh=part.mesh
-			mm.use_colors=kind.begins_with("shore_") or kind.begins_with("underside_")
+			mm.use_colors=kind.begins_with("shore_") or kind.begins_with("underside_") or kind.begins_with("cliff_column")
 			mm.instance_count=transforms.size()
 			for i in transforms.size():
 				mm.set_instance_transform(i,transforms[i]*part.pose)

@@ -55,6 +55,16 @@ func run():
      if minf(weights.x,minf(weights.y,weights.z))>=-.000001:nearest=minf(nearest,absf(distance))
      else:
       for edge in [[a,b],[b,c],[c,a]]:nearest=minf(nearest,point.distance_to(Geometry3D.get_closest_point_to_segment(point,edge[0],edge[1])))
+    # Since round 4, standing stone columns clad broad outer walls in front
+    # of the recessed procedural rock. A spray hanging over a column is
+    # supported by that column's actual mesh, so its triangles also count.
+    var column_faces:PackedVector3Array=deco.column_faces_near(point)
+    for i in range(0,column_faces.size(),3):
+     var a:=column_faces[i];var b:=column_faces[i+1];var c:=column_faces[i+2]
+     var normal:Vector3=(b-a).cross(c-a).normalized()
+     var distance:float=normal.dot(point-a)
+     var weights:=Geometry3D.get_triangle_barycentric_coords(point-normal*distance,a,b,c)
+     if minf(weights.x,minf(weights.y,weights.z))>=-.000001:nearest=minf(nearest,absf(distance))
     checked+=1
     if nearest==INF:missing+=1;continue
     var gap:float=nearest;max_gap=maxf(max_gap,gap)
