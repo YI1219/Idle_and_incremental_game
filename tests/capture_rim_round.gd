@@ -42,6 +42,10 @@ func run()->void:
 	await capture(tag+"_rim_lower_right")
 	frame(Vector2(-3,2),9.0,-30.0,30.0)
 	await capture(tag+"_rim_terrace_step")
+	# Low camera outside the lower lobe, looking up at the foot of the wall.
+	editor.camera.position=Vector3(22.0,-3.2,16.5)
+	editor.camera.look_at(Vector3(8.5,-1.2,4.5))
+	await capture(tag+"_underside")
 	# Expand the lower terrace's dry right edge, raise part of it, then undo.
 	frame(Vector2(15.5,4.0),13.0,48.0,30.0)
 	await capture(tag+"_edit_0_before")

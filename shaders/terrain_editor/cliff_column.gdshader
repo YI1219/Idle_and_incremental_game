@@ -3,10 +3,11 @@ shader_type spatial;
 #include "cliff_palette.gdshaderinc"
 #include "land_palette.gdshaderinc"
 #include "ground_cover.gdshaderinc"
-// Rim blocks: standing stones whose crowns form the island edge. The crown
+// Rim blocks: cut stone masses whose crowns form the island edge. The crown
 // carries the same world-space lawn as the cap beside it, moss creeps over
 // the bevel and down the face, and the rock below weathers in vertical streaks.
 // Mesh space is a unit box with its top at y=0 and its foot at y=-1.
+// The baked chamfer lives in the top fifth so this remap keeps a rock head.
 uniform float cover_relief = .55;
 varying vec3 local_position;
 varying vec3 column_origin;
@@ -18,8 +19,8 @@ float noise_column(vec2 p){
 	return mix(mix(hash_column(i),hash_column(i+vec2(1,0)),u.x),mix(hash_column(i+vec2(0,1)),hash_column(i+vec2(1,1)),u.x),u.y);
 }
 
-// The source stone's top fifth is its crown bevel. It keeps about this real
-// height however tall the block is stretched, so crowns stay rounded.
+// The block's top fifth is its crown chamfer. It keeps about this real
+// height however tall the block is stretched, so the head stays the edge.
 const float CROWN_SOURCE=.20;
 const float CROWN_HEIGHT=.30;
 void vertex(){
@@ -53,7 +54,8 @@ void fragment(){
 	float up=world_normal.y;
 	// Moss creeps over the bevel and hangs in a ragged fringe down the face.
 	float ragged=noise_column(vec2((world_position.x+world_position.z)*3.1,variation.z*7.0))*.65+noise_column(vec2((world_position.x-world_position.z)*9.0,3.0))*.35;
-	float fringe=1.0-smoothstep(.06+.50*ragged,.14+.75*ragged,below);
+	// Moss stays on the crown. A long fringe painted a green lip on every course.
+	float fringe=1.0-smoothstep(.02+.10*ragged,.10+.18*ragged,below);
 	float moss=max(smoothstep(.15,.55,up)*(1.0-smoothstep(.25,.70,below)),fringe*.80);
 	vec3 moss_color=vec3(.40,.45,.27);
 	vec3 color=mix(stone,moss_color,moss*(.70+.30*streak));

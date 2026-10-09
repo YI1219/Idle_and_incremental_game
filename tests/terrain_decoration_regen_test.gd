@@ -41,6 +41,9 @@ func recomputed(data)->Dictionary:
 	field.refresh(copy)
 	fresh.contours=field
 	fresh.load_assets()
+	# The renderer's run cache is the optimization under test. This copy
+	# places from the heights alone, with nothing kept from an earlier edit.
+	fresh._run_cache.clear()
 	var chunks:Dictionary={}
 	for cell:Vector2i in copy.cells:
 		for z in range(-1,2):
@@ -132,6 +135,7 @@ func run()->void:
 		var inside:Vector2=column.edge-Vector2(column.outward.x,column.outward.z)*.3
 		if not Vector2i(inside.floor()) in original_cells:on_new_land+=1
 	check(on_new_land>=3,"expanded land carries new rim blocks on its new edge (%d)"%on_new_land)
+	check(renderer.decoration.layout_hits>renderer.decoration.layout_misses,"expand rebuilds only changed rim runs (%d hits, %d misses, %.2f ms)"%[renderer.decoration.layout_hits,renderer.decoration.layout_misses,renderer.decoration.layout_ms])
 	check(near(kinds(expanded,["underside_rock","underside_rock_b"]),expand_center,4.5)>near(kinds(initial,["underside_rock","underside_rock_b"]),expand_center,4.5),"expanded edge gains its own underside boulders")
 	check(near(kinds(expanded,["vine"]),expand_center,4.0)>0,"vines re-seat on the expanded rim")
 	# Raise part of the new land twice: the blocks follow the new top.
@@ -193,6 +197,7 @@ func run()->void:
 	data.undo();data.undo()
 	follows(renderer,data,"undo expand and raise")
 	check(same(published(renderer),initial)=="","undoing expand and raise restores the initial decoration exactly")
+	print("RIM BAKE us=%d"%renderer.decoration.model_library.block_bake_us)
 	renderer.free()
 	print("TERRAIN DECORATION REGEN: %d/%d passed"%[checks-failures,checks])
 	quit(1 if failures else 0)

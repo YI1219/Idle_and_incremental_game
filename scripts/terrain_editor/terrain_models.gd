@@ -2,6 +2,8 @@ class_name TerrainModels
 extends RefCounted
 ## CC0 model parts and material palette. Canopies assemble existing oak mesh modules.
 var assets:Dictionary={}
+## Microseconds to bake the six rim/underside block meshes. They are instanced after that.
+var block_bake_us:=0
 const IDS={"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
 	if not assets.is_empty():return
@@ -12,12 +14,16 @@ func load_assets()->void:
 	assets.reeds=_reed_models()
 	assets.lily=_lily_models()
 	assets.path=_path_models()
-	assets.underside_rock=_hanging_rock_models("Rock_Medium_1")
-	assets.underside_rock_b=_hanging_rock_models("Rock_Medium_2")
-	assets.cliff_column=_column_models("stone_smallFlatA")
-	assets.cliff_column_b=_column_models("stone_largeD")
-	assets.cliff_column_c=_column_models("stone_largeB")
-	assets.cliff_column_d=_column_models("Rock_Medium_2")
+	# Cut blocks, not the retained CC0 boulders. Four straight masses form the
+	# rim; two blunt-footed masses close the underside. Baked once, then instanced.
+	var bake:=Time.get_ticks_usec()
+	assets.cliff_column=_block_models(11,false)
+	assets.cliff_column_b=_block_models(23,false)
+	assets.cliff_column_c=_block_models(37,false)
+	assets.cliff_column_d=_block_models(41,false)
+	assets.underside_rock=_block_models(53,true)
+	assets.underside_rock_b=_block_models(67,true)
+	block_bake_us=Time.get_ticks_usec()-bake
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=[]
@@ -183,73 +189,98 @@ func _grass_clump_models()->Array:
 		material.set_shader_parameter("light_color",Vector3(.38,.39,.27))
 	return parts
 
-func _hanging_rock_models(id:String)->Array:
-	# Retained CC0 boulders turned crown-down: their rounded tops become the
-	# hanging underside. Normalized to unit width, top centre at the origin,
-	# so a placement's origin is its attachment inside the shell.
-	var source:Node=load("res://assets/nature/quaternius/"+id+".gltf").instantiate()
-	var parts:Array=[]
-	for node:MeshInstance3D in source.find_children("*","MeshInstance3D",true,false):
-		var pose:Transform3D=Transform3D(Basis(Vector3.RIGHT,PI),Vector3.ZERO)*_global_pose(node,source)
-		for surface in node.mesh.get_surface_count():
-			var mesh:=ArrayMesh.new()
-			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,node.mesh.surface_get_arrays(surface))
-			var material:=ShaderMaterial.new()
-			material.shader=load("res://shaders/terrain_editor/underside_rock.gdshader")
-			material.set_shader_parameter("detail_tex",load("res://assets/nature/quaternius/Rocks_Diffuse.png"))
-			mesh.surface_set_material(0,material)
-			parts.append({"mesh":mesh,"pose":pose})
-	source.free()
-	var box:=AABB()
-	for i in parts.size():
-		var part_box:AABB=parts[i].pose*parts[i].mesh.get_aabb()
-		box=part_box if i==0 else box.merge(part_box)
-	var width:=maxf(box.size.x,box.size.z)
-	var normalize:=Transform3D(Basis.IDENTITY.scaled(Vector3.ONE/maxf(width,.0001)),Vector3.ZERO)
-	normalize=normalize.translated_local(-Vector3(box.get_center().x,box.end.y,box.get_center().z))
-	for part:Dictionary in parts:part.pose=normalize*part.pose
-	return parts
-
-func _column_models(id:String)->Array:
-	# Retained CC0 stones stood upright and stretched into rim blocks.
-	# Baked into a unit box: x/z in [-.5,.5], y in [-1,0], top centre at the
-	# origin, so a placement scales it to width, height and thickness.
-	var parts:Array=[]
-	if id.begins_with("Rock"):
-		var source:Node=load("res://assets/nature/quaternius/"+id+".gltf").instantiate()
-		for node:MeshInstance3D in source.find_children("*","MeshInstance3D",true,false):
-			for surface in node.mesh.get_surface_count():
-				var mesh:=ArrayMesh.new()
-				mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,node.mesh.surface_get_arrays(surface))
-				parts.append({"mesh":mesh,"pose":_global_pose(node,source)})
-		source.free()
-	else:
-		parts=_load(id,"surface_rock")
-	var box:=AABB()
-	for i in parts.size():
-		var part_box:AABB=parts[i].pose*parts[i].mesh.get_aabb()
-		box=part_box if i==0 else box.merge(part_box)
-	var normalize:=Transform3D(Basis.IDENTITY.scaled(Vector3.ONE/box.size.max(Vector3.ONE*.0001)),Vector3.ZERO)
-	normalize=normalize.translated_local(-Vector3(box.get_center().x,box.end.y,box.get_center().z))
-	var builder=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
-	for part:Dictionary in parts:
-		var arrays:Array=part.mesh.surface_get_arrays(0)
-		var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
-		var indices:Variant=arrays[Mesh.ARRAY_INDEX]
-		if indices!=null and not (indices as PackedInt32Array).is_empty():
-			var expanded:=PackedVector3Array()
-			for index:int in indices:expanded.append(vertices[index])
-			vertices=expanded
-		var colors:Variant=arrays[Mesh.ARRAY_COLOR]
-		# Untinted Quaternius rocks take the Kenney stones' mid grey.
-		var flat:=colors==null or (colors as PackedColorArray).size()!=vertices.size()
-		var pose:Transform3D=normalize*part.pose
-		for i in range(0,vertices.size(),3):builder.triangle(pose*vertices[i],pose*vertices[i+1],pose*vertices[i+2],Color(.66,.66,.66) if flat else colors[i])
-	var mesh:ArrayMesh=builder.mesh()
+func _block_models(seed_value:int,taper:bool)->Array:
+	# Unit box: x/z in [-.5,.5], y in [-1,0], top centre at the origin.
+	# A placement scales that box to width, height and thickness.
+	var mesh:=_block_mesh(seed_value,taper)
 	var material:=ShaderMaterial.new()
 	material.shader=load("res://shaders/terrain_editor/cliff_column.gdshader")
 	mesh.surface_set_material(0,material)
 	return [{"mesh":mesh,"pose":Transform3D.IDENTITY}]
+
+func _block_mesh(seed_value:int,taper:bool)->ArrayMesh:
+	# Squarish clipped block, not a circle. Long flat faces, small corner cuts,
+	# a chamfer in the top fifth (the shader keeps that as a ~.30 m rock head),
+	# then near-vertical sides. Taper meshes keep that head and narrow only
+	# at the foot, so the underside continues the wall.
+	var rng:=RandomNumberGenerator.new()
+	rng.seed=seed_value
+	var cuts:=PackedFloat32Array()
+	for _i in 4:cuts.append(lerpf(.045,.08,rng.randf()))
+	var skew:=Vector2(lerpf(-.012,.012,rng.randf()),lerpf(-.012,.012,rng.randf()))
+	var shape:=_block_shape(lerpf(.96,1.0,rng.randf()),lerpf(.96,1.0,rng.randf()),cuts,skew)
+	# Small crown chamfer, then a near-vertical body. The foot narrows, but stays
+	# a block so it remains outside the recessed shell.
+	var rings:Array=[[0.0,.93],[-.04,.97],[-.10,.995],[-.17,1.0],[-.32,1.0],[-1.0,1.0]]
+	if taper:rings=[[0.0,1.0],[-.18,1.0],[-.36,.98],[-.58,.92],[-.76,.84],[-.90,.76],[-1.0,.70]]
+	var built:Array=[]
+	for spec:Array in rings:
+		var scale:float=spec[1]
+		var pts:=PackedVector3Array()
+		for p:Vector2 in shape:pts.append(Vector3(p.x*scale,float(spec[0]),p.y*scale))
+		built.append(pts)
+	var builder=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
+	var top:PackedVector3Array=built[0]
+	var centre:=Vector3(0,top[0].y,0)
+	for i in top.size():
+		_facing_triangle(builder,centre,top[i],top[(i+1)%top.size()],_block_shade(seed_value,30),Vector3.UP)
+	for r in built.size()-1:
+		var upper:PackedVector3Array=built[r]
+		var lower:PackedVector3Array=built[r+1]
+		for i in upper.size():
+			var j:=(i+1)%upper.size()
+			var outward:=Vector3(upper[i].x+upper[j].x,0,upper[i].z+upper[j].z)
+			_facing_quad(builder,upper[i],lower[i],lower[j],upper[j],_block_shade(seed_value,40+i+r*8),outward)
+	var bottom:PackedVector3Array=built[built.size()-1]
+	var foot:=Vector3(0,bottom[0].y,0)
+	for i in bottom.size():
+		_facing_triangle(builder,foot,bottom[(i+1)%bottom.size()],bottom[i],_block_shade(seed_value,31),Vector3.DOWN)
+	return builder.mesh()
+
+func _block_shape(aspect_x:float,aspect_z:float,cuts:PackedFloat32Array,skew:Vector2)->PackedVector2Array:
+	# Clockwise is irrelevant; callers flip to the outward normal. The ring is
+	# ordered around the top so consecutive points share an edge.
+	var hx:=.5*aspect_x
+	var hz:=.5*aspect_z
+	var c0:=cuts[0]*hx*2.0
+	var c1:=cuts[1]*hx*2.0
+	var c2:=cuts[2]*hx*2.0
+	var c3:=cuts[3]*hx*2.0
+	var d0:=cuts[0]*hz*2.0
+	var d1:=cuts[1]*hz*2.0
+	var d2:=cuts[2]*hz*2.0
+	var d3:=cuts[3]*hz*2.0
+	var pts:=PackedVector2Array([
+		Vector2(-hx+c0,-hz),Vector2(hx-c1,-hz),Vector2(hx,-hz+d1),Vector2(hx,hz-d2),
+		Vector2(hx-c2,hz),Vector2(-hx+c3,hz),Vector2(-hx,hz-d3),Vector2(-hx,-hz+d0),
+	])
+	for i in pts.size():
+		var p:=pts[i]
+		p+=Vector2(skew.x*(1.0 if p.x>0.0 else -1.0),skew.y*(1.0 if p.y>0.0 else -1.0))
+		pts[i]=p
+	var limit:=0.0
+	for p:Vector2 in pts:limit=maxf(limit,maxf(absf(p.x),absf(p.y)))
+	if limit>.5:
+		var fit:=.5/limit
+		for i in pts.size():pts[i]*=fit
+	return pts
+
+func _facing_triangle(builder,a:Vector3,b:Vector3,c:Vector3,color:Color,outward:Vector3)->void:
+	var normal:=-(b-a).cross(c-a)
+	if normal.dot(outward)<0.0:builder.triangle(a,c,b,color)
+	else:builder.triangle(a,b,c,color)
+
+func _facing_quad(builder,a:Vector3,b:Vector3,c:Vector3,d:Vector3,color:Color,outward:Vector3)->void:
+	var normal:=-(b-a).cross(c-a)
+	if normal.dot(outward)<0.0:builder.quad(a,d,c,b,color)
+	else:builder.quad(a,b,c,d,color)
+
+static func _block_shade(seed_value:int,salt:int)->Color:
+	# Around the .66 grey the rim shader treats as an untinted facet.
+	var value:int=(seed_value*374761393+salt*668265263)&0x7fffffff
+	value=((value^(value>>13))*1274126177)&0x7fffffff
+	var shade:=.58+.16*(float(value)/2147483647.0)
+	return Color(shade,shade,shade,1)
 
 static func _global_pose(node:Node,root:Node)->Transform3D:
 	var pose:=Transform3D.IDENTITY

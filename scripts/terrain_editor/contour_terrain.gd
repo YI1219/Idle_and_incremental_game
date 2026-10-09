@@ -12,7 +12,7 @@ const KEEL_LIMIT := -3.0
 # Rim blocks clad broad dry outer walls and terrace steps; their grassy crowns
 # form the island edge. The rock behind them stays at least this far inside
 # the contour, so joints read as crevices.
-const COLUMN_RECESS := .28
+const COLUMN_RECESS := .40
 const STEP_BLOCK_DEPTH := .9
 # Dry broad walls round over in a convex shoulder this deep before the recess.
 const SHOULDER_DEPTH := .45
