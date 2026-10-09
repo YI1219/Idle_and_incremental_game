@@ -22,8 +22,19 @@ func run()->void:
 	check(first.get("grass_clump",[]).size()>0,"dry land has solid grass clumps")
 	check(first.surface_rock.size()>0,"dry surface has individual rocks")
 	check(first==deco.placements(d,Vector2i.ZERO),"placement is deterministic")
+	# Rim blocks crown the island edge just above the turf, and ground modules
+	# over a block sit on its crown (TerrainDecoration._rim_lift) instead of
+	# being buried in it, so "ground height" there is the crown height.
+	var expected_y:=func(at:Vector3)->float:
+		var top:float=deco.rim_top_at(Vector2(at.x,at.z))
+		return 1.0 if top==-INF else maxf(1.0,top-.04)
 	for transform:Transform3D in first.grass:
-		check(is_equal_approx(transform.origin.y,1.0),"grass follows ground height")
+		check(is_equal_approx(transform.origin.y,expected_y.call(transform.origin)),"grass follows ground height")
+	for pose:Transform3D in first.get("grass_clump",[]):
+		var on_crown:=false
+		for column:Dictionary in deco._columns:
+			if is_equal_approx(pose.origin.y,column.pose.origin.y-.05):on_crown=true
+		check(on_crown or is_equal_approx(pose.origin.y,expected_y.call(pose.origin)),"solid grass clumps follow ground height")
 	for transform:Transform3D in first.surface_rock:
 		check(transform.origin.y<1.0,"surface rock origin embeds below ground")
 	for cell in d.cells:d.cells[cell].height=1.5
@@ -31,8 +42,6 @@ func run()->void:
 	check(raised.grass.size()==first.grass.size(),"raise preserves deterministic population count")
 	for i in first.grass.size():
 		check(is_equal_approx(raised.grass[i].origin.y-first.grass[i].origin.y,0.5),"raise moves grass with terrain")
-	for pose:Transform3D in first.get("grass_clump",[]):
-		check(is_equal_approx(pose.origin.y,1.0),"solid grass clumps follow ground height")
 	check(raised.get("grass_clump",[]).size()==first.get("grass_clump",[]).size(),"raise retains deterministic clump population")
 	for i in first.get("grass_clump",[]).size():
 		check(is_equal_approx(raised.grass_clump[i].origin.y-first.grass_clump[i].origin.y,.5),"raise moves solid clumps with terrain")
