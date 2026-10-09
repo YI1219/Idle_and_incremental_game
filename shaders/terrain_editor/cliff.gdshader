@@ -2,6 +2,8 @@ shader_type spatial;
 #include "land_palette.gdshaderinc"
 render_mode cull_disabled;
 #include "cliff_palette.gdshaderinc"
+#include "ground_cover.gdshaderinc"
+uniform float cover_relief = .55;
 varying vec3 world_position;
 void vertex(){
 	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
@@ -26,15 +28,28 @@ void fragment(){
 	vec3 variation=rock_hash(selected+vec3(17.0));
 	// The staggered render mesh now supplies the actual broad rock planes.
 	// Keep its geometric normal and let real relief light the recesses.
-	vec3 gray=cliff_gray(variation.x);
-	// A few short turf lips join the flat cap to the same cliff mesh. The
-	// published alpha describes true dry-cap proximity, never hidden ground.
-	float patch=sin(world_position.x*.81+sin(world_position.z*.59)*1.7);
-	float fringe=.5+.5*sin(world_position.x*9.3+world_position.z*7.1);
-	float turf=smoothstep(.80+fringe*.09,.96,COLOR.a)*smoothstep(.05,.55,patch);
-	float lawn=sin(world_position.x*.51+world_position.z*.22)*sin(world_position.z*.47-world_position.x*.18)*.5+.5;
-	vec3 grass=mix(grass_base,grass_highlight,lawn);
-	ALBEDO=mix(gray,grass,turf);
-	ROUGHNESS=.96;
-	SPECULAR=.15;
+	vec3 color=cliff_gray(variation.x);
+	// UV carries the cap height this rock rises to and whether the cap is dry.
+	// A dry rim rounds over: the cap's own lawn runs onto the shoulder, then
+	// a ragged moss fringe hangs down the face. Undersides stay bare rock.
+	float below=UV.x-world_position.y;
+	float dry=step(.5,UV.y);
+	vec3 world_normal=(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz;
+	float facing=smoothstep(-.30,.10,world_normal.y);
+	vec2 along=world_position.xz;
+	float ragged=gc_noise(vec2(along.x+along.y,along.x-along.y)*1.7)*.65+gc_noise((along.x-along.y)*vec2(7.0,3.0))*.35;
+	float moss=dry*facing*(1.0-smoothstep(.18+.45*ragged,.30+.75*ragged,below));
+	vec3 moss_color=vec3(.40,.45,.27);
+	color=mix(color,moss_color,moss*.78);
+	float shoulder=dry*facing*(1.0-smoothstep(.10+.18*ragged,.28+.26*ragged,below));
+	float footprint=length(fwidth(along))*9.0;
+	float detail=1.0-smoothstep(.35,1.0,footprint);
+	vec2 slope;
+	vec3 lawn=ground_cover(along,detail,slope);
+	ALBEDO=mix(color,lawn,shoulder);
+	// The shoulder is lit like the cap, so the rim turns rather than folds.
+	vec3 lawn_normal=normalize(vec3(-slope.x*cover_relief*detail,1.0,-slope.y*cover_relief*detail));
+	NORMAL=normalize(mix(NORMAL,(VIEW_MATRIX*vec4(lawn_normal,0.0)).xyz,shoulder));
+	ROUGHNESS=mix(.96,.95,shoulder);
+	SPECULAR=mix(.15,.30,shoulder);
 }

@@ -9,9 +9,14 @@ const UNDERSIDE_THICKNESS := 0.80
 # World-anchored stepped lobes hang below the slab; the keel never passes this floor.
 const KEEL_DEPTH := 1.1
 const KEEL_LIMIT := -3.0
-# Standing columns clad broad dry outer walls below the lip. The rock behind
-# them stays at least this far inside the lip line, so joints read as crevices.
-const COLUMN_RECESS := .30
+# Rim blocks clad broad dry outer walls and terrace steps; their grassy crowns
+# form the island edge. The rock behind them stays at least this far inside
+# the contour, so joints read as crevices.
+const COLUMN_RECESS := .40
+const STEP_BLOCK_DEPTH := .9
+# Dry broad walls round over in a convex shoulder this deep before the recess.
+const SHOULDER_DEPTH := .45
+const SHOULDER_BULGE := .10
 ## Increments on every refresh; decoration caches whole-outline layouts by it.
 var revision:=0
 var land_regions:Dictionary={}
@@ -28,6 +33,9 @@ var _broad_faces:=PackedInt32Array()
 var _cliff_bands:Dictionary={}
 var _chain_constraints:Dictionary={}
 var _cliff_turf:Dictionary={}
+# Cliff vertex UV: the cap height this rock rises to and whether that cap
+# is dry land. The cliff shader rounds the lawn over the rim from it.
+var _cliff_cap:Dictionary={}
 ## Plunge centres for the renderer's mist; rebuilt with the outlines.
 var splash_points:Array=[]
 ## One entry per connected curtain: lip and foot centres, width, outward
@@ -39,6 +47,7 @@ func refresh(data:Data)->void:
 	revision+=1
 	_chain_constraints.clear()
 	_cliff_turf.clear()
+	_cliff_cap.clear()
 	splash_points.clear()
 	fall_veils.clear()
 	_cliff_bands.clear()
@@ -270,7 +279,10 @@ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
 					var receiver:Dictionary=source.cells.get(nearby+direction,{})
 					var height:float=receiver.water*.5 if receiver.get("water",-1)>=0 else receiver.get("height",BOTTOM)
 					if height<level*.5-.1:water=maxi(water,level);break
-	var profile:={"top":top,"rock_top":rock_top,"bottom":bottom,"base":outside.is_empty(),"inset":_inset_limit(p,normal,top) if outside.is_empty() else 0.0,"water":water}
+	var profile:={"top":top,"rock_top":rock_top,"bottom":bottom,"base":outside.is_empty(),"inset":_inset_limit(p,normal,top) if outside.is_empty() else 0.0,"water":water,"step":false}
+	# A broad dry terrace step above dry lower land is clad by rim blocks too.
+	if not outside.is_empty() and water<0 and outside.water<0 and top-bottom>=STEP_BLOCK_DEPTH:
+		profile.step=_inset_limit(p,normal,top)>=.9
 	_profiles[key]=profile
 	return profile
 
@@ -317,19 +329,26 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 		var weight:float=clampf((profile.top-y)/maxf(.001,profile.top-profile.bottom),0,1)
 		point.y=lerpf(profile.top,floor_y,weight)
 		if profile.water<0 and mass>0.0:
-			# Broad outer faces step in and out as blocky buttresses, with a
-			# shallow notch under the lip so the turf edge overhangs. Below the
-			# lip the rock stays behind the standing-column plane; forward masses
-			# settle back before the foot; narrow necks and walls beside falls
-			# keep their proven profile.
+			# Broad outer faces step in and out as blocky buttresses. The top
+			# rounds over as a shallow convex shoulder that the cap's lawn runs
+			# onto; below it the rock stays behind the rim-block plane. Forward
+			# masses settle back before the foot; narrow necks and walls beside
+			# falls keep their proven profile.
 			var below:float=profile.top-point.y
-			var notch:=smoothstep(0.0,.18,below)*(1.0-smoothstep(.45,.95,below))
 			var buttress:=_buttress(p)*smoothstep(.25,.85,below)
 			if buttress>0.0:buttress*=1.0-smoothstep(.55,.95,weight)
-			point+=Vector3(normal.x,0,normal.y)*(buttress*.50-notch*.24)*mass
-			var band:=smoothstep(.02,.30,below)*(1.0-smoothstep(2.4,3.4,below))
+			point+=Vector3(normal.x,0,normal.y)*(buttress*.50+_shoulder(below))*mass
+			var band:=smoothstep(SHOULDER_DEPTH,SHOULDER_DEPTH+.32,below)*(1.0-smoothstep(2.4,3.4,below))
 			var excess:=Vector2(point.x-p.x,point.z-p.y).dot(normal)+COLUMN_RECESS
 			if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess*band*mass
+	elif profile.get("step",false) and y<profile.top:
+		# Both terrace contours stay exact; between them the step rounds over
+		# and sits behind its rim blocks like the outer walls do.
+		var below:float=profile.top-y
+		point+=Vector3(normal.x,0,normal.y)*_shoulder(below)
+		var band:=smoothstep(SHOULDER_DEPTH,SHOULDER_DEPTH+.32,below)*smoothstep(.05,.35,y-profile.bottom)
+		var excess:=Vector2(point.x-p.x,point.z-p.y).dot(normal)+COLUMN_RECESS
+		if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess*band
 	if profile.water>=0 and point.y<=profile.water*.5+.045:
 		# Exposed wet walls sit behind the shared stream envelope. Limit only
 		# protruding shoulders; inland and dry cliff masses keep their full relief.
@@ -353,6 +372,10 @@ static func _keel_floor(p:Vector2,top:float,mass:float=1.0)->float:
 	var slab:=_shell_floor(p,top)
 	var keel:=(_step_field(p,3.1,Vector2(17.0,3.0))*.5+.5)*KEEL_DEPTH*clampf((top+4.0)/4.0,0,1)*mass
 	return maxf(slab-keel,minf(KEEL_LIMIT,slab))
+
+static func _shoulder(below:float)->float:
+	# Outward bulge of the rounded rim just under a dry cap.
+	return SHOULDER_BULGE*sin(PI*clampf(below/SHOULDER_DEPTH,0.0,1.0))
 
 static func _buttress(p:Vector2)->float:
 	return _step_field(p,2.3,Vector2.ZERO)
@@ -378,6 +401,7 @@ func _outer_profile(p:Vector2,normal:Vector2,profile:Dictionary)->void:
 	# outward probe can touch adjacent low land; that must not leave a single
 	# column at the obsolete global floor while its neighbors are shallow.
 	profile.base=true
+	profile.step=false
 	profile.bottom=BOTTOM
 	var cell:=Vector2i(p.floor())
 	for z in range(-2,3):
@@ -494,6 +518,7 @@ func _rock_chain(p:Vector2,normal:Vector2,profile:Dictionary,top:float,bottom:fl
 		var point:=_profile_point(p,height,normal,profile)
 		result.append(point)
 		_cliff_turf[point]=clampf(1.0-(profile.rock_top-height)/.5,0,1) if dry else 0.0
+		_cliff_cap[point]=Vector2(profile.rock_top,1.0 if dry else 0.0)
 	return result
 
 func _join_rock_chains(left:PackedVector3Array,right:PackedVector3Array)->void:
@@ -510,7 +535,10 @@ func _join_rock_chains(left:PackedVector3Array,right:PackedVector3Array)->void:
 			b+=1
 		if surfaces.cliff.vertices.size()==start+3:
 			_broad_faces.append(start)
-			for index in range(start,start+3):surfaces.cliff.colors[index].a=_cliff_turf.get(surfaces.cliff.vertices[index],0.0)
+			for index in range(start,start+3):
+				var vertex:Vector3=surfaces.cliff.vertices[index]
+				surfaces.cliff.colors[index].a=_cliff_turf.get(vertex,0.0)
+				surfaces.cliff.uv[index]=_cliff_cap.get(vertex,Vector2(vertex.y,0.0))
 
 func _cliff_span(a:Vector2,b:Vector2,normal_a:Vector2,normal_b:Vector2,profile_a:Dictionary,profile_b:Dictionary,top:float,bottom:float)->void:
 	# Keep the authoritative cap contour, but resolve rock shoulders within
@@ -529,7 +557,15 @@ func _cliff_span(a:Vector2,b:Vector2,normal_a:Vector2,normal_b:Vector2,profile_a
 		var q:=_profile_point(right,top,right_normal,right_profile)
 		var r:=_profile_point(right,bottom,right_normal,right_profile)
 		var s:=_profile_point(left,bottom,left_normal,left_profile)
+		var start:int=surfaces.cliff.vertices.size()
 		surfaces.cliff.quad(p,s,r,q,Color("a8aba800"))
+		var left_land:=surface_at(left-left_normal*.25)
+		var right_land:=surface_at(right-right_normal*.25)
+		var left_cap:=Vector2(left_profile.rock_top,1.0 if not left_land.is_empty() and left_land.water<0 else 0.0)
+		var right_cap:=Vector2(right_profile.rock_top,1.0 if not right_land.is_empty() and right_land.water<0 else 0.0)
+		for index in range(start,surfaces.cliff.vertices.size()):
+			var vertex:Vector3=surfaces.cliff.vertices[index]
+			surfaces.cliff.uv[index]=left_cap if vertex==p or vertex==s else right_cap
 		left=right
 		left_normal=right_normal
 		left_profile=right_profile
@@ -1032,6 +1068,11 @@ func build(chunk:Vector2i)->Dictionary:
 				if kind in ["cliff","shore","bank","waterfall"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
+				if kind=="cliff":
+					var uv:PackedVector2Array=surfaces.cliff.uv
+					for index in range(before,local.vertices.size()):
+						var cap:=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],Color(uv[i].x,uv[i].y,0),Color(uv[i+1].x,uv[i+1].y,0),Color(uv[i+2].x,uv[i+2].y,0))
+						local.uv[index]=Vector2(cap.r,cap.g)
 				if kind=="waterfall" and local.vertices.size()>before:
 					var normal:Vector3=normals[i]
 					var axis:=0 if absf(normal.z)>=absf(normal.x) else 2
