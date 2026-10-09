@@ -12,7 +12,7 @@ const KEEL_LIMIT := -3.0
 # Rim blocks clad broad dry outer walls and terrace steps; their grassy crowns
 # form the island edge. The rock behind them stays at least this far inside
 # the contour, so joints read as crevices.
-const COLUMN_RECESS := .40
+const COLUMN_RECESS := .28
 const STEP_BLOCK_DEPTH := .9
 # Dry broad walls round over in a convex shoulder this deep before the recess.
 const SHOULDER_DEPTH := .45
@@ -338,7 +338,9 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 			var buttress:=_buttress(p)*smoothstep(.25,.85,below)
 			if buttress>0.0:buttress*=1.0-smoothstep(.55,.95,weight)
 			point+=Vector3(normal.x,0,normal.y)*(buttress*.50+_shoulder(below))*mass
-			var band:=smoothstep(SHOULDER_DEPTH,SHOULDER_DEPTH+.32,below)*(1.0-smoothstep(2.4,3.4,below))
+			var band:=smoothstep(SHOULDER_DEPTH,SHOULDER_DEPTH+.32,below)
+			# The shell stays behind the whole rock mass, and steps further in
+			# where the underside courses tuck under the heads.
 			var excess:=Vector2(point.x-p.x,point.z-p.y).dot(normal)+COLUMN_RECESS
 			if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess*band*mass
 	elif profile.get("step",false) and y<profile.top:

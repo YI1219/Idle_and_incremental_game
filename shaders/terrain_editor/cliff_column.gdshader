@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "terrain_morph.gdshaderinc"
 #include "cliff_palette.gdshaderinc"
 #include "land_palette.gdshaderinc"
 #include "ground_cover.gdshaderinc"
@@ -28,6 +29,7 @@ void vertex(){
 	local_position=VERTEX;
 	column_origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;
 	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+	if(terrain_morph_progress<1.0){vec3 origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;VERTEX+=(inverse(MODEL_MATRIX)*vec4(0.0,terrain_morph_offset(origin),0.0,0.0)).xyz;}
 }
 
 void fragment(){

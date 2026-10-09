@@ -1,0 +1,59 @@
+{
+	"adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"captures": [
+		{
+			"draw_calls": 569.0,
+			"error": 0,
+			"file": "after_rim_upper_front.png",
+			"position": "(-7.131281, 9.0, 19.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 516.0,
+			"error": 0,
+			"file": "after_rim_lower_right.png",
+			"position": "(18.86872, 9.0, 23.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 670.0,
+			"error": 0,
+			"file": "after_rim_terrace_step.png",
+			"position": "(-10.79423, 9.0, 15.5)",
+			"rotation": "(-30.0, -30.0, 0.0)"
+		},
+		{
+			"draw_calls": 692.0,
+			"error": 0,
+			"file": "after_edit_0_before.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 698.0,
+			"error": 0,
+			"file": "after_edit_1_expanded.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 704.0,
+			"error": 0,
+			"file": "after_edit_2_raised.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 692.0,
+			"error": 0,
+			"file": "after_edit_3_undone.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	]
+}

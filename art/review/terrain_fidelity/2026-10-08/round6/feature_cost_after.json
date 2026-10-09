@@ -1,0 +1,54 @@
+{
+	"adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"resolution": [
+		1280,
+		720
+	],
+	"results": {
+		"all_on": {
+			"cpu_ms_median": 0.981000006198883,
+			"gpu_ms_max": 506.571014404297,
+			"gpu_ms_median": 494.167999267578
+		},
+		"all_on_again": {
+			"cpu_ms_median": 0.833000004291534,
+			"gpu_ms_max": 488.498992919922,
+			"gpu_ms_median": 477.213012695312
+		},
+		"cloud_decks_off": {
+			"cpu_ms_median": 0.834999978542328,
+			"gpu_ms_max": 481.016998291016,
+			"gpu_ms_median": 468.321014404297
+		},
+		"fog_off": {
+			"cpu_ms_median": 0.846000015735626,
+			"gpu_ms_max": 505.959014892578,
+			"gpu_ms_median": 489.180999755859
+		},
+		"glow_off": {
+			"cpu_ms_median": 0.810999989509583,
+			"gpu_ms_max": 459.256011962891,
+			"gpu_ms_median": 441.403991699219
+		},
+		"rim_blocks_off": {
+			"cpu_ms_median": 0.735000014305115,
+			"gpu_ms_max": 470.303985595703,
+			"gpu_ms_median": 450.192993164062
+		},
+		"ssao_off": {
+			"cpu_ms_median": 0.800000011920929,
+			"gpu_ms_max": 442.230010986328,
+			"gpu_ms_median": 434.135986328125
+		},
+		"sun_shadow_off": {
+			"cpu_ms_median": 0.657000005245209,
+			"gpu_ms_max": 1519.01696777344,
+			"gpu_ms_median": 1073.42395019531
+		},
+		"waterfall_mist_off": {
+			"cpu_ms_median": 0.950999975204468,
+			"gpu_ms_max": 495.519012451172,
+			"gpu_ms_median": 483.845001220703
+		}
+	}
+}

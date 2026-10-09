@@ -166,10 +166,19 @@ func make_preset(kind: int) -> void:
 				upper_shape=((at-Vector2(-9,-2))/Vector2(12,7)).length()
 				lower_shape=((at-Vector2(9,2))/Vector2(12,7)).length()
 			var ripple:=.025*sin(at.x*.74+at.y*.81)+.018*sin(at.x*1.3-at.y*.6)
-			if minf(upper_shape,lower_shape)>1.0+ripple:continue
-			if kind==2 and (at-Vector2(-4,0)).length()<2.8:continue
 			var terrace_line:=1.5 if kind==1 else 3.0
+			var filled:=false
+			if kind==0 and minf(upper_shape,lower_shape)>1.0+ripple:
+				# The homestead's two lobes share one elongated footprint. A
+				# smooth union plus a front bridge closes the old waist notches
+				# without moving either terrace, lake, or the connecting fall.
+				var bridge:=((at-Vector2(-3.0,5.5))/Vector2(6.5,3.4)).length()
+				filled=_smooth_min(_smooth_min(upper_shape,lower_shape,.5),bridge,.5)<=1.0+ripple
+				if not filled:continue
+			elif minf(upper_shape,lower_shape)>1.0+ripple:continue
+			if kind==2 and (at-Vector2(-4,0)).length()<2.8:continue
 			var upper:=upper_shape<1.0+ripple and (at.y < -at.x*.6+terrace_line or lower_shape>1.0)
+			if filled:upper=upper_shape<lower_shape or (at.y>4.0 and at.x<-1.5)
 			var height:=3.5 if upper else 1.5
 			var water:=-1
 			var pond_center:=(Vector2(-6,0) if kind==1 else Vector2(-3,0)) if upper else Vector2(7,3)
@@ -187,3 +196,7 @@ func make_preset(kind: int) -> void:
 			var cell:=Vector2i(x,z)
 			cells[cell]={"height":height,"water":water}
 			invalidate(cell)
+
+static func _smooth_min(a:float,b:float,k:float)->float:
+	var h:=clampf(.5+.5*(b-a)/k,0.0,1.0)
+	return lerpf(b,a,h)-k*h*(1.0-h)

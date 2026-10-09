@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "terrain_morph.gdshaderinc"
 #include "land_palette.gdshaderinc"
 render_mode cull_disabled;
 #include "cliff_palette.gdshaderinc"
@@ -7,6 +8,7 @@ uniform float cover_relief = .55;
 varying vec3 world_position;
 void vertex(){
 	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+	VERTEX.y+=terrain_morph_offset(world_position);
 }
 void fragment(){
 	// One world-space rock field across the joined cliff volume. Broad facets

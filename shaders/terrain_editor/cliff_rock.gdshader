@@ -1,7 +1,11 @@
 shader_type spatial;
+#include "terrain_morph.gdshaderinc"
 #include "cliff_palette.gdshaderinc"
 varying vec3 rock_origin;
-void vertex(){rock_origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;}
+void vertex(){
+	rock_origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;
+	if(terrain_morph_progress<1.0){vec3 origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;VERTEX+=(inverse(MODEL_MATRIX)*vec4(0.0,terrain_morph_offset(origin),0.0,0.0)).xyz;}
+}
 void fragment(){
 	// Each retained model already has physical flat faces. Match the body
 	// palette without repeating its nearest-site search at every rock pixel.

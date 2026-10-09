@@ -1,0 +1,89 @@
+{
+	"adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"captures": [
+		{
+			"eased": 1.0,
+			"error": 0,
+			"file": "growth_expand_before.png",
+			"progress": 1.0
+		},
+		{
+			"eased": -0.000000000000000222044604925031,
+			"error": 0,
+			"file": "growth_expand_0.png",
+			"progress": 0.0
+		},
+		{
+			"eased": 0.4300416,
+			"error": 0,
+			"file": "growth_expand_1.png",
+			"progress": 0.12
+		},
+		{
+			"eased": 0.746875,
+			"error": 0,
+			"file": "growth_expand_2.png",
+			"progress": 0.25
+		},
+		{
+			"eased": 0.9568,
+			"error": 0,
+			"file": "growth_expand_3.png",
+			"progress": 0.4
+		},
+		{
+			"eased": 1.0512,
+			"error": 0,
+			"file": "growth_expand_4.png",
+			"progress": 0.6
+		},
+		{
+			"eased": 1.0,
+			"error": 0,
+			"file": "growth_expand_5.png",
+			"progress": 1.0
+		},
+		{
+			"eased": -0.000000000000000222044604925031,
+			"error": 0,
+			"file": "growth_raise_0.png",
+			"progress": 0.0
+		},
+		{
+			"eased": 0.4300416,
+			"error": 0,
+			"file": "growth_raise_1.png",
+			"progress": 0.12
+		},
+		{
+			"eased": 0.746875,
+			"error": 0,
+			"file": "growth_raise_2.png",
+			"progress": 0.25
+		},
+		{
+			"eased": 0.9568,
+			"error": 0,
+			"file": "growth_raise_3.png",
+			"progress": 0.4
+		},
+		{
+			"eased": 1.0512,
+			"error": 0,
+			"file": "growth_raise_4.png",
+			"progress": 0.6
+		},
+		{
+			"eased": 1.0,
+			"error": 0,
+			"file": "growth_raise_5.png",
+			"progress": 1.0
+		}
+	],
+	"morph_seconds": 0.55,
+	"renderer": "forward_plus",
+	"resolution": [
+		1280,
+		720
+	]
+}

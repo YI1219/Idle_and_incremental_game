@@ -22,6 +22,14 @@ var materials:Dictionary={}
 var rebuild_count:=0
 var last_rebuild_ms:=0.0
 var decoration:RefCounted
+## Edits grow into place over MORPH_SECONDS. A full rebuild snaps.
+const MORPH_SECONDS:=.55
+const MORPH_RISE:=2.4
+var animate_edits:=true
+var morph_progress:=1.0
+var _morph_from:Dictionary={}
+var _morph_to:Dictionary={}
+var _snap_next:=false
 
 func configure(source:Data)->void:
 	_discard_pending()
@@ -155,6 +163,7 @@ func _publish()->void:
 	_pending_chunks.clear()
 	_pending_faces.clear()
 	_pending_bounds.clear()
+	_start_morph(_published_data,_build_data)
 	_published_data=_build_data
 	if not _pending_shore.is_empty():
 		materials.water.set_shader_parameter("shore_field",_pending_shore.texture)
@@ -166,6 +175,78 @@ func _publish()->void:
 
 func _exit_tree()->void:_discard_pending()
 
+static func _tops(source:Data)->Dictionary:
+	var result:Dictionary={}
+	if source==null:return result
+	for cell:Vector2i in source.cells:
+		var record:Dictionary=source.cells[cell]
+		result[cell]=record.water*.5 if record.water>=0 else float(record.height)
+	return result
+
+static func morph_ease(t:float)->float:
+	var u:=clampf(t,0.0,1.0)-1.0
+	return 1.0+2.2*u*u*u+1.2*u*u
+
+func shown_top(cell:Vector2i)->float:
+	if not _morph_to.has(cell):return NAN
+	return lerpf(_morph_from.get(cell,float(_morph_to[cell])-MORPH_RISE),float(_morph_to[cell]),morph_ease(morph_progress))
+
+func _start_morph(previous:Data,next:Data)->void:
+	var to:=_tops(next)
+	var snap:=_snap_next or previous==null or not animate_edits
+	_snap_next=false
+	var from:Dictionary={}
+	var changed:=false
+	if not snap:
+		for cell:Vector2i in to:
+			var shown:=shown_top(cell)
+			if is_nan(shown):changed=true
+			else:
+				from[cell]=shown
+				if absf(shown-float(to[cell]))>.001:changed=true
+	_morph_to=to
+	if snap or not changed:
+		morph_progress=1.0
+		_morph_from=to.duplicate()
+		RenderingServer.global_shader_parameter_set("terrain_morph_progress",1.0)
+		return
+	_morph_from=from
+	var lo:=Vector2i(1<<20,1<<20)
+	var hi:=-lo
+	for cell:Vector2i in to:
+		lo=Vector2i(mini(lo.x,cell.x),mini(lo.y,cell.y))
+		hi=Vector2i(maxi(hi.x,cell.x),maxi(hi.y,cell.y))
+	lo-=Vector2i(4,4)
+	hi+=Vector2i(4,4)
+	var size:=hi-lo+Vector2i.ONE
+	var image:=Image.create(size.x,size.y,false,Image.FORMAT_RGF)
+	var known:Dictionary={}
+	for cell:Vector2i in to:
+		var pair:=Color(float(from.get(cell,float(to[cell])-MORPH_RISE)),float(to[cell]),0,0)
+		image.set_pixelv(cell-lo,pair)
+		known[cell]=pair
+	for ring in 4:
+		var grown:Dictionary={}
+		for cell:Vector2i in known:
+			for offset:Vector2i in [Vector2i(1,0),Vector2i(-1,0),Vector2i(0,1),Vector2i(0,-1),Vector2i(1,1),Vector2i(-1,1),Vector2i(1,-1),Vector2i(-1,-1)]:
+				var neighbor:Vector2i=cell+offset
+				if known.has(neighbor):continue
+				var pair:Color=known[cell]
+				if grown.has(neighbor) and absf(grown[neighbor].g-grown[neighbor].r)>=absf(pair.g-pair.r):continue
+				grown[neighbor]=pair
+		for cell:Vector2i in grown:
+			known[cell]=grown[cell]
+			if Rect2i(lo,size).has_point(cell):image.set_pixelv(cell-lo,grown[cell])
+	RenderingServer.global_shader_parameter_set("terrain_morph_field",ImageTexture.create_from_image(image))
+	RenderingServer.global_shader_parameter_set("terrain_morph_rect",Vector4(lo.x,lo.y,size.x,size.y))
+	morph_progress=0.0
+	RenderingServer.global_shader_parameter_set("terrain_morph_progress",0.0)
+
+func _process(delta:float)->void:
+	if morph_progress>=1.0:return
+	morph_progress=minf(1.0,morph_progress+delta/MORPH_SECONDS)
+	RenderingServer.global_shader_parameter_set("terrain_morph_progress",morph_progress)
+
 func pending_chunk_count()->int:
 	return _build_queue.size()+(data.dirty_chunks.size() if data!=null else 0)
 
@@ -173,6 +254,7 @@ func has_pending_updates()->bool:
 	return data!=null and (not _build_queue.is_empty() or not data.dirty_chunks.is_empty() or _contour_revision!=data.revision)
 
 func rebuild_all()->void:
+	_snap_next=true
 	_discard_pending()
 	_build_queue.clear()
 	_contour_revision=-1

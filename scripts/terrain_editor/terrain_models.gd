@@ -357,11 +357,7 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 				else:builder.triangle(a,b,c,color)
 
 			mesh=builder.mesh()
-			var material:=StandardMaterial3D.new()
-			material.vertex_color_use_as_albedo=true
-			material.vertex_color_is_srgb=true
-			material.roughness=.95
-			mesh.surface_set_material(0,material)
+			mesh.surface_set_material(0,_vertex_color_material())
 			if kind in ["bush","vine"]:
 				var box:=mesh.get_aabb()
 				pose.origin=Vector3(-box.position.x-box.size.x*.5,-box.position.y,-box.position.z-box.size.z*.5)
@@ -376,11 +372,7 @@ func _merge(parts:Array)->Dictionary:
 		var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR]
 		for i in range(0,vertices.size(),3):builder.triangle(part.pose*vertices[i],part.pose*vertices[i+1],part.pose*vertices[i+2],colors[i]*part.get("tint",Color.WHITE))
 	var mesh:ArrayMesh=builder.mesh()
-	var material:=StandardMaterial3D.new()
-	material.vertex_color_use_as_albedo=true
-	material.vertex_color_is_srgb=true
-	material.roughness=.95
-	mesh.surface_set_material(0,material)
+	mesh.surface_set_material(0,_vertex_color_material())
 	return {"mesh":mesh,"pose":Transform3D.IDENTITY}
 
 func _lift_branches(point:Vector3)->Vector3:
@@ -449,3 +441,8 @@ func _path_models()->Array:
 		surface.triangle(Vector3(0,.065,0),top[i],top[j],Color("a4a18d"),true)
 		surface.quad(top[j],top[i],bottom[i],bottom[j],Color("969384"))
 	return [{"mesh":surface.mesh(),"pose":Transform3D.IDENTITY}]
+
+static func _vertex_color_material()->ShaderMaterial:
+	var material:=ShaderMaterial.new()
+	material.shader=preload("res://shaders/terrain_editor/decor_vertex_color.gdshader")
+	return material

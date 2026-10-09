@@ -21,6 +21,9 @@ var _columns:Array=[]
 var _column_cells:Dictionary={}
 var _column_field:RefCounted
 var _column_key:=Vector2i(-1,-1)
+# Wall and underside courses of the same rock mass. Kept out of _columns so
+# crown-height checks stay about the heads that form the silhouette.
+var _mass:Array=[]
 static func random_at(cell:Vector2i,seed_value:int,salt:int)->float:
 	var value:int=(cell.x*374761393+cell.y*668265263+seed_value*69069+salt*144269)&0x7fffffff
 	value=((value^(value>>13))*1274126177)&0x7fffffff
@@ -83,7 +86,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						if _stable(field,flower_at,h,.12):result.flower.append(_transform(Vector3(flower_at.x,h,flower_at.y),angle+bloom,Vector3.ONE*(1.1+bloom*.12)))
 			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.36:
 				var pose:=_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2))
-				if _supported_shrub(field,pose,h):result.bush.append(pose)
+				if _supported_shrub(field,pose,h) and _clear_of_rim(pose):result.bush.append(pose)
 			if not house_clear and cluster>.26 and random_at(cell,data.seed,141)<.13 and _stable(field,p,h,.52):
 				result.grass_clump.append(_transform(origin,angle,Vector3.ONE*(.85+random_at(cell,data.seed,142)*.25)))
 			if not house_clear and cluster>.48 and random_at(cell,data.seed,140)<.026 and _stable(field,p,h,.65):
@@ -154,7 +157,9 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						if not draped.is_empty():result.vine.append(draped.pose)
 						drop+=.25+random_at(cell,data.seed,170+leaf+strand*11)*.11
 
-	_underside_rocks(result,field,data.seed,chunk)
+	for stone:Dictionary in _mass:
+		if Data.chunk_of(stone.cell)!=chunk:continue
+		result[stone.kind].append(stone.pose)
 	for level:int in field.water_regions:
 		for loop:PackedVector2Array in field.water_regions[level]:
 			for i in loop.size():
@@ -201,7 +206,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			if support.is_empty() or support.water>=0 or not _stable(field,point,support.height,.16):continue
 			result.flower.append(_transform(Vector3(point.x,support.height,point.y),j*1.7,Vector3.ONE*(1.1+j*.13)))
 	_fences(result,field,chunk)
-	for kind in ["grass","grass_clump","bush","flower","surface_rock","fence","path"]:
+	for kind in ["grass","grass_clump","flower","surface_rock","fence","path"]:
 		var lifted:Array=result[kind]
 		for i in lifted.size():
 			var pose:Transform3D=lifted[i]
@@ -210,85 +215,162 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	result.grass_clump.append_array(crown_tufts)
 	return result
 func _column_layout(field,seed_value:int)->void:
-	# Rim blocks: broad dry outer walls and terrace steps are clad by standing
-	# stones whose grassy crowns rise just above the turf, so the rock tops
-	# form the island edge. Blocks step in and out in plan and vary in shape.
-	# Segment ends are world-anchored, so edits only move nearby blocks; the
-	# whole layout is derived from the current contours on every revision.
+	# One rock mass. Chunks of the retained CC0 stones overlap along every
+	# outer wall and dry terrace step, so their heads are the silhouette.
+	# The same stones continue down the wall and close as large rounded
+	# boulders, stepped inward, instead of a thin shell with sparse hangers.
+	# Runs begin at world-anchored contour points, so an edit moves only
+	# nearby stones. The layout is derived from the current contours.
 	var key:=Vector2i(field.revision,seed_value)
 	if _column_field==field and _column_key==key:return
 	_column_field=field
 	_column_key=key
 	_columns.clear()
 	_column_cells.clear()
-	var falls:Dictionary={}
-	for point:Vector3 in field.surfaces.waterfall.vertices:falls[Vector2i(floori(point.x),floori(point.z))]=true
+	_mass.clear()
 	for h:float in field.land_regions:
 		for loop:PackedVector2Array in field.land_regions[h]:
-			var size:=loop.size()
-			for i in size:
-				# A block may span two nearly straight segments. The decision
-				# belongs to the shared vertex, never to two consecutive vertices.
-				if _column_joins(loop,i,seed_value):continue
-				var a:=loop[i]
-				var b:=loop[(i+1)%size]
-				if _column_joins(loop,(i+1)%size,seed_value):b=loop[(i+2)%size]
-				var length:=a.distance_to(b)
-				if length<.42:continue
-				var out:=Vector2(b.y-a.y,a.x-b.x).normalized()
-				var supported:=true
-				for p:Vector2 in [a,(a+b)*.5,b]:
-					var profile:Dictionary=field._cliff_profile(p,out)
-					# Every elevation's outline repeats shared outer edges; only
-					# the outline at the wall's own top owns its blocks.
-					if absf(profile.rock_top-h)>.01:supported=false
-					elif profile.base:
-						if profile.water>=0 or profile.inset<.9:supported=false
-					elif not profile.step:supported=false
-					var cell:=Vector2i(p.floor())
-					for z in range(-1,2):
-						for x in range(-1,2):
-							if falls.has(cell+Vector2i(x,z)):supported=false
-				if not supported:continue
-				var outward:=Vector3(out.x,0,out.y)
-				var tangent:=Vector3(out.y,0,-out.x)
-				var count:=maxi(1,roundi(length/2.1))
-				for k in count:
-					var c:=a.lerp(b,(k+.5)/count)
-					var profile:Dictionary=field._cliff_profile(c,out)
-					var cell:=Vector2i(roundi(c.x*8.0),roundi(c.y*8.0))
-					var width:=length/count-lerpf(.10,.22,random_at(cell,seed_value,3000))
-					if width<.32:continue
-					var top:float=h+lerpf(.03,.15,random_at(cell,seed_value,3001))
-					var height:float
-					# Each block follows its own wall, even where a segment turns
-					# from a terrace step onto an outer wall: a step block stands
-					# on the lower terrace, an outer block hangs over the shell.
-					if absf(profile.rock_top-h)>.01:continue
-					if profile.step:
-						height=top-profile.bottom+.15
-					elif not profile.base or profile.water>=0 or profile.inset<.9:continue
-					else:
-						var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
-						height=maxf(.8,(h-foot.y)*lerpf(.35,.80,random_at(cell,seed_value,3002)))
-					var proud:=pow(random_at(cell,seed_value,3004),1.3)*.52+.06
-					var thickness:=lerpf(.95,1.30,random_at(cell,seed_value,3003))+maxf(0.0,proud)
-					var frame:=Basis(tangent,Vector3.UP,outward)*Basis(Vector3.UP,(random_at(cell,seed_value,3005)-.5)*.10)
-					var lean:=Basis(Vector3.RIGHT,(random_at(cell,seed_value,3007)-.5)*.05)
-					# Quarter turns before scaling show a different face of the stone.
-					var face:=Basis(Vector3.UP,PI*.5*floorf(random_at(cell,seed_value,3006)*4.0))
-					var basis:=frame*lean*Basis.from_scale(Vector3(width,height,thickness))*face
-					var pose:=Transform3D(basis,Vector3(c.x,top,c.y)+outward*(proud-thickness*.5))
-					var pick:=random_at(cell,seed_value,3008)
-					var kind:="cliff_column" if pick<.36 else ("cliff_column_b" if pick<.60 else ("cliff_column_c" if pick<.80 else "cliff_column_d"))
-					var index:=_columns.size()
-					_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":width,"thickness":thickness,"height":height})
-					var bounds:AABB=pose*AABB(Vector3(-.5,-1,-.5),Vector3.ONE)
-					for z in range(floori(bounds.position.z/2.0),floori(bounds.end.z/2.0)+1):
-						for x in range(floori(bounds.position.x/2.0),floori(bounds.end.x/2.0)+1):
-							var bucket:=Vector2i(x,z)
-							if not _column_cells.has(bucket):_column_cells[bucket]=[]
-							_column_cells[bucket].append(index)
+			for run:Array in _runs(loop):_rim_run(field,run[0],run[1],run[2],h,seed_value)
+static func _runs(loop:PackedVector2Array)->Array:
+	# Join short contour segments until a stone fits, and stop before a sharp
+	# corner so the chord stays on the outline.
+	var runs:Array=[]
+	var size:=loop.size()
+	var start:=loop[0]
+	var walked:=0.0
+	var points:=PackedVector2Array([start])
+	for i in size:
+		var a:=loop[i]
+		var b:=loop[(i+1)%size]
+		var nxt:=loop[(i+2)%size]
+		walked+=a.distance_to(b)
+		points.append(b)
+		var turn:=absf((nxt-b).angle_to(b-start)) if b.distance_squared_to(start)>.0001 else 0.0
+		if walked<2.05 and turn<.55 and i<size-1:continue
+		runs.append([start,b,points])
+		start=b
+		walked=0.0
+		points=PackedVector2Array([b])
+	return runs
+static func _onto(points:PackedVector2Array,c:Vector2,out:Vector2)->Vector2:
+	# A chord cuts a curved contour. Slide the stone centre back onto it.
+	var best:=c
+	var nearest:=INF
+	for i in points.size()-1:
+		var q:=Geometry2D.get_closest_point_to_segment(c,points[i],points[i+1])
+		var dist:=c.distance_squared_to(q)
+		if dist<nearest:nearest=dist;best=q
+	return c+out*(best-c).dot(out)
+func _curtain_span(field,a:Vector2,dir:Vector2,span:Vector2,y:float,external_only:bool)->Vector2:
+	# Shorten a stone so it stops at a fall curtain instead of dropping the
+	# whole run and leaving a lawn gap beside the water.
+	for veil:Dictionary in field.fall_veils:
+		if external_only and not veil.external:continue
+		var lip:Vector3=veil.lip
+		if not external_only and absf(lip.y-y)>1.4:continue
+		var lip_xz:=Vector2(lip.x,lip.z)
+		var mid:=a+dir*(span.x+span.y)*.5
+		var along:=(mid-lip_xz).dot(veil.out)
+		if along<-1.6 or along>1.5:continue
+		var side:=absf(dir.dot(Vector2(-veil.out.y,veil.out.x)))
+		var reach:=float(veil.half_width)/maxf(.40,side)+.18
+		var at:=(lip_xz-a).dot(dir)
+		var lo:=at-reach
+		var hi:=at+reach
+		if hi<=span.x or lo>=span.y:continue
+		if lo-span.x>=span.y-hi:span.y=minf(span.y,lo)
+		else:span.x=maxf(span.x,hi)
+	return span if span.y-span.x>=.70 else Vector2(NAN,NAN)
+func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->void:
+	var length:=a.distance_to(b)
+	if length<.05:return
+	var dir:=(b-a)/length
+	var out:=Vector2(dir.y,-dir.x)
+	var outward:=Vector3(out.x,0,out.y)
+	var tangent:=Vector3(dir.x,0,dir.y)
+	var count:=maxi(1,roundi(length/2.15))
+	for k in count:
+		var span:=_curtain_span(field,a,dir,Vector2(length*k/count-.04,length*(k+1)/count+.04),h,false)
+		if is_nan(span.x):continue
+		var c:=_onto(points,a+dir*(span.x+span.y)*.5,out)
+		var profile:Dictionary=field._cliff_profile(c,out)
+		if absf(profile.rock_top-h)>.01:continue
+		var drop:float=profile.top-profile.bottom
+		var step:bool=profile.step or (not profile.base and profile.water<0 and drop>=Contours.STEP_BLOCK_DEPTH)
+		if not profile.base and not step:continue
+		var inside:Dictionary=field.surface_at(c-out*.35)
+		if inside.is_empty() or int(inside.water)>=0:continue
+		var cell:=Vector2i(roundi(c.x*8.0),roundi(c.y*8.0))
+		var width:=(span.y-span.x)+.55
+		var top:float=h+lerpf(.06,.14,random_at(cell,seed_value,3001))
+		var proud:=lerpf(.32,.68,pow(random_at(cell,seed_value,3004),1.1))
+		var thickness:=lerpf(1.55,2.20,random_at(cell,seed_value,3003))
+		if profile.base:thickness=minf(thickness,maxf(.80,profile.inset+proud*.4))
+		var height:float
+		var shell_floor:float=top
+		if step:
+			height=clampf(top-profile.bottom+.22,1.25,2.7)
+		else:
+			var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
+			shell_floor=foot.y
+			height=lerpf(1.65,2.35,random_at(cell,seed_value,3002))
+			height=minf(height,maxf(1.15,top-shell_floor+.25))
+		var frame:=Basis(tangent,Vector3.UP,outward)*Basis(Vector3.UP,(random_at(cell,seed_value,3005)-.5)*.10)
+		var lean:=Basis(Vector3.RIGHT,(random_at(cell,seed_value,3007)-.5)*.05)
+		var face:=Basis(Vector3.UP,PI*.5*floorf(random_at(cell,seed_value,3006)*4.0))
+		var basis:=frame*lean*Basis.from_scale(Vector3(width,height,thickness))*face
+		var pose:=Transform3D(basis,Vector3(c.x,top,c.y)+outward*(proud-thickness*.5))
+		var pick:=random_at(cell,seed_value,3008)
+		var kind:="cliff_column_b" if pick<.40 else ("cliff_column_c" if pick<.72 else ("cliff_column_d" if pick<.90 else "cliff_column"))
+		var index:=_columns.size()
+		_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":width,"thickness":thickness,"height":height})
+		var bounds:AABB=pose*AABB(Vector3(-.5,-1,-.5),Vector3.ONE)
+		for z in range(floori(bounds.position.z/2.0),floori(bounds.end.z/2.0)+1):
+			for x in range(floori(bounds.position.x/2.0),floori(bounds.end.x/2.0)+1):
+				var bucket:=Vector2i(x,z)
+				if not _column_cells.has(bucket):_column_cells[bucket]=[]
+				_column_cells[bucket].append(index)
+		if profile.base and profile.water<0:
+			var under:=_curtain_span(field,a,dir,span,0.0,true)
+			if not is_nan(under.x):
+				_hang(field,_onto(points,a+dir*(under.x+under.y)*.5,out),out,top-height,shell_floor,under.y-under.x+.30,proud,profile,cell,seed_value,frame)
+func _hang(field,c:Vector2,out:Vector2,head_foot:float,shell_floor:float,width:float,proud:float,profile:Dictionary,cell:Vector2i,seed_value:int,frame:Basis)->void:
+	# Courses under an outer head. Each steps inward and overlaps the one
+	# above; the last is a wide rounded boulder, so neighbours fuse into one
+	# underside instead of hanging as separate stones.
+	var depth:=clampf((float(profile.rock_top)+1.2)/5.0,.72,1.15)
+	var target:float=shell_floor-lerpf(1.2,2.2,random_at(cell,seed_value,3200))*depth
+	var gap:float=head_foot-target
+	if gap<1.0:return
+	var outward:=Vector3(out.x,0,out.y)
+	var tangent:=Vector3(-out.y,0,out.x)
+	var y:=head_foot+.48
+	# The connecting course is the visible wall. Its lip sits just behind the
+	# head, and the boulder closes the foot as one rounded mass.
+	var courses:=2 if gap>1.7 else 1
+	for course in courses:
+		var salt:=3220+course*11
+		var last:=course==courses-1
+		var span:=width*lerpf(1.02,1.16,random_at(cell,seed_value,salt))
+		var thick:=lerpf(1.7,2.4,random_at(cell,seed_value,salt+1))
+		var lip:=proud-.06-float(course)*.18
+		var height:float=maxf(1.3,y-target+.2) if last else minf(maxf(1.5,gap*.62),y-target-.6)
+		var shift:=(random_at(cell,seed_value,salt+3)-.5)*.22
+		var face:=Basis(Vector3.UP,PI*.5*floorf(random_at(cell,seed_value,salt+4)*4.0))
+		var turned:=frame*Basis(Vector3.UP,(random_at(cell,seed_value,salt+5)-.5)*.16)
+		var origin:=Vector3(c.x,y,c.y)+outward*lip+tangent*shift
+		var owner:=Vector2i(c.floor())
+		if last:
+			var size:=maxf(span,thick)*lerpf(1.08,1.28,random_at(cell,seed_value,salt+6))
+			var hang:=lerpf(.70,.92,random_at(cell,seed_value,salt+7))
+			var kind:="underside_rock" if random_at(cell,seed_value,salt+8)<.55 else "underside_rock_b"
+			_mass.append({"kind":kind,"cell":owner,"pose":Transform3D(turned.scaled(Vector3(size,size*hang,size)),origin+Vector3.UP*.25-outward*(size*.22+float(course)*.15))})
+		else:
+			var pick:=random_at(cell,seed_value,salt+8)
+			var kind:="cliff_column_b" if pick<.5 else "cliff_column_c"
+			var pose:=Transform3D(turned*Basis.from_scale(Vector3(span,height,thick))*face,origin-outward*thick*.5)
+			_mass.append({"kind":kind,"cell":owner,"pose":pose})
+		y-=height-.55
 static func crown_remap(vertex:Vector3,stretch:float)->Vector3:
 	# Mirrors cliff_column.gdshader: the source stone's top fifth (its crown
 	# bevel) keeps about .30 m of real height however tall the block is.
@@ -312,14 +394,6 @@ func _rim_lift(field,p:Vector2)->float:
 	var ground:Dictionary=field.surface_at(p)
 	if ground.is_empty():return 0.0
 	return maxf(0.0,top-.04-float(ground.height))
-func _column_joins(loop:PackedVector2Array,i:int,seed_value:int)->bool:
-	return _column_join_wanted(loop,i,seed_value) and not _column_join_wanted(loop,(i-1+loop.size())%loop.size(),seed_value)
-func _column_join_wanted(loop:PackedVector2Array,i:int,seed_value:int)->bool:
-	var p:=loop[i]
-	var previous:=loop[(i-1+loop.size())%loop.size()]
-	var next:=loop[(i+1)%loop.size()]
-	if absf((next-p).angle_to(p-previous))>.22:return false
-	return random_at(Vector2i(roundi(p.x*8.0),roundi(p.y*8.0)),seed_value,3010)<.65
 func column_faces_near(point:Vector3)->PackedVector3Array:
 	# World triangles of standing columns around a point; vines hang on these.
 	var faces:=PackedVector3Array()
@@ -333,46 +407,6 @@ func column_faces_near(point:Vector3)->PackedVector3Array:
 				var vertices:PackedVector3Array=assets[column.kind][0].mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 				for vertex:Vector3 in vertices:faces.append(column.pose*crown_remap(vertex,column.height))
 	return faces
-func _underside_rocks(result:Dictionary,field,seed_value:int,chunk:Vector2i)->void:
-	# The shell foot of broad outer walls hangs rounded boulder masses below
-	# the standing columns (larger at convex corners). Walls beside falls
-	# stay clear so curtains keep their path.
-	var falls:Dictionary={}
-	for point:Vector3 in field.surfaces.waterfall.vertices:falls[Vector2i(floori(point.x),floori(point.z))]=true
-	var anchors:Dictionary={}
-	for h:float in field.land_regions:
-		for loop:PackedVector2Array in field.land_regions[h]:
-			for i in loop.size():
-				var p:=loop[i]
-				if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
-				var anchor:=Vector2i(floori(p.x/1.45),floori(p.y/1.45))
-				if anchors.has(anchor):continue
-				var next:Vector2=loop[(i+1)%loop.size()]
-				var previous:Vector2=loop[(i-1+loop.size())%loop.size()]
-				var out:=Vector2(next.y-previous.y,previous.x-next.x).normalized()
-				var profile:Dictionary=field._cliff_profile(p,out)
-				if not profile.base or profile.water>=0 or profile.inset<.8:continue
-				var near_fall:=false
-				for z in range(-2,3):
-					for x in range(-2,3):
-						if falls.has(Vector2i(floori(p.x)+x,floori(p.y)+z)):near_fall=true
-				if near_fall:continue
-				anchors[anchor]=true
-				var cell:=Vector2i(p.floor())
-				var turn:float=absf((next-p).angle_to(p-previous))
-				var corner:=1.0+.35*smoothstep(.15,.55,turn)
-				var foot:Vector3=field._profile_point(p,Contours.BOTTOM,out,profile)
-				var depth:float=maxf(1.0,profile.top-foot.y)
-				var outward:=Vector3(out.x,0,out.y)
-				var width:=lerpf(2.6,3.5,random_at(cell,seed_value,2000))*corner*clampf(depth/3.4,.75,1.15)
-				var hang:=lerpf(.85,1.20,random_at(cell,seed_value,2001))
-				var yaw:=random_at(cell,seed_value,2002)*TAU
-				var tilt:=(random_at(cell,seed_value,2003)-.5)*.30
-				# Top sits inside the shell; the rounded crown hangs below its floor.
-				var origin:=foot+Vector3.UP*width*.70*hang*.70-outward*width*.30
-				var basis:=Basis(Vector3(-out.y,0,out.x),tilt)*Basis(Vector3.UP,yaw).scaled(Vector3(width,width*hang,width))
-				var kind:="underside_rock" if random_at(cell,seed_value,2004)<.6 else "underside_rock_b"
-				result[kind].append(Transform3D(basis,origin))
 func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:int,bank:Vector2,out:Vector2,angle:float,water_y:float)->void:
 	# Mixed shoreline: world-anchored groups of large shouldered boulders,
 	# medium stones and small clusters, some standing out in the water.
@@ -418,6 +452,14 @@ func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:in
 		var tilt:=(random_at(cell,seed_value,1260+salt)-.5)*.22
 		var basis:=Basis(Vector3(out.x,0,out.y),tilt)*Basis(Vector3.UP,yaw).scaled(size)
 		result[kind].append(Transform3D(basis,Vector3(at.x,water_y-sink-depth,at.y)))
+func _clear_of_rim(pose:Transform3D)->bool:
+	# A shrub stays on open turf. Sitting it on a rim head would either clip
+	# the stone or lift base vertices off the ground beside it.
+	if rim_top_at(Vector2(pose.origin.x,pose.origin.z))!=-INF:return false
+	for point:Vector3 in _shrub_base:
+		var world:Vector3=pose*point
+		if rim_top_at(Vector2(world.x,world.z))!=-INF:return false
+	return true
 func _supported_shrub(field,pose:Transform3D,height:float)->bool:
 	# Check the actual lower mesh vertices after yaw/scale. Four cardinal
 	# probes miss diagonal holes and narrow lips at pond/terrace boundaries.

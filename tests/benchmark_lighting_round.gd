@@ -58,7 +58,7 @@ func run()->void:
  var rim:Array=[]
  for chunk in editor.renderer.chunks.values():
   for child in chunk.get_children():
-   if String(child.name).begins_with("cliff_column"):rim.append(child)
+   if String(child.name).begins_with("cliff_column") or String(child.name).begins_with("underside_"):rim.append(child)
  for block in rim:block.visible=false
  results.rim_blocks_off=await measure()
  for block in rim:block.visible=true

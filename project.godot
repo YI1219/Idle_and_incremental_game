@@ -72,3 +72,18 @@ camera_right={
 textures/canvas_textures/default_texture_filter=0
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
 anti_aliasing/quality/msaa_3d=2
+
+[shader_globals]
+
+terrain_morph_field={
+"type": "sampler2D",
+"value": ""
+}
+terrain_morph_rect={
+"type": "vec4",
+"value": Vector4(0, 0, 1, 1)
+}
+terrain_morph_progress={
+"type": "float",
+"value": 1.0
+}

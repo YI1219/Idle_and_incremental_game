@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "terrain_morph.gdshaderinc"
 render_mode cull_disabled;
 uniform sampler2D shore_field : filter_linear, repeat_disable;
 uniform vec2 shore_origin = vec2(0.0);
@@ -34,6 +35,7 @@ vec3 height_gradient(vec2 p) {
 
 void vertex() {
 	world_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	VERTEX.y += terrain_morph_offset(world_position);
 }
 
 void fragment() {

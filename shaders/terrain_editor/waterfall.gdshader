@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "terrain_morph.gdshaderinc"
 render_mode blend_mix,depth_draw_never,cull_disabled,shadows_disabled;
 varying vec3 world_position;
 
@@ -26,6 +27,7 @@ float strands(vec2 p) {
 
 void vertex() {
 	world_position = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+	VERTEX.y += terrain_morph_offset(world_position);
 }
 
 void fragment() {

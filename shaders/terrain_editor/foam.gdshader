@@ -1,8 +1,10 @@
 shader_type spatial;
+#include "terrain_morph.gdshaderinc"
 render_mode cull_disabled, shadows_disabled;
 varying vec2 world_xz;
 void vertex(){
  world_xz=(MODEL_MATRIX*vec4(VERTEX,1.0)).xz;
+ VERTEX.y+=terrain_morph_offset((MODEL_MATRIX*vec4(VERTEX,1.0)).xyz);
  VERTEX.y+=sin(world_xz.x*8.0+world_xz.y*6.0+TIME*3.0)*.012*COLOR.a;
 }
 float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
