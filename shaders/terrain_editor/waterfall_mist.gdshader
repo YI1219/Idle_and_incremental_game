@@ -9,6 +9,7 @@ uniform float cycle_seconds = 4.2;
 uniform sampler2D depth_texture : hint_depth_texture, filter_nearest;
 varying float life;
 varying float seed;
+varying float strength;
 
 float hash_mist(vec2 p){
 	vec3 q=fract(vec3(p.xyx)*.1031);
@@ -23,6 +24,8 @@ float noise_mist(vec2 p){
 
 void vertex(){
 	seed=INSTANCE_CUSTOM.x;
+	// Plunge puffs rise (positive y); curtain veil puffs drift down with the fall.
+	strength=INSTANCE_CUSTOM.z;
 	life=fract(TIME/cycle_seconds+seed);
 	float size=length(MODEL_MATRIX[0].xyz)*(.70+.65*life);
 	vec3 origin=MODEL_MATRIX[3].xyz+vec3(0.0,rise*life*INSTANCE_CUSTOM.y,0.0);
@@ -40,5 +43,5 @@ void fragment(){
 	vec4 scene=INV_PROJECTION_MATRIX*vec4(SCREEN_UV*2.0-1.0,scene_depth,1.0);
 	float contact=clamp((VERTEX.z-scene.z/scene.w)/.45,0.0,1.0);
 	ALBEDO=mist_color;
-	ALPHA=body*fade*contact*opacity;
+	ALPHA=body*fade*contact*opacity*strength;
 }

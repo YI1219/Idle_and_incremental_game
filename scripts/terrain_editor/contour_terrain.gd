@@ -30,6 +30,9 @@ var _chain_constraints:Dictionary={}
 var _cliff_turf:Dictionary={}
 ## Plunge centres for the renderer's mist; rebuilt with the outlines.
 var splash_points:Array=[]
+## One entry per connected curtain: lip and foot centres, width, outward
+## direction and whether it falls off the island. Feeds the spray veil.
+var fall_veils:Array=[]
 
 func refresh(data:Data)->void:
 	source=data
@@ -37,6 +40,7 @@ func refresh(data:Data)->void:
 	_chain_constraints.clear()
 	_cliff_turf.clear()
 	splash_points.clear()
+	fall_veils.clear()
 	_cliff_bands.clear()
 	_broad_faces.clear()
 	_profiles.clear()
@@ -700,6 +704,7 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 	if _area(loop)<0:return
 	var flow_edges:=_flow_edges(loop,water_y)
 	var impacts:Dictionary={}
+	var veils:Dictionary={}
 	for i in loop.size():
 		var a:=loop[i]
 		var b:=loop[(i+1)%loop.size()]
@@ -774,6 +779,13 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 				surfaces.bank.colors[index]=Color(1,1,0,1 if vertex==p+lift or vertex==q+lift else 0)
 		var r:=_fall_point(b,normal_b,water_y,low+.07)
 		var s:=_fall_point(a,normal_a,water_y,low+.07)
+		var veil_key:=Vector3i(flow_edges[i].run,int(sample.get("water",-1)),i if flow_edges[i].width<=0 else -1)
+		if not veils.has(veil_key):veils[veil_key]={"lip":Vector3.ZERO,"foot":Vector3.ZERO,"out":Vector2.ZERO,"weight":0.0,"width":flow_edges[i].width if flow_edges[i].width>0 else a.distance_to(b),"external":sample.is_empty()}
+		var veil_weight:=a.distance_to(b)
+		veils[veil_key].lip+=Vector3((a.x+b.x)*.5,water_y,(a.y+b.y)*.5)*veil_weight
+		veils[veil_key].foot+=(r+s)*.5*veil_weight
+		veils[veil_key].out+=out*veil_weight
+		veils[veil_key].weight+=veil_weight
 		if not sample.is_empty() and sample.water>=0:
 			var center:=(r+s)*.5+Vector3(out.x*.24,.015,out.y*.24)
 			# One connected impact per receiving elevation/run, rather than a
@@ -785,6 +797,11 @@ func _falls(loop:PackedVector2Array,water_y:float)->void:
 			impacts[key].direction+=out*weight
 			impacts[key].weight+=weight
 			impacts[key].samples.append({"center":center,"direction":out,"width":a.distance_to(b)})
+	for key:Vector3i in veils:
+		var veil:Dictionary=veils[key]
+		var weight:float=maxf(.001,veil.weight)
+		if veil.out.length_squared()<.001:continue
+		fall_veils.append({"lip":veil.lip/weight,"foot":veil.foot/weight,"out":veil.out.normalized(),"half_width":veil.width*.5,"external":veil.external})
 	for key:Vector3i in impacts:
 		var impact:Dictionary=impacts[key]
 		var center:Vector3=impact.center/maxf(.001,impact.weight)

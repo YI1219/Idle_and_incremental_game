@@ -162,7 +162,7 @@ func _publish()->void:
 		materials.water.set_shader_parameter("shore_extent",_pending_shore.extent)
 		_pending_shore.clear()
 	props.sync(contours)
-	mist.sync(contours.splash_points)
+	mist.sync(contours.splash_points,contours.fall_veils)
 
 func _exit_tree()->void:_discard_pending()
 

@@ -51,27 +51,31 @@ void fragment() {
 	float fine = strands(vec2(across*26.0,(y+TIME*2.9)*1.1)+vec2(3.1,17.0));
 	// Falling packets: denser white clumps travel down the curtain.
 	float packets = flow_noise(vec2(across*2.6,(y+TIME*3.1)*1.9)+vec2(5.0,1.0));
-	// Water aerates within the first metre and is mostly white below.
-	float base_air = mix(.16,.86,smoothstep(.05,1.5,drop));
-	float air = base_air+(body-.5)*1.15+(fine-.5)*.55+(packets-.5)*.45*accelerate+landing*.55;
-	float white = smoothstep(.38,.78,air);
-	vec3 water = mix(vec3(.36,.52,.57),vec3(.58,.71,.74),body);
+	// A thick aerated body: only the lip is glassy; within a metre the fall
+	// is dense white water with soft grey-blue shading in the grooves.
+	float base_air = mix(.22,1.05,smoothstep(.05,.80,drop));
+	float air = base_air+(body-.5)*.95+(fine-.5)*.35+(packets-.5)*.40*accelerate+landing*.55;
+	float white = smoothstep(.30,.70,air);
+	vec3 water = mix(vec3(.50,.64,.68),vec3(.72,.81,.83),body);
 	// A glassy band follows the lip before the stream breaks up.
 	float lip = 1.0-smoothstep(.02,.32,drop);
-	water = mix(water,vec3(.66,.78,.78),lip*smoothstep(.45,.75,fine)*.55);
-	vec3 color = mix(water,vec3(.93,.95,.93),white);
+	water = mix(water,vec3(.72,.82,.82),lip*smoothstep(.45,.75,fine)*.55);
+	vec3 foam = mix(vec3(.86,.89,.89),vec3(.97,.98,.96),smoothstep(.3,.8,body*.7+fine*.3));
+	vec3 color = mix(water,foam,white);
 	float side = 1.0;
+	float edge = .5;
 	if (COLOR.a<.5) {
-		float edge = min(COLOR.r,1.0-COLOR.r);
-		// Ragged, thinning edges that widen as the stream falls.
-		float ragged = (fine-.5)*.16+(body-.5)*.12;
-		float inset = clamp((.018+min(drop,5.0)*.040+ragged)*inverse_width,0.0,.24);
-		float softness = min(max(.05*inverse_width,fwidth(edge)*1.5),.14);
+		edge = min(COLOR.r,1.0-COLOR.r);
+		// Ragged edges widen as the stream falls and feather into the spray veil.
+		float ragged = (fine-.5)*.16+(body-.5)*.14;
+		float inset = clamp((.012+min(drop,5.0)*.030+ragged)*inverse_width,0.0,.20);
+		float softness = min(max((.10+min(drop,4.0)*.06)*inverse_width,fwidth(edge)*1.5),.22);
 		side = smoothstep(inset,inset+max(softness,.0001),edge);
 	}
-	// Thin water between strands lets the rock behind read through.
-	float opacity = mix(mix(.74,.90,body),.97,white);
-	opacity *= mix(1.0,smoothstep(.10,.42,air),accelerate*.35);
+	// The core is nearly opaque below the lip, so a change of backdrop (rock
+	// ending above open sky) no longer shows through as a seam.
+	float opacity = mix(mix(.76,.92,body),.985,white);
+	opacity *= mix(1.0,smoothstep(.0,.30,air),accelerate*.12);
 	// Grooves follow the strands; screen derivatives reconstruct the same
 	// world-space gradient for every camera.
 	vec3 dx = dFdx(VERTEX);
@@ -82,9 +86,19 @@ void fragment() {
 	float relief = body*.6+fine*.4;
 	vec3 gradient = sign(determinant)*(dFdx(relief)*r1+dFdy(relief)*r2);
 	if(abs(determinant)>.00000001) NORMAL = normalize(abs(determinant)*NORMAL-gradient*.035);
+	// Rounded cross-section: normals wrap toward each side so the body shades
+	// as a thick column of water rather than a flat sheet.
+	if (COLOR.a<.5 && abs(determinant)>.00000001) {
+		vec3 across_gradient = sign(determinant)*(dFdx(COLOR.r)*r1+dFdy(COLOR.r)*r2);
+		if (length(across_gradient)>.0000001) {
+			vec3 side_direction = normalize(across_gradient);
+			float wrap = (COLOR.r-.5)*2.0;
+			NORMAL = normalize(NORMAL*sqrt(max(.0,1.0-wrap*wrap*.55))+side_direction*wrap*.75);
+		}
+	}
 	ALBEDO = color;
-	// Aerated water scatters light, so white strands stay bright in shade.
-	EMISSION = vec3(.16,.18,.18)*white+color*.12;
+	// Aerated water scatters light, so white water stays bright in shade.
+	EMISSION = vec3(.30,.31,.31)*white+color*.16;
 	ALPHA = opacity*side;
 	if(COLOR.a<.001) ALPHA*=1.0-smoothstep(3.2,5.5,drop+(body-.5)*1.2);
 	ROUGHNESS = mix(.22,.65,white);
