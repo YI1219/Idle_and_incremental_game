@@ -1,11 +1,15 @@
 shader_type spatial;
 #include "cliff_palette.gdshaderinc"
 #include "land_palette.gdshaderinc"
-// Standing stone columns that clad broad outer walls below the turf lip.
+#include "ground_cover.gdshaderinc"
+// Rim blocks: standing stones whose crowns form the island edge. The crown
+// carries the same world-space lawn as the cap beside it, moss creeps over
+// the bevel and down the face, and the rock below weathers in vertical streaks.
 // Mesh space is a unit box with its top at y=0 and its foot at y=-1.
+uniform float cover_relief = .55;
 varying vec3 local_position;
 varying vec3 column_origin;
-varying vec3 world_normal;
+varying vec3 world_position;
 
 float hash_column(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float noise_column(vec2 p){
@@ -13,13 +17,25 @@ float noise_column(vec2 p){
 	return mix(mix(hash_column(i),hash_column(i+vec2(1,0)),u.x),mix(hash_column(i+vec2(0,1)),hash_column(i+vec2(1,1)),u.x),u.y);
 }
 
+// The source stone's top fifth is its crown bevel. It keeps about this real
+// height however tall the block is stretched, so crowns stay rounded.
+const float CROWN_SOURCE=.20;
+const float CROWN_HEIGHT=.30;
 void vertex(){
+	float stretch=length(MODEL_MATRIX[1].xyz);
+	float crown=min(CROWN_SOURCE,CROWN_HEIGHT/max(stretch,.001));
+	VERTEX.y=VERTEX.y>-CROWN_SOURCE?VERTEX.y*crown/CROWN_SOURCE:-crown-(-VERTEX.y-CROWN_SOURCE)*(1.0-crown)/(1.0-CROWN_SOURCE);
 	local_position=VERTEX;
 	column_origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;
-	world_normal=normalize(MODEL_NORMAL_MATRIX*NORMAL);
+	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 }
 
 void fragment(){
+	// Flat facets from the remapped surface itself, facing the viewer.
+	vec3 facet=normalize(cross(dFdx(VERTEX),dFdy(VERTEX)));
+	if(dot(facet,VERTEX)>0.0)facet=-facet;
+	NORMAL=facet;
+	vec3 world_normal=(INV_VIEW_MATRIX*vec4(facet,0.0)).xyz;
 	vec3 variation=rock_hash(floor(column_origin*2.3)+vec3(17.0));
 	// Facet shade from the source stone, softened; instance tone sets the block.
 	vec3 stone=cliff_gray(.25+.6*variation.x)*mix(vec3(1.0),COLOR.rgb/.66,.55);
@@ -27,14 +43,27 @@ void fragment(){
 	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
 	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;
 	stone*=.90+.20*streak;
-	// The foot of each block sits in the shadow of the mass below the lip.
+	// The foot of each block sits in the shadow of the mass below.
 	stone*=mix(.78,1.0,smoothstep(-1.0,-.45,local_position.y));
 	stone*=mix(.80,1.0,smoothstep(-.85,.25,world_normal.y));
-	// Moss on the block tops and a ragged fringe just under the turf.
-	float fringe=smoothstep(-.10-.08*noise_column(vec2(local_position.x*9.0+variation.z*5.0,3.0)),-.01,local_position.y);
-	float moss=max(smoothstep(.45,.80,world_normal.y),fringe*.55);
-	vec3 moss_color=mix(grass_base,grass_highlight,.35)*.82;
-	ALBEDO=mix(stone,moss_color,moss*(.65+.35*streak));
-	ROUGHNESS=.93;
-	SPECULAR=.16;
+	// Metres below this block's crown.
+	float below=column_origin.y-world_position.y;
+	float up=world_normal.y;
+	// Moss creeps over the bevel and hangs in a ragged fringe down the face.
+	float ragged=noise_column(vec2((world_position.x+world_position.z)*3.1,variation.z*7.0))*.65+noise_column(vec2((world_position.x-world_position.z)*9.0,3.0))*.35;
+	float fringe=1.0-smoothstep(.06+.50*ragged,.14+.75*ragged,below);
+	float moss=max(smoothstep(.15,.55,up)*(1.0-smoothstep(.25,.70,below)),fringe*.80);
+	vec3 moss_color=vec3(.40,.45,.27);
+	vec3 color=mix(stone,moss_color,moss*(.70+.30*streak));
+	// The crown is the lawn itself, lit like the cap beside it.
+	float footprint=length(fwidth(world_position.xz))*9.0;
+	float detail=1.0-smoothstep(.35,1.0,footprint);
+	vec2 slope;
+	vec3 lawn=ground_cover(world_position.xz,detail,slope);
+	float crown=smoothstep(.45,.78,up)*(1.0-smoothstep(.30,.60,below));
+	ALBEDO=mix(color,lawn,crown);
+	vec3 lawn_normal=normalize(vec3(-slope.x*cover_relief*detail,1.0,-slope.y*cover_relief*detail));
+	NORMAL=normalize(mix(NORMAL,(VIEW_MATRIX*vec4(lawn_normal,0.0)).xyz,crown));
+	ROUGHNESS=mix(.93,.95,crown);
+	SPECULAR=mix(.16,.30,crown);
 }

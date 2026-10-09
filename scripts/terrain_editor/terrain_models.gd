@@ -16,6 +16,8 @@ func load_assets()->void:
 	assets.underside_rock_b=_hanging_rock_models("Rock_Medium_2")
 	assets.cliff_column=_column_models("stone_smallFlatA")
 	assets.cliff_column_b=_column_models("stone_largeD")
+	assets.cliff_column_c=_column_models("stone_largeB")
+	assets.cliff_column_d=_column_models("Rock_Medium_2")
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
 	var tree:Array=[]
@@ -65,7 +67,7 @@ func load_assets()->void:
 	assets.vine=spray
 	for kind in assets:
 		# Retain the curved grass mesh's UVs/normals and palette texture.
-		if kind not in ["grass","grass_clump","reeds","underside_rock","underside_rock_b","cliff_column","cliff_column_b"]:assets[kind]=[_merge(assets[kind])]
+		if kind not in ["grass","grass_clump","reeds","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d"]:assets[kind]=[_merge(assets[kind])]
 	# Apply after merging, which intentionally replaces individual source materials.
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
@@ -209,10 +211,20 @@ func _hanging_rock_models(id:String)->Array:
 	return parts
 
 func _column_models(id:String)->Array:
-	# Retained CC0 stones stood upright and stretched into standing columns.
+	# Retained CC0 stones stood upright and stretched into rim blocks.
 	# Baked into a unit box: x/z in [-.5,.5], y in [-1,0], top centre at the
 	# origin, so a placement scales it to width, height and thickness.
-	var parts:=_load(id,"surface_rock")
+	var parts:Array=[]
+	if id.begins_with("Rock"):
+		var source:Node=load("res://assets/nature/quaternius/"+id+".gltf").instantiate()
+		for node:MeshInstance3D in source.find_children("*","MeshInstance3D",true,false):
+			for surface in node.mesh.get_surface_count():
+				var mesh:=ArrayMesh.new()
+				mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,node.mesh.surface_get_arrays(surface))
+				parts.append({"mesh":mesh,"pose":_global_pose(node,source)})
+		source.free()
+	else:
+		parts=_load(id,"surface_rock")
 	var box:=AABB()
 	for i in parts.size():
 		var part_box:AABB=parts[i].pose*parts[i].mesh.get_aabb()
@@ -223,9 +235,16 @@ func _column_models(id:String)->Array:
 	for part:Dictionary in parts:
 		var arrays:Array=part.mesh.surface_get_arrays(0)
 		var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
-		var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR]
+		var indices:Variant=arrays[Mesh.ARRAY_INDEX]
+		if indices!=null and not (indices as PackedInt32Array).is_empty():
+			var expanded:=PackedVector3Array()
+			for index:int in indices:expanded.append(vertices[index])
+			vertices=expanded
+		var colors:Variant=arrays[Mesh.ARRAY_COLOR]
+		# Untinted Quaternius rocks take the Kenney stones' mid grey.
+		var flat:=colors==null or (colors as PackedColorArray).size()!=vertices.size()
 		var pose:Transform3D=normalize*part.pose
-		for i in range(0,vertices.size(),3):builder.triangle(pose*vertices[i],pose*vertices[i+1],pose*vertices[i+2],colors[i])
+		for i in range(0,vertices.size(),3):builder.triangle(pose*vertices[i],pose*vertices[i+1],pose*vertices[i+2],Color(.66,.66,.66) if flat else colors[i])
 	var mesh:ArrayMesh=builder.mesh()
 	var material:=ShaderMaterial.new()
 	material.shader=load("res://shaders/terrain_editor/cliff_column.gdshader")
