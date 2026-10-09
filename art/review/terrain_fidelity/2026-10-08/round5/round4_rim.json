@@ -1,0 +1,59 @@
+{
+	"adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"captures": [
+		{
+			"draw_calls": 522.0,
+			"error": 0,
+			"file": "round4_rim_upper_front.png",
+			"position": "(-7.131281, 9.0, 19.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 508.0,
+			"error": 0,
+			"file": "round4_rim_lower_right.png",
+			"position": "(18.86872, 9.0, 23.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 622.0,
+			"error": 0,
+			"file": "round4_rim_terrace_step.png",
+			"position": "(-10.79423, 9.0, 15.5)",
+			"rotation": "(-30.0, -30.0, 0.0)"
+		},
+		{
+			"draw_calls": 662.0,
+			"error": 0,
+			"file": "round4_edit_0_before.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 663.0,
+			"error": 0,
+			"file": "round4_edit_1_expanded.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 663.0,
+			"error": 0,
+			"file": "round4_edit_2_raised.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 662.0,
+			"error": 0,
+			"file": "round4_edit_3_undone.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	]
+}
