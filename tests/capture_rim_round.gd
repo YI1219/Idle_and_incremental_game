@@ -42,9 +42,13 @@ func run()->void:
 	await capture(tag+"_rim_lower_right")
 	frame(Vector2(-3,2),9.0,-30.0,30.0)
 	await capture(tag+"_rim_terrace_step")
-	# Low camera outside the lower lobe, looking up at the foot of the wall.
-	editor.camera.position=Vector3(22.0,-3.2,16.5)
-	editor.camera.look_at(Vector3(8.5,-1.2,4.5))
+	# Outside the lower lobe, level with the crowns, so each body's outline is its own.
+	editor.camera.position=Vector3(24.0,2.2,14.0)
+	editor.camera.look_at(Vector3(10.0,1.2,5.5))
+	await capture(tag+"_bodies_side")
+	# Same wall from below. The foot in frame is the bottom of those bodies.
+	editor.camera.position=Vector3(22.0,-2.4,15.2)
+	editor.camera.look_at(Vector3(9.0,-0.2,5.0))
 	await capture(tag+"_underside")
 	# Expand the lower terrace's dry right edge, raise part of it, then undo.
 	frame(Vector2(15.5,4.0),13.0,48.0,30.0)

@@ -9,7 +9,7 @@ const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
 const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Contours=preload("res://scripts/terrain_editor/contour_terrain.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
-const RIM:=["cliff_column","cliff_column_b","cliff_column_c","cliff_column_d"]
+const RIM:=["cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","underside_rock","underside_rock_b"]
 var checks:=0
 var failures:=0
 var fresh:=Decoration.new()
@@ -97,6 +97,15 @@ func near(poses:Array,center:Vector2,radius:float)->int:
 	for pose:Transform3D in poses:
 		if Vector2(pose.origin.x,pose.origin.z).distance_to(center)<radius:count+=1
 	return count
+func deep_near(decoration,center:Vector2,radius:float)->int:
+	# The underside is the lower part of a standing body, so a deep body is
+	# one whose own height continues well below the crown.
+	var count:=0
+	for column:Dictionary in decoration._columns:
+		if float(column.height)<3.2:continue
+		var at:=Vector2(column.pose.origin.x,column.pose.origin.z)
+		if radius<0.0 or at.distance_to(center)<radius:count+=1
+	return count
 func run()->void:
 	# The headless dummy renderer keeps no MultiMesh buffer, so every instance
 	# would read back as identity and the comparisons would pass vacuously.
@@ -118,12 +127,13 @@ func run()->void:
 	renderer.rebuild_all()
 	follows(renderer,data,"initial island")
 	var initial:=published(renderer)
-	check(kinds(initial,RIM).size()>=40,"homestead rim is clad by rim blocks (%d)"%kinds(initial,RIM).size())
-	check(kinds(initial,["underside_rock","underside_rock_b"]).size()>=8,"underside boulders hang below the shell")
+	check(kinds(initial,RIM).size()>=40,"homestead rim is clad by rock bodies (%d)"%kinds(initial,RIM).size())
+	check(deep_near(renderer.decoration,Vector2.ZERO,-1.0)>=8,"rock bodies continue below the shell (%d)"%deep_near(renderer.decoration,Vector2.ZERO,-1.0))
 	check(kinds(initial,["shore_rock","shore_boulder","shore_pebble"]).size()>=8,"lake banks carry shore stones")
 	# Expand: new land on the lower terrace's dry right edge grows its own
-	# rock-native rim, boulders and vines where there was only sky.
+	# rock bodies and vines where there was only sky.
 	var expand_center:=Vector2(19.2,4.6)
+	var initial_deep:=deep_near(renderer.decoration,expand_center,4.5)
 	check(not data.cells.has(Vector2i(20,4)),"expand target starts as open sky")
 	check(near(kinds(initial,RIM),Vector2(20.6,4.6),1.0)==0,"no rim block exists beyond the old edge")
 	var original_cells:=data.cells.keys()
@@ -136,7 +146,7 @@ func run()->void:
 		if not Vector2i(inside.floor()) in original_cells:on_new_land+=1
 	check(on_new_land>=3,"expanded land carries new rim blocks on its new edge (%d)"%on_new_land)
 	check(renderer.decoration.layout_hits>renderer.decoration.layout_misses,"expand rebuilds only changed rim runs (%d hits, %d misses, %.2f ms)"%[renderer.decoration.layout_hits,renderer.decoration.layout_misses,renderer.decoration.layout_ms])
-	check(near(kinds(expanded,["underside_rock","underside_rock_b"]),expand_center,4.5)>near(kinds(initial,["underside_rock","underside_rock_b"]),expand_center,4.5),"expanded edge gains its own underside boulders")
+	check(deep_near(renderer.decoration,expand_center,4.5)>initial_deep,"expanded edge gains deep rock bodies (%d vs %d)"%[deep_near(renderer.decoration,expand_center,4.5),initial_deep])
 	check(near(kinds(expanded,["vine"]),expand_center,4.0)>0,"vines re-seat on the expanded rim")
 	# Raise part of the new land twice: the blocks follow the new top.
 	data.begin_stroke();data.apply_brush(Vector2(18.6,4.4),2.2,"raise",false,1.5,3);data.end_stroke()

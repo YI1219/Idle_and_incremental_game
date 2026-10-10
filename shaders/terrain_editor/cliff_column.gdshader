@@ -3,11 +3,10 @@ shader_type spatial;
 #include "cliff_palette.gdshaderinc"
 #include "land_palette.gdshaderinc"
 #include "ground_cover.gdshaderinc"
-// Rim blocks: cut stone masses whose crowns form the island edge. The crown
-// carries the same world-space lawn as the cap beside it, moss creeps over
-// the bevel and down the face, and the rock below weathers in vertical streaks.
-// Mesh space is a unit box with its top at y=0 and its foot at y=-1.
-// The baked chamfer lives in the top fifth so this remap keeps a rock head.
+// Rock bodies: each mesh is one faceted solid, crown at y=0, foot below.
+// The crown carries the same world-space lawn as the cap beside it. Moss stays
+// on that crown. The rock below weathers in vertical streaks. Instance scale
+// stays near uniform, so the silhouette is the mesh, not a stretched box.
 uniform float cover_relief = .55;
 varying vec3 local_position;
 varying vec3 column_origin;
@@ -19,14 +18,7 @@ float noise_column(vec2 p){
 	return mix(mix(hash_column(i),hash_column(i+vec2(1,0)),u.x),mix(hash_column(i+vec2(0,1)),hash_column(i+vec2(1,1)),u.x),u.y);
 }
 
-// The block's top fifth is its crown chamfer. It keeps about this real
-// height however tall the block is stretched, so the head stays the edge.
-const float CROWN_SOURCE=.20;
-const float CROWN_HEIGHT=.30;
 void vertex(){
-	float stretch=length(MODEL_MATRIX[1].xyz);
-	float crown=min(CROWN_SOURCE,CROWN_HEIGHT/max(stretch,.001));
-	VERTEX.y=VERTEX.y>-CROWN_SOURCE?VERTEX.y*crown/CROWN_SOURCE:-crown-(-VERTEX.y-CROWN_SOURCE)*(1.0-crown)/(1.0-CROWN_SOURCE);
 	local_position=VERTEX;
 	column_origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;
 	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
@@ -34,7 +26,7 @@ void vertex(){
 }
 
 void fragment(){
-	// Flat facets from the remapped surface itself, facing the viewer.
+	// Flat facets of this solid, facing the viewer.
 	vec3 facet=normalize(cross(dFdx(VERTEX),dFdy(VERTEX)));
 	if(dot(facet,VERTEX)>0.0)facet=-facet;
 	NORMAL=facet;
@@ -42,15 +34,14 @@ void fragment(){
 	vec3 variation=rock_hash(floor(column_origin*2.3)+vec3(17.0));
 	// Facet shade from the source stone, softened; instance tone sets the block.
 	vec3 stone=cliff_gray(.25+.6*variation.x)*mix(vec3(1.0),COLOR.rgb/.66,.55);
-	// Vertical weathering streaks run the height of each block.
+	// Vertical weathering streaks run the height of this body.
 	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
 	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;
 	stone*=.90+.20*streak;
-	// The foot of each block sits in the shadow of the mass below.
-	stone*=mix(.78,1.0,smoothstep(-1.0,-.45,local_position.y));
 	stone*=mix(.80,1.0,smoothstep(-.85,.25,world_normal.y));
-	// Metres below this block's crown.
+	// Metres below this body's crown. The foot is the same solid, just darker.
 	float below=column_origin.y-world_position.y;
+	stone*=mix(1.0,.78,smoothstep(1.6,4.2,below));
 	float up=world_normal.y;
 	// Moss creeps over the bevel and hangs in a ragged fringe down the face.
 	float ragged=noise_column(vec2((world_position.x+world_position.z)*3.1,variation.z*7.0))*.65+noise_column(vec2((world_position.x-world_position.z)*9.0,3.0))*.35;

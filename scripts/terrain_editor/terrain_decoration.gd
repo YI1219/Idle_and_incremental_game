@@ -8,8 +8,7 @@ const COMMON_TREE_HEIGHT := 4.15
 # Shore stones read as bank stones at gameplay framing, not as boulders that
 # dominate the lake rim.
 const SHORE_STONE_SCALE := .62
-const CROWN_SOURCE := .20
-const CROWN_HEIGHT := .30
+const BODY_KINDS:Array=["cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","underside_rock","underside_rock_b"]
 var model_library:=Models.new()
 var assets:Dictionary={}
 var contours:RefCounted
@@ -21,8 +20,8 @@ var _columns:Array=[]
 var _column_cells:Dictionary={}
 var _column_field:RefCounted
 var _column_key:=Vector2i(-1,-1)
-# Wall and underside courses of the same rock mass. Kept out of _columns so
-# crown-height checks stay about the heads that form the silhouette.
+# Kept so a cached run can still copy an empty course list. Underside is the
+# foot of each body in _columns, not a second course of panels.
 var _mass:Array=[]
 # Unchanged contour runs keep their blocks. Keyed by the run's geometry and
 # the nearby heights, so an edit rebuilds only the runs it actually moves.
@@ -221,10 +220,9 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	result.grass_clump.append_array(crown_tufts)
 	return result
 func _column_layout(field,seed_value:int)->void:
-	# One rock mass of cut blocks. Heads overlap along every outer wall and
-	# dry terrace step, so the block crown is the silhouette. The same blocks
-	# continue down the wall and close in a tapered foot. Runs begin at
-	# world-anchored contour points. A run whose outline and nearby heights
+	# One standing body per contour run. Crowns overlap along every outer wall
+	# and dry terrace step, so the island edge is those crowns. The foot of
+	# the same body is the underside. A run whose outline and nearby heights
 	# are unchanged is copied from the previous revision.
 	var key:=Vector2i(field.revision,seed_value)
 	if _column_field==field and _column_key==key:return
@@ -292,7 +290,11 @@ func _restore_run(cached:Dictionary)->void:
 		_bucket_column(index)
 	for source:Dictionary in cached.mass:_mass.append(source.duplicate())
 func _bucket_column(index:int)->void:
-	var bounds:AABB=_columns[index].pose*AABB(Vector3(-.5,-1,-.5),Vector3.ONE)
+	var column:Dictionary=_columns[index]
+	var mesh_h:=1.0
+	if assets.has(column.kind) and not (assets[column.kind] as Array).is_empty():
+		mesh_h=float(assets[column.kind][0].get("body_height",1.0))
+	var bounds:AABB=column.pose*AABB(Vector3(-.5,-mesh_h,-.5),Vector3(1.0,mesh_h,1.0))
 	for z in range(floori(bounds.position.z/2.0),floori(bounds.end.z/2.0)+1):
 		for x in range(floori(bounds.position.x/2.0),floori(bounds.end.x/2.0)+1):
 			var bucket:=Vector2i(x,z)
@@ -313,7 +315,7 @@ static func _runs(loop:PackedVector2Array)->Array:
 		walked+=a.distance_to(b)
 		points.append(b)
 		var turn:=absf((nxt-b).angle_to(b-start)) if b.distance_squared_to(start)>.0001 else 0.0
-		if walked<2.05 and turn<.55 and i<size-1:continue
+		if walked<2.15 and turn<.55 and i<size-1:continue
 		runs.append([start,b,points])
 		start=b
 		walked=0.0
@@ -349,95 +351,68 @@ func _curtain_span(field,a:Vector2,dir:Vector2,span:Vector2,y:float,external_onl
 		else:span.x=maxf(span.x,hi)
 	return span if span.y-span.x>=.70 else Vector2(NAN,NAN)
 func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->void:
+	# One discrete body, centred on the run. Its size does not follow the run
+	# length, so neighbours overlap as separate masses instead of a stretched panel.
 	var length:=a.distance_to(b)
-	if length<.05:return
+	if length<.25:return
 	var dir:=(b-a)/length
 	var out:=Vector2(dir.y,-dir.x)
 	var outward:=Vector3(out.x,0,out.y)
 	var tangent:=Vector3(dir.x,0,dir.y)
-	var count:=maxi(1,roundi(length/2.15))
-	for k in count:
-		var span:=_curtain_span(field,a,dir,Vector2(length*k/count-.04,length*(k+1)/count+.04),h,false)
-		if is_nan(span.x):continue
-		var c:=_onto(points,a+dir*(span.x+span.y)*.5,out)
-		var profile:Dictionary=field._cliff_profile(c,out)
-		if absf(profile.rock_top-h)>.01:continue
-		var drop:float=profile.top-profile.bottom
-		var step:bool=profile.step or (not profile.base and profile.water<0 and drop>=Contours.STEP_BLOCK_DEPTH)
-		if not profile.base and not step:continue
-		var inside:Dictionary=field.surface_at(c-out*.35)
-		if inside.is_empty() or int(inside.water)>=0:continue
-		var cell:=Vector2i(roundi(c.x*8.0),roundi(c.y*8.0))
-		var width:=(span.y-span.x)+.95
-		var top:float=h+lerpf(.06,.14,random_at(cell,seed_value,3001))
-		var proud:=lerpf(.36,.58,pow(random_at(cell,seed_value,3004),1.05))
-		var thickness:=lerpf(1.65,2.25,random_at(cell,seed_value,3003))
-		if profile.base:thickness=minf(thickness,maxf(.90,profile.inset+proud*.45))
-		var height:float
-		var shell_floor:float=top
-		if step:
-			height=clampf(top-profile.bottom+.35,1.45,3.3)
-		else:
-			var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
-			shell_floor=foot.y
-			var room:float=maxf(1.2,top-shell_floor)
-			height=lerpf(2.15,2.75,random_at(cell,seed_value,3002))
-			# The head is the top course. Deeper walls keep room for courses below it.
-			if room>3.0:height=minf(height,maxf(1.70,room*.42))
-			height=minf(height,room+.20)
-			height=maxf(height,1.40)
-		var frame:=Basis(tangent,Vector3.UP,outward)*Basis(Vector3.UP,(random_at(cell,seed_value,3005)-.5)*.04)
-		var lean:=Basis(Vector3.RIGHT,(random_at(cell,seed_value,3007)-.5)*.03)
-		var face:=Basis(Vector3.UP,PI*.5*floorf(random_at(cell,seed_value,3006)*4.0))
-		var basis:=frame*lean*Basis.from_scale(Vector3(width,height,thickness))*face
-		var pose:=Transform3D(basis,Vector3(c.x,top,c.y)+outward*(proud-thickness*.5))
-		var pick:=random_at(cell,seed_value,3008)
-		var kind:="cliff_column_b" if pick<.40 else ("cliff_column_c" if pick<.72 else ("cliff_column_d" if pick<.90 else "cliff_column"))
-		var index:=_columns.size()
-		_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":width,"thickness":thickness,"height":height})
-		_bucket_column(index)
-		if profile.base and profile.water<0:
-			var under:=_curtain_span(field,a,dir,span,0.0,true)
-			if not is_nan(under.x):
-				_hang(field,_onto(points,a+dir*(under.x+under.y)*.5,out),out,top-height,shell_floor,under.y-under.x+.55,proud,profile,cell,seed_value,frame)
-func _hang(field,c:Vector2,out:Vector2,head_foot:float,shell_floor:float,width:float,proud:float,profile:Dictionary,cell:Vector2i,seed_value:int,frame:Basis)->void:
-	# Courses under an outer head, the same cut blocks. Each lip sits just
-	# behind the course above. The last course is the blunt foot, so the
-	# underside continues the wall instead of hanging as a separate boulder.
-	var depth:=clampf((float(profile.rock_top)+1.2)/5.0,.72,1.15)
-	var target:float=shell_floor-lerpf(.55,1.35,random_at(cell,seed_value,3200))*depth
-	var gap:float=head_foot-target
-	if gap<.85:return
-	var outward:=Vector3(out.x,0,out.y)
-	var tangent:=Vector3(-out.y,0,out.x)
-	var y:=head_foot+.62
-	var courses:=1
-	if gap>4.2:courses=3
-	elif gap>2.0:courses=2
-	for course in courses:
-		var salt:=3220+course*11
-		var last:=course==courses-1
-		var span:=width*(lerpf(1.02,1.10,random_at(cell,seed_value,salt)) if last else lerpf(1.06,1.16,random_at(cell,seed_value,salt)))
-		var thick:=lerpf(1.75,2.30,random_at(cell,seed_value,salt+1))
-		var lip:=proud-.02-float(course)*.03
-		var height:float=maxf(1.35,y-target+.12) if last else minf(maxf(1.55,gap*.48),y-target-.70)
-		var shift:=(random_at(cell,seed_value,salt+3)-.5)*.08
-		var face:=Basis(Vector3.UP,PI*.5*floorf(random_at(cell,seed_value,salt+4)*4.0))
-		var turned:=frame*Basis(Vector3.UP,(random_at(cell,seed_value,salt+5)-.5)*.04)*Basis(Vector3.RIGHT,(random_at(cell,seed_value,salt+2)-.5)*.025)
-		var origin:=Vector3(c.x,y,c.y)+outward*lip+tangent*shift
-		var owner:=Vector2i(c.floor())
-		var pick:=random_at(cell,seed_value,salt+8)
-		var kind:="cliff_column_b" if pick<.5 else "cliff_column_c"
-		if last:kind="underside_rock" if pick<.55 else "underside_rock_b"
-		var pose:=Transform3D(turned*Basis.from_scale(Vector3(span,height,thick))*face,origin-outward*thick*.5)
-		_mass.append({"kind":kind,"cell":owner,"pose":pose})
-		y-=height-.62
-static func crown_remap(vertex:Vector3,stretch:float)->Vector3:
-	# Mirrors cliff_column.gdshader: the block's top fifth (its crown chamfer)
-	# keeps about .30 m of real height however tall the block is.
-	var crown:=minf(CROWN_SOURCE,CROWN_HEIGHT/maxf(stretch,.001))
-	if vertex.y>-CROWN_SOURCE:vertex.y*=crown/CROWN_SOURCE
-	else:vertex.y=-crown-(-vertex.y-CROWN_SOURCE)*(1.0-crown)/(1.0-CROWN_SOURCE)
+	var span:=_curtain_span(field,a,dir,Vector2(-.02,length+.02),h,false)
+	if is_nan(span.x) or span.y-span.x<.25:return
+	var c:=_onto(points,a+dir*(span.x+span.y)*.5,out)
+	var profile:Dictionary=field._cliff_profile(c,out)
+	if absf(profile.rock_top-h)>.01:return
+	var drop:float=profile.top-profile.bottom
+	var step:bool=profile.step or (not profile.base and profile.water<0 and drop>=Contours.STEP_BLOCK_DEPTH)
+	if not profile.base and not step:return
+	var inside:Dictionary=field.surface_at(c-out*.35)
+	if inside.is_empty() or int(inside.water)>=0:return
+	var cell:=Vector2i(roundi(c.x*8.0),roundi(c.y*8.0))
+	var pick:=mini(BODY_KINDS.size()-1,int(random_at(cell,seed_value,3008)*BODY_KINDS.size()))
+	var kind:String=BODY_KINDS[pick]
+	var part:Dictionary=assets[kind][0]
+	var body_h:float=float(part.body_height)
+	var crown_z:float=float(part.crown_z)
+	var top:float=h+lerpf(.06,.14,random_at(cell,seed_value,3001))
+	var proud:=lerpf(.28,1.05,pow(random_at(cell,seed_value,3004),1.05))
+	# Width and depth stay in a body range. Height reaches this wall's own foot,
+	# so the underside is the bottom of the body rather than a second course.
+	var span_x:float=maxf(.45,float(part.span_x))
+	var span_z:float=maxf(.45,float(part.span_z))
+	var want_w:=lerpf(3.05,4.15,random_at(cell,seed_value,3010))
+	var want_d:=lerpf(1.85,2.65,random_at(cell,seed_value,3013))
+	var sx:=want_w/span_x
+	var sz:=want_d/span_z
+	var sy:float
+	if step:
+		sx=lerpf(1.70,2.40,random_at(cell,seed_value,3014))/span_x
+		sz=lerpf(1.40,2.00,random_at(cell,seed_value,3015))/span_z
+		sy=clampf((drop+.25)/body_h,1.15,2.40)
+	else:
+		var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
+		var room:float=maxf(1.4,top-foot.y)
+		sy=clampf((room+.35)/body_h,1.6,3.6)
+		if float(profile.inset)<1.45:
+			var fit_d:=maxf(1.20,float(profile.inset))
+			sz=minf(sz,fit_d/span_z)
+	# Keep width and depth from turning the solid into a thin panel.
+	if sx>sz*1.85:sx=sz*1.85
+	if sz>sx*1.85:sz=sx*1.85
+	var open:=span.y-span.x
+	if span.x>-.02 or span.y<length-.02:sx=minf(sx,maxf(1.35,open*.95))
+	var yaw:=(random_at(cell,seed_value,3005)-.5)*1.60
+	var lean:=(random_at(cell,seed_value,3007)-.5)*.32
+	var roll:=(random_at(cell,seed_value,3009)-.5)*.20
+	var frame:=Basis(tangent,Vector3.UP,outward)
+	var basis:=frame*Basis(Vector3.UP,yaw)*Basis(Vector3.RIGHT,lean)*Basis(Vector3.FORWARD,roll)*Basis.from_scale(Vector3(sx,sy,sz))
+	var pose:=Transform3D(basis,Vector3(c.x,top,c.y)+outward*(proud-crown_z*sz))
+	var index:=_columns.size()
+	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy})
+	_bucket_column(index)
+static func crown_remap(vertex:Vector3,_stretch:float)->Vector3:
+	# The crown is authored on the mesh. Scaling must not squash it.
 	return vertex
 func rim_top_at(p:Vector2)->float:
 	# Crown height of the rim block covering a ground point, or -INF.

@@ -14,15 +14,14 @@ func load_assets()->void:
 	assets.reeds=_reed_models()
 	assets.lily=_lily_models()
 	assets.path=_path_models()
-	# Cut blocks, not the retained CC0 boulders. Four straight masses form the
-	# rim; two blunt-footed masses close the underside. Baked once, then instanced.
+	# Six standing rock bodies. Each is its own faceted solid. Baked once, then instanced.
 	var bake:=Time.get_ticks_usec()
-	assets.cliff_column=_block_models(11,false)
-	assets.cliff_column_b=_block_models(23,false)
-	assets.cliff_column_c=_block_models(37,false)
-	assets.cliff_column_d=_block_models(41,false)
-	assets.underside_rock=_block_models(53,true)
-	assets.underside_rock_b=_block_models(67,true)
+	assets.cliff_column=_rock_body_models(11)
+	assets.cliff_column_b=_rock_body_models(23)
+	assets.cliff_column_c=_rock_body_models(37)
+	assets.cliff_column_d=_rock_body_models(41)
+	assets.underside_rock=_rock_body_models(53)
+	assets.underside_rock_b=_rock_body_models(67)
 	block_bake_us=Time.get_ticks_usec()-bake
 	var wood:Array=_load("tree_detailed","tree_wood")
 	var leaf:Array=_load("tree_oak","tree_leaf")
@@ -189,81 +188,129 @@ func _grass_clump_models()->Array:
 		material.set_shader_parameter("light_color",Vector3(.38,.39,.27))
 	return parts
 
-func _block_models(seed_value:int,taper:bool)->Array:
-	# Unit box: x/z in [-.5,.5], y in [-1,0], top centre at the origin.
-	# A placement scales that box to width, height and thickness.
-	var mesh:=_block_mesh(seed_value,taper)
+func _rock_body_models(seed_value:int)->Array:
+	# One authored solid. XZ is fitted into ±.5; Y is the body's own height
+	# and is not fitted, so a near-uniform instance scale cannot turn it into a wall panel.
+	var built:Dictionary=_rock_body(seed_value)
+	var mesh:ArrayMesh=built.mesh
 	var material:=ShaderMaterial.new()
 	material.shader=load("res://shaders/terrain_editor/cliff_column.gdshader")
 	mesh.surface_set_material(0,material)
-	return [{"mesh":mesh,"pose":Transform3D.IDENTITY}]
+	return [{"mesh":mesh,"pose":Transform3D.IDENTITY,"body_height":built.height,"crown_z":built.crown_z,"span_x":built.span_x,"span_z":built.span_z}]
 
-func _block_mesh(seed_value:int,taper:bool)->ArrayMesh:
-	# Squarish clipped block, not a circle. Long flat faces, small corner cuts,
-	# a chamfer in the top fifth (the shader keeps that as a ~.30 m rock head),
-	# then near-vertical sides. Taper meshes keep that head and narrow only
-	# at the foot, so the underside continues the wall.
+func _rock_body(seed_value:int)->Dictionary:
+	# Irregular plan: unequal angles and radii, one broad face, one pinched face.
+	# Rings share that plan, then lean, twist and a per-vertex foot taper, so the
+	# solid is not an extruded octagon. The crown is the widest ring. The foot is
+	# the bottom of this same body.
 	var rng:=RandomNumberGenerator.new()
 	rng.seed=seed_value
-	var cuts:=PackedFloat32Array()
-	for _i in 4:cuts.append(lerpf(.045,.08,rng.randf()))
-	var skew:=Vector2(lerpf(-.012,.012,rng.randf()),lerpf(-.012,.012,rng.randf()))
-	var shape:=_block_shape(lerpf(.96,1.0,rng.randf()),lerpf(.96,1.0,rng.randf()),cuts,skew)
-	# Small crown chamfer, then a near-vertical body. The foot narrows, but stays
-	# a block so it remains outside the recessed shell.
-	var rings:Array=[[0.0,.93],[-.04,.97],[-.10,.995],[-.17,1.0],[-.32,1.0],[-1.0,1.0]]
-	if taper:rings=[[0.0,1.0],[-.18,1.0],[-.36,.98],[-.58,.92],[-.76,.84],[-.90,.76],[-1.0,.70]]
-	var built:Array=[]
-	for spec:Array in rings:
-		var scale:float=spec[1]
+	var sides:=6 if seed_value%4<2 else 7
+	var spans:Array=[]
+	var span_sum:=0.0
+	for _i in sides:
+		var span:=lerpf(.55,1.45,rng.randf())
+		spans.append(span)
+		span_sum+=span
+	var angle:=rng.randf()*TAU
+	var angles:=PackedFloat32Array()
+	var radii:=PackedFloat32Array()
+	var drops:=PackedFloat32Array()
+	var foots:=PackedFloat32Array()
+	var bulge:=PackedFloat32Array()
+	var broad:=0
+	for i in sides:
+		var sweep:float=float(spans[i])/span_sum*TAU
+		angles.append(angle)
+		angle+=sweep
+		radii.append(lerpf(.34,.72,rng.randf()))
+		drops.append(rng.randf())
+		foots.append(lerpf(.82,1.0,rng.randf()))
+		bulge.append(lerpf(.08,.70,rng.randf()))
+		if float(spans[i])>float(spans[broad]):broad=i
+	# The long edge is a real face: both of its corners stand out, the opposite corner pinches in.
+	radii[broad]=lerpf(1.15,1.48,rng.randf())
+	radii[(broad+1)%sides]=lerpf(1.05,1.36,rng.randf())
+	radii[(broad+int(sides/2))%sides]*=lerpf(.42,.62,rng.randf())
+	var mid_broad:=(angles[broad]+angles[(broad+1)%sides])*.5
+	if angles[(broad+1)%sides]<angles[broad]:mid_broad+=PI
+	var turn:=PI*.5-mid_broad
+	for i in sides:angles[i]+=turn
+	var height:=lerpf(1.35,1.72,rng.randf())
+	var lean:=Vector2(lerpf(-.16,.16,rng.randf()),lerpf(-.16,.16,rng.randf()))
+	var twist:=lerpf(-.16,.16,rng.randf())
+	# Four rings, so each side is a few large facets. The foot stays blunt.
+	var stations:Array=[
+		[0.0,1.0,.06],
+		[.14,.96,.30],
+		[.62,.90,1.0],
+		[1.0,.74,.22],
+	]
+	var rings:Array=[]
+	for spec:Array in stations:
+		var down:float=spec[0]
+		var radial:float=spec[1]
+		var lean_w:float=spec[2]
+		var foot_mix:=smoothstep(.72,1.0,down)
 		var pts:=PackedVector3Array()
-		for p:Vector2 in shape:pts.append(Vector3(p.x*scale,float(spec[0]),p.y*scale))
-		built.append(pts)
+		for i in sides:
+			var swell:=1.0-absf(down-bulge[i])/.70
+			var r:float=radii[i]*radial*lerpf(1.0,foots[i],foot_mix)*lerpf(.90,1.10,clampf(swell,0.0,1.0))
+			var ang:float=angles[i]+twist*down
+			var xz:=Vector2(cos(ang),sin(ang))*r+lean*lean_w
+			var y:=-down*height
+			if down==0.0:y-=drops[i]*.06*height
+			pts.append(Vector3(xz.x,y,xz.y))
+		rings.append(pts)
+	var min_x:=INF
+	var max_x:=-INF
+	var min_z:=INF
+	var max_z:=-INF
+	for ring:PackedVector3Array in rings:
+		for p:Vector3 in ring:
+			min_x=minf(min_x,p.x)
+			max_x=maxf(max_x,p.x)
+			min_z=minf(min_z,p.z)
+			max_z=maxf(max_z,p.z)
+	var mid:=Vector2((min_x+max_x)*.5,(min_z+max_z)*.5)
+	# Uniform fit keeps a wide face wide and a pinched face pinched.
+	var half:=maxf((max_x-min_x)*.5,(max_z-min_z)*.5)
+	var fit:=.5/maxf(half,.001)
+	var crown_z:=0.0
+	var foot_y:=0.0
+	var span_x:=0.0
+	var span_z:=0.0
+	for r in rings.size():
+		var ring:PackedVector3Array=rings[r]
+		for i in ring.size():
+			var p:Vector3=ring[i]
+			p.x=(p.x-mid.x)*fit
+			p.z=(p.z-mid.y)*fit
+			ring[i]=p
+			foot_y=minf(foot_y,p.y)
+			span_x=maxf(span_x,absf(p.x))
+			span_z=maxf(span_z,absf(p.z))
+			if r==0:crown_z=maxf(crown_z,p.z)
+		rings[r]=ring
 	var builder=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
-	var top:PackedVector3Array=built[0]
-	var centre:=Vector3(0,top[0].y,0)
+	var top:PackedVector3Array=rings[0]
 	for i in top.size():
-		_facing_triangle(builder,centre,top[i],top[(i+1)%top.size()],_block_shade(seed_value,30),Vector3.UP)
-	for r in built.size()-1:
-		var upper:PackedVector3Array=built[r]
-		var lower:PackedVector3Array=built[r+1]
+		_facing_triangle(builder,Vector3.ZERO,top[i],top[(i+1)%top.size()],_block_shade(seed_value,30),Vector3.UP)
+	for r in rings.size()-1:
+		var upper:PackedVector3Array=rings[r]
+		var lower:PackedVector3Array=rings[r+1]
 		for i in upper.size():
 			var j:=(i+1)%upper.size()
-			var outward:=Vector3(upper[i].x+upper[j].x,0,upper[i].z+upper[j].z)
-			_facing_quad(builder,upper[i],lower[i],lower[j],upper[j],_block_shade(seed_value,40+i+r*8),outward)
-	var bottom:PackedVector3Array=built[built.size()-1]
-	var foot:=Vector3(0,bottom[0].y,0)
+			var outward:=Vector3(upper[i].x+upper[j].x,0.0,upper[i].z+upper[j].z)
+			# One shade down a face, so the side reads as a facet of this body.
+			_facing_quad(builder,upper[i],lower[i],lower[j],upper[j],_block_shade(seed_value,40+i),outward)
+	var bottom:PackedVector3Array=rings[rings.size()-1]
+	var centre:=Vector3.ZERO
+	for p:Vector3 in bottom:centre+=p
+	centre/=float(bottom.size())
 	for i in bottom.size():
-		_facing_triangle(builder,foot,bottom[(i+1)%bottom.size()],bottom[i],_block_shade(seed_value,31),Vector3.DOWN)
-	return builder.mesh()
-
-func _block_shape(aspect_x:float,aspect_z:float,cuts:PackedFloat32Array,skew:Vector2)->PackedVector2Array:
-	# Clockwise is irrelevant; callers flip to the outward normal. The ring is
-	# ordered around the top so consecutive points share an edge.
-	var hx:=.5*aspect_x
-	var hz:=.5*aspect_z
-	var c0:=cuts[0]*hx*2.0
-	var c1:=cuts[1]*hx*2.0
-	var c2:=cuts[2]*hx*2.0
-	var c3:=cuts[3]*hx*2.0
-	var d0:=cuts[0]*hz*2.0
-	var d1:=cuts[1]*hz*2.0
-	var d2:=cuts[2]*hz*2.0
-	var d3:=cuts[3]*hz*2.0
-	var pts:=PackedVector2Array([
-		Vector2(-hx+c0,-hz),Vector2(hx-c1,-hz),Vector2(hx,-hz+d1),Vector2(hx,hz-d2),
-		Vector2(hx-c2,hz),Vector2(-hx+c3,hz),Vector2(-hx,hz-d3),Vector2(-hx,-hz+d0),
-	])
-	for i in pts.size():
-		var p:=pts[i]
-		p+=Vector2(skew.x*(1.0 if p.x>0.0 else -1.0),skew.y*(1.0 if p.y>0.0 else -1.0))
-		pts[i]=p
-	var limit:=0.0
-	for p:Vector2 in pts:limit=maxf(limit,maxf(absf(p.x),absf(p.y)))
-	if limit>.5:
-		var fit:=.5/limit
-		for i in pts.size():pts[i]*=fit
-	return pts
+		_facing_triangle(builder,centre,bottom[(i+1)%bottom.size()],bottom[i],_block_shade(seed_value,31),Vector3.DOWN)
+	return {"mesh":builder.mesh(),"height":-foot_y,"crown_z":crown_z,"span_x":span_x*2.0,"span_z":span_z*2.0}
 
 func _facing_triangle(builder,a:Vector3,b:Vector3,c:Vector3,color:Color,outward:Vector3)->void:
 	var normal:=-(b-a).cross(c-a)
