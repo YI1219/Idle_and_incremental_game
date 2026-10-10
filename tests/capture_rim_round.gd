@@ -64,6 +64,12 @@ func run()->void:
 	data.undo();data.undo();data.undo()
 	publish()
 	await capture(tag+"_edit_3_undone")
+	# Contract the dry edge to review the independently rebuilt smaller spans.
+	data.begin_stroke();data.apply_brush(Vector2(18.6,4.4),2.2,"contract",false,1.5,3);data.end_stroke()
+	publish()
+	await capture(tag+"_edit_4_shrunk")
+	data.undo();publish()
+	await capture(tag+"_edit_5_restored")
 	var file:=FileAccess.open(OUT+tag+"_rim.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"renderer":RenderingServer.get_current_rendering_method(),"adapter":RenderingServer.get_video_adapter_name(),"resolution":[1671,941],"captures":captures},"\t"))
 	print("RIM CAPTURES: ",JSON.stringify(captures))

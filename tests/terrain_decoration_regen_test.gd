@@ -98,11 +98,12 @@ func near(poses:Array,center:Vector2,radius:float)->int:
 		if Vector2(pose.origin.x,pose.origin.z).distance_to(center)<radius:count+=1
 	return count
 func deep_near(decoration,center:Vector2,radius:float)->int:
-	# The underside is the lower part of a standing body, so a deep body is
-	# one whose own height continues well below the crown.
+	# Roots are separate from crowns. Count actual root meshes that extend
+	# at least 1.3 m below their own shoulder, not old full-height columns.
 	var count:=0
-	for column:Dictionary in decoration._columns:
-		if float(column.height)<3.2:continue
+	for column:Dictionary in decoration._mass:
+		var bounds:AABB=column.pose*decoration.assets[column.kind][0].mesh.get_aabb()
+		if bounds.size.y<1.3:continue
 		var at:=Vector2(column.pose.origin.x,column.pose.origin.z)
 		if radius<0.0 or at.distance_to(center)<radius:count+=1
 	return count

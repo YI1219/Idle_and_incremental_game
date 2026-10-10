@@ -1,0 +1,12 @@
+[
+  {
+    "test": "tests/terrain_decoration_regen_test.gd",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-11 00:56:18.894 godot[33228:3328508] +[IMKClient subclass]: chose IMKClient_Modern\nRIM BAKE us=10786\nTERRAIN DECORATION REGEN: 42/42 passed\n"
+  },
+  {
+    "test": "tests/terrain_cottage_material_test.gd",
+    "exit_code": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-11 00:53:28.069 godot[30700:3321798] +[IMKClient subclass]: chose IMKClient_Modern\nCOTTAGE MATERIAL SAMPLES wall=(0.8314, 0.8039, 0.7216, 1.0) gable=(0.8307, 0.8033, 0.7211, 1.0)\n2026-10-11 00:53:28.169 godot[30700:3321798] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nCOTTAGE PANEL VIEW SAMPLES front=(0.4588, 0.4157, 0.3569, 1.0) oblique=(0.4588, 0.4157, 0.3569, 1.0)\nCOTTAGE MATERIAL CHECKS: 7 failures: 0\n"
+  }
+]

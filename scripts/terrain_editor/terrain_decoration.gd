@@ -8,7 +8,7 @@ const COMMON_TREE_HEIGHT := 4.15
 # Shore stones read as bank stones at gameplay framing, not as boulders that
 # dominate the lake rim.
 const SHORE_STONE_SCALE := .62
-const BODY_KINDS:Array=["cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","underside_rock","underside_rock_b"]
+const BODY_KINDS:Array=["cliff_column","cliff_column_b","cliff_column_c","cliff_column_d"]
 var model_library:=Models.new()
 var assets:Dictionary={}
 var contours:RefCounted
@@ -20,8 +20,7 @@ var _columns:Array=[]
 var _column_cells:Dictionary={}
 var _column_field:RefCounted
 var _column_key:=Vector2i(-1,-1)
-# Kept so a cached run can still copy an empty course list. Underside is the
-# foot of each body in _columns, not a second course of panels.
+# Independent tapered roots behind the crown joints; cached with their rim span.
 var _mass:Array=[]
 # Unchanged contour runs keep their blocks. Keyed by the run's geometry and
 # the nearby heights, so an edit rebuilds only the runs it actually moves.
@@ -194,7 +193,6 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						var plant:=bank+out*.25
 						if random_at(cell,data.seed,1080+block)<.18 and _stable(field,plant,level*.5,.18):
 							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*3.8))
-						continue
 					_shore_stones(result,field,data.seed,cell,block,bank,out,angle,level*.5)
 				var cell:=Vector2i(p.floor())
 				if random_at(cell,data.seed,95)<.66:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*4.2))
@@ -220,10 +218,8 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	result.grass_clump.append_array(crown_tufts)
 	return result
 func _column_layout(field,seed_value:int)->void:
-	# One standing body per contour run. Crowns overlap along every outer wall
-	# and dry terrace step, so the island edge is those crowns. The foot of
-	# the same body is the underside. A run whose outline and nearby heights
-	# are unchanged is copied from the previous revision.
+	# Crown and root placements share an editable contour span, with different
+	# meshes, depths and offsets. Unchanged spans retain cached placements.
 	var key:=Vector2i(field.revision,seed_value)
 	if _column_field==field and _column_key==key:return
 	var started:=Time.get_ticks_usec()
@@ -291,35 +287,43 @@ func _restore_run(cached:Dictionary)->void:
 	for source:Dictionary in cached.mass:_mass.append(source.duplicate())
 func _bucket_column(index:int)->void:
 	var column:Dictionary=_columns[index]
-	var mesh_h:=1.0
-	if assets.has(column.kind) and not (assets[column.kind] as Array).is_empty():
-		mesh_h=float(assets[column.kind][0].get("body_height",1.0))
-	var bounds:AABB=column.pose*AABB(Vector3(-.5,-mesh_h,-.5),Vector3(1.0,mesh_h,1.0))
+	var bounds:AABB=column.pose*assets[column.kind][0].mesh.get_aabb()
 	for z in range(floori(bounds.position.z/2.0),floori(bounds.end.z/2.0)+1):
 		for x in range(floori(bounds.position.x/2.0),floori(bounds.end.x/2.0)+1):
 			var bucket:=Vector2i(x,z)
 			if not _column_cells.has(bucket):_column_cells[bucket]=[]
 			_column_cells[bucket].append(index)
 static func _runs(loop:PackedVector2Array)->Array:
-	# Join short contour segments until a stone fits, and stop before a sharp
-	# corner so the chord stays on the outline.
-	var runs:Array=[]
-	var size:=loop.size()
-	var start:=loop[0]
+	# Corner-bounded spans grow continuously, split above the size limit, and
+	# recombine on contraction. Reconstructing from geometry keeps undo/load exact.
+	var sections:Array=[]
+	var points:=PackedVector2Array([loop[0]])
 	var walked:=0.0
-	var points:=PackedVector2Array([start])
-	for i in size:
-		var a:=loop[i]
-		var b:=loop[(i+1)%size]
-		var nxt:=loop[(i+2)%size]
-		walked+=a.distance_to(b)
-		points.append(b)
-		var turn:=absf((nxt-b).angle_to(b-start)) if b.distance_squared_to(start)>.0001 else 0.0
-		if walked<2.15 and turn<.55 and i<size-1:continue
-		runs.append([start,b,points])
-		start=b
-		walked=0.0
-		points=PackedVector2Array([b])
+	for i in loop.size():
+		var a:=loop[i];var b:=loop[(i+1)%loop.size()];var next:=loop[(i+2)%loop.size()]
+		points.append(b);walked+=a.distance_to(b)
+		var turn:=absf((next-b).angle_to(b-points[0])) if b.distance_squared_to(points[0])>.00001 else 0.0
+		if walked>=11.0 or turn>.70 or i==loop.size()-1:
+			sections.append(points);points=PackedVector2Array([b]);walked=0.0
+	var runs:Array=[]
+	for section:PackedVector2Array in sections:
+		var total:=0.0
+		for i in section.size()-1:total+=section[i].distance_to(section[i+1])
+		var count:=maxi(1,ceili(total/3.8))
+		var distance:=0.0
+		var current:=PackedVector2Array([section[0]])
+		var split:=total/count
+		for i in section.size()-1:
+			var a:=section[i];var b:=section[i+1]
+			var length:=a.distance_to(b)
+			while split<distance+length-.00001:
+				var p:=a.lerp(b,(split-distance)/length)
+				current.append(p);runs.append([current[0],p,current])
+				current=PackedVector2Array([p]);split+=total/count
+			current.append(b);distance+=length
+			if absf(distance-split)<.00001 and i<section.size()-2:
+				runs.append([current[0],b,current]);current=PackedVector2Array([b]);split+=total/count
+		if current.size()>1:runs.append([current[0],current[-1],current])
 	return runs
 static func _onto(points:PackedVector2Array,c:Vector2,out:Vector2)->Vector2:
 	# A chord cuts a curved contour. Slide the stone centre back onto it.
@@ -351,8 +355,7 @@ func _curtain_span(field,a:Vector2,dir:Vector2,span:Vector2,y:float,external_onl
 		else:span.x=maxf(span.x,hi)
 	return span if span.y-span.x>=.70 else Vector2(NAN,NAN)
 func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->void:
-	# One discrete body, centred on the run. Its size does not follow the run
-	# length, so neighbours overlap as separate masses instead of a stretched panel.
+	# One bounded crown per adaptive span; a separate root hangs below it.
 	var length:=a.distance_to(b)
 	if length<.25:return
 	var dir:=(b-a)/length
@@ -376,41 +379,65 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 	var body_h:float=float(part.body_height)
 	var crown_z:float=float(part.crown_z)
 	var top:float=h+lerpf(.06,.14,random_at(cell,seed_value,3001))
-	var proud:=lerpf(.28,1.05,pow(random_at(cell,seed_value,3004),1.05))
-	# Width and depth stay in a body range. Height reaches this wall's own foot,
-	# so the underside is the bottom of the body rather than a second course.
+	var proud:=lerpf(.80,1.12,pow(random_at(cell,seed_value,3004),1.05))
+	# Crown size follows the span until it splits. Crown height stays broad;
+	# the independent root covers the remaining inward-tapering underside.
 	var span_x:float=maxf(.45,float(part.span_x))
 	var span_z:float=maxf(.45,float(part.span_z))
-	var want_w:=lerpf(3.05,4.15,random_at(cell,seed_value,3010))
-	var want_d:=lerpf(1.85,2.65,random_at(cell,seed_value,3013))
+	var want_w:=clampf(length*1.02,1.65,4.15)
+	var want_d:=lerpf(2.05,2.70,random_at(cell,seed_value,3013))
 	var sx:=want_w/span_x
 	var sz:=want_d/span_z
 	var sy:float
 	if step:
-		sx=lerpf(1.70,2.40,random_at(cell,seed_value,3014))/span_x
-		sz=lerpf(1.40,2.00,random_at(cell,seed_value,3015))/span_z
-		sy=clampf((drop+.25)/body_h,1.15,2.40)
+		sx=want_w/span_x
+		sz=lerpf(1.85,2.25,random_at(cell,seed_value,3015))/span_z
+		sy=clampf((drop+.15)/body_h,1.0,2.8)
 	else:
 		var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
 		var room:float=maxf(1.4,top-foot.y)
-		sy=clampf((room+.35)/body_h,1.6,3.6)
+		sy=clampf(minf(room*.44,want_w*.66)*lerpf(.80,1.12,random_at(cell,seed_value,3021))/body_h,1.4,3.6)
 		if float(profile.inset)<1.45:
-			var fit_d:=maxf(1.20,float(profile.inset))
+			var fit_d:=maxf(1.65,float(profile.inset))
 			sz=minf(sz,fit_d/span_z)
 	# Keep width and depth from turning the solid into a thin panel.
 	if sx>sz*1.85:sx=sz*1.85
 	if sz>sx*1.85:sz=sx*1.85
 	var open:=span.y-span.x
 	if span.x>-.02 or span.y<length-.02:sx=minf(sx,maxf(1.35,open*.95))
-	var yaw:=(random_at(cell,seed_value,3005)-.5)*1.60
-	var lean:=(random_at(cell,seed_value,3007)-.5)*.32
-	var roll:=(random_at(cell,seed_value,3009)-.5)*.20
-	var frame:=Basis(tangent,Vector3.UP,outward)
+	var yaw:=(random_at(cell,seed_value,3005)-.5)*.65
+	var lean:=(random_at(cell,seed_value,3007)-.5)*.04
+	var roll:=(random_at(cell,seed_value,3009)-.5)*.04
+	var frame:=Basis(-tangent,Vector3.UP,outward)
 	var basis:=frame*Basis(Vector3.UP,yaw)*Basis(Vector3.RIGHT,lean)*Basis(Vector3.FORWARD,roll)*Basis.from_scale(Vector3(sx,sy,sz))
 	var pose:=Transform3D(basis,Vector3(c.x,top,c.y)+outward*(proud-crown_z*sz))
 	var index:=_columns.size()
 	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy})
 	_bucket_column(index)
+	if profile.base:
+		# Roots hang behind crown joints, independently sized and rotated. Their
+		# upper shoulders overlap the crown's foot; lower cuts converge inward.
+		var root_kind:="underside_rock" if pick%2==0 else "underside_rock_b"
+		var root_h:float=assets[root_kind][0].body_height
+		var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
+		var root_top:=top-body_h*sy*lerpf(.55,.85,random_at(cell,seed_value,3022))
+		var root_height:=clampf(root_top-foot.y+.28,1.3,3.8)
+		var root_basis:=frame*Basis(Vector3.UP,yaw+.50)*Basis.from_scale(Vector3(want_w*1.10,root_height/root_h,want_d*.92))
+		var root_origin:=Vector3(c.x,root_top,c.y)-outward*.64+tangent*length*lerpf(.38,.58,random_at(cell,seed_value,3023))
+		# Staggering must not move a root into a waterfall. Fit the actual
+		# projected mesh extent into the remaining interval before publishing it.
+		var extent:=Vector2(INF,-INF)
+		for vertex:Vector3 in assets[root_kind][0].mesh.get_faces():
+			var along:float=(root_basis*vertex).dot(tangent)
+			extent.x=minf(extent.x,along);extent.y=maxf(extent.y,along)
+		var clear:=_curtain_span(field,Vector2(root_origin.x,root_origin.z),dir,extent,root_top,true)
+		if is_nan(clear.x):return
+		if clear!=extent:
+			var fit:=(clear.y-clear.x)/(extent.y-extent.x)
+			if fit<.45:return
+			root_basis=root_basis.scaled_local(Vector3(fit,1.0,fit))
+			root_origin+=tangent*((clear.x+clear.y)*.5-(extent.x+extent.y)*.5*fit)
+		_mass.append({"kind":root_kind,"pose":Transform3D(root_basis,root_origin),"cell":Vector2i(c.floor())})
 static func crown_remap(vertex:Vector3,_stretch:float)->Vector3:
 	# The crown is authored on the mesh. Scaling must not squash it.
 	return vertex
@@ -442,6 +469,11 @@ func column_faces_near(point:Vector3)->PackedVector3Array:
 				var column:Dictionary=_columns[index]
 				var vertices:PackedVector3Array=assets[column.kind][0].mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 				for vertex:Vector3 in vertices:faces.append(column.pose*crown_remap(vertex,column.height))
+	for stone:Dictionary in _mass:
+		var mesh:Mesh=assets[stone.kind][0].mesh
+		var bounds:AABB=stone.pose*mesh.get_aabb()
+		if not bounds.grow(2.0).has_point(point):continue
+		for vertex:Vector3 in mesh.get_faces():faces.append(stone.pose*vertex)
 	return faces
 func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:int,bank:Vector2,out:Vector2,angle:float,water_y:float)->void:
 	# Mixed shoreline: world-anchored groups of large shouldered boulders,
