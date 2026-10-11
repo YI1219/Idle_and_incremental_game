@@ -75,8 +75,8 @@ func follows(renderer,data,label:String)->void:
 	drain(renderer)
 	var difference:=same(published(renderer),recomputed(data))
 	check(difference=="",label+": published decoration equals a fresh placement from current heights ("+difference+")")
-	# Rim blocks stand on the current turf: crown .03-.15 m above the land at
-	# their edge, and every block belongs to land that still exists.
+	# Crown tops join the current turf at the same height; no raised rim.
+	# Every block belongs to land that still exists.
 	var field=renderer.contours
 	var floating:=0
 	for column:Dictionary in renderer.decoration._columns:
@@ -85,8 +85,8 @@ func follows(renderer,data,label:String)->void:
 		var turf:Dictionary=field.surface_at(edge-out*.3)
 		if turf.is_empty() or turf.water>=0:floating+=1;continue
 		var rise:float=column.pose.origin.y-float(turf.height)
-		if rise<.02 or rise>.16:floating+=1
-	check(floating==0,label+": every rim block crown sits just above current turf (%d off)"%floating)
+		if absf(rise)>.001:floating+=1
+	check(floating==0,label+": every rim block crown joins the current turf without a raised lip (%d off)"%floating)
 func kinds(state:Dictionary,names:Array)->Array:
 	var poses:Array=[]
 	for chunk in state:

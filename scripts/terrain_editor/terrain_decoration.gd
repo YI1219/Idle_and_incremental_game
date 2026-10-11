@@ -253,6 +253,7 @@ func _column_layout(field,seed_value:int)->void:
 	for signature in _run_cache:
 		if not seen.has(signature):stale.append(signature)
 	for signature in stale:_run_cache.erase(signature)
+	preload("res://scripts/terrain_editor/rim_union.gd").apply(field,_columns,assets)
 	layout_ms=(Time.get_ticks_usec()-started)/1000.0
 func _run_signature(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->String:
 	# Everything _rim_run reads: the chord, the land height, nearby cells and
@@ -406,11 +407,11 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 	var open:=span.y-span.x
 	if span.x>-.02 or span.y<length-.02:sx=minf(sx,maxf(1.35,open*.95))
 	var yaw:=(random_at(cell,seed_value,3005)-.5)*.65
-	var lean:=(random_at(cell,seed_value,3007)-.5)*.04
-	var roll:=(random_at(cell,seed_value,3009)-.5)*.04
 	var frame:=Basis(-tangent,Vector3.UP,outward)
-	var basis:=frame*Basis(Vector3.UP,yaw)*Basis(Vector3.RIGHT,lean)*Basis(Vector3.FORWARD,roll)*Basis.from_scale(Vector3(sx,sy,sz))
-	var pose:=Transform3D(basis,Vector3(c.x,top,c.y)+outward*(proud-crown_z*sz))
+	# A crown is part of the terrace volume: its back joins the lawn at h.
+	# Modest lateral overlap buries internal faces at neighboring stone joints.
+	var basis:=frame*Basis(Vector3.UP,yaw)*Basis.from_scale(Vector3(minf(sx*1.3,4.8),sy,sz))
+	var pose:=Transform3D(basis,Vector3(c.x,h,c.y)+outward*(proud-crown_z*sz))
 	var index:=_columns.size()
 	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy})
 	_bucket_column(index)
@@ -451,7 +452,7 @@ func rim_top_at(p:Vector2)->float:
 	return top
 func _rim_lift(field,p:Vector2)->float:
 	# Ground modules over a rim block sit on its crown, slightly sunk into
-	# the bevelled stone so they never float.
+	# the actual stone surface so they never float.
 	var top:=rim_top_at(p)
 	if top==-INF:return 0.0
 	var ground:Dictionary=field.surface_at(p)
@@ -632,7 +633,7 @@ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
 			var part:Dictionary=assets[kind][index]
 			var mm:=MultiMesh.new()
 			mm.transform_format=MultiMesh.TRANSFORM_3D
-			mm.mesh=part.mesh
+			mm.mesh=part.get("render_mesh",part.mesh)
 			mm.use_colors=kind.begins_with("shore_") or kind.begins_with("underside_") or kind.begins_with("cliff_column")
 			mm.instance_count=transforms.size()
 			for i in transforms.size():

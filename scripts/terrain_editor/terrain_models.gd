@@ -196,7 +196,8 @@ func _rock_body_models(seed_value:int,root:bool=false)->Array:
 	material.shader=load("res://shaders/terrain_editor/cliff_column.gdshader")
 	material.set_shader_parameter("crown_cover",0.0 if root else 1.0)
 	mesh.surface_set_material(0,material)
-	return [{"mesh":mesh,"pose":Transform3D.IDENTITY,"body_height":built.height,"crown_z":built.crown_z,"span_x":built.span_x,"span_z":built.span_z}]
+	built.render_mesh.surface_set_material(0,material)
+	return [{"mesh":mesh,"render_mesh":built.render_mesh,"pose":Transform3D.IDENTITY,"body_height":built.height,"crown_z":built.crown_z,"span_x":built.span_x,"span_z":built.span_z}]
 
 
 func _facing_triangle(builder,a:Vector3,b:Vector3,c:Vector3,color:Color,outward:Vector3)->void:

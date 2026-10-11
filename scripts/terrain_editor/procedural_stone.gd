@@ -5,14 +5,13 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
  var rng:=RandomNumberGenerator.new();rng.seed=seed_value
  var height:=1.0 if root else .68
  var planes:Array[Plane]=[Plane(Vector3.UP,0),Plane(Vector3.DOWN,height)]
- var walls:Array[Plane]=[]
  var sides:=7+seed_value%3
  for i in sides:
   var angle:=TAU*(float(i)/sides+rng.randf_range(-.025,.025))
   var normal:=Vector3(cos(angle),rng.randf_range(-.07,.10),sin(angle))
   if not root:normal.y=0.0
   var wall:=Plane(normal,(rng.randf_range(.43,.56) if root else rng.randf_range(.32,.61)))
-  planes.append(wall);walls.append(wall)
+  planes.append(wall)
   # Fracture undercuts: staggered in depth, unequal in slope and orientation.
   var cut:=Vector3(normal.x,-rng.randf_range(.48,.62) if root else -rng.randf_range(.22,.44),normal.z)
   planes.append(Plane(cut,rng.randf_range(.68,.78) if root else rng.randf_range(.57,.70)))
@@ -20,25 +19,8 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
    var shoulder:=Plane(Vector3(normal.x,rng.randf_range(.75,1.3),normal.z),rng.randf_range(.38,.48))
    if root:planes.append(shoulder)
  var fracture_count:=planes.size()
- if not root:
-  # Clip only the sharp plan corners; retain the unequal fracture footprint.
-  # Each clip is a narrow face of this closed solid, never an attached box.
-  for p:Vector3 in _intersections(planes):
-   if absf(p.y)>.00001:continue
-   var normal:=Vector3.ZERO
-   var meeting_walls:=0
-   for wall:Plane in walls:
-    if absf(wall.distance_to(p))<.00002:normal+=wall.normal;meeting_walls+=1
-   if meeting_walls<2:continue
-   normal.y=0;normal=normal.normalized()
-   if normal.length_squared()<.5:continue
-   var corner:=Plane(normal,normal.dot(p)-.035)
-   planes.append(corner)
-  # A shallow, continuous shoulder around one level cap. The old alternate
-  # deep cuts made an individual block's grass edge read as a sawtooth.
-  for wall:Plane in planes.duplicate():
-   if absf(wall.normal.y)>.15:continue
-   planes.append(Plane(Vector3(wall.normal.x,1.6,wall.normal.z),wall.d-.045))
+ # The cap meets the side directly. Grass/stone mixing is a material band,
+ # not a bevel, chamfer ring or raised shoulder.
  var vertices:=_intersections(planes)
  var positions:=PackedVector3Array();var normals:=PackedVector3Array();var colors:=PackedColorArray();var uv:=PackedVector2Array()
  var bounds:=AABB(vertices[0],Vector3.ZERO)
@@ -92,10 +74,19 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
  var arrays:Array=[];arrays.resize(Mesh.ARRAY_MAX)
  arrays[Mesh.ARRAY_VERTEX]=positions;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_COLOR]=colors;arrays[Mesh.ARRAY_TEX_UV]=uv
  var mesh:=ArrayMesh.new();mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+ var render_mesh:=mesh
+ if not root:
+  var walls:Array=arrays.duplicate(true)
+  for slot in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_NORMAL,Mesh.ARRAY_COLOR,Mesh.ARRAY_TEX_UV]:walls[slot].clear()
+  for i in range(0,positions.size(),3):
+   if absf(positions[i].y)+absf(positions[i+1].y)+absf(positions[i+2].y)<.00001:continue
+   for j in 3:
+    for slot in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_NORMAL,Mesh.ARRAY_COLOR,Mesh.ARRAY_TEX_UV]:walls[slot].append(arrays[slot][i+j])
+  render_mesh=ArrayMesh.new();render_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,walls)
  var crown_z:=0.0
  for p:Vector3 in positions:
   if p.y>-.08:crown_z=maxf(crown_z,p.z)
- return {"mesh":mesh,"height":bounds.size.y,"crown_z":crown_z,"span_x":1.0,"span_z":1.0}
+ return {"mesh":mesh,"render_mesh":render_mesh,"height":bounds.size.y,"crown_z":crown_z,"span_x":1.0,"span_z":1.0}
 
 static func _intersections(planes:Array[Plane])->PackedVector3Array:
  var vertices:=PackedVector3Array()

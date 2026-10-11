@@ -85,6 +85,9 @@ func flush_dirty(max_chunks:int=2)->int:
 		_build_data.seed=data.seed
 		for cell in data.cells:_build_data.cells[cell]=data.cells[cell].duplicate()
 		contours.refresh(_build_data)
+		if decoration!=null:
+			decoration.load_assets()
+			decoration._column_layout(contours,_build_data.seed)
 		_contour_revision=data.revision
 		_discard_pending()
 		_pending_shore=preload("res://scripts/terrain_editor/water_shore_field.gd").build(_build_data,contours)
@@ -109,6 +112,10 @@ func _rebuild(chunk:Vector2i)->void:
 	_pending_bounds.erase(chunk)
 	var faces:=PackedVector3Array()
 	for kind in ["grass","cliff","water","waterfall","shore"]:faces.append_array(geometry[kind].get_faces())
+	if decoration!=null:
+		for crown:Dictionary in decoration._columns:
+			if Data.chunk_of(crown.cell)!=chunk:continue
+			for point:Vector3 in decoration.assets[crown.kind][0].mesh.get_faces():faces.append(crown.pose*point)
 	if not faces.is_empty():
 		_pending_faces[chunk]=faces
 		var bounds:=AABB(faces[0],Vector3.ZERO)

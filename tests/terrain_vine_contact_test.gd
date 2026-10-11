@@ -31,6 +31,7 @@ func run():
   data.deserialize(initial)
   if spec[0]!='default':data.begin_stroke();data.apply_brush(spec[1],spec[2],spec[0],false,1.5,3);data.end_stroke()
   var field=Contours.new();field.refresh(data);deco.contours=field
+  deco._column_layout(field,data.seed) # Prepare the final rim before snapshotting cliff arrays.
   var chunks={}
   for cell:Vector2i in data.cells:chunks[Data.chunk_of(cell)]=true
   var faces:PackedVector3Array=field.surfaces.cliff.vertices

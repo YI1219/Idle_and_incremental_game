@@ -20,6 +20,9 @@ const SHOULDER_BULGE := .10
 ## Increments on every refresh; decoration caches whole-outline layouts by it.
 var revision:=0
 var land_regions:Dictionary={}
+## Final top outline after the independent crowns are joined to the lawn.
+## Authoring/water contours remain separate inputs; picking uses the baked top.
+var rim_regions:Dictionary={}
 var water_regions:Dictionary={}
 var levels:Array=[]
 var surfaces:Dictionary={}
@@ -57,6 +60,7 @@ func refresh(data:Data)->void:
 	_volume_site_cache.clear()
 	_land_winding_signs.clear()
 	land_regions.clear()
+	rim_regions.clear()
 	water_regions.clear()
 	levels.clear()
 	surfaces.clear()
@@ -1070,8 +1074,8 @@ func build(chunk:Vector2i)->Dictionary:
 				if kind in ["cliff","shore","bank","waterfall"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
-				if kind=="cliff":
-					var uv:PackedVector2Array=surfaces.cliff.uv
+				if kind in ["cliff","grass"]:
+					var uv:PackedVector2Array=surfaces[kind].uv
 					for index in range(before,local.vertices.size()):
 						var cap:=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],Color(uv[i].x,uv[i].y,0),Color(uv[i+1].x,uv[i+1].y,0),Color(uv[i+2].x,uv[i+2].y,0))
 						local.uv[index]=Vector2(cap.r,cap.g)

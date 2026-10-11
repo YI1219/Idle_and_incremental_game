@@ -26,7 +26,7 @@ func run():
      cap_low=minf(cap_low,vertices[i+j].y);cap_high=maxf(cap_high,vertices[i+j].y)
      bare_edge=bare_edge or uv[i+j].x<.001
      covered_center=covered_center or uv[i+j].x>.15
-   elif up>.35 and maxf(vertices[i].y,maxf(vertices[i+1].y,vertices[i+2].y))>-.0001:
+   elif arrays[Mesh.ARRAY_NORMAL][i].y>.35 and maxf(vertices[i].y,maxf(vertices[i+1].y,vertices[i+2].y))>-.0001:
     bevel_area+=area
     for j in 3:deepest_bevel=minf(deepest_bevel,vertices[i+j].y)
    for j in 3:
@@ -34,7 +34,7 @@ func run():
     color_low=minf(color_low,tint.get_luminance());color_high=maxf(color_high,tint.get_luminance())
     warm=warm or tint.r>tint.b+.01;cool=cool or tint.b>tint.r+.01
   check(cap_area>.35 and cap_high-cap_low<.0001,"crown %s has a broad planar top"%seed_value)
-  check(bevel_area>.01 and deepest_bevel>-.09,"crown %s has a shallow calm shoulder, not deep sawteeth"%seed_value)
+  check(bevel_area<.0001,"crown %s meets its side directly, with no geometric bevel"%seed_value)
   check(bare_edge and covered_center,"crown %s reserves a bare stone lip around its grass interior"%seed_value)
   check(warm and cool and color_high-color_low>.07 and color_high-color_low<.25,"crown %s has restrained warm/cool face albedo"%seed_value)
  print("RIM POLISH: ",checks-failures,"/",checks," passed")
