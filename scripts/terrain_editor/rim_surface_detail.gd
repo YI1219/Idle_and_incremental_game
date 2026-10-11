@@ -23,7 +23,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      var center:=a.lerp(b,(k+.5)/count)
      var choice:=_hash(center*2.1+Vector2(h,7))
      var patch:=_hash((center*.60).floor()+Vector2(h,29))
-     if patch<.44 or choice<.18:continue
+     if patch<.56 or choice<.18:continue
      # Only crown-backed final boundary segments get flaps; skip water lips
      # and raw terrace joins. No orphan cards in the waterfall openings.
      var on_crown:=false
@@ -34,19 +34,34 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
        if center.distance_to(Geometry2D.get_closest_point_to_segment(center,poly[j],poly[j+1]))<.003:on_crown=true;break
       if on_crown:break
      if not on_crown:continue
-     var width:=minf(length/count*.88,.12+.25*_hash(center+Vector2(4,2)))
-     var depth:=.12+.38*pow(_hash(center+Vector2(19,3)),1.6)
+     var width:=minf(length/count*.88,.30+.35*_hash(center+Vector2(4,2)))
+     var depth:=.18+.38*pow(_hash(center+Vector2(19,3)),1.6)
+     # Several overlapping rounded lobes form a thick turf cluster. The
+     # rear lies against the stone; the proud ridge catches light and casts
+     # a small contact shadow. This is not a face-colour spill or flat card.
      var left:=center-tangent*width*.5;var right:=center+tangent*width*.5
-     var top_l:=Vector3(left.x,h+.004,left.y);var top_r:=Vector3(right.x,h+.004,right.y)
-     var bend_l=_drape(left,out,h-.075,faces[h]);var bend_r=_drape(right,out,h-.07,faces[h])
-     var tip_center:=center+tangent*width*(choice-.5)*.55
-     var tip=_drape(tip_center-tangent*width*.19,out,h-depth,faces[h])
-     var tip_r=_drape(tip_center+tangent*width*.23,out,h-depth*(.65+.25*choice),faces[h])
-     if bend_l==null or bend_r==null or tip==null or tip_r==null:continue
-     # A broad attached shoulder narrows into unequal hanging tongues.
      var start:=result.vertices.size()
-     result.quad(top_l,top_r,bend_r,bend_l,Color.WHITE)
-     result.quad(bend_l,bend_r,tip_r,tip,Color.WHITE)
+     var outward:=Vector3(out.x,0,out.y)
+     for lobe in 3:
+      var u:float=(lobe+.5)/3.0
+      var c:=left.lerp(right,u)
+      var w:=width*(.24+.08*_hash(c+Vector2(3,5)))
+      var d:=depth*(.55+.45*_hash(c*7.0))
+      var l:=c-tangent*w;var r:=c+tangent*w
+      var top_l:=Vector3(l.x,h-.014,l.y)-outward*.025
+      var top_r:=Vector3(r.x,h-.014,r.y)-outward*.025
+      var shoulder_l=_drape(l,out,h-.07,faces[h])
+      var shoulder_r=_drape(r,out,h-.06,faces[h])
+      var tip_l=_drape(c-tangent*w*.44,out,h-d,faces[h])
+      var tip_r=_drape(c+tangent*w*.36,out,h-d*.91,faces[h])
+      if shoulder_l==null or shoulder_r==null or tip_l==null or tip_r==null:continue
+      var outline:Array=[top_l,top_r,shoulder_r,tip_r,tip_l,shoulder_l]
+      var ridge:Vector3=(top_l+top_r+tip_l+tip_r)*.25+outward*.075
+      for j in outline.size():
+       var va:Vector3=outline[j];var vb:Vector3=outline[(j+1)%outline.size()]
+       result.triangle(va,vb,ridge,Color.WHITE)
+       result.triangle(vb-outward*.025,va-outward*.025,ridge-outward*.075,Color.WHITE)
+       result.quad(vb,va,va-outward*.025,vb-outward*.025,Color.WHITE)
      for i in range(start,result.vertices.size()):
       var p:Vector3=result.vertices[i]
       var along:=clampf((Vector2(p.x,p.z)-left).dot(tangent)/maxf(width,.001),0,1)
@@ -54,6 +69,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
       result.colors[i]=Color(along,choice,1,1)
       result.uv2.append(anchor)
       result.uv[i]=Vector2(h,clampf((h-p.y)/depth,0,1))
+
  return result
 
 static func _drape(p:Vector2,out:Vector2,y:float,faces:PackedVector3Array):

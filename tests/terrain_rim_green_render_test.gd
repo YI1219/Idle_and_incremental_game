@@ -3,7 +3,7 @@ const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
 const Field=preload("res://scripts/terrain_editor/contour_terrain.gd")
 const Deco=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
-const OUT="res://art/review/terrain_fidelity/2026-10-11/rocks_step5/"
+var OUT="res://art/review/terrain_fidelity/2026-10-11/rocks_step5/"
 var viewport:SubViewport
 func _initialize():call_deferred("run")
 func capture()->Image:
@@ -11,6 +11,8 @@ func capture()->Image:
   RenderingServer.force_draw(false);await process_frame
  return viewport.get_texture().get_image()
 func run():
+ for arg in OS.get_cmdline_user_args():
+  if arg.begins_with("out="):OUT=arg.trim_prefix("out=")
  var data:=Data.new();data.make_preset(0);var field:=Field.new();field.refresh(data)
  var deco:=Deco.new();deco.load_assets();deco._column_layout(field,data.seed)
  var renderer:=Renderer.new();renderer.configure(data)

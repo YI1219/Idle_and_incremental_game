@@ -120,7 +120,10 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
     var start:=result.vertices.size()
     result.quad(Vector3(a.x,h,a.y),Vector3(a.x,h-.70,a.y),Vector3(b.x,h-.70,b.y),Vector3(b.x,h,b.y),Color.WHITE)
     for j in range(start,result.vertices.size()):result.uv[j]=Vector2(h,1.0)
- field.surfaces.cliff=result
+ preload("res://scripts/terrain_editor/block_mantle.gd").close_base(result,field.land_regions)
+ var mantle=preload("res://scripts/terrain_editor/block_mantle.gd").build(result,regions)
+ field.surfaces.cliff=mantle.backing
+ field.surfaces.stone_mantle=mantle.stone
  field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lip(regions,crowns,assets)
  field._index_triangles()
 

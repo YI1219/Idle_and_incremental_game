@@ -210,8 +210,8 @@ func surface_at(p:Vector2)->Dictionary:
 		return {"height":h,"water":-1}
 	return {}
 
-func _cap(surface,loops:Array,height:float,tint:Color,extra_rows:PackedFloat32Array=PackedFloat32Array())->void:
-	var has_holes:=false
+func _cap(surface,loops:Array,height:float,tint:Color,extra_rows:PackedFloat32Array=PackedFloat32Array(),force_sweep:bool=false)->void:
+	var has_holes:=force_sweep
 	for loop:PackedVector2Array in loops:
 		if _area(loop)<0:has_holes=true
 	if not has_holes:
@@ -1071,10 +1071,10 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind in ["cliff","shore","bank","waterfall","rim_green"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
-				if kind in ["cliff","shore","bank","waterfall","rim_green"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
 				if kind in ["cliff","grass","rim_green"]:

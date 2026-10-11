@@ -475,6 +475,18 @@ func column_faces_near(point:Vector3)->PackedVector3Array:
 		var bounds:AABB=stone.pose*mesh.get_aabb()
 		if not bounds.grow(2.0).has_point(point):continue
 		for vertex:Vector3 in mesh.get_faces():faces.append(stone.pose*vertex)
+	# The exposed lower backing is now separate stone volumes. They must also
+	# own hanging vegetation contact instead of leaving it buried in the core.
+	if _column_field!=null and _column_field.surfaces.has("stone_mantle"):
+		var mantle_seen:Dictionary={}
+		var mantle:PackedVector3Array=_column_field.surfaces.stone_mantle.vertices
+		for z in range(floori((point.z-2.0)/8.0),floori((point.z+2.0)/8.0)+1):
+			for x in range(floori((point.x-2.0)/8.0),floori((point.x+2.0)/8.0)+1):
+				for i:int in _column_field.triangle_chunks.get(Vector2i(x,z),{}).get("stone_mantle",[]):
+					if mantle_seen.has(i):continue
+					mantle_seen[i]=true
+					for j in 3:faces.append(mantle[i+j])
+
 	return faces
 func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:int,bank:Vector2,out:Vector2,angle:float,water_y:float)->void:
 	# Mixed shoreline: world-anchored groups of large shouldered boulders,
@@ -577,6 +589,29 @@ func _drape_vine(field,pose:Transform3D,out:Vector2)->Dictionary:
 			var along:float=origin.distance_to(hit)
 			if along<front and center.distance_to(hit)<=1.2:front=along;contact=hit;normal=face_normal;nearest=0.0
 	if nearest==INF:return {}
+	# Turning the spray to a fracture face changes its outward ray. Resolve
+	# a last short contact on that ray so an adjacent block cannot bury it.
+	if _column_field==field:
+		for resolve in 3:
+			var faces:=column_faces_near(contact)
+			var probe:=contact+normal*.65;var distance:=.65
+			for i in range(0,faces.size(),3):
+				var hit=Geometry3D.ray_intersects_triangle(probe,-normal,faces[i],faces[i+1],faces[i+2])
+				if hit!=null and probe.distance_to(hit)<distance:
+					var triangle_normal:Vector3=(faces[i+1]-faces[i]).cross(faces[i+2]-faces[i]).normalized()
+					if absf(triangle_normal.dot(hit-faces[i]))>.003:continue
+					var weights:=Geometry3D.get_triangle_barycentric_coords(hit,faces[i],faces[i+1],faces[i+2])
+					if minf(weights.x,minf(weights.y,weights.z))<-.00001:continue
+					distance=probe.distance_to(hit);contact=hit
+	# A short ray can start inside overlapping stones. If the resolved spray
+	# is still hidden, omit this leaf cluster instead of walking it across the
+	# island to an unrelated face.
+	if _column_field==field:
+		var point:=contact+normal*.025
+		var faces:=column_faces_near(point)
+		for i in range(0,faces.size(),3):
+			var hit=Geometry3D.ray_intersects_triangle(point+normal*.6,-normal,faces[i],faces[i+1],faces[i+2])
+			if hit!=null and (point+normal*.6).distance_to(hit)<.57:return {}
 	var right:=pose.basis.x.normalized()
 	right=(right-normal*right.dot(normal)).normalized()
 	var up:=normal.cross(right).normalized()

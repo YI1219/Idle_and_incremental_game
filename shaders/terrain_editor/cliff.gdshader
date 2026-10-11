@@ -31,29 +31,6 @@ void fragment(){
 	// The staggered render mesh now supplies the actual broad rock planes.
 	// Keep its geometric normal and let real relief light the recesses.
 	vec3 color=cliff_gray(variation.x);
-	// UV carries the cap height this rock rises to and whether the cap is dry.
-	// A dry rim rounds over: the cap's own lawn runs onto the shoulder, then
-	// a ragged moss fringe hangs down the face. Undersides stay bare rock.
-	float below=UV.x-world_position.y;
-	float dry=step(.5,UV.y);
-	vec3 world_normal=(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz;
-	float facing=smoothstep(-.30,.10,world_normal.y);
-	vec2 along=world_position.xz;
-	float ragged=gc_noise(vec2(along.x+along.y,along.x-along.y)*1.7)*.65+gc_noise((along.x-along.y)*vec2(7.0,3.0))*.35;
-	float moss=dry*facing*(1.0-smoothstep(.18+.45*ragged,.30+.75*ragged,below));
-	vec3 moss_color=vec3(.40,.45,.27);
-	color=mix(color,moss_color,moss*.78);
-	float shoulder=dry*facing*(1.0-smoothstep(.10+.18*ragged,.28+.26*ragged,below));
-	float footprint=length(fwidth(along))*9.0;
-	float detail=1.0-smoothstep(.35,1.0,footprint);
-	vec2 slope=vec2(0.0);
-	vec3 lawn=color;
-	// Most cliff fragments are bare rock; skip the lawn there.
-	if(shoulder>0.0)lawn=ground_cover(along,detail,slope);
-	ALBEDO=mix(color,lawn,shoulder);
-	// The shoulder is lit like the cap, so the rim turns rather than folds.
-	vec3 lawn_normal=normalize(vec3(-slope.x*cover_relief*detail,1.0,-slope.y*cover_relief*detail));
-	NORMAL=normalize(mix(NORMAL,(VIEW_MATRIX*vec4(lawn_normal,0.0)).xyz,shoulder));
-	ROUGHNESS=mix(.96,.95,shoulder);
-	SPECULAR=mix(.15,.30,shoulder);
+	ALBEDO=color*COLOR.rgb;
+ ROUGHNESS=.96;SPECULAR=.15;
 }

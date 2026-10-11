@@ -71,6 +71,9 @@ func configure(source:Data)->void:
 		var cliff:=ShaderMaterial.new()
 		cliff.shader=load("res://shaders/terrain_editor/cliff.gdshader")
 		materials.cliff=cliff
+		var mantle:=ShaderMaterial.new()
+		mantle.shader=load("res://shaders/terrain_editor/stone_mantle.gdshader")
+		materials.stone_mantle=mantle
 		var foam:=ShaderMaterial.new()
 		foam.shader=load("res://shaders/terrain_editor/foam.gdshader")
 		materials.bank=foam
@@ -136,7 +139,8 @@ func _rebuild(chunk:Vector2i)->void:
 	_pending_faces.erase(chunk)
 	_pending_bounds.erase(chunk)
 	var faces:=PackedVector3Array()
-	for kind in ["grass","cliff","water","waterfall","shore"]:faces.append_array(geometry[kind].get_faces())
+	for kind in ["grass","cliff","water","waterfall","shore","stone_mantle"]:
+		if geometry.has(kind):faces.append_array(geometry[kind].get_faces())
 	if decoration!=null:
 		for crown:Dictionary in decoration._columns:
 			if Data.chunk_of(crown.cell)!=chunk:continue

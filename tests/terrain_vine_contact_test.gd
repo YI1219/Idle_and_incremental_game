@@ -66,6 +66,8 @@ func run():
      var distance:float=normal.dot(point-a)
      var weights:=Geometry3D.get_triangle_barycentric_coords(point-normal*distance,a,b,c)
      if minf(weights.x,minf(weights.y,weights.z))>=-.000001:nearest=minf(nearest,absf(distance))
+     else:
+      for edge in [[a,b],[b,c],[c,a]]:nearest=minf(nearest,point.distance_to(Geometry3D.get_closest_point_to_segment(point,edge[0],edge[1])))
     checked+=1
     if nearest==INF:missing+=1;continue
     var gap:float=nearest;max_gap=maxf(max_gap,gap)

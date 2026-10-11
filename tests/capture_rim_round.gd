@@ -54,6 +54,9 @@ func run()->void:
 	editor.camera.look_at(Vector3(9.0,-0.2,5.0))
 	await capture(tag+"_underside")
 	if args.has("details"):
+		editor.camera.position=Vector3(12,-14,21)
+		editor.camera.look_at(Vector3(-2,-1,0))
+		await capture(tag+"_underside_bottom")
 		# Former orphan-chip location and overlapping-cap lawn tint, Step 4.
 		editor.camera.position=Vector3(4.0,4.3,14.0)
 		editor.camera.look_at(Vector3(-1.6,3.05,7.83))

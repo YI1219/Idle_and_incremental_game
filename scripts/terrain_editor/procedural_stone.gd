@@ -5,7 +5,7 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
  var rng:=RandomNumberGenerator.new();rng.seed=seed_value
  var height:=1.0 if root else .68
  var planes:Array[Plane]=[Plane(Vector3.UP,0),Plane(Vector3.DOWN,height)]
- var sides:=7+seed_value%3
+ var sides:=(5+seed_value%2) if root else (7+seed_value%3)
  for i in sides:
   var angle:=TAU*(float(i)/sides+rng.randf_range(-.025,.025))
   var normal:=Vector3(cos(angle),rng.randf_range(-.07,.10),sin(angle))
@@ -17,7 +17,7 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
   planes.append(Plane(cut,rng.randf_range(.68,.78) if root else rng.randf_range(.57,.70)))
   if i%2==0:
    var shoulder:=Plane(Vector3(normal.x,rng.randf_range(.75,1.3),normal.z),rng.randf_range(.38,.48))
-   if root:planes.append(shoulder)
+   if root and i==2:planes.append(shoulder)
  var fracture_count:=planes.size()
  # The cap meets the side directly. Grass/stone mixing is a material band,
  # not a bevel, chamfer ring or raised shoulder.
@@ -38,7 +38,7 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
   var other:=plane.normal.normalized().cross(axis)
   face.sort_custom(func(a:Vector3,b:Vector3):return atan2((a-center).dot(other),(a-center).dot(axis))<atan2((b-center).dot(other),(b-center).dot(axis)))
   var shade:=rng.randf_range(.62,.70)
-  var relief:=face.size()>3 and absf(plane.normal.normalized().y)<(.82 if root else .35) and (root or index<fracture_count)
+  var relief:=not root and face.size()>3 and absf(plane.normal.normalized().y)<(.82 if root else .35) and (root or index<fracture_count)
   var relief_amount:=rng.randf_range(.025,.07)
   if not root:
    # Unequal fracture depth and off-centre fracture junctions; the cap's
