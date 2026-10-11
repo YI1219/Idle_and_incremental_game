@@ -23,7 +23,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      var center:=a.lerp(b,(k+.5)/count)
      var choice:=_hash(center*2.1+Vector2(h,7))
      var patch:=_hash((center*.60).floor()+Vector2(h,29))
-     if patch<.55 or choice<.18:continue
+     if patch<.42 or choice<.12:continue
      # Only crown-backed final boundary segments get flaps; skip water lips
      # and raw terrace joins. No orphan cards in the waterfall openings.
      var on_crown:=false
@@ -34,36 +34,43 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
        if center.distance_to(Geometry2D.get_closest_point_to_segment(center,poly[j],poly[j+1]))<.003:on_crown=true;break
       if on_crown:break
      if not on_crown:continue
-     var width:=minf(length/count*.88,.50+.35*_hash(center+Vector2(4,2)))
-     var depth:=.12+.34*pow(_hash(center+Vector2(19,3)),1.6)
-     # Several overlapping rounded lobes form a thick turf cluster. The
-     # rear lies against the stone; the proud ridge catches light and casts
-     # a small contact shadow. This is not a face-colour spill or flat card.
+     var width:=minf(length/count*.95,.62+.40*_hash(center+Vector2(4,2)))
+     var depth:=.10+.24*pow(_hash(center+Vector2(19,3)),1.6)
+     # Sparse rounded sod patches continue the lawn over the stone edge.
      var left:=center-tangent*width*.5;var right:=center+tangent*width*.5
      var start:=result.vertices.size()
      var outward:=Vector3(out.x,0,out.y)
-     for lobe in 2:
-      var u:float=(lobe+.5)/2.0
+     # A continuous rolled sod patch, with rounded shoulders in both
+     # directions. Every downturned row is projected onto real crown stone.
+     var rows:Array=[]
+     var valid:=true
+     for column in 7:
+      var u:float=float(column)/6.0
       var c:=left.lerp(right,u)
-      var w:=width*(.30+.07*_hash(c+Vector2(3,5)))
-      var d:=depth*(.55+.45*_hash(c*7.0))
-      var l:=c-tangent*w;var r:=c+tangent*w
-      var top_l:=Vector3(l.x,h-.014,l.y)-outward*.055
-      var top_r:=Vector3(r.x,h-.014,r.y)-outward*.055
-      var shoulder_l=_drape(l,out,h-.07,faces[h])
-      var shoulder_r=_drape(r,out,h-.06,faces[h])
-      var tip_l=_drape(c-tangent*w*.44,out,h-d,faces[h])
-      var tip_r=_drape(c+tangent*w*.36,out,h-d*.91,faces[h])
-      if shoulder_l==null or shoulder_r==null or tip_l==null or tip_r==null:continue
-      var crest_l:=Vector3(c.x-tangent.x*w*.35,h+.012,c.y-tangent.y*w*.35)-outward*.008
-      var crest_r:=Vector3(c.x+tangent.x*w*.35,h+.018,c.y+tangent.y*w*.35)-outward*.008
-      var outline:Array=[top_l,crest_l,crest_r,top_r,shoulder_r,tip_r,tip_l,shoulder_l]
-      var ridge:Vector3=(top_l+top_r+tip_l+tip_r)*.25+outward*.040
-      for j in outline.size():
-       var va:Vector3=outline[j];var vb:Vector3=outline[(j+1)%outline.size()]
-       result.triangle(va,vb,ridge,Color.WHITE)
-       result.triangle(vb-outward*.025,va-outward*.025,ridge-outward*.040,Color.WHITE)
-       result.quad(vb,va,va-outward*.025,vb-outward*.025,Color.WHITE)
+      var bell:=pow(sin(PI*u),.65)
+      var d:=.045+depth*bell*(.75+.25*cos(u*TAU*2.0+choice*2.0))
+      var shoulder=_drape(c,out,h-.045,faces[h])
+      var tip=_drape(c,out,h-d,faces[h])
+      if shoulder==null or tip==null:valid=false;break
+      rows.append([
+       Vector3(c.x,h+.004,c.y)-outward*(.32*bell+.025),
+       Vector3(c.x,h+.035*bell+.004,c.y)-outward*.025,
+       shoulder+outward*(.018*bell),tip])
+     if valid:
+      for column in 6:
+       for row in 3:
+        var a0:Vector3=rows[column][row];var b0:Vector3=rows[column+1][row]
+        var c0:Vector3=rows[column+1][row+1];var d0:Vector3=rows[column][row+1]
+        result.quad(a0,b0,c0,d0,Color.WHITE)
+        result.quad(d0-outward*.018,c0-outward*.018,b0-outward*.018,a0-outward*.018,Color.WHITE)
+      for row in 3:
+       for column in [0,6]:
+        var a0:Vector3=rows[column][row];var b0:Vector3=rows[column][row+1]
+        result.quad(a0,b0,b0-outward*.018,a0-outward*.018,Color.WHITE)
+      for column in 6:
+       for row in [0,3]:
+        var a0:Vector3=rows[column][row];var b0:Vector3=rows[column+1][row]
+        result.quad(a0,b0,b0-outward*.018,a0-outward*.018,Color.WHITE)
      for i in range(start,result.vertices.size()):
       var p:Vector3=result.vertices[i]
       var along:=clampf((Vector2(p.x,p.z)-left).dot(tangent)/maxf(width,.001),0,1)

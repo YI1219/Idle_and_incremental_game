@@ -1,5 +1,5 @@
 extends RefCounted
-## Closed, irregular stone volumes cut from the existing lower envelope.
+## Fractured side stones over a continuous, calm bottom envelope.
 ## World-anchored Voronoi cells avoid horizontal courses and keep edits local.
 const Surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface
 const SIZE:=4.4
@@ -23,25 +23,32 @@ static func _clip(poly:Array,n:Vector3,d:float)->Array:
 static func build(source,regions:Dictionary={})->Dictionary:
  var patches:Dictionary={};var planes:Dictionary={};var caps:Dictionary={}
  var backing:=Surface.new();var stone:=Surface.new();var bodies:Array=[]
- var shared_normals:Dictionary={}
+ var shared_normals:Dictionary={};var base_vertices:Dictionary={}
  for i in range(0,source.vertices.size(),3):
   var weighted:Vector3=-(source.vertices[i+1]-source.vertices[i]).cross(source.vertices[i+2]-source.vertices[i])
   for j in 3:
    var key:=Vector3i((source.vertices[i+j]*10000).round())
    shared_normals[key]=shared_normals.get(key,Vector3.ZERO)+weighted
+   if source.uv[i+j].y<-.5:base_vertices[key]=true
  for i in range(0,source.vertices.size(),3):
   var tri:Array=[source.vertices[i],source.vertices[i+1],source.vertices[i+2]]
   var normal:Vector3=-(tri[1]-tri[0]).cross(tri[2]-tri[0]).normalized()
   var h:float=source.uv[i].x
-  # The upper join stays untouched behind crowns. Lower backing is buried;
-  # every visible patch has its own front, back, and deep fracture side walls.
+  var base:bool=source.uv[i].y<-.5
+  # The upper join stays behind crowns. Side blocks cover recessed backing;
+  # the tagged bottom is left continuous and receives no block extrusion.
   var start:=backing.vertices.size()
   var inset:Array=[]
   for p:Vector3 in tri:
-   var shared:Vector3=shared_normals[Vector3i((p*10000).round())].normalized()
-   inset.append(p-shared*.42*smoothstep(.7,1.3,h-p.y))
+   var point_key:=Vector3i((p*10000).round())
+   var shared:Vector3=shared_normals[point_key].normalized()
+   # All copies of the skirt/wall boundary must stay welded, including
+   # shallow upper-terrace feet above the usual recession fade-out.
+   var recess:=0.0 if base_vertices.has(point_key) else .42*smoothstep(.7,1.3,h-p.y)*smoothstep(-1.7,-.6,p.y)
+   inset.append(p-shared*recess)
   backing.triangle(inset[0],inset[1],inset[2],Color(.76,.78,.81))
   for j in range(start,backing.vertices.size()):backing.uv[j]=source.uv[i+j-start]
+  if base:continue
   var poly:=_clip(tri,Vector3.UP,h-.85)
   if poly.size()<3:continue
   var box:=AABB(poly[0],Vector3.ZERO)
@@ -169,7 +176,7 @@ static func _face_point(p:Vector3,center:Vector3,axis:Vector3,other:Vector3,norm
 
 static func close_base(source,regions:Dictionary={})->void:
  # Close the actual low boundary of the existing cliff envelope, not the
- # lawn outline. The same cell fracture pass then turns this cap into blocks.
+ # lawn outline. UV.y=-1 keeps this closure out of side-block extrusion.
  var edges:Dictionary={};var points:Dictionary={};var neighbors:Dictionary={};var owners:Dictionary={}
  var cap_height:=1.5
  if not regions.is_empty():cap_height=regions.keys().min()
@@ -227,7 +234,7 @@ static func close_base(source,regions:Dictionary={})->void:
   for j in chain.size():
    var next:=(j+1)%chain.size();var start:int=source.vertices.size()
    source.quad(chain[next],chain[j],floor_chain[j],floor_chain[next],Color.WHITE)
-   for k in range(start,source.vertices.size()):source.uv[k]=Vector2(1.5,0)
+   for k in range(start,source.vertices.size()):source.uv[k]=Vector2(1.5,-1)
  if loops.is_empty():return
  var bounds:=Rect2(loops[0][0],Vector2.ZERO)
  for polygon:PackedVector2Array in loops:
@@ -252,7 +259,7 @@ static func close_base(source,regions:Dictionary={})->void:
    for j in range(0,floor_surface.vertices.size(),3):
     var start:int=source.vertices.size()
     source.triangle(floor_surface.vertices[j],floor_surface.vertices[j+2],floor_surface.vertices[j+1],Color.WHITE)
-    for k in range(start,source.vertices.size()):source.uv[k]=Vector2(1.5,0)
+    for k in range(start,source.vertices.size()):source.uv[k]=Vector2(1.5,-1)
 
 static func _base_y(p:Vector2,regions:Dictionary,cache:Dictionary)->float:
  var key:=Vector2i((p/2.0).floor());var f:=p/2.0-Vector2(key)
@@ -267,9 +274,9 @@ static func _base_node(key:Vector2i,regions:Dictionary,cache:Dictionary)->float:
    for h:float in regions:
     if preload("res://scripts/terrain_editor/contour_terrain.gd").contains(regions[h],p):top=maxf(top,h)
    if top!=-INF:low=minf(low,top)
- # Asymmetric broad rises and hanging lobes, independent of distance
- # to the island centre; there is no boat-like central keel.
+ # Shallow asymmetric relief, independent of distance to the island
+ # centre. The continuous bottom has neither plate offsets nor a keel.
  var p:=Vector2(key)*2.0
- var relief:=.62*sin(p.x*.31+p.y*.18)+.34*sin(p.y*.49-p.x*.15+1.7)
- cache[key]=minf(-1.25,low-.95)+relief*.70
+ var relief:=.18*sin(p.x*.31+p.y*.18)+.10*sin(p.y*.49-p.x*.15+1.7)
+ cache[key]=minf(-2.10,low-.95)+relief
  return cache[key]

@@ -738,14 +738,14 @@ func _shores(loop:PackedVector2Array,height:float)->void:
 			# authored pond and its water mesh remain exactly unchanged.
 			# Crests sit just above the opaque water (+.045); lower crests
 			# were hidden, leaving the original straight cut visible.
-			var scallop_p:=.14+.12*sin(p.x*2.3+p.y*1.9)
-			var scallop_q:=.14+.12*sin(q.x*2.3+q.y*1.9)
+			var scallop_p:=.20+.12*sin(p.x*2.3+p.y*1.9)+.055*cos(p.x*4.1-p.y*2.7)
+			var scallop_q:=.20+.12*sin(q.x*2.3+q.y*1.9)+.055*cos(q.x*4.1-q.y*2.7)
 			var rim_p:=Vector3(p.x-np.x*scallop_p,height+.045+(.035+.020*sin(p.x*2.7+p.y*1.9))*wp,p.y-np.y*scallop_p)
 			var rim_q:=Vector3(q.x-nq.x*scallop_q,height+.045+(.035+.020*sin(q.x*2.7+q.y*1.9))*wq,q.y-nq.y*scallop_q)
 			var join_p:=Vector3(p.x,height+.060,p.y)
 			var join_q:=Vector3(q.x,height+.060,q.y)
-			var inner_p:=Vector3(p.x-np.x*(.25+.10*sin(p.x*1.3+p.y)),height-.16,p.y-np.y*(.25+.10*sin(p.x*1.3+p.y)))
-			var inner_q:=Vector3(q.x-nq.x*(.25+.10*sin(q.x*1.3+q.y)),height-.16,q.y-nq.y*(.25+.10*sin(q.x*1.3+q.y)))
+			var inner_p:=Vector3(p.x-np.x*(scallop_p+.16),height-.16,p.y-np.y*(scallop_p+.16))
+			var inner_q:=Vector3(q.x-nq.x*(scallop_q+.16),height-.16,q.y-nq.y*(scallop_q+.16))
 			var start:int=surfaces.shore.vertices.size()
 			surfaces.shore.quad(outer_p,outer_q,join_q,join_p,Color(.30,.32,.14),true)
 			surfaces.shore.quad(join_p,join_q,rim_q,rim_p,Color(.30,.32,.14),true)
@@ -753,6 +753,7 @@ func _shores(loop:PackedVector2Array,height:float)->void:
 			for index in range(start,surfaces.shore.vertices.size()):
 				var point:Vector3=surfaces.shore.vertices[index]
 				surfaces.shore.colors[index].a=0 if point==outer_p or point==outer_q else (wp if point==rim_p or point==inner_p or point==join_p else wq)
+				surfaces.shore.uv[index]=Vector2(height,0.0 if point==outer_p or point==outer_q else 1.0)
 
 func _falls(loop:PackedVector2Array,water_y:float)->void:
 	if _area(loop)<0:return
@@ -1086,7 +1087,7 @@ func build(chunk:Vector2i)->Dictionary:
 				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
-				if kind in ["cliff","grass","rim_green"]:
+				if kind in ["cliff","grass","rim_green","shore"]:
 					var uv:PackedVector2Array=surfaces[kind].uv
 					for index in range(before,local.vertices.size()):
 						var cap:=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],Color(uv[i].x,uv[i].y,0),Color(uv[i+1].x,uv[i+1].y,0),Color(uv[i+2].x,uv[i+2].y,0))

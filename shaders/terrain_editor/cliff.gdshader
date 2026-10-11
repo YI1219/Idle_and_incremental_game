@@ -1,36 +1,16 @@
 shader_type spatial;
 #include "terrain_morph.gdshaderinc"
-#include "land_palette.gdshaderinc"
-render_mode cull_disabled;
 #include "cliff_palette.gdshaderinc"
-#include "ground_cover.gdshaderinc"
-uniform float cover_relief = .55;
+#include "stone_surface.gdshaderinc"
+render_mode cull_disabled;
 varying vec3 world_position;
 void vertex(){
-	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
-	VERTEX.y+=terrain_morph_offset(world_position);
+ world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+ VERTEX.y+=terrain_morph_offset(world_position);
 }
 void fragment(){
-	// One world-space rock field across the joined cliff volume. Broad facets
-	// stay anchored through edits instead of exposing the mesh's height rows.
-	vec3 frame=vec3(world_position.x+world_position.y*.16,world_position.y+world_position.x*.28+world_position.z*.19,world_position.z-world_position.y*.12);
-	vec3 p=frame/vec3(3.2,2.7,3.2);
-	vec3 cell=floor(p);vec3 f=fract(p);float nearest=10.0;float second=10.0;vec3 selected=cell;vec3 local=vec3(0.0);
-	for(int z=-1;z<=1;z++)for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
-		vec3 offset=vec3(float(x),float(y),float(z));
-		vec3 delta=offset+rock_hash(cell+offset)*.72+.14-f;
-		vec3 shape=rock_hash(cell+offset+vec3(31.0));
-		float angle=(shape.z-.5)*1.1;
-		vec3 rotated=vec3(delta.x*cos(angle)-delta.z*sin(angle),delta.y,delta.x*sin(angle)+delta.z*cos(angle));
-		vec3 axis=abs(rotated)/(vec3(.85)+shape*.25);
-		float d=max(max(axis.x,max(axis.y,axis.z)),dot(axis,vec3(.57)));
-		if(d<nearest){second=nearest;nearest=d;selected=cell+offset;local=-delta;}
-		else if(d<second){second=d;}
-	}
-	vec3 variation=rock_hash(selected+vec3(17.0));
-	// The staggered render mesh now supplies the actual broad rock planes.
-	// Keep its geometric normal and let real relief light the recesses.
-	vec3 color=cliff_gray(variation.x);
-	ALBEDO=color*COLOR.rgb;
+ // The cap is one stone surface. Painted cell boundaries would restore the
+ // patchwork read even after removing the separate extruded bottom blocks.
+ ALBEDO=stone_surface(world_position)*mix(vec3(1.0),COLOR.rgb,.35);
  ROUGHNESS=.96;SPECULAR=.15;
 }

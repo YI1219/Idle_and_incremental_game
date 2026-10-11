@@ -1,0 +1,7 @@
+{
+  "central_bottom_red": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCALM BOTTOM: {\"layered\":242,\"misses\":0,\"passed\":false,\"probes\":259,\"steep\":180}\n",
+  "central_bottom_green": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCALM BOTTOM: {\"layered\":0,\"misses\":0,\"passed\":true,\"probes\":259,\"steep\":0}\n",
+  "boundary_seam_red": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOTTOM SEAM: {\"maximum_separation\":0.227164760231972,\"passed\":false,\"shared_vertices\":20,\"split_vertices\":6}\n",
+  "boundary_seam_green": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOTTOM SEAM: {\"maximum_separation\":0.0,\"passed\":true,\"shared_vertices\":20,\"split_vertices\":0}\n",
+  "bright_patch_diagnosis": "Six camera rays through the suspicious bright region in low orbit -120 hit island stone geometry (mantle, backing or root), not open sky. The displacement regression is independently established by the seam fixture."
+}

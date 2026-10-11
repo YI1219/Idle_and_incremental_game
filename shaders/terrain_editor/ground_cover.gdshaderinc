@@ -34,7 +34,7 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
 	float height=gc_cover_height(p);
 	// Soft mottling: low-contrast, no cell edges.
 	vec3 dry=base*vec3(1.02,1.01,.98);
-	vec3 lush=base*vec3(.88,.92,.86);
+	vec3 lush=base*vec3(.79,.93,.76);
 	vec3 color=mix(dry,lush,clamp(cover*.75+(height-.5)*1.3*detail,0.0,1.0));
 	// Two overlapping layers of irregular low tufts: darker green and
 	// yellow-green, each lit as a gentle dome so the sun picks out its side.

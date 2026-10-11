@@ -69,6 +69,7 @@ func run():
      if hit!=null:front=minf(front,(center+outward*.6).distance_to(hit))
     if front<.57:buried+=1
   var remote:=remote_difference(original.field.surfaces.stone_mantle,mantle)
+  var remote_cap:=remote_difference(original.field.surfaces.cliff,field.surfaces.cliff)
   var base_probes:=0;var base_misses:=0
   var bottom_faces:PackedVector3Array=mantle.vertices.duplicate();bottom_faces.append_array(field.surfaces.cliff.vertices)
   for z in range(-8,9,2):
@@ -82,7 +83,7 @@ func run():
      var hit=Geometry3D.ray_intersects_triangle(Vector3(p.x,-10,p.y),Vector3.UP,bottom_faces[i],bottom_faces[i+1],bottom_faces[i+2])
      if hit!=null and hit.y<0:covered=true;break
     if not covered:base_misses+=1
-  if leaks or open_edges or buried or not remote.within_3mm or base_misses or base_probes<25:failures+=1
-  reports.append({"state":state,"lawn_leaks":leaks,"open_edges":open_edges,"buried_vines":buried,"vines":vines,"remote":remote,"base_probes":base_probes,"base_misses":base_misses})
+  if leaks or open_edges or buried or not remote.within_3mm or not remote_cap.within_3mm or base_misses or base_probes<25:failures+=1
+  reports.append({"state":state,"lawn_leaks":leaks,"open_edges":open_edges,"buried_vines":buried,"vines":vines,"remote":remote,"remote_cap":remote_cap,"base_probes":base_probes,"base_misses":base_misses})
  print("MANTLE INTEGRATION: ",JSON.stringify({"fixtures":reports,"failures":failures}))
  quit(0 if failures==0 else 1)
