@@ -34,7 +34,10 @@ void fragment(){
 	vec3 world_normal=(INV_VIEW_MATRIX*vec4(facet,0.0)).xyz;
 	vec3 variation=rock_hash(floor(column_origin*2.3)+vec3(17.0));
 	// Facet shade from the source stone, softened; instance tone sets the block.
-	vec3 stone=(cliff_gray(.25+.6*variation.x)+vec3(.065,.075,.085))*mix(vec3(1.0),COLOR.rgb/.66,.55);
+	vec3 stone=(cliff_gray(.25+.6*variation.x)+vec3(.065,.075,.085))*mix(vec3(1.0),COLOR.rgb/.66,mix(.55,.85,crown_cover));
+	// Broad, low-contrast mineral patches; no textures or extra draw calls.
+	float mineral=noise_column(local_position.xz*4.0+local_position.y*2.0+variation.xy*11.0);
+	stone+=crown_cover*(mineral-.5)*vec3(.045,.055,.075);
 	// Vertical weathering streaks run the height of this body.
 	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
 	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;
@@ -44,11 +47,13 @@ void fragment(){
 	float below=column_origin.y-world_position.y;
 	stone*=mix(1.0,.78,smoothstep(1.6,4.2,below));
 	float up=world_normal.y;
-	// Moss creeps over the bevel and hangs in a ragged fringe down the face.
-	float ragged=noise_column(vec2((world_position.x+world_position.z)*3.1,variation.z*7.0))*.65+noise_column(vec2((world_position.x-world_position.z)*9.0,3.0))*.35;
-	// Moss stays on the crown. A long fringe painted a green lip on every course.
-	float fringe=1.0-smoothstep(.02+.10*ragged,.10+.18*ragged,below);
-	float moss=crown_cover*max(smoothstep(.15,.55,up)*(1.0-smoothstep(.25,.70,below)),fringe*.80);
+	// Sun-facing exposed shoulders stay weathered grey rather than a bright trim.
+	float shoulder=crown_cover*smoothstep(.65,.95,up);
+	stone*=mix(vec3(1.0),vec3(.65,.69,.74),shoulder);
+	// UV.x is distance into the planar cap. Keep its perimeter and shoulder
+	// stone-colored; only the interior meets the existing world-space lawn.
+	float interior=smoothstep(.005+.006*mineral,.025+.035*mineral,UV.x);
+	float moss=crown_cover*interior*smoothstep(.75,.95,up);
 	vec3 moss_color=vec3(.40,.45,.27);
 	vec3 color=mix(stone,moss_color,moss*(.70+.30*streak));
 	// The crown is the lawn itself, lit like the cap beside it.
@@ -56,11 +61,12 @@ void fragment(){
 	float detail=1.0-smoothstep(.35,1.0,footprint);
 	vec2 slope=vec2(0.0);
 	vec3 lawn=color;
-	float crown=crown_cover*smoothstep(.45,.78,up)*(1.0-smoothstep(.30,.60,below));
+	float crown=crown_cover*interior*smoothstep(.92,.99,up)*(1.0-smoothstep(.03,.12,below));
 	if(crown>0.0)lawn=ground_cover(world_position.xz,detail,slope);
 	ALBEDO=mix(color,lawn,crown);
 	vec3 lawn_normal=normalize(vec3(-slope.x*cover_relief*detail,1.0,-slope.y*cover_relief*detail));
 	NORMAL=normalize(mix(NORMAL,(VIEW_MATRIX*vec4(lawn_normal,0.0)).xyz,crown));
 	ROUGHNESS=mix(.93,.95,crown);
 	SPECULAR=mix(.16,.30,crown);
+	AO=mix(1.0,.86,crown_cover*(1.0-smoothstep(-.65,-.25,local_position.y)));
 }

@@ -9,8 +9,11 @@ var editor:Node3D
 var captures:Array=[]
 func _initialize()->void:call_deferred("run")
 func capture(name:String)->void:
-	for i in 30:await process_frame
-	await RenderingServer.frame_post_draw
+	for i in 30:
+		RenderingServer.force_draw(false)
+		await process_frame
+	# Native-window occlusion can suspend the automatic render loop on macOS.
+	RenderingServer.force_draw(false)
 	var error:=viewport.get_texture().get_image().save_png(OUT+name+".png")
 	captures.append({"file":name+".png","error":error,"position":str(editor.camera.position),"rotation":str(editor.camera.rotation_degrees),"draw_calls":Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)})
 func frame(center:Vector2,height:float,yaw:float,pitch:float)->void:

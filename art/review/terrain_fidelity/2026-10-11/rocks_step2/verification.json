@@ -1,0 +1,23 @@
+{
+  "baseline": "c14a9a2f17488428bbb36c75c71bd3e3dcc2a54a",
+  "headless_terrain_suites": {
+    "passed": 33,
+    "total": 33
+  },
+  "rendered_regeneration": {
+    "passed": 42,
+    "total": 42,
+    "renderer": "Forward+",
+    "adapter": "Apple M4 Pro"
+  },
+  "unchanged_root_array_hashes": {
+    "53": 496251262,
+    "67": 3531517669
+  },
+  "independent_review": "No actionable defects; review candidate",
+  "required_captures": [
+    "after_default.png",
+    "after_rim_upper_front.png",
+    "after_underside.png"
+  ]
+}
