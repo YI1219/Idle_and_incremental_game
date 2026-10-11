@@ -1,6 +1,7 @@
 shader_type spatial;
 #include "terrain_morph.gdshaderinc"
 #include "cliff_palette.gdshaderinc"
+#include "land_palette.gdshaderinc"
 // Separate crown/root solids: local y=0 anchors each body's own shoulder.
 // Crown tops are baked into the shared terrain surface; this material shades
 // the independent side bodies and the separately tapered roots.
@@ -42,7 +43,13 @@ void fragment(){
 	// Metres below this body's shoulder; lower facets weather darker.
 	float below=column_origin.y-world_position.y;
 	stone*=mix(1.0,.78,smoothstep(1.6,4.2,below));
-	ALBEDO=stone;
+ // A ragged, shallow green spill coats the vertical stone. It is albedo
+ // only: no shoulder geometry, and roots keep their existing stone finish.
+ float fringe=noise_column(world_position.xz*3.2)*.65+noise_column(world_position.xz*8.5)*.35;
+ float spill=crown_cover*(1.0-smoothstep(.06+.11*fringe,.13+.21*fringe,below));
+ spill*=mix(.22,1.0,smoothstep(.24,.68,noise_column(world_position.xz*.9)));
+ vec3 green=mix(grass_base,grass_highlight,.48+fringe*.28)*vec3(.98,1.0,.93);
+ ALBEDO=mix(stone,green,spill*.78);
 	ROUGHNESS=.93;
 	SPECULAR=.16;
 	AO=mix(1.0,.86,crown_cover*(1.0-smoothstep(-.65,-.25,local_position.y)));

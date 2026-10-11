@@ -1,3 +1,13 @@
+// World-space compression is supplied by TerrainRenderer.set_grass_compression.
+// No mask means standing cover; outside the supplied field stays standing.
+uniform sampler2D grass_compression : filter_linear, repeat_disable, hint_default_black;
+uniform vec2 compression_origin = vec2(-64.0);
+uniform vec2 compression_extent = vec2(128.0);
+float gc_standing(vec2 p){
+ vec2 uv=(p-compression_origin)/compression_extent;
+ float inside=step(0.0,uv.x)*step(0.0,uv.y)*step(uv.x,1.0)*step(uv.y,1.0);
+ return 1.0-texture(grass_compression,uv).r*inside;
+}
 // Simulated low plant cover shared by the terrain cap and the grassy crowns of
 // rim blocks: soft multi-scale mottling, sparse darker plant dabs and pale
 // seed heads, lit through a gentle world-space height field. Being a pure
@@ -15,6 +25,8 @@ float gc_cover_height(vec2 p){
 }
 // Returns the cover colour; slope receives the surface tilt for lighting.
 vec3 ground_cover(vec2 p,float detail,out vec2 slope){
+	float standing=gc_standing(p);
+	detail*=standing;
 	float broad=sin(p.x*0.51+p.y*0.22)*sin(p.y*0.47-p.x*0.18)*0.5+0.5;
 	vec3 base=mix(grass_base,grass_highlight,broad);
 	// Metre-scale patches of denser, greener cover between drier open grass.
@@ -36,7 +48,7 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
 		for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
 			vec2 o=vec2(float(x),float(y));
 			vec2 id=cell+o;
-			float present=step(gc_hash(id+vec2(9.0,2.0)),.62+.33*cover);
+			float present=step(gc_hash(id+vec2(9.0,2.0)),.34+.30*cover);
 			vec2 d=o+gc_hash2(id)*.8+.1-f;
 			float r=mix(.34,.62,gc_hash(id+vec2(4.0,9.0)));
 			float wobble=(gc_noise((g-id)*4.0+id*1.7)-.5)*.22;
@@ -56,6 +68,10 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
 	color=mix(color,vec3(.88,.85,.70),bloom*.65*detail);
 	float e=.04;
 	slope=vec2(gc_cover_height(p+vec2(e,0.0))-height,gc_cover_height(p+vec2(0.0,e))-height)/e;
-	slope=slope*.08+slope_tuft;
+	// Sparse clumps get a fine directional blade cue. The same compression
+ // mask removes both their color relief and their normal relief.
+ float blade=sin(p.x*71.0+p.y*29.0+gc_noise(p*3.0)*5.0);
+ color*=1.0+blade*.025*cover*detail;
+ slope=(slope*.08+slope_tuft*1.35)*standing;
 	return color;
 }

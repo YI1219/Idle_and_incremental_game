@@ -30,6 +30,25 @@ var morph_progress:=1.0
 var _morph_from:Dictionary={}
 var _morph_to:Dictionary={}
 var _snap_next:=false
+# R: 0 = standing, 1 = flattened. Caller owns painting/recovery and texture
+# updates; this round only reserves the world-space data/material path.
+var _grass_compression:Texture2D
+var _compression_bounds:=Rect2(-64,-64,128,128)
+
+func set_grass_compression(texture:Texture2D,world_rect:Rect2)->bool:
+	if world_rect.size.x<=0 or world_rect.size.y<=0:return false
+	_grass_compression=texture
+	_compression_bounds=world_rect
+	_bind_grass_compression()
+	return true
+
+func _bind_grass_compression()->void:
+	for kind in ["grass","cliff"]:
+		if not materials.has(kind):continue
+		materials[kind].set_shader_parameter("grass_compression",_grass_compression)
+		materials[kind].set_shader_parameter("compression_origin",_compression_bounds.position)
+		materials[kind].set_shader_parameter("compression_extent",_compression_bounds.size)
+
 
 func configure(source:Data)->void:
 	_discard_pending()
@@ -61,6 +80,7 @@ func configure(source:Data)->void:
 		var shore:=ShaderMaterial.new()
 		shore.shader=load("res://shaders/terrain_editor/shore.gdshader")
 		materials.shore=shore
+	_bind_grass_compression()
 	for cell:Vector2i in data.cells:
 		for z in range(-1,2):
 			for x in range(-1,2):data.dirty_chunks[Data.chunk_of(cell+Vector2i(x,z))]=true

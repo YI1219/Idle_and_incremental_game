@@ -35,11 +35,13 @@ func run():
   var vertices:PackedVector3Array=mesh.get_faces()
   for i in range(0,vertices.size(),3):
    if absf(vertices[i].y)+absf(vertices[i+1].y)+absf(vertices[i+2].y)>.00001:continue
-   var p:Vector3=col.pose*((vertices[i]+vertices[i+1]+vertices[i+2])/3.0)
+   var p:Vector3=col.pose*(vertices[i]*.271+vertices[i+1]*.337+vertices[i+2]*.392)
    var matches:=0
    for j in range(0,grass.size(),3):
     if absf(grass[j].y-p.y)>.001:continue
-    if Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),PackedVector2Array([Vector2(grass[j].x,grass[j].z),Vector2(grass[j+1].x,grass[j+1].z),Vector2(grass[j+2].x,grass[j+2].z)])):matches+=1
+    var triangle:=PackedVector2Array([Vector2(grass[j].x,grass[j].z),Vector2(grass[j+1].x,grass[j+1].z),Vector2(grass[j+2].x,grass[j+2].z)])
+    var box:=Rect2(triangle[0],Vector2.ZERO).expand(triangle[1]).expand(triangle[2])
+    if box.grow(.00001).has_point(Vector2(p.x,p.z)) and Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),triangle):matches+=1
    cap_probes+=1
    if matches!=1:duplicate_tops+=1
  if duplicate_tops>0:failures+=1;push_error("Missing/duplicated baked crown tops: %d"%duplicate_tops)

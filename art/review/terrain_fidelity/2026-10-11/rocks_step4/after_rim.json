@@ -1,0 +1,108 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 553.0,
+			"error": 0,
+			"file": "after_rim_upper_front.png",
+			"position": "(-7.131281, 9.0, 19.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 513.0,
+			"error": 0,
+			"file": "after_rim_lower_right.png",
+			"position": "(18.86872, 9.0, 23.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 646.0,
+			"error": 0,
+			"file": "after_rim_terrace_step.png",
+			"position": "(-10.79423, 9.0, 15.5)",
+			"rotation": "(-30.0, -30.0, 0.0)"
+		},
+		{
+			"draw_calls": 864.0,
+			"error": 0,
+			"file": "after_bodies_side.png",
+			"position": "(24.0, 2.2, 14.0)",
+			"rotation": "(-3.493928, 58.73626, 0.0)"
+		},
+		{
+			"draw_calls": 864.0,
+			"error": 0,
+			"file": "after_underside.png",
+			"position": "(22.0, -2.4, 15.2)",
+			"rotation": "(7.583776, 51.88172, 0.0)"
+		},
+		{
+			"draw_calls": 610.0,
+			"error": 0,
+			"file": "after_bug_upper_joint.png",
+			"position": "(4.0, 4.3, 14.0)",
+			"rotation": "(-8.531708, 42.22743, 0.0)"
+		},
+		{
+			"draw_calls": 284.0,
+			"error": 0,
+			"file": "after_bug_lawn_overlap.png",
+			"position": "(17.8168, 6.0, 12.78215)",
+			"rotation": "(-38.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 377.0,
+			"error": 0,
+			"file": "after_grass_lip.png",
+			"position": "(-9.883202, 6.0, 10.38215)",
+			"rotation": "(-38.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 674.0,
+			"error": 0,
+			"file": "after_edit_0_before.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 685.0,
+			"error": 0,
+			"file": "after_edit_1_expanded.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 687.0,
+			"error": 0,
+			"file": "after_edit_2_raised.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 674.0,
+			"error": 0,
+			"file": "after_edit_3_undone.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 665.0,
+			"error": 0,
+			"file": "after_edit_4_shrunk.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 674.0,
+			"error": 0,
+			"file": "after_edit_5_restored.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	]
+}

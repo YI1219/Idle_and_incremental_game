@@ -53,6 +53,15 @@ func run()->void:
 	editor.camera.position=Vector3(22.0,-2.4,15.2)
 	editor.camera.look_at(Vector3(9.0,-0.2,5.0))
 	await capture(tag+"_underside")
+	if args.has("details"):
+		# Former orphan-chip location and overlapping-cap lawn tint, Step 4.
+		editor.camera.position=Vector3(4.0,4.3,14.0)
+		editor.camera.look_at(Vector3(-1.6,3.05,7.83))
+		await capture(tag+"_bug_upper_joint")
+		frame(Vector2(15.7,5.4),6.0,16.0,38.0)
+		await capture(tag+"_bug_lawn_overlap")
+		frame(Vector2(-12,3),6.0,16.0,38.0)
+		await capture(tag+"_grass_lip")
 	# Expand the lower terrace's dry right edge, raise part of it, then undo.
 	frame(Vector2(15.5,4.0),13.0,48.0,30.0)
 	await capture(tag+"_edit_0_before")

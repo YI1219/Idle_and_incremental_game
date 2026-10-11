@@ -5,7 +5,6 @@ const Surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface
 const Field=preload("res://scripts/terrain_editor/contour_terrain.gd")
 
 static func apply(field,columns:Array,assets:Dictionary)->void:
- var cuts:Array=[]
  var crowns:Array=[]
  var strips:Array=[]
  for col:Dictionary in columns:
@@ -32,21 +31,8 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
    reach.x=maxf(reach.x,section.x+.015);reach.y=minf(reach.y,section.y-.015)
   var strip:=PackedVector2Array([c+tangent*reach.x-out*.10,c+tangent*reach.y-out*.10,c+tangent*reach.y+out*3.0,c+tangent*reach.x+out*3.0])
   crowns.append({"polygon":hull,"height":col.pose.origin.y,"column":col})
-  var masks:Array=[hull]
   if reach.y>reach.x:
    strips.append({"polygon":strip,"height":col.pose.origin.y})
-   masks.append(strip)
-  for polygon:PackedVector2Array in masks:
-   if Field._area(polygon)<0:polygon.reverse()
-   var planes:Array[Plane]=[]
-   var box:=Rect2(polygon[0],Vector2.ZERO)
-   for i in polygon.size():
-    var a:=polygon[i];var b:=polygon[(i+1)%polygon.size()]
-    if a.distance_squared_to(b)<.0000001:continue
-    var n:=Vector2(b.y-a.y,a.x-b.x).normalized()
-    planes.append(Plane(Vector3(n.x,0,n.y),n.dot(a)))
-    box=box.expand(a)
-   cuts.append({"planes":planes,"bounds":box,"height":col.pose.origin.y})
  # Resolve the whole filled top before triangulating. Newly enclosed pockets
  # between crowns are lawn, not holes through the island. Authored holes remain.
  var regions:Dictionary={}
@@ -80,7 +66,7 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
    var hole:PackedVector2Array=crown.polygon.duplicate()
    if Field._area(hole)>0:hole.reverse()
    loops.append(hole)
-  field._cap(lawn,loops,h,Color.WHITE)
+  field._cap(lawn,loops,h,Color.WHITE,_crossing_rows(loops))
  # Each crown remains a closed authoring solid. Bake its top into the shared
  # surface once, subtracting earlier crowns so coplanar overlaps cannot flicker.
  var previous:Array=[]
@@ -98,54 +84,61 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
     fragments=next
    for piece:Array in fragments:
     for j in range(1,piece.size()-1):
-     var start:=lawn.vertices.size()
-     lawn.triangle(piece[0],piece[j],piece[j+1],Color(1,1,1,0),true)
-     for k in range(start,lawn.vertices.size()):
-      var p:Vector3=lawn.vertices[k]
-      var point:=Vector2(p.x,p.z)
-      var inset:=0.0
-      for other:Dictionary in crowns:
-       if absf(other.height-crown.height)>.001 or not Geometry2D.is_point_in_polygon(point,other.polygon):continue
-       var distance:=INF
-       for e in other.polygon.size()-1:
-        distance=minf(distance,point.distance_to(Geometry2D.get_closest_point_to_segment(point,other.polygon[e],other.polygon[e+1])))
-       inset=maxf(inset,distance)
-      var local:Vector3=col.pose.affine_inverse()*p
-      lawn.uv[k]=Vector2(inset,local.z)
+     _top_triangle(lawn,piece[0],piece[j],piece[j+1],regions[crown.height])
   previous.append({"planes":_planes(crown.polygon),"height":crown.height})
  field.surfaces.grass=lawn
- for kind in ["cliff"]:
-  var original=field.surfaces[kind]
-  var result:=Surface.new()
-  for i in range(0,original.vertices.size(),3):
-   var a:Vector3=original.vertices[i];var b:Vector3=original.vertices[i+1];var c:Vector3=original.vertices[i+2]
-   var box:=Rect2(Vector2(a.x,a.z),Vector2.ZERO).expand(Vector2(b.x,b.z)).expand(Vector2(c.x,c.z))
-   var fragments:Array=[[a,b,c]]
-   for cut:Dictionary in cuts:
-    if not box.intersects(cut.bounds,true):continue
-    if kind=="grass" and absf(a.y-cut.height)>.001:continue
-    if kind=="cliff" and (maxf(a.y,maxf(b.y,c.y))<cut.height-.70 or minf(a.y,minf(b.y,c.y))>cut.height+.001):continue
-    var planes:Array[Plane]=cut.planes.duplicate()
-    if kind=="cliff":
-     planes.append(Plane(Vector3.DOWN,-cut.height+.70))
-     planes.append(Plane(Vector3.UP,cut.height+.001))
-    var next:Array=[]
-    for polygon:Array in fragments:next.append_array(_subtract(polygon,planes))
-    fragments=next
-    if fragments.is_empty():break
-   for polygon:Array in fragments:
-    for j in range(1,polygon.size()-1):
-     var start:=result.vertices.size()
-     result.triangle(polygon[0],polygon[j],polygon[j+1],Color.WHITE,kind=="grass")
-     for k in range(start,result.vertices.size()):
-      var p:Vector3=result.vertices[k]
-      result.normals[k]=Field._interpolated_normal(p,a,b,c,original.normals[i],original.normals[i+1],original.normals[i+2])
-      result.colors[k]=Field._interpolated_color(p,a,b,c,original.colors[i],original.colors[i+1],original.colors[i+2])
-      var u:Vector2=original.uv[i];var v:Vector2=original.uv[i+1];var w:Vector2=original.uv[i+2]
-      var value:=Field._interpolated_color(p,a,b,c,Color(u.x,u.y,0),Color(v.x,v.y,0),Color(w.x,w.y,0))
-      result.uv[k]=Vector2(value.r,value.g)
-  field.surfaces[kind]=result
+ # Keep a continuous core behind the independent crowns. Boolean cuts in
+ # the old bulging shoulder made isolated chips; removing all outer pieces
+ # instead opened gaps under the cap. Tuck its vertices beneath the final
+ # outline without deleting faces, so the backing remains connected.
+ var original=field.surfaces.cliff
+ var result:=Surface.new()
+ for i in range(0,original.vertices.size(),3):
+  var a:=_tuck_shoulder(original.vertices[i],regions,original.uv[i].x)
+  var b:=_tuck_shoulder(original.vertices[i+1],regions,original.uv[i+1].x)
+  var c:=_tuck_shoulder(original.vertices[i+2],regions,original.uv[i+2].x)
+  var start:=result.vertices.size()
+  result.triangle(a,b,c,Color.WHITE)
+  for k in range(start,result.vertices.size()):
+   result.colors[k]=original.colors[i+k-start]
+   result.uv[k]=original.uv[i+k-start]
+ # Short original-contour joins between crown footprints need a skin after
+ # the bulging old shoulder is trimmed. Match the final top boundary exactly.
+ for h:float in regions:
+  for loop:PackedVector2Array in regions[h]:
+   for e in loop.size():
+    var a:=loop[e];var b:=loop[(e+1)%loop.size()];var mid:=(a+b)*.5
+    if a.distance_squared_to(b)<.000001:continue
+    var near:=INF;var on_body:=INF
+    for crown:Dictionary in crowns:
+     if absf(crown.height-h)>.001:continue
+     near=minf(near,mid.distance_to(crown.column.edge))
+     for j in crown.polygon.size()-1:
+      on_body=minf(on_body,mid.distance_to(Geometry2D.get_closest_point_to_segment(mid,crown.polygon[j],crown.polygon[j+1])))
+    if near>1.5 or on_body<.002:continue
+    var start:=result.vertices.size()
+    result.quad(Vector3(a.x,h,a.y),Vector3(a.x,h-.70,a.y),Vector3(b.x,h-.70,b.y),Vector3(b.x,h,b.y),Color.WHITE)
+    for j in range(start,result.vertices.size()):result.uv[j]=Vector2(h,1.0)
+ field.surfaces.cliff=result
  field._index_triangles()
+
+static func _crossing_rows(loops:Array)->PackedFloat32Array:
+ # Crown subtraction rings overlap. Their edges must not change order inside
+ # a cap scanline slab, or its extrapolated trapezoids leave triangular holes.
+ var rows:=PackedFloat32Array()
+ for i in loops.size():
+  var a:PackedVector2Array=loops[i]
+  for j in range(i+1,loops.size()):
+   var b:PackedVector2Array=loops[j]
+   for e in a.size():
+    var p:=a[e];var q:=a[(e+1)%a.size()]
+    for f in b.size():
+     var r:=b[f];var s:=b[(f+1)%b.size()]
+     if maxf(p.x,q.x)<minf(r.x,s.x) or maxf(r.x,s.x)<minf(p.x,q.x):continue
+     if maxf(p.y,q.y)<minf(r.y,s.y) or maxf(r.y,s.y)<minf(p.y,q.y):continue
+     var crossing=Geometry2D.segment_intersects_segment(p,q,r,s)
+     if crossing!=null:rows.append(crossing.y)
+ return rows
 
 static func _union(polygons:Array,addition:PackedVector2Array)->void:
  var merged:=addition
@@ -186,3 +179,47 @@ static func _subtract(polygon:Array,planes:Array[Plane])->Array:
   if outside.size()>=3:result.append(outside)
   inside=next
  return result
+
+static func _edge_distance(p:Vector3,regions:Array)->float:
+ var point:=Vector2(p.x,p.z)
+ var distance:=INF
+ for loop:PackedVector2Array in regions:
+  for i in loop.size():
+   distance=minf(distance,point.distance_to(Geometry2D.get_closest_point_to_segment(point,loop[i],loop[(i+1)%loop.size()])))
+ return distance
+
+static func _top_triangle(surface,a:Vector3,b:Vector3,c:Vector3,regions:Array,depth:int=0)->void:
+ var da:=_edge_distance(a,regions);var db:=_edge_distance(b,regions);var dc:=_edge_distance(c,regions)
+ # Bound interpolation error near the narrow transition: long cap fan edges
+ # used to carry a perimeter color right across the interior lawn.
+ var ab:=a.distance_squared_to(b);var bc:=b.distance_squared_to(c);var ca:=c.distance_squared_to(a)
+ if minf(da,minf(db,dc))<.30 and maxf(ab,maxf(bc,ca))>.09 and depth<9:
+  if ab>=bc and ab>=ca:
+   var mid:=(a+b)*.5;_top_triangle(surface,a,mid,c,regions,depth+1);_top_triangle(surface,mid,b,c,regions,depth+1)
+  elif bc>=ca:
+   var mid:=(b+c)*.5;_top_triangle(surface,a,b,mid,regions,depth+1);_top_triangle(surface,a,mid,c,regions,depth+1)
+  else:
+   var mid:=(c+a)*.5;_top_triangle(surface,a,b,mid,regions,depth+1);_top_triangle(surface,mid,b,c,regions,depth+1)
+  return
+ var start:int=surface.vertices.size()
+ surface.triangle(a,b,c,Color(1,1,1,0),true)
+ for k in range(start,surface.vertices.size()):surface.uv[k]=Vector2(_edge_distance(surface.vertices[k],regions),1.0)
+
+static func _tuck_shoulder(point:Vector3,regions:Dictionary,h:float)->Vector3:
+ # Use this face's own cap height: newly added lower levels elsewhere must
+ # not retuck an unchanged upper cliff against a different terrace's outline.
+ if not regions.has(h) or point.y<h-.70 or point.y>h+.001:return point
+ var p:=Vector2(point.x,point.z)
+ if Field.contains(regions[h],p):return point
+ var distance:=INF;var closest:=p;var inward:=Vector2.ZERO
+ for loop:PackedVector2Array in regions[h]:
+  for i in loop.size():
+   var a:=loop[i];var b:=loop[(i+1)%loop.size()]
+   if a.distance_squared_to(b)<.000001:continue
+   var q:=Geometry2D.get_closest_point_to_segment(p,a,b)
+   var d:=p.distance_squared_to(q)
+   if d<distance:
+    distance=d;closest=q;inward=Vector2(a.y-b.y,b.x-a.x).normalized()
+ if distance<2.25:
+  point.x=closest.x+inward.x*.045;point.z=closest.y+inward.y*.045
+ return point

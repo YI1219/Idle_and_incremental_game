@@ -39,7 +39,15 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
   face.sort_custom(func(a:Vector3,b:Vector3):return atan2((a-center).dot(other),(a-center).dot(axis))<atan2((b-center).dot(other),(b-center).dot(axis)))
   var shade:=rng.randf_range(.62,.70)
   var relief:=face.size()>3 and absf(plane.normal.normalized().y)<(.82 if root else .35) and (root or index<fracture_count)
-  var apex:=center+plane.normal.normalized()*rng.randf_range(.025,.07)
+  var relief_amount:=rng.randf_range(.025,.07)
+  if not root:
+   # Unequal fracture depth and off-centre fracture junctions; the cap's
+   # original vertices and RNG stream stay fixed, so island plans do not move.
+   var chip:=.5+.5*sin(float(seed_value*17+index*31))
+   relief_amount=lerpf(-.035,.13,chip*chip)
+  var apex:=center+plane.normal.normalized()*relief_amount
+  if not root and relief:
+   apex+=(face[(seed_value+index)%face.size()]-center)*.22
   var cap:=not root and index==0
   if cap:apex=center
   var triangles:Array=[]
@@ -59,7 +67,9 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
    var tint:=Color(shade,shade,shade) if root else Color(.60+.13*tone+.018*warmth,.60+.13*tone,.60+.13*tone-.018*warmth)
    triangle_index+=1
    for p:Vector3 in [a,b,c]:
-    positions.append(Vector3((p.x-bounds.get_center().x)/bounds.size.x,p.y,(p.z-bounds.get_center().z)/bounds.size.z))
+    var vertex:=Vector3((p.x-bounds.get_center().x)/bounds.size.x,p.y,(p.z-bounds.get_center().z)/bounds.size.z)
+    if not root:vertex=_crown_fracture(vertex,seed_value)
+    positions.append(vertex)
     normals.append(Vector3(plane.normal.x*bounds.size.x,plane.normal.y,plane.normal.z*bounds.size.z).normalized())
     colors.append(tint)
     # Interpolated distance from the top perimeter, for a bare stone ledge.
@@ -104,3 +114,17 @@ static func _intersections(planes:Array[Plane])->PackedVector3Array:
      if v.distance_squared_to(p)<1e-10:duplicate=true;break
     if not duplicate:vertices.append(p)
  return vertices
+
+static func _crown_fracture(p:Vector3,seed_value:int)->Vector3:
+ # The top plan is frozen. Below it, unequal side recesses make tight joints
+ # alternate with deeper clefts; no extra stones or disconnected chip meshes.
+ var depth:=clampf(-p.y/.68,0.0,1.0)
+ var left:=.025+.24*(.5+.5*sin(float(seed_value)*1.73))
+ var right:=.025+.24*(.5+.5*sin(float(seed_value)*2.91+1.2))
+ var recess:=lerpf(left,right,smoothstep(-.35,.35,p.x))
+ p.x*=1.0-recess*minf(1.0,depth*2.4)
+ p.z*=1.0-(.025+.085*(.5+.5*sin(float(seed_value)*.83)))*depth
+ # Unequal bottom breaks vary thickness while keeping the upper contact
+ # and broad proportions. Roots are independent and are not changed.
+ p.y-=depth*.07*sin(float(seed_value)*.61+p.x*4.0+p.z*2.0)
+ return p

@@ -208,7 +208,7 @@ func surface_at(p:Vector2)->Dictionary:
 		return {"height":h,"water":-1}
 	return {}
 
-func _cap(surface,loops:Array,height:float,tint:Color)->void:
+func _cap(surface,loops:Array,height:float,tint:Color,extra_rows:PackedFloat32Array=PackedFloat32Array())->void:
 	var has_holes:=false
 	for loop:PackedVector2Array in loops:
 		if _area(loop)<0:has_holes=true
@@ -219,6 +219,7 @@ func _cap(surface,loops:Array,height:float,tint:Color)->void:
 	# around a wholly enclosed hole returns separate rings, which a simple polygon
 	# triangulator fills again. This sweep preserves every interior opening.
 	var heights:Array=[]
+	heights.append_array(extra_rows)
 	for loop:PackedVector2Array in loops:
 		for point in loop:heights.append(point.y)
 	heights.sort()
