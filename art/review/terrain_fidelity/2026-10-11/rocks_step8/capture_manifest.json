@@ -1,0 +1,71 @@
+{
+  "baseline": "bcfc583",
+  "same_rim_cameras": true,
+  "default_camera": "Unchanged capture_lighting_round.gd preset camera, 1671\u00d7941; baseline copied from Step7.",
+  "images": [
+    {
+      "file": "before_default.png",
+      "sha256": "3c9646b3973dc9f0fc941fbbea18bdb072d446b6ba70d2f35c771cec7e131bdf"
+    },
+    {
+      "file": "after_default.png",
+      "sha256": "92bc992521a752c26b5a9ef8c837e5c0fac2741c73a749f493c1a4212b6c5ca2"
+    },
+    {
+      "file": "before_rim_upper_front.png",
+      "sha256": "a868bc69aaa3f15e7d55d098d783666b897b22a4667080bd959f0c2eb53bc148"
+    },
+    {
+      "file": "after_rim_upper_front.png",
+      "sha256": "2db039af8d4a6538769411f9e730c0c086c731820e39ba6c59f2211ff6ef15c0"
+    },
+    {
+      "file": "before_underside.png",
+      "sha256": "98d0f3bda9e8fc6bafad5b788ecb07bf0dd88c7611c0da06169cf3c36d40f876"
+    },
+    {
+      "file": "after_underside.png",
+      "sha256": "fe7505f5ef78cfa7448cbfddb7d05d5f1dd113af99878348dc8a23ad758adbe2"
+    },
+    {
+      "file": "before_underside_bottom.png",
+      "sha256": "ab49e1022a594264328f2a2b8b93e348a1b1a4f372071d7cbbfb170fc5be4016"
+    },
+    {
+      "file": "after_underside_bottom.png",
+      "sha256": "f03972e2aceb07efc1a5fb7d700b7e36496a043cde30c6591415b72ea14610d0"
+    },
+    {
+      "file": "before_pond_shore.png",
+      "sha256": "63e81fe85c49a11de4cc9b8e4a55f8f645f3713869cb69ec11fe81c9ce54d2da"
+    },
+    {
+      "file": "after_pond_shore.png",
+      "sha256": "a6571bc599299983ab1707fecc1c9dda608283b1f4bf5757f5720091bab1c4e6"
+    },
+    {
+      "file": "before_grass_lip.png",
+      "sha256": "1efa08d0941489d344366be99305e1f9bc3e755745107dec1a8d456f4ea8b759"
+    },
+    {
+      "file": "after_grass_lip.png",
+      "sha256": "e7c709f8627480a2498f1d03edcba3bc0afba6d16ac4094ec1b1e703cf1910cd"
+    },
+    {
+      "file": "before_tight_joint.png",
+      "sha256": "b5f255bcfc3a37f2bc262d1714bd25ae8edd03f6da84f0c7721261d9179d2f05"
+    },
+    {
+      "file": "after_tight_joint.png",
+      "sha256": "917c6d617cbf171bc81f6975aa77e0fcb2e2ca1f12b2f83651c3c56ea54387e4"
+    },
+    {
+      "file": "before_former_orphan_spot.png",
+      "sha256": "232abf919367c208f59c2a9f68694a73f2505b0be0054bc654ac1f212688ad50"
+    },
+    {
+      "file": "after_former_orphan_spot.png",
+      "sha256": "af2bd9b04c378112f94f9fc83e04be11815a8c88b1303c41f2379abe0ef617e8"
+    }
+  ]
+}

@@ -4,5 +4,5 @@ vec3 rock_hash(vec3 p){
 	return fract(vec3((q.x+q.y)*q.z,(q.y+q.z)*q.x,(q.z+q.x)*q.y));
 }
 vec3 cliff_gray(float variation){
-	return mix(vec3(.43,.42,.39),vec3(.58,.56,.51),variation);
+	return mix(vec3(.46,.48,.48),vec3(.63,.62,.57),variation);
 }

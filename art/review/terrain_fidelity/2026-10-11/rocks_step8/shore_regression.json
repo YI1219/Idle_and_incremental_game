@@ -1,0 +1,5 @@
+{
+  "baseline_crests": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVISIBLE SHORE CRESTS: 42/555\nCURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples\nSHORE TRANSITION: 608 triangles, wet/dry continuity true/true, 1 failures\n",
+  "detached_study": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVISIBLE SHORE CRESTS: 912/912\nCONNECTED SHORE JOINS: 691\nCURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples\nSHORE TRANSITION: 608 triangles, wet/dry continuity true/true, 351 failures\n",
+  "fixed": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVISIBLE SHORE CRESTS: 1824/1824\nCONNECTED SHORE JOINS: 1357\nCURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples\nSHORE TRANSITION: 912 triangles, wet/dry continuity true/true, 0 failures\n"
+}

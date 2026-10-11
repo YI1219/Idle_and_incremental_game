@@ -19,6 +19,6 @@ void fragment(){
  float fleck=gc_noise(world_position.xz*19.0+world_position.y*7.0);
  ALBEDO=green*mix(.99,.83,tongue)*(.93+.20*fleck);
  vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
- NORMAL=normalize(mix(NORMAL,up,.22));
+ NORMAL=normalize(mix(NORMAL,up,.55));
  ROUGHNESS=.96;SPECULAR=.12;
 }

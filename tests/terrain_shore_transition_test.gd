@@ -15,6 +15,8 @@ func run()->void:
 	var checked:=0
 	var submerged:=false
 	var above:=false
+	var wet_crests:=0
+	var visible_crests:=0
 	for i in range(0,field.surfaces.shore.vertices.size(),3):
 		var a:Vector3=field.surfaces.shore.vertices[i]
 		var b:Vector3=field.surfaces.shore.vertices[i+1]
@@ -24,10 +26,41 @@ func run()->void:
 		for point in [a,b,c]:
 			var sample:=field.surface_at(Vector2(point.x,point.z))
 			if sample.is_empty():failures+=1
-			elif sample.water>=0 and point.y<sample.height:submerged=true
+			elif sample.water>=0:
+				if point.y<sample.height:submerged=true
+				else:
+					wet_crests+=1
+					if point.y>sample.height+.045:visible_crests+=1
 			elif sample.water<0 and point.y>=sample.height:above=true
 		checked+=1
 	if not submerged or not above:failures+=1
+	# The water is opaque at height + .045. Most scalloped bank tips
+	# must actually protrude above it, not hide below the old straight edge.
+	if wet_crests<10 or visible_crests<float(wet_crests)*.80:failures+=1
+	print("VISIBLE SHORE CRESTS: ",visible_crests,"/",wet_crests)
+	# At the actual water boundary the connecting bank must clear water too.
+	# Otherwise a visible crest can become a detached offshore ribbon.
+	var joins:=0
+	for i in range(0,field.surfaces.shore.vertices.size(),3):
+		var tri:Array=[]
+		for j in 3:tri.append(field.surfaces.shore.vertices[i+j])
+		for j in 3:
+			var a:Vector3=tri[j];var b:Vector3=tri[(j+1)%3]
+			for level:int in field.water_regions:
+				for loop:PackedVector2Array in field.water_regions[level]:
+					for k in loop.size():
+						var hit=Geometry2D.segment_intersects_segment(Vector2(a.x,a.z),Vector2(b.x,b.z),loop[k],loop[(k+1)%loop.size()])
+						if hit==null:continue
+						var length:=Vector2(a.x,a.z).distance_to(Vector2(b.x,b.z))
+						if length<.00001:continue
+						var t:float=Vector2(a.x,a.z).distance_to(hit)/length
+						var y:=lerpf(a.y,b.y,t)
+						if absf(y-level*.5)>.2:continue
+						joins+=1
+						if y<level*.5+.045-.001:failures+=1
+	if joins<10:failures+=1
+	print("CONNECTED SHORE JOINS: ",joins)
+
 	# Published R follows actual smoothed water contours. G/B/A keep their
 	# bed/connected-impact/wet meaning; tolerate only RGBA8 quantization.
 	var curved:Dictionary=ShoreField.build(data,field)

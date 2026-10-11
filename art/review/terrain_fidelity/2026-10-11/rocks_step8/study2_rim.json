@@ -1,0 +1,136 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 569.0,
+			"error": 0,
+			"file": "study2_rim_upper_front.png",
+			"position": "(-7.131281, 9.0, 19.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 547.0,
+			"error": 0,
+			"file": "study2_rim_lower_right.png",
+			"position": "(18.86872, 9.0, 23.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 681.0,
+			"error": 0,
+			"file": "study2_rim_terrace_step.png",
+			"position": "(-10.79423, 9.0, 15.5)",
+			"rotation": "(-30.0, -30.0, 0.0)"
+		},
+		{
+			"draw_calls": 890.0,
+			"error": 0,
+			"file": "study2_bodies_side.png",
+			"position": "(24.0, 2.2, 14.0)",
+			"rotation": "(-3.493928, 58.73626, 0.0)"
+		},
+		{
+			"draw_calls": 890.0,
+			"error": 0,
+			"file": "study2_underside.png",
+			"position": "(22.0, -2.4, 15.2)",
+			"rotation": "(7.583776, 51.88172, 0.0)"
+		},
+		{
+			"draw_calls": 894.0,
+			"error": 0,
+			"file": "study2_underside_bottom.png",
+			"position": "(12.0, -14.0, 21.0)",
+			"rotation": "(27.25203, 33.69007, 0.0)"
+		},
+		{
+			"draw_calls": 626.0,
+			"error": 0,
+			"file": "study2_bug_upper_joint.png",
+			"position": "(4.0, 4.3, 14.0)",
+			"rotation": "(-8.531708, 42.22743, 0.0)"
+		},
+		{
+			"draw_calls": 319.0,
+			"error": 0,
+			"file": "study2_bug_lawn_overlap.png",
+			"position": "(17.8168, 6.0, 12.78215)",
+			"rotation": "(-38.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 410.0,
+			"error": 0,
+			"file": "study2_grass_lip.png",
+			"position": "(-9.883202, 6.0, 10.38215)",
+			"rotation": "(-38.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 772.0,
+			"error": 0,
+			"file": "study2_tight_joint.png",
+			"position": "(-15.2, 7.1, 17.6)",
+			"rotation": "(-21.27233, -33.95905, 0.0)"
+		},
+		{
+			"draw_calls": 587.0,
+			"error": 0,
+			"file": "study2_pond_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 498.0,
+			"error": 0,
+			"file": "study2_former_orphan_spot.png",
+			"position": "(-8.0, 10.0, 13.0)",
+			"rotation": "(-29.04483, 19.9831, 0.0)"
+		},
+		{
+			"draw_calls": 703.0,
+			"error": 0,
+			"file": "study2_edit_0_before.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 713.0,
+			"error": 0,
+			"file": "study2_edit_1_expanded.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 716.0,
+			"error": 0,
+			"file": "study2_edit_2_raised.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 703.0,
+			"error": 0,
+			"file": "study2_edit_3_undone.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 691.0,
+			"error": 0,
+			"file": "study2_edit_4_shrunk.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		},
+		{
+			"draw_calls": 703.0,
+			"error": 0,
+			"file": "study2_edit_5_restored.png",
+			"position": "(32.23314, 13.0, 19.06659)",
+			"rotation": "(-30.0, 48.0, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	]
+}

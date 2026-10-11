@@ -2,7 +2,7 @@ extends RefCounted
 ## Closed, irregular stone volumes cut from the existing lower envelope.
 ## World-anchored Voronoi cells avoid horizontal courses and keep edits local.
 const Surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface
-const SIZE:=2.7
+const SIZE:=4.4
 
 static func _hash(p:Vector3)->float:
  return fposmod(sin(p.dot(Vector3(127.1,311.7,74.7)))*43758.5453,1.0)
@@ -82,12 +82,12 @@ static func build(source,regions:Dictionary={})->Dictionary:
   if area<.30 or normal.length_squared()<.00001:continue
   center/=area;normal=normal.normalized()
   if normal.y<-.85:
-   normal=(normal+Vector3((_hash(Vector3(key)+Vector3(1,4,3))-.5)*.50,0,(_hash(Vector3(key)+Vector3(4,9,8))-.5)*.50)).normalized()
+   normal=(normal+Vector3((_hash(Vector3(key)+Vector3(1,4,3))-.5)*.85,0,(_hash(Vector3(key)+Vector3(4,9,8))-.5)*.85)).normalized()
   var choice:=_hash(Vector3(key)+Vector3(29,11,8))
-  var scale:=.992 if choice<.72 else .947
+  var scale:=.998 if choice<.78 else .965
   var offset:=lerpf(-.06,.16,_hash(Vector3(key)+Vector3(5,11,21)))
-  if normal.y<-.85:offset=lerpf(-.08,.55,choice*choice)
-  var depth:=1.10+choice*.85
+  if normal.y<-.85:offset=lerpf(-.15,1.15,choice*choice)
+  var depth:=1.35+choice*.85
   var body:=Surface.new()
   var tint:=Color(.90+choice*.12,.94+choice*.08,1.0-choice*.025)
   var axis:=normal.cross(Vector3.UP).normalized()
@@ -109,11 +109,23 @@ static func build(source,regions:Dictionary={})->Dictionary:
   var rect:=Rect2(hull[0],Vector2.ZERO)
   for p:Vector2 in hull:rect=rect.expand(p)
   if minf(rect.size.x,rect.size.y)<.28:continue
+  # Split selected broad faces on one off-centre fracture. The intersection
+  # vertices also belong to the side walls, keeping each mass watertight.
+  var outline:Array=[]
+  var crease:=Vector3(.65,.30,0);var cut:=choice-.5
+  for p:Vector2 in hull:outline.append(Vector3(p.x,p.y,0))
+  var faces:Array=[outline]
+  if choice>.35:
+   faces=[_clip(outline,crease,cut),_clip(outline,-crease,-cut)]
+   var divided:Array=[]
+   for j in outline.size():
+    var a:Vector3=outline[j];var b:Vector3=outline[(j+1)%outline.size()]
+    var da:=crease.dot(a)-cut;var db:=crease.dot(b)-cut
+    divided.append(a)
+    if da*db<-.0000001:divided.append(a.lerp(b,da/(da-db)))
+   outline=divided
   var front:Array=[]
-  for p:Vector2 in hull:
-   var point:=center+axis*p.x+other*p.y+normal*offset
-   point.y=minf(point.y,caps[key]-.18)
-   front.append(point)
+  for p:Vector3 in outline:front.append(_face_point(p,center,axis,other,normal,offset,choice,caps[key]-.18))
   # A terrace may put lower lawn next to a higher cliff. Bound the whole
   # solid beneath any lawn its footprint crosses, including the buried back;
   # a closed volume must not turn into a grey shelf through that lower lawn.
@@ -130,24 +142,14 @@ static func build(source,regions:Dictionary={})->Dictionary:
      if preload("res://scripts/terrain_editor/contour_terrain.gd").contains(regions[level],at):top=maxf(top,level)
     if top!=-INF:ceiling=minf(ceiling,top-.18)
   for j in front.size():front[j].y=minf(front[j].y,ceiling)
-  # A convex footprint closes slivers from the source triangulation instead
-  # of extruding each triangle's internal edges into stray thin fins.
-  # Eroded faces are broad, off-centre fracture shoulders rather
-  # than a flat plate. Relief varies independently of cell size/depth.
-  var relief:=.18+.85*pow(_hash(Vector3(key)+Vector3(7,41,13)),1.4)
-  var middle:=center+normal*(offset+relief)
-  var shoulder:Array=[]
-  for j in front.size():
-   var point:Vector3=center+(front[j]-center)*(.44+.25*_hash(Vector3(key)+Vector3(j,6,19)))+normal*(relief*.85)
-   point.y=minf(point.y,ceiling)
-   shoulder.append(point)
-  middle.y=minf(middle.y,ceiling)
+  # Broad tilted planes meet along a fracture rather than a raised button.
+  for face:Array in faces:
+   var points:Array=[]
+   for p:Vector3 in face:points.append(_face_point(p,center,axis,other,normal,offset,choice,ceiling))
+   for j in range(1,points.size()-1):body.triangle(points[0],points[j+1],points[j],tint)
   var rear:=center-normal*depth;rear.y=minf(rear.y,ceiling)
   for j in front.size():
    var a:Vector3=front[j];var b:Vector3=front[(j+1)%front.size()]
-   var ca:Vector3=shoulder[j];var cb:Vector3=shoulder[(j+1)%front.size()]
-   body.triangle(middle,cb,ca,tint)
-   body.quad(ca,cb,b,a,tint*(.92+.10*_hash(Vector3(key)+Vector3(j,3,7))))
    var back_a:=a-normal*depth;var back_b:=b-normal*depth
    back_a.y=minf(back_a.y,ceiling);back_b.y=minf(back_b.y,ceiling)
    body.triangle(rear,back_a,back_b,tint*.72)
@@ -156,6 +158,14 @@ static func build(source,regions:Dictionary={})->Dictionary:
   stone.colors.append_array(body.colors);stone.uv.append_array(body.uv)
   bodies.append({"key":key,"surface":body,"area":area*.5,"depth":depth})
  return {"backing":backing,"stone":stone,"bodies":bodies}
+
+static func _face_point(p:Vector3,center:Vector3,axis:Vector3,other:Vector3,normal:Vector3,offset:float,choice:float,ceiling:float)->Vector3:
+ var distance:=p.x*.65+p.y*.30+(.5-choice)
+ var relief:=distance*.12
+ if choice>.35:relief-=maxf(0.0,distance)*(.38+choice*.24)
+ var point:=center+axis*p.x+other*p.y+normal*(offset+relief)
+ point.y=minf(point.y,ceiling)
+ return point
 
 static func close_base(source,regions:Dictionary={})->void:
  # Close the actual low boundary of the existing cliff envelope, not the
@@ -257,5 +267,9 @@ static func _base_node(key:Vector2i,regions:Dictionary,cache:Dictionary)->float:
    for h:float in regions:
     if preload("res://scripts/terrain_editor/contour_terrain.gd").contains(regions[h],p):top=maxf(top,h)
    if top!=-INF:low=minf(low,top)
- cache[key]=minf(-2.25,low-.95)
+ # Asymmetric broad rises and hanging lobes, independent of distance
+ # to the island centre; there is no boat-like central keel.
+ var p:=Vector2(key)*2.0
+ var relief:=.62*sin(p.x*.31+p.y*.18)+.34*sin(p.y*.49-p.x*.15+1.7)
+ cache[key]=minf(-1.25,low-.95)+relief*.70
  return cache[key]
