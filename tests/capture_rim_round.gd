@@ -62,6 +62,9 @@ func run()->void:
 		await capture(tag+"_bug_lawn_overlap")
 		frame(Vector2(-12,3),6.0,16.0,38.0)
 		await capture(tag+"_grass_lip")
+		editor.camera.position=Vector3(-15.2,7.1,17.6)
+		editor.camera.look_at(Vector3(-8.6,2.5,7.8))
+		await capture(tag+"_tight_joint")
 	# Expand the lower terrace's dry right edge, raise part of it, then undo.
 	frame(Vector2(15.5,4.0),13.0,48.0,30.0)
 	await capture(tag+"_edit_0_before")

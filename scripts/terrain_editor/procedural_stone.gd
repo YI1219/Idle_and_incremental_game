@@ -44,10 +44,10 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
    # Unequal fracture depth and off-centre fracture junctions; the cap's
    # original vertices and RNG stream stay fixed, so island plans do not move.
    var chip:=.5+.5*sin(float(seed_value*17+index*31))
-   relief_amount=lerpf(-.035,.13,chip*chip)
+   relief_amount=lerpf(-.085,.11,chip*chip)
   var apex:=center+plane.normal.normalized()*relief_amount
   if not root and relief:
-   apex+=(face[(seed_value+index)%face.size()]-center)*.22
+   apex+=(face[(seed_value+index)%face.size()]-center)*.32
   var cap:=not root and index==0
   if cap:apex=center
   var triangles:Array=[]
@@ -68,7 +68,19 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
    triangle_index+=1
    for p:Vector3 in [a,b,c]:
     var vertex:=Vector3((p.x-bounds.get_center().x)/bounds.size.x,p.y,(p.z-bounds.get_center().z)/bounds.size.z)
-    if not root:vertex=_crown_fracture(vertex,seed_value)
+    if not root:
+     vertex=_crown_fracture(vertex,seed_value)
+     # Keep every side vertex inside the frozen cap prism. Full shoulders
+     # close most joints; a minority of recessed sides retain open clefts.
+     if p.y<-.00001:
+      var left_limit:=-INF;var right_limit:=INF
+      for boundary:Plane in planes:
+       if absf(boundary.normal.y)>.00001:continue
+       var n:=Vector2(boundary.normal.x*bounds.size.x,boundary.normal.z*bounds.size.z)
+       var limit:=boundary.d-Vector2(boundary.normal.x,boundary.normal.z).dot(Vector2(bounds.get_center().x,bounds.get_center().z))
+       if n.x>.00001:right_limit=minf(right_limit,(limit-n.y*vertex.z)/n.x)
+       elif n.x<-.00001:left_limit=maxf(left_limit,(limit-n.y*vertex.z)/n.x)
+      if left_limit<=right_limit:vertex.x=clampf(vertex.x,left_limit,right_limit)
     positions.append(vertex)
     normals.append(Vector3(plane.normal.x*bounds.size.x,plane.normal.y,plane.normal.z*bounds.size.z).normalized())
     colors.append(tint)
@@ -119,11 +131,11 @@ static func _crown_fracture(p:Vector3,seed_value:int)->Vector3:
  # The top plan is frozen. Below it, unequal side recesses make tight joints
  # alternate with deeper clefts; no extra stones or disconnected chip meshes.
  var depth:=clampf(-p.y/.68,0.0,1.0)
- var left:=.025+.24*(.5+.5*sin(float(seed_value)*1.73))
- var right:=.025+.24*(.5+.5*sin(float(seed_value)*2.91+1.2))
+ var left:=-.32 if seed_value%4!=1 else .03
+ var right:=-.28 if seed_value%3!=2 else -.12
  var recess:=lerpf(left,right,smoothstep(-.35,.35,p.x))
  p.x*=1.0-recess*minf(1.0,depth*2.4)
- p.z*=1.0-(.025+.085*(.5+.5*sin(float(seed_value)*.83)))*depth
+ p.z*=1.0-(.005+.018*(.5+.5*sin(float(seed_value)*.83)))*depth
  # Unequal bottom breaks vary thickness while keeping the upper contact
  # and broad proportions. Roots are independent and are not changed.
  p.y-=depth*.07*sin(float(seed_value)*.61+p.x*4.0+p.z*2.0)

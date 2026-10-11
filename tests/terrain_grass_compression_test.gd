@@ -13,7 +13,7 @@ func run():
  var bounds:=Rect2(-20,-12,44,25)
  var ok:bool=renderer.set_grass_compression(texture,bounds)
  renderer.configure(data)
- for kind in ['grass','cliff']:
+ for kind in ['grass','cliff','rim_green']:
   ok=ok and renderer.materials[kind].get_shader_parameter('grass_compression')==texture
   ok=ok and renderer.materials[kind].get_shader_parameter('compression_origin')==bounds.position
   ok=ok and renderer.materials[kind].get_shader_parameter('compression_extent')==bounds.size

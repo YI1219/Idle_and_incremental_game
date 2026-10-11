@@ -10,6 +10,7 @@ class Surface:
 	var normals := PackedVector3Array()
 	var colors := PackedColorArray()
 	var uv := PackedVector2Array()
+	var uv2 := PackedVector2Array()
 	func triangle(a: Vector3,b: Vector3,c: Vector3,color:Color,up:bool=false) -> void:
 		var cross := -(b-a).cross(c-a)
 		if cross.length_squared()<0.00000001:return
@@ -43,6 +44,7 @@ class Surface:
 		arrays[Mesh.ARRAY_NORMAL]=normals
 		arrays[Mesh.ARRAY_COLOR]=colors
 		arrays[Mesh.ARRAY_TEX_UV]=uv
+		if uv2.size()==vertices.size():arrays[Mesh.ARRAY_TEX_UV2]=uv2
 		result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 		return result
 

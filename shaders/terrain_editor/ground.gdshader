@@ -22,7 +22,9 @@ void fragment(){
 	color=mix(color,stone,rim*(.30+.22*mineral));
 	if(show_grid){vec2 grid=abs(fract(p)-0.5);float edge=step(0.486,max(grid.x,grid.y));color=mix(color,vec3(0.91,0.95,0.66),edge*0.35);}
 	ALBEDO=color*COLOR.rgb;
-	vec3 normal_world=normalize(vec3(-slope.x*cover_relief*detail,1.0,-slope.y*cover_relief*detail));
+	vec3 base_normal=normalize(cross(dFdx(world_position),dFdy(world_position)));
+ if(base_normal.y<0.0)base_normal=-base_normal;
+ vec3 normal_world=normalize(base_normal+vec3(-slope.x*cover_relief*detail,0.0,-slope.y*cover_relief*detail));
 	NORMAL=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
 	ROUGHNESS=0.95;
 	SPECULAR=.30;

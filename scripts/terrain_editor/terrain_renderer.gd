@@ -43,7 +43,7 @@ func set_grass_compression(texture:Texture2D,world_rect:Rect2)->bool:
 	return true
 
 func _bind_grass_compression()->void:
-	for kind in ["grass","cliff"]:
+	for kind in ["grass","cliff","rim_green"]:
 		if not materials.has(kind):continue
 		materials[kind].set_shader_parameter("grass_compression",_grass_compression)
 		materials[kind].set_shader_parameter("compression_origin",_compression_bounds.position)
@@ -65,6 +65,9 @@ func configure(source:Data)->void:
 		var ground:=ShaderMaterial.new()
 		ground.shader=load("res://shaders/terrain_editor/ground.gdshader")
 		materials.grass=ground
+		var green:=ShaderMaterial.new()
+		green.shader=load("res://shaders/terrain_editor/rim_green.gdshader")
+		materials.rim_green=green
 		var cliff:=ShaderMaterial.new()
 		cliff.shader=load("res://shaders/terrain_editor/cliff.gdshader")
 		materials.cliff=cliff
@@ -127,6 +130,8 @@ func flush_dirty(max_chunks:int=2)->int:
 
 func _rebuild(chunk:Vector2i)->void:
 	var geometry:Dictionary=contours.build(chunk)
+	if not contours.lawn_boundaries.is_empty():
+		geometry.grass=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lawn(geometry.grass,contours.lawn_boundaries,contours.water_regions)
 	_pending_chunks[chunk]=null
 	_pending_faces.erase(chunk)
 	_pending_bounds.erase(chunk)

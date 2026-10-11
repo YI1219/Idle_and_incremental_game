@@ -32,7 +32,15 @@ void fragment(){
 	vec3 variation=rock_hash(floor(column_origin*2.3)+vec3(17.0));
 	// Facet shade from the source stone, softened; instance tone sets the block.
 	vec3 stone=(cliff_gray(.25+.6*variation.x)+vec3(.065,.075,.085))*mix(vec3(1.0),COLOR.rgb/.66,mix(.55,.85,crown_cover));
-	// Broad, low-contrast mineral patches; no textures or extra draw calls.
+	// World-scale triplanar mineral clouds; no unique UV textures. Blended
+ // projections avoid stretched streaks on sides with different orientations.
+ vec3 blend=pow(abs(world_normal),vec3(4.0));blend/=max(dot(blend,vec3(1.0)),.001);
+ vec3 p=world_position*.85;
+ float cloud=noise_column(p.yz+vec2(11,3))*blend.x+noise_column(p.xz+vec2(5,17))*blend.y+noise_column(p.xy+vec2(23,7))*blend.z;
+ float fine=noise_column(world_position.xy*7.0)*blend.z+noise_column(world_position.zy*7.0)*blend.x+noise_column(world_position.xz*7.0)*blend.y;
+ float warm=noise_column(world_position.xz*.63+world_position.y*.2)-.5;
+ stone+=crown_cover*((cloud-.5)*vec3(.13,.14,.16)+warm*vec3(.065,.018,-.05)+(fine-.5)*.025);
+ // Broad, low-contrast mineral patches; no textures or extra draw calls.
 	float mineral=noise_column(local_position.xz*4.0+local_position.y*2.0+variation.xy*11.0);
 	stone+=crown_cover*(mineral-.5)*vec3(.045,.055,.075);
 	// Vertical weathering streaks run the height of this body.
@@ -49,8 +57,9 @@ void fragment(){
  float spill=crown_cover*(1.0-smoothstep(.06+.11*fringe,.13+.21*fringe,below));
  spill*=mix(.22,1.0,smoothstep(.24,.68,noise_column(world_position.xz*.9)));
  vec3 green=mix(grass_base,grass_highlight,.48+fringe*.28)*vec3(.98,1.0,.93);
- ALBEDO=mix(stone,green,spill*.78);
+ ALBEDO=mix(stone,green,spill*.30);
 	ROUGHNESS=.93;
 	SPECULAR=.16;
-	AO=mix(1.0,.86,crown_cover*(1.0-smoothstep(-.65,-.25,local_position.y)));
+	float seam=smoothstep(.28,.49,abs(local_position.x))*(1.0-smoothstep(-.5,-.05,local_position.y));
+ AO=mix(1.0,.77,crown_cover*max(seam,(1.0-smoothstep(-.65,-.25,local_position.y))*.6));
 }

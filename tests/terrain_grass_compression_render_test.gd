@@ -1,7 +1,7 @@
 extends SceneTree
 const Renderer=preload('res://scripts/terrain_editor/terrain_renderer.gd')
 const Data=preload('res://scripts/terrain_editor/terrain_data.gd')
-const OUT='res://art/review/terrain_fidelity/2026-10-11/rocks_step4/'
+var OUT='res://art/review/terrain_fidelity/2026-10-11/rocks_step4/'
 var viewport:SubViewport
 func _initialize():call_deferred('run')
 func capture()->Image:
@@ -10,6 +10,8 @@ func capture()->Image:
   await process_frame
  return viewport.get_texture().get_image()
 func run():
+ for arg in OS.get_cmdline_user_args():
+  if arg.begins_with("out="):OUT=arg.trim_prefix("out=")
  var renderer:=Renderer.new();var data:=Data.new();data.make_preset(0);renderer.configure(data)
  viewport=SubViewport.new();viewport.size=Vector2i(512,512);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
  var mesh:=MeshInstance3D.new();var plane:=PlaneMesh.new();plane.size=Vector2(8,8);mesh.mesh=plane;mesh.material_override=renderer.materials.grass;viewport.add_child(mesh)

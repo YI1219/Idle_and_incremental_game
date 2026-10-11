@@ -16,16 +16,21 @@ func run():
  var deco:=Deco.new();deco.load_assets();deco._column_layout(field,data.seed)
  var sections:Array=[]
  for col:Dictionary in deco._columns:sections.append(section(col,deco.assets[col.kind][0].mesh))
+ var outer:=measure(deco,sections,.45)
+ var joint:=measure(deco,sections,.20)
+ quit(0 if outer and joint else 1)
+
+func measure(deco,sections:Array,offset:float)->bool:
  var tight:=0;var gaps:=0;var pairs:=0;var widths:Array=[]
  for i in deco._columns.size()-1:
   var a:Dictionary=deco._columns[i];var b:Dictionary=deco._columns[i+1]
   if absf(a.pose.origin.y-b.pose.origin.y)>.01 or a.edge.distance_to(b.edge)>4.5 or a.outward.dot(b.outward)<.65:continue
   var first:PackedVector2Array=sections[i];var second:PackedVector2Array=sections[i+1]
   # Bodies overlap behind their visible fronts to remain one island mass.
-  # Measure spacing in the outer half-metre, where crevices are actually seen.
+  # Sample both projecting fronts and the recessed junctions between them.
   var out:=Vector2(a.outward.x+b.outward.x,a.outward.z+b.outward.z).normalized()
   var center:Vector2=(a.edge+b.edge)*.5
-  first=front(first,center,out);second=front(second,center,out)
+  first=front(first,center,out,offset);second=front(second,center,out,offset)
   if first.size()<3 or second.size()<3:continue
   var distance:=INF
   if not Geometry2D.intersect_polygons(first,second).is_empty():distance=0.0
@@ -37,15 +42,15 @@ func run():
   pairs+=1;widths.append(distance)
   if distance<.04:tight+=1
   elif distance>.10:gaps+=1
- var ok:=tight>=5 and gaps>=3
- print('RIM RHYTHM: section 0.45m below crowns; pairs=',pairs,' tight=',tight,' clear gaps=',gaps,' widths=',widths,' passed=',ok)
- quit(0 if ok else 1)
+ var ok:bool=tight>=12 and gaps>=3 if offset>.4 else tight>=26 and gaps>=3
+ print('RIM RHYTHM: section 0.45m below crowns; outward offset=',offset,'; pairs=',pairs,' tight=',tight,' clear gaps=',gaps,' widths=',widths,' passed=',ok)
+ return ok
 
-func front(polygon:PackedVector2Array,center:Vector2,out:Vector2)->PackedVector2Array:
+func front(polygon:PackedVector2Array,center:Vector2,out:Vector2,offset:float)->PackedVector2Array:
  var result:=PackedVector2Array()
  for i in polygon.size()-1:
   var a:=polygon[i];var b:=polygon[i+1]
-  var da:=(a-center).dot(out)-.45;var db:=(b-center).dot(out)-.45
+  var da:=(a-center).dot(out)-offset;var db:=(b-center).dot(out)-offset
   if da>=0:result.append(a)
   if (da<0 and db>0) or (da>0 and db<0):result.append(a.lerp(b,da/(da-db)))
  if not result.is_empty():result.append(result[0])

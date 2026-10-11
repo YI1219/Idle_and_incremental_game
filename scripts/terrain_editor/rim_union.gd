@@ -67,6 +67,7 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
    if Field._area(hole)>0:hole.reverse()
    loops.append(hole)
   field._cap(lawn,loops,h,Color.WHITE,_crossing_rows(loops))
+  field.lawn_boundaries[h]=loops
  # Each crown remains a closed authoring solid. Bake its top into the shared
  # surface once, subtracting earlier crowns so coplanar overlaps cannot flicker.
  var previous:Array=[]
@@ -120,6 +121,7 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
     result.quad(Vector3(a.x,h,a.y),Vector3(a.x,h-.70,a.y),Vector3(b.x,h-.70,b.y),Vector3(b.x,h,b.y),Color.WHITE)
     for j in range(start,result.vertices.size()):result.uv[j]=Vector2(h,1.0)
  field.surfaces.cliff=result
+ field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lip(regions,crowns,assets)
  field._index_triangles()
 
 static func _crossing_rows(loops:Array)->PackedFloat32Array:

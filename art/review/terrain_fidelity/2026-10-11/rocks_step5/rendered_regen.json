@@ -1,0 +1,7 @@
+{
+  "test": "tests/terrain_decoration_regen_test.gd",
+  "renderer": "Metal Forward+",
+  "passed": 42,
+  "total": 42,
+  "rim_bake_us": 11372
+}

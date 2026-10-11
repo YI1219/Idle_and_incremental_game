@@ -26,6 +26,7 @@ var rim_regions:Dictionary={}
 var water_regions:Dictionary={}
 var levels:Array=[]
 var surfaces:Dictionary={}
+var lawn_boundaries:Dictionary={}
 var source:Data
 var triangle_chunks:Dictionary={}
 var _profiles:Dictionary={}
@@ -64,6 +65,7 @@ func refresh(data:Data)->void:
 	water_regions.clear()
 	levels.clear()
 	surfaces.clear()
+	lawn_boundaries.clear()
 	for kind in ["grass","cliff","bank","water","waterfall","shore"]:surfaces[kind]=Legacy.Surface.new()
 	var wet:Dictionary={}
 	for cell:Vector2i in data.cells:
@@ -1069,17 +1071,22 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind in ["cliff","shore","bank","waterfall"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
-				if kind in ["cliff","shore","bank","waterfall"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
-				if kind in ["cliff","grass"]:
+				if kind in ["cliff","grass","rim_green"]:
 					var uv:PackedVector2Array=surfaces[kind].uv
 					for index in range(before,local.vertices.size()):
 						var cap:=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],Color(uv[i].x,uv[i].y,0),Color(uv[i+1].x,uv[i+1].y,0),Color(uv[i+2].x,uv[i+2].y,0))
 						local.uv[index]=Vector2(cap.r,cap.g)
+				if kind=="rim_green":
+					var anchors:PackedVector2Array=surfaces[kind].uv2
+					for index in range(before,local.vertices.size()):
+						var anchor:=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],Color(anchors[i].x,anchors[i].y,0),Color(anchors[i+1].x,anchors[i+1].y,0),Color(anchors[i+2].x,anchors[i+2].y,0))
+						local.uv2.append(Vector2(anchor.r,anchor.g))
 				if kind=="waterfall" and local.vertices.size()>before:
 					var normal:Vector3=normals[i]
 					var axis:=0 if absf(normal.z)>=absf(normal.x) else 2
