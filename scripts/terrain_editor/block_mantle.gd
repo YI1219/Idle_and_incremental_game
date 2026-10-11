@@ -9,7 +9,7 @@ static func _hash(p:Vector3)->float:
 
 static func _seed(k:Vector3i)->Vector3:
  var p:=Vector3(k)
- return (p+Vector3(.22+.56*_hash(p),.22+.56*_hash(p+Vector3(17,3,9)),.22+.56*_hash(p+Vector3(7,19,2))))*SIZE
+ return (p+Vector3(.08+.84*_hash(p),.08+.84*_hash(p+Vector3(17,3,9)),.08+.84*_hash(p+Vector3(7,19,2))))*SIZE
 
 static func _clip(poly:Array,n:Vector3,d:float)->Array:
  var result:Array=[]
@@ -57,7 +57,11 @@ static func build(source,regions:Dictionary={})->Dictionary:
         for dx in range(-1,2):
          if dx==0 and dy==0 and dz==0:continue
          var other:=_seed(key+Vector3i(dx,dy,dz));var n:=other-center
-         cuts.append(Plane(n.normalized(),n.normalized().dot((center+other)*.5)))
+         # A weighted partition gives unequal blocks while each shared
+         # fracture plane remains complementary to its neighbour.
+         var weight:=(_hash(Vector3(key)+Vector3(31,9,5))-.5)*3.8
+         var other_weight:=(_hash(Vector3(key+Vector3i(dx,dy,dz))+Vector3(31,9,5))-.5)*3.8
+         cuts.append(Plane(n.normalized(),n.normalized().dot((center+other)*.5)+(weight-other_weight)/(2.0*n.length())))
       planes[key]=cuts
      var piece:=poly
      for plane:Plane in planes[key]:
@@ -78,12 +82,12 @@ static func build(source,regions:Dictionary={})->Dictionary:
   if area<.30 or normal.length_squared()<.00001:continue
   center/=area;normal=normal.normalized()
   if normal.y<-.85:
-   normal=(normal+Vector3((_hash(Vector3(key)+Vector3(1,4,3))-.5)*.14,0,(_hash(Vector3(key)+Vector3(4,9,8))-.5)*.14)).normalized()
+   normal=(normal+Vector3((_hash(Vector3(key)+Vector3(1,4,3))-.5)*.50,0,(_hash(Vector3(key)+Vector3(4,9,8))-.5)*.50)).normalized()
   var choice:=_hash(Vector3(key)+Vector3(29,11,8))
   var scale:=.992 if choice<.72 else .947
   var offset:=lerpf(-.06,.16,_hash(Vector3(key)+Vector3(5,11,21)))
-  if normal.y<-.85:offset=lerpf(.02,.45,choice)
-  var depth:=1.05+choice*.55
+  if normal.y<-.85:offset=lerpf(-.08,.55,choice*choice)
+  var depth:=1.10+choice*.85
   var body:=Surface.new()
   var tint:=Color(.90+choice*.12,.94+choice*.08,1.0-choice*.025)
   var axis:=normal.cross(Vector3.UP).normalized()
@@ -128,12 +132,22 @@ static func build(source,regions:Dictionary={})->Dictionary:
   for j in front.size():front[j].y=minf(front[j].y,ceiling)
   # A convex footprint closes slivers from the source triangulation instead
   # of extruding each triangle's internal edges into stray thin fins.
-  var middle:=center+normal*(offset+.035*(choice-.5))
+  # Eroded faces are broad, off-centre fracture shoulders rather
+  # than a flat plate. Relief varies independently of cell size/depth.
+  var relief:=.18+.85*pow(_hash(Vector3(key)+Vector3(7,41,13)),1.4)
+  var middle:=center+normal*(offset+relief)
+  var shoulder:Array=[]
+  for j in front.size():
+   var point:Vector3=center+(front[j]-center)*(.44+.25*_hash(Vector3(key)+Vector3(j,6,19)))+normal*(relief*.85)
+   point.y=minf(point.y,ceiling)
+   shoulder.append(point)
   middle.y=minf(middle.y,ceiling)
   var rear:=center-normal*depth;rear.y=minf(rear.y,ceiling)
   for j in front.size():
    var a:Vector3=front[j];var b:Vector3=front[(j+1)%front.size()]
-   body.triangle(middle,b,a,tint)
+   var ca:Vector3=shoulder[j];var cb:Vector3=shoulder[(j+1)%front.size()]
+   body.triangle(middle,cb,ca,tint)
+   body.quad(ca,cb,b,a,tint*(.92+.10*_hash(Vector3(key)+Vector3(j,3,7))))
    var back_a:=a-normal*depth;var back_b:=b-normal*depth
    back_a.y=minf(back_a.y,ceiling);back_b.y=minf(back_b.y,ceiling)
    body.triangle(rear,back_a,back_b,tint*.72)

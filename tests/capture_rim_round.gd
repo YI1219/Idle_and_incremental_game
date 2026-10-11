@@ -38,6 +38,14 @@ func run()->void:
 	editor=load("res://scenes/terrain_editor.tscn").instantiate()
 	viewport.add_child(editor)
 	editor.hud.hide();editor.brush.hide();editor.set_process(false);editor.camera.set_process(false)
+	if args.has("shore_only"):
+		editor.camera.position=Vector3(1,10,12)
+		editor.camera.look_at(Vector3(-3,3.5,2))
+		await capture(tag+"_pond_shore")
+		editor.camera.position=Vector3(-8,10,13)
+		editor.camera.look_at(Vector3(-12,3.5,2))
+		await capture(tag+"_former_orphan_spot")
+		quit();return
 	# Close views of the rim at the gameplay pitch.
 	frame(Vector2(-12,3),9.0,16.0,27.0)
 	await capture(tag+"_rim_upper_front")
@@ -68,6 +76,13 @@ func run()->void:
 		editor.camera.position=Vector3(-15.2,7.1,17.6)
 		editor.camera.look_at(Vector3(-8.6,2.5,7.8))
 		await capture(tag+"_tight_joint")
+	if args.has("step7"):
+		editor.camera.position=Vector3(1,10,12)
+		editor.camera.look_at(Vector3(-3,3.5,2))
+		await capture(tag+"_pond_shore")
+		editor.camera.position=Vector3(-8,10,13)
+		editor.camera.look_at(Vector3(-12,3.5,2))
+		await capture(tag+"_former_orphan_spot")
 	# Expand the lower terrace's dry right edge, raise part of it, then undo.
 	frame(Vector2(15.5,4.0),13.0,48.0,30.0)
 	await capture(tag+"_edit_0_before")

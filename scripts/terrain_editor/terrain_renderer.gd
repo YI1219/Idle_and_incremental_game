@@ -43,7 +43,7 @@ func set_grass_compression(texture:Texture2D,world_rect:Rect2)->bool:
 	return true
 
 func _bind_grass_compression()->void:
-	for kind in ["grass","cliff","rim_green"]:
+	for kind in ["grass","cliff","rim_green","shore"]:
 		if not materials.has(kind):continue
 		materials[kind].set_shader_parameter("grass_compression",_grass_compression)
 		materials[kind].set_shader_parameter("compression_origin",_compression_bounds.position)

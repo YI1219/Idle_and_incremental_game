@@ -78,12 +78,6 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
 			var house_clear:=_near_path(p) or p.distance_to(Vector2(-11,-7))<2.4 or (p.x> -10.5 and p.x< -6.9 and p.y> -6.1 and p.y< -3.1)
 			if not house_clear and cluster>.12 and random_at(cell,data.seed,4)<.38:
-				for tuft in 1:
-					var offset:=Vector2(random_at(cell,data.seed,110+tuft*2)-.5,random_at(cell,data.seed,111+tuft*2)-.5)*.75
-					var ground:Dictionary=field.surface_at(p+offset)
-					if ground.is_empty() or ground.water>=0 or absf(ground.height-h)>.01:continue
-					if not _stable(field,p+offset,h,.18):continue
-					result.grass.append(_transform(origin+Vector3(offset.x,0,offset.y),angle+tuft*2.4,Vector3(.70,.20,.70)*(.85+random_at(cell,data.seed,120+tuft)*.45)))
 				if random_at(cell,data.seed,13)<.66:
 					for bloom in 4:
 						var flower_at:=p+Vector2(sin(bloom*2.4+angle),cos(bloom*2.4+angle))*.24
@@ -137,14 +131,8 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				var wide_patch:bool=growth>.05 and random_at(cell,data.seed,82)<.70
 				var tangent:=Vector2(-out.y,out.x)
 				var patch_width:=.78+random_at(cell,data.seed,83)*.38
-				var crowns:=2 if wide_patch else 1
-				for crown in crowns:
-					var side:float=float(crown)-float(crowns-1)*.5
-					var spread:=tangent*side*patch_width*.30
-					var root_position:=Vector3(p.x-out.x*.18+spread.x,h+.025,p.y-out.y*.18+spread.y)
-					root_position.y+=_rim_lift(field,Vector2(root_position.x,root_position.z))
-					var basis:=Basis(Vector3.UP,atan2(out.x,out.y)+side*.37)*Basis(Vector3.RIGHT,-PI*.5)
-					result.vine.append(Transform3D(basis.scaled_local(Vector3(.94,.80,.78) if wide_patch else Vector3(.70,.65,.70)),root_position))
+				# Rim moss owns the top join; horizontal vine sprays at the old
+				# contour became loose green discs inside the merged crown lawn.
 				var strands:=2 if wide_patch and random_at(cell,data.seed,84)<.18 else 1
 				for strand in strands:
 					var length:=11+int(random_at(cell,data.seed,85+strand)*5) if wide_patch else 4+int(random_at(cell,data.seed,85)*4)
@@ -216,7 +204,32 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			pose.origin.y+=_rim_lift(field,Vector2(pose.origin.x,pose.origin.z))
 			lifted[i]=pose
 	result.grass_clump.append_array(crown_tufts)
+	# Reed-like accents belong to supported pond banks. Squashed broad blades
+	# used to read as loose green discs across the lawn; moss owns the rim now.
+	for kind in ["grass_clump","reeds"]:
+		var kept:Array=[]
+		for pose:Transform3D in result[kind]:
+			var at:=Vector2(pose.origin.x,pose.origin.z)
+			if _water_distance(field,at,pose.origin.y)<=.85 and _stable(field,at,pose.origin.y,.18):kept.append(pose)
+		result[kind]=kept
+	var lilies:Array=[]
+	for pose:Transform3D in result.lily:
+		var supported:=true
+		for part:Dictionary in assets.lily:
+			for vertex:Vector3 in part.mesh.get_faces():
+				var at:Vector3=pose*part.pose*vertex
+				var wet:Dictionary=field.surface_at(Vector2(at.x,at.z))
+				if wet.is_empty() or wet.water<0 or absf(wet.height-(pose.origin.y-.06))>.01:supported=false;break
+		if supported:lilies.append(pose)
+	result.lily=lilies
 	return result
+func _water_distance(field,p:Vector2,height:float)->float:
+	var distance:=INF
+	for level:int in field.water_regions:
+		if absf(level*.5-height)>.15:continue
+		for loop:PackedVector2Array in field.water_regions[level]:
+			for i in loop.size():distance=minf(distance,p.distance_to(Geometry2D.get_closest_point_to_segment(p,loop[i],loop[(i+1)%loop.size()])))
+	return distance
 func _column_layout(field,seed_value:int)->void:
 	# Crown and root placements share an editable contour span, with different
 	# meshes, depths and offsets. Unchanged spans retain cached placements.

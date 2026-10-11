@@ -27,7 +27,11 @@ void fragment(){
 	// Flat facets of this solid, facing the viewer.
 	vec3 facet=normalize(cross(dFdx(VERTEX),dFdy(VERTEX)));
 	if(dot(facet,VERTEX)>0.0)facet=-facet;
-	NORMAL=facet;
+	// A narrow rounded lighting response calms the knife-edge without
+ // moving cap vertices or adding a coloured perimeter band.
+ float edge_soft=crown_cover*(1.0-smoothstep(.015,.22,column_origin.y-world_position.y));
+ vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
+ NORMAL=normalize(mix(facet,up,edge_soft*.38));
 	vec3 world_normal=(INV_VIEW_MATRIX*vec4(facet,0.0)).xyz;
 	vec3 variation=rock_hash(floor(column_origin*2.3)+vec3(17.0));
 	// Facet shade from the source stone, softened; instance tone sets the block.

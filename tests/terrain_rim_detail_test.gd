@@ -9,14 +9,15 @@ func run():
  var ok:=field.surfaces.has("rim_green")
  if not ok:push_error("No attached overhanging green lip geometry");quit(1);return
  var lip=field.surfaces.rim_green
- var low:=0;var anchored:=0;var depths:Dictionary={}
+ var low:=0;var anchored:=0;var crests:=0;var depths:Dictionary={}
  for i in lip.vertices.size():
   var depth:float=lip.uv[i].x-lip.vertices[i].y
   if depth>.12:low+=1
+  if depth<0:crests+=1
   if absf(depth)<.02:anchored+=1
   depths[snappedf(depth,.05)]=true
-  ok=ok and depth<.85 and depth>-.02
- ok=ok and low>50 and anchored>50 and depths.size()>5
+  ok=ok and depth<.85 and depth>-.041
+ ok=ok and crests>50 and low>50 and anchored>50 and depths.size()>5
  var uploaded:=0
  for chunk:Vector2i in field.triangle_chunks:
   var mesh:ArrayMesh=field.build(chunk).rim_green

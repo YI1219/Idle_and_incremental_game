@@ -727,17 +727,21 @@ func _shores(loop:PackedVector2Array,height:float)->void:
 			var u:float=float(column+1)/columns
 			var p:=a.lerp(b,t);var q:=a.lerp(b,u)
 			var np:=na.lerp(nb,t).normalized();var nq:=na.lerp(nb,u).normalized()
-			var wp:=shore_weight(p,height);var wq:=shore_weight(q,height)
+			var wp:=.30+.70*shore_weight(p,height);var wq:=.30+.70*shore_weight(q,height)
 			if maxf(wp,wq)<.02:continue
 			var width_p:float=(.55+.18*sin(p.x*.61+p.y*.43))*wp+.04
 			var width_q:float=(.55+.18*sin(q.x*.61+q.y*.43))*wq+.04
 			if not shore_support(p,np,height,width_p) or not shore_support(q,nq,height,width_q):continue
 			var outer_p:=Vector3(p.x+np.x*width_p,height+.007,p.y+np.y*width_p)
 			var outer_q:=Vector3(q.x+nq.x*width_q,height+.007,q.y+nq.y*width_q)
-			var rim_p:=Vector3(p.x+np.x*.025,height+.09*wp,p.y+np.y*.025)
-			var rim_q:=Vector3(q.x+nq.x*.025,height+.09*wq,q.y+nq.y*.025)
-			var inner_p:=Vector3(p.x-np.x*.30,height-.16,p.y-np.y*.30)
-			var inner_q:=Vector3(q.x-nq.x*.30,height-.16,q.y-nq.y*.30)
+			# Centimetre-scale scallops soften the visible bank, while the
+			# authored pond and its water mesh remain exactly unchanged.
+			var scallop_p:=.035+.105*sin(p.x*3.1+p.y*2.7)
+			var scallop_q:=.035+.105*sin(q.x*3.1+q.y*2.7)
+			var rim_p:=Vector3(p.x-np.x*scallop_p,height+(.035+.025*sin(p.x*2.7+p.y*1.9))*wp,p.y-np.y*scallop_p)
+			var rim_q:=Vector3(q.x-nq.x*scallop_q,height+(.035+.025*sin(q.x*2.7+q.y*1.9))*wq,q.y-nq.y*scallop_q)
+			var inner_p:=Vector3(p.x-np.x*(.25+.10*sin(p.x*1.3+p.y)),height-.16,p.y-np.y*(.25+.10*sin(p.x*1.3+p.y)))
+			var inner_q:=Vector3(q.x-nq.x*(.25+.10*sin(q.x*1.3+q.y)),height-.16,q.y-nq.y*(.25+.10*sin(q.x*1.3+q.y)))
 			var start:int=surfaces.shore.vertices.size()
 			surfaces.shore.quad(outer_p,outer_q,rim_q,rim_p,Color(.30,.32,.14),true)
 			surfaces.shore.quad(rim_p,rim_q,inner_q,inner_p,Color(.30,.35,.24),true)

@@ -23,7 +23,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      var center:=a.lerp(b,(k+.5)/count)
      var choice:=_hash(center*2.1+Vector2(h,7))
      var patch:=_hash((center*.60).floor()+Vector2(h,29))
-     if patch<.56 or choice<.18:continue
+     if patch<.44 or choice<.18:continue
      # Only crown-backed final boundary segments get flaps; skip water lips
      # and raw terrace joins. No orphan cards in the waterfall openings.
      var on_crown:=false
@@ -48,14 +48,15 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
       var w:=width*(.24+.08*_hash(c+Vector2(3,5)))
       var d:=depth*(.55+.45*_hash(c*7.0))
       var l:=c-tangent*w;var r:=c+tangent*w
-      var top_l:=Vector3(l.x,h-.014,l.y)-outward*.025
-      var top_r:=Vector3(r.x,h-.014,r.y)-outward*.025
+      var top_l:=Vector3(l.x,h-.014,l.y)-outward*.055
+      var top_r:=Vector3(r.x,h-.014,r.y)-outward*.055
       var shoulder_l=_drape(l,out,h-.07,faces[h])
       var shoulder_r=_drape(r,out,h-.06,faces[h])
       var tip_l=_drape(c-tangent*w*.44,out,h-d,faces[h])
       var tip_r=_drape(c+tangent*w*.36,out,h-d*.91,faces[h])
       if shoulder_l==null or shoulder_r==null or tip_l==null or tip_r==null:continue
-      var outline:Array=[top_l,top_r,shoulder_r,tip_r,tip_l,shoulder_l]
+      var crest:=Vector3(c.x,h+.015+.025*_hash(c*3.1),c.y)-outward*.008
+      var outline:Array=[top_l,crest,top_r,shoulder_r,tip_r,tip_l,shoulder_l]
       var ridge:Vector3=(top_l+top_r+tip_l+tip_r)*.25+outward*.075
       for j in outline.size():
        var va:Vector3=outline[j];var vb:Vector3=outline[(j+1)%outline.size()]
