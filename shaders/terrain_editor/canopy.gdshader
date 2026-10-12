@@ -37,8 +37,8 @@ void fragment(){
 	color=mix(color*vec3(.84,.92,.82),color*vec3(1.08,1.10,1.02),crown*leaf);
 	float breath=sin(world_position.x*1.35+world_position.z*1.05)*.5+.5;
 	float high=sin(world_position.x*.62-world_position.y*.4+world_position.z*.5)*.5+.5;
-	color=mix(color,color*vec3(.92,1.08,.90),leaf*breath*.22);
-	color=mix(color,color*vec3(1.05,1.02,.92),leaf*high*.12);
+	color=mix(color,color*vec3(.82,1.14,.78),leaf*breath*.42);
+	color=mix(color,color*vec3(1.08,1.04,.90),leaf*high*.20);
 	color*=mix(1.0,1.0-foliage_belly,under*leaf);
 	float contact=(1.0-smoothstep(0.0,.22,rise))*smoothstep(-.05,.02,rise);
 	color*=mix(1.0,.76,contact*(1.0-leaf));

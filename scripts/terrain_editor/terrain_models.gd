@@ -52,15 +52,14 @@ func load_assets()->void:
 	tree.append_array(_join_crown(crown_parts))
 	assets.tree=tree
 	var spray:Array=[]
-	# Flatten retained oak lobes into pointed leaf blades. Unequal paired
-	# leaves form one overlapping spray rather than three rounded beads.
+	# Wide sage drapes. The old blades tapered to needles and read as spikes
+	# against the grey cut; overlapping blunt leaves hang as one soft mass.
 	var blades:Array=[
-		[Vector3(-.06,.06,.012),-.48,Vector3(.22,.62,.07)],
-		[Vector3(.07,.02,.014),.42,Vector3(.20,.56,.065)],
-		[Vector3(-.02,-.16,.010),-.18,Vector3(.18,.50,.06)],
-		[Vector3(.03,-.12,.010),.22,Vector3(.16,.46,.055)],
-		[Vector3(.00,.10,.008),.06,Vector3(.24,.58,.06)],
-		[Vector3(-.01,-.02,.006),-.06,Vector3(.15,.42,.05)],
+		[Vector3(0.00,-0.02,0.03),-0.10,Vector3(0.72,0.30,0.26)],
+		[Vector3(-0.12,-0.08,0.02),-0.46,Vector3(0.60,0.26,0.22)],
+		[Vector3(0.12,-0.10,0.02),0.42,Vector3(0.56,0.24,0.20)],
+		[Vector3(-0.04,-0.16,0.016),-0.18,Vector3(0.50,0.20,0.18)],
+		[Vector3(0.06,-0.18,0.016),0.22,Vector3(0.46,0.18,0.16)],
 	]
 	for i in blades.size():
 		var spec:Array=blades[i]
@@ -83,9 +82,9 @@ func load_assets()->void:
 		assets[kind][0].mesh.surface_set_material(0,material)
 	for kind in ["tree","bush","vine"]:
 		if not assets.has(kind) or assets[kind].is_empty():continue
-		var soft:=.88 if kind=="tree" else (.84 if kind=="bush" else .80)
-		var belly:=.30 if kind=="tree" else (.22 if kind=="bush" else .06)
-		var lift:=1.04 if kind=="tree" else (1.08 if kind=="bush" else 1.28)
+		var soft:=.84 if kind=="tree" else (.88 if kind=="bush" else .90)
+		var belly:=.34 if kind=="tree" else (.22 if kind=="bush" else .10)
+		var lift:=1.02 if kind=="tree" else (1.06 if kind=="bush" else 1.08)
 		assets[kind][0].mesh.surface_set_material(0,_canopy_material(soft,belly,lift))
 
 func _shrub_clusters(source:Array)->Array:
@@ -119,11 +118,15 @@ func _join_crown(parts:Array)->Array:
 	# The current oak source has one active foliage surface per arranged mass.
 	# Preserve an unfamiliar source assembly rather than assume its indexing.
 	if parts.size()!=4:return parts
-	# One hull around the four masses. Separate gems read as popcorn;
-	# the shared hull is a single soft crown, still outside every leaf point.
-	return [_crown_hull(parts)]
+	# One convex hull of the four masses was a faceted umbrella. Overlapping
+	# rounded lobes keep every oak point inside some closed surface and break
+	# that single gem outline into an irregular canopy.
+	var gathered:Dictionary=_crown_points(parts)
+	var masses:Array=_canopy_masses(gathered.points,gathered.shades)
+	if masses.is_empty():return [_crown_hull(parts)]
+	return masses
 
-func _crown_hull(parts:Array)->Dictionary:
+func _crown_points(parts:Array)->Dictionary:
 	var points:=PackedVector3Array()
 	var shades:=PackedColorArray()
 	var seen:Dictionary={}
@@ -137,6 +140,155 @@ func _crown_hull(parts:Array)->Dictionary:
 			seen[point]=points.size()
 			points.append(point)
 			shades.append(colors[i]*part.get("tint",Color.WHITE))
+	return {"points":points,"shades":shades}
+
+func _canopy_masses(points:PackedVector3Array,shades:PackedColorArray)->Array:
+	if points.size()<4:return []
+	var center:=Vector3.ZERO
+	var low:=INF
+	var high:=-INF
+	for point:Vector3 in points:
+		center+=point
+		low=minf(low,point.y)
+		high=maxf(high,point.y)
+	center/=points.size()
+	var radius:=.15
+	for point:Vector3 in points:radius=maxf(radius,Vector2(point.x-center.x,point.z-center.z).length())
+	var span:=maxf(high-low,.25)
+	# Shells centred on the oak cloud inflate into one ellipsoid. Each mass
+	# owns a wedge and is pushed outward, so the union outline is lobed.
+	var specs:Array=[
+		{"ang":0.4,"push":.32,"rad":1.02,"y":.20,"ys":.70,"wedge":1.55,"tint":Color(.34,.45,.22),"spin":.3},
+		{"ang":2.4,"push":.38,"rad":.98,"y":.36,"ys":.62,"wedge":1.45,"tint":Color(.40,.51,.26),"spin":1.5},
+		{"ang":4.2,"push":.28,"rad":.96,"y":.12,"ys":.66,"wedge":1.50,"tint":Color(.36,.46,.23),"spin":2.3},
+		{"ang":5.5,"push":.20,"rad":.74,"y":.60,"ys":.52,"wedge":1.35,"tint":Color(.45,.55,.29),"spin":3.2},
+	]
+	var lobes:Array=[]
+	var covered:Dictionary={}
+	for spec:Dictionary in specs:
+		var ang:=float(spec.ang)
+		var dir:=Vector3(cos(ang),0.0,sin(ang))
+		var shell_c:=center+dir*radius*float(spec.push)
+		shell_c.y=lerpf(low,high,float(spec.y))
+		var indices:Array=[]
+		for i in points.size():
+			var offset:Vector3=points[i]-center
+			var flat:=Vector2(offset.x,offset.z)
+			var delta:=0.0 if flat.length()<.02 else absf(angle_difference(atan2(offset.z,offset.x),ang))
+			if delta<=float(spec.wedge):
+				indices.append(i)
+				covered[i]=true
+		if indices.size()<3:
+			var nearest:=0
+			var best:=INF
+			for i in points.size():
+				var dist:float=points[i].distance_squared_to(shell_c)
+				if dist<best:best=dist;nearest=i
+			indices=[nearest,nearest,nearest]
+		var radii:=Vector3(radius*float(spec.rad),span*float(spec.ys)+.1,radius*float(spec.rad)*.9)
+		var cloud:Dictionary=_shell(shell_c,radii,spec.tint,float(spec.spin))
+		for index:int in indices:
+			cloud.points.append(points[index])
+			cloud.shades.append(spec.tint)
+		var lobe:Dictionary=_hull_cloud(cloud)
+		if not lobe.is_empty():lobes.append(lobe)
+	var rest:Array=[]
+	for i in points.size():
+		if not covered.has(i):rest.append(i)
+	if rest.size()>0:
+		while rest.size()<3:rest.append(rest[0])
+		var lobe:Dictionary=_fit_lobe(points,rest,Color(.38,.48,.25),1.16,.8,1.2,center,.2)
+		if not lobe.is_empty():lobes.append(lobe)
+	return lobes
+
+func _fit_lobe(points:PackedVector3Array,indices:Array,tint:Color,margin:float,y_stretch:float,spin:float,pull:Vector3=Vector3.ZERO,pull_weight:float=0.0)->Dictionary:
+	var center:=Vector3.ZERO
+	for index:int in indices:center+=points[index]
+	center/=indices.size()
+	if pull_weight>0.0:center=center.lerp(pull,pull_weight)
+	var extent:=Vector3(.08,.08,.08)
+	for index:int in indices:
+		var delta:Vector3=(points[index]-center).abs()
+		extent.x=maxf(extent.x,delta.x)
+		extent.y=maxf(extent.y,delta.y)
+		extent.z=maxf(extent.z,delta.z)
+	var scale:=1.0
+	for index:int in indices:
+		var delta:Vector3=points[index]-center
+		var ellipse:=sqrt(pow(delta.x/extent.x,2.0)+pow(delta.y/extent.y,2.0)+pow(delta.z/extent.z,2.0))
+		scale=maxf(scale,ellipse/.82)
+	var radii:=extent*scale*margin
+	radii.y*=y_stretch
+	var cloud:Dictionary=_shell(center,radii,tint,spin)
+	for index:int in indices:
+		cloud.points.append(points[index])
+		cloud.shades.append(tint)
+	return _hull_cloud(cloud)
+
+func _shell(center:Vector3,radii:Vector3,tint:Color,spin:float)->Dictionary:
+	var points:=PackedVector3Array()
+	var shades:=PackedColorArray()
+	var rot:=Basis.from_euler(Vector3(spin*.12,spin,spin*.05))
+	var lit:=Color(minf(tint.r*1.14,1.0),minf(tint.g*1.08,1.0),minf(tint.b*.98,1.0))
+	for dir:Vector3 in _ico_dirs(2):
+		# Low-frequency scallop. The convex hull keeps the mass closed; the
+		# outline is no longer a perfect ellipsoid.
+		var horizontal:=1.0-absf(dir.y)
+		var lobe:=absf(sin(dir.x*2.4+spin*1.6))*absf(sin(dir.z*2.1-spin*.7))
+		var wobble:=lerpf(1.0,.80+.30*lobe,horizontal)
+		var lifted:=0.94+.06*lobe
+		points.append(center+rot*Vector3(dir.x*radii.x*wobble,dir.y*radii.y*lifted,dir.z*radii.z*wobble))
+		shades.append(tint.lerp(lit,clampf(dir.y*.5+.5,0.0,1.0)*.6))
+	return {"points":points,"shades":shades}
+
+func _ico_dirs(subdiv:int)->PackedVector3Array:
+	var phi:=(1.0+sqrt(5.0))*.5
+	var verts:Array=[
+		Vector3(-1,phi,0),Vector3(1,phi,0),Vector3(-1,-phi,0),Vector3(1,-phi,0),
+		Vector3(0,-1,phi),Vector3(0,1,phi),Vector3(0,-1,-phi),Vector3(0,1,-phi),
+		Vector3(phi,0,-1),Vector3(phi,0,1),Vector3(-phi,0,-1),Vector3(-phi,0,1),
+	]
+	var faces:Array=[
+		[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],
+		[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],
+		[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],
+		[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1],
+	]
+	for _step in subdiv:
+		var cache:Dictionary={}
+		var next:Array=[]
+		for face:Array in faces:
+			var ab:int=_ico_mid(verts,cache,face[0],face[1])
+			var bc:int=_ico_mid(verts,cache,face[1],face[2])
+			var ca:int=_ico_mid(verts,cache,face[2],face[0])
+			next.append([face[0],ab,ca])
+			next.append([face[1],bc,ab])
+			next.append([face[2],ca,bc])
+			next.append([ab,bc,ca])
+		faces=next
+	var dirs:=PackedVector3Array()
+	for point:Vector3 in verts:dirs.append(point.normalized())
+	return dirs
+
+func _ico_mid(verts:Array,cache:Dictionary,i:int,j:int)->int:
+	var key:=mini(i,j)*8192+maxi(i,j)
+	if cache.has(key):return int(cache[key])
+	var point:Vector3=((verts[i] as Vector3)+(verts[j] as Vector3)).normalized()
+	var id:=verts.size()
+	verts.append(point)
+	cache[key]=id
+	return id
+
+func _crown_hull(parts:Array)->Dictionary:
+	var gathered:Dictionary=_crown_points(parts)
+	var hull:Dictionary=_hull_cloud(gathered)
+	if hull.is_empty():return _merge(parts)
+	return hull
+
+func _hull_cloud(cloud:Dictionary)->Dictionary:
+	var points:PackedVector3Array=cloud.points
+	var shades:PackedColorArray=cloud.shades
+	if points.size()<4:return {}
 	# The native convex shape provides an indexed solid surface alongside its
 	# debug lines. Copy only the solid triangles into the render resource.
 	var shape:=ConvexPolygonShape3D.new()
@@ -175,7 +327,7 @@ func _crown_hull(parts:Array)->Dictionary:
 			var b:int=indices[i+1] if not indices.is_empty() else i+1
 			var c:int=indices[i+2] if not indices.is_empty() else i+2
 			builder.triangle(vertices[a],vertices[b],vertices[c],(hull_shades[a]+hull_shades[b]+hull_shades[c])/3.0)
-	if builder.vertices.is_empty():return _merge(parts)
+	if builder.vertices.is_empty():return {}
 	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
 
 func _canopy_material(soft:float,belly:float,lift:float=1.0)->ShaderMaterial:
@@ -465,24 +617,49 @@ func _flatten_bloom(point:Vector3,box:AABB)->Vector3:
 func _vine_leaf(point:Vector3,box:AABB)->Vector3:
 	var center:=box.position+box.size*.5
 	var radius:=box.size*.5
-	var leaf:=_round_leaf(point,box,.16)-center
+	var leaf:=_round_leaf(point,box,.62)-center
 	var along:=clampf((leaf.y+radius.y)/maxf(radius.y*2.0,.0001),0,1)
-	leaf.x*=lerpf(.95,.32,pow(along,1.05))
-	leaf.z*=lerpf(.58,.18,pow(along,1.05))
-	leaf.y*=1.05
-	return center+leaf
+	# Squat pad. The oak leaf's corners still read as paper spikes on the cut.
+	var unit:=leaf/radius.max(Vector3.ONE*.0001)
+	var dir:=unit.normalized() if unit.length_squared()>1e-8 else Vector3.UP
+	var uneven:=.94+.06*sin(dir.x*3.1+dir.z*2.4)
+	return center+Vector3(dir.x*radius.x*uneven,dir.y*radius.y*.38,dir.z*radius.z*.76*uneven)
 
 func _reed_models()->Array:
-	var parts:=_grass_models("Grass_Common_Short")
-	for part:Dictionary in parts:
-		var box:AABB=part.pose*part.mesh.get_aabb()
-		var basis:=Basis.IDENTITY.scaled(Vector3(.32,.29,.32)/box.size.max(Vector3.ONE*.0001))
-		var foot:=Vector3(box.get_center().x,box.position.y,box.get_center().z)
-		part.pose=Transform3D(basis,-(basis*foot))*part.pose
-		var mat:ShaderMaterial=part.mesh.surface_get_material(0)
-		mat.set_shader_parameter("dark_color",Vector3(.18,.26,.13))
-		mat.set_shader_parameter("light_color",Vector3(.40,.50,.26))
-	return parts
+	# Soft bank tufts. Alpha-cut grass blades stayed as dark spikes in the
+	# wallpaper read; short leaning ribbons share the olive nap instead.
+	var surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
+	# Placement multiplies by about 3. These local sizes stay a low bank tuft,
+	# not a spread of flat leaves and not a stand of spikes.
+	for blade in 8:
+		var yaw:=blade*.78+.15
+		var dir:=Vector3(cos(yaw),0,sin(yaw))
+		var right:=Vector3(-dir.z,0,dir.x)
+		var lean:=.032+.012*float(blade%3)
+		var height:=.048+.016*float(blade%4)
+		var width:=.015+.005*float(blade%3)
+		var segments:=4
+		for segment in segments:
+			var t0:=float(segment)/float(segments)
+			var t1:=float(segment+1)/float(segments)
+			var c0:=_reed_point(dir,lean,height,t0)
+			var c1:=_reed_point(dir,lean,height,t1)
+			var w0:=maxf(width*(1.0-.28*t0),width*.7)
+			var w1:=maxf(width*(1.0-.28*t1),width*.7)
+			var col:=Color(.40,.48,.26).lerp(Color(.50,.56,.32),t0)
+			var a:=c0-right*w0
+			var b:=c0+right*w0
+			var c:=c1+right*w1
+			var d:=c1-right*w1
+			surface.quad(a,b,c,d,col)
+			surface.quad(a,d,c,b,col)
+	var mesh:ArrayMesh=surface.mesh()
+	mesh.surface_set_material(0,_vertex_color_material())
+	return [{"mesh":mesh,"pose":Transform3D.IDENTITY}]
+
+func _reed_point(dir:Vector3,lean:float,height:float,t:float)->Vector3:
+	var bow:=t*t
+	return Vector3(dir.x*lean*bow,height*t*(1.0-.12*bow),dir.z*lean*bow)
 
 func _lily_models()->Array:
 	var surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()

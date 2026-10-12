@@ -107,7 +107,7 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
  var arrays:Array=[];arrays.resize(Mesh.ARRAY_MAX)
  arrays[Mesh.ARRAY_VERTEX]=positions;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_COLOR]=colors;arrays[Mesh.ARRAY_TEX_UV]=uv
  var mesh:=ArrayMesh.new();mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
- var render_mesh:=mesh
+ var render_arrays:Array=arrays
  if not root:
   var walls:Array=arrays.duplicate(true)
   for slot in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_NORMAL,Mesh.ARRAY_COLOR,Mesh.ARRAY_TEX_UV]:walls[slot].clear()
@@ -115,13 +115,198 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
    if absf(positions[i].y)+absf(positions[i+1].y)+absf(positions[i+2].y)<.00001:continue
    for j in 3:
     for slot in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_NORMAL,Mesh.ARRAY_COLOR,Mesh.ARRAY_TEX_UV]:walls[slot].append(arrays[slot][i+j])
-  render_mesh=ArrayMesh.new();render_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,walls)
+  render_arrays=walls
+ # Authoring mesh stays the convex footprint. The skin bows outward so a
+ # cut is no longer one flat wall; the top ring is not moved.
+ var render_mesh:=_weather_skin(render_arrays,seed_value)
  return {"mesh":mesh,"render_mesh":render_mesh,"height":bounds.size.y,"crown_z":crown_z,"span_x":1.0,"span_z":1.0}
 
 static func _pack(p:Vector3,bounds:AABB,root:bool)->Vector3:
  var vertex:=Vector3((p.x-bounds.get_center().x)/bounds.size.x,p.y,(p.z-bounds.get_center().z)/bounds.size.z)
  if root:vertex.z-=1.28*pow(clampf(-p.y,0.0,1.0),1.6)
  return vertex
+
+static func _q(p:Vector3)->Vector3i:
+ return Vector3i(roundi(p.x*10000.0),roundi(p.y*10000.0),roundi(p.z*10000.0))
+
+static func _ek(a:Vector3,b:Vector3)->String:
+ var qa:=_q(a);var qb:=_q(b)
+ if qb<qa:var swap:=qa;qa=qb;qb=swap
+ return "%d,%d,%d|%d,%d,%d"%[qa.x,qa.y,qa.z,qb.x,qb.y,qb.z]
+
+static func _vk(p:Vector3)->String:
+ var q:=_q(p)
+ return "%d,%d,%d"%[q.x,q.y,q.z]
+
+static func _unit(a:float)->float:
+ return fmod(abs(sin(a*12.9898)*43758.5453),1.0)
+
+static func _weather_skin(arrays:Array,seed_value:int)->ArrayMesh:
+ var positions:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
+ var normals:PackedVector3Array=arrays[Mesh.ARRAY_NORMAL]
+ var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR]
+ var groups:Dictionary={}
+ var order:Array=[]
+ for i in range(0,positions.size(),3):
+  var a:Vector3=positions[i];var b:Vector3=positions[i+1];var c:Vector3=positions[i+2]
+  var raw:Vector3=(b-a).cross(c-a)
+  var n:Vector3=normals[i]
+  if raw.length_squared()>1e-12:
+   var geo:=(-raw).normalized()
+   if n.dot(geo)<0.0:n=geo
+   else:n=n.normalized()
+  var key:="%d,%d,%d,%d"%[roundi(n.x*200.0),roundi(n.y*200.0),roundi(n.z*200.0),roundi(n.dot(a)*200.0)]
+  if not groups.has(key):
+   groups[key]={"normal":n,"tris":[]}
+   order.append(key)
+  groups[key].tris.append([a,b,c,colors[i]])
+ var faces:Array=[]
+ for key:String in order:
+  var group:Dictionary=groups[key]
+  var poly:PackedVector3Array=_boundary(group.tris)
+  faces.append({"normal":group.normal,"tris":group.tris,"poly":poly})
+ var edge_n:Dictionary={}
+ var edge_lock:Dictionary={}
+ for face:Dictionary in faces:
+  var poly:PackedVector3Array=face.poly
+  var steep:bool=absf((face.normal as Vector3).y)>.55
+  if poly.size()<3:continue
+  for i in poly.size():
+   var a:Vector3=poly[i];var b:Vector3=poly[(i+1)%poly.size()]
+   var ek:=_ek(a,b)
+   if not edge_n.has(ek):edge_n[ek]=Vector3.ZERO
+   edge_n[ek]=edge_n[ek]+face.normal
+   if steep or (a.y>-.028 and b.y>-.028):edge_lock[ek]=true
+ var out_v:=PackedVector3Array();var out_n:=PackedVector3Array();var out_c:=PackedColorArray();var out_u:=PackedVector2Array()
+ for face:Dictionary in faces:
+  var normal:Vector3=face.normal
+  var poly:PackedVector3Array=face.poly
+  if absf(normal.y)>.55 or poly.size()<3:
+   for tri:Array in face.tris:_push_flat(out_v,out_n,out_c,out_u,tri[0],tri[1],tri[2],tri[3],normal)
+   continue
+  var boundary:Array=[]
+  for i in poly.size():
+   var a:Vector3=poly[i];var b:Vector3=poly[(i+1)%poly.size()]
+   var ek:=_ek(a,b)
+   var nsum:Vector3=edge_n.get(ek,normal)
+   if nsum.length_squared()<.0001:nsum=normal
+   var locked:bool=edge_lock.has(ek)
+   for s in 4:boundary.append(_edge_point(a,b,float(s)/4.0,nsum.normalized(),seed_value,locked))
+  var center:=Vector3.ZERO
+  for p:Vector3 in poly:center+=p
+  center/=poly.size()
+  var span:=.2
+  for p:Vector3 in poly:span=maxf(span,p.distance_to(center))
+  # One smooth outward dome per cut. High-frequency lumps became knife shards;
+  # the amplitude is capped by the face so a small cut cannot grow a spike.
+  var dome:=_unit(center.x*.9+center.y*.45+center.z*1.15+float(seed_value)*.17)
+  var amp:=minf(.05+.22*dome,span*.24)
+  var count:int=boundary.size()
+  var rings:Array=[]
+  for ring in 5:
+   var row:Array=[]
+   var t:=float(ring)/4.0
+   var along:=1.0-t
+   if ring==0:row.append(center+normal*amp)
+   else:
+    for i in count:
+     var brim:Vector3=boundary[i]
+     var p:Vector3=center.lerp(brim,t)
+     if ring==4:p=brim
+     else:p+=normal*(amp*along*along)
+     row.append(p)
+   rings.append(row)
+  var tint:Color=face.tris[0][3]
+  for ring in 4:
+   var inner:Array=rings[ring]
+   var outer:Array=rings[ring+1]
+   if inner.size()==1:
+    for i in outer.size():
+     var j:=(i+1)%outer.size()
+     _push_out(out_v,out_n,out_c,out_u,inner[0],outer[i],outer[j],normal,tint,seed_value)
+   else:
+    for i in outer.size():
+     var j:=(i+1)%outer.size()
+     _push_out(out_v,out_n,out_c,out_u,inner[i],outer[i],outer[j],normal,tint,seed_value)
+     _push_out(out_v,out_n,out_c,out_u,inner[i],outer[j],inner[j],normal,tint,seed_value)
+ var result:=ArrayMesh.new()
+ if out_v.is_empty():
+  result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+  return result
+ var built:Array=[];built.resize(Mesh.ARRAY_MAX)
+ built[Mesh.ARRAY_VERTEX]=out_v;built[Mesh.ARRAY_NORMAL]=out_n;built[Mesh.ARRAY_COLOR]=out_c;built[Mesh.ARRAY_TEX_UV]=out_u
+ result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,built)
+ return result
+
+static func _boundary(tris:Array)->PackedVector3Array:
+ var count:Dictionary={};var dir:Dictionary={}
+ for tri:Array in tris:
+  for e in [[tri[0],tri[1]],[tri[1],tri[2]],[tri[2],tri[0]]]:
+   var ek:=_ek(e[0],e[1])
+   count[ek]=int(count.get(ek,0))+1
+   if not dir.has(ek):dir[ek]=[e[0],e[1]]
+ var adj:Dictionary={}
+ for ek:String in count:
+  if int(count[ek])!=1:continue
+  var a:Vector3=dir[ek][0];var b:Vector3=dir[ek][1]
+  if not adj.has(_vk(a)):adj[_vk(a)]=[]
+  if not adj.has(_vk(b)):adj[_vk(b)]=[]
+  adj[_vk(a)].append(b);adj[_vk(b)].append(a)
+ if adj.is_empty():return PackedVector3Array()
+ var start:Vector3
+ var found:=false
+ for ek:String in count:
+  if int(count[ek])!=1:continue
+  start=dir[ek][0];found=true;break
+ if not found:return PackedVector3Array()
+ var poly:=PackedVector3Array();var prev:String="";var cur:Vector3=start
+ for _guard in 48:
+  poly.append(cur)
+  var options:Array=adj.get(_vk(cur),[])
+  if options.is_empty():return PackedVector3Array()
+  var nxt:Vector3=options[0]
+  if options.size()>1 and _vk(nxt)==prev:nxt=options[1]
+  if _vk(nxt)==_vk(start) and poly.size()>2:return poly
+  prev=_vk(cur);cur=nxt
+ return PackedVector3Array()
+
+static func _edge_point(a:Vector3,b:Vector3,t:float,nsum:Vector3,seed_value:int,locked:bool)->Vector3:
+ var swap:=_q(b)<_q(a)
+ var p0:=b if swap else a
+ var p1:=a if swap else b
+ var u:=(1.0-t) if swap else t
+ var p:=p0.lerp(p1,u)
+ if locked:return p
+ var h:=_unit(p0.x*3.1+p0.y*1.7+p1.z*2.4+float(seed_value)*.17)
+ # A small bow, pinned at the corners. A larger shared-edge bow became a ridge.
+ var wobble:=sin(u*PI)*(0.02+0.04*h)
+ return p+nsum*wobble
+
+static func _bulk(p:Vector3,seed_value:int,fall:float)->float:
+ var n:=_unit(p.x*7.2+p.y*4.4+p.z*6.1+float(seed_value)*.13)
+ var m:=_unit(p.x*2.4-p.y*3.7+float(seed_value)*.07)
+ return fall*(0.012+0.05*n)*(0.55+0.45*m)
+
+static func _push_flat(out_v:PackedVector3Array,out_n:PackedVector3Array,out_c:PackedColorArray,out_u:PackedVector2Array,a:Vector3,b:Vector3,c:Vector3,color:Color,normal:Vector3)->void:
+ var geo:Vector3=(b-a).cross(c-a)
+ if geo.dot(normal)<0.0:var swap:=b;b=c;c=swap;geo=-geo
+ if geo.length_squared()<1e-14:return
+ var outward:=geo.normalized()
+ for p:Vector3 in [a,b,c]:
+  out_v.append(p);out_n.append(outward);out_c.append(color);out_u.append(Vector2.ZERO)
+
+static func _push_out(out_v:PackedVector3Array,out_n:PackedVector3Array,out_c:PackedColorArray,out_u:PackedVector2Array,a:Vector3,b:Vector3,c:Vector3,normal:Vector3,color:Color,seed_value:int)->void:
+ var geo:Vector3=(b-a).cross(c-a)
+ if geo.dot(normal)<0.0:var swap:=b;b=c;c=swap;geo=-geo
+ if geo.length_squared()<1e-14:return
+ var outward:=geo.normalized()
+ var mid:=(a+b+c)/3.0
+ var wear:=clampf(_bulk(mid,seed_value,1.0)/.07,0.0,1.0)
+ var moss:=Color(color.r*.78,color.g*.94,color.b*.74)
+ var tint:=color.lerp(Color(minf(color.r*1.08,1.0),minf(color.g*1.05,1.0),color.b*.98),wear*.45)
+ tint=tint.lerp(moss,(1.0-wear)*.28)
+ for p:Vector3 in [a,b,c]:
+  out_v.append(p);out_n.append(outward);out_c.append(tint);out_u.append(Vector2.ZERO)
 
 static func _intersections(planes:Array[Plane])->PackedVector3Array:
  var vertices:=PackedVector3Array()

@@ -58,11 +58,11 @@ vec3 cliff_weather(vec3 stone,vec3 p,vec3 n){
 	float pocket=stone_noise(p*vec3(.24,.12,.24)+vec3(9.0,2.0,4.0));
 	float moss=smoothstep(.64,.88,pocket)*mix(.28,1.0,max(shelf*.55,stain));
 	float veil=stone_noise(vec3(p.x*1.2,p.y*.20,p.z*1.2)+vec3(5.0,1.0,3.0));
-	float hang=smoothstep(.74,.92,veil)*smoothstep(.46,.72,column);
+	float hang=smoothstep(.52,.82,veil)*smoothstep(.30,.62,column);
 	hang*=1.0-smoothstep(.16,.58,n.y);
 	vec3 moss_col=vec3(.30,.44,.22)*(.92+.14*mass);
 	vec3 deep=vec3(.20,.32,.16);
-	stone=mix(stone,mix(moss_col,deep,hang*.45),clamp(moss*.50+hang*.58,0.0,.38));
+	stone=mix(stone,mix(moss_col,deep,hang*.45),clamp(moss*.55+hang*.66,0.0,.52));
 	float grit=stone_noise(p*3.2);
 	stone*=.96+.08*grit;
 	return stone;

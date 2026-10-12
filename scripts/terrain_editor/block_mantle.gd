@@ -2,7 +2,7 @@ extends RefCounted
 ## Fractured side stones over a continuous, calm bottom envelope.
 ## World-anchored Voronoi cells avoid horizontal courses and keep edits local.
 const Surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface
-const SIZE:=4.4
+const SIZE:=3.6
 
 static func _hash(p:Vector3)->float:
  return fposmod(sin(p.dot(Vector3(127.1,311.7,74.7)))*43758.5453,1.0)

@@ -134,7 +134,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				var patch_width:=.78+random_at(cell,data.seed,83)*.38
 				# Rim moss owns the top join; horizontal vine sprays at the old
 				# contour became loose green discs inside the merged crown lawn.
-				var strands:=2 if wide_patch and random_at(cell,data.seed,84)<.18 else 1
+				var strands:=2 if wide_patch and random_at(cell,data.seed,84)<.72 else 1
 				for strand in strands:
 					var length:=11+int(random_at(cell,data.seed,85+strand)*5) if wide_patch else 4+int(random_at(cell,data.seed,85)*4)
 					var offset:float=(float(strand)-float(strands-1)*.5)*patch_width*.42
@@ -486,10 +486,13 @@ func column_faces_near(point:Vector3)->PackedVector3Array:
 				if seen.has(index):continue
 				seen[index]=true
 				var column:Dictionary=_columns[index]
-				var vertices:PackedVector3Array=assets[column.kind][0].mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+				# Vines hang on the visible skin. The authoring solid stays the
+				# footprint; its flat cuts sit behind the weathered render.
+				var skin:Mesh=assets[column.kind][0].get("render_mesh",assets[column.kind][0].mesh)
+				var vertices:PackedVector3Array=skin.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 				for vertex:Vector3 in vertices:faces.append(column.pose*crown_remap(vertex,column.height))
 	for stone:Dictionary in _mass:
-		var mesh:Mesh=assets[stone.kind][0].mesh
+		var mesh:Mesh=assets[stone.kind][0].get("render_mesh",assets[stone.kind][0].mesh)
 		var bounds:AABB=stone.pose*mesh.get_aabb()
 		if not bounds.grow(2.0).has_point(point):continue
 		for vertex:Vector3 in mesh.get_faces():faces.append(stone.pose*vertex)
