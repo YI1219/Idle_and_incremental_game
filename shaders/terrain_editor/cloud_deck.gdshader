@@ -22,10 +22,10 @@ void fragment(){
  float thick=smoothstep(coverage,coverage+.30,body);
  // Billow sides facing the sun brighten; the far sides and thin rims fall
  // into a soft grey shadow, so stacked layers stay separable.
- float lit=clamp(.45+(body-toward_sun)*14.0,0.0,1.0);
- vec3 shade=vec3(.62,.56,.53);
- vec3 sunlit=vec3(1.0,.89,.72);
- vec3 color=mix(shade,sunlit,clamp(lit*.70+thick*.45-.10,0.0,1.0));
+ float lit=clamp(.55+(body-toward_sun)*12.0,0.0,1.0);
+ vec3 shade=vec3(.88,.82,.74);
+ vec3 sunlit=vec3(1.10,.99,.88);
+ vec3 color=mix(shade,sunlit,clamp(lit*.58+thick*.48+.08,0.0,1.0));
  vec3 view=world_position-CAMERA_POSITION_WORLD;
  float distance=length(view);
  vec2 p=sky_coord(view/distance);

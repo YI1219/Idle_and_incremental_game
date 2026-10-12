@@ -683,16 +683,16 @@ func _meadow_density(cell:Vector2i)->float:
 	var mid:=sin(x*2.05-z*.70)*sin(z*1.80+x*.55)
 	return clampf((broad*.55+mid*.45)*.5+.82,0.0,1.0)
 func _place_turf(result:Dictionary,field,data:Data,chunk:Vector2i)->void:
-	# Thatch from neighbouring clumps overlaps. Troughs stay covered. Path
-	# stones and the kitchen garden stay clear. The stability radius matches
-	# the thatch so a disc does not hover past a bank.
+	# Wide pads overlap into one carpet. Troughs stay covered. Path stones
+	# and the kitchen garden stay clear. The stability radius matches the
+	# pad so a disc does not hover past a bank.
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
 			var cell:=Vector2i(x,z)
 			var density:=_meadow_density(cell)
 			var shaped:=density*density*(3.0-2.0*density)
-			var accept:=lerpf(.66,.94,shaped)
-			for attempt in 84:
+			var accept:=lerpf(.78,.97,shaped)
+			for attempt in 78:
 				if random_at(cell,data.seed,8000+attempt)>accept:continue
 				var p:=Vector2(x+.02+random_at(cell,data.seed,8200+attempt)*.96,z+.02+random_at(cell,data.seed,8400+attempt)*.96)
 				if _near_path(p,.48) or p.distance_to(Vector2(-11,-7))<2.6:continue
@@ -700,11 +700,11 @@ func _place_turf(result:Dictionary,field,data:Data,chunk:Vector2i)->void:
 				var surface:Dictionary=field.surface_at(p)
 				if surface.is_empty() or surface.water>=0:continue
 				var h:float=surface.height
-				if not _stable(field,p,h,.16):continue
+				if not _stable(field,p,h,.18):continue
 				var yaw:=random_at(cell,data.seed,8600+attempt)*TAU
-				var scale:=lerpf(1.15,1.72,random_at(cell,data.seed,8800+attempt))
-				var tall:=lerpf(.82,1.08,random_at(cell,data.seed,9000+attempt))
-				var origin:=Vector3(p.x,h-.01+_lawn_relief(field,p,h),p.y)
+				var scale:=lerpf(1.55,2.35,random_at(cell,data.seed,8800+attempt))
+				var tall:=lerpf(.94,1.06,random_at(cell,data.seed,9000+attempt))
+				var origin:=Vector3(p.x,h-.0015+_lawn_relief(field,p,h),p.y)
 				result.turf.append(_transform(origin,yaw,Vector3(scale,tall,scale)))
 func _lawn_relief(field,p:Vector2,h:float)->float:
 	# Matches the open-lawn sine used by the cap. Near a drop the wave fades
@@ -738,17 +738,18 @@ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
 			instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if kind=="turf" else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			parent.add_child(instance)
 static func _turf_tone(origin:Vector3)->Color:
-	# Linear multiplier around white. The shader owns the olive; this only
-	# shifts value and a little warmth from clump to clump.
+	# Almost white. World-space cover owns the olive, so a clump does not
+	# cut a disc out of the carpet.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)
 	var b:=fposmod(sin(origin.x*19.19+origin.z*41.13)*24634.6345,1.0)
-	var value:=lerpf(.97,1.03,a)
-	return Color(value,value*lerpf(.99,1.02,b),value*lerpf(.98,1.02,b),1.0)
+	var value:=lerpf(.992,1.012,a)
+	return Color(value,value*lerpf(.996,1.008,b),value*lerpf(.994,1.006,b),1.0)
 static func _stone_tone(origin:Vector3)->Color:
-	# Deterministic per-stone value and hue: warm ochre, cool slate and moss-dark.
+	# Weathered grey. A little warmth, a cooler slate, and a rare moss-dark.
+	# The dark end stays high so a crown does not turn to brown mud.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)
 	var b:=fposmod(sin(origin.x*39.346+origin.z*11.135)*24634.6345,1.0)
-	var value:=lerpf(.68,1.08,a)
-	var warm:=Color(1.04,.98,.88).lerp(Color(.88,.92,.96),b)
-	if b>.82:warm=Color(.86,.92,.78)
+	var value:=lerpf(.88,1.14,a)
+	var warm:=Color(1.00,.99,.96).lerp(Color(.92,.95,.98),b)
+	if b>.88:warm=Color(.86,.92,.84)
 	return Color(warm.r*value,warm.g*value,warm.b*value,1.0)

@@ -7,7 +7,7 @@ const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
 @export var sunlight_energy := 1.78
 @export var fill_energy := 0.035
-@export var ambient_energy := 0.10
+@export var ambient_energy := 0.13
 @export_range(0.0,1.0) var background_haze := 0.64
 var data:=Data.new()
 var renderer:=Renderer.new()
@@ -83,13 +83,13 @@ func _setup_environment()->void:
 	env.environment.sky=sky
 	var settings:=env.environment
 	settings.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-	settings.ambient_light_color=Color("d2c2ac")
+	settings.ambient_light_color=Color("e6d6c2")
 	settings.ambient_light_energy=ambient_energy
 	# AgX holds the warm mist and olive lawn. Exposure stays near 1 so the
 	# sky does not blow out; contrast keeps the island from washing into the mist.
 	settings.tonemap_mode=Environment.TONE_MAPPER_AGX
-	settings.tonemap_exposure=1.05
-	settings.tonemap_agx_contrast=1.18
+	settings.tonemap_exposure=1.08
+	settings.tonemap_agx_contrast=1.12
 	settings.tonemap_agx_white=10.0
 	settings.ssao_enabled=true
 	settings.ssao_radius=.48
@@ -115,10 +115,10 @@ func _setup_environment()->void:
 	settings.adjustment_saturation=1.02
 	settings.fog_enabled=true
 	settings.fog_mode=Environment.FOG_MODE_EXPONENTIAL
-	settings.fog_light_color=Color("f6d0a0")
-	settings.fog_light_energy=.82
-	settings.fog_sun_scatter=.70
-	settings.fog_density=.00145
+	settings.fog_light_color=Color("fde8c8")
+	settings.fog_light_energy=1.05
+	settings.fog_sun_scatter=.80
+	settings.fog_density=.00128
 	settings.fog_sky_affect=0.0
 	add_child(env)
 func _process(delta:float)->void:

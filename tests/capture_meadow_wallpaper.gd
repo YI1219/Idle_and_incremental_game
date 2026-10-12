@@ -17,7 +17,7 @@ func _want(only:String,name:String)->bool:
 	return only.is_empty() or only==name
 func run()->void:
 	var args:=OS.get_cmdline_user_args()
-	OUT="res://art/review/terrain_fidelity/2026-10-12/meadow_wallpaper/"
+	OUT="res://art/review/terrain_fidelity/2026-10-12/living_carpet/"
 	var tag:="after"
 	var only:=""
 	for arg in args:

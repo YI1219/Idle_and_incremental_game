@@ -18,9 +18,9 @@ void sky(){
   vec3 source=textureLod(cloud_backdrop,uv,1.0).rgb;
   float density=smoothstep(.10,.65,source.r);
   float cloud_light=smoothstep(.24,.88,source.r);
-  vec3 cloud_color=mix(vec3(.64,.55,.49),vec3(1.0,.85,.62),cloud_light);
+  vec3 cloud_color=mix(vec3(.86,.78,.68),vec3(1.08,.96,.82),cloud_light);
   float sun=sky_sun_distance(p);
-  cloud_color+=vec3(.30,.20,.08)*exp(-sun*5.0);
+  cloud_color+=vec3(.24,.18,.08)*exp(-sun*4.2);
   color=mix(color,cloud_color,density*smoothstep(.14,.60,p.y)*(.92+(haze-.65)*.12));
   COLOR=mix(color,SKY_SUN_CORE,sky_sun_disc(p));
  }

@@ -30,8 +30,8 @@ vec3 stone_surface(vec3 p,vec3 n){
  float grain=stone_noise(p*8.0);
  float chip=stone_noise(p*3.3);
  float grit=stone_noise(p*12.5);
- vec3 stone=cliff_gray(.53)+vec3(.065,.075,.085);
- stone+=(cloud-.5)*vec3(.105,.115,.13)+(mineral-.5)*vec3(.09,.035,-.025);
+ vec3 stone=cliff_gray(.66)+vec3(.085,.088,.092);
+ stone+=(cloud-.5)*vec3(.09,.095,.10)+(mineral-.5)*vec3(.04,.035,.02);
  stone+=(chip-.5)*vec3(.045,.048,.05)+(grit-.5)*vec3(.03,.032,.034);
  return stone*(.98+grain*.04)*(1.0+(stone_map(p,n).r-.5)*.22);
 }

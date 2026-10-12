@@ -19,20 +19,14 @@ void vertex(){
 	}
 }
 void fragment(){
-	// The clump uses the cap colour at this spot. The root is a little
-	// darker so the tuft sits in the sod; the tip matches the lawn.
+	// The pad uses the cap colour at this spot, with no radial darkening,
+	// so the clump does not redraw itself on top of the carpet.
 	vec3 world=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 	float detail=1.0-smoothstep(.35,1.0,length(fwidth(world.xz))*9.0);
 	vec2 slope;
 	vec3 color=ground_cover(world.xz,detail,slope);
-	float tip=smoothstep(0.0,.65,UV.y);
-	// Slightly under the cap, never a paler card. The normal follows the
-	// same gentle tilt as the lawn so the tuft does not catch extra sun.
-	color*=mix(vec3(.90),vec3(.97),tip);
 	ALBEDO=color*COLOR.rgb;
-	// Same tilt as the cap. A geometric blade normal lights the fringe as a
-	// pale spike, so the tuft takes the lawn's light instead.
-	vec3 normal_world=normalize(vec3(-slope.x*.25,1.0,-slope.y*.25));
+	vec3 normal_world=normalize(vec3(-slope.x*.22,1.0,-slope.y*.22));
 	NORMAL=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
 	ROUGHNESS=1.0;
 }

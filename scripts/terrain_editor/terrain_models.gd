@@ -182,43 +182,62 @@ func _crown_hull(parts:Array)->Dictionary:
 func _push_turf(vertices:PackedVector3Array,normals:PackedVector3Array,colors:PackedColorArray,uv:PackedVector2Array,a:Vector3,b:Vector3,c:Vector3,ua:float,ub:float,uc:float)->void:
 	var facing:=(b-a).cross(c-a)
 	if facing.y<0.0:facing=-facing
-	var normal:=Vector3.UP if facing.length_squared()<1e-10 else facing.normalized().lerp(Vector3.UP,.25).normalized()
+	# Almost upward. The pad is only a few millimetres tall, and a facet
+	# normal would redraw that thickness as a shard.
+	var normal:=Vector3.UP if facing.length_squared()<1e-10 else facing.normalized().lerp(Vector3.UP,.92).normalized()
 	var white:=Color(1,1,1,1)
 	vertices.append(a);vertices.append(b);vertices.append(c)
 	normals.append(normal);normals.append(normal);normals.append(normal)
 	colors.append(white);colors.append(white);colors.append(white)
 	uv.append(Vector2(.5,ua));uv.append(Vector2(.5,ub));uv.append(Vector2(.5,uc))
 
+func _turf_pad(vertices:PackedVector3Array,normals:PackedVector3Array,colors:PackedColorArray,uv:PackedVector2Array,center:Vector3,radius:float,height:float,spin:float)->void:
+	# A wide cosine pad. Three rings keep the crown smooth; the rim sits in
+	# the sod. No upright fringe.
+	var sides:=12
+	var rings:=3
+	var pts:Array=[]
+	for ring in rings:
+		var t:=float(ring)/float(rings-1)
+		var y:=height*pow(cos(t*PI*0.5),2.0)
+		var rad:=radius*t
+		var ring_pts:Array[Vector3]=[]
+		var count:=1 if ring==0 else sides
+		for i in count:
+			var angle:=spin+TAU*float(i)/float(sides)
+			var wobble:=1.0
+			if ring==rings-1:wobble=.90+.14*absf(sin(float(i)*1.7+spin*3.0))
+			ring_pts.append(center+Vector3(cos(angle)*rad*wobble,y,sin(angle)*rad*(.94+.06*wobble)))
+		pts.append(ring_pts)
+	for ring in range(rings-1):
+		var inner:Array=pts[ring]
+		var outer:Array=pts[ring+1]
+		if inner.size()==1:
+			var uy:=clampf(inner[0].y/height,0.0,1.0)
+			for i in outer.size():
+				var j:=(i+1)%outer.size()
+				_push_turf(vertices,normals,colors,uv,inner[0],outer[i],outer[j],uy,clampf(outer[i].y/height,0.0,1.0),clampf(outer[j].y/height,0.0,1.0))
+		else:
+			for i in outer.size():
+				var j:=(i+1)%outer.size()
+				var ui:=clampf(inner[i].y/height,0.0,1.0)
+				var uj:=clampf(inner[j].y/height,0.0,1.0)
+				var oi:=clampf(outer[i].y/height,0.0,1.0)
+				var oj:=clampf(outer[j].y/height,0.0,1.0)
+				_push_turf(vertices,normals,colors,uv,inner[i],outer[i],outer[j],ui,oi,oj)
+				_push_turf(vertices,normals,colors,uv,inner[i],outer[j],inner[j],ui,oj,uj)
+
 func _turf_models()->Array:
-	# A low opaque mound with a short wide fringe. Neighbouring mounds overlap
-	# into a continuous nap. Nothing here is tall enough to read as a card.
+	# Three overlapping pads make one soft clump. Neighbouring clumps overlap
+	# into a carpet. Height stays a few millimetres so a close crop does not
+	# resolve a faceted mound or an upright shard.
 	var vertices:=PackedVector3Array()
 	var normals:=PackedVector3Array()
 	var colors:=PackedColorArray()
 	var uv:=PackedVector2Array()
-	var sides:=8
-	var mid:Array[Vector3]=[]
-	var outer:Array[Vector3]=[]
-	for i in sides:
-		var angle:=TAU*float(i)/float(sides)
-		var wobble:=.85+.22*absf(sin(float(i)*1.7))
-		var radius:=.055*wobble
-		mid.append(Vector3(cos(angle)*radius*.62,.014+.006*absf(sin(float(i)*2.1)),sin(angle)*radius*.62))
-		outer.append(Vector3(cos(angle)*radius,.003,sin(angle)*radius))
-	var apex:=Vector3(0.0,.015,0.0)
-	for i in sides:
-		var j:=(i+1)%sides
-		_push_turf(vertices,normals,colors,uv,apex,mid[i],mid[j],.85,.55,.55)
-		_push_turf(vertices,normals,colors,uv,mid[i],outer[i],outer[j],.45,.08,.08)
-		_push_turf(vertices,normals,colors,uv,mid[i],outer[j],mid[j],.45,.08,.45)
-		# Short wide fringe, folded so the edge has thickness.
-		var forward:Vector3=outer[i].normalized()
-		var side:Vector3=Vector3(-forward.z,0.0,forward.x)
-		var root:Vector3=outer[i]
-		var tip:Vector3=root+forward*.008+Vector3(0.0,.016+.010*absf(sin(float(i)*1.3)),0.0)
-		var half:=.026+.006*absf(sin(float(i)*2.4))
-		_push_turf(vertices,normals,colors,uv,root-side*half,root+side*half,tip,.05,.05,.95)
-		_push_turf(vertices,normals,colors,uv,root-side*half,tip,tip-side*half*.35+Vector3(0.0,.004,0.0),.05,.95,.9)
+	_turf_pad(vertices,normals,colors,uv,Vector3(0.0,.001,0.0),.080,.0034,.4)
+	_turf_pad(vertices,normals,colors,uv,Vector3(.036,.0006,.018),.054,.0028,1.7)
+	_turf_pad(vertices,normals,colors,uv,Vector3(-.032,.0006,.024),.048,.0024,2.8)
 	var arrays:Array=[]
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX]=vertices

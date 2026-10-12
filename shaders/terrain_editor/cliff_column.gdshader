@@ -40,22 +40,27 @@ void fragment(){
 	vec3 variation=rock_hash(floor(column_origin*1.3)+vec3(17.0));
 	// One value for the whole block, with a small warm or cool shift.
 	// Face tint stays quiet so a flat cut does not break into wedges.
-	vec3 stone=stone_surface(world_position,material_normal)*mix(.86,1.12,variation.x);
-	stone*=mix(vec3(1.0),COLOR.rgb/.66,.28);
-	stone*=mix(vec3(.95,.97,1.02),vec3(1.05,1.02,.94),variation.y);
-	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
-	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;
-	stone*=.98+.04*streak;
-	stone*=mix(.90,1.0,smoothstep(-.85,.25,world_normal.y));
+	vec3 stone=stone_surface(world_position,material_normal)*mix(.92,1.10,variation.x);
+	stone*=mix(vec3(1.0),COLOR.rgb/.66,.22);
+	stone*=mix(vec3(.98,.99,1.01),vec3(1.02,1.01,.98),variation.y);
+	vec2 q=vec2(local_position.x*2.4+local_position.z*2.2+variation.y*9.0,local_position.y*1.1);
+	float streak=noise_column(q)*.6+noise_column(q*vec2(1.8,1.3)+vec2(4.1,7.3))*.4;
+	stone*=.96+.08*streak;
+	// Sun-worn on the upper outward face. Colour only; the normal stays
+	// the authored outward cut, so the crown does not scoop into a pit.
+	float worn=smoothstep(.05,.72,world_normal.y)*crown_cover;
+	stone=mix(stone,stone*vec3(1.12,1.10,1.06),worn*.40);
+	stone*=mix(.92,1.0,smoothstep(-.85,.25,world_normal.y));
 	float below=column_origin.y-world_position.y;
-	stone*=mix(1.0,.88,smoothstep(1.6,4.2,below));
-	// Thin joints at the packed edges, plus a short lip under the turf.
-	// Neither bends the face, so a plane stays a plane.
+	stone*=mix(1.0,.90,smoothstep(1.6,4.2,below));
+	// A broken cleft shadow, not a continuous course line. The face itself
+	// is not bent.
 	float side=max(abs(local_position.x),abs(local_position.z));
-	float joint=smoothstep(.455,.50,side)*crown_cover;
-	float lip=crown_cover*(1.0-smoothstep(.012,.05,-local_position.y));
-	lip*=.55+.45*noise_column(column_origin.xz*3.0+local_position.xz*5.0);
-	stone*=mix(1.0,.58,clamp(joint+lip*.5,0.0,1.0));
+	float seam=noise_column(local_position.xz*2.6+column_origin.xz*1.7);
+	float joint=smoothstep(.472,.505,side)*crown_cover*(.30+.70*seam);
+	float lip=crown_cover*(1.0-smoothstep(.008,.04,-local_position.y));
+	lip*=.35+.65*noise_column(column_origin.xz*2.2+local_position.xz*6.0);
+	stone*=mix(1.0,.84,clamp(joint*.80+lip*.32,0.0,1.0));
 	ALBEDO=stone;
 	ROUGHNESS=stone_map(world_position,material_normal).a;
 	SPECULAR=.08;

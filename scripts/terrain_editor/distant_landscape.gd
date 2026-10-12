@@ -4,9 +4,9 @@ extends Node3D
 ## Three mesh resources in cullable angular sectors; no shadows or colliders.
 ## Flat cloud decks between the mountain rings form the layered cloud sea.
 const CLOUD_DECKS:=[
- {"height":-150.0,"uv_scale":.0021,"coverage":.53,"opacity":.88,"offset":Vector2(.13,.71)},
- {"height":-270.0,"uv_scale":.0015,"coverage":.50,"opacity":.92,"offset":Vector2(.58,.29)},
- {"height":-420.0,"uv_scale":.0011,"coverage":.45,"opacity":.96,"offset":Vector2(.81,.47)},
+ {"height":-150.0,"uv_scale":.0021,"coverage":.44,"opacity":.94,"offset":Vector2(.13,.71)},
+ {"height":-270.0,"uv_scale":.0015,"coverage":.40,"opacity":.96,"offset":Vector2(.58,.29)},
+ {"height":-420.0,"uv_scale":.0011,"coverage":.36,"opacity":.98,"offset":Vector2(.81,.47)},
 ]
 var material:=ShaderMaterial.new()
 var cloud_materials:Array[ShaderMaterial]=[]

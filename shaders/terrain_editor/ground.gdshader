@@ -19,7 +19,7 @@ void fragment(){
 	// warm whisper of the lawn colour. It does not open into loam or grit.
 	float meadow=clamp((sin(p.x*1.15+p.y*.42)*sin(p.y*1.35-p.x*.33)*.55+sin(p.x*2.05-p.y*.70)*sin(p.y*1.80+p.x*.55)*.45)*.5+.82,0.0,1.0);
 	meadow=meadow*meadow*(3.0-2.0*meadow);
-	color=mix(color*vec3(.96,.97,.95),color,mix(.93,1.0,meadow));
+	color=mix(color*vec3(.985,.99,.98),color,mix(.97,1.0,meadow));
 	// Exposed crown patches, never a perimeter-distance stroke. Most of the
  // shared cap is turf, including its edge; sparse mineral windows stop inland.
  float patch=gc_noise(p*1.65+vec2(11.0,3.0));
