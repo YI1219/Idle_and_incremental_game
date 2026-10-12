@@ -14,5 +14,8 @@ void fragment(){
 	ALBEDO=mix(dark_color,light_color,lightness);
 	ALPHA=source.a;
 	ALPHA_SCISSOR_THRESHOLD=0.2;
-	ROUGHNESS=0.95;
+	ROUGHNESS=0.94;
+	SPECULAR=0.04;
+	vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
+	NORMAL=normalize(mix(NORMAL,up,.22));
 }

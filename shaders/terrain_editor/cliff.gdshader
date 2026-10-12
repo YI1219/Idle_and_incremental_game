@@ -9,7 +9,12 @@ void vertex(){
  VERTEX.y+=terrain_morph_offset(world_position);
 }
 void fragment(){
- vec3 material_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ vec3 authored=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ vec3 geometric=normalize(cross(dFdx(world_position),dFdy(world_position)));
+ // One outward normal for the whole cut. Smoothed normals bend across a
+ // large triangle and light its middle as a hollow.
+ if(dot(geometric,authored)<0.0)geometric=-geometric;
+ vec3 material_normal=geometric;
  // Short closure skirts share the calm downward response of the base.
  // This avoids a bright seam where small low-foot variations turn upward.
  if(UV.y<-.5)material_normal=normalize(mix(material_normal,vec3(0.0,-1.0,0.0),.72));

@@ -19,7 +19,20 @@ func run():
   var odd:=0
   for uses:int in edges.values():
    if uses%2!=0:odd+=1
-  if odd>0 or volume<=.001:failed.append({"key":str(body.key),"open_edges":odd,"volume":volume})
+  var pits:=0
+  var worst:=0.0
+  for i in range(0,surface.vertices.size(),3):
+   if surface.colors[i].r<.85:continue
+   var pa:Vector3=surface.vertices[i];var pb:Vector3=surface.vertices[i+1];var pc:Vector3=surface.vertices[i+2]
+   var face_raw:Vector3=(pb-pa).cross(pc-pa)
+   if face_raw.length_squared()<1e-10:continue
+   var outward:Vector3=(-face_raw).normalized()
+   if outward.dot(surface.normals[i])<.9:pits+=1;continue
+   for v:Vector3 in surface.vertices:
+    var dist:=outward.dot(v-pa)
+    worst=maxf(worst,dist)
+    if dist>.08:pits+=1;break
+  if odd>0 or volume<=.001 or pits>0:failed.append({"key":str(body.key),"open_edges":odd,"volume":volume,"inward_faces":pits,"worst_m":worst})
   minimum_volume=minf(minimum_volume,volume);triangles+=surface.vertices.size()/3
  var ok:bool=not result.bodies.is_empty() and failed.is_empty()
  print("BLOCK MANTLE: ",JSON.stringify({"bodies":result.bodies.size(),"triangles":triangles,"minimum_volume":minimum_volume,"build_ms":Time.get_ticks_msec()-start,"failed":failed,"passed":ok}))

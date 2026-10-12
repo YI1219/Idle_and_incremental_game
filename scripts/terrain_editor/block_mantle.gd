@@ -119,23 +119,10 @@ static func build(source,regions:Dictionary={})->Dictionary:
   var rect:=Rect2(hull[0],Vector2.ZERO)
   for p:Vector2 in hull:rect=rect.expand(p)
   if minf(rect.size.x,rect.size.y)<.28:continue
-  # Split selected broad faces on one off-centre fracture. The intersection
-  # vertices also belong to the side walls, keeping each mass watertight.
   var outline:Array=[]
-  var crease:=Vector3(.65,.30,0);var cut:=choice-.5
   for p:Vector2 in hull:outline.append(Vector3(p.x,p.y,0))
-  var faces:Array=[outline]
-  if choice>.35:
-   faces=[_clip(outline,crease,cut),_clip(outline,-crease,-cut)]
-   var divided:Array=[]
-   for j in outline.size():
-    var a:Vector3=outline[j];var b:Vector3=outline[(j+1)%outline.size()]
-    var da:=crease.dot(a)-cut;var db:=crease.dot(b)-cut
-    divided.append(a)
-    if da*db<-.0000001:divided.append(a.lerp(b,da/(da-db)))
-   outline=divided
   var front:Array=[]
-  for p:Vector3 in outline:front.append(_face_point(p,center,axis,other,normal,offset,choice,caps[key]-.18))
+  for p:Vector3 in outline:front.append(_face_point(p,center,axis,other,normal,offset,choice))
   # A terrace may put lower lawn next to a higher cliff. Bound the whole
   # solid beneath any lawn its footprint crosses, including the buried back;
   # a closed volume must not turn into a grey shelf through that lower lawn.
@@ -151,12 +138,12 @@ static func build(source,regions:Dictionary={})->Dictionary:
     for level:float in regions:
      if preload("res://scripts/terrain_editor/contour_terrain.gd").contains(regions[level],at):top=maxf(top,level)
     if top!=-INF:ceiling=minf(ceiling,top-.18)
-  for j in front.size():front[j].y=minf(front[j].y,ceiling)
-  # Broad tilted planes meet along a fracture rather than a raised button.
-  for face:Array in faces:
-   var points:Array=[]
-   for p:Vector3 in face:points.append(_face_point(p,center,axis,other,normal,offset,choice,ceiling))
-   for j in range(1,points.size()-1):body.triangle(points[0],points[j+1],points[j],tint)
+  front=_clip(front,Vector3.UP,ceiling)
+  front=_drop_colinear(front)
+  if front.size()<3:continue
+  # One outward plane. Split halves used to fold through each other; the
+  # plate is a single convex cut clipped under the lawn instead.
+  for j in range(1,front.size()-1):body.triangle(front[0],front[j+1],front[j],tint)
   var rear:=center-normal*depth;rear.y=minf(rear.y,ceiling)
   for j in front.size():
    var a:Vector3=front[j];var b:Vector3=front[(j+1)%front.size()]
@@ -169,13 +156,32 @@ static func build(source,regions:Dictionary={})->Dictionary:
   bodies.append({"key":key,"surface":body,"area":area*.5,"depth":depth})
  return {"backing":backing,"stone":stone,"bodies":bodies}
 
-static func _face_point(p:Vector3,center:Vector3,axis:Vector3,other:Vector3,normal:Vector3,offset:float,choice:float,ceiling:float)->Vector3:
- var distance:=p.x*.65+p.y*.30+(.5-choice)
- var relief:=distance*.12
- if choice>.35:relief-=maxf(0.0,distance)*(.38+choice*.24)
- var point:=center+axis*p.x+other*p.y+normal*(offset+relief)
- point.y=minf(point.y,ceiling)
- return point
+static func _drop_colinear(poly:Array)->Array:
+ var guard:=0
+ var changed:=true
+ while changed and poly.size()>3 and guard<12:
+  changed=false
+  guard+=1
+  for j in poly.size():
+   var prev:Vector3=poly[(j+poly.size()-1)%poly.size()]
+   var curr:Vector3=poly[j]
+   var nxt:Vector3=poly[(j+1)%poly.size()]
+   var edge:=nxt-prev
+   if edge.length_squared()<1e-12 or curr.distance_squared_to(prev)<1e-12:
+    poly.remove_at(j);changed=true;break
+   var closest:=prev+edge*clampf((curr-prev).dot(edge)/edge.length_squared(),0.0,1.0)
+   var kink:=curr.distance_to(closest)
+   # A centimetre-scale kink on a long edge extrudes into a dark knife between cuts.
+   if kink<.06 and kink<edge.length()*.08:
+    poly.remove_at(j);changed=true;break
+ return poly
+
+static func _face_point(p:Vector3,center:Vector3,axis:Vector3,other:Vector3,normal:Vector3,offset:float,choice:float)->Vector3:
+ # A constant outward offset. The previous signed relief pushed one half of
+ # a split face through the plate, and the outer triangles read as hollows.
+ # choice is retained so split faces stay on the same stream as before.
+ var proud:=maxf(offset,.08)+.04+choice*.015
+ return center+axis*p.x+other*p.y+normal*proud
 
 static func close_base(source,regions:Dictionary={})->void:
  # Close the actual low boundary of the existing cliff envelope, not the

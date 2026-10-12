@@ -45,7 +45,7 @@ void fragment() {
 	// Actual bed depth remains authoritative. Bank distance shortens the
 	// apparent path over the shallow margin without painting an edge/foam ring.
 	float bed_depth = basin.g*4.0;
-	float path_depth = bed_depth*mix(.08,1.0,smoothstep(.04,.55,basin.r));
+	float path_depth = bed_depth*mix(.06,1.0,smoothstep(.0,.92,basin.r));
 	float absorption = 1.0-exp(-path_depth*1.45);
 	mat2 turn = mat2(vec2(.80,.60),vec2(-.60,.80));
 	mat2 fine_turn = mat2(vec2(.39,-.9208),vec2(.9208,.39));
@@ -84,7 +84,7 @@ void fragment() {
 	vec2 view_xz = normalize(world_position.xz-CAMERA_POSITION_WORLD.xz);
 	vec2 toward_lake = vec2(toward_lake_x,toward_lake_z);
 	float far_bank = smoothstep(.0,.6,-dot(view_xz,toward_lake/max(length(toward_lake),.0001)));
-	float bank_band = (1.0-smoothstep(.06,.38,basin.r))*far_bank*(1.0-basin.b);
+	float bank_band = (1.0-smoothstep(.02,.62,basin.r))*far_bank*(1.0-basin.b);
 	color = mix(color,bank_reflection,bank_band*.55);
 	// Receiving water is aerated and paler around the plunge.
 	color = mix(color,vec3(.76,.86,.86),basin.b*basin.b*.40);

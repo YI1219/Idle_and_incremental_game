@@ -342,8 +342,10 @@ func _profile_point(p:Vector2,y:float,normal:Vector2,profile:Dictionary)->Vector
 			# masses settle back before the foot; narrow necks and walls beside
 			# falls keep their proven profile.
 			var below:float=profile.top-point.y
-			var buttress:=_buttress(p)*smoothstep(.25,.85,below)
-			if buttress>0.0:buttress*=1.0-smoothstep(.55,.95,weight)
+			# Negative lobes folded the outer wall into pits: a vertex behind its
+			# neighbours becomes the dark centre of a fan. Keep the outward cuts.
+			var buttress:=maxf(0.0,_buttress(p))*smoothstep(.25,.85,below)
+			buttress*=1.0-smoothstep(.55,.95,weight)
 			point+=Vector3(normal.x,0,normal.y)*(buttress*.50+_shoulder(below))*mass
 			var band:=smoothstep(SHOULDER_DEPTH,SHOULDER_DEPTH+.32,below)
 			# The shell stays behind the whole rock mass, and steps further in
@@ -537,10 +539,10 @@ func _join_rock_chains(left:PackedVector3Array,right:PackedVector3Array)->void:
 		var start:int=surfaces.cliff.vertices.size()
 		# Shorter diagonals avoid thin folds when adjacent feature heights differ.
 		if b==right.size()-1 or (a<left.size()-1 and left[a+1].distance_squared_to(right[b])<=right[b+1].distance_squared_to(left[a])):
-			surfaces.cliff.triangle(left[a],left[a+1],right[b],Color("a8aba8"))
+			_cliff_triangle(left[a],left[a+1],right[b],Color("a8aba8"))
 			a+=1
 		else:
-			surfaces.cliff.triangle(left[a],right[b+1],right[b],Color("a8aba8"))
+			_cliff_triangle(left[a],right[b+1],right[b],Color("a8aba8"))
 			b+=1
 		if surfaces.cliff.vertices.size()==start+3:
 			_broad_faces.append(start)
@@ -567,7 +569,8 @@ func _cliff_span(a:Vector2,b:Vector2,normal_a:Vector2,normal_b:Vector2,profile_a
 		var r:=_profile_point(right,bottom,right_normal,right_profile)
 		var s:=_profile_point(left,bottom,left_normal,left_profile)
 		var start:int=surfaces.cliff.vertices.size()
-		surfaces.cliff.quad(p,s,r,q,Color("a8aba800"))
+		_cliff_triangle(p,s,r,Color("a8aba800"))
+		_cliff_triangle(p,r,q,Color("a8aba800"))
 		var left_land:=surface_at(left-left_normal*.25)
 		var right_land:=surface_at(right-right_normal*.25)
 		var left_cap:=Vector2(left_profile.rock_top,1.0 if not left_land.is_empty() and left_land.water<0 else 0.0)
@@ -578,6 +581,14 @@ func _cliff_span(a:Vector2,b:Vector2,normal_a:Vector2,normal_b:Vector2,profile_a
 		left=right
 		left_normal=right_normal
 		left_profile=right_profile
+
+func _cliff_triangle(a:Vector3,b:Vector3,c:Vector3,color:Color)->void:
+	# A long edge with a few centimetres of altitude is a folded knife, not a cut.
+	# It lights as a dark spike between otherwise convex faces.
+	var longest:=maxf(a.distance_to(b),maxf(b.distance_to(c),c.distance_to(a)))
+	var altitude:=(b-a).cross(c-a).length()/maxf(longest,.00001)
+	if longest>.35 and altitude<.05 and altitude<longest*.09:return
+	surfaces.cliff.triangle(a,b,c,color)
 
 func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 	# Measure the same filled outline that owns the cap and cliff boundary.
@@ -635,7 +646,8 @@ static func _rock_relief(point:Vector3)->float:
 				# than a smooth mound. Minimum distance keeps site joins continuous.
 				var distance:=maxf(maxf(axis.x,maxf(axis.y,axis.z)),(axis.x+axis.y+axis.z)*.57)
 				nearest=minf(nearest,distance)
-	return .75*clampf((.76-nearest)/.55,0.0,1.0)-.10
+	# Joints stay flush. A negative value folds the shoulder into a pit.
+	return maxf(0.0,.75*clampf((.76-nearest)/.55,0.0,1.0)-.10)
 
 func _mass_rock_relief(point:Vector3)->float:
 	return _volume_relief(point)
@@ -664,7 +676,7 @@ func _volume_relief(point:Vector3)->float:
 		delta/=sites[i+2]
 		var distance:=maxf(maxf(delta.x,delta.y),maxf(delta.z,(delta.x+delta.y+delta.z)*.54))
 		nearest=minf(nearest,distance)
-	return .52*clampf((.62-nearest)/.35,0,1)-.03
+	return maxf(0.0,.52*clampf((.62-nearest)/.35,0,1)-.03)
 
 func _mass_rock_rows(p:Vector2,profile:Dictionary)->Array[float]:
 	# Resolve actual changes in the column profile, rather than every candidate
@@ -1013,7 +1025,9 @@ func _rock_plane_normals()->void:
 			var key:Vector3=(p*10000.0).round()
 			var sum:=Vector3.ZERO
 			for weighted:Vector3 in incident[key]:
-				if face.dot(weighted.normalized())>.94:sum+=weighted
+				# Only nearly coplanar neighbours share a normal. A wider average
+				# bends a flat cut so its centre lights as a hollow.
+				if face.dot(weighted.normalized())>.99:sum+=weighted
 			surface.normals[i+j]=sum.normalized() if sum.length_squared()>.00000001 else face
 
 func _smooth_normals(surface)->void:

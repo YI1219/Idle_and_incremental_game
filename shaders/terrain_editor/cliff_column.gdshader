@@ -25,10 +25,12 @@ void vertex(){
 
 void fragment(){
  vec3 material_normal=normalize(cross(dFdx(world_position),dFdy(world_position)));
- if(dot(material_normal,(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz)<0.0)material_normal=-material_normal;
-	// Flat facets of this solid, facing the viewer.
+ vec3 authored=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ if(dot(material_normal,authored)<0.0)material_normal=-material_normal;
+	// Facet shading follows the authored outward normal. A test against the
+	// view-space position flips grazing convex cuts and lights them as pits.
 	vec3 facet=normalize(cross(dFdx(VERTEX),dFdy(VERTEX)));
-	if(dot(facet,VERTEX)>0.0)facet=-facet;
+	if(dot(facet,normalize(NORMAL))<0.0)facet=-facet;
 	// A narrow rounded lighting response calms the knife-edge without
  // moving cap vertices or adding a coloured perimeter band.
  float edge_soft=crown_cover*(1.0-smoothstep(.015,.22,column_origin.y-world_position.y));
@@ -50,6 +52,6 @@ void fragment(){
 	ROUGHNESS=stone_map(world_position,material_normal).a;
 	SPECULAR=.16;
 	float seam=smoothstep(.28,.49,abs(local_position.x))*(1.0-smoothstep(-.5,-.05,local_position.y));
- AO=mix(1.0,.77,crown_cover*max(seam,(1.0-smoothstep(-.65,-.25,local_position.y))*.6));
+ AO=mix(1.0,.86,crown_cover*max(seam,(1.0-smoothstep(-.65,-.25,local_position.y))*.45));
  NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);
 }

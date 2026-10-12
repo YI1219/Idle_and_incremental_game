@@ -12,13 +12,15 @@ void fragment(){
  vec3 grass=ground_cover(p,1.0-smoothstep(.35,1.0,length(fwidth(p))*9.0),slope);
  // Only the inner bank is damp. The outer feather uses exactly the lawn
  // function, while mineral flecks break up the damp earth at the waterline.
- float wet=(1.0-smoothstep(.025,.105,world_position.y-UV.x))*UV.y;
+ float wet=(1.0-smoothstep(.015,.34,world_position.y-UV.x))*UV.y;
  float grit=gc_noise(p*14.0);
+ float pebbles=gc_noise(p*7.5+vec2(2.0,9.0));
  vec3 earth=mix(vec3(.40,.42,.29),vec3(.51,.50,.36),broad);
- earth*=mix(1.0,.78,wet);
- earth=mix(earth,vec3(.57,.57,.47),smoothstep(.66,.83,grit)*.28);
- ALBEDO=mix(grass,earth,smoothstep(.12,.95,COLOR.a*(.70+.45*gc_noise(p*4.0))));
- vec3 n=normalize(vec3(-slope.x*.2,1.0,-slope.y*.2));
+ earth*=mix(1.0,.82,wet);
+ earth=mix(earth,vec3(.57,.57,.47),smoothstep(.66,.83,grit)*.22);
+ earth=mix(earth,vec3(.55,.56,.50),smoothstep(.62,.84,pebbles)*.16);
+ ALBEDO=mix(grass,earth,smoothstep(.06,.78,COLOR.a*(.55+.40*gc_noise(p*2.6))));
+ vec3 n=normalize(vec3(-slope.x*.42,1.0,-slope.y*.42));
  NORMAL=normalize((VIEW_MATRIX*vec4(n,0.0)).xyz);
  ROUGHNESS=mix(.94,.74,wet);
  SPECULAR=.15;

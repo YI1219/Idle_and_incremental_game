@@ -21,6 +21,27 @@ func run():
    count+=2
    if not closed:failures+=1;push_error("Open procedural stone "+str([root,seed_value]))
    if volume<=.08:failures+=1;push_error("Stone lacks outward closed volume "+str([root,seed_value,volume]))
+   var arrays:Array=stone.mesh.surface_get_arrays(0)
+   var verts:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
+   var norms:PackedVector3Array=arrays[Mesh.ARRAY_NORMAL]
+   var flipped:=0
+   var concave:=0
+   var worst:=0.0
+   for i in range(0,verts.size(),3):
+    var a:Vector3=verts[i];var b:Vector3=verts[i+1];var c:Vector3=verts[i+2]
+    var raw:Vector3=(b-a).cross(c-a)
+    if raw.length_squared()<1e-12:continue
+    var outward:Vector3=(-raw).normalized()
+    if outward.dot(norms[i])<.98:flipped+=1
+    if root:continue
+    var face_worst:=0.0
+    for v:Vector3 in verts:
+     face_worst=maxf(face_worst,outward.dot(v-a))
+    worst=maxf(worst,face_worst)
+    if face_worst>.012:concave+=1
+   count+=2
+   if flipped>0:failures+=1;push_error("Outer facet normal is flipped "+str([root,seed_value,flipped]))
+   if concave>0:failures+=1;push_error("Crown face folds inward "+str([seed_value,concave,worst]))
    if root:
     var top:=PackedVector2Array();var bottom:=PackedVector2Array()
     for p:Vector3 in faces:

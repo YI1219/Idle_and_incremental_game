@@ -22,6 +22,7 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
  # The cap meets the side directly; local turf clusters soften its silhouette.
  var vertices:=_intersections(planes)
  var positions:=PackedVector3Array();var normals:=PackedVector3Array();var colors:=PackedColorArray();var uv:=PackedVector2Array()
+ var crown_z:=0.0
  var bounds:=AABB(vertices[0],Vector3.ZERO)
  for v:Vector3 in vertices:bounds=bounds.expand(v)
  for index in planes.size():
@@ -38,49 +39,71 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
   face.sort_custom(func(a:Vector3,b:Vector3):return atan2((a-center).dot(other),(a-center).dot(axis))<atan2((b-center).dot(other),(b-center).dot(axis)))
   var shade:=rng.randf_range(.62,.70)
   var relief:=face.size()>3 and absf(plane.normal.normalized().y)<(.82 if root else .35) and (root or index<fracture_count)
-  var relief_amount:=rng.randf_range(-.09,.11)
-  if not root:
-   # Unequal fracture depth and off-centre fracture junctions; the cap's
-   # original vertices and RNG stream stay fixed, so island plans do not move.
-   var chip:=.5+.5*sin(float(seed_value*17+index*31))
-   relief_amount=lerpf(-.085,.11,chip*chip)
-  var apex:=center+plane.normal.normalized()*relief_amount
-  if not root and relief:
-   apex+=(face[(seed_value+index)%face.size()]-center)*.32
+  # The random draw stays so later shade values, and the legacy crown depth
+  # below, keep the previous stream. Its sign is not a cut direction.
+  var relief_draw:=rng.randf_range(-.09,.11)
+  var chip:=.5+.5*sin(float(seed_value*17+index*31))
   var cap:=not root and index==0
-  if cap:apex=center
+  var outward_n:=plane.normal.normalized()
+  # Legacy apex: negative relief folded the face into a pit. It is used only
+  # to keep crown_z, which anchors the stone to the terrace, unchanged.
+  var legacy_amount:=relief_draw
+  if not root:legacy_amount=lerpf(-.085,.11,chip*chip)
+  var legacy_apex:=center+outward_n*legacy_amount
+  if not root and relief:legacy_apex+=(face[(seed_value+index)%face.size()]-center)*.32
+  if cap:legacy_apex=center
+  # Visible faces stay on their fracture planes. An apex pushed through a
+  # plane — inward, or sideways past a neighbour — folds a large triangle
+  # into a pit. The unequal planes are already the convex cuts.
+  var apex:=center
+  var legacy_triangles:Array=[]
   var triangles:Array=[]
   if relief or cap:
-   for j in face.size():triangles.append([apex,face[j],face[(j+1)%face.size()]])
+   for j in face.size():
+    legacy_triangles.append([legacy_apex,face[j],face[(j+1)%face.size()]])
+    triangles.append([apex,face[j],face[(j+1)%face.size()]])
   else:
-   for j in range(1,face.size()-1):triangles.append([face[0],face[j],face[j+1]])
-  var triangle_index:=0
+   for j in range(1,face.size()-1):
+    legacy_triangles.append([face[0],face[j],face[j+1]])
+    triangles.append([face[0],face[j],face[j+1]])
+  var hint:=Vector3(plane.normal.x*bounds.size.x,plane.normal.y,plane.normal.z*bounds.size.z)
+  for triangle:Array in legacy_triangles:
+   var la:Vector3=triangle[0];var lb:Vector3=triangle[1];var lc:Vector3=triangle[2]
+   if -(lb-la).cross(lc-la).dot(plane.normal)<0:
+    var swap:=lb;lb=lc;lc=swap
+   if (lb-la).cross(lc-la).length_squared()<1e-16:continue
+   for p:Vector3 in [la,lb,lc]:
+    var legacy:=_pack(p,bounds,root)
+    if legacy.y>-.08:crown_z=maxf(crown_z,legacy.z)
+  var cap_inset:=0.0
+  if cap:
+   cap_inset=1.0
+   for j in face.size():
+    var edge:=face[(j+1)%face.size()]-face[j]
+    cap_inset=minf(cap_inset,edge.cross(center-face[j]).length()/maxf(edge.length(),.00001))
   for triangle:Array in triangles:
-   var a:Vector3=triangle[0];var b:Vector3=triangle[1];var c:Vector3=triangle[2]
-   if -(b-a).cross(c-a).dot(plane.normal)<0:
+   var a:Vector3=_pack(triangle[0],bounds,root)
+   var b:Vector3=_pack(triangle[1],bounds,root)
+   var c:Vector3=_pack(triangle[2],bounds,root)
+   var geo:=(b-a).cross(c-a)
+   if geo.dot(hint)>0.0:
     var swap:=b;b=c;c=swap
-   if (b-a).cross(c-a).length_squared()<1e-16:continue
-   # Separate deterministic tint stream leaves the fracture and root RNG alone.
-   var tone:=.5+.5*sin(float(seed_value*37+index*19+triangle_index*7))
+    geo=-geo
+   if geo.length_squared()<1e-16:continue
+   var outward:=(-geo).normalized()
+   if outward.dot(hint)<0.0:outward=hint.normalized()
+   # One value for the whole cut. Per-triangle tint painted dark wedges on a
+   # flat face, and those wedges read as sunk folds under the sun.
+   var tone:=.5+.5*sin(float(seed_value*37+index*19))
    var warmth:=sin(float(seed_value*13+index*7))
-   var tint:=Color(shade,shade,shade) if root else Color(.60+.13*tone+.018*warmth,.60+.13*tone,.60+.13*tone-.018*warmth)
-   triangle_index+=1
-   for p:Vector3 in [a,b,c]:
-    var vertex:=Vector3((p.x-bounds.get_center().x)/bounds.size.x,p.y,(p.z-bounds.get_center().z)/bounds.size.z)
-    if root:
-     vertex.z-=1.28*pow(clampf(-p.y,0.0,1.0),1.6)
-    positions.append(vertex)
-    normals.append(Vector3(plane.normal.x*bounds.size.x,plane.normal.y,plane.normal.z*bounds.size.z).normalized())
+   var tint:=Color(shade,shade,shade) if root else Color(.63+.035*tone+.01*warmth,.63+.035*tone,.63+.035*tone-.01*warmth)
+   var insets:=[0.0,0.0,0.0]
+   if cap and triangle[0]==center:insets[0]=cap_inset
+   for i in 3:
+    positions.append([a,b,c][i])
+    normals.append(outward)
     colors.append(tint)
-    # Interpolated distance from the top perimeter, for a bare stone ledge.
-    # The cap fan has a covered interior; all perimeter/shoulder vertices are bare.
-    var inset:=0.0
-    if cap and p==center:
-     inset=1.0
-     for j in face.size():
-      var edge:=face[(j+1)%face.size()]-face[j]
-      inset=minf(inset,edge.cross(center-face[j]).length()/edge.length())
-    uv.append(Vector2(inset,0))
+    uv.append(Vector2(insets[i],0.0))
  var arrays:Array=[];arrays.resize(Mesh.ARRAY_MAX)
  arrays[Mesh.ARRAY_VERTEX]=positions;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_COLOR]=colors;arrays[Mesh.ARRAY_TEX_UV]=uv
  var mesh:=ArrayMesh.new();mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
@@ -93,10 +116,12 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
    for j in 3:
     for slot in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_NORMAL,Mesh.ARRAY_COLOR,Mesh.ARRAY_TEX_UV]:walls[slot].append(arrays[slot][i+j])
   render_mesh=ArrayMesh.new();render_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,walls)
- var crown_z:=0.0
- for p:Vector3 in positions:
-  if p.y>-.08:crown_z=maxf(crown_z,p.z)
  return {"mesh":mesh,"render_mesh":render_mesh,"height":bounds.size.y,"crown_z":crown_z,"span_x":1.0,"span_z":1.0}
+
+static func _pack(p:Vector3,bounds:AABB,root:bool)->Vector3:
+ var vertex:=Vector3((p.x-bounds.get_center().x)/bounds.size.x,p.y,(p.z-bounds.get_center().z)/bounds.size.z)
+ if root:vertex.z-=1.28*pow(clampf(-p.y,0.0,1.0),1.6)
+ return vertex
 
 static func _intersections(planes:Array[Plane])->PackedVector3Array:
  var vertices:=PackedVector3Array()

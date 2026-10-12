@@ -5,10 +5,10 @@ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
-@export var sunlight_energy := 1.30
-@export var fill_energy := 0.23
-@export var ambient_energy := 0.52
-@export_range(0.0,1.0) var background_haze := 0.65
+@export var sunlight_energy := 1.22
+@export var fill_energy := 0.30
+@export var ambient_energy := 0.58
+@export_range(0.0,1.0) var background_haze := 0.68
 var data:=Data.new()
 var renderer:=Renderer.new()
 var camera:=Camera.new()
@@ -52,8 +52,8 @@ func _setup_environment()->void:
 	sun.light_specular=.28
 	sun.shadow_enabled=true
 	sun.directional_shadow_max_distance=90
-	sun.light_angular_distance=1.6
-	sun.shadow_opacity=1.0
+	sun.light_angular_distance=2.5
+	sun.shadow_opacity=.92
 	sun.shadow_bias=.06
 	sun.shadow_normal_bias=1.4
 	sun.directional_shadow_blend_splits=true
@@ -83,17 +83,17 @@ func _setup_environment()->void:
 	env.environment.sky=sky
 	var settings:=env.environment
 	settings.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-	settings.ambient_light_color=Color("cac5bd")
+	settings.ambient_light_color=Color("d4cfc6")
 	settings.ambient_light_energy=ambient_energy
 	# Linear keeps the authored palettes; Filmic/AgX compress the warm sky
 	# and haze toward grey. Only the sun core and water glints exceed 1.0.
 	settings.tonemap_mode=Environment.TONE_MAPPER_LINEAR
 	settings.ssao_enabled=true
-	settings.ssao_radius=1.3
-	settings.ssao_intensity=2.2
-	settings.ssao_power=1.6
-	settings.ssao_detail=.5
-	settings.ssao_light_affect=.25
+	settings.ssao_radius=.85
+	settings.ssao_intensity=1.15
+	settings.ssao_power=1.25
+	settings.ssao_detail=.35
+	settings.ssao_light_affect=.18
 	# Glow blooms only near-white values: the sun disc and bright water glints.
 	settings.glow_enabled=true
 	settings.glow_intensity=.55
@@ -110,10 +110,10 @@ func _setup_environment()->void:
 	settings.adjustment_saturation=1.06
 	settings.fog_enabled=true
 	settings.fog_mode=Environment.FOG_MODE_EXPONENTIAL
-	settings.fog_light_color=Color("ebc58f")
-	settings.fog_light_energy=1.0
-	settings.fog_sun_scatter=.30
-	settings.fog_density=.0004
+	settings.fog_light_color=Color("f0d2a4")
+	settings.fog_light_energy=.92
+	settings.fog_sun_scatter=.42
+	settings.fog_density=.00072
 	settings.fog_sky_affect=0.0
 	add_child(env)
 func _process(delta:float)->void:

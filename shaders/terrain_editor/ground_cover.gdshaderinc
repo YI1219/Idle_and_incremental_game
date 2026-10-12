@@ -49,7 +49,7 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
 		for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
 			vec2 o=vec2(float(x),float(y));
 			vec2 id=cell+o;
-			float present=step(gc_hash(id+vec2(9.0,2.0)),.34+.30*cover);
+			float present=step(gc_hash(id+vec2(9.0,2.0)),.52+.30*cover);
 			vec2 d=o+gc_hash2(id)*.8+.1-f;
 			float r=mix(.34,.62,gc_hash(id+vec2(4.0,9.0)));
 			float wobble=(gc_noise((g-id)*4.0+id*1.7)-.5)*.22;
@@ -60,7 +60,7 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
 		vec3 dark=mix(base*vec3(.78,.83,.75),vec3(.34,.36,.29),.18);
 		vec3 light=base*vec3(1.04,1.02,.94);
 		vec3 tuft_color=mix(dark,light,tone*tone)*(.92+.14*best);
-		color=mix(color,tuft_color,smoothstep(0.0,.35,best)*(layer==0?.82:.55)*detail);
+		color=mix(color,tuft_color,smoothstep(0.0,.55,best)*(layer==0?.58:.36)*detail);
 		slope_tuft-=lean*smoothstep(0.0,.6,best)*(layer==0?.35:.25);
 	}
 	// Fine blade grain keeps the surface from reading as flat paint.
@@ -71,11 +71,26 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
 	slope=vec2(gc_cover_height(p+vec2(e,0.0))-height,gc_cover_height(p+vec2(0.0,e))-height)/e;
 	// Sparse clumps get a fine directional blade cue. The same compression
  // mask removes both their color relief and their normal relief.
- float blade=sin(p.x*71.0+p.y*29.0+gc_noise(p*3.0)*5.0);
+	float blade=sin(p.x*71.0+p.y*29.0+gc_noise(p*3.0)*5.0);
  color*=1.0+blade*.025*cover*detail;
- slope=(slope*.08+slope_tuft*1.35)*standing;
+	// About a metre of soft olive mottling. A share of it stays when the
+	// camera backs off, so the lawn still reads in a wide framing.
+	float metre=gc_noise(p*.82+vec2(2.2,6.4))*.58+gc_noise(p*1.22+vec2(14.0,3.7))*.42;
+	vec3 metre_dry=base*vec3(1.045,1.02,.965);
+	vec3 metre_lush=base*vec3(.78,.94,.75);
+	color=mix(color,mix(metre_dry,metre_lush,smoothstep(.30,.76,metre)),mix(.16,.34,detail));
+	// Tenth-of-a-metre blades and pale seed tips. They drop out with detail
+	// so a distant view does not shimmer.
+	float fine=gc_noise(p*10.2+vec2(3.0,11.0));
+	float seed=gc_noise(p*15.5+vec2(8.2,1.4));
+	color=mix(color,color*vec3(.84,.91,.78),smoothstep(.64,.88,fine)*.30*detail);
+	color=mix(color,vec3(.79,.75,.61),smoothstep(.86,.96,seed)*.40*detail);
+ slope=(slope*.08+slope_tuft*1.15)*standing;
  vec4 mapped=texture(ground_detail_map,p*.48);
  color*=1.0+(mapped.r-.5)*.60*detail;
+	vec4 near_map=texture(ground_detail_map,p*1.85+vec2(4.0,9.0));
+	color*=1.0+(near_map.r-.5)*.28*detail;
  slope+=(mapped.gb-.5)*2.2*standing;
+	slope+=(near_map.gb-.5)*1.15*standing*detail;
 	return color;
 }
