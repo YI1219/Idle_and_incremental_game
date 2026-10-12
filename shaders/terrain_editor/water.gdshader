@@ -69,6 +69,10 @@ void fragment() {
 	slope += impact.yz*(.026*4.1)*basin.b;
 	vec3 normal_world = normalize(vec3(-slope.x,1.0,-slope.y));
 	NORMAL = normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
+	// Soft contact darkening along the bank. It falls off within a fraction
+	// of a metre and does not draw a foam ring.
+	float contact = exp(-max(basin.r,0.0)*8.0);
+	color = mix(color, color*vec3(.62,.72,.70), contact*.58*(1.0-basin.b));
 	// Broken irregular wavelets carry pale sky light across the lake.
 	vec2 ripple_p=p*vec2(2.5,5.5)+vec2(TIME*.08,-TIME*.11);
 	vec3 ripple=height_gradient(ripple_p);
@@ -90,7 +94,7 @@ void fragment() {
 	color = mix(color,vec3(.76,.86,.86),basin.b*basin.b*.40);
 	ALBEDO = color;
 	METALLIC = 0.0;
-	ROUGHNESS = .20+basin.b*.10;
+	ROUGHNESS = mix(.48,.18,smoothstep(0.0,.55,basin.r))+basin.b*.10;
 	// Dielectric BRDF with the warm sky radiance cubemap; bank band and
 	// shallow margins reflect less sky so the bed and bank tones read.
 	SPECULAR = mix(.50,.18,bank_band)*mix(.75,1.0,absorption);

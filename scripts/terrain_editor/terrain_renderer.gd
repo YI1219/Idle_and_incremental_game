@@ -48,6 +48,15 @@ func _bind_grass_compression()->void:
 		materials[kind].set_shader_parameter("grass_compression",_grass_compression)
 		materials[kind].set_shader_parameter("compression_origin",_compression_bounds.position)
 		materials[kind].set_shader_parameter("compression_extent",_compression_bounds.size)
+	_bind_turf_compression()
+
+func _bind_turf_compression()->void:
+	if decoration==null or not decoration.assets.has("turf"):return
+	var material:=decoration.assets.turf[0].mesh.surface_get_material(0) as ShaderMaterial
+	if material==null:return
+	material.set_shader_parameter("grass_compression",_grass_compression)
+	material.set_shader_parameter("compression_origin",_compression_bounds.position)
+	material.set_shader_parameter("compression_extent",_compression_bounds.size)
 
 
 func configure(source:Data)->void:
@@ -114,6 +123,7 @@ func flush_dirty(max_chunks:int=2)->int:
 		contours.refresh(_build_data)
 		if decoration!=null:
 			decoration.load_assets()
+			_bind_turf_compression()
 			decoration._column_layout(contours,_build_data.seed)
 		_contour_revision=data.revision
 		_discard_pending()

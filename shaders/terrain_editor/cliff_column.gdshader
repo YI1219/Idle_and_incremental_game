@@ -50,7 +50,7 @@ void fragment(){
 	stone*=mix(1.0,.86,smoothstep(1.6,4.2,below));
  ALBEDO=stone;
 	ROUGHNESS=stone_map(world_position,material_normal).a;
-	SPECULAR=.16;
+	SPECULAR=.08;
 	float seam=smoothstep(.28,.49,abs(local_position.x))*(1.0-smoothstep(-.5,-.05,local_position.y));
  AO=mix(1.0,.86,crown_cover*max(seam,(1.0-smoothstep(-.65,-.25,local_position.y))*.45));
  NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);

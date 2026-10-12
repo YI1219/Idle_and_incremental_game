@@ -7,8 +7,8 @@ vec2 sky_coord(vec3 direction){
 float sky_sun_distance(vec2 p){return length((p-SKY_SUN)*vec2(1.7768,1.0));}
 vec3 sky_gradient(vec2 p){
 	float sun=sky_sun_distance(p);
-	vec3 color=mix(vec3(.84,.74,.60),vec3(.97,.76,.47),smoothstep(-.12,.30,p.y));
-	color=mix(color,vec3(.91,.80,.64),smoothstep(.30,.80,p.y));
+	vec3 color=mix(vec3(.96,.82,.60),vec3(1.08,.84,.48),smoothstep(-.12,.30,p.y));
+	color=mix(color,vec3(1.02,.88,.66),smoothstep(.30,.80,p.y));
 	color=mix(color,vec3(1.0,.80,.50),exp(-sun*4.2)*.60);
 	return color+vec3(.45,.30,.12)*exp(-sun*13.0);
 }

@@ -19,6 +19,6 @@ void fragment(){
 	float wet=bank_stone*(1.0-smoothstep(.06,.42,world_position.y-rock_origin.y));
 	ALBEDO=stone_surface(world_position,material_normal)*(.73+.20*variation.x)*clamp(COLOR.r/.714,.75,1.02)*mix(1.0,.79,wet);
 	ROUGHNESS=mix(stone_map(world_position,material_normal).a,.76,wet);
-	SPECULAR=.15;
+	SPECULAR=.08;
  NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);
 }

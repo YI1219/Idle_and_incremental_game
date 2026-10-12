@@ -20,6 +20,11 @@ func run()->void:
 	var first:Dictionary=deco.placements(d,Vector2i.ZERO)
 	check(first.grass.is_empty(),"dry lawn uses terrain cover, without flattened loose blade discs")
 	check(first.get("grass_clump",[]).is_empty(),"reed-like clumps require pond-bank support")
+	check(first.turf.size()>30,"dry lawn has soft turf clumps")
+	var seated:=true
+	for transform:Transform3D in first.turf:
+		if transform.origin.y>1.12 or transform.origin.y<.88:seated=false
+	check(seated,"turf sits in the lawn")
 	check(first.surface_rock.size()>0,"dry surface has individual rocks")
 	check(first==deco.placements(d,Vector2i.ZERO),"placement is deterministic")
 	for transform:Transform3D in first.surface_rock:
@@ -31,7 +36,7 @@ func run()->void:
 		check(is_equal_approx(raised.surface_rock[i].origin.y-first.surface_rock[i].origin.y,.5),"raise moves supported rocks with terrain")
 	for cell in d.cells:d.cells[cell].water=4
 	var wet:Dictionary=deco.placements(d,Vector2i.ZERO)
-	check(wet.get("grass_clump",[]).is_empty() and wet.grass.is_empty() and wet.tree.is_empty() and wet.bush.is_empty() and wet.surface_rock.is_empty(),"water removes surface vegetation and rocks")
+	check(wet.turf.is_empty() and wet.get("grass_clump",[]).is_empty() and wet.grass.is_empty() and wet.tree.is_empty() and wet.bush.is_empty() and wet.surface_rock.is_empty(),"water removes surface vegetation and rocks")
 	for cell in d.cells:
 		d.cells[cell].water=-1
 		d.cells[cell].height=1.0

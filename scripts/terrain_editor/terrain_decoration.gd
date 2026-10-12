@@ -53,7 +53,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	var field=contours
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
-	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
+	for kind in ["grass","grass_clump","turf","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
 	_column_layout(field,data.seed)
 	var crown_tufts:Array=[]
 	for column:Dictionary in _columns:
@@ -90,6 +90,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			if not house_clear and cluster>.48 and random_at(cell,data.seed,140)<.026 and _stable(field,p,h,.65):
 				result.grass_clump.append(_transform(origin,angle,Vector3(1.10,1.18,1.05)))
 			if not house_clear and random_at(cell,data.seed,7)<.018:result.surface_rock.append(_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7))
+	_place_turf(result,field,data,chunk)
 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
 	for spec in [[Vector2(-16,-3),Vector3(1.28,1.02,1.16)],[Vector2(-5,-8),Vector3(.96,.98,1.04)],[Vector2(6.3,-3.3),Vector3(1.0,1.0,.97)],[Vector2(15.6,2),Vector3(1.03,1.01,.96)]]:
 		var p:Vector2=spec[0]
@@ -197,7 +198,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			if support.is_empty() or support.water>=0 or not _stable(field,point,support.height,.16):continue
 			result.flower.append(_transform(Vector3(point.x,support.height,point.y),j*1.7,Vector3.ONE*(1.1+j*.13)))
 	_fences(result,field,chunk)
-	for kind in ["grass","grass_clump","flower","surface_rock","fence","path"]:
+	for kind in ["grass","grass_clump","turf","flower","surface_rock","fence","path"]:
 		var lifted:Array=result[kind]
 		for i in lifted.size():
 			var pose:Transform3D=lifted[i]
@@ -673,6 +674,35 @@ func _fences(result:Dictionary,field,chunk:Vector2i)->void:
 			var pose:=_transform(Vector3(p.x,sample.height,p.y),-float(spec[1]),Vector3.ONE*1.5)
 			pose.origin-=pose.basis*Vector3(0,0,-.46)
 			result.fence.append(pose)
+func _place_turf(result:Dictionary,field,data:Data,chunk:Vector2i)->void:
+	# Low-frequency density: some metres are a soft mat, others stay open.
+	# Blades stay short so a clump photographs as turf rather than a planted disc.
+	for z in range(chunk.y*8,chunk.y*8+8):
+		for x in range(chunk.x*8,chunk.x*8+8):
+			var cell:=Vector2i(x,z)
+			var density:=.5+.5*sin((x+.5)*2.35+(z+.5)*.55)*sin((z+.5)*1.95-(x+.5)*.40)
+			var accept:=lerpf(.55,.96,clampf(density,0.0,1.0))
+			for attempt in 20:
+				if random_at(cell,data.seed,4300+attempt)>accept:continue
+				var p:=Vector2(x+.04+random_at(cell,data.seed,4400+attempt)*.92,z+.04+random_at(cell,data.seed,4500+attempt)*.92)
+				if _near_path(p) or p.distance_to(Vector2(-11,-7))<2.6:continue
+				if p.x>-10.5 and p.x<-6.9 and p.y>-6.1 and p.y<-3.1:continue
+				var surface:Dictionary=field.surface_at(p)
+				if surface.is_empty() or surface.water>=0:continue
+				var h:float=surface.height
+				if not _stable(field,p,h,.18):continue
+				var yaw:=random_at(cell,data.seed,4600+attempt)*TAU
+				var scale:=lerpf(.88,1.28,random_at(cell,data.seed,4700+attempt))
+				var tall:=lerpf(.72,1.05,random_at(cell,data.seed,4800+attempt))
+				var origin:=Vector3(p.x,h-.01+_lawn_relief(field,p,h),p.y)
+				result.turf.append(_transform(origin,yaw,Vector3(scale,tall*scale,scale)))
+func _lawn_relief(field,p:Vector2,h:float)->float:
+	# Matches the open-lawn sine used by the cap. Near a drop the wave fades
+	# so blades do not sit on the bank lip.
+	var wave:=.055*sin(p.x*.8+p.y*.3)*sin(p.y*.62-p.x*.21)
+	if _stable(field,p,h,.85):return wave
+	if _stable(field,p,h,.40):return wave*.5
+	return wave*.2
 func _transform(origin:Vector3,angle:float,size:Vector3)->Transform3D:
 	return Transform3D(Basis(Vector3.UP,angle).scaled(size),origin)
 func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
@@ -686,16 +716,23 @@ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
 			var mm:=MultiMesh.new()
 			mm.transform_format=MultiMesh.TRANSFORM_3D
 			mm.mesh=part.get("render_mesh",part.mesh)
-			mm.use_colors=kind.begins_with("shore_") or kind.begins_with("underside_") or kind.begins_with("cliff_column")
+			mm.use_colors=kind.begins_with("shore_") or kind.begins_with("underside_") or kind.begins_with("cliff_column") or kind=="turf"
 			mm.instance_count=transforms.size()
 			for i in transforms.size():
 				mm.set_instance_transform(i,transforms[i]*part.pose)
-				if mm.use_colors:mm.set_instance_color(i,_stone_tone(transforms[i].origin))
+				if kind=="turf":mm.set_instance_color(i,_turf_tone(transforms[i].origin))
+				elif mm.use_colors:mm.set_instance_color(i,_stone_tone(transforms[i].origin))
 			var instance:=MultiMeshInstance3D.new()
 			instance.name=kind+"_%d"%index
 			instance.multimesh=mm
-			instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+			instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if kind=="turf" else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			parent.add_child(instance)
+static func _turf_tone(origin:Vector3)->Color:
+	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)
+	var b:=fposmod(sin(origin.x*19.19+origin.z*41.13)*24634.6345,1.0)
+	var value:=lerpf(.90,1.08,a)
+	var tint:=Color(.40,.52,.42).lerp(Color(.48,.58,.47),b)
+	return Color(tint.r*value,tint.g*value,tint.b*value,1.0)
 static func _stone_tone(origin:Vector3)->Color:
 	# Deterministic per-stone value and hue: warm ochre, cool slate and moss-dark.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)

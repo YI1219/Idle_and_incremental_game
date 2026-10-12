@@ -5,9 +5,9 @@ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
-@export var sunlight_energy := 1.22
-@export var fill_energy := 0.30
-@export var ambient_energy := 0.58
+@export var sunlight_energy := 1.85
+@export var fill_energy := 0.07
+@export var ambient_energy := 0.15
 @export_range(0.0,1.0) var background_haze := 0.68
 var data:=Data.new()
 var renderer:=Renderer.new()
@@ -46,10 +46,10 @@ func _setup_environment()->void:
 	# Low warm back-right sun, toward the painted sun's side of the sky.
 	var sun:=DirectionalLight3D.new()
 	sun.rotation_degrees=Vector3(-34,140,0)
-	sun.light_color=Color("ffe7c9")
+	sun.light_color=Color("ffe0b8")
 	sun.light_energy=sunlight_energy
 	# Keeps the low sun's reflection on the lakes from clipping to a white patch.
-	sun.light_specular=.28
+	sun.light_specular=.20
 	sun.shadow_enabled=true
 	sun.directional_shadow_max_distance=90
 	sun.light_angular_distance=2.5
@@ -59,11 +59,11 @@ func _setup_environment()->void:
 	sun.directional_shadow_blend_splits=true
 	add_child(sun)
 	landscape.set_sun_direction(sun.transform.basis.z)
-	# Faint neutral bounce keeps the front cliff planes readable under the
-	# back light without filling the sun's shadows. No extra shadow map.
+	# A very small neutral bounce keeps the front cliff from going black
+	# under the back light. It is not a second key.
 	var fill:=DirectionalLight3D.new()
 	fill.rotation_degrees=Vector3(-45,-28,0)
-	fill.light_color=Color("dcd8d0")
+	fill.light_color=Color("d4cfc4")
 	fill.light_energy=fill_energy
 	fill.shadow_enabled=false
 	add_child(fill)
@@ -83,22 +83,27 @@ func _setup_environment()->void:
 	env.environment.sky=sky
 	var settings:=env.environment
 	settings.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-	settings.ambient_light_color=Color("d4cfc6")
+	settings.ambient_light_color=Color("cfc6b8")
 	settings.ambient_light_energy=ambient_energy
-	# Linear keeps the authored palettes; Filmic/AgX compress the warm sky
-	# and haze toward grey. Only the sun core and water glints exceed 1.0.
-	settings.tonemap_mode=Environment.TONE_MAPPER_LINEAR
+	# AgX holds the warm mist and olive lawn without a linear wash. Exposure
+	# stays near 1 so the sky does not blow out; contrast is the AgX curve.
+	settings.tonemap_mode=Environment.TONE_MAPPER_AGX
+	settings.tonemap_exposure=1.08
+	settings.tonemap_agx_contrast=1.16
+	settings.tonemap_agx_white=12.0
 	settings.ssao_enabled=true
-	settings.ssao_radius=.85
-	settings.ssao_intensity=1.15
-	settings.ssao_power=1.25
-	settings.ssao_detail=.35
-	settings.ssao_light_affect=.18
+	settings.ssao_radius=.20
+	settings.ssao_intensity=2.4
+	settings.ssao_power=1.35
+	settings.ssao_detail=.62
+	settings.ssao_horizon=.05
+	settings.ssao_sharpness=.85
+	settings.ssao_light_affect=.72
 	# Glow blooms only near-white values: the sun disc and bright water glints.
 	settings.glow_enabled=true
-	settings.glow_intensity=.55
+	settings.glow_intensity=.35
 	settings.glow_bloom=0.0
-	settings.glow_hdr_threshold=.92
+	settings.glow_hdr_threshold=1.15
 	settings.glow_blend_mode=Environment.GLOW_BLEND_MODE_SOFTLIGHT
 	for level in 7:settings.set_glow_level(level,[0.0,0.0,.6,1.0,.8,.5,0.0][level])
 	# Thin warm haze over the island; distant mountains and cloud decks fade
@@ -106,12 +111,12 @@ func _setup_environment()->void:
 	# Gentle grade restores island contrast and colour lost to the bright
 	# backdrop; warmth comes from the sun, sky and fog colours, not a tint.
 	settings.adjustment_enabled=true
-	settings.adjustment_contrast=1.08
-	settings.adjustment_saturation=1.06
+	settings.adjustment_contrast=1.03
+	settings.adjustment_saturation=1.08
 	settings.fog_enabled=true
 	settings.fog_mode=Environment.FOG_MODE_EXPONENTIAL
 	settings.fog_light_color=Color("f0d2a4")
-	settings.fog_light_energy=.92
+	settings.fog_light_energy=.78
 	settings.fog_sun_scatter=.42
 	settings.fog_density=.00072
 	settings.fog_sky_affect=0.0

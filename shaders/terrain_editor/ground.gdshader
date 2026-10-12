@@ -4,9 +4,9 @@ shader_type spatial;
 #include "ground_cover.gdshaderinc"
 #include "cliff_palette.gdshaderinc"
 #include "stone_surface.gdshaderinc"
-render_mode cull_disabled;
+render_mode cull_disabled, specular_disabled;
 uniform bool show_grid = false;
-uniform float cover_relief = .55;
+uniform float cover_relief = 1.15;
 varying vec3 world_position;
 void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;VERTEX.y+=terrain_morph_offset(world_position);}
 void fragment(){
@@ -26,6 +26,5 @@ void fragment(){
  if(base_normal.y<0.0)base_normal=-base_normal;
  vec3 normal_world=normalize(base_normal+vec3(-slope.x*cover_relief*detail,0.0,-slope.y*cover_relief*detail));
 	NORMAL=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
-	ROUGHNESS=0.95;
-	SPECULAR=.30;
+	ROUGHNESS=0.98;
 }

@@ -21,5 +21,5 @@ void fragment(){
 	stone*=mix(.82,1.0,smoothstep(-.85,.25,world_normal.y));
 	ALBEDO=stone;
 	ROUGHNESS=.94;
-	SPECULAR=.18;
+	SPECULAR=.08;
 }

@@ -11,6 +11,7 @@ func load_assets()->void:
 	assets.bush=_shrub_clusters(assets.bush)
 	assets.grass=_grass_models()
 	assets.grass_clump=_grass_clump_models()
+	assets.turf=_turf_models()
 	assets.reeds=_reed_models()
 	assets.lily=_lily_models()
 	assets.path=_path_models()
@@ -72,7 +73,7 @@ func load_assets()->void:
 	assets.vine=spray
 	for kind in assets:
 		# Retain the curved grass mesh's UVs/normals and palette texture.
-		if kind not in ["grass","grass_clump","reeds","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d"]:assets[kind]=[_merge(assets[kind])]
+		if kind not in ["grass","grass_clump","turf","reeds","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d"]:assets[kind]=[_merge(assets[kind])]
 	# Apply after merging, which intentionally replaces individual source materials.
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
@@ -177,6 +178,52 @@ func _crown_hull(parts:Array)->Dictionary:
 	if builder.vertices.is_empty():return _merge(parts)
 
 	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
+
+func _turf_models()->Array:
+	# Short opaque blades in a loose fan. They read as a soft clump, not a disc.
+	var vertices:=PackedVector3Array()
+	var normals:=PackedVector3Array()
+	var colors:=PackedColorArray()
+	var uv:=PackedVector2Array()
+	for i in 11:
+		var angle:=i*TAU/11.0+.27
+		var forward:=Vector3(cos(angle),0.0,sin(angle))
+		var side:=Vector3(-forward.z,0.0,forward.x)
+		var height:=.032+.022*sin(i*1.7)
+		var width:=.026+.008*cos(i*2.1)
+		var lean:=.085+.028*sin(i*.9)
+		var rows:Array=[]
+		for row in 3:
+			var t:=float(row)/2.0
+			var out:=forward*lean*t*t
+			var half:=side*width*(1.0-t*.62)*.5
+			var y:=height*t
+			rows.append({"left":out-half+Vector3(0,y,0),"right":out+half+Vector3(0,y,0),"t":t})
+		var normal:=Vector3(forward.x*.22,1.0,forward.z*.22).normalized()
+		for seg in 2:
+			var low:Dictionary=rows[seg]
+			var high:Dictionary=rows[seg+1]
+			var corners:Array=[
+				[low.left,low.right,high.right,0.0,1.0,1.0,float(low.t),float(low.t),float(high.t)],
+				[low.left,high.right,high.left,0.0,1.0,0.0,float(low.t),float(high.t),float(high.t)],
+			]
+			for corner:Array in corners:
+				vertices.append(corner[0]);vertices.append(corner[1]);vertices.append(corner[2])
+				normals.append(normal);normals.append(normal);normals.append(normal)
+				colors.append(Color.WHITE);colors.append(Color.WHITE);colors.append(Color.WHITE)
+				uv.append(Vector2(corner[3],corner[6]));uv.append(Vector2(corner[4],corner[7]));uv.append(Vector2(corner[5],corner[8]))
+	var arrays:Array=[]
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX]=vertices
+	arrays[Mesh.ARRAY_NORMAL]=normals
+	arrays[Mesh.ARRAY_COLOR]=colors
+	arrays[Mesh.ARRAY_TEX_UV]=uv
+	var mesh:=ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+	var material:=ShaderMaterial.new()
+	material.shader=load("res://shaders/terrain_editor/turf.gdshader")
+	mesh.surface_set_material(0,material)
+	return [{"mesh":mesh,"pose":Transform3D.IDENTITY}]
 
 func _grass_clump_models()->Array:
 	# Reuse the retained broad common blades as a low compact accent. Fine

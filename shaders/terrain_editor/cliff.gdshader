@@ -21,6 +21,6 @@ void fragment(){
  // The cap is one stone surface. Painted cell boundaries would restore the
  // patchwork read even after removing the separate extruded bottom blocks.
  ALBEDO=stone_surface(world_position,material_normal)*mix(vec3(1.0),COLOR.rgb,.35);
- ROUGHNESS=stone_map(world_position,material_normal).a;SPECULAR=.15;
+ ROUGHNESS=stone_map(world_position,material_normal).a;SPECULAR=.08;
  NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);
 }
