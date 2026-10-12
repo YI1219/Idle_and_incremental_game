@@ -77,7 +77,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var angle:=random_at(cell,data.seed,1)*TAU
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
 			var house_clear:=_near_path(p) or p.distance_to(Vector2(-11,-7))<2.4 or (p.x> -10.5 and p.x< -6.9 and p.y> -6.1 and p.y< -3.1)
-			if not house_clear and cluster>-.05 and random_at(cell,data.seed,4)<.30:
+			if not house_clear and cluster>-.15 and random_at(cell,data.seed,4)<.10:
 				if random_at(cell,data.seed,13)<.66:
 					for bloom in 4:
 						var flower_at:=p+Vector2(sin(bloom*2.4+angle),cos(bloom*2.4+angle))*.24
@@ -146,9 +146,9 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 						var anchor:Vector3=field._profile_point(p,y,out,profile)+Vector3(spread.x,0,spread.y)
 						var turn:=atan2(out.x,out.y)+(random_at(cell,data.seed,150+leaf+strand*11)-.5)*.54
 						var width:float=patch_width*(maxf(.30,1.12-leaf*.075) if wide_patch else maxf(.22,.80-leaf*.075))
-						var draped:=_drape_vine(field,_transform(anchor,turn,Vector3(width,.70 if wide_patch else .60,.85)),out)
+						var draped:=_drape_vine(field,_transform(anchor,turn,Vector3(width*.95,.92 if wide_patch else .82,.52)),out)
 						if not draped.is_empty():result.vine.append(draped.pose)
-						drop+=.25+random_at(cell,data.seed,170+leaf+strand*11)*.11
+						drop+=.15+random_at(cell,data.seed,170+leaf+strand*11)*.06
 
 	for stone:Dictionary in _mass:
 		if Data.chunk_of(stone.cell)!=chunk:continue
@@ -181,10 +181,10 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					if field.shore_weight(bank-out*.22,level*.5)>.5 and not near_drop and field.shore_support(bank-out*.22,out,level*.5,.70):
 						var plant:=bank+out*.25
 						if random_at(cell,data.seed,1080+block)<.18 and _stable(field,plant,level*.5,.18):
-							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*3.8))
+							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*3.05))
 					_shore_stones(result,field,data.seed,cell,block,bank,out,angle,level*.5)
 				var cell:=Vector2i(p.floor())
-				if random_at(cell,data.seed,95)<.66:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*4.2))
+				if random_at(cell,data.seed,95)<.66:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*3.25))
 				var lily:=p-out*.8
 				var wet:Dictionary=field.surface_at(lily)
 				if not wet.is_empty() and wet.water==level and random_at(cell,data.seed,96)<.62:result.lily.append(_transform(Vector3(lily.x,level*.5+.06,lily.y),angle,Vector3.ONE*1.9))
@@ -737,13 +737,10 @@ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
 			instance.multimesh=mm
 			instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if kind=="turf" else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			parent.add_child(instance)
-static func _turf_tone(origin:Vector3)->Color:
-	# Almost white. World-space cover owns the olive, so a clump does not
-	# cut a disc out of the carpet.
-	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)
-	var b:=fposmod(sin(origin.x*19.19+origin.z*41.13)*24634.6345,1.0)
-	var value:=lerpf(.992,1.012,a)
-	return Color(value,value*lerpf(.996,1.008,b),value*lerpf(.994,1.006,b),1.0)
+static func _turf_tone(_origin:Vector3)->Color:
+	# White. World-space cover owns the olive, so a lobe cannot cut a disc
+	# out of the carpet.
+	return Color(1,1,1,1)
 static func _stone_tone(origin:Vector3)->Color:
 	# Weathered grey. A little warmth, a cooler slate, and a rare moss-dark.
 	# The dark end stays high so a crown does not turn to brown mud.

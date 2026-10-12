@@ -33,10 +33,10 @@ func load_assets()->void:
 	# raised crown, unequal lower fork masses and a small rear support.
 	# Their lower edges expose branch space rather than filling every shoulder.
 	var crown:Array=[
-		[Vector3(-.085,1.12,.035),Vector3(.90,.74,.70)],
-		[Vector3(-.39,1.02,-.14),Vector3(.62,.40,.55)],
-		[Vector3(.35,1.005,.075),Vector3(.57,.41,.54)],
-		[Vector3(.045,1.025,-.345),Vector3(.35,.38,.38)],
+		[Vector3(-.02,1.16,.01),Vector3(1.16,.66,.92)],
+		[Vector3(-.50,1.04,-.06),Vector3(.82,.38,.68)],
+		[Vector3(.48,1.03,.05),Vector3(.78,.36,.64)],
+		[Vector3(.02,.99,-.30),Vector3(.56,.30,.50)],
 	]
 	var crown_parts:Array=[]
 	for i in crown.size():
@@ -47,7 +47,7 @@ func load_assets()->void:
 			var box:AABB=part.mesh.get_aabb()
 			var basis:=rotation.scaled_local(size/box.size.max(Vector3.ONE*.0001))
 			var pose:=Transform3D(basis,center-basis*(box.position+box.size*.5))
-			var tint:Color=[Color(1.04,1.04,1.0),Color(.90,.95,.92),Color(.95,.99,.94),Color(.86,.92,.90)][i]
+			var tint:Color=[Color(1.0,1.02,.98),Color(.96,1.0,.96),Color(.98,1.01,.97),Color(.94,.98,.95)][i]
 			crown_parts.append({"mesh":part.mesh,"pose":pose,"tint":tint})
 	tree.append_array(_join_crown(crown_parts))
 	assets.tree=tree
@@ -55,13 +55,12 @@ func load_assets()->void:
 	# Flatten retained oak lobes into pointed leaf blades. Unequal paired
 	# leaves form one overlapping spray rather than three rounded beads.
 	var blades:Array=[
-		[Vector3(-.15,.01,.025),-.62,Vector3(.24,.42,.075)],
-		[Vector3(.16,.025,.01),.70,Vector3(.23,.40,.07)],
-		[Vector3(-.12,-.13,.045),-.46,Vector3(.21,.37,.07)],
-		[Vector3(.13,-.16,.03),.51,Vector3(.22,.36,.075)],
-		[Vector3(-.075,-.27,.055),-.28,Vector3(.17,.32,.06)],
-		[Vector3(.065,-.30,.02),.30,Vector3(.16,.30,.06)],
-		[Vector3(.01,-.37,.035),.06,Vector3(.13,.26,.055)],
+		[Vector3(-.06,.06,.012),-.48,Vector3(.22,.62,.07)],
+		[Vector3(.07,.02,.014),.42,Vector3(.20,.56,.065)],
+		[Vector3(-.02,-.16,.010),-.18,Vector3(.18,.50,.06)],
+		[Vector3(.03,-.12,.010),.22,Vector3(.16,.46,.055)],
+		[Vector3(.00,.10,.008),.06,Vector3(.24,.58,.06)],
+		[Vector3(-.01,-.02,.006),-.06,Vector3(.15,.42,.05)],
 	]
 	for i in blades.size():
 		var spec:Array=blades[i]
@@ -69,7 +68,7 @@ func load_assets()->void:
 			var box:AABB=part.mesh.get_aabb()
 			var basis:=Basis(Vector3.FORWARD,float(spec[1])).scaled_local(spec[2]/box.size.max(Vector3.ONE*.0001))
 			var pose:=Transform3D(basis,spec[0]-basis*(box.position+box.size*.5))
-			spray.append({"mesh":part.mesh,"pose":pose,"tint":Color(.94+.10*sin(i*2.1),1.0+.06*cos(i*1.7),.94,1)})
+			spray.append({"mesh":part.mesh,"pose":pose,"tint":Color(.98,1.02,.96,1)})
 	assets.vine=spray
 	for kind in assets:
 		# Retain the curved grass mesh's UVs/normals and palette texture.
@@ -82,17 +81,22 @@ func load_assets()->void:
 		var material:=rock_material.duplicate()
 		material.set_shader_parameter("bank_stone",1.0 if kind.begins_with("shore_") else 0.0)
 		assets[kind][0].mesh.surface_set_material(0,material)
+	for kind in ["tree","bush","vine"]:
+		if not assets.has(kind) or assets[kind].is_empty():continue
+		var soft:=.88 if kind=="tree" else (.84 if kind=="bush" else .80)
+		var belly:=.30 if kind=="tree" else (.22 if kind=="bush" else .06)
+		var lift:=1.04 if kind=="tree" else (1.08 if kind=="bush" else 1.28)
+		assets[kind][0].mesh.surface_set_material(0,_canopy_material(soft,belly,lift))
 
 func _shrub_clusters(source:Array)->Array:
 	# Assemble existing CC0 leaf parts into a low, unequal leafy group.
 	# Ground each transformed part using its actual vertices, not its AABB.
 	var clusters:Array=[
-		[Vector2(-.20,-.02),Vector3(.46,.46,.48)],
-		[Vector2(.20,.04),Vector3(.48,.40,.50)],
-		[Vector2(.00,-.08),Vector3(.42,.60,.42)],
-		[Vector2(-.40,.06),Vector3(.31,.27,.32)],
-		[Vector2(.02,.28),Vector3(.36,.28,.37)],
-		[Vector2(.02,-.27),Vector3(.32,.29,.34)],
+		[Vector2(-.08,.00),Vector3(.66,.42,.58)],
+		[Vector2(.16,.02),Vector3(.58,.36,.52)],
+		[Vector2(-.02,.08),Vector3(.46,.40,.42)],
+		[Vector2(-.30,.06),Vector3(.34,.26,.32)],
+		[Vector2(.24,-.12),Vector3(.32,.22,.30)],
 	]
 	var result:Array=[]
 	for i in clusters.size():
@@ -115,9 +119,9 @@ func _join_crown(parts:Array)->Array:
 	# The current oak source has one active foliage surface per arranged mass.
 	# Preserve an unfamiliar source assembly rather than assume its indexing.
 	if parts.size()!=4:return parts
-	var result:Array=[]
-	for part:Dictionary in parts:result.append(_crown_hull([part]))
-	return result
+	# One hull around the four masses. Separate gems read as popcorn;
+	# the shared hull is a single soft crown, still outside every leaf point.
+	return [_crown_hull(parts)]
 
 func _crown_hull(parts:Array)->Dictionary:
 	var points:=PackedVector3Array()
@@ -133,9 +137,8 @@ func _crown_hull(parts:Array)->Dictionary:
 			seen[point]=points.size()
 			points.append(point)
 			shades.append(colors[i]*part.get("tint",Color.WHITE))
-	# The native convex shape provides an indexed solid
-	# surface alongside its debug lines. Copy only the solid triangles into
-	# our normal render resource; no physics node or debug material is used.
+	# The native convex shape provides an indexed solid surface alongside its
+	# debug lines. Copy only the solid triangles into the render resource.
 	var shape:=ConvexPolygonShape3D.new()
 	shape.points=points
 	var hull:Mesh=shape.get_debug_mesh()
@@ -146,9 +149,6 @@ func _crown_hull(parts:Array)->Dictionary:
 		var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
 		var indices:PackedInt32Array=arrays[Mesh.ARRAY_INDEX]
 		var count:int=indices.size() if not indices.is_empty() else vertices.size()
-		# The native hull approximates nearly coplanar source points. Expand
-		# uniformly by the measured supporting-plane deficit to limit clipping
-		# of leaf tips. Rebuilt float normals retain a small numerical tolerance.
 		var center:=Vector3.ZERO
 		for vertex:Vector3 in vertices:center+=vertex
 		center/=vertices.size()
@@ -176,8 +176,15 @@ func _crown_hull(parts:Array)->Dictionary:
 			var c:int=indices[i+2] if not indices.is_empty() else i+2
 			builder.triangle(vertices[a],vertices[b],vertices[c],(hull_shades[a]+hull_shades[b]+hull_shades[c])/3.0)
 	if builder.vertices.is_empty():return _merge(parts)
-
 	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
+
+func _canopy_material(soft:float,belly:float,lift:float=1.0)->ShaderMaterial:
+	var material:=ShaderMaterial.new()
+	material.shader=load("res://shaders/terrain_editor/canopy.gdshader")
+	material.set_shader_parameter("foliage_soft",soft)
+	material.set_shader_parameter("foliage_belly",belly)
+	material.set_shader_parameter("foliage_lift",lift)
+	return material
 
 func _push_turf(vertices:PackedVector3Array,normals:PackedVector3Array,colors:PackedColorArray,uv:PackedVector2Array,a:Vector3,b:Vector3,c:Vector3,ua:float,ub:float,uc:float)->void:
 	var facing:=(b-a).cross(c-a)
@@ -191,11 +198,11 @@ func _push_turf(vertices:PackedVector3Array,normals:PackedVector3Array,colors:Pa
 	colors.append(white);colors.append(white);colors.append(white)
 	uv.append(Vector2(.5,ua));uv.append(Vector2(.5,ub));uv.append(Vector2(.5,uc))
 
-func _turf_pad(vertices:PackedVector3Array,normals:PackedVector3Array,colors:PackedColorArray,uv:PackedVector2Array,center:Vector3,radius:float,height:float,spin:float)->void:
-	# A wide cosine pad. Three rings keep the crown smooth; the rim sits in
-	# the sod. No upright fringe.
-	var sides:=12
-	var rings:=3
+func _turf_pad(vertices:PackedVector3Array,normals:PackedVector3Array,colors:PackedColorArray,uv:PackedVector2Array,center:Vector3,radius:float,height:float,spin:float,sx:float,sz:float)->void:
+	# A wide, lobed sheet a millimetre proud of the sod. The outline is not
+	# a disc, so a close crop does not read a pad tile.
+	var sides:=16
+	var rings:=4
 	var pts:Array=[]
 	for ring in rings:
 		var t:=float(ring)/float(rings-1)
@@ -206,8 +213,8 @@ func _turf_pad(vertices:PackedVector3Array,normals:PackedVector3Array,colors:Pac
 		for i in count:
 			var angle:=spin+TAU*float(i)/float(sides)
 			var wobble:=1.0
-			if ring==rings-1:wobble=.90+.14*absf(sin(float(i)*1.7+spin*3.0))
-			ring_pts.append(center+Vector3(cos(angle)*rad*wobble,y,sin(angle)*rad*(.94+.06*wobble)))
+			if ring==rings-1:wobble=.62+.42*absf(sin(float(i)*2.15+spin*2.4))
+			ring_pts.append(center+Vector3(cos(angle)*rad*wobble*sx,y,sin(angle)*rad*wobble*sz))
 		pts.append(ring_pts)
 	for ring in range(rings-1):
 		var inner:Array=pts[ring]
@@ -235,9 +242,10 @@ func _turf_models()->Array:
 	var normals:=PackedVector3Array()
 	var colors:=PackedColorArray()
 	var uv:=PackedVector2Array()
-	_turf_pad(vertices,normals,colors,uv,Vector3(0.0,.001,0.0),.080,.0034,.4)
-	_turf_pad(vertices,normals,colors,uv,Vector3(.036,.0006,.018),.054,.0028,1.7)
-	_turf_pad(vertices,normals,colors,uv,Vector3(-.032,.0006,.024),.048,.0024,2.8)
+	_turf_pad(vertices,normals,colors,uv,Vector3(0.0,.0003,0.0),.072,.0010,.4,1.05,.78)
+	_turf_pad(vertices,normals,colors,uv,Vector3(.028,.0002,.010),.046,.0008,1.7,.86,1.18)
+	_turf_pad(vertices,normals,colors,uv,Vector3(-.024,.0002,.014),.042,.00075,2.8,1.22,.74)
+	_turf_pad(vertices,normals,colors,uv,Vector3(.006,.00025,-.026),.038,.0007,4.2,.70,1.28)
 	var arrays:Array=[]
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX]=vertices
@@ -354,10 +362,10 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			elif kind in ["surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","path"]:tint=Color("aaa89b")
 			elif kind=="tree_leaf":tint=Color("697547")
 			elif kind=="bush":tint=Color("73844e")
-			elif kind=="vine":tint=Color("68785c")
+			elif kind=="vine":tint=Color("9cba86")
 			elif kind=="grass" or kind=="reeds":tint=Color("939b72")
 			elif kind=="lily":tint=Color("a8ad55")
-			elif kind=="flower":tint=Color("e2dcc1") if name_value.to_lower().contains("yellow") else Color("788665")
+			elif kind=="flower":tint=Color("e4d3b6") if name_value.to_lower().contains("yellow") else Color("7d8f62")
 			var arrays:Array=node.mesh.surface_get_arrays(surface)
 			var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
 			var indices:PackedInt32Array=arrays[Mesh.ARRAY_INDEX]
@@ -380,11 +388,16 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 					a.y=minf(a.y,.30)+maxf(a.y-.30,0.0)*.72
 					b.y=minf(b.y,.30)+maxf(b.y-.30,0.0)*.72
 					c.y=minf(c.y,.30)+maxf(c.y-.30,0.0)*.72
-				var shade:=.90+.13*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
+				var shade:=.96+.04*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7) if kind=="flower" else .90+.13*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
 				# Per-facet value steps keep shore stones faceted under soft light.
 				if kind in ["shore_rock","shore_boulder","shore_pebble"]:shade=.91+.09*sin((a.x+b.x+c.x)*9.13+(a.y+b.y+c.y)*5.3+(a.z+b.z+c.z)*7.7)
-				if kind in ["tree_leaf","bush","vine"]:shade=.92+.14*sin((a.x+b.x+c.x)*12.13+(a.y+b.y+c.y)*8.17+(a.z+b.z+c.z)*4.7)
+				if kind=="tree_leaf":shade=.96+.06*sin((a.x+b.x+c.x)*6.2+(a.y+b.y+c.y)*4.1+(a.z+b.z+c.z)*3.4)
+				elif kind in ["bush","vine"]:shade=.95+.07*sin((a.x+b.x+c.x)*8.4+(a.y+b.y+c.y)*5.2+(a.z+b.z+c.z)*3.8)
 				var color:=Color(tint.r*shade,tint.g*shade,tint.b*shade,1)
+				if kind=="flower" and name_value.to_lower().contains("yellow"):
+					a=_flatten_bloom(a,leaf_box)
+					b=_flatten_bloom(b,leaf_box)
+					c=_flatten_bloom(c,leaf_box)
 				if kind in ["tree_leaf","bush","vine"]:
 					var box:AABB=leaf_box
 					var ab:=(a+b)*.5
@@ -392,11 +405,11 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 					var ca:=(c+a)*.5
 					var faces:=[[a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]]
 					for face in faces:
-						var blend:=.60 if kind=="tree_leaf" else .68
+						var blend:=.76 if kind=="tree_leaf" else .70
 						if kind=="vine":
 							builder.triangle(_vine_leaf(face[0],box),_vine_leaf(face[1],box),_vine_leaf(face[2],box),color)
 						else:
-							var irregularity:=.13 if kind=="tree_leaf" else .055
+							var irregularity:=.035 if kind=="tree_leaf" else .03
 							builder.triangle(_round_leaf(face[0],box,blend,irregularity),_round_leaf(face[1],box,blend,irregularity),_round_leaf(face[2],box,blend,irregularity),color)
 				else:builder.triangle(a,b,c,color)
 
@@ -439,12 +452,24 @@ func _round_leaf(point:Vector3,box:AABB,blend:float=.68,irregularity:float=.055)
 	var uneven:=1.0+strength*sin(direction.x*7.1+direction.y*4.3)*sin(direction.z*6.7-direction.y*3.1)
 	return point.lerp(center+direction*radius*uneven,blend)
 
+func _flatten_bloom(point:Vector3,box:AABB)->Vector3:
+	# The retained bloom is an upright faceted cup. Sit it in the nap as a
+	# low petal so a close lawn does not read a row of stone stubs.
+	var center:=box.get_center()
+	var radius:=box.size*.5
+	var unit:=(point-center)/radius.max(Vector3.ONE*.0001)
+	var radial:=clampf(Vector2(unit.x,unit.z).length(),0.0,1.4)
+	var y:=box.position.y+box.size.y*(.05+.09*(1.0-smoothstep(0.0,1.05,radial)))
+	return Vector3(center.x+unit.x*radius.x*.9,y,center.z+unit.z*radius.z*.9)
+
 func _vine_leaf(point:Vector3,box:AABB)->Vector3:
 	var center:=box.position+box.size*.5
 	var radius:=box.size*.5
-	var leaf:=_round_leaf(point,box,.26)-center
-	var along:=clampf(absf(leaf.y)/maxf(radius.y,.0001),0,1)
-	leaf.x*=lerpf(1.0,.12,pow(along,1.4))
+	var leaf:=_round_leaf(point,box,.16)-center
+	var along:=clampf((leaf.y+radius.y)/maxf(radius.y*2.0,.0001),0,1)
+	leaf.x*=lerpf(.95,.32,pow(along,1.05))
+	leaf.z*=lerpf(.58,.18,pow(along,1.05))
+	leaf.y*=1.05
 	return center+leaf
 
 func _reed_models()->Array:
@@ -455,8 +480,8 @@ func _reed_models()->Array:
 		var foot:=Vector3(box.get_center().x,box.position.y,box.get_center().z)
 		part.pose=Transform3D(basis,-(basis*foot))*part.pose
 		var mat:ShaderMaterial=part.mesh.surface_get_material(0)
-		mat.set_shader_parameter("dark_color",Vector3(.16,.20,.075))
-		mat.set_shader_parameter("light_color",Vector3(.46,.50,.20))
+		mat.set_shader_parameter("dark_color",Vector3(.18,.26,.13))
+		mat.set_shader_parameter("light_color",Vector3(.40,.50,.26))
 	return parts
 
 func _lily_models()->Array:
@@ -467,7 +492,7 @@ func _lily_models()->Array:
 		for side in range(1,12):
 			var a:=TAU*side/12.0+pad
 			var b:=TAU*(side+1)/12.0+pad
-			surface.triangle(center,center+Vector3(cos(a),0,sin(a))*radius,center+Vector3(cos(b),0,sin(b))*radius,Color("afb45e"),true)
+			surface.triangle(center,center+Vector3(cos(a),0,sin(a))*radius,center+Vector3(cos(b),0,sin(b))*radius,Color("8a9a68"),true)
 	var mesh:ArrayMesh=surface.mesh()
 	return [{"mesh":mesh,"pose":Transform3D.IDENTITY}]
 

@@ -61,9 +61,9 @@ void fragment(){
 	float lip=crown_cover*(1.0-smoothstep(.008,.04,-local_position.y));
 	lip*=.35+.65*noise_column(column_origin.xz*2.2+local_position.xz*6.0);
 	stone*=mix(1.0,.84,clamp(joint*.80+lip*.32,0.0,1.0));
-	ALBEDO=stone;
+	ALBEDO=cliff_weather(stone,world_position,material_normal);
 	ROUGHNESS=stone_map(world_position,material_normal).a;
 	SPECULAR=.08;
 	AO=mix(1.0,.64,joint);
- NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);
+ NORMAL=normalize((VIEW_MATRIX*vec4(cliff_face_normal(world_position,material_normal),0.0)).xyz);
 }

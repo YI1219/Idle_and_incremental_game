@@ -15,7 +15,7 @@ void vertex(){
 }
 void fragment(){
  vec2 slope;
- vec3 green=ground_cover(world_position.xz,.65,slope);
+ vec3 green=lawn_color(world_position.xz,1.0-smoothstep(55.0,120.0,length(VERTEX)),slope); // lip matches the carpet
  float fleck=gc_noise(world_position.xz*19.0+world_position.y*7.0);
  ALBEDO=green*mix(1.0,.86,smoothstep(.25,1.0,tongue))*(.94+.16*fleck);
  vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;

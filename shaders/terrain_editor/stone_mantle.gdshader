@@ -8,7 +8,7 @@ void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1)).xyz;VERTEX.y+=terrain
 void fragment(){
  vec3 material_normal=normalize(cross(dFdx(world_position),dFdy(world_position)));
  if(dot(material_normal,(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz)<0.0)material_normal=-material_normal;
- ALBEDO=stone_surface(world_position,material_normal)*mix(vec3(1.0),COLOR.rgb,.55);
+ ALBEDO=cliff_weather(stone_surface(world_position,material_normal)*mix(vec3(1.0),COLOR.rgb,.55),world_position,material_normal);
  ROUGHNESS=stone_map(world_position,material_normal).a;SPECULAR=.08;AO=.94;
- NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);
+ NORMAL=normalize((VIEW_MATRIX*vec4(cliff_face_normal(world_position,material_normal),0.0)).xyz);
 }

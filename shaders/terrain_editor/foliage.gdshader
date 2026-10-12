@@ -22,5 +22,5 @@ void fragment(){
 	ROUGHNESS=0.94;
 	SPECULAR=0.04;
 	vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
-	NORMAL=normalize(mix(NORMAL,up,.22));
+	NORMAL=normalize(mix(NORMAL,up,.42));
 }

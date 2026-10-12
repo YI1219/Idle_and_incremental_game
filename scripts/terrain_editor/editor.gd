@@ -5,9 +5,9 @@ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
-@export var sunlight_energy := 1.78
-@export var fill_energy := 0.035
-@export var ambient_energy := 0.13
+@export var sunlight_energy := 1.58
+@export var fill_energy := 0.20
+@export var ambient_energy := 0.18
 @export_range(0.0,1.0) var background_haze := 0.64
 var data:=Data.new()
 var renderer:=Renderer.new()
@@ -59,11 +59,11 @@ func _setup_environment()->void:
 	sun.directional_shadow_blend_splits=true
 	add_child(sun)
 	landscape.set_sun_direction(sun.transform.basis.z)
-	# A very small neutral bounce keeps the front cliff from going black
-	# under the back light. It is not a second key.
+	# A small warm bounce keeps the front cliff from going black under the
+	# back light. Moss carries the green; the fill stays a warm grey.
 	var fill:=DirectionalLight3D.new()
 	fill.rotation_degrees=Vector3(-45,-28,0)
-	fill.light_color=Color("d4cfc4")
+	fill.light_color=Color("e4e0cc")
 	fill.light_energy=fill_energy
 	fill.shadow_enabled=false
 	add_child(fill)
@@ -92,13 +92,13 @@ func _setup_environment()->void:
 	settings.tonemap_agx_contrast=1.12
 	settings.tonemap_agx_white=10.0
 	settings.ssao_enabled=true
-	settings.ssao_radius=.48
-	settings.ssao_intensity=1.25
-	settings.ssao_power=1.22
-	settings.ssao_detail=.35
-	settings.ssao_horizon=.12
-	settings.ssao_sharpness=.18
-	settings.ssao_light_affect=.42
+	settings.ssao_radius=.92
+	settings.ssao_intensity=1.85
+	settings.ssao_power=1.45
+	settings.ssao_detail=.04
+	settings.ssao_horizon=.18
+	settings.ssao_sharpness=.05
+	settings.ssao_light_affect=.28
 	# Glow blooms only near-white values: the sun disc and bright water glints.
 	settings.glow_enabled=true
 	settings.glow_intensity=.35
