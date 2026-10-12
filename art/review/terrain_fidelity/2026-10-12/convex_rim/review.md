@@ -14,7 +14,7 @@ A rim-band crop from the runtime still is not systematically darker in face cent
 
 ## Still
 
-Palette stays warm mist, olive grass and grey stone. Authored land, ponds, cottage and prop layout are unchanged. Ground cover keeps a metre-scale olive mottle plus finer flecks, shores and pond margins are softer, and the sun is a low warm source with milder SSAO and a light warm fog. Default, distant, rim, pond and stone views were written beside this note (PNGs stay local; `tests/capture_convex_rim_pass.gd` reproduces them).
+Palette stays warm mist, olive grass and grey stone. Authored land, ponds, cottage and prop layout are unchanged. Ground cover keeps a metre-scale olive mottle plus finer flecks, shores and pond margins are softer, and the sun is a low warm source with milder SSAO and a light warm fog. Default, distant, rim, pond and stone views are committed beside this note, with `after_stone_joint.png` and `after_rim_band.png` as closer crops. `tests/capture_convex_rim_pass.gd` reproduces the five full frames.
 
 The distant view is still softer and paler than a desktop wallpaper of the pastoral reference. The grass lip is a stylized edge. Lavapipe on this host is not a Windows thin-and-light or MacBook Air measurement.
 
