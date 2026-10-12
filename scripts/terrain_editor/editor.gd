@@ -5,10 +5,10 @@ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
-@export var sunlight_energy := 1.85
-@export var fill_energy := 0.07
-@export var ambient_energy := 0.15
-@export_range(0.0,1.0) var background_haze := 0.68
+@export var sunlight_energy := 1.72
+@export var fill_energy := 0.05
+@export var ambient_energy := 0.12
+@export_range(0.0,1.0) var background_haze := 0.78
 var data:=Data.new()
 var renderer:=Renderer.new()
 var camera:=Camera.new()
@@ -52,8 +52,8 @@ func _setup_environment()->void:
 	sun.light_specular=.20
 	sun.shadow_enabled=true
 	sun.directional_shadow_max_distance=90
-	sun.light_angular_distance=2.5
-	sun.shadow_opacity=.92
+	sun.light_angular_distance=3.6
+	sun.shadow_opacity=.78
 	sun.shadow_bias=.06
 	sun.shadow_normal_bias=1.4
 	sun.directional_shadow_blend_splits=true
@@ -83,22 +83,22 @@ func _setup_environment()->void:
 	env.environment.sky=sky
 	var settings:=env.environment
 	settings.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-	settings.ambient_light_color=Color("cfc6b8")
+	settings.ambient_light_color=Color("d4c8b6")
 	settings.ambient_light_energy=ambient_energy
 	# AgX holds the warm mist and olive lawn without a linear wash. Exposure
 	# stays near 1 so the sky does not blow out; contrast is the AgX curve.
 	settings.tonemap_mode=Environment.TONE_MAPPER_AGX
-	settings.tonemap_exposure=1.08
-	settings.tonemap_agx_contrast=1.16
+	settings.tonemap_exposure=1.10
+	settings.tonemap_agx_contrast=1.10
 	settings.tonemap_agx_white=12.0
 	settings.ssao_enabled=true
-	settings.ssao_radius=.20
-	settings.ssao_intensity=2.4
-	settings.ssao_power=1.35
-	settings.ssao_detail=.62
-	settings.ssao_horizon=.05
-	settings.ssao_sharpness=.85
-	settings.ssao_light_affect=.72
+	settings.ssao_radius=.32
+	settings.ssao_intensity=.75
+	settings.ssao_power=1.05
+	settings.ssao_detail=.25
+	settings.ssao_horizon=.08
+	settings.ssao_sharpness=.2
+	settings.ssao_light_affect=.28
 	# Glow blooms only near-white values: the sun disc and bright water glints.
 	settings.glow_enabled=true
 	settings.glow_intensity=.35
@@ -111,14 +111,14 @@ func _setup_environment()->void:
 	# Gentle grade restores island contrast and colour lost to the bright
 	# backdrop; warmth comes from the sun, sky and fog colours, not a tint.
 	settings.adjustment_enabled=true
-	settings.adjustment_contrast=1.03
-	settings.adjustment_saturation=1.08
+	settings.adjustment_contrast=1.02
+	settings.adjustment_saturation=1.05
 	settings.fog_enabled=true
 	settings.fog_mode=Environment.FOG_MODE_EXPONENTIAL
-	settings.fog_light_color=Color("f0d2a4")
-	settings.fog_light_energy=.78
-	settings.fog_sun_scatter=.42
-	settings.fog_density=.00072
+	settings.fog_light_color=Color("f4d6a8")
+	settings.fog_light_energy=.94
+	settings.fog_sun_scatter=.58
+	settings.fog_density=.0022
 	settings.fog_sky_affect=0.0
 	add_child(env)
 func _process(delta:float)->void:

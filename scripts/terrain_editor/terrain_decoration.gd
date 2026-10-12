@@ -675,35 +675,36 @@ func _fences(result:Dictionary,field,chunk:Vector2i)->void:
 			pose.origin-=pose.basis*Vector3(0,0,-.46)
 			result.fence.append(pose)
 func _meadow_density(cell:Vector2i)->float:
-	# A few metres of thicker meadow, then a thinner one. The bias stays high
-	# so a trough is a lighter patch, not a bare opening.
+	# A few metres of thicker meadow, then a lighter one. The bias stays high
+	# so a trough is still sod, not an opening of soil.
 	var x:=float(cell.x)+.5
 	var z:=float(cell.y)+.5
 	var broad:=sin(x*1.15+z*.42)*sin(z*1.35-x*.33)
 	var mid:=sin(x*2.05-z*.70)*sin(z*1.80+x*.55)
-	return clampf((broad*.55+mid*.45)*.5+.74,0.0,1.0)
+	return clampf((broad*.55+mid*.45)*.5+.82,0.0,1.0)
 func _place_turf(result:Dictionary,field,data:Data,chunk:Vector2i)->void:
-	# Full metres hold a continuous mat. The wave troughs thin out, they do
-	# not open into bare soil. Path stones and the kitchen garden stay clear.
+	# Thatch from neighbouring clumps overlaps. Troughs stay covered. Path
+	# stones and the kitchen garden stay clear. The stability radius matches
+	# the thatch so a disc does not hover past a bank.
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
 			var cell:=Vector2i(x,z)
 			var density:=_meadow_density(cell)
 			var shaped:=density*density*(3.0-2.0*density)
-			var accept:=lerpf(.58,.98,shaped)
-			for attempt in 120:
+			var accept:=lerpf(.72,.96,shaped)
+			for attempt in 90:
 				if random_at(cell,data.seed,8000+attempt)>accept:continue
 				var p:=Vector2(x+.02+random_at(cell,data.seed,8200+attempt)*.96,z+.02+random_at(cell,data.seed,8400+attempt)*.96)
-				if _near_path(p,.50) or p.distance_to(Vector2(-11,-7))<2.6:continue
+				if _near_path(p,.48) or p.distance_to(Vector2(-11,-7))<2.6:continue
 				if p.x>-10.5 and p.x<-6.9 and p.y>-6.1 and p.y<-3.1:continue
 				var surface:Dictionary=field.surface_at(p)
 				if surface.is_empty() or surface.water>=0:continue
 				var h:float=surface.height
-				if not _stable(field,p,h,.12):continue
+				if not _stable(field,p,h,.16):continue
 				var yaw:=random_at(cell,data.seed,8600+attempt)*TAU
-				var scale:=lerpf(1.08,1.36,random_at(cell,data.seed,8800+attempt))
-				var tall:=lerpf(.92,1.10,random_at(cell,data.seed,9000+attempt))*lerpf(1.04,.94,density)
-				var origin:=Vector3(p.x,h-.012+_lawn_relief(field,p,h),p.y)
+				var scale:=lerpf(1.05,1.28,random_at(cell,data.seed,8800+attempt))
+				var tall:=lerpf(.85,.98,random_at(cell,data.seed,9000+attempt))*lerpf(1.0,.94,density)
+				var origin:=Vector3(p.x,h-.004+_lawn_relief(field,p,h),p.y)
 				result.turf.append(_transform(origin,yaw,Vector3(scale,tall,scale)))
 func _lawn_relief(field,p:Vector2,h:float)->float:
 	# Matches the open-lawn sine used by the cap. Near a drop the wave fades

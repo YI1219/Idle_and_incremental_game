@@ -14,9 +14,10 @@ void fragment(){
  float bank=smoothstep(0.0,1.0,COLOR.a);
  float wet=(1.0-smoothstep(.02,.50,world_position.y-UV.x))*bank;
  float grit=gc_noise(p*6.2);
- vec3 soil=mix(vec3(.32,.30,.23),vec3(.40,.36,.27),grit);
- soil=mix(soil,soil*vec3(.76,.84,.82),wet*.5);
- float earth=smoothstep(.05,.78,bank)*smoothstep(.08,.75,wet+gc_noise(p*1.7)*.38);
+ vec3 soil=mix(vec3(.26,.28,.18),vec3(.34,.32,.22),grit);
+ soil=mix(soil,soil*vec3(.72,.82,.80),wet*.55);
+ float earth=smoothstep(.10,.96,bank)*smoothstep(.02,.92,wet+gc_noise(p*1.15)*.5);
+ earth=min(earth,.58);
  ALBEDO=mix(grass,soil,earth);
  vec3 n=normalize(vec3(-slope.x*.5,1.0,-slope.y*.5));
  NORMAL=normalize((VIEW_MATRIX*vec4(n,0.0)).xyz);

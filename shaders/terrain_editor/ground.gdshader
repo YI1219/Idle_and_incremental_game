@@ -6,7 +6,7 @@ shader_type spatial;
 #include "stone_surface.gdshaderinc"
 render_mode cull_disabled, specular_disabled;
 uniform bool show_grid = false;
-uniform float cover_relief = 1.15;
+uniform float cover_relief = 0.55;
 varying vec3 world_position;
 void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;VERTEX.y+=terrain_morph_offset(world_position);}
 void fragment(){
@@ -26,14 +26,18 @@ void fragment(){
 	loam=mix(loam,loam*vec3(.92,1.0,.86),smoothstep(.55,.88,gc_noise(p*.42+vec2(7.0,2.2))));
 	float pebble=smoothstep(.86,.97,gc_noise(p*vec2(22.0,26.0)));
 	loam=mix(loam,loam*vec3(1.22,1.14,1.02),pebble*.35);
-	// Same low-frequency meadow as the clump scatter. Thick grass keeps the
-	// olive pair underneath so a missed blade is not a hole in a dirt field.
-	// Thin patches open into loam.
-	float meadow=clamp((sin(p.x*1.15+p.y*.42)*sin(p.y*1.35-p.x*.33)*.55+sin(p.x*2.05-p.y*.70)*sin(p.y*1.80+p.x*.55)*.45)*.5+.74,0.0,1.0);
+	// Same low-frequency meadow as the clump scatter. Thick sod stays olive.
+	// A trough keeps only a warm soil tint, so a gap is not a dirt hole.
+	float meadow=clamp((sin(p.x*1.15+p.y*.42)*sin(p.y*1.35-p.x*.33)*.55+sin(p.x*2.05-p.y*.70)*sin(p.y*1.80+p.x*.55)*.45)*.5+.82,0.0,1.0);
 	meadow=meadow*meadow*(3.0-2.0*meadow);
-	float soil_amt=mix(.84,.18,meadow);
+	float soil_amt=mix(.08,.015,meadow);
 	soil_amt=mix(soil_amt,soil_amt*.72,moss);
 	color=mix(color,loam,detail*soil_amt);
+	color*=mix(.94,1.0,meadow);
+	float cloud=gc_noise(p*1.7+vec2(2.4,6.1));
+	float nap=gc_noise(p*vec2(8.5,10.5)+vec2(1.2,4.0));
+	color*=1.0+((cloud-.5)*.18+(nap-.5)*.07)*detail;
+	color=mix(color,color*vec3(1.05,1.0,.90),(gc_noise(p*.85+vec2(8.0,1.5))-.5)*.22*detail);
 	// Exposed crown patches, never a perimeter-distance stroke. Most of the
  // shared cap is turf, including its edge; sparse mineral windows stop inland.
  float patch=gc_noise(p*1.65+vec2(11.0,3.0));

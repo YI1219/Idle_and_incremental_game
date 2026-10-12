@@ -13,9 +13,9 @@ vec3 stone_normal(vec3 p,vec3 n){
  vec2 y2=(texture(stone_detail_map,p.xz*1.65+vec2(8.4,2.2)).gb-.5)*2.0;
  vec2 z2=(texture(stone_detail_map,p.xy*1.65+vec2(1.3,6.6)).gb-.5)*2.0;
  vec3 fine=vec3(0.0,x2.y,x2.x)*w.x+vec3(y2.x,0.0,y2.y)*w.y+vec3(z2.x,z2.y,0.0)*w.z;
- // Coarse tilt stays shallow so a facet does not scoop into a pit.
- // The finer octave is the 0.1 m grit that should still read up close.
- vec3 bent=(slope-n*dot(n,slope))*.07+(fine-n*dot(n,fine))*.09;
+ // Colour carries the broad mineral variation. A coarse normal bend
+ // shades the middle of a flat cut as a pit, so only a short grit remains.
+ vec3 bent=(fine-n*dot(n,fine))*.04;
  return normalize(n-bent);
 }
 // Quiet world-anchored mineral variation shared by the stone envelope,
@@ -33,5 +33,5 @@ vec3 stone_surface(vec3 p,vec3 n){
  vec3 stone=cliff_gray(.53)+vec3(.065,.075,.085);
  stone+=(cloud-.5)*vec3(.105,.115,.13)+(mineral-.5)*vec3(.09,.035,-.025);
  stone+=(chip-.5)*vec3(.045,.048,.05)+(grit-.5)*vec3(.03,.032,.034);
- return stone*(.98+grain*.04)*(1.0+(stone_map(p,n).r-.5)*.55);
+ return stone*(.98+grain*.04)*(1.0+(stone_map(p,n).r-.5)*.22);
 }
