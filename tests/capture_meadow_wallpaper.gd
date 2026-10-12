@@ -1,5 +1,6 @@
 extends "res://tests/capture_rim_round.gd"
-## Runtime stills for the meadow wallpaper pass.
+## Runtime stills for the living-carpet pass. Default output is
+## art/review/terrain_fidelity/2026-10-12/living_carpet/.
 func _turf_count()->int:
 	var total:=0
 	for node in editor.renderer.find_children("*","MultiMeshInstance3D",true,false):

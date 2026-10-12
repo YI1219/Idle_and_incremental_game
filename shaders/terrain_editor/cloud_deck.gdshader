@@ -23,8 +23,8 @@ void fragment(){
  // Billow sides facing the sun brighten; the far sides and thin rims fall
  // into a soft grey shadow, so stacked layers stay separable.
  float lit=clamp(.55+(body-toward_sun)*12.0,0.0,1.0);
- vec3 shade=vec3(.88,.82,.74);
- vec3 sunlit=vec3(1.10,.99,.88);
+ vec3 shade=vec3(.92,.82,.68);
+ vec3 sunlit=vec3(1.16,1.02,.84);
  vec3 color=mix(shade,sunlit,clamp(lit*.58+thick*.48+.08,0.0,1.0));
  vec3 view=world_position-CAMERA_POSITION_WORLD;
  float distance=length(view);
