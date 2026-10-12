@@ -646,10 +646,10 @@ func _stable(field,p:Vector2,h:float,radius:float)->bool:
 	return true
 func _path_points()->Array:
 	return [Vector2(-11,-7+2.24*.82*preload("res://scripts/terrain_editor/terrain_props.gd").COTTAGE_SCALE),Vector2(-12,-3),Vector2(-13,0),Vector2(-11,3),Vector2(-7,5)]
-func _near_path(p:Vector2)->bool:
+func _near_path(p:Vector2,clearance:float=.75)->bool:
 	var points:=_path_points()
 	for i in points.size()-1:
-		if p.distance_to(Geometry2D.get_closest_point_to_segment(p,points[i],points[i+1]))<.75:return true
+		if p.distance_to(Geometry2D.get_closest_point_to_segment(p,points[i],points[i+1]))<clearance:return true
 	return false
 func _path(result:Dictionary,field,chunk:Vector2i)->void:
 	var points:=_path_points()
@@ -674,28 +674,38 @@ func _fences(result:Dictionary,field,chunk:Vector2i)->void:
 			var pose:=_transform(Vector3(p.x,sample.height,p.y),-float(spec[1]),Vector3.ONE*1.5)
 			pose.origin-=pose.basis*Vector3(0,0,-.46)
 			result.fence.append(pose)
+func _meadow_density(cell:Vector2i)->float:
+	# A few metres of meadow, then an opening. Most cells stay full; the
+	# aligned troughs of the two waves are the gaps.
+	var x:=float(cell.x)+.5
+	var z:=float(cell.y)+.5
+	var broad:=sin(x*1.15+z*.42)*sin(z*1.35-x*.33)
+	var mid:=sin(x*2.05-z*.70)*sin(z*1.80+x*.55)
+	return clampf((broad*.55+mid*.45)*.5+.62,0.0,1.0)
 func _place_turf(result:Dictionary,field,data:Data,chunk:Vector2i)->void:
-	# Low-frequency density: some metres are a soft mat, others stay open.
-	# Blades stay short so a clump photographs as turf rather than a planted disc.
+	# Dozens of short clumps per square metre where the field is full, and
+	# only a few where it opens. Path stones and the kitchen garden stay clear.
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
 			var cell:=Vector2i(x,z)
-			var density:=.5+.5*sin((x+.5)*2.35+(z+.5)*.55)*sin((z+.5)*1.95-(x+.5)*.40)
-			var accept:=lerpf(.55,.96,clampf(density,0.0,1.0))
-			for attempt in 20:
+			var density:=_meadow_density(cell)
+			var shaped:=density*density*(3.0-2.0*density)
+			var accept:=lerpf(.16,.92,shaped)
+			if density<.28:accept*=lerpf(.35,1.0,clampf((density-.12)/.16,0.0,1.0))
+			for attempt in 56:
 				if random_at(cell,data.seed,4300+attempt)>accept:continue
-				var p:=Vector2(x+.04+random_at(cell,data.seed,4400+attempt)*.92,z+.04+random_at(cell,data.seed,4500+attempt)*.92)
-				if _near_path(p) or p.distance_to(Vector2(-11,-7))<2.6:continue
+				var p:=Vector2(x+.02+random_at(cell,data.seed,4400+attempt)*.96,z+.02+random_at(cell,data.seed,4500+attempt)*.96)
+				if _near_path(p,.52) or p.distance_to(Vector2(-11,-7))<2.6:continue
 				if p.x>-10.5 and p.x<-6.9 and p.y>-6.1 and p.y<-3.1:continue
 				var surface:Dictionary=field.surface_at(p)
 				if surface.is_empty() or surface.water>=0:continue
 				var h:float=surface.height
-				if not _stable(field,p,h,.18):continue
+				if not _stable(field,p,h,.16):continue
 				var yaw:=random_at(cell,data.seed,4600+attempt)*TAU
-				var scale:=lerpf(.88,1.28,random_at(cell,data.seed,4700+attempt))
-				var tall:=lerpf(.72,1.05,random_at(cell,data.seed,4800+attempt))
-				var origin:=Vector3(p.x,h-.01+_lawn_relief(field,p,h),p.y)
-				result.turf.append(_transform(origin,yaw,Vector3(scale,tall*scale,scale)))
+				var scale:=lerpf(.86,1.20,random_at(cell,data.seed,4700+attempt))
+				var tall:=lerpf(.84,1.14,random_at(cell,data.seed,4800+attempt))*lerpf(1.10,.88,density)
+				var origin:=Vector3(p.x,h-.012+_lawn_relief(field,p,h),p.y)
+				result.turf.append(_transform(origin,yaw,Vector3(scale,tall,scale)))
 func _lawn_relief(field,p:Vector2,h:float)->float:
 	# Matches the open-lawn sine used by the cap. Near a drop the wave fades
 	# so blades do not sit on the bank lip.
@@ -728,11 +738,13 @@ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
 			instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if kind=="turf" else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			parent.add_child(instance)
 static func _turf_tone(origin:Vector3)->Color:
+	# Linear multiplier around white. The shader owns the olive; this only
+	# shifts value and a little warmth from clump to clump.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)
 	var b:=fposmod(sin(origin.x*19.19+origin.z*41.13)*24634.6345,1.0)
-	var value:=lerpf(.90,1.08,a)
-	var tint:=Color(.40,.52,.42).lerp(Color(.48,.58,.47),b)
-	return Color(tint.r*value,tint.g*value,tint.b*value,1.0)
+	var value:=lerpf(.92,1.08,a)
+	var warm:=lerpf(.96,1.05,b)
+	return Color(value*warm,value,value*lerpf(1.04,.94,b),1.0)
 static func _stone_tone(origin:Vector3)->Color:
 	# Deterministic per-stone value and hue: warm ochre, cool slate and moss-dark.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)

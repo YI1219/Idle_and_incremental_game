@@ -15,6 +15,18 @@ void fragment(){
 	float detail=1.0-smoothstep(.35,1.0,footprint);
 	vec2 slope;
 	vec3 color=ground_cover(p,detail,slope);
+	// Up close the olive pair would read as a painted sheet between blades.
+	// Loam shows in those gaps; distance falls back to the unresolved lawn.
+	float moss=smoothstep(.58,.88,gc_noise(p*1.15+vec2(3.2,8.4)));
+	float loam_n=gc_noise(p*2.35+vec2(4.2,1.6));
+	float clod=gc_noise(p*vec2(6.2,7.4)+vec2(1.4,9.0));
+	float grit=gc_noise(p*vec2(15.0,17.0));
+	vec3 loam=mix(vec3(.16,.13,.09),vec3(.30,.24,.16),loam_n*.60+clod*.40);
+	loam*=1.0+(grit-.5)*.09;
+	loam=mix(loam,loam*vec3(.90,.98,.84),smoothstep(.60,.90,gc_noise(p*.42+vec2(7.0,2.2))));
+	float pebble=smoothstep(.84,.96,gc_noise(p*vec2(22.0,26.0)));
+	loam=mix(loam,loam*vec3(1.18,1.12,1.02),pebble*.45);
+	color=mix(color,loam,detail*mix(.90,.52,moss));
 	// Exposed crown patches, never a perimeter-distance stroke. Most of the
  // shared cap is turf, including its edge; sparse mineral windows stop inland.
  float patch=gc_noise(p*1.65+vec2(11.0,3.0));

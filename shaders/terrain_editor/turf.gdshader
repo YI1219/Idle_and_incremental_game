@@ -21,12 +21,14 @@ void vertex(){
 	tip=UV.y;
 }
 void fragment(){
-	vec3 tint=COLOR.rgb;
-	tint=mix(pow((tint+vec3(.055))*(1.0/1.055),vec3(2.4)),tint*(1.0/12.92),lessThan(tint,vec3(.04045)));
-	vec3 root=tint*vec3(.90,.94,.86);
-	vec3 blade=tint*vec3(1.02,1.04,.96);
-	ALBEDO=mix(root,blade,smoothstep(.08,.85,tip));
+	// COLOR is a linear multiplier around 1. Skyward normals keep each blade
+	// from flashing; the root stays darker so the tuft sits in the loam.
+	vec3 tint=max(COLOR.rgb,vec3(0.001));
+	vec3 root=vec3(.18,.22,.13)*tint;
+	vec3 blade=vec3(.40,.45,.27)*tint;
+	ALBEDO=mix(root,blade,smoothstep(.04,.78,tip));
 	vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
-	NORMAL=normalize(mix(NORMAL,up,.72));
-	ROUGHNESS=.98;
+	NORMAL=normalize(mix(NORMAL,up,.91));
+	ROUGHNESS=.97;
+	BACKLIGHT=vec3(.03,.04,.018)*smoothstep(.40,1.0,tip);
 }

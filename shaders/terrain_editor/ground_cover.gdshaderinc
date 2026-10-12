@@ -9,9 +9,10 @@ float gc_standing(vec2 p){
  float inside=step(0.0,uv.x)*step(0.0,uv.y)*step(uv.x,1.0)*step(uv.y,1.0);
  return 1.0-texture(grass_compression,uv).r*inside;
 }
-// Lawn colour shared by the terrain cap and grassy crowns. Soft world-space
-// mottling between two close grey-olives, plus a fine normal grain. Physical
-// turf clumps carry the silhouette; this function does not paint blade blobs.
+// Unresolved lawn colour shared by the terrain cap, lip and banks. Soft
+// world-space mottling between two close grey-olives, plus a fine normal
+// grain. The cap shader turns close gaps into loam. Physical turf clumps
+// carry the green; this function does not paint blade blobs.
 // Requires land_palette.gdshaderinc.
 float gc_hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float gc_noise(vec2 p){

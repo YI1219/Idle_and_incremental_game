@@ -180,26 +180,46 @@ func _crown_hull(parts:Array)->Dictionary:
 	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
 
 func _turf_models()->Array:
-	# Short opaque blades in a loose fan. They read as a soft clump, not a disc.
+	# Standing meadow tuft. Blades stay short and mostly upright, with a small
+	# tip bend, so neighbouring clumps join into sod instead of a flat fan.
 	var vertices:=PackedVector3Array()
 	var normals:=PackedVector3Array()
 	var colors:=PackedColorArray()
 	var uv:=PackedVector2Array()
-	for i in 11:
-		var angle:=i*TAU/11.0+.27
+	# angle, height, width, lean, root radius, root angle, side curl
+	var specs:Array=[
+		[.18,.096,.024,.018,.010,0.4,.004],
+		[.72,.074,.020,.014,.030,1.2,-.003],
+		[1.28,.108,.028,.022,.006,2.4,.005],
+		[1.86,.052,.036,.010,.038,2.7,-.004],
+		[2.42,.088,.022,.016,.016,3.3,.003],
+		[3.05,.100,.026,.020,.024,4.1,-.005],
+		[3.62,.060,.034,.012,.034,4.6,.004],
+		[4.28,.082,.020,.016,.012,5.1,-.003],
+		[4.92,.112,.026,.024,.018,0.8,.005],
+		[5.48,.046,.038,.008,.040,1.7,-.004],
+		[5.95,.078,.022,.014,.014,5.7,.003],
+		[6.28,.066,.030,.012,.026,3.8,-.003],
+	]
+	for spec:Array in specs:
+		var angle:float=spec[0]
+		var height:float=spec[1]
+		var width:float=spec[2]
+		var lean:float=spec[3]
 		var forward:=Vector3(cos(angle),0.0,sin(angle))
 		var side:=Vector3(-forward.z,0.0,forward.x)
-		var height:=.032+.022*sin(i*1.7)
-		var width:=.026+.008*cos(i*2.1)
-		var lean:=.085+.028*sin(i*.9)
+		var root:=Vector3(cos(spec[5]),0.0,sin(spec[5]))*spec[4]
+		var curl:float=spec[6]
 		var rows:Array=[]
 		for row in 3:
 			var t:=float(row)/2.0
-			var out:=forward*lean*t*t
-			var half:=side*width*(1.0-t*.62)*.5
-			var y:=height*t
-			rows.append({"left":out-half+Vector3(0,y,0),"right":out+half+Vector3(0,y,0),"t":t})
-		var normal:=Vector3(forward.x*.22,1.0,forward.z*.22).normalized()
+			var center:=root+forward*lean*t*t+side*curl*t+Vector3(0.0,height*t,0.0)
+			var half:=width*(1.0-t*.48)*.5
+			rows.append({"left":center-side*half,"right":center+side*half,"t":t})
+		var normal:=Vector3(forward.x*.06,1.0,forward.z*.06).normalized()
+		var shade:=.94+.10*abs(sin(angle*2.7))
+		var warm:=.96+.08*abs(cos(angle*1.9))
+		var blade_color:=Color(shade*warm,shade,shade*lerpf(1.04,.94,warm-.96),1.0)
 		for seg in 2:
 			var low:Dictionary=rows[seg]
 			var high:Dictionary=rows[seg+1]
@@ -210,7 +230,7 @@ func _turf_models()->Array:
 			for corner:Array in corners:
 				vertices.append(corner[0]);vertices.append(corner[1]);vertices.append(corner[2])
 				normals.append(normal);normals.append(normal);normals.append(normal)
-				colors.append(Color.WHITE);colors.append(Color.WHITE);colors.append(Color.WHITE)
+				colors.append(blade_color);colors.append(blade_color);colors.append(blade_color)
 				uv.append(Vector2(corner[3],corner[6]));uv.append(Vector2(corner[4],corner[7]));uv.append(Vector2(corner[5],corner[8]))
 	var arrays:Array=[]
 	arrays.resize(Mesh.ARRAY_MAX)
