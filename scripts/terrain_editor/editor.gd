@@ -92,13 +92,13 @@ func _setup_environment()->void:
 	settings.tonemap_agx_contrast=1.18
 	settings.tonemap_agx_white=10.0
 	settings.ssao_enabled=true
-	settings.ssao_radius=.22
-	settings.ssao_intensity=1.65
-	settings.ssao_power=1.35
-	settings.ssao_detail=.42
-	settings.ssao_horizon=.10
-	settings.ssao_sharpness=.45
-	settings.ssao_light_affect=.40
+	settings.ssao_radius=.48
+	settings.ssao_intensity=1.25
+	settings.ssao_power=1.22
+	settings.ssao_detail=.35
+	settings.ssao_horizon=.12
+	settings.ssao_sharpness=.18
+	settings.ssao_light_affect=.42
 	# Glow blooms only near-white values: the sun disc and bright water glints.
 	settings.glow_enabled=true
 	settings.glow_intensity=.35

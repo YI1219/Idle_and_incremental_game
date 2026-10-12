@@ -179,59 +179,46 @@ func _crown_hull(parts:Array)->Dictionary:
 
 	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
 
+func _push_turf(vertices:PackedVector3Array,normals:PackedVector3Array,colors:PackedColorArray,uv:PackedVector2Array,a:Vector3,b:Vector3,c:Vector3,ua:float,ub:float,uc:float)->void:
+	var facing:=(b-a).cross(c-a)
+	if facing.y<0.0:facing=-facing
+	var normal:=Vector3.UP if facing.length_squared()<1e-10 else facing.normalized().lerp(Vector3.UP,.25).normalized()
+	var white:=Color(1,1,1,1)
+	vertices.append(a);vertices.append(b);vertices.append(c)
+	normals.append(normal);normals.append(normal);normals.append(normal)
+	colors.append(white);colors.append(white);colors.append(white)
+	uv.append(Vector2(.5,ua));uv.append(Vector2(.5,ub));uv.append(Vector2(.5,uc))
+
 func _turf_models()->Array:
-	# Short opaque tufts. Four folded strokes and a low centre mound stay
-	# under a decimetre, so a clump cannot become a crossed card. The shader
-	# paints them with the cap colour.
+	# A low opaque mound with a short wide fringe. Neighbouring mounds overlap
+	# into a continuous nap. Nothing here is tall enough to read as a card.
 	var vertices:=PackedVector3Array()
 	var normals:=PackedVector3Array()
 	var colors:=PackedColorArray()
 	var uv:=PackedVector2Array()
-	var up:=Vector3.UP
-	var white:=Color(1,1,1,1)
-	for i in 4:
-		var angle:=TAU*float(i)/4.0+sin(float(i)*1.9)*.48
-		var height:=.050+.028*absf(sin(float(i)*2.2))
-		var width:=.036+.012*absf(sin(float(i)*1.4))
-		var lean:=.012+.010*absf(sin(float(i)*.7))
-		var forward:=Vector3(cos(angle),0.0,sin(angle))
-		var side:=Vector3(-forward.z,0.0,forward.x)
-		var root:=forward*(.006+.014*absf(sin(float(i)*2.6)))
-		var rows:Array=[]
-		for row in 3:
-			var t:=float(row)/2.0
-			var center:Vector3=root+forward*lean*t*t+Vector3(0.0,height*t+.004,0.0)
-			var half:float=width*(1.0-t*.48)*.5
-			var fold:=.007*(1.0-t*.35)
-			rows.append({"left":center-side*half,"ridge":center+Vector3(0.0,fold,0.0),"right":center+side*half,"t":t})
-		for seg in 2:
-			var low:Dictionary=rows[seg]
-			var high:Dictionary=rows[seg+1]
-			var quads:Array=[
-				[low.left,low.ridge,high.ridge,high.left,low.t,high.t],
-				[low.ridge,low.right,high.right,high.ridge,low.t,high.t],
-			]
-			for quad:Array in quads:
-				var pts:Array=[quad[0],quad[1],quad[2],quad[3]]
-				var hs:Array=[quad[4],quad[4],quad[5],quad[5]]
-				for tri in [[0,1,2],[0,2,3]]:
-					for k in tri:
-						vertices.append(pts[k])
-						normals.append(up)
-						colors.append(white)
-						uv.append(Vector2(.5,hs[k]))
-	var apex:=Vector3(0.0,.016,0.0)
-	for i in 6:
-		var a0:=TAU*float(i)/6.0
-		var a1:=TAU*float(i+1)/6.0
-		var p0:=Vector3(cos(a0)*.040,.003,sin(a0)*.040)
-		var p1:=Vector3(cos(a1)*.040,.003,sin(a1)*.040)
-		for point in [apex,p0,p1]:
-			vertices.append(point)
-			normals.append(up)
-			colors.append(white)
-			var tip_v:=.04 if point.is_equal_approx(apex) else 0.0
-			uv.append(Vector2(.5,tip_v))
+	var sides:=8
+	var mid:Array[Vector3]=[]
+	var outer:Array[Vector3]=[]
+	for i in sides:
+		var angle:=TAU*float(i)/float(sides)
+		var wobble:=.85+.22*absf(sin(float(i)*1.7))
+		var radius:=.055*wobble
+		mid.append(Vector3(cos(angle)*radius*.62,.014+.006*absf(sin(float(i)*2.1)),sin(angle)*radius*.62))
+		outer.append(Vector3(cos(angle)*radius,.003,sin(angle)*radius))
+	var apex:=Vector3(0.0,.015,0.0)
+	for i in sides:
+		var j:=(i+1)%sides
+		_push_turf(vertices,normals,colors,uv,apex,mid[i],mid[j],.85,.55,.55)
+		_push_turf(vertices,normals,colors,uv,mid[i],outer[i],outer[j],.45,.08,.08)
+		_push_turf(vertices,normals,colors,uv,mid[i],outer[j],mid[j],.45,.08,.45)
+		# Short wide fringe, folded so the edge has thickness.
+		var forward:Vector3=outer[i].normalized()
+		var side:Vector3=Vector3(-forward.z,0.0,forward.x)
+		var root:Vector3=outer[i]
+		var tip:Vector3=root+forward*.008+Vector3(0.0,.016+.010*absf(sin(float(i)*1.3)),0.0)
+		var half:=.026+.006*absf(sin(float(i)*2.4))
+		_push_turf(vertices,normals,colors,uv,root-side*half,root+side*half,tip,.05,.05,.95)
+		_push_turf(vertices,normals,colors,uv,root-side*half,tip,tip-side*half*.35+Vector3(0.0,.004,0.0),.05,.95,.9)
 	var arrays:Array=[]
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX]=vertices

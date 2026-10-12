@@ -26,11 +26,11 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
 	// ~3 m blotches, then ~0.9 m blotches. Smoothstep keeps the pair as
 	// soft patches instead of a sand of mixed pixels.
 	float broad=gc_noise(p*.34+vec2(2.2,6.4));
-	float mid=gc_noise(turn*p*1.15+vec2(11.0,3.4));
-	float mix_t=smoothstep(.20,.80,clamp(broad*.64+mid*.36,0.0,1.0));
+	float mid=gc_noise(turn*p*1.65+vec2(11.0,3.4));
+	float mix_t=smoothstep(.16,.84,clamp(broad*.55+mid*.45,0.0,1.0));
 	vec3 color=mix(grass_base,grass_highlight,mix_t);
-	float slow=gc_noise(p*.18+vec2(4.1,9.2));
-	color*=1.0+(slow-.5)*.08;
+	float slow=gc_noise(p*.22+vec2(4.1,9.2));
+	color*=1.0+(slow-.5)*.10;
 	float fibre=gc_noise(p*vec2(4.2,4.8)+vec2(1.2,8.0));
 	color*=1.0+(fibre-.5)*.03*detail;
 	vec4 mapped=texture(ground_detail_map,p*.20);

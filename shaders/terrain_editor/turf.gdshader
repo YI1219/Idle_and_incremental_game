@@ -25,10 +25,14 @@ void fragment(){
 	float detail=1.0-smoothstep(.35,1.0,length(fwidth(world.xz))*9.0);
 	vec2 slope;
 	vec3 color=ground_cover(world.xz,detail,slope);
-	float tip=smoothstep(0.0,.55,UV.y);
-	color*=mix(vec3(.80,.82,.72),vec3(1.0),tip);
+	float tip=smoothstep(0.0,.65,UV.y);
+	// Slightly under the cap, never a paler card. The normal follows the
+	// same gentle tilt as the lawn so the tuft does not catch extra sun.
+	color*=mix(vec3(.90),vec3(.97),tip);
 	ALBEDO=color*COLOR.rgb;
-	vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
-	NORMAL=normalize(up);
+	// Same tilt as the cap. A geometric blade normal lights the fringe as a
+	// pale spike, so the tuft takes the lawn's light instead.
+	vec3 normal_world=normalize(vec3(-slope.x*.25,1.0,-slope.y*.25));
+	NORMAL=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
 	ROUGHNESS=1.0;
 }
