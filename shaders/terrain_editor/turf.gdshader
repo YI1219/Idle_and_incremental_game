@@ -24,11 +24,10 @@ void fragment(){
 	// COLOR is a linear multiplier around 1. Skyward normals keep each blade
 	// from flashing; the root stays darker so the tuft sits in the loam.
 	vec3 tint=max(COLOR.rgb,vec3(0.001));
-	vec3 root=vec3(.18,.22,.13)*tint;
-	vec3 blade=vec3(.40,.45,.27)*tint;
-	ALBEDO=mix(root,blade,smoothstep(.04,.78,tip));
+	vec3 root=vec3(.12,.18,.11)*tint;
+	vec3 blade=vec3(.22,.31,.19)*tint;
+	ALBEDO=mix(root,blade,smoothstep(.02,.72,tip));
 	vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
-	NORMAL=normalize(mix(NORMAL,up,.91));
-	ROUGHNESS=.97;
-	BACKLIGHT=vec3(.03,.04,.018)*smoothstep(.40,1.0,tip);
+	NORMAL=normalize(mix(NORMAL,up,.88));
+	ROUGHNESS=.98;
 }

@@ -675,35 +675,34 @@ func _fences(result:Dictionary,field,chunk:Vector2i)->void:
 			pose.origin-=pose.basis*Vector3(0,0,-.46)
 			result.fence.append(pose)
 func _meadow_density(cell:Vector2i)->float:
-	# A few metres of meadow, then an opening. Most cells stay full; the
-	# aligned troughs of the two waves are the gaps.
+	# A few metres of thicker meadow, then a thinner one. The bias stays high
+	# so a trough is a lighter patch, not a bare opening.
 	var x:=float(cell.x)+.5
 	var z:=float(cell.y)+.5
 	var broad:=sin(x*1.15+z*.42)*sin(z*1.35-x*.33)
 	var mid:=sin(x*2.05-z*.70)*sin(z*1.80+x*.55)
-	return clampf((broad*.55+mid*.45)*.5+.62,0.0,1.0)
+	return clampf((broad*.55+mid*.45)*.5+.74,0.0,1.0)
 func _place_turf(result:Dictionary,field,data:Data,chunk:Vector2i)->void:
-	# Dozens of short clumps per square metre where the field is full, and
-	# only a few where it opens. Path stones and the kitchen garden stay clear.
+	# Full metres hold a continuous mat. The wave troughs thin out, they do
+	# not open into bare soil. Path stones and the kitchen garden stay clear.
 	for z in range(chunk.y*8,chunk.y*8+8):
 		for x in range(chunk.x*8,chunk.x*8+8):
 			var cell:=Vector2i(x,z)
 			var density:=_meadow_density(cell)
 			var shaped:=density*density*(3.0-2.0*density)
-			var accept:=lerpf(.16,.92,shaped)
-			if density<.28:accept*=lerpf(.35,1.0,clampf((density-.12)/.16,0.0,1.0))
-			for attempt in 56:
-				if random_at(cell,data.seed,4300+attempt)>accept:continue
-				var p:=Vector2(x+.02+random_at(cell,data.seed,4400+attempt)*.96,z+.02+random_at(cell,data.seed,4500+attempt)*.96)
-				if _near_path(p,.52) or p.distance_to(Vector2(-11,-7))<2.6:continue
+			var accept:=lerpf(.58,.98,shaped)
+			for attempt in 120:
+				if random_at(cell,data.seed,8000+attempt)>accept:continue
+				var p:=Vector2(x+.02+random_at(cell,data.seed,8200+attempt)*.96,z+.02+random_at(cell,data.seed,8400+attempt)*.96)
+				if _near_path(p,.50) or p.distance_to(Vector2(-11,-7))<2.6:continue
 				if p.x>-10.5 and p.x<-6.9 and p.y>-6.1 and p.y<-3.1:continue
 				var surface:Dictionary=field.surface_at(p)
 				if surface.is_empty() or surface.water>=0:continue
 				var h:float=surface.height
-				if not _stable(field,p,h,.16):continue
-				var yaw:=random_at(cell,data.seed,4600+attempt)*TAU
-				var scale:=lerpf(.86,1.20,random_at(cell,data.seed,4700+attempt))
-				var tall:=lerpf(.84,1.14,random_at(cell,data.seed,4800+attempt))*lerpf(1.10,.88,density)
+				if not _stable(field,p,h,.12):continue
+				var yaw:=random_at(cell,data.seed,8600+attempt)*TAU
+				var scale:=lerpf(1.08,1.36,random_at(cell,data.seed,8800+attempt))
+				var tall:=lerpf(.92,1.10,random_at(cell,data.seed,9000+attempt))*lerpf(1.04,.94,density)
 				var origin:=Vector3(p.x,h-.012+_lawn_relief(field,p,h),p.y)
 				result.turf.append(_transform(origin,yaw,Vector3(scale,tall,scale)))
 func _lawn_relief(field,p:Vector2,h:float)->float:
@@ -742,9 +741,8 @@ static func _turf_tone(origin:Vector3)->Color:
 	# shifts value and a little warmth from clump to clump.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)
 	var b:=fposmod(sin(origin.x*19.19+origin.z*41.13)*24634.6345,1.0)
-	var value:=lerpf(.92,1.08,a)
-	var warm:=lerpf(.96,1.05,b)
-	return Color(value*warm,value,value*lerpf(1.04,.94,b),1.0)
+	var value:=lerpf(.90,1.06,a)
+	return Color(value*lerpf(.94,1.02,b),value*lerpf(.98,1.06,b),value*lerpf(.90,.98,b),1.0)
 static func _stone_tone(origin:Vector3)->Color:
 	# Deterministic per-stone value and hue: warm ochre, cool slate and moss-dark.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)

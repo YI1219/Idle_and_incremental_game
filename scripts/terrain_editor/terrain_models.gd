@@ -180,58 +180,62 @@ func _crown_hull(parts:Array)->Dictionary:
 	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
 
 func _turf_models()->Array:
-	# Standing meadow tuft. Blades stay short and mostly upright, with a small
-	# tip bend, so neighbouring clumps join into sod instead of a flat fan.
+	# Short crossed blades. A single quad vanishes edge-on, so each blade is
+	# a pair of faces and the tuft keeps body from the gameplay camera.
 	var vertices:=PackedVector3Array()
 	var normals:=PackedVector3Array()
 	var colors:=PackedColorArray()
 	var uv:=PackedVector2Array()
-	# angle, height, width, lean, root radius, root angle, side curl
+	# angle, height, width, lean, root radius, root angle
+	# Thin blades. The second face is a narrow cross so an edge-on view still has body.
 	var specs:Array=[
-		[.18,.096,.024,.018,.010,0.4,.004],
-		[.72,.074,.020,.014,.030,1.2,-.003],
-		[1.28,.108,.028,.022,.006,2.4,.005],
-		[1.86,.052,.036,.010,.038,2.7,-.004],
-		[2.42,.088,.022,.016,.016,3.3,.003],
-		[3.05,.100,.026,.020,.024,4.1,-.005],
-		[3.62,.060,.034,.012,.034,4.6,.004],
-		[4.28,.082,.020,.016,.012,5.1,-.003],
-		[4.92,.112,.026,.024,.018,0.8,.005],
-		[5.48,.046,.038,.008,.040,1.7,-.004],
-		[5.95,.078,.022,.014,.014,5.7,.003],
-		[6.28,.066,.030,.012,.026,3.8,-.003],
+		[.12,.062,.024,.016,.008,0.2],
+		[.62,.078,.020,.020,.036,1.1],
+		[1.15,.054,.026,.014,.022,1.8],
+		[1.70,.086,.018,.022,.048,2.5],
+		[2.20,.066,.022,.016,.014,3.2],
+		[2.75,.074,.020,.018,.040,3.9],
+		[3.25,.050,.026,.012,.028,4.6],
+		[3.80,.082,.018,.020,.052,5.2],
+		[4.30,.058,.024,.014,.018,0.7],
+		[4.85,.070,.020,.018,.044,1.6],
+		[5.40,.052,.026,.012,.030,2.8],
+		[5.95,.076,.018,.020,.034,4.3],
 	]
 	for spec:Array in specs:
-		var angle:float=spec[0]
-		var height:float=spec[1]
-		var width:float=spec[2]
-		var lean:float=spec[3]
-		var forward:=Vector3(cos(angle),0.0,sin(angle))
-		var side:=Vector3(-forward.z,0.0,forward.x)
-		var root:=Vector3(cos(spec[5]),0.0,sin(spec[5]))*spec[4]
-		var curl:float=spec[6]
-		var rows:Array=[]
-		for row in 3:
-			var t:=float(row)/2.0
-			var center:=root+forward*lean*t*t+side*curl*t+Vector3(0.0,height*t,0.0)
-			var half:=width*(1.0-t*.48)*.5
-			rows.append({"left":center-side*half,"right":center+side*half,"t":t})
-		var normal:=Vector3(forward.x*.06,1.0,forward.z*.06).normalized()
-		var shade:=.94+.10*abs(sin(angle*2.7))
-		var warm:=.96+.08*abs(cos(angle*1.9))
-		var blade_color:=Color(shade*warm,shade,shade*lerpf(1.04,.94,warm-.96),1.0)
-		for seg in 2:
-			var low:Dictionary=rows[seg]
-			var high:Dictionary=rows[seg+1]
-			var corners:Array=[
-				[low.left,low.right,high.right,0.0,1.0,1.0,float(low.t),float(low.t),float(high.t)],
-				[low.left,high.right,high.left,0.0,1.0,0.0,float(low.t),float(high.t),float(high.t)],
-			]
-			for corner:Array in corners:
-				vertices.append(corner[0]);vertices.append(corner[1]);vertices.append(corner[2])
-				normals.append(normal);normals.append(normal);normals.append(normal)
-				colors.append(blade_color);colors.append(blade_color);colors.append(blade_color)
-				uv.append(Vector2(corner[3],corner[6]));uv.append(Vector2(corner[4],corner[7]));uv.append(Vector2(corner[5],corner[8]))
+		var angle:float=float(spec[0])
+		var height:float=float(spec[1])
+		var width:float=float(spec[2])
+		var lean:float=float(spec[3])
+		var root_angle:float=float(spec[5])
+		var root:=Vector3(cos(root_angle),0.0,sin(root_angle))*float(spec[4])
+		var shade:float=.94+.08*absf(sin(angle*2.3))
+		var blade_color:=Color(shade*.97,shade,shade*.95,1.0)
+		var normal:=Vector3(cos(angle)*.05,1.0,sin(angle)*.05).normalized()
+		for turn in 2:
+			var facing:float=angle+(0.0 if turn==0 else 1.15)
+			var forward:=Vector3(cos(facing),0.0,sin(facing))
+			var side:=Vector3(-forward.z,0.0,forward.x)
+			var lift:float=.003 if int(turn)==1 else 0.0
+			var origin:Vector3=root+side*lift
+			var rows:Array=[]
+			for row in 2:
+				var t:=float(row)
+				var center:Vector3=origin+forward*lean*t*t+Vector3(0.0,height*t,0.0)
+				var half:float=width*(1.0-t*.35)*.5
+				rows.append({"left":center-side*half,"right":center+side*half,"t":t})
+			for seg in 1:
+				var low:Dictionary=rows[seg]
+				var high:Dictionary=rows[seg+1]
+				var corners:Array=[
+					[low.left,low.right,high.right,0.0,1.0,1.0,float(low.t),float(low.t),float(high.t)],
+					[low.left,high.right,high.left,0.0,1.0,0.0,float(low.t),float(high.t),float(high.t)],
+				]
+				for corner:Array in corners:
+					vertices.append(corner[0]);vertices.append(corner[1]);vertices.append(corner[2])
+					normals.append(normal);normals.append(normal);normals.append(normal)
+					colors.append(blade_color);colors.append(blade_color);colors.append(blade_color)
+					uv.append(Vector2(corner[3],corner[6]));uv.append(Vector2(corner[4],corner[7]));uv.append(Vector2(corner[5],corner[8]))
 	var arrays:Array=[]
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX]=vertices
