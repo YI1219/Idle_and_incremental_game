@@ -1,0 +1,48 @@
+extends "res://tests/capture_rim_round.gd"
+## Runtime stills for the meadow wallpaper pass.
+func _turf_count()->int:
+	var total:=0
+	for node in editor.renderer.find_children("*","MultiMeshInstance3D",true,false):
+		if str(node.name).begins_with("turf"):
+			total+=node.multimesh.instance_count
+	return total
+func capture(name:String)->void:
+	for i in 8:
+		RenderingServer.force_draw(false)
+		await process_frame
+	RenderingServer.force_draw(false)
+	var error:=viewport.get_texture().get_image().save_png(OUT+name+".png")
+	captures.append({"file":name+".png","error":error,"position":str(editor.camera.position),"rotation":str(editor.camera.rotation_degrees)})
+func _want(only:String,name:String)->bool:
+	return only.is_empty() or only==name
+func run()->void:
+	var args:=OS.get_cmdline_user_args()
+	OUT="res://art/review/terrain_fidelity/2026-10-12/meadow_wallpaper/"
+	var tag:="after"
+	var only:=""
+	for arg in args:
+		if arg.begins_with("only="):only=arg.trim_prefix("only=")
+		elif arg.begins_with("out="):OUT="res://art/review/terrain_fidelity/"+arg.trim_prefix("out=")+"/"
+		elif not arg.begins_with("-"):tag=arg
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+	viewport=SubViewport.new();viewport.size=Vector2i(1671,941);viewport.own_world_3d=true
+	viewport.msaa_3d=Viewport.MSAA_4X;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS
+	root.add_child(viewport)
+	editor=load("res://scenes/terrain_editor.tscn").instantiate();viewport.add_child(editor)
+	editor.hud.hide();editor.brush.hide();editor.set_process(false);editor.camera.set_process(false)
+	publish()
+	print("TURF INSTANCES ",_turf_count())
+	if _want(only,"default"):
+		frame(Vector2(0,-1),21.0,16.0,27.0);await capture(tag+"_default")
+	if _want(only,"distant"):
+		frame(Vector2(0,-1),29.0,16.0,24.0);await capture(tag+"_distant")
+	if _want(only,"rim"):
+		frame(Vector2(-12,3),8.2,16.0,27.0);await capture(tag+"_rim")
+	if _want(only,"pond"):
+		editor.camera.position=Vector3(1,10,12);editor.camera.look_at(Vector3(-3,3.5,2));await capture(tag+"_pond")
+	if _want(only,"grass"):
+		editor.camera.position=Vector3(-16.2,4.35,1.2)
+		editor.camera.look_at(Vector3(-13.4,3.52,-0.6))
+		await capture(tag+"_grass")
+	print("LOOK CAPTURES: ",tag," ",captures.size()," errors ",captures," adapter ",RenderingServer.get_video_adapter_name())
+	quit()

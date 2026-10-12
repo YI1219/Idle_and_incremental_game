@@ -62,7 +62,7 @@ void fragment() {
 	vec2 slope = broad.yz*(.055*.95);
 	slope += transpose(turn)*small.yz*(.020*2.8);
 	slope += transpose(fine_turn)*fine.yz*(.004*6.4);
-	slope *= 1.15*mix(.28,1.0,smoothstep(.0,.90,basin.r));
+	slope *= 1.05*mix(.12,1.0,smoothstep(.05,1.35,basin.r));
 	// Faster short disturbances stay in connected receiving water. The same
 	// published mask fades both aeration and slopes into the calm lake body.
 	vec3 impact = height_gradient(p*4.1+vec2(TIME*.30,TIME*1.25)+vec2(41.2,7.3));
@@ -71,14 +71,14 @@ void fragment() {
 	NORMAL = normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
 	// Soft contact darkening along the bank. It falls off within a fraction
 	// of a metre and does not draw a foam ring.
-	float contact = exp(-max(basin.r,0.0)*3.2);
-	color = mix(color, color*vec3(.52,.64,.62), contact*.78*(1.0-basin.b));
+	float contact = exp(-max(basin.r,0.0)*1.65);
+	color = mix(color, color*vec3(.38,.50,.50), contact*.94*(1.0-basin.b));
 	// Broken irregular wavelets carry pale sky light across the lake.
 	vec2 ripple_p=p*vec2(2.5,5.5)+vec2(TIME*.08,-TIME*.11);
 	vec3 ripple=height_gradient(ripple_p);
 	float glint=smoothstep(.69,.76,ripple.x)*(1.0-smoothstep(.77,.84,ripple.x));
 	glint*=smoothstep(.36,.70,small.x);
-	color = mix(color*(.94+broad.x*.10),vec3(.90,.86,.74),glint*.07);
+	color = mix(color*(.96+broad.x*.06),vec3(.90,.86,.74),glint*.035);
 	// Approximate reflection of the far bank: next to a shore that lies
 	// beyond the water along the view, swap sky reflection for a dark
 	// bank tone. The shore field gradient gives the bank's direction.
@@ -96,7 +96,7 @@ void fragment() {
 	color=mix(color,vec3(.58,.66,.62),aerial*.20);
 	ALBEDO = color;
 	METALLIC = 0.0;
-	ROUGHNESS = mix(.64,.30,smoothstep(0.0,.75,basin.r))+basin.b*.08;
+	ROUGHNESS = mix(.82,.34,smoothstep(0.0,1.05,basin.r))+basin.b*.08;
 	// Dielectric BRDF with the warm sky radiance cubemap; bank band and
 	// shallow margins reflect less sky so the bed and bank tones read.
 	SPECULAR = mix(.50,.18,bank_band)*mix(.75,1.0,absorption);

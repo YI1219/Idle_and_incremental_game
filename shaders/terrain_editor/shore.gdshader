@@ -12,12 +12,12 @@ void fragment(){
  // The outer feather stays lawn. Damp soil appears only on the last soft
  // stretch into the water, with a noisy edge instead of a hard colour band.
  float bank=smoothstep(0.0,1.0,COLOR.a);
- float wet=(1.0-smoothstep(.02,.50,world_position.y-UV.x))*bank;
- float grit=gc_noise(p*6.2);
- vec3 soil=mix(vec3(.26,.28,.18),vec3(.34,.32,.22),grit);
- soil=mix(soil,soil*vec3(.72,.82,.80),wet*.55);
- float earth=smoothstep(.10,.96,bank)*smoothstep(.02,.92,wet+gc_noise(p*1.15)*.5);
- earth=min(earth,.58);
+ float wet=(1.0-smoothstep(0.0,.95,world_position.y-UV.x))*bank;
+ float grit=gc_noise(p*1.6);
+ vec3 soil=grass*mix(vec3(.78,.66,.52),vec3(.70,.74,.72),grit);
+ soil=mix(soil,soil*vec3(.82,.90,.92),wet*.40);
+ float earth=smoothstep(.04,.90,bank)*smoothstep(0.0,.85,wet+gc_noise(p*.85)*.45);
+ earth=min(earth,.40);
  ALBEDO=mix(grass,soil,earth);
  vec3 n=normalize(vec3(-slope.x*.5,1.0,-slope.y*.5));
  NORMAL=normalize((VIEW_MATRIX*vec4(n,0.0)).xyz);

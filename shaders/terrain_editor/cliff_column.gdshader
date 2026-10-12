@@ -37,23 +37,28 @@ void fragment(){
  vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
  NORMAL=normalize(mix(facet,up,edge_soft*.38));
 	vec3 world_normal=(INV_VIEW_MATRIX*vec4(facet,0.0)).xyz;
-	vec3 variation=rock_hash(floor(column_origin*2.3)+vec3(17.0));
-	// Facet shade from the source stone, softened; instance tone sets the block.
-	vec3 stone=stone_surface(world_position,material_normal)*(.96+.08*variation.x)*mix(vec3(1.0),COLOR.rgb/.66,.65);
-	// Vertical weathering streaks run the height of this body.
+	vec3 variation=rock_hash(floor(column_origin*1.3)+vec3(17.0));
+	// One value for the whole block, with a small warm or cool shift.
+	// Face tint stays quiet so a flat cut does not break into wedges.
+	vec3 stone=stone_surface(world_position,material_normal)*mix(.86,1.12,variation.x);
+	stone*=mix(vec3(1.0),COLOR.rgb/.66,.28);
+	stone*=mix(vec3(.95,.97,1.02),vec3(1.05,1.02,.94),variation.y);
 	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
 	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;
-	stone*=.96+.08*streak;
-	stone*=mix(.87,1.0,smoothstep(-.85,.25,world_normal.y));
-	// Metres below this body's shoulder; lower facets weather darker.
+	stone*=.98+.04*streak;
+	stone*=mix(.90,1.0,smoothstep(-.85,.25,world_normal.y));
 	float below=column_origin.y-world_position.y;
-	stone*=mix(1.0,.86,smoothstep(1.6,4.2,below));
-	float seam=smoothstep(.28,.49,abs(local_position.x))*(1.0-smoothstep(-.5,-.05,local_position.y));
-	float crevice=crown_cover*max(seam,(1.0-smoothstep(-.65,-.25,local_position.y))*.45);
-	stone*=mix(1.0,.82,crevice);
+	stone*=mix(1.0,.88,smoothstep(1.6,4.2,below));
+	// Thin joints at the packed edges, plus a short lip under the turf.
+	// Neither bends the face, so a plane stays a plane.
+	float side=max(abs(local_position.x),abs(local_position.z));
+	float joint=smoothstep(.455,.50,side)*crown_cover;
+	float lip=crown_cover*(1.0-smoothstep(.012,.05,-local_position.y));
+	lip*=.55+.45*noise_column(column_origin.xz*3.0+local_position.xz*5.0);
+	stone*=mix(1.0,.58,clamp(joint+lip*.5,0.0,1.0));
 	ALBEDO=stone;
 	ROUGHNESS=stone_map(world_position,material_normal).a;
 	SPECULAR=.08;
-	AO=mix(1.0,.84,crevice);
+	AO=mix(1.0,.64,joint);
  NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);
 }

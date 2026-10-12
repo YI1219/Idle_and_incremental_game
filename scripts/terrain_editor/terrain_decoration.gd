@@ -77,12 +77,12 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var angle:=random_at(cell,data.seed,1)*TAU
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
 			var house_clear:=_near_path(p) or p.distance_to(Vector2(-11,-7))<2.4 or (p.x> -10.5 and p.x< -6.9 and p.y> -6.1 and p.y< -3.1)
-			if not house_clear and cluster>.12 and random_at(cell,data.seed,4)<.38:
+			if not house_clear and cluster>-.05 and random_at(cell,data.seed,4)<.30:
 				if random_at(cell,data.seed,13)<.66:
 					for bloom in 4:
 						var flower_at:=p+Vector2(sin(bloom*2.4+angle),cos(bloom*2.4+angle))*.24
 						if _stable(field,flower_at,h,.12):result.flower.append(_transform(Vector3(flower_at.x,h,flower_at.y),angle+bloom,Vector3.ONE*(.65+bloom*.09)))
-			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.36:
+			if not house_clear and cluster>.02 and random_at(cell,data.seed,6)<.26:
 				var pose:=_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2))
 				if _supported_shrub(field,pose,h) and _clear_of_rim(pose):result.bush.append(pose)
 			if not house_clear and cluster>.12 and random_at(cell,data.seed,141)<.26 and _stable(field,p,h,.52):
@@ -691,8 +691,8 @@ func _place_turf(result:Dictionary,field,data:Data,chunk:Vector2i)->void:
 			var cell:=Vector2i(x,z)
 			var density:=_meadow_density(cell)
 			var shaped:=density*density*(3.0-2.0*density)
-			var accept:=lerpf(.72,.96,shaped)
-			for attempt in 90:
+			var accept:=lerpf(.58,.90,shaped)
+			for attempt in 72:
 				if random_at(cell,data.seed,8000+attempt)>accept:continue
 				var p:=Vector2(x+.02+random_at(cell,data.seed,8200+attempt)*.96,z+.02+random_at(cell,data.seed,8400+attempt)*.96)
 				if _near_path(p,.48) or p.distance_to(Vector2(-11,-7))<2.6:continue
@@ -702,9 +702,9 @@ func _place_turf(result:Dictionary,field,data:Data,chunk:Vector2i)->void:
 				var h:float=surface.height
 				if not _stable(field,p,h,.16):continue
 				var yaw:=random_at(cell,data.seed,8600+attempt)*TAU
-				var scale:=lerpf(1.05,1.28,random_at(cell,data.seed,8800+attempt))
-				var tall:=lerpf(.85,.98,random_at(cell,data.seed,9000+attempt))*lerpf(1.0,.94,density)
-				var origin:=Vector3(p.x,h-.004+_lawn_relief(field,p,h),p.y)
+				var scale:=lerpf(.92,1.36,random_at(cell,data.seed,8800+attempt))
+				var tall:=lerpf(.76,1.06,random_at(cell,data.seed,9000+attempt))
+				var origin:=Vector3(p.x,h-.01+_lawn_relief(field,p,h),p.y)
 				result.turf.append(_transform(origin,yaw,Vector3(scale,tall,scale)))
 func _lawn_relief(field,p:Vector2,h:float)->float:
 	# Matches the open-lawn sine used by the cap. Near a drop the wave fades
@@ -742,8 +742,8 @@ static func _turf_tone(origin:Vector3)->Color:
 	# shifts value and a little warmth from clump to clump.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)
 	var b:=fposmod(sin(origin.x*19.19+origin.z*41.13)*24634.6345,1.0)
-	var value:=lerpf(.90,1.06,a)
-	return Color(value*lerpf(.94,1.02,b),value*lerpf(.98,1.06,b),value*lerpf(.90,.98,b),1.0)
+	var value:=lerpf(.94,1.05,a)
+	return Color(value*lerpf(.97,1.02,b),value,value*lerpf(.96,1.0,b),1.0)
 static func _stone_tone(origin:Vector3)->Color:
 	# Deterministic per-stone value and hue: warm ochre, cool slate and moss-dark.
 	var a:=fposmod(sin(origin.x*12.9898+origin.z*78.233)*43758.5453,1.0)

@@ -17,7 +17,8 @@ void fragment(){
 	// palette without repeating its nearest-site search at every rock pixel.
 	vec3 variation=rock_hash(floor(rock_origin/vec3(2.2,1.8,2.2))+vec3(17.0));
 	float wet=bank_stone*(1.0-smoothstep(.06,.42,world_position.y-rock_origin.y));
-	ALBEDO=stone_surface(world_position,material_normal)*(.73+.20*variation.x)*clamp(COLOR.r/.714,.75,1.02)*mix(1.0,.79,wet);
+	float seat=1.0-smoothstep(0.0,.16,max(world_position.y-rock_origin.y,0.0));
+	ALBEDO=stone_surface(world_position,material_normal)*(.73+.20*variation.x)*clamp(COLOR.r/.714,.75,1.02)*mix(1.0,.79,wet)*mix(1.0,.66,seat);
 	ROUGHNESS=mix(stone_map(world_position,material_normal).a,.76,wet);
 	SPECULAR=.08;
  NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);

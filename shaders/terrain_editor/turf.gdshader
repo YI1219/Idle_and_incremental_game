@@ -19,13 +19,16 @@ void vertex(){
 	}
 }
 void fragment(){
-	// The nap uses the lawn colour, so a close stroke cannot read as a paler
-	// card. Skyward normals keep it from flashing against the sod.
+	// The clump uses the cap colour at this spot. The root is a little
+	// darker so the tuft sits in the sod; the tip matches the lawn.
 	vec3 world=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
 	float detail=1.0-smoothstep(.35,1.0,length(fwidth(world.xz))*9.0);
 	vec2 slope;
-	ALBEDO=ground_cover(world.xz,detail,slope);
+	vec3 color=ground_cover(world.xz,detail,slope);
+	float tip=smoothstep(0.0,.55,UV.y);
+	color*=mix(vec3(.80,.82,.72),vec3(1.0),tip);
+	ALBEDO=color*COLOR.rgb;
 	vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
-	NORMAL=normalize(mix(NORMAL,up,.97));
+	NORMAL=normalize(up);
 	ROUGHNESS=1.0;
 }

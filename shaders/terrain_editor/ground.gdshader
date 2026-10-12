@@ -15,29 +15,11 @@ void fragment(){
 	float detail=1.0-smoothstep(.35,1.0,footprint);
 	vec2 slope;
 	vec3 color=ground_cover(p,detail,slope);
-	// Up close the olive pair would read as a painted sheet between blades.
-	// Loam shows in those gaps; distance falls back to the unresolved lawn.
-	float moss=smoothstep(.58,.88,gc_noise(p*1.15+vec2(3.2,8.4)));
-	float loam_n=gc_noise(p*2.35+vec2(4.2,1.6));
-	float clod=gc_noise(p*vec2(6.2,7.4)+vec2(1.4,9.0));
-	float grit=gc_noise(p*vec2(15.0,17.0));
-	vec3 loam=mix(vec3(.10,.08,.055),vec3(.18,.14,.09),loam_n*.60+clod*.40);
-	loam*=1.0+(grit-.5)*.08;
-	loam=mix(loam,loam*vec3(.92,1.0,.86),smoothstep(.55,.88,gc_noise(p*.42+vec2(7.0,2.2))));
-	float pebble=smoothstep(.86,.97,gc_noise(p*vec2(22.0,26.0)));
-	loam=mix(loam,loam*vec3(1.22,1.14,1.02),pebble*.35);
-	// Same low-frequency meadow as the clump scatter. Thick sod stays olive.
-	// A trough keeps only a warm soil tint, so a gap is not a dirt hole.
+	// Same low-frequency meadow as the clump scatter. A thin patch takes a
+	// warm whisper of the lawn colour. It does not open into loam or grit.
 	float meadow=clamp((sin(p.x*1.15+p.y*.42)*sin(p.y*1.35-p.x*.33)*.55+sin(p.x*2.05-p.y*.70)*sin(p.y*1.80+p.x*.55)*.45)*.5+.82,0.0,1.0);
 	meadow=meadow*meadow*(3.0-2.0*meadow);
-	float soil_amt=mix(.08,.015,meadow);
-	soil_amt=mix(soil_amt,soil_amt*.72,moss);
-	color=mix(color,loam,detail*soil_amt);
-	color*=mix(.94,1.0,meadow);
-	float cloud=gc_noise(p*1.7+vec2(2.4,6.1));
-	float nap=gc_noise(p*vec2(8.5,10.5)+vec2(1.2,4.0));
-	color*=1.0+((cloud-.5)*.18+(nap-.5)*.07)*detail;
-	color=mix(color,color*vec3(1.05,1.0,.90),(gc_noise(p*.85+vec2(8.0,1.5))-.5)*.22*detail);
+	color=mix(color*vec3(1.05,.97,.86),color,mix(.90,1.0,meadow));
 	// Exposed crown patches, never a perimeter-distance stroke. Most of the
  // shared cap is turf, including its edge; sparse mineral windows stop inland.
  float patch=gc_noise(p*1.65+vec2(11.0,3.0));
@@ -49,5 +31,5 @@ void fragment(){
  if(base_normal.y<0.0)base_normal=-base_normal;
  vec3 normal_world=normalize(base_normal+vec3(-slope.x*cover_relief*detail,0.0,-slope.y*cover_relief*detail));
 	NORMAL=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
-	ROUGHNESS=0.98;
+	ROUGHNESS=1.0;
 }

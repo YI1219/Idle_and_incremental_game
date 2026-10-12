@@ -180,41 +180,58 @@ func _crown_hull(parts:Array)->Dictionary:
 	return {"mesh":builder.mesh(),"pose":Transform3D.IDENTITY}
 
 func _turf_models()->Array:
-	# Narrow strokes only. Wide flakes read as plates up close; the lawn
-	# shader is the continuous sod, and these add a short matched nap.
+	# Short opaque tufts. Four folded strokes and a low centre mound stay
+	# under a decimetre, so a clump cannot become a crossed card. The shader
+	# paints them with the cap colour.
 	var vertices:=PackedVector3Array()
 	var normals:=PackedVector3Array()
 	var colors:=PackedColorArray()
 	var uv:=PackedVector2Array()
 	var up:=Vector3.UP
-	for i in 16:
-		var angle:=TAU*float(i)/16.0+sin(float(i)*1.7)*.35
-		var height:=.003+.002*absf(sin(float(i)*2.1))
-		var width:=.007+.003*absf(sin(float(i)*1.3))
-		var lean:=.006+.003*absf(sin(float(i)*.8))
-		var root:=Vector3(cos(angle+1.3),0.0,sin(angle+1.3))*(.008+.062*absf(sin(float(i)*2.7)))
-		var shade:float=.97+.04*absf(sin(float(i)*1.9))
-		var blade_color:=Color(shade*.98,shade,shade*.97,1.0)
+	var white:=Color(1,1,1,1)
+	for i in 4:
+		var angle:=TAU*float(i)/4.0+sin(float(i)*1.9)*.48
+		var height:=.050+.028*absf(sin(float(i)*2.2))
+		var width:=.036+.012*absf(sin(float(i)*1.4))
+		var lean:=.012+.010*absf(sin(float(i)*.7))
 		var forward:=Vector3(cos(angle),0.0,sin(angle))
 		var side:=Vector3(-forward.z,0.0,forward.x)
+		var root:=forward*(.006+.014*absf(sin(float(i)*2.6)))
 		var rows:Array=[]
-		for row in 2:
-			var t:=float(row)
+		for row in 3:
+			var t:=float(row)/2.0
 			var center:Vector3=root+forward*lean*t*t+Vector3(0.0,height*t+.004,0.0)
-			var half:float=width*(1.0-t*.22)*.5
-			rows.append({"left":center-side*half,"right":center+side*half,"t":t})
-		for seg in 1:
+			var half:float=width*(1.0-t*.48)*.5
+			var fold:=.007*(1.0-t*.35)
+			rows.append({"left":center-side*half,"ridge":center+Vector3(0.0,fold,0.0),"right":center+side*half,"t":t})
+		for seg in 2:
 			var low:Dictionary=rows[seg]
 			var high:Dictionary=rows[seg+1]
-			var corners:Array=[
-				[low.left,low.right,high.right,0.0,1.0,1.0,float(low.t),float(low.t),float(high.t)],
-				[low.left,high.right,high.left,0.0,1.0,0.0,float(low.t),float(high.t),float(high.t)],
+			var quads:Array=[
+				[low.left,low.ridge,high.ridge,high.left,low.t,high.t],
+				[low.ridge,low.right,high.right,high.ridge,low.t,high.t],
 			]
-			for corner:Array in corners:
-				vertices.append(corner[0]);vertices.append(corner[1]);vertices.append(corner[2])
-				normals.append(up);normals.append(up);normals.append(up)
-				colors.append(blade_color);colors.append(blade_color);colors.append(blade_color)
-				uv.append(Vector2(corner[3],corner[6]));uv.append(Vector2(corner[4],corner[7]));uv.append(Vector2(corner[5],corner[8]))
+			for quad:Array in quads:
+				var pts:Array=[quad[0],quad[1],quad[2],quad[3]]
+				var hs:Array=[quad[4],quad[4],quad[5],quad[5]]
+				for tri in [[0,1,2],[0,2,3]]:
+					for k in tri:
+						vertices.append(pts[k])
+						normals.append(up)
+						colors.append(white)
+						uv.append(Vector2(.5,hs[k]))
+	var apex:=Vector3(0.0,.016,0.0)
+	for i in 6:
+		var a0:=TAU*float(i)/6.0
+		var a1:=TAU*float(i+1)/6.0
+		var p0:=Vector3(cos(a0)*.040,.003,sin(a0)*.040)
+		var p1:=Vector3(cos(a1)*.040,.003,sin(a1)*.040)
+		for point in [apex,p0,p1]:
+			vertices.append(point)
+			normals.append(up)
+			colors.append(white)
+			var tip_v:=.04 if point.is_equal_approx(apex) else 0.0
+			uv.append(Vector2(.5,tip_v))
 	var arrays:Array=[]
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX]=vertices
