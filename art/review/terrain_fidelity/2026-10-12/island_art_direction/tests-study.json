@@ -1,0 +1,288 @@
+{
+  "passed": 34,
+  "total": 47,
+  "results": [
+    {
+      "test": "tests/terrain_block_mantle_test.gd",
+      "passed": true,
+      "seconds": 1.19,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBLOCK MANTLE: {\"bodies\":75,\"build_ms\":683,\"failed\":[],\"minimum_volume\":0.402290980021159,\"passed\":true,\"triangles\":3470}\n"
+    },
+    {
+      "test": "tests/terrain_boundary_wall_test.gd",
+      "passed": true,
+      "seconds": 1.31,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOUNDARY WALL default: 0 missing\nBOUNDARY WALL raise: 0 missing\nBOUNDARY WALL lower: 0 missing\nBOUNDARY WALL expand: 0 missing\nBOUNDARY WALL contract: 0 missing\nTERRAIN BOUNDARY WALL: 416 samples, 0 failures\n"
+    },
+    {
+      "test": "tests/terrain_broad_facet_test.gd",
+      "passed": true,
+      "seconds": 0.34,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBROAD CLIFF FACETS: 1774 large faces; 170 planar normals\nBROAD NORMAL VALIDITY: 0 invalid entries\n"
+    },
+    {
+      "test": "tests/terrain_canopy_contact_test.gd",
+      "passed": true,
+      "seconds": 0.24,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTUAL WOOD EXTREMUM (-0.434883, 0.867647, -0.146833) covered by leaf lobes [1]\nACTUAL WOOD EXTREMUM (0.377939, 0.877121, -0.110059) covered by leaf lobes [2]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (-0.036714, 0.885095, -0.047428) covered by leaf lobes [0]\nTERRAIN CANOPY CONTACT: 5/5\n"
+    },
+    {
+      "test": "tests/terrain_cliff_interface_test.gd",
+      "passed": true,
+      "seconds": 0.74,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLIFF INTERFACES: 96 boundary points; 0 separated; max=0.0\nIRREGULAR CLIFF EDGES: [3388, 0, 0.0]\nIRREGULAR BROAD/NARROW POLYLINES: [26, 0, 0.0]\nMULTI-ELEVATION CLIFF EDGES: 7174 points; 0 separated; max=0.0\n"
+    },
+    {
+      "test": "tests/terrain_cliff_taper_test.gd",
+      "passed": false,
+      "seconds": 0.24,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CLIFF TAPER: 1/2 passed, sampled 0 foot vertices, furthest -inf\nERROR: The broad diagonal cliff foot is present in the inspected region\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_cliff_taper_test.gd:8)\n       [1] run (res://tests/terrain_cliff_taper_test.gd:30)\n"
+    },
+    {
+      "test": "tests/terrain_closed_flow_test.gd",
+      "passed": true,
+      "seconds": 0.34,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLOSED FLOW: impact vertices=5814, receiving sectors=4, wet feet=129, dry feet=11382, failures=0\n"
+    },
+    {
+      "test": "tests/terrain_contour_test.gd",
+      "passed": true,
+      "seconds": 0.63,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n"
+    },
+    {
+      "test": "tests/terrain_crown_integrity_test.gd",
+      "passed": true,
+      "seconds": 0.34,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":4,\"contained_source_entries\":3072,\"max_plane_violation\":-0.000000119209289550781,\"outward_surfaces\":4,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":3072,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}\nPUBLISHED CROWN MATCH: true, entries=2256, max_difference=0.0, different_entries=0\n"
+    },
+    {
+      "test": "tests/terrain_editor_data_test.gd",
+      "passed": true,
+      "seconds": 0.14,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n"
+    },
+    {
+      "test": "tests/terrain_editor_decoration_test.gd",
+      "passed": true,
+      "seconds": 2.56,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 23/23 passed\n"
+    },
+    {
+      "test": "tests/terrain_editor_render_test.gd",
+      "passed": true,
+      "seconds": 0.53,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RENDER: 339/339 passed\n"
+    },
+    {
+      "test": "tests/terrain_editor_runtime_test.gd",
+      "passed": false,
+      "seconds": 28.3,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 18/22 passed\nERROR: cliff pointer identifies owning cell\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_editor_runtime_test.gd:8)\n       [1] run (res://tests/terrain_editor_runtime_test.gd:108)\nERROR: snapped viewport brush edits east/south cliff owner\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_editor_runtime_test.gd:8)\n       [1] run (res://tests/terrain_editor_runtime_test.gd:113)\nERROR: cliff pointer identifies owning cell\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_editor_runtime_test.gd:8)\n       [1] run (res://tests/terrain_editor_runtime_test.gd:108)\nERROR: snapped viewport brush edits east/south cliff owner\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_editor_runtime_test.gd:8)\n       [1] run (res://tests/terrain_editor_runtime_test.gd:113)\n"
+    },
+    {
+      "test": "tests/terrain_grass_compression_test.gd",
+      "passed": true,
+      "seconds": 0.24,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGRASS COMPRESSION: texture/origin/extent, preconfigure, reconfigure, invalid bounds and clear: true\n"
+    },
+    {
+      "test": "tests/terrain_homestead_test.gd",
+      "passed": false,
+      "seconds": 16.06,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nHOMESTEAD: 28/34 passed; tree heights=[4.06712532043457, 4.15012741088867, 4.19162845611572, 4.23313045501709]\nERROR: Thick slab keeps 80% of the original underside depth, upper boundary anchored\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_homestead_test.gd:9)\n       [1] run (res://tests/terrain_homestead_test.gd:43)\nERROR: Thick slab keeps 80% of the original underside depth, upper boundary anchored\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_homestead_test.gd:9)\n       [1] run (res://tests/terrain_homestead_test.gd:43)\nERROR: Thick slab keeps 80% of the original underside depth, upper boundary anchored\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_homestead_test.gd:9)\n       [1] run (res://tests/terrain_homestead_test.gd:43)\nERROR: Thick slab keeps 80% of the original underside depth, upper boundary anchored\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_homestead_test.gd:9)\n       [1] run (res://tests/terrain_homestead_test.gd:43)\nERROR: Thick slab keeps 80% of the original underside depth, upper boundary anchored\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_homestead_test.gd:9)\n       [1] run (res://tests/terrain_homestead_test.gd:43)\nERROR: Thick slab keeps 80% of the original underside depth, upper boundary anchored\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_homestead_test.gd:9)\n       [1] run (res://tests/terrain_homestead_test.gd:43)\n"
+    },
+    {
+      "test": "tests/terrain_incremental_test.gd",
+      "passed": true,
+      "seconds": 54.23,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n"
+    },
+    {
+      "test": "tests/terrain_lawn_relief_test.gd",
+      "passed": true,
+      "seconds": 4.01,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nLAWN RELIEF: range=(-0.054975, 0.05497) samples=200424 seam vertices=2310 errors=0 passed=true\n"
+    },
+    {
+      "test": "tests/terrain_mantle_integration_test.gd",
+      "passed": true,
+      "seconds": 14.62,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMANTLE INTEGRATION: {\"failures\":0,\"fixtures\":[{\"base_misses\":0,\"base_probes\":96,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"default\",\"vines\":389},{\"base_misses\":0,\"base_probes\":98,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"expand\",\"vines\":392},{\"base_misses\":0,\"base_probes\":95,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"contract\",\"vines\":382},{\"base_misses\":0,\"base_probes\":96,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"deep_lower\",\"vines\":393}]}\n"
+    },
+    {
+      "test": "tests/terrain_model_bounds_test.gd",
+      "passed": true,
+      "seconds": 0.25,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN MODEL BOUNDS: 9/9 passed\n"
+    },
+    {
+      "test": "tests/terrain_narrow_cliff_test.gd",
+      "passed": true,
+      "seconds": 0.33,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 676 slices, 0 failures, smallest gap 0.0302\n"
+    },
+    {
+      "test": "tests/terrain_orbit_test.gd",
+      "passed": true,
+      "seconds": 0.15,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nORBIT failures=0\n"
+    },
+    {
+      "test": "tests/terrain_rework_shape_test.gd",
+      "passed": false,
+      "seconds": 0.43,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHAPE DIAGNOSTIC: 3 wedges / 1239 substantial cliff triangles, max edge 1.878\nREWORK SHAPE: failures 1; default foot (8.326729, -4.786904, 6.0); minimum foot (8.286757, -4.5, 6.0)\nERROR: Default-height shell still contracts to an unnecessarily deep global floor\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_rework_shape_test.gd:29)\n"
+    },
+    {
+      "test": "tests/terrain_rim_closure_test.gd",
+      "passed": false,
+      "seconds": 7.61,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM CLOSURE: [{\"maximum_recess_m\":1e99999,\"misses\":[[\"(11.00377, -4.693413)\",1.5,0.08,3.00105404853821],[\"(16.90581, -1.440102)\",1.5,0.55,2.72181344032288],[\"(7.36521, 11.08215)\",1.5,0.08,1e99999],[\"(7.36521, 11.08215)\",1.5,0.55,1e99999],[\"(7.374271, 11.16429)\",1.5,0.08,1e99999],[\"(7.374271, 11.16429)\",1.5,0.25,1e99999],[\"(7.374271, 11.16429)\",1.5,0.55,1e99999],[\"(7.383333, 11.24644)\",1.5,0.08,1e99999],[\"(7.383333, 11.24644)\",1.5,0.25,1e99999],[\"(7.383333, 11.24644)\",1.5,0.55,1e99999],[\"(1.577579, 10.74936)\",1.5,0.55,2.81137228012085],[\"(-5.944632, -12.0)\",3.5,0.08,1e99999],[\"(-5.69924, -12.06425)\",3.5,0.25,2.6756489276886],[\"(-5.697269, -12.12849)\",3.5,0.08,2.84013295173645],[\"(-5.697269, -12.12849)\",3.5,0.25,2.70726609230042],[\"(-5.697269, -12.12849)\",3.5,0.55,2.50698375701904],[\"(-5.695299, -12.19274)\",3.5,0.08,2.85894536972046],[\"(3.267326, -9.111097)\",3.5,0.08,2.55532765388489],[\"(3.267326, -9.111097)\",3.5,0.25,2.69643688201904],[\"(3.267326, -9.111097)\",3.5,0.55,2.57038569450378],[\"(3.30175, -9.171879)\",3.5,0.08,2.57319903373718],[\"(3.30175, -9.171879)\",3.5,0.25,2.71644020080566],[\"(3.336174, -9.23266)\",3.5,0.08,2.59107041358948],[\"(3.336174, -9.23266)\",3.5,0.25,2.72383904457092],[\"(5.395575, -7.976316)\",3.5,0.55,2.73953938484192],[\"(5.341656, -7.920238)\",3.5,0.55,2.79145884513855],[\"(5.287737, -7.864161)\",3.5,0.25,2.5290892124176],[\"(5.287737, -7.864161)\",3.5,0.55,2.8433780670166],[\"(7.4681, -7.247324)\",3.5,0.55,2.56825613975525],[\"(7.438845, -3.680269)\",3.5,0.55,2.56823515892029],[\"(-0.6322, 3.737125)\",3.5,0.25,2.64380049705505],[\"(-0.6322, 3.737125)\",3.5,0.55,2.71326661109924],[\"(-3.843304, 9.324013)\",3.5,0.55,1e99999],[\"(-3.864561, 9.486019)\",3.5,0.08,1e99999],[\"(-3.864561, 9.486019)\",3.5,0.55,1e99999],[\"(-6.744205, 8.756281)\",3.5,0.25,2.57700252532959],[\"(-10.97651, 5.974989)\",3.5,0.25,2.59715867042542],[\"(-10.97651, 5.974989)\",3.5,0.55,2.58414506912231],[\"(-10.96615, 5.96291)\",3.5,0.25,2.58032417297363],[\"(-10.96615, 5.96291)\",3.5,0.55,2.5822286605835],[\"(-10.95579, 5.95083)\",3.5,0.55,2.58031129837036],[\"(-14.33646, 4.589914)\",3.5,0.55,3.25525808334351],[\"(-14.37155, 4.664722)\",3.5,0.08,2.99809098243713],[\"(-14.37155, 4.664722)\",3.5,0.55,3.28247547149658],[\"(-14.40664, 4.739531)\",3.5,0.08,3.02127814292908],[\"(-14.40664, 4.739531)\",3.5,0.25,1e99999],[\"(-14.40664, 4.739531)\",3.5,0.55,3.4047863483429],[\"(-19.42743, 1.610573)\",3.5,0.25,2.74596619606018],[\"(-19.42743, 1.610573)\",3.5,0.55,2.71691489219666],[\"(-19.32355, 1.484016)\",3.5,0.55,2.60405778884888],[\"(-21.13067, -1.867971)\",3.5,0.08,2.63180017471313],[\"(-21.26133, -1.87244)\",3.5,0.08,1e99999],[\"(-21.26133, -1.87244)\",3.5,0.25,1e99999],[\"(-21.392, -1.876909)\",3.5,0.08,1e99999],[\"(-21.392, -1.876909)\",3.5,0.25,1e99999],[\"(-21.392, -1.876909)\",3.5,0.55,1e99999],[\"(-21.39748, -4.60075)\",3.5,0.55,1e99999],[\"(-15.35256, -10.45025)\",3.5,0.55,2.8563117980957],[\"(-15.42194, -10.59336)\",3.5,0.55,2.93859910964966],[\"(-15.49133, -10.73646)\",3.5,0.08,2.6198935508728],[\"(-15.49133, -10.73646)\",3.5,0.25,2.85104322433472],[\"(-15.49133, -10.73646)\",3.5,0.55,3.06015539169312],[\"(-12.02461, -12.03951)\",3.5,0.55,1e99999],[\"(-8.940397, -12.07824)\",3.5,0.08,2.90155625343323],[\"(-8.940397, -12.07824)\",3.5,0.55,2.55860233306885],[\"(-8.949032, -12.15647)\",3.5,0.08,2.92367911338806],[\"(-8.949032, -12.15647)\",3.5,0.25,3.22988319396973],[\"(-8.957666, -12.23471)\",3.5,0.08,2.94580149650574],[\"(-8.957666, -12.23471)\",3.5,0.25,3.3517017364502]],\"probes\":2712,\"state\":\"default\"},{\"maximum_recess_m\":1e99999,\"misses\":[[\"(11.00377, -4.693413)\",1.5,0.08,3.00105404853821],[\"(14.16896, -3.619316)\",1.5,0.25,2.5232458114624],[\"(19.10128, 1.376038)\",1.5,0.55,2.59800720214844],[\"(19.19493, 1.25948)\",1.5,0.55,3.09905385971069],[\"(7.36521, 11.08215)\",1.5,0.08,1e99999],[\"(7.36521, 11.08215)\",1.5,0.55,1e99999],[\"(7.374271, 11.16429)\",1.5,0.08,1e99999],[\"(7.374271, 11.16429)\",1.5,0.25,1e99999],[\"(7.374271, 11.16429)\",1.5,0.55,1e99999],[\"(7.383333, 11.24644)\",1.5,0.08,1e99999],[\"(7.383333, 11.24644)\",1.5,0.25,1e99999],[\"(7.383333, 11.24644)\",1.5,0.55,1e99999],[\"(1.577579, 10.74936)\",1.5,0.55,2.81137228012085],[\"(-5.944632, -12.0)\",3.5,0.08,1e99999],[\"(-5.69924, -12.06425)\",3.5,0.25,2.6756489276886],[\"(-5.697269, -12.12849)\",3.5,0.08,2.84013295173645],[\"(-5.697269, -12.12849)\",3.5,0.25,2.70726609230042],[\"(-5.697269, -12.12849)\",3.5,0.55,2.50698375701904],[\"(-5.695299, -12.19274)\",3.5,0.08,2.85894536972046],[\"(3.267326, -9.111097)\",3.5,0.08,2.55532765388489],[\"(3.267326, -9.111097)\",3.5,0.25,2.69643688201904],[\"(3.267326, -9.111097)\",3.5,0.55,2.57038569450378],[\"(3.30175, -9.171879)\",3.5,0.08,2.57319903373718],[\"(3.30175, -9.171879)\",3.5,0.25,2.71644020080566],[\"(3.336174, -9.23266)\",3.5,0.08,2.59107041358948],[\"(3.336174, -9.23266)\",3.5,0.25,2.72383904457092],[\"(5.395575, -7.976316)\",3.5,0.55,2.73953938484192],[\"(5.341656, -7.920238)\",3.5,0.55,2.79145884513855],[\"(5.287737, -7.864161)\",3.5,0.25,2.5290892124176],[\"(5.287737, -7.864161)\",3.5,0.55,2.8433780670166],[\"(7.4681, -7.247324)\",3.5,0.55,2.56825613975525],[\"(7.438845, -3.680269)\",3.5,0.55,2.56823515892029],[\"(-0.6322, 3.737125)\",3.5,0.25,2.64380049705505],[\"(-0.6322, 3.737125)\",3.5,0.55,2.71326661109924],[\"(-3.843304, 9.324013)\",3.5,0.55,1e99999],[\"(-3.864561, 9.486019)\",3.5,0.08,1e99999],[\"(-3.864561, 9.486019)\",3.5,0.55,1e99999],[\"(-6.744205, 8.756281)\",3.5,0.25,2.57700252532959],[\"(-10.97651, 5.974989)\",3.5,0.25,2.59715867042542],[\"(-10.97651, 5.974989)\",3.5,0.55,2.58414506912231],[\"(-10.96615, 5.96291)\",3.5,0.25,2.58032417297363],[\"(-10.96615, 5.96291)\",3.5,0.55,2.5822286605835],[\"(-10.95579, 5.95083)\",3.5,0.55,2.58031129837036],[\"(-14.33646, 4.589914)\",3.5,0.55,3.25525808334351],[\"(-14.37155, 4.664722)\",3.5,0.08,2.99809098243713],[\"(-14.37155, 4.664722)\",3.5,0.55,3.28247547149658],[\"(-14.40664, 4.739531)\",3.5,0.08,3.02127814292908],[\"(-14.40664, 4.739531)\",3.5,0.25,1e99999],[\"(-14.40664, 4.739531)\",3.5,0.55,3.4047863483429],[\"(-19.42743, 1.610573)\",3.5,0.25,2.74596619606018],[\"(-19.42743, 1.610573)\",3.5,0.55,2.71691489219666],[\"(-19.32355, 1.484016)\",3.5,0.55,2.60405778884888],[\"(-21.13067, -1.867971)\",3.5,0.08,2.63180017471313],[\"(-21.26133, -1.87244)\",3.5,0.08,1e99999],[\"(-21.26133, -1.87244)\",3.5,0.25,1e99999],[\"(-21.392, -1.876909)\",3.5,0.08,1e99999],[\"(-21.392, -1.876909)\",3.5,0.25,1e99999],[\"(-21.392, -1.876909)\",3.5,0.55,1e99999],[\"(-21.39748, -4.60075)\",3.5,0.55,1e99999],[\"(-15.35256, -10.45025)\",3.5,0.55,2.8563117980957],[\"(-15.42194, -10.59336)\",3.5,0.55,2.93859910964966],[\"(-15.49133, -10.73646)\",3.5,0.08,2.6198935508728],[\"(-15.49133, -10.73646)\",3.5,0.25,2.85104322433472],[\"(-15.49133, -10.73646)\",3.5,0.55,3.06015539169312],[\"(-12.02461, -12.03951)\",3.5,0.55,1e99999],[\"(-8.940397, -12.07824)\",3.5,0.08,2.90155625343323],[\"(-8.940397, -12.07824)\",3.5,0.55,2.55860233306885],[\"(-8.949032, -12.15647)\",3.5,0.08,2.92367911338806],[\"(-8.949032, -12.15647)\",3.5,0.25,3.22988319396973],[\"(-8.957666, -12.23471)\",3.5,0.08,2.94580149650574],[\"(-8.957666, -12.23471)\",3.5,0.25,3.3517017364502]],\"probes\":2973,\"state\":\"expand\"},{\"maximum_recess_m\":1e99999,\"misses\":[[\"(11.00377, -4.693413)\",1.5,0.08,3.00105404853821],[\"(16.81705, -1.292591)\",1.5,0.55,1e99999],[\"(16.999, -1.373465)\",1.5,0.08,1e99999],[\"(16.999, -1.373465)\",1.5,0.25,1e99999],[\"(16.999, -1.373465)\",1.5,0.55,1e99999],[\"(18.39318, 1.221102)\",1.5,0.25,1e99999],[\"(18.39318, 1.221102)\",1.5,0.55,1e99999],[\"(18.31078, 1.232021)\",1.5,0.25,1e99999],[\"(18.31078, 1.232021)\",1.5,0.55,1e99999],[\"(18.22838, 1.242941)\",1.5,0.08,1e99999],[\"(18.22838, 1.242941)\",1.5,0.25,1e99999],[\"(18.22838, 1.242941)\",1.5,0.55,1e99999],[\"(7.36521, 11.08215)\",1.5,0.08,1e99999],[\"(7.36521, 11.08215)\",1.5,0.55,1e99999],[\"(7.374271, 11.16429)\",1.5,0.08,1e99999],[\"(7.374271, 11.16429)\",1.5,0.25,1e99999],[\"(7.374271, 11.16429)\",1.5,0.55,1e99999],[\"(7.383333, 11.24644)\",1.5,0.08,1e99999],[\"(7.383333, 11.24644)\",1.5,0.25,1e99999],[\"(7.383333, 11.24644)\",1.5,0.55,1e99999],[\"(1.577579, 10.74936)\",1.5,0.55,2.81137228012085],[\"(-5.944632, -12.0)\",3.5,0.08,1e99999],[\"(-5.69924, -12.06425)\",3.5,0.25,2.6756489276886],[\"(-5.697269, -12.12849)\",3.5,0.08,2.84013295173645],[\"(-5.697269, -12.12849)\",3.5,0.25,2.70726609230042],[\"(-5.697269, -12.12849)\",3.5,0.55,2.50698375701904],[\"(-5.695299, -12.19274)\",3.5,0.08,2.85894536972046],[\"(3.267326, -9.111097)\",3.5,0.08,2.55532765388489],[\"(3.267326, -9.111097)\",3.5,0.25,2.69643688201904],[\"(3.267326, -9.111097)\",3.5,0.55,2.57038569450378],[\"(3.30175, -9.171879)\",3.5,0.08,2.57319903373718],[\"(3.30175, -9.171879)\",3.5,0.25,2.71644020080566],[\"(3.336174, -9.23266)\",3.5,0.08,2.59107041358948],[\"(3.336174, -9.23266)\",3.5,0.25,2.72383904457092],[\"(5.395575, -7.976316)\",3.5,0.55,2.73953938484192],[\"(5.341656, -7.920238)\",3.5,0.55,2.79145884513855],[\"(5.287737, -7.864161)\",3.5,0.25,2.5290892124176],[\"(5.287737, -7.864161)\",3.5,0.55,2.8433780670166],[\"(7.4681, -7.247324)\",3.5,0.55,2.56825613975525],[\"(7.438845, -3.680269)\",3.5,0.55,2.56823515892029],[\"(-0.6322, 3.737125)\",3.5,0.25,2.64380049705505],[\"(-0.6322, 3.737125)\",3.5,0.55,2.71326661109924],[\"(-3.843304, 9.324013)\",3.5,0.55,1e99999],[\"(-3.864561, 9.486019)\",3.5,0.08,1e99999],[\"(-3.864561, 9.486019)\",3.5,0.55,1e99999],[\"(-6.744205, 8.756281)\",3.5,0.25,2.57700252532959],[\"(-10.97651, 5.974989)\",3.5,0.25,2.59715867042542],[\"(-10.97651, 5.974989)\",3.5,0.55,2.58414506912231],[\"(-10.96615, 5.96291)\",3.5,0.25,2.58032417297363],[\"(-10.96615, 5.96291)\",3.5,0.55,2.5822286605835],[\"(-10.95579, 5.95083)\",3.5,0.55,2.58031129837036],[\"(-14.33646, 4.589914)\",3.5,0.55,3.25525808334351],[\"(-14.37155, 4.664722)\",3.5,0.08,2.99809098243713],[\"(-14.37155, 4.664722)\",3.5,0.55,3.28247547149658],[\"(-14.40664, 4.739531)\",3.5,0.08,3.02127814292908],[\"(-14.40664, 4.739531)\",3.5,0.25,1e99999],[\"(-14.40664, 4.739531)\",3.5,0.55,3.4047863483429],[\"(-19.42743, 1.610573)\",3.5,0.25,2.74596619606018],[\"(-19.42743, 1.610573)\",3.5,0.55,2.71691489219666],[\"(-19.32355, 1.484016)\",3.5,0.55,2.60405778884888],[\"(-21.13067, -1.867971)\",3.5,0.08,2.63180017471313],[\"(-21.26133, -1.87244)\",3.5,0.08,1e99999],[\"(-21.26133, -1.87244)\",3.5,0.25,1e99999],[\"(-21.392, -1.876909)\",3.5,0.08,1e99999],[\"(-21.392, -1.876909)\",3.5,0.25,1e99999],[\"(-21.392, -1.876909)\",3.5,0.55,1e99999],[\"(-21.39748, -4.60075)\",3.5,0.55,1e99999],[\"(-15.35256, -10.45025)\",3.5,0.55,2.8563117980957],[\"(-15.42194, -10.59336)\",3.5,0.55,2.93859910964966],[\"(-15.49133, -10.73646)\",3.5,0.08,2.6198935508728],[\"(-15.49133, -10.73646)\",3.5,0.25,2.85104322433472],[\"(-15.49133, -10.73646)\",3.5,0.55,3.06015539169312],[\"(-12.02461, -12.03951)\",3.5,0.55,1e99999],[\"(-8.940397, -12.07824)\",3.5,0.08,2.90155625343323],[\"(-8.940397, -12.07824)\",3.5,0.55,2.55860233306885],[\"(-8.949032, -12.15647)\",3.5,0.08,2.92367911338806],[\"(-8.949032, -12.15647)\",3.5,0.25,3.22988319396973],[\"(-8.957666, -12.23471)\",3.5,0.08,2.94580149650574],[\"(-8.957666, -12.23471)\",3.5,0.25,3.3517017364502]],\"probes\":2712,\"state\":\"contract\"}]\n"
+    },
+    {
+      "test": "tests/terrain_rim_detail_test.gd",
+      "passed": true,
+      "seconds": 2.65,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM DETAIL: hanging vertices=4909 anchors=9200 depth bands=9 passed=true\n"
+    },
+    {
+      "test": "tests/terrain_rim_finish_test.gd",
+      "passed": false,
+      "seconds": 2.57,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM FINISH: footprint identical=false; 23780 lawn probes; leaks=0; orphan chip=false; 291 cap probes; holes=0; failures=1\nERROR: Step 3 crown outline changed\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_rim_finish_test.gd:25)\n"
+    },
+    {
+      "test": "tests/terrain_rim_polish_test.gd",
+      "passed": false,
+      "seconds": 0.15,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM POLISH: 13/24 passed\nERROR: crown 11 has a broad planar top\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:36)\nERROR: crown 11 meets its side directly, with no geometric bevel\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:37)\nERROR: crown 23 has a broad planar top\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:36)\nERROR: crown 23 meets its side directly, with no geometric bevel\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:37)\nERROR: crown 37 has a broad planar top\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:36)\nERROR: crown 37 meets its side directly, with no geometric bevel\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:37)\nERROR: crown 41 meets its side directly, with no geometric bevel\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:37)\nERROR: crown 101 has a broad planar top\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:36)\nERROR: crown 101 meets its side directly, with no geometric bevel\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:37)\nERROR: crown 203 has a broad planar top\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:36)\nERROR: crown 203 meets its side directly, with no geometric bevel\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rim_polish_test.gd:7)\n       [1] run (res://tests/terrain_rim_polish_test.gd:37)\n"
+    },
+    {
+      "test": "tests/terrain_rim_rhythm_test.gd",
+      "passed": false,
+      "seconds": 2.38,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM RHYTHM: section 0.45m below crowns; outward offset=0.45; pairs=32 tight=25 clear gaps=5 widths=[0.0, 0.0, 0.0, 0.0, 0.12575836479664, 0.0, 0.0, 2.13300657272339, 0.0, 0.0, 0.0, 0.07125699520111, 0.0, 0.06903154402971, 0.22357395291328, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25259390473366, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.22564460337162, 0.0, 0.0, 0.0, 0.0] passed=true\nRIM RHYTHM: section 0.45m below crowns; outward offset=0.2; pairs=32 tight=30 clear gaps=2 widths=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.04159832000732, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.18372404575348, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.03395672142506, 0.0, 0.0, 0.0, 0.0] passed=false\n"
+    },
+    {
+      "test": "tests/terrain_rim_systems_test.gd",
+      "passed": true,
+      "seconds": 2.46,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM SYSTEMS: 24/24 passed\n"
+    },
+    {
+      "test": "tests/terrain_rim_union_test.gd",
+      "passed": false,
+      "seconds": 2.85,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM UNION: 32583 overlap probes; 366 single-top probes; 64 closed-side probes; failures=1\nERROR: Missing/duplicated baked crown tops: 1\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_rim_union_test.gd:47)\n"
+    },
+    {
+      "test": "tests/terrain_rock_fall_clearance_test.gd",
+      "passed": true,
+      "seconds": 6.72,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROCK/FALL CLEARANCE: 140 curtain samples, 0 inside stones\n"
+    },
+    {
+      "test": "tests/terrain_rock_transition_test.gd",
+      "passed": true,
+      "seconds": 0.24,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROCK WIDTH TRANSITION: 2 samples, 0 failures, largest displacement 0.00000541\n"
+    },
+    {
+      "test": "tests/terrain_shell_floor_test.gd",
+      "passed": false,
+      "seconds": 1.12,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHELL FLOOR default: low=-4.70926856994629, below intended floor=1671\nSHELL FLOOR lower: low=-4.70926856994629, below intended floor=1705\nSHELL FLOOR contract: low=-4.70926856994629, below intended floor=1809\nSHELL FLOOR raise: low=-4.70926856994629, below intended floor=1671\nSHELL FLOOR expand: low=-4.70926856994629, below intended floor=1840\n"
+    },
+    {
+      "test": "tests/terrain_shore_prop_test.gd",
+      "passed": true,
+      "seconds": 10.12,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHORE PROPS default: { \"grass_clump\": 0, \"reeds\": 23, \"lily\": 16 } invalid=0\nSHORE PROPS dry: { \"grass_clump\": 1, \"reeds\": 13, \"lily\": 9 } invalid=0\nSHORE PROPS contract: { \"grass_clump\": 0, \"reeds\": 21, \"lily\": 14 } invalid=0\n"
+    },
+    {
+      "test": "tests/terrain_shore_transition_test.gd",
+      "passed": true,
+      "seconds": 0.44,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVISIBLE SHORE CRESTS: 1824/1824\nCONNECTED SHORE JOINS: 1345\nCURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples\nSHORE TRANSITION: 912 triangles, wet/dry continuity true/true, 0 failures\n"
+    },
+    {
+      "test": "tests/terrain_shoreline_test.gd",
+      "passed": true,
+      "seconds": 0.73,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n"
+    },
+    {
+      "test": "tests/terrain_shrub_support_test.gd",
+      "passed": true,
+      "seconds": 16.62,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: shrubs=29 base_points=9164 unsupported=0\nraise: shrubs=29 base_points=9164 unsupported=0\nlower: shrubs=29 base_points=9164 unsupported=0\nexpand: shrubs=30 base_points=9480 unsupported=0\ncontract: shrubs=27 base_points=8532 unsupported=0\nSHRUB SUPPORT: 45504 actual base points; 0 unsupported; coverage=true\n"
+    },
+    {
+      "test": "tests/terrain_stone_volume_test.gd",
+      "passed": false,
+      "seconds": 0.24,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTONE VOLUMES: 32/40\nERROR: Underside must taper inward\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_stone_volume_test.gd:30)\nERROR: Underside must taper inward\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_stone_volume_test.gd:30)\nERROR: Underside must taper inward\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_stone_volume_test.gd:30)\nERROR: Underside must taper inward\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_stone_volume_test.gd:30)\nERROR: Underside must taper inward\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_stone_volume_test.gd:30)\nERROR: Underside must taper inward\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_stone_volume_test.gd:30)\nERROR: Underside must taper inward\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_stone_volume_test.gd:30)\nERROR: Underside must taper inward\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_stone_volume_test.gd:30)\n"
+    },
+    {
+      "test": "tests/terrain_test.gd",
+      "passed": true,
+      "seconds": 0.25,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CHECKS: 794/794 passed, failures=0\n"
+    },
+    {
+      "test": "tests/terrain_turf_transition_test.gd",
+      "passed": true,
+      "seconds": 0.43,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nPUBLISHED TURF TRANSITION: 866 gradient faces, 411 cap faces, 0 invalid\n"
+    },
+    {
+      "test": "tests/terrain_upper_rock_test.gd",
+      "passed": true,
+      "seconds": 0.43,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 16 rays, 12 shoulders, 29 nearby join vertices, 0 failures\n"
+    },
+    {
+      "test": "tests/terrain_vine_contact_test.gd",
+      "passed": true,
+      "seconds": 18.71,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":389,\"fixture\":\"default\",\"max_absolute_gap\":0.0250011831521988,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":389,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250011831521988,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":402,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250011831521988,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":402,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250013023614883,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":419,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250011831521988,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n"
+    },
+    {
+      "test": "tests/terrain_water_impact_test.gd",
+      "passed": true,
+      "seconds": 0.14,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nWATER IMPACT: 8/8 passed\n"
+    },
+    {
+      "test": "tests/terrain_waterfall_test.gd",
+      "passed": true,
+      "seconds": 1.79,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n"
+    },
+    {
+      "test": "tests/terrain_calm_bottom_test.gd",
+      "passed": false,
+      "seconds": 2.56,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCALM BOTTOM: {\"layered\":41,\"misses\":0,\"passed\":false,\"probes\":259,\"steep\":140}\n"
+    },
+    {
+      "test": "tests/terrain_bottom_seam_test.gd",
+      "passed": true,
+      "seconds": 0.23,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOTTOM SEAM: {\"maximum_separation\":0.0,\"passed\":true,\"shared_vertices\":20,\"split_vertices\":0}\n"
+    },
+    {
+      "test": "tests/terrain_goal_frozen_test.gd",
+      "passed": false,
+      "seconds": 2.37,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nFROZEN: {\"after\":{\"cells\":3214587788,\"falls\":839671855,\"rim\":3392218151,\"water\":440449048},\"baseline\":\"f39052c\",\"before\":{\"cells\":3214587788,\"falls\":3181142195,\"rim\":3647164281,\"water\":440449048},\"identical\":false}\n"
+    },
+    {
+      "test": "tests/terrain_stone_shoulders_test.gd",
+      "passed": true,
+      "seconds": 0.15,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTONE SHOULDERS: area ratios=[1.79513536320919, 1.81815243359022, 1.63317307595519, 1.68943820402807], failures=0\n"
+    }
+  ]
+}

@@ -76,6 +76,7 @@ func load_assets()->void:
 	# Apply after merging, which intentionally replaces individual source materials.
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
+	preload("res://scripts/terrain_editor/material_detail.gd").bind(rock_material)
 	for kind in ["cliff_rock","surface_rock","shore_rock","shore_boulder","shore_pebble"]:
 		var material:=rock_material.duplicate()
 		material.set_shader_parameter("bank_stone",1.0 if kind.begins_with("shore_") else 0.0)
@@ -197,6 +198,7 @@ func _rock_body_models(seed_value:int,root:bool=false)->Array:
 	var mesh:ArrayMesh=built.mesh
 	var material:=ShaderMaterial.new()
 	material.shader=load("res://shaders/terrain_editor/cliff_column.gdshader")
+	preload("res://scripts/terrain_editor/material_detail.gd").bind(material)
 	material.set_shader_parameter("crown_cover",0.0 if root else 1.0)
 	mesh.surface_set_material(0,material)
 	built.render_mesh.surface_set_material(0,material)

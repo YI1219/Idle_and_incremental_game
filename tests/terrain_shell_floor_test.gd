@@ -10,7 +10,7 @@ func run():
   var f=Contours.new();f.refresh(d);var low=INF;var spikes=0
   for v in f.surfaces.cliff.vertices:
    low=minf(low,v.y)
-   if v.y< -3.08:spikes+=1
+   if v.y< Contours.KEEL_LIMIT-.08:spikes+=1
   print("SHELL FLOOR ",spec[0],": low=",low,", below intended floor=",spikes)
   if spikes:failures+=1
  quit(1 if failures else 0)

@@ -48,8 +48,11 @@ static func build(source,regions:Dictionary={})->Dictionary:
    inset.append(p-shared*recess)
   backing.triangle(inset[0],inset[1],inset[2],Color(.76,.78,.81))
   for j in range(start,backing.vertices.size()):backing.uv[j]=source.uv[i+j-start]
-  if base:continue
+  # Keep individual fractures near the shoulder. The lower turning face
+  # remains one connected surface instead of a second layer of plates.
+  if base or normal.y<-.38:continue
   var poly:=_clip(tri,Vector3.UP,h-.85)
+  poly=_clip(poly,Vector3.DOWN,1.8-h)
   if poly.size()<3:continue
   var box:=AABB(poly[0],Vector3.ZERO)
   for p:Vector3 in poly:box=box.expand(p)
@@ -229,12 +232,27 @@ static func close_base(source,regions:Dictionary={})->void:
   if Geometry2D.is_polygon_clockwise(polygon)!=hole:
    polygon.reverse();chain.reverse()
   loops[i]=polygon
-  var floor_chain:Array=[]
-  for p:Vector3 in chain:floor_chain.append(Vector3(p.x,_base_y(Vector2(p.x,p.z),regions,floor_cache),p.z))
   for j in chain.size():
-   var next:=(j+1)%chain.size();var start:int=source.vertices.size()
-   source.quad(chain[next],chain[j],floor_chain[j],floor_chain[next],Color.WHITE)
-   for k in range(start,source.vertices.size()):source.uv[k]=Vector2(1.5,-1)
+   var next:=(j+1)%chain.size()
+   var a:Vector3=chain[j];var b:Vector3=chain[next]
+   # Split skirts at the same world-grid and diagonal crossings as the cap.
+   # Every resulting edge lies in one affine height-field triangle.
+   var cuts:Array[float]=[0.0,1.0]
+   for axis:Vector2 in [Vector2.RIGHT,Vector2.DOWN,Vector2(1,-1)]:
+    var av:=Vector2(a.x,a.z).dot(axis);var bv:=Vector2(b.x,b.z).dot(axis)
+    if absf(bv-av)<.00001:continue
+    for line in range(floori(minf(av,bv)/2.0)+1,ceili(maxf(av,bv)/2.0)):
+     var t:float=(line*2.0-av)/(bv-av)
+     if t>.00001 and t<.99999:cuts.append(t)
+   cuts.sort()
+   for k in cuts.size()-1:
+    if cuts[k+1]-cuts[k]<.000001:continue
+    var l:=a.lerp(b,cuts[k]);var r:=a.lerp(b,cuts[k+1])
+    var fl:=Vector3(l.x,_closure_y(Vector2(l.x,l.z),regions,floor_cache,chains),l.z)
+    var fr:=Vector3(r.x,_closure_y(Vector2(r.x,r.z),regions,floor_cache,chains),r.z)
+    var start:int=source.vertices.size()
+    source.quad(r,l,fl,fr,Color.WHITE)
+    for vertex in range(start,source.vertices.size()):source.uv[vertex]=Vector2(1.5,-1)
  if loops.is_empty():return
  var bounds:=Rect2(loops[0][0],Vector2.ZERO)
  for polygon:PackedVector2Array in loops:
@@ -243,23 +261,25 @@ static func close_base(source,regions:Dictionary={})->void:
  # not insert scanlines through, or re-triangulate, every underside block.
  for z in range(floori(bounds.position.y/2),ceili(bounds.end.y/2)):
   for x in range(floori(bounds.position.x/2),ceili(bounds.end.x/2)):
-   var tile:=PackedVector2Array([Vector2(x*2,z*2),Vector2(x*2+2,z*2),Vector2(x*2+2,z*2+2),Vector2(x*2,z*2+2)])
-   var pieces:Array=[]
-   for polygon:PackedVector2Array in loops:
-    var hole:=Geometry2D.is_polygon_clockwise(polygon)
-    for piece:PackedVector2Array in Geometry2D.intersect_polygons(polygon,tile):
-     if Geometry2D.is_polygon_clockwise(piece)!=hole:piece.reverse()
-     pieces.append(piece)
-   var floor_surface:=Surface.new()
-   preload("res://scripts/terrain_editor/contour_terrain.gd").new()._cap(floor_surface,pieces,-2.25,Color.WHITE,PackedFloat32Array(),true)
-   for j in floor_surface.vertices.size():
-    var point:Vector3=floor_surface.vertices[j]
-    point.y=_base_y(Vector2(point.x,point.z),regions,floor_cache)
-    floor_surface.vertices[j]=point
-   for j in range(0,floor_surface.vertices.size(),3):
-    var start:int=source.vertices.size()
-    source.triangle(floor_surface.vertices[j],floor_surface.vertices[j+2],floor_surface.vertices[j+1],Color.WHITE)
-    for k in range(start,source.vertices.size()):source.uv[k]=Vector2(1.5,-1)
+   var corner:=Vector2(x,z)*2.0
+   var tiles:Array=[PackedVector2Array([corner,corner+Vector2(2,0),corner+Vector2(2,2)]),PackedVector2Array([corner,corner+Vector2(2,2),corner+Vector2(0,2)])]
+   for tile:PackedVector2Array in tiles:
+    var pieces:Array=[]
+    for polygon:PackedVector2Array in loops:
+     var hole:=Geometry2D.is_polygon_clockwise(polygon)
+     for piece:PackedVector2Array in Geometry2D.intersect_polygons(polygon,tile):
+      if Geometry2D.is_polygon_clockwise(piece)!=hole:piece.reverse()
+      pieces.append(piece)
+    var floor_surface:=Surface.new()
+    preload("res://scripts/terrain_editor/contour_terrain.gd").new()._cap(floor_surface,pieces,-2.25,Color.WHITE,PackedFloat32Array(),true)
+    for j in floor_surface.vertices.size():
+     var point:Vector3=floor_surface.vertices[j]
+     point.y=_closure_y(Vector2(point.x,point.z),regions,floor_cache,chains)
+     floor_surface.vertices[j]=point
+    for j in range(0,floor_surface.vertices.size(),3):
+     var start:int=source.vertices.size()
+     source.triangle(floor_surface.vertices[j],floor_surface.vertices[j+2],floor_surface.vertices[j+1],Color.WHITE)
+     for k in range(start,source.vertices.size()):source.uv[k]=Vector2(1.5,-1)
 
 static func _base_y(p:Vector2,regions:Dictionary,cache:Dictionary)->float:
  var key:=Vector2i((p/2.0).floor());var f:=p/2.0-Vector2(key)
@@ -277,6 +297,30 @@ static func _base_node(key:Vector2i,regions:Dictionary,cache:Dictionary)->float:
  # Shallow asymmetric relief, independent of distance to the island
  # centre. The continuous bottom has neither plate offsets nor a keel.
  var p:=Vector2(key)*2.0
- var relief:=.18*sin(p.x*.31+p.y*.18)+.10*sin(p.y*.49-p.x*.15+1.7)
- cache[key]=minf(-2.10,low-.95)+relief
+ var relief:=.38*sin(p.x*.31+p.y*.18)+.22*sin(p.y*.49-p.x*.15+1.7)
+ cache[key]=minf(-4.55,low-1.5)+relief
  return cache[key]
+
+static func _closure_y(p:Vector2,regions:Dictionary,cache:Dictionary,chains:Array)->float:
+ var key:=Vector2i((p/2.0).floor());var f:=p/2.0-Vector2(key)
+ var a:=_closure_node(key,regions,cache,chains)
+ var c:=_closure_node(key+Vector2i.ONE,regions,cache,chains)
+ if f.x>=f.y:return a*(1.0-f.x)+_closure_node(key+Vector2i.RIGHT,regions,cache,chains)*(f.x-f.y)+c*f.y
+ return a*(1.0-f.y)+c*f.x+_closure_node(key+Vector2i.DOWN,regions,cache,chains)*(f.y-f.x)
+
+static func _closure_node(key:Vector2i,regions:Dictionary,cache:Dictionary,chains:Array)->float:
+ var cache_key:=Vector3i(key.x,991,key.y)
+ if cache.has(cache_key):return cache[cache_key]
+ # Meet the outer rock foot, then descend into broad unequal interior
+ # masses. The bounded radius keeps remote terrain edits local.
+ var p:=Vector2(key)*2.0;var distance:=INF;var edge_y:=0.0
+ for chain:Array in chains:
+  for i in chain.size():
+   var a:Vector3=chain[i];var b:Vector3=chain[(i+1)%chain.size()]
+   var av:=Vector2(a.x,a.z);var bv:=Vector2(b.x,b.z)
+   var point:=Geometry2D.get_closest_point_to_segment(p,av,bv)
+   var d:=p.distance_to(point)
+   if d<distance:
+    distance=d;edge_y=lerpf(a.y,b.y,av.distance_to(point)/maxf(.00001,av.distance_to(bv)))
+ cache[cache_key]=lerpf(edge_y-.10,_base_y(p,regions,cache),smoothstep(0.0,3.5,distance))
+ return cache[cache_key]

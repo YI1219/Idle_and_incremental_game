@@ -1,0 +1,9 @@
+{
+  "rendered_regeneration": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-12 10:54:09.383 godot[4530:13334632] +[IMKClient subclass]: chose IMKClient_Modern\nRIM BAKE us=6263\nTERRAIN DECORATION REGEN: 42/42 passed\n",
+  "map_mips_red": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nstone_detail mipmaps=false\nground_detail mipmaps=false\n",
+  "map_mips_green": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nstone_detail mipmaps=true\nground_detail mipmaps=true\n",
+  "lower_plates_red": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMANTLE TRANSITION: lower plates=5 backing retained=true\n",
+  "lower_plates_green": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMANTLE TRANSITION: lower plates=0 backing retained=true\n",
+  "base_tangent_red": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBASE EASING: tangent ratio=1.05882281560761\n",
+  "base_tangent_green": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBASE EASING: tangent ratio=3.69213131129677\n"
+}

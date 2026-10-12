@@ -18,6 +18,8 @@ void fragment(){
  earth*=mix(1.0,.78,wet);
  earth=mix(earth,vec3(.57,.57,.47),smoothstep(.66,.83,grit)*.28);
  ALBEDO=mix(grass,earth,smoothstep(.12,.95,COLOR.a*(.70+.45*gc_noise(p*4.0))));
+ vec3 n=normalize(vec3(-slope.x*.2,1.0,-slope.y*.2));
+ NORMAL=normalize((VIEW_MATRIX*vec4(n,0.0)).xyz);
  ROUGHNESS=mix(.94,.74,wet);
  SPECULAR=.15;
 }

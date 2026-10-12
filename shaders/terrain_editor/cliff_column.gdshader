@@ -2,7 +2,6 @@ shader_type spatial;
 #include "terrain_morph.gdshaderinc"
 #include "cliff_palette.gdshaderinc"
 #include "stone_surface.gdshaderinc"
-#include "land_palette.gdshaderinc"
 // Separate crown/root solids: local y=0 anchors each body's own shoulder.
 // Crown tops are baked into the shared terrain surface; this material shades
 // the independent side bodies and the separately tapered roots.
@@ -25,6 +24,8 @@ void vertex(){
 }
 
 void fragment(){
+ vec3 material_normal=normalize(cross(dFdx(world_position),dFdy(world_position)));
+ if(dot(material_normal,(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz)<0.0)material_normal=-material_normal;
 	// Flat facets of this solid, facing the viewer.
 	vec3 facet=normalize(cross(dFdx(VERTEX),dFdy(VERTEX)));
 	if(dot(facet,VERTEX)>0.0)facet=-facet;
@@ -36,7 +37,7 @@ void fragment(){
 	vec3 world_normal=(INV_VIEW_MATRIX*vec4(facet,0.0)).xyz;
 	vec3 variation=rock_hash(floor(column_origin*2.3)+vec3(17.0));
 	// Facet shade from the source stone, softened; instance tone sets the block.
-	vec3 stone=stone_surface(world_position)*(.96+.08*variation.x)*mix(vec3(1.0),COLOR.rgb/.66,.65);
+	vec3 stone=stone_surface(world_position,material_normal)*(.96+.08*variation.x)*mix(vec3(1.0),COLOR.rgb/.66,.65);
 	// Vertical weathering streaks run the height of this body.
 	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
 	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;
@@ -46,8 +47,9 @@ void fragment(){
 	float below=column_origin.y-world_position.y;
 	stone*=mix(1.0,.86,smoothstep(1.6,4.2,below));
  ALBEDO=stone;
-	ROUGHNESS=.93;
+	ROUGHNESS=stone_map(world_position,material_normal).a;
 	SPECULAR=.16;
 	float seam=smoothstep(.28,.49,abs(local_position.x))*(1.0-smoothstep(-.5,-.05,local_position.y));
  AO=mix(1.0,.77,crown_cover*max(seam,(1.0-smoothstep(-.65,-.25,local_position.y))*.6));
+ NORMAL=normalize((VIEW_MATRIX*vec4(stone_normal(world_position,material_normal),0.0)).xyz);
 }

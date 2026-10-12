@@ -81,11 +81,11 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				if random_at(cell,data.seed,13)<.66:
 					for bloom in 4:
 						var flower_at:=p+Vector2(sin(bloom*2.4+angle),cos(bloom*2.4+angle))*.24
-						if _stable(field,flower_at,h,.12):result.flower.append(_transform(Vector3(flower_at.x,h,flower_at.y),angle+bloom,Vector3.ONE*(1.1+bloom*.12)))
+						if _stable(field,flower_at,h,.12):result.flower.append(_transform(Vector3(flower_at.x,h,flower_at.y),angle+bloom,Vector3.ONE*(.65+bloom*.09)))
 			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.36:
 				var pose:=_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2))
 				if _supported_shrub(field,pose,h) and _clear_of_rim(pose):result.bush.append(pose)
-			if not house_clear and cluster>.26 and random_at(cell,data.seed,141)<.13 and _stable(field,p,h,.52):
+			if not house_clear and cluster>.12 and random_at(cell,data.seed,141)<.26 and _stable(field,p,h,.52):
 				result.grass_clump.append(_transform(origin,angle,Vector3.ONE*(.85+random_at(cell,data.seed,142)*.25)))
 			if not house_clear and cluster>.48 and random_at(cell,data.seed,140)<.026 and _stable(field,p,h,.65):
 				result.grass_clump.append(_transform(origin,angle,Vector3(1.10,1.18,1.05)))
@@ -326,17 +326,21 @@ static func _runs(loop:PackedVector2Array)->Array:
 		var count:=maxi(1,ceili(total/3.8))
 		var distance:=0.0
 		var current:=PackedVector2Array([section[0]])
-		var split:=total/count
+		var spacing:=total/count
+		var index:=1
+		var jitter:=minf(.5,(4.2-spacing)*.45)
+		var phase:=section[0].dot(Vector2(.73,.51))
+		var split:=spacing+jitter*sin(phase+index*2.4) if index<count else total
 		for i in section.size()-1:
 			var a:=section[i];var b:=section[i+1]
 			var length:=a.distance_to(b)
 			while split<distance+length-.00001:
 				var p:=a.lerp(b,(split-distance)/length)
 				current.append(p);runs.append([current[0],p,current])
-				current=PackedVector2Array([p]);split+=total/count
+				current=PackedVector2Array([p]);index+=1;split=spacing*index+jitter*sin(phase+index*2.4) if index<count else total
 			current.append(b);distance+=length
 			if absf(distance-split)<.00001 and i<section.size()-2:
-				runs.append([current[0],b,current]);current=PackedVector2Array([b]);split+=total/count
+				runs.append([current[0],b,current]);current=PackedVector2Array([b]);index+=1;split=spacing*index+jitter*sin(phase+index*2.4) if index<count else total
 		if current.size()>1:runs.append([current[0],current[-1],current])
 	return runs
 static func _onto(points:PackedVector2Array,c:Vector2,out:Vector2)->Vector2:
@@ -410,7 +414,7 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 	else:
 		var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
 		var room:float=maxf(1.4,top-foot.y)
-		sy=clampf(minf(room*.44,want_w*.66)*lerpf(.80,1.12,random_at(cell,seed_value,3021))/body_h,1.4,3.6)
+		sy=clampf(minf(room*.44,want_w*.66)*lerpf(.80,1.12,random_at(cell,seed_value,3021))/body_h,1.3,2.8)
 		if float(profile.inset)<1.45:
 			var fit_d:=maxf(1.65,float(profile.inset))
 			sz=minf(sz,fit_d/span_z)
@@ -435,8 +439,8 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 		var root_h:float=assets[root_kind][0].body_height
 		var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
 		var root_top:=top-body_h*sy*lerpf(.55,.85,random_at(cell,seed_value,3022))
-		var root_height:=clampf(root_top-foot.y+.28,1.3,3.8)
-		var root_basis:=frame*Basis(Vector3.UP,yaw+.50)*Basis.from_scale(Vector3(want_w*1.10,root_height/root_h,want_d*.92))
+		var root_height:=clampf(root_top-foot.y+.28,1.3,4.5)
+		var root_basis:=frame*Basis(Vector3.UP,yaw+.12)*Basis.from_scale(Vector3(want_w*1.38,root_height/root_h,want_d*.92))
 		var root_origin:=Vector3(c.x,root_top,c.y)-outward*.64+tangent*length*lerpf(.38,.58,random_at(cell,seed_value,3023))
 		# Staggering must not move a root into a waterfall. Fit the actual
 		# projected mesh extent into the remaining interval before publishing it.

@@ -19,8 +19,7 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
    var shoulder:=Plane(Vector3(normal.x,rng.randf_range(.75,1.3),normal.z),rng.randf_range(.38,.48))
    if root and i==2:planes.append(shoulder)
  var fracture_count:=planes.size()
- # The cap meets the side directly. Grass/stone mixing is a material band,
- # not a bevel, chamfer ring or raised shoulder.
+ # The cap meets the side directly; local turf clusters soften its silhouette.
  var vertices:=_intersections(planes)
  var positions:=PackedVector3Array();var normals:=PackedVector3Array();var colors:=PackedColorArray();var uv:=PackedVector2Array()
  var bounds:=AABB(vertices[0],Vector3.ZERO)
@@ -38,8 +37,8 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
   var other:=plane.normal.normalized().cross(axis)
   face.sort_custom(func(a:Vector3,b:Vector3):return atan2((a-center).dot(other),(a-center).dot(axis))<atan2((b-center).dot(other),(b-center).dot(axis)))
   var shade:=rng.randf_range(.62,.70)
-  var relief:=not root and face.size()>3 and absf(plane.normal.normalized().y)<(.82 if root else .35) and (root or index<fracture_count)
-  var relief_amount:=rng.randf_range(.025,.07)
+  var relief:=face.size()>3 and absf(plane.normal.normalized().y)<(.82 if root else .35) and (root or index<fracture_count)
+  var relief_amount:=rng.randf_range(-.09,.11)
   if not root:
    # Unequal fracture depth and off-centre fracture junctions; the cap's
    # original vertices and RNG stream stay fixed, so island plans do not move.
@@ -68,19 +67,8 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
    triangle_index+=1
    for p:Vector3 in [a,b,c]:
     var vertex:=Vector3((p.x-bounds.get_center().x)/bounds.size.x,p.y,(p.z-bounds.get_center().z)/bounds.size.z)
-    if not root:
-     vertex=_crown_fracture(vertex,seed_value)
-     # Keep every side vertex inside the frozen cap prism. Full shoulders
-     # close most joints; a minority of recessed sides retain open clefts.
-     if p.y<-.00001:
-      var left_limit:=-INF;var right_limit:=INF
-      for boundary:Plane in planes:
-       if absf(boundary.normal.y)>.00001:continue
-       var n:=Vector2(boundary.normal.x*bounds.size.x,boundary.normal.z*bounds.size.z)
-       var limit:=boundary.d-Vector2(boundary.normal.x,boundary.normal.z).dot(Vector2(bounds.get_center().x,bounds.get_center().z))
-       if n.x>.00001:right_limit=minf(right_limit,(limit-n.y*vertex.z)/n.x)
-       elif n.x<-.00001:left_limit=maxf(left_limit,(limit-n.y*vertex.z)/n.x)
-      if left_limit<=right_limit:vertex.x=clampf(vertex.x,left_limit,right_limit)
+    if root:
+     vertex.z-=1.28*pow(clampf(-p.y,0.0,1.0),1.6)
     positions.append(vertex)
     normals.append(Vector3(plane.normal.x*bounds.size.x,plane.normal.y,plane.normal.z*bounds.size.z).normalized())
     colors.append(tint)
@@ -126,17 +114,3 @@ static func _intersections(planes:Array[Plane])->PackedVector3Array:
      if v.distance_squared_to(p)<1e-10:duplicate=true;break
     if not duplicate:vertices.append(p)
  return vertices
-
-static func _crown_fracture(p:Vector3,seed_value:int)->Vector3:
- # The top plan is frozen. Below it, unequal side recesses make tight joints
- # alternate with deeper clefts; no extra stones or disconnected chip meshes.
- var depth:=clampf(-p.y/.68,0.0,1.0)
- var left:=-.32 if seed_value%4!=1 else .03
- var right:=-.28 if seed_value%3!=2 else -.12
- var recess:=lerpf(left,right,smoothstep(-.35,.35,p.x))
- p.x*=1.0-recess*minf(1.0,depth*2.4)
- p.z*=1.0-(.005+.018*(.5+.5*sin(float(seed_value)*.83)))*depth
- # Unequal bottom breaks vary thickness while keeping the upper contact
- # and broad proportions. Roots are independent and are not changed.
- p.y-=depth*.07*sin(float(seed_value)*.61+p.x*4.0+p.z*2.0)
- return p

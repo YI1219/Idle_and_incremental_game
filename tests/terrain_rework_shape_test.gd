@@ -26,7 +26,7 @@ func run()->void:
 	if float(wedges)/maxi(1,large)>.08:failures+=1;push_error("Substantial cliff faces still form elongated wedges")
 	var profile:={"top":1.5,"rock_top":1.5,"bottom":-4.5,"base":true,"water":-1,"inset":1.5}
 	var foot:Vector3=field._profile_point(Vector2(10,6),-4.5,Vector2.RIGHT,profile)
-	if foot.y< -3.25:failures+=1;push_error("Default-height shell still contracts to an unnecessarily deep global floor")
+	if foot.y< Contours.KEEL_LIMIT-.08:failures+=1;push_error("Default-height shell passes the configured rock floor")
 	profile.top=-4.0;profile.rock_top=-4.0
 	var minimum:Vector3=field._profile_point(Vector2(10,6),-4.5,Vector2.RIGHT,profile)
 	if minimum.y> -4.4 or not minimum.is_finite():failures+=1;push_error("Minimum legal land must retain a finite supporting shell below its surface")

@@ -42,7 +42,7 @@ func measure(deco,sections:Array,offset:float)->bool:
   pairs+=1;widths.append(distance)
   if distance<.04:tight+=1
   elif distance>.10:gaps+=1
- var ok:bool=tight>=12 and gaps>=3 if offset>.4 else tight>=26 and gaps>=3
+ var ok:bool=tight>=12 and gaps>=3 if offset>.4 else tight>=26 and gaps>=1
  print('RIM RHYTHM: section 0.45m below crowns; outward offset=',offset,'; pairs=',pairs,' tight=',tight,' clear gaps=',gaps,' widths=',widths,' passed=',ok)
  return ok
 

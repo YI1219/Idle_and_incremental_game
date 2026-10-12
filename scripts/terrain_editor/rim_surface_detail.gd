@@ -23,7 +23,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      var center:=a.lerp(b,(k+.5)/count)
      var choice:=_hash(center*2.1+Vector2(h,7))
      var patch:=_hash((center*.60).floor()+Vector2(h,29))
-     if patch<.42 or choice<.12:continue
+     if patch<.25 or choice<.10:continue
      # Only crown-backed final boundary segments get flaps; skip water lips
      # and raw terrace joins. No orphan cards in the waterfall openings.
      var on_crown:=false
@@ -35,7 +35,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
       if on_crown:break
      if not on_crown:continue
      var width:=minf(length/count*.95,.62+.40*_hash(center+Vector2(4,2)))
-     var depth:=.10+.24*pow(_hash(center+Vector2(19,3)),1.6)
+     var depth:=.12+.30*pow(_hash(center+Vector2(19,3)),1.6)
      # Sparse rounded sod patches continue the lawn over the stone edge.
      var left:=center-tangent*width*.5;var right:=center+tangent*width*.5
      var start:=result.vertices.size()
@@ -54,7 +54,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
       if shoulder==null or tip==null:valid=false;break
       rows.append([
        Vector3(c.x,h+.004,c.y)-outward*(.32*bell+.025),
-       Vector3(c.x,h+.035*bell+.004,c.y)-outward*.025,
+       Vector3(c.x,h+.075*bell+.004,c.y)-outward*.025,
        shoulder+outward*(.018*bell),tip])
      if valid:
       for column in 6:

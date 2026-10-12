@@ -5,9 +5,9 @@ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
-@export var sunlight_energy := 1.75
-@export var fill_energy := 0.16
-@export var ambient_energy := 0.40
+@export var sunlight_energy := 1.30
+@export var fill_energy := 0.23
+@export var ambient_energy := 0.52
 @export_range(0.0,1.0) var background_haze := 0.65
 var data:=Data.new()
 var renderer:=Renderer.new()
@@ -46,7 +46,7 @@ func _setup_environment()->void:
 	# Low warm back-right sun, toward the painted sun's side of the sky.
 	var sun:=DirectionalLight3D.new()
 	sun.rotation_degrees=Vector3(-34,140,0)
-	sun.light_color=Color("ffdcb2")
+	sun.light_color=Color("ffe7c9")
 	sun.light_energy=sunlight_energy
 	# Keeps the low sun's reflection on the lakes from clipping to a white patch.
 	sun.light_specular=.28
@@ -90,7 +90,7 @@ func _setup_environment()->void:
 	settings.tonemap_mode=Environment.TONE_MAPPER_LINEAR
 	settings.ssao_enabled=true
 	settings.ssao_radius=1.3
-	settings.ssao_intensity=3.0
+	settings.ssao_intensity=2.2
 	settings.ssao_power=1.6
 	settings.ssao_detail=.5
 	settings.ssao_light_affect=.25

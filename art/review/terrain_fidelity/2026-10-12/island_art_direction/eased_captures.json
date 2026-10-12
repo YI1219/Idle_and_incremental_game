@@ -1,0 +1,137 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 789.0,
+			"error": 0,
+			"file": "eased_default.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 584.0,
+			"error": 0,
+			"file": "eased_distant.png",
+			"position": "(17.95366, 29.0, 61.61184)",
+			"rotation": "(-24.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 587.0,
+			"error": 0,
+			"file": "eased_rim_upper_front.png",
+			"position": "(-7.131281, 9.0, 19.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 913.0,
+			"error": 0,
+			"file": "eased_underside.png",
+			"position": "(22.0, -2.4, 15.2)",
+			"rotation": "(7.583776, 51.88172, 0.0)"
+		},
+		{
+			"draw_calls": 919.0,
+			"error": 0,
+			"file": "eased_underside_bottom.png",
+			"position": "(12.0, -14.0, 21.0)",
+			"rotation": "(27.25203, 33.69007, 0.0)"
+		},
+		{
+			"draw_calls": 607.0,
+			"error": 0,
+			"file": "eased_pond_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 742.0,
+			"error": 0,
+			"file": "eased_orbit_-164.png",
+			"position": "(-11.36034, 21.0, -40.61823)",
+			"rotation": "(-27.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 763.0,
+			"error": 0,
+			"file": "eased_orbit_-104.png",
+			"position": "(-39.99056, 21.0, -10.97077)",
+			"rotation": "(-27.0, -104.0, 0.0)"
+		},
+		{
+			"draw_calls": 865.0,
+			"error": 0,
+			"file": "eased_orbit_-44.png",
+			"position": "(-28.63022, 21.0, 28.64746)",
+			"rotation": "(-27.0, -44.0, 0.0)"
+		},
+		{
+			"draw_calls": 789.0,
+			"error": 0,
+			"file": "eased_orbit_16.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 743.0,
+			"error": 0,
+			"file": "eased_orbit_76.png",
+			"position": "(39.99056, 21.0, 8.970768)",
+			"rotation": "(-27.0, 75.99999, 0.0)"
+		},
+		{
+			"draw_calls": 741.0,
+			"error": 0,
+			"file": "eased_orbit_136.png",
+			"position": "(28.63022, 21.0, -30.64746)",
+			"rotation": "(-27.0, 136.0, 0.0)"
+		},
+		{
+			"draw_calls": 814.0,
+			"error": 0,
+			"file": "eased_low_orbit_-120.png",
+			"position": "(-27.71281, -12.0, -16.0)",
+			"rotation": "(18.97041, -120.0, 0.0)"
+		},
+		{
+			"draw_calls": 1028.0,
+			"error": 0,
+			"file": "eased_low_orbit_-60.png",
+			"position": "(-27.71281, -12.0, 16.0)",
+			"rotation": "(18.97041, -60.0, 0.0)"
+		},
+		{
+			"draw_calls": 994.0,
+			"error": 0,
+			"file": "eased_low_orbit_0.png",
+			"position": "(0.0, -12.0, 32.0)",
+			"rotation": "(18.97041, 0.0, 0.0)"
+		},
+		{
+			"draw_calls": 814.0,
+			"error": 0,
+			"file": "eased_low_orbit_60.png",
+			"position": "(27.71281, -12.0, 16.0)",
+			"rotation": "(18.97041, 60.0, 0.0)"
+		},
+		{
+			"draw_calls": 809.0,
+			"error": 0,
+			"file": "eased_low_orbit_120.png",
+			"position": "(27.71281, -12.0, -16.0)",
+			"rotation": "(18.97041, 120.0, 0.0)"
+		},
+		{
+			"draw_calls": 812.0,
+			"error": 0,
+			"file": "eased_low_orbit_180.png",
+			"position": "(0.0, -12.0, -32.0)",
+			"rotation": "(18.97041, 180.0, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"source": "Godot runtime"
+}

@@ -86,6 +86,7 @@ func configure(source:Data)->void:
 		var shore:=ShaderMaterial.new()
 		shore.shader=load("res://shaders/terrain_editor/shore.gdshader")
 		materials.shore=shore
+	for material in materials.values():preload("res://scripts/terrain_editor/material_detail.gd").bind(material)
 	_bind_grass_compression()
 	for cell:Vector2i in data.cells:
 		for z in range(-1,2):
@@ -325,4 +326,12 @@ func pick(ray_origin:Vector3,ray_direction:Vector3)->Dictionary:
 				if not _published_data.cells.has(candidate):continue
 				var distance:=Vector2(position_hit.x,position_hit.z).distance_squared_to(Vector2(candidate)+Vector2(.5,.5))
 				if distance<closest:closest=distance;cell=candidate
+	# Sculpted overhangs can extend farther than one cell beyond their support.
+	# If the fast neighboring-cell lookup found no owner, resolve the nearest
+	# published land cell rather than returning a nonexistent cell to the brush.
+	if not _published_data.cells.has(cell):
+		var closest:=INF
+		for candidate:Vector2i in _published_data.cells:
+			var distance:=Vector2(position_hit.x,position_hit.z).distance_squared_to(Vector2(candidate)+Vector2(.5,.5))
+			if distance<closest:closest=distance;cell=candidate
 	return {"position":position_hit,"cell":cell}

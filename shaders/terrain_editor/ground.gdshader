@@ -3,6 +3,7 @@ shader_type spatial;
 #include "land_palette.gdshaderinc"
 #include "ground_cover.gdshaderinc"
 #include "cliff_palette.gdshaderinc"
+#include "stone_surface.gdshaderinc"
 render_mode cull_disabled;
 uniform bool show_grid = false;
 uniform float cover_relief = .55;
@@ -18,7 +19,7 @@ void fragment(){
  // shared cap is turf, including its edge; sparse mineral windows stop inland.
  float patch=gc_noise(p*1.65+vec2(11.0,3.0));
  float exposed=(1.0-COLOR.a)*smoothstep(.70,.83,patch)*(1.0-smoothstep(.04,.20,UV.x));
- color=mix(color,cliff_gray(.65)+vec3(.03,.04,.05),exposed*.8);
+ color=mix(color,stone_surface(world_position,vec3(0.0,1.0,0.0)),exposed*.8);
 	if(show_grid){vec2 grid=abs(fract(p)-0.5);float edge=step(0.486,max(grid.x,grid.y));color=mix(color,vec3(0.91,0.95,0.66),edge*0.35);}
 	ALBEDO=color*COLOR.rgb;
 	vec3 base_normal=normalize(cross(dFdx(world_position),dFdy(world_position)));

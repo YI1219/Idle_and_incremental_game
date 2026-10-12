@@ -37,10 +37,8 @@ func run()->void:
  check(rows.size()==5,"Five kitchen garden rows")
  for top in [1.5,3.5]:
   for p in [Vector2.ZERO,Vector2(13,7),Vector2(-16,-3)]:
-   var previous:float=-2.8+.18*sin(p.x*.43+p.y*.31)+.09*sin(p.x*.87-p.y*.57)
    var floor_y:float=Contours._shell_floor(p,top)
-   var ratio:float=(top-floor_y)/(top-previous)
-   check(ratio>=.78 and ratio<=.82,"Thick slab keeps 80% of the original underside depth, upper boundary anchored")
+   check(floor_y<top-.5 and floor_y>=Contours.KEEL_LIMIT,"Rock shell has supporting thickness and stays inside its configured floor")
    var keel:float=Contours._keel_floor(p,top)
    check(keel<=floor_y and keel>=Contours.KEEL_LIMIT-.001,"Uneven keel hangs below the slab without passing the shell floor limit")
  check(Contours._shell_floor(Vector2.ZERO,-4)<=-4.5,"Minimum legal height retains supporting thickness")

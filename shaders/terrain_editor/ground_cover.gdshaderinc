@@ -1,3 +1,4 @@
+uniform sampler2D ground_detail_map : filter_linear_mipmap_anisotropic, repeat_enable;
 // World-space compression is supplied by TerrainRenderer.set_grass_compression.
 // No mask means standing cover; outside the supplied field stays standing.
 uniform sampler2D grass_compression : filter_linear, repeat_disable, hint_default_black;
@@ -73,5 +74,8 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
  float blade=sin(p.x*71.0+p.y*29.0+gc_noise(p*3.0)*5.0);
  color*=1.0+blade*.025*cover*detail;
  slope=(slope*.08+slope_tuft*1.35)*standing;
+ vec4 mapped=texture(ground_detail_map,p*.48);
+ color*=1.0+(mapped.r-.5)*.60*detail;
+ slope+=(mapped.gb-.5)*2.2*standing;
 	return color;
 }

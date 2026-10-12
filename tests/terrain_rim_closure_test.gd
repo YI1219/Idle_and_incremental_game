@@ -45,11 +45,13 @@ func probe(data:Data)->Dictionary:
       for x in range(floori(p.x)-2,floori(p.x)+3):
        for i:int in buckets.get(Vector2i(x,z),[]):candidates[i]=true
      for drop:float in [.08,.25,.55]:
-      var origin:=Vector3(p.x,h-drop,p.y)+out*.05
+      var origin:=Vector3(p.x,h-drop,p.y)+out*3.0
       var distance:=INF
       for i:int in candidates:
        var hit=Geometry3D.ray_intersects_triangle(origin,-out,faces[i],faces[i+1],faces[i+2])
-       if hit!=null:distance=minf(distance,origin.distance_to(hit))
+       if hit!=null:distance=minf(distance,origin.distance_to(hit)-2.95)
+      # Start outside the shouldered rock instead of inside its overhang.
+      # Report recession relative to the same original 5cm probe plane.
       # Up to half the maximum 4.8m crown span allows deep concave joints,
       # but not an unbacked ray reaching the far side of the island.
       count+=1;worst=maxf(worst,distance)

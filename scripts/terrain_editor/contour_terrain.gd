@@ -5,10 +5,10 @@ const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Legacy = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const BOTTOM := -4.5
 # Only the shell below its local supporting terrace is shortened.
-const UNDERSIDE_THICKNESS := 0.80
+const UNDERSIDE_THICKNESS := 1.0
 # World-anchored stepped lobes hang below the slab; the keel never passes this floor.
 const KEEL_DEPTH := 1.1
-const KEEL_LIMIT := -3.0
+const KEEL_LIMIT := -5.5
 # Rock bodies clad broad dry outer walls and terrace steps; their crowns are
 # the island edge. The shell behind them stays this far inside the contour,
 # within the bodies, so it does not draw a second outline between stones.
@@ -372,7 +372,7 @@ static func _shell_floor(p:Vector2,top:float)->float:
 	# Unequal shallow feet, continuous at shared columns; minimum-height land
 	# retains its half-unit supporting body without changing legal data.
 	var variation:float=.18*sin(p.x*.43+p.y*.31)+.09*sin(p.x*.87-p.y*.57)
-	var original_floor:=minf(-2.8,top-.5)+variation*clampf((top+4.0)/4.0,0,1)
+	var original_floor:=minf(-3.6,top-.5)+variation*clampf((top+4.0)/4.0,0,1)
 	return top-maxf(.5,(top-original_floor)*UNDERSIDE_THICKNESS)
 
 static func _keel_floor(p:Vector2,top:float,mass:float=1.0)->float:
@@ -588,14 +588,14 @@ func _inset_limit(p:Vector2,normal:Vector2,height:float)->float:
 	for step in range(1,45):
 		var distance:=step*.125
 		if not contains(loops,p-normal*distance,signs):return minf(1.5,distance*.28)
-	return 1.5
+	return 2.8
 
 static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,normal:Vector2=Vector2.ZERO,inset_limit:float=1.5,rounded_relief:float=NAN,rock_fraction:float=NAN)->Vector3:
-	# Broad feet keep blunt shoulders rather than converging into a bowl.
+	# Broad sides turn toward a horizontal foot through a quarter-ellipse.
 	# Thickness-limited profiles preserve their proven narrow shell.
 	var broad:float=smoothstep(.35,.85,inset_limit)
 	var retreat:float=lerpf(pow(f,1.5),.12*smoothstep(.18,.40,f)+.26*smoothstep(.68,.92,f),broad)
-	retreat=lerpf(retreat,.38*f,broad)
+	retreat=lerpf(retreat,.95*(1.0-sqrt(maxf(0.0,1.0-f*f))),broad)
 	var inset:=normal*(inset_limit*retreat if base else 0.0)
 	var width_weight:=clampf((inset_limit-.35)/.45,0.0,1.0) if base else .5
 	var noise:=sin(p.x*1.91+p.y*2.17+f*7.9)*lerpf(.38,0.0,width_weight)*sin(PI*f)
@@ -614,6 +614,7 @@ static func _rock_point(p:Vector2,y:float,f:float,base:bool,relief:float=1.0,nor
 	var volume_envelope:=minf(1.0,shoulder_f*7.0)*(.98-.36*maxf(0,(shoulder_f-.65)/.35))
 	envelope=lerpf(envelope,volume_envelope,smoothstep(.8,1.2,inset_limit) if base else 1.0)
 	var ledge:=rounded_relief*envelope*relief*width_weight*lerpf(1.0,1.30,smoothstep(.8,1.2,inset_limit))
+	if base:ledge*=1.0-smoothstep(.30,.88,f)
 	return Vector3(p.x-inset.x+noise+normal.x*ledge,y+vertical_noise*relief,p.y-inset.y+noise*.7+normal.y*ledge)
 
 static func _rock_relief(point:Vector3)->float:

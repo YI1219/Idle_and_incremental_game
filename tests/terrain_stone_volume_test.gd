@@ -22,11 +22,18 @@ func run():
    if not closed:failures+=1;push_error("Open procedural stone "+str([root,seed_value]))
    if volume<=.08:failures+=1;push_error("Stone lacks outward closed volume "+str([root,seed_value,volume]))
    if root:
-    var top:=0.0;var bottom:=0.0
+    var top:=PackedVector2Array();var bottom:=PackedVector2Array()
     for p:Vector3 in faces:
-     if p.y>-.2:top=maxf(top,Vector2(p.x,p.z).length())
-     if p.y<-stone.height*.85:bottom=maxf(bottom,Vector2(p.x,p.z).length())
+     if p.y>-.2:top.append(Vector2(p.x,p.z))
+     if p.y<-stone.height*.85:bottom.append(Vector2(p.x,p.z))
     count+=1
-    if bottom>=top*.8:failures+=1;push_error("Underside must taper inward")
+    # An inward-leaning root translates its lower section. Compare section
+    # areas, so translation cannot be mistaken for an outward flare.
+    if hull_area(bottom)>=hull_area(top)*.65:failures+=1;push_error("Underside cross-section must taper inward")
  print("STONE VOLUMES: ",count-failures,"/",count)
  quit(1 if failures else 0)
+
+func hull_area(points:PackedVector2Array)->float:
+ var hull:=Geometry2D.convex_hull(points);var area:=0.0
+ for i in hull.size()-1:area+=hull[i].cross(hull[i+1])*.5
+ return absf(area)

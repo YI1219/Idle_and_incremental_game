@@ -1,0 +1,53 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 788.0,
+			"error": 0,
+			"file": "turf_default.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 584.0,
+			"error": 0,
+			"file": "turf_distant.png",
+			"position": "(17.95366, 29.0, 61.61184)",
+			"rotation": "(-24.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 587.0,
+			"error": 0,
+			"file": "turf_rim_upper_front.png",
+			"position": "(-7.131281, 9.0, 19.97924)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 910.0,
+			"error": 0,
+			"file": "turf_underside.png",
+			"position": "(22.0, -2.4, 15.2)",
+			"rotation": "(7.583776, 51.88172, 0.0)"
+		},
+		{
+			"draw_calls": 916.0,
+			"error": 0,
+			"file": "turf_underside_bottom.png",
+			"position": "(12.0, -14.0, 21.0)",
+			"rotation": "(27.25203, 33.69007, 0.0)"
+		},
+		{
+			"draw_calls": 605.0,
+			"error": 0,
+			"file": "turf_pond_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"source": "Godot runtime"
+}

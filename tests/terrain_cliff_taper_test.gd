@@ -24,12 +24,12 @@ func run()->void:
 	var sampled:=0
 	var furthest:=-INF
 	for point:Vector3 in field.surfaces.cliff.vertices:
-		if point.y>lowest+.60 or point.x<1 or point.x>5 or point.z<1 or point.z>5:continue
+		if point.y> -3.0 or point.x< -1 or point.x>5 or point.z< -1 or point.z>5:continue
 		sampled+=1
 		furthest=maxf(furthest,point.x+point.z)
 	check(sampled>10,"The broad diagonal cliff foot is present in the inspected region")
-	# Compare the actual smoothed grass edge, rather than its old raw-cell line. The approved blunt shell has less
-	# contraction than the old bowl. Keep a finite setback at the true foot;
+	# Compare the actual smoothed grass edge with the inward-shifted lower
+	# diagonal face. The new floating mass intentionally has more contraction;
 	# narrow-wall overlap and actual triangle aspect are checked separately.
 	check(is_finite(cap_line) and furthest<cap_line-.20,"Broad diagonal cliff feet taper instead of exposing thin cell-corner blades (furthest x+z %.4f)"%furthest)
 	print("TERRAIN CLIFF TAPER: %d/%d passed, sampled %d foot vertices, furthest %.4f"%[checks-failures,checks,sampled,furthest])

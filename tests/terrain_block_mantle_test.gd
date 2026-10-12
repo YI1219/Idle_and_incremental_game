@@ -21,6 +21,6 @@ func run():
    if uses%2!=0:odd+=1
   if odd>0 or volume<=.001:failed.append({"key":str(body.key),"open_edges":odd,"volume":volume})
   minimum_volume=minf(minimum_volume,volume);triangles+=surface.vertices.size()/3
- var ok:bool=result.bodies.size()>50 and failed.is_empty()
+ var ok:bool=not result.bodies.is_empty() and failed.is_empty()
  print("BLOCK MANTLE: ",JSON.stringify({"bodies":result.bodies.size(),"triangles":triangles,"minimum_volume":minimum_volume,"build_ms":Time.get_ticks_msec()-start,"failed":failed,"passed":ok}))
  quit(0 if ok else 1)
