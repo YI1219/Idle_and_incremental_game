@@ -1,0 +1,33 @@
+{
+  "baseline": "696fe317a9132c916a69a1fe32228a1624d92aa3",
+  "implementation_commit": "fbf6441",
+  "sha256": {
+    "assets/nature/quaternius/Bark_NormalTree.png.import": "786783c39f6a94f2f107c846122e9b6392bcdfcba0017b8673ab4f3bc26bd67e",
+    "assets/nature/quaternius/Flowers.png.import": "22b895bbe4e0ad179fec9b08a850d8a9d2d464957175310e71a256597356c62e",
+    "assets/nature/quaternius/Grass.png.import": "b3f1aefd5bb7038a529a080d813e2a2fe15bdbbde47c8406bc86026b15afb35d",
+    "assets/nature/quaternius/Leaves.png.import": "4a3297d347b068ba534c4feca76b32e55b14060f382296d4d64265d537bf58e4",
+    "assets/nature/quaternius/Leaves_NormalTree_C.png.import": "31119183c8e0b6c365ded3639bda829582e798d2628d45bbd2b9c252df2b1886",
+    "assets/nature/quaternius/Leaves_TwistedTree_C.png.import": "2bc8064f2ccd621815ef3d49ea967738245fecfa2130a0a2749ec5b95a99b8e7",
+    "scripts/terrain_editor/editor.gd": "b845b77ecfe0ecac652d0703c1a4f3bd56e9ea95a6ca417ceffdb4b7b9b558c8",
+    "scripts/terrain_editor/material_detail.gd": "159614e27531b4a9d287e5bad2a23d1155e1abad692d1ec50d47ae109234da97",
+    "scripts/terrain_editor/terrain_decoration.gd": "0562d49939fb98fd070c91a77d2b73506856c51d2ad7adbe22b5bef11c5d2537",
+    "scripts/terrain_editor/terrain_models.gd": "f66797a1727d923278bb4228bf1d1966a8aeb60f275cbb7d8e2f28ec93008ab8",
+    "scripts/terrain_editor/terrain_paths.gd": "3b8b0ad50b3903e6c199686634c7d7f09620513f7177da1d1f79f0dcc59adcf6",
+    "scripts/terrain_editor/terrain_paths.gd.uid": "480bef8824730cca39e66f795d1398fc084f147e11dbdb083bc0885b63345f96",
+    "scripts/terrain_editor/terrain_props.gd": "966089cac02889a9c0c815228abca097c87ebecc28f90891b01b64561794e72f",
+    "scripts/terrain_editor/terrain_renderer.gd": "1b3ca17efb9d5f513f351cebba3df33422ba26780187ef178ee55cfcbbe489cd",
+    "scripts/terrain_editor/textured_nature.gd": "2ba21be2c70dc0099c427e46dbec4a071c89d096beec495b55413209191cd164",
+    "scripts/terrain_editor/textured_nature.gd.uid": "3d5d8e4f71c26e9e3b15ce2a7f7fb159f95b7d567097123608ff258f7809fb70",
+    "shaders/terrain_editor/cloud_deck.gdshader": "0e046666fde3d047264ad60d8157903843cfdd938afa5fbd4ce7d4fe54732bf4",
+    "shaders/terrain_editor/cottage_roof.gdshader": "7c95c8e03912ce896a3f703ac3923602be3bddba30054962857cdf1cdfd93ea6",
+    "shaders/terrain_editor/ground_cover.gdshaderinc": "99524eeb037bf19f49cab3b1f5a3ab0e14c0cb0c0933fc58444d1323abd7736b",
+    "shaders/terrain_editor/shore.gdshader": "e21773ac231fe066476550bf65b10e1d57c722eb51abdbc57ceed45af064fe2b",
+    "shaders/terrain_editor/sky.gdshader": "6d3d726d941ab0a1f31063b95e7d8ebb01cd6ea4b40f8359c6ca1dc947b38d16",
+    "shaders/terrain_editor/sky_palette.gdshaderinc": "63fb29d1b3953762656098070d7fc5e2ef1654c8718497aa1c7e5c76a6292a7c",
+    "shaders/terrain_editor/stone_surface.gdshaderinc": "a6460f2bd6c61fd986c8557ec637eb8be22ed740a70469814b6f5636ff3467e6",
+    "shaders/terrain_editor/textured_nature.gdshader": "d74f4c9cbbcd713bd98ad9249846f1480dab5fb36dab5deaa20716ab7bf3c1e3",
+    "shaders/terrain_editor/textured_nature.gdshader.uid": "28712249a5c3da660404aa831c89c9be0d5f06daf65160ff5a14cdd4c5dec7f6",
+    "shaders/terrain_editor/water.gdshader": "c5b9981e40d7a90912cd079d9bbbac50dcaad4ed714feaf5ea3dccc50b34b992",
+    "shaders/terrain_editor/waterfall.gdshader": "3cbca39ff190d49bb5db2fe01319413fbd081b954e0d1ef2db28eab032f552a3"
+  }
+}

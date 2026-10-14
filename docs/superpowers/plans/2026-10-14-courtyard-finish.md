@@ -32,4 +32,4 @@
 - [x] Integrate existing textured trees/shrubs/flowers, preserving surface materials, morph and support. Run loader and decoration tests; expected zero failures.
 - [x] Render lighting/camera and ground/material studies. Accept clear improvement against baseline, inspect close and whole-island views. Reversible visual parameter choices use images rather than assertions mirroring constants.
 - [x] Run relevant existing camera, decoration, material, terrain and edit-regeneration suites; expected zero failures. Produce final comparison and fresh screenshots.
-- [ ] Commit, obtain one fresh whole-change review, address important findings with targeted red/green proof, update current status and push reversible work.
+- [x] Commit, obtain one fresh whole-change review, address important findings with targeted red/green proof, update current status and push reversible work.
