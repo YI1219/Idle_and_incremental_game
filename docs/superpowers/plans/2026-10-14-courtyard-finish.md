@@ -1,3 +1,5 @@
+> 2026-10-14 用户范围纠正：本计划中替换树木/植被、小屋比例及布局改动已撤回。当前方向仅为色调、材质质感与水体；以 CURRENT_CONTEXT.md 和 corrected_* 实景为准。下文是历史执行记录。
+
 # Courtyard reference finish Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.

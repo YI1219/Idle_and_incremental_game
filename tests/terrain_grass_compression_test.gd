@@ -12,13 +12,7 @@ func run():
  var texture:=ImageTexture.create_from_image(image)
  var bounds:=Rect2(-20,-12,44,25)
  var ok:bool=renderer.set_grass_compression(texture,bounds)
- renderer.decoration=load("res://scripts/terrain_editor/terrain_decoration.gd").new()
  renderer.configure(data)
- renderer.rebuild_all()
- var meadow:ShaderMaterial=renderer.decoration.assets.meadow[0].mesh.surface_get_material(0)
- ok=ok and meadow.get_shader_parameter("grass_compression")==texture
- ok=ok and meadow.get_shader_parameter("compression_origin")==bounds.position
- ok=ok and meadow.get_shader_parameter("compression_extent")==bounds.size
  for kind in ['grass','cliff','rim_green','shore']:
   ok=ok and renderer.materials[kind].get_shader_parameter('grass_compression')==texture
   ok=ok and renderer.materials[kind].get_shader_parameter('compression_origin')==bounds.position
@@ -28,7 +22,6 @@ func run():
  ok=ok and renderer.materials.grass.get_shader_parameter('grass_compression')==texture
  ok=ok and renderer.set_grass_compression(null,bounds)
  ok=ok and renderer.materials.grass.get_shader_parameter('grass_compression')==null
- ok=ok and meadow.get_shader_parameter("grass_compression")==null
  renderer.free()
  print('GRASS COMPRESSION: texture/origin/extent, preconfigure, reconfigure, invalid bounds and clear: ',ok)
  quit(0 if ok else 1)

@@ -53,16 +53,16 @@ void fragment() {
 	float fine = strands(vec2(across*26.0,(y+TIME*2.9)*1.1)+vec2(3.1,17.0));
 	// Falling packets: denser white clumps travel down the curtain.
 	float packets = flow_noise(vec2(across*2.6,(y+TIME*3.1)*1.9)+vec2(5.0,1.0));
-	// A thick aerated body: only the lip is glassy; within a metre the fall
-	// is dense white water with soft grey-blue shading in the grooves.
-	float base_air = mix(.22,1.05,smoothstep(.05,.80,drop));
+	// Aerated strands retain blue-green grooves under frontal sunlight;
+	// foam stays below clipping so the moving sheet remains readable.
+	float base_air = mix(.20,.65,smoothstep(.05,.80,drop));
 	float air = base_air+(body-.5)*.95+(fine-.5)*.35+(packets-.5)*.40*accelerate+landing*.55;
 	float white = smoothstep(.30,.70,air);
-	vec3 water = mix(vec3(.50,.64,.68),vec3(.72,.81,.83),body);
+	vec3 water = mix(vec3(.24,.46,.49),vec3(.46,.65,.65),body);
 	// A glassy band follows the lip before the stream breaks up.
 	float lip = 1.0-smoothstep(.02,.32,drop);
-	water = mix(water,vec3(.72,.82,.82),lip*smoothstep(.45,.75,fine)*.55);
-	vec3 foam = mix(vec3(.86,.89,.89),vec3(.97,.98,.96),smoothstep(.3,.8,body*.7+fine*.3));
+	water = mix(water,vec3(.52,.69,.68),lip*smoothstep(.45,.75,fine)*.55);
+	vec3 foam = mix(vec3(.50,.61,.62),vec3(.70,.76,.74),smoothstep(.3,.8,body*.7+fine*.3));
 	vec3 color = mix(water,foam,white);
 	float side = 1.0;
 	float edge = .5;
@@ -100,7 +100,7 @@ void fragment() {
 	}
 	ALBEDO = color;
 	// Aerated water scatters light, so white water stays bright in shade.
-	EMISSION = vec3(.10,.12,.13)*white+color*.06;
+	EMISSION = vec3(.025,.035,.04)*white+color*.025;
 	ALPHA = opacity*side;
 	if(COLOR.a<.001) ALPHA*=1.0-smoothstep(3.2,5.5,drop+(body-.5)*1.2);
 	ROUGHNESS = mix(.22,.65,white);

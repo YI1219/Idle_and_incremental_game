@@ -1,0 +1,42 @@
+[
+  {
+    "test": "terrain_crown_integrity_test",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":4,\"contained_source_entries\":3072,\"max_plane_violation\":-0.000000119209289550781,\"outward_surfaces\":4,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":3072,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}\nPUBLISHED CROWN MATCH: true, entries=2256, max_difference=0.0, different_entries=0\n"
+  },
+  {
+    "test": "terrain_homestead_test",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nHOMESTEAD: 34/34 passed; tree heights=[4.06712532043457, 4.15012741088867, 4.19162845611572, 4.23313045501709]\n"
+  },
+  {
+    "test": "terrain_grass_compression_test",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGRASS COMPRESSION: texture/origin/extent, preconfigure, reconfigure, invalid bounds and clear: true\n"
+  },
+  {
+    "test": "terrain_shrub_support_test",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: shrubs=28 base_points=8848 unsupported=0\nraise: shrubs=28 base_points=8848 unsupported=0\nlower: shrubs=28 base_points=8848 unsupported=0\nexpand: shrubs=28 base_points=8848 unsupported=0\ncontract: shrubs=26 base_points=8216 unsupported=0\nSHRUB SUPPORT: 43608 actual base points; 0 unsupported; coverage=true\n"
+  },
+  {
+    "test": "terrain_editor_runtime_test",
+    "exit": 0,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n"
+  },
+  {
+    "test": "terrain_canopy_contact_test",
+    "exit": 0,
+    "result": "5/5"
+  },
+  {
+    "test": "terrain_waterfall_test",
+    "exit": 0,
+    "result": "35/35"
+  },
+  {
+    "test": "terrain_water_impact_test",
+    "exit": 0,
+    "result": "8/8"
+  }
+]

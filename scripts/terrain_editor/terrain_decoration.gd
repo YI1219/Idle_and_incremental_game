@@ -53,7 +53,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	var field=contours
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
-	for kind in ["grass","grass_clump","meadow","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
+	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
 	_column_layout(field,data.seed)
 	var crown_tufts:Array=[]
 	for column:Dictionary in _columns:
@@ -76,20 +76,14 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			var origin:=Vector3(p.x,h,p.y)
 			var angle:=random_at(cell,data.seed,1)*TAU
 			var cluster:=sin(p.x*.67+p.y*.31)*sin(p.y*.79-p.x*.18)
-			var house_clear:=_near_path(p) or p.distance_to(Vector2(-11,-7))<3.1 or (p.x> -10.5 and p.x< -6.9 and p.y> -5.35 and p.y< -2.3)
-			# Fine terrestrial grass is distinct from pond reeds. Its entire small
-			# rooted footprint must remain on the current editable dry surface.
-			if not house_clear and cluster>-.26 and random_at(cell,data.seed,190)<.90:
-				for tuft in 5:
-					var tuft_at:=p+Vector2(sin(tuft*2.4+angle),cos(tuft*2.4+angle))*.24
-					if _stable(field,tuft_at,h,.25):result.meadow.append(_transform(Vector3(tuft_at.x,h,tuft_at.y),angle+tuft,Vector3.ONE*(.8+random_at(cell,data.seed,191+tuft)*.5)))
+			var house_clear:=_near_path(p) or p.distance_to(Vector2(-11,-7))<2.4 or (p.x> -10.5 and p.x< -6.9 and p.y> -6.1 and p.y< -3.1)
 			if not house_clear and cluster>.12 and random_at(cell,data.seed,4)<.38:
 				if random_at(cell,data.seed,13)<.66:
 					for bloom in 4:
 						var flower_at:=p+Vector2(sin(bloom*2.4+angle),cos(bloom*2.4+angle))*.24
 						if _stable(field,flower_at,h,.12):result.flower.append(_transform(Vector3(flower_at.x,h,flower_at.y),angle+bloom,Vector3.ONE*(.65+bloom*.09)))
-			if not house_clear and cluster>.12 and random_at(cell,data.seed,6)<.58:
-				var pose:=_transform(origin-Vector3(0,.02,0),angle,Vector3(1.45,.90,1.35))
+			if not house_clear and cluster>.22 and random_at(cell,data.seed,6)<.36:
+				var pose:=_transform(origin-Vector3(0,.02,0),angle,Vector3(1.2,.85,1.2))
 				if _supported_shrub(field,pose,h) and _clear_of_rim(pose):result.bush.append(pose)
 			if not house_clear and cluster>.12 and random_at(cell,data.seed,141)<.26 and _stable(field,p,h,.52):
 				result.grass_clump.append(_transform(origin,angle,Vector3.ONE*(.85+random_at(cell,data.seed,142)*.25)))
@@ -104,7 +98,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 		if sample.is_empty() or sample.water>=0:continue
 		if not _stable(field,p,float(sample.height),.6):continue
 		var box:AABB=assets.tree[0].mesh.get_aabb()
-		var size:Vector3=spec[1]*Vector3(1.45,1.0,1.35)*(COMMON_TREE_HEIGHT/box.size.y)
+		var size:Vector3=spec[1]*(COMMON_TREE_HEIGHT/box.size.y)
 		result.tree.append(_transform(Vector3(p.x,sample.height-box.position.y*size.y,p.y),p.x*.13,size))
 	var foliage_anchors:Dictionary={}
 	for h:float in field.land_regions:
@@ -203,7 +197,7 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 			if support.is_empty() or support.water>=0 or not _stable(field,point,support.height,.16):continue
 			result.flower.append(_transform(Vector3(point.x,support.height,point.y),j*1.7,Vector3.ONE*(1.1+j*.13)))
 	_fences(result,field,chunk)
-	for kind in ["grass","grass_clump","meadow","flower","surface_rock","fence","path"]:
+	for kind in ["grass","grass_clump","flower","surface_rock","fence","path"]:
 		var lifted:Array=result[kind]
 		for i in lifted.size():
 			var pose:Transform3D=lifted[i]
@@ -661,15 +655,15 @@ func _path(result:Dictionary,field,chunk:Vector2i)->void:
 	for i in points.size()-1:
 		var a:Vector2=points[i]
 		var b:Vector2=points[i+1]
-		var count:=ceili(a.distance_to(b)/1.25)
+		var count:=ceili(a.distance_to(b)/.90)
 		for j in count:
 			var p:=a.lerp(b,float(j)/count)
 			if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
 			var sample:Dictionary=field.surface_at(p)
 			if sample.is_empty() or sample.water>=0:continue
-			result.path.append(_transform(Vector3(p.x,sample.height+.015,p.y),i*.4+j*.13,Vector3(1.8,.95,1.9)*(1.0+.10*sin(i*3.0+j*2.2))))
+			result.path.append(_transform(Vector3(p.x,sample.height+.015,p.y),i*.4+j*.13,Vector3(1.55,.65,1.70)))
 func _fences(result:Dictionary,field,chunk:Vector2i)->void:
-	for spec in [[Vector2(-10.4,-2.15),0.0,3],[Vector2(-10.6,-5.35),PI*.5,2],[Vector2(-16,-5),.1,3],[Vector2(-7,-9),0.0,3],[Vector2(-7,4),.18,3],[Vector2(10,-4),-.1,3],[Vector2(16,7),.7,2]]:
+	for spec in [[Vector2(-10.4,-2.9),0.0,3],[Vector2(-10.6,-6.1),PI*.5,2],[Vector2(-16,-5),.1,3],[Vector2(-7,-9),0.0,3],[Vector2(-7,4),.18,3],[Vector2(10,-4),-.1,3],[Vector2(16,7),.7,2]]:
 		for i in int(spec[2]):
 			var p:Vector2=spec[0]+Vector2(cos(spec[1]),sin(spec[1]))*i*1.45
 			if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue

@@ -1,11 +1,9 @@
 # Current asset status
 Updated: 2026-10-14. The project uses 3D, non-pixel ancient-Chinese stylized rendering. Current visual evidence is the [courtyard reference pass](review/terrain_fidelity/2026-10-14/courtyard_finish/review.md); earlier workshop references are historical, not active replacement tasks.
 
-The latest user image guides warm courtyard sunlight against cool cloud-sea atmosphere, light plaster/blue-grey roofing, layered foliage and soft grass/earth transitions. The existing Tripo cottage is retained at 0.85 display scale; its five-row garden moves forward to clear the facade. Authoritative island and pond data remain unchanged. Original models and texture bytes remain intact.
+The latest user clarification is explicit: this reference guides **tone, material feel and water rendering**, not tree replacement. The October 14 correction restores the prior assembled tree, shrubs/flowers/grass, cottage 0.65 display scale, garden/fence placement and paving proportions. Keep existing asset silhouettes and layout. The model-replacement study is superseded; current runtime images use the `corrected_*` prefix.
 
-The workshop now uses retained CC0 Quaternius CommonTree_5, Bush_Common, Flower_3_Group and Grass_Wispy_Short with original UVs and separate material surfaces. Six nature textures gain mip chains through import settings. Source-relative geometry is verified after grounding and common scaling. Fine terrestrial grass remains distinct from pond reeds, with terrain support and the existing compression-mask path. Existing procedural rim solids, physical turf, continuous bottom and mineral/ground maps remain.
-
-No model generation or purchase is needed for this pass. No character, garment or combat-animation work occurred. The result is a visual candidate, not concept-equivalent or owner-approved. Remaining gaps include the reference's pine silhouette, distant mountain richness, finer shore/cliff forms and close leaf-card appearance. Target thin-laptop performance remains unmeasured. The [current context](../CURRENT_CONTEXT.md) records current constraints and direction.
+Retained improvements are warm sunlight against cool cloud-sea atmosphere, light plaster/blue-grey roofing, grass/earth wear, stone material response and clearer turquoise water. The waterfall now retains cooler moving grooves and restrained foam highlights. Original models and texture bytes, authoritative terrain, physical turf and continuous bottom remain intact. No new asset generation or purchase is needed. Target thin-laptop performance and final art acceptance remain unmeasured/unapproved. See [current context](../CURRENT_CONTEXT.md).
 
 ## Integrated candidates
 
