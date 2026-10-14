@@ -13,7 +13,7 @@ func run()->void:
  editor.set_process(false);editor.camera.set_process(false)
  var props=editor.renderer.props
  var cottage:Node3D=props.entries[0].node
- check(cottage.scale.is_equal_approx(Vector3(1.05,.70,.82)*.65),"Cottage and attached architecture uniformly reduced to 65%")
+ check(cottage.scale.is_equal_approx(Vector3(1.05,.70,.82)*.85),"Cottage and attached architecture share the retained 85% courtyard scale")
  check(cottage.position.is_equal_approx(Vector3(-11,3.5,-7)),"Cottage retains terrain contact and location")
  var heights:Array[float]=[]
  var deco=editor.renderer.decoration
@@ -32,6 +32,7 @@ func run()->void:
  for entry:Dictionary in props.entries:
   if str(entry.node.name).begins_with("KitchenGardenRow"):
    rows.append(entry)
+   check(entry.at.y-entry.footprint.y> -7+2.24*.82*.85+.15,"Crop rows stay outside the enlarged cottage front")
    check(entry.node.visible,"Each crop row supported on dry upper terrace")
    check(entry.node.position.x-entry.footprint.x> -11+.55,"Garden leaves the entrance path clear")
  check(rows.size()==5,"Five kitchen garden rows")

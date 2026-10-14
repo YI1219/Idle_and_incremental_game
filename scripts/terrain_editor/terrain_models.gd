@@ -7,8 +7,8 @@ var block_bake_us:=0
 const IDS={"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
 	if not assets.is_empty():return
-	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
-	assets.bush=_shrub_clusters(assets.bush)
+	for kind in IDS:
+		if kind not in ["bush","flower"]:assets[kind]=_load(IDS[kind],kind)
 	assets.grass=_grass_models()
 	assets.grass_clump=_grass_clump_models()
 	assets.reeds=_reed_models()
@@ -23,33 +23,6 @@ func load_assets()->void:
 	assets.underside_rock=_rock_body_models(53,true)
 	assets.underside_rock_b=_rock_body_models(67,true)
 	block_bake_us=Time.get_ticks_usec()-bake
-	var wood:Array=_load("tree_detailed","tree_wood")
-	var leaf:Array=_load("tree_oak","tree_leaf")
-	var tree:Array=[]
-	var wood_shape:=Transform3D(Basis.IDENTITY.scaled(Vector3(1.24,1.07,1.24)),Vector3.ZERO)
-	for part:Dictionary in wood:tree.append({"mesh":part.mesh,"pose":wood_shape*part.pose})
-	# Four compact masses derive from the retained oak surface: a dominant
-	# raised crown, unequal lower fork masses and a small rear support.
-	# Their lower edges expose branch space rather than filling every shoulder.
-	var crown:Array=[
-		[Vector3(-.085,1.12,.035),Vector3(.90,.74,.70)],
-		[Vector3(-.39,1.02,-.14),Vector3(.62,.40,.55)],
-		[Vector3(.35,1.005,.075),Vector3(.57,.41,.54)],
-		[Vector3(.045,1.025,-.345),Vector3(.35,.38,.38)],
-	]
-	var crown_parts:Array=[]
-	for i in crown.size():
-		var center:Vector3=crown[i][0]
-		var size:Vector3=crown[i][1]
-		var rotation:=Basis.from_euler(Vector3(.10*sin(i*1.9),i*.83,.10*cos(i*2.7)))
-		for part:Dictionary in leaf:
-			var box:AABB=part.mesh.get_aabb()
-			var basis:=rotation.scaled_local(size/box.size.max(Vector3.ONE*.0001))
-			var pose:=Transform3D(basis,center-basis*(box.position+box.size*.5))
-			var tint:Color=[Color(1.04,1.04,1.0),Color(.90,.95,.92),Color(.95,.99,.94),Color(.86,.92,.90)][i]
-			crown_parts.append({"mesh":part.mesh,"pose":pose,"tint":tint})
-	tree.append_array(_join_crown(crown_parts))
-	assets.tree=tree
 	var spray:Array=[]
 	# Flatten retained oak lobes into pointed leaf blades. Unequal paired
 	# leaves form one overlapping spray rather than three rounded beads.
@@ -73,6 +46,13 @@ func load_assets()->void:
 	for kind in assets:
 		# Retain the curved grass mesh's UVs/normals and palette texture.
 		if kind not in ["grass","grass_clump","reeds","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d"]:assets[kind]=[_merge(assets[kind])]
+	# Textured retained CC0 sources are already baked with separate material surfaces.
+	var nature=preload("res://scripts/terrain_editor/textured_nature.gd")
+	assets.tree=[nature.build("CommonTree_5",4.15)]
+	assets.bush=[nature.build("Bush_Common",.65)]
+	assets.flower=[nature.build("Flower_3_Group",.30)]
+	assets.meadow=[nature.build("Grass_Wispy_Short",.20)]
+	assets.path[0].mesh.surface_set_material(0,_path_material())
 	# Apply after merging, which intentionally replaces individual source materials.
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
@@ -378,7 +358,7 @@ func _reed_models()->Array:
 	var parts:=_grass_models("Grass_Common_Short")
 	for part:Dictionary in parts:
 		var box:AABB=part.pose*part.mesh.get_aabb()
-		var basis:=Basis.IDENTITY.scaled(Vector3(.32,.29,.32)/box.size.max(Vector3.ONE*.0001))
+		var basis:=Basis.IDENTITY.scaled(Vector3(.32,.19,.32)/box.size.max(Vector3.ONE*.0001))
 		var foot:=Vector3(box.get_center().x,box.position.y,box.get_center().z)
 		part.pose=Transform3D(basis,-(basis*foot))*part.pose
 		var mat:ShaderMaterial=part.mesh.surface_get_material(0)
@@ -394,7 +374,7 @@ func _lily_models()->Array:
 		for side in range(1,12):
 			var a:=TAU*side/12.0+pad
 			var b:=TAU*(side+1)/12.0+pad
-			surface.triangle(center,center+Vector3(cos(a),0,sin(a))*radius,center+Vector3(cos(b),0,sin(b))*radius,Color("afb45e"),true)
+			surface.triangle(center,center+Vector3(cos(a),0,sin(a))*radius,center+Vector3(cos(b),0,sin(b))*radius,Color("7e995a"),true)
 	var mesh:ArrayMesh=surface.mesh()
 	return [{"mesh":mesh,"pose":Transform3D.IDENTITY}]
 
@@ -416,4 +396,10 @@ func _path_models()->Array:
 static func _vertex_color_material()->ShaderMaterial:
 	var material:=ShaderMaterial.new()
 	material.shader=preload("res://shaders/terrain_editor/decor_vertex_color.gdshader")
+	return material
+
+func _path_material()->ShaderMaterial:
+	var material:=ShaderMaterial.new()
+	material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
+	preload("res://scripts/terrain_editor/material_detail.gd").bind(material)
 	return material

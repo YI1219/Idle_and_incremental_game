@@ -100,7 +100,7 @@ void fragment() {
 	}
 	ALBEDO = color;
 	// Aerated water scatters light, so white water stays bright in shade.
-	EMISSION = vec3(.30,.31,.31)*white+color*.16;
+	EMISSION = vec3(.10,.12,.13)*white+color*.06;
 	ALPHA = opacity*side;
 	if(COLOR.a<.001) ALPHA*=1.0-smoothstep(3.2,5.5,drop+(body-.5)*1.2);
 	ROUGHNESS = mix(.22,.65,white);

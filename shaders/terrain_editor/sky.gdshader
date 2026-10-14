@@ -13,14 +13,14 @@ void sky(){
   vec2 p=sky_coord(EYEDIR);
   vec3 color=sky_gradient(p);
   float cirrus=smoothstep(.55,.69,noise(p*vec2(8,110))+noise(p*vec2(23,210))*.15);
-  color=mix(color,vec3(1.0,.82,.52),cirrus*.18*(1.0-smoothstep(.3,.5,p.y)));
+  color=mix(color,vec3(1.0,.91,.78),cirrus*.06*(1.0-smoothstep(.3,.5,p.y)));
   vec2 uv=vec2(p.x*.85,.20+p.y*.80);
   vec3 source=textureLod(cloud_backdrop,uv,1.0).rgb;
   float density=smoothstep(.10,.65,source.r);
   float cloud_light=smoothstep(.24,.88,source.r);
-  vec3 cloud_color=mix(vec3(.64,.55,.49),vec3(1.0,.85,.62),cloud_light);
+  vec3 cloud_color=mix(vec3(.54,.62,.70),vec3(.97,.94,.86),cloud_light);
   float sun=sky_sun_distance(p);
-  cloud_color+=vec3(.30,.20,.08)*exp(-sun*5.0);
+  cloud_color+=vec3(.12,.08,.03)*exp(-sun*5.0);
   color=mix(color,cloud_color,density*smoothstep(.14,.60,p.y)*(.92+(haze-.65)*.12));
   COLOR=mix(color,SKY_SUN_CORE,sky_sun_disc(p));
  }

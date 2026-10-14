@@ -14,7 +14,7 @@ void fragment(){
 		float rib=1.0-smoothstep(0.035,0.11,abs(fract(local_position.x*3.6)-0.5));
 		float row=1.0-smoothstep(0.012,0.045,abs(fract(local_position.z*2.8)-0.5));
 		float value=dot(base,vec3(.299,.587,.114));
-		base=vec3(.122,.147,.138)*(.80+value*.65);
+		base=vec3(.20,.26,.31)*(.80+value*.65);
 		base*=1.0-rib*0.38-row*0.09;
 	}
 	if(surface_role==2 && local_position.y>.35){
@@ -25,7 +25,7 @@ void fragment(){
 		vec3 timber=mix(vec3(.18,.125,.083),vec3(.28,.20,.13),.5+.15*sin(along*21.0+local_position.y*3.0));
 		timber*=1.0-seam*.16;
 		timber=mix(timber,vec3(.12,.095,.068),max(post,beam)*.85);
-		vec3 plaster=vec3(.66,.61,.48)*(1.0-seam*.04);
+		vec3 plaster=vec3(.76,.70,.59)*(1.0-seam*.04);
 		base=mix(plaster,timber,max(post,beam)*.92);
 	}
 	ALBEDO=base;

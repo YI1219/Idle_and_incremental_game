@@ -2,7 +2,7 @@ class_name TerrainProps
 extends Node3D
 ## Supporting modules anchored to the same editable terrain. Bench and lantern are placeholders.
 const Cottage=preload("res://scripts/world/cottage.gd")
-const COTTAGE_SCALE := 0.65
+const COTTAGE_SCALE := 0.85
 var entries:Array=[]
 func _ready()->void:
 	var cottage:=Cottage.new()
@@ -117,4 +117,4 @@ func _kitchen_garden()->void:
 			instances.set_instance_transform(plant,Transform3D(Basis.IDENTITY.scaled(scale3),position3))
 		plants.multimesh=instances
 		bed.add_child(plants)
-		entries.append({"node":bed,"at":Vector2(-8.7,-5.7+row*.57),"radius":1.6,"footprint":Vector2(1.6,.22)})
+		entries.append({"node":bed,"at":Vector2(-8.7,-4.95+row*.57),"radius":1.6,"footprint":Vector2(1.6,.22)})

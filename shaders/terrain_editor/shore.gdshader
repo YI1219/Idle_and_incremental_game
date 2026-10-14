@@ -14,7 +14,7 @@ void fragment(){
  // function, while mineral flecks break up the damp earth at the waterline.
  float wet=(1.0-smoothstep(.025,.105,world_position.y-UV.x))*UV.y;
  float grit=gc_noise(p*14.0);
- vec3 earth=mix(vec3(.40,.42,.29),vec3(.51,.50,.36),broad);
+ vec3 earth=mix(vec3(.25,.28,.20),vec3(.38,.37,.26),broad);
  earth*=mix(1.0,.78,wet);
  earth=mix(earth,vec3(.57,.57,.47),smoothstep(.66,.83,grit)*.28);
  ALBEDO=mix(grass,earth,smoothstep(.12,.95,COLOR.a*(.70+.45*gc_noise(p*4.0))));

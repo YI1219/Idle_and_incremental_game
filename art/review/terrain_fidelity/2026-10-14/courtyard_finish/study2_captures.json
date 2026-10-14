@@ -1,0 +1,25 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 639.0,
+			"error": 0,
+			"file": "study2_courtyard.png",
+			"position": "(-3.483236, 13.5, 12.23924)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 857.0,
+			"error": 0,
+			"file": "study2_overview.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"source": "Godot runtime"
+}

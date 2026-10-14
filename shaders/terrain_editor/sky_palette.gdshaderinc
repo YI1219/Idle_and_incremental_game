@@ -7,12 +7,12 @@ vec2 sky_coord(vec3 direction){
 float sky_sun_distance(vec2 p){return length((p-SKY_SUN)*vec2(1.7768,1.0));}
 vec3 sky_gradient(vec2 p){
 	float sun=sky_sun_distance(p);
-	vec3 color=mix(vec3(.84,.74,.60),vec3(.97,.76,.47),smoothstep(-.12,.30,p.y));
-	color=mix(color,vec3(.91,.80,.64),smoothstep(.30,.80,p.y));
-	color=mix(color,vec3(1.0,.80,.50),exp(-sun*4.2)*.60);
-	return color+vec3(.45,.30,.12)*exp(-sun*13.0);
+	vec3 color=mix(vec3(.57,.68,.78),vec3(.81,.84,.85),smoothstep(-.12,.30,p.y));
+	color=mix(color,vec3(.84,.87,.88),smoothstep(.30,.80,p.y));
+	color=mix(color,vec3(1.0,.86,.64),exp(-sun*2.8)*.65);
+	return color+vec3(.23,.15,.06)*exp(-sun*13.0);
 }
 // The disc stays just below white in the Linear tonemapper so it reads as a
 // warm sun rather than a clipped hole; glow supplies a little extra bloom.
-const vec3 SKY_SUN_CORE = vec3(1.0,.90,.60);
+const vec3 SKY_SUN_CORE = vec3(1.0,.94,.78);
 float sky_sun_disc(vec2 p){return 1.0-smoothstep(.056,.066,sky_sun_distance(p));}

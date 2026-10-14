@@ -5,8 +5,8 @@ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
 const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
-@export var sunlight_energy := 1.30
-@export var fill_energy := 0.23
+@export var sunlight_energy := 1.5
+@export var fill_energy := 0.16
 @export var ambient_energy := 0.52
 @export_range(0.0,1.0) var background_haze := 0.65
 var data:=Data.new()
@@ -43,9 +43,9 @@ func _ready()->void:
 	hud.editor=self
 	add_child(hud)
 func _setup_environment()->void:
-	# Low warm back-right sun, toward the painted sun's side of the sky.
+	# Warm front-right sunlight opens the plaster and foliage toward the courtyard view.
 	var sun:=DirectionalLight3D.new()
-	sun.rotation_degrees=Vector3(-34,140,0)
+	sun.rotation_degrees=Vector3(-42,40,0)
 	sun.light_color=Color("ffe7c9")
 	sun.light_energy=sunlight_energy
 	# Keeps the low sun's reflection on the lakes from clipping to a white patch.
@@ -59,11 +59,10 @@ func _setup_environment()->void:
 	sun.directional_shadow_blend_splits=true
 	add_child(sun)
 	landscape.set_sun_direction(sun.transform.basis.z)
-	# Faint neutral bounce keeps the front cliff planes readable under the
-	# back light without filling the sun's shadows. No extra shadow map.
+	# Cool diffuse bounce keeps shaded cliff planes readable. No extra shadow map.
 	var fill:=DirectionalLight3D.new()
 	fill.rotation_degrees=Vector3(-45,-28,0)
-	fill.light_color=Color("dcd8d0")
+	fill.light_color=Color("cedbe5")
 	fill.light_energy=fill_energy
 	fill.shadow_enabled=false
 	add_child(fill)
@@ -83,14 +82,14 @@ func _setup_environment()->void:
 	env.environment.sky=sky
 	var settings:=env.environment
 	settings.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-	settings.ambient_light_color=Color("cac5bd")
+	settings.ambient_light_color=Color("b8c9db")
 	settings.ambient_light_energy=ambient_energy
 	# Linear keeps the authored palettes; Filmic/AgX compress the warm sky
 	# and haze toward grey. Only the sun core and water glints exceed 1.0.
 	settings.tonemap_mode=Environment.TONE_MAPPER_LINEAR
 	settings.ssao_enabled=true
 	settings.ssao_radius=1.3
-	settings.ssao_intensity=2.2
+	settings.ssao_intensity=1.3
 	settings.ssao_power=1.6
 	settings.ssao_detail=.5
 	settings.ssao_light_affect=.25
@@ -101,16 +100,16 @@ func _setup_environment()->void:
 	settings.glow_hdr_threshold=.92
 	settings.glow_blend_mode=Environment.GLOW_BLEND_MODE_SOFTLIGHT
 	for level in 7:settings.set_glow_level(level,[0.0,0.0,.6,1.0,.8,.5,0.0][level])
-	# Thin warm haze over the island; distant mountains and cloud decks fade
+	# Thin cool haze over the island; distant mountains and cloud decks fade
 	# into the sky colour in their own shaders and ignore this fog.
 	# Gentle grade restores island contrast and colour lost to the bright
 	# backdrop; warmth comes from the sun, sky and fog colours, not a tint.
 	settings.adjustment_enabled=true
-	settings.adjustment_contrast=1.08
-	settings.adjustment_saturation=1.06
+	settings.adjustment_contrast=1.04
+	settings.adjustment_saturation=1.0
 	settings.fog_enabled=true
 	settings.fog_mode=Environment.FOG_MODE_EXPONENTIAL
-	settings.fog_light_color=Color("ebc58f")
+	settings.fog_light_color=Color("c2d2df")
 	settings.fog_light_energy=1.0
 	settings.fog_sun_scatter=.30
 	settings.fog_density=.0004

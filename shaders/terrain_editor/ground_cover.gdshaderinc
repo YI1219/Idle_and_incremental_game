@@ -1,3 +1,5 @@
+uniform vec2 footpath_points[8];
+uniform int footpath_count=0;
 uniform sampler2D ground_detail_map : filter_linear_mipmap_anisotropic, repeat_enable;
 // World-space compression is supplied by TerrainRenderer.set_grass_compression.
 // No mask means standing cover; outside the supplied field stays standing.
@@ -77,5 +79,21 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
  vec4 mapped=texture(ground_detail_map,p*.48);
  color*=1.0+(mapped.r-.5)*.60*detail;
  slope+=(mapped.gb-.5)*2.2*standing;
-	return color;
+ // Broad worn earth follows the same authored route as the stepping stones.
+ // Ragged vegetation breaks its margins; compression can add future wear.
+ float distance_to_path=1000.0;
+ for(int i=0;i<7;i++){
+  if(i+1>=footpath_count)break;
+  vec2 a=footpath_points[i];vec2 edge=footpath_points[i+1]-a;
+  float t=clamp(dot(p-a,edge)/max(dot(edge,edge),.0001),0.0,1.0);
+  distance_to_path=min(distance_to_path,length(p-a-edge*t));
+ }
+ float irregular=gc_noise(p*2.3)*.48+gc_noise(p*7.7)*.15;
+ float wear=1.0-smoothstep(.36+irregular,1.12+irregular,distance_to_path);
+ float bare=smoothstep(.68,.86,gc_noise(p*.62+vec2(21.0,8.0))*.65+gc_noise(p*3.1)*.35)*.45;
+ float soil=max(max(wear*.85,bare),1.0-standing);
+ vec3 earth=mix(vec3(.36,.29,.20),vec3(.57,.48,.34),gc_noise(p*1.2)*.6+gc_noise(p*9.0)*.4);
+ color=mix(color,earth,soil);
+ slope*=1.0-soil*.85;
+ return color;
 }

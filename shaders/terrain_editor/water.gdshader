@@ -4,8 +4,8 @@ render_mode cull_disabled;
 uniform sampler2D shore_field : filter_linear, repeat_disable;
 uniform vec2 shore_origin = vec2(0.0);
 uniform vec2 shore_extent = vec2(1.0);
-uniform vec3 water_shallow : source_color = vec3(.36,.62,.64);
-uniform vec3 water_deep : source_color = vec3(.12,.33,.42);
+uniform vec3 water_shallow : source_color = vec3(.40,.70,.69);
+uniform vec3 water_deep : source_color = vec3(.14,.40,.45);
 uniform vec3 bed_color : source_color = vec3(.50,.60,.52);
 uniform vec3 bank_reflection : source_color = vec3(.20,.24,.15);
 varying vec3 world_position;
@@ -57,8 +57,12 @@ void fragment() {
 	vec3 caustic_a = height_gradient(p*1.9+vec2(TIME*.11,TIME*.07)+vec2(5.1,9.3));
 	vec3 caustic_b = height_gradient(turn*p*2.3-vec2(TIME*.09,TIME*.05)+vec2(13.7,2.2));
 	float caustic = smoothstep(.62,.95,1.0-abs(caustic_a.x-caustic_b.x)*2.2);
-	vec3 bed = bed_color*(.88+caustic*.30);
+	vec3 bed = bed_color*(.88+caustic*.18);
 	vec3 color = mix(mix(bed,water_shallow,.60),water_deep,absorption);
+ // The shallowest centimetres expose a damp mineral bed; uneven caustics
+ // interrupt the transition instead of outlining the pond with foam.
+ float shallows=1.0-smoothstep(.005,.16+(broad.x-.5)*.05,basin.r);
+ color=mix(color,bed*vec3(.80,.86,.78),shallows*.68);
 	vec2 slope = broad.yz*(.055*.95);
 	slope += transpose(turn)*small.yz*(.020*2.8);
 	slope += transpose(fine_turn)*fine.yz*(.004*6.4);
@@ -74,7 +78,7 @@ void fragment() {
 	vec3 ripple=height_gradient(ripple_p);
 	float glint=smoothstep(.69,.76,ripple.x)*(1.0-smoothstep(.77,.84,ripple.x));
 	glint*=smoothstep(.36,.70,small.x);
-	color = mix(color*(.92+broad.x*.16),vec3(.92,.88,.76),glint*.18);
+	color = mix(color*(.92+broad.x*.16),vec3(.92,.88,.76),glint*.09);
 	// Approximate reflection of the far bank: next to a shore that lies
 	// beyond the water along the view, swap sky reflection for a dark
 	// bank tone. The shore field gradient gives the bank's direction.

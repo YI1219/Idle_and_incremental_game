@@ -1,0 +1,5 @@
+{
+  "edit_regeneration": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-14 16:25:43.431 godot[50886:27306781] +[IMKClient subclass]: chose IMKClient_Modern\nRIM BAKE us=9609\nTERRAIN DECORATION REGEN: 42/42 passed\n",
+  "cottage_material": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-14 16:28:22.474 godot[54151:27318504] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-14 16:28:22.875 godot[54151:27318504] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nCOTTAGE MATERIAL SAMPLES wall=(0.8863, 0.8549, 0.7922, 1.0) gable=(0.8856, 0.8541, 0.7915, 1.0)\nCOTTAGE PANEL VIEW SAMPLES front=(0.4667, 0.4261, 0.3725, 1.0) oblique=(0.4667, 0.4248, 0.3725, 1.0)\nCOTTAGE MATERIAL CHECKS: 7 failures: 0\n",
+  "homestead": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nHOMESTEAD: 39/39 passed; tree heights=[4.06700086593628, 4.15000057220459, 4.19150066375732, 4.2330002784729]\n"
+}
