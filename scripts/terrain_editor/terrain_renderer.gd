@@ -146,6 +146,10 @@ func _rebuild(chunk:Vector2i)->void:
 		for crown:Dictionary in decoration._columns:
 			if Data.chunk_of(crown.cell)!=chunk:continue
 			for point:Vector3 in decoration.assets[crown.kind][0].mesh.get_faces():faces.append(crown.pose*point)
+		for rock:Dictionary in decoration._outcrops:
+			var at:=Vector2(rock.pose.origin.x,rock.pose.origin.z)
+			if Data.chunk_of(Vector2i(at.floor()))!=chunk:continue
+			for point:Vector3 in decoration.assets[rock.kind][0].mesh.get_faces():faces.append(rock.pose*point)
 	if not faces.is_empty():
 		_pending_faces[chunk]=faces
 		var bounds:=AABB(faces[0],Vector3.ZERO)

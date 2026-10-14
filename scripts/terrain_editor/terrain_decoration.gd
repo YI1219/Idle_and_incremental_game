@@ -22,6 +22,7 @@ var _column_field:RefCounted
 var _column_key:=Vector2i(-1,-1)
 # Independent tapered roots behind the crown joints; cached with their rim span.
 var _mass:Array=[]
+var _outcrops:Array=[]
 # Unchanged contour runs keep their blocks. Keyed by the run's geometry and
 # the nearby heights, so an edit rebuilds only the runs it actually moves.
 var _run_cache:Dictionary={}
@@ -53,8 +54,10 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	var field=contours
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
-	for kind in ["grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
+	for kind in ["rim_outcrop","rim_shelf","grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
 	_column_layout(field,data.seed)
+	for rock:Dictionary in _outcrops:
+		if Data.chunk_of(Vector2i(Vector2(rock.pose.origin.x,rock.pose.origin.z).floor()))==chunk:result[rock.kind].append(rock.pose)
 	var crown_tufts:Array=[]
 	for column:Dictionary in _columns:
 		if Data.chunk_of(column.cell)!=chunk:continue
@@ -267,6 +270,7 @@ func _column_layout(field,seed_value:int)->void:
 		if not seen.has(signature):stale.append(signature)
 	for signature in stale:_run_cache.erase(signature)
 	preload("res://scripts/terrain_editor/rim_union.gd").apply(field,_columns,assets)
+	_outcrops=preload("res://scripts/terrain_editor/rim_outcrops.gd").build(self,field,seed_value)
 	layout_ms=(Time.get_ticks_usec()-started)/1000.0
 func _run_signature(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->String:
 	# Everything _rim_run reads: the chord, the land height, nearby cells and
@@ -487,7 +491,7 @@ func column_faces_near(point:Vector3)->PackedVector3Array:
 				var column:Dictionary=_columns[index]
 				var vertices:PackedVector3Array=assets[column.kind][0].mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 				for vertex:Vector3 in vertices:faces.append(column.pose*crown_remap(vertex,column.height))
-	for stone:Dictionary in _mass:
+	for stone:Dictionary in _mass+_outcrops:
 		var mesh:Mesh=assets[stone.kind][0].mesh
 		var bounds:AABB=stone.pose*mesh.get_aabb()
 		if not bounds.grow(2.0).has_point(point):continue

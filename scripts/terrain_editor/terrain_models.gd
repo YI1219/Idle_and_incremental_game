@@ -4,7 +4,7 @@ extends RefCounted
 var assets:Dictionary={}
 ## Microseconds to bake the six rim/underside block meshes. They are instanced after that.
 var block_bake_us:=0
-const IDS={"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
+const IDS={"rim_outcrop":"stone_largeD","rim_shelf":"stone_largeA","bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
 	if not assets.is_empty():return
 	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
@@ -78,7 +78,7 @@ func load_assets()->void:
 	var rock_material:=ShaderMaterial.new()
 	rock_material.shader=load("res://shaders/terrain_editor/cliff_rock.gdshader")
 	preload("res://scripts/terrain_editor/material_detail.gd").bind(rock_material)
-	for kind in ["cliff_rock","surface_rock","shore_rock","shore_boulder","shore_pebble"]:
+	for kind in ["cliff_rock","surface_rock","shore_rock","shore_boulder","shore_pebble","rim_outcrop","rim_shelf"]:
 		var material:=rock_material.duplicate()
 		material.set_shader_parameter("bank_stone",1.0 if kind.begins_with("shore_") else 0.0)
 		assets[kind][0].mesh.surface_set_material(0,material)
@@ -279,7 +279,7 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			if kind in ["bush","vine"] and not name_value.contains("leaf"):continue
 			var tint:=Color("697547")
 			if kind in ["tree_wood","fence"]:tint=Color("79634e") if not name_value.contains("Dark") else Color("615447")
-			elif kind in ["surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","path"]:tint=Color("aaa89b")
+			elif kind in ["surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","path","rim_outcrop","rim_shelf"]:tint=Color("aaa89b")
 			elif kind=="tree_leaf":tint=Color("697547")
 			elif kind=="bush":tint=Color("73844e")
 			elif kind=="vine":tint=Color("68785c")

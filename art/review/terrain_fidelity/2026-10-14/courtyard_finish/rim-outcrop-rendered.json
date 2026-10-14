@@ -1,0 +1,5 @@
+{
+  "source": "fresh Godot Forward+ Metal run",
+  "regeneration": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-14 19:08:18.715 godot[10202:27797977] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-14 19:08:18.715 godot[10202:27797977] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nRIM BAKE us=10281\nTERRAIN DECORATION REGEN: 42/42 passed\n",
+  "captures": "edge_final_captures.json"
+}
