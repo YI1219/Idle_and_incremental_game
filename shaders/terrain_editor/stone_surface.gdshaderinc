@@ -24,7 +24,7 @@ vec3 stone_surface(vec3 p,vec3 n){
  float mineral=stone_noise(p*.29+vec3(13.0,4.0,7.0));
  float grain=stone_noise(p*8.0);
  float layers=stone_noise(vec3(p.x*.58,p.y*2.4+stone_noise(p*.38)*.8,p.z*.58));
- vec3 stone=mix(vec3(.36,.40,.42),vec3(.57,.56,.50),.58);
+ vec3 stone=mix(vec3(.27,.30,.32),vec3(.43,.43,.39),.58);
  stone+=(cloud-.5)*vec3(.065,.075,.085)+(mineral-.5)*vec3(.065,.028,-.015)+(layers-.5)*vec3(.035,.039,.042);
  vec3 w=stone_weights(n);
  vec3 mineral_paint=texture(stone_mineral_map,p.zy*.27).rgb*w.x+texture(stone_mineral_map,p.xz*.27).rgb*w.y+texture(stone_mineral_map,p.xy*.27).rgb*w.z;
@@ -46,12 +46,12 @@ vec3 stone_root_contact(vec3 stone,vec3 p,vec3 n,float cap_height,float dry){
  float depth=cap_height-p.y;
  if(dry<.5 || depth<-.015 || depth>.72)return stone;
  vec3 deposits=tw_deposits(vec3(p.x,cap_height,p.z));
- float reach=.10+.48*tw_noise(vec3(p.x*.9,cap_height,p.z*.9)+vec3(23.0));
+ float reach=.055+.24*tw_noise(vec3(p.x*.9,cap_height,p.z*.9)+vec3(23.0));
  float near=(1.0-smoothstep(.015,reach,depth))*smoothstep(-.30,.15,n.y);
  float fragments=tw_noise(p*vec3(19.0,11.0,19.0));
  float soil=deposits.x*near*(.45+.55*smoothstep(.35,.64,fragments));
- vec3 root_earth=mix(vec3(.20,.19,.13),vec3(.32,.29,.20),deposits.y);
- stone=mix(stone,root_earth,soil*.70);
+ vec3 root_earth=mix(vec3(.09,.075,.044),vec3(.18,.15,.09),deposits.y);
+ stone=mix(stone,root_earth,clamp(soil*1.35,0.0,.75));
  float lichen=deposits.y*near*(1.0-deposits.x)*.40;
  return mix(stone,stone*vec3(.71,.81,.55),lichen);
 }

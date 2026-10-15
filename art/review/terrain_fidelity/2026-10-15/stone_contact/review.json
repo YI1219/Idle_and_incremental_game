@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-15",
+  "baseline": "clear3 / f1d5bdc",
+  "candidate": "mineral2",
+  "goal": "active, incomplete",
+  "selected": "Only darker shared stone base and shorter/darker/stronger scattered dry-cap soil contact. No new runtime geometry/model/authoring changes.",
+  "unchanged_bed": "Actual lake-bed albedo uses its own material and does not call changed functions; water optics and bed are unchanged.",
+  "rejected": [
+    "v5 weak vertical turns with 1396tri vs634; first screenshots precede tiny-hole cleanup",
+    "v6 stronger vertical turns with1402tri show sharp black folds",
+    "v7 604tri cuts reduce cap and normalized runtime body grows lower spear",
+    "v8 680tri protected cap but lower cuts expose dark horizontal root belts",
+    "joint1 taller existing bodies produce large teeth",
+    "mineral1 root soil too broad/blotchy"
+  ],
+  "captures": {
+    "count": 11,
+    "matched_camera_transforms": true,
+    "inspected_views": [
+      "courtyard",
+      "overview",
+      "distant",
+      "ground",
+      "shore",
+      "rim",
+      "reverse",
+      "bottom"
+    ],
+    "source": "Actual Godot runtime, not concept"
+  },
+  "verification": {
+    "headless": "checks.json",
+    "rendered": "render_checks.json",
+    "caustic_fixture": "caustic/caustic_fixture_checks.json",
+    "reflection_fixture": "reflection/fixture_checks.json",
+    "art_review": "Independent reviewer supports retaining modest material improvement; no Critical/Important defect found; art not accepted"
+  },
+  "hashes": {
+    "shaders/terrain_editor/stone_surface.gdshaderinc": "4ef768dc82aaaec5a16f509bded034b72b24eb6f614e8c08fb015a6996e25538",
+    "scripts/terrain_editor/terrain_models.gd": "713c11af79fd28685a26d1ffa6d7354d74ba8c27cc1a7822f832b6bc9b27b03c",
+    "scripts/terrain_editor/terrain_decoration.gd": "7beb47e34ca88eb13d58ed2cbc5c7db69149df0e22ceafa0016a76ca0379ce7d",
+    "assets/nature/refined/cliff_main_v4.glb": "a8a0659cc07190b27aefe5fb4d5404f9d1f1101c417c59f0f2fa3b9bb16f3483",
+    "assets/nature/refined/cliff_tall_v2.glb": "8719f745175718d1ac240e7293c1ede88894aaece93d3035a20cdab00f7f24b9"
+  },
+  "limits": [
+    "Broad planar walls, thin cap/hard turf cut, applied small root pads",
+    "Near water light web, straight shallow band, bright waterfall curtain remain",
+    "No arbitrary-layout/morph art or target-device performance acceptance"
+  ],
+  "reviewer": "mineral_contact_review; inspected paired six views, no new test runs; limited material retention recommended"
+}

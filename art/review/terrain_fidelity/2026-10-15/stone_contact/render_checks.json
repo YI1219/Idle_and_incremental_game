@@ -1,0 +1,73 @@
+[
+  {
+    "test": "caustic",
+    "source": "res://tests/terrain_lake_bed_caustic_render_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 1.37,
+    "log": "/tmp/mineral2-caustic-isolated.log",
+    "tail": [
+      "",
+      "2026-10-15 20:57:29.378 godot[99915:33952139] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 20:57:29.559 godot[99915:33952139] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "BED CAUSTIC RENDER: { \"shallow_changed_pixels\": 177, \"middle_changed_pixels\": 144, \"deep_changed_pixels\": 0, \"moving_shallow_pixels\": 322, \"production_strength\": 0.11999999731779, \"default_changed_pixels\": 208, \"default_motion_pixels\": 405, \"morph_equivalence_changed_pixels\": 0, \"passed\": true }"
+    ],
+    "output": "isolated stone_contact/caustic/; default fixture output was first replayed with identical counts, then new out= support was verified"
+  },
+  {
+    "test": "reflection",
+    "source": "res://tests/terrain_water_reflection_render_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 0.94,
+    "log": "/tmp/mineral2-reflection.log",
+    "tail": [
+      "",
+      "2026-10-15 20:50:01.612 godot[98836:33942406] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 20:50:01.655 godot[98836:33942406] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "WATER REFLECTION RENDER: {\"angled_camera_red_pixels\":729,\"disabled_red_pixels\":0,\"moved_marker_red_pixels\":729,\"passed\":true,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":729,\"removed_marker_red_pixels\":0,\"stale_mirror_red_pixels\":0}"
+    ]
+  },
+  {
+    "test": "compression",
+    "source": "res://tests/terrain_rim_green_render_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 8.09,
+    "log": "/tmp/mineral2-compression.log",
+    "tail": [
+      "",
+      "2026-10-15 20:50:02.762 godot[98850:33942553] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 20:50:10.154 godot[98850:33942553] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "LIP COMPRESSION RENDER: { \"standing_pixels\": 2309, \"compressed_pixels\": 0, \"local_mask_pixels\": 1362, \"passed\": true }"
+    ]
+  },
+  {
+    "test": "editor",
+    "source": "res://tests/terrain_editor_render_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 1.05,
+    "log": "/tmp/mineral2-editor.log",
+    "tail": [
+      "Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)",
+      "",
+      "2026-10-15 20:50:10.665 godot[98863:33942863] +[IMKClient subclass]: chose IMKClient_Modern",
+      "TERRAIN EDITOR RENDER: 339/339 passed"
+    ]
+  },
+  {
+    "test": "regeneration",
+    "source": "res://tests/terrain_decoration_regen_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 315.73,
+    "log": "/tmp/mineral2-regeneration.log",
+    "tail": [
+      "",
+      "2026-10-15 20:50:11.903 godot[98874:33943017] +[IMKClient subclass]: chose IMKClient_Modern",
+      "RIM BAKE us=52945",
+      "TERRAIN DECORATION REGEN: 42/42 passed"
+    ]
+  }
+]

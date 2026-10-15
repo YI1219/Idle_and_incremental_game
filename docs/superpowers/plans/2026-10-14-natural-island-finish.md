@@ -113,3 +113,11 @@ Previous rooted3 turn changed authoritative state and pushedcd0f4cc. Six actual 
 This pass does not add decorative land or alter island/water footprint, source models or authored depths. Full art and target-hardware acceptance remain unproven.
 
 Selected clear3: quieter mineral bed and shared wet substrate, sparse warped .12 lightweb. All7 affected headless checks and final actual capture/SSR/impact/editor/regen queue pass; added default-strength and morph-equivalent fixture passes. Independent review twice supports local improvement, not full art acceptance. Cost remains unmeasured.
+
+## Broad face refinement — October15 continuation
+
+Previous turn was progress: clear3 water changes committed/pushed f1d5bdc. Current matched rim still shows large clean planar fronts with a thin cap. Use the authorized Blender refinement path for source2: preserve the retained source silhouette/outer-skin repair, add unequal near-vertical oblique plane turns rather than another horizontal band or detached rubble. Judge neutral source and actual clipped wall before retaining. Existing tall_v2, trees, water and calm lower closure stay.
+
+- [x] Selected-source regression fails missing v5 then mismatched actual profiles; versioned Blender candidates saved. Final original source selection retained; hashes unchanged.
+- [x] Compare representative rim and matched11-view studies. All v5–v8 and joint1 shapes rejected; no new runtime model retained. See stone_contact review for concrete failures.
+- [x] Retain mineral2 shared stone/short root-earth material after rejecting broad mineral1 contact; final16 headless and five rendered checks pass,11 captures/eight views inspected, independent review supports limited retention. Update current docs/gallery and reversible commit/push.

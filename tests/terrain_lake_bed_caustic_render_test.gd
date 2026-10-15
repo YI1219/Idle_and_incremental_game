@@ -14,6 +14,8 @@ func changed(a:Image,b:Image,center:Vector2,threshold:float=.012)->int:
    if absf(c.r-d.r)+absf(c.g-d.g)+absf(c.b-d.b)>threshold:count+=1
  return count
 func run()->void:
+ for arg in OS.get_cmdline_user_args():
+  if arg.begins_with('out='):OUT=arg.trim_prefix('out=')
  RenderingServer.global_shader_parameter_set('terrain_morph_progress',1.0)
  DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
  viewport=SubViewport.new();viewport.size=Vector2i(600,240);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)

@@ -1,0 +1,18 @@
+[
+  {
+    "camera_size": 4.20420074462891,
+    "geometry": "Unchanged source geometry; neutral preview material override only",
+    "source": "res://assets/nature/refined/cliff_main_v5.glb",
+    "source_bounds": "[P: (-1.712433, -0.050842, -1.190236), S: (3.114223, 1.88351, 2.600021)]",
+    "views": [
+      "front",
+      "left",
+      "right",
+      "back",
+      "quarter"
+    ],
+    "selection": "rejected",
+    "retained_work_source": "art/work/cliff_refinement/2026-10-15/output/cliff_main_v5.glb",
+    "stage": "Initial 1444tri export before tiny-face cleanup; preview is not final closed1396tri source evidence."
+  }
+]
