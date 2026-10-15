@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+CLIFF CONNECTION 11: cap_gap=0.00003829098569 lower_front_recession=0.34709998965263 passed=false
+CLIFF CONNECTION 37: cap_gap=0.00004659964543 lower_front_recession=0.40279999375343 passed=false
+CLIFF CONNECTION 23: cap_gap=0.00003226413537 lower_front_recession=0.30239999294281 passed=false
+CLIFF CONNECTION 41: cap_gap=0.00214775581844 lower_front_recession=0.3377999663353 passed=false

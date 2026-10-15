@@ -1,0 +1,44 @@
+[
+	{
+		"draw_calls": 743.0,
+		"error": 0,
+		"file": "layers_current.png",
+		"position": "(-8.658074, 7.0, 14.65468)",
+		"rotation": "(-30.0, 16.0, 0.0)"
+	},
+	{
+		"draw_calls": 682.0,
+		"error": 0,
+		"file": "layers_no_root.png",
+		"position": "(-8.658074, 7.0, 14.65468)",
+		"rotation": "(-30.0, 16.0, 0.0)"
+	},
+	{
+		"draw_calls": 694.0,
+		"error": 0,
+		"file": "layers_no_mantle.png",
+		"position": "(-8.658074, 7.0, 14.65468)",
+		"rotation": "(-30.0, 16.0, 0.0)"
+	},
+	{
+		"draw_calls": 682.0,
+		"error": 0,
+		"file": "layers_no_backing.png",
+		"position": "(-8.658074, 7.0, 14.65468)",
+		"rotation": "(-30.0, 16.0, 0.0)"
+	},
+	{
+		"draw_calls": 665.0,
+		"error": 0,
+		"file": "layers_no_crown_shadow.png",
+		"position": "(-8.658074, 7.0, 14.65468)",
+		"rotation": "(-30.0, 16.0, 0.0)"
+	},
+	{
+		"draw_calls": 743.0,
+		"error": 0,
+		"file": "layers_categories.png",
+		"position": "(-8.658074, 7.0, 14.65468)",
+		"rotation": "(-30.0, 16.0, 0.0)"
+	}
+]

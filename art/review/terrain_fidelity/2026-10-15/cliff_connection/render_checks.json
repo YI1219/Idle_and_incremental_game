@@ -1,0 +1,16 @@
+[
+  {
+    "test": "terrain_editor_render_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.4,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nTERRAIN EDITOR RENDER: 339/339 passed\n2026-10-16 00:06:12.343 godot[31023:34200319] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  },
+  {
+    "test": "terrain_decoration_regen_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 313.44,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nRIM BAKE us=51504\nTERRAIN DECORATION REGEN: 42/42 passed\n2026-10-16 00:06:13.640 godot[31025:34200538] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  }
+]

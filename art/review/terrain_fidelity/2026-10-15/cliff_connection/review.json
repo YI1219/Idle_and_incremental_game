@@ -1,0 +1,51 @@
+{
+  "candidate": "joined1",
+  "baseline": "flowing4 / 7de6abf",
+  "scope": "Crease-aware continuous core normals only; no selected geometry/model/material changes",
+  "normal_regression": {
+    "red_artificial_seams": 1329,
+    "green_artificial_seams": 0,
+    "hard_joins_default": 588,
+    "states": [
+      "default",
+      "expand",
+      "contract",
+      "lower"
+    ]
+  },
+  "captures": {
+    "matched": 11,
+    "principal_views_inspected": 8,
+    "camera_positions_and_rotations_identical": true,
+    "script_shader_errors": false
+  },
+  "unchanged_selected_source_hashes": [
+    {
+      "file": "assets/nature/refined/cliff_main_v4.glb",
+      "sha256": "a8a0659cc07190b27aefe5fb4d5404f9d1f1101c417c59f0f2fa3b9bb16f3483",
+      "unchanged_from_7de6abf": true
+    },
+    {
+      "file": "assets/nature/refined/cliff_tall_v2.glb",
+      "sha256": "8719f745175718d1ac240e7293c1ede88894aaece93d3035a20cdab00f7f24b9",
+      "unchanged_from_7de6abf": true
+    }
+  ],
+  "headless_passed": 12,
+  "rendered_passed": 2,
+  "independent_review": {
+    "agent": "cliff_connection_review",
+    "critical": 0,
+    "important": 0,
+    "actionable_minor": 0,
+    "recommendation": "Retain modest core shading correction. Broad panels/projecting feet/dark seam and hard turf cuts remain; not full art acceptance. Temporary mesh CPU cost is unmeasured."
+  },
+  "rejected": [
+    "Blender foot-recession v1: low cap shifts along crossing edge; detached plate look",
+    "Blender foot-recession v2: protective section, runtime tiny-face loss/closure failure and detached plate look",
+    "shell1: render-only expansion with insufficient depth bounds, stretched remote/internal faces and water artifacts; rejected, not runtime evidence"
+  ],
+  "performance": "Not measured on target devices",
+  "goal": "active, incomplete",
+  "gallery": "http://127.0.0.1:18771/comparison.html"
+}

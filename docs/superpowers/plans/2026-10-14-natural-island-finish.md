@@ -129,3 +129,15 @@ Previous turn was progress: mineral2 material and rejected form evidence pushed2
 - [x] Foam old40,000opaque core/rings0gaps fails, new0opaque/26,598moving core and14,564gaps/17,557moving rings passes. Refraction old0changes fails, selected4409/default1883/foreground0/73edge rejection passes.
 - [x] Ten actual layer captures identify mist/core blanket. Reject thin flowing1 and over-transmissive flowing2; flowing3 palette with corrected projected displacement selectsflowing4. Six fixed-phase near pairs and11 main captures/eight principal views inspected; review supports limited improvement.
 - [x] Six headless and final9 rendered queue entries pass, including falls35/35,impact8/8,SSR729,editor339/339,regeneration42/42. Current docs/gallery updated; commit/push reversible checkpoint. Thin curtain and concentric ring shape remain; projection magnitude/orthographic/zoom and target GPU are unverified, not full goal acceptance.
+
+
+## Crown–root–base connection — current continuation
+
+Ruling: inspect the whole connection before further source cuts. Actual category/no-root/no-crown-shadow captures show a projecting crown foot, not only a shadow artifact. Blender v1 lower-section recession moves the low .62 cap through long crossing edges; v2 protective section reduces that drift but creates tiny source triangles dropped by runtime and still looks like hanging plates. Neither is selected. The render-only shell-expansion study also fails: insufficiently bounded displacement stretches remote/internal faces and causes water artifacts, so it is not valid runtime acceptance evidence. Preserve these rejected studies, leave selected main_v4/tall_v2 and all source geometry unchanged.
+
+A separate real defect is visible in this investigation: rim union rebuilds the continuous shell with flat normals, losing its earlier smooth shallow joins. Restore crease-aware normals only on that backing, preserving geometry, colors, UVs and real hard turns.
+
+- [x] Actual-scene layer isolation; versioned Blender v1/v2 work/validation; reject detached-plate recession.
+- [x] Reproduce 1,329 shallow shared joins with artificial seams on baseline. Restore crease-aware normals: zero seam failures, 588 sharp joins retained.
+- [x] Inspect11 matched actual captures/eight principal views; retain only the modest lower-core normal correction.
+- [x]12 affected headless plus actual editor339/339 and regeneration42/42 pass, independent review supports limited retention; docs/gallery updated. Reversible checkpoint verified; full art goal remains open.

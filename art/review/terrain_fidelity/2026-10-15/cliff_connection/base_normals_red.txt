@@ -1,0 +1,3 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BASE NORMALS: {"artificial_seams":1329,"erased_corners":0,"gentle_joins":1329,"invalid":0,"passed":false,"sharp_joins":588}

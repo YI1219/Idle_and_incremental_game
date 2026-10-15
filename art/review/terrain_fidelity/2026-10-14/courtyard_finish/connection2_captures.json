@@ -1,0 +1,88 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 782.0,
+			"error": 0,
+			"file": "connection2_courtyard.png",
+			"position": "(-3.483236, 13.5, 12.23924)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 796.0,
+			"error": 0,
+			"file": "connection2_overview.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 788.0,
+			"error": 0,
+			"file": "connection2_camera_a.png",
+			"position": "(-14.08273, 12.3, 11.72071)",
+			"rotation": "(-32.0, -18.0, 0.0)"
+		},
+		{
+			"draw_calls": 820.0,
+			"error": 0,
+			"file": "connection2_camera_b.png",
+			"position": "(-15.17069, 14.5, 15.06912)",
+			"rotation": "(-32.0, -18.0, 0.0)"
+		},
+		{
+			"draw_calls": 812.0,
+			"error": 0,
+			"file": "connection2_camera_c.png",
+			"position": "(0.278348, 16.5, 21.38261)",
+			"rotation": "(-32.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 611.0,
+			"error": 0,
+			"file": "connection2_distant.png",
+			"position": "(17.95366, 29.0, 61.61184)",
+			"rotation": "(-24.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 853.0,
+			"error": 0,
+			"file": "connection2_ground.png",
+			"position": "(-10.0, 7.0, 3.0)",
+			"rotation": "(-44.14895, 33.69006, 0.0)"
+		},
+		{
+			"draw_calls": 860.0,
+			"error": 0,
+			"file": "connection2_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 747.0,
+			"error": 0,
+			"file": "connection2_rim.png",
+			"position": "(-8.658074, 7.0, 14.65468)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 842.0,
+			"error": 0,
+			"file": "connection2_reverse.png",
+			"position": "(-35.29263, 21.0, -9.799441)",
+			"rotation": "(-30.0, -104.0, 0.0)"
+		},
+		{
+			"draw_calls": 857.0,
+			"error": 0,
+			"file": "connection2_bottom.png",
+			"position": "(12.0, -14.0, 21.0)",
+			"rotation": "(27.25203, 33.69007, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"source": "Godot runtime"
+}

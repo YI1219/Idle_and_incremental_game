@@ -1,0 +1,42 @@
+[
+  {
+    "source": "assets/nature/refined/cliff_main_v4.glb",
+    "source_sha256": "a8a0659cc07190b27aefe5fb4d5404f9d1f1101c417c59f0f2fa3b9bb16f3483",
+    "kind": "main",
+    "variant": "v1",
+    "inward_fraction_of_source_depth": 0.32,
+    "upper_normalized_height_protected": 0.52,
+    "protected_vertices": 156,
+    "maximum_shift": 0.8330841064453125,
+    "triangles": 634,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "signed_volume_before": 8.232086862993073,
+    "signed_volume_after": 8.198747563623737,
+    "blend": "art/work/cliff_connection/2026-10-15/output/cliff_wall_main_v1.blend",
+    "glb": "art/work/cliff_connection/2026-10-15/output/cliff_wall_main_v1.glb",
+    "glb_sha256": "127a5e605c314380ebb0958fdc74f76746312e633117b17d8c7dc97949b27655",
+    "blender_version": "5.2.1 LTS",
+    "operation": "Translate lower retained-source cross-sections inward by a smooth height profile. Upper region untouched; identical topology, no detached pieces or generated replacement geometry."
+  },
+  {
+    "source": "assets/nature/refined/cliff_tall_v2.glb",
+    "source_sha256": "8719f745175718d1ac240e7293c1ede88894aaece93d3035a20cdab00f7f24b9",
+    "kind": "tall",
+    "variant": "v1",
+    "inward_fraction_of_source_depth": 0.32,
+    "upper_normalized_height_protected": 0.52,
+    "protected_vertices": 213,
+    "maximum_shift": 0.9855670166015625,
+    "triangles": 816,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "signed_volume_before": 8.599906451573755,
+    "signed_volume_after": 8.558827652350361,
+    "blend": "art/work/cliff_connection/2026-10-15/output/cliff_wall_tall_v1.blend",
+    "glb": "art/work/cliff_connection/2026-10-15/output/cliff_wall_tall_v1.glb",
+    "glb_sha256": "4ddb5a8418ba020382b7493c163217017cca30a1aeca21995b032853b534bf90",
+    "blender_version": "5.2.1 LTS",
+    "operation": "Translate lower retained-source cross-sections inward by a smooth height profile. Upper region untouched; identical topology, no detached pieces or generated replacement geometry."
+  }
+]

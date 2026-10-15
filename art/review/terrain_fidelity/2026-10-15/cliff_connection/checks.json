@@ -1,0 +1,86 @@
+[
+  {
+    "test": "terrain_base_normals_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 27.95,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBASE NORMALS: [{\"artificial_seams\":0,\"erased_corners\":0,\"gentle_joins\":1329,\"invalid\":0,\"passed\":true,\"sharp_joins\":588,\"state\":\"default\"},{\"artificial_seams\":0,\"erased_corners\":0,\"gentle_joins\":1362,\"invalid\":0,\"passed\":true,\"sharp_joins\":654,\"state\":\"expand\"},{\"artificial_seams\":0,\"erased_corners\":0,\"gentle_joins\":1336,\"invalid\":0,\"passed\":true,\"sharp_joins\":591,\"state\":\"contract\"},{\"artificial_seams\":0,\"erased_corners\":0,\"gentle_joins\":1364,\"invalid\":0,\"passed\":true,\"sharp_joins\":603,\"state\":\"lower\"}]\n"
+  },
+  {
+    "test": "terrain_stone_normals_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.14,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTONE NORMALS: 15/15\n"
+  },
+  {
+    "test": "terrain_refined_cliff_source_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.34,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nREFINED CLIFF PROFILE 23: expected_faces=625 actual_faces=625 mismatch=false\nREFINED CLIFF PROFILE 41: expected_faces=514 actual_faces=514 mismatch=false\nREFINED CLIFF SOURCE: triangles=634 failures=0\nREFINED TALL PROFILE 11: expected_faces=654 actual_faces=654 mismatch=false\nREFINED TALL PROFILE 37: expected_faces=717 actual_faces=717 mismatch=false\n"
+  },
+  {
+    "test": "terrain_source_crown_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.45,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSOURCE CROWN: q:Rock_Medium_1 faces=304 cap=38 invalid_edges/bounds=0\nSOURCE CROWN: q:Rock_Medium_2 faces=272 cap=41 invalid_edges/bounds=0\nSOURCE CROWN: q:Rock_Medium_1 faces=316 cap=32 invalid_edges/bounds=0\nSOURCE CROWN: q:Rock_Medium_2 faces=258 cap=47 invalid_edges/bounds=0\nSOURCE CROWN: res://assets/nature/refined/cliff_main_v4.glb faces=698 cap=73 invalid_edges/bounds=0\nSOURCE CROWN: res://assets/nature/refined/cliff_main_v4.glb faces=602 cap=88 invalid_edges/bounds=0\nSOURCE CROWN: res://assets/nature/refined/cliff_tall_v2.glb faces=722 cap=68 invalid_edges/bounds=0\nSOURCE CROWN: res://assets/nature/refined/cliff_tall_v2.glb faces=768 cap=51 invalid_edges/bounds=0\n"
+  },
+  {
+    "test": "terrain_rim_union_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 10.47,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM UNION: 0 overlap probes; 2831 single-top probes; 17 closed-side probes; failures=0\n"
+  },
+  {
+    "test": "terrain_rim_closure_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 25.93,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM CLOSURE: [{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":6633,\"state\":\"default\"},{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":7200,\"state\":\"expand\"},{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":6474,\"state\":\"contract\"}]\n"
+  },
+  {
+    "test": "terrain_mantle_integration_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 49.6,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMANTLE INTEGRATION: {\"failures\":0,\"fixtures\":[{\"base_misses\":0,\"base_probes\":96,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"default\",\"vines\":391},{\"base_misses\":0,\"base_probes\":98,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"expand\",\"vines\":393},{\"base_misses\":0,\"base_probes\":95,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"contract\",\"vines\":384},{\"base_misses\":0,\"base_probes\":96,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"deep_lower\",\"vines\":395}]}\n"
+  },
+  {
+    "test": "terrain_rim_rhythm_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 7.29,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM RHYTHM: section 0.45m below crowns; outward offset=0.45; pairs=32 tight=21 clear gaps=8 widths=[0.06368860602379, 0.0, 0.0, 0.0, 0.0, 0.84758859872818, 0.0, 2.68871021270752, 0.71315604448318, 0.0, 0.0, 0.22117547690868, 0.0, 0.0, 0.0, 0.71969270706177, 0.61394166946411, 0.07520505785942, 0.0, 0.0, 0.08453841507435, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.49342107772827, 0.0, 0.10870096832514, 0.0] passed=true\nRIM RHYTHM: section 0.45m below crowns; outward offset=0.2; pairs=32 tight=28 clear gaps=4 widths=[0.0, 0.0, 0.0, 0.0, 0.0, 0.19311100244522, 0.0, 2.28170347213745, 0.25805771350861, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.68235021829605, 0.0, 0.0, 0.0] passed=true\n"
+  },
+  {
+    "test": "terrain_rim_outcrops_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 56.93,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: rocks=14 tall=5 low=9 support_samples=1702 invalid=0 detached=0\ncontract: rocks=12 tall=3 low=9 support_samples=1504 invalid=0 detached=0\nraise: rocks=14 tall=5 low=9 support_samples=1696 invalid=0 detached=0\nwater: rocks=12 tall=4 low=8 support_samples=1485 invalid=0 detached=0\nRIM OUTCROPS: 24/24\n"
+  },
+  {
+    "test": "terrain_vine_contact_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 66.55,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":391,\"fixture\":\"default\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":391,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":400,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":405,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250014811754227,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":421,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n"
+  },
+  {
+    "test": "terrain_rim_tuft_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 8.15,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=43761 uploaded=193551 triangles=64465 roots=4407 unsupported=0 invalid=0 passed=true\n"
+  },
+  {
+    "test": "terrain_rock_fall_clearance_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 21.14,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROCK/FALL CLEARANCE: 140 curtain samples, 0 inside stones\n"
+  }
+]

@@ -113,6 +113,11 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
     for j in range(start,result.vertices.size()):result.uv[j]=Vector2(h,1.0)
  preload("res://scripts/terrain_editor/block_mantle.gd").close_base(result,field.land_regions)
  var mantle=preload("res://scripts/terrain_editor/block_mantle.gd").build(result,regions)
+ # Rim reconstruction emits flat faces. Restore smooth shallow joins on
+ # the continuous core while preserving real cliff/floor corner breaks.
+ var core_mesh:ArrayMesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(mantle.backing.mesh(),42.0,1.0)
+ if core_mesh.get_surface_count()>0:
+  mantle.backing.normals=core_mesh.surface_get_arrays(0)[Mesh.ARRAY_NORMAL]
  field.surfaces.cliff=mantle.backing
  field.surfaces.stone_mantle=mantle.stone
  field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lip(regions,crowns,assets)
