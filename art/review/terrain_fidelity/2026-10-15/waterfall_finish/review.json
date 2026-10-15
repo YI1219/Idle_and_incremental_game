@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-15",
+  "baseline": "mineral2 / 2854203",
+  "candidate": "flowing4",
+  "goal": "active, incomplete",
+  "production_scope": "Three shader-only changes; existing authored terrain/fall/foam/mist meshes, layouts, models and supports unchanged. Foam default phase follows TIME.",
+  "diagnosis": "Ten fixed-fall-phase actual layer captures show overlapping mist and opaque impact core dominate white blanket; specular contributes glitter but is not the primary blanket.",
+  "selected": [
+    "Mist default opacity .26 to .10",
+    "Foam core moving partial coverage and broken ripple arcs",
+    "Darker blue-green fall body with sparse traveling white packets, quieter normal/spec response",
+    "Current-screen opaque transmission/bending, .045m displacement control with per-axis projection/clip.w scaling and displaced foreground depth rejection"
+  ],
+  "rejected": {
+    "flowing1": "Body too thin/weak",
+    "flowing2": "Transmission too high, reads thin veil",
+    "flowing3": "Selected body palette, superseded by final projected displacement correction"
+  },
+  "captures": {
+    "main": 11,
+    "main_inspected_views": [
+      "courtyard",
+      "overview",
+      "distant",
+      "ground",
+      "shore",
+      "rim",
+      "reverse",
+      "bottom"
+    ],
+    "fixed_phase_close_pairs": 6,
+    "close_phases": [
+      0.5,
+      1.2,
+      2.4
+    ],
+    "matched_camera_transforms": true,
+    "baseline_shader_copies": "baseline_*.gdshader.txt from2854203, loaded into same actual scene",
+    "gallery_close_copies": "mineral2/flowing4_fall_receiving/external are unchanged copies of phase.5 captures"
+  },
+  "fresh_verification": {
+    "headless": "checks.json",
+    "rendered": "render_checks.json",
+    "foam": "foam_final/foam_fixture_checks.json",
+    "refraction": "refraction_final/fixture_checks.json",
+    "reflection": "reflection/fixture_checks.json"
+  },
+  "review": {
+    "reviewer": "fall_finish_review",
+    "judgment": "Keep as modest local improvement; no Critical/Important correctness defect found",
+    "art_evidence": "Six fixed-phase near frames and matched overview/distant/shore/reverse pairs inspected; no reviewer rendering rerun alongside queue",
+    "nonblocking_gap": "Refraction fixture changed-pixel counts at one perspective camera do not quantitatively prove projection/displacement magnitude or zoom/orthographic stability"
+  },
+  "remaining": [
+    "Translucent curtain still exposes large cliff planes",
+    "Impact ripple geometry still conspicuously concentric",
+    "Broad wall panels, thin/hard turf contacts, shallow shore band and water light web remain",
+    "No off-screen or transparent-layer refraction; camera movement, arbitrary edits and GPU cost remain unverified",
+    "No full art acceptance or target-device FPS claim"
+  ],
+  "sha256": {
+    "shaders/terrain_editor/waterfall.gdshader": "0af04be23d8e392850896e2d67ca7e13606fa0f009e18d4354459f7d2674c46b",
+    "shaders/terrain_editor/foam.gdshader": "df4fb07b3dcaca6ef9de5da492f36324e5dba705a532be2a93838b8c76665e4d",
+    "shaders/terrain_editor/waterfall_mist.gdshader": "c204a760398adcb7f4c7c50e4c93798581acf1586621f804424cfd4ea9627510",
+    "tests/terrain_foam_breakup_render_test.gd": "ab37e2d2350da042e5860890112f7f1c2e6e51d58c19ad193621f58be891b920",
+    "tests/terrain_fall_refraction_render_test.gd": "e3ffc6b1b9e8db9eb04c1945d1f75835213b5fd5d70d86faa9c05c3e825d736a",
+    "tools/art/capture_waterfall_layers.gd": "be72897c73b25edfa605a0892e1573e601cb3632c0b25042ebb1281bd0a8c7c7"
+  },
+  "verification_note": "Post-check shader changes only clarify comments; executable expressions unchanged."
+}

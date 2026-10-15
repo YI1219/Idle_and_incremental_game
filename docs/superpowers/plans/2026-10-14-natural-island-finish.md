@@ -121,3 +121,11 @@ Previous turn was progress: clear3 water changes committed/pushed f1d5bdc. Curre
 - [x] Selected-source regression fails missing v5 then mismatched actual profiles; versioned Blender candidates saved. Final original source selection retained; hashes unchanged.
 - [x] Compare representative rim and matched11-view studies. All v5–v8 and joint1 shapes rejected; no new runtime model retained. See stone_contact review for concrete failures.
 - [x] Retain mineral2 shared stone/short root-earth material after rejecting broad mineral1 contact; final16 headless and five rendered checks pass,11 captures/eight views inspected, independent review supports limited retention. Update current docs/gallery and reversible commit/push.
+
+## Waterfall body, foam and mist — October15 continuation
+
+Previous turn was progress: mineral2 material and rejected form evidence pushed2854203. Fixed-phase actual layer isolation identifies heavy mist and always-opaque central foam as the main white blanket, with continuous fine strands on the curtain. Keep existing authored waterfall geometry/contact metadata and pond/land footprint. Reduce blanket mist, give foam/core and ripple arcs real partial coverage/moving gaps, and separate broader transparent flow from sparse white aeration. Judge against matched receiving/free-fall close cameras and the eight principal scene views; no opaque cloth, uniform dim veil or erased flow.
+
+- [x] Foam old40,000opaque core/rings0gaps fails, new0opaque/26,598moving core and14,564gaps/17,557moving rings passes. Refraction old0changes fails, selected4409/default1883/foreground0/73edge rejection passes.
+- [x] Ten actual layer captures identify mist/core blanket. Reject thin flowing1 and over-transmissive flowing2; flowing3 palette with corrected projected displacement selectsflowing4. Six fixed-phase near pairs and11 main captures/eight principal views inspected; review supports limited improvement.
+- [x] Six headless and final9 rendered queue entries pass, including falls35/35,impact8/8,SSR729,editor339/339,regeneration42/42. Current docs/gallery updated; commit/push reversible checkpoint. Thin curtain and concentric ring shape remain; projection magnitude/orthographic/zoom and target GPU are unverified, not full goal acceptance.

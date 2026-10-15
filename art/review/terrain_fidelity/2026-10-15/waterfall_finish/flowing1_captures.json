@@ -1,0 +1,44 @@
+[
+	{
+		"draw_calls": 829.0,
+		"error": 0,
+		"file": "flowing1_external_0_5.png",
+		"position": "(12.49439, 1.745, 18.93195)",
+		"rotation": "(-13.42095, 17.35402, 0.0)"
+	},
+	{
+		"draw_calls": 829.0,
+		"error": 0,
+		"file": "flowing1_external_1_2.png",
+		"position": "(12.49439, 1.745, 18.93195)",
+		"rotation": "(-13.42095, 17.35402, 0.0)"
+	},
+	{
+		"draw_calls": 829.0,
+		"error": 0,
+		"file": "flowing1_external_2_4.png",
+		"position": "(12.49439, 1.745, 18.93195)",
+		"rotation": "(-13.42095, 17.35402, 0.0)"
+	},
+	{
+		"draw_calls": 751.0,
+		"error": 0,
+		"file": "flowing1_receiving_0_5.png",
+		"position": "(9.122736, 4.5575, 8.167875)",
+		"rotation": "(-11.78227, 45.48442, 0.0)"
+	},
+	{
+		"draw_calls": 751.0,
+		"error": 0,
+		"file": "flowing1_receiving_1_2.png",
+		"position": "(9.122736, 4.5575, 8.167875)",
+		"rotation": "(-11.78227, 45.48442, 0.0)"
+	},
+	{
+		"draw_calls": 751.0,
+		"error": 0,
+		"file": "flowing1_receiving_2_4.png",
+		"position": "(9.122736, 4.5575, 8.167875)",
+		"rotation": "(-11.78227, 45.48442, 0.0)"
+	}
+]

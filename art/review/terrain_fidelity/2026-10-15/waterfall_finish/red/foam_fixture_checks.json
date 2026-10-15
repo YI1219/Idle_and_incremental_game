@@ -1,0 +1,21 @@
+{
+	"core": {
+		"gaps": 0,
+		"max_alpha": 1.0,
+		"min_alpha": 1.0,
+		"moving": 0,
+		"opaque": 40000,
+		"probes": 40000,
+		"visible": 40000
+	},
+	"passed": false,
+	"ring": {
+		"gaps": 0,
+		"max_alpha": 0.423529416322708,
+		"min_alpha": 0.250980406999588,
+		"moving": 0,
+		"opaque": 0,
+		"probes": 40000,
+		"visible": 40000
+	}
+}

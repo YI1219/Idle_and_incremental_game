@@ -1,0 +1,81 @@
+[
+  {
+    "test": "terrain_waterfall_test",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 2.25,
+    "log": "/tmp/flowing4-terrain_waterfall_test.log",
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "TERRAIN WATERFALL: 35/35 passed"
+    ]
+  },
+  {
+    "test": "terrain_shore_transition_test",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 0.63,
+    "log": "/tmp/flowing4-terrain_shore_transition_test.log",
+    "tail": [
+      "",
+      "VISIBLE SHORE CRESTS: 1824/1824",
+      "CONNECTED SHORE JOINS: 1345",
+      "CURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples",
+      "SHORE TRANSITION: 912 triangles, wet/dry continuity true/true, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_shore_prop_test",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 36.4,
+    "log": "/tmp/flowing4-terrain_shore_prop_test.log",
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "SHORE PROPS default: { \"grass_clump\": 1, \"reeds\": 23, \"lily\": 16 } invalid=0",
+      "SHORE PROPS dry: { \"grass_clump\": 2, \"reeds\": 13, \"lily\": 9 } invalid=0",
+      "SHORE PROPS contract: { \"grass_clump\": 1, \"reeds\": 21, \"lily\": 14 } invalid=0"
+    ]
+  },
+  {
+    "test": "terrain_rock_fall_clearance_test",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 23.44,
+    "log": "/tmp/flowing4-terrain_rock_fall_clearance_test.log",
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "ROCK/FALL CLEARANCE: 140 curtain samples, 0 inside stones"
+    ]
+  },
+  {
+    "test": "terrain_lake_bed_test",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 8.78,
+    "log": "/tmp/flowing4-terrain_lake_bed_test.log",
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "BED INTERIOR EDGES unmatched=0",
+      "BED INTERIOR EDGES unmatched=0",
+      "LAKE BED: probes=417 failures=0"
+    ]
+  },
+  {
+    "test": "terrain_vine_contact_test",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 69.49,
+    "log": "/tmp/flowing4-terrain_vine_contact_test.log",
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "VINE WALL OWNERSHIP: closest=true, bounded=true",
+      "TERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":391,\"fixture\":\"default\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":391,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":400,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":405,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250014811754227,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":421,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}"
+    ]
+  }
+]

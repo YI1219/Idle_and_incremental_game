@@ -1,0 +1,8 @@
+{
+	"changed_background_pixels": 4409,
+	"foreground_difference_pixels": 0,
+	"passed": true,
+	"probes": 64000,
+	"production_default_changed_pixels": 1883,
+	"rejected_foreground_edge_samples": 73
+}

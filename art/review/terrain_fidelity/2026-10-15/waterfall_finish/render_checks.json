@@ -1,0 +1,128 @@
+[
+  {
+    "test": "baseline_close",
+    "source": "res://tools/art/capture_waterfall_layers.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 24.38,
+    "log": "/tmp/flowing4-baseline_close.log",
+    "tail": [
+      "ACTUAL FALL VEIL: { \"lip\": (9.994392, 1.545, 10.93195), \"foot\": (10.10633, -5.500534, 11.49603), \"out\": (0.0, 1.0), \"half_width\": 0.92918628454208, \"external\": true }",
+      "2026-10-15 21:29:22.157 godot[6064:33999718] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "ACTUAL FALL VEIL: { \"lip\": (2.28572, 3.545, 1.445503), \"foot\": (2.769024, 1.57, 1.931378), \"out\": (0.542127, 0.840297), \"half_width\": 0.93311673402786, \"external\": false }",
+      "WATERFALL LAYERS: 6"
+    ]
+  },
+  {
+    "test": "final_close",
+    "source": "res://tools/art/capture_waterfall_layers.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 22.37,
+    "log": "/tmp/flowing4-final_close.log",
+    "tail": [
+      "ACTUAL FALL VEIL: { \"lip\": (9.994392, 1.545, 10.93195), \"foot\": (10.10633, -5.500534, 11.49603), \"out\": (0.0, 1.0), \"half_width\": 0.92918628454208, \"external\": true }",
+      "2026-10-15 21:29:45.447 godot[6216:34001223] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "ACTUAL FALL VEIL: { \"lip\": (2.28572, 3.545, 1.445503), \"foot\": (2.769024, 1.57, 1.931378), \"out\": (0.542127, 0.840297), \"half_width\": 0.93311673402786, \"external\": false }",
+      "WATERFALL LAYERS: 6"
+    ]
+  },
+  {
+    "test": "captures",
+    "source": "res://tests/capture_courtyard_finish.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 28.25,
+    "log": "/tmp/flowing4-captures.log",
+    "tail": [
+      "",
+      "2026-10-15 21:29:52.584 godot[6474:34002906] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 21:30:08.141 godot[6474:34002906] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "COURTYARD CAPTURES: flowing4 11"
+    ]
+  },
+  {
+    "test": "foam",
+    "source": "res://tests/terrain_foam_breakup_render_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 0.69,
+    "log": "/tmp/flowing4-foam.log",
+    "tail": [
+      "",
+      "2026-10-15 21:30:20.804 godot[6629:34004226] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 21:30:20.888 godot[6629:34004226] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "FOAM BREAKUP RENDER: { \"core\": { \"opaque\": 0, \"gaps\": 0, \"moving\": 26598, \"visible\": 40000, \"min_alpha\": 0.2392156869173, \"max_alpha\": 0.81960785388947, \"probes\": 40000 }, \"ring\": { \"opaque\": 0, \"gaps\": 14564, \"moving\": 17557, \"visible\": 23603, \"min_alpha\": 0.0, \"max_alpha\": 0.35686275362968, \"probes\": 40000 }, &\"passed\": true }"
+    ]
+  },
+  {
+    "test": "refraction",
+    "source": "res://tests/terrain_fall_refraction_render_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 0.93,
+    "log": "/tmp/flowing4-refraction.log",
+    "tail": [
+      "",
+      "2026-10-15 21:30:21.500 godot[6642:34004369] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 21:30:21.592 godot[6642:34004369] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "FALL REFRACTION RENDER: { \"changed_background_pixels\": 4409, \"foreground_difference_pixels\": 0, \"production_default_changed_pixels\": 1883, \"rejected_foreground_edge_samples\": 73, \"probes\": 64000, \"passed\": true }"
+    ]
+  },
+  {
+    "test": "reflection",
+    "source": "res://tests/terrain_water_reflection_render_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 0.93,
+    "log": "/tmp/flowing4-reflection.log",
+    "tail": [
+      "",
+      "2026-10-15 21:30:22.424 godot[6689:34004520] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 21:30:22.516 godot[6689:34004520] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "WATER REFLECTION RENDER: {\"angled_camera_red_pixels\":729,\"disabled_red_pixels\":0,\"moved_marker_red_pixels\":729,\"passed\":true,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":729,\"removed_marker_red_pixels\":0,\"stale_mirror_red_pixels\":0}"
+    ]
+  },
+  {
+    "test": "impact",
+    "source": "res://tests/terrain_water_impact_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 0.44,
+    "log": "/tmp/flowing4-impact.log",
+    "tail": [
+      "Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)",
+      "",
+      "2026-10-15 21:30:23.374 godot[6695:34004613] +[IMKClient subclass]: chose IMKClient_Modern",
+      "WATER IMPACT: 8/8 passed"
+    ]
+  },
+  {
+    "test": "editor",
+    "source": "res://tests/terrain_editor_render_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 1.02,
+    "log": "/tmp/flowing4-editor.log",
+    "tail": [
+      "Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)",
+      "",
+      "2026-10-15 21:30:23.816 godot[6702:34004679] +[IMKClient subclass]: chose IMKClient_Modern",
+      "TERRAIN EDITOR RENDER: 339/339 passed"
+    ]
+  },
+  {
+    "test": "regeneration",
+    "source": "res://tests/terrain_decoration_regen_test.gd",
+    "exit_code": 0,
+    "errors": false,
+    "elapsed_seconds": 311.61,
+    "log": "/tmp/flowing4-regeneration.log",
+    "tail": [
+      "",
+      "2026-10-15 21:30:25.032 godot[6715:34004769] +[IMKClient subclass]: chose IMKClient_Modern",
+      "RIM BAKE us=53233",
+      "TERRAIN DECORATION REGEN: 42/42 passed"
+    ]
+  }
+]

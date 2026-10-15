@@ -1,0 +1,72 @@
+[
+	{
+		"draw_calls": 829.0,
+		"error": 0,
+		"file": "layers_external_current.png",
+		"position": "(12.49439, 1.745, 18.93195)",
+		"rotation": "(-13.42095, 17.35402, 0.0)"
+	},
+	{
+		"draw_calls": 828.0,
+		"error": 0,
+		"file": "layers_external_no_mist.png",
+		"position": "(12.49439, 1.745, 18.93195)",
+		"rotation": "(-13.42095, 17.35402, 0.0)"
+	},
+	{
+		"draw_calls": 828.0,
+		"error": 0,
+		"file": "layers_external_no_specular.png",
+		"position": "(12.49439, 1.745, 18.93195)",
+		"rotation": "(-13.42095, 17.35402, 0.0)"
+	},
+	{
+		"draw_calls": 828.0,
+		"error": 0,
+		"file": "layers_external_unlit.png",
+		"position": "(12.49439, 1.745, 18.93195)",
+		"rotation": "(-13.42095, 17.35402, 0.0)"
+	},
+	{
+		"draw_calls": 826.0,
+		"error": 0,
+		"file": "layers_external_no_foam.png",
+		"position": "(12.49439, 1.745, 18.93195)",
+		"rotation": "(-13.42095, 17.35402, 0.0)"
+	},
+	{
+		"draw_calls": 751.0,
+		"error": 0,
+		"file": "layers_receiving_current.png",
+		"position": "(9.122736, 4.5575, 8.167875)",
+		"rotation": "(-11.78227, 45.48442, 0.0)"
+	},
+	{
+		"draw_calls": 750.0,
+		"error": 0,
+		"file": "layers_receiving_no_mist.png",
+		"position": "(9.122736, 4.5575, 8.167875)",
+		"rotation": "(-11.78227, 45.48442, 0.0)"
+	},
+	{
+		"draw_calls": 750.0,
+		"error": 0,
+		"file": "layers_receiving_no_specular.png",
+		"position": "(9.122736, 4.5575, 8.167875)",
+		"rotation": "(-11.78227, 45.48442, 0.0)"
+	},
+	{
+		"draw_calls": 750.0,
+		"error": 0,
+		"file": "layers_receiving_unlit.png",
+		"position": "(9.122736, 4.5575, 8.167875)",
+		"rotation": "(-11.78227, 45.48442, 0.0)"
+	},
+	{
+		"draw_calls": 749.0,
+		"error": 0,
+		"file": "layers_receiving_no_foam.png",
+		"position": "(9.122736, 4.5575, 8.167875)",
+		"rotation": "(-11.78227, 45.48442, 0.0)"
+	}
+]
