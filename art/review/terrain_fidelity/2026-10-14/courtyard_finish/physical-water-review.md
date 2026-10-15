@@ -1,6 +1,8 @@
 # Physical water — verified progress, art goal remains active
 
-2026-10-15. Current captures: `water_final_*`, Godot 4.7.2 Forward+ Metal, Apple M4 Pro, 1671×941. Same-camera water baseline: `natural12_*` at `193fb65`; earlier island baseline `edge_final_*` at `3e4b06c` remains selectable in the [local gallery](comparison.html). Eleven captures, eight principal views inspected. Concepts are references, never runtime evidence.
+2026-10-15. Stage reviewed here: `water_final_*`, Godot 4.7.2 Forward+ Metal, Apple M4 Pro, 1671×941. Same-camera water baseline: `natural12_*` at `193fb65`; earlier island baseline `edge_final_*` at `3e4b06c` remains selectable in the [local gallery](comparison.html). Eleven captures, eight principal views inspected. Concepts are references, never runtime evidence.
+
+The current rim-cover follow-up is documented separately in [rooted turf review](rooted-turf-review.md). This report preserves the water checkpoint.
 
 ## Retained change
 

@@ -12,11 +12,11 @@ func run():
  var low:=0;var anchored:=0;var crests:=0;var depths:Dictionary={}
  for i in lip.vertices.size():
   var depth:float=lip.uv[i].x-lip.vertices[i].y
-  if depth>.12:low+=1
+  if depth>.02:low+=1
   if depth<0:crests+=1
   if absf(depth)<.02:anchored+=1
   depths[snappedf(depth,.05)]=true
-  ok=ok and depth<.85 and depth>-.085
+  ok=ok and depth<.85 and depth>-.30
  ok=ok and crests>50 and low>50 and anchored>50 and depths.size()>5
  var uploaded:=0
  for chunk:Vector2i in field.triangle_chunks:
@@ -31,5 +31,5 @@ func run():
     ok=false;print("bad anchor ",positions[i],anchors[i])
    if anchors[i].x<0 or anchors[i].y>1:uploaded+=1
  ok=ok and uploaded>100
- print("RIM DETAIL: hanging vertices=",low," anchors=",anchored," depth bands=",depths.size()," passed=",ok)
+ print("RIM DETAIL: short root vertices=",low," anchors=",anchored," depth bands=",depths.size()," passed=",ok)
  quit(0 if ok else 1)

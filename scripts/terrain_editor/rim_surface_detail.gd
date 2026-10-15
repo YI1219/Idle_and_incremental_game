@@ -8,6 +8,13 @@ static func _hash(p:Vector2)->float:
 static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
  var result:=Surface.new()
  var faces:Dictionary={}
+ var blades:=PackedVector3Array()
+ for part:Dictionary in assets.get("grass",[]):
+  for p:Vector3 in part.mesh.get_faces():blades.append(part.pose*p)
+ var blade_box:=AABB()
+ if not blades.is_empty():
+  blade_box=AABB(blades[0],Vector3.ZERO)
+  for p:Vector3 in blades:blade_box=blade_box.expand(p)
  for crown:Dictionary in crowns:
   var col:Dictionary=crown.column
   if not faces.has(crown.height):faces[crown.height]=PackedVector3Array()
@@ -18,7 +25,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
     var a:=loop[e];var b:=loop[(e+1)%loop.size()];var length:=a.distance_to(b)
     if length<.12:continue
     var tangent:=(b-a)/length;var out:=Vector2(tangent.y,-tangent.x)
-    var count:=maxi(1,floori(length/.75))
+    var count:=maxi(1,floori(length/.60))
     for k in count:
      var center:=a.lerp(b,(k+.5)/count)
      var choice:=_hash(center*2.1+Vector2(h,7))
@@ -34,52 +41,73 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
        if center.distance_to(Geometry2D.get_closest_point_to_segment(center,poly[j],poly[j+1]))<.003:on_crown=true;break
       if on_crown:break
      if not on_crown:continue
-     var width:=minf(length/count*.95,.38+.34*_hash(center+Vector2(4,2)))
-     var depth:=.09+.19*pow(_hash(center+Vector2(19,3)),1.6)
-     # Sparse rounded sod patches continue the lawn over the stone edge.
+     var width:=minf(length/count*.95,.17+.17*_hash(center+Vector2(4,2)))
+     var depth:=.018+.018*pow(_hash(center+Vector2(19,3)),1.6)
+     # Compact turf grows out of the cap and follows the actual stone below.
      var left:=center-tangent*width*.5;var right:=center+tangent*width*.5
      var start:=result.vertices.size()
      var outward:=Vector3(out.x,0,out.y)
-     # A continuous rolled sod patch, with rounded shoulders in both
-     # directions. Every downturned row is projected onto real crown stone.
-     var rows:Array=[]
+     var rows:Array=[];var backs:Array=[]
      var valid:=true
-     for column in 7:
-      var u:float=float(column)/6.0
+     for column in 9:
+      var u:float=float(column)/8.0
       var c:=left.lerp(right,u)
       var bell:=pow(sin(PI*u),.65)
-      var d:=.045+depth*bell*(.75+.25*cos(u*TAU*2.0+choice*2.0))
-      var shoulder=_drape(c,out,h-.045,faces[h])
-      var tip=_drape(c,out,h-d,faces[h])
-      if shoulder==null or tip==null:valid=false;break
-      rows.append([
-       Vector3(c.x,h+.004,c.y)-outward*(.32*bell+.025),
-       Vector3(c.x,h+.075*bell+.004,c.y)-outward*.025,
-       shoulder+outward*(.018*bell),tip])
+      var lobes:=.82+.18*sin(u*TAU*2.7+choice*7.0)
+      var d:=.008+depth*bell*lobes
+      var section:Array=[
+       Vector3(c.x,h+.003,c.y)-outward*(.10*bell+.025),
+       Vector3(c.x,h+.020*bell+.003,c.y)-outward*.015]
+      var inner:Array=[section[0]-Vector3.UP*.028,section[1]-Vector3.UP*(.020*bell+.028)]
+      for fraction:float in [.32,.68,1.0]:
+       var contact=_drape(c,out,h-d*fraction,faces[h])
+       if contact==null:valid=false;break
+       section.append(contact+outward*(.018*bell*sin(fraction*PI)))
+       # The back skin is inside the stone, not a second floating green flap.
+       inner.append(contact-outward*.045)
+      if not valid:break
+      rows.append(section);backs.append(inner)
      if valid:
-      for column in 6:
-       for row in 3:
+      for column in 8:
+       for row in 4:
         var a0:Vector3=rows[column][row];var b0:Vector3=rows[column+1][row]
         var c0:Vector3=rows[column+1][row+1];var d0:Vector3=rows[column][row+1]
-        result.quad(a0,b0,c0,d0,Color.WHITE)
-        result.quad(d0-outward*.018,c0-outward*.018,b0-outward*.018,a0-outward*.018,Color.WHITE)
-      for row in 3:
-       for column in [0,6]:
-        var a0:Vector3=rows[column][row];var b0:Vector3=rows[column][row+1]
-        result.quad(a0,b0,b0-outward*.018,a0-outward*.018,Color.WHITE)
-      for column in 6:
-       for row in [0,3]:
-        var a0:Vector3=rows[column][row];var b0:Vector3=rows[column+1][row]
-        result.quad(a0,b0,b0-outward*.018,a0-outward*.018,Color.WHITE)
+        # Exterior upper normals face up; the previous front skin faced down.
+        result.quad(d0,c0,b0,a0,Color.WHITE)
+        result.quad(backs[column][row],backs[column+1][row],backs[column+1][row+1],backs[column][row+1],Color(1,1,0))
+      for row in 4:
+       result.quad(rows[0][row],backs[0][row],backs[0][row+1],rows[0][row+1],Color(1,1,.35))
+       result.quad(rows[8][row+1],backs[8][row+1],backs[8][row],rows[8][row],Color(1,1,.35))
+      for column in 8:
+       result.quad(rows[column+1][0],backs[column+1][0],backs[column][0],rows[column][0],Color(1,1,.35))
+       result.quad(rows[column][4],backs[column][4],backs[column+1][4],rows[column+1][4],Color(1,1,.35))
      for i in range(start,result.vertices.size()):
       var p:Vector3=result.vertices[i]
       var along:=clampf((Vector2(p.x,p.z)-left).dot(tangent)/maxf(width,.001),0,1)
-      var anchor:=left.lerp(right,along)
-      result.colors[i]=Color(along,choice,1,1)
+      var anchor:=left.lerp(right,along)-out*.035
+      result.colors[i]=Color(along,choice,result.colors[i].b,1)
       result.uv2.append(anchor)
       result.uv[i]=Vector2(h,clampf((h-p.y)/depth,0,1))
 
+     if valid and not blades.is_empty():_blades(result,center,tangent,out,h,choice,blades,blade_box)
  return result
+
+static func _blades(result,center:Vector2,tangent:Vector2,out:Vector2,h:float,choice:float,blades:PackedVector3Array,box:AABB)->void:
+ # Instance the existing curved grass source at its original proportions.
+ # Small unequal fans grow from inside the cap, not a flattened hanging sheet.
+ var foot:=Vector3(box.position.x+box.size.x*.5,box.position.y,box.position.z+box.size.z*.5)
+ for fan in 2:
+  var at:=center+tangent*(-.065 if fan==0 else .065)-out*(.075 if fan==0 else .10)
+  var scale:float=(.19+.03*choice if fan==0 else .12+.03*choice)/maxf(box.size.y,.001)
+  var lean:=Basis(Vector3(tangent.x,0,tangent.y),-.14-.08*choice)
+  var basis:=lean*Basis(Vector3.UP,choice*TAU+fan*1.9)
+  basis=basis.scaled(Vector3.ONE*scale)
+  var pose:=Transform3D(basis,Vector3(at.x,h-.012,at.y)-basis*foot)
+  var start:int=result.vertices.size()
+  for i in range(0,blades.size(),3):result.triangle(pose*blades[i],pose*blades[i+1],pose*blades[i+2],Color.WHITE)
+  for i in range(start,result.vertices.size()):
+   result.colors[i]=Color(.5,choice,1,1)
+   result.uv[i]=Vector2(h,0.0);result.uv2.append(at)
 
 static func _drape(p:Vector2,out:Vector2,y:float,faces:PackedVector3Array):
  var origin:=Vector3(p.x+out.x*1.0,y,p.y+out.y*1.0)

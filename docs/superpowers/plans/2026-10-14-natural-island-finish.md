@@ -47,3 +47,14 @@ The current opaque bed-color approximation still reads as a shaded sheet. Protot
 - [x] Run affected closure/picking/shore/edit checks and rendered regeneration before retaining or pushing.
 
 Verified `water_final`: 55 headless and five rendered scripts pass. Follow-up bed checks cover published chunk meshes (417 probes, no internal open edges), and a synthetic intersecting-hole cap fails the old path with 28 errors then passes with centralized intersection rows. Eight matched principal views inspected. Screen-space approximation remains limited; cliff/sod art still needs further work. See the physical-water review and checks manifest.
+
+## Rooted turf follow-up
+
+The existing rolled sod front has inverted top-face winding, while its back is horizontally offset and remains above the ground. Correct outward winding, bury the back below the cap/inside the real crown, and smooth the closed patch normals before chunk publication. Judge compact tuft alternatives against the saved `water_final` rim view. Reject the broad leaf/fingered silhouettes if they still read as paper or dripping paint; do not hide the source cliff limitation with denser decoration. Preserve compression, anchors and whole-patch outcrop trimming.
+
+- [x] Reproduce wrong above-ground winding in a dedicated actual-scene test (970 inward top triangles).
+- [x] Inspect compact rooted patch alternatives at the representative rim; retain only a clear improvement.
+- [x] Verify turf contact/normals, anchors, outcrop trimming, published mesh and compression, plus editor/decor regeneration.
+- [x] Capture matched whole/close/reverse/bottom views and update review/docs with remaining visual limitations.
+
+Selected `turf5`: very short rooted cuffs and uniformly scaled retained grass fans replace long sheets. `turf1`–`turf3` molded/fingered silhouettes rejected; `turf4` source-fan trial led to shorter cuffs and taller unequal fans. 13 affected headless scripts and three rendered scripts pass. Independent review found no actionable technical defects but notes oval pads and cliff slab shapes remain unaccepted. Next decisive art step remains the user's actual main-stone refinement, then composition at that real shape; no further decorative escalation while it is missing.

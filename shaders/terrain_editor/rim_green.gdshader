@@ -18,9 +18,9 @@ void fragment(){
  vec3 green=ground_cover(world_position.xz,.65,slope);
  float fleck=gc_noise(world_position.xz*19.0+world_position.y*7.0);
  vec3 root=green*vec3(.63,.62,.48);
- ALBEDO=mix(green,root,smoothstep(.48,.95,tongue)*.55)*(.97+.06*fleck);
+ ALBEDO=mix(green,root,clamp((1.0-COLOR.b)*.75+smoothstep(.48,.95,tongue)*.20,0.0,1.0))*(.97+.06*fleck);
  vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
- NORMAL=normalize(mix(NORMAL,up,.12));
+ NORMAL=normalize(mix(NORMAL,up,.08));
  // Only the physical sod tips fray. The lawn and stone retain solid joins;
  // this breaks the repeated rounded-card silhouette at close range.
  float fray=gc_noise(world_position.xz*51.0+world_position.y*23.0);
