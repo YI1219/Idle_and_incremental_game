@@ -1,0 +1,28 @@
+[
+	{
+		"camera_size": 4.35395050048828,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://assets/nature/quaternius/Rock_Medium_1.gltf",
+		"source_bounds": "[P: (-1.727287, -0.271131, -1.149883), S: (3.225148, 2.259797, 2.989136)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	},
+	{
+		"camera_size": 4.11582660675049,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://assets/nature/quaternius/Rock_Medium_2.gltf",
+		"source_bounds": "[P: (-1.713642, -0.050842, -1.159125), S: (3.04876, 1.898975, 2.479072)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-15",
+  "stage": "Existing-source Blender refinement, no Tripo submission",
+  "decision": "User selected existing-source refinement first; new custom Tripo route only if in-engine result is insufficient.",
+  "first_asset": "cliff_main_v1 (derived from Rock_Medium_2)",
+  "source_files": [
+    {
+      "file": "Rock_Medium_1.gltf",
+      "source": "assets/nature/quaternius/Rock_Medium_1.gltf",
+      "sha256": "5d1ab1fa03218f4a908728ed0eabe6486344a7e4f510b0d3d6f837fd1d011bd8",
+      "unchanged": true
+    },
+    {
+      "file": "Rock_Medium_1.bin",
+      "source": "assets/nature/quaternius/Rock_Medium_1.bin",
+      "sha256": "ea79527d4c2b3bdb7a28bf589bf0c1fd96d192a4d0738636753911dd58681e99",
+      "unchanged": true
+    },
+    {
+      "file": "Rock_Medium_2.gltf",
+      "source": "assets/nature/quaternius/Rock_Medium_2.gltf",
+      "sha256": "fac2d05a05f2d0d2098de59c09b58f42cc875c9caca4fd4c4bd57f3d36e7b12e",
+      "unchanged": true
+    },
+    {
+      "file": "Rock_Medium_2.bin",
+      "source": "assets/nature/quaternius/Rock_Medium_2.bin",
+      "sha256": "76b60bf8349f71abdb0ed462b3223d93c2dcabdfb5754bc132e18b021cc6c805",
+      "unchanged": true
+    },
+    {
+      "file": "Rocks_Diffuse.png",
+      "source": "assets/nature/quaternius/Rocks_Diffuse.png",
+      "sha256": "b813696df6081f469a127092eb0ce45cc39d56f3ccc0699152bfcd3804810b48",
+      "unchanged": true
+    },
+    {
+      "file": "License_Standard.txt",
+      "source": "assets/nature/quaternius/License_Standard.txt",
+      "sha256": "120710e542c3ebaf83856c4eb55b4a1e680593b39302eba7fdc5d942dfe78c58",
+      "unchanged": true
+    }
+  ],
+  "source_metrics": [
+    {
+      "source": "Rock_Medium_1",
+      "triangles": 342,
+      "position_accessor_bounds": {
+        "min": [
+          -1.7272872924804688,
+          -0.27113133668899536,
+          -1.1498832702636719
+        ],
+        "max": [
+          1.4978611469268799,
+          1.988665223121643,
+          1.8392531871795654
+        ]
+      }
+    },
+    {
+      "source": "Rock_Medium_2",
+      "triangles": 244,
+      "position_accessor_bounds": {
+        "min": [
+          -1.713641881942749,
+          -0.05084158852696419,
+          -1.1591253280639648
+        ],
+        "max": [
+          1.3351185321807861,
+          1.8481333255767822,
+          1.3199462890625
+        ]
+      }
+    }
+  ],
+  "concept": {
+    "path": "art/work/cliff_refinement/2026-10-15/reference/refinement_concept_v1.png",
+    "original": "/Users/yi/.codex/generated_images/01a12b7f-422c-7c23-a8f2-99b82c1e92b9/exec-c9f918d7-a33c-453c-9032-c4921a1b913d.png",
+    "type": "Native image_gen visual refinement guide, not runtime evidence or a four-view generation input",
+    "sha256": "22a916556e5f73bbc9f1d36cad0cfca5bc89c1bcaf73a26e8e26fd3880141042"
+  },
+  "deliverables": [
+    "art/work/cliff_refinement/2026-10-15/output/cliff_main_v1.blend",
+    "art/work/cliff_refinement/2026-10-15/output/cliff_main_v1.glb"
+  ]
+}

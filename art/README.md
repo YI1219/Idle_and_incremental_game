@@ -5,6 +5,8 @@ Tree/building replacement remains outside scope. Existing tree anchors, cottage 
 
 A new native image_gen mineral base-color map is saved as `../assets/textures/terrain/stone_mineral_v1.png`; [prompt and provenance](review/terrain_fidelity/2026-10-14/courtyard_finish/stone-material-generation.md). Original textures are preserved. It adds stone weathering and approximate shallow-bed detail alongside the existing packed material maps. Water/fall reflection, color, turbulence and mist were refined, but the water is still opaque and not true refraction. No model generation, Tripo operation or purchase occurred. Current function checks pass; art approval and target-device performance remain separate. See [current context](../CURRENT_CONTEXT.md).
 
+Current user-selected next step: **first refine one existing main cliff stone in Blender**, using Rock_Medium_2. [Source inspection, visual concept and concrete handoff](review/terrain_fidelity/2026-10-15/cliff_refinement/README.md). No refined model has been received. Only if its Godot comparison remains inadequate will new model generation be prepared; current concept/source views must not be submitted to Tripo.
+
 ## Integrated candidates
 
 | Asset | Runtime file | Source and status | Remaining |

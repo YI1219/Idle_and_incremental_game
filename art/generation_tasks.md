@@ -1,5 +1,5 @@
 # Current Tripo generation tasks
-Updated: 2026-09-21. **No tasks to submit. The user does not need to generate or pay for texturing for now.**
+Updated: 2026-10-15. **No Tripo tasks to submit or texturing to pay for. Current user action is existing-source Blender cliff refinement, described below.**
 
 | Asset | Status | Current action |
 | --- | --- | --- |
@@ -8,7 +8,9 @@ Updated: 2026-09-21. **No tasks to submit. The user does not need to generate or
 | Old nature-asset four-view batch | Deleted | Do not upload or restore |
 | Riverbank, bridge, and other nature modules | Evaluate free assets and validate a small scene first | No custom generation task published |
 
-Follow [current consensus](../CURRENT_CONTEXT.md) and [asset status](README.md). Next is the [restored 3D pipeline rendering study](../docs/art/three_d_art_direction.md) with existing assets. No new model generation is selected. The user operates Tripo manually; do not use the Cursor collaboration mechanism.
+Current selected step: refine one existing `Rock_Medium_2` into a grey main cliff stone in Blender, then validate it in Godot before doing the other variants. [Inspected sources and concrete handoff](review/terrain_fidelity/2026-10-15/cliff_refinement/README.md); [modification guide](work/cliff_refinement/2026-10-15/START_HERE.md). User selected existing-source refinement first; new-model generation is a fallback only if the actual integrated result is insufficient. The concept sheet and original-source views are not Tripo inputs. Do not submit them.
+
+Follow [current consensus](../CURRENT_CONTEXT.md) and [asset status](README.md). The user operates Blender/Tripo; Codex prepares visual guidance, parameters when needed, and engine integration/validation. Do not use the Cursor collaboration mechanism.
 
 The 2026-09-21 realistic furnace front/left trials were rejected and must not be submitted. The 2D concept studies remain references only; they are not a pending furnace task.
 
@@ -27,4 +29,4 @@ For future explicitly selected 3D assets, the user leads model inspection/refine
 - [Sword input and original manifest](source/sword/2026-09-20/manifest.json): suggested at the time P2.0, multi-view, triangles, 1000 faces; actual generation parameters unknown. Four inputs and originals are in the same directory; originals under the `tripo` subdirectory.
 - [Cottage input and original manifest](source/cottage/2026-09-20/manifest.json): suggested at the time P2.0, multi-view, triangles, 3000 faces, GLB. This is a historical suggestion, not a new submission requirement. Untextured and textured originals are in the same directory's `tripo` subdirectory.
 
-Archive only. No user action is needed now.
+Archive only. Those completed generation tasks need no user action; the current Blender refinement step is described above.
