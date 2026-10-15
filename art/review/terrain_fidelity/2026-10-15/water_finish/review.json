@@ -1,0 +1,77 @@
+{
+  "baseline": "cd0f4cc / rooted3",
+  "selected": "clear3",
+  "production_files": [
+    {
+      "path": "scripts/terrain_editor/lake_bed.gd",
+      "sha256": "a1faebcc80c52b0f59f62d28c3cbee8896ad85be2750825f9c1a11ecc75e08dc"
+    },
+    {
+      "path": "shaders/terrain_editor/lake_bed.gdshader",
+      "sha256": "8488c025cbd17a7ec8fa1cc0531a53ec86f4eb862536cc9a6dacfc51061f06f9"
+    },
+    {
+      "path": "shaders/terrain_editor/shore.gdshader",
+      "sha256": "a959a5fe930daef26243624a801f6e2bcf81c7fdb9f4f99dca82377cf09cccde"
+    },
+    {
+      "path": "shaders/terrain_editor/wet_bank.gdshaderinc",
+      "sha256": "80e9b84fe43127b821357c99592a01c2832c4f6b8ecf9d30f60dcd0dba4f54cb"
+    }
+  ],
+  "layer_probe": {
+    "captures": 6,
+    "baseline": "cd0f4cc before edits",
+    "finding": "Reflection off and flat water normal retain cloudy grain; plain bed removes it. Original dry-rock bed relief is the principal source. First inline-include probe was invalid and replaced by correctly expanded six captures."
+  },
+  "selected_changes": [
+    "Byte-encoded authoritative water level survives bed weld/chunk/GPU colors; no vertex/layout/authoring changes",
+    "Quiet mineral contrast and12percent former dry-rock normal",
+    "Sparse warped moving bed light, .12 strength; depth fade and skipped disabled/deep evaluation",
+    "Shared wet earth/mineral substrate for shore/shallow bed",
+    "Light depth follows morphed bed and water heights"
+  ],
+  "fixture": {
+    "deep_changed_pixels": 0,
+    "default_changed_pixels": 208,
+    "default_motion_pixels": 405,
+    "middle_changed_pixels": 144,
+    "morph_equivalence_changed_pixels": 0,
+    "moving_shallow_pixels": 322,
+    "passed": true,
+    "production_strength": 0.119999997317791,
+    "shallow_changed_pixels": 177
+  },
+  "fixture_scope": "SameXZ sequential .25/1.5/4.5m; .5 amplified cutoff.012 RGBsum, actualdefault.12 cutoff.003; morph endpoint matches equivalent staticdepth. Does not prove all motion/camera conditions.",
+  "art_review": "Independent review twice supports modest clarity improvement and finds no concrete runtime defect. Polygonal light web still recognizable up close; natural water art acceptance incomplete. Four actual production motion frames captured,0/2 inspected.",
+  "principal_views_inspected": [
+    "courtyard",
+    "overview",
+    "distant",
+    "ground",
+    "shore",
+    "rim",
+    "reverse",
+    "bottom"
+  ],
+  "checks": {
+    "headless": 7,
+    "actual_render_queue_entries": 5,
+    "caustic_fixture": true
+  },
+  "unchanged": [
+    "island/pond footprint",
+    "bed vertex positions and authored depths",
+    "trees/buildings/source models",
+    "calm continuous bottom",
+    "water-surface SSR/transmission algorithm",
+    "waterfall shader/geometry"
+  ],
+  "limitations": [
+    "Natural water/art goal incomplete",
+    "Shallow band and source geometry still apparent",
+    "Caustic and shared-substrate GPU cost unmeasured on target hardware",
+    "No full offscreen reflections",
+    "Morph fixture covers one endpoint/equivalent depth, not every layout or transition"
+  ]
+}

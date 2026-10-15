@@ -1,0 +1,62 @@
+[
+  {
+    "test": "captures",
+    "source": "res://tests/capture_courtyard_finish.gd",
+    "exit_code": 0,
+    "script_shader_errors": false,
+    "elapsed_seconds": 29.47,
+    "tail": [
+      "2026-10-15 19:20:10.245 godot[81784:33818745] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 19:20:26.903 godot[81784:33818745] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "COURTYARD CAPTURES: clear3 11"
+    ]
+  },
+  {
+    "test": "reflection",
+    "source": "res://tests/terrain_water_reflection_render_test.gd",
+    "exit_code": 0,
+    "script_shader_errors": false,
+    "elapsed_seconds": 1.21,
+    "tail": [
+      "2026-10-15 19:20:39.708 godot[81970:33820185] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-10-15 19:20:40.042 godot[81970:33820185] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "WATER REFLECTION RENDER: {\"angled_camera_red_pixels\":729,\"disabled_red_pixels\":0,\"moved_marker_red_pixels\":729,\"passed\":true,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":729,\"removed_marker_red_pixels\":0,\"stale_mirror_red_pixels\":0}"
+    ]
+  },
+  {
+    "test": "impact",
+    "source": "res://tests/terrain_water_impact_test.gd",
+    "exit_code": 0,
+    "script_shader_errors": false,
+    "elapsed_seconds": 0.39,
+    "tail": [
+      "",
+      "2026-10-15 19:20:40.891 godot[82005:33820399] +[IMKClient subclass]: chose IMKClient_Modern",
+      "WATER IMPACT: 8/8 passed"
+    ]
+  },
+  {
+    "test": "editor",
+    "source": "res://tests/terrain_editor_render_test.gd",
+    "exit_code": 0,
+    "script_shader_errors": false,
+    "elapsed_seconds": 1.0,
+    "tail": [
+      "",
+      "2026-10-15 19:20:41.282 godot[82008:33820453] +[IMKClient subclass]: chose IMKClient_Modern",
+      "TERRAIN EDITOR RENDER: 339/339 passed"
+    ]
+  },
+  {
+    "test": "regeneration",
+    "source": "res://tests/terrain_decoration_regen_test.gd",
+    "exit_code": 0,
+    "script_shader_errors": false,
+    "elapsed_seconds": 312.68,
+    "tail": [
+      "2026-10-15 19:20:42.479 godot[82010:33820506] +[IMKClient subclass]: chose IMKClient_Modern",
+      "RIM BAKE us=53117",
+      "TERRAIN DECORATION REGEN: 42/42 passed"
+    ]
+  }
+]

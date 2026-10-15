@@ -61,7 +61,8 @@ static func build(field):
       var p:=Vector2(point.x,point.z).snapped(Vector2.ONE*.00001)
       if not cache.has(p):cache[p]=height_at(field.source,p,level,shores)
       positions.append(Vector3(p.x,cache[p],p.y))
-     result.triangle(positions[0],positions[1],positions[2],Color.WHITE,true)
+     # Byte-exact water level survives GPU color upload and chunk clipping.
+     result.triangle(positions[0],positions[1],positions[2],Color(level/255.0,0,0),true)
   # A short submerged bank joins the dry surface to the bed at its boundary.
   # Split at the same global cuts so nonlinear shore ramps cannot open seams.
   for loop:PackedVector2Array in loops:
@@ -77,7 +78,7 @@ static func build(field):
      var p:=a.lerp(b,ts[j]).snapped(Vector2.ONE*.00001)
      var q:=a.lerp(b,ts[j+1]).snapped(Vector2.ONE*.00001)
      if p.distance_squared_to(q)<1e-14:continue
-     result.quad(Vector3(p.x,h,p.y),Vector3(p.x,height_at(field.source,p,level,shores),p.y),Vector3(q.x,height_at(field.source,q,level,shores),q.y),Vector3(q.x,h,q.y),Color.WHITE)
+     result.quad(Vector3(p.x,h,p.y),Vector3(p.x,height_at(field.source,p,level,shores),p.y),Vector3(q.x,height_at(field.source,q,level,shores),q.y),Vector3(q.x,h,q.y),Color(level/255.0,0,0))
  result=_weld(result)
  field._smooth_normals(result)
  return result
@@ -113,7 +114,7 @@ static func _weld(source):
   var label:=str(key)
   if seen.has(label):continue
   seen[label]=true
-  result.triangle(points[ids[0]],points[ids[1]],points[ids[2]],Color.WHITE)
+  result.triangle(points[ids[0]],points[ids[1]],points[ids[2]],source.colors[i])
  return result
 
 static func height_at(data,p:Vector2,level:int,shores:Array)->float:

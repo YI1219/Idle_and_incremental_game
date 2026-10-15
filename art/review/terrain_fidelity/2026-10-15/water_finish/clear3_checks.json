@@ -1,0 +1,73 @@
+[
+  {
+    "test": "terrain_lake_bed_light",
+    "exit_code": 0,
+    "elapsed_seconds": 1.17,
+    "scope": "Levels validated against authoritative owning water contour at raw/published triangle centroids, plus all0..7 brush edits",
+    "tail": [
+      "BED LIGHT LEVEL uploaded edit6: vertices=1248 invalid=0",
+      "BED LIGHT LEVEL water edit7: vertices=1248 invalid=0",
+      "BED LIGHT LEVEL uploaded edit7: vertices=1248 invalid=0"
+    ]
+  },
+  {
+    "test": "terrain_lake_bed",
+    "exit_code": 0,
+    "elapsed_seconds": 8.38,
+    "tail": [
+      "BED INTERIOR EDGES unmatched=0",
+      "BED INTERIOR EDGES unmatched=0",
+      "LAKE BED: probes=417 failures=0"
+    ]
+  },
+  {
+    "test": "terrain_shore_transition",
+    "exit_code": 0,
+    "elapsed_seconds": 0.45,
+    "tail": [
+      "CONNECTED SHORE JOINS: 1345",
+      "CURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples",
+      "SHORE TRANSITION: 912 triangles, wet/dry continuity true/true, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_shoreline",
+    "exit_code": 0,
+    "elapsed_seconds": 1.04,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "TERRAIN SHORELINE: 9/9 passed"
+    ]
+  },
+  {
+    "test": "terrain_shore_prop",
+    "exit_code": 0,
+    "elapsed_seconds": 34.06,
+    "tail": [
+      "SHORE PROPS default: { \"grass_clump\": 1, \"reeds\": 23, \"lily\": 16 } invalid=0",
+      "SHORE PROPS dry: { \"grass_clump\": 2, \"reeds\": 13, \"lily\": 9 } invalid=0",
+      "SHORE PROPS contract: { \"grass_clump\": 1, \"reeds\": 21, \"lily\": 14 } invalid=0"
+    ]
+  },
+  {
+    "test": "terrain_shore_stone_contact",
+    "exit_code": 0,
+    "elapsed_seconds": 46.64,
+    "tail": [
+      "SHORE STONE CONTACT raise: stones=94 failures=0",
+      "SHORE STONE CONTACT contract: stones=79 failures=0",
+      "SHORE STONE CONTACT: probes=4445 failures=0"
+    ]
+  },
+  {
+    "test": "terrain_waterfall",
+    "exit_code": 0,
+    "elapsed_seconds": 2.05,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "TERRAIN WATERFALL: 35/35 passed"
+    ]
+  }
+]

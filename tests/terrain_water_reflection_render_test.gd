@@ -22,6 +22,8 @@ func redness(image:Image,center:Vector2)->int:
    if c.r-c.g>.045 and c.r-c.b>.045:count+=1
  return count
 func run()->void:
+ for arg in OS.get_cmdline_user_args():
+  if arg.begins_with('out='):OUT=arg.trim_prefix('out=')
  DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
  viewport=SubViewport.new();viewport.size=Vector2i(640,480);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
  var env:=WorldEnvironment.new();env.environment=Environment.new();env.environment.background_mode=Environment.BG_COLOR;env.environment.background_color=Color(.2,.2,.2);viewport.add_child(env)

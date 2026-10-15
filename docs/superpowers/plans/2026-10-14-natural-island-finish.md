@@ -101,3 +101,15 @@ Previous goal turn made actual progress: main v4 integrated, checked and pushed5
 - [x] Complete14 affected headless and3 rendered editing/compression checks on final rooted3; inspect8 matched principal views, independent review, update current docs/gallery and commit/push.
 
 Independent review supports modest high-stone/root-contact improvement, no actionable runtime defect; report conditional for rejected tall_v1 convex reconstruction corrected. Broad panel masses, crisp cap contacts and water finish remain open, not full goal acceptance.
+
+## Water depth and quiet mineral bed — October15 continuation
+
+Previous rooted3 turn changed authoritative state and pushedcd0f4cc. Six actual probe captures isolate reflected/flat-normal/plain-bed layers; plain bed removes the cloudy granularity, whereas disabling reflection or water normal does not. First probe compilation was invalid and replaced with correctly expanded include captures.
+
+- [x] Carry authored water level in bed vertex color through weld/chunk publication; regression must fail before change and pass default plus valid water edit. Byte encoding supports existing0..7 water levels.
+- [x] Quiet submerged dry-rock normal/map contrast, retain material texture; add low-contrast moving light web on actual bed with depth fade and shadows. A rendered shallow/middle/deep/off/moved fixture must first fail, then pass.
+- [x] Judge actual pond/whole-island views against rooted3; do not retain flat uniform fill or dense luminous grids. Run affected bed/shore/reflection/fall/edit checks and independent review, update current comparison/docs, commit/push.
+
+This pass does not add decorative land or alter island/water footprint, source models or authored depths. Full art and target-hardware acceptance remain unproven.
+
+Selected clear3: quieter mineral bed and shared wet substrate, sparse warped .12 lightweb. All7 affected headless checks and final actual capture/SSR/impact/editor/regen queue pass; added default-strength and morph-equivalent fixture passes. Independent review twice supports local improvement, not full art acceptance. Cost remains unmeasured.
