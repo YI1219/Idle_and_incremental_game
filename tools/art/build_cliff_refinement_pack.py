@@ -29,12 +29,17 @@ assert hashlib.sha256(concept.read_bytes()).hexdigest() == manifest['concept']['
 reference = BASE / 'reference/user_cliff_reference.png'
 if not reference.exists():
     raise SystemExit('Restore the supplied cliff reference before rebuilding.')
+latest = manifest.get('latest_reference')
+if latest:
+    source = ROOT / latest['source']
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == latest['sha256']
+    shutil.copy2(source, BASE / 'reference' / latest['file'])
 for source in REVIEW.glob('Rock_Medium_*.png'):
     shutil.copy2(source, BASE / 'reference' / source.name)
 for view in ['front', 'left', 'right', 'back', 'quarter']:
     for model in ['Rock_Medium_1', 'Rock_Medium_2']:
         assert (BASE / 'reference' / f'{model}_{view}.png').exists()
-for name in ['natural12_rim.png', 'natural12_overview.png']:
+for name in ['natural12_rim.png', 'natural12_overview.png', 'fracture2_rim.png', 'fracture2_overview.png']:
     source = ROOT / 'art/review/terrain_fidelity/2026-10-14/courtyard_finish' / name
     shutil.copy2(source, BASE / 'reference' / name)
 shutil.copy2(REVIEW / 'concept-generation.md', BASE / 'reference/concept-generation.md')

@@ -84,5 +84,11 @@
   "deliverables": [
     "art/work/cliff_refinement/2026-10-15/output/cliff_main_v1.blend",
     "art/work/cliff_refinement/2026-10-15/output/cliff_main_v1.glb"
-  ]
+  ],
+  "latest_reference": {
+    "source": "art/source/visual_targets/2026-10-15/floating_island_user_target.png",
+    "file": "floating_island_user_target.png",
+    "sha256": "a21112eb7017184b4f5049e2ea981d6ba11da511eb2486062c5deebc7e78b3cc",
+    "user_scope": "Side stone masses and irregular island-edge shape; retain uneven shoulders, corners and recesses. Soften light/material joins, not the whole physical silhouette. Reference does not prescribe copying layout."
+  }
 }

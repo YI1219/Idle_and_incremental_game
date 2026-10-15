@@ -403,7 +403,9 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 	var body_h:float=float(part.body_height)
 	var crown_z:float=float(part.crown_z)
 	var top:float=h+lerpf(.06,.14,random_at(cell,seed_value,3001))
-	var proud:=lerpf(.80,1.12,pow(random_at(cell,seed_value,3004),1.05))
+	# Unequal setbacks let neighboring source shoulders form ledges/clefts.
+	# Soft shading must not turn the physical rim into an even perimeter.
+	var proud:=lerpf(.45,1.15,pow(random_at(cell,seed_value,3004),1.05))
 	# Crown size follows the span until it splits. Crown height stays broad;
 	# the independent root covers the remaining inward-tapering underside.
 	var span_x:float=maxf(.45,float(part.span_x))
@@ -429,11 +431,11 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 	if sz>sx*1.85:sz=sx*1.85
 	var open:=span.y-span.x
 	if span.x>-.02 or span.y<length-.02:sx=minf(sx,maxf(1.35,open*.95))
-	var yaw:=(random_at(cell,seed_value,3005)-.5)*.65
+	var yaw:=(random_at(cell,seed_value,3005)-.5)*.85
 	var frame:=Basis(-tangent,Vector3.UP,outward)
 	# A crown is part of the terrace volume: its back joins the lawn at h.
 	# Modest lateral overlap buries internal faces at neighboring stone joints.
-	var basis:=frame*Basis(Vector3.UP,yaw)*Basis.from_scale(Vector3(minf(sx*1.3,4.8),sy,sz))
+	var basis:=frame*Basis(Vector3.UP,yaw)*Basis.from_scale(Vector3(minf(sx*lerpf(1.25,1.36,random_at(cell,seed_value,3024)),4.8),sy,sz))
 	var pose:=Transform3D(basis,Vector3(c.x,h,c.y)+outward*(proud-crown_z*sz))
 	# Source shoulders can extend beyond the normalized cut cap, especially
 	# after yaw. Fit their actual projected crown_extent, not the nominal span.
