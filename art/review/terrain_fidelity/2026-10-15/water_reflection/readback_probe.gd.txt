@@ -1,0 +1,31 @@
+extends SceneTree
+var viewport:SubViewport
+var editor:Node3D
+func _initialize()->void:call_deferred('run')
+func run()->void:
+ DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
+ DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+ viewport=SubViewport.new();viewport.size=Vector2i(1280,720);viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;viewport.msaa_3d=Viewport.MSAA_4X;root.add_child(viewport)
+ editor=load('res://scenes/terrain_editor.tscn').instantiate();viewport.add_child(editor)
+ editor.hud.hide();editor.brush.hide();editor.set_process(false);editor.camera.set_process(false)
+ var material:ShaderMaterial=editor.renderer.materials.water
+ var samples:Array=[]
+ for cycle in 3:
+  for strength in ([0.0,.28] if cycle%2==0 else [.28,0.0]):
+   material.set_shader_parameter('reflection_strength',strength)
+   for i in 20:
+    RenderingServer.force_draw(false);await process_frame
+   var values:Array=[]
+   for i in 30:
+    var start:=Time.get_ticks_usec()
+    RenderingServer.force_draw(false)
+    var bitmap:=viewport.get_texture().get_image()
+    values.append((Time.get_ticks_usec()-start)/1000.0)
+    if bitmap.is_empty():push_error('Missing readback');quit(1);return
+    await process_frame
+   values.sort()
+   var sample:={'cycle':cycle,'reflection_strength':strength,'blocking_draw_and_readback_ms_median':values[15],'p95':values[28]}
+   samples.append(sample);print('REFLECTION READBACK COST: ',JSON.stringify(sample))
+ var report:={'adapter':RenderingServer.get_video_adapter_name(),'resolution':[1280,720],'samples':samples,'scope':'Synchronous force_draw+image readback latency on development host. Includes CPU/GPU synchronization and readback overhead; NOT pure GPU timing or gameplay FPS, not target-laptop acceptance.'}
+ FileAccess.open('res://art/review/terrain_fidelity/2026-10-15/water_reflection/readback_cost_final.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
+ quit()

@@ -1,0 +1,46 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"resolution": [
+		1280,
+		720
+	],
+	"samples": [
+		{
+			"blocking_draw_and_readback_ms_median": 17.117,
+			"cycle": 0,
+			"p95": 18.161,
+			"reflection_strength": 0.0
+		},
+		{
+			"blocking_draw_and_readback_ms_median": 10.973,
+			"cycle": 0,
+			"p95": 12.226,
+			"reflection_strength": 0.28
+		},
+		{
+			"blocking_draw_and_readback_ms_median": 10.778,
+			"cycle": 1,
+			"p95": 11.767,
+			"reflection_strength": 0.28
+		},
+		{
+			"blocking_draw_and_readback_ms_median": 9.97,
+			"cycle": 1,
+			"p95": 11.153,
+			"reflection_strength": 0.0
+		},
+		{
+			"blocking_draw_and_readback_ms_median": 9.722,
+			"cycle": 2,
+			"p95": 15.055,
+			"reflection_strength": 0.0
+		},
+		{
+			"blocking_draw_and_readback_ms_median": 9.97,
+			"cycle": 2,
+			"p95": 10.67,
+			"reflection_strength": 0.28
+		}
+	],
+	"scope": "Synchronous force_draw+image readback latency on development host. Includes CPU/GPU synchronization and readback overhead; NOT pure GPU timing or gameplay FPS, not target-laptop acceptance."
+}

@@ -7,6 +7,7 @@ uniform sampler2D shore_field : filter_linear, repeat_disable;
 uniform vec2 shore_origin = vec2(0.0);
 uniform vec2 shore_extent = vec2(1.0);
 uniform vec3 water_deep : source_color = vec3(.10,.35,.34);
+uniform float reflection_strength : hint_range(0.0,1.0) = .28;
 varying vec3 world_position;
 
 float hash_water(vec2 p) {
@@ -37,6 +38,55 @@ vec3 scene_position(vec2 uv,mat4 inv_projection,mat4 inv_view){
  float depth=texture(depth_texture,uv).r;
  vec4 local=inv_projection*vec4(uv*2.0-1.0,depth,1.0);
  return (inv_view*vec4(local.xyz/local.w,1.0)).xyz;
+}
+
+vec3 screen_view_position(vec2 uv,mat4 inv_projection){
+ vec4 p=inv_projection*vec4(uv*2.0-1.0,texture(depth_texture,uv).r,1.0);
+ return p.xyz/p.w;
+}
+
+// Trace only opaque geometry already present in this camera's depth buffer.
+// Missing/off-screen hits fade to the existing sky radiance, never a stretched
+// copy of a screen edge. Above-water validation excludes the transmitted bed.
+vec4 water_reflection(vec3 origin,vec3 direction,mat4 view,mat4 projection,mat4 inv_projection,mat4 inv_view){
+ if(direction.y<=.01 || reflection_strength<=0.0)return vec4(0.0);
+ vec3 start=(view*vec4(origin,1.0)).xyz;
+ vec3 ray=(view*vec4(direction,0.0)).xyz;
+ float previous=.04;
+ for(int i=0;i<12;i++){
+  float travel=.12*pow(1.52,float(i));
+  vec3 at=start+ray*travel;
+  vec4 clip=projection*vec4(at,1.0);
+  if(clip.w<=0.0)return vec4(0.0);
+  vec2 uv=clip.xy/clip.w*.5+.5;
+  if(any(lessThan(uv,vec2(.002))) || any(greaterThan(uv,vec2(.998))))return vec4(0.0);
+  vec3 scene=screen_view_position(uv,inv_projection);
+  float gap=scene.z-at.z;
+  if(gap>0.0 && gap<1.5){
+   float lo=previous;float hi=travel;
+   for(int j=0;j<5;j++){
+    float mid=(lo+hi)*.5;
+    vec3 point=start+ray*mid;
+    vec4 projected=projection*vec4(point,1.0);
+    uv=projected.xy/projected.w*.5+.5;
+    scene=screen_view_position(uv,inv_projection);
+    if(scene.z-point.z>0.0)hi=mid;else lo=mid;
+   }
+   // Sample the endpoint actually being validated, not the last midpoint
+   // (which may have advanced only lo at a depth discontinuity).
+   vec4 refined=projection*vec4(start+ray*hi,1.0);
+   uv=refined.xy/refined.w*.5+.5;
+   scene=screen_view_position(uv,inv_projection);
+   vec3 hit=(inv_view*vec4(scene,1.0)).xyz;
+   float error=abs(scene.z-(start+ray*hi).z);
+   if(hit.y<=origin.y+.025 || error>.14+hi*.015)return vec4(0.0);
+   vec2 margin=min(uv,vec2(1.0)-uv);
+   float confidence=smoothstep(.008,.07,min(margin.x,margin.y))*(1.0-smoothstep(3.0,12.0,hi));
+   return vec4(texture(screen_texture,uv).rgb,confidence);
+  }
+  previous=travel;
+ }
+ return vec4(0.0);
 }
 
 void vertex(){
@@ -75,6 +125,10 @@ void fragment(){
  vec3 bed=texture(screen_texture,sample_uv).rgb;
  vec3 color=bed*transmission+water_deep*(vec3(1.0)-transmission)*.65;
  float fresnel=.02+.60*pow(1.0-max(dot(view_world,normal_world),0.0),5.0);
+ vec4 reflected=water_reflection(world_position+normal_world*.035,reflect(-view_world,normal_world),VIEW_MATRIX,PROJECTION_MATRIX,INV_PROJECTION_MATRIX,INV_VIEW_MATRIX);
+ float reflection=reflection_strength*reflected.a*(.5+.5*pow(1.0-max(dot(view_world,normal_world),0.0),3.0));
+ reflection*=1.0-basin.b*.55;
+ color=mix(color,reflected.rgb,reflection);
  color=mix(color,vec3(.38,.49,.43),basin.b*basin.b*.04);
  // The opaque buffer already lights the actual submerged terrain. Re-lighting
  // it as diffuse water would flatten the bank shadows and mineral relief.

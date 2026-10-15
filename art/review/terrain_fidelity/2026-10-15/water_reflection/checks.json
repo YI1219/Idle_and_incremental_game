@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-15",
+  "baseline": "140ece9 / weather3",
+  "candidate": "reflection3",
+  "captures": 11,
+  "principal_views_inspected": 8,
+  "tests": [
+    {
+      "test": "terrain_water_reflection_render_test",
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 15:28:10.151 godot[9195:33330230] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-15 15:28:11.155 godot[9195:33330230] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER REFLECTION RENDER: {\"angled_camera_red_pixels\":729,\"disabled_red_pixels\":0,\"moved_marker_red_pixels\":729,\"passed\":true,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":729,\"removed_marker_red_pixels\":0,\"stale_mirror_red_pixels\":0}\n"
+    },
+    {
+      "test": "terrain_editor_render_test",
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 15:30:20.548 godot[9840:33334900] +[IMKClient subclass]: chose IMKClient_Modern\nTERRAIN EDITOR RENDER: 339/339 passed\n"
+    },
+    {
+      "test": "terrain_water_impact_test",
+      "passed": true,
+      "output": "WATER IMPACT: 8/8 passed"
+    }
+  ],
+  "red_phase": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 15:14:10.913 godot[4626:33302890] +[IMKClient subclass]: chose IMKClient_Modern\nWATER REFLECTION RENDER: {\"disabled_red_pixels\":0,\"passed\":false,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":0,\"removed_marker_red_pixels\":0}\n",
+  "independent_review": "Endpoint mismatch fixed and re-reviewed. No remaining actionable code defect found; modest near-shore improvement, residual pale lower-lake reflected masses. Not full art acceptance.",
+  "scope": "Material-only current-camera opaque reflection. Geometry/layout/source models unchanged. No fresh full terrain-suite or target-device performance claim."
+}
