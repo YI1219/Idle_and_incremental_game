@@ -9,7 +9,7 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
  for i in sides:
   var angle:=TAU*(float(i)/sides+rng.randf_range(-.025,.025))
   var normal:=Vector3(cos(angle),rng.randf_range(-.07,.10),sin(angle))
-  if not root:normal.y=0.0
+  if not root:normal.y=.065*sin(float(seed_value*11+i*7))
   var wall:=Plane(normal,(rng.randf_range(.43,.56) if root else rng.randf_range(.32,.61)))
   planes.append(wall)
   # Fracture undercuts: staggered in depth, unequal in slope and orientation.
@@ -61,9 +61,9 @@ static func build(seed_value:int,root:bool=false)->Dictionary:
     var swap:=b;b=c;c=swap
    if (b-a).cross(c-a).length_squared()<1e-16:continue
    # Separate deterministic tint stream leaves the fracture and root RNG alone.
-   var tone:=.5+.5*sin(float(seed_value*37+index*19+triangle_index*7))
+   var tone:=.5+.5*sin(float(seed_value*37+index*19))
    var warmth:=sin(float(seed_value*13+index*7))
-   var tint:=Color(shade,shade,shade) if root else Color(.60+.13*tone+.018*warmth,.60+.13*tone,.60+.13*tone-.018*warmth)
+   var tint:=Color(shade,shade,shade) if root else Color(.645+.025*tone+.005*warmth,.645+.025*tone,.645+.025*tone-.005*warmth)
    triangle_index+=1
    for p:Vector3 in [a,b,c]:
     var vertex:=Vector3((p.x-bounds.get_center().x)/bounds.size.x,p.y,(p.z-bounds.get_center().z)/bounds.size.z)

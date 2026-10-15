@@ -135,7 +135,7 @@ func flush_dirty(max_chunks:int=2)->int:
 func _rebuild(chunk:Vector2i)->void:
 	var geometry:Dictionary=contours.build(chunk)
 	if not contours.lawn_boundaries.is_empty():
-		geometry.grass=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lawn(geometry.grass,contours.lawn_boundaries,contours.water_regions)
+		geometry.grass=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lawn(geometry.grass,contours.lawn_boundaries,contours.water_regions,0.0)
 	_pending_chunks[chunk]=null
 	_pending_faces.erase(chunk)
 	_pending_bounds.erase(chunk)
@@ -145,7 +145,7 @@ func _rebuild(chunk:Vector2i)->void:
 	if decoration!=null:
 		for crown:Dictionary in decoration._columns:
 			if Data.chunk_of(crown.cell)!=chunk:continue
-			for point:Vector3 in decoration.assets[crown.kind][0].mesh.get_faces():faces.append(crown.pose*point)
+			for point:Vector3 in decoration.assets[crown.kind][0].render_mesh.get_faces():faces.append(crown.pose*point)
 		for rock:Dictionary in decoration._outcrops:
 			var at:=Vector2(rock.pose.origin.x,rock.pose.origin.z)
 			if Data.chunk_of(Vector2i(at.floor()))!=chunk:continue

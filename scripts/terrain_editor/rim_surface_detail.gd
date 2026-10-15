@@ -23,7 +23,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      var center:=a.lerp(b,(k+.5)/count)
      var choice:=_hash(center*2.1+Vector2(h,7))
      var patch:=_hash((center*.60).floor()+Vector2(h,29))
-     if patch<.25 or choice<.10:continue
+     if patch<.32 or choice<.18:continue
      # Only crown-backed final boundary segments get flaps; skip water lips
      # and raw terrace joins. No orphan cards in the waterfall openings.
      var on_crown:=false
@@ -34,8 +34,8 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
        if center.distance_to(Geometry2D.get_closest_point_to_segment(center,poly[j],poly[j+1]))<.003:on_crown=true;break
       if on_crown:break
      if not on_crown:continue
-     var width:=minf(length/count*.95,.62+.40*_hash(center+Vector2(4,2)))
-     var depth:=.12+.30*pow(_hash(center+Vector2(19,3)),1.6)
+     var width:=minf(length/count*.95,.38+.34*_hash(center+Vector2(4,2)))
+     var depth:=.09+.19*pow(_hash(center+Vector2(19,3)),1.6)
      # Sparse rounded sod patches continue the lawn over the stone edge.
      var left:=center-tangent*width*.5;var right:=center+tangent*width*.5
      var start:=result.vertices.size()
@@ -93,7 +93,7 @@ static func _drape(p:Vector2,out:Vector2,y:float,faces:PackedVector3Array):
   if offset<nearest and offset<.50:nearest=offset;point=hit-direction*.012
  return point
 
-static func lawn(mesh:ArrayMesh,boundaries:Dictionary,wet:Dictionary={})->ArrayMesh:
+static func lawn(mesh:ArrayMesh,boundaries:Dictionary,wet:Dictionary={},relief:float=.055)->ArrayMesh:
  if mesh.get_surface_count()==0:return mesh
  var arrays:=mesh.surface_get_arrays(0);var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
  var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR];var uv:PackedVector2Array=arrays[Mesh.ARRAY_TEX_UV]
@@ -141,7 +141,7 @@ static func lawn(mesh:ArrayMesh,boundaries:Dictionary,wet:Dictionary={})->ArrayM
         if Geometry2D.is_point_in_polygon(q,edge):winding+=-1 if Geometry2D.is_polygon_clockwise(edge) else 1
        if winding>0:submerged=true
       if submerged:distance=0.0
-      cache[key]=.055*sin(p.x*.8+p.z*.3)*sin(p.z*.62-p.x*.21)*smoothstep(.02,.85,distance)
+      cache[key]=relief*sin(p.x*.8+p.z*.3)*sin(p.z*.62-p.x*.21)*smoothstep(.02,.85,distance)
      points.append(p+Vector3.UP*cache[key])
     result.triangle(points[0],points[1],points[2],colors[i],true)
  return result.mesh()

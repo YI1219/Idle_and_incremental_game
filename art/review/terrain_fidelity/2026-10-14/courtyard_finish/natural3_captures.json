@@ -1,0 +1,88 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 786.0,
+			"error": 0,
+			"file": "natural3_courtyard.png",
+			"position": "(-3.483236, 13.5, 12.23924)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 804.0,
+			"error": 0,
+			"file": "natural3_overview.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 771.0,
+			"error": 0,
+			"file": "natural3_camera_a.png",
+			"position": "(-14.08273, 12.3, 11.72071)",
+			"rotation": "(-32.0, -18.0, 0.0)"
+		},
+		{
+			"draw_calls": 824.0,
+			"error": 0,
+			"file": "natural3_camera_b.png",
+			"position": "(-15.17069, 14.5, 15.06912)",
+			"rotation": "(-32.0, -18.0, 0.0)"
+		},
+		{
+			"draw_calls": 820.0,
+			"error": 0,
+			"file": "natural3_camera_c.png",
+			"position": "(0.278348, 16.5, 21.38261)",
+			"rotation": "(-32.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 614.0,
+			"error": 0,
+			"file": "natural3_distant.png",
+			"position": "(17.95366, 29.0, 61.61184)",
+			"rotation": "(-24.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 856.0,
+			"error": 0,
+			"file": "natural3_ground.png",
+			"position": "(-10.0, 7.0, 3.0)",
+			"rotation": "(-44.14895, 33.69006, 0.0)"
+		},
+		{
+			"draw_calls": 845.0,
+			"error": 0,
+			"file": "natural3_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 760.0,
+			"error": 0,
+			"file": "natural3_rim.png",
+			"position": "(-8.658074, 7.0, 14.65468)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 849.0,
+			"error": 0,
+			"file": "natural3_reverse.png",
+			"position": "(-35.29263, 21.0, -9.799441)",
+			"rotation": "(-30.0, -104.0, 0.0)"
+		},
+		{
+			"draw_calls": 863.0,
+			"error": 0,
+			"file": "natural3_bottom.png",
+			"position": "(12.0, -14.0, 21.0)",
+			"rotation": "(27.25203, 33.69007, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"source": "Godot runtime"
+}

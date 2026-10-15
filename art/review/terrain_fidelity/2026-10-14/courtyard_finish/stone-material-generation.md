@@ -1,0 +1,11 @@
+# Mineral stone material v1
+
+Date: 2026-10-15. Generated with the built-in `image_gen` tool. This is a new bitmap material, not a scene, concept-to-engine claim, model, or replacement of any original source file.
+
+Runtime asset: `assets/textures/terrain/stone_mineral_v1.png` (relative to repository root). Original retained locally at `/Users/yi/.codex/generated_images/01a12b7f-422c-7c23-a8f2-99b82c1e92b9/exec-c08ed46c-6d4c-489a-8067-390869349c40.png`. No post-generation image editing. Godot imports it with mipmaps; stone uses world-space triplanar albedo, water uses it as approximate shallow-bed detail. Original packed normal/slope/roughness maps remain. SHA-256 is in `natural12_checks.json`.
+
+Exact prompt:
+
+> Use case: stylized-concept. Asset type: seamless square tileable stone BASE COLOR texture for a classical Chinese fantasy 3D floating island cliff; a material map, NOT a scene or a rendered rock. Orthographic flat surface filling the entire image, uniform shadowless diffuse illumination, no directional shading or highlights. Quiet weathered grey limestone with faint warm mineral patches and cool slate grey variations, soft-edged broad irregular tonal planes blended with subtle broken mineral flecks, occasional fine discontinuous hairline weathering. Painterly naturalistic game material, refined hand painted finish with medium scale stone grain, matte, restrained tonal contrast. Roughly 2.5 meters of stone represented across the square. Enough medium-scale mineral variation to avoid flat plaster, but no busy cracks. Seamless on all four edges. No separate rocks, no brick pattern, no rubble, no deep crevices, no grass or moss, no scenery, no borders, no text, no light baked in. Surface should be softly worn, dignified and natural, compatible with atmospheric ancient Chinese landscape painting.
+
+Inspection: quiet mineral patches, no scene objects or obvious directional light. The asset was retained only after actual `natural10`/`natural11`/`natural12` runtime stone/ground/shore comparison. It improves the missing middle scale of weathering but does not solve the broad low-poly silhouette. Seamlessness was requested, not numerically proven; world-space triplanar sampling and restrained blend hide obvious tile lines in the inspected views. Final art acceptance remains incomplete.

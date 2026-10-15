@@ -100,3 +100,35 @@ static func build(deco,field,seed_value:int)->Array:
   if clear(shoulder) and supported(field,mesh,pose,h):
    result.append({"kind":"rim_shelf","pose":pose,"height":h,"anchor":p})
  return result
+
+static func trim_cover(surface,rocks:Array,assets:Dictionary):
+ var result=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface.new()
+ var footprints:Array=[]
+ for rock:Dictionary in rocks:
+  var points:=PackedVector2Array()
+  for v:Vector3 in assets[rock.kind][0].mesh.get_faces():
+   var p:Vector3=rock.pose*v;points.append(Vector2(p.x,p.z))
+  footprints.append({"poly":Geometry2D.convex_hull(points),"height":rock.height})
+ # Remove a complete sod patch when a rock occupies it. Per-triangle
+ # removal left little detached tips and jagged cuts beside exposed stones.
+ var hidden:Dictionary={}
+ for i in range(0,surface.vertices.size(),3):
+  var key:=Vector2(surface.uv[i].x,surface.colors[i].g)
+  if hidden.has(key):continue
+  var triangle:=PackedVector2Array()
+  for j in 3:
+   var v:Vector3=surface.vertices[i+j];triangle.append(Vector2(v.x,v.z))
+  for footprint:Dictionary in footprints:
+   if absf(key.x-footprint.height)>.01:continue
+   var overlaps:=false
+   for p:Vector2 in triangle:
+    if Geometry2D.is_point_in_polygon(p,footprint.poly):overlaps=true;break
+   if not overlaps and absf((triangle[1]-triangle[0]).cross(triangle[2]-triangle[0]))>.000001:
+    overlaps=not Geometry2D.intersect_polygons(triangle,footprint.poly).is_empty()
+   if overlaps:hidden[key]=true;break
+ for i in range(0,surface.vertices.size(),3):
+  if hidden.has(Vector2(surface.uv[i].x,surface.colors[i].g)):continue
+  for j in 3:
+   result.vertices.append(surface.vertices[i+j]);result.normals.append(surface.normals[i+j])
+   result.colors.append(surface.colors[i+j]);result.uv.append(surface.uv[i+j]);result.uv2.append(surface.uv2[i+j])
+ return result

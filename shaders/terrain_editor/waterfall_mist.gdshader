@@ -3,7 +3,7 @@ render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, shadows_disabl
 // Soft spray where a fall meets receiving water. Each instance is one camera-facing
 // puff that rises, swells and fades on its own phase (INSTANCE_CUSTOM.x).
 uniform vec3 mist_color : source_color = vec3(.97,.95,.89);
-uniform float opacity = .42;
+uniform float opacity = .26;
 uniform float rise = .9;
 uniform float cycle_seconds = 4.2;
 uniform sampler2D depth_texture : hint_depth_texture, filter_nearest;

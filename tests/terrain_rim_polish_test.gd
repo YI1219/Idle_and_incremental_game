@@ -32,10 +32,12 @@ func run():
    for j in 3:
     var tint:=colors[i+j]
     color_low=minf(color_low,tint.get_luminance());color_high=maxf(color_high,tint.get_luminance())
-    warm=warm or tint.r>tint.b+.01;cool=cool or tint.b>tint.r+.01
+    warm=warm or tint.r>tint.b+.003;cool=cool or tint.b>tint.r+.003
   check(cap_area>.20 and cap_high-cap_low<.0001,"crown %s has a broad planar top"%seed_value)
   check(bevel_area<.001,"crown %s meets the turf directly without a bevel outline"%seed_value)
   check(bare_edge and covered_center,"crown %s reserves a bare stone lip around its grass interior"%seed_value)
-  check(warm and cool and color_high-color_low>.07 and color_high-color_low<.25,"crown %s has restrained warm/cool face albedo"%seed_value)
+  # Large per-face paint jumps made the old crowns read as triangulated paper.
+  # Keep a little mineral variation, but no longer require that old contrast.
+  check(warm and cool and color_high-color_low>.01 and color_high-color_low<.06,"crown %s has quiet warm/cool face albedo"%seed_value)
  print("RIM POLISH: ",checks-failures,"/",checks," passed")
  quit(1 if failures else 0)

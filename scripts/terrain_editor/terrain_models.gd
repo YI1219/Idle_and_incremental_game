@@ -4,7 +4,7 @@ extends RefCounted
 var assets:Dictionary={}
 ## Microseconds to bake the six rim/underside block meshes. They are instanced after that.
 var block_bake_us:=0
-const IDS={"rim_outcrop":"stone_largeD","rim_shelf":"stone_largeA","bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
+const IDS={"rim_outcrop":"q:Rock_Medium_1","rim_shelf":"q:Rock_Medium_2","bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
 	if not assets.is_empty():return
 	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
@@ -14,7 +14,7 @@ func load_assets()->void:
 	assets.reeds=_reed_models()
 	assets.lily=_lily_models()
 	assets.path=_path_models()
-	# Four carved crowns and two tapered roots. Closed procedural solids, baked once.
+	# Four retained-source cut crowns and two tapered roots. Closed solids, baked once.
 	var bake:=Time.get_ticks_usec()
 	assets.cliff_column=_rock_body_models(11)
 	assets.cliff_column_b=_rock_body_models(23)
@@ -82,6 +82,7 @@ func load_assets()->void:
 		var material:=rock_material.duplicate()
 		material.set_shader_parameter("bank_stone",1.0 if kind.begins_with("shore_") else 0.0)
 		assets[kind][0].mesh.surface_set_material(0,material)
+		assets[kind][0].mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(assets[kind][0].mesh,48.0,.65)
 
 func _shrub_clusters(source:Array)->Array:
 	# Assemble existing CC0 leaf parts into a low, unequal leafy group.
@@ -195,7 +196,13 @@ func _grass_clump_models()->Array:
 
 func _rock_body_models(seed_value:int,root:bool=false)->Array:
 	# Crown and root use different fracture cuts; metadata supplies actual bounds.
-	var built:Dictionary=preload("res://scripts/terrain_editor/procedural_stone.gd").build(seed_value,root)
+	var built:Dictionary
+	if root:
+		built=preload("res://scripts/terrain_editor/procedural_stone.gd").build(seed_value,true)
+	else:
+		var source_id:String={11:"q:Rock_Medium_1",23:"q:Rock_Medium_2",37:"q:Rock_Medium_1",41:"q:Rock_Medium_2"}.get(seed_value,"q:Rock_Medium_1")
+		var source:Dictionary=_merge(_load(source_id,"cliff_rock"))
+		built=preload("res://scripts/terrain_editor/source_stone_crown.gd").build(source.mesh,.68,{11:.72,23:.72,37:.86,41:.62}.get(seed_value,.72))
 	var mesh:ArrayMesh=built.mesh
 	var material:=ShaderMaterial.new()
 	material.shader=load("res://shaders/terrain_editor/cliff_column.gdshader")
@@ -203,7 +210,9 @@ func _rock_body_models(seed_value:int,root:bool=false)->Array:
 	material.set_shader_parameter("crown_cover",0.0 if root else 1.0)
 	mesh.surface_set_material(0,material)
 	built.render_mesh.surface_set_material(0,material)
-	return [{"mesh":mesh,"render_mesh":built.render_mesh,"pose":Transform3D.IDENTITY,"body_height":built.height,"crown_z":built.crown_z,"span_x":built.span_x,"span_z":built.span_z}]
+	mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(mesh,42.0,.55)
+	built.render_mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(built.render_mesh,42.0,.55)
+	return [{"mesh":mesh,"render_mesh":built.render_mesh,"pose":Transform3D.IDENTITY,"body_height":built.height,"crown_z":built.crown_z,"span_x":built.span_x,"span_z":built.span_z,"cap_polygon":built.get("cap_polygon",PackedVector2Array())}]
 
 
 func _facing_triangle(builder,a:Vector3,b:Vector3,c:Vector3,color:Color,outward:Vector3)->void:
@@ -258,6 +267,7 @@ func _load(id:String,kind:String)->Array:
 	var document:=GLTFDocument.new()
 	var state:=GLTFState.new()
 	var path:="res://assets/nature/kenney/"+id+".glb"
+	if id.begins_with("q:"):path="res://assets/nature/quaternius/"+id.trim_prefix("q:")+".gltf"
 	if document.append_from_file(path,state)!=OK:
 		push_error("Cannot load CC0 model: "+path)
 		return []

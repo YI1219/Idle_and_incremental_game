@@ -11,8 +11,7 @@ void vertex(){
 	if(terrain_morph_progress<1.0){vec3 origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;VERTEX+=(inverse(MODEL_MATRIX)*vec4(0.0,terrain_morph_offset(origin),0.0,0.0)).xyz;}
 }
 void fragment(){
- vec3 material_normal=normalize(cross(dFdx(world_position),dFdy(world_position)));
- if(dot(material_normal,(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz)<0.0)material_normal=-material_normal;
+ vec3 material_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
 	// Each retained model already has physical flat faces. Match the body
 	// palette without repeating its nearest-site search at every rock pixel.
 	vec3 variation=rock_hash(floor(rock_origin/vec3(2.2,1.8,2.2))+vec3(17.0));

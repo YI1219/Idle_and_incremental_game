@@ -55,14 +55,14 @@ void fragment() {
 	float packets = flow_noise(vec2(across*2.6,(y+TIME*3.1)*1.9)+vec2(5.0,1.0));
 	// Aerated strands retain blue-green grooves under frontal sunlight;
 	// foam stays below clipping so the moving sheet remains readable.
-	float base_air = mix(.20,.65,smoothstep(.05,.80,drop));
+	float base_air = mix(.12,.46,smoothstep(.05,.80,drop));
 	float air = base_air+(body-.5)*.95+(fine-.5)*.35+(packets-.5)*.40*accelerate+landing*.55;
 	float white = smoothstep(.30,.70,air);
-	vec3 water = mix(vec3(.24,.46,.49),vec3(.46,.65,.65),body);
+	vec3 water = mix(vec3(.16,.32,.35),vec3(.34,.51,.52),body);
 	// A glassy band follows the lip before the stream breaks up.
 	float lip = 1.0-smoothstep(.02,.32,drop);
 	water = mix(water,vec3(.52,.69,.68),lip*smoothstep(.45,.75,fine)*.55);
-	vec3 foam = mix(vec3(.50,.61,.62),vec3(.70,.76,.74),smoothstep(.3,.8,body*.7+fine*.3));
+	vec3 foam = mix(vec3(.40,.51,.52),vec3(.61,.69,.67),smoothstep(.3,.8,body*.7+fine*.3));
 	vec3 color = mix(water,foam,white);
 	float side = 1.0;
 	float edge = .5;
@@ -76,7 +76,7 @@ void fragment() {
 	}
 	// The core is nearly opaque below the lip, so a change of backdrop (rock
 	// ending above open sky) no longer shows through as a seam.
-	float opacity = mix(mix(.76,.92,body),.985,white);
+	float opacity = mix(mix(.52,.78,body),.90,white);
 	opacity *= mix(1.0,smoothstep(.0,.30,air),accelerate*.12);
 	// Grooves follow the strands; screen derivatives reconstruct the same
 	// world-space gradient for every camera.

@@ -1,0 +1,378 @@
+{
+  "date": "2026-10-15",
+  "status": "verified functional candidate; art goal remains active",
+  "baseline": "3e4b06c",
+  "headless": [
+    {
+      "test": "terrain_base_easing_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBASE EASING: tangent ratio=3.69213131129677\n"
+    },
+    {
+      "test": "terrain_block_mantle_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBLOCK MANTLE: {\"bodies\":43,\"build_ms\":170,\"failed\":[],\"minimum_volume\":0.291993031899134,\"passed\":true,\"triangles\":1294}\n"
+    },
+    {
+      "test": "terrain_bottom_interpolation_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOTTOM INTERPOLATION: samples=54 errors=0 max=0.00000017023188\n"
+    },
+    {
+      "test": "terrain_bottom_seam_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOTTOM SEAM: {\"maximum_separation\":0.0,\"passed\":true,\"shared_vertices\":20,\"split_vertices\":0}\n"
+    },
+    {
+      "test": "terrain_boundary_wall_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBOUNDARY WALL default: 0 missing\nBOUNDARY WALL raise: 0 missing\nBOUNDARY WALL lower: 0 missing\nBOUNDARY WALL expand: 0 missing\nBOUNDARY WALL contract: 0 missing\nTERRAIN BOUNDARY WALL: 416 samples, 0 failures\n"
+    },
+    {
+      "test": "terrain_broad_facet_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBROAD CLIFF FACETS: 1768 large faces; 291 planar normals\nBROAD NORMAL VALIDITY: 0 invalid entries\n"
+    },
+    {
+      "test": "terrain_calm_bottom_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPTED BOTTOM COVERAGE: {\"layered\":0,\"misses\":0,\"passed\":true,\"probes\":259,\"steep\":4}\n"
+    },
+    {
+      "test": "terrain_canopy_contact_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nACTUAL WOOD EXTREMUM (-0.434883, 0.867647, -0.146833) covered by leaf lobes [1]\nACTUAL WOOD EXTREMUM (0.377939, 0.877121, -0.110059) covered by leaf lobes [2]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (0.033263, 0.902457, -0.376142) covered by leaf lobes [3]\nACTUAL WOOD EXTREMUM (-0.036714, 0.885095, -0.047428) covered by leaf lobes [0]\nTERRAIN CANOPY CONTACT: 5/5\n"
+    },
+    {
+      "test": "terrain_cliff_interface_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLIFF INTERFACES: 96 boundary points; 0 separated; max=0.0\nIRREGULAR CLIFF EDGES: [3124, 0, 0.0]\nIRREGULAR BROAD/NARROW POLYLINES: [26, 0, 0.0]\nMULTI-ELEVATION CLIFF EDGES: 6716 points; 0 separated; max=0.0\n"
+    },
+    {
+      "test": "terrain_cliff_taper_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CLIFF TAPER: 2/2 passed, sampled 267 foot vertices, furthest 5.9954\n"
+    },
+    {
+      "test": "terrain_closed_flow_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCLOSED FLOW: impact vertices=5814, receiving sectors=4, wet feet=129, dry feet=11382, failures=0\n"
+    },
+    {
+      "test": "terrain_contour_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CONTOURS: 1025/1025 passed\n"
+    },
+    {
+      "test": "terrain_crown_integrity_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nCROWN INTEGRITY: {\"closed_surfaces\":4,\"contained_source_entries\":3072,\"max_plane_violation\":-0.000000119209289550781,\"outward_surfaces\":4,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":3072,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}\nPUBLISHED CROWN MATCH: true, entries=2256, max_difference=0.0, different_entries=0\n"
+    },
+    {
+      "test": "terrain_detail_mipmaps_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nstone_detail mipmaps=true\nground_detail mipmaps=true\nstone_mineral_v1 mipmaps=true\n"
+    },
+    {
+      "test": "terrain_editor_data_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n"
+    },
+    {
+      "test": "terrain_editor_decoration_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 25/25 passed\n"
+    },
+    {
+      "test": "terrain_editor_runtime_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n"
+    },
+    {
+      "test": "terrain_goal_frozen_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSOURCE PRESERVATION: {\"generated\":{\"cells\":3214587788,\"falls\":839671855,\"rim\":1146863648,\"water\":440449048},\"source_unchanged\":true}\n"
+    },
+    {
+      "test": "terrain_grass_compression_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGRASS COMPRESSION: texture/origin/extent, preconfigure, reconfigure, invalid bounds and clear: true\n"
+    },
+    {
+      "test": "terrain_homestead_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nHOMESTEAD: 34/34 passed; tree heights=[4.06712532043457, 4.15012741088867, 4.19162845611572, 4.23313045501709]\n"
+    },
+    {
+      "test": "terrain_incremental_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN INCREMENTAL: 20/20 passed\n"
+    },
+    {
+      "test": "terrain_lawn_relief_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nLAWN RELIEF: range=(-0.054996, 0.05497) samples=76998 seam vertices=1101 errors=0 passed=true\n"
+    },
+    {
+      "test": "terrain_mantle_integration_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMANTLE INTEGRATION: {\"failures\":0,\"fixtures\":[{\"base_misses\":0,\"base_probes\":96,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"default\",\"vines\":388},{\"base_misses\":0,\"base_probes\":98,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"expand\",\"vines\":391},{\"base_misses\":0,\"base_probes\":95,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"contract\",\"vines\":381},{\"base_misses\":0,\"base_probes\":96,\"buried_vines\":0,\"lawn_leaks\":0,\"open_edges\":0,\"remote\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"remote_cap\":{\"maximum_delta_m\":0.0,\"same_vertex_count\":true,\"within_3mm\":true},\"state\":\"deep_lower\",\"vines\":393}]}\n"
+    },
+    {
+      "test": "terrain_mantle_transition_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nMANTLE TRANSITION: lower plates=0 backing retained=true\n"
+    },
+    {
+      "test": "terrain_model_bounds_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN MODEL BOUNDS: 9/9 passed\n"
+    },
+    {
+      "test": "terrain_narrow_cliff_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN NARROW CLIFF: 676 slices, 0 failures, smallest gap 0.0302\n"
+    },
+    {
+      "test": "terrain_orbit_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nORBIT failures=0\n"
+    },
+    {
+      "test": "terrain_rework_shape_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHAPE DIAGNOSTIC: 8 wedges / 1448 substantial cliff triangles, max edge 1.570\nREWORK SHAPE: failures 0; default foot (8.575, -4.786904, 6.0); minimum foot (8.575, -4.5, 6.0)\n"
+    },
+    {
+      "test": "terrain_rim_closure_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM CLOSURE: [{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":3828,\"state\":\"default\"},{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":4167,\"state\":\"expand\"},{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":3828,\"state\":\"contract\"}]\n"
+    },
+    {
+      "test": "terrain_rim_detail_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM DETAIL: hanging vertices=3385 anchors=7760 depth bands=9 passed=true\n"
+    },
+    {
+      "test": "terrain_rim_finish_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM FINISH: valid footprint=true; legacy crown-tint probe retired; orphan chip=false; 291 cap probes; holes=0; failures=0\n"
+    },
+    {
+      "test": "terrain_rim_outcrops_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: rocks=17 tall=6 low=11 support_samples=2071 invalid=0 detached=0\ncontract: rocks=17 tall=5 low=12 support_samples=2101 invalid=0 detached=0\nraise: rocks=16 tall=5 low=11 support_samples=1954 invalid=0 detached=0\nwater: rocks=16 tall=5 low=11 support_samples=1954 invalid=0 detached=0\nRIM OUTCROPS: 24/24\n"
+    },
+    {
+      "test": "terrain_rim_polish_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM POLISH: 24/24 passed\n"
+    },
+    {
+      "test": "terrain_rim_rhythm_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM RHYTHM: section 0.45m below crowns; outward offset=0.45; pairs=32 tight=28 clear gaps=4 widths=[0.0, 0.0, 0.0, 0.0, 0.0, 0.24952273070812, 0.0, 3.28229951858521, 0.50458812713623, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.79935455322266, 0.0, 0.0, 0.0] passed=true\nRIM RHYTHM: section 0.45m below crowns; outward offset=0.2; pairs=32 tight=29 clear gaps=2 widths=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.95638680458069, 0.12795539200306, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.08810946345329, 0.0, 0.0, 0.0] passed=true\n"
+    },
+    {
+      "test": "terrain_rim_systems_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM SYSTEMS: 27/27 passed\n"
+    },
+    {
+      "test": "terrain_rim_union_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM UNION: 0 overlap probes; 1642 single-top probes; 10 closed-side probes; failures=0\n"
+    },
+    {
+      "test": "terrain_rock_fall_clearance_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROCK/FALL CLEARANCE: 140 curtain samples, 0 inside stones\n"
+    },
+    {
+      "test": "terrain_rock_transition_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROCK WIDTH TRANSITION: 2 samples, 0 failures, largest displacement 0.00001215\n"
+    },
+    {
+      "test": "terrain_shell_floor_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHELL FLOOR default: low=-4.70926856994629, below intended floor=0\nSHELL FLOOR lower: low=-4.70926856994629, below intended floor=0\nSHELL FLOOR contract: low=-4.70926856994629, below intended floor=0\nSHELL FLOOR raise: low=-4.70926856994629, below intended floor=0\nSHELL FLOOR expand: low=-4.70926856994629, below intended floor=0\n"
+    },
+    {
+      "test": "terrain_shore_prop_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHORE PROPS default: { \"grass_clump\": 1, \"reeds\": 23, \"lily\": 16 } invalid=0\nSHORE PROPS dry: { \"grass_clump\": 2, \"reeds\": 13, \"lily\": 9 } invalid=0\nSHORE PROPS contract: { \"grass_clump\": 1, \"reeds\": 21, \"lily\": 14 } invalid=0\n"
+    },
+    {
+      "test": "terrain_shore_transition_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVISIBLE SHORE CRESTS: 1824/1824\nCONNECTED SHORE JOINS: 1345\nCURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples\nSHORE TRANSITION: 912 triangles, wet/dry continuity true/true, 0 failures\n"
+    },
+    {
+      "test": "terrain_shoreline_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN SHORELINE: 9/9 passed\n"
+    },
+    {
+      "test": "terrain_shrub_support_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\ndefault: shrubs=29 base_points=9164 unsupported=0\nraise: shrubs=29 base_points=9164 unsupported=0\nlower: shrubs=29 base_points=9164 unsupported=0\nexpand: shrubs=29 base_points=9164 unsupported=0\ncontract: shrubs=27 base_points=8532 unsupported=0\nSHRUB SUPPORT: 45188 actual base points; 0 unsupported; coverage=true\n"
+    },
+    {
+      "test": "terrain_source_cap_join_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSOURCE CAP JOIN: concavity probes=41 missing=0\n"
+    },
+    {
+      "test": "terrain_source_crown_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSOURCE CROWN: q:Rock_Medium_1 faces=304 cap=38 invalid_edges/bounds=0\nSOURCE CROWN: q:Rock_Medium_2 faces=272 cap=41 invalid_edges/bounds=0\nSOURCE CROWN: q:Rock_Medium_1 faces=316 cap=32 invalid_edges/bounds=0\nSOURCE CROWN: q:Rock_Medium_2 faces=258 cap=47 invalid_edges/bounds=0\n"
+    },
+    {
+      "test": "terrain_stone_normals_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTONE NORMALS: 15/15\n"
+    },
+    {
+      "test": "terrain_stone_shoulders_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTONE SHOULDERS: area ratios=[1.04336447512899, 1.05291672663444, 1.01414663184362, 1.05687456322342], failures=0\n"
+    },
+    {
+      "test": "terrain_stone_volume_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTONE VOLUMES: 40/40\n"
+    },
+    {
+      "test": "terrain_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN CHECKS: 794/794 passed, failures=0\n"
+    },
+    {
+      "test": "terrain_turf_transition_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nPUBLISHED TURF TRANSITION: 829 gradient faces, 417 cap faces, 0 invalid\n"
+    },
+    {
+      "test": "terrain_upper_rock_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN UPPER ROCK: 16 rays, 12 shoulders, 29 nearby join vertices, 0 failures\n"
+    },
+    {
+      "test": "terrain_vine_contact_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":388,\"fixture\":\"default\",\"max_absolute_gap\":0.0250011533498764,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":388,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250011533498764,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":398,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250011533498764,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":403,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250010788440704,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":418,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250011533498764,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n"
+    },
+    {
+      "test": "terrain_water_impact_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nWATER IMPACT: 8/8 passed\n"
+    },
+    {
+      "test": "terrain_waterfall_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n"
+    }
+  ],
+  "rendered": [
+    {
+      "test": "terrain_editor_render_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nTERRAIN EDITOR RENDER: 339/339 passed\n2026-10-15 10:50:07.118 godot[15870:32447475] +[IMKClient subclass]: chose IMKClient_Modern\n"
+    },
+    {
+      "test": "terrain_cottage_material_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nCOTTAGE MATERIAL SAMPLES wall=(0.8863, 0.8549, 0.7922, 1.0) gable=(0.8856, 0.8541, 0.7915, 1.0)\nCOTTAGE PANEL VIEW SAMPLES front=(0.4667, 0.4261, 0.3725, 1.0) oblique=(0.4667, 0.4248, 0.3725, 1.0)\nCOTTAGE MATERIAL CHECKS: 7 failures: 0\n2026-10-15 10:50:08.606 godot[15891:32447684] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-15 10:50:08.700 godot[15891:32447684] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+    },
+    {
+      "test": "terrain_grass_compression_render_test",
+      "exit": 0,
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nGRASS COMPRESSION RENDER: {\"changed_pixels\":106528,\"flattened_half_error\":0.0,\"passed\":true,\"samples\":107520,\"standing_half_error\":0.0}\n2026-10-15 10:50:09.456 godot[15892:32447745] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-15 10:50:10.024 godot[15892:32447745] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+    },
+    {
+      "test": "terrain_decoration_regen_test",
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 10:46:58.410 godot[15150:32437388] +[IMKClient subclass]: chose IMKClient_Modern\nRIM BAKE us=214702\nTERRAIN DECORATION REGEN: 42/42 passed\n"
+    },
+    {
+      "test": "terrain_rim_green_render_test",
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 10:48:15.790 godot[15416:32441006] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-15 10:48:21.537 godot[15416:32441006] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nLIP COMPRESSION RENDER: { \"standing_pixels\": 4382, \"compressed_pixels\": 0, \"local_mask_pixels\": 3468, \"passed\": true }\n"
+    }
+  ],
+  "captures": "natural12_captures.json",
+  "renderer": "Godot 4.7.2 Forward+ Metal Apple M4 Pro",
+  "scope": "54 terrain scripts, 5 rendering-device scripts. No target laptop performance claim; sampled support is not a proof for all leaves/all layouts.",
+  "new_texture": {
+    "path": "assets/textures/terrain/stone_mineral_v1.png",
+    "sha256": "9fe31329daa3bfa8b008260fd108dd1375d9972eb04299181947f80e35008fd7",
+    "generator": "native image_gen built-in tool",
+    "source": "/Users/yi/.codex/generated_images/01a12b7f-422c-7c23-a8f2-99b82c1e92b9/exec-c08ed46c-6d4c-489a-8067-390869349c40.png"
+  },
+  "review_followup": "Enabled mineral albedo mipmaps (new check first failed, then passed). Retired obsolete per-crown alpha/UV tint probe selecting no current triangles; hole/component checks remain, union/cap tests cover new top. Restored October11 evidence and kept fresh compression report in October14.",
+  "independent_review": {
+    "critical": 0,
+    "important": 0,
+    "readiness": "reversible partial-progress commit after minor fixes",
+    "art": "incomplete: broad slabs, turf cards, opaque water",
+    "reruns": "4 source closures; cap41/0; union1642 single-top+10 sides/0; fall140/0"
+  }
+}

@@ -24,20 +24,11 @@ void vertex(){
 }
 
 void fragment(){
- vec3 material_normal=normalize(cross(dFdx(world_position),dFdy(world_position)));
- if(dot(material_normal,(INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz)<0.0)material_normal=-material_normal;
-	// Flat facets of this solid, facing the viewer.
-	vec3 facet=normalize(cross(dFdx(VERTEX),dFdy(VERTEX)));
-	if(dot(facet,VERTEX)>0.0)facet=-facet;
-	// A narrow rounded lighting response calms the knife-edge without
- // moving cap vertices or adding a coloured perimeter band.
- float edge_soft=crown_cover*(1.0-smoothstep(.015,.22,column_origin.y-world_position.y));
- vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
- NORMAL=normalize(mix(facet,up,edge_soft*.38));
-	vec3 world_normal=(INV_VIEW_MATRIX*vec4(facet,0.0)).xyz;
+ vec3 material_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+	vec3 world_normal=material_normal;
 	vec3 variation=rock_hash(floor(column_origin*2.3)+vec3(17.0));
 	// Facet shade from the source stone, softened; instance tone sets the block.
-	vec3 stone=stone_surface(world_position,material_normal)*(.96+.08*variation.x)*mix(vec3(1.0),COLOR.rgb/.66,.65);
+	vec3 stone=stone_surface(world_position,material_normal)*(.96+.08*variation.x)*mix(vec3(1.0),COLOR.rgb/.66,.20);
 	// Vertical weathering streaks run the height of this body.
 	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
 	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;

@@ -271,6 +271,8 @@ func _column_layout(field,seed_value:int)->void:
 	for signature in stale:_run_cache.erase(signature)
 	preload("res://scripts/terrain_editor/rim_union.gd").apply(field,_columns,assets)
 	_outcrops=preload("res://scripts/terrain_editor/rim_outcrops.gd").build(self,field,seed_value)
+	field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_outcrops.gd").trim_cover(field.surfaces.rim_green,_outcrops,assets)
+	field._index_triangles()
 	layout_ms=(Time.get_ticks_usec()-started)/1000.0
 func _run_signature(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->String:
 	# Everything _rim_run reads: the chord, the land height, nearby cells and
@@ -433,6 +435,20 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 	# Modest lateral overlap buries internal faces at neighboring stone joints.
 	var basis:=frame*Basis(Vector3.UP,yaw)*Basis.from_scale(Vector3(minf(sx*1.3,4.8),sy,sz))
 	var pose:=Transform3D(basis,Vector3(c.x,h,c.y)+outward*(proud-crown_z*sz))
+	# Source shoulders can extend beyond the normalized cut cap, especially
+	# after yaw. Fit their actual projected crown_extent, not the nominal span.
+	var crown_extent:=Vector2(INF,-INF)
+	for vertex:Vector3 in part.mesh.get_faces():
+		var along:float=(pose.basis*vertex).dot(tangent)
+		crown_extent.x=minf(crown_extent.x,along);crown_extent.y=maxf(crown_extent.y,along)
+	var crown_clear:=_curtain_span(field,Vector2(pose.origin.x,pose.origin.z),dir,crown_extent,h,false)
+	if is_nan(crown_clear.x):return
+	if crown_clear!=crown_extent:
+		var crown_fit:=(crown_clear.y-crown_clear.x)/(crown_extent.y-crown_extent.x)
+		if crown_fit<.45:return
+		for axis in 3:
+			pose.basis[axis]-=tangent*pose.basis[axis].dot(tangent)*(1.0-crown_fit)
+		pose.origin+=tangent*((crown_clear.x+crown_clear.y)*.5-(crown_extent.x+crown_extent.y)*.5*crown_fit)
 	var index:=_columns.size()
 	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy})
 	_bucket_column(index)
@@ -444,8 +460,8 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 		var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,profile)
 		var root_top:=top-body_h*sy*lerpf(.55,.85,random_at(cell,seed_value,3022))
 		var root_height:=clampf(root_top-foot.y+.28,1.3,4.5)
-		var root_basis:=frame*Basis(Vector3.UP,yaw+.12)*Basis.from_scale(Vector3(want_w*1.38,root_height/root_h,want_d*.92))
-		var root_origin:=Vector3(c.x,root_top,c.y)-outward*.64+tangent*length*lerpf(.38,.58,random_at(cell,seed_value,3023))
+		var root_basis:=frame*Basis(Vector3.UP,yaw+.12)*Basis.from_scale(Vector3(want_w*1.08,root_height/root_h,want_d*.84))
+		var root_origin:=Vector3(c.x,root_top,c.y)-outward*.90+tangent*length*lerpf(.14,.30,random_at(cell,seed_value,3023))
 		# Staggering must not move a root into a waterfall. Fit the actual
 		# projected mesh extent into the remaining interval before publishing it.
 		var extent:=Vector2(INF,-INF)
@@ -639,7 +655,7 @@ func _drape_vine(field,pose:Transform3D,out:Vector2)->Dictionary:
 	if up.y<.2:
 		up=(Vector3.UP-normal*normal.y).normalized()
 		right=up.cross(normal).normalized()
-	var basis:=Basis(right,up,normal).scaled_local(pose.basis.get_scale())
+	var basis:=Basis(right,up,normal).scaled_local(pose.basis.get_scale()*.68)
 	# A small lift lets the solid blades overlap the rock without hovering.
 	return {"pose":Transform3D(basis,contact+normal*.025-basis*_vine_center)}
 func _stable(field,p:Vector2,h:float,radius:float)->bool:

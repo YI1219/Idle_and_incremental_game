@@ -1,6 +1,6 @@
 extends RefCounted
-## Crown solids replace the old cap/shoulder in their contour span. Subtract
-## their actual footprint from the lawn, so the two tops share an inner edge.
+## Crown solids replace the old cap/shoulder in their contour span. Their
+## exact boundary and the lawn are resolved into one continuous drawn top.
 const Surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface
 const Field=preload("res://scripts/terrain_editor/contour_terrain.gd")
 
@@ -13,6 +13,13 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
    if absf(p.y)>.00001:continue
    var q:Vector3=col.pose*p;points.append(Vector2(q.x,q.z))
   var hull:=Geometry2D.convex_hull(points)
+  var authored:PackedVector2Array=assets[col.kind][0].get("cap_polygon",PackedVector2Array())
+  if not authored.is_empty():
+   hull.clear()
+   for p:Vector2 in authored:
+    var q:Vector3=col.pose*Vector3(p.x,0,p.y);hull.append(Vector2(q.x,q.z))
+   if Field._area(hull)<0:hull.reverse()
+   hull.append(hull[0])
   var out:=Vector2(col.outward.x,col.outward.z)
   var tangent:=Vector2(col.tangent.x,col.tangent.z)
   var c:Vector2=col.edge
@@ -61,32 +68,12 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
   if i+1<field.levels.size():
    for loop:PackedVector2Array in field.land_regions[field.levels[i+1]]:
     var hole:=loop.duplicate();hole.reverse();loops.append(hole)
-  for crown:Dictionary in crowns:
-   if absf(crown.height-h)>.001:continue
-   var hole:PackedVector2Array=crown.polygon.duplicate()
-   if Field._area(hole)>0:hole.reverse()
-   loops.append(hole)
+  # Draw the joined top ONCE from its final filled boundary. Independent
+  # concave source crowns remain closed authoring volumes, with wall-only
+  # render meshes. Per-crown subtraction and re-baking would leave holes
+  # where concave caps overlap, or duplicate thin coplanar fragments.
   field._cap(lawn,loops,h,Color.WHITE,_crossing_rows(loops))
   field.lawn_boundaries[h]=loops
- # Each crown remains a closed authoring solid. Bake its top into the shared
- # surface once, subtracting earlier crowns so coplanar overlaps cannot flicker.
- var previous:Array=[]
- for crown:Dictionary in crowns:
-  var col:Dictionary=crown.column
-  var mesh:ArrayMesh=assets[col.kind][0].mesh
-  var vertices:PackedVector3Array=mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
-  for i in range(0,vertices.size(),3):
-   if absf(vertices[i].y)+absf(vertices[i+1].y)+absf(vertices[i+2].y)>.00001:continue
-   var fragments:Array=[[col.pose*vertices[i],col.pose*vertices[i+1],col.pose*vertices[i+2]]]
-   for earlier:Dictionary in previous:
-    if absf(earlier.height-crown.height)>.001:continue
-    var next:Array=[]
-    for piece:Array in fragments:next.append_array(_subtract(piece,earlier.planes))
-    fragments=next
-   for piece:Array in fragments:
-    for j in range(1,piece.size()-1):
-     _top_triangle(lawn,piece[0],piece[j],piece[j+1],regions[crown.height])
-  previous.append({"planes":_planes(crown.polygon),"height":crown.height})
  field.surfaces.grass=lawn
  # Keep a continuous core behind the independent crowns. Boolean cuts in
  # the old bulging shoulder made isolated chips; removing all outer pieces
@@ -157,58 +144,6 @@ static func _union(polygons:Array,addition:PackedVector2Array)->void:
    merged=positive[0];polygons.remove_at(i);i=0
   else:i+=1
  polygons.append(merged)
-
-static func _planes(polygon:PackedVector2Array)->Array[Plane]:
- var result:Array[Plane]=[]
- for i in polygon.size()-1:
-  var a:=polygon[i];var b:=polygon[i+1]
-  if a.distance_squared_to(b)<.0000001:continue
-  var n:=Vector2(b.y-a.y,a.x-b.x).normalized()
-  result.append(Plane(Vector3(n.x,0,n.y),n.dot(a)))
- return result
-
-static func _subtract(polygon:Array,planes:Array[Plane])->Array:
- var inside:Array=polygon
- var result:Array=[]
- for plane:Plane in planes:
-  if inside.size()<3:break
-  var next:Array=[];var outside:Array=[]
-  for i in inside.size():
-   var a:Vector3=inside[i];var b:Vector3=inside[(i+1)%inside.size()]
-   var da:=plane.distance_to(a);var db:=plane.distance_to(b)
-   if da<=0.0:next.append(a)
-   else:outside.append(a)
-   if (da<0.0 and db>0.0) or (da>0.0 and db<0.0):
-    var crossing:=a.lerp(b,da/(da-db))
-    next.append(crossing);outside.append(crossing)
-  if outside.size()>=3:result.append(outside)
-  inside=next
- return result
-
-static func _edge_distance(p:Vector3,regions:Array)->float:
- var point:=Vector2(p.x,p.z)
- var distance:=INF
- for loop:PackedVector2Array in regions:
-  for i in loop.size():
-   distance=minf(distance,point.distance_to(Geometry2D.get_closest_point_to_segment(point,loop[i],loop[(i+1)%loop.size()])))
- return distance
-
-static func _top_triangle(surface,a:Vector3,b:Vector3,c:Vector3,regions:Array,depth:int=0)->void:
- var da:=_edge_distance(a,regions);var db:=_edge_distance(b,regions);var dc:=_edge_distance(c,regions)
- # Bound interpolation error near the narrow transition: long cap fan edges
- # used to carry a perimeter color right across the interior lawn.
- var ab:=a.distance_squared_to(b);var bc:=b.distance_squared_to(c);var ca:=c.distance_squared_to(a)
- if minf(da,minf(db,dc))<.30 and maxf(ab,maxf(bc,ca))>.09 and depth<9:
-  if ab>=bc and ab>=ca:
-   var mid:=(a+b)*.5;_top_triangle(surface,a,mid,c,regions,depth+1);_top_triangle(surface,mid,b,c,regions,depth+1)
-  elif bc>=ca:
-   var mid:=(b+c)*.5;_top_triangle(surface,a,b,mid,regions,depth+1);_top_triangle(surface,a,mid,c,regions,depth+1)
-  else:
-   var mid:=(c+a)*.5;_top_triangle(surface,a,b,mid,regions,depth+1);_top_triangle(surface,mid,b,c,regions,depth+1)
-  return
- var start:int=surface.vertices.size()
- surface.triangle(a,b,c,Color(1,1,1,0),true)
- for k in range(start,surface.vertices.size()):surface.uv[k]=Vector2(_edge_distance(surface.vertices[k],regions),1.0)
 
 static func _tuck_shoulder(point:Vector3,regions:Dictionary,h:float)->Vector3:
  # Use this face's own cap height: newly added lower levels elsewhere must

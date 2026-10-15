@@ -10,21 +10,10 @@ func run():
  var water_before:Dictionary={}
  for kind in ["water","waterfall","shore","bank"]:water_before[kind]=hash(field.surfaces[kind].vertices)
  var deco:=Decoration.new();deco.load_assets();deco._column_layout(field,data.seed)
- var overlaps:=0;var checked:=0
+ var checked:=0
  var grass:PackedVector3Array=field.surfaces.grass.vertices
- for col:Dictionary in deco._columns:
-  var hull:=PackedVector2Array()
-  for p:Vector3 in deco.assets[col.kind][0].mesh.get_faces():
-   if absf(p.y)>.00001:continue
-   var q:Vector3=col.pose*p;hull.append(Vector2(q.x,q.z))
-  hull=Geometry2D.convex_hull(hull)
-  for i in range(0,grass.size(),3):
-   if field.surfaces.grass.colors[i].a<.5:continue # single baked crown top
-   if absf(grass[i].y-col.pose.origin.y)>.001:continue
-   var center:Vector3=(grass[i]+grass[i+1]+grass[i+2])/3.0
-   checked+=1
-   if Geometry2D.is_point_in_polygon(Vector2(center.x,center.z),hull):overlaps+=1
- if overlaps>0:failures+=1;push_error("Old grass cap overlaps crown tops: %d triangles"%overlaps)
+ # Crown caps and lawn are now one baked top. Check its actual ray owners
+ # below, rather than relying on the old cap-vs-lawn color flag.
  for kind in water_before:
   if water_before[kind]!=hash(field.surfaces[kind].vertices):failures+=1;push_error("Rim union changed "+kind)
  # A cap must be drawn exactly once, including overlaps between neighboring
@@ -36,6 +25,9 @@ func run():
   for i in range(0,vertices.size(),3):
    if absf(vertices[i].y)+absf(vertices[i+1].y)+absf(vertices[i+2].y)>.00001:continue
    var p:Vector3=col.pose*(vertices[i]*.271+vertices[i+1]*.337+vertices[i+2]*.392)
+   var raw:Dictionary=field.surface_at(Vector2(p.x,p.z))
+   if not raw.is_empty() and raw.height>p.y+.001:continue # cap buried under a higher terrace
+   if not field.contains(field.rim_regions[col.pose.origin.y],Vector2(p.x,p.z)):continue
    var matches:=0;var boundary_sample:=false
    for j in range(0,grass.size(),3):
     if absf(grass[j].y-p.y)>.001:continue
@@ -61,7 +53,14 @@ func run():
   for p:Vector3 in deco.assets[col.kind][0].mesh.get_faces():
    if absf(p.y)>.00001:continue
    var q:Vector3=col.pose*p;points.append(Vector2(q.x,q.z))
-  hulls.append({"polygon":Geometry2D.convex_hull(points),"height":col.pose.origin.y})
+  var boundary:=Geometry2D.convex_hull(points)
+  var authored:PackedVector2Array=deco.assets[col.kind][0].get("cap_polygon",PackedVector2Array())
+  if not authored.is_empty():
+   boundary.clear()
+   for p:Vector2 in authored:
+    var q:Vector3=col.pose*Vector3(p.x,0,p.y);boundary.append(Vector2(q.x,q.z))
+   boundary.append(boundary[0])
+  hulls.append({"polygon":boundary,"height":col.pose.origin.y})
   for p:Vector3 in deco.assets[col.kind][0].render_mesh.get_faces():faces.append(col.pose*p)
  for h:float in field.rim_regions:
   for polygon:PackedVector2Array in field.rim_regions[h]:
