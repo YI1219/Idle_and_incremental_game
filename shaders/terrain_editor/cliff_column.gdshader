@@ -37,7 +37,7 @@ void fragment(){
 	// Metres below this body's shoulder; lower facets weather darker.
 	float below=column_origin.y-world_position.y;
 	stone*=mix(1.0,.86,smoothstep(1.6,4.2,below));
- ALBEDO=stone;
+ ALBEDO=stone_root_contact(stone,world_position,material_normal,column_origin.y,crown_cover);
 	ROUGHNESS=stone_map(world_position,material_normal).a;
 	SPECULAR=.16;
 	float seam=smoothstep(.28,.49,abs(local_position.x))*(1.0-smoothstep(-.5,-.05,local_position.y));

@@ -1,3 +1,4 @@
+#include "weathering.gdshaderinc"
 uniform vec2 footpath_points[8];
 uniform int footpath_count=0;
 uniform sampler2D ground_detail_map : filter_linear_mipmap_anisotropic, repeat_enable;
@@ -27,7 +28,8 @@ float gc_cover_height(vec2 p){
 	return gc_noise(p*1.7)*.45+gc_noise(turn*p*4.3+vec2(5.2,1.3))*.35+gc_noise(turn*turn*p*9.1+vec2(2.7,8.1))*.20;
 }
 // Returns the cover colour; slope receives the surface tilt for lighting.
-vec3 ground_cover(vec2 p,float detail,out vec2 slope){
+vec3 ground_cover(vec3 position,float detail,out vec2 slope){
+ vec2 p=position.xz;
 	float standing=gc_standing(p);
 	detail*=standing;
 	float broad=sin(p.x*0.51+p.y*0.22)*sin(p.y*0.47-p.x*0.18)*0.5+0.5;
@@ -89,11 +91,22 @@ vec3 ground_cover(vec2 p,float detail,out vec2 slope){
   distance_to_path=min(distance_to_path,length(p-a-edge*t));
  }
  float irregular=gc_noise(p*2.3)*.48+gc_noise(p*7.7)*.15;
- float wear=1.0-smoothstep(.36+irregular,1.12+irregular,distance_to_path);
+ float margin=(gc_noise(p*13.0)-.5)*.22+(gc_noise(p*29.0)-.5)*.09;
+ float wear=1.0-smoothstep(.36+irregular,.99+irregular,distance_to_path+margin);
  float bare=smoothstep(.68,.86,gc_noise(p*.62+vec2(21.0,8.0))*.65+gc_noise(p*3.1)*.35)*.45;
- float soil=max(max(wear*.85,bare),1.0-standing);
+ vec3 deposits=tw_deposits(position);
+ // Break the material boundary into grass remnants and exposed grains.
+ // Broad deposits only choose where fragments collect, not a painted patch.
+ float fragments=smoothstep(.43,.66,gc_noise(p*18.0)*.65+gc_noise(p*41.0)*.35);
+ float weathered=deposits.x*(.10+.38*fragments);
+ float soil=max(max(max(wear*.85,bare),weathered),1.0-standing);
+ soil*=1.0-fragments*.32*standing*(1.0-wear*.50);
  vec3 earth=mix(vec3(.36,.29,.20),vec3(.57,.48,.34),gc_noise(p*1.2)*.6+gc_noise(p*9.0)*.4);
  color=mix(color,earth,soil);
- slope*=1.0-soil*.85;
+ // Small mineral grains in exposed earth, with grass fragments left inside
+ // the patches. This is local surface grit, never a continuous grey lip.
+ float grit=deposits.z*soil*detail;
+ color=mix(color,mix(vec3(.32,.35,.30),vec3(.55,.53,.42),deposits.y),grit*.50);
+ slope*=1.0-soil*.70;
  return color;
 }

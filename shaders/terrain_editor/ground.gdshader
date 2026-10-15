@@ -14,7 +14,7 @@ void fragment(){
 	float footprint=length(fwidth(p))*9.0;
 	float detail=1.0-smoothstep(.35,1.0,footprint);
 	vec2 slope;
-	vec3 color=ground_cover(p,detail,slope);
+	vec3 color=ground_cover(world_position,detail,slope);
 	// Exposed crown patches, never a perimeter-distance stroke. Most of the
  // shared cap is turf, including its edge; sparse mineral windows stop inland.
  float patch=gc_noise(p*1.65+vec2(11.0,3.0));

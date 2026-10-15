@@ -1,3 +1,4 @@
+#include "weathering.gdshaderinc"
 // Linear RGBA: mineral value, local U/V slopes, roughness. World-space
 // triplanar projection continues across independent bodies and their backing.
 uniform sampler2D stone_detail_map : filter_linear_mipmap_anisotropic, repeat_enable;
@@ -10,7 +11,7 @@ vec3 stone_normal(vec3 p,vec3 n){
  vec2 y=(texture(stone_detail_map,p.xz*.38).gb-.5)*2.0;
  vec2 z=(texture(stone_detail_map,p.xy*.38).gb-.5)*2.0;
  vec3 slope=vec3(0.0,x.y,x.x)*w.x+vec3(y.x,0.0,y.y)*w.y+vec3(z.x,z.y,0.0)*w.z;
- return normalize(n-(slope-n*dot(n,slope))*.14);
+ return normalize(n-(slope-n*dot(n,slope))*.20);
 }
 // Quiet world-anchored mineral variation shared by the stone envelope,
 // fractured sides and shore rocks. Physical planes provide the large facets.
@@ -29,5 +30,28 @@ vec3 stone_surface(vec3 p,vec3 n){
  vec3 mineral_paint=texture(stone_mineral_map,p.zy*.27).rgb*w.x+texture(stone_mineral_map,p.xz*.27).rgb*w.y+texture(stone_mineral_map,p.xy*.27).rgb*w.z;
  // Albedo supplies the missing middle scale; packed slopes still carry fine
  // relief. The blend stays restrained so the source silhouette owns the form.
- return stone*.88*(.995+grain*.01)*(1.0+(stone_map(p,n).r-.5)*.14)*(vec3(.78)+mineral_paint*.65);
+ stone=stone*.88*(.98+grain*.04)*(1.0+(stone_map(p,n).r-.5)*.24)*(vec3(.62)+mineral_paint*.95);
+ vec3 deposit=tw_deposits(p);
+ float exposed=.45+.55*smoothstep(-.65,.25,n.y);
+ // Mineral weathering is uneven within a face, rather than one clean tint.
+ stone=mix(stone,stone*vec3(.58,.60,.59)+vec3(.015,.011,.005),deposit.x*.58*exposed);
+ stone=mix(stone,stone*vec3(.74,.67,.52),deposit.y*.25*exposed);
+ stone=mix(stone,vec3(.48,.48,.40),deposit.z*.18*exposed);
+ return stone;
+}
+
+// Grass roots, soil and sparse lichen mingle locally below a real dry cap.
+// Shared deposits match the lawn above; the uneven reach cannot form a belt.
+vec3 stone_root_contact(vec3 stone,vec3 p,vec3 n,float cap_height,float dry){
+ float depth=cap_height-p.y;
+ if(dry<.5 || depth<-.015 || depth>.72)return stone;
+ vec3 deposits=tw_deposits(vec3(p.x,cap_height,p.z));
+ float reach=.10+.48*tw_noise(vec3(p.x*.9,cap_height,p.z*.9)+vec3(23.0));
+ float near=(1.0-smoothstep(.015,reach,depth))*smoothstep(-.30,.15,n.y);
+ float fragments=tw_noise(p*vec3(19.0,11.0,19.0));
+ float soil=deposits.x*near*(.45+.55*smoothstep(.35,.64,fragments));
+ vec3 root_earth=mix(vec3(.20,.19,.13),vec3(.32,.29,.20),deposits.y);
+ stone=mix(stone,root_earth,soil*.70);
+ float lichen=deposits.y*near*(1.0-deposits.x)*.40;
+ return mix(stone,stone*vec3(.71,.81,.55),lichen);
 }

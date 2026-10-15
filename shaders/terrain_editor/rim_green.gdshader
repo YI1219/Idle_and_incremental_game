@@ -15,7 +15,7 @@ void vertex(){
 }
 void fragment(){
  vec2 slope;
- vec3 green=ground_cover(world_position.xz,.65,slope);
+ vec3 green=ground_cover(world_position,.65,slope);
  float fleck=gc_noise(world_position.xz*19.0+world_position.y*7.0);
  vec3 root=green*vec3(.63,.62,.48);
  ALBEDO=mix(green,root,clamp((1.0-COLOR.b)*.75+smoothstep(.48,.95,tongue)*.20,0.0,1.0))*(.97+.06*fleck);

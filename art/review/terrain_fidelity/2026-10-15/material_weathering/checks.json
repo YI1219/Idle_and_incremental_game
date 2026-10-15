@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-15",
+  "baseline": "cbcfcc1 / fracture2",
+  "candidate": "weather2",
+  "scope": "Material-only weathering and grass/earth mixing; geometry unchanged",
+  "captures": 11,
+  "principal_views_inspected": 8,
+  "rendered_checks": [
+    {
+      "test": "terrain_editor_render_test",
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 14:39:22.637 godot[89658:33216832] +[IMKClient subclass]: chose IMKClient_Modern\nTERRAIN EDITOR RENDER: 339/339 passed\n"
+    },
+    {
+      "test": "terrain_grass_compression_render_test",
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 14:40:22.571 godot[90133:33219386] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-15 14:40:24.088 godot[90133:33219386] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nGRASS COMPRESSION RENDER: {\"changed_pixels\":106279,\"flattened_half_error\":0.0,\"passed\":true,\"samples\":107520,\"standing_half_error\":0.0}\n"
+    },
+    {
+      "test": "terrain_decoration_regen_test",
+      "passed": true,
+      "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 14:42:18.017 godot[91208:33225216] +[IMKClient subclass]: chose IMKClient_Modern\nRIM BAKE us=242104\nTERRAIN DECORATION REGEN: 42/42 passed\n"
+    }
+  ],
+  "invalid_invocation": {
+    "test": "terrain_decoration_regen_test --headless",
+    "reason": "Fixture explicitly requires a rendering device; refused dummy MultiMesh buffers, rerun with actual Metal renderer passed"
+  },
+  "performance": "Not measured; added procedural fragment noise increases shader work. No target-laptop claim."
+}

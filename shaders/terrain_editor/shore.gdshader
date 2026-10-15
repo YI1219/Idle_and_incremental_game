@@ -10,7 +10,7 @@ void fragment(){
  float broad=.5+.5*sin(world_position.x*.71+sin(world_position.z*.63));
  vec2 p=world_position.xz;
  vec2 slope;
- vec3 grass=ground_cover(p,1.0-smoothstep(.35,1.0,length(fwidth(p))*9.0),slope);
+ vec3 grass=ground_cover(world_position,1.0-smoothstep(.35,1.0,length(fwidth(p))*9.0),slope);
  // Only the inner bank is damp. The outer feather uses exactly the lawn
  // function, while mineral flecks break up the damp earth at the waterline.
  float wet=(1.0-smoothstep(.025,.105,world_position.y-UV.x))*UV.y;
