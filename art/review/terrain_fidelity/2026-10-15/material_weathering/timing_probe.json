@@ -1,0 +1,113 @@
+{
+  "adapter": "Apple M4 Pro (Apple9)",
+  "baseline": "cbcfcc1",
+  "candidate": "400fb5c",
+  "measured_frames_per_sample": 60,
+  "renderer": "forward_plus",
+  "resolution": [
+    1671,
+    941
+  ],
+  "samples": [
+    {
+      "cpu_ms_median": 0.602999985218048,
+      "cycle": 0,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "baseline",
+      "view": "overview"
+    },
+    {
+      "cpu_ms_median": 0.601999998092651,
+      "cycle": 0,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "candidate",
+      "view": "overview"
+    },
+    {
+      "cpu_ms_median": 0.569999992847443,
+      "cycle": 1,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "candidate",
+      "view": "overview"
+    },
+    {
+      "cpu_ms_median": 0.181999996304512,
+      "cycle": 1,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "baseline",
+      "view": "overview"
+    },
+    {
+      "cpu_ms_median": 0.200000002980232,
+      "cycle": 2,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "baseline",
+      "view": "overview"
+    },
+    {
+      "cpu_ms_median": 0.187000006437302,
+      "cycle": 2,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "candidate",
+      "view": "overview"
+    },
+    {
+      "cpu_ms_median": 0.175999999046326,
+      "cycle": 0,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "baseline",
+      "view": "rim"
+    },
+    {
+      "cpu_ms_median": 0.171000003814697,
+      "cycle": 0,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "candidate",
+      "view": "rim"
+    },
+    {
+      "cpu_ms_median": 0.17399999499321,
+      "cycle": 1,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "candidate",
+      "view": "rim"
+    },
+    {
+      "cpu_ms_median": 0.307000011205673,
+      "cycle": 1,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "baseline",
+      "view": "rim"
+    },
+    {
+      "cpu_ms_median": 0.779999971389771,
+      "cycle": 2,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "baseline",
+      "view": "rim"
+    },
+    {
+      "cpu_ms_median": 0.175999999046326,
+      "cycle": 2,
+      "gpu_ms_median": 0.0,
+      "gpu_ms_p95": 0.0,
+      "state": "candidate",
+      "view": "rim"
+    }
+  ],
+  "scope": "One M4 Pro, fixed same-process cameras. Does not establish target-laptop FPS or long-idle performance.",
+  "warmup_frames_per_sample": 48,
+  "valid_gpu_comparison": false,
+  "limitation": "All GPU counters returned zero on this Metal setup. CPU submission timings are not GPU cost; no performance acceptance or overhead conclusion follows."
+}

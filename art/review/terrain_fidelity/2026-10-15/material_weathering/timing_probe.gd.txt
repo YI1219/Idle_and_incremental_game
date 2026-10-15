@@ -1,0 +1,45 @@
+extends SceneTree
+var viewport:SubViewport
+var editor:Node3D
+func _initialize()->void:call_deferred('run')
+func measure()->Dictionary:
+ for i in 48:
+  RenderingServer.force_draw(false)
+  await process_frame
+ var cpu:Array=[];var gpu:Array=[]
+ for i in 60:
+  RenderingServer.force_draw(false)
+  await process_frame
+  cpu.append(RenderingServer.viewport_get_measured_render_time_cpu(viewport.get_viewport_rid()))
+  gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(viewport.get_viewport_rid()))
+ cpu.sort();gpu.sort()
+ return {'cpu_ms_median':cpu[30],'gpu_ms_median':gpu[30],'gpu_ms_p95':gpu[57]}
+func run()->void:
+ DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
+ DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+ viewport=SubViewport.new();viewport.size=Vector2i(1671,941);viewport.own_world_3d=true
+ viewport.msaa_3d=Viewport.MSAA_4X;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS
+ root.add_child(viewport)
+ RenderingServer.viewport_set_measure_render_time(viewport.get_viewport_rid(),true)
+ editor=load('res://scenes/terrain_editor.tscn').instantiate();viewport.add_child(editor)
+ editor.hud.hide();editor.brush.hide();editor.set_process(false);editor.camera.set_process(false)
+ var sources:Dictionary=JSON.parse_string(FileAccess.get_file_as_string('/tmp/weathering_shader_comparison.json'))
+ var shaders:Dictionary={}
+ for path in sources:shaders[path]=load('res://'+path)
+ var results:Array=[]
+ for view in ['overview','rim']:
+  if view=='overview':
+   editor.camera.position=Vector3(11.36034,21,38.61823);editor.camera.rotation_degrees=Vector3(-27,16,0)
+  else:
+   editor.camera.position=Vector3(-8.658074,7,14.65468);editor.camera.rotation_degrees=Vector3(-30,16,0)
+  for cycle in 3:
+   # Alternation reduces bias from warm caches and host drift.
+   for state in (['baseline','candidate'] if cycle%2==0 else ['candidate','baseline']):
+    for path in sources:shaders[path].code=sources[path][state]
+    var sample:=await measure()
+    sample.merge({'view':view,'cycle':cycle,'state':state});results.append(sample)
+    print('WEATHERING COST SAMPLE: ',JSON.stringify(sample))
+ var report:={'adapter':RenderingServer.get_video_adapter_name(),'renderer':RenderingServer.get_current_rendering_method(),'resolution':[1671,941],'baseline':'cbcfcc1','candidate':'400fb5c','warmup_frames_per_sample':48,'measured_frames_per_sample':60,'samples':results,'scope':'One M4 Pro, fixed same-process cameras. Does not establish target-laptop FPS or long-idle performance.'}
+ FileAccess.open('res://art/review/terrain_fidelity/2026-10-15/material_weathering/timing_probe_rerun.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
+ print('WEATHERING COST COMPLETE')
+ quit()

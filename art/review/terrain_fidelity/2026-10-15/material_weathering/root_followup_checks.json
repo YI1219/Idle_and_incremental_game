@@ -1,0 +1,8 @@
+{
+  "candidate": "weather3",
+  "captures": 11,
+  "principal_views_inspected": 8,
+  "rim_compression_passed": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-15 15:04:51.786 godot[1130:33282851] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-15 15:04:55.734 godot[1130:33282851] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nLIP COMPRESSION RENDER: { \"standing_pixels\": 2398, \"compressed_pixels\": 0, \"local_mask_pixels\": 1573, \"passed\": true }\n",
+  "geometry_unchanged": true
+}

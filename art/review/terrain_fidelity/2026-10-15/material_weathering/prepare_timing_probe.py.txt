@@ -1,0 +1,10 @@
+import subprocess,re,json,hashlib
+from pathlib import Path
+root=Path.cwd();prefix=Path('shaders/terrain_editor')
+names=['ground.gdshader','shore.gdshader','rim_green.gdshader','cliff_column.gdshader','cliff.gdshader','cliff_rock.gdshader','lake_bed.gdshader','stone_mantle.gdshader']
+def read(path,baseline):
+    return subprocess.check_output(['git','show',f'cbcfcc1:{path}'],text=True) if baseline else (root/path).read_text()
+def expand(path,baseline):
+    return re.sub(r'#include "([^"]+)"',lambda m:expand(path.parent/m[1],baseline),read(path,baseline))
+shaders={str(prefix/n):dict(baseline=expand(prefix/n,True),candidate=expand(prefix/n,False)) for n in names}
+Path('/tmp/weathering_shader_comparison.json').write_text(json.dumps(shaders))
