@@ -1,0 +1,43 @@
+{
+  "baseline": "5fe569a / model4",
+  "selected": "rooted3 / main_v4 + tall_v2",
+  "source_original_hashes_unchanged": true,
+  "red_evidence": {
+    "selected_tall_source": "/tmp/tall-red.log: missing refined tall source, exit1",
+    "root_support": "/tmp/rooted2-root-diagnostic.log:13 unsupported sample roots, exit1"
+  },
+  "green_evidence": {
+    "headless_scripts": 14,
+    "rendered_scripts": 3,
+    "root_support": {
+      "anchors": 4407,
+      "unsupported": 0,
+      "invalid": 0,
+      "uploaded_values": 193551
+    },
+    "rim_compression": {
+      "compressed_pixels": 0,
+      "local_mask_pixels": 1362,
+      "passed": true,
+      "standing_pixels": 2309
+    }
+  },
+  "art_review": "Independent reviewer supports retaining modest high-stone shoulder and lower-cuff improvement; no actionable runtime defect. Rejected tall_v1 convex lower point. Tall_v1 provenance corrected to include convex reconstruction.",
+  "principal_views_inspected": [
+    "courtyard",
+    "overview",
+    "distant",
+    "ground",
+    "shore",
+    "rim",
+    "reverse",
+    "bottom"
+  ],
+  "captures": 11,
+  "limitations": [
+    "Broad panels and crisp grass/stone transitions remain",
+    "Angular lower joins remain",
+    "Water unchanged in this pass",
+    "No arbitrary-layout or target-hardware acceptance"
+  ]
+}

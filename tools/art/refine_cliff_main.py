@@ -1,4 +1,4 @@
-"""Blender: refine the retained CC0 Rock_Medium_2 source, never its original.
+"""Blender: refine retained CC0 Rock_Medium_1/2 sources, never its original.
 
 Run: blender --factory-startup --background --python tools/art/refine_cliff_main.py
 Only the selected existing cliff task is authorized for Codex Blender operation.
@@ -8,7 +8,10 @@ from mathutils import Vector
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 VERSION=sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'v4'
-SOURCE=ROOT/'assets/nature/quaternius/Rock_Medium_2.gltf'
+assert VERSION in ['v1','v2','v3','v4','tall_v1','tall_v2'], 'Select a recorded refinement variant'
+TALL=VERSION.startswith('tall_')
+STEM='cliff_'+VERSION if TALL else 'cliff_main_'+VERSION
+SOURCE=ROOT/('assets/nature/quaternius/Rock_Medium_1.gltf' if TALL else 'assets/nature/quaternius/Rock_Medium_2.gltf')
 OUT=ROOT/'art/work/cliff_refinement/2026-10-15/output'
 REVIEW=ROOT/'art/review/terrain_fidelity/2026-10-15/cliff_refinement'
 OUT.mkdir(parents=True,exist_ok=True)
@@ -24,7 +27,7 @@ bm=bmesh.new();bm.from_mesh(obj.data)
 bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=1e-6)
 # Remove only triangulation diagonals on the source's truly coplanar faces.
 bmesh.ops.dissolve_limit(bm,angle_limit=.002,verts=list(bm.verts),edges=list(bm.edges),delimit=set())
-if VERSION=='v4':
+if VERSION in ['v4','tall_v1']:
  # The retained source has thin inward knife folds. Repair its outer skin
  # from its own silhouette vertices before adding broad geological turns.
  source_points=[v.co.copy() for v in bm.verts]
@@ -50,10 +53,18 @@ if VERSION=='v2':
  for feature in features:
   feature['profile']=[p for p in feature['profile'] if p[0] not in [.14,.60,.32,.54] or (feature is features[0] and p[0]==.32)]
   feature['profile']=[(h,amount*.62) for h,amount in feature['profile']]
-if VERSION in ['v3','v4']:
+if VERSION in ['v3','v4'] or TALL:
  features[0]['profile']=[(0,-.008),(.23,.052),(.48,-.016),(1,0)]
  features[1]['profile']=[(0,0),(.43,.050),(.69,-.020),(1,.006)]
  features[2]['profile']=[(0,0),(.62,.042),(.89,-.012),(1,.006)]
+if TALL:
+ features[0].update(a=.30,b=-.20,profile=[(0,-.005),(.22,.055),(.50,-.018),(1,0)])
+ features[1].update(a=-.27,b=.25,profile=[(0,0),(.40,.072),(.72,-.018),(1,.008)])
+ features[2].update(a=.22,b=.15,profile=[(0,0),(.65,.050),(.92,-.008),(1,0)])
+if VERSION=='tall_v2':
+ features[0]['profile']=[(0,0),(.27,.028),(.64,-.006),(1,0)]
+ features[1]['profile']=[(0,0),(.42,.035),(.78,-.008),(1,0)]
+ features[2]['profile']=[(0,0),(.64,.025),(.93,-.005),(1,0)]
 for feature in features:
  for h,_ in feature['profile'][1:-1]:
   normal=Vector((feature['a']/size.x,feature['b']/size.y,1/size.z)).normalized()
@@ -71,7 +82,7 @@ for vertex in bm.verts:
  radial=Vector((u,v));radial.normalize()
  shift=Vector((0,0,0))
  for feature in features:
-  weight=smoothstep(.35 if VERSION in ['v3','v4'] else .02,.95 if VERSION in ['v3','v4'] else .88,radial.dot(feature['direction']))
+  weight=smoothstep(.35 if VERSION in ['v3','v4'] or TALL else .02,.95 if VERSION in ['v3','v4'] or TALL else .88,radial.dot(feature['direction']))
   level=h+feature['a']*u+feature['b']*v
   amount=profile(feature['profile'],level)*weight
   shift.x+=feature['direction'].x*size.x*amount
@@ -79,7 +90,7 @@ for vertex in bm.verts:
  # Keep the top asymmetrical without rounding away geological corners.
  shift.z+=size.z*(.040*u-.025*v)*smoothstep(.76,1,h)
  vertex.co=p+shift
-if VERSION in ['v2','v3','v4']:
+if VERSION in ['v2','v3','v4'] or TALL:
  # Collapse very short section intersections before triangulation/export.
  bmesh.ops.remove_doubles(bm,verts=list(bm.verts),dist=.012)
  bmesh.ops.dissolve_degenerate(bm,dist=.003,edges=list(bm.edges))
@@ -97,10 +108,10 @@ obj.data.materials.clear();material=bpy.data.materials.new('Neutral_Inspection')
 bsdf=material.node_tree.nodes.get('Principled BSDF');bsdf.inputs['Base Color'].default_value=(.55,.56,.54,1);bsdf.inputs['Roughness'].default_value=.9
 obj.data.materials.append(material)
 # Mesh/work source is retained; no camera/lights are baked into the GLB.
-blend=OUT/('cliff_main_'+VERSION+'.blend');glb=OUT/('cliff_main_'+VERSION+'.glb')
+blend=OUT/(STEM+'.blend');glb=OUT/(STEM+'.glb')
 bpy.ops.wm.save_as_mainfile(filepath=str(blend))
 bpy.ops.export_scene.gltf(filepath=str(glb),export_format='GLB',use_selection=True,export_materials='EXPORT',export_animations=False,export_cameras=False,export_lights=False)
 assert hashlib.sha256(SOURCE.read_bytes()).hexdigest()==original_hash
-report={'source':str(SOURCE.relative_to(ROOT)),'source_sha256':original_hash,'source_vertices':original_vertices,'source_triangles':original_triangles,'refined_triangles':triangles,'nonmanifold_edges':nonmanifold,'degenerate_faces':degenerate,'signed_volume':volume,'blend':str(blend.relative_to(ROOT)),'glb':str(glb.relative_to(ROOT)),'glb_sha256':hashlib.sha256(glb.read_bytes()).hexdigest(),'blender_version':bpy.app.version_string,'variant':VERSION,'operation':('Convex outer-skin reconstruction from retained source silhouette vertices repairs inherited inward knife folds; ' if VERSION=='v4' else '')+'Retained-source coplanar diagonal dissolve, oblique sectional cuts and three local directional shoulder profiles; no disconnected rubble or texture generation.','authorization':'User explicitly authorized Codex model-tool operation on 2026-10-15.'}
-(REVIEW/('refined_main_'+VERSION+'.json')).write_text(json.dumps(report,indent=2)+'\n')
+report={'source':str(SOURCE.relative_to(ROOT)),'source_sha256':original_hash,'source_vertices':original_vertices,'source_triangles':original_triangles,'refined_triangles':triangles,'nonmanifold_edges':nonmanifold,'degenerate_faces':degenerate,'signed_volume':volume,'blend':str(blend.relative_to(ROOT)),'glb':str(glb.relative_to(ROOT)),'glb_sha256':hashlib.sha256(glb.read_bytes()).hexdigest(),'blender_version':bpy.app.version_string,'variant':VERSION,'operation':('Convex outer-skin reconstruction from retained source silhouette vertices repairs inherited inward knife folds; ' if VERSION in ['v4','tall_v1'] else '')+'Retained-source coplanar diagonal dissolve, oblique sectional cuts and three local directional shoulder profiles; no disconnected rubble or texture generation.','authorization':'User explicitly authorized Codex model-tool operation on 2026-10-15.'}
+(REVIEW/(('refined_'+VERSION if TALL else 'refined_main_'+VERSION)+'.json')).write_text(json.dumps(report,indent=2)+'\n')
 print('REFINED MAIN CLIFF:',json.dumps(report))

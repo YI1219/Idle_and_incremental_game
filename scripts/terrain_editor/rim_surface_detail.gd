@@ -27,7 +27,8 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
     var tangent:=(b-a)/length;var out:=Vector2(tangent.y,-tangent.x)
     var count:=maxi(1,floori(length/.60))
     for k in count:
-     var center:=a.lerp(b,(k+.5)/count)
+     var offset:=.25+.50*_hash(a+b+Vector2(k,h))
+     var center:=a.lerp(b,(k+offset)/count)
      var choice:=_hash(center*2.1+Vector2(h,7))
      var patch:=_hash((center*.60).floor()+Vector2(h,29))
      if patch<.32 or choice<.18:continue
@@ -42,6 +43,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
       if on_crown:break
      if not on_crown:continue
      var width:=minf(length/count*.95,.17+.17*_hash(center+Vector2(4,2)))
+     width=minf(width,length/count*2.0*minf(offset,1.0-offset)*.95)
      var depth:=.018+.018*pow(_hash(center+Vector2(19,3)),1.6)
      # Compact turf grows out of the cap and follows the actual stone below.
      var left:=center-tangent*width*.5;var right:=center+tangent*width*.5
@@ -52,13 +54,14 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      for column in 9:
       var u:float=float(column)/8.0
       var c:=left.lerp(right,u)
+      if not _inside(regions[h],c-out*.035):valid=false;break
       var bell:=pow(sin(PI*u),.65)
       var lobes:=.82+.18*sin(u*TAU*2.7+choice*7.0)
       var d:=.008+depth*bell*lobes
       var section:Array=[
-       Vector3(c.x,h+.003,c.y)-outward*(.10*bell+.025),
-       Vector3(c.x,h+.020*bell+.003,c.y)-outward*.015]
-      var inner:Array=[section[0]-Vector3.UP*.028,section[1]-Vector3.UP*(.020*bell+.028)]
+       Vector3(c.x,h+.003,c.y)-outward*(.035*bell+.012),
+       Vector3(c.x,h+.006*bell+.003,c.y)-outward*.008]
+      var inner:Array=[section[0]-Vector3.UP*.028,section[1]-Vector3.UP*(.006*bell+.028)]
       for fraction:float in [.32,.68,1.0]:
        var contact=_drape(c,out,h-d*fraction,faces[h])
        if contact==null:valid=false;break
@@ -89,16 +92,26 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
       result.uv2.append(anchor)
       result.uv[i]=Vector2(h,clampf((h-p.y)/depth,0,1))
 
-     if valid and not blades.is_empty():_blades(result,center,tangent,out,h,choice,blades,blade_box)
+     if valid and not blades.is_empty():_blades(result,center,tangent,out,h,choice,blades,blade_box,regions[h])
  return result
 
-static func _blades(result,center:Vector2,tangent:Vector2,out:Vector2,h:float,choice:float,blades:PackedVector3Array,box:AABB)->void:
+static func _inside(loops:Array,p:Vector2)->bool:
+ var winding:=0
+ for loop:PackedVector2Array in loops:
+  if not Geometry2D.is_point_in_polygon(p,loop):continue
+  var area:=0.0
+  for i in loop.size():area+=loop[i].cross(loop[(i+1)%loop.size()])
+  winding+=1 if area>0.0 else -1
+ return winding>0
+
+static func _blades(result,center:Vector2,tangent:Vector2,out:Vector2,h:float,choice:float,blades:PackedVector3Array,box:AABB,regions:Array)->void:
  # Instance the existing curved grass source at its original proportions.
  # Small unequal fans grow from inside the cap, not a flattened hanging sheet.
  var foot:=Vector3(box.position.x+box.size.x*.5,box.position.y,box.position.z+box.size.z*.5)
- for fan in 2:
-  var at:=center+tangent*(-.065 if fan==0 else .065)-out*(.075 if fan==0 else .10)
-  var scale:float=(.19+.03*choice if fan==0 else .12+.03*choice)/maxf(box.size.y,.001)
+ for fan in 3:
+  var at:Vector2=center+tangent*[-.080,.035,.12][fan]-out*[.060,.085,.12][fan]
+  if not _inside(regions,at):continue
+  var scale:float=([.22,.16,.10][fan]+.025*choice)/maxf(box.size.y,.001)
   var lean:=Basis(Vector3(tangent.x,0,tangent.y),-.14-.08*choice)
   var basis:=lean*Basis(Vector3.UP,choice*TAU+fan*1.9)
   basis=basis.scaled(Vector3.ONE*scale)

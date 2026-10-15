@@ -1,0 +1,142 @@
+[
+  {
+    "test": "terrain_refined_cliff_source",
+    "exit_code": 0,
+    "elapsed_seconds": 0.34,
+    "tail": [
+      "REFINED CLIFF SOURCE: triangles=634 failures=0",
+      "REFINED TALL PROFILE 11: expected_faces=654 actual_faces=654 mismatch=false",
+      "REFINED TALL PROFILE 37: expected_faces=717 actual_faces=717 mismatch=false"
+    ]
+  },
+  {
+    "test": "terrain_source_crown",
+    "exit_code": 0,
+    "elapsed_seconds": 0.54,
+    "tail": [
+      "SOURCE CROWN: res://assets/nature/refined/cliff_main_v4.glb faces=602 cap=88 invalid_edges/bounds=0",
+      "SOURCE CROWN: res://assets/nature/refined/cliff_tall_v2.glb faces=722 cap=68 invalid_edges/bounds=0",
+      "SOURCE CROWN: res://assets/nature/refined/cliff_tall_v2.glb faces=768 cap=51 invalid_edges/bounds=0"
+    ]
+  },
+  {
+    "test": "terrain_source_cap_join",
+    "exit_code": 0,
+    "elapsed_seconds": 7.58,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "SOURCE CAP JOIN: concavity probes=32 missing=0"
+    ]
+  },
+  {
+    "test": "terrain_crown_integrity",
+    "exit_code": 0,
+    "elapsed_seconds": 0.44,
+    "tail": [
+      "",
+      "CROWN INTEGRITY: {\"closed_surfaces\":4,\"contained_source_entries\":3072,\"max_plane_violation\":-0.000000119209289550781,\"outward_surfaces\":4,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":3072,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}",
+      "PUBLISHED CROWN MATCH: true, entries=2256, max_difference=0.0, different_entries=0"
+    ]
+  },
+  {
+    "test": "terrain_stone_normals",
+    "exit_code": 0,
+    "elapsed_seconds": 0.24,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "STONE NORMALS: 15/15"
+    ]
+  },
+  {
+    "test": "terrain_rim_closure",
+    "exit_code": 0,
+    "elapsed_seconds": 27.09,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "RIM CLOSURE: [{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":6633,\"state\":\"default\"},{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":7200,\"state\":\"expand\"},{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":6474,\"state\":\"contract\"}]"
+    ]
+  },
+  {
+    "test": "terrain_rim_union",
+    "exit_code": 0,
+    "elapsed_seconds": 11.07,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "RIM UNION: 0 overlap probes; 2831 single-top probes; 17 closed-side probes; failures=0"
+    ]
+  },
+  {
+    "test": "terrain_rim_rhythm",
+    "exit_code": 0,
+    "elapsed_seconds": 7.53,
+    "tail": [
+      "",
+      "RIM RHYTHM: section 0.45m below crowns; outward offset=0.45; pairs=32 tight=21 clear gaps=8 widths=[0.06368860602379, 0.0, 0.0, 0.0, 0.0, 0.84758859872818, 0.0, 2.68871021270752, 0.71315604448318, 0.0, 0.0, 0.22117547690868, 0.0, 0.0, 0.0, 0.71969270706177, 0.61394166946411, 0.07520505785942, 0.0, 0.0, 0.08453841507435, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.49342107772827, 0.0, 0.10870096832514, 0.0] passed=true",
+      "RIM RHYTHM: section 0.45m below crowns; outward offset=0.2; pairs=32 tight=28 clear gaps=4 widths=[0.0, 0.0, 0.0, 0.0, 0.0, 0.19311100244522, 0.0, 2.28170347213745, 0.25805771350861, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.68235021829605, 0.0, 0.0, 0.0] passed=true"
+    ]
+  },
+  {
+    "test": "terrain_rim_outcrops",
+    "exit_code": 0,
+    "elapsed_seconds": 58.81,
+    "tail": [
+      "raise: rocks=14 tall=5 low=9 support_samples=1696 invalid=0 detached=0",
+      "water: rocks=12 tall=4 low=8 support_samples=1485 invalid=0 detached=0",
+      "RIM OUTCROPS: 24/24"
+    ]
+  },
+  {
+    "test": "terrain_rock_fall_clearance",
+    "exit_code": 0,
+    "elapsed_seconds": 22.09,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "ROCK/FALL CLEARANCE: 140 curtain samples, 0 inside stones"
+    ]
+  },
+  {
+    "test": "terrain_shrub_support",
+    "exit_code": 0,
+    "elapsed_seconds": 58.55,
+    "tail": [
+      "expand: shrubs=27 base_points=8532 unsupported=0",
+      "contract: shrubs=24 base_points=7584 unsupported=0",
+      "SHRUB SUPPORT: 40764 actual base points; 0 unsupported; coverage=true"
+    ]
+  },
+  {
+    "test": "terrain_vine_contact",
+    "exit_code": 0,
+    "elapsed_seconds": 69.09,
+    "tail": [
+      "",
+      "VINE WALL OWNERSHIP: closest=true, bounded=true",
+      "TERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":391,\"fixture\":\"default\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":391,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":400,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":405,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250014811754227,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":421,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250015053898096,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}"
+    ]
+  },
+  {
+    "test": "terrain_rim_tuft",
+    "exit_code": 0,
+    "elapsed_seconds": 8.66,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "RIM TUFT: raised blade vertices=43761 uploaded=193551 triangles=64465 roots=4407 unsupported=0 invalid=0 passed=true"
+    ]
+  },
+  {
+    "test": "terrain_rim_detail",
+    "exit_code": 0,
+    "elapsed_seconds": 8.85,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "RIM DETAIL: short root vertices=25934 anchors=76800 depth bands=7 passed=true"
+    ]
+  }
+]

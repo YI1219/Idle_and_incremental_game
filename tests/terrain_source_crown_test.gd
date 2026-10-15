@@ -5,7 +5,7 @@ func run()->void:
  var path:='res://scripts/terrain_editor/source_stone_crown.gd'
  if not ResourceLoader.exists(path):push_error('Retained-source crown clipping unavailable');quit(1);return
  var models=load('res://scripts/terrain_editor/terrain_models.gd').new()
- for spec:Array in [['q:Rock_Medium_1',.72],['q:Rock_Medium_2',.72],['q:Rock_Medium_1',.86],['q:Rock_Medium_2',.62],['res://assets/nature/refined/cliff_main_v4.glb',.72],['res://assets/nature/refined/cliff_main_v4.glb',.62]]:
+ for spec:Array in [['q:Rock_Medium_1',.72],['q:Rock_Medium_2',.72],['q:Rock_Medium_1',.86],['q:Rock_Medium_2',.62],['res://assets/nature/refined/cliff_main_v4.glb',.72],['res://assets/nature/refined/cliff_main_v4.glb',.62],['res://assets/nature/refined/cliff_tall_v2.glb',.72],['res://assets/nature/refined/cliff_tall_v2.glb',.86]]:
   var id:String=spec[0]
   var source:Array=models._load(id,'cliff_rock')
   var merged:Dictionary=models._merge(source)

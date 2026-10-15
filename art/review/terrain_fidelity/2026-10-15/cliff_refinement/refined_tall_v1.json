@@ -1,0 +1,17 @@
+{
+  "source": "assets/nature/quaternius/Rock_Medium_1.gltf",
+  "source_sha256": "5d1ab1fa03218f4a908728ed0eabe6486344a7e4f510b0d3d6f837fd1d011bd8",
+  "source_vertices": 351,
+  "source_triangles": 342,
+  "refined_triangles": 620,
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "signed_volume": 10.073418523459415,
+  "blend": "art/work/cliff_refinement/2026-10-15/output/cliff_tall_v1.blend",
+  "glb": "art/work/cliff_refinement/2026-10-15/output/cliff_tall_v1.glb",
+  "glb_sha256": "8acc8f53d99fac08f1de6ea8f3d8a59d38ff93883c6f9e8136f35c2440f4d347",
+  "blender_version": "5.2.1 LTS",
+  "variant": "tall_v1",
+  "operation": "Convex outer-skin reconstruction from retained source silhouette vertices; Retained-source coplanar diagonal dissolve, oblique sectional cuts and three local directional shoulder profiles; no disconnected rubble or texture generation.",
+  "authorization": "User explicitly authorized Codex model-tool operation on 2026-10-15."
+}

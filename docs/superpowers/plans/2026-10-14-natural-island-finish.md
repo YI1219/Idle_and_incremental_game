@@ -89,3 +89,15 @@ The user explicitly authorizes Codex to operate model tools and cannot optimize 
 Ruling: refine the existing licensed source directly rather than inventing a replacement model; latest user authorization removes the previous Blender handoff blocker. Existing generated concept is a shape guide, not model evidence.
 
 Selected v4:634 triangles; inherited thin knife folds repaired from source silhouette vertices, broad local shoulders, original6 source hashes unchanged. V1/v2 rejected for banding; v3 retained inherited folds. All13 headless checks plus actual editor339/339 and regeneration42/42 pass. Main broad wall/source1 and grass contacts remain open; no full-goal or target-device claim.
+
+## Remaining high stone and rooted contact — October15 continuation
+
+Previous goal turn made actual progress: main v4 integrated, checked and pushed5fe569a. This pass refines remaining source1 and root-cuff composition under the same user authorization, with unchanged layout, main v4 and continuous bottom.
+
+- [x] Inspect source1 and matched model4; add failing selected-tall-source regression.
+- [x] Save/inspect versioned Blender tall variants; reject convex tall_v1's pointed lower mass. Select tall_v2 retaining source topology and broader oblique turns,816tri, zero nonmanifold/degenerate faces. Original source hashes unchanged.
+- [x] Inspect full outcrop and clipped wall in actual11-view tall2 captures; all8 source/crown closure cases pass.
+- [x] Reduce raised oval cuff top, retain3 unequal uniformly scaled grass fans and jittered intervals. Rooted2 uncovered13 unsupported sample roots; rooted3 bounds patch widths and checks actual cap winding for cuff/fan anchors, then0unsupported/4,407 roots. Rooted1 parse-error captures are invalid, removed from comparison evidence.
+- [x] Complete14 affected headless and3 rendered editing/compression checks on final rooted3; inspect8 matched principal views, independent review, update current docs/gallery and commit/push.
+
+Independent review supports modest high-stone/root-contact improvement, no actionable runtime defect; report conditional for rejected tall_v1 convex reconstruction corrected. Broad panel masses, crisp cap contacts and water finish remain open, not full goal acceptance.

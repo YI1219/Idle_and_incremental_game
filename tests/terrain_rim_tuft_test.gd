@@ -13,7 +13,8 @@ func run():
   if p.y>h+.30 or not p.is_finite() or not cover.normals[i].is_finite() or absf(cover.normals[i].length()-1.0)>.002:invalid+=1
   roots[Vector3(anchor.x,h,anchor.y)]=true
  for root:Vector3 in roots:
-  if not field.contains(field.rim_regions[root.y],Vector2(root.x,root.z)):unsupported+=1
+  if not field.contains(field.rim_regions[root.y],Vector2(root.x,root.z)):
+   unsupported+=1;print('UNSUPPORTED TUFT ROOT: ',root)
  var uploaded:=0
  for chunk:Vector2i in field.triangle_chunks:
   var mesh:Mesh=field.build(chunk).rim_green

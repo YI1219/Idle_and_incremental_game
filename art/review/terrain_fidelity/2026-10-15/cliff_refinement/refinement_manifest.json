@@ -92,19 +92,19 @@
     "user_scope": "Side stone masses and irregular island-edge shape; retain uneven shoulders, corners and recesses. Soften light/material joins, not the whole physical silhouette. Reference does not prescribe copying layout."
   },
   "current_runtime_evidence": {
-    "revision": "2bf14d0 plus retained-source v4 candidate",
-    "tag": "model4",
+    "revision": "5fe569a plus tall_v2 and rooted3 candidate",
+    "tag": "rooted3",
     "scope": "Latest material/weathering, limited water reflection and shore seating retained; main cliff source shapes still lack unequal shoulders and fractures. Images are actual Godot captures, not concepts.",
     "files": [
       {
-        "file": "model4_rim.png",
-        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/model4_rim.png",
-        "sha256": "bb72168392885169241804ad38c59b472f0f5b98dc79bb40df869c6428cce076"
+        "file": "rooted3_rim.png",
+        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/rooted3_rim.png",
+        "sha256": "cd55b9125fdd25649fcd7e49fa5fa743a6555807fa96af812bc12b83fd2a1f99"
       },
       {
-        "file": "model4_overview.png",
-        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/model4_overview.png",
-        "sha256": "d0f46c6080e2777c9c3f8c8df1a9d2378dba1719abf092efd95941526656a665"
+        "file": "rooted3_overview.png",
+        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/rooted3_overview.png",
+        "sha256": "ab9bf9928bac5b6b01806f74b05feb755f3cc0e19fe7747e622d5ee995d1ac8e"
       }
     ]
   },
@@ -113,5 +113,11 @@
     "report": "art/review/terrain_fidelity/2026-10-15/cliff_refinement/refined_main_v4.json",
     "user_delivery_required": false,
     "acceptance": "Modest local improvement, full art goal incomplete"
+  },
+  "selected_tall_refinement": {
+    "runtime": "assets/nature/refined/cliff_tall_v2.glb",
+    "report": "art/review/terrain_fidelity/2026-10-15/cliff_refinement/refined_tall_v2.json",
+    "user_delivery_required": false,
+    "acceptance": "Modest shoulder variation; full art incomplete"
   }
 }
