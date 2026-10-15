@@ -90,5 +90,22 @@
     "file": "floating_island_user_target.png",
     "sha256": "a21112eb7017184b4f5049e2ea981d6ba11da511eb2486062c5deebc7e78b3cc",
     "user_scope": "Side stone masses and irregular island-edge shape; retain uneven shoulders, corners and recesses. Soften light/material joins, not the whole physical silhouette. Reference does not prescribe copying layout."
+  },
+  "current_runtime_evidence": {
+    "revision": "1c2ebc7",
+    "tag": "shore1",
+    "scope": "Latest material/weathering, limited water reflection and shore seating retained; main cliff source shapes still lack unequal shoulders and fractures. Images are actual Godot captures, not concepts.",
+    "files": [
+      {
+        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/shore1_rim.png",
+        "file": "shore1_rim.png",
+        "sha256": "3c1b7d2702253036b49031bd2ae16ce11cd6672291fc0c6bfc6f6ea18f090c9a"
+      },
+      {
+        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/shore1_overview.png",
+        "file": "shore1_overview.png",
+        "sha256": "d2e73be0ffa631b6acac25fc937ad6ee32ca078191db0cf567a8b9e93492a4a6"
+      }
+    ]
   }
 }

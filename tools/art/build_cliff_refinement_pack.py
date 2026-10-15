@@ -42,6 +42,10 @@ for view in ['front', 'left', 'right', 'back', 'quarter']:
 for name in ['natural12_rim.png', 'natural12_overview.png', 'fracture2_rim.png', 'fracture2_overview.png']:
     source = ROOT / 'art/review/terrain_fidelity/2026-10-14/courtyard_finish' / name
     shutil.copy2(source, BASE / 'reference' / name)
+for record in manifest.get('current_runtime_evidence', {}).get('files', []):
+    source = ROOT / record['source']
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == record['sha256']
+    shutil.copy2(source, BASE / 'reference' / record['file'])
 shutil.copy2(REVIEW / 'concept-generation.md', BASE / 'reference/concept-generation.md')
 shutil.copy2(ROOT / 'tools/art/templates/cliff_refinement.html', BASE / 'index.html')
 (BASE / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
@@ -59,5 +63,8 @@ with zipfile.ZipFile(archive) as zipped:
     assert zipped.testzip() is None
     for record in manifest['source_files']:
         payload = zipped.read('2026-10-15/input/' + record['file'])
+        assert hashlib.sha256(payload).hexdigest() == record['sha256']
+    for record in manifest.get('current_runtime_evidence', {}).get('files', []):
+        payload = zipped.read('2026-10-15/reference/' + record['file'])
         assert hashlib.sha256(payload).hexdigest() == record['sha256']
 print(f'Verified {len(manifest["source_files"])} unchanged source files: {archive}')
