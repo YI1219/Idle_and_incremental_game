@@ -72,3 +72,7 @@ Latest user feedback identifies uniformly clean rock faces and separated grass/s
 ## Bounded near-shore reflection follow-up
 
 `reflection3` adds current-screen opaque reflection over the physical bed. Real rendered mirror-marker test failed on the old shader then passes expected/moved/angled positions with disabled/removed/stale controls. Long/strong trace studies produced pale reflected ghost masses; selected variant reduces range/strength and fades 3–12 m. Reviewer identified a minor bisection endpoint mismatch, now fixed by resampling the validated hit. Eleven matched captures, eight principal views inspected. No geometry/layout change, full reflection and temporal/performance acceptance still open. See reflection review for exact checks and invalid/limited timing conclusions.
+
+## Shore-stone support correction
+
+Latest user feedback: shore stones feel floating and separated from ground. Lowest dry vertices already intersected land, but lower flanks emerged too high; fully wet accents used a fixed offset from water instead of actual lake-bed support. `shore1` seats the retained mesh lower-third in actual bank triangles and its wet underside on the actual bed. New four-edit-fixture regression red901 sample failures → green0/4,445 probes, stone counts retained; shore props/transition and rendered regeneration pass. Eleven captures/eight principal views inspected; no geometry/source/XZ-layout change. Contact improves, simple stone shapes and hard material joins remain.

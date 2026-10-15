@@ -571,7 +571,8 @@ func _shore_stones(result:Dictionary,field,seed_value:int,cell:Vector2i,block:in
 		var yaw:=-angle+(random_at(cell,seed_value,1240+salt)-.5)*(.6 if kind=="shore_rock" else TAU)
 		var tilt:=(random_at(cell,seed_value,1260+salt)-.5)*.22
 		var basis:=Basis(Vector3(out.x,0,out.y),tilt)*Basis(Vector3.UP,yaw).scaled(size)
-		result[kind].append(Transform3D(basis,Vector3(at.x,water_y-sink-depth,at.y)))
+		var seated:=preload("res://scripts/terrain_editor/shore_stone_support.gd").seat(field,assets[kind][0].mesh,Transform3D(basis,Vector3(at.x,water_y-sink-depth,at.y)),water_y)
+		if not seated.is_empty():result[kind].append(seated.pose)
 func _clear_of_rim(pose:Transform3D)->bool:
 	# A shrub stays on open turf. Sitting it on a rim head would either clip
 	# the stone or lift base vertices off the ground beside it.
