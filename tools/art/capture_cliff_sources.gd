@@ -24,8 +24,11 @@ func run():
  viewport.add_child(environment)
  var light:=DirectionalLight3D.new();light.rotation_degrees=Vector3(-38,-28,0);light.light_energy=1.0;viewport.add_child(light)
  camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.current=true;viewport.add_child(camera)
- for id:String in ["Rock_Medium_1","Rock_Medium_2"]:
-  var path:="res://assets/nature/quaternius/"+id+".gltf"
+ var sources:={"Rock_Medium_1":"res://assets/nature/quaternius/Rock_Medium_1.gltf","Rock_Medium_2":"res://assets/nature/quaternius/Rock_Medium_2.gltf"}
+ var args:=OS.get_cmdline_user_args()
+ if not args.is_empty():sources={args[0].get_file().get_basename():args[0]}
+ for id:String in sources:
+  var path:String=sources[id]
   var document:=GLTFDocument.new();var state:=GLTFState.new()
   if document.append_from_file(path,state)!=OK:push_error("Cannot load "+path);quit(1);return
   var model:=document.generate_scene(state);var points:Array=[];bounds(model,Transform3D.IDENTITY,points)
@@ -42,6 +45,7 @@ func run():
    if error!=OK:push_error("Capture failed");quit(1);return
   reports.append({"source":path,"source_bounds":str(box),"camera_size":camera.size,"views":views.keys(),"geometry":"Unchanged source geometry; neutral preview material override only"})
   viewport.remove_child(model);model.free()
- FileAccess.open(OUT+"source_views.json",FileAccess.WRITE).store_string(JSON.stringify(reports,"\t"))
+ var report_name:="source_views" if args.is_empty() else args[0].get_file().get_basename()+"_views"
+ FileAccess.open(OUT+report_name+".json",FileAccess.WRITE).store_string(JSON.stringify(reports,"\t"))
  print("CLIFF SOURCE INSPECTION: ",reports.size()," sources, five views each")
  quit()

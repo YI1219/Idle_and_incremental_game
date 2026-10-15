@@ -1,0 +1,15 @@
+[
+	{
+		"camera_size": 4.14718437194824,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://art/work/cliff_refinement/2026-10-15/output/cliff_main_v3.glb",
+		"source_bounds": "[P: (-1.713642, -0.050842, -1.230431), S: (3.071988, 1.88351, 2.60052)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

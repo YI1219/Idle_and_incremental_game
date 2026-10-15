@@ -92,20 +92,26 @@
     "user_scope": "Side stone masses and irregular island-edge shape; retain uneven shoulders, corners and recesses. Soften light/material joins, not the whole physical silhouette. Reference does not prescribe copying layout."
   },
   "current_runtime_evidence": {
-    "revision": "1c2ebc7",
-    "tag": "shore1",
+    "revision": "2bf14d0 plus retained-source v4 candidate",
+    "tag": "model4",
     "scope": "Latest material/weathering, limited water reflection and shore seating retained; main cliff source shapes still lack unequal shoulders and fractures. Images are actual Godot captures, not concepts.",
     "files": [
       {
-        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/shore1_rim.png",
-        "file": "shore1_rim.png",
-        "sha256": "3c1b7d2702253036b49031bd2ae16ce11cd6672291fc0c6bfc6f6ea18f090c9a"
+        "file": "model4_rim.png",
+        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/model4_rim.png",
+        "sha256": "bb72168392885169241804ad38c59b472f0f5b98dc79bb40df869c6428cce076"
       },
       {
-        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/shore1_overview.png",
-        "file": "shore1_overview.png",
-        "sha256": "d2e73be0ffa631b6acac25fc937ad6ee32ca078191db0cf567a8b9e93492a4a6"
+        "file": "model4_overview.png",
+        "source": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/model4_overview.png",
+        "sha256": "d0f46c6080e2777c9c3f8c8df1a9d2378dba1719abf092efd95941526656a665"
       }
     ]
+  },
+  "selected_refinement": {
+    "runtime": "assets/nature/refined/cliff_main_v4.glb",
+    "report": "art/review/terrain_fidelity/2026-10-15/cliff_refinement/refined_main_v4.json",
+    "user_delivery_required": false,
+    "acceptance": "Modest local improvement, full art goal incomplete"
   }
 }

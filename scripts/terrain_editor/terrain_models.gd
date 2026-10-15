@@ -4,7 +4,8 @@ extends RefCounted
 var assets:Dictionary={}
 ## Microseconds to bake the six rim/underside block meshes. They are instanced after that.
 var block_bake_us:=0
-const IDS={"rim_outcrop":"q:Rock_Medium_1","rim_shelf":"q:Rock_Medium_2","bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
+const REFINED_CLIFF="res://assets/nature/refined/cliff_main_v4.glb"
+const IDS={"rim_outcrop":"q:Rock_Medium_1","rim_shelf":REFINED_CLIFF,"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
 	if not assets.is_empty():return
 	for kind in IDS:assets[kind]=_load(IDS[kind],kind)
@@ -200,7 +201,7 @@ func _rock_body_models(seed_value:int,root:bool=false)->Array:
 	if root:
 		built=preload("res://scripts/terrain_editor/procedural_stone.gd").build(seed_value,true)
 	else:
-		var source_id:String={11:"q:Rock_Medium_1",23:"q:Rock_Medium_2",37:"q:Rock_Medium_1",41:"q:Rock_Medium_2"}.get(seed_value,"q:Rock_Medium_1")
+		var source_id:String={11:"q:Rock_Medium_1",23:REFINED_CLIFF,37:"q:Rock_Medium_1",41:REFINED_CLIFF}.get(seed_value,"q:Rock_Medium_1")
 		var source:Dictionary=_merge(_load(source_id,"cliff_rock"))
 		built=preload("res://scripts/terrain_editor/source_stone_crown.gd").build(source.mesh,.68,{11:.72,23:.72,37:.86,41:.62}.get(seed_value,.72))
 	var mesh:ArrayMesh=built.mesh
@@ -267,6 +268,7 @@ func _load(id:String,kind:String)->Array:
 	var document:=GLTFDocument.new()
 	var state:=GLTFState.new()
 	var path:="res://assets/nature/kenney/"+id+".glb"
+	if id.begins_with("res://"):path=id
 	if id.begins_with("q:"):path="res://assets/nature/quaternius/"+id.trim_prefix("q:")+".gltf"
 	if document.append_from_file(path,state)!=OK:
 		push_error("Cannot load CC0 model: "+path)

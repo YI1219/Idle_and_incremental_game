@@ -1,0 +1,15 @@
+{
+  "source": "assets/nature/quaternius/Rock_Medium_2.gltf",
+  "source_sha256": "fac2d05a05f2d0d2098de59c09b58f42cc875c9caca4fd4c4bd57f3d36e7b12e",
+  "source_vertices": 249,
+  "source_triangles": 244,
+  "refined_triangles": 746,
+  "nonmanifold_edges": 0,
+  "degenerate_faces": 0,
+  "signed_volume": 7.832123489232328,
+  "blend": "art/work/cliff_refinement/2026-10-15/output/cliff_main_v3.blend",
+  "glb": "art/work/cliff_refinement/2026-10-15/output/cliff_main_v3.glb",
+  "glb_sha256": "872e764d8146693c40746502829de3b7d2737bc46c9fd63719a9f870f5c13cc1",
+  "operation": "Retained-source coplanar diagonal dissolve, oblique sectional cuts and three local directional shoulder profiles; no new original body, disconnected rubble or texture generation.",
+  "authorization": "User explicitly authorized Codex model-tool operation on 2026-10-15."
+}

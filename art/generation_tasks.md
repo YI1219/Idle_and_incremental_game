@@ -1,5 +1,5 @@
 # Current Tripo generation tasks
-Updated: 2026-10-15. **No Tripo tasks to submit or texturing to pay for. Current user action is existing-source Blender cliff refinement, described below.**
+Updated: 2026-10-15. **No Tripo tasks to submit or texturing to pay for. Codex now operates the selected existing-source Blender cliff refinement under the latest explicit authorization; no user model delivery is pending.**
 
 | Asset | Status | Current action |
 | --- | --- | --- |
@@ -8,9 +8,9 @@ Updated: 2026-10-15. **No Tripo tasks to submit or texturing to pay for. Current
 | Old nature-asset four-view batch | Deleted | Do not upload or restore |
 | Riverbank, bridge, and other nature modules | Evaluate free assets and validate a small scene first | No custom generation task published |
 
-Current selected step: refine one existing `Rock_Medium_2` into a grey main cliff stone in Blender, then validate it in Godot before doing the other variants. [Inspected sources and concrete handoff](review/terrain_fidelity/2026-10-15/cliff_refinement/README.md); [modification guide](work/cliff_refinement/2026-10-15/START_HERE.md). User selected existing-source refinement first; new-model generation is a fallback only if the actual integrated result is insufficient. The concept sheet and original-source views are not Tripo inputs. Do not submit them.
+Current selected existing-source step has produced and integrated `cliff_main_v4`: a634-triangle Blender refinement of `Rock_Medium_2`, compared as `model4_*` against `shore1_*`. No user model delivery is pending; further source/contact work remains with Codex. [Inspected sources and concrete handoff](review/terrain_fidelity/2026-10-15/cliff_refinement/README.md); [modification guide](work/cliff_refinement/2026-10-15/START_HERE.md). User selected existing-source refinement first; new-model generation is a fallback only if the actual integrated result is insufficient. The concept sheet and original-source views are not Tripo inputs. Do not submit them.
 
-Follow [current consensus](../CURRENT_CONTEXT.md) and [asset status](README.md). The user operates Blender/Tripo; Codex prepares visual guidance, parameters when needed, and engine integration/validation. Do not use the Cursor collaboration mechanism.
+Follow [current consensus](../CURRENT_CONTEXT.md) and [asset status](README.md). The user still operates Tripo. For this selected cliff task, latest explicit authorization permits Codex to operate Blender refinement, inspect models and perform engine integration/validation. Do not use the Cursor collaboration mechanism.
 
 The 2026-09-21 realistic furnace front/left trials were rejected and must not be submitted. The 2D concept studies remain references only; they are not a pending furnace task.
 

@@ -1,0 +1,132 @@
+[
+  {
+    "test": "terrain_refined_cliff_source",
+    "exit_code": 0,
+    "elapsed_seconds": 0.34,
+    "tail": [
+      "REFINED CLIFF PROFILE 23: expected_faces=698 actual_faces=698 mismatch=false",
+      "REFINED CLIFF PROFILE 41: expected_faces=601 actual_faces=601 mismatch=false",
+      "REFINED CLIFF SOURCE: triangles=766 failures=0"
+    ]
+  },
+  {
+    "test": "terrain_source_crown",
+    "exit_code": 0,
+    "elapsed_seconds": 0.53,
+    "tail": [
+      "SOURCE CROWN: q:Rock_Medium_2 faces=258 cap=47 invalid_edges/bounds=0",
+      "SOURCE CROWN: res://assets/nature/refined/cliff_main_v2.glb faces=772 cap=74 invalid_edges/bounds=0",
+      "SOURCE CROWN: res://assets/nature/refined/cliff_main_v2.glb faces=678 cap=77 invalid_edges/bounds=0"
+    ]
+  },
+  {
+    "test": "terrain_source_cap_join",
+    "exit_code": 0,
+    "elapsed_seconds": 5.56,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "SOURCE CAP JOIN: concavity probes=44 missing=0"
+    ]
+  },
+  {
+    "test": "terrain_crown_integrity",
+    "exit_code": 0,
+    "elapsed_seconds": 0.54,
+    "tail": [
+      "",
+      "CROWN INTEGRITY: {\"closed_surfaces\":4,\"contained_source_entries\":3072,\"max_plane_violation\":-0.000000119209289550781,\"outward_surfaces\":4,\"scope\":\"Actual generated crown boundaries and all current input vertex entries; duplicates included. Does not prove branch coverage or arbitrary inputs.\",\"source_entries\":3072,\"surfaces\":[{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96},{\"closed\":true,\"outward\":true,\"triangles\":188,\"vertices\":96}]}",
+      "PUBLISHED CROWN MATCH: true, entries=2256, max_difference=0.0, different_entries=0"
+    ]
+  },
+  {
+    "test": "terrain_stone_normals",
+    "exit_code": 0,
+    "elapsed_seconds": 0.15,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "STONE NORMALS: 15/15"
+    ]
+  },
+  {
+    "test": "terrain_rim_closure",
+    "exit_code": 0,
+    "elapsed_seconds": 19.1,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "RIM CLOSURE: [{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":5220,\"state\":\"default\"},{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":5715,\"state\":\"expand\"},{\"maximum_recess_m\":0.400866794586181,\"misses\":[],\"probes\":5037,\"state\":\"contract\"}]"
+    ]
+  },
+  {
+    "test": "terrain_rim_union",
+    "exit_code": 0,
+    "elapsed_seconds": 7.79,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "RIM UNION: 0 overlap probes; 2433 single-top probes; 13 closed-side probes; failures=0"
+    ]
+  },
+  {
+    "test": "terrain_rim_rhythm",
+    "exit_code": 0,
+    "elapsed_seconds": 5.46,
+    "tail": [
+      "",
+      "RIM RHYTHM: section 0.45m below crowns; outward offset=0.45; pairs=32 tight=21 clear gaps=10 widths=[0.00864715501666, 0.0, 0.17181076109409, 0.08194328844547, 0.0, 1.08960902690887, 0.0, 2.75750279426575, 0.86438155174255, 0.0, 0.0, 0.2574203312397, 0.0, 0.0, 0.0, 0.56939351558685, 0.71709251403809, 0.47284331917763, 0.0, 0.0, 0.00389945716597, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.68838346004486, 0.0, 0.34022122621536, 0.0] passed=true",
+      "RIM RHYTHM: section 0.45m below crowns; outward offset=0.2; pairs=32 tight=28 clear gaps=4 widths=[0.0, 0.0, 0.0, 0.0, 0.0, 0.44015631079674, 0.0, 2.34528493881226, 0.33806550502777, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.86938405036926, 0.0, 0.0, 0.0] passed=true"
+    ]
+  },
+  {
+    "test": "terrain_rim_outcrops",
+    "exit_code": 0,
+    "elapsed_seconds": 42.32,
+    "tail": [
+      "raise: rocks=13 tall=5 low=8 support_samples=1578 invalid=0 detached=0",
+      "water: rocks=12 tall=4 low=8 support_samples=1458 invalid=0 detached=0",
+      "RIM OUTCROPS: 24/24"
+    ]
+  },
+  {
+    "test": "terrain_rock_fall_clearance",
+    "exit_code": 0,
+    "elapsed_seconds": 15.72,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "ROCK/FALL CLEARANCE: 140 curtain samples, 0 inside stones"
+    ]
+  },
+  {
+    "test": "terrain_shrub_support",
+    "exit_code": 0,
+    "elapsed_seconds": 45.0,
+    "tail": [
+      "expand: shrubs=27 base_points=8532 unsupported=0",
+      "contract: shrubs=24 base_points=7584 unsupported=0",
+      "SHRUB SUPPORT: 40764 actual base points; 0 unsupported; coverage=true"
+    ]
+  },
+  {
+    "test": "terrain_vine_contact",
+    "exit_code": 0,
+    "elapsed_seconds": 52.85,
+    "tail": [
+      "",
+      "VINE WALL OWNERSHIP: closest=true, bounded=true",
+      "TERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":390,\"fixture\":\"default\",\"max_absolute_gap\":0.0250015631318092,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":390,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250015631318092,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":399,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250015631318092,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":404,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250014811754227,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":420,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250015631318092,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}"
+    ]
+  },
+  {
+    "test": "terrain_rim_tuft",
+    "exit_code": 0,
+    "elapsed_seconds": 6.16,
+    "tail": [
+      "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+      "",
+      "RIM TUFT: raised blade vertices=21571 uploaded=130611 triangles=43355 roots=3409 unsupported=0 invalid=0 passed=true"
+    ]
+  }
+]

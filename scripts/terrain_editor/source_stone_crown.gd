@@ -14,7 +14,13 @@ static func build(source:ArrayMesh,height:float=.68,cut_fraction:float=.72)->Dic
    if a.y<=cut:polygon.append(a)
    if (a.y<cut and b.y>cut) or (a.y>cut and b.y<cut):
     var p:=a.lerp(b,(cut-a.y)/(b.y-a.y));p.y=cut
-    polygon.append(p);cap[Vector2(p.x,p.z).snapped(Vector2.ONE*.000001)]=p
+    # Nearby cut intersections can straddle a quantization boundary. Reuse
+    # the actual shared point in both wall and cap, avoiding a zero-width ear.
+    var shared:=false
+    for existing:Vector3 in cap.values():
+     if existing.distance_squared_to(p)<1e-10:p=existing;shared=true;break
+    polygon.append(p)
+    if not shared:cap[Vector2(p.x,p.z)]=p
   if polygon.size()>2:polygons.append(polygon)
  var bounds:=AABB(Vector3.ZERO,Vector3.ZERO);var first:=true
  for polygon:Array in polygons:

@@ -76,3 +76,16 @@ Latest user feedback identifies uniformly clean rock faces and separated grass/s
 ## Shore-stone support correction
 
 Latest user feedback: shore stones feel floating and separated from ground. Lowest dry vertices already intersected land, but lower flanks emerged too high; fully wet accents used a fixed offset from water instead of actual lake-bed support. `shore1` seats the retained mesh lower-third in actual bank triangles and its wet underside on the actual bed. New four-edit-fixture regression red901 sample failures → green0/4,445 probes, stone counts retained; shore props/transition and rendered regeneration pass. Eleven captures/eight principal views inspected; no geometry/source/XZ-layout change. Contact improves, simple stone shapes and hard material joins remain.
+
+## Authorized Blender source refinement — latest user correction
+
+The user explicitly authorizes Codex to operate model tools and cannot optimize models themselves. This supersedes the user-operated Blender handoff for the selected existing cliff source. Use the installed Blender5.2.1 CLI; originals and Tripo website restrictions remain.
+
+- [x] Refine a copy of Rock_Medium_2 in Blender: unequal tilted major faces and two/three local offset shoulders through the middle/lower body; no dense rubble or global rounding. Save versioned work and grey GLB, validate closed outward finite mesh and source hashes.
+- [x] Inspect neutral whole-source and clipped-wall views before runtime selection.
+- [x] Add the selected retained-source refinement to runtime crown profiles, preserving source fallback and authoritative cap/shore/closure/picking. Prove source selection with a failing-then-passing integration test and run existing source clipping/contact/closure/edit tests.
+- [x] Capture eleven matched actual island views; eight principal views inspected. Independent review supports v4 as a modest improvement, not full acceptance. Update stale user-action docs and commit/push this reversible candidate.
+
+Ruling: refine the existing licensed source directly rather than inventing a replacement model; latest user authorization removes the previous Blender handoff blocker. Existing generated concept is a shape guide, not model evidence.
+
+Selected v4:634 triangles; inherited thin knife folds repaired from source silhouette vertices, broad local shoulders, original6 source hashes unchanged. V1/v2 rejected for banding; v3 retained inherited folds. All13 headless checks plus actual editor339/339 and regeneration42/42 pass. Main broad wall/source1 and grass contacts remain open; no full-goal or target-device claim.
