@@ -94,7 +94,7 @@ static func _drape(p:Vector2,out:Vector2,y:float,faces:PackedVector3Array):
  return point
 
 static func lawn(mesh:ArrayMesh,boundaries:Dictionary,wet:Dictionary={},relief:float=.055)->ArrayMesh:
- if mesh.get_surface_count()==0:return mesh
+ if mesh.get_surface_count()==0 or is_zero_approx(relief):return mesh
  var arrays:=mesh.surface_get_arrays(0);var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
  var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR];var uv:PackedVector2Array=arrays[Mesh.ARRAY_TEX_UV]
  var result:=Surface.new();var cache:Dictionary={}

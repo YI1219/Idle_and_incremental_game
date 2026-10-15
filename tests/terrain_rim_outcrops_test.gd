@@ -16,6 +16,20 @@ func signature(deco)->String:
  var result:=PackedStringArray()
  for rock:Dictionary in deco._outcrops:result.append(str(rock.kind,rock.pose))
  return "|".join(result)
+func cap_contains(p:Vector2,grass:PackedVector3Array,height:float)->bool:
+ # Inclusive barycentric ownership of the actual horizontal cap. A vertical
+ # ray exactly on a new scanline edge can miss both triangles through float
+ # rounding; four 20-micron neighbor probes reproduced that ambiguity.
+ for i in range(0,grass.size(),3):
+  if absf(grass[i].y-height)>.01:continue
+  var a:=Vector2(grass[i].x,grass[i].z)
+  var ab:=Vector2(grass[i+1].x,grass[i+1].z)-a
+  var ac:=Vector2(grass[i+2].x,grass[i+2].z)-a
+  var det:=ab.cross(ac)
+  if absf(det)<1e-10:continue
+  var u:=(p-a).cross(ac)/det;var v:=ab.cross(p-a)/det
+  if u>=-.000001 and v>=-.000001 and u+v<=1.000001:return true
+ return false
 func inspect(field,deco,label:String)->void:
  var bad:=0;var points:=0;var high:=0;var low:=0;var detached:=0
  for rock:Dictionary in deco._outcrops:
@@ -36,11 +50,7 @@ func inspect(field,deco,label:String)->void:
      if point!=null:hit=true;bottom=minf(bottom,point.y);top=maxf(top,point.y)
     if not hit:continue
     points+=1;rock_points+=1
-    var cap_hit:=false
-    var grass=field.surfaces.grass.vertices
-    for j in range(0,grass.size(),3):
-     var point=Geometry3D.ray_intersects_triangle(origin,Vector3.DOWN,grass[j],grass[j+1],grass[j+2])
-     if point!=null and absf(point.y-rock.height)<.01:cap_hit=true;break
+    var cap_hit:=cap_contains(Vector2(origin.x,origin.z),field.surfaces.grass.vertices,rock.height)
     if cap_hit:
      backed+=1
      if bottom<rock.height-.10 and top>rock.height+.05:connected+=1

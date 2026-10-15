@@ -4,9 +4,35 @@ const Field=preload("res://scripts/terrain_editor/contour_terrain.gd")
 const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 var failures:=0
 func _initialize():call_deferred("run")
+# General point-in-polygon ray tests can miss extremely thin triangles at
+# world coordinates. Barycentric coordinates inspect the actual triangle.
+func owns(p:Vector2,a:Vector2,b:Vector2,c:Vector2)->bool:
+ var ab:=b-a;var ac:=c-a;var ap:=p-a
+ var det:float=ab.cross(ac)
+ if absf(det)<1e-14:return false
+ var u:float=ap.cross(ac)/det;var v:float=ab.cross(ap)/det
+ return u>=0.0 and v>=0.0 and u+v<=1.0
 func run():
+ var thin:=PackedVector2Array([Vector2(-17.81649,-9.586769),Vector2(-17.80442,-9.595413),Vector2(3.347405,-9.595413)])
+ if not owns(Vector2(-15.46738,-9.595251),thin[0],thin[1],thin[2]):failures+=1;push_error("Thin cap ownership regression")
  var data:=Data.new();data.make_preset(0)
  var field:=Field.new();field.refresh(data)
+ # A hole crossing an outer edge changes crossing order inside a vertex slab.
+ # Include intersection rows; vertex rows alone can fill outside the shape.
+ var outer:=PackedVector2Array([Vector2(0,0),Vector2(4,0),Vector2(4,4),Vector2(0,4)])
+ var hole:=PackedVector2Array([Vector2(-1,1),Vector2(3,2),Vector2(-1,3)])
+ if Field._area(hole)>0:hole.reverse()
+ var cap=preload("res://scripts/terrain_editor/lake_bed.gd").BedSurface.new()
+ field._cap(cap,[outer,hole],0.0,Color.WHITE)
+ var sweep_errors:=0
+ for z in 38:
+  for x in 48:
+   var probe:=Vector2(x*.11-.8,z*.11+.017);var owners:=0
+   for j in range(0,cap.vertices.size(),3):
+    var a:Vector3=cap.vertices[j];var b:Vector3=cap.vertices[j+1];var c:Vector3=cap.vertices[j+2]
+    if owns(probe,Vector2(a.x,a.z),Vector2(b.x,b.z),Vector2(c.x,c.z)):owners+=1
+   if (owners==1)!=Field.contains([outer,hole],probe) or owners>1:sweep_errors+=1
+ if sweep_errors:failures+=1;push_error("Crossing-hole cap errors: "+str(sweep_errors))
  var water_before:Dictionary={}
  for kind in ["water","waterfall","shore","bank"]:water_before[kind]=hash(field.surfaces[kind].vertices)
  var deco:=Decoration.new();deco.load_assets();deco._column_layout(field,data.seed)
@@ -27,13 +53,16 @@ func run():
    var p:Vector3=col.pose*(vertices[i]*.271+vertices[i+1]*.337+vertices[i+2]*.392)
    var raw:Dictionary=field.surface_at(Vector2(p.x,p.z))
    if not raw.is_empty() and raw.height>p.y+.001:continue # cap buried under a higher terrace
+   # Water now has an actual lower bed. Its coincident crown cap must not
+   # be drawn as grass through the refracting surface.
+   if not raw.is_empty() and raw.water>=0 and absf(raw.height-p.y)<.001:continue
    if not field.contains(field.rim_regions[col.pose.origin.y],Vector2(p.x,p.z)):continue
    var matches:=0;var boundary_sample:=false
    for j in range(0,grass.size(),3):
     if absf(grass[j].y-p.y)>.001:continue
     var triangle:=PackedVector2Array([Vector2(grass[j].x,grass[j].z),Vector2(grass[j+1].x,grass[j+1].z),Vector2(grass[j+2].x,grass[j+2].z)])
     var box:=Rect2(triangle[0],Vector2.ZERO).expand(triangle[1]).expand(triangle[2])
-    if box.grow(.00001).has_point(Vector2(p.x,p.z)) and Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),triangle):matches+=1
+    if box.grow(.00001).has_point(Vector2(p.x,p.z)) and owns(Vector2(p.x,p.z),triangle[0],triangle[1],triangle[2]):matches+=1
     for edge in 3:
      if Vector2(p.x,p.z).distance_to(Geometry2D.get_closest_point_to_segment(Vector2(p.x,p.z),triangle[edge],triangle[(edge+1)%3]))<.00002:boundary_sample=true
    # A ray exactly on a shared triangulation edge has two valid owners.
@@ -43,6 +72,13 @@ func run():
    cap_probes+=1
    if matches!=1:duplicate_tops+=1
  if duplicate_tops>0:failures+=1;push_error("Missing/duplicated baked crown tops: %d"%duplicate_tops)
+ # Exact dry-cap neighborhood exercises the pond-hole sweep far from water.
+ for delta:Vector2 in [Vector2.ZERO,Vector2(.00003,0),Vector2(-.00003,0),Vector2(0,.00003),Vector2(0,-.00003)]:
+  var probe:=Vector2(-15.46738,-9.595251)+delta;var owners:=0
+  for j in range(0,grass.size(),3):
+   if absf(grass[j].y-3.5)>.001:continue
+   if owns(probe,Vector2(grass[j].x,grass[j].z),Vector2(grass[j+1].x,grass[j+1].z),Vector2(grass[j+2].x,grass[j+2].z)):owners+=1
+  if owners!=1:failures+=1;push_error("Dry cap neighborhood missing/duplicated: "+str(owners))
  # Regression for a strip cut beyond a yawed crown beside the upper fall:
  # its new cap boundary previously opened a 7cm slit through the island.
  var open_sides:=0;var side_probes:=0

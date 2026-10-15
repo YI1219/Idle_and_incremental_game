@@ -79,7 +79,13 @@ func configure(source:Data)->void:
 		materials.bank=foam
 		var water:=ShaderMaterial.new()
 		water.shader=load("res://shaders/terrain_editor/water.gdshader")
+		# Render the refracting surface before translucent falls/froth/mist.
+		# Those effects are absent from its opaque scene-color buffer.
+		water.render_priority=-10
 		materials.water=water
+		var bed:=ShaderMaterial.new()
+		bed.shader=load("res://shaders/terrain_editor/lake_bed.gdshader")
+		materials.lake_bed=bed
 		var fall:=ShaderMaterial.new()
 		fall.shader=load("res://shaders/terrain_editor/waterfall.gdshader")
 		materials.waterfall=fall
@@ -167,7 +173,7 @@ func _rebuild(chunk:Vector2i)->void:
 		instance.name=key
 		instance.mesh=geometry[key]
 		instance.material_override=materials[key]
-		instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if key=="waterfall" else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+		instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if key in ["water","waterfall"] else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 		node.add_child(instance)
 	_pending_chunks[chunk]=node
 	if decoration!=null:

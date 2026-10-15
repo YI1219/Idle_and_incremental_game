@@ -89,6 +89,7 @@ func refresh(data:Data)->void:
 	var water_levels:=wet.keys()
 	water_levels.sort()
 	for level:int in water_levels:water_regions[level]=_outlines(wet[level])
+	if not wet.is_empty():surfaces.grass=preload("res://scripts/terrain_editor/lake_bed.gd").BedSurface.new()
 	for i in levels.size():
 		var h:float=levels[i]
 		var exposed:Array=land_regions[h].duplicate()
@@ -97,6 +98,10 @@ func refresh(data:Data)->void:
 				var subtract:=loop.duplicate()
 				subtract.reverse()
 				exposed.append(subtract)
+		for level:int in water_regions:
+			if absf(level*.5-h)>.001:continue
+			for loop:PackedVector2Array in water_regions[level]:
+				var hole:=loop.duplicate();hole.reverse();exposed.append(hole)
 		_cap(surfaces.grass,exposed,h,Color.WHITE)
 	# Every occupied elevation retains its exact contour boundary. Broad
 	# walls span the interval with staggered interior samples; narrow walls
@@ -116,6 +121,7 @@ func refresh(data:Data)->void:
 	_smooth_normals(surfaces.shore)
 	_smooth_normals(surfaces.bank)
 	_smooth_normals(surfaces.waterfall)
+	surfaces.lake_bed=preload("res://scripts/terrain_editor/lake_bed.gd").build(self)
 	_index_triangles()
 
 static func _area(p:PackedVector2Array)->float:
@@ -210,6 +216,24 @@ func surface_at(p:Vector2)->Dictionary:
 		return {"height":h,"water":-1}
 	return {}
 
+static func _crossing_rows(loops:Array)->PackedFloat32Array:
+	# Crown subtraction rings overlap. Their edges must not change order inside
+	# a cap scanline slab, or its extrapolated trapezoids leave triangular holes.
+	var rows:=PackedFloat32Array()
+	for i in loops.size():
+		var a:PackedVector2Array=loops[i]
+		for j in range(i+1,loops.size()):
+			var b:PackedVector2Array=loops[j]
+			for e in a.size():
+				var p:=a[e];var q:=a[(e+1)%a.size()]
+				for f in b.size():
+					var r:=b[f];var s:=b[(f+1)%b.size()]
+					if maxf(p.x,q.x)<minf(r.x,s.x) or maxf(r.x,s.x)<minf(p.x,q.x):continue
+					if maxf(p.y,q.y)<minf(r.y,s.y) or maxf(r.y,s.y)<minf(p.y,q.y):continue
+					var crossing=Geometry2D.segment_intersects_segment(p,q,r,s)
+					if crossing!=null:rows.append(crossing.y)
+	return rows
+
 func _cap(surface,loops:Array,height:float,tint:Color,extra_rows:PackedFloat32Array=PackedFloat32Array(),force_sweep:bool=false)->void:
 	var has_holes:=force_sweep
 	for loop:PackedVector2Array in loops:
@@ -222,6 +246,7 @@ func _cap(surface,loops:Array,height:float,tint:Color,extra_rows:PackedFloat32Ar
 	# triangulator fills again. This sweep preserves every interior opening.
 	var heights:Array=[]
 	heights.append_array(extra_rows)
+	heights.append_array(_crossing_rows(loops))
 	for loop:PackedVector2Array in loops:
 		for point in loop:heights.append(point.y)
 	heights.sort()
@@ -1070,7 +1095,7 @@ func _index_triangles()->void:
 func build(chunk:Vector2i)->Dictionary:
 	var result:Dictionary={}
 	for kind in surfaces:
-		var local:=Legacy.Surface.new()
+		var local:Legacy.Surface=preload("res://scripts/terrain_editor/lake_bed.gd").BedSurface.new() if kind in ["lake_bed","grass"] else Legacy.Surface.new()
 		var vertices:PackedVector3Array=surfaces[kind].vertices
 		var colors:PackedColorArray=surfaces[kind].colors
 		var normals:PackedVector3Array=surfaces[kind].normals
@@ -1082,10 +1107,10 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
-				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
 				if kind in ["cliff","grass","rim_green","shore"]:

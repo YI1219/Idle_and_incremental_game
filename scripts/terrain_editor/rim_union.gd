@@ -61,18 +61,22 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
   polygons.append_array(holes)
   regions[h]=polygons
  field.rim_regions=regions
- var lawn:=Surface.new()
+ var lawn=preload("res://scripts/terrain_editor/lake_bed.gd").BedSurface.new() if not field.water_regions.is_empty() else Surface.new()
  for i in field.levels.size():
   var h:float=field.levels[i]
   var loops:Array=regions[h].duplicate()
   if i+1<field.levels.size():
    for loop:PackedVector2Array in field.land_regions[field.levels[i+1]]:
     var hole:=loop.duplicate();hole.reverse();loops.append(hole)
+  for level:int in field.water_regions:
+   if absf(level*.5-h)>.001:continue
+   for loop:PackedVector2Array in field.water_regions[level]:
+    var hole:=loop.duplicate();hole.reverse();loops.append(hole)
   # Draw the joined top ONCE from its final filled boundary. Independent
   # concave source crowns remain closed authoring volumes, with wall-only
   # render meshes. Per-crown subtraction and re-baking would leave holes
   # where concave caps overlap, or duplicate thin coplanar fragments.
-  field._cap(lawn,loops,h,Color.WHITE,_crossing_rows(loops))
+  field._cap(lawn,loops,h,Color.WHITE)
   field.lawn_boundaries[h]=loops
  field.surfaces.grass=lawn
  # Keep a continuous core behind the independent crowns. Boolean cuts in
@@ -113,24 +117,6 @@ static func apply(field,columns:Array,assets:Dictionary)->void:
  field.surfaces.stone_mantle=mantle.stone
  field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lip(regions,crowns,assets)
  field._index_triangles()
-
-static func _crossing_rows(loops:Array)->PackedFloat32Array:
- # Crown subtraction rings overlap. Their edges must not change order inside
- # a cap scanline slab, or its extrapolated trapezoids leave triangular holes.
- var rows:=PackedFloat32Array()
- for i in loops.size():
-  var a:PackedVector2Array=loops[i]
-  for j in range(i+1,loops.size()):
-   var b:PackedVector2Array=loops[j]
-   for e in a.size():
-    var p:=a[e];var q:=a[(e+1)%a.size()]
-    for f in b.size():
-     var r:=b[f];var s:=b[(f+1)%b.size()]
-     if maxf(p.x,q.x)<minf(r.x,s.x) or maxf(r.x,s.x)<minf(p.x,q.x):continue
-     if maxf(p.y,q.y)<minf(r.y,s.y) or maxf(r.y,s.y)<minf(p.y,q.y):continue
-     var crossing=Geometry2D.segment_intersects_segment(p,q,r,s)
-     if crossing!=null:rows.append(crossing.y)
- return rows
 
 static func _union(polygons:Array,addition:PackedVector2Array)->void:
  var merged:=addition

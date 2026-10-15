@@ -1,6 +1,8 @@
-# Natural island finish — verified candidate, goal still active
+# Natural island finish — preserved natural12 stage review
 
-2026-10-15. Baseline: `3e4b06c` / `edge_final_*`. Current: `natural12_*`, actual Godot 4.7.2 Forward+ Metal captures at 1671×941 on Apple M4 Pro. Capture harness: `tests/capture_courtyard_finish.gd`. Eight principal same-camera comparisons are available in `comparison.html`; three additional courtyard framing views are in the capture manifest. Concepts remain references, never engine evidence.
+2026-10-15. Baseline: `3e4b06c` / `edge_final_*`. Stage reviewed here: `natural12_*`, actual Godot 4.7.2 Forward+ Metal captures at 1671×941 on Apple M4 Pro. Capture harness: `tests/capture_courtyard_finish.gd`. Eight principal same-camera comparisons are available in `comparison.html`; three additional courtyard framing views are in the capture manifest. Concepts remain references, never engine evidence.
+
+Current water work supersedes this stage’s opaque-water description: [physical water review](physical-water-review.md). This document preserves the verified stone/material checkpoint and its historical evidence.
 
 ## Changes retained
 
