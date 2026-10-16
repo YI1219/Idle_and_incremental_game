@@ -12,6 +12,8 @@ func run():
  if args.has('planes'):preload('res://tools/art/author_unified_cliff_planes.gd').author(editor.data)
  if args.has('cutstone'):preload('res://tools/art/author_unified_cliff_cutstone.gd').author(editor.data)
  if args.has('fullshoulder'):preload('res://tools/art/author_unified_cliff_cutstone.gd').full_island(editor.data)
+ if args.has('returncuts'):preload('res://tools/art/author_unified_cliff_return.gd').author(editor.data)
+ if args.has('liplayers'):preload('res://tools/art/author_unified_cliff_return.gd').lip_study(editor.data)
  editor.renderer.rebuild_all()
  frame(Vector2(-14,4),8,16,30);await capture(tag+'_close')
  frame(Vector2(0,-1),21,16,27);await capture(tag+'_overview')

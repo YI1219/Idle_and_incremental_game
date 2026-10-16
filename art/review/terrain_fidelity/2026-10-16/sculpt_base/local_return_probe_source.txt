@@ -1,0 +1,23 @@
+extends SceneTree
+func _initialize():call_deferred('run')
+func run():
+ var data=load('res://scripts/terrain_editor/terrain_data.gd').new();data.make_preset(0);data.set_sculpt_base(true)
+ var original:Dictionary=data.cells.duplicate(true)
+ load('res://tools/art/author_unified_cliff_cutstone.gd').author(data)
+ var before:Dictionary=data.rocks.samples.duplicate()
+ data.begin_stroke()
+ for stroke in [
+  [Vector3(-17.7,-.35,2.6),2.70,Vector3(-.35,-.45,1.0)],
+  [Vector3(-14.4,-.75,3.8),3.35,Vector3(.20,-.52,1.0)],
+  [Vector3(-11.7,-.15,4.8),2.70,Vector3(-.32,-.38,1.0)],
+  [Vector3(-15.3,1.25,3.8),1.35,Vector3(.85,-.10,1.0)]]:
+  data.apply_rock_brush(stroke[0],stroke[1],'rock_plane',stroke[2].normalized())
+ data.end_stroke()
+ var changed:=0;var highest:=-INF
+ for key in data.rocks.samples:
+  var previous:float=before.get(key,data.rocks.base.node_value(key))
+  if data.rocks.samples[key]!=previous:changed+=1;highest=maxf(highest,key.y*.25)
+ var result:={'changed_samples':changed,'highest_changed_y':highest,'original_cap_y':3.5,'authored_cells_unchanged':data.cells==original,'public_tools_only':true,'art_accepted':false}
+ FileAccess.open('res://art/review/terrain_fidelity/2026-10-16/sculpt_base/local_return_probe.json',FileAccess.WRITE).store_string(JSON.stringify(result,'\t'))
+ print('LOCAL RETURN PROBE: ',result)
+ quit(0 if changed>0 and highest<3.5 and data.cells==original else 1)

@@ -1,0 +1,56 @@
+{
+	"captures": [
+		{
+			"draw_calls": 418.0,
+			"error": 0,
+			"file": "return1_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 467.0,
+			"error": 0,
+			"file": "return1_overview.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 365.0,
+			"error": 0,
+			"file": "return1_far.png",
+			"position": "(17.311, 32.0, 59.37063)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 339.0,
+			"error": 0,
+			"file": "return1_grass.png",
+			"position": "(-12.4, 7.1, 11.0)",
+			"rotation": "(-23.8915, 18.65789, 0.0)"
+		},
+		{
+			"draw_calls": 386.0,
+			"error": 0,
+			"file": "return1_reverse.png",
+			"position": "(-30.34978, 9.0, -0.38091)",
+			"rotation": "(-28.0, -105.0, 0.0)"
+		},
+		{
+			"draw_calls": 505.0,
+			"error": 0,
+			"file": "return1_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 486.0,
+			"error": 0,
+			"file": "return1_bottom.png",
+			"position": "(12.0, -14.0, 21.0)",
+			"rotation": "(27.25203, 33.69007, 0.0)"
+		}
+	],
+	"samples": 5862,
+	"sculpt_base": true,
+	"source": "Actual Godot terrain scene"
+}

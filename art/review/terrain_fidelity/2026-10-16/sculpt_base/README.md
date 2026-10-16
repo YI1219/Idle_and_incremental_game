@@ -57,3 +57,31 @@ Current fresh results:
 - `shoulder_checks.json`: coherent-base23/23 (including55actual thin-ledge mesh intersections/0mismatches). Early `shoulder_green.json` is not passing: a4cm normal probe stepped through a neighboring face at an oblique corner. `shoulder_normal_fixture.json` records positive values on both sides at4cm, and the correct positive/negative values at1mm. The new shoulder inspector uses local1mm probes; legacy normal tests keep their original4cm default. No geometry winding change was made to hide that fixture issue.
 
 Fresh independent review found no actionable correctness defect in orientation, bounds/atomicity, cache/snapshot handling, brush/history/save/native-input integration orG-channel propagation. It independently ran14/14 before the extra capacity assertion; final15/15 is in the retained report. Art and target-device performance remain unaccepted.
+
+
+## Local return and lip cuts — rejected October16 follow-up
+
+After the water-material checkpoint, two local studies reuse only the public
+shoulder and bounded-plane brushes. `return1` cuts beneath retained shoulders:
+4,486changed samples, highest changedY2.5 below the original3.5cap, original
+authored cells unchanged. The probe source and actual result are retained.
+Seven native captures exit0 without errors,724,512skin vertices. Close/grass/whole/
+bottom views show concave cave-like pockets while the broad wall remains; reject.
+
+`lip1` instead allows small cuts to reach the ground edge, adds one exposed
+shoulder and planes the first mound. Seven native captures exit0,723,216skin
+vertices. Close/grass/whole/reverse inspection shows thin pointed lips and
+knife-like folds; reject. No default geometry, material or player-tool behavior
+changes. These are not accepted natural geology or full support/closure checks.
+
+Both studies keep their explicit stroke source in
+`tools/art/author_unified_cliff_return.gd`. The gallery now compares six states
+at seven checked camera positions (42images). These captures span water-material
+stages and live animation phases, so only geometry is compared here. Do not infer
+a water improvement or fully frozen scene from this gallery.
+
+The next shape work should address the continuous base's large proportions and
+the bounded cut's falloff: clipping within a small spherical influence can leave
+a taper or pocket at its boundary. More perimeter stamps or deeper repeated
+cuts on the same thick slab are not a solution. Preserve the common bottom and
+overall footprint without freezing every small segment of the grass lip.
