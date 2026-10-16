@@ -1,0 +1,40 @@
+[
+  {
+    "kind": "main",
+    "source": "assets/nature/refined/cliff_integrated_main_v1.glb",
+    "source_sha256": "65e9cc5145aba717915bb9a17c62eff731ed94c9f3e79b20804253dd246a6ceb",
+    "width": 0.1636323642730713,
+    "selected_convex_edges": 73,
+    "segments": 2,
+    "profile": 0.6,
+    "source_faces": 585,
+    "triangles": 1146,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "volume": 15.092702004677696,
+    "blend": "art/work/cliff_worn/2026-10-16/cliff_worn_main_v1.blend",
+    "glb": "art/work/cliff_worn/2026-10-16/cliff_worn_main_v1.glb",
+    "glb_sha256": "ae42cce4fb43c984529a48a09018ce74c2af1864bf11faf8a3d978a408e87aa1",
+    "blender_version": "5.2.1 LTS",
+    "stage": "Unaccepted source study; cap bounds intentionally allowed to change with physical wear. No runtime promotion."
+  },
+  {
+    "kind": "tall",
+    "source": "assets/nature/refined/cliff_integrated_tall_v1.glb",
+    "source_sha256": "d486c4ad35fa464f2221125c1a512c89ecdc39d6473fe8a580225f4a5abe4d16",
+    "width": 0.17963959395885468,
+    "selected_convex_edges": 173,
+    "segments": 2,
+    "profile": 0.6,
+    "source_faces": 728,
+    "triangles": 1908,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "volume": 16.098258611631586,
+    "blend": "art/work/cliff_worn/2026-10-16/cliff_worn_tall_v1.blend",
+    "glb": "art/work/cliff_worn/2026-10-16/cliff_worn_tall_v1.glb",
+    "glb_sha256": "dda25784cd13e83f3316867cd94dd46e6ee4fd54a1d1a69c2b88bf38965d6139",
+    "blender_version": "5.2.1 LTS",
+    "stage": "Unaccepted source study; cap bounds intentionally allowed to change with physical wear. No runtime promotion."
+  }
+]

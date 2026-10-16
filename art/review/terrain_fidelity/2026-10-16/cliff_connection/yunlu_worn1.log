@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+WORN CLIFF SOURCES: {"reports":[{"geometry_height":1.23024873449288,"invalid_edges":2,"kind":"cliff_column","original_geometry_height":1.23062262260614,"vertices":4374},{"geometry_height":1.24303244177502,"invalid_edges":0,"kind":"cliff_column_b","original_geometry_height":1.24313274398192,"vertices":3438},{"geometry_height":1.14067335911032,"invalid_edges":0,"kind":"cliff_column_c","original_geometry_height":1.14098638171677,"vertices":4830},{"geometry_height":1.33384412593228,"invalid_edges":6,"kind":"cliff_column_d","original_geometry_height":1.33396060591449,"vertices":3024}],"stage":"Unaccepted physical corner wear; cells/layout/material remain production; cap shape follows refined source."}
+SCULPT BASE CAPTURES: 7 samples=0 skin_vertices=0

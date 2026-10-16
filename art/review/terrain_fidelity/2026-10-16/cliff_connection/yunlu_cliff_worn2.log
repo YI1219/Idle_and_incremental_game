@@ -1,0 +1,25 @@
+00:00.138  translation      | WARNING Falling back to standard locale ("C")
+22:19:07 | INFO: Data are loaded, start creating Blender stuff
+22:19:07 | INFO: Blender create Mesh node Cube.004_Retopology.001
+22:19:07 | INFO: glTF import finished in 0.01s
+Info: Saved as "cliff_worn_main_v2.blend"
+INFO Draco is available, use library at /Applications/Blender.app/Contents/Resources/5.2/scripts/addons_core/io_scene_gltf2/libbf_intern_draco_bridge.dylib
+INFO MeshOptimizer is available, use library at /Applications/Blender.app/Contents/Resources/5.2/scripts/addons_core/io_scene_gltf2/libbf_intern_meshopt_bridge.dylib
+22:19:08 | INFO: Starting glTF 2.0 export
+22:19:08 | INFO: Extracting primitive: Cube.004_Retopology.001
+22:19:08 | INFO: Primitives created: 1
+22:19:08 | INFO: Finished glTF 2.0 export in 0.008906364440917969 s
+
+22:19:08 | INFO: Data are loaded, start creating Blender stuff
+22:19:08 | INFO: Blender create Mesh node Cube.005_Retopology.001
+22:19:08 | INFO: glTF import finished in 0.00s
+Info: Saved as "cliff_worn_tall_v2.blend"
+22:19:08 | INFO: Starting glTF 2.0 export
+22:19:08 | INFO: Extracting primitive: Cube.005_Retopology.001
+22:19:08 | INFO: Primitives created: 1
+22:19:08 | INFO: Finished glTF 2.0 export in 0.0048100948333740234 s
+
+WORN CLIFF SOURCES: [{"kind": "main", "source": "assets/nature/refined/cliff_integrated_main_v1.glb", "source_sha256": "65e9cc5145aba717915bb9a17c62eff731ed94c9f3e79b20804253dd246a6ceb", "width": 0.1636323642730713, "selected_convex_edges": 73, "segments": 2, "profile": 0.6, "voxel_width_fraction": 0.025, "smooth_factor": 0.55, "smooth_iterations": 4, "cloud_scale_fraction": 0.17, "displacement_fraction": 0.035, "decimate_ratio": 0.24, "source_faces": 585, "triangles": 3984, "nonmanifold_edges": 0, "degenerate_faces": 0, "volume": 15.053776422853556, "blend": "art/work/cliff_worn/2026-10-16/cliff_worn_main_v2.blend", "glb": "art/work/cliff_worn/2026-10-16/cliff_worn_main_v2.glb", "glb_sha256": "5d3c5c320325108f0c646f44a166184bd7969def809855a92d19a0bd1185c60b", "blender_version": "5.2.1 LTS", "stage": "Unaccepted source study; cap bounds intentionally allowed to change with physical wear. No runtime promotion."}, {"kind": "tall", "source": "assets/nature/refined/cliff_integrated_tall_v1.glb", "source_sha256": "d486c4ad35fa464f2221125c1a512c89ecdc39d6473fe8a580225f4a5abe4d16", "width": 0.17963959395885468, "selected_convex_edges": 173, "segments": 2, "profile": 0.6, "voxel_width_fraction": 0.025, "smooth_factor": 0.55, "smooth_iterations": 4, "cloud_scale_fraction": 0.17, "displacement_fraction": 0.035, "decimate_ratio": 0.24, "source_faces": 728, "triangles": 3858, "nonmanifold_edges": 0, "degenerate_faces": 0, "volume": 16.079606398039267, "blend": "art/work/cliff_worn/2026-10-16/cliff_worn_tall_v2.blend", "glb": "art/work/cliff_worn/2026-10-16/cliff_worn_tall_v2.glb", "glb_sha256": "c0f22075d469549a3825494e6f36e7805656675d3a64213aa0dd3127177c7479", "blender_version": "5.2.1 LTS", "stage": "Unaccepted source study; cap bounds intentionally allowed to change with physical wear. No runtime promotion."}]
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

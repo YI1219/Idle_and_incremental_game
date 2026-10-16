@@ -44,7 +44,21 @@ func run():
  if args.has('section'):preload('res://tools/art/author_cliff_section.gd').author(editor.data)
  if args.has('leansection'):preload('res://tools/art/author_cliff_section.gd').author(editor.data,true)
  if args.has('volumesection'):preload('res://tools/art/author_cliff_section.gd').author(editor.data,false,true)
+ if args.has('worn') or args.has('worn2') or args.has('worn3'):
+  var source_report:Dictionary=preload('res://tools/art/worn_cliff_sources.gd').install(editor.renderer.decoration,'v3' if args.has('worn3') else ('v2' if args.has('worn2') else 'v1'),args.has('wearsmooth'))
+  FileAccess.open(OUT+tag+'_worn_sources.json',FileAccess.WRITE).store_string(JSON.stringify(source_report,'\t'))
+  print('WORN CLIFF SOURCES: ',JSON.stringify(source_report))
  editor.renderer.rebuild_all()
+ if args.has('source_return'):
+  var study=preload('res://tools/art/source_return_envelope.gd').new()
+  var report:Dictionary=study.apply(editor.renderer.contours,editor.renderer.decoration._columns,editor.renderer.decoration.assets)
+  print('SOURCE RETURN ENVELOPE: ',JSON.stringify(report))
+  FileAccess.open(OUT+tag+'_source_return.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
+  var chunks:Dictionary={}
+  for chunk in editor.renderer.chunks:chunks[chunk]=true
+  for chunk in editor.renderer.contours.triangle_chunks:chunks[chunk]=true
+  for chunk in chunks:editor.renderer._rebuild(chunk)
+  editor.renderer._publish()
  if args.has('spall') or args.has('spall2') or args.has('spall3'):
   var detail:=Image.load_from_file('res://art/work/stone_spall/2026-10-16/stone_detail_spall_'+('v3' if args.has('spall3') else ('v2' if args.has('spall2') else 'v1'))+'.png')
   assert(detail!=null);detail.generate_mipmaps()

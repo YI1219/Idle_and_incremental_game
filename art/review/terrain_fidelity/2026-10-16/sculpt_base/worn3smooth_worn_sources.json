@@ -1,0 +1,41 @@
+{
+	"reports": [
+		{
+			"geometry_height": 1.23361362846905,
+			"invalid_edges": 0,
+			"kind": "cliff_column",
+			"original_geometry_height": 1.23062262260614,
+			"smooth_wear": true,
+			"vertices": 2784,
+			"vertices_sha256": "bc1c071d2ed5792320f17ef11598a0b7e85cc38bae6d573806d7e83fbbb0d9f0"
+		},
+		{
+			"geometry_height": 1.25125584791912,
+			"invalid_edges": 0,
+			"kind": "cliff_column_b",
+			"original_geometry_height": 1.24313274398192,
+			"smooth_wear": true,
+			"vertices": 2844,
+			"vertices_sha256": "9d9f55f40c4627e189375eed4780d5aa009efab331849f58eeb1a2c6370068e5"
+		},
+		{
+			"geometry_height": 1.1434904796485,
+			"invalid_edges": 6,
+			"kind": "cliff_column_c",
+			"original_geometry_height": 1.14098638171677,
+			"smooth_wear": true,
+			"vertices": 2916,
+			"vertices_sha256": "b9eae7badca99f686d06fd6204c224965975ae96d3a4165b0760caddc9f98140"
+		},
+		{
+			"geometry_height": 1.34339388790607,
+			"invalid_edges": 0,
+			"kind": "cliff_column_d",
+			"original_geometry_height": 1.33396060591449,
+			"smooth_wear": true,
+			"vertices": 2730,
+			"vertices_sha256": "cc61d3618b90f60fac9fbd97c5a99ae63eb1ba0094afc68b53980da2f8bcd155"
+		}
+	],
+	"stage": "Unaccepted physical corner wear; cells/layout/material remain production; cap shape follows refined source."
+}

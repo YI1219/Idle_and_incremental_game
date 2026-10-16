@@ -1,0 +1,33 @@
+{
+	"reports": [
+		{
+			"geometry_height": 1.23232581914647,
+			"invalid_edges": 0,
+			"kind": "cliff_column",
+			"original_geometry_height": 1.23062262260614,
+			"vertices": 10434
+		},
+		{
+			"geometry_height": 1.24990200722539,
+			"invalid_edges": 0,
+			"kind": "cliff_column_b",
+			"original_geometry_height": 1.24313274398192,
+			"vertices": 10818
+		},
+		{
+			"geometry_height": 1.14241231370402,
+			"invalid_edges": 0,
+			"kind": "cliff_column_c",
+			"original_geometry_height": 1.14098638171677,
+			"vertices": 11034
+		},
+		{
+			"geometry_height": 1.34182168581014,
+			"invalid_edges": 0,
+			"kind": "cliff_column_d",
+			"original_geometry_height": 1.33396060591449,
+			"vertices": 10146
+		}
+	],
+	"stage": "Unaccepted physical corner wear; cells/layout/material remain production; cap shape follows refined source."
+}

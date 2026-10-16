@@ -1,0 +1,290 @@
+{
+  "base_commit": "bb440935a1596b814ce838863bcd0e905dee356b",
+  "production_changed_files": [],
+  "untracked_runtime_files": [],
+  "original_sources_sha256": {
+    "assets/nature/refined/cliff_integrated_main_v1.glb": "65e9cc5145aba717915bb9a17c62eff731ed94c9f3e79b20804253dd246a6ceb",
+    "assets/nature/refined/cliff_integrated_tall_v1.glb": "d486c4ad35fa464f2221125c1a512c89ecdc39d6473fe8a580225f4a5abe4d16",
+    "assets/nature/refined/cliff_main_v4.glb": "a8a0659cc07190b27aefe5fb4d5404f9d1f1101c417c59f0f2fa3b9bb16f3483",
+    "assets/nature/refined/cliff_tall_v2.glb": "8719f745175718d1ac240e7293c1ede88894aaece93d3035a20cdab00f7f24b9"
+  },
+  "new_clean_native_captures": 42,
+  "images_size": [
+    1671,
+    941
+  ],
+  "cameras_and_authoritative_data_match": true,
+  "principal_water_clocks": 1.25,
+  "source_diagnostics": {
+    "edge_tolerance": 1e-06,
+    "reports": {
+      "default": {
+        "cliff_column": {
+          "minimum_triangle_area": 1.07865760767822e-08,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 722
+        },
+        "cliff_column_b": {
+          "minimum_triangle_area": 5.48599928151816e-06,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 698
+        },
+        "cliff_column_c": {
+          "minimum_triangle_area": 2.10436724046303e-06,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 768
+        },
+        "cliff_column_d": {
+          "minimum_triangle_area": 5.97509642830119e-06,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 602
+        }
+      },
+      "v1": {
+        "cliff_column": {
+          "minimum_triangle_area": 1.07270574645213e-08,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 1,
+            "non_two_edges": 2
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 1458
+        },
+        "cliff_column_b": {
+          "minimum_triangle_area": 3.18984128000466e-08,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 1146
+        },
+        "cliff_column_c": {
+          "minimum_triangle_area": 7.80881705964021e-08,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 1610
+        },
+        "cliff_column_d": {
+          "minimum_triangle_area": 7.36215497454396e-08,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 3,
+            "non_two_edges": 6
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 6
+          },
+          "uploaded_triangle_count": 1008
+        }
+      },
+      "v2": {
+        "cliff_column": {
+          "minimum_triangle_area": 5.94522418850829e-07,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 3478
+        },
+        "cliff_column_b": {
+          "minimum_triangle_area": 3.87616950092706e-07,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 3606
+        },
+        "cliff_column_c": {
+          "minimum_triangle_area": 1.10307939849008e-06,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 3678
+        },
+        "cliff_column_d": {
+          "minimum_triangle_area": 3.73025636690727e-06,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 3382
+        }
+      },
+      "v3": {
+        "cliff_column": {
+          "minimum_triangle_area": 9.50484757566983e-09,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 928
+        },
+        "cliff_column_b": {
+          "minimum_triangle_area": 6.54389350529527e-06,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 948
+        },
+        "cliff_column_c": {
+          "minimum_triangle_area": 5.1567330956459e-06,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 6
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 6
+          },
+          "uploaded_triangle_count": 972
+        },
+        "cliff_column_d": {
+          "minimum_triangle_area": 2.75806996796746e-06,
+          "nonfinite_vertices": 0,
+          "rounded_get_faces_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_edges": {
+            "collapsed_edges": 0,
+            "non_two_edges": 0
+          },
+          "uploaded_triangle_count": 910
+        }
+      }
+    },
+    "rounded_mesh_faces_warning": "get_faces rounds coordinates; actual uploaded arrays are reported separately",
+    "stage": "Rejected-source diagnostics; no runtime promotion or whole-scene closure claim"
+  },
+  "all_studies_rejected": true,
+  "hash_note": "worn2smooth/worn3smooth capture-source vertices_sha256 hashes hexadecimal text of packed vertices; not raw packed bytes. Diagnostic topology checks use actual uploaded arrays.",
+  "scope": "No runtime changes. Finite source diagnostics and screenshots do not prove full-scene closure, support, edit regeneration, motion, export or hardware performance. No such acceptance claimed.",
+  "http_statuses": {
+    "cliff_connection.html": 200,
+    "comparison.html": 200,
+    "connection_control1_close.png": 200,
+    "connection_control1_overview.png": 200,
+    "connection_control1_far.png": 200,
+    "connection_control1_grass.png": 200,
+    "connection_control1_reverse.png": 200,
+    "connection_control1_shore.png": 200,
+    "connection_control1_bottom.png": 200,
+    "source_return1_close.png": 200,
+    "source_return1_overview.png": 200,
+    "source_return1_far.png": 200,
+    "source_return1_grass.png": 200,
+    "source_return1_reverse.png": 200,
+    "source_return1_shore.png": 200,
+    "source_return1_bottom.png": 200,
+    "worn1_close.png": 200,
+    "worn1_overview.png": 200,
+    "worn1_far.png": 200,
+    "worn1_grass.png": 200,
+    "worn1_reverse.png": 200,
+    "worn1_shore.png": 200,
+    "worn1_bottom.png": 200,
+    "worn2_close.png": 200,
+    "worn2_overview.png": 200,
+    "worn2_far.png": 200,
+    "worn2_grass.png": 200,
+    "worn2_reverse.png": 200,
+    "worn2_shore.png": 200,
+    "worn2_bottom.png": 200,
+    "worn2smooth_close.png": 200,
+    "worn2smooth_overview.png": 200,
+    "worn2smooth_far.png": 200,
+    "worn2smooth_grass.png": 200,
+    "worn2smooth_reverse.png": 200,
+    "worn2smooth_shore.png": 200,
+    "worn2smooth_bottom.png": 200,
+    "worn3smooth_close.png": 200,
+    "worn3smooth_overview.png": 200,
+    "worn3smooth_far.png": 200,
+    "worn3smooth_grass.png": 200,
+    "worn3smooth_reverse.png": 200,
+    "worn3smooth_shore.png": 200,
+    "worn3smooth_bottom.png": 200
+  }
+}

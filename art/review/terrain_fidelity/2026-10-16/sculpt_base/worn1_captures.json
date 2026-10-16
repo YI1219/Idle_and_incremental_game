@@ -1,0 +1,63 @@
+{
+	"captures": [
+		{
+			"draw_calls": 664.0,
+			"error": 0,
+			"file": "worn1_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 733.0,
+			"error": 0,
+			"file": "worn1_overview.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 563.0,
+			"error": 0,
+			"file": "worn1_far.png",
+			"position": "(17.311, 32.0, 59.37063)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 531.0,
+			"error": 0,
+			"file": "worn1_grass.png",
+			"position": "(-12.4, 7.1, 11.0)",
+			"rotation": "(-23.8915, 18.65789, 0.0)"
+		},
+		{
+			"draw_calls": 619.0,
+			"error": 0,
+			"file": "worn1_reverse.png",
+			"position": "(-30.34978, 9.0, -0.38091)",
+			"rotation": "(-28.0, -105.0, 0.0)"
+		},
+		{
+			"draw_calls": 797.0,
+			"error": 0,
+			"file": "worn1_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 781.0,
+			"error": 0,
+			"file": "worn1_bottom.png",
+			"position": "(12.0, -14.0, 21.0)",
+			"rotation": "(27.25203, 33.69007, 0.0)"
+		}
+	],
+	"data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+	"samples": 0,
+	"sculpt_base": false,
+	"sculpt_profile": "local",
+	"skin_colors_sha256": "",
+	"skin_normals_sha256": "",
+	"skin_uv_sha256": "",
+	"skin_vertices_sha256": "",
+	"source": "Actual Godot terrain scene",
+	"water_phase": 1.25
+}
