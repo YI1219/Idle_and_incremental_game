@@ -1,0 +1,60 @@
+{
+  "source_sha256": "fe9db333d29be207d65a43984a2c6ee48dbc5b424257f941241686684fb69bb3",
+  "baseline_sha256": "e2878eb8e864cdbf46329e90cf93f92bbc73903468d05be22ecd6cf68a58295e",
+  "save_sha256": "baa0dc8cacbbb0e7dda488fd99dcfd4e273e8f0ea0ee829a902c9899d0aee219",
+  "sources": [
+    {
+      "kind": "cliff_column_b",
+      "edge": [
+        -12.3916034698486,
+        5.02697229385376
+      ],
+      "triangles": 2822,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "volume": 59.66069014480318,
+      "operation": "Existing closed source, face subdivision, cap-anchored1.55 vertical extension and inward.60+.40*depth\u00b2 return."
+    },
+    {
+      "kind": "cliff_column",
+      "edge": [
+        -15.6178331375122,
+        3.94139862060547
+      ],
+      "triangles": 3208,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "volume": 63.11459387493384,
+      "operation": "Existing closed source, face subdivision, cap-anchored1.55 vertical extension and inward.60+.40*depth\u00b2 return."
+    },
+    {
+      "kind": "cliff_column_c",
+      "edge": [
+        -18.3053760528564,
+        2.21489906311035
+      ],
+      "triangles": 3190,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "volume": 64.26888547666027,
+      "operation": "Existing closed source, face subdivision, cap-anchored1.55 vertical extension and inward.60+.40*depth\u00b2 return."
+    }
+  ],
+  "records": 19817,
+  "maximum_density_change": 1.0,
+  "step": 0.25,
+  "bounds": {
+    "lo": [
+      -80,
+      -24,
+      0
+    ],
+    "hi": [
+      -40,
+      18,
+      32
+    ]
+  },
+  "blender_version": "5.2.1 LTS",
+  "stage": "Unaccepted bounded editable volume study; ordinary save loader and actual native views required. Not a new player brush or runtime model assembly feature."
+}

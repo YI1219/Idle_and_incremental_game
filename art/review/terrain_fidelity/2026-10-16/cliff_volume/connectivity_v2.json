@@ -1,0 +1,51 @@
+{
+  "version": "v2",
+  "triangles": 233189,
+  "vertices": 116624,
+  "components": [
+    {
+      "triangles": 233141,
+      "vertices": 116596,
+      "lo": [
+        -20.999980926513672,
+        -4.689836025238037,
+        -11.999979972839355
+      ],
+      "hi": [
+        17.999980926513672,
+        3.4999899864196777,
+        10.999979972839355
+      ]
+    },
+    {
+      "triangles": 24,
+      "vertices": 14,
+      "lo": [
+        -19.321292877197266,
+        0.17491452395915985,
+        2.674914598464966
+      ],
+      "hi": [
+        -19.182857513427734,
+        0.32330697774887085,
+        2.8241000175476074
+      ]
+    },
+    {
+      "triangles": 24,
+      "vertices": 14,
+      "lo": [
+        -18.393314361572266,
+        -2.1433143615722656,
+        0.6156511902809143
+      ],
+      "hi": [
+        -18.129974365234375,
+        -1.879974126815796,
+        0.8700258731842041
+      ]
+    }
+  ],
+  "non_two_use_edges": 95,
+  "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+}

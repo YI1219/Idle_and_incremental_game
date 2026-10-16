@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-10-16 23:35:49.856 godot[49636:2480066] +[IMKClient subclass]: chose IMKClient_Modern
+SCRIPT ERROR: Assertion failed: Existing terrain footprint/heights must remain
+          at: author (res://tools/art/author_cliff_volume_study.gd:9)
+          GDScript backtrace (most recent call first):
+              [0] author (res://tools/art/author_cliff_volume_study.gd:9)
+              [1] run (res://tools/art/capture_sculpt_base.gd:47)
+2026-10-16 23:36:10.056 godot[49636:2480066] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+SCULPT BASE CAPTURES: 7 samples=0 skin_vertices=693852

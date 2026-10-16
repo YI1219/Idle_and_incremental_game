@@ -44,11 +44,35 @@ func run():
  if args.has('section'):preload('res://tools/art/author_cliff_section.gd').author(editor.data)
  if args.has('leansection'):preload('res://tools/art/author_cliff_section.gd').author(editor.data,true)
  if args.has('volumesection'):preload('res://tools/art/author_cliff_section.gd').author(editor.data,false,true)
+ if args.has('sourcevolume'):preload('res://tools/art/author_cliff_volume_study.gd').author(editor.data)
+ if args.has('sourcevolume2'):preload('res://tools/art/author_cliff_volume_study.gd').author(editor.data,'v2')
+ if args.has('sourcevolume3'):preload('res://tools/art/author_cliff_volume_study.gd').author(editor.data,'v3')
  if args.has('worn') or args.has('worn2') or args.has('worn3'):
   var source_report:Dictionary=preload('res://tools/art/worn_cliff_sources.gd').install(editor.renderer.decoration,'v3' if args.has('worn3') else ('v2' if args.has('worn2') else 'v1'),args.has('wearsmooth'))
   FileAccess.open(OUT+tag+'_worn_sources.json',FileAccess.WRITE).store_string(JSON.stringify(source_report,'\t'))
   print('WORN CLIFF SOURCES: ',JSON.stringify(source_report))
  editor.renderer.rebuild_all()
+ if args.has('grasspatch') or args.has('grasspatch2') or args.has('grasspatch3') or args.has('grassarc') or args.has('grassworld'):
+  var field=editor.renderer.contours
+  var deco=editor.renderer.decoration
+  var crowns:Array=[]
+  for col:Dictionary in deco._columns:
+   var polygon:=PackedVector2Array()
+   for p:Vector2 in deco.assets[col.kind][0].cap_polygon:
+    var q:Vector3=col.pose*Vector3(p.x,0,p.y);polygon.append(Vector2(q.x,q.z))
+   polygon.append(polygon[0])
+   crowns.append({'polygon':polygon,'height':col.pose.origin.y})
+  var surface=preload('res://tools/art/rim_grass_patch_study.gd').lip(field.rim_regions,crowns,deco.assets,args.has('grasspatch2') or args.has('grasspatch3'),args.has('grasspatch3'))
+  if args.has('grassarc'):surface=preload('res://tools/art/rim_arc_probe_study.gd').lip(field.rim_regions,crowns,deco.assets)
+  if args.has('grassworld'):surface=preload('res://tools/art/rim_world_probe_study.gd').lip(field.rim_regions,crowns,deco.assets)
+  surface=preload('res://scripts/terrain_editor/rim_outcrops.gd').trim_cover(surface,deco._outcrops,deco.assets)
+  field._smooth_normals(surface);field.surfaces.rim_green=surface;field._index_triangles()
+  var chunks:Dictionary={}
+  for chunk in editor.renderer.chunks:chunks[chunk]=true
+  for chunk in field.triangle_chunks:chunks[chunk]=true
+  for chunk in chunks:editor.renderer._rebuild(chunk)
+  editor.renderer._publish()
+  print('GRASS PATCH STUDY: vertices=',surface.vertices.size())
  if args.has('source_return'):
   var study=preload('res://tools/art/source_return_envelope.gd').new()
   var report:Dictionary=study.apply(editor.renderer.contours,editor.renderer.decoration._columns,editor.renderer.decoration.assets)
