@@ -1,4 +1,6 @@
 extends 'res://tests/capture_rim_round.gd'
+func bytes_hash(bytes:PackedByteArray)->String:
+ var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(bytes);return digest.finish().hex_encode()
 func run():
  var args:=OS.get_cmdline_user_args();var tag:='base1' if args.is_empty() else args[0]
  OUT='res://art/review/terrain_fidelity/2026-10-16/sculpt_base/'
@@ -32,6 +34,6 @@ func run():
  frame(Vector2(-14,4),9,-105,28);await capture(tag+'_reverse')
  editor.camera.position=Vector3(1,10,12);editor.camera.look_at(Vector3(-3,3.5,2));await capture(tag+'_shore')
  editor.camera.position=Vector3(12,-14,21);editor.camera.look_at(Vector3(-2,-1,0));await capture(tag+'_bottom')
- FileAccess.open(OUT+tag+'_captures.json',FileAccess.WRITE).store_string(JSON.stringify({'captures':captures,'source':'Actual Godot terrain scene','sculpt_base':editor.data.sculpt_base_enabled,'sculpt_profile':editor.data.sculpt_base_profile,'water_phase':1.25 if args.has('fixedwater') else -1.0,'samples':editor.data.rocks.samples.size()},'\t'))
  var skin=editor.renderer.contours.surfaces.get('sculpted_terrain')
+ FileAccess.open(OUT+tag+'_captures.json',FileAccess.WRITE).store_string(JSON.stringify({'captures':captures,'source':'Actual Godot terrain scene','sculpt_base':editor.data.sculpt_base_enabled,'sculpt_profile':editor.data.sculpt_base_profile,'water_phase':1.25 if args.has('fixedwater') else -1.0,'samples':editor.data.rocks.samples.size(),'data_sha256':JSON.stringify(editor.data.serialize()).sha256_text(),'skin_vertices_sha256':bytes_hash(skin.vertices.to_byte_array()) if skin!=null else '', 'skin_normals_sha256':bytes_hash(skin.normals.to_byte_array()) if skin!=null else '', 'skin_colors_sha256':bytes_hash(skin.colors.to_byte_array()) if skin!=null else '', 'skin_uv_sha256':bytes_hash(skin.uv.to_byte_array()) if skin!=null else ''},'\t'))
  print('SCULPT BASE CAPTURES: ',captures.size(),' samples=',editor.data.rocks.samples.size(),' skin_vertices=',skin.vertices.size() if skin!=null else 0);quit()

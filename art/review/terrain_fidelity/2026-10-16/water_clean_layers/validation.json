@@ -1,0 +1,78 @@
+[
+  {
+    "stage": "baseline",
+    "command": [
+      "tools/art/capture_water_finish.gd",
+      "--",
+      "clean_water_before"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nWATER FINISH CAPTURES: 7\n2026-10-16 16:35:04.540 godot[57601:1442896] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 16:35:15.454 godot[57601:1442896] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  {
+    "stage": "candidate",
+    "command": [
+      "tools/art/capture_water_finish.gd",
+      "--",
+      "clean_water25"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nWATER FINISH CAPTURES: 7\n2026-10-16 16:35:22.782 godot[57732:1444061] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 16:35:33.852 godot[57732:1444061] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  {
+    "stage": "reflection",
+    "command": [
+      "tests/terrain_water_reflection_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_clean_layers/reflection/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nWATER REFLECTION RENDER: {\"angled_camera_red_pixels\":729,\"disabled_red_pixels\":0,\"moved_marker_red_pixels\":729,\"passed\":true,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":729,\"removed_marker_red_pixels\":0,\"stale_mirror_red_pixels\":0}\n2026-10-16 16:35:41.154 godot[57845:1445171] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 16:35:41.563 godot[57845:1445171] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  {
+    "stage": "impact",
+    "command": [
+      "tests/terrain_water_impact_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nWATER IMPACT: 8/8 passed\n2026-10-16 16:35:42.371 godot[57867:1445383] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  },
+  {
+    "stage": "editor",
+    "command": [
+      "tests/terrain_editor_render_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nTERRAIN EDITOR RENDER: 339/339 passed\n2026-10-16 16:35:42.812 godot[57875:1445455] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  },
+  {
+    "stage": "main_captures",
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 16:37:34.771 godot[58428:1450189] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 16:37:45.790 godot[58428:1450189] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nCOURTYARD CAPTURES: clean_water1 11\n",
+    "captures": 11
+  },
+  {
+    "stage": "layers_before",
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 16:33:35.333 godot[57264:1439510] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 16:33:46.112 godot[57264:1439510] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER CLEAN LAYERS: 10\n"
+  },
+  {
+    "stage": "strength_trial",
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 16:32:06.564 godot[56900:1436592] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 16:32:18.183 godot[56900:1436592] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER CLEAN LAYERS: 4\n"
+  },
+  {
+    "stage": "provenance_diagnostic",
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 16:42:58.362 godot[59465:1462604] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 16:43:08.990 godot[59465:1462604] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER CLEAN LAYERS: 10\n"
+  }
+]

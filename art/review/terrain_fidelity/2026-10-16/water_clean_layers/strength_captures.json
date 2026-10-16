@@ -1,0 +1,34 @@
+{
+	"captures": [
+		{
+			"draw_calls": 799.0,
+			"error": 0,
+			"file": "spec25_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 490.0,
+			"error": 0,
+			"file": "spec25_grazing.png",
+			"position": "(-4.0, 5.0, 9.0)",
+			"rotation": "(-9.405486, -6.34019, 0.0)"
+		},
+		{
+			"draw_calls": 799.0,
+			"error": 0,
+			"file": "spec35_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 490.0,
+			"error": 0,
+			"file": "spec35_grazing.png",
+			"position": "(-4.0, 5.0, 9.0)",
+			"rotation": "(-9.405486, -6.34019, 0.0)"
+		}
+	],
+	"source": "Actual default clean_finish1 scene; diagnostic layers only; no source mutation; mist/cloud clocks remain live",
+	"water_phase": 1.25
+}

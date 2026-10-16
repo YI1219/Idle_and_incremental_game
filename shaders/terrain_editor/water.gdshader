@@ -142,5 +142,5 @@ void fragment(){
  ALBEDO=vec3(0.0);
  EMISSION=color*(1.0-fresnel);
  ALPHA=1.0;
- METALLIC=0.0;ROUGHNESS=.075+basin.b*.13;SPECULAR=.60;
+ METALLIC=0.0;ROUGHNESS=.075+basin.b*.13;SPECULAR=.25;
 }
