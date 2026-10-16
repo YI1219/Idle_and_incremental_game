@@ -1,0 +1,58 @@
+{
+  "candidate": "integrated_final / integrated wall v1",
+  "baseline": "joined1 /29c0863",
+  "selected_sources": [
+    "assets/nature/refined/cliff_main_v4.glb",
+    "assets/nature/refined/cliff_tall_v2.glb"
+  ],
+  "runtime_sources": [
+    "assets/nature/refined/cliff_integrated_main_v1.glb",
+    "assets/nature/refined/cliff_integrated_tall_v1.glb"
+  ],
+  "source_triangles": [
+    634,
+    816
+  ],
+  "default_detached_root_count": {
+    "before": 36,
+    "after": 0
+  },
+  "default_wall_count": 42,
+  "cap_boundary_maximum_normalized_gap": 8.975838136e-05,
+  "captures": {
+    "actual": 11,
+    "same_camera_positions_rotations": true,
+    "principal_views_inspected": 8
+  },
+  "headless_checks_passed": 16,
+  "rendered_checks": {
+    "capture": 11,
+    "compression_pixels": [
+      2185,
+      0,
+      1186
+    ],
+    "editor": "339/339",
+    "regeneration": "42/42 final observed; full temporary log/exit status lost at goal continuation, see render_checks.json"
+  },
+  "independent_review": {
+    "reviewer": "integrated_foot_review",
+    "critical": 0,
+    "important": 0,
+    "actionable_minor_fixed": "two stale assembly comments",
+    "test_update_review": "Retained actual1.3m mesh-depth and expansion thresholds while counting integrated walls; no weakening found"
+  },
+  "rejected_strengths": [
+    "v2 shorter .42/.16: horizontal band",
+    "v3 longer .78/.30: too massive"
+  ],
+  "remaining_art_limits": [
+    "broad clean panels",
+    "some pointed lower endings",
+    "deep grooves",
+    "razor turf cut",
+    "extreme low-angle source/core intersections"
+  ],
+  "performance": "Target devices unmeasured; no FPS claim",
+  "goal": "active, incomplete"
+}

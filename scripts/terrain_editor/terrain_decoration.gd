@@ -379,7 +379,8 @@ func _curtain_span(field,a:Vector2,dir:Vector2,span:Vector2,y:float,external_onl
 		else:span.x=maxf(span.x,hi)
 	return span if span.y-span.x>=.70 else Vector2(NAN,NAN)
 func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->void:
-	# One bounded crown per adaptive span; a separate root hangs below it.
+	# One bounded shoulder/foot source per adaptive span; legacy sources may
+	# still use a separate root as a fallback.
 	var length:=a.distance_to(b)
 	if length<.25:return
 	var dir:=(b-a)/length
@@ -406,8 +407,8 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 	# Unequal setbacks let neighboring source shoulders form ledges/clefts.
 	# Soft shading must not turn the physical rim into an even perimeter.
 	var proud:=lerpf(.45,1.15,pow(random_at(cell,seed_value,3004),1.05))
-	# Crown size follows the span until it splits. Crown height stays broad;
-	# the independent root covers the remaining inward-tapering underside.
+	# Shoulder size follows the span until it splits. Its reference height
+	# stays broad; the sculpted lower foot continues into the supporting core.
 	var span_x:float=maxf(.45,float(part.span_x))
 	var span_z:float=maxf(.45,float(part.span_z))
 	var want_w:=clampf(length*1.02,1.65,4.15)
@@ -454,8 +455,8 @@ func _rim_run(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_v
 	var index:=_columns.size()
 	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy})
 	_bucket_column(index)
-	if profile.base:
-		# Roots hang behind crown joints, independently sized and rotated. Their
+	if profile.base and not part.get("integrated_foot",false):
+		# Legacy roots hang behind crown joints, independently sized and rotated. Their
 		# upper shoulders overlap the crown's foot; lower cuts converge inward.
 		var root_kind:="underside_rock" if pick%2==0 else "underside_rock_b"
 		var root_h:float=assets[root_kind][0].body_height

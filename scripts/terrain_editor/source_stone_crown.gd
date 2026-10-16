@@ -2,8 +2,10 @@ extends RefCounted
 ## Clip a retained closed stone source into a terrain crown, then close its
 ## cut with a shared cap. Source faces determine the geological shoulder.
 const Surface=preload('res://scripts/terrain_editor/chunk_geometry.gd').Surface
-static func build(source:ArrayMesh,height:float=.68,cut_fraction:float=.72)->Dictionary:
- var box:=source.get_aabb()
+static func build(source:ArrayMesh,height:float=.68,cut_fraction:float=.72,reference_bounds:AABB=AABB())->Dictionary:
+ # A refined lower foot may extend below the retained source. Cap cutting
+ # and placement stay anchored to its original shoulder bounds.
+ var box:=source.get_aabb() if reference_bounds.size==Vector3.ZERO else reference_bounds
  var cut:float=box.position.y+box.size.y*cut_fraction
  var cap:Dictionary={};var polygons:Array=[]
  var faces:=source.get_faces()
@@ -58,7 +60,7 @@ static func build(source:ArrayMesh,height:float=.68,cut_fraction:float=.72)->Dic
  for j in range(0,cap_indices.size(),3):
   var a:=cap_polygon[cap_indices[j]];var b:=cap_polygon[cap_indices[j+1]];var c:=cap_polygon[cap_indices[j+2]]
   _triangle(full,Vector3(a.x,0,a.y),Vector3(b.x,0,b.y),Vector3(c.x,0,c.y),tint,true)
- return {'mesh':full.mesh(),'render_mesh':walls.mesh(),'height':height,'crown_z':crown_z,'span_x':1.0,'span_z':1.0,'cap_polygon':cap_polygon}
+ return {'mesh':full.mesh(),'render_mesh':walls.mesh(),'height':height,'geometry_height':height*(cut-bounds.position.y)/(cut-box.position.y),'crown_z':crown_z,'span_x':1.0,'span_z':1.0,'cap_polygon':cap_polygon}
 
 static func _triangle(surface,a:Vector3,b:Vector3,c:Vector3,tint:Color,up:bool=false)->void:
  # A plane cut can create very small real faces. The general terrain

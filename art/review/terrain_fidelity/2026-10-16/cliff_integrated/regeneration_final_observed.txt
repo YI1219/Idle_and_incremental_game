@@ -1,0 +1,4 @@
+Transcribed from the completed run observed via exec_command immediately before goal continuation.
+Original temporary log/session was cleared at continuation; this is not a full stdout capture.
+RIM BAKE us=62752
+TERRAIN DECORATION REGEN: 42/42 passed

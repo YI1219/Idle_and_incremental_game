@@ -1,0 +1,15 @@
+[
+	{
+		"camera_size": 4.8586311340332,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://assets/nature/refined/cliff_integrated_tall_v1.glb",
+		"source_bounds": "[P: (-1.727567, -1.596634, -1.685038), S: (3.266174, 3.598986, 3.324549)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

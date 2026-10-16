@@ -26,7 +26,11 @@ func run():
  var field:=Contours.new();field.refresh(data)
  var deco:=Decoration.new();deco.load_assets();deco._column_layout(field,data.seed)
  check(deco._columns.size()>20,"default terrain has independent rim crowns")
- check(deco._mass.size()>20,"underside has its own inward-tapering stone system")
+ var integrated:=true
+ for stone:Dictionary in deco._columns:
+  var part:Dictionary=deco.assets[stone.kind][0]
+  integrated=integrated and part.get("integrated_foot",false) and part.geometry_height>part.body_height+.15
+ check(integrated and deco._mass.is_empty(),"each wall continues into its own foot without a detached root layer")
  var mirrored:=0;var tall:=0
  for stone:Dictionary in deco._columns:
   if stone.pose.basis.determinant()<=0:mirrored+=1

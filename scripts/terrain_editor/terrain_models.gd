@@ -5,6 +5,8 @@ var assets:Dictionary={}
 ## Microseconds to bake the six rim/underside block meshes. They are instanced after that.
 var block_bake_us:=0
 const REFINED_CLIFF="res://assets/nature/refined/cliff_main_v4.glb"
+const INTEGRATED_CLIFF="res://assets/nature/refined/cliff_integrated_main_v1.glb"
+const INTEGRATED_TALL="res://assets/nature/refined/cliff_integrated_tall_v1.glb"
 const REFINED_TALL="res://assets/nature/refined/cliff_tall_v2.glb"
 const IDS={"rim_outcrop":REFINED_TALL,"rim_shelf":REFINED_CLIFF,"bush":"tree_oak","surface_rock":"stone_largeA","cliff_rock":"stone_largeA","shore_rock":"stone_largeD","shore_boulder":"stone_largeB","shore_pebble":"stone_largeA","path":"stone_smallFlatA","fence":"fence_simple","reeds":"plant_flatTall","lily":"lily_large","flower":"flower_yellowA","vine":"tree_oak"}
 func load_assets()->void:
@@ -16,7 +18,8 @@ func load_assets()->void:
 	assets.reeds=_reed_models()
 	assets.lily=_lily_models()
 	assets.path=_path_models()
-	# Four retained-source cut crowns and two tapered roots. Closed solids, baked once.
+	# Four retained-source shoulder/foot walls and two legacy root fallbacks.
+	# Closed solids, baked once.
 	var bake:=Time.get_ticks_usec()
 	assets.cliff_column=_rock_body_models(11)
 	assets.cliff_column_b=_rock_body_models(23)
@@ -197,14 +200,21 @@ func _grass_clump_models()->Array:
 	return parts
 
 func _rock_body_models(seed_value:int,root:bool=false)->Array:
-	# Crown and root use different fracture cuts; metadata supplies actual bounds.
+	# Sculpted wall feet use retained shoulder bounds for cap/placement scale;
+	# their lower continuation is part of the same closed source, not a root prop.
 	var built:Dictionary
 	if root:
 		built=preload("res://scripts/terrain_editor/procedural_stone.gd").build(seed_value,true)
 	else:
-		var source_id:String={11:REFINED_TALL,23:REFINED_CLIFF,37:REFINED_TALL,41:REFINED_CLIFF}.get(seed_value,"q:Rock_Medium_1")
+		var source_id:String={11:INTEGRATED_TALL,23:INTEGRATED_CLIFF,37:INTEGRATED_TALL,41:INTEGRATED_CLIFF}.get(seed_value,"q:Rock_Medium_1")
 		var source:Dictionary=_merge(_load(source_id,"cliff_rock"))
-		built=preload("res://scripts/terrain_editor/source_stone_crown.gd").build(source.mesh,.68,{11:.72,23:.72,37:.86,41:.62}.get(seed_value,.72))
+		var reference_bounds:=AABB()
+		var integrated:bool=seed_value in [11,23,37,41]
+		if integrated:
+			var retained:Dictionary=_merge(_load(REFINED_TALL if seed_value in [11,37] else REFINED_CLIFF,"cliff_rock"))
+			reference_bounds=retained.mesh.get_aabb()
+		built=preload("res://scripts/terrain_editor/source_stone_crown.gd").build(source.mesh,.68,{11:.72,23:.72,37:.86,41:.62}.get(seed_value,.72),reference_bounds)
+		built.integrated_foot=integrated
 	var mesh:ArrayMesh=built.mesh
 	var material:=ShaderMaterial.new()
 	material.shader=load("res://shaders/terrain_editor/cliff_column.gdshader")
@@ -214,7 +224,7 @@ func _rock_body_models(seed_value:int,root:bool=false)->Array:
 	built.render_mesh.surface_set_material(0,material)
 	mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(mesh,42.0,.55)
 	built.render_mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(built.render_mesh,42.0,.55)
-	return [{"mesh":mesh,"render_mesh":built.render_mesh,"pose":Transform3D.IDENTITY,"body_height":built.height,"crown_z":built.crown_z,"span_x":built.span_x,"span_z":built.span_z,"cap_polygon":built.get("cap_polygon",PackedVector2Array())}]
+	return [{"mesh":mesh,"render_mesh":built.render_mesh,"pose":Transform3D.IDENTITY,"body_height":built.height,"geometry_height":built.get("geometry_height",built.height),"integrated_foot":built.get("integrated_foot",false),"crown_z":built.crown_z,"span_x":built.span_x,"span_z":built.span_z,"cap_polygon":built.get("cap_polygon",PackedVector2Array())}]
 
 
 func _facing_triangle(builder,a:Vector3,b:Vector3,c:Vector3,color:Color,outward:Vector3)->void:

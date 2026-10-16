@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+INTEGRATED CLIFF 11: cap_gap=0.0 extra_depth=0.0 passed=false
+INTEGRATED CLIFF 37: cap_gap=0.0 extra_depth=0.0 passed=false
+INTEGRATED CLIFF 23: cap_gap=0.0 extra_depth=0.0 passed=false
+INTEGRATED CLIFF 41: cap_gap=0.0 extra_depth=0.0 passed=false
+INTEGRATED CLIFF SCENE: columns=42 detached_roots=36 failures=5

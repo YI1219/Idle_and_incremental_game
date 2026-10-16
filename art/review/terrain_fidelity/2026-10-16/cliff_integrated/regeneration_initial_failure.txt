@@ -1,0 +1,16 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+RIM BAKE us=62607
+TERRAIN DECORATION REGEN: 40/42 passed
+2026-10-16 00:48:43.374 godot[38719:34249932] +[IMKClient subclass]: chose IMKClient_Modern
+ERROR: rock bodies continue below the shell (0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_decoration_regen_test.gd:18)
+       [1] run (res://tests/terrain_decoration_regen_test.gd:132)
+ERROR: expanded edge gains deep rock bodies (0 vs 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_decoration_regen_test.gd:18)
+       [1] run (res://tests/terrain_decoration_regen_test.gd:150)

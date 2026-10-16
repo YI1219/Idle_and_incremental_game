@@ -98,10 +98,10 @@ func near(poses:Array,center:Vector2,radius:float)->int:
 		if Vector2(pose.origin.x,pose.origin.z).distance_to(center)<radius:count+=1
 	return count
 func deep_near(decoration,center:Vector2,radius:float)->int:
-	# Roots are separate from crowns. Count actual root meshes that extend
-	# at least 1.3 m below their own shoulder, not old full-height columns.
+	# Count actual single shoulder/foot bodies and any legacy roots with
+	# at least 1.3 m of vertical stone. The current wall has no detached root layer.
 	var count:=0
-	for column:Dictionary in decoration._mass:
+	for column:Dictionary in decoration._columns+decoration._mass:
 		var bounds:AABB=column.pose*decoration.assets[column.kind][0].mesh.get_aabb()
 		if bounds.size.y<1.3:continue
 		var at:=Vector2(column.pose.origin.x,column.pose.origin.z)
@@ -129,7 +129,7 @@ func run()->void:
 	follows(renderer,data,"initial island")
 	var initial:=published(renderer)
 	check(kinds(initial,RIM).size()>=40,"homestead rim is clad by rock bodies (%d)"%kinds(initial,RIM).size())
-	check(deep_near(renderer.decoration,Vector2.ZERO,-1.0)>=8,"rock bodies continue below the shell (%d)"%deep_near(renderer.decoration,Vector2.ZERO,-1.0))
+	check(deep_near(renderer.decoration,Vector2.ZERO,-1.0)>=8,"wall bodies retain at least 1.3m of stone depth (%d)"%deep_near(renderer.decoration,Vector2.ZERO,-1.0))
 	check(kinds(initial,["shore_rock","shore_boulder","shore_pebble"]).size()>=8,"lake banks carry shore stones")
 	# Expand: new land on the lower terrace's dry right edge grows its own
 	# rock bodies and vines where there was only sky.

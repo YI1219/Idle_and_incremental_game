@@ -1,0 +1,38 @@
+[
+  {
+    "test": "capture_courtyard_finish",
+    "arguments": [
+      "integrated_final",
+      "camera"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 28.36,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nCOURTYARD CAPTURES: integrated_final 11\n2026-10-16 00:48:05.749 godot[38539:34248300] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 00:48:21.560 godot[38539:34248300] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  {
+    "test": "terrain_rim_green_render_test",
+    "arguments": [],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 8.1,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nLIP COMPRESSION RENDER: { \"standing_pixels\": 2185, \"compressed_pixels\": 0, \"local_mask_pixels\": 1186, \"passed\": true }\n2026-10-16 00:48:34.265 godot[38677:34249416] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 00:48:41.497 godot[38677:34249416] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  {
+    "test": "terrain_editor_render_test",
+    "arguments": [],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.03,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nTERRAIN EDITOR RENDER: 339/339 passed\n2026-10-16 00:48:42.142 godot[38704:34249801] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  },
+  {
+    "test": "terrain_decoration_regen_test",
+    "arguments": [],
+    "exit_code": null,
+    "passed": true,
+    "output": "RIM BAKE us=62752\nTERRAIN DECORATION REGEN: 42/42 passed\n",
+    "completion_evidence": "Observed final42/42 marker in the running test log and terminal/missing process before continuation. Temporary full log and exec session no longer exist; exit code not independently recovered. No restart solely due lost observation handle. Test source quits0 when failures==0.",
+    "test_sha256": "2a0b284749b628991eccd949be50d09a286f7e350546db1ca231042e7f4f7c12"
+  }
+]

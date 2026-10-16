@@ -141,3 +141,12 @@ A separate real defect is visible in this investigation: rim union rebuilds the 
 - [x] Reproduce 1,329 shallow shared joins with artificial seams on baseline. Restore crease-aware normals: zero seam failures, 588 sharp joins retained.
 - [x] Inspect11 matched actual captures/eight principal views; retain only the modest lower-core normal correction.
 - [x]12 affected headless plus actual editor339/339 and regeneration42/42 pass, independent review supports limited retention; docs/gallery updated. Reversible checkpoint verified; full art goal remains open.
+
+
+## Single retained-source shoulder and foot — October16 continuation
+
+Previous turn made authoritative progress and pushed29c0863 (continuous base normals). Ruling: the separate roots and flat-ended crown create a stacked construction. Refine the same retained-source lower foot downward and modestly inward, protecting whole faces crossing all runtime cap planes; do not add sliver-producing horizontal sections. Anchor clipping/scale to original source bounds, so extension does not renormalize the grass cap. Omit separate roots only for these integrated-foot wall modules; continuous backing remains. Compare extension/return strengths in the real scene, reject teeth/plate variants. Outcrops, trees, water and authored data keep existing sources.
+
+- [x] Reproduce active model0extra-depth/36detached roots in new integration regression; initial parse failure discarded, corrected red test exits1. Blender work copies v1/v2/v3 keep topology634/816 and closed positive volume, original source hashes protected.
+- [x] Neutral models and11matched actual views inspected; selectv1, reject shorter v2 band and too-heavy v3.
+- [x]16 headless checks pass, compression2185/0/1186 and editor339/339 pass. Corrected regeneration42/42 observed; temporary log/exit-status loss at continuation explicitly recorded. Review supports limited retention; root-depth test update preserves thresholds. Docs/gallery ready for reversible checkpoint. Full goal remains active.

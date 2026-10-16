@@ -1,6 +1,6 @@
 extends SceneTree
-const PATH='res://assets/nature/refined/cliff_main_v4.glb'
-const TALL_PATH='res://assets/nature/refined/cliff_tall_v2.glb'
+const PATH='res://assets/nature/refined/cliff_integrated_main_v1.glb'
+const TALL_PATH='res://assets/nature/refined/cliff_integrated_tall_v1.glb'
 var failures:=0
 func _initialize()->void:
  if not FileAccess.file_exists(PATH):push_error('Refined retained main cliff source is missing');quit(1);return
@@ -9,10 +9,12 @@ func _initialize()->void:
  var source:Array=models._load(PATH,'cliff_rock')
  if source.is_empty():push_error('Refined main cliff source cannot load');quit(1);return
  var merged:Dictionary=models._merge(source)
+ var retained:Dictionary=models._merge(models._load('res://assets/nature/refined/cliff_main_v4.glb','cliff_rock'))
+ var retained_tall:Dictionary=models._merge(models._load('res://assets/nature/refined/cliff_tall_v2.glb','cliff_rock'))
  var faces:PackedVector3Array=merged.mesh.get_faces()
  if faces.size()/3<=244 or faces.size()/3>1500:failures+=1
  for spec:Array in [[23,.72],[41,.62]]:
-  var expected:Dictionary=load('res://scripts/terrain_editor/source_stone_crown.gd').build(merged.mesh,.68,spec[1])
+  var expected:Dictionary=load('res://scripts/terrain_editor/source_stone_crown.gd').build(merged.mesh,.68,spec[1],retained.mesh.get_aabb())
   var actual:Array=models._rock_body_models(spec[0])
   var want:PackedVector3Array=expected.render_mesh.get_faces()
   var got:PackedVector3Array=actual[0].render_mesh.get_faces()
@@ -28,7 +30,7 @@ func _initialize()->void:
  print('REFINED CLIFF SOURCE: triangles=',faces.size()/3,' failures=',failures)
  var tall:Dictionary=models._merge(models._load(TALL_PATH,'cliff_rock'))
  for spec:Array in [[11,.72],[37,.86]]:
-  var expected:Dictionary=load('res://scripts/terrain_editor/source_stone_crown.gd').build(tall.mesh,.68,spec[1])
+  var expected:Dictionary=load('res://scripts/terrain_editor/source_stone_crown.gd').build(tall.mesh,.68,spec[1],retained_tall.mesh.get_aabb())
   var actual:Array=models._rock_body_models(spec[0])
   var want:PackedVector3Array=expected.render_mesh.get_faces()
   var got:PackedVector3Array=actual[0].render_mesh.get_faces()
