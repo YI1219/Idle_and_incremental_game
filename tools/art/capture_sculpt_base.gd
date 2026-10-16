@@ -28,7 +28,18 @@ func run():
  if args.has('mass'):preload('res://tools/art/author_unified_cliff_mass.gd').author(editor.data)
  if args.has('compactmass'):preload('res://tools/art/author_unified_cliff_mass.gd').author(editor.data,true)
  if args.has('massfinish'):preload('res://tools/art/author_unified_cliff_mass.gd').finish(editor.data)
+ if args.has('section'):preload('res://tools/art/author_cliff_section.gd').author(editor.data)
+ if args.has('leansection'):preload('res://tools/art/author_cliff_section.gd').author(editor.data,true)
+ if args.has('volumesection'):preload('res://tools/art/author_cliff_section.gd').author(editor.data,false,true)
  editor.renderer.rebuild_all()
+ if args.has('neutral'):
+  var neutral:=Shader.new()
+  neutral.code='shader_type spatial; void fragment(){ALBEDO=mix(vec3(.42),vec3(.66),COLOR.r);ROUGHNESS=.95;SPECULAR=0.0;}'
+  editor.renderer.materials.sculpted_terrain.shader=neutral
+  editor.renderer.props.hide();editor.renderer.mist.hide()
+  for chunk:Node3D in editor.renderer.chunks.values():
+   for child:Node3D in chunk.get_children():
+    child.visible=child.name=='sculpted_terrain'
  frame(Vector2(-14,4),8,16,30);await capture(tag+'_close')
  frame(Vector2(0,-1),21,16,27);await capture(tag+'_overview')
  if args.has('details'):

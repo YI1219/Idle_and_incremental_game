@@ -1,0 +1,32 @@
+{
+  "successful_native_stages": [
+    "section1",
+    "section2",
+    "section2_neutral",
+    "section_control_neutral",
+    "section3d1"
+  ],
+  "new_native_images": 35,
+  "seven_matching_cameras": true,
+  "principal_water_phase": 1.25,
+  "live_clouds_and_non_neutral_mist": true,
+  "neutral_pair_identical_data_and_skin_hashes": true,
+  "neutral_control_matches_unmodified_base_hashes": true,
+  "production_scripts_shaders_assets_unchanged_from_HEAD": true,
+  "production_head": "2cbc9fef7d9172d151eaa8561c1f15b4f6e78966",
+  "reproduction_flags_not_runtime_capture_metadata": {
+    "section1": "section",
+    "section2": "leansection",
+    "section2_neutral": "leansection neutral",
+    "section_control_neutral": "neutral",
+    "section3d1": "volumesection"
+  },
+  "all_art_variants_rejected": true,
+  "default_candidate": "clean_water1",
+  "whole_art_accepted": false,
+  "fresh_functional_checks": {
+    "sculpt_base": "23/23; 55 thin-support probes, zero mismatches; zero invalid edges",
+    "rock_shoulder": "15/15; zero open/inward faces",
+    "scope": "Existing tool regressions only; not rejected whole-scene art/support acceptance"
+  }
+}
