@@ -1,0 +1,35 @@
+{
+	"captures": [
+		{
+			"draw_calls": 411.0,
+			"error": 0,
+			"file": "rendered_envelope1_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 341.0,
+			"error": 0,
+			"file": "rendered_envelope1_grass.png",
+			"position": "(-12.4, 7.1, 11.0)",
+			"rotation": "(-23.8915, 18.65789, 0.0)"
+		},
+		{
+			"draw_calls": 373.0,
+			"error": 0,
+			"file": "rendered_envelope1_reverse.png",
+			"position": "(-30.34978, 9.0, -0.38091)",
+			"rotation": "(-28.0, -105.0, 0.0)"
+		}
+	],
+	"data_sha256": "1c9b53fce074e496914e5eb6472527988fbd646351fb6108392cbb4214cc8425",
+	"samples": 28702,
+	"sculpt_base": true,
+	"sculpt_profile": "local",
+	"skin_colors_sha256": "d1e27a972a9166d462960eeb673ddd7fcbcbee6b28cc8db544203e0a3c5410d4",
+	"skin_normals_sha256": "b51acef5500c0a2909dff4130425cd06d89965be1fbf795225dcf342908a2abf",
+	"skin_uv_sha256": "7761aaa5c5f5041bd3940e67e046ab7803186b5a64931649213e37ab76dff6eb",
+	"skin_vertices_sha256": "2f0999af5168bc6e257f0d14b57aa44a69927b5aa345e0859b02e0d5a28ed061",
+	"source": "Actual Godot terrain scene",
+	"water_phase": 1.25
+}

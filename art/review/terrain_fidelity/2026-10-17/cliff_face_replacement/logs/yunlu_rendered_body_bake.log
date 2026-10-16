@@ -1,0 +1,6 @@
+00:00.119  translation      | WARNING Falling back to standard locale ("C")
+Info: Saved as "actual_rendered_body.blend"
+RENDERED BODY BAKE: {"samples": 28972, "source_sha256": "34077ba741fed9d013d6d71b5f6009e44e7eef3ba67683cefc4a4b7939dc635b", "save_sha256": "c64e213912b15ce89db2b02a5cd8801789b99b305e8f343c2f31486d8acd84b3", "queries": 126665, "ray_vote_disagreements": 14591, "operation": "Actual original visible terrain body surfaces plus42closed retained crowns. Three oriented-winding rays classify composite union; nearest actual face distance, bounded ordinary v4density replacement. No source stretching, new rock face source or runtime model overlay.", "stage": "Unaccepted local conversion, not proof of source closure or default art acceptance."}
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

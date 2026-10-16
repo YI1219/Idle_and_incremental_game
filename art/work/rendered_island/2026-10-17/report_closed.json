@@ -1,0 +1,15 @@
+{
+  "samples": 42788,
+  "source_sha256": "34077ba741fed9d013d6d71b5f6009e44e7eef3ba67683cefc4a4b7939dc635b",
+  "save_sha256": "5756b737fba66bb03646b8234222f1b1bce1bfd0a0169c8d01f019d7102b38ae",
+  "queries": 125583,
+  "ray_vote_disagreements": 30388,
+  "source_state": {
+    "triangles": 913344,
+    "nonmanifold_edges": 0,
+    "volume": 944.8069471400531
+  },
+  "flat_cap_air_ties": 1082,
+  "operation": "Actual original visible terrain body surfaces plus42closed retained crowns. Three oriented-winding rays classify composite union; nearest actual face distance, bounded ordinary v4density replacement. No source stretching, new rock face source or runtime model overlay. Before density conversion, Blender.10m voxel-remesh of the preserved composite source, with zero nonmanifold source edges required. Original flat upper cap ties belong to air. Closure alone is not art acceptance.",
+  "stage": "Unaccepted local conversion, not proof of source closure or default art acceptance."
+}

@@ -1,0 +1,54 @@
+{
+  "point": [
+    -15,
+    2,
+    0
+  ],
+  "hits": [
+    {
+      "triangle": 580964,
+      "distance": 3.930482732632642,
+      "signed_dot": 0.0038163405915039483,
+      "vertices": [
+        [
+          -11.65000057220459,
+          3.5,
+          1.25
+        ],
+        [
+          -11.550000190734863,
+          3.5,
+          1.25
+        ],
+        [
+          -11.550000190734863,
+          3.5,
+          1.149999976158142
+        ]
+      ]
+    },
+    {
+      "triangle": 580977,
+      "distance": 3.930482732632642,
+      "signed_dot": -0.0038163405915039483,
+      "vertices": [
+        [
+          -11.550000190734863,
+          3.5,
+          1.25
+        ],
+        [
+          -11.65000057220459,
+          3.5,
+          1.149999976158142
+        ],
+        [
+          -11.550000190734863,
+          3.5,
+          1.149999976158142
+        ]
+      ]
+    }
+  ],
+  "finding": "Coincident opposite-facing cap triangles cancel analytic winding, but successive BVH ray steps skip the second hit. Closed edge incidence alone did not establish a solid union."
+}

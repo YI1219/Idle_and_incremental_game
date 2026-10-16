@@ -1,0 +1,10 @@
+{
+	"ambiguous_junctions": 0,
+	"grass_anchor_count": 478,
+	"loops": 2,
+	"open_boundaries": 0,
+	"painted_flat_cap_vertex_occurrences": 120870,
+	"section_y": 3.4634917,
+	"stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+	"unsupported_anchor_samples": 0
+}

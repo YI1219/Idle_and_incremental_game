@@ -1,0 +1,462 @@
+{
+  "valid_native_frames": 42,
+  "failed_cap_frames": {
+    "face_scan6_close.png": "618c4edc48753e66496e8a676e19e2055421b705e691f43d8c59c0c0ea4c6174",
+    "face_scan6_grass.png": "7276a89d5a343058350c56197d0b21d63beb8b407ef8fb3d20186428464affc1",
+    "face_scan6_reverse.png": "05689c54d444c5aa86ea208019abdb616b5f54462a996d94e653ef4a06925c9b"
+  },
+  "captures": {
+    "rendered_legacy_control1": {
+      "views": {
+        "close": {
+          "sha256": "cbb13195f488a7ee8366bd28bafd22740b22166b9970ca9d235110033c432f3c",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "814c5db053cf58984e966bd188a7b3837db43e28d0442cddb9be2a700b79977f",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "a876d619f873533b5f2988750765a48b4bb564e7b3c23adbe9141e6bc0cf36b4",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+      "samples": 0
+    },
+    "face_replacement1": {
+      "views": {
+        "close": {
+          "sha256": "bf645b5324a412d29b8788fbfbb3f1507c61a5ab2a4fc22612dc6fd11b6d6877",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "2e89b0a1491180da71b5c8005475eaf590aec10c515ae24ba4678031e4653020",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "e30470a20e2592f52b1ff36b3089a3f430b74dd2b17d369ebcedaef3adc7a8c5",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "8fbf41e8254187782aa3a3a589b49e9d2b8c27e91365b6f2abce019e9b42ec37",
+      "samples": 10752
+    },
+    "face_replacement2": {
+      "views": {
+        "close": {
+          "sha256": "56cafba1f54a4dae2bd18f1466526275036058c4ce8018a0b1bd8eb126c527af",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "af0eb7f78e26f2db66a881ec76e68db3fd1e9498ed037445c6d714c247021c1c",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "d06c57df4f6b683743c8d6f6168bafb144bf936918f2543f1afea453d8708509",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "06b73f3415ca22d6e6130a718df6b6c5727f2b4262e389fe4810dbb29a85e93f",
+      "samples": 11937
+    },
+    "face_scan1": {
+      "views": {
+        "close": {
+          "sha256": "8865f3d164486eb932d0ba81c5f3983f6023250f0f532e4aa01f2a68d8ccd6a7",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "d5947912ed345dee842d6e407cc7050a30a5a383c7d6e181cf3bb70c6f9e9e74",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "86fc8812ea64938c4a0fea9cf9ad056b22fcbc4f45a53cf7a2ca7e80b9519749",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "0dd12027a51815c24f8010477d87fb1a157425b7b666f255aa3effea21a2dd7f",
+      "samples": 15282
+    },
+    "face_scan2": {
+      "views": {
+        "close": {
+          "sha256": "743f8fe9aaa3964ef42fbc28f0d31b6305d64f304ea187dc3f56d6e664ecbd7b",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "c846913bfcf45df3470c96ea3695a8cea6034f59c6396aac4a5110e1ca604954",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "19d47c534fa0897cafb85a701a9c2b936db92b8c2eb99e7b2bb8f5954259fa45",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "70a095e001997bff2bd06b79d0337d4c0ce2fee78f10459062054f1f6cd2dbd2",
+      "samples": 9671
+    },
+    "face_scan3": {
+      "views": {
+        "close": {
+          "sha256": "dd19c2bb35684c8821c962bbc6f67b0823b38e6a4d499c3bcd89fc159b3a3a06",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "c057625a07f041098651483e7fdb126bb5d2299187165a0200e5a7fd1ae97654",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "dd630424fe5782103700820ff1f573f3b603721de9169deb673dee813609cc77",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "f0b650afb26800e58740f4e27bc192a1b0db19507708e486f098f1293d2972bd",
+      "samples": 4519
+    },
+    "face_scan4": {
+      "views": {
+        "close": {
+          "sha256": "bcb535da2df6d310f8fea0068831cf5c37e15d6ffd83d0f824b2b58d4296d344",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "996b6e0e155f357bce1b795e8d06fda9fd7cbd2444a8784f45386e8c39a27367",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "aeb0df66e7f2edb06e612c832fbc3581d6d526bea35dfbe3473465788ca557c9",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "5245bfd845ee76181f299c4a0419beb7b585ec0dd00d91095479c8f2f33e8b83",
+      "samples": 6211
+    },
+    "face_scan5": {
+      "views": {
+        "close": {
+          "sha256": "b9812182dd6d148752ef4739c5da6ab704e27a6d444cad9c52b087ce0779cb43",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "dcb35ba6c522e17ec99b92c079d3aaed40ebf18a1abbdd8972dc492d90a164a3",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "915db6fbfbd88797b6780609c73cceb780e275120714736763b6edfb2ec61bee",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "e86e17021c95f351782dcebf1a4a9137043d7f6a261200e76576f335b8f86341",
+      "samples": 5333
+    },
+    "face_scan6_bare": {
+      "views": {
+        "close": {
+          "sha256": "217c3cc9a0019c1046d0d2235d42a49b432ada37bf9665648f32d5888861ff9a",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "20a993b259e5ed1b9347a99c9928d1e329f8a27152d3c2247c333c6be56109e1",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "ddf4fab798ab26aa2cebba2589cfeebbc6fe6b65cea0058a61403241e036c910",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "878a9bfbd97854dd447bec093fb897ead9ac186ca42e6fd4358536385313f707",
+      "samples": 5294
+    },
+    "face_scan6_cap": {
+      "views": {
+        "close": {
+          "sha256": "60386555dc694d701027d8110e8d16a3804d87d1676cf719468929dce3bac577",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "2a2dfe8925bd993cde4bd0e4b618abc90edfb2dca2274488494dded282b69c56",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "994240c13e44616f642968a3e5b6a7cf7df877c3d44760129105a2197b35b412",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "878a9bfbd97854dd447bec093fb897ead9ac186ca42e6fd4358536385313f707",
+      "samples": 5294
+    },
+    "face_scan6_leaf": {
+      "views": {
+        "close": {
+          "sha256": "a51ab191dae9f28df3e1238bd5c26742d8ceef2560f74c9691441baefcc8dd86",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "c71d00fc3fa971713d927db5f4fa70abcbcecc6933918800e343270f9986eff3",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "cf43e6134787f588ea0287e35334f4621e8f32e6330d63974e8021692254b6d7",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "878a9bfbd97854dd447bec093fb897ead9ac186ca42e6fd4358536385313f707",
+      "samples": 5294
+    },
+    "rendered_body1": {
+      "views": {
+        "close": {
+          "sha256": "a5290459cf203016f9b4b327b40a22f066ddca4ab5fc1731674274fb7ba46b34",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "abbf944e34b3561d13230e8cbbad4baef45dfa4c7989299351856c07c73ea0b1",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "8ae1fe5b411274edb96ff24b2f21a52c8a70360094c40c1ac9b2475c71826ba1",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "a9b1adaa5eb964bf9791a8f3c471f73aaa3e5a7fff66765eddc767eaa60e60ac",
+      "samples": 28972
+    },
+    "rendered_envelope1": {
+      "views": {
+        "close": {
+          "sha256": "622020a42404fafb4db1d95e841153babe954c35cd4b02d07fa0f5f5bc0a0a89",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "258b48b6cebb23add3c33f9bed0475c332a699924b0b56d207e4e7dfa7430c2a",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "b44fee997284734e690e860798bd831d82ee280f6ecf90d6aea3dd595966d48f",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "1c9b53fce074e496914e5eb6472527988fbd646351fb6108392cbb4214cc8425",
+      "samples": 28702
+    },
+    "rendered_envelopecap1": {
+      "views": {
+        "close": {
+          "sha256": "6121f30db0cb4849846264ace42f8a9634db9df46b61337da3b07d36a94f0cc6",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "c28e367659799d06157dfa6308e5e2aad7942687edc216aba3cda425acad2c52",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "563de9f45ace5a58ad64acddfec9b0e01807dd4c672eb14ac7b640de3fb4454f",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "8ebe589d5573f977783444b7aeb6922fbc84561b1fabfb42847ffe8f20fb829e",
+      "samples": 28438
+    }
+  },
+  "saves": {
+    "v1": {
+      "sha256": "b27640eabfb7c52180018a40bf28395a495812fd2324bc32fad27411cce81bad",
+      "samples": 10752,
+      "operation": "Unchanged existing closed crown faces; true front intersections at.125m vertical intervals. Replace core exterior by shared cap/side envelope; below last real section continue inward1.1m/m into original common bottom. Ordinary editable density, no stretch/source instances."
+    },
+    "v2": {
+      "sha256": "c26ecc97af5d5fbe3c5955746bffc10fe0988ea5b70ccac8e29313770e71d680",
+      "samples": 11937,
+      "operation": "Existing source main front faces aboveY1.5; one continuous inward lower return from that actual section (.20d+.22d\u00b2), same canonical bottom plane. Complete side density replaces former core exterior; original dry-cap footprint guard releases over1m depth. No added rock instances or source stretch."
+    },
+    "scan": {
+      "sha256": "2c1dbeab7914f6fcb98333dba4054aabe8901dfed66e8974e8a7fcc37a523966",
+      "samples": 15282,
+      "operation": "Existing RockFace02 open source only supplies front ray intersections. Uniform3x scale, source Z remains vertical. Each x-section translates depth to original dry edge at cap; actual lower face supplies relief/returns, then inward1.1m/m continuation into canonical bottom. Whole bounded density side replaces core; no open runtime patch, source instances or anisotropic scale."
+    },
+    "scan2": {
+      "sha256": "525f1dab6f9c88b70762b3d3a5f01f25b8fdaf1933660fd3c07b781d72b83b59",
+      "samples": 9671,
+      "operation": "RockFace02 front intersections, same envelope replacement. Uniform3x scale and rigid frame aligns the complete area-weighted source normal outward; source Up is perpendicular to that normal. Cap cuts at68% source vertical extent, each section anchored to original dry-edge cap. No forward-lean bulge from uncorrected scan orientation. Actual lower face then inward continuation to canonical bottom."
+    },
+    "scan3": {
+      "sha256": "67e2ff505608321b8aa943eb2f5f2de0f2e707527a4672149370bd1cdf8966b7",
+      "samples": 4519,
+      "operation": "RockFace02 front intersections, same envelope replacement. Uniform3x scale and rigid frame aligns the complete area-weighted source normal outward; source Up is perpendicular to that normal. Cap cuts at68% source vertical extent, each section anchored to original dry-edge cap. Actual lower face then inward continuation to canonical bottom. Below2.5m depth blend the geometric front position into the actual original base-front crossings; at6m depth leave base nodes untouched. No continuing extruded bottom plank."
+    },
+    "scan4": {
+      "sha256": "8c2c4699185fc4745fd57159937ab8e236ea8a0657ee9d583480f0b0c1a71df4",
+      "samples": 6211,
+      "operation": "RockFace02 front intersections, same envelope replacement. Uniform6x scale and rigid frame aligns the complete area-weighted source normal outward; source Up is perpendicular to that normal. Cap cuts at68% source vertical extent, each section anchored to original dry-edge cap. Actual lower face then inward continuation to canonical bottom. Below2.5m depth blend the geometric front position into the actual original base-front crossings; at6m depth leave base nodes untouched."
+    },
+    "scan5": {
+      "sha256": "a1dd9cd18e4f02c0e169ec3cfbbda191a725674b82584e11d4c5ce7f0d3b6c51",
+      "samples": 5333,
+      "operation": "RockFace02 front intersections, same envelope replacement. Uniform3x scale and rigid frame aligns the complete area-weighted source normal outward; source Up is perpendicular to that normal. Cap cuts at68% source vertical extent, each section anchored to original dry-edge cap. Actual lower face then inward continuation to canonical bottom. Below2.5m depth blend the geometric front position into the actual original base-front crossings; at6m depth leave base nodes untouched. Rigid90degree face-plane rotation converts source horizontal strata to vertical clefts; feather actual source-supported x interval over.75m to avoid hard endpoint ribs."
+    },
+    "scan6": {
+      "sha256": "81f590fde9d035405fab29e7533dc4945a2eb7d846cfe40a53511c891f48463b",
+      "samples": 5294,
+      "operation": "RockFace02 front intersections, same envelope replacement. Uniform3x scale and rigid frame aligns the complete area-weighted source normal outward; source Up is perpendicular to that normal. Cap cuts at68% source vertical extent, each section anchored to original dry-edge cap. Actual lower face then inward continuation to canonical bottom. Below2.5m depth blend the geometric front position into the actual original base-front crossings; at6m depth leave base nodes untouched. Rigid90degree face-plane rotation converts source horizontal strata to vertical clefts; feather actual source-supported x interval over.75m. Preserve real detrended source cap variation, bounded to +/-.6m; actual visible footprint changes locally while canonical cells remain unchanged. Requires actual-skin cap coverage study, not production grass acceptance."
+    },
+    "body_v1": {
+      "sha256": "c64e213912b15ce89db2b02a5cd8801789b99b305e8f343c2f31486d8acd84b3",
+      "samples": 28972,
+      "operation": "Actual original visible terrain body surfaces plus42closed retained crowns. Three oriented-winding rays classify composite union; nearest actual face distance, bounded ordinary v4density replacement. No source stretching, new rock face source or runtime model overlay."
+    },
+    "body_closed": {
+      "sha256": "5756b737fba66bb03646b8234222f1b1bce1bfd0a0169c8d01f019d7102b38ae",
+      "samples": 42788,
+      "operation": "Actual original visible terrain body surfaces plus42closed retained crowns. Three oriented-winding rays classify composite union; nearest actual face distance, bounded ordinary v4density replacement. No source stretching, new rock face source or runtime model overlay. Before density conversion, Blender.10m voxel-remesh of the preserved composite source, with zero nonmanifold source edges required. Original flat upper cap ties belong to air. Closure alone is not art acceptance."
+    },
+    "body_envelope": {
+      "sha256": "23738a07350029431d0f4993d87998aba3cc8f4db6b38a0139a957f4cde69be9",
+      "samples": 28702,
+      "operation": "Bounded vertical-envelope density of retained body/crown draw geometry. At each .25m XZ node, analytic float64 triangle intersections supply min/max Y; fill that entire interval, including visible air below overhangs. Nearest original face sets bounded magnitude. This is not a shape-preserving or exact CSG conversion. Outcrop props are excluded from the source and disappear in this unified study. Exact upper/lower ties belong to air. No new model or runtime overlay."
+    },
+    "body_envelopecap": {
+      "sha256": "7469fecf9dc600dc1dc819de53ab7d6def000eac2d2ea2e24dd4076ff52e7219",
+      "samples": 28438,
+      "operation": "Bounded vertical-envelope density of retained body/crown draw geometry. At each .25m XZ node, analytic float64 triangle intersections supply min/max Y; fill that entire interval, including visible air below overhangs. Nearest original face sets bounded magnitude. This is not a shape-preserving or exact CSG conversion. Outcrop props are excluded from the source and disappear in this unified study. Exact upper/lower ties belong to air. No new model or runtime overlay. Within .35m of a cap above a >.7m column, use vertical cap distance rather than nearest composite internal face, keeping the cap interpolation uniform."
+    }
+  },
+  "source_sha256": "34077ba741fed9d013d6d71b5f6009e44e7eef3ba67683cefc4a4b7939dc635b",
+  "connectivity": {
+    "scan3": {
+      "version": "scan3",
+      "triangles": 232944,
+      "vertices": 116474,
+      "components": [
+        {
+          "triangles": 232944,
+          "vertices": 116474,
+          "lo": [
+            -20.999980926513672,
+            -4.689836025238037,
+            -11.999979972839355
+          ],
+          "hi": [
+            17.999980926513672,
+            3.4999799728393555,
+            10.999979972839355
+          ]
+        }
+      ],
+      "non_two_use_edges": 0,
+      "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+    },
+    "scan6": {
+      "version": "scan6",
+      "triangles": 233396,
+      "vertices": 116700,
+      "components": [
+        {
+          "triangles": 233396,
+          "vertices": 116700,
+          "lo": [
+            -20.999980926513672,
+            -4.689836025238037,
+            -11.999979972839355
+          ],
+          "hi": [
+            17.999980926513672,
+            3.4999799728393555,
+            10.999979972839355
+          ]
+        }
+      ],
+      "non_two_use_edges": 0,
+      "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+    },
+    "renderedenvelopecap": {
+      "version": "renderedenvelopecap",
+      "triangles": 240116,
+      "vertices": 120060,
+      "components": [
+        {
+          "triangles": 240116,
+          "vertices": 120060,
+          "lo": [
+            -21.192819595336914,
+            -4.689836025238037,
+            -11.999979972839355
+          ],
+          "hi": [
+            17.999980926513672,
+            3.501987934112549,
+            10.999979972839355
+          ]
+        }
+      ],
+      "non_two_use_edges": 0,
+      "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+    }
+  },
+  "save_checks": [
+    {
+      "checks": 12,
+      "failures": 0,
+      "scope": "Finite ordinary density save/load/support/carve/undo/redo. No actual-cap render override persistence, publication/picking, props, arbitrary sculpture, water routing or performance acceptance.",
+      "skin_sha256_hex_algorithm": "99c4d6530119848128c1fc30f8c28b99373c439c6352903ce51826875e07faab",
+      "study_samples": 5294,
+      "support_mismatches": 0,
+      "support_probes": 135
+    },
+    {
+      "checks": 12,
+      "failures": 0,
+      "scope": "Finite ordinary density save/load/support/carve/undo/redo. No actual-cap render override persistence, publication/picking, props, arbitrary sculpture, water routing or performance acceptance.",
+      "skin_sha256_hex_algorithm": "9c5afade33e57a19e9d3e5966e1448d30a1a833f50d5765d2a3ae7c8e347fd19",
+      "study": "renderedenvelopecap",
+      "study_samples": 28438,
+      "support_mismatches": 0,
+      "support_probes": 135
+    }
+  ],
+  "production_paths_unchanged_from": "f7ccc00",
+  "decision": "All shape studies unaccepted; default remains spall_finish1. No whole/far/shore/bottom, arbitrary editor or performance acceptance.",
+  "limitations": "Tool-only cap color/grass override; source excludes outcrop props and unified mode changes some decoration placement. Vertical envelope fills visible overhang air too; not exact CSG or shape preservation. Closed source ray classifier is disproven by independent analytic intersections. Clouds/mist live, four principal water clocks fixed."
+}

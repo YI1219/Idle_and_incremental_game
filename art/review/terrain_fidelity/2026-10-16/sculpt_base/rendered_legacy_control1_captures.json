@@ -1,0 +1,35 @@
+{
+	"captures": [
+		{
+			"draw_calls": 667.0,
+			"error": 0,
+			"file": "rendered_legacy_control1_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 534.0,
+			"error": 0,
+			"file": "rendered_legacy_control1_grass.png",
+			"position": "(-12.4, 7.1, 11.0)",
+			"rotation": "(-23.8915, 18.65789, 0.0)"
+		},
+		{
+			"draw_calls": 621.0,
+			"error": 0,
+			"file": "rendered_legacy_control1_reverse.png",
+			"position": "(-30.34978, 9.0, -0.38091)",
+			"rotation": "(-28.0, -105.0, 0.0)"
+		}
+	],
+	"data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+	"samples": 0,
+	"sculpt_base": false,
+	"sculpt_profile": "local",
+	"skin_colors_sha256": "",
+	"skin_normals_sha256": "",
+	"skin_uv_sha256": "",
+	"skin_vertices_sha256": "",
+	"source": "Actual Godot terrain scene",
+	"water_phase": 1.25
+}

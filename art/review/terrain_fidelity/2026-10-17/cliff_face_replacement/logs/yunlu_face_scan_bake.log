@@ -1,0 +1,7 @@
+00:00.142  translation      | WARNING Falling back to standard locale ("C")
+00:00.506  blend            | Read blend: "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/polyhaven_rocks/2026-10-17/rock_face_02/rock_face_02_study_4k.blend"
+Info: Saved as "existing_source_sections.blend"
+CLIFF FACE REPLACEMENT: {"samples": 15282, "source_sha256": "fe9db333d29be207d65a43984a2c6ee48dbc5b424257f941241686684fb69bb3", "save_sha256": "2c1dbeab7914f6fcb98333dba4054aabe8901dfed66e8974e8a7fcc37a523966", "operation": "Existing RockFace02 open source only supplies front ray intersections. Uniform3x scale, source Z remains vertical. Each x-section translates depth to original dry edge at cap; actual lower face supplies relief/returns, then inward1.1m/m continuation into canonical bottom. Whole bounded density side replaces core; no open runtime patch, source instances or anisotropic scale.", "stage": "Unaccepted local volume spike, not a player brush or default promotion.", "scan_source": "art/work/polyhaven_rocks/2026-10-17/rock_face_02/rock_face_02_study_4k.blend", "scan_sha256": "02348961c3224facb1a0d0c013dba033460a3fd12d8377eb1c0693a0a4ac3a07"}
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

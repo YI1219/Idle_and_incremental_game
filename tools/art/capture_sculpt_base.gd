@@ -54,11 +54,32 @@ func run():
  if args.has('scannedbouldersingle'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true,'single')
  if args.has('scannedreplace'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true,'replace')
  if args.has('scannedfitcap'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true,'fitcap')
+ if args.has('facereplacement'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'face')
+ if args.has('facereplacement2'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'face2')
+ if args.has('facescan'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'facescan')
+ if args.has('facescan2'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'facescan2')
+ if args.has('facescan3'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'facescan3')
+ if args.has('facescan4'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'facescan4')
+ if args.has('facescan5'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'facescan5')
+ if args.has('facescan6'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'facescan6')
+ if args.has('renderedbody'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedbody')
+ if args.has('renderedclosed'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedclosed')
+ if args.has('renderedenvelope'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedenvelope')
+ if args.has('renderedenvelopecap'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedenvelopecap')
  if args.has('worn') or args.has('worn2') or args.has('worn3'):
   var source_report:Dictionary=preload('res://tools/art/worn_cliff_sources.gd').install(editor.renderer.decoration,'v3' if args.has('worn3') else ('v2' if args.has('worn2') else 'v1'),args.has('wearsmooth'))
   FileAccess.open(OUT+tag+'_worn_sources.json',FileAccess.WRITE).store_string(JSON.stringify(source_report,'\t'))
   print('WORN CLIFF SOURCES: ',JSON.stringify(source_report))
  editor.renderer.rebuild_all()
+ if args.has('actualcap'):
+  var report:Dictionary=preload('res://tools/art/actual_sculpt_cap_study.gd').apply(editor.renderer.contours,editor.renderer.decoration.assets,args.has('capfans'))
+  FileAccess.open(OUT+tag+'_actual_cap.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
+  var chunks:Dictionary={}
+  for chunk in editor.renderer.chunks:chunks[chunk]=true
+  for chunk in editor.renderer.contours.triangle_chunks:chunks[chunk]=true
+  for chunk in chunks:editor.renderer._rebuild(chunk)
+  editor.renderer._publish()
+  print('ACTUAL CAP STUDY: ',JSON.stringify(report))
  if args.has('grasspatch') or args.has('grasspatch2') or args.has('grasspatch3') or args.has('grassarc') or args.has('grassworld'):
   var field=editor.renderer.contours
   var deco=editor.renderer.decoration
