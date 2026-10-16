@@ -1,0 +1,84 @@
+[
+  {
+    "kind": "main",
+    "source": "assets/nature/refined/cliff_integrated_main_v1.glb",
+    "source_sha256": "65e9cc5145aba717915bb9a17c62eff731ed94c9f3e79b20804253dd246a6ceb",
+    "reference": "cliff_main_v4",
+    "cuts": [
+      {
+        "normal": [
+          0.7824686765670776,
+          -0.621962308883667,
+          0.030094949528574944
+        ],
+        "requested_depth": 0.13,
+        "actual_maximum_cut": 0.13,
+        "faces_before": 585,
+        "faces_after": 532
+      },
+      {
+        "normal": [
+          -0.6386920213699341,
+          -0.7684262990951538,
+          -0.03991825133562088
+        ],
+        "requested_depth": 0.1,
+        "actual_maximum_cut": 0.0891323503188789,
+        "faces_before": 532,
+        "faces_after": 459
+      }
+    ],
+    "triangles": 578,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "volume": 14.093460041169294,
+    "blend": "art/work/cliff_corner_planes/2026-10-16/Cliff_Corner_main_v2.blend",
+    "glb": "art/work/cliff_corner_planes/2026-10-16/Cliff_Corner_main_v2.glb",
+    "glb_sha256": "a876d8637e0567d54c8c30de427070165fb417b5c7ceb4aa8a3651788d8289e5",
+    "blender_version": "5.2.1 LTS",
+    "variant": "v2",
+    "cut_sliver_cleanup": true,
+    "stage": "Unaccepted source-refinement study; actual Godot cap closure and scene comparison required."
+  },
+  {
+    "kind": "tall",
+    "source": "assets/nature/refined/cliff_integrated_tall_v1.glb",
+    "source_sha256": "d486c4ad35fa464f2221125c1a512c89ecdc39d6473fe8a580225f4a5abe4d16",
+    "reference": "cliff_tall_v2",
+    "cuts": [
+      {
+        "normal": [
+          0.7218430638313293,
+          -0.6917662620544434,
+          -0.020051194354891777
+        ],
+        "requested_depth": 0.12,
+        "actual_maximum_cut": 0.12,
+        "faces_before": 728,
+        "faces_after": 669
+      },
+      {
+        "normal": [
+          -0.7685698866844177,
+          -0.6388113498687744,
+          0.03493499383330345
+        ],
+        "requested_depth": 0.075,
+        "actual_maximum_cut": 0.07500000000000001,
+        "faces_before": 669,
+        "faces_after": 627
+      }
+    ],
+    "triangles": 772,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "volume": 15.18817249576441,
+    "blend": "art/work/cliff_corner_planes/2026-10-16/Cliff_Corner_tall_v2.blend",
+    "glb": "art/work/cliff_corner_planes/2026-10-16/Cliff_Corner_tall_v2.glb",
+    "glb_sha256": "be94fc600f2d75f62557e992d72b7013e7b1955d9ae56c2afdf278c91ca948e3",
+    "blender_version": "5.2.1 LTS",
+    "variant": "v2",
+    "cut_sliver_cleanup": true,
+    "stage": "Unaccepted source-refinement study; actual Godot cap closure and scene comparison required."
+  }
+]

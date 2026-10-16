@@ -1,0 +1,49 @@
+{
+	"failures": 1,
+	"reports": [
+		{
+			"cap_bounds_normalized": true,
+			"cap_max": "(0.5, 0.5)",
+			"cap_min": "(-0.5, -0.5)",
+			"cut": 0.72,
+			"geometry_height_delta": 0.0,
+			"invalid_edges_or_vertices": 0,
+			"kind": "main",
+			"raw_cap_bound_delta": 0.000943899154663086,
+			"vertices": 1908
+		},
+		{
+			"cap_bounds_normalized": true,
+			"cap_max": "(0.5, 0.5)",
+			"cap_min": "(-0.5, -0.5)",
+			"cut": 0.62,
+			"geometry_height_delta": 0.0,
+			"invalid_edges_or_vertices": 0,
+			"kind": "main",
+			"raw_cap_bound_delta": 0.0,
+			"vertices": 1614
+		},
+		{
+			"cap_bounds_normalized": true,
+			"cap_max": "(0.5, 0.5)",
+			"cap_min": "(-0.5, -0.5)",
+			"cut": 0.72,
+			"geometry_height_delta": 0.0,
+			"invalid_edges_or_vertices": 0,
+			"kind": "tall",
+			"raw_cap_bound_delta": 0.0000295639038085938,
+			"vertices": 1974
+		},
+		{
+			"cap_bounds_normalized": true,
+			"cap_max": "(0.5, 0.5)",
+			"cap_min": "(-0.5, -0.5)",
+			"cut": 0.86,
+			"geometry_height_delta": 0.0,
+			"invalid_edges_or_vertices": 0,
+			"kind": "tall",
+			"raw_cap_bound_delta": 0.0,
+			"vertices": 2208
+		}
+	]
+}

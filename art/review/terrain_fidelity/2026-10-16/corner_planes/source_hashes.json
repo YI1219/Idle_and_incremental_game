@@ -1,0 +1,6 @@
+{
+  "scripts/terrain_editor/terrain_models.gd": "5779030a2615aef2b95be8c746b825315f5206ab7f0f1ccc35858ba78f7f8643",
+  "tools/art/refine_cliff_corner_planes.py": "0586a3f3a43982448418df69a3bdd63fa46cab235333156f095d2c349ea6f8d4",
+  "tools/art/probe_corner_sources.gd": "d4bf2eb8197026885567f7bb50c2bc79f395feb9c3e401c00d9c75b68949a587",
+  "tools/art/build_corner_planes_review.py": "fffdcea23b1fe79cc8cd7357f5c086b5f439e60910ad3d797bdaa16e0d9ac72f"
+}
