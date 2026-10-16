@@ -1,0 +1,83 @@
+{
+  "source_save_sha256": "c0f0921f03c05a85537da9e33576ff0fc4d053c9a9a6f5429d6d72163f9eafae",
+  "hulls_sha256": "8af611747046b1ba39d21aa62e72071a67f47799da648fc236b200481b2bb0ac",
+  "frames_sha256": "7365baafaabaa3af6da2e511f87f76dad1e8aedd1d24da2712288f71addd144a",
+  "save_sha256": "7bc842d49a51d2a2b1573aacfca8fc886eed5ef761d5ab91867a1267b86928e7",
+  "planes": [
+    {
+      "crown": 36,
+      "original_equation": [
+        -0.4415356422626768,
+        -0.4944668918045111,
+        0.7486980496307382,
+        -9.466475210159771
+      ],
+      "new_equation": [
+        -0.41050917432149675,
+        -0.5890199345815552,
+        0.6960874474255542,
+        -8.646112425103096
+      ],
+      "actual_face_area": 12.614596540855008,
+      "extra_inward_slope": 0.16,
+      "pivot_y": 1.2,
+      "edge": [
+        -12.3916034698486,
+        0,
+        5.02697229385376
+      ],
+      "outward": [
+        -0.354509204626083,
+        0.0,
+        0.935052514076233
+      ],
+      "tangent": [
+        -0.935052514076233,
+        0.0,
+        -0.354509204626083
+      ],
+      "width": 2.97917162757367
+    },
+    {
+      "crown": 37,
+      "original_equation": [
+        -0.4218687341338362,
+        -0.5061435872183745,
+        0.7522269872040157,
+        -9.55211335062641
+      ],
+      "new_equation": [
+        -0.3806848559714142,
+        -0.6279486397378407,
+        0.6787927123101863,
+        -8.41415295546481
+      ],
+      "actual_face_area": 10.043104121805788,
+      "extra_inward_slope": 0.22,
+      "pivot_y": 1.2,
+      "edge": [
+        -15.6178331375122,
+        0,
+        3.94139862060547
+      ],
+      "outward": [
+        -0.441575258970261,
+        0.0,
+        0.897224247455597
+      ],
+      "tangent": [
+        -0.897224247455597,
+        0.0,
+        -0.441575258970261
+      ],
+      "width": 3.411783724837
+    }
+  ],
+  "changed_nodes": 4422,
+  "sign_nodes_removed": 972,
+  "sign_nodes_added": 0,
+  "samples": 25634,
+  "protected_saved_node_y_at_or_above": 1.6,
+  "continuous_interpolation_may_reach_y": 1.75,
+  "operation": "Select each actual bridge36/37 largest outward/downward hull face by area. Rotate its halfspace inward below common pivotY1.2 with unequal added slopes.16/.22. Subtract through ordinary scalar density, bounded by actual frame widths and local XZ, release into retained upper sideY.8..1.6; no lower-height cutoff or independent bottom shell. Upper saved nodes>=1.6 preserved, not exact continuous-plane preservation. No fill, source asset, material or new player brush. Native/topology/edit/art acceptance unproven."
+}

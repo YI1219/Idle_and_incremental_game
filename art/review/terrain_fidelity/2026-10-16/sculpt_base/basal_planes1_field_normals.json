@@ -1,0 +1,10 @@
+{
+	"gradient_nodes": 10678,
+	"meshes_replaced": 20,
+	"normal_occurrences_changed": 117376,
+	"scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+	"transform_buffer_sha256_after": "c741e1b532bdbc95feebdcf200ba857076b74928bfcdb32feae774654d2674da",
+	"transform_buffer_sha256_before": "c741e1b532bdbc95feebdcf200ba857076b74928bfcdb32feae774654d2674da",
+	"unique_sample_points": 19564,
+	"uploaded_geometry_color_uv_unchanged": true
+}

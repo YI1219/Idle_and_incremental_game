@@ -1,0 +1,67 @@
+{
+  "tool": "built-in image_gen",
+  "status": "Ready only for one untextured exploratory multi-view model; illustrated references, not exact orthographic or dimensional truth",
+  "selected": {
+    "front": {
+      "source": "front_v1.png",
+      "input": "inputs/front.png",
+      "sha256": "ba7ee414dbc6bd3c001342bf402564331b408de8d7d49175ff518eeeef855227",
+      "dimensions": [
+        1402,
+        1122
+      ]
+    },
+    "left": {
+      "source": "left_v3.png",
+      "input": "inputs/left.png",
+      "sha256": "951690796c27254a5039cc3cf4b20ff79e30cfb34954aad622b6287a8332d9fa",
+      "dimensions": [
+        1402,
+        1122
+      ]
+    },
+    "right": {
+      "source": "right_v1.png",
+      "input": "inputs/right.png",
+      "sha256": "e188288337b065575dcd84a6a1d7ba7e392eab25ec257f86c9ae54c84e334d18",
+      "dimensions": [
+        1402,
+        1122
+      ]
+    },
+    "back": {
+      "source": "back_v1.png",
+      "input": "inputs/back.png",
+      "sha256": "f43660589749d4db258f85587fb67af0610bb171410c297298f78c71be18600d",
+      "dimensions": [
+        1402,
+        1122
+      ]
+    }
+  },
+  "excluded": [
+    "rejected/left_oblique_v1.png",
+    "left_v2.png"
+  ],
+  "original_generation_files": [
+    "exec-09116784-610d-4489-8b21-e0c5e7ab6186.png",
+    "exec-884f56ab-ef26-4fec-aef0-e7e0b6b1f87c.png",
+    "exec-88b9e6bf-341a-4f43-86aa-492d4dc9ad19.png",
+    "exec-48c0836c-ce1f-483b-a601-27718a79bec1.png",
+    "exec-bb814549-52e3-4739-bd22-8da1aec8d5f7.png",
+    "exec-38f3b5fb-8661-4517-a4b7-59324cc61316.png"
+  ],
+  "review": "Parent and independent reviewer inspected all four selected images; side skyline orientation corrected. No final3D/model/art/performance acceptance. Side/back surface texture differs; white probe only.",
+  "recommended_parameters": {
+    "mode": "P2.0 multi-view / Smart Topology Mesh",
+    "topology": "Triangle",
+    "target_faces": 5000,
+    "texture": false,
+    "rig": false,
+    "animation": false,
+    "export": "GLB"
+  },
+  "actual_generation_parameters": null,
+  "model_task_id": null,
+  "original_generation_directory": "/Users/yi/.codex/generated_images/01a12b7f-422c-7c23-a8f2-99b82c1e92b9"
+}

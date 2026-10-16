@@ -52,6 +52,8 @@ func run():
  if version=='exposedcleft':path='res://art/work/rendered_join/2026-10-17/exposed_cleft/save_checks.json'
  if version=='actualshoulder':path='res://art/work/actual_shoulder/2026-10-17/save_checks.json'
  if version=='actualshoulderclean':path='res://art/work/actual_shoulder/2026-10-17/clean_save_checks.json'
+ if version=='basalplanes':path='res://art/work/basal_planes/2026-10-17/save_checks.json'
+ if version=='basalunion':path='res://art/work/basal_planes/2026-10-17/union_save_checks.json'
  report['study']=version
  FileAccess.open(path,FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
  print('FACE STUDY SAVE: ',checks-failures,'/',checks,' support=',probes,' mismatches=',mismatches)

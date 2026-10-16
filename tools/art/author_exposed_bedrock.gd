@@ -31,6 +31,8 @@ static func author(data,scanned:bool=false,version:String='v1')->void:
  if version=='shouldersoil':path='res://art/work/cliff_finish/2026-10-17/shoulder_soil_v1.json'
  if version=='actualshoulder':path='res://art/work/actual_shoulder/2026-10-17/shoulder_cut_v1.json'
  if version=='actualshoulderclean':path='res://art/work/actual_shoulder/2026-10-17/shoulder_cut_clean.json'
+ if version=='basalplanes':path='res://art/work/basal_planes/2026-10-17/basal_planes_v1.json'
+ if version=='basalunion':path='res://art/work/basal_planes/2026-10-17/basal_planes_union.json'
  var payload:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
  assert(data.deserialize(payload));data.ensure_sculpt_base()
  assert(data.serialize().cells==before)

@@ -1,0 +1,4 @@
+<!doctype html><meta charset="utf-8"><title>岛底收束研究</title><style>body{margin:24px;background:#e9e7df;color:#303933;font:16px system-ui}p{max-width:1080px;line-height:1.7}select{font:inherit;padding:8px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}img{width:100%}section{margin-top:24px}</style>
+<h1>下部收束 · 两版均舍弃</h1><p>直接切面削到了相邻岩块；按实际岩块范围裁剪再合并，减轻了过切，但仍产生下缘缺口、斜腹面和右侧悬垂体量。两版均不采用，默认 spall_finish1 不变。上方72852三角面逐字节保留，不代表下部美术通过。</p>
+<label>右侧<select id="stage"><option value="basal_planes1">直接切面 · 舍弃</option><option value="basal_union1" selected>实际岩体范围 · 舍弃</option></select></label><main id="views"></main>
+<script>function draw(){views.innerHTML=['close','grass','reverse'].map(v=>`<section><h2>${v}</h2><div class="pair"><img src="actual_shoulder_clean1_${v}.png"><img src="${stage.value}_${v}.png"></div></section>`).join('')}stage.onchange=draw;draw()</script>
