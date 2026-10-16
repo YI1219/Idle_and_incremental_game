@@ -1,0 +1,39 @@
+{
+  "version": "actualshoulder",
+  "triangles": 240756,
+  "vertices": 120382,
+  "components": [
+    {
+      "triangles": 240660,
+      "vertices": 120332,
+      "lo": [
+        -21.33278465270996,
+        -4.689836025238037,
+        -11.999979972839355
+      ],
+      "hi": [
+        17.999980926513672,
+        4.8125,
+        10.999979972839355
+      ],
+      "signed_volume_godot_clockwise": 3685.209548807014
+    },
+    {
+      "triangles": 96,
+      "vertices": 50,
+      "lo": [
+        -10.8125,
+        -4.5625,
+        6.4375
+      ],
+      "hi": [
+        -9.891342163085938,
+        -4.4375,
+        6.5625
+      ],
+      "signed_volume_godot_clockwise": 0.007757624868443071
+    }
+  ],
+  "non_two_use_edges": 0,
+  "scope": "Exact actual source-skin vertices, before chunk clipping. Signed volume reverses Godot clockwise winding: negative components can be enclosed cavity shells, not detached solid pieces. Connectivity alone does not classify containment. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+}

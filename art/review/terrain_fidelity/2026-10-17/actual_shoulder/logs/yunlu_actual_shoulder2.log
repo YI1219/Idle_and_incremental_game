@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-10-17 04:55:31.333 godot[30709:3975444] +[IMKClient subclass]: chose IMKClient_Modern
+EXPOSED BEDROCK: ordinary_loader=true samples=26712
+ACTUAL CAP STUDY: {"ambiguous_junctions":0,"grass_anchor_count":534,"loops":2,"open_boundaries":0,"painted_flat_cap_vertex_occurrences":123651,"section_y":3.4634917,"source_fans":true,"stage":"Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.","unsupported_anchor_samples":0}
+FIELD GRADIENT NORMALS: {"actual_cut_plane":{"input_vertices_sha256":"c8d917a9a6407d1f62da55c1589890229e1b85a6a0669a0d487514828db8d9c3","max_vertex_plane_distance":0.000000653876901043316,"normal":"(0.0, 0.0, 1.0)","normal_occurrences_changed":180,"output_normals_sha256":"aa6081e820df73bede72c809420aed959408bbe66db6e0d5b5ea3a743bb05d0c","scope":"Only exact exposed cut-plane triangles, geometric normal agreement>.995, all three vertices within5mm of fitted real plane, Y3..3.499 and inner unfaded tangent span. Same data/vertices/colors/UV/material. Analytic normal diagnostic, not a persistent ordinary-save rendering feature or art acceptance.","triangles":60},"gradient_nodes":10747,"meshes_replaced":20,"normal_occurrences_changed":118984,"scope":"Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.","transform_buffer_sha256_after":"140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1","transform_buffer_sha256_before":"140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1","unique_sample_points":19834,"uploaded_geometry_color_uv_unchanged":true}
+2026-10-17 04:56:00.799 godot[30709:3975444] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+SCULPT BASE CAPTURES: 3 samples=26712 skin_vertices=722268

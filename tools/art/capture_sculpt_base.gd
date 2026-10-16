@@ -83,6 +83,8 @@ func run():
  if args.has('crownroots3'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'crownroots3')
  if args.has('exposedcleft'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'exposedcleft')
  if args.has('shouldersoil'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'shouldersoil')
+ if args.has('actualshoulder'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'actualshoulder')
+ if args.has('actualshoulderclean'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'actualshoulderclean')
  if args.has('worn') or args.has('worn2') or args.has('worn3'):
   var source_report:Dictionary=preload('res://tools/art/worn_cliff_sources.gd').install(editor.renderer.decoration,'v3' if args.has('worn3') else ('v2' if args.has('worn2') else 'v1'),args.has('wearsmooth'))
   FileAccess.open(OUT+tag+'_worn_sources.json',FileAccess.WRITE).store_string(JSON.stringify(source_report,'\t'))
@@ -101,6 +103,7 @@ func run():
   var before:Array=[];transform_state(editor.renderer,before)
   var report:Dictionary=preload('res://tools/art/field_gradient_normals.gd').apply(editor.renderer.contours,editor.data.rocks)
   if args.has('sourceplanes'):report['source_plane_transfer']=preload('res://tools/art/apply_cliff_planes.gd').apply(editor.renderer.contours)
+  if args.has('shoulderplanes'):report['actual_cut_plane']=preload('res://tools/art/actual_shoulder_plane_normals.gd').apply(editor.renderer.contours)
   var replaced:=0
   for chunk in editor.renderer.chunks:
    var instance:MeshInstance3D=editor.renderer.chunks[chunk].get_node_or_null('sculpted_terrain')

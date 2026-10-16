@@ -1,0 +1,579 @@
+{
+  "new_native_local_frames": 9,
+  "reused_local_control_frames": 3,
+  "production_unchanged_from": "e9968db",
+  "reports": {
+    "cut": {
+      "source_save_sha256": "eb480e75120dd0d997927752e5be46d7e6dd3b269803b45927f21d715a2dcd71",
+      "source_skin_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+      "frames_sha256": "7365baafaabaa3af6da2e511f87f76dad1e8aedd1d24da2712288f71addd144a",
+      "save_sha256": "7fcfda3d717516c49dea312ee9101fb0c23740e2b37e34090409c413cedb29fa",
+      "crown": 37,
+      "origin": [
+        -15.6178331375122,
+        0.0,
+        3.94139862060547
+      ],
+      "outward": [
+        -0.441575258970261,
+        0.0,
+        0.897224247455597
+      ],
+      "tangent": [
+        -0.897224247455597,
+        0.0,
+        -0.441575258970261
+      ],
+      "upper_plane_y": 3.49,
+      "along_samples": [
+        -0.85,
+        -0.7999999999999999,
+        -0.75,
+        -0.7,
+        -0.6499999999999999,
+        -0.6,
+        -0.5499999999999999,
+        -0.49999999999999994,
+        -0.44999999999999996,
+        -0.39999999999999997,
+        -0.35,
+        -0.29999999999999993,
+        -0.2499999999999999,
+        -0.19999999999999996,
+        -0.1499999999999999,
+        -0.09999999999999998,
+        -0.04999999999999993,
+        1.1102230246251565e-16,
+        0.050000000000000044,
+        0.10000000000000009,
+        0.15000000000000002,
+        0.20000000000000007,
+        0.2500000000000001,
+        0.30000000000000016,
+        0.3500000000000002,
+        0.4,
+        0.45
+      ],
+      "upper_front_samples": [
+        -0.05433072117076164,
+        -0.029722867547628547,
+        -0.0051150139244955095,
+        0.019492839698637583,
+        0.044100693321770676,
+        0.0687085469449037,
+        0.0933164005680368,
+        0.11792425419116986,
+        0.14253210781430292,
+        0.16713996143743598,
+        0.19174781506056904,
+        0.21635566868370215,
+        0.2409635223068352,
+        0.26557137592996827,
+        0.2901792295531013,
+        0.31478708317623433,
+        0.3393949367993674,
+        0.3640027904225005,
+        0.3886106440456335,
+        0.4132184976687666,
+        0.4378263512918996,
+        0.46243420491503273,
+        0.48704205853816585,
+        0.511649912161299,
+        0.5362577657844321,
+        0.560865619407565,
+        0.5854734730306981
+      ],
+      "slope": 0.49215707246266144,
+      "intercept": 0.3640027904225004,
+      "fit_max_error": 1.942890293094024e-16,
+      "front_before": {
+        "3.49": [
+          -0.05433072117076164,
+          0.11792425419116984,
+          0.36400279042250044,
+          0.5854734730306981
+        ],
+        "3.25": [
+          0.14852724857088512,
+          0.32078222393281663,
+          0.5668607601641471,
+          0.7780123455715487
+        ],
+        "3.0": [
+          0.17329532668226377,
+          0.3455503020441952,
+          0.6922476940929422,
+          0.8397502717444005
+        ],
+        "2.5": [
+          0.13459560322688718,
+          0.30685057858881865,
+          0.6432559543545854,
+          0.7743997974283469
+        ],
+        "2.0": [
+          -0.0047229760459055956,
+          0.20098188031811884,
+          0.5529291148201493,
+          0.7743997974283469
+        ]
+      },
+      "changed_nodes": 149,
+      "sign_nodes_removed": 6,
+      "sign_nodes_added": 0,
+      "samples": 26712,
+      "operation": "One subtractive plane follows the actual upper skin grass-edge direction of crown37, fitY3.49 over along-.85..45 with max error<.015m. Bounded along-1.35..1.0, fade into original lower sideY2..3 by.45m release. No ground fill, painted grey cover, whole-perimeter extrusion or source-asset change. Ordinary shared editable density save, tool-only authoring study; native/support/topology/art acceptance unproven."
+    },
+    "clean": {
+      "source_save_sha256": "eb480e75120dd0d997927752e5be46d7e6dd3b269803b45927f21d715a2dcd71",
+      "source_skin_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+      "frames_sha256": "7365baafaabaa3af6da2e511f87f76dad1e8aedd1d24da2712288f71addd144a",
+      "save_sha256": "c0f0921f03c05a85537da9e33576ff0fc4d053c9a9a6f5429d6d72163f9eafae",
+      "crown": 37,
+      "origin": [
+        -15.6178331375122,
+        0.0,
+        3.94139862060547
+      ],
+      "outward": [
+        -0.441575258970261,
+        0.0,
+        0.897224247455597
+      ],
+      "tangent": [
+        -0.897224247455597,
+        0.0,
+        -0.441575258970261
+      ],
+      "upper_plane_y": 3.49,
+      "along_samples": [
+        -0.85,
+        -0.7999999999999999,
+        -0.75,
+        -0.7,
+        -0.6499999999999999,
+        -0.6,
+        -0.5499999999999999,
+        -0.49999999999999994,
+        -0.44999999999999996,
+        -0.39999999999999997,
+        -0.35,
+        -0.29999999999999993,
+        -0.2499999999999999,
+        -0.19999999999999996,
+        -0.1499999999999999,
+        -0.09999999999999998,
+        -0.04999999999999993,
+        1.1102230246251565e-16,
+        0.050000000000000044,
+        0.10000000000000009,
+        0.15000000000000002,
+        0.20000000000000007,
+        0.2500000000000001,
+        0.30000000000000016,
+        0.3500000000000002,
+        0.4,
+        0.45
+      ],
+      "upper_front_samples": [
+        -0.05433072117076164,
+        -0.029722867547628547,
+        -0.0051150139244955095,
+        0.019492839698637583,
+        0.044100693321770676,
+        0.0687085469449037,
+        0.0933164005680368,
+        0.11792425419116986,
+        0.14253210781430292,
+        0.16713996143743598,
+        0.19174781506056904,
+        0.21635566868370215,
+        0.2409635223068352,
+        0.26557137592996827,
+        0.2901792295531013,
+        0.31478708317623433,
+        0.3393949367993674,
+        0.3640027904225005,
+        0.3886106440456335,
+        0.4132184976687666,
+        0.4378263512918996,
+        0.46243420491503273,
+        0.48704205853816585,
+        0.511649912161299,
+        0.5362577657844321,
+        0.560865619407565,
+        0.5854734730306981
+      ],
+      "slope": 0.49215707246266144,
+      "intercept": 0.3640027904225004,
+      "fit_max_error": 1.942890293094024e-16,
+      "front_before": {
+        "3.49": [
+          -0.05433072117076164,
+          0.11792425419116984,
+          0.36400279042250044,
+          0.5854734730306981
+        ],
+        "3.25": [
+          0.14852724857088512,
+          0.32078222393281663,
+          0.5668607601641471,
+          0.7780123455715487
+        ],
+        "3.0": [
+          0.17329532668226377,
+          0.3455503020441952,
+          0.6922476940929422,
+          0.8397502717444005
+        ],
+        "2.5": [
+          0.13459560322688718,
+          0.30685057858881865,
+          0.6432559543545854,
+          0.7743997974283469
+        ],
+        "2.0": [
+          -0.0047229760459055956,
+          0.20098188031811884,
+          0.5529291148201493,
+          0.7743997974283469
+        ]
+      },
+      "changed_nodes": 153,
+      "sign_nodes_removed": 10,
+      "sign_nodes_added": 0,
+      "samples": 26712,
+      "operation": "One subtractive plane follows the actual upper skin grass-edge direction of crown37, fitY3.49 over along-.85..45 with max error<.015m. Bounded along-1.35..1.0, fade into original lower sideY2..3 by.45m release. No ground fill, painted grey cover, whole-perimeter extrusion or source-asset change. Ordinary shared editable density save, tool-only authoring study; native/support/topology/art acceptance unproven. Remove only four negative density knots of the inherited96triangle orphan; each26-neighbor is either in this isolated knot set or positive. Not a visual-only component deletion; final actual-skin topology still requires verification.",
+      "orphan_negative_knots_removed": [
+        [
+          -43,
+          -18,
+          26
+        ],
+        [
+          -42,
+          -18,
+          26
+        ],
+        [
+          -41,
+          -18,
+          26
+        ],
+        [
+          -40,
+          -18,
+          26
+        ]
+      ],
+      "orphan_source_topology_sha256": "4ccce54bc6773bfc26308fac20d73c339c16eb663a6379052fa06daf23c61153"
+    }
+  },
+  "targeted_geometric_metrics": {
+    "before": {
+      "targeted_upward_below_cap_area": 0.5920531749725342,
+      "triangles": 79
+    },
+    "cut": {
+      "targeted_upward_below_cap_area": 0.12394281476736069,
+      "triangles": 13
+    },
+    "clean": {
+      "targeted_upward_below_cap_area": 0.12394281476736069,
+      "triangles": 13
+    }
+  },
+  "cleanup_exact_triangle_difference": {
+    "removed": 96,
+    "added": 0,
+    "all_retained_triangles_byte_identical": true
+  },
+  "topology": {
+    "cut": {
+      "version": "actualshoulder",
+      "triangles": 240756,
+      "vertices": 120382,
+      "components": [
+        {
+          "triangles": 240660,
+          "vertices": 120332,
+          "lo": [
+            -21.33278465270996,
+            -4.689836025238037,
+            -11.999979972839355
+          ],
+          "hi": [
+            17.999980926513672,
+            4.8125,
+            10.999979972839355
+          ],
+          "signed_volume_godot_clockwise": 3685.209548807014
+        },
+        {
+          "triangles": 96,
+          "vertices": 50,
+          "lo": [
+            -10.8125,
+            -4.5625,
+            6.4375
+          ],
+          "hi": [
+            -9.891342163085938,
+            -4.4375,
+            6.5625
+          ],
+          "signed_volume_godot_clockwise": 0.007757624868443071
+        }
+      ],
+      "non_two_use_edges": 0,
+      "scope": "Exact actual source-skin vertices, before chunk clipping. Signed volume reverses Godot clockwise winding: negative components can be enclosed cavity shells, not detached solid pieces. Connectivity alone does not classify containment. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+    },
+    "clean": {
+      "version": "actualshoulderclean",
+      "triangles": 240660,
+      "vertices": 120332,
+      "components": [
+        {
+          "triangles": 240660,
+          "vertices": 120332,
+          "lo": [
+            -21.33278465270996,
+            -4.689836025238037,
+            -11.999979972839355
+          ],
+          "hi": [
+            17.999980926513672,
+            4.8125,
+            10.999979972839355
+          ],
+          "signed_volume_godot_clockwise": 3685.209548807014
+        }
+      ],
+      "non_two_use_edges": 0,
+      "scope": "Exact actual source-skin vertices, before chunk clipping. Signed volume reverses Godot clockwise winding: negative components can be enclosed cavity shells, not detached solid pieces. Connectivity alone does not classify containment. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+    }
+  },
+  "finite_edit_checks": {
+    "cut": {
+      "checks": 12,
+      "failures": 0,
+      "scope": "Finite ordinary density save/load/support/carve/undo/redo. No actual-cap render override persistence, publication/picking, props, arbitrary sculpture, water routing or performance acceptance.",
+      "skin_sha256_hex_algorithm": "9aeee0ee31d68a37e18a4d0ff343e770daa8cb3fab53818e20c977b5c17d929e",
+      "study": "actualshoulder",
+      "study_samples": 26712,
+      "support_mismatches": 0,
+      "support_probes": 135
+    },
+    "clean": {
+      "checks": 12,
+      "failures": 0,
+      "scope": "Finite ordinary density save/load/support/carve/undo/redo. No actual-cap render override persistence, publication/picking, props, arbitrary sculpture, water routing or performance acceptance.",
+      "skin_sha256_hex_algorithm": "1d433655e2f928ca4d7d4acf28c7ed2930b890c7e226076907c49cf1b163708e",
+      "study": "actualshoulderclean",
+      "study_samples": 26712,
+      "support_mismatches": 0,
+      "support_probes": 135
+    }
+  },
+  "captures": {
+    "actual_shoulder1": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 419.0,
+            "error": 0,
+            "file": "actual_shoulder1_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 346.0,
+            "error": 0,
+            "file": "actual_shoulder1_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 380.0,
+            "error": 0,
+            "file": "actual_shoulder1_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "4e505d19721c674d8445cd6aa1a7cb37f25eac1db2c258cf64a91c693eb6d4b4",
+        "samples": 26712,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "0f4ae1e11959cb7aadcf6fb76931e75487de062027bc24013f5650b85bdebc85",
+        "skin_normals_sha256": "2dbce7d3a1c601c24698c50695dabe11f87b640d1a8901ca2fe3f64dd3c26067",
+        "skin_uv_sha256": "4ed8cdf0ff0d5044573b9f2a4a9cbc2a5d52d1393342f7ae5282f000e1c52c29",
+        "skin_vertices_sha256": "c8d917a9a6407d1f62da55c1589890229e1b85a6a0669a0d487514828db8d9c3",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "png_sha256": {
+        "actual_shoulder1_close.png": "eaeea5b77045f9ff04699c489cc1347bb8b97db549a5288dad47da7eac1fa136",
+        "actual_shoulder1_grass.png": "1fd2859f718a4d487a1d22e18e53e79f5541e151cd6990b5fe9ed4bb30b9badc",
+        "actual_shoulder1_reverse.png": "72fae79240ce0a0ba5a3496eb83906729a8b1b73c832ba6eeb19fb7515b16585"
+      },
+      "cap": {
+        "ambiguous_junctions": 0,
+        "grass_anchor_count": 534,
+        "loops": 2,
+        "open_boundaries": 0,
+        "painted_flat_cap_vertex_occurrences": 123651,
+        "section_y": 3.4634917,
+        "source_fans": true,
+        "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+        "unsupported_anchor_samples": 0
+      },
+      "normal": {
+        "gradient_nodes": 10747,
+        "meshes_replaced": 20,
+        "normal_occurrences_changed": 118984,
+        "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+        "transform_buffer_sha256_after": "140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1",
+        "transform_buffer_sha256_before": "140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1",
+        "unique_sample_points": 19834,
+        "uploaded_geometry_color_uv_unchanged": true
+      }
+    },
+    "actual_shoulder2": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 419.0,
+            "error": 0,
+            "file": "actual_shoulder2_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 346.0,
+            "error": 0,
+            "file": "actual_shoulder2_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 380.0,
+            "error": 0,
+            "file": "actual_shoulder2_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "4e505d19721c674d8445cd6aa1a7cb37f25eac1db2c258cf64a91c693eb6d4b4",
+        "samples": 26712,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "0f4ae1e11959cb7aadcf6fb76931e75487de062027bc24013f5650b85bdebc85",
+        "skin_normals_sha256": "aa6081e820df73bede72c809420aed959408bbe66db6e0d5b5ea3a743bb05d0c",
+        "skin_uv_sha256": "4ed8cdf0ff0d5044573b9f2a4a9cbc2a5d52d1393342f7ae5282f000e1c52c29",
+        "skin_vertices_sha256": "c8d917a9a6407d1f62da55c1589890229e1b85a6a0669a0d487514828db8d9c3",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "png_sha256": {
+        "actual_shoulder2_close.png": "1d09fdf632977112a85f2c60e5611c54389dc3156cdae732d8a4e433abac77a7",
+        "actual_shoulder2_grass.png": "d6c5f5961510531c001b322446591b8baaff5a576c1f8c5b11e854142166490f",
+        "actual_shoulder2_reverse.png": "5e7d484c0a459dbb6dc4aa3866c82da7774955550bac57181a9e42f51b92de5c"
+      },
+      "cap": {
+        "ambiguous_junctions": 0,
+        "grass_anchor_count": 534,
+        "loops": 2,
+        "open_boundaries": 0,
+        "painted_flat_cap_vertex_occurrences": 123651,
+        "section_y": 3.4634917,
+        "source_fans": true,
+        "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+        "unsupported_anchor_samples": 0
+      },
+      "normal": {
+        "actual_cut_plane": {
+          "input_vertices_sha256": "c8d917a9a6407d1f62da55c1589890229e1b85a6a0669a0d487514828db8d9c3",
+          "max_vertex_plane_distance": 6.53876901043316e-07,
+          "normal": "(0.0, 0.0, 1.0)",
+          "normal_occurrences_changed": 180,
+          "output_normals_sha256": "aa6081e820df73bede72c809420aed959408bbe66db6e0d5b5ea3a743bb05d0c",
+          "scope": "Only exact exposed cut-plane triangles, geometric normal agreement>.995, all three vertices within5mm of fitted real plane, Y3..3.499 and inner unfaded tangent span. Same data/vertices/colors/UV/material. Analytic normal diagnostic, not a persistent ordinary-save rendering feature or art acceptance.",
+          "triangles": 60
+        },
+        "gradient_nodes": 10747,
+        "meshes_replaced": 20,
+        "normal_occurrences_changed": 118984,
+        "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+        "transform_buffer_sha256_after": "140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1",
+        "transform_buffer_sha256_before": "140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1",
+        "unique_sample_points": 19834,
+        "uploaded_geometry_color_uv_unchanged": true
+      }
+    },
+    "actual_shoulder_clean1": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 419.0,
+            "error": 0,
+            "file": "actual_shoulder_clean1_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 346.0,
+            "error": 0,
+            "file": "actual_shoulder_clean1_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 380.0,
+            "error": 0,
+            "file": "actual_shoulder_clean1_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "b043f0f8b6084fcdce82dafd2a22f12c28c3373fb025ba68d4d21b2acbbec578",
+        "samples": 26712,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "b21d2f1b67a32c0563b5070a53ed20888e797ef5bca8bcdb8cbafccce29d3528",
+        "skin_normals_sha256": "98dcbb260c6481ba86c79a3104f39189f3f68ed5922fa198012bccdbe8fc4dad",
+        "skin_uv_sha256": "5c22ed77c5ecb02aa108bb1d0e15ebe8c80cf462813712e4bd833996e8b3b176",
+        "skin_vertices_sha256": "1674fa88f32e9ec4415535d6d7d36fcb450fcd8c2a60c364d98f67f312dc2d40",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "png_sha256": {
+        "actual_shoulder_clean1_close.png": "e8afb05be7803753207b6147f5888ea12bafe29272966a1cb2515186b28dee34",
+        "actual_shoulder_clean1_grass.png": "4b742ff56e118a93c1e8d6bb08112f5243ad28408913de922e3edb3499d64072",
+        "actual_shoulder_clean1_reverse.png": "18575a112ebebb978f94e5f440b1a2186f1ce537aded2164d1a59b218a1fc515"
+      },
+      "cap": {
+        "ambiguous_junctions": 0,
+        "grass_anchor_count": 534,
+        "loops": 2,
+        "open_boundaries": 0,
+        "painted_flat_cap_vertex_occurrences": 123651,
+        "section_y": 3.4634917,
+        "source_fans": true,
+        "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+        "unsupported_anchor_samples": 0
+      },
+      "normal": {
+        "gradient_nodes": 10711,
+        "meshes_replaced": 20,
+        "normal_occurrences_changed": 118696,
+        "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+        "transform_buffer_sha256_after": "140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1",
+        "transform_buffer_sha256_before": "140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1",
+        "unique_sample_points": 19784,
+        "uploaded_geometry_color_uv_unchanged": true
+      }
+    }
+  },
+  "decision": "Retain cleaned cut only as an unaccepted local structural lead. Targeted grey shoulder narrows; one exact closed skin replaces inherited detached fragment. Analytic-only normals create a rectangular shading patch and are rejected. Broad wall/rounded shoulders/lower lobe remain. No default, whole/far/shore/water, arbitrary editing/leaf support/publication/picking or target-device acceptance."
+}

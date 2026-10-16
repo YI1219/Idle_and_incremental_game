@@ -1,0 +1,19 @@
+{
+	"actual_cut_plane": {
+		"input_vertices_sha256": "c8d917a9a6407d1f62da55c1589890229e1b85a6a0669a0d487514828db8d9c3",
+		"max_vertex_plane_distance": 0.000000653876901043316,
+		"normal": "(0.0, 0.0, 1.0)",
+		"normal_occurrences_changed": 180,
+		"output_normals_sha256": "aa6081e820df73bede72c809420aed959408bbe66db6e0d5b5ea3a743bb05d0c",
+		"scope": "Only exact exposed cut-plane triangles, geometric normal agreement>.995, all three vertices within5mm of fitted real plane, Y3..3.499 and inner unfaded tangent span. Same data/vertices/colors/UV/material. Analytic normal diagnostic, not a persistent ordinary-save rendering feature or art acceptance.",
+		"triangles": 60
+	},
+	"gradient_nodes": 10747,
+	"meshes_replaced": 20,
+	"normal_occurrences_changed": 118984,
+	"scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+	"transform_buffer_sha256_after": "140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1",
+	"transform_buffer_sha256_before": "140f6355746150de660b3886dc3141f6da941097244f2e97935a39077263e8a1",
+	"unique_sample_points": 19834,
+	"uploaded_geometry_color_uv_unchanged": true
+}
