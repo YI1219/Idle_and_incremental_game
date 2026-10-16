@@ -1,0 +1,14 @@
+[
+  {
+    "tag": "compact_body1",
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=639984\n2026-10-16 17:13:08.347 godot[67813:1527999] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 17:13:28.295 godot[67813:1527999] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  {
+    "tag": "compact_mass1",
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nMASS CUT: 2659\nMASS CUT: 2000\nMASS SHOULDER: 3738\nMASS SHOULDER: 2051\nSCULPT BASE CAPTURES: 7 samples=7555 skin_vertices=654480\n2026-10-16 17:13:33.994 godot[67886:1528935] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 17:13:54.856 godot[67886:1528935] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  }
+]

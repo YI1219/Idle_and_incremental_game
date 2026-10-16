@@ -1,0 +1,19 @@
+{
+  "scripts/terrain_editor/terrain_models.gd": {
+    "matches_HEAD": true,
+    "sha256": "5779030a2615aef2b95be8c746b825315f5206ab7f0f1ccc35858ba78f7f8643"
+  },
+  "scripts/terrain_editor/rock_terrain_base.gd": {
+    "matches_HEAD": true,
+    "sha256": "d9244f2052297328448a65a34b082a427494c24352eca33df3c91d0e67380314"
+  },
+  "shaders/terrain_editor/cliff.gdshader": {
+    "matches_HEAD": true,
+    "sha256": "fd96e253757ef7e9e4d4fa74c5cacf06d51d016b347f52b0c2d043df098166c4"
+  },
+  "shaders/terrain_editor/cliff_column.gdshader": {
+    "matches_HEAD": true,
+    "sha256": "bb48b5be65b78eb07d86e1d9d2058519ebac4f5a5f98b1e4f0bf1c7fca9f0fc4"
+  },
+  "source_original_hashes_unchanged": true
+}

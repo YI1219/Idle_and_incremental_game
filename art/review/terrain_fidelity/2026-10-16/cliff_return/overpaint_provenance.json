@@ -1,0 +1,19 @@
+{
+  "kind": "AI-generated 2D local form overpaint, NOT in-engine, NOT an accepted asset or Tripo task",
+  "tool": "native image_gen via imagegen skill",
+  "original_generated_file": "/Users/yi/.codex/generated_images/01a12b7f-422c-7c23-a8f2-99b82c1e92b9/exec-33bc1bf1-1f4b-459d-bb8e-4c5be12c30cd.png",
+  "project_copy": "art/source/studies/2026-10-16/cliff_continuity_overpaint_v1.png",
+  "sha256": "68b01be8570007e488d6d858669c955cf5ed8f44b8e3a03717d31fce976a5c2f",
+  "prompt_file": "overpaint_prompt.txt",
+  "inputs": [
+    {
+      "path": "art/review/terrain_fidelity/2026-10-16/sculpt_base/return_control1_close.png",
+      "sha256": "57f94bda51bd996f41e217a93bc8331375cd283967a78d7044e92e191856e971"
+    },
+    {
+      "path": "art/review/terrain_fidelity/2026-10-14/courtyard_finish/side_reference.png",
+      "sha256": "a21112eb7017184b4f5049e2ea981d6ba11da511eb2486062c5deebc7e78b3cc"
+    }
+  ],
+  "interpretation": "Broad side masses blend into a common lower face without a separate horizontal dark hull. Use only as a shape/contact guide; added foliage density/texture is not adopted. A single camera does not define unseen volume or establish editable 3D acceptance."
+}

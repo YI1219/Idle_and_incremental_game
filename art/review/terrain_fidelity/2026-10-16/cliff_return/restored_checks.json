@@ -1,0 +1,29 @@
+{
+  "scope": "Fresh checks after temporary source/body restoration; no candidate art or all-layout acceptance implied",
+  "checks": [
+    {
+      "script": "tests/terrain_source_crown_test.gd",
+      "exit": 0,
+      "source_cut_cases": 12,
+      "invalid_edges_bounds": 0
+    },
+    {
+      "script": "tests/terrain_sculpt_profile_test.gd",
+      "exit": 0,
+      "checks": 15,
+      "passed": 15,
+      "profile_vertices": 214488,
+      "open": 0,
+      "inward": 0
+    },
+    {
+      "script": "tests/terrain_rock_shoulder_test.gd",
+      "exit": 0,
+      "checks": 15,
+      "passed": 15,
+      "shoulder_vertices": 5304,
+      "open": 0,
+      "inward": 0
+    }
+  ]
+}

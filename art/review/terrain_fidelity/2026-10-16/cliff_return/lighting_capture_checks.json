@@ -1,0 +1,26 @@
+[
+  {
+    "tag": "honest_norm1",
+    "remove_forced_down_normal": true,
+    "remove_column_fake_ao": false,
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=0\n2026-10-16 19:32:39.023 godot[97235:1736652] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 19:32:59.923 godot[97235:1736652] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  {
+    "tag": "honest_ao1",
+    "remove_forced_down_normal": false,
+    "remove_column_fake_ao": true,
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=0\n2026-10-16 19:33:06.982 godot[97541:1738771] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 19:33:28.244 godot[97541:1738771] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  {
+    "tag": "honest_both1",
+    "remove_forced_down_normal": true,
+    "remove_column_fake_ao": true,
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=0\n2026-10-16 19:33:35.331 godot[97697:1740128] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 19:33:56.370 godot[97697:1740128] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  }
+]

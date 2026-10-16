@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "clean": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 17:05:03.054 godot[65785:1514502] +[IMKClient subclass]: chose IMKClient_Modern\nMASS CUT: 2659\nMASS CUT: 2000\nMASS SHOULDER: 5617\nMASS SHOULDER: 3039\nMASS TURN: 69\nMASS TURN: 1417\nMASS TURN: 370\nMASS TURN: 82\nMASS TURN: 0\n2026-10-16 17:05:24.400 godot[65785:1514502] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nSCULPT BASE CAPTURES: 7 samples=10130 skin_vertices=714852\n"
+}

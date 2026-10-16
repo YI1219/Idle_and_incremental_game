@@ -1,0 +1,29 @@
+# Complete cliff/body diagnosis — no runtime promotion
+
+User direction remains natural floating island, cleaner/beautiful without plastic, with editable terrain and existing tree/building sources. This round changes no default geometry, material or authored data. Current preview stays clean_water1.
+
+## Actual source and volume studies
+
+All11stages have seven matching actual Godot Metal cameras and four principal water clocks1.25:77screenshots total. Cloud/mist remain live. matched_views.json validates actual positions/rotations/error0. Derived support/occlusion decoration may differ when geometry changes. Binary images stay local; metadata and reproduction tools are tracked. The separate cliff_body_studies.html is explicitly a rejected-study gallery, not the default.
+
+1. return_control1: retained model-based default. return_tall1: Blender5.2.1 existing-source tall copy, section split at original reference.58 below all active caps; lower wall bends into a broad shoulder and inward/narrower foot. Parent and independent reviewer reject hard brackets/overhanging undersides and a broken waist belt. It exposes the broad lower backing rather than connecting naturally.
+2. mass_control1: unchanged opt-in unified base. mass1: two bounded plane removals followed by two unequal geological shoulders through the ordinary player API.4successful strokes (2,659/2,000/5,617/3,039changed samples),9,954final samples/715,032source vertices. Still two round-fronted broad boards on a wall. mass2: five further plane cuts (69/1,417/370/82/0changes),10,130samples/714,852vertices, produces a thin fin and grass-top stairs. Both rejected.
+3. compact_body1/compact_mass1: derived common-floor clamp temporarily -4.5→-2.0; smaller shoulders r2.5/2.0 in compact_mass. Slightly less heavy, still long-wall/boat structure. Rejected. This temporary floor is NOT represented by the ordinary save or compactmass flag alone. Reproduction requires that explicit source substitution; it is not a supported saved profile or new prefab. Restored before subsequent work.
+4. earlyshape1: existing early procedural crown/root source generation with current material/water/placement logic, not a rollback of all earlier code or a new source asset. Far view slightly fragmented; near/reverse/bottom show suspended pointed panels and separate bottom support. Reject. This isolates source-family change, not every difference in the historical edge_final image.
+5. honest_norm1/honest_ao1/honest_both1: remove the lower-skirt forced downward normal, column artificial AO, or both. Shape remains materially the same; removing the normal tilt exposes a long fine bright underside seam. All rejected. This rules out these two shading treatments as the dominant cause of the bottom-support read, not all lighting/material influences.
+
+## Source integrity and current-state verification
+
+Initial bisected source copies are closed in Blender but fail runtime cap closure:main35bad edges/tall3 at both cuts. After source-only sliver cleanup, final sources774/902triangles are closed with positive volume in Blender. Actual imported tall.72/.86cuts have0bad edges and raw-cap deltas.000047/.000094source units. Main still13bad edges; .62raw-cap delta.000302 exceeds unchanged.0002guard. Main excluded from every actual scene trial. Neither source is promoted. cap_checks_initial.json is superseded initial evidence; cap_checks_v1.json describes current work copies. Do not lower the guard to accept the main model.
+
+Original source hashes unchanged. Temporary terrain_models.gd,rock_terrain_base.gd,cliff.gdshader,cliff_column.gdshader all match HEAD byte-for-byte afterward (production_restoration.json). Fresh original source-crown12cases have0invalid edges/bounds, existing sculpt-profile15/15 and shoulder15/15 pass; those checks prove restoration/basic existing tools, not new art acceptance or arbitrary support. Capture execution logs are in capture_checks, mass_capture_checks, mass2_capture_checks, compact_capture_checks, early_capture_checks and lighting_capture_checks. No target-device/performance/full sandbox acceptance is claimed for rejected candidates.
+
+## Local 2D form guide — not engine evidence
+
+Native image_gen produced art/source/studies/2026-10-16/cliff_continuity_overpaint_v1.png from current rim close view and the user concept. Prompt/provenance/input/output hashes are recorded separately. It is agent-generated art direction, not a new user instruction, in-engine result, accepted asset or four-view/Tripo task. No model sourcing, purchase or user action is pending.
+
+Use its major relationships only: unequal rock fronts continue obliquely below the grass, neighboring returns occur at different heights and converge into one common lower dark mass. Extra vegetation density and fine texture are not adopted. The picture still has some board-like long faces and only one visible view; painted shadows/details can conceal geometry. Next actual modeling must establish a complete local grass-top/side/neighbor/bottom section at low detail, then prove near/far/reverse/bottom before expansion. Do not repeat radius,cut-count,global-floor,crease or AO parameter sweeps as a substitute for that primary form.
+
+## Reproduction
+
+Blender source tool: tools/art/refine_cliff_return.py -- v1. Probe tools/art/probe_cliff_return.gd must currently exit1 for the two invalid main cases. For return_tall1 only substitute INTEGRATED_TALL with the generated art/work/cliff_return/2026-10-16/cliff_return_tall_v1.glb, leaving main untouched, capture legacy/details/fixedwater, then restore exact original text. mass1 uses capture_sculpt_base.gd -- <newtag> mass details fixedwater; mass2 adds massfinish. compact_mass uses compactmass plus the explicitly temporary floor substitution described above. Every trial is unaccepted. Gallery: python3 tools/art/build_cliff_body_review.py. Never substitute these prototype sources or concept images into the default preview.

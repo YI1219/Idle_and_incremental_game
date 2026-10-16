@@ -1,0 +1,7 @@
+{
+  "exit": 0,
+  "clean": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=0\n2026-10-16 17:09:37.805 godot[67161:1522876] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 17:09:47.916 godot[67161:1522876] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n",
+  "scope": "Existing early procedural crown/root sources only; current shaders/maps/placement/outcrop/tree/building/cells retained. Temporary source study, restored.",
+  "source_sha256_restored": "5779030a2615aef2b95be8c746b825315f5206ab7f0f1ccc35858ba78f7f8643"
+}

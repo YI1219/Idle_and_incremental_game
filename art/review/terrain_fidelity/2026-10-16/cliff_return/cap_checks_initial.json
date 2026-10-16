@@ -1,0 +1,49 @@
+{
+	"failures": 4,
+	"reports": [
+		{
+			"cap_bounds_normalized": true,
+			"cap_max": "(0.5, 0.5)",
+			"cap_min": "(-0.5, -0.5)",
+			"cut": 0.72,
+			"geometry_height_delta": 0.0,
+			"invalid_edges_or_vertices": 35,
+			"kind": "main",
+			"raw_cap_bound_delta": 0.0000813007354736328,
+			"vertices": 2637
+		},
+		{
+			"cap_bounds_normalized": true,
+			"cap_max": "(0.5, 0.5)",
+			"cap_min": "(-0.5, -0.5)",
+			"cut": 0.62,
+			"geometry_height_delta": 0.0,
+			"invalid_edges_or_vertices": 35,
+			"kind": "main",
+			"raw_cap_bound_delta": 0.000101295212516561,
+			"vertices": 2535
+		},
+		{
+			"cap_bounds_normalized": true,
+			"cap_max": "(0.5, 0.5)",
+			"cap_min": "(-0.5, -0.5)",
+			"cut": 0.72,
+			"geometry_height_delta": 0.0,
+			"invalid_edges_or_vertices": 3,
+			"kind": "tall",
+			"raw_cap_bound_delta": 0.0000472068786621094,
+			"vertices": 2619
+		},
+		{
+			"cap_bounds_normalized": true,
+			"cap_max": "(0.5, 0.5)",
+			"cap_min": "(-0.5, -0.5)",
+			"cut": 0.86,
+			"geometry_height_delta": 0.0,
+			"invalid_edges_or_vertices": 3,
+			"kind": "tall",
+			"raw_cap_bound_delta": 0.0000939369201660156,
+			"vertices": 2739
+		}
+	]
+}
