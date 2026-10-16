@@ -43,7 +43,7 @@ func set_grass_compression(texture:Texture2D,world_rect:Rect2)->bool:
 	return true
 
 func _bind_grass_compression()->void:
-	for kind in ["grass","cliff","rim_green","shore"]:
+	for kind in ["grass","cliff","rim_green","shore","sculpted_terrain"]:
 		if not materials.has(kind):continue
 		materials[kind].set_shader_parameter("grass_compression",_grass_compression)
 		materials[kind].set_shader_parameter("compression_origin",_compression_bounds.position)
@@ -73,6 +73,9 @@ func configure(source:Data)->void:
 		materials.cliff=cliff
 		materials.sculpted_rock=cliff.duplicate()
 		materials.sculpted_rock.set_shader_parameter("follow_land_morph",false)
+		var unified:=ShaderMaterial.new()
+		unified.shader=load("res://shaders/terrain_editor/sculpt_terrain.gdshader")
+		materials.sculpted_terrain=unified
 		var mantle:=ShaderMaterial.new()
 		mantle.shader=load("res://shaders/terrain_editor/stone_mantle.gdshader")
 		materials.stone_mantle=mantle
@@ -119,6 +122,8 @@ func flush_dirty(max_chunks:int=2)->int:
 		_build_data=Data.new()
 		_build_data.seed=data.seed
 		_build_data.rocks.samples=data.rocks.samples.duplicate()
+		_build_data.sculpt_base_enabled=data.sculpt_base_enabled and data.ensure_sculpt_base()
+		if _build_data.sculpt_base_enabled:_build_data.rocks.base=data.rocks.base
 		for cell in data.cells:_build_data.cells[cell]=data.cells[cell].duplicate()
 		contours.refresh(_build_data)
 		if decoration!=null:
@@ -149,7 +154,7 @@ func _rebuild(chunk:Vector2i)->void:
 	_pending_faces.erase(chunk)
 	_pending_bounds.erase(chunk)
 	var faces:=PackedVector3Array()
-	for kind in ["grass","cliff","water","waterfall","shore","stone_mantle","sculpted_rock"]:
+	for kind in ["grass","cliff","water","waterfall","shore","stone_mantle","sculpted_rock","sculpted_terrain"]:
 		if geometry.has(kind):faces.append_array(geometry[kind].get_faces())
 	if decoration!=null:
 		for crown:Dictionary in decoration._columns:

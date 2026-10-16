@@ -95,6 +95,42 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      if valid and not blades.is_empty():_blades(result,center,tangent,out,h,choice,blades,blade_box,regions[h])
  return result
 
+static func sculpt_lip(field,assets:Dictionary):
+ # Actual rooted blades, with no cuff disks or a painted green wall band.
+ var result:=Surface.new();var blades:=PackedVector3Array()
+ for part:Dictionary in assets.get("grass",[]):
+  for p:Vector3 in part.mesh.get_faces():blades.append(part.pose*p)
+ if blades.is_empty():return result
+ var box:=AABB(blades[0],Vector3.ZERO)
+ for p:Vector3 in blades:box=box.expand(p)
+ var foot:=Vector3(box.get_center().x,box.position.y,box.get_center().z)
+ for h:float in field.land_regions:
+  for loop:PackedVector2Array in field.land_regions[h]:
+   for e in loop.size():
+    var a:=loop[e];var b:=loop[(e+1)%loop.size()];var length:=a.distance_to(b)
+    if length<.15:continue
+    var tangent:=(b-a).normalized();var out:=Vector2(tangent.y,-tangent.x)
+    var count:=maxi(1,ceili(length/.7))
+    for k in count:
+     var p:=a.lerp(b,(k+.25+.5*_hash(a+Vector2(k,h)))/count)-out*.13
+     var choice:=_hash(p*2.1+Vector2(h,7))
+     if choice<.28:continue
+     var ground:Dictionary=field.surface_at(p)
+     if ground.is_empty() or ground.water>=0 or absf(ground.height-h)>.12:continue
+     for fan in 2:
+      var at:=p+tangent*(fan-.5)*.12-out*.035*fan
+      var sample:Dictionary=field.surface_at(at)
+      if sample.is_empty() or sample.water>=0 or absf(sample.height-h)>.12:continue
+      var scale:float=(.13+.09*choice-.035*fan)/maxf(box.size.y,.001)
+      var basis:=Basis(Vector3(tangent.x,0,tangent.y),-.50-.25*choice)*Basis(Vector3.UP,choice*TAU+fan*1.9)
+      basis=basis.scaled(Vector3.ONE*scale)
+      var pose:=Transform3D(basis,Vector3(at.x,sample.height-.012,at.y)-basis*foot)
+      var start:=result.vertices.size()
+      for j in range(0,blades.size(),3):result.triangle(pose*blades[j],pose*blades[j+1],pose*blades[j+2],Color.WHITE)
+      for j in range(start,result.vertices.size()):
+       result.colors[j]=Color(.5,choice,1,1);result.uv[j]=Vector2(sample.height,0);result.uv2.append(at)
+ return result
+
 static func _inside(loops:Array,p:Vector2)->bool:
  var winding:=0
  for loop:PackedVector2Array in loops:

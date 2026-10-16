@@ -3,6 +3,9 @@ extends RefCounted
 const Data=preload('res://scripts/terrain_editor/terrain_data.gd')
 
 static func height_at(field,p:Vector2,water_y:float)->float:
+ if field.source.sculpt_base_enabled:
+  var p3:float=field.source.rocks.height_at(p)
+  return p3 if not is_nan(p3) and p3<=water_y+.2 else -INF
  var height:=-INF
  var chunk:=Data.chunk_of(Vector2i(p.floor()))
  for kind in ['grass','shore','lake_bed']:

@@ -1,0 +1,26 @@
+{
+  "unified_shore": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 45.925984144210815,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHORE STONE CONTACT default: stones=83 failures=0\nSHORE STONE CONTACT dry: stones=68 failures=0\nSHORE STONE CONTACT raise: stones=84 failures=0\nSHORE STONE CONTACT contract: stones=67 failures=0\nSHORE STONE CONTACT: probes=3526 failures=0\n"
+  },
+  "legacy_data": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.24268603324890137,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n"
+  },
+  "legacy_editor": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.2318918704986572,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nTERRAIN EDITOR RENDER: 339/339 passed\n2026-10-16 09:56:56.133 godot[34795:369468] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  },
+  "final_pointer": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 19.372762203216553,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE PUBLISHED: triangles=30184 invalid_edges=0\nSCULPT BASE INPUT: 10/10\n2026-10-16 09:56:57.268 godot[34819:369712] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  }
+}

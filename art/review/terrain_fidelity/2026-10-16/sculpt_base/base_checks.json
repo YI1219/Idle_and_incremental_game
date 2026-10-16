@@ -1,0 +1,14 @@
+[
+  {
+    "test": "terrain_sculpt_base_test",
+    "exit_code": 0,
+    "seconds": 0.870713292,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT BASE: 13/13 vertices=146316 invalid_edges=0\n"
+  },
+  {
+    "test": "terrain_rock_sculpt_test",
+    "exit_code": 0,
+    "seconds": 0.3620184169999999,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH joined strokes: vertices=15720 open=0 inward=0\nSCULPT MESH initial: vertices=4968 open=0 inward=0\nSCULPT MESH carved: vertices=5136 open=0 inward=0\nROCK SCULPT: 29/29\n"
+  }
+]

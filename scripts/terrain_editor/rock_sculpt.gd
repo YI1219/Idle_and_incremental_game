@@ -6,7 +6,10 @@ const STEP:=.25
 const AIR:=.5
 const MAX_SAMPLES:=160000
 var samples:Dictionary[Vector3i,float]={}
-func node_value(key:Vector3i)->float:return samples.get(key,AIR)
+var base:RefCounted
+var _height_bounds_dirty:=true
+var _height_bounds:=Vector2(-16,24)
+func node_value(key:Vector3i)->float:return samples[key] if samples.has(key) else (base.node_value(key) if base!=null else AIR)
 func value_at(p:Vector3)->float:
  var q:=p/STEP;var key:=Vector3i(q.floor());var f:=q-Vector3(key)
  # Match the mesh's tetrahedral interpolation, including carved concavities.
@@ -38,21 +41,44 @@ func brush(center:Vector3,radius:float,tool:String,normal:=Vector3.UP)->Dictiona
      'rock_plane':
       var weight:=1.0-smoothstep(radius*.65,radius,distance)
       value=lerpf(old,maxf(old,(p-center).dot(normal)),weight)
+    if value==old:continue
     value=roundf(clampf(value,-AIR,AIR)*100000.0)/100000.0
     # Avoid exact isosurface lattice corners (zero-area tetrahedron faces).
     if absf(value)<.00001:value=.00002
     if value==old:continue
     before[key]=samples.get(key)
-    next[key]=null if value==AIR else value
+    next[key]=null if value==AIR and base==null else value
     if not samples.has(key) and next[key]!=null:size+=1
     elif samples.has(key) and next[key]==null:size-=1
  if size>MAX_SAMPLES:return {}
  restore(next)
  return before
 func restore(values:Dictionary)->void:
+ _height_bounds_dirty=true
  for key:Vector3i in values:
   if values[key]==null:samples.erase(key)
   else:samples[key]=values[key]
+func height_at(p:Vector2)->float:
+ if _height_bounds_dirty:
+  var bottom:float=base.low.y*STEP-STEP if base!=null else 24.0
+  var top:float=(base.low.y+base.size.y)*STEP+STEP if base!=null else -16.0
+  for key:Vector3i in samples:
+   bottom=minf(bottom,key.y*STEP-STEP);top=maxf(top,key.y*STEP+STEP)
+  _height_bounds=Vector2(bottom,top);_height_bounds_dirty=false
+ var upper:=_height_bounds.y;var above:=value_at(Vector3(p.x,upper,p.y))
+ # At a fixed XZ, a tetrahedron changes when local Y crosses local X or Z.
+ # Test each linear segment: a thin ledge can cross twice inside one STEP.
+ var fractions:Array[float]=[0.0,fposmod(p.x/STEP,1.0),fposmod(p.y/STEP,1.0)]
+ fractions.sort();fractions.reverse()
+ while upper>_height_bounds.x:
+  var slab_bottom:float=(roundf(upper/STEP)-1.0)*STEP
+  for fraction:float in fractions:
+   var lower:=slab_bottom+fraction*STEP
+   if lower>=upper-.0000001:continue
+   var below:=value_at(Vector3(p.x,lower,p.y))
+   if above>=0 and below<0:return lerpf(upper,lower,above/(above-below))
+   upper=lower;above=below
+ return NAN
 func records()->Array:
  var result:Array=[];var keys:=samples.keys();keys.sort()
  for key:Vector3i in keys:result.append({'x':key.x,'y':key.y,'z':key.z,'density':samples[key]})
@@ -68,7 +94,7 @@ func load_records(records:Variant)->bool:
   for name in ['x','y','z']:
    if float(record[name])!=floorf(record[name]):return false
   if absf(record.x)>4096 or absf(record.z)>4096 or record.y< -64 or record.y>96:return false
-  if record.density< -AIR or record.density>=AIR or absf(record.density)<.00001:return false
+  if record.density< -AIR or record.density>AIR or absf(record.density)<.00001:return false
   var key:=Vector3i(record.x,record.y,record.z)
   if candidate.has(key):return false
   candidate[key]=record.density

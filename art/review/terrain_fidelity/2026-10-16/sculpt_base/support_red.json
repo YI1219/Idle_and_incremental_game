@@ -1,0 +1,4 @@
+{
+  "exit_code": 1,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTHIN SCULPT SUPPORT: probes=55 mismatches=23\nSCULPT BASE: 22/23 vertices=114432 invalid_edges=0\nERROR: Thin carved ledges have the same support height as actual mesh intersections\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_sculpt_base_test.gd:8)\n       [1] run (res://tests/terrain_sculpt_base_test.gd:80)\n"
+}

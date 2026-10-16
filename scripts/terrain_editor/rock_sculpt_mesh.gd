@@ -16,8 +16,10 @@ class SculptSurface extends Surface:
    vertices.append(p);normals.append(normal);colors.append(color);uv.append(Vector2.ZERO)
 static func build(field)->Surface:
  var surface:=SculptSurface.new();var cells:Dictionary={};var cache:Dictionary={};var gradients:Dictionary={}
+ if field.base!=null:
+  for cell:Vector3i in field.base.surface_cells:cells[cell]=true
  for key:Vector3i in field.samples:
-  if field.samples[key]>=0:continue
+  if field.base==null and field.samples[key]>=0:continue
   for corner:Vector3i in CORNERS:cells[key-corner]=true
  var keys:=cells.keys();keys.sort()
  for cell:Vector3i in keys:
@@ -50,9 +52,28 @@ static func build(field)->Surface:
     if cross.length_squared()<1e-20:continue
     if cross.dot(outward)<0:
      var swap:Dictionary=triangle[1];triangle[1]=triangle[2];triangle[2]=swap
+     cross=-cross
     for entry:Dictionary in triangle:
-     surface.vertices.append(entry.point);surface.normals.append(entry.normal)
-     surface.colors.append(Color.WHITE);surface.uv.append(Vector2.ZERO)
+     surface.vertices.append(entry.point)
+     # The later crease pass needs actual face normals. Feeding it shared
+     # field gradients has already erased every sharp carved edge.
+     surface.normals.append(cross.normalized() if field.base!=null else entry.normal)
+     if field.base!=null:
+      var tag:Dictionary=field.base.tag(entry.point,entry.normal)
+      surface.colors.append(tag.color);surface.uv.append(tag.uv)
+     else:surface.colors.append(Color.WHITE);surface.uv.append(Vector2.ZERO)
+ if field.base!=null:
+  # Side points at the old cap height must not inherit a green stripe from
+  # that height when newly sculpted rock now rises above them.
+  var top:Dictionary={}
+  for p:Vector3 in surface.vertices:
+   var key:=Vector2i(roundi(p.x/Field.STEP),roundi(p.z/Field.STEP))
+   top[key]=maxf(top.get(key,-INF),p.y)
+  for i in surface.vertices.size():
+   var p:Vector3=surface.vertices[i];var key:=Vector2i(roundi(p.x/Field.STEP),roundi(p.z/Field.STEP))
+   if float(top[key])>p.y+.11:surface.colors[i].r=0.0
+  var softened:ArrayMesh=preload('res://scripts/terrain_editor/stone_normals.gd').soften(surface.mesh(),65.0,1.0)
+  if softened.get_surface_count()>0:surface.normals=softened.surface_get_arrays(0)[Mesh.ARRAY_NORMAL]
  return surface
 static func crossing(field,a:Vector3i,b:Vector3i,cache:Dictionary,gradients:Dictionary)->Dictionary:
  if b<a:

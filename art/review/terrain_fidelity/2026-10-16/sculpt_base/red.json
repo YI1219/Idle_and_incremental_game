@@ -1,0 +1,4 @@
+{
+  "exit_code": 1,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nERROR: Existing terrain cannot be directly sculpted as one volume\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_sculpt_base_test.gd:8)\n       [1] run (res://tests/terrain_sculpt_base_test.gd:15)\n"
+}

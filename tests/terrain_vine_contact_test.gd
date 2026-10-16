@@ -30,11 +30,13 @@ func run():
  for spec in [['default',Vector2.ZERO,0.0],['raise',Vector2(-13,2),2.3],['lower',Vector2(13,7),2.0],['expand',Vector2(18,4),2.6],['contract',Vector2(3,7),2.2]]:
   data.deserialize(initial)
   if spec[0]!='default':data.begin_stroke();data.apply_brush(spec[1],spec[2],spec[0],false,1.5,3);data.end_stroke()
+  if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
   var field=Contours.new();field.refresh(data);deco.contours=field
   deco._column_layout(field,data.seed) # Prepare the final rim before snapshotting cliff arrays.
   var chunks={}
   for cell:Vector2i in data.cells:chunks[Data.chunk_of(cell)]=true
-  var faces:PackedVector3Array=field.surfaces.cliff.vertices
+  var wall_kind:='sculpted_terrain' if data.sculpt_base_enabled else 'cliff'
+  var faces:PackedVector3Array=field.surfaces[wall_kind].vertices
   var checked=0;var missing=0;var separated=0;var max_gap=0.0
   for chunk:Vector2i in chunks:
    for pose:Transform3D in deco.placements(data,chunk).vine:
@@ -44,7 +46,7 @@ func run():
     var nearest=INF;var candidates={}
     for z in range(floori((point.z-.10)/8),floori((point.z+.10)/8)+1):
      for x in range(floori((point.x-.10)/8),floori((point.x+.10)/8)+1):
-      for i:int in field.triangle_chunks.get(Vector2i(x,z),{}).get('cliff',[]):candidates[i]=true
+      for i:int in field.triangle_chunks.get(Vector2i(x,z),{}).get(wall_kind,[]):candidates[i]=true
     for i:int in candidates:
      var a:=faces[i];var b:=faces[i+1];var c:=faces[i+2]
      var low:=a.min(b).min(c)-Vector3.ONE*.10;var high:=a.max(b).max(c)+Vector3.ONE*.10

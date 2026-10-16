@@ -19,6 +19,8 @@ const SHOULDER_DEPTH := .45
 const SHOULDER_BULGE := .10
 ## Increments on every refresh; decoration caches whole-outline layouts by it.
 var revision:=0
+var _sculpt_active:=false
+var _sculpt_height_cache:Dictionary={}
 var land_regions:Dictionary={}
 ## Final top outline after the independent crowns are joined to the lawn.
 ## Authoring/water contours remain separate inputs; picking uses the baked top.
@@ -48,6 +50,8 @@ var fall_veils:Array=[]
 
 func refresh(data:Data)->void:
 	source=data
+	_sculpt_active=false;_sculpt_height_cache.clear()
+	data.ensure_sculpt_base()
 	revision+=1
 	_chain_constraints.clear()
 	_cliff_turf.clear()
@@ -121,8 +125,13 @@ func refresh(data:Data)->void:
 	_smooth_normals(surfaces.shore)
 	_smooth_normals(surfaces.bank)
 	_smooth_normals(surfaces.waterfall)
-	surfaces.sculpted_rock=preload("res://scripts/terrain_editor/rock_sculpt_mesh.gd").build(data.rocks)
+	surfaces.sculpted_rock=Legacy.Surface.new() if data.sculpt_base_enabled else preload("res://scripts/terrain_editor/rock_sculpt_mesh.gd").build(data.rocks)
 	surfaces.lake_bed=preload("res://scripts/terrain_editor/lake_bed.gd").build(self)
+	if data.sculpt_base_enabled:
+		surfaces.sculpted_terrain=preload("res://scripts/terrain_editor/rock_sculpt_mesh.gd").build(data.rocks)
+		for kind in ["grass","cliff","shore","bank","lake_bed"]:surfaces[kind]=Legacy.Surface.new()
+		rim_regions=land_regions.duplicate(true)
+		_sculpt_active=true
 	_index_triangles()
 
 static func _area(p:PackedVector2Array)->float:
@@ -209,6 +218,14 @@ static func contains(loops:Array,p:Vector2,signs:PackedInt32Array=PackedInt32Arr
 	return winding>0
 
 func surface_at(p:Vector2)->Dictionary:
+	if _sculpt_active:
+		var key:=Vector2i((p*10000).round())
+		if not _sculpt_height_cache.has(key):_sculpt_height_cache[key]=source.rocks.height_at(p)
+		var h:float=_sculpt_height_cache[key]
+		if is_nan(h):return {}
+		for water:int in water_regions:
+			if water*.5>=h+.001 and contains(water_regions[water],p):return {"height":water*.5,"water":water}
+		return {"height":h,"water":-1}
 	for i in range(levels.size()-1,-1,-1):
 		var h:float=levels[i]
 		if not contains(land_regions[h],p):continue
@@ -1097,7 +1114,7 @@ func build(chunk:Vector2i)->Dictionary:
 	var result:Dictionary={}
 	for kind in surfaces:
 		var local:Legacy.Surface=preload("res://scripts/terrain_editor/lake_bed.gd").BedSurface.new() if kind in ["lake_bed","grass"] else Legacy.Surface.new()
-		if kind=="sculpted_rock":local=preload("res://scripts/terrain_editor/rock_sculpt_mesh.gd").SculptSurface.new()
+		if kind in ["sculpted_rock","sculpted_terrain"]:local=preload("res://scripts/terrain_editor/rock_sculpt_mesh.gd").SculptSurface.new()
 		var vertices:PackedVector3Array=surfaces[kind].vertices
 		var colors:PackedColorArray=surfaces[kind].colors
 		var normals:PackedVector3Array=surfaces[kind].normals
@@ -1109,13 +1126,13 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock","sculpted_terrain"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
-				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock","sculpted_terrain"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
-				if kind in ["cliff","grass","rim_green","shore"]:
+				if kind in ["cliff","grass","rim_green","shore","sculpted_terrain"]:
 					var uv:PackedVector2Array=surfaces[kind].uv
 					for index in range(before,local.vertices.size()):
 						var cap:=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],Color(uv[i].x,uv[i].y,0),Color(uv[i+1].x,uv[i+1].y,0),Color(uv[i+2].x,uv[i+2].y,0))

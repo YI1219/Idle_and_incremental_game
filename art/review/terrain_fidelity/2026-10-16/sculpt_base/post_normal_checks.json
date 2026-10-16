@@ -1,0 +1,20 @@
+{
+  "base5_capture": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 28.687813997268677,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 5 samples=2847 skin_vertices=722232\n2026-10-16 10:01:45.907 godot[35852:379363] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 10:02:10.885 godot[35852:379363] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  "post_normal_base": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.0135560035705566,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTHIN SCULPT SUPPORT: probes=55 mismatches=0\nSCULPT BASE: 23/23 vertices=114432 invalid_edges=0\n"
+  },
+  "post_normal_pointer": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 19.355654001235962,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE PUBLISHED: triangles=30184 invalid_edges=0\nSCULPT BASE INPUT: 10/10\n2026-10-16 10:02:15.621 godot[35928:380501] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  }
+}

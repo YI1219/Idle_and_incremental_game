@@ -165,3 +165,15 @@ The user explicitly rejects "player builds a mountain, then the system combines 
 Review focus: negative/chunk-crossing brush coordinates; empty/dry/wet terrain and volume-only layouts; brush size/sample-limit atomicity; invalid load preserving history/current data; snapshot picking matching the published mesh. Independent original sources and current island/pond footprint remain preserved.
 
 Direct-sculpt checkpoint:volume29/29,published9/9,legacy data301/301/runtime22/22 and affected support/closure checks pass. Native editor339/339,input-helper8/8,regeneration42/42 and11default tone_final captures pass. Independent Important morph/pick mismatch fixed with red→green actual-render fixture(10,117→0silhouette changes);post-fix volume/runtime pass. Minor native full-pointer-route coverage deferred. Both sculpt1/sculpt2 forms rejected; no replacement of default cliffs. Direct volume tooling does not yet integrate the existing base/grass coverage, and full lookdev acceptance remains open.
+
+
+## Coherent sculptable terrain base — current continuation
+
+The previous volume brush trial is functional but overlays retained cliffs/caps and fails art. Seed the sculpt field from the existing authored terrain itself in a reversible opt-in mode. One derived closed skin must replace old grass/cliff draws, expose both grass/rock coverage and update support/picking. Brush samples, history and serialization stay authoritative. The existing default island remains the comparison until actual whole/close views pass art. No automatic rock assembly, extra locked land, tree/building replacement or user model delivery.
+
+- [x] Red regression: carving actual pre-existing ground, one closed grass/stone/base skin, no retained cap/wall, support follows carved top, save/load and switching back.
+- [x] Implement derived base signed field from authoritative cell contours and calm bottom; sparse edits override it. Mesh base crossings and all edited cells, including internal positive carve samples.
+- [x] Integrate opt-in conversion/history/save/snapshot, single-skin material, actual support and decoration contact; add native pointer editing coverage.
+- [x] Inspect representative and whole actual views; reject clay/sheet geometry and grey/painted lip. Only adopt visual improvements. Run affected fresh checks/review, update current status and push reversible checkpoint.
+
+Coherent-base checkpoint: original-ground carve, closed skin, actual pointer/picking/undo, version3 save/load and base-budget tests pass. Review found and fixed atomic history restoration and thin-ledge support; red→green evidence retained. Wet-bottom material contamination fixed with actual rendered positive/negative controls. Default art remains tone_final; coherent-base studies are rejected for broad/rounded or coarse forms. Five-view base5 is functional-stage evidence only. Finite shore/vine support and legacy regressions pass; target-device cost, arbitrary sculpted water routing and final art remain open.

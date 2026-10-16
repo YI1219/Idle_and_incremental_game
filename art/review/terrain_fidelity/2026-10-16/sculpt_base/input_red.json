@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "seconds": 15.276497916,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 09:31:28.488 godot[28675:284133] +[IMKClient subclass]: chose IMKClient_Modern\nERROR: Workshop has no explicit reversible base-conversion control\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_sculpt_base_input_test.gd:5)\n       [1] run (res://tests/terrain_sculpt_base_input_test.gd:12)\n"
+}

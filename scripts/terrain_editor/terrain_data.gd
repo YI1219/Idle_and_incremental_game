@@ -9,6 +9,7 @@ var cells: Dictionary[Vector2i, Dictionary] = {}
 var seed: int = 7301
 const RockSculpt=preload("res://scripts/terrain_editor/rock_sculpt.gd")
 var rocks:=RockSculpt.new()
+var sculpt_base_enabled:=false
 var _rock_before:Dictionary={}
 var dirty_chunks: Dictionary = {}
 var revision := 0
@@ -21,7 +22,8 @@ var _redo: Array[Dictionary] = []
 static func chunk_of(cell: Vector2i) -> Vector2i:
 	return Vector2i(floori(float(cell.x)/CHUNK_SIZE), floori(float(cell.y)/CHUNK_SIZE))
 
-func invalidate(cell: Vector2i) -> void:
+func invalidate(cell: Vector2i,land_change:bool=true) -> void:
+	if land_change:rocks.base=null
 	for z in range(-1,2):
 		for x in range(-1,2):
 			dirty_chunks[chunk_of(cell + Vector2i(x,z))] = true
@@ -42,6 +44,10 @@ func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, heigh
 	if snap: center = center.floor() + Vector2(0.5,0.5)
 	radius = clampf(radius, 0.1, 16.0)
 	height = clampf(roundf(height*2.0)*0.5,-4.0,12.0)
+	if sculpt_base_enabled and tool in ["expand","raise","lower"]:
+		var lo:=center-Vector2.ONE*(radius+1.0) if tool=="expand" else Vector2(INF,INF)
+		var hi:=center+Vector2.ONE*(radius+1.0) if tool=="expand" else Vector2(-INF,-INF)
+		if not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(cells,lo,hi,-.5 if tool=="lower" else 0.0,.5 if tool=="raise" else 0.0,height if tool=="expand" else NAN):return 0
 	var changed := 0
 	for z in range(floori(center.y-radius), ceili(center.y+radius)):
 		for x in range(floori(center.x-radius), ceili(center.x+radius)):
@@ -71,8 +77,30 @@ func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, heigh
 			changed += 1
 	return changed
 
+func ensure_sculpt_base()->bool:
+	if not sculpt_base_enabled:return true
+	if rocks.base==null:
+		var candidate=preload("res://scripts/terrain_editor/rock_terrain_base.gd").new()
+		if not candidate.configure(cells):return false
+		rocks.base=candidate
+		rocks._height_bounds_dirty=true
+	return true
+func set_sculpt_base(enabled:bool)->bool:
+	end_stroke()
+	if enabled==sculpt_base_enabled:return true
+	# Conversion is an authoring mode choice, never an implicit brush action.
+	# Existing separate trial volumes must be saved/reset before conversion.
+	if not rocks.samples.is_empty():return false
+	if enabled and not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(cells):return false
+	sculpt_base_enabled=enabled;rocks.base=null
+	ensure_sculpt_base()
+	for cell:Vector2i in cells:invalidate(cell,false)
+	revision+=1
+	return true
+
 func apply_rock_brush(center:Vector3,radius:float,tool:String,normal:=Vector3.UP)->int:
 	if not _active:begin_stroke()
+	if not ensure_sculpt_base():return 0
 	var before:Dictionary=rocks.brush(center,radius,tool,normal)
 	for key:Vector3i in before:
 		if not _rock_before.has(key):_rock_before[key]=before[key]
@@ -84,7 +112,7 @@ func _invalidate_rocks(keys:Array)->void:
 	for key:Vector3i in keys:
 		var p:=Vector3(key)*RockSculpt.STEP
 		changed[Vector2i(floori(p.x),floori(p.z))]=true
-	for cell:Vector2i in changed:invalidate(cell)
+	for cell:Vector2i in changed:invalidate(cell,false)
 
 func end_stroke() -> void:
 	if not _active:return
@@ -94,31 +122,43 @@ func end_stroke() -> void:
 			var value:Variant=cells.get(cell)
 			after[cell]=value.duplicate() if value!=null else null
 		for key:Vector3i in _rock_before:rock_after[key]=rocks.samples.get(key)
-		_undo.append({"before":_before.duplicate(true),"after":after,"rock_before":_rock_before.duplicate(),"rock_after":rock_after})
+		_undo.append({"before":_before.duplicate(true),"after":after,"rock_before":_rock_before.duplicate(),"rock_after":rock_after,"sculpt_base":sculpt_base_enabled})
 		if _undo.size()>HISTORY_LIMIT:_undo.pop_front()
 		_redo.clear()
 	_active=false;_before.clear();_visited.clear();_rock_before.clear()
 
-func _restore(values:Dictionary,rock_values:Dictionary={}) -> void:
+func _restore(values:Dictionary,rock_values:Dictionary={},rock_mode:bool=false) -> bool:
+	# Sparse rock overrides belong to the base against which they were made.
+	# Preserve an incompatible entry for replay after switching back.
+	if not rock_values.is_empty() and rock_mode!=sculpt_base_enabled:return false
+	if sculpt_base_enabled and not values.is_empty():
+		var candidate:=cells.duplicate()
+		for cell:Vector2i in values:
+			if values[cell]==null:candidate.erase(cell)
+			else:candidate[cell]=values[cell]
+		if not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(candidate):return false
 	for cell:Vector2i in values:
 		if values[cell]==null:cells.erase(cell)
 		else:cells[cell]=values[cell].duplicate()
 		invalidate(cell)
 	rocks.restore(rock_values)
 	_invalidate_rocks(rock_values.keys())
+	return true
 
 func undo() -> bool:
 	end_stroke()
 	if _undo.is_empty():return false
-	var entry:Dictionary=_undo.pop_back()
-	_restore(entry.before,entry.get("rock_before",{}));_redo.append(entry)
+	var entry:Dictionary=_undo.back()
+	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false)):return false
+	_undo.pop_back();_redo.append(entry)
 	return true
 
 func redo() -> bool:
 	end_stroke()
 	if _redo.is_empty():return false
-	var entry:Dictionary=_redo.pop_back()
-	_restore(entry.after,entry.get("rock_after",{}));_undo.append(entry)
+	var entry:Dictionary=_redo.back()
+	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false)):return false
+	_redo.pop_back();_undo.append(entry)
 	return true
 
 func water_mask(cell: Vector2i) -> int:
@@ -137,17 +177,19 @@ func serialize() -> Dictionary:
 	for cell: Vector2i in keys:
 		records.append({"x":cell.x,"z":cell.y,"height":cells[cell].height,"water":cells[cell].water})
 	var payload:Dictionary={"version":1,"seed":seed,"cells":records}
-	if not rocks.samples.is_empty():
-		payload.version=2;payload.rocks=rocks.records()
+	if not rocks.samples.is_empty() or sculpt_base_enabled:
+		payload.version=3 if sculpt_base_enabled else 2;payload.rocks=rocks.records()
+		if sculpt_base_enabled:payload.sculpt_base=true
 	return payload
 
 static func _number(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value))
 
 func deserialize(payload: Dictionary) -> bool:
-	if (payload.get("version")!=1 and payload.get("version")!=2) or not _number(payload.get("seed")): return false
+	if (payload.get("version")!=1 and payload.get("version")!=2 and payload.get("version")!=3) or not _number(payload.get("seed")): return false
 	var candidate_rocks=preload("res://scripts/terrain_editor/rock_sculpt.gd").new()
-	if payload.version==2 and not candidate_rocks.load_records(payload.get("rocks")):return false
+	if payload.version>=2 and not candidate_rocks.load_records(payload.get("rocks")):return false
+	if payload.version==3 and (not payload.get("sculpt_base") is bool or payload.get("sculpt_base")!=true):return false
 	if float(payload.seed)!=floorf(float(payload.seed)) or absf(float(payload.seed))>2147483647: return false
 	var records: Variant=payload.get("cells")
 	if not records is Array or records.size()>MAX_CELLS: return false
@@ -164,10 +206,12 @@ func deserialize(payload: Dictionary) -> bool:
 		var cell := Vector2i(int(record.x),int(record.z))
 		if candidate.has(cell): return false
 		candidate[cell]={"height":float(record.height),"water":int(record.water)}
+	if payload.version==3 and not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(candidate):return false
 	end_stroke()
 	for cell: Vector2i in cells: invalidate(cell)
 	_invalidate_rocks(rocks.samples.keys())
 	rocks=candidate_rocks
+	sculpt_base_enabled=payload.version==3
 	_invalidate_rocks(rocks.samples.keys())
 	cells = candidate
 	seed = int(payload.seed)
@@ -181,6 +225,7 @@ func make_preset(kind: int) -> void:
 	for cell: Vector2i in cells: invalidate(cell)
 	_invalidate_rocks(rocks.samples.keys())
 	rocks.samples.clear()
+	rocks.base=null;sculpt_base_enabled=false
 	cells.clear()
 	_undo.clear()
 	_redo.clear()

@@ -9,9 +9,22 @@ func _initialize()->void:call_deferred('run')
 func ground_height(field,p:Vector2,h:float)->float:
  var result:=-INF
  var chunk:=Data.chunk_of(Vector2i(p.floor()))
- for kind in ['grass','shore','lake_bed']:
+ for kind in ['sculpted_terrain'] if field.source.sculpt_base_enabled else ['grass','shore','lake_bed']:
   var vertices:PackedVector3Array=field.surfaces[kind].vertices
   for i:int in field.triangle_chunks.get(chunk,{}).get(kind,[]):
+   if kind=='sculpted_terrain':
+    # Near-zero lattice crossings produce valid tiny projected triangles.
+    # Geometry3D's generic ray epsilon skips some of these. Use independent
+    # scalar barycentrics here instead of mistaking that epsilon for a hole.
+    var a:=vertices[i];var b:=vertices[i+1];var c:=vertices[i+2]
+    var denominator:float=(b.x-a.x)*(c.z-a.z)-(b.z-a.z)*(c.x-a.x)
+    if absf(denominator)<1e-16:continue
+    var u:float=((p.x-a.x)*(c.z-a.z)-(p.y-a.z)*(c.x-a.x))/denominator
+    var v:float=((b.x-a.x)*(p.y-a.z)-(b.z-a.z)*(p.x-a.x))/denominator
+    if u<-.00000001 or v<-.00000001 or u+v>1.00000001:continue
+    var y:float=a.y+u*(b.y-a.y)+v*(c.y-a.y)
+    if y<=h+.2:result=maxf(result,y)
+    continue
    var hit=Geometry3D.ray_intersects_triangle(Vector3(p.x,h+.2,p.y),Vector3.DOWN,vertices[i],vertices[i+1],vertices[i+2])
    if hit!=null:result=maxf(result,hit.y)
  return result
@@ -22,6 +35,12 @@ func inspect(field,deco,kind:String,pose:Transform3D)->void:
  var sample:Dictionary=field.surface_at(Vector2(pose.origin.x,pose.origin.z))
  if sample.is_empty():failures+=1;return
  var h:float=sample.height
+ # A continuous bank can slope below its pond. The seating section belongs
+ # to the pond elevation, rather than the dry height under the stone pivot.
+ if field.source.sculpt_base_enabled:
+  var nearest:=INF
+  for water:int in field.water_regions:
+   if absf(water*.5-sample.height)<nearest:nearest=absf(water*.5-sample.height);h=water*.5
  var level:=lo+(hi-lo)*.30
  var dry_points:=0;var gaps:=0
  # Intersect all real triangle edges with a horizontal lower-third section.
@@ -38,7 +57,9 @@ func inspect(field,deco,kind:String,pose:Transform3D)->void:
    if unique.has(key):continue
    unique[key]=true;dry_points+=1;checked+=1
    var support:=ground_height(field,at,h)
-   if support==-INF or p.y>support+.015:gaps+=1
+   if support==-INF or p.y>support+.015:
+    gaps+=1
+    if OS.get_cmdline_user_args().has('debug_contact'):print('SHORE PROBE ',at,' flank=',p.y,' ground=',support,' land=',land,' pond=',h)
  if dry_points>0:
   failures+=gaps
   if gaps>0:print('RAISED LOWER FLANK ',kind,' ',pose.origin,' gaps=',gaps,'/',dry_points)
@@ -57,6 +78,7 @@ func run()->void:
  for state in ['default','dry','raise','contract']:
   if state!='default':
    data.make_preset(0);data.begin_stroke();data.apply_brush(Vector2(-3,0) if state=='dry' else Vector2(12,4),3.0,state,false,1.5,3);data.end_stroke()
+  if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
   var field:=Field.new();field.refresh(data);deco.contours=field
   var chunks:Dictionary={};var count:=0;var before:=failures
   for cell in data.cells:chunks[Data.chunk_of(cell)]=true

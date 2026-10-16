@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "seconds": 1.311933125,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 09:40:07.804 godot[29898:329133] +[IMKClient subclass]: chose IMKClient_Modern\nSCULPT BASE UNDERSIDE MATERIAL: foreground=0 pond_tag_changes=0 passed=false\n"
+}

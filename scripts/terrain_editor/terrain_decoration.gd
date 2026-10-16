@@ -22,6 +22,7 @@ var _column_field:RefCounted
 var _column_key:=Vector2i(-1,-1)
 # Independent tapered roots behind the crown joints; cached with their rim span.
 var _mass:Array=[]
+var _sculpt_buckets:Dictionary={}
 var _outcrops:Array=[]
 # Unchanged contour runs keep their blocks. Keyed by the run's geometry and
 # the nearby heights, so an edit rebuilds only the runs it actually moves.
@@ -244,6 +245,23 @@ func _column_layout(field,seed_value:int)->void:
 	_columns.clear()
 	_column_cells.clear()
 	_mass.clear()
+	_sculpt_buckets.clear()
+	if field.source.sculpt_base_enabled:
+		_outcrops.clear();_run_cache.clear()
+		var skin:PackedVector3Array=field.surfaces.sculpted_terrain.vertices
+		for i in range(0,skin.size(),3):
+			var lo:=skin[i].min(skin[i+1]).min(skin[i+2])/2.0
+			var hi:=skin[i].max(skin[i+1]).max(skin[i+2])/2.0
+			for z in range(floori(lo.z),floori(hi.z)+1):
+				for y in range(floori(lo.y),floori(hi.y)+1):
+					for x in range(floori(lo.x),floori(hi.x)+1):
+						var bucket:=Vector3i(x,y,z)
+						if not _sculpt_buckets.has(bucket):_sculpt_buckets[bucket]=PackedInt32Array()
+						_sculpt_buckets[bucket].append(i)
+		field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_surface_detail.gd").sculpt_lip(field,assets)
+		field._smooth_normals(field.surfaces.rim_green);field._index_triangles()
+		layout_hits=0;layout_misses=0;layout_ms=0.0
+		return
 	layout_hits=0
 	layout_misses=0
 	var seen:Dictionary={}
@@ -502,6 +520,16 @@ func column_faces_near(point:Vector3)->PackedVector3Array:
 	# World triangles of standing columns around a point; vines hang on these.
 	var faces:=PackedVector3Array()
 	var seen:Dictionary={}
+	if not _sculpt_buckets.is_empty():
+		var skin:PackedVector3Array=_column_field.surfaces.sculpted_terrain.vertices
+		for z in range(floori((point.z-1.1)/2.0),floori((point.z+1.1)/2.0)+1):
+			for y in range(floori((point.y-1.1)/2.0),floori((point.y+1.1)/2.0)+1):
+				for x in range(floori((point.x-1.1)/2.0),floori((point.x+1.1)/2.0)+1):
+					for i:int in _sculpt_buckets.get(Vector3i(x,y,z),PackedInt32Array()):
+						if seen.has(i):continue
+						seen[i]=true
+						for j in 3:faces.append(skin[i+j])
+		return faces
 	for z in range(floori((point.z-1.0)/2.0),floori((point.z+1.0)/2.0)+1):
 		for x in range(floori((point.x-1.0)/2.0),floori((point.x+1.0)/2.0)+1):
 			for index:int in _column_cells.get(Vector2i(x,z),[]):

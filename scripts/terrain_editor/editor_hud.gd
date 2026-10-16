@@ -32,6 +32,15 @@ func _ready()->void:
 	tools.name="TerrainTools"
 	for name in ["Raise land","Lower land","Expand island","Contract island","Paint water","Remove water","塑岩试作 · 增岩","塑岩试作 · 削岩","塑岩试作 · 切面"]:tools.add_item(name)
 	column.add_child(tools)
+	var convert:=Button.new()
+	convert.name="ConvertRockBase";convert.text="整体岩体塑形 · 试验模式"
+	convert.pressed.connect(func():
+		editor.cancel_input()
+		if editor.data.set_sculpt_base(not editor.data.sculpt_base_enabled):
+			editor.renderer.rebuild_all()
+			status.text="整片地形可直接增削" if editor.data.sculpt_base_enabled else "恢复原地形显示"
+		else:status.text="此试验需先保存并重置已有塑形，或使用更紧凑的地形")
+	column.add_child(convert)
 	column.add_child(_label("Brush radius",12))
 	var radius:=HSlider.new()
 	radius.name="BrushRadius"
@@ -51,7 +60,7 @@ func _ready()->void:
 	snap.button_pressed=editor.snap
 	snap.toggled.connect(func(enabled:bool):editor.snap=enabled)
 	column.add_child(snap)
-	column.add_child(_label("吸附仅用于土地笔刷\n塑岩试作仅修改新塑岩体",11))
+	column.add_child(_label("吸附仅用于土地笔刷\n开启整体模式后可直接塑造原地形",11))
 	column.add_child(_label("Expansion height",12))
 	var height:=SpinBox.new()
 	height.min_value=-4
@@ -67,7 +76,8 @@ func _ready()->void:
 	column.add_child(water)
 	var grid:=CheckButton.new()
 	grid.text="Show editing grid"
-	grid.toggled.connect(func(enabled:bool):editor.renderer.materials.grass.set_shader_parameter("show_grid",enabled))
+	grid.toggled.connect(func(enabled:bool):
+		for kind in ["grass","sculpted_terrain"]:editor.renderer.materials[kind].set_shader_parameter("show_grid",enabled))
 	column.add_child(grid)
 	var history:=HBoxContainer.new()
 	_button(history,"Undo",func():editor.cancel_input();editor.data.undo())

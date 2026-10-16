@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "seconds": 0.892013417,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nERROR: Carving removes existing terrain rather than an overlay\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_sculpt_base_test.gd:8)\n       [1] run (res://tests/terrain_sculpt_base_test.gd:21)\nERROR: Support queries follow the carved surface\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_sculpt_base_test.gd:8)\n       [1] run (res://tests/terrain_sculpt_base_test.gd:26)\nSCULPT BASE: 11/13 vertices=146904 invalid_edges=0\n"
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "test": "base_data",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.330897625,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT BASE: 16/16 vertices=114432 invalid_edges=0\n"
+  },
+  {
+    "test": "material_green",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.8630062500000002,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 09:43:15.493 godot[30801:342259] +[IMKClient subclass]: chose IMKClient_Modern\nSCULPT BASE UNDERSIDE MATERIAL: foreground=11236 pond_tag_changes=0 valid_bed_changes=11163 passed=true\n"
+  },
+  {
+    "test": "input_final",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 20.200720583,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 09:43:17.154 godot[30814:342494] +[IMKClient subclass]: chose IMKClient_Modern\nSCULPT BASE PUBLISHED: triangles=30184 invalid_edges=0\nSCULPT BASE INPUT: 10/10\n"
+  }
+]
