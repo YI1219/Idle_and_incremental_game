@@ -1,0 +1,14 @@
+{
+  "source": "User attachment 2026-10-16, explicitly endorsed visual finish target",
+  "file": "art/source/visual_targets/2026-10-16/cliff_user_target.png",
+  "sha256": "1f16fa5540c7539175faa0b3d167b3a8b0e9df0651aba96397f47075009de2e7",
+  "user_message": "如果真的能改进到这个结果那就完美了",
+  "meaning": "Current approved look target; not evidence of an achieved Godot render or accepted implementation",
+  "preserve": [
+    "overall island footprint",
+    "trees and buildings",
+    "editable authoritative terrain"
+  ],
+  "prior_agent_overpaint": "art/source/studies/2026-10-16/cliff_continuity_overpaint_v1.png",
+  "supersedes": "Previous restriction against referring to the overpaint foliage/texture as a user-approved look; actual geometry, material and performance still require engine validation"
+}

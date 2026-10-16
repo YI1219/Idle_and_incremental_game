@@ -1,0 +1,14 @@
+{
+  "tool": "built-in image_gen",
+  "mode": "generate new grayscale material guide",
+  "original": "/Users/yi/.codex/generated_images/01a12b7f-422c-7c23-a8f2-99b82c1e92b9/exec-d9570ccf-6ee3-4dfe-8e1f-589acb750956.png",
+  "source": {
+    "path": "art/source/materials/2026-10-16/cliff_spall_height_v1.png",
+    "sha256": "fe018b74010f7135630e8740bc861bff4ba4a6e8121d7556648c110b6f88043e"
+  },
+  "prompt": {
+    "path": "art/source/materials/2026-10-16/cliff_spall_prompt.txt",
+    "sha256": "f405a1d3cac8569848402e50a04779e28af02c54466d2a2e08bb6dad11123294"
+  },
+  "role": "Artist grayscale relief guide, not measured physical height or scene screenshot"
+}

@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-10-16 20:27:59.756 godot[11281:1841695] +[IMKClient subclass]: chose IMKClient_Modern
+2026-10-16 20:28:20.412 godot[11281:1841695] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+SCULPT BASE CAPTURES: 7 samples=0 skin_vertices=0

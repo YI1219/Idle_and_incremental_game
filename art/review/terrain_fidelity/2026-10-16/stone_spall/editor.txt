@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-10-16 20:51:17.405 godot[16732:1887060] +[IMKClient subclass]: chose IMKClient_Modern
+TERRAIN EDITOR RENDER: 339/339 passed

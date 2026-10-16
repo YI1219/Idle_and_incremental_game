@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+stone_detail.png mipmaps=true
+ground_detail.png mipmaps=true
+stone_mineral_v1.png mipmaps=true
+stone_detail_spall_v3.res mipmaps=true

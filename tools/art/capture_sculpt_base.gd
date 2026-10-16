@@ -1,6 +1,19 @@
 extends 'res://tests/capture_rim_round.gd'
 func bytes_hash(bytes:PackedByteArray)->String:
  var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(bytes);return digest.finish().hex_encode()
+func bind_spall(node:Node,texture:Texture2D,seen:Dictionary,strength:float)->void:
+ var materials:Array=[]
+ if node is GeometryInstance3D:materials.append(node.material_override)
+ var mesh:Mesh=node.mesh if node is MeshInstance3D else (node.multimesh.mesh if node is MultiMeshInstance3D and node.multimesh!=null else null)
+ if mesh!=null:
+  for i in mesh.get_surface_count():materials.append(mesh.surface_get_material(i))
+ for material in materials:
+  if not material is ShaderMaterial or seen.has(material):continue
+  seen[material]=true
+  if material.get_shader_parameter('stone_detail_map')==null:continue
+  material.set_shader_parameter('stone_detail_map',texture)
+  material.set_shader_parameter('stone_relief_strength',strength)
+ for child in node.get_children():bind_spall(child,texture,seen,strength)
 func run():
  var args:=OS.get_cmdline_user_args();var tag:='base1' if args.is_empty() else args[0]
  OUT='res://art/review/terrain_fidelity/2026-10-16/sculpt_base/'
@@ -32,6 +45,10 @@ func run():
  if args.has('leansection'):preload('res://tools/art/author_cliff_section.gd').author(editor.data,true)
  if args.has('volumesection'):preload('res://tools/art/author_cliff_section.gd').author(editor.data,false,true)
  editor.renderer.rebuild_all()
+ if args.has('spall') or args.has('spall2') or args.has('spall3'):
+  var detail:=Image.load_from_file('res://art/work/stone_spall/2026-10-16/stone_detail_spall_'+('v3' if args.has('spall3') else ('v2' if args.has('spall2') else 'v1'))+'.png')
+  assert(detail!=null);detail.generate_mipmaps()
+  bind_spall(editor,ImageTexture.create_from_image(detail),{},.25 if args.has('spall3') else (.30 if args.has('spall2') else .20))
  if args.has('neutral'):
   var neutral:=Shader.new()
   neutral.code='shader_type spatial; void fragment(){ALBEDO=mix(vec3(.42),vec3(.66),COLOR.r);ROUGHNESS=.95;SPECULAR=0.0;}'

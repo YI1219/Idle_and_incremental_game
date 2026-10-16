@@ -1,0 +1,64 @@
+{
+  "material_change_retained": true,
+  "whole_goal_complete": false,
+  "fresh_native_paired_study_images": 35,
+  "fresh_main_images": 11,
+  "main_camera_match": true,
+  "paired_camera_data_clock_match_file": "matched_views.json",
+  "static_rock_crop_variant_to_production_mean_abs_8bit": 0.0,
+  "static_rock_crop_max_abs_8bit": 0.0,
+  "original_stone_detail_bytes_unchanged_from_HEAD": true,
+  "files": {
+    "guide": {
+      "path": "art/source/materials/2026-10-16/cliff_spall_height_v1.png",
+      "sha256": "fe018b74010f7135630e8740bc861bff4ba4a6e8121d7556648c110b6f88043e"
+    },
+    "target": {
+      "path": "art/source/visual_targets/2026-10-16/cliff_user_target.png",
+      "sha256": "1f16fa5540c7539175faa0b3d167b3a8b0e9df0651aba96397f47075009de2e7"
+    },
+    "runtime_texture": {
+      "path": "assets/textures/terrain/stone_detail_spall_v3.res",
+      "sha256": "693398884633794b357c1abb9076de595657f61bd7e298d550fe35f74e6e7223"
+    },
+    "original_detail": {
+      "path": "assets/textures/terrain/stone_detail.png",
+      "sha256": "38e7751439bbafe8f2112f58e58b5bae1c905aaebcbffdf6d750f0ab25cf81d7"
+    },
+    "prompt": {
+      "path": "art/source/materials/2026-10-16/cliff_spall_prompt.txt",
+      "sha256": "f405a1d3cac8569848402e50a04779e28af02c54466d2a2e08bb6dad11123294"
+    }
+  },
+  "mip_value_and_roughness_byte_mismatches": 0,
+  "asset_quiet_fraction": 0.59663200378418,
+  "asset_relief_fraction": 0.36751842498779,
+  "checks": {
+    "mipmaps": "4 textures with mip chains",
+    "normals": "15/15",
+    "wet_material": "11236 foreground, unwanted pond changes0, valid bed changes11236",
+    "editor": "339/339",
+    "regeneration": "42/42",
+    "bed_depth_light_motion_morph": {
+      "shallow": 288,
+      "middle": 119,
+      "deep": 0,
+      "moving_shallow": 413,
+      "default_changed": 377,
+      "default_motion": 556,
+      "morph_difference": 0,
+      "passed": true,
+      "scope": "Scoped fresh native fixture, not full water-art acceptance"
+    }
+  },
+  "not_proven": [
+    "macro cliff shape",
+    "grass cliff contact",
+    "motion stability",
+    "exported game package",
+    "target device performance"
+  ],
+  "generation_tool": "built-in image_gen; no fallback/API CLI",
+  "generation_prompt_file": "art/source/materials/2026-10-16/cliff_spall_prompt.txt",
+  "production_delta": "Shared packed stone texture binding and matching strength only; new resource; no geometry/source model or authored layout edits"
+}

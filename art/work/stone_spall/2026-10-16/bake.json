@@ -1,0 +1,15 @@
+{
+	"accepted_in_engine": false,
+	"candidate_shader_strength": 0.2,
+	"changes_geometry": false,
+	"clipped_channel_fraction": 0.00217914581298828,
+	"combined_slope_rms": 0.0445172921777712,
+	"fine_slope_rms": 0.0222000512737941,
+	"guide": "art/source/materials/2026-10-16/cliff_spall_height_v1.png",
+	"new_geological_slope_rms": 0.0390082815786261,
+	"original_fine_strength": 0.07,
+	"output": "art/work/stone_spall/2026-10-16/stone_detail_spall_v1.png",
+	"size": 1024,
+	"source": "Generated grayscale artistic relief guide; not measured displacement",
+	"value_and_roughness_bytes_identical": true
+}
