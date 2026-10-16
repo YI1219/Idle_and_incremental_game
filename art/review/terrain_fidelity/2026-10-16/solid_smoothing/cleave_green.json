@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_rock_cleave_test.gd"
+  ],
+  "exit": 0,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH geological cleave: vertices=26016 open=0 inward=0\nROCK CLEAVE: 10/10\n"
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_sculpt_base_input_test.gd"
+  ],
+  "exit": 1,
+  "clean": false,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE PUBLISHED: triangles=30704 invalid_edges=0\nSCULPT BASE INPUT: 24/25\n2026-10-16 14:59:26.175 godot[30377:1235550] +[IMKClient subclass]: chose IMKClient_Modern\nERROR: Published geological cut opens the original rock cap and is picked\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_sculpt_base_input_test.gd:5)\n       [1] run (res://tests/terrain_sculpt_base_input_test.gd:88)\n"
+}

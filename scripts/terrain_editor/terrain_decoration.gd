@@ -93,7 +93,12 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 				result.grass_clump.append(_transform(origin,angle,Vector3.ONE*(.85+random_at(cell,data.seed,142)*.25)))
 			if not house_clear and cluster>.48 and random_at(cell,data.seed,140)<.026 and _stable(field,p,h,.65):
 				result.grass_clump.append(_transform(origin,angle,Vector3(1.10,1.18,1.05)))
-			if not house_clear and random_at(cell,data.seed,7)<.018:result.surface_rock.append(_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7))
+			if not house_clear and random_at(cell,data.seed,7)<.018:
+				var pose:=_transform(origin-Vector3(0,.11,0),angle,Vector3.ONE*1.7)
+				if data.sculpt_base_enabled:
+					var seated:=preload("res://scripts/terrain_editor/surface_stone_support.gd").seat(field,assets.surface_rock[0].mesh,pose)
+					if not seated.is_empty():result.surface_rock.append(seated.pose)
+				else:result.surface_rock.append(pose)
 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
 	for spec in [[Vector2(-16,-3),Vector3(1.28,1.02,1.16)],[Vector2(-5,-8),Vector3(.96,.98,1.04)],[Vector2(6.3,-3.3),Vector3(1.0,1.0,.97)],[Vector2(15.6,2),Vector3(1.03,1.01,.96)]]:
 		var p:Vector2=spec[0]

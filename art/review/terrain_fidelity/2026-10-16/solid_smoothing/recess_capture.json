@@ -1,0 +1,37 @@
+[
+  {
+    "name": "recess_before1",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tools/art/capture_sculpt_base.gd",
+      "--",
+      "recess_before1",
+      "details",
+      "fixedwater"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:50:20.401 godot[28247:1187337] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 14:50:40.555 godot[28247:1187337] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=693852\n"
+  },
+  {
+    "name": "recess1",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tools/art/capture_sculpt_base.gd",
+      "--",
+      "recess1",
+      "recess",
+      "details",
+      "fixedwater"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:50:46.639 godot[28311:1188531] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 14:51:07.464 godot[28311:1188531] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nSCULPT BASE CAPTURES: 7 samples=5451 skin_vertices=696744\n"
+  }
+]

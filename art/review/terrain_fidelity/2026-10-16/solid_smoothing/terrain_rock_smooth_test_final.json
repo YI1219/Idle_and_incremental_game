@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_rock_smooth_test.gd"
+  ],
+  "exit": 0,
+  "clean": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH smoothed shoulder: vertices=11364 open=0 inward=0\nSCULPT MESH smoothed base: vertices=25620 open=0 inward=0\nROCK SMOOTH: 21/21\n"
+}

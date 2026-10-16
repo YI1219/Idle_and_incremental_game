@@ -5,6 +5,7 @@ extends RefCounted
 const STEP:=.25
 const AIR:=.5
 const MAX_SAMPLES:=160000
+const SMOOTH_NEIGHBORS=[Vector3i.LEFT,Vector3i.RIGHT,Vector3i.UP,Vector3i.DOWN,Vector3i.FORWARD,Vector3i.BACK]
 var samples:Dictionary[Vector3i,float]={}
 var base:RefCounted
 var _height_bounds_dirty:=true
@@ -22,9 +23,9 @@ func gradient(key:Vector3i)->Vector3:
  return Vector3(node_value(key+Vector3i.RIGHT)-node_value(key-Vector3i.RIGHT),node_value(key+Vector3i.UP)-node_value(key-Vector3i.UP),node_value(key+Vector3i.BACK)-node_value(key-Vector3i.BACK)).normalized()
 func brush(center:Vector3,radius:float,tool:String,normal:=Vector3.UP)->Dictionary:
  if not center.is_finite() or not is_finite(radius) or radius<.25 or radius>4.0:return {}
- if tool not in ['rock_add','rock_cut','rock_plane','rock_shoulder']:return {}
- if tool in ['rock_plane','rock_shoulder'] and (not normal.is_finite() or normal.length_squared()<.0001):return {}
- var reach:=radius*(1.8 if tool=='rock_shoulder' else 1.0)+AIR
+ if tool not in ['rock_add','rock_cut','rock_plane','rock_shoulder','rock_smooth','rock_cleave']:return {}
+ if tool in ['rock_plane','rock_shoulder','rock_cleave'] and (not normal.is_finite() or normal.length_squared()<.0001):return {}
+ var reach:=radius*(1.8 if tool in ['rock_shoulder','rock_cleave'] else 1.0)+AIR
  if absf(center.x)+reach>1024 or absf(center.z)+reach>1024 or center.y-reach< -16 or center.y+reach>24:return {}
  normal=normal.normalized()
  var stone_turn:=Basis(Vector3.UP,-atan2(normal.x,normal.z)) if Vector2(normal.x,normal.z).length_squared()>.0001 else Basis.IDENTITY
@@ -40,6 +41,14 @@ func brush(center:Vector3,radius:float,tool:String,normal:=Vector3.UP)->Dictiona
      'rock_add':value=minf(old,distance-radius)
      'rock_cut':value=maxf(old,radius-distance)
      'rock_shoulder':value=minf(old,preload('res://scripts/terrain_editor/rock_shoulder_brush.gd').distance(stone_turn*(p-center)/radius)*radius)
+     'rock_cleave':value=maxf(old,-preload('res://scripts/terrain_editor/rock_shoulder_brush.gd').distance(stone_turn*(p-center)/radius)*radius)
+     'rock_smooth':
+      if distance<radius:
+       # Read the pre-stroke field throughout this pass: traversal order must
+       # not turn smoothing into a directional erosion/extra rock placement.
+       var average:=0.0
+       for neighbor:Vector3i in SMOOTH_NEIGHBORS:average+=node_value(key+neighbor)/6.0
+       value=lerpf(old,average,.5*(1.0-smoothstep(radius*.6,radius,distance)))
      'rock_plane':
       # Remove the intersection of a sphere and the selected half-space.
       # Mixing old density into the falloff makes repeated full-strength

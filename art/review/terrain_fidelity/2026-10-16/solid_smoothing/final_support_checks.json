@@ -1,0 +1,97 @@
+[
+  {
+    "name": "surface_stone_recess",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_surface_stone_contact_test.gd",
+      "--",
+      "recess"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSURFACE STONE CONTACT: {\"failures\":0,\"probes\":120,\"states\":[{\"failures\":0,\"state\":\"default\",\"stones\":2},{\"failures\":0,\"state\":\"raise\",\"stones\":2},{\"failures\":0,\"state\":\"contract\",\"stones\":2}]}\n"
+  },
+  {
+    "name": "surface_stone_base",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_surface_stone_contact_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSURFACE STONE CONTACT: {\"failures\":0,\"probes\":160,\"states\":[{\"failures\":0,\"state\":\"default\",\"stones\":3},{\"failures\":0,\"state\":\"raise\",\"stones\":3},{\"failures\":0,\"state\":\"contract\",\"stones\":2}]}\n"
+  },
+  {
+    "name": "rim_recess",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_tuft_test.gd",
+      "--",
+      "unified",
+      "recess"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=40984 uploaded=102924 triangles=34235 roots=241 unsupported=0 invalid=0 passed=true\n"
+  },
+  {
+    "name": "shore_recess",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_shore_stone_contact_test.gd",
+      "--",
+      "unified",
+      "recess"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHORE STONE CONTACT default: stones=83 failures=0\nSHORE STONE CONTACT dry: stones=68 failures=0\nSHORE STONE CONTACT raise: stones=84 failures=0\nSHORE STONE CONTACT contract: stones=67 failures=0\nSHORE STONE CONTACT: probes=3526 failures=0\n"
+  },
+  {
+    "name": "vine_recess",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_vine_contact_test.gd",
+      "--",
+      "unified",
+      "recess"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":375,\"fixture\":\"default\",\"max_absolute_gap\":0.025001248344779,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":375,\"fixture\":\"raise\",\"max_absolute_gap\":0.025001248344779,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":384,\"fixture\":\"lower\",\"max_absolute_gap\":0.025001248344779,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":386,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250010937452316,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":405,\"fixture\":\"contract\",\"max_absolute_gap\":0.025001248344779,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n"
+  },
+  {
+    "name": "legacy_decoration",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_editor_decoration_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 23/23 passed\n"
+  }
+]

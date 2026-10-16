@@ -68,6 +68,28 @@ func run():
  check(editor.data.undo() and editor.data.serialize()==before,'Pointer plane stroke undoes to exact original terrain')
  editor.renderer.rebuild_all();hit=editor._pointer(screen)
  check(not hit.is_empty() and absf(hit.position.y-3.5)<.01,'Undo republishes and picks the original cap')
+ if tools.item_count<=10:check(false,'Player tool list has no local smoothing brush');editor.free();viewport.queue_free();quit(1);return
+ tools.select(10);tools.item_selected.emit(10);editor.radius=1.1
+ var edge_screen:Vector2=editor.camera.unproject_position(Vector3(4.85,3.5,0))
+ check(editor.tool=='rock_smooth' and editor.begin_paint(edge_screen),'Public pointer route starts local smoothing on the original rim')
+ editor.continue_paint(edge_screen);editor.cancel_input()
+ while editor.renderer.has_pending_updates():editor.renderer.flush_dirty(64)
+ hit=editor._pointer(edge_screen)
+ check(editor.data.serialize()!=before and not hit.is_empty() and hit.position.y<3.49 and hit.position.y>3.0,'Published smoothed rim is picked at its actual lower surface')
+ check(editor.data.undo() and editor.data.serialize()==before,'Pointer smoothing undoes to exact original terrain')
+ editor.renderer.rebuild_all();hit=editor._pointer(edge_screen)
+ check(not hit.is_empty() and absf(hit.position.y-3.5)<.01,'Smoothing undo republishes the original picked cap')
+ if tools.item_count<=11:check(false,'Player tool list has no geological cutter');editor.free();viewport.queue_free();quit(1);return
+ tools.select(11);tools.item_selected.emit(11);editor.radius=.75
+ check(editor.tool=='rock_cleave' and editor.begin_paint(screen),'Public pointer route starts the geological cutting tool')
+ editor.continue_paint(screen);editor.cancel_input()
+ while editor.renderer.has_pending_updates():editor.renderer.flush_dirty(64)
+ hit=editor._pointer(screen)
+ # The oblique screen ray first hits the cut's front face, not its bottom.
+ check(editor.data.serialize()!=before and editor.data.rocks.value_at(Vector3(0,3.5,0))>0 and not hit.is_empty() and hit.position.y<3.4 and absf(editor.data.rocks.value_at(hit.position))<.002,'Published geological cut opens the original rock cap and is picked')
+ check(editor.data.undo() and editor.data.serialize()==before,'Pointer geological cut undoes exactly')
+ editor.renderer.rebuild_all();hit=editor._pointer(screen)
+ check(not hit.is_empty() and absf(hit.position.y-3.5)<.01,'Geological cut undo restores the original picked cap')
  editor.free();viewport.queue_free()
  print('SCULPT BASE INPUT: ',checks-failures,'/',checks)
  quit(1 if failures else 0)

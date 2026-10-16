@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tools/art/probe_local_sculpt_body.gd",
+    "--",
+    "recess"
+  ],
+  "exit": 0,
+  "clean": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nWHOLE SCULPT SOURCE: { \"vertices\": 696744, \"unique_positions\": 116126, \"connected_components\": 1, \"invalid_edges\": 0, \"invalid_vertices\": 0, \"original_cells_unchanged\": true, \"profile\": \"local\", \"save_version\": 4, \"overrides\": 5451 }\n"
+}

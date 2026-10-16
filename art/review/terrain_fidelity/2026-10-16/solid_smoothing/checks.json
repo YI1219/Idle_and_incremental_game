@@ -1,0 +1,128 @@
+[
+  {
+    "name": "terrain_rock_smooth_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rock_smooth_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH smoothed shoulder: vertices=11364 open=0 inward=0\nSCULPT MESH smoothed base: vertices=25620 open=0 inward=0\nROCK SMOOTH: 21/21\n"
+  },
+  {
+    "name": "terrain_rock_sculpt_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rock_sculpt_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH joined strokes: vertices=15720 open=0 inward=0\nSCULPT MESH initial: vertices=4968 open=0 inward=0\nSCULPT MESH carved: vertices=5136 open=0 inward=0\nROCK SCULPT: 29/29\n"
+  },
+  {
+    "name": "terrain_rock_plane_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rock_plane_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH bounded plane: vertices=59592 open=0 inward=0\nROCK PLANE: 10/10\n"
+  },
+  {
+    "name": "terrain_rock_shoulder_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rock_shoulder_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH shoulder: vertices=5304 open=0 inward=0\nROCK SHOULDER: 15/15\n"
+  },
+  {
+    "name": "terrain_rock_sculpt_runtime_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rock_sculpt_runtime_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT PUBLISHED: triangles=3052 invalid_edges=0\nROCK SCULPT RUNTIME: 9/9\n"
+  },
+  {
+    "name": "terrain_sculpt_base_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_sculpt_base_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTHIN SCULPT SUPPORT: probes=55 mismatches=0\nSCULPT BASE: 23/23 vertices=114432 invalid_edges=0\n"
+  },
+  {
+    "name": "terrain_sculpt_profile_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_sculpt_profile_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH local terrace profile: vertices=214488 open=0 inward=0\nSCULPT PROFILE: 15/15\n"
+  },
+  {
+    "name": "terrain_editor_data_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_editor_data_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n"
+  },
+  {
+    "name": "terrain_editor_runtime_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_editor_runtime_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR RUNTIME: 22/22 passed\n"
+  }
+]

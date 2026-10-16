@@ -30,7 +30,7 @@ func _ready()->void:
 	column.add_child(HSeparator.new())
 	var tools:=OptionButton.new()
 	tools.name="TerrainTools"
-	for name in ["Raise land","Lower land","Expand island","Contract island","Paint water","Remove water","塑岩试作 · 增岩","塑岩试作 · 削岩","塑岩试作 · 切面","塑岩试作 · 斜肩增岩"]:tools.add_item(name)
+	for name in ["Raise land","Lower land","Expand island","Contract island","Paint water","Remove water","塑岩试作 · 增岩","塑岩试作 · 削岩","塑岩试作 · 切面","塑岩试作 · 斜肩增岩","塑岩试作 · 局部柔化","塑岩试作 · 棱面削岩"]:tools.add_item(name)
 	column.add_child(tools)
 	var convert:=Button.new()
 	convert.name="ConvertRockBase";convert.text="整体岩体塑形 · 试验模式"
@@ -52,7 +52,7 @@ func _ready()->void:
 	column.add_child(radius)
 	tools.item_selected.connect(func(index:int):
 		editor.cancel_input()
-		editor.tool=["raise","lower","expand","contract","water","dry","rock_add","rock_cut","rock_plane","rock_shoulder"][index]
+		editor.tool=["raise","lower","expand","contract","water","dry","rock_add","rock_cut","rock_plane","rock_shoulder","rock_smooth","rock_cleave"][index]
 		radius.max_value=4 if index>=6 else 8)
 
 	var snap:=CheckButton.new()

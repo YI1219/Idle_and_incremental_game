@@ -1,0 +1,8 @@
+{
+  "scripts/terrain_editor/rock_sculpt.gd": "06f71187d70dcbcc35efcb40662ed920864e385e4b4e2c2faa2bd68289d1a53b",
+  "scripts/terrain_editor/rock_shoulder_brush.gd": "88f87c9bc1365ef712afabf2bad96ed2c1b986f703438865d658ef09fc6da0b8",
+  "scripts/terrain_editor/surface_stone_support.gd": "9dcecadb03e3f38b8d5b8a5cd128b65ba373b3fad868f913a5f3f3b629b70da1",
+  "scripts/terrain_editor/terrain_decoration.gd": "f4c61455c8efd8933f3275768370c346c4da77fb7c95bf8c4f894c05cbcb6914",
+  "tools/art/author_unified_cliff_recess.gd": "a3c3c26e986f8a9f4466efa020c75c64bc666e50adcaaf0059676b6fc8b8e5d6",
+  "tools/art/author_unified_cliff_smooth.gd": "5486de9082cb4d4e83f59cc7c45bc9f751bdb5669286ecb46177cbef99cc6e09"
+}

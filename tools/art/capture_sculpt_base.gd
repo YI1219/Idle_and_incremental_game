@@ -21,6 +21,8 @@ func run():
  if args.has('returncuts'):preload('res://tools/art/author_unified_cliff_return.gd').author(editor.data)
  if args.has('liplayers'):preload('res://tools/art/author_unified_cliff_return.gd').lip_study(editor.data)
  if args.has('chisel'):preload('res://tools/art/author_unified_cliff_chisel.gd').author(editor.data)
+ if args.has('smooth'):preload('res://tools/art/author_unified_cliff_smooth.gd').author(editor.data)
+ if args.has('recess'):preload('res://tools/art/author_unified_cliff_recess.gd').author(editor.data)
  editor.renderer.rebuild_all()
  frame(Vector2(-14,4),8,16,30);await capture(tag+'_close')
  frame(Vector2(0,-1),21,16,27);await capture(tag+'_overview')

@@ -79,6 +79,7 @@ func run()->void:
   data.make_preset(0)
   if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
   if OS.get_cmdline_user_args().has('shoulder'):load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
+  if OS.get_cmdline_user_args().has('recess'):load('res://tools/art/author_unified_cliff_recess.gd').author(data)
   if state!='default':
    data.begin_stroke();data.apply_brush(Vector2(-3,0) if state=='dry' else Vector2(12,4),3.0,state,false,1.5,3);data.end_stroke()
   var field:=Field.new();field.refresh(data);deco.contours=field

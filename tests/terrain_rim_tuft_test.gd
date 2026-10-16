@@ -14,6 +14,7 @@ func run():
   data.begin_stroke();data.apply_brush(Vector2(-15.0,3.0),1.6,'contract',false,3.5,3);data.end_stroke()
  if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
  if OS.get_cmdline_user_args().has('shoulder'):load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
+ if args.has('recess'):load('res://tools/art/author_unified_cliff_recess.gd').author(data)
  var field:=Field.new();field.refresh(data)
  var deco:=Deco.new();deco.load_assets();deco._column_layout(field,data.seed)
  var cover=field.surfaces.rim_green;var raised:=0;var unsupported:=0;var invalid:=0;var roots:Dictionary={}

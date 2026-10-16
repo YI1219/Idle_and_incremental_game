@@ -14,6 +14,7 @@ func run():
  var data=Data.new();data.make_preset(0)
  if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
  if OS.get_cmdline_user_args().has('shoulder'):load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
+ if OS.get_cmdline_user_args().has('recess'):load('res://tools/art/author_unified_cliff_recess.gd').author(data)
  var initial=data.serialize()
  var deco=Decoration.new();deco.load_assets()
  var center=Vector3.ZERO

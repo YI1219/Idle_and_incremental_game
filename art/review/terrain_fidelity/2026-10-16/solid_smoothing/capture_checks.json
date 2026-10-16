@@ -1,0 +1,39 @@
+[
+  {
+    "name": "smooth_rough1",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tools/art/capture_sculpt_base.gd",
+      "--",
+      "smooth_rough1",
+      "chisel",
+      "details",
+      "fixedwater"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:38:59.065 godot[24348:1132923] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 14:39:20.099 godot[24348:1132923] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nSCULPT BASE CAPTURES: 7 samples=2865 skin_vertices=697992\n"
+  },
+  {
+    "name": "smooth_polish1",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tools/art/capture_sculpt_base.gd",
+      "--",
+      "smooth_polish1",
+      "chisel",
+      "smooth",
+      "details",
+      "fixedwater"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:39:26.150 godot[24507:1134736] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 14:39:47.725 godot[24507:1134736] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nSCULPT BASE CAPTURES: 7 samples=11520 skin_vertices=694944\n"
+  }
+]

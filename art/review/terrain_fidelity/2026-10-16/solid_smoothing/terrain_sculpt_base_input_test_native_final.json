@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_sculpt_base_input_test.gd"
+  ],
+  "exit": 0,
+  "clean": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE PUBLISHED: triangles=30704 invalid_edges=0\nSCULPT BASE INPUT: 25/25\n2026-10-16 15:02:27.192 godot[31179:1243178] +[IMKClient subclass]: chose IMKClient_Modern\n"
+}

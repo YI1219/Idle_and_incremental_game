@@ -1,0 +1,20 @@
+{
+  "same_cameras": true,
+  "all_phase_125": true,
+  "image_count": 42,
+  "gallery_http": 200,
+  "linked_from_main": true,
+  "all_images_http": true,
+  "final_checks.json": {
+    "count": 10,
+    "all_clean": true
+  },
+  "final_support_checks.json": {
+    "count": 6,
+    "all_clean": true
+  },
+  "final_capture_checks.json": {
+    "count": 2,
+    "all_clean": true
+  }
+}

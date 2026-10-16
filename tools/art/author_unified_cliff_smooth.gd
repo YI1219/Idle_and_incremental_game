@@ -1,0 +1,8 @@
+extends RefCounted
+## Explicit polish strokes on the same public brush used by the player.
+static func author(data)->void:
+ data.begin_stroke()
+ for pass_index in 2:
+  for center:Vector3 in [Vector3(-16.0,2.0,2.8),Vector3(-12.5,1.5,4.0)]:
+   data.apply_rock_brush(center,3.25,'rock_smooth')
+ data.end_stroke()

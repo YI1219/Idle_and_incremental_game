@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_surface_stone_contact_test.gd",
+    "--",
+    "recess"
+  ],
+  "exit": 0,
+  "clean": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSURFACE STONE CONTACT: {\"failures\":0,\"probes\":120,\"states\":[{\"failures\":0,\"state\":\"default\",\"stones\":2},{\"failures\":0,\"state\":\"raise\",\"stones\":2},{\"failures\":0,\"state\":\"contract\",\"stones\":2}]}\n"
+}

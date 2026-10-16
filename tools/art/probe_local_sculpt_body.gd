@@ -12,7 +12,9 @@ func run():
  var data=load('res://scripts/terrain_editor/terrain_data.gd').new();data.make_preset(0)
  var original:Dictionary=data.cells.duplicate(true)
  data.set_sculpt_base(true)
- load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
+ var recess:=OS.get_cmdline_user_args().has('recess')
+ if recess:load('res://tools/art/author_unified_cliff_recess.gd').author(data)
+ else:load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
  var skin=load('res://scripts/terrain_editor/rock_sculpt_mesh.gd').build(data.rocks)
  var ids:Dictionary={};var edges:Dictionary={};var bad_vertices:=0
  for i in range(0,skin.vertices.size(),3):
@@ -32,6 +34,7 @@ func run():
  for count:int in edges.values():
   if count!=2:bad_edges+=1
  var report:={'vertices':skin.vertices.size(),'unique_positions':ids.size(),'connected_components':components.size(),'invalid_edges':bad_edges,'invalid_vertices':bad_vertices,'original_cells_unchanged':data.cells==original,'profile':data.sculpt_base_profile,'save_version':data.serialize().version,'overrides':data.rocks.samples.size()}
- FileAccess.open('res://art/review/terrain_fidelity/2026-10-16/plane_sculpt/whole_volume_checks.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
+ var output:='res://art/review/terrain_fidelity/2026-10-16/solid_smoothing/recess_volume.json' if recess else 'res://art/review/terrain_fidelity/2026-10-16/plane_sculpt/whole_volume_checks.json'
+ FileAccess.open(output,FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
  print('WHOLE SCULPT SOURCE: ',report)
  quit(0 if components.size()==1 and bad_edges==0 and bad_vertices==0 and data.cells==original else 1)

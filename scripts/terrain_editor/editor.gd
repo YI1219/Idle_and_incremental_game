@@ -229,7 +229,7 @@ func _update_brush(screen:Vector2)->void:
 				var point:=Vector3(cos(angle)*size,0,sin(angle)*size)
 				if ring==1:point=Vector3(point.x,point.z,0)
 				elif ring==2:point=Vector3(0,point.x,point.z)
-				if tool=="rock_shoulder":point.y*=1.55
+				if tool in ["rock_shoulder","rock_cleave"]:point.y*=1.55
 				mesh.surface_add_vertex(point)
 	mesh.surface_end()
 	brush.mesh=mesh

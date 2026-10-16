@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_rock_smooth_test.gd"
+  ],
+  "exit": 1,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nERROR: Shared brush accepts local solid smoothing\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_rock_smooth_test.gd:7)\nERROR: A one-node needle is removed instead of remaining a sharp residual solid\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_rock_smooth_test.gd:8)\nERROR: Smoothing acts on actual joined shoulder geometry\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_rock_smooth_test.gd:20)\nSCULPT MESH smoothed shoulder: vertices=11796 open=0 inward=0\nERROR: Smooth stroke has exact undo and redo\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_rock_smooth_test.gd:22)\nROCK SMOOTH: 11/15\n"
+}
