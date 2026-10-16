@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_sod_volume_test.gd"
+  ],
+  "exit": 1,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nERROR: Rim cover must contain finite source blades without solid cuff pads\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_sod_volume_test.gd:18)\nERROR: Missing source leaves leave manufactured rim pads\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] run (res://tests/terrain_sod_volume_test.gd:23)\nRIM SOURCE COVER: vertices=193143 cuff_vertices=45225 invalid=0 missing_source_vertices=73407 failures=2\n"
+}

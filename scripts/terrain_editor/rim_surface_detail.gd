@@ -6,19 +6,13 @@ static func _hash(p:Vector2)->float:
  return fposmod(sin(p.dot(Vector2(127.1,311.7)))*43758.5453,1.0)
 
 static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
- var result:=Surface.new()
- var faces:Dictionary={}
- var blades:=PackedVector3Array()
+ # Source leaves form the edge silhouette; there is no separate molded sod.
+ var result:=Surface.new();var blades:=PackedVector3Array()
  for part:Dictionary in assets.get("grass",[]):
   for p:Vector3 in part.mesh.get_faces():blades.append(part.pose*p)
- var blade_box:=AABB()
- if not blades.is_empty():
-  blade_box=AABB(blades[0],Vector3.ZERO)
-  for p:Vector3 in blades:blade_box=blade_box.expand(p)
- for crown:Dictionary in crowns:
-  var col:Dictionary=crown.column
-  if not faces.has(crown.height):faces[crown.height]=PackedVector3Array()
-  for p:Vector3 in assets[col.kind][0].mesh.get_faces():faces[crown.height].append(col.pose*p)
+ if blades.is_empty():return result
+ var box:=AABB(blades[0],Vector3.ZERO)
+ for p:Vector3 in blades:box=box.expand(p)
  for h:float in regions:
   for loop:PackedVector2Array in regions[h]:
    for e in loop.size():
@@ -32,8 +26,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      var choice:=_hash(center*2.1+Vector2(h,7))
      var patch:=_hash((center*.60).floor()+Vector2(h,29))
      if patch<.32 or choice<.18:continue
-     # Only crown-backed final boundary segments get flaps; skip water lips
-     # and raw terrace joins. No orphan cards in the waterfall openings.
+     # Only final crown-backed contours get cover; fall openings stay clear.
      var on_crown:=false
      for crown:Dictionary in crowns:
       if absf(crown.height-h)>.001:continue
@@ -41,58 +34,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
       for j in poly.size()-1:
        if center.distance_to(Geometry2D.get_closest_point_to_segment(center,poly[j],poly[j+1]))<.003:on_crown=true;break
       if on_crown:break
-     if not on_crown:continue
-     var width:=minf(length/count*.95,.17+.17*_hash(center+Vector2(4,2)))
-     width=minf(width,length/count*2.0*minf(offset,1.0-offset)*.95)
-     var depth:=.018+.018*pow(_hash(center+Vector2(19,3)),1.6)
-     # Compact turf grows out of the cap and follows the actual stone below.
-     var left:=center-tangent*width*.5;var right:=center+tangent*width*.5
-     var start:=result.vertices.size()
-     var outward:=Vector3(out.x,0,out.y)
-     var rows:Array=[];var backs:Array=[]
-     var valid:=true
-     for column in 9:
-      var u:float=float(column)/8.0
-      var c:=left.lerp(right,u)
-      if not _inside(regions[h],c-out*.035):valid=false;break
-      var bell:=pow(sin(PI*u),.65)
-      var lobes:=.82+.18*sin(u*TAU*2.7+choice*7.0)
-      var d:=.008+depth*bell*lobes
-      var section:Array=[
-       Vector3(c.x,h+.003,c.y)-outward*(.035*bell+.012),
-       Vector3(c.x,h+.006*bell+.003,c.y)-outward*.008]
-      var inner:Array=[section[0]-Vector3.UP*.028,section[1]-Vector3.UP*(.006*bell+.028)]
-      for fraction:float in [.32,.68,1.0]:
-       var contact=_drape(c,out,h-d*fraction,faces[h])
-       if contact==null:valid=false;break
-       section.append(contact+outward*(.018*bell*sin(fraction*PI)))
-       # The back skin is inside the stone, not a second floating green flap.
-       inner.append(contact-outward*.045)
-      if not valid:break
-      rows.append(section);backs.append(inner)
-     if valid:
-      for column in 8:
-       for row in 4:
-        var a0:Vector3=rows[column][row];var b0:Vector3=rows[column+1][row]
-        var c0:Vector3=rows[column+1][row+1];var d0:Vector3=rows[column][row+1]
-        # Exterior upper normals face up; the previous front skin faced down.
-        result.quad(d0,c0,b0,a0,Color.WHITE)
-        result.quad(backs[column][row],backs[column+1][row],backs[column+1][row+1],backs[column][row+1],Color(1,1,0))
-      for row in 4:
-       result.quad(rows[0][row],backs[0][row],backs[0][row+1],rows[0][row+1],Color(1,1,.35))
-       result.quad(rows[8][row+1],backs[8][row+1],backs[8][row],rows[8][row],Color(1,1,.35))
-      for column in 8:
-       result.quad(rows[column+1][0],backs[column+1][0],backs[column][0],rows[column][0],Color(1,1,.35))
-       result.quad(rows[column][4],backs[column][4],backs[column+1][4],rows[column+1][4],Color(1,1,.35))
-     for i in range(start,result.vertices.size()):
-      var p:Vector3=result.vertices[i]
-      var along:=clampf((Vector2(p.x,p.z)-left).dot(tangent)/maxf(width,.001),0,1)
-      var anchor:=left.lerp(right,along)-out*.035
-      result.colors[i]=Color(along,choice,result.colors[i].b,1)
-      result.uv2.append(anchor)
-      result.uv[i]=Vector2(h,clampf((h-p.y)/depth,0,1))
-
-     if valid and not blades.is_empty():_blades(result,center,tangent,out,h,choice,blades,blade_box,regions[h])
+     if on_crown:_blades(result,center,tangent,out,h,choice,blades,box,regions[h])
  return result
 
 static func sculpt_lip(field,assets:Dictionary):
@@ -142,13 +84,13 @@ static func _inside(loops:Array,p:Vector2)->bool:
 
 static func _blades(result,center:Vector2,tangent:Vector2,out:Vector2,h:float,choice:float,blades:PackedVector3Array,box:AABB,regions:Array)->void:
  # Instance the existing curved grass source at its original proportions.
- # Small unequal fans grow from inside the cap, not a flattened hanging sheet.
+ # Unequal upright, outward and low fans share supported roots inside the cap.
  var foot:=Vector3(box.position.x+box.size.x*.5,box.position.y,box.position.z+box.size.z*.5)
  for fan in 3:
   var at:Vector2=center+tangent*[-.080,.035,.12][fan]-out*[.060,.085,.12][fan]
   if not _inside(regions,at):continue
-  var scale:float=([.22,.16,.10][fan]+.025*choice)/maxf(box.size.y,.001)
-  var lean:=Basis(Vector3(tangent.x,0,tangent.y),-.14-.08*choice)
+  var scale:float=([.24,.20,.14][fan]+.020*choice)/maxf(box.size.y,.001)
+  var lean:=Basis(Vector3(tangent.x,0,tangent.y),[-.24,-1.08,-.65][fan]-.10*choice)
   var basis:=lean*Basis(Vector3.UP,choice*TAU+fan*1.9)
   basis=basis.scaled(Vector3.ONE*scale)
   var pose:=Transform3D(basis,Vector3(at.x,h-.012,at.y)-basis*foot)
@@ -157,18 +99,6 @@ static func _blades(result,center:Vector2,tangent:Vector2,out:Vector2,h:float,ch
   for i in range(start,result.vertices.size()):
    result.colors[i]=Color(.5,choice,1,1)
    result.uv[i]=Vector2(h,0.0);result.uv2.append(at)
-
-static func _drape(p:Vector2,out:Vector2,y:float,faces:PackedVector3Array):
- var origin:=Vector3(p.x+out.x*1.0,y,p.y+out.y*1.0)
- var direction:=Vector3(-out.x,0,-out.y)
- var nearest:=INF;var point=null
- for i in range(0,faces.size(),3):
-  var hit=Geometry3D.ray_intersects_triangle(origin,direction,faces[i],faces[i+1],faces[i+2])
-  if hit==null:continue
-  var distance:float=origin.distance_to(hit)
-  var offset:=absf(distance-1.0)
-  if offset<nearest and offset<.50:nearest=offset;point=hit-direction*.012
- return point
 
 static func lawn(mesh:ArrayMesh,boundaries:Dictionary,wet:Dictionary={},relief:float=.055)->ArrayMesh:
  if mesh.get_surface_count()==0 or is_zero_approx(relief):return mesh

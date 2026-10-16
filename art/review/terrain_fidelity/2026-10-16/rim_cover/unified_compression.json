@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_rim_green_render_test.gd",
+    "--",
+    "unified",
+    "shoulder",
+    "out=res://art/review/terrain_fidelity/2026-10-16/rim_cover/unified/"
+  ],
+  "exit": 0,
+  "clean": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:26:09.865 godot[20667:1056236] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 14:26:16.580 godot[20667:1056236] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nLIP COMPRESSION RENDER: { \"standing_pixels\": 2251, \"compressed_pixels\": 0, \"local_mask_pixels\": 1785, \"passed\": true }\n"
+}

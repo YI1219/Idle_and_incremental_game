@@ -5,6 +5,13 @@ const Deco=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 func _initialize():call_deferred("run")
 func run():
  var data:=Data.new();data.make_preset(0)
+ var args:=OS.get_cmdline_user_args()
+ if args.has('expand'):
+  data.begin_stroke();data.apply_brush(Vector2(19.2,4.6),2.8,'expand',false,1.5,3);data.end_stroke()
+ if args.has('raise'):
+  data.begin_stroke();data.apply_brush(Vector2(18.6,4.4),2.2,'raise',false,1.5,3);data.end_stroke()
+ if args.has('contract'):
+  data.begin_stroke();data.apply_brush(Vector2(-15.0,3.0),1.6,'contract',false,3.5,3);data.end_stroke()
  if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
  if OS.get_cmdline_user_args().has('shoulder'):load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
  var field:=Field.new();field.refresh(data)

@@ -1,0 +1,78 @@
+[
+  {
+    "args": [
+      "expand"
+    ],
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_tuft_test.gd",
+      "--",
+      "expand"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=32453 uploaded=141690 triangles=47237 roots=383 unsupported=0 invalid=0 passed=true\n"
+  },
+  {
+    "args": [
+      "expand",
+      "raise"
+    ],
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_tuft_test.gd",
+      "--",
+      "expand",
+      "raise"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=35702 uploaded=155964 triangles=51995 roots=422 unsupported=0 invalid=0 passed=true\n"
+  },
+  {
+    "args": [
+      "contract"
+    ],
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_tuft_test.gd",
+      "--",
+      "contract"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=37778 uploaded=164820 triangles=54967 roots=446 unsupported=0 invalid=0 passed=true\n"
+  },
+  {
+    "args": [
+      "unified",
+      "shoulder"
+    ],
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_tuft_test.gd",
+      "--",
+      "unified",
+      "shoulder"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=40280 uploaded=101508 triangles=33769 roots=238 unsupported=0 invalid=0 passed=true\n"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "scripts/terrain_editor/rim_surface_detail.gd": "de89a641543b84bf43d81c4ac571e88de4fbd96ca150d435b7ebd444d4a4b1a6",
+  "shaders/terrain_editor/rim_green.gdshader": "94318c019ceec522a2c0d858adc6ea2e1dcb6c9c71cc5435649aa6b2709cf1fa",
+  "tests/terrain_sod_volume_test.gd": "01c9f87174251cb071fef901b0dcc375bfb20c6bafc851278b26272bfa105748",
+  "tests/terrain_rim_tuft_test.gd": "41d4d750cb119608234688b7e74dcb1c143e0147da815a4b61435b14d068f96a"
+}

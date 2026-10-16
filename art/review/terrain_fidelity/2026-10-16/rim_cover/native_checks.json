@@ -1,0 +1,61 @@
+[
+  {
+    "name": "main",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/capture_courtyard_finish.gd",
+      "--",
+      "cover_finish1",
+      "camera"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:20:33.084 godot[18092:1039429] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 14:20:44.061 godot[18092:1039429] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nCOURTYARD CAPTURES: cover_finish1 11\n"
+  },
+  {
+    "name": "editor",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_editor_render_test.gd",
+      "--"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:20:56.740 godot[18228:1040666] +[IMKClient subclass]: chose IMKClient_Modern\nTERRAIN EDITOR RENDER: 339/339 passed\n"
+  },
+  {
+    "name": "compression",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_green_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/rim_cover/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:20:58.074 godot[18238:1040777] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 14:21:01.257 godot[18238:1040777] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nLIP COMPRESSION RENDER: { \"standing_pixels\": 1953, \"compressed_pixels\": 0, \"local_mask_pixels\": 1103, \"passed\": true }\n"
+  },
+  {
+    "name": "regeneration",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_decoration_regen_test.gd",
+      "--"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 14:21:02.117 godot[18257:1040962] +[IMKClient subclass]: chose IMKClient_Modern\nRIM BAKE us=65156\nTERRAIN DECORATION REGEN: 42/42 passed\n"
+  }
+]

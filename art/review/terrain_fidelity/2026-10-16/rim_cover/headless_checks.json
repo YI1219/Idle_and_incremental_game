@@ -1,0 +1,72 @@
+[
+  {
+    "name": "terrain_sod_volume_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_sod_volume_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM SOURCE COVER: vertices=158073 cuff_vertices=0 invalid=0 missing_source_vertices=0 failures=0\n"
+  },
+  {
+    "name": "terrain_rim_tuft_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_tuft_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=36235 uploaded=157950 triangles=52691 roots=428 unsupported=0 invalid=0 passed=true\n"
+  },
+  {
+    "name": "terrain_rim_detail_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_detail_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM DETAIL: short root vertices=6925 anchors=52772 depth bands=7 passed=true\n"
+  },
+  {
+    "name": "terrain_editor_decoration_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_editor_decoration_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 23/23 passed\n"
+  },
+  {
+    "name": "terrain_rim_outcrop_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_outcrop_test.gd"
+    ],
+    "exit": 0,
+    "clean": false,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nERROR: Attempt to open script 'res://tests/terrain_rim_outcrop_test.gd' resulted in error 'File not found'.\n   at: load_source_code (modules/gdscript/gdscript.cpp:1139)\nERROR: Failed loading resource: res://tests/terrain_rim_outcrop_test.gd.\n   at: _load (core/io/resource_loader.cpp:317)\nERROR: Can't load script: tests/terrain_rim_outcrop_test.gd\n   at: start (main/main.cpp:4370)\n"
+  }
+]
