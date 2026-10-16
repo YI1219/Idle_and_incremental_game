@@ -1,6 +1,6 @@
 extends SceneTree
 ## Neutral inspection views of unchanged retained source meshes.
-const OUT="res://art/review/terrain_fidelity/2026-10-15/cliff_refinement/"
+var OUT="res://art/review/terrain_fidelity/2026-10-15/cliff_refinement/"
 var viewport:SubViewport
 var camera:Camera3D
 var reports:Array=[]
@@ -14,6 +14,11 @@ func bounds(node:Node,pose:Transform3D,points:Array)->void:
   node.material_override=material
  for child in node.get_children():bounds(child,pose,points)
 func run():
+ var args:=OS.get_cmdline_user_args()
+ var source_path:=''
+ for arg:String in args:
+  if arg.begins_with('out='):OUT=arg.trim_prefix('out=').trim_suffix('/')+'/'
+  else:source_path=arg
  DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
  viewport=SubViewport.new();viewport.size=Vector2i(1024,1024);viewport.own_world_3d=true
  viewport.msaa_3d=Viewport.MSAA_4X;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
@@ -25,8 +30,7 @@ func run():
  var light:=DirectionalLight3D.new();light.rotation_degrees=Vector3(-38,-28,0);light.light_energy=1.0;viewport.add_child(light)
  camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.current=true;viewport.add_child(camera)
  var sources:={"Rock_Medium_1":"res://assets/nature/quaternius/Rock_Medium_1.gltf","Rock_Medium_2":"res://assets/nature/quaternius/Rock_Medium_2.gltf"}
- var args:=OS.get_cmdline_user_args()
- if not args.is_empty():sources={args[0].get_file().get_basename():args[0]}
+ if not source_path.is_empty():sources={source_path.get_file().get_basename():source_path}
  for id:String in sources:
   var path:String=sources[id]
   var document:=GLTFDocument.new();var state:=GLTFState.new()
@@ -45,7 +49,7 @@ func run():
    if error!=OK:push_error("Capture failed");quit(1);return
   reports.append({"source":path,"source_bounds":str(box),"camera_size":camera.size,"views":views.keys(),"geometry":"Unchanged source geometry; neutral preview material override only"})
   viewport.remove_child(model);model.free()
- var report_name:="source_views" if args.is_empty() else args[0].get_file().get_basename()+"_views"
+ var report_name:="source_views" if source_path.is_empty() else source_path.get_file().get_basename()+"_views"
  FileAccess.open(OUT+report_name+".json",FileAccess.WRITE).store_string(JSON.stringify(reports,"\t"))
  print("CLIFF SOURCE INSPECTION: ",reports.size()," sources, five views each")
  quit()

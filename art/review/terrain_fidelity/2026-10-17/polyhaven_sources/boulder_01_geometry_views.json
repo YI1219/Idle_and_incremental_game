@@ -1,0 +1,15 @@
+[
+	{
+		"camera_size": 2.47095108032227,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://art/work/polyhaven_rocks/2026-10-17/boulder_01/boulder_01_geometry.gltf",
+		"source_bounds": "[P: (-0.74816, -0.073643, -0.94844), S: (1.272136, 1.00383, 1.830334)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

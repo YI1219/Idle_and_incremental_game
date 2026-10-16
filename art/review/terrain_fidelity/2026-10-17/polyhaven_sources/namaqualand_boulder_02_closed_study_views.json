@@ -1,0 +1,15 @@
+[
+	{
+		"camera_size": 3.35792946815491,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_closed_study.glb",
+		"source_bounds": "[P: (-1.177225, 0.097904, -0.607516), S: (2.487355, 0.721371, 1.231114)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

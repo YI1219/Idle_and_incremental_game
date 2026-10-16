@@ -1,0 +1,23 @@
+00:00.062  translation      | WARNING Falling back to standard locale ("C")
+00:40:43 - tripo_addon - [task.py:21] - INFO - WebSocket server started on port 60600
+00:40:43 - tripo_addon - [ws_server.py:126] - INFO - WebSocket server running on ws://127.0.0.1:60600
+00:40:43 - tripo_addon - [ws_server.py:133] - INFO - Heartbeat monitoring started (timeout: 120s)
+00:40:43 - tripo_addon - [ws_server.py:90] - INFO - Stopping WebSocket server...
+00:40:43 - tripo_addon - [task.py:27] - INFO - WebSocket server stop requested
+00:40:43 - tripo_addon - [ws_server.py:77] - INFO - Event loop closed
+[Tripo3D] Log file: /var/folders/t2/mvn40j_s2c5f_54lyjp_t53r0000gn/T/tripo3d_blender_bridge.log
+00:40:43 | INFO: Data are loaded, start creating Blender stuff
+00:40:43 | INFO: Blender create Mesh node boulder_02_5m
+00:40:43 | INFO: glTF import finished in 0.07s
+Info: Saved as "namaqualand_boulder_02_closed_study.blend"
+INFO Draco is available, use library at /Applications/Blender.app/Contents/Resources/5.2/scripts/addons_core/io_scene_gltf2/libbf_intern_draco_bridge.dylib
+INFO MeshOptimizer is available, use library at /Applications/Blender.app/Contents/Resources/5.2/scripts/addons_core/io_scene_gltf2/libbf_intern_meshopt_bridge.dylib
+00:40:44 | INFO: Starting glTF 2.0 export
+00:40:44 | INFO: Extracting primitive: boulder_02_5m
+00:40:44 | INFO: Primitives created: 1
+00:40:44 | INFO: Finished glTF 2.0 export in 0.0034499168395996094 s
+
+CLOSED POLY HAVEN SOURCE: {"source": "art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_geometry.gltf", "source_sha256": "fed943ae115c1e0856af6ae8f0ba95cd852bc7428393472911e7807649bb70c5", "before_nonmanifold_edges": 396, "filled_polygon_count": 1, "nonmanifold_edges": 0, "degenerate_faces": 0, "component_vertex_counts": [37490], "triangles": 74976, "signed_volume": 0.6690950049851746, "operation": "Crop scanned floor/skirt below Blender Z=.10m, close boundary loops, triangulate and recalculate outward normals; then collapse closed source toward4000triangles. Retained outer source surfaces above cut; no new rock primitive or source overwrite.", "stage": "Unaccepted closed source for small editable-volume/normal-material test; closure is not art acceptance.", "reduced_triangles": 4000, "reduced_nonmanifold_edges": 0, "glb_sha256": "18a77e08cb49153f3de91cda99d9abf9cd03e3082136550e3f6ba53566677f5e"}
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

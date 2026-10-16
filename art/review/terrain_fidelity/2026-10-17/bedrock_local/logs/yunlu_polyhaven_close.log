@@ -1,0 +1,17 @@
+00:00.063  translation      | WARNING Falling back to standard locale ("C")
+00:36:25 - tripo_addon - [task.py:21] - INFO - WebSocket server started on port 60600
+00:36:25 - tripo_addon - [ws_server.py:126] - INFO - WebSocket server running on ws://127.0.0.1:60600
+00:36:25 - tripo_addon - [ws_server.py:133] - INFO - Heartbeat monitoring started (timeout: 120s)
+00:00.345  blend            | Read blend: "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_study_4k.blend"
+Traceback (most recent call last):
+  File "/Users/yi/Projects/games/yunlu-pr9-astra/tools/art/close_polyhaven_boulder.py", line 21, in <module>
+    assert bad==tiny==0,(bad,tiny)
+           ^^^^^^^^^^^^
+AssertionError: (5, 0)
+[Tripo3D] Log file: /var/folders/t2/mvn40j_s2c5f_54lyjp_t53r0000gn/T/tripo3d_blender_bridge.log
+00:36:25 - tripo_addon - [ws_server.py:90] - INFO - Stopping WebSocket server...
+00:36:25 - tripo_addon - [task.py:27] - INFO - WebSocket server stop requested
+00:36:25 - tripo_addon - [ws_server.py:77] - INFO - Event loop closed
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

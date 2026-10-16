@@ -1,0 +1,15 @@
+[
+	{
+		"camera_size": 3.41839194297791,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_geometry.gltf",
+		"source_bounds": "[P: (-1.184007, -0.059473, -0.608694), S: (2.532142, 0.882638, 1.234263)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

@@ -1,0 +1,13 @@
+00:00.139  translation      | WARNING Falling back to standard locale ("C")
+00:24:47 - tripo_addon - [task.py:21] - INFO - WebSocket server started on port 60600
+00:24:47 - tripo_addon - [ws_server.py:126] - INFO - WebSocket server running on ws://127.0.0.1:60600
+00:24:47 - tripo_addon - [ws_server.py:133] - INFO - Heartbeat monitoring started (timeout: 120s)
+00:24:47 - tripo_addon - [ws_server.py:90] - INFO - Stopping WebSocket server...
+00:24:47 - tripo_addon - [task.py:27] - INFO - WebSocket server stop requested
+00:24:47 - tripo_addon - [ws_server.py:77] - INFO - Event loop closed
+[Tripo3D] Log file: /var/folders/t2/mvn40j_s2c5f_54lyjp_t53r0000gn/T/tripo3d_blender_bridge.log
+Info: Saved as "whole_sources.blend"
+EXPOSED BEDROCK BAKE: {"sources": [{"kind": "cliff_column_b", "nonmanifold_edges": 0, "triangles": 634, "lower": [-14.13117790222168, 0.019228458404541016, 2.2864770889282227], "upper": [-9.238775253295898, 4.240488052368164, 7.167415618896484], "above_cap_vertex_occurrences": 265}, {"kind": "cliff_column", "nonmanifold_edges": 0, "triangles": 816, "lower": [-18.777313232421875, 0.05425691604614258, 0.728381872177124], "upper": [-12.157224655151367, 4.240499973297119, 4.551128387451172], "above_cap_vertex_occurrences": 682}, {"kind": "cliff_column_c", "nonmanifold_edges": 0, "triangles": 816, "lower": [-20.290634155273438, 0.3052380084991455, -1.7493195533752441], "upper": [-15.490926742553711, 3.809999942779541, 4.479884147644043], "above_cap_vertex_occurrences": 448}], "samples": 13235, "save_sha256": "227a4ed0efaf1cf289c8d56303bf42c789034562aaf51559a6e89205c5bfe93e", "input_sha256": "8c8ec1f153a0b19f89a346ab580421ccd8b0d0bf91f55d839fded6f7cfdccd2f", "operation": "Original complete source solids in exact existing crown normalization/poses. .14m smooth union into unchanged local base; no source warp, cap clipping, core recession or fracture subtraction.", "stage": "Unaccepted cap-decision isolation; not a default asset or a new player brush."}
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

@@ -1,0 +1,27 @@
+{
+  "source": "art/work/polyhaven_rocks/2026-10-17/boulder_01/boulder_01_study_4k.blend",
+  "source_sha256": "d480b52f9070de9af5805c07a87d067d5a75b6ea9c7133ae064c87a190612140",
+  "samples": 7262,
+  "world_lower": [
+    -17.431535720825195,
+    -1.7414532899856567,
+    2.173083543777466
+  ],
+  "world_upper": [
+    -13.366636276245117,
+    4.099999904632568,
+    5.41868782043457
+  ],
+  "save_sha256": "dcd9e2cdf6d8f9215533cd7f0ed4c5b32c34f1e37d7c3d4a62f515f0bb5a3fab",
+  "version": "fitcap",
+  "outward_correction": -0.1118084669113159,
+  "operation": "Source01 true proportions: uniform3x scale and rigid long-axis rotation, highest point4.1m. Actual3D cap cross-section front aligned.45m outside edge; BVH cap-back intersections determine local ground recession, fading into original lower body. No anisotropic stretch or arbitrary ground-gap width. Lower-only .45m union; ordinary saved density.",
+  "stage": "Unaccepted small cap/adjacent-face/lower-return study. No automatic runtime rock assembly, new player brush or default promotion.",
+  "cap_fit": {
+    "y_bias": 1.0462833404541012,
+    "out_bias": -0.1118084669113159,
+    "along_min": -0.6155749559402466,
+    "along_max": 1.162368893623352,
+    "cap_front": 0.45
+  }
+}

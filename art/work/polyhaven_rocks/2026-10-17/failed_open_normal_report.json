@@ -1,0 +1,66 @@
+[
+  {
+    "slug": "namaqualand_boulder_02",
+    "source_sha256": "fed943ae115c1e0856af6ae8f0ba95cd852bc7428393472911e7807649bb70c5",
+    "before": {
+      "vertices": 49173,
+      "triangles": 97964,
+      "boundary_edges": 396,
+      "nonmanifold_edges": 396,
+      "lower": [
+        -1.1840065717697144,
+        -0.6255689859390259,
+        -0.059473201632499695
+      ],
+      "upper": [
+        1.3481357097625732,
+        0.6086939573287964,
+        0.8231645822525024
+      ],
+      "signed_volume": 0.8342284862780718
+    },
+    "after": {
+      "vertices": 2051,
+      "triangles": 4000,
+      "boundary_edges": 116,
+      "nonmanifold_edges": 116
+    },
+    "blend": "art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_study_4k.blend",
+    "glb": "art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_study_4k.glb",
+    "glb_sha256": "e4304168cfe56172630696f56a0174f381785b0319711516838142a6f2b143c3",
+    "operation": "Weld1e-6, Blender collapse decimation toward4000triangles and recalculate normals. Shape sources preserved; no backing invented or holes silently filled.",
+    "stage": "Unaccepted neutral shape/LOD study; not a runtime asset or performance acceptance."
+  },
+  {
+    "slug": "rock_face_02",
+    "source_sha256": "43710d5d70c60fb82f35440246bdb27a08f073e6eff2ad888edbc09a0f878894",
+    "before": {
+      "vertices": 15151,
+      "triangles": 29564,
+      "boundary_edges": 752,
+      "nonmanifold_edges": 760,
+      "lower": [
+        -2.2611024379730225,
+        -0.938514769077301,
+        -0.13961930572986603
+      ],
+      "upper": [
+        0.45009371638298035,
+        1.188185453414917,
+        2.3323476314544678
+      ],
+      "signed_volume": 1.454603991374289
+    },
+    "after": {
+      "vertices": 2131,
+      "triangles": 3998,
+      "boundary_edges": 278,
+      "nonmanifold_edges": 286
+    },
+    "blend": "art/work/polyhaven_rocks/2026-10-17/rock_face_02/rock_face_02_study_4k.blend",
+    "glb": "art/work/polyhaven_rocks/2026-10-17/rock_face_02/rock_face_02_study_4k.glb",
+    "glb_sha256": "adbb26c8a30da7d4743b39c1885fd4ca9a560ff5227bb6916c6ff249e74193aa",
+    "operation": "Weld1e-6, Blender collapse decimation toward4000triangles and recalculate normals. Shape sources preserved; no backing invented or holes silently filled.",
+    "stage": "Unaccepted neutral shape/LOD study; not a runtime asset or performance acceptance."
+  }
+]

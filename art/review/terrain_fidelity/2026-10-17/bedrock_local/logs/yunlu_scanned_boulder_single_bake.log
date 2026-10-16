@@ -1,0 +1,7 @@
+00:00.059  translation      | WARNING Falling back to standard locale ("C")
+00:00.316  blend            | Read blend: "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/polyhaven_rocks/2026-10-17/boulder_01/boulder_01_study_4k.blend"
+Info: Saved as "scanned_bedrock_world_single.blend"
+SCANNED BEDROCK BAKE: {"source": "art/work/polyhaven_rocks/2026-10-17/boulder_01/boulder_01_study_4k.blend", "source_sha256": "d480b52f9070de9af5805c07a87d067d5a75b6ea9c7133ae064c87a190612140", "samples": 7622, "world_lower": [-16.889976501464844, -1.8000000715255737, -0.76053386926651], "world_upper": [-12.610010147094727, 3.5999999046325684, 5.046335697174072], "save_sha256": "9f0da210c7e9bf4b4f77dea25133e4efc9f2918ff44a5e7f852be7c539c627d5", "version": "single", "outward_correction": -0.5, "operation": "One already-closed Boulder01 source:3.8m tangent width,5.4m height,3.6m depth, centerY.9; fit along actual edge with .5m inward center setback and .5m/m lower inward shear. Hard union into unchanged base, no cap clipping or core recession.", "stage": "Unaccepted small cap/adjacent-face/lower-return study. No automatic runtime rock assembly, new player brush or default promotion."}
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

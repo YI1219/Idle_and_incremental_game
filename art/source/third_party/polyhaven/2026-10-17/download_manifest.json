@@ -1,0 +1,77 @@
+[
+  {
+    "slug": "namaqualand_boulder_02",
+    "page": "https://polyhaven.com/a/namaqualand_boulder_02",
+    "license": "CC0-1.0",
+    "files": [
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_1k.gltf",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/namaqualand_boulder_02/namaqualand_boulder_02_1k.gltf",
+        "bytes": 2818,
+        "sha256": "3c41b5946cd5b208673ec481a3969047665688b2fab1de99b57a7b4eedde099b",
+        "md5": "0730814e31f50e85defd7b8833a02070"
+      },
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02.bin",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/namaqualand_boulder_02/namaqualand_boulder_02.bin",
+        "bytes": 2297768,
+        "sha256": "0f6daa7ec9b1a92207c0b09b737ff1eec904aebc1c1eada778afa6e5eacd55c0",
+        "md5": "aa8f2212633a07a7e9a805e90977f4fd"
+      }
+    ],
+    "work_geometry": "art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_geometry.gltf",
+    "geometry_sha256": "fed943ae115c1e0856af6ae8f0ba95cd852bc7428393472911e7807649bb70c5",
+    "work_operation": "Strip material/image/texture/sampler references from a separate glTF copy; geometry, scene transforms, buffer bytes and originals unchanged.",
+    "stage": "Source evaluation only; no runtime promotion or downloaded preview/texture images."
+  },
+  {
+    "slug": "rock_face_02",
+    "page": "https://polyhaven.com/a/rock_face_02",
+    "license": "CC0-1.0",
+    "files": [
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/rock_face_02/rock_face_02_1k.gltf",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/rock_face_02/rock_face_02_1k.gltf",
+        "bytes": 2794,
+        "sha256": "ebeab82d463c89eb5f894b85807da111280a73b552d694257118f3f2d47bf760",
+        "md5": "f4c7eefa474143b14312409cad4fb4b8"
+      },
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/rock_face_02/rock_face_02.bin",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/rock_face_02/rock_face_02.bin",
+        "bytes": 702068,
+        "sha256": "cfa3dea8f0f91525b5dfe93d889acacf961d20f7174aae100eae2c6e101edf31",
+        "md5": "add01c9b573fdddd688acb6378c78c3b"
+      }
+    ],
+    "work_geometry": "art/work/polyhaven_rocks/2026-10-17/rock_face_02/rock_face_02_geometry.gltf",
+    "geometry_sha256": "43710d5d70c60fb82f35440246bdb27a08f073e6eff2ad888edbc09a0f878894",
+    "work_operation": "Strip material/image/texture/sampler references from a separate glTF copy; geometry, scene transforms, buffer bytes and originals unchanged.",
+    "stage": "Source evaluation only; no runtime promotion or downloaded preview/texture images."
+  },
+  {
+    "slug": "boulder_01",
+    "page": "https://polyhaven.com/a/boulder_01",
+    "license": "CC0-1.0",
+    "files": [
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/boulder_01/boulder_01_1k.gltf",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/boulder_01/boulder_01_1k.gltf",
+        "bytes": 2773,
+        "sha256": "51487934db898b4c24072780a451e34eca5c02e3ada24a62bbc600bbc4019e92",
+        "md5": "26e2eef4a1f68c9557c65cd375b21d6c"
+      },
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/boulder_01/boulder_01.bin",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/boulder_01/boulder_01.bin",
+        "bytes": 2938808,
+        "sha256": "7f5b06503d62bd95bfe9c6b8a354a5cc8ff04a4d271a8cf87a3e3125db4232d7",
+        "md5": "27a19fa031d8b4c3a09261f19c444dc5"
+      }
+    ],
+    "work_geometry": "art/work/polyhaven_rocks/2026-10-17/boulder_01/boulder_01_geometry.gltf",
+    "geometry_sha256": "df1223a812d297e0e35d68fecdd9242377948c002359555052e96ecd3485433d",
+    "work_operation": "Strip material/image/texture/sampler references from a separate glTF copy; geometry, scene transforms, buffer bytes and originals unchanged.",
+    "stage": "Source evaluation only; no runtime promotion or downloaded preview/texture images."
+  }
+]

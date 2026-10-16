@@ -1,0 +1,20 @@
+{
+  "source": "art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_closed_study.blend",
+  "source_sha256": "4ef05311380ec84ca5e639ca7ac32a037e2a075293016889867b4043bf574ca0",
+  "samples": 18844,
+  "world_lower": [
+    -19.44434356689453,
+    -0.31215888261795044,
+    -1.1430124044418335
+  ],
+  "world_upper": [
+    -8.997451782226562,
+    3.5111093521118164,
+    5.548191070556641
+  ],
+  "save_sha256": "2a0f4b86a496be61551fc4a7c3d0925e9b8642d2c8dab85ce2a164cf6dc8b1ef",
+  "operation": "One closed source-derived rock mass inverted under its repaired flat base, affine fit/shear along the actual front-left edge; source outer shape retained. Three-ray parity distance; hard union with a locally receded derived base; original cap footprint guard. Ordinary saved density only.",
+  "stage": "Unaccepted small cap/adjacent-face/lower-return study. No automatic runtime rock assembly, new player brush or default promotion.",
+  "version": "v1",
+  "outward_correction": 0.0
+}

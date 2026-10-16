@@ -1,0 +1,15 @@
+[
+	{
+		"camera_size": 3.66011476516724,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://art/work/polyhaven_rocks/2026-10-17/rock_face_02/rock_face_02_geometry.gltf",
+		"source_bounds": "[P: (-2.261102, -0.139619, -1.188185), S: (2.711196, 2.471967, 2.1267)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

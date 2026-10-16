@@ -47,6 +47,13 @@ func run():
  if args.has('sourcevolume'):preload('res://tools/art/author_cliff_volume_study.gd').author(editor.data)
  if args.has('sourcevolume2'):preload('res://tools/art/author_cliff_volume_study.gd').author(editor.data,'v2')
  if args.has('sourcevolume3'):preload('res://tools/art/author_cliff_volume_study.gd').author(editor.data,'v3')
+ if args.has('exposed'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data)
+ if args.has('scannedbedrock'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true)
+ if args.has('scannedbedrock2'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true,'v2')
+ if args.has('scannedbedrock3'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true,'v3')
+ if args.has('scannedbouldersingle'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true,'single')
+ if args.has('scannedreplace'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true,'replace')
+ if args.has('scannedfitcap'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,true,'fitcap')
  if args.has('worn') or args.has('worn2') or args.has('worn3'):
   var source_report:Dictionary=preload('res://tools/art/worn_cliff_sources.gd').install(editor.renderer.decoration,'v3' if args.has('worn3') else ('v2' if args.has('worn2') else 'v1'),args.has('wearsmooth'))
   FileAccess.open(OUT+tag+'_worn_sources.json',FileAccess.WRITE).store_string(JSON.stringify(source_report,'\t'))

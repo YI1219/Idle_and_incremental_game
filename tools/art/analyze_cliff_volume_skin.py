@@ -7,7 +7,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 WORK = ROOT / 'art/work/cliff_volume/2026-10-16'
 version = sys.argv[1] if len(sys.argv)>1 else 'v1'
-vertices = np.fromfile(WORK/f'volume_{version}_skin.bin', dtype='<f4').reshape(-1,3)
+input_path = Path(sys.argv[2]) if len(sys.argv)>2 else WORK/f'volume_{version}_skin.bin'
+vertices = np.fromfile(input_path, dtype='<f4').reshape(-1,3)
 assert np.isfinite(vertices).all() and len(vertices)%3 == 0
 points, inverse = np.unique(vertices, axis=0, return_inverse=True)
 triangles = inverse.reshape(-1,3)
@@ -33,7 +34,7 @@ for root, count in sorted(zip(roots,counts), key=lambda pair:-pair[1]):
 report = dict(version=version, triangles=len(triangles), vertices=len(points), components=components,
     non_two_use_edges=int((incidence!=2).sum()),
     scope='Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance.')
-OUT=ROOT/'art/review/terrain_fidelity/2026-10-16/cliff_volume'
+OUT=Path(sys.argv[3]) if len(sys.argv)>3 else ROOT/'art/review/terrain_fidelity/2026-10-16/cliff_volume'
 OUT.mkdir(parents=True,exist_ok=True)
 (OUT/f'connectivity_{version}.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report))

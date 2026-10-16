@@ -1,0 +1,431 @@
+{
+  "base_commit": "3a4c613",
+  "unchanged_production": true,
+  "new_local_native_views": 24,
+  "valid_neutral_native_views": 35,
+  "failed_insideout_views_excluded": 10,
+  "evidence": {
+    "exposed_control1": {
+      "views": {
+        "close": {
+          "sha256": "3deb6bfee3d9a251cebe10a72103f466716aea8b74c45ab844761cbfccd680fa",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "4577e36c25d0ffc94d57a64b5d92dbe165e82ff783c65af3f9d808676fc4a680",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "bd7938c58cef1510338b4dee9a89d087dc08d53ede64414a4ffa8fd4443fb872",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "samples": 0,
+      "data_sha256": "e2878eb8e864cdbf46329e90cf93f92bbc73903468d05be22ecd6cf68a58295e"
+    },
+    "exposed1": {
+      "views": {
+        "close": {
+          "sha256": "f6bcaf3121d6c9ad927a97c0c86e4a47f1d7c223ebcd5e475eb1dbc2466d737b",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "32cc08e58fe982d10875ef7296a10cda21803487a9d73edb7ac15f08bdd2ebd9",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "648fa506bd1152137cc4ddcc3d83bfe8f2f36e5248f1cc94ce56920126a098dc",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "samples": 13235,
+      "data_sha256": "2f6a99cc5ff9b1fd77d3a9e976c76b830b0a41e10cb22d7f9d599757378e1bbf"
+    },
+    "scannedbedrock1": {
+      "views": {
+        "close": {
+          "sha256": "2e9bd8cb4e9c34505d4ee26e60ceb169af26becb11036c81dbd4a6984eb692e2",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "8123cced8e07e8ae0e1b2df46852e6bda99a8bbd7309fdde17af5def82e171b2",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "d67c3df97e5167db9bbae31bad92feb66a837eb9b33e3c1ff7614ed1e22858df",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "samples": 18844,
+      "data_sha256": "c361b4e87c6491a05b355c93841885c9b31322fc6af422faada7220af81670a2"
+    },
+    "scannedbedrock2": {
+      "views": {
+        "close": {
+          "sha256": "7e114b928230d20ec4ab3f43ab572fefb8453d3ac88aae5c01b5c0a8eaabd56a",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "f9a55cd13eb7700b7e18585d63e68460e34c3dbeb486d4d4ee8aa0c1596c1066",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "0494f9690f1d33259b084342ff330995e698e840bd95f26d1724a088b0b96d40",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "samples": 19014,
+      "data_sha256": "59301af70bb9efa6d4a695f3d7c9f8bc0b9dacaf80979f26c6427f720f199eb5"
+    },
+    "scannedbedrock3": {
+      "views": {
+        "close": {
+          "sha256": "9a633cf50b8c5ffaec9b813dc387718b4894be51e4cca711372e2ec65b914966",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "1724ffcae92abd52ad4051f5674be3bd0345efc6b7a959b881c441984f93151e",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "2a915bd65ba8bbeead96ab49226e8672e208c0113265ba02d84a77acc3ee63a3",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "samples": 7648,
+      "data_sha256": "387820c3c5a716ff314a20e7ca3117cfe2ebaf02043bb94ef3c1284e0bac412a"
+    },
+    "scanned_single1": {
+      "views": {
+        "close": {
+          "sha256": "56161237603001bb4ac20079b00644377d4b0a33904591fc6fc3b008c511dd9d",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "a0611aaa2c1507c3a5e77c58914da960f9c4978728b1ea3198e16c609b9d115a",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "e36afef14f91efb55520d7aea032d99021200d1ef9c141b7b2363dd71359f223",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "samples": 7622,
+      "data_sha256": "91e9be586d09c59d66d41dcec3e3562458bcbd0a06062488168886df5fa4d5bc"
+    },
+    "scanned_replace1": {
+      "views": {
+        "close": {
+          "sha256": "c9756bb868c998e238789b0ffe477d188a60a03bd10e3451c720222637a91838",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "cd5101b19035add6c1d86814eff85417aea0f73e356db6abadb95769b34730d5",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "6899cbc2892fbb1e237a4a284b1184c856afa343d5eb2b022a288235ee1eedf1",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "samples": 8600,
+      "data_sha256": "9723d97d424a8d507687515877993ed04641c1777f85a4d603bca2275f168daa"
+    },
+    "scanned_fitcap1": {
+      "views": {
+        "close": {
+          "sha256": "ccce98d3f7c0fdbe9beab68326d2ac9a26734a08bac6e402098a8a751feecae9",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "be5b1cebab00f02c3e90bcfc729bfb0a505aed3c5bff30c8f882cc07292f3436",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "560fa3d4d936e0b9d8327f146242ad9e929ef6a45c1dac3d3119fc14eab5bd45",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "samples": 7262,
+      "data_sha256": "06cf4e086e35d93130b4635453c693902867aba9d8d9d3f15859ef8411db2d03"
+    }
+  },
+  "source_views_sha256": {
+    "boulder_01_geometry": {
+      "front": "bb30fbacf2383edd6507c0c8a037d04315b2eeebf162734486c7dc1702e947da",
+      "left": "95c292c3c927beaba9090326d9e3d1632897ea5d45a21ef5667dae363ce72bf3",
+      "right": "8867ae2cf54e3a5e3806e0febb1de9dbb3e71d1c4c5831de53f9ec48ba4ac54d",
+      "back": "2370c0f1ab6458a77f2b17d731e1b0163fbc7cd4873b3a91453f234f097eb871",
+      "quarter": "b7c08dedf30209cc3afc187576145df2b3227de2af2a83eaf2f0bd7eda2273e5"
+    },
+    "boulder_01_study_4k": {
+      "front": "5e9529f7971e541c0e4141acc26249a94768d7768319b260f99a5503fc37a49d",
+      "left": "8225b28d864a9334953675f8668435f502517425a23128d3cf6572370cdadf2f",
+      "right": "a888f9d85ae47e5d53dd3ca8cf6d261928faef4021dd30e88f4569fad692a152",
+      "back": "2e67926c53e722463ebe071535d33f677252500540cb4d1c6066c0e9c73ab3a4",
+      "quarter": "426767300f853932c6c55628c59ca7224e24bca05282b87370f8d045bf3d0592"
+    },
+    "namaqualand_boulder_02_closed_study": {
+      "front": "7ddb8aa4ca0894c91534fe5da821b292e3893089548419b4620da972416d3dd6",
+      "left": "b39797f32066c60a2bc3c009ba621d28f963f71d9a42d9050a5ebb87b04520b3",
+      "right": "9efc53ab8cbd6cc2be875c565426350bf668338538b1d0000c777fefc2280662",
+      "back": "f2d3e39bd9c57ae273ba8236165f1a0923ce3f72f0005b67f129a47b742b7f7e",
+      "quarter": "dce495ed2a7313900590d91ba786042e2c897579fcfbb154bd095c1ee3d0c1c5"
+    },
+    "namaqualand_boulder_02_geometry": {
+      "front": "f4de74bb48d74166e3663089c5e5c63f5d6d693cdcf7733003658ac586bc2906",
+      "left": "20d7b0eebcdef3affa07fce4f1509bcd1362bf955d66103a826a9337d7c8637b",
+      "right": "e6123360ef7e7fdbd006206bc4dfd9dbb2d15ee283332ae10e5988636df89cd7",
+      "back": "ce07cd1b92f1a91d957b619f7662db0c7d0791fea86e4a5f2408ff1cfe3d2294",
+      "quarter": "0f8839727abc9c5e3186799dce7bcdf1dcea061b0df4933c552791c8896ec243"
+    },
+    "namaqualand_boulder_02_study_4k": {
+      "front": "fba2ec157d4f1ebf44abd2d07266d91d81ece9bcb99ff03342e437ff855d47dc",
+      "left": "682001bcad29290d34819beed6e9a01faeed6300581e43d0896dc1e514929798",
+      "right": "e46d99589d1bab984a00e6f37b6972b502f9a08e30ca25a204e064b82f347ae5",
+      "back": "3ad4160a6aa723aa225c8e1d739608062136be568fd693380c64bd3747abb490",
+      "quarter": "4ea31919f8d3ec3413024e36c1e4685ef81dd7137bcf41a06a96ac46ac3a43be"
+    },
+    "rock_face_02_geometry": {
+      "front": "e656d6fda01c1ee10135201f10d71217aa157ccd6eec1b027af15e83654c3292",
+      "left": "00ebb9e43e5ea605926caab91d036ca1162a78c814af7a70f84199f1d0798ffc",
+      "right": "f8a47e84f162d0bfb41917766b9b5e05ec2a530a3d0c2e22806af223974863bb",
+      "back": "f7a19c1431c56abff31794b0f1dfe555604e7e6fa91d7d5b898626b969974f0b",
+      "quarter": "7a78e3a73c024d5921682362301b0b5d96fc4c27a619208f97b8eb13ed11c6ef"
+    },
+    "rock_face_02_study_4k": {
+      "front": "6ff182192db0fd8418544d865c90e6700b2b6c0d1e6746e891a27a22ca1271b1",
+      "left": "9b73f5e480f70608ef2b0b1488bff72bd9bec9b897eebc9970fa7bdb177951dc",
+      "right": "1edf72dc224add53c26f26c5fedd4c63015d3b8d090c1ab9c3251e977bb14c4b",
+      "back": "c59e94d518a1f8db85b4f5312934d4b27c5e82a4933d5f1ee2237fb54f58bc81",
+      "quarter": "0ded46a466f4cd073e618c4492bf2564884117594dab97fb39756d3788249b72"
+    }
+  },
+  "volumes": {
+    "v1": {
+      "samples": 18844,
+      "save_sha256": "2a0f4b86a496be61551fc4a7c3d0925e9b8642d2c8dab85ce2a164cf6dc8b1ef",
+      "raw_skin": {
+        "version": "scanned",
+        "triangles": 231444,
+        "vertices": 115724,
+        "components": [
+          {
+            "triangles": 231444,
+            "vertices": 115724,
+            "lo": [
+              -20.999980926513672,
+              -4.689836025238037,
+              -11.999979972839355
+            ],
+            "hi": [
+              17.999980926513672,
+              3.4999799728393555,
+              10.999979972839355
+            ]
+          }
+        ],
+        "non_two_use_edges": 0,
+        "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+      }
+    },
+    "v2": {
+      "samples": 19014,
+      "save_sha256": "b170355cade0b567a9bb244e7a139fefbb040268e63b0c47fb1b32d72b93e141",
+      "raw_skin": {
+        "version": "scanned_v2",
+        "triangles": 233604,
+        "vertices": 116804,
+        "components": [
+          {
+            "triangles": 233604,
+            "vertices": 116804,
+            "lo": [
+              -20.999980926513672,
+              -4.689836025238037,
+              -11.999979972839355
+            ],
+            "hi": [
+              17.999980926513672,
+              3.4999799728393555,
+              10.999979972839355
+            ]
+          }
+        ],
+        "non_two_use_edges": 0,
+        "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+      }
+    },
+    "v3": {
+      "samples": 7648,
+      "save_sha256": "cf13752a5f723429357dca8a6d5bead91370644f7e5840b572d050f5b6800229",
+      "raw_skin": {
+        "version": "scanned_v3",
+        "triangles": 231540,
+        "vertices": 115770,
+        "components": [
+          {
+            "triangles": 231540,
+            "vertices": 115770,
+            "lo": [
+              -20.999980926513672,
+              -4.689836025238037,
+              -11.999979972839355
+            ],
+            "hi": [
+              17.999980926513672,
+              3.6335105895996094,
+              10.999979972839355
+            ]
+          }
+        ],
+        "non_two_use_edges": 0,
+        "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+      }
+    },
+    "single": {
+      "samples": 7622,
+      "save_sha256": "9f0da210c7e9bf4b4f77dea25133e4efc9f2918ff44a5e7f852be7c539c627d5",
+      "raw_skin": {
+        "version": "scanned_single",
+        "triangles": 231980,
+        "vertices": 115992,
+        "components": [
+          {
+            "triangles": 231980,
+            "vertices": 115992,
+            "lo": [
+              -20.999980926513672,
+              -4.689836025238037,
+              -11.999979972839355
+            ],
+            "hi": [
+              17.999980926513672,
+              3.4999799728393555,
+              10.999979972839355
+            ]
+          }
+        ],
+        "non_two_use_edges": 0,
+        "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+      }
+    },
+    "replace": {
+      "samples": 8600,
+      "save_sha256": "5b0c1f776e84535f2b3024f848cb5d2cd307149914ee51bae3c4935e498e55e3",
+      "raw_skin": {
+        "version": "scanned_replace",
+        "triangles": 234788,
+        "vertices": 117396,
+        "components": [
+          {
+            "triangles": 234788,
+            "vertices": 117396,
+            "lo": [
+              -20.999980926513672,
+              -4.689836025238037,
+              -11.999979972839355
+            ],
+            "hi": [
+              17.999980926513672,
+              4.372559547424316,
+              10.999979972839355
+            ]
+          }
+        ],
+        "non_two_use_edges": 0,
+        "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+      }
+    },
+    "fitcap": {
+      "samples": 7262,
+      "save_sha256": "dcd9e2cdf6d8f9215533cd7f0ed4c5b32c34f1e37d7c3d4a62f515f0bb5a3fab",
+      "raw_skin": {
+        "version": "scanned_fitcap",
+        "triangles": 234348,
+        "vertices": 117176,
+        "components": [
+          {
+            "triangles": 234348,
+            "vertices": 117176,
+            "lo": [
+              -20.999980926513672,
+              -4.689836025238037,
+              -11.999979972839355
+            ],
+            "hi": [
+              17.999980926513672,
+              4.084474086761475,
+              10.999979972839355
+            ]
+          }
+        ],
+        "non_two_use_edges": 0,
+        "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+      }
+    }
+  },
+  "exposed_raw_skin": {
+    "version": "exposed",
+    "triangles": 236700,
+    "vertices": 118354,
+    "components": [
+      {
+        "triangles": 236676,
+        "vertices": 118340,
+        "lo": [
+          -20.999980926513672,
+          -4.689836025238037,
+          -11.999979972839355
+        ],
+        "hi": [
+          17.999980926513672,
+          4.231199741363525,
+          10.999979972839355
+        ]
+      },
+      {
+        "triangles": 24,
+        "vertices": 14,
+        "lo": [
+          -19.143281936645508,
+          1.8334466218948364,
+          3.319291114807129
+        ],
+        "hi": [
+          -18.79431915283203,
+          2.2056801319122314,
+          3.6630938053131104
+        ]
+      }
+    ],
+    "non_two_use_edges": 0,
+    "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+  },
+  "all_seven_shape_trials_rejected": true,
+  "scope": "Three local views only; no fresh whole/far/shore/bottom, motion, support, publication, arbitrary editing or target-device acceptance. Original CC0 geometry preserved; no runtime source promotion."
+}

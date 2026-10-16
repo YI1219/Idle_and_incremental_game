@@ -1,0 +1,20 @@
+{
+  "source": "art/work/polyhaven_rocks/2026-10-17/namaqualand_boulder_02/namaqualand_boulder_02_closed_study.blend",
+  "source_sha256": "4ef05311380ec84ca5e639ca7ac32a037e2a075293016889867b4043bf574ca0",
+  "samples": 7648,
+  "world_lower": [
+    -19.44434356689453,
+    -1.3146727085113525,
+    -3.348133087158203
+  ],
+  "world_upper": [
+    -8.997451782226562,
+    3.734926700592041,
+    4.827065944671631
+  ],
+  "save_sha256": "cf13752a5f723429357dca8a6d5bead91370644f7e5840b572d050f5b6800229",
+  "version": "v3",
+  "outward_correction": 0.8,
+  "operation": "Upright closed source, .8m upper exposure and inward lower return into the unchanged original base. No cap clipping or core recession; upper geological shoulders retain source orientation. Three-ray parity distance and hard union.",
+  "stage": "Unaccepted small cap/adjacent-face/lower-return study. No automatic runtime rock assembly, new player brush or default promotion."
+}
