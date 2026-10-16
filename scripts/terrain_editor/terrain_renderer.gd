@@ -122,6 +122,7 @@ func flush_dirty(max_chunks:int=2)->int:
 		_build_data=Data.new()
 		_build_data.seed=data.seed
 		_build_data.rocks.samples=data.rocks.samples.duplicate()
+		_build_data.sculpt_base_profile=data.sculpt_base_profile
 		_build_data.sculpt_base_enabled=data.sculpt_base_enabled and data.ensure_sculpt_base()
 		if _build_data.sculpt_base_enabled:_build_data.rocks.base=data.rocks.base
 		for cell in data.cells:_build_data.cells[cell]=data.cells[cell].duplicate()

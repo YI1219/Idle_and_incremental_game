@@ -1,0 +1,9 @@
+{
+  "scripts/terrain_editor/rock_sculpt.gd": "e4e6778d9e98fe28f7cbecb01ce1003b9cd6023ddafaf698171214fdf48f405f",
+  "scripts/terrain_editor/rock_terrain_base.gd": "d9244f2052297328448a65a34b082a427494c24352eca33df3c91d0e67380314",
+  "scripts/terrain_editor/terrain_data.gd": "93882faf91db833df938ef7ec905758eb5cf922da342aea8f0d297d8d74ca888",
+  "scripts/terrain_editor/terrain_renderer.gd": "4c8e090a39dbb57509a80d4424454638744bfc23ede581c22266775845027a5e",
+  "tests/terrain_rock_plane_test.gd": "f6aa8271acd113b5cfac6f248c01240efb634c14c2b3147a0b1f3304d33e0628",
+  "tests/terrain_sculpt_profile_test.gd": "08f337551cf862bb03612af4091b67e0df79b6628431b4b170d3dd9e5af19bba",
+  "tests/terrain_sculpt_base_input_test.gd": "560805e99bb23d2d1161a80a0f1e4a20fb8828f757e526280590834065ecd5e4"
+}

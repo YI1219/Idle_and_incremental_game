@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_sculpt_profile_test.gd"
+  ],
+  "exit": 1,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nERROR: A new-format file missing its body profile cannot silently load as the old shape\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_sculpt_profile_test.gd:22)\nERROR: Nearby high land cannot erase the original lower shelf cap\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_sculpt_profile_test.gd:31)\nSCULPT MESH local terrace profile: vertices=213636 open=0 inward=0\nSCULPT PROFILE: 13/15\n"
+}

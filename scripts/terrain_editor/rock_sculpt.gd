@@ -41,8 +41,10 @@ func brush(center:Vector3,radius:float,tool:String,normal:=Vector3.UP)->Dictiona
      'rock_cut':value=maxf(old,radius-distance)
      'rock_shoulder':value=minf(old,preload('res://scripts/terrain_editor/rock_shoulder_brush.gd').distance(stone_turn*(p-center)/radius)*radius)
      'rock_plane':
-      var weight:=1.0-smoothstep(radius*.65,radius,distance)
-      value=lerpf(old,maxf(old,(p-center).dot(normal)),weight)
+      # Remove the intersection of a sphere and the selected half-space.
+      # Mixing old density into the falloff makes repeated full-strength
+      # stamps change again, and leaves rock above the requested plane.
+      if distance<radius:value=maxf(old,minf((p-center).dot(normal),radius-distance))
     if value==old:continue
     value=roundf(clampf(value,-AIR,AIR)*100000.0)/100000.0
     # Avoid exact isosurface lattice corners (zero-area tetrahedron faces).

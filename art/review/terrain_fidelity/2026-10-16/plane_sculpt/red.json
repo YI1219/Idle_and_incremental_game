@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_rock_plane_test.gd"
+  ],
+  "exit": 1,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nERROR: Cut removes rock above its selected plane in the outer brush region\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_rock_plane_test.gd:10)\nERROR: Stamping the same full-strength plane twice does not deepen its transition\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_rock_plane_test.gd:15)\nERROR: One effective plane stroke undoes exactly after an inert repeat\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_rock_plane_test.gd:16)\nERROR: Redo restores the deterministic cut\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_rock_plane_test.gd:17)\nSCULPT MESH bounded plane: vertices=57552 open=0 inward=0\nROCK PLANE: 6/10\n"
+}

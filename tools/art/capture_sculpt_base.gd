@@ -7,6 +7,12 @@ func run():
  editor=load('res://scenes/terrain_editor.tscn').instantiate();viewport.add_child(editor)
  editor.hud.hide();editor.brush.hide();editor.set_process(false);editor.camera.set_process(false)
  if not args.has('legacy'):editor.data.set_sculpt_base(true)
+ if args.has('oldprofile'):
+  var old:Dictionary=editor.data.serialize();old.version=3;old.sculpt_base=true;old.rocks=[];old.erase('sculpt_profile')
+  editor.data.deserialize(old)
+ if args.has('fixedwater'):
+  for spec in [['water','water_time'],['lake_bed','caustic_time'],['waterfall','flow_time'],['bank','foam_time']]:
+   editor.renderer.materials[spec[0]].set_shader_parameter(spec[1],1.25)
  if args.has('authored'):preload('res://tools/art/author_sculpted_cliff.gd').author(editor.data)
  if args.has('curated'):preload('res://tools/art/author_unified_cliff.gd').author(editor.data)
  if args.has('planes'):preload('res://tools/art/author_unified_cliff_planes.gd').author(editor.data)
@@ -23,6 +29,6 @@ func run():
  frame(Vector2(-14,4),9,-105,28);await capture(tag+'_reverse')
  editor.camera.position=Vector3(1,10,12);editor.camera.look_at(Vector3(-3,3.5,2));await capture(tag+'_shore')
  editor.camera.position=Vector3(12,-14,21);editor.camera.look_at(Vector3(-2,-1,0));await capture(tag+'_bottom')
- FileAccess.open(OUT+tag+'_captures.json',FileAccess.WRITE).store_string(JSON.stringify({'captures':captures,'source':'Actual Godot terrain scene','sculpt_base':editor.data.sculpt_base_enabled,'samples':editor.data.rocks.samples.size()},'\t'))
+ FileAccess.open(OUT+tag+'_captures.json',FileAccess.WRITE).store_string(JSON.stringify({'captures':captures,'source':'Actual Godot terrain scene','sculpt_base':editor.data.sculpt_base_enabled,'sculpt_profile':editor.data.sculpt_base_profile,'water_phase':1.25 if args.has('fixedwater') else -1.0,'samples':editor.data.rocks.samples.size()},'\t'))
  var skin=editor.renderer.contours.surfaces.get('sculpted_terrain')
  print('SCULPT BASE CAPTURES: ',captures.size(),' samples=',editor.data.rocks.samples.size(),' skin_vertices=',skin.vertices.size() if skin!=null else 0);quit()

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--headless",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_sculpt_profile_test.gd"
+  ],
+  "exit": 1,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nERROR: High side returns inward below its own shoulder despite the lower terrace\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_sculpt_profile_test.gd:10)\nERROR: A new saved profile reopens with the same higher-side recession\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_sculpt_profile_test.gd:14)\nERROR: Unknown body profile is rejected before changing current data\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] run (res://tests/terrain_sculpt_profile_test.gd:20)\nERROR: local terrace profile: finite outward geometry and shading\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] inspect (res://tests/terrain_rock_sculpt_test.gd:78)\n       [2] run (res://tests/terrain_sculpt_profile_test.gd:21)\nSCULPT MESH local terrace profile: vertices=225276 open=0 inward=15\nSCULPT PROFILE: 8/12\n"
+}

@@ -12,8 +12,10 @@ var size:=Vector3i.ZERO
 var values:=PackedFloat32Array()
 var surface_cells:Array[Vector3i]=[]
 var horizontal_distances:Array[PackedFloat32Array]=[]
-func configure(records:Dictionary)->bool:
- if not fits(records):return false
+var profile:String='legacy'
+func configure(records:Dictionary,body_profile:String='legacy')->bool:
+ if body_profile not in ['legacy','local'] or not fits(records):return false
+ profile=body_profile
  cells=records.duplicate(true)
  if cells.is_empty():return true
  var lo:=Vector2i(4096,4096);var hi:=-lo
@@ -41,13 +43,21 @@ func configure(records:Dictionary)->bool:
    var distances:Array[float]=[]
    for h:float in levels:distances.append(_distance(regions[h],p))
    for i in levels.size():horizontal_distances[i][z*size.x+x]=distances[i]
+   var body_height:float=_body_height(p) if profile=='local' else 0.0
    var floor_y:=minf(-4.5,float(levels[0])-1.4)+.12*sin(p.x*.37+p.y*.17)+.07*sin(p.y*.46-p.x*.13)
    for y in size.y:
     var py:float=(y+low.y)*STEP;var value:=AIR
-    for i in levels.size():
-     var h:float=levels[i]
-     var inset:=maxf(0.0,h-py-1.4)*.55
-     value=minf(value,maxf(maxf(distances[i]+inset,py-h),floor_y-py))
+    if profile=='local':
+     # Cumulative regions define the stepped top, but must not let the
+     # lowest terrace postpone recession beneath all higher ground.
+     for i in levels.size():value=minf(value,maxf(distances[i],py-float(levels[i])))
+     var inset:=maxf(0.0,body_height-py-1.4)*.55
+     value=maxf(maxf(value,distances[0]+inset),floor_y-py)
+    else:
+     for i in levels.size():
+      var h:float=levels[i]
+      var inset:=maxf(0.0,h-py-1.4)*.55
+      value=minf(value,maxf(maxf(distances[i]+inset,py-h),floor_y-py))
     value=clampf(value,-AIR,AIR)
     if absf(value)<.00001:value=.00002
     values[(z*size.y+y)*size.x+x]=value
@@ -60,6 +70,24 @@ func configure(records:Dictionary)->bool:
      smallest=minf(smallest,values[start+offset]);largest=maxf(largest,values[start+offset])
     if smallest<0 and largest>=0:surface_cells.append(low+Vector3i(x,y,z))
  return true
+func _body_height(p:Vector2)->float:
+ # Smooth over nearby authored cells only; abrupt height records should not
+ # introduce a vertical seam into the continuous lower body.
+ var cell:=Vector2i(p.floor());var total:=0.0;var weight:=0.0;var cap_limit:=INF
+ for z in range(-2,3):
+  for x in range(-2,3):
+   var key:=cell+Vector2i(x,z)
+   if not cells.has(key):continue
+   var w:=maxf(0.0,1.0-p.distance_squared_to(Vector2(key)+Vector2.ONE*.5)/(1.75*1.75))
+   w*=w;total+=float(cells[key].height)*w;weight+=w
+   # Preserve a low cell's full upper shoulder even beside a tall mountain.
+   # The height limit extends continuously beyond the cell and becomes
+   # inactive before leaving this neighborhood, avoiding a stepped seam.
+   var offset:Vector2=(p-(Vector2(key)+Vector2.ONE*.5)).abs()-Vector2.ONE*.5
+   var distance:=offset.max(Vector2.ZERO).length()
+   if distance<1.75:
+    cap_limit=minf(cap_limit,float(cells[key].height)+2.0*distance/(1.0-distance*distance/(1.75*1.75)))
+ return minf(total/weight,cap_limit) if weight>.00001 else float(levels[0])
 static func fits(records:Dictionary,extra_lo:=Vector2(INF,INF),extra_hi:=Vector2(-INF,-INF),lower:float=0.0,upper:float=0.0,target_height:float=NAN)->bool:
  if records.is_empty() and not extra_lo.is_finite():return true
  var lo:=extra_lo;var hi:=extra_hi;var minimum:=INF;var maximum:=-INF

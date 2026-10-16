@@ -10,6 +10,7 @@ var seed: int = 7301
 const RockSculpt=preload("res://scripts/terrain_editor/rock_sculpt.gd")
 var rocks:=RockSculpt.new()
 var sculpt_base_enabled:=false
+var sculpt_base_profile:String='local'
 var _rock_before:Dictionary={}
 var dirty_chunks: Dictionary = {}
 var revision := 0
@@ -81,7 +82,7 @@ func ensure_sculpt_base()->bool:
 	if not sculpt_base_enabled:return true
 	if rocks.base==null:
 		var candidate=preload("res://scripts/terrain_editor/rock_terrain_base.gd").new()
-		if not candidate.configure(cells):return false
+		if not candidate.configure(cells,sculpt_base_profile):return false
 		rocks.base=candidate
 		rocks._height_bounds_dirty=true
 	return true
@@ -178,18 +179,24 @@ func serialize() -> Dictionary:
 		records.append({"x":cell.x,"z":cell.y,"height":cells[cell].height,"water":cells[cell].water})
 	var payload:Dictionary={"version":1,"seed":seed,"cells":records}
 	if not rocks.samples.is_empty() or sculpt_base_enabled:
-		payload.version=3 if sculpt_base_enabled else 2;payload.rocks=rocks.records()
-		if sculpt_base_enabled:payload.sculpt_base=true
+		payload.version=(4 if sculpt_base_profile=='local' else 3) if sculpt_base_enabled else 2;payload.rocks=rocks.records()
+		if sculpt_base_enabled:
+			payload.sculpt_base=true
+			if sculpt_base_profile!='legacy':payload.sculpt_profile=sculpt_base_profile
 	return payload
 
 static func _number(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value))
 
 func deserialize(payload: Dictionary) -> bool:
-	if (payload.get("version")!=1 and payload.get("version")!=2 and payload.get("version")!=3) or not _number(payload.get("seed")): return false
+	# JSON numbers arrive as floats; Array membership compares their types.
+	if (payload.get("version")!=1 and payload.get("version")!=2 and payload.get("version")!=3 and payload.get("version")!=4) or not _number(payload.get("seed")): return false
 	var candidate_rocks=preload("res://scripts/terrain_editor/rock_sculpt.gd").new()
 	if payload.version>=2 and not candidate_rocks.load_records(payload.get("rocks")):return false
-	if payload.version==3 and (not payload.get("sculpt_base") is bool or payload.get("sculpt_base")!=true):return false
+	if payload.version>=3 and (not payload.get("sculpt_base") is bool or payload.get("sculpt_base")!=true):return false
+	var candidate_profile:Variant=payload.get('sculpt_profile','legacy') if payload.version>=3 else 'local'
+	if not candidate_profile is String or candidate_profile not in ['legacy','local']:return false
+	if payload.version==4 and candidate_profile!='local':return false
 	if float(payload.seed)!=floorf(float(payload.seed)) or absf(float(payload.seed))>2147483647: return false
 	var records: Variant=payload.get("cells")
 	if not records is Array or records.size()>MAX_CELLS: return false
@@ -206,12 +213,13 @@ func deserialize(payload: Dictionary) -> bool:
 		var cell := Vector2i(int(record.x),int(record.z))
 		if candidate.has(cell): return false
 		candidate[cell]={"height":float(record.height),"water":int(record.water)}
-	if payload.version==3 and not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(candidate):return false
+	if payload.version>=3 and not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(candidate):return false
 	end_stroke()
 	for cell: Vector2i in cells: invalidate(cell)
 	_invalidate_rocks(rocks.samples.keys())
 	rocks=candidate_rocks
-	sculpt_base_enabled=payload.version==3
+	sculpt_base_enabled=payload.version>=3
+	sculpt_base_profile=candidate_profile
 	_invalidate_rocks(rocks.samples.keys())
 	cells = candidate
 	seed = int(payload.seed)
@@ -225,7 +233,7 @@ func make_preset(kind: int) -> void:
 	for cell: Vector2i in cells: invalidate(cell)
 	_invalidate_rocks(rocks.samples.keys())
 	rocks.samples.clear()
-	rocks.base=null;sculpt_base_enabled=false
+	rocks.base=null;sculpt_base_enabled=false;sculpt_base_profile='local'
 	cells.clear()
 	_undo.clear()
 	_redo.clear()
