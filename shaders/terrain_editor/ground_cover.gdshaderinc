@@ -79,7 +79,7 @@ vec3 ground_cover(vec3 position,float detail,out vec2 slope){
  color*=1.0+blade*.025*cover*detail;
  slope=(slope*.08+slope_tuft*1.35)*standing;
  vec4 mapped=texture(ground_detail_map,p*.48);
- color*=1.0+(mapped.r-.5)*.60*detail;
+ color*=1.0+(mapped.r-.5)*.38*detail;
  slope+=(mapped.gb-.5)*2.2*standing;
  // Broad worn earth follows the same authored route as the stepping stones.
  // Ragged vegetation breaks its margins; compression can add future wear.
@@ -98,7 +98,7 @@ vec3 ground_cover(vec3 position,float detail,out vec2 slope){
  // Break the material boundary into grass remnants and exposed grains.
  // Broad deposits only choose where fragments collect, not a painted patch.
  float fragments=smoothstep(.43,.66,gc_noise(p*18.0)*.65+gc_noise(p*41.0)*.35);
- float weathered=deposits.x*(.10+.38*fragments);
+ float weathered=deposits.x*(.06+.22*fragments);
  float soil=max(max(max(wear*.85,bare),weathered),1.0-standing);
  soil*=1.0-fragments*.32*standing*(1.0-wear*.50);
  vec3 earth=mix(vec3(.36,.29,.20),vec3(.57,.48,.34),gc_noise(p*1.2)*.6+gc_noise(p*9.0)*.4);
@@ -106,7 +106,7 @@ vec3 ground_cover(vec3 position,float detail,out vec2 slope){
  // Small mineral grains in exposed earth, with grass fragments left inside
  // the patches. This is local surface grit, never a continuous grey lip.
  float grit=deposits.z*soil*detail;
- color=mix(color,mix(vec3(.32,.35,.30),vec3(.55,.53,.42),deposits.y),grit*.50);
+ color=mix(color,mix(vec3(.32,.35,.30),vec3(.55,.53,.42),deposits.y),grit*.30);
  slope*=1.0-soil*.70;
  return color;
 }

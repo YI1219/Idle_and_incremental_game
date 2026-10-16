@@ -1,0 +1,30 @@
+[
+  {
+    "name": "terrain_stone_normals_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_stone_normals_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSTONE NORMALS: 15/15\n"
+  },
+  {
+    "name": "terrain_detail_mipmaps_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_detail_mipmaps_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nstone_detail mipmaps=true\nground_detail mipmaps=true\nstone_mineral_v1 mipmaps=true\n"
+  }
+]

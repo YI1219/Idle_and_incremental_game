@@ -1,0 +1,72 @@
+[
+  {
+    "name": "terrain_refined_cliff_source_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_refined_cliff_source_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nREFINED CLIFF PROFILE 23: expected_faces=625 actual_faces=625 mismatch=false\nREFINED CLIFF PROFILE 41: expected_faces=514 actual_faces=514 mismatch=false\nREFINED CLIFF SOURCE: triangles=634 failures=0\nREFINED TALL PROFILE 11: expected_faces=654 actual_faces=654 mismatch=false\nREFINED TALL PROFILE 37: expected_faces=717 actual_faces=717 mismatch=false\n"
+  },
+  {
+    "name": "terrain_shore_prop_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_shore_prop_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHORE PROPS default: { \"grass_clump\": 1, \"reeds\": 23, \"lily\": 16 } invalid=0\nSHORE PROPS dry: { \"grass_clump\": 2, \"reeds\": 13, \"lily\": 9 } invalid=0\nSHORE PROPS contract: { \"grass_clump\": 1, \"reeds\": 21, \"lily\": 14 } invalid=0\n"
+  },
+  {
+    "name": "terrain_shore_stone_contact_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_shore_stone_contact_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHORE STONE CONTACT default: stones=93 failures=0\nSHORE STONE CONTACT dry: stones=78 failures=0\nSHORE STONE CONTACT raise: stones=94 failures=0\nSHORE STONE CONTACT contract: stones=79 failures=0\nSHORE STONE CONTACT: probes=4445 failures=0\n"
+  },
+  {
+    "name": "terrain_rim_tuft_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_rim_tuft_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=36235 uploaded=157950 triangles=52691 roots=428 unsupported=0 invalid=0 passed=true\n"
+  },
+  {
+    "name": "terrain_editor_decoration_test",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_editor_decoration_test.gd"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DECORATION: 23/23 passed\n"
+  }
+]

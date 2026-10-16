@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tools/art/capture_sculpt_base.gd",
+    "--",
+    "clean_planes1",
+    "legacy",
+    "details",
+    "fixedwater"
+  ],
+  "exit": 0,
+  "clean": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=0\n2026-10-16 15:20:31.575 godot[37168:1314704] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 15:20:54.413 godot[37168:1314704] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+}

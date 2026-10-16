@@ -1,0 +1,22 @@
+{
+  "same_cameras": true,
+  "all_phase_125": true,
+  "matched_image_count": 28,
+  "gallery_http": 200,
+  "main_http": 200,
+  "all_matched_images_http": true,
+  "main_captures": 11,
+  "main_writes_clean": true,
+  "material_checks": {
+    "count": 2,
+    "all_clean": true
+  },
+  "support_checks": {
+    "count": 5,
+    "all_clean": true
+  },
+  "native_checks": {
+    "count": 7,
+    "all_clean": true
+  }
+}

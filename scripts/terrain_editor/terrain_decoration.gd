@@ -189,10 +189,10 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 					if field.shore_weight(bank-out*.22,level*.5)>.5 and not near_drop and field.shore_support(bank-out*.22,out,level*.5,.70):
 						var plant:=bank+out*.25
 						if random_at(cell,data.seed,1080+block)<.18 and _stable(field,plant,level*.5,.18):
-							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*3.8))
+							result.reeds.append(_transform(Vector3(plant.x,level*.5,plant.y),angle,Vector3.ONE*2.8))
 					_shore_stones(result,field,data.seed,cell,block,bank,out,angle,level*.5)
 				var cell:=Vector2i(p.floor())
-				if random_at(cell,data.seed,95)<.66:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*4.2))
+				if random_at(cell,data.seed,95)<.66:result.reeds.append(_transform(Vector3(p.x,level*.5,p.y)+Vector3(out.x*.55,0,out.y*.55),angle,Vector3.ONE*3.1))
 				var lily:=p-out*.8
 				var wet:Dictionary=field.surface_at(lily)
 				if not wet.is_empty() and wet.water==level and random_at(cell,data.seed,96)<.62:result.lily.append(_transform(Vector3(lily.x,level*.5+.06,lily.y),angle,Vector3.ONE*1.9))

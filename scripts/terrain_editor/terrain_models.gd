@@ -222,8 +222,8 @@ func _rock_body_models(seed_value:int,root:bool=false)->Array:
 	material.set_shader_parameter("crown_cover",0.0 if root else 1.0)
 	mesh.surface_set_material(0,material)
 	built.render_mesh.surface_set_material(0,material)
-	mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(mesh,42.0,.55)
-	built.render_mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(built.render_mesh,42.0,.55)
+	mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(mesh,42.0,.28)
+	built.render_mesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(built.render_mesh,42.0,.28)
 	return [{"mesh":mesh,"render_mesh":built.render_mesh,"pose":Transform3D.IDENTITY,"body_height":built.height,"geometry_height":built.get("geometry_height",built.height),"integrated_foot":built.get("integrated_foot",false),"crown_z":built.crown_z,"span_x":built.span_x,"span_z":built.span_z,"cap_polygon":built.get("cap_polygon",PackedVector2Array())}]
 
 

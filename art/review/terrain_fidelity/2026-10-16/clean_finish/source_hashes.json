@@ -1,0 +1,8 @@
+{
+  "shaders/terrain_editor/stone_surface.gdshaderinc": "1764507691d3e3cd98c3889e76019b12ef487055a490206d76b28ac29b8dfab0",
+  "shaders/terrain_editor/ground_cover.gdshaderinc": "5d6c3fc36b952d05ae022746a79342394ba31166b302d78dd0d4eb208057a824",
+  "scripts/terrain_editor/terrain_models.gd": "5779030a2615aef2b95be8c746b825315f5206ab7f0f1ccc35858ba78f7f8643",
+  "scripts/terrain_editor/terrain_decoration.gd": "6f7bdc2c05026471101e3b32c887b353a4461c17a4486ca765f4bfec9a0457bb",
+  "tools/art/capture_sculpt_base.gd": "135f62066cee86de5e5ecafe58103acf71f1a2e86014b3b28bc538e4a635d1e1",
+  "tools/art/build_clean_finish_review.py": "520bfd29b83573aa1e68b2f1995487af9711548ba131670d7c22cf1909f001f3"
+}
