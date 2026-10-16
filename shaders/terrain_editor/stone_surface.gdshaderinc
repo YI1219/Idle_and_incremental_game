@@ -30,12 +30,12 @@ vec3 stone_surface(vec3 p,vec3 n){
  vec3 mineral_paint=texture(stone_mineral_map,p.zy*.27).rgb*w.x+texture(stone_mineral_map,p.xz*.27).rgb*w.y+texture(stone_mineral_map,p.xy*.27).rgb*w.z;
  // Albedo supplies the missing middle scale; packed slopes still carry fine
  // relief. The blend stays restrained so the source silhouette owns the form.
- stone=stone*.88*(.98+grain*.04)*(1.0+(stone_map(p,n).r-.5)*.24)*(vec3(.62)+mineral_paint*.95);
+ stone=stone*.94*(.98+grain*.04)*(1.0+(stone_map(p,n).r-.5)*.24)*(vec3(.62)+mineral_paint*.95);
  vec3 deposit=tw_deposits(p);
  float exposed=.45+.55*smoothstep(-.65,.25,n.y);
  // Mineral weathering is uneven within a face, rather than one clean tint.
- stone=mix(stone,stone*vec3(.58,.60,.59)+vec3(.015,.011,.005),deposit.x*.58*exposed);
- stone=mix(stone,stone*vec3(.74,.67,.52),deposit.y*.25*exposed);
+ stone=mix(stone,stone*vec3(.58,.60,.59)+vec3(.015,.011,.005),deposit.x*.40*exposed);
+ stone=mix(stone,stone*vec3(.74,.67,.52),deposit.y*.18*exposed);
  stone=mix(stone,vec3(.48,.48,.40),deposit.z*.18*exposed);
  return stone;
 }

@@ -3,10 +3,12 @@ shader_type spatial;
 #include "cliff_palette.gdshaderinc"
 #include "stone_surface.gdshaderinc"
 render_mode cull_disabled;
+// Directly sculpted volumes own world-space samples, independent of cell lift.
+uniform bool follow_land_morph = true;
 varying vec3 world_position;
 void vertex(){
  world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
- VERTEX.y+=terrain_morph_offset(world_position);
+ if(follow_land_morph)VERTEX.y+=terrain_morph_offset(world_position);
 }
 void fragment(){
  vec3 material_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);

@@ -1,0 +1,8 @@
+{
+  "test": "capture_courtyard_finish",
+  "tag": "tone1",
+  "exit_code": 0,
+  "passed": true,
+  "seconds": 24.769737005233765,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nCOURTYARD CAPTURES: tone1 11\n2026-10-16 08:20:57.504 godot[11176:69287] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 08:21:13.113 godot[11176:69287] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+}

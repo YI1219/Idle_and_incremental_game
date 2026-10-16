@@ -1,0 +1,7 @@
+{
+  "test": "terrain_rock_sculpt_test",
+  "exit_code": 0,
+  "passed": true,
+  "seconds": 0.378828875,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH joined strokes: vertices=15720 open=0 inward=0\nSCULPT MESH initial: vertices=4968 open=0 inward=0\nSCULPT MESH carved: vertices=5136 open=0 inward=0\nROCK SCULPT: 29/29\n"
+}

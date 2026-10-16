@@ -24,6 +24,8 @@ var last_edit_ms:=0.0
 var brush:=MeshInstance3D.new()
 var _last_paint:=Vector2(INF,INF)
 var _clock:=0.0
+var _last_sculpt:=Vector3(INF,INF,INF)
+var _last_sculpt_screen:=Vector2(INF,INF)
 func _ready()->void:
 	data.make_preset(0)
 	add_child(renderer)
@@ -159,7 +161,7 @@ func _pointer(screen:Vector2)->Dictionary:
 			var t:float=(build_height-origin.y)/direction.y
 			if t>0:
 				var p:=origin+direction*t
-				if hit.is_empty() or tool=="expand":return {"position":p,"cell":Vector2i(floori(p.x),floori(p.z))}
+				if hit.is_empty() or tool=="expand":return {"position":p,"cell":Vector2i(floori(p.x),floori(p.z)),"normal":Vector3.UP}
 	return hit
 func begin_paint(screen:Vector2,from_ui:bool=false)->bool:
 	if from_ui or hud.is_over_panel(screen):return false
@@ -167,6 +169,8 @@ func begin_paint(screen:Vector2,from_ui:bool=false)->bool:
 	if focus:focus.release_focus()
 	painting=true
 	_last_paint=Vector2(INF,INF)
+	_last_sculpt=Vector3(INF,INF,INF)
+	_last_sculpt_screen=Vector2(INF,INF)
 	data.begin_stroke()
 	continue_paint(screen)
 	return true
@@ -174,6 +178,8 @@ func continue_paint(screen:Vector2)->void:
 	if not painting or hud.is_over_panel(screen):return
 	var hit:=_pointer(screen)
 	if hit.is_empty():return
+	if tool.begins_with("rock_"):
+		_sculpt_at(screen,hit);return
 	var center:=Vector2(hit.cell)+Vector2(0.5,0.5) if snap else Vector2(hit.position.x,hit.position.z)
 	# Interpolate fast drags so there are no holes between input samples.
 	var start:Vector2=center if not _last_paint.is_finite() else _last_paint
@@ -184,19 +190,46 @@ func continue_paint(screen:Vector2)->void:
 		data.apply_brush(start.lerp(center,float(i+1)/steps),radius,tool,snap,build_height,water_level)
 	_last_paint=center
 	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
+func _sculpt_center(hit:Dictionary)->Vector3:
+	var center:Vector3=hit.position
+	var normal:Vector3=hit.get("normal",Vector3.UP)
+	var size:=minf(radius,4.0)
+	if tool=="rock_add":center+=normal*size*.25
+	elif tool=="rock_plane":center-=normal*size*.12
+	return center
+func _sculpt_at(screen:Vector2,hit:Dictionary)->void:
+	# Stationary holding must not grow again merely because a new mesh publishes.
+	if _last_sculpt_screen.is_finite() and screen.distance_squared_to(_last_sculpt_screen)<4.0:return
+	var normal:Vector3=hit.get("normal",Vector3.UP)
+	var size:=minf(radius,4.0)
+	var center:=_sculpt_center(hit)
+	var start:=center if not _last_sculpt.is_finite() else _last_sculpt
+	var steps:=mini(64,maxi(1,ceili(start.distance_to(center)/maxf(.125,size*.3))))
+	var begin:=Time.get_ticks_usec()
+	for i in steps:data.apply_rock_brush(start.lerp(center,float(i+1)/steps),size,tool,normal)
+	_last_sculpt=center;_last_sculpt_screen=screen
+	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
 func _update_brush(screen:Vector2)->void:
 	var hit:=_pointer(screen)
 	brush.visible=not hit.is_empty()
 	if not brush.visible:return
-	var position3:Vector3=hit.position
-	if snap:
+	var position3:Vector3=_sculpt_center(hit) if tool.begins_with("rock_") else hit.position
+	if snap and not tool.begins_with("rock_"):
 		position3.x=hit.cell.x+0.5
 		position3.z=hit.cell.y+0.5
-	brush.position=position3+Vector3(0,0.06,0)
+	brush.position=position3 if tool.begins_with("rock_") else position3+Vector3(0,0.06,0)
 	var mesh:=ImmediateMesh.new()
 	mesh.surface_begin(Mesh.PRIMITIVE_LINES)
-	for i in 48:
-		for angle:float in [TAU*i/48.0,TAU*(i+1)/48.0]:mesh.surface_add_vertex(Vector3(cos(angle)*radius,0,sin(angle)*radius))
+	var sculpt:=tool.begins_with("rock_")
+	var size:=minf(radius,4.0) if sculpt else radius
+	var rings:=3 if sculpt else 1
+	for ring in rings:
+		for i in 48:
+			for angle:float in [TAU*i/48.0,TAU*(i+1)/48.0]:
+				var point:=Vector3(cos(angle)*size,0,sin(angle)*size)
+				if ring==1:point=Vector3(point.x,point.z,0)
+				elif ring==2:point=Vector3(0,point.x,point.z)
+				mesh.surface_add_vertex(point)
 	mesh.surface_end()
 	brush.mesh=mesh
 func select_preset(kind:int)->void:

@@ -1,0 +1,7 @@
+{
+  "test": "sculpt2_capture",
+  "exit_code": 0,
+  "passed": true,
+  "seconds": 64.502870167,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:49:48.329 godot[20902:126832] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 08:50:03.336 godot[20902:126832] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nROCK SCULPT CAPTURES: 6 samples=13168\n"
+}

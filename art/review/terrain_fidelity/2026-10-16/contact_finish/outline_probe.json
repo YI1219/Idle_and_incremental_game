@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "seconds": 19.30100525,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nOUTLINE PROBE: 3\n2026-10-16 08:28:33.374 godot[14292:85661] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 08:28:49.363 godot[14292:85661] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+}

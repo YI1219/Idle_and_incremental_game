@@ -1,0 +1,75 @@
+[
+  {
+    "test": "morph_green",
+    "command": [
+      "godot",
+      "--path",
+      ".",
+      "-s",
+      "res://tests/terrain_rock_sculpt_morph_render_test.gd"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.970852375,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:58:46.811 godot[22951:142584] +[IMKClient subclass]: chose IMKClient_Modern\nSCULPT MORPH RENDER: foreground=16804 changing_mask_pixels=0 pick_y=3.74117469787598 passed=true\n"
+  },
+  {
+    "test": "final_capture",
+    "command": [
+      "godot",
+      "--path",
+      ".",
+      "-s",
+      "res://tests/capture_courtyard_finish.gd",
+      "--",
+      "tone_final",
+      "camera"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 27.926552792000003,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:58:48.610 godot[22974:142926] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 08:59:04.121 godot[22974:142926] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nCOURTYARD CAPTURES: tone_final 11\n"
+  },
+  {
+    "test": "editor_render",
+    "command": [
+      "godot",
+      "--path",
+      ".",
+      "-s",
+      "res://tests/terrain_editor_render_test.gd"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.1149394999999984,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:59:16.547 godot[23078:144029] +[IMKClient subclass]: chose IMKClient_Modern\nTERRAIN EDITOR RENDER: 339/339 passed\n"
+  },
+  {
+    "test": "sculpt_input_final",
+    "command": [
+      "godot",
+      "--path",
+      ".",
+      "-s",
+      "res://tests/terrain_rock_sculpt_input_test.gd"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 29.985260083,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:59:17.622 godot[23086:144111] +[IMKClient subclass]: chose IMKClient_Modern\nROCK SCULPT INPUT: 8/8\n"
+  },
+  {
+    "test": "decoration_regen",
+    "command": [
+      "godot",
+      "--path",
+      ".",
+      "-s",
+      "res://tests/terrain_decoration_regen_test.gd"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 314.84551866600003,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:59:47.835 godot[23151:145171] +[IMKClient subclass]: chose IMKClient_Modern\nRIM BAKE us=62025\nTERRAIN DECORATION REGEN: 42/42 passed\n"
+  }
+]

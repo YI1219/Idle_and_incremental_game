@@ -1,0 +1,6 @@
+{
+  "exit_code": 1,
+  "passed": false,
+  "seconds": 1.2330524999999999,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:57:36.819 godot[22765:140746] +[IMKClient subclass]: chose IMKClient_Modern\nSCULPT MORPH RENDER: foreground=16804 changing_mask_pixels=10117 pick_y=3.74117469787598 passed=false\n"
+}

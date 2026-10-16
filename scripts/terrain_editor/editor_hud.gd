@@ -29,23 +29,29 @@ func _ready()->void:
 	column.add_child(_label("Terrain workshop · low quality",12))
 	column.add_child(HSeparator.new())
 	var tools:=OptionButton.new()
-	for name in ["Raise land","Lower land","Expand island","Contract island","Paint water","Remove water"]:tools.add_item(name)
-	tools.item_selected.connect(func(index:int):editor.cancel_input();editor.tool=["raise","lower","expand","contract","water","dry"][index])
+	tools.name="TerrainTools"
+	for name in ["Raise land","Lower land","Expand island","Contract island","Paint water","Remove water","塑岩试作 · 增岩","塑岩试作 · 削岩","塑岩试作 · 切面"]:tools.add_item(name)
 	column.add_child(tools)
 	column.add_child(_label("Brush radius",12))
 	var radius:=HSlider.new()
+	radius.name="BrushRadius"
 	radius.min_value=0.49
 	radius.max_value=8
 	radius.step=0.1
 	radius.value=editor.radius
 	radius.value_changed.connect(func(value:float):editor.radius=value)
 	column.add_child(radius)
+	tools.item_selected.connect(func(index:int):
+		editor.cancel_input()
+		editor.tool=["raise","lower","expand","contract","water","dry","rock_add","rock_cut","rock_plane"][index]
+		radius.max_value=4 if index>=6 else 8)
+
 	var snap:=CheckButton.new()
 	snap.text="Snap to cells"
 	snap.button_pressed=editor.snap
 	snap.toggled.connect(func(enabled:bool):editor.snap=enabled)
 	column.add_child(snap)
-	column.add_child(_label("Off: free brush position\nTerrain remains cell-based",11))
+	column.add_child(_label("吸附仅用于土地笔刷\n塑岩试作仅修改新塑岩体",11))
 	column.add_child(_label("Expansion height",12))
 	var height:=SpinBox.new()
 	height.min_value=-4

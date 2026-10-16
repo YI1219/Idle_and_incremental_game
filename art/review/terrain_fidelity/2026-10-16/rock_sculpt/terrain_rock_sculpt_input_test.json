@@ -1,0 +1,7 @@
+{
+  "test": "terrain_rock_sculpt_input_test",
+  "exit_code": 0,
+  "passed": true,
+  "seconds": 29.923072708000007,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:50:52.801 godot[21101:128759] +[IMKClient subclass]: chose IMKClient_Modern\nROCK SCULPT INPUT: 8/8\n"
+}

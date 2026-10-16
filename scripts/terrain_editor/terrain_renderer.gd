@@ -71,6 +71,8 @@ func configure(source:Data)->void:
 		var cliff:=ShaderMaterial.new()
 		cliff.shader=load("res://shaders/terrain_editor/cliff.gdshader")
 		materials.cliff=cliff
+		materials.sculpted_rock=cliff.duplicate()
+		materials.sculpted_rock.set_shader_parameter("follow_land_morph",false)
 		var mantle:=ShaderMaterial.new()
 		mantle.shader=load("res://shaders/terrain_editor/stone_mantle.gdshader")
 		materials.stone_mantle=mantle
@@ -116,6 +118,7 @@ func flush_dirty(max_chunks:int=2)->int:
 		refreshed=true
 		_build_data=Data.new()
 		_build_data.seed=data.seed
+		_build_data.rocks.samples=data.rocks.samples.duplicate()
 		for cell in data.cells:_build_data.cells[cell]=data.cells[cell].duplicate()
 		contours.refresh(_build_data)
 		if decoration!=null:
@@ -146,7 +149,7 @@ func _rebuild(chunk:Vector2i)->void:
 	_pending_faces.erase(chunk)
 	_pending_bounds.erase(chunk)
 	var faces:=PackedVector3Array()
-	for kind in ["grass","cliff","water","waterfall","shore","stone_mantle"]:
+	for kind in ["grass","cliff","water","waterfall","shore","stone_mantle","sculpted_rock"]:
 		if geometry.has(kind):faces.append_array(geometry[kind].get_faces())
 	if decoration!=null:
 		for crown:Dictionary in decoration._columns:
@@ -316,6 +319,7 @@ func pick(ray_origin:Vector3,ray_direction:Vector3)->Dictionary:
 	var direction:=ray_direction.normalized()
 	var nearest:=INF
 	var position_hit:=Vector3.ZERO
+	var normal_hit:=Vector3.UP
 	for chunk:Vector2i in _pick_faces:
 		var box:AABB=_pick_bounds[chunk]
 		if box.intersects_ray(ray_origin,direction)==null:continue
@@ -324,7 +328,9 @@ func pick(ray_origin:Vector3,ray_direction:Vector3)->Dictionary:
 			var hit:Variant=Geometry3D.ray_intersects_triangle(ray_origin,direction,faces[i],faces[i+1],faces[i+2])
 			if hit==null:continue
 			var distance:float=ray_origin.distance_squared_to(hit)
-			if distance<nearest:nearest=distance;position_hit=hit
+			if distance<nearest:
+				nearest=distance;position_hit=hit
+				normal_hit=-(faces[i+1]-faces[i]).cross(faces[i+2]-faces[i]).normalized()
 	if not is_finite(nearest):return {}
 	var cell:=Vector2i(floori(position_hit.x),floori(position_hit.z))
 	if not _published_data.cells.has(cell):
@@ -344,4 +350,4 @@ func pick(ray_origin:Vector3,ray_direction:Vector3)->Dictionary:
 		for candidate:Vector2i in _published_data.cells:
 			var distance:=Vector2(position_hit.x,position_hit.z).distance_squared_to(Vector2(candidate)+Vector2(.5,.5))
 			if distance<closest:closest=distance;cell=candidate
-	return {"position":position_hit,"cell":cell}
+	return {"position":position_hit,"cell":cell,"normal":normal_hit}

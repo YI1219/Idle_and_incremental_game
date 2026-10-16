@@ -2,9 +2,9 @@ shader_type spatial;
 #include "terrain_morph.gdshaderinc"
 #include "cliff_palette.gdshaderinc"
 #include "stone_surface.gdshaderinc"
-// Separate crown/root solids: local y=0 anchors each body's own shoulder.
-// Crown tops are baked into the shared terrain surface; this material shades
-// the independent side bodies and the separately tapered roots.
+// Local y=0 anchors each retained shoulder/foot wall at the shared lawn.
+// Crown tops are baked into that surface; legacy separate roots also use
+// this material when an unfamiliar source needs the fallback.
 uniform float crown_cover = 1.0;
 varying vec3 local_position;
 varying vec3 column_origin;
@@ -33,10 +33,10 @@ void fragment(){
 	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
 	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;
 	stone*=.96+.08*streak;
-	stone*=mix(.87,1.0,smoothstep(-.85,.25,world_normal.y));
+	stone*=mix(.94,1.0,smoothstep(-.85,.25,world_normal.y));
 	// Metres below this body's shoulder; lower facets weather darker.
 	float below=column_origin.y-world_position.y;
-	stone*=mix(1.0,.86,smoothstep(1.6,4.2,below));
+	stone*=mix(1.0,.95,smoothstep(1.6,4.2,below));
  ALBEDO=stone_root_contact(stone,world_position,material_normal,column_origin.y,crown_cover);
 	ROUGHNESS=stone_map(world_position,material_normal).a;
 	SPECULAR=.16;

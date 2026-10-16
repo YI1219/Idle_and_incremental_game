@@ -121,6 +121,7 @@ func refresh(data:Data)->void:
 	_smooth_normals(surfaces.shore)
 	_smooth_normals(surfaces.bank)
 	_smooth_normals(surfaces.waterfall)
+	surfaces.sculpted_rock=preload("res://scripts/terrain_editor/rock_sculpt_mesh.gd").build(data.rocks)
 	surfaces.lake_bed=preload("res://scripts/terrain_editor/lake_bed.gd").build(self)
 	_index_triangles()
 
@@ -1096,6 +1097,7 @@ func build(chunk:Vector2i)->Dictionary:
 	var result:Dictionary={}
 	for kind in surfaces:
 		var local:Legacy.Surface=preload("res://scripts/terrain_editor/lake_bed.gd").BedSurface.new() if kind in ["lake_bed","grass"] else Legacy.Surface.new()
+		if kind=="sculpted_rock":local=preload("res://scripts/terrain_editor/rock_sculpt_mesh.gd").SculptSurface.new()
 		var vertices:PackedVector3Array=surfaces[kind].vertices
 		var colors:PackedColorArray=surfaces[kind].colors
 		var normals:PackedVector3Array=surfaces[kind].normals
@@ -1107,10 +1109,10 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
-				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed"]:
+				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
 				if kind in ["cliff","grass","rim_green","shore"]:

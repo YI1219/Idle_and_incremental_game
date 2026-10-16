@@ -1,0 +1,5 @@
+# Stone value rebalance — tone_final
+
+The user notes cumulative dark/muddy stone. Retained trial lifts the shared dry-stone multiplier .88→.94, reduces broad dark and brown deposit weights .58→.40/.25→.18, and eases extra side-body normal/depth darkening .87→.94/.86→.95. Physical lighting, crevice occlusion, mineral/detail maps and short cap-root soil/lichen remain. Stone relief/geometry and all default placement data remain unchanged. Physical-bed albedo uses its independent finish.
+
+Eleven final actual Godot captures are in the courtyard gallery; eight principal views were visually inspected. Slightly more open stone value is retained as a limited improvement, not full art acceptance. Wide panels, crown/grass hard cuts and non-integrated cliff accents remain. Time-varying clouds/water are not frozen between these matched-camera captures; no image-wide numeric brightness or performance claim is made. See rock_sculpt/render_checks.json for fresh capture/renderer checks; the parallel direct-sculpt shape trials are not default art.

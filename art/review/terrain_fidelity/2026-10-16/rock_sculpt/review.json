@@ -1,0 +1,22 @@
+{
+  "base": "24e29d8",
+  "reviewer": "/root/rock_sculpt_review",
+  "critical": [],
+  "important": [
+    {
+      "finding": "Sculpt inherited land-height morph and visually moved away from fixed picking during land edits",
+      "status": "fixed",
+      "red": "morph_red.json:10117 changing mask pixels; native exit1",
+      "green": "render_checks.json/morph_green:0 changing mask pixels at phases0/.5/1,16804foreground pixels; native exit0",
+      "fix": "cliff shader explicit follow_land_morph; sculpt material opts out"
+    }
+  ],
+  "deferred_minor": [
+    {
+      "finding": "Input test invokes _sculpt_at helper, not full native pointer to begin_paint/continue_paint route",
+      "scope": "toolbar/cursor/helper/undo verified; full native route remains unverified"
+    }
+  ],
+  "art": "sculpt1/sculpt2 rejected as default art; broad rounded sheet and old-rim/grass overlap remain. Tone final is a limited value change.",
+  "acceptance": "Prototype function only; full island art/target-device performance not accepted"
+}

@@ -7,6 +7,9 @@ const MAX_CELLS := 65536
 const HISTORY_LIMIT := 64
 var cells: Dictionary[Vector2i, Dictionary] = {}
 var seed: int = 7301
+const RockSculpt=preload("res://scripts/terrain_editor/rock_sculpt.gd")
+var rocks:=RockSculpt.new()
+var _rock_before:Dictionary={}
 var dirty_chunks: Dictionary = {}
 var revision := 0
 var _visited: Dictionary = {}
@@ -29,6 +32,7 @@ func begin_stroke() -> void:
 	_active = true
 	_visited.clear()
 	_before.clear()
+	_rock_before.clear()
 
 func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int) -> int:
 	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return 0
@@ -67,40 +71,54 @@ func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, heigh
 			changed += 1
 	return changed
 
-func end_stroke() -> void:
-	if not _active: return
-	if not _before.is_empty():
-		var after := {}
-		for cell in _before:
-			var value: Variant=cells.get(cell)
-			after[cell]=value.duplicate() if value!=null else null
-		_undo.append({"before":_before.duplicate(true),"after":after})
-		if _undo.size()>HISTORY_LIMIT: _undo.pop_front()
-		_redo.clear()
-	_active = false
-	_before.clear()
-	_visited.clear()
+func apply_rock_brush(center:Vector3,radius:float,tool:String,normal:=Vector3.UP)->int:
+	if not _active:begin_stroke()
+	var before:Dictionary=rocks.brush(center,radius,tool,normal)
+	for key:Vector3i in before:
+		if not _rock_before.has(key):_rock_before[key]=before[key]
+	_invalidate_rocks(before.keys())
+	return before.size()
 
-func _restore(values: Dictionary) -> void:
-	for cell: Vector2i in values:
-		if values[cell]==null: cells.erase(cell)
-		else: cells[cell]=values[cell].duplicate()
+func _invalidate_rocks(keys:Array)->void:
+	var changed:Dictionary={}
+	for key:Vector3i in keys:
+		var p:=Vector3(key)*RockSculpt.STEP
+		changed[Vector2i(floori(p.x),floori(p.z))]=true
+	for cell:Vector2i in changed:invalidate(cell)
+
+func end_stroke() -> void:
+	if not _active:return
+	if not _before.is_empty() or not _rock_before.is_empty():
+		var after:Dictionary={};var rock_after:Dictionary={}
+		for cell in _before:
+			var value:Variant=cells.get(cell)
+			after[cell]=value.duplicate() if value!=null else null
+		for key:Vector3i in _rock_before:rock_after[key]=rocks.samples.get(key)
+		_undo.append({"before":_before.duplicate(true),"after":after,"rock_before":_rock_before.duplicate(),"rock_after":rock_after})
+		if _undo.size()>HISTORY_LIMIT:_undo.pop_front()
+		_redo.clear()
+	_active=false;_before.clear();_visited.clear();_rock_before.clear()
+
+func _restore(values:Dictionary,rock_values:Dictionary={}) -> void:
+	for cell:Vector2i in values:
+		if values[cell]==null:cells.erase(cell)
+		else:cells[cell]=values[cell].duplicate()
 		invalidate(cell)
+	rocks.restore(rock_values)
+	_invalidate_rocks(rock_values.keys())
 
 func undo() -> bool:
 	end_stroke()
-	if _undo.is_empty(): return false
-	var entry: Dictionary = _undo.pop_back()
-	_restore(entry.before)
-	_redo.append(entry)
+	if _undo.is_empty():return false
+	var entry:Dictionary=_undo.pop_back()
+	_restore(entry.before,entry.get("rock_before",{}));_redo.append(entry)
 	return true
 
 func redo() -> bool:
 	end_stroke()
-	if _redo.is_empty(): return false
-	var entry: Dictionary = _redo.pop_back()
-	_restore(entry.after)
-	_undo.append(entry)
+	if _redo.is_empty():return false
+	var entry:Dictionary=_redo.pop_back()
+	_restore(entry.after,entry.get("rock_after",{}));_undo.append(entry)
 	return true
 
 func water_mask(cell: Vector2i) -> int:
@@ -118,13 +136,18 @@ func serialize() -> Dictionary:
 	keys.sort_custom(func(a: Vector2i,b: Vector2i): return a.y<b.y or (a.y==b.y and a.x<b.x))
 	for cell: Vector2i in keys:
 		records.append({"x":cell.x,"z":cell.y,"height":cells[cell].height,"water":cells[cell].water})
-	return {"version":1,"seed":seed,"cells":records}
+	var payload:Dictionary={"version":1,"seed":seed,"cells":records}
+	if not rocks.samples.is_empty():
+		payload.version=2;payload.rocks=rocks.records()
+	return payload
 
 static func _number(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value))
 
 func deserialize(payload: Dictionary) -> bool:
-	if payload.get("version")!=1 or not _number(payload.get("seed")): return false
+	if (payload.get("version")!=1 and payload.get("version")!=2) or not _number(payload.get("seed")): return false
+	var candidate_rocks=preload("res://scripts/terrain_editor/rock_sculpt.gd").new()
+	if payload.version==2 and not candidate_rocks.load_records(payload.get("rocks")):return false
 	if float(payload.seed)!=floorf(float(payload.seed)) or absf(float(payload.seed))>2147483647: return false
 	var records: Variant=payload.get("cells")
 	if not records is Array or records.size()>MAX_CELLS: return false
@@ -143,6 +166,9 @@ func deserialize(payload: Dictionary) -> bool:
 		candidate[cell]={"height":float(record.height),"water":int(record.water)}
 	end_stroke()
 	for cell: Vector2i in cells: invalidate(cell)
+	_invalidate_rocks(rocks.samples.keys())
+	rocks=candidate_rocks
+	_invalidate_rocks(rocks.samples.keys())
 	cells = candidate
 	seed = int(payload.seed)
 	for cell: Vector2i in cells: invalidate(cell)
@@ -153,6 +179,8 @@ func deserialize(payload: Dictionary) -> bool:
 func make_preset(kind: int) -> void:
 	end_stroke()
 	for cell: Vector2i in cells: invalidate(cell)
+	_invalidate_rocks(rocks.samples.keys())
+	rocks.samples.clear()
 	cells.clear()
 	_undo.clear()
 	_redo.clear()

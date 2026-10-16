@@ -1,0 +1,23 @@
+[
+  {
+    "test": "terrain_rock_sculpt_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.378828875,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH joined strokes: vertices=15720 open=0 inward=0\nSCULPT MESH initial: vertices=4968 open=0 inward=0\nSCULPT MESH carved: vertices=5136 open=0 inward=0\nROCK SCULPT: 29/29\n"
+  },
+  {
+    "test": "sculpt2_capture",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 64.502870167,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:49:48.329 godot[20902:126832] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 08:50:03.336 godot[20902:126832] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nROCK SCULPT CAPTURES: 6 samples=13168\n"
+  },
+  {
+    "test": "terrain_rock_sculpt_input_test",
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 29.923072708000007,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 08:50:52.801 godot[21101:128759] +[IMKClient subclass]: chose IMKClient_Modern\nROCK SCULPT INPUT: 8/8\n"
+  }
+]

@@ -1,0 +1,4 @@
+{
+  "exit_code": 0,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCRIPT ERROR: Parse Error: Could not preload resource script \"res://scripts/terrain_editor/terrain_data.gd\".\n          at: GDScript::reload (res://tests/terrain_rock_sculpt_test.gd:2)\nSCRIPT ERROR: Parse Error: Could not resolve script \"res://scripts/terrain_editor/terrain_data.gd\".\n          at: GDScript::reload (res://tests/terrain_rock_sculpt_test.gd:2)\nERROR: Failed to load script \"res://tests/terrain_rock_sculpt_test.gd\" with error \"Parse error\".\n   at: load (modules/gdscript/gdscript_resource_format.cpp:46)\n"
+}

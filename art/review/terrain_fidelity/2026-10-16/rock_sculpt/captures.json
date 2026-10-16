@@ -1,0 +1,48 @@
+{
+	"captures": [
+		{
+			"draw_calls": 669.0,
+			"error": 0,
+			"file": "before_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 677.0,
+			"error": 0,
+			"file": "sculpt2_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 745.0,
+			"error": 0,
+			"file": "sculpt2_overview.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 629.0,
+			"error": 0,
+			"file": "sculpt2_reverse.png",
+			"position": "(-30.34978, 9.0, -0.38091)",
+			"rotation": "(-28.0, -105.0, 0.0)"
+		},
+		{
+			"draw_calls": 677.0,
+			"error": 0,
+			"file": "sculpt2_carved.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 677.0,
+			"error": 0,
+			"file": "sculpt2_undo.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		}
+	],
+	"samples": 13168,
+	"source": "Actual Godot runtime; authored same production brush API. Study only; default prefab unchanged."
+}

@@ -150,3 +150,18 @@ Previous turn made authoritative progress and pushed29c0863 (continuous base nor
 - [x] Reproduce active model0extra-depth/36detached roots in new integration regression; initial parse failure discarded, corrected red test exits1. Blender work copies v1/v2/v3 keep topology634/816 and closed positive volume, original source hashes protected.
 - [x] Neutral models and11matched actual views inspected; selectv1, reject shorter v2 band and too-heavy v3.
 - [x]16 headless checks pass, compression2185/0/1186 and editor339/339 pass. Corrected regeneration42/42 observed; temporary log/exit-status loss at continuation explicitly recorded. Review supports limited retention; root-depth test update preserves thresholds. Docs/gallery ready for reversible checkpoint. Full goal remains active.
+
+
+## Direct rock sculpting — October16 user correction
+
+The user explicitly rejects "player builds a mountain, then the system combines stones". Player and prefab author must directly sculpt the same rock/mountain volume. First implement additive/subtractive/planar volume brushes in authoritative TerrainData, mesh their result, publish/pick it through the terrain renderer, and reuse these exact brushes for an authored example. This is not an automatic rock scatter/assembly pass. Existing scene sources remain until the sculpted sample is visually accepted. Sparse signed-distance samples permit overhangs and cuts rather than another stepped height-only facade. A .25m lattice is a first quality/cost choice, not final performance acceptance.
+
+- [x] Write failing direct-volume tests: connected add strokes, subtraction, bounded plane cut, finite outward closed mesh, mixed terrain/rock undo/redo, atomic save/load, invalid-input rejection.
+- [x] Implement `rock_sculpt.gd` (sparse bounded field and brush patches) and `rock_sculpt_mesh.gd` (deterministic shared-edge tetrahedral contouring). Keep shape authored, with no implicit extra rock placement.
+- [x] Integrate authoritative samples/history/serialization into TerrainData, snapshot/publication/picking into the renderer, and three brush choices/cursor into the existing editor.
+- [x] Reuse the production brush API for a representative authored cliff group; inspect actual engine before/after/edit/cut captures. Keep a study if quality is insufficient; do not claim a prototype is final island art or replace the whole rim blindly.
+- [x] Run affected data/runtime/editor checks and one fresh independent review; update current status and push reversible work. Finish restrained stone-value balancing separately from the new shape evidence.
+
+Review focus: negative/chunk-crossing brush coordinates; empty/dry/wet terrain and volume-only layouts; brush size/sample-limit atomicity; invalid load preserving history/current data; snapshot picking matching the published mesh. Independent original sources and current island/pond footprint remain preserved.
+
+Direct-sculpt checkpoint:volume29/29,published9/9,legacy data301/301/runtime22/22 and affected support/closure checks pass. Native editor339/339,input-helper8/8,regeneration42/42 and11default tone_final captures pass. Independent Important morph/pick mismatch fixed with red→green actual-render fixture(10,117→0silhouette changes);post-fix volume/runtime pass. Minor native full-pointer-route coverage deferred. Both sculpt1/sculpt2 forms rejected; no replacement of default cliffs. Direct volume tooling does not yet integrate the existing base/grass coverage, and full lookdev acceptance remains open.
