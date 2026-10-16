@@ -1,0 +1,41 @@
+{
+	"captures": [
+		{
+			"draw_calls": 418.0,
+			"error": 0,
+			"file": "cutstone1_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 467.0,
+			"error": 0,
+			"file": "cutstone1_overview.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 386.0,
+			"error": 0,
+			"file": "cutstone1_reverse.png",
+			"position": "(-30.34978, 9.0, -0.38091)",
+			"rotation": "(-28.0, -105.0, 0.0)"
+		},
+		{
+			"draw_calls": 504.0,
+			"error": 0,
+			"file": "cutstone1_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 486.0,
+			"error": 0,
+			"file": "cutstone1_bottom.png",
+			"position": "(12.0, -14.0, 21.0)",
+			"rotation": "(27.25203, 33.69007, 0.0)"
+		}
+	],
+	"samples": 4049,
+	"source": "Actual Godot unified-base study"
+}

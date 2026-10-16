@@ -1,0 +1,22 @@
+{
+  "shoulder": {
+    "exit_code": 0,
+    "passed": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH shoulder: vertices=5304 open=0 inward=0\nROCK SHOULDER: 14/14\n"
+  },
+  "base": {
+    "exit_code": 0,
+    "passed": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTHIN SCULPT SUPPORT: probes=55 mismatches=0\nSCULPT BASE: 23/23 vertices=114432 invalid_edges=0\n"
+  },
+  "tufts": {
+    "exit_code": 0,
+    "passed": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=42027 uploaded=105825 triangles=35202 roots=248 unsupported=0 invalid=0 passed=true\n"
+  },
+  "pointer": {
+    "exit_code": 0,
+    "passed": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE PUBLISHED: triangles=30704 invalid_edges=0\nSCULPT BASE INPUT: 13/13\n2026-10-16 11:39:52.647 godot[63033:552087] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  }
+}

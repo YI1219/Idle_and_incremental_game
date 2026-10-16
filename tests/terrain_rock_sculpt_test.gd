@@ -58,12 +58,12 @@ func run():
  check(not copy.rocks.load_records(oversized),'Oversized sample loads rejected before iteration')
  print('ROCK SCULPT: ',checks-failures,'/',checks)
  quit(1 if failures else 0)
-func inspect(surface,field,label:String):
+func inspect(surface,field,label:String,normal_probe:float=.04):
  var edges={};var normals=0;var finite=0
  for i in range(0,surface.vertices.size(),3):
   var a:Vector3=surface.vertices[i];var b:Vector3=surface.vertices[i+1];var c:Vector3=surface.vertices[i+2]
   var normal=-(b-a).cross(c-a).normalized();var center=(a+b+c)/3
-  if field.value_at(center+normal*.04)<field.value_at(center-normal*.04)-.0001:normals+=1
+  if field.value_at(center+normal*normal_probe)<field.value_at(center-normal*normal_probe)-.0001:normals+=1
   for j in 3:
    var p:Vector3=surface.vertices[i+j];var q:Vector3=surface.vertices[i+(j+1)%3]
    if not p.is_finite() or not surface.normals[i+j].is_finite() or surface.normals[i+j].length()<.99:finite+=1

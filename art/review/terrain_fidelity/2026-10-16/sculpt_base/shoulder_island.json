@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "passed": true,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHOULDER ISLAND: vertices=752976 components=1 invalid_edges=0 samples=19205 same_cells=true passed=true\n"
+}

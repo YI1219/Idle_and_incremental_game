@@ -1,0 +1,56 @@
+{
+  "shoulder_final": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.53084397315979,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH shoulder: vertices=5304 open=0 inward=0\nROCK SHOULDER: 15/15\n"
+  },
+  "shoulder_tufts": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 8.956241846084595,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nRIM TUFT: raised blade vertices=40280 uploaded=101508 triangles=33769 roots=238 unsupported=0 invalid=0 passed=true\n"
+  },
+  "shoulder_compression": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 7.4453959465026855,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:09:50.416 godot[73142:622363] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:09:57.016 godot[73142:622363] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nLIP COMPRESSION RENDER: { \"standing_pixels\": 2251, \"compressed_pixels\": 0, \"local_mask_pixels\": 1785, \"passed\": true }\n"
+  },
+  "shoulder_material": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.998211145401001,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:09:57.688 godot[73155:622889] +[IMKClient subclass]: chose IMKClient_Modern\nSCULPT BASE UNDERSIDE MATERIAL: foreground=11236 pond_tag_changes=0 valid_bed_changes=11236 passed=true\n"
+  },
+  "shoulder_shore": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 55.15272617340088,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHORE STONE CONTACT default: stones=83 failures=0\nSHORE STONE CONTACT dry: stones=68 failures=0\nSHORE STONE CONTACT raise: stones=84 failures=0\nSHORE STONE CONTACT contract: stones=67 failures=0\nSHORE STONE CONTACT: probes=3526 failures=0\n"
+  },
+  "shoulder_vine": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 56.81679582595825,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":338,\"fixture\":\"default\",\"max_absolute_gap\":0.0250011757016182,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":338,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250011757016182,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":348,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250014066696167,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":351,\"fixture\":\"expand\",\"max_absolute_gap\":0.025001086294651,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":368,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250011757016182,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n"
+  },
+  "legacy_volume": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.371243953704834,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH joined strokes: vertices=15720 open=0 inward=0\nSCULPT MESH initial: vertices=4968 open=0 inward=0\nSCULPT MESH carved: vertices=5136 open=0 inward=0\nROCK SCULPT: 29/29\n"
+  },
+  "legacy_data": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.19143414497375488,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN EDITOR DATA: 301/301 passed\n"
+  },
+  "legacy_render": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.231623888015747,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:11:51.163 godot[73709:633950] +[IMKClient subclass]: chose IMKClient_Modern\nTERRAIN EDITOR RENDER: 339/339 passed\n"
+  }
+}

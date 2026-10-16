@@ -1,0 +1,42 @@
+extends RefCounted
+## Throwaway art spike. If accepted, the brush must move into the player API.
+static func author(data)->void:
+ data.begin_stroke()
+ # Tall shoulder, recessed turn, low neighbor: deliberately unequal fronts.
+ _stamp(data,Vector3(-16.2,1.5,3.0),1.95,-.30)
+ _stamp(data,Vector3(-14.0,1.0,4.0),1.55,.18)
+ _stamp(data,Vector3(-12.3,.7,4.75),1.15,-.12)
+ _stamp(data,Vector3(-16.25,3.10,2.8),1.05,-.30)
+ data.end_stroke()
+static func _stamp(data,center:Vector3,radius:float,yaw:float)->void:
+ var field=data.rocks;var step:float=field.STEP;var reach:=radius*1.8+.5
+ var lo:=Vector3i(((center-Vector3.ONE*reach)/step).floor());var hi:=Vector3i(((center+Vector3.ONE*reach)/step).ceil())
+ var turn:=Basis(Vector3.UP,-yaw)
+ var planes:Array=[
+  [Vector3(.98,.08,.12).normalized(),.72],
+  [Vector3(-.94,.06,-.22).normalized(),.76],
+  [Vector3(.18,.03,.98).normalized(),.68],
+  [Vector3(-.65,.12,.76).normalized(),.68],
+  [Vector3(-.12,.05,-.99).normalized(),.70],
+  [Vector3(.12,.99,-.10).normalized(),.70],
+  [Vector3(.15,-.95,.24).normalized(),.75],
+  [Vector3(.03,-.85,.53).normalized(),.40],
+  [Vector3(.68,.55,.49).normalized(),.90],
+  [Vector3(-.45,.8,.39).normalized(),.85]]
+ var patch:Dictionary={};var old:Dictionary={}
+ for z in range(lo.z,hi.z+1):
+  for y in range(lo.y,hi.y+1):
+   for x in range(lo.x,hi.x+1):
+    var key:=Vector3i(x,y,z);var world:=Vector3(key)*step
+    var p:Vector3=turn*(world-center)/radius;p.y/=1.55
+    p+=Vector3(sin(p.y*2.3+p.z*.7),sin(p.z*2.1-p.x*.6),sin(p.x*2.2+p.y*.6))*.025
+    var sdf:=-INF
+    for plane:Array in planes:sdf=maxf(sdf,p.dot(plane[0])-plane[1])
+    var value:float=minf(field.node_value(key),sdf*radius)
+    if value==field.node_value(key):continue
+    value=roundf(clampf(value,-.5,.5)*100000.0)/100000.0
+    if absf(value)<.00001:value=.00002
+    old[key]=field.samples.get(key);patch[key]=value
+ for key in old:
+  if not data._rock_before.has(key):data._rock_before[key]=old[key]
+ field.restore(patch);data._invalidate_rocks(patch.keys())

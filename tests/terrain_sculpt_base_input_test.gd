@@ -36,6 +36,13 @@ func run():
   for child in chunk.get_children():kinds[child.name]=true
  check(kinds.has('sculpted_terrain') and not kinds.has('grass') and not kinds.has('cliff'),'Published geometry has one base skin')
  check(not kinds.has('cliff_column_0') and not kinds.has('rim_outcrop_0'),'Converted volume has no old cliff-model overlay')
+ if tools.item_count<=9:check(false,'Player tool list has no shoulder brush');editor.free();viewport.queue_free();quit(1);return
+ tools.select(9);tools.item_selected.emit(9);editor.radius=.75
+ check(editor.tool=='rock_shoulder' and editor.begin_paint(screen),'Public pointer route starts the geological shoulder brush')
+ editor.continue_paint(screen);editor.cancel_input()
+ while editor.renderer.has_pending_updates():editor.renderer.flush_dirty(64)
+ var grown=editor.data.serialize();hit=editor._pointer(screen)
+ check(grown!=before and not hit.is_empty() and hit.position.y>3.5,'Published shoulder rises from original ground and is picked')
  var edges:Dictionary={};var triangles:=0
  for chunk in editor.renderer.chunks.values():
   var skin=chunk.get_node('sculpted_terrain')
@@ -50,6 +57,7 @@ func run():
   if count!=2:invalid+=1
  check(invalid==0,'Actual published unified skin remains closed at chunk seams')
  print('SCULPT BASE PUBLISHED: triangles=',triangles,' invalid_edges=',invalid)
+ check(editor.data.undo() and editor.data.serialize()==before,'Player shoulder stroke undoes to exact original terrain')
  editor.free();viewport.queue_free()
  print('SCULPT BASE INPUT: ',checks-failures,'/',checks)
  quit(1 if failures else 0)

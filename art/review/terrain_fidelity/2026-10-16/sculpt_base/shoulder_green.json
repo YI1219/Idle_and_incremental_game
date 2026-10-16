@@ -1,0 +1,4 @@
+{
+  "exit_code": 1,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCULPT MESH shoulder: vertices=5304 open=0 inward=1\nROCK SHOULDER: 13/14\nERROR: shoulder: finite outward geometry and shading\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/terrain_rock_sculpt_test.gd:7)\n       [1] inspect (res://tests/terrain_rock_sculpt_test.gd:78)\n       [2] run (res://tests/terrain_rock_shoulder_test.gd:9)\n"
+}

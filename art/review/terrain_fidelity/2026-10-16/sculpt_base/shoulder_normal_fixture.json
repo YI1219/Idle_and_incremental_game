@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSUSPECT (-0.535112, 0.964888, -0.285112)(-0.528845, 1.0, -0.278845)(-0.595298, 1.0, -0.25) area=0.00261278264225 N=(-0.387633, 0.228579, -0.893024)\n0.04 outside=0.00991865414143 inside=0.01012531910419\n0.01 outside=0.0024796578598 inside=-0.0017215417099\n0.001 outside=0.00024796067476 inside=-0.0002479691577\n0.0001 outside=0.00002478554249 inside=-0.00002479402542\n",
+  "conclusion": "The4cm inward probe crosses a neighboring face and exits the solid;1mm local probes have correct opposite signs. Legacy probe defaults stay unchanged."
+}

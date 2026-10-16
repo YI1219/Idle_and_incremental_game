@@ -110,19 +110,19 @@ static func sculpt_lip(field,assets:Dictionary):
     var a:=loop[e];var b:=loop[(e+1)%loop.size()];var length:=a.distance_to(b)
     if length<.15:continue
     var tangent:=(b-a).normalized();var out:=Vector2(tangent.y,-tangent.x)
-    var count:=maxi(1,ceili(length/.7))
+    var count:=maxi(1,ceili(length/.58))
     for k in count:
      var p:=a.lerp(b,(k+.25+.5*_hash(a+Vector2(k,h)))/count)-out*.13
      var choice:=_hash(p*2.1+Vector2(h,7))
-     if choice<.28:continue
+     if choice<.40:continue
      var ground:Dictionary=field.surface_at(p)
      if ground.is_empty() or ground.water>=0 or absf(ground.height-h)>.12:continue
      for fan in 2:
       var at:=p+tangent*(fan-.5)*.12-out*.035*fan
       var sample:Dictionary=field.surface_at(at)
       if sample.is_empty() or sample.water>=0 or absf(sample.height-h)>.12:continue
-      var scale:float=(.13+.09*choice-.035*fan)/maxf(box.size.y,.001)
-      var basis:=Basis(Vector3(tangent.x,0,tangent.y),-.50-.25*choice)*Basis(Vector3.UP,choice*TAU+fan*1.9)
+      var scale:float=(.20+.10*choice-.055*fan)/maxf(box.size.y,.001)
+      var basis:=Basis(Vector3(tangent.x,0,tangent.y),-.35-.25*choice)*Basis(Vector3.UP,choice*TAU+fan*1.9)
       basis=basis.scaled(Vector3.ONE*scale)
       var pose:=Transform3D(basis,Vector3(at.x,sample.height-.012,at.y)-basis*foot)
       var start:=result.vertices.size()

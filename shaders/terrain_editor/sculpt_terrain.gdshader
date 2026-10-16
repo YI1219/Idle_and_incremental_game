@@ -5,14 +5,14 @@ shader_type spatial;
 #include "stone_surface.gdshaderinc"
 #include "wet_bank.gdshaderinc"
 // This single world-anchored skin carries grass, rock and shallow mineral bed.
-// Vertex R is physical top cover; UV is authored cap/water height.
+// Vertex R is top cover, G marks original grass contact; UV is cap/water height.
 uniform bool show_grid = false;
 varying vec3 world_position;
 void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;}
 void fragment(){
  vec3 n=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
  vec3 stone=stone_surface(world_position,n);
- stone=stone_root_contact(stone,world_position,n,UV.x,UV.y<0.0?1.0:0.0);
+ stone=stone_root_contact(stone,world_position,n,UV.x,UV.y<0.0?COLOR.g:0.0);
  float cover=clamp(COLOR.r,0.0,1.0);
  vec2 slope=vec2(0.0);
  if(cover>.001){

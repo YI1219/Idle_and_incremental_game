@@ -76,9 +76,11 @@ func inspect(field,deco,kind:String,pose:Transform3D)->void:
 func run()->void:
  var data:=Data.new();data.make_preset(0);var deco:=Deco.new();deco.load_assets()
  for state in ['default','dry','raise','contract']:
-  if state!='default':
-   data.make_preset(0);data.begin_stroke();data.apply_brush(Vector2(-3,0) if state=='dry' else Vector2(12,4),3.0,state,false,1.5,3);data.end_stroke()
+  data.make_preset(0)
   if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
+  if OS.get_cmdline_user_args().has('shoulder'):load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
+  if state!='default':
+   data.begin_stroke();data.apply_brush(Vector2(-3,0) if state=='dry' else Vector2(12,4),3.0,state,false,1.5,3);data.end_stroke()
   var field:=Field.new();field.refresh(data);deco.contours=field
   var chunks:Dictionary={};var count:=0;var before:=failures
   for cell in data.cells:chunks[Data.chunk_of(cell)]=true

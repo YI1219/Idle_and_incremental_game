@@ -11,7 +11,10 @@ func wall_fixture(levels:Array)->RefCounted:
  for z:float in levels:surface.quad(Vector3(-1,-1,z),Vector3(-1,1,z),Vector3(1,1,z),Vector3(1,-1,z),Color.WHITE)
  field.surfaces={'cliff':surface};field._index_triangles();return field
 func run():
- var data=Data.new();data.make_preset(0);var initial=data.serialize()
+ var data=Data.new();data.make_preset(0)
+ if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
+ if OS.get_cmdline_user_args().has('shoulder'):load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
+ var initial=data.serialize()
  var deco=Decoration.new();deco.load_assets()
  var center=Vector3.ZERO
  var vertices:PackedVector3Array=deco.assets.vine[0].mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]

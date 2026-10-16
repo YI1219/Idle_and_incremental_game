@@ -1,0 +1,25 @@
+{
+  "shoulder4": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 31.077590227127075,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 7 samples=2225 skin_vertices=720612\n2026-10-16 11:44:44.747 godot[63839:558349] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 11:45:10.042 godot[63839:558349] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+  },
+  "legacy_initial": {
+    "passed": false,
+    "exit_code": -999,
+    "reason": "180s process timeout killed helper: print referenced a unified-only surface after all seven legacy captures. Diagnostic helper fixed and rerun; not a production renderer failure."
+  },
+  "legacy_shoulder4": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 37.14466595649719,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:01:26.121 godot[69720:600338] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:01:26.121 godot[69720:600338] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=0\n"
+  },
+  "plain_shoulder4": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 31.244468927383423,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:02:02.963 godot[69945:602525] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:02:28.227 godot[69945:602525] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nSCULPT BASE CAPTURES: 7 samples=0 skin_vertices=716796\n"
+  }
+}

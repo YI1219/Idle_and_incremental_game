@@ -194,7 +194,7 @@ func _sculpt_center(hit:Dictionary)->Vector3:
 	var center:Vector3=hit.position
 	var normal:Vector3=hit.get("normal",Vector3.UP)
 	var size:=minf(radius,4.0)
-	if tool=="rock_add":center+=normal*size*.25
+	if tool in ["rock_add","rock_shoulder"]:center+=normal*size*.25
 	elif tool=="rock_plane":center-=normal*size*.12
 	return center
 func _sculpt_at(screen:Vector2,hit:Dictionary)->void:
@@ -229,6 +229,7 @@ func _update_brush(screen:Vector2)->void:
 				var point:=Vector3(cos(angle)*size,0,sin(angle)*size)
 				if ring==1:point=Vector3(point.x,point.z,0)
 				elif ring==2:point=Vector3(0,point.x,point.z)
+				if tool=="rock_shoulder":point.y*=1.55
 				mesh.surface_add_vertex(point)
 	mesh.surface_end()
 	brush.mesh=mesh

@@ -4,7 +4,10 @@ const Field=preload("res://scripts/terrain_editor/contour_terrain.gd")
 const Deco=preload("res://scripts/terrain_editor/terrain_decoration.gd")
 func _initialize():call_deferred("run")
 func run():
- var data:=Data.new();data.make_preset(0);var field:=Field.new();field.refresh(data)
+ var data:=Data.new();data.make_preset(0)
+ if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
+ if OS.get_cmdline_user_args().has('shoulder'):load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
+ var field:=Field.new();field.refresh(data)
  var deco:=Deco.new();deco.load_assets();deco._column_layout(field,data.seed)
  var cover=field.surfaces.rim_green;var raised:=0;var unsupported:=0;var invalid:=0;var roots:Dictionary={}
  for i in cover.vertices.size():
@@ -13,6 +16,10 @@ func run():
   if p.y>h+.30 or not p.is_finite() or not cover.normals[i].is_finite() or absf(cover.normals[i].length()-1.0)>.002:invalid+=1
   roots[Vector3(anchor.x,h,anchor.y)]=true
  for root:Vector3 in roots:
+  if data.sculpt_base_enabled:
+   var ground:Dictionary=field.surface_at(Vector2(root.x,root.z))
+   if ground.is_empty() or ground.water>=0 or absf(ground.height-root.y)>.015:unsupported+=1
+   continue
   if not field.contains(field.rim_regions[root.y],Vector2(root.x,root.z)):
    unsupported+=1;print('UNSUPPORTED TUFT ROOT: ',root)
  var uploaded:=0

@@ -22,11 +22,12 @@ func gradient(key:Vector3i)->Vector3:
  return Vector3(node_value(key+Vector3i.RIGHT)-node_value(key-Vector3i.RIGHT),node_value(key+Vector3i.UP)-node_value(key-Vector3i.UP),node_value(key+Vector3i.BACK)-node_value(key-Vector3i.BACK)).normalized()
 func brush(center:Vector3,radius:float,tool:String,normal:=Vector3.UP)->Dictionary:
  if not center.is_finite() or not is_finite(radius) or radius<.25 or radius>4.0:return {}
- if tool not in ['rock_add','rock_cut','rock_plane']:return {}
- if tool=='rock_plane' and (not normal.is_finite() or normal.length_squared()<.0001):return {}
- var reach:=radius+AIR
+ if tool not in ['rock_add','rock_cut','rock_plane','rock_shoulder']:return {}
+ if tool in ['rock_plane','rock_shoulder'] and (not normal.is_finite() or normal.length_squared()<.0001):return {}
+ var reach:=radius*(1.8 if tool=='rock_shoulder' else 1.0)+AIR
  if absf(center.x)+reach>1024 or absf(center.z)+reach>1024 or center.y-reach< -16 or center.y+reach>24:return {}
  normal=normal.normalized()
+ var stone_turn:=Basis(Vector3.UP,-atan2(normal.x,normal.z)) if Vector2(normal.x,normal.z).length_squared()>.0001 else Basis.IDENTITY
  var lo:=Vector3i(((center-Vector3.ONE*reach)/STEP).floor())
  var hi:=Vector3i(((center+Vector3.ONE*reach)/STEP).ceil())
  var next:Dictionary={};var before:Dictionary={};var size:=samples.size()
@@ -38,6 +39,7 @@ func brush(center:Vector3,radius:float,tool:String,normal:=Vector3.UP)->Dictiona
     match tool:
      'rock_add':value=minf(old,distance-radius)
      'rock_cut':value=maxf(old,radius-distance)
+     'rock_shoulder':value=minf(old,preload('res://scripts/terrain_editor/rock_shoulder_brush.gd').distance(stone_turn*(p-center)/radius)*radius)
      'rock_plane':
       var weight:=1.0-smoothstep(radius*.65,radius,distance)
       value=lerpf(old,maxf(old,(p-center).dot(normal)),weight)

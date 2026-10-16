@@ -1,0 +1,6 @@
+{
+  "exit_code": 0,
+  "passed": true,
+  "seconds": 20.51898503303528,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:12:24.471 godot[73870:637739] +[IMKClient subclass]: chose IMKClient_Modern\nSCULPT BASE PUBLISHED: triangles=30704 invalid_edges=0\nSCULPT BASE INPUT: 13/13\n"
+}

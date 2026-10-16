@@ -11,6 +11,7 @@ var low:=Vector3i.ZERO
 var size:=Vector3i.ZERO
 var values:=PackedFloat32Array()
 var surface_cells:Array[Vector3i]=[]
+var horizontal_distances:Array[PackedFloat32Array]=[]
 func configure(records:Dictionary)->bool:
  if not fits(records):return false
  cells=records.duplicate(true)
@@ -31,12 +32,15 @@ func configure(records:Dictionary)->bool:
  low=Vector3i(lo.x*4-3,floori(minf(-4.9,float(levels[0])-1.8)/STEP),lo.y*4-3)
  var high:=Vector3i(hi.x*4+3,ceili((float(levels[-1])+AIR)/STEP),hi.y*4+3)
  size=high-low+Vector3i.ONE
+ for h:float in levels:
+  var grid:=PackedFloat32Array();grid.resize(size.x*size.z);horizontal_distances.append(grid)
  values.resize(size.x*size.y*size.z)
  for z in size.z:
   for x in size.x:
    var p:=Vector2(x+low.x,z+low.z)*STEP
    var distances:Array[float]=[]
    for h:float in levels:distances.append(_distance(regions[h],p))
+   for i in levels.size():horizontal_distances[i][z*size.x+x]=distances[i]
    var floor_y:=minf(-4.5,float(levels[0])-1.4)+.12*sin(p.x*.37+p.y*.17)+.07*sin(p.y*.46-p.x*.13)
    for y in size.y:
     var py:float=(y+low.y)*STEP;var value:=AIR
@@ -88,9 +92,21 @@ func tag(p:Vector3,n:Vector3)->Dictionary:
  var record:=record_at(Vector2(p.x,p.z));var h:float=record.get('height',p.y-2.0)
  var water:float=float(record.get('water',-1))*.5 if record.get('water',-1)>=0 else -1.0
  var grass:=0.0
+ var dry_contact:=0.0
  if not record.is_empty() and water<0:
+  dry_contact=1.0-smoothstep(.08,.20,_cover_distance(Vector2(p.x,p.z),h))
   grass=(1.0-smoothstep(.025,.10,absf(p.y-h)))*smoothstep(.05,.45,n.y)
- return {'color':Color(grass,0,0,1),'uv':Vector2(h,water)}
+  # A nearby dry record alone is insufficient: outboard authored rock must
+  # not receive lawn paint. A small margin preserves the original cap lip.
+  grass*=dry_contact
+ return {'color':Color(grass,dry_contact,0,1),'uv':Vector2(h,water)}
+func _cover_distance(p:Vector2,h:float)->float:
+ var i:=levels.find(h)
+ if i<0:return INF
+ var q:=p/STEP-Vector2(low.x,low.z);var cell:=Vector2i(q.floor());var f:=q-Vector2(cell)
+ if cell.x<0 or cell.y<0 or cell.x+1>=size.x or cell.y+1>=size.z:return INF
+ var grid:PackedFloat32Array=horizontal_distances[i];var at:=cell.y*size.x+cell.x
+ return lerpf(lerpf(grid[at],grid[at+1],f.x),lerpf(grid[at+size.x],grid[at+size.x+1],f.x),f.y)
 static func _distance(loops:Array,p:Vector2)->float:
  var distance:=INF;var winding:=0
  for loop:PackedVector2Array in loops:

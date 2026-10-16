@@ -177,3 +177,11 @@ The previous volume brush trial is functional but overlays retained cliffs/caps 
 - [x] Inspect representative and whole actual views; reject clay/sheet geometry and grey/painted lip. Only adopt visual improvements. Run affected fresh checks/review, update current status and push reversible checkpoint.
 
 Coherent-base checkpoint: original-ground carve, closed skin, actual pointer/picking/undo, version3 save/load and base-budget tests pass. Review found and fixed atomic history restoration and thin-ledge support; red→green evidence retained. Wet-bottom material contamination fixed with actual rendered positive/negative controls. Default art remains tone_final; coherent-base studies are rejected for broad/rounded or coarse forms. Five-view base5 is functional-stage evidence only. Finite shore/vine support and legacy regressions pass; target-device cost, arbitrary sculpted water routing and final art remain open.
+
+## Directly authored geological shoulder — current continuation
+
+Base5's sphere/short-plane strokes still make clay-like walls. Larger plane cuts were actually tested and rejected for sheeting and loss of nearby lawn. Prototype an unequal convex shoulder brush with a basal inward plane, keeping its lower end within the common island body. If useful as a local shape improvement, expose that exact brush through the player API; do not retain a private prefab-only shape path. Keep the default until the whole scene is artistically accepted. Limit derived cover to the original grass footprint so new stone cannot inherit distant lawn paint; enlarge retained grass fans in irregular groups only, without cuffs.
+
+- [x] Preserve rejected plane/straight-foot studies; implement the chosen shoulder brush through bounded atomic volume edits/history/save and actual pointer use.
+- [x] Check original grass coverage, native rooted tuft/compression and sculpted mesh support; retain only useful art changes.
+- [x] Capture seven matched views including a correctly framed grass join; review shape and contacts separately from function, update current evidence and push.

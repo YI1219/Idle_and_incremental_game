@@ -13,7 +13,10 @@ func capture()->Image:
 func run():
  for arg in OS.get_cmdline_user_args():
   if arg.begins_with("out="):OUT=arg.trim_prefix("out=")
- var data:=Data.new();data.make_preset(0);var field:=Field.new();field.refresh(data)
+ var data:=Data.new();data.make_preset(0)
+ if OS.get_cmdline_user_args().has('unified'):data.set_sculpt_base(true)
+ if OS.get_cmdline_user_args().has('shoulder'):load('res://tools/art/author_unified_cliff_cutstone.gd').full_island(data)
+ var field:=Field.new();field.refresh(data)
  var deco:=Deco.new();deco.load_assets();deco._column_layout(field,data.seed)
  var renderer:=Renderer.new();renderer.configure(data)
  viewport=SubViewport.new();viewport.size=Vector2i(768,512);viewport.own_world_3d=true;viewport.transparent_bg=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)

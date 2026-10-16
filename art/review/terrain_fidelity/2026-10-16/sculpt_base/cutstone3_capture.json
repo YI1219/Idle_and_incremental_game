@@ -1,0 +1,6 @@
+{
+  "exit_code": 0,
+  "passed": true,
+  "seconds": 31.31253409385681,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nSCULPT BASE CAPTURES: 7 samples=2492 skin_vertices=720612\n2026-10-16 10:19:22.635 godot[43502:420745] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 10:19:48.461 godot[43502:420745] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+}
