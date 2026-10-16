@@ -1,0 +1,7 @@
+<!doctype html><meta charset="utf-8"><title>岩肩连接研究</title><style>body{margin:24px;background:#e9e7df;color:#303933;font:16px system-ui}p{max-width:1080px;line-height:1.7}select{font:inherit;padding:8px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}img{width:100%}figure{margin:0}section{margin-top:24px}</style>
+<h1>岩肩与草沿 · 局部实验</h1><p>默认仍为 spall_finish1。本页是未采用的局部诊断：真实原岩面法线只略微加强转折；填土产生平草台和尖角，舍弃。稀疏草丛、低草初版因细碎面过滤丢失叶片，不能据此否定完整草丛；修正版保留完整原叶片，但仍未解决宽灰肩。均未达到参考图质量。</p>
+<label>左侧<select id="base"><option value="exposed_cleft1">既有局部形体</option><option value="cliff_planes1" selected>原岩面法线</option></select></label>
+ <label>右侧<select id="stage"><option value="cliff_planes1">原岩面法线</option><option value="shoulder_clusters1">稀疏草丛 · 叶片缺失</option><option value="shoulder_soil1">填土 · 舍弃</option><option value="shoulder_mats1">低草初版 · 叶片缺失</option><option value="shoulder_mats2" selected>低草 · 完整叶片</option></select></label>
+<main id="views"></main><p>15张新实机图，其中6张叶片缺失图只作为故障证据。3张既有局部对照沿用旧图；水体相位固定，云雾仍实时变化。没有整岛推广、性能或美术通过声明。</p>
+
+<script>function draw(){views.innerHTML=['close','grass','reverse'].map(v=>`<section><h2>${v}</h2><div class="pair"><figure><img src="${base.value}_${v}.png"></figure><figure><img src="${stage.value}_${v}.png"></figure></div></section>`).join('')}base.onchange=stage.onchange=draw;draw()</script>

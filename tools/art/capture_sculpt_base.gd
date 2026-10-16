@@ -82,6 +82,7 @@ func run():
  if args.has('crownroots2'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'crownroots2')
  if args.has('crownroots3'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'crownroots3')
  if args.has('exposedcleft'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'exposedcleft')
+ if args.has('shouldersoil'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'shouldersoil')
  if args.has('worn') or args.has('worn2') or args.has('worn3'):
   var source_report:Dictionary=preload('res://tools/art/worn_cliff_sources.gd').install(editor.renderer.decoration,'v3' if args.has('worn3') else ('v2' if args.has('worn2') else 'v1'),args.has('wearsmooth'))
   FileAccess.open(OUT+tag+'_worn_sources.json',FileAccess.WRITE).store_string(JSON.stringify(source_report,'\t'))
@@ -99,6 +100,7 @@ func run():
  if args.has('fieldnormals'):
   var before:Array=[];transform_state(editor.renderer,before)
   var report:Dictionary=preload('res://tools/art/field_gradient_normals.gd').apply(editor.renderer.contours,editor.data.rocks)
+  if args.has('sourceplanes'):report['source_plane_transfer']=preload('res://tools/art/apply_cliff_planes.gd').apply(editor.renderer.contours)
   var replaced:=0
   for chunk in editor.renderer.chunks:
    var instance:MeshInstance3D=editor.renderer.chunks[chunk].get_node_or_null('sculpted_terrain')
@@ -115,6 +117,33 @@ func run():
   assert(report.transform_buffer_sha256_before==report.transform_buffer_sha256_after)
   FileAccess.open(OUT+tag+'_field_normals.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
   print('FIELD GRADIENT NORMALS: ',JSON.stringify(report))
+ if args.has('shoulderclusters') or args.has('shouldermats'):
+  var before:Array=[];transform_state(editor.renderer.props,before)
+  var field=editor.renderer.contours;var skin=field.surfaces.sculpted_terrain
+  var skin_before:=[bytes_hash(skin.vertices.to_byte_array()),bytes_hash(skin.normals.to_byte_array()),bytes_hash(skin.colors.to_byte_array()),bytes_hash(skin.uv.to_byte_array())]
+  var rim=field.surfaces.rim_green;var prefix_count:int=rim.vertices.size()
+  var rim_before:=[rim.vertices.to_byte_array(),rim.normals.to_byte_array(),rim.colors.to_byte_array(),rim.uv.to_byte_array(),rim.uv2.to_byte_array()]
+  var report:Dictionary=preload('res://tools/art/shoulder_grass_mats.gd').apply(field,editor.renderer.decoration.assets) if args.has('shouldermats') else preload('res://tools/art/shoulder_grass_clusters.gd').apply(field,editor.renderer.decoration.assets)
+  assert(rim_before==[rim.vertices.slice(0,prefix_count).to_byte_array(),rim.normals.slice(0,prefix_count).to_byte_array(),rim.colors.slice(0,prefix_count).to_byte_array(),rim.uv.slice(0,prefix_count).to_byte_array(),rim.uv2.slice(0,prefix_count).to_byte_array()])
+  var changed:=0
+  if args.has('shouldermats'):
+   var canopy:=MeshInstance3D.new();canopy.name='shoulder_canopy_study';canopy.mesh=report._canopy_surface.mesh();canopy.material_override=editor.renderer.materials.rim_green
+   editor.renderer.add_child(canopy);report.erase('_canopy_surface');report['uploaded_vertex_occurrences']=canopy.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX].size();changed=1
+   assert(report.uploaded_vertex_occurrences==report.added_vertex_occurrences)
+  for chunk in ([] if args.has('shouldermats') else editor.renderer.chunks.keys()):
+   var meshes:Dictionary=field.build(chunk)
+   if not meshes.has('rim_green'):continue
+   var instance:MeshInstance3D=editor.renderer.chunks[chunk].get_node_or_null('rim_green')
+   if instance==null:
+    instance=MeshInstance3D.new();instance.name='rim_green';instance.material_override=editor.renderer.materials.rim_green;editor.renderer.chunks[chunk].add_child(instance)
+   instance.mesh=meshes.rim_green;changed+=1
+  var after:Array=[];transform_state(editor.renderer.props,after)
+  assert(bytes_hash(var_to_bytes(before))==bytes_hash(var_to_bytes(after)))
+  assert(skin_before==[bytes_hash(skin.vertices.to_byte_array()),bytes_hash(skin.normals.to_byte_array()),bytes_hash(skin.colors.to_byte_array()),bytes_hash(skin.uv.to_byte_array())])
+  report['props_transform_buffer_sha256']=bytes_hash(var_to_bytes(after));report['terrain_attributes_unchanged']=true;report['meshes_replaced']=changed
+  report['existing_rim_prefix_unchanged']=true
+  FileAccess.open(OUT+tag+'_shoulder_clusters.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
+  print('SHOULDER CLUSTERS: ',JSON.stringify(report))
  if args.has('grasspatch') or args.has('grasspatch2') or args.has('grasspatch3') or args.has('grassarc') or args.has('grassworld'):
   var field=editor.renderer.contours
   var deco=editor.renderer.decoration

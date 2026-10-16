@@ -1,0 +1,21 @@
+# Actual shoulder/contact diagnosis
+
+2026-10-17. All candidates remain unaccepted. Default `spall_finish1` and production files remain unchanged from `480f702`. The latest [user target](../../../../source/visual_targets/2026-10-16/cliff_user_target.png) is still an unachieved finish/form target. Local gallery: [actual matched views](http://127.0.0.1:18771/cliff_finish.html).
+
+The actual retained `exposed_cleft1` skin has 6.1545m² of grey upward-facing shoulders in the bounded probe, including 5.3789m² below the flat cap. This is primarily real sloping stone, not simply a missing green cap color. Continuous green paint or more surface noise would conceal the structural issue.
+
+| Study | Actual result | Decision |
+| --- | --- | --- |
+| `cliff_planes1` | Transfer normals from nearby actual original triangles and exposed bridge planes; modestly firmer turns, unchanged geometry | Diagnostic only. Molded shoulders, broad wall and hanging lower lobe remain |
+| `shoulder_clusters1` | Sparse original-leaf fans on supported shoulders | Technically incomplete source-fan trial: the terrain triangle-area cutoff retained 9,777 of 18,135 source vertex occurrences. Its screenshots show the actual partial geometry; do not use them to reject a complete-fan hypothesis |
+| `shoulder_soil1` | Fourteen small authoritative soil lobes tied to existing lawn/support | Reject: flat green tongue, sharp grey projections and stepped joins. 79 rounded write attempts are only 74 effective saved-node changes above 1e-6; five air-to-solid changes, zero removals |
+| `shoulder_mats1` | Low leaf canopy, initial publication | Technically incomplete: only 10,302 of 180,885 source vertex occurrences survived the terrain area cutoff |
+| `shoulder_mats2` | Complete low original-source leaves, separately uploaded with the existing rim material | Reject promotion. Slightly denser connected patches still look like small blades planted on a broad grey shelf; reverse silhouette barely changes. No observed painted bleed, gloss or plastic regression |
+
+The corrected full-canopy trial generates **389 × 465 = 180,885** source vertex occurrences and asserts that all are uploaded. Only that diagnostic uses a separate tool mesh; the production terrain cutoff is unchanged. It does not create a new ground surface, cuff, source asset or player feature. The five existing rim attribute prefixes, four skin attributes and prop transforms remain unchanged. The normal-only path replaces only twenty existing skin meshes and asserts unchanged uploaded vertices/colors/UVs and renderer transforms/buffers.
+
+Low-root samples query the authoritative dry skin and embed by at most about 1.4cm. This is finite sampled-root evidence, not proof for every leaf point or arbitrary player edits. Sparse fan anchors can reach Y3.501 although their selected group centers are below Y3.49. All native cap reports have zero unsupported anchor samples/open boundaries/ambiguous junctions.
+
+There are **15 new actual native local images** (three views per study): nine faithful controls/studies and six incomplete source-fan images, plus three reused matched local baseline images. Cameras and water phase1.25 match; clouds/mist remain live. Hashes, source provenance, delivered-leaf counts, ordinary soil-save checks and clean logs are bound by [validation.json](validation.json). An initial sparse-trial parse failure is preserved separately and excluded from valid captures. The validator initially detected an inflated soil-change count; the writer now separates rounding attempts from effective saved differences, without changing the captured save bytes.
+
+Parent and [independent review](independent_review.md) agree on no promotion. The next bounded direction must correct one actual shoulder's width and establish stronger broken rock planes through the same editable geometry. Do not repeat grass-density sweeps, painted shoulders, flat capsule fill or global closing. Previous `exposed_cleft1` still contains its inherited 96-triangle orphan; topology was not rerun or fixed here. No fresh whole/far/shore/water, full editor/regeneration/picking, arbitrary-sculpture or target-device acceptance. Full goal remains active/incomplete; no external model-delivery blocker is established.

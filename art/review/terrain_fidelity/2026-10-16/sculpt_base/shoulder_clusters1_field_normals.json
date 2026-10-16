@@ -1,0 +1,25 @@
+{
+	"gradient_nodes": 10759,
+	"meshes_replaced": 20,
+	"normal_occurrences_changed": 119104,
+	"scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+	"source_plane_transfer": {
+		"input_normal_sha256": "391dda95f9e00616f3d95f4b5034fa5523a58765b41c5eae6cb334dd14cf78f7",
+		"input_vertex_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+		"normal_occurrences_changed": 64694.0,
+		"operation": "Nearest real original triangle planes or exposed bridge halfspace planes, only within.18m and normal agreement>.72. Distance/angular confidence blends at most.65; cap fadeY3.15–3.45. Bridge transfer only belowY1 and facing its original outward frame. No density/vertices/colors/UV/material/decor change. Not a crease-angle sweep or geometry improvement claim; actual native isolation required.",
+		"original_source_sha256": "4b604f5b914b83715a7fedfba4a9da5825385c59decdc9cacd56552681316be7",
+		"output_normal_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+		"root_source_sha256": "8af611747046b1ba39d21aa62e72071a67f47799da648fc236b200481b2bb0ac",
+		"source_kind_counts": {
+			"bridge": 21719.0,
+			"original": 42975.0
+		},
+		"unique_input_samples": 124203.0,
+		"vertices": 722388.0
+	},
+	"transform_buffer_sha256_after": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+	"transform_buffer_sha256_before": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+	"unique_sample_points": 19854,
+	"uploaded_geometry_color_uv_unchanged": true
+}

@@ -1,0 +1,510 @@
+{
+  "new_native_local_frames": 15,
+  "faithful_native_local_frames": 9,
+  "technically_incomplete_canopy_frames": 6,
+  "reused_local_control_frames": 3,
+  "production_unchanged_from": "480f702",
+  "plane_report": {
+    "vertices": 722388,
+    "normal_occurrences_changed": 64694,
+    "unique_input_samples": 124203,
+    "source_kind_counts": {
+      "original": 42975,
+      "bridge": 21719
+    },
+    "input_vertex_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+    "input_normal_sha256": "391dda95f9e00616f3d95f4b5034fa5523a58765b41c5eae6cb334dd14cf78f7",
+    "output_normal_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+    "original_source_sha256": "4b604f5b914b83715a7fedfba4a9da5825385c59decdc9cacd56552681316be7",
+    "root_source_sha256": "8af611747046b1ba39d21aa62e72071a67f47799da648fc236b200481b2bb0ac",
+    "operation": "Nearest real original triangle planes or exposed bridge halfspace planes, only within.18m and normal agreement>.72. Distance/angular confidence blends at most.65; cap fadeY3.15\u20133.45. Bridge transfer only belowY1 and facing its original outward frame. No density/vertices/colors/UV/material/decor change. Not a crease-angle sweep or geometry improvement claim; actual native isolation required."
+  },
+  "skin_report": {
+    "cap": {
+      "ambiguous_junctions": 0,
+      "grass_anchor_count": 531,
+      "loops": 2,
+      "open_boundaries": 0,
+      "painted_flat_cap_vertex_occurrences": 123771,
+      "section_y": 3.4634917,
+      "source_fans": true,
+      "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+      "unsupported_anchor_samples": 0
+    },
+    "grey_below_cap_area": 5.37886188060884,
+    "grey_triangles": 794,
+    "normal": {
+      "gradient_nodes": 10759,
+      "normal_occurrences_changed": 119104,
+      "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+      "unique_sample_points": 19854
+    },
+    "scope": "Actual local-lead upper skin with cap/fan and field-normal diagnostics; upward facesY3.0..3.501, normalY>=.55, boundedXZ. No production change.",
+    "upward_green_area": 93.9343626907271,
+    "upward_grey_area": 6.15448486302508,
+    "vertices": 722388
+  },
+  "max_normal_unit_error": 1.2991907549775306e-07,
+  "soil_report": {
+    "input_save_sha256": "eb480e75120dd0d997927752e5be46d7e6dd3b269803b45927f21d715a2dcd71",
+    "anchors_sha256": "ba771320dce0604142dfdce3e68650586b9ebaa513a2f68721d67e9570ffd2cd",
+    "save_sha256": "09c328289acb0666bb08b6347ee1805509f40e22572cd8877cd8228c3e5236d4",
+    "groups": 14,
+    "filled_columns": 85,
+    "rounded_write_attempts": 79,
+    "changed_nodes": 74,
+    "added_sign_nodes": 5,
+    "removed_sign_nodes": 0,
+    "samples": 26729,
+    "operation": "Ordinary shared editable volume fill of14sparse .30m-radius XZ capsules from actual sloping shoulder groups to their nearby real lawn cap. FillY3.0..3.5 only where originalY3.0node is already solid. Fixed vertical cap distance keeps new upper plane at grade. Existing solids/upper rocks remain; no separate decorative ground, source asset or green side-paint. Quarter-grid result is unaccepted until actual native review. changed_nodes counts effective differences>1e-6; rounded_write_attempts also includes sub-threshold rounding of existing values."
+  },
+  "captures": {
+    "cliff_planes1": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 419.0,
+            "error": 0,
+            "file": "cliff_planes1_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 346.0,
+            "error": 0,
+            "file": "cliff_planes1_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 380.0,
+            "error": 0,
+            "file": "cliff_planes1_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "a21f275822299d9d9c7426b8b3648ace82400d09d184552a909ec831e1a73df3",
+        "samples": 26727,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "043e655eab068a8acfa8321c2fb029d05aeb03eed7e88533cc3272a83dff8748",
+        "skin_normals_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+        "skin_uv_sha256": "9c72ae2e9346ce00eec8ca8370e6a2c9cb0e526ae5e28a3e820fc26408e65e16",
+        "skin_vertices_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "png_sha256": {
+        "cliff_planes1_close.png": "da44740793c96538308215bdd9e20db15fc6d20b68aaf118ed71da78e95cc1a4",
+        "cliff_planes1_grass.png": "f318fa110d9a5a5a7a8a12470431c37ecc40f942ccec3299310279d135e4cec2",
+        "cliff_planes1_reverse.png": "f40ca0801c979134103e202b0f1920d578a6d5aba5e8428cb3927de88064119c"
+      },
+      "cap": {
+        "ambiguous_junctions": 0,
+        "grass_anchor_count": 531,
+        "loops": 2,
+        "open_boundaries": 0,
+        "painted_flat_cap_vertex_occurrences": 123771,
+        "section_y": 3.4634917,
+        "source_fans": true,
+        "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+        "unsupported_anchor_samples": 0
+      },
+      "normal_diagnostic": {
+        "gradient_nodes": 10759,
+        "meshes_replaced": 20,
+        "normal_occurrences_changed": 119104,
+        "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+        "source_plane_transfer": {
+          "input_normal_sha256": "391dda95f9e00616f3d95f4b5034fa5523a58765b41c5eae6cb334dd14cf78f7",
+          "input_vertex_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+          "normal_occurrences_changed": 64694.0,
+          "operation": "Nearest real original triangle planes or exposed bridge halfspace planes, only within.18m and normal agreement>.72. Distance/angular confidence blends at most.65; cap fadeY3.15\u20133.45. Bridge transfer only belowY1 and facing its original outward frame. No density/vertices/colors/UV/material/decor change. Not a crease-angle sweep or geometry improvement claim; actual native isolation required.",
+          "original_source_sha256": "4b604f5b914b83715a7fedfba4a9da5825385c59decdc9cacd56552681316be7",
+          "output_normal_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+          "root_source_sha256": "8af611747046b1ba39d21aa62e72071a67f47799da648fc236b200481b2bb0ac",
+          "source_kind_counts": {
+            "bridge": 21719.0,
+            "original": 42975.0
+          },
+          "unique_input_samples": 124203.0,
+          "vertices": 722388.0
+        },
+        "transform_buffer_sha256_after": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+        "transform_buffer_sha256_before": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+        "unique_sample_points": 19854,
+        "uploaded_geometry_color_uv_unchanged": true
+      },
+      "faithful_for_art_judgment": true
+    },
+    "shoulder_clusters1": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 419.0,
+            "error": 0,
+            "file": "shoulder_clusters1_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 346.0,
+            "error": 0,
+            "file": "shoulder_clusters1_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 381.0,
+            "error": 0,
+            "file": "shoulder_clusters1_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "a21f275822299d9d9c7426b8b3648ace82400d09d184552a909ec831e1a73df3",
+        "samples": 26727,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "043e655eab068a8acfa8321c2fb029d05aeb03eed7e88533cc3272a83dff8748",
+        "skin_normals_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+        "skin_uv_sha256": "9c72ae2e9346ce00eec8ca8370e6a2c9cb0e526ae5e28a3e820fc26408e65e16",
+        "skin_vertices_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "png_sha256": {
+        "shoulder_clusters1_close.png": "d085a5c8f368f5ea99ad27e2f26e1f549954b228be32ed1458160f5d00e2fe21",
+        "shoulder_clusters1_grass.png": "a31102ec8280d0c5dadd32cc2ed7591cb1e162c832daddd3ccbd4721e17c3e6a",
+        "shoulder_clusters1_reverse.png": "7dbe6bfbafab8bf7a445aa60d5315896f73487269f171c5a3930115c625dc917"
+      },
+      "cap": {
+        "ambiguous_junctions": 0,
+        "grass_anchor_count": 531,
+        "loops": 2,
+        "open_boundaries": 0,
+        "painted_flat_cap_vertex_occurrences": 123771,
+        "section_y": 3.4634917,
+        "source_fans": true,
+        "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+        "unsupported_anchor_samples": 0
+      },
+      "normal_diagnostic": {
+        "gradient_nodes": 10759,
+        "meshes_replaced": 20,
+        "normal_occurrences_changed": 119104,
+        "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+        "source_plane_transfer": {
+          "input_normal_sha256": "391dda95f9e00616f3d95f4b5034fa5523a58765b41c5eae6cb334dd14cf78f7",
+          "input_vertex_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+          "normal_occurrences_changed": 64694.0,
+          "operation": "Nearest real original triangle planes or exposed bridge halfspace planes, only within.18m and normal agreement>.72. Distance/angular confidence blends at most.65; cap fadeY3.15\u20133.45. Bridge transfer only belowY1 and facing its original outward frame. No density/vertices/colors/UV/material/decor change. Not a crease-angle sweep or geometry improvement claim; actual native isolation required.",
+          "original_source_sha256": "4b604f5b914b83715a7fedfba4a9da5825385c59decdc9cacd56552681316be7",
+          "output_normal_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+          "root_source_sha256": "8af611747046b1ba39d21aa62e72071a67f47799da648fc236b200481b2bb0ac",
+          "source_kind_counts": {
+            "bridge": 21719.0,
+            "original": 42975.0
+          },
+          "unique_input_samples": 124203.0,
+          "vertices": 722388.0
+        },
+        "transform_buffer_sha256_after": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+        "transform_buffer_sha256_before": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+        "unique_sample_points": 19854,
+        "uploaded_geometry_color_uv_unchanged": true
+      },
+      "faithful_for_art_judgment": false
+    },
+    "shoulder_soil1": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 419.0,
+            "error": 0,
+            "file": "shoulder_soil1_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 346.0,
+            "error": 0,
+            "file": "shoulder_soil1_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 381.0,
+            "error": 0,
+            "file": "shoulder_soil1_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "a06132dce227265e11331ab3e03d2b5974b9f6a75ac808c8d98bfbe7e31071e0",
+        "samples": 26729,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "7f938ce0709276c7ece8330b8c5d8e1c8d9a7375f2703e658782983d4b951cfb",
+        "skin_normals_sha256": "7e934a43e2dcd808ad2a0fad4558672e4365bfe4e93df24f32048bfd377b4208",
+        "skin_uv_sha256": "a625632cdbae5ecd692a35e2eb0a898e5d7e8df09cc8cad349c6d143c6e17159",
+        "skin_vertices_sha256": "74e1d22896b772afb6177add18ec75048660d7e0e76a05147f43f19595602d1f",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "png_sha256": {
+        "shoulder_soil1_close.png": "b104a7c5f2f51b1fb84896087fb83595ebe8bd2e15773dbd9944dcbb00738832",
+        "shoulder_soil1_grass.png": "7586a04528b5cf70852ae34468c317e659929aeee253e13f32ccbe80376aac2f",
+        "shoulder_soil1_reverse.png": "654531d7bedf2024bff455e1f1b819261daf9f95fa2e5095fc5d316cca8b6d89"
+      },
+      "cap": {
+        "ambiguous_junctions": 0,
+        "grass_anchor_count": 534,
+        "loops": 2,
+        "open_boundaries": 0,
+        "painted_flat_cap_vertex_occurrences": 124563,
+        "section_y": 3.4634917,
+        "source_fans": true,
+        "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+        "unsupported_anchor_samples": 0
+      },
+      "normal_diagnostic": {
+        "gradient_nodes": 10759,
+        "meshes_replaced": 20,
+        "normal_occurrences_changed": 119152,
+        "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+        "transform_buffer_sha256_after": "281b4a26d17d41e5ad9d3fe76127a5abcf50429b95ebf546240364cc72e05071",
+        "transform_buffer_sha256_before": "281b4a26d17d41e5ad9d3fe76127a5abcf50429b95ebf546240364cc72e05071",
+        "unique_sample_points": 19862,
+        "uploaded_geometry_color_uv_unchanged": true
+      },
+      "faithful_for_art_judgment": true
+    },
+    "shoulder_mats1": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 419.0,
+            "error": 0,
+            "file": "shoulder_mats1_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 346.0,
+            "error": 0,
+            "file": "shoulder_mats1_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 380.0,
+            "error": 0,
+            "file": "shoulder_mats1_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "a21f275822299d9d9c7426b8b3648ace82400d09d184552a909ec831e1a73df3",
+        "samples": 26727,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "043e655eab068a8acfa8321c2fb029d05aeb03eed7e88533cc3272a83dff8748",
+        "skin_normals_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+        "skin_uv_sha256": "9c72ae2e9346ce00eec8ca8370e6a2c9cb0e526ae5e28a3e820fc26408e65e16",
+        "skin_vertices_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "png_sha256": {
+        "shoulder_mats1_close.png": "6db4bb6985931c2f9a6f74a66f557d0a5d84189590ceb4a44b2ce9bbbcf7121f",
+        "shoulder_mats1_grass.png": "9495ea10f4dd9542115d22a4caeef2936745d1521a9c65cf55b0f806b666d2f2",
+        "shoulder_mats1_reverse.png": "7f72c94f1f42b6e875b31b6ae2b139dabe385e5fe3d9ff390339d2d7207b1bbd"
+      },
+      "cap": {
+        "ambiguous_junctions": 0,
+        "grass_anchor_count": 531,
+        "loops": 2,
+        "open_boundaries": 0,
+        "painted_flat_cap_vertex_occurrences": 123771,
+        "section_y": 3.4634917,
+        "source_fans": true,
+        "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+        "unsupported_anchor_samples": 0
+      },
+      "normal_diagnostic": {
+        "gradient_nodes": 10759,
+        "meshes_replaced": 20,
+        "normal_occurrences_changed": 119104,
+        "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+        "source_plane_transfer": {
+          "input_normal_sha256": "391dda95f9e00616f3d95f4b5034fa5523a58765b41c5eae6cb334dd14cf78f7",
+          "input_vertex_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+          "normal_occurrences_changed": 64694.0,
+          "operation": "Nearest real original triangle planes or exposed bridge halfspace planes, only within.18m and normal agreement>.72. Distance/angular confidence blends at most.65; cap fadeY3.15\u20133.45. Bridge transfer only belowY1 and facing its original outward frame. No density/vertices/colors/UV/material/decor change. Not a crease-angle sweep or geometry improvement claim; actual native isolation required.",
+          "original_source_sha256": "4b604f5b914b83715a7fedfba4a9da5825385c59decdc9cacd56552681316be7",
+          "output_normal_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+          "root_source_sha256": "8af611747046b1ba39d21aa62e72071a67f47799da648fc236b200481b2bb0ac",
+          "source_kind_counts": {
+            "bridge": 21719.0,
+            "original": 42975.0
+          },
+          "unique_input_samples": 124203.0,
+          "vertices": 722388.0
+        },
+        "transform_buffer_sha256_after": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+        "transform_buffer_sha256_before": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+        "unique_sample_points": 19854,
+        "uploaded_geometry_color_uv_unchanged": true
+      },
+      "faithful_for_art_judgment": false
+    },
+    "shoulder_mats2": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 423.0,
+            "error": 0,
+            "file": "shoulder_mats2_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 351.0,
+            "error": 0,
+            "file": "shoulder_mats2_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 384.0,
+            "error": 0,
+            "file": "shoulder_mats2_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "a21f275822299d9d9c7426b8b3648ace82400d09d184552a909ec831e1a73df3",
+        "samples": 26727,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "043e655eab068a8acfa8321c2fb029d05aeb03eed7e88533cc3272a83dff8748",
+        "skin_normals_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+        "skin_uv_sha256": "9c72ae2e9346ce00eec8ca8370e6a2c9cb0e526ae5e28a3e820fc26408e65e16",
+        "skin_vertices_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "png_sha256": {
+        "shoulder_mats2_close.png": "39d69e89d74fb12f07046e33b2ebe0f844d12013a1a04bbc909d034b0e3ea9d9",
+        "shoulder_mats2_grass.png": "52f69446f150787e3c6f164b4877877933bb333e2857d18c9253d37aca54889a",
+        "shoulder_mats2_reverse.png": "4e61be14de17e9073902c7b5911f9c09704267ff72c65915b92bfd0f18c0d86a"
+      },
+      "cap": {
+        "ambiguous_junctions": 0,
+        "grass_anchor_count": 531,
+        "loops": 2,
+        "open_boundaries": 0,
+        "painted_flat_cap_vertex_occurrences": 123771,
+        "section_y": 3.4634917,
+        "source_fans": true,
+        "stage": "Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.",
+        "unsupported_anchor_samples": 0
+      },
+      "normal_diagnostic": {
+        "gradient_nodes": 10759,
+        "meshes_replaced": 20,
+        "normal_occurrences_changed": 119104,
+        "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+        "source_plane_transfer": {
+          "input_normal_sha256": "391dda95f9e00616f3d95f4b5034fa5523a58765b41c5eae6cb334dd14cf78f7",
+          "input_vertex_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+          "normal_occurrences_changed": 64694.0,
+          "operation": "Nearest real original triangle planes or exposed bridge halfspace planes, only within.18m and normal agreement>.72. Distance/angular confidence blends at most.65; cap fadeY3.15\u20133.45. Bridge transfer only belowY1 and facing its original outward frame. No density/vertices/colors/UV/material/decor change. Not a crease-angle sweep or geometry improvement claim; actual native isolation required.",
+          "original_source_sha256": "4b604f5b914b83715a7fedfba4a9da5825385c59decdc9cacd56552681316be7",
+          "output_normal_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+          "root_source_sha256": "8af611747046b1ba39d21aa62e72071a67f47799da648fc236b200481b2bb0ac",
+          "source_kind_counts": {
+            "bridge": 21719.0,
+            "original": 42975.0
+          },
+          "unique_input_samples": 124203.0,
+          "vertices": 722388.0
+        },
+        "transform_buffer_sha256_after": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+        "transform_buffer_sha256_before": "5918962e8d1ed0dd945b2474810121c6e50bb8ef46dfac6baeddeb65bf72aca4",
+        "unique_sample_points": 19854,
+        "uploaded_geometry_color_uv_unchanged": true
+      },
+      "faithful_for_art_judgment": true
+    }
+  },
+  "grass": {
+    "shoulder_clusters1": {
+      "added_vertex_occurrences": 9777,
+      "clusters": 14,
+      "fans": 39,
+      "max_root_height_error": 0.0140001191033257,
+      "meshes_replaced": 20,
+      "old_vertex_occurrences": 196395,
+      "props_transform_buffer_sha256": "2e1af498762e191538f4a90bb7c49f62e2fd015224a7a35cee9bd63b4d0e48f2",
+      "rejected_fans": 0,
+      "root_vertex_occurrences": 2145,
+      "scope": "Tool-only sparse source-leaf clusters on actual dry shoulderY3.12..3.49, supported normalY>=.60 and nearby lawn. Roots drape to authoritative skin. Existing rim prefix preserved; no ground-color/shape or source-asset changes. Not a persistent player/editor feature.",
+      "terrain_attributes_unchanged": true,
+      "report_sha256": "72fd7360b00e738416913145ada92f2e76bc5b4d3a8ae30d66821b23a34fc5c8"
+    },
+    "shoulder_mats1": {
+      "added_vertex_occurrences": 10302,
+      "existing_rim_prefix_unchanged": true,
+      "fans": 389,
+      "max_root_height_error": 0.014000116423361,
+      "meshes_replaced": 20,
+      "old_vertex_occurrences": 196395,
+      "patches": 14,
+      "props_transform_buffer_sha256": "2e1af498762e191538f4a90bb7c49f62e2fd015224a7a35cee9bd63b4d0e48f2",
+      "rejected_fans": 0,
+      "root_vertex_occurrences": 21395,
+      "scope": "Tool-only low source-leaf canopy groups between actual lawn and supported shoulders, heights.065..12m, frayed source-root distribution. All root samples drape to authoritative skin. No terrain fill, cuff shell, painted side-color or source-asset change. Not persistent editor behavior or performance acceptance.",
+      "terrain_attributes_unchanged": true,
+      "report_sha256": "7305fc3508130eccd58d56dc57af0d2193f85e42fd3141114651525bd2dd084a"
+    },
+    "shoulder_mats2": {
+      "added_vertex_occurrences": 180885,
+      "all_source_leaf_triangles_preserved": true,
+      "existing_rim_prefix_unchanged": true,
+      "fans": 389,
+      "max_root_height_error": 0.014000116423361,
+      "meshes_replaced": 1,
+      "old_vertex_occurrences": 196395,
+      "patches": 14,
+      "props_transform_buffer_sha256": "2e1af498762e191538f4a90bb7c49f62e2fd015224a7a35cee9bd63b4d0e48f2",
+      "rejected_fans": 0,
+      "root_vertex_occurrences": 21395,
+      "scope": "Tool-only low source-leaf canopy groups between actual lawn and supported shoulders, heights.065..12m, frayed source-root distribution. All sampled low roots drape to authoritative skin. Separately uploaded with existing rim material to avoid terrain-sized triangle-area culling. No terrain fill, cuff shell, painted side-color or source-asset change. Not persistent editor behavior or performance acceptance.",
+      "source_fan_vertex_occurrences": 465,
+      "terrain_attributes_unchanged": true,
+      "uploaded_vertex_occurrences": 180885,
+      "report_sha256": "e76370d7ff42a080fa25ce3330f4f68a617e1beb284a02b9622a2ae3e3b8d161"
+    }
+  },
+  "source_leaf_count_controls": {
+    "shoulder_clusters1": {
+      "source_vertex_occurrences_per_fan": 465,
+      "expected_source_vertex_occurrences": 18135,
+      "generated_vertex_occurrences": 9777
+    },
+    "shoulder_mats1": {
+      "source_vertex_occurrences_per_fan": 465,
+      "expected_source_vertex_occurrences": 180885,
+      "generated_vertex_occurrences": 10302
+    },
+    "shoulder_mats2": {
+      "source_vertex_occurrences_per_fan": 465,
+      "expected_source_vertex_occurrences": 180885,
+      "generated_vertex_occurrences": 180885
+    }
+  },
+  "scope": "Actual matched local near/contact/reverse only. Six sparse/initial-canopy views lost valid source leaves to terrain-sized triangle filtering and cannot reject the full-source hypothesis. Corrected mats2 preserves and uploads all original leaf triangles. No fresh whole/far/water, topology, arbitrary editing, full-leaf support, regeneration/picking or device-performance acceptance. Existing exposed-cleft orphan96tri remains inherited. All variants tool-only; no default promotion."
+}

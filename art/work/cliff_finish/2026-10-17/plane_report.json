@@ -1,0 +1,15 @@
+{
+  "vertices": 722388,
+  "normal_occurrences_changed": 64694,
+  "unique_input_samples": 124203,
+  "source_kind_counts": {
+    "original": 42975,
+    "bridge": 21719
+  },
+  "input_vertex_sha256": "f4090f7f19c5e6f3ffd4842fff158f123f5ab824419af8ababbfb9d832fd3c43",
+  "input_normal_sha256": "391dda95f9e00616f3d95f4b5034fa5523a58765b41c5eae6cb334dd14cf78f7",
+  "output_normal_sha256": "83b8ccc4bc7892c9ae13b64d01fbf017e58d944b1316b29d564f0c560ce2e222",
+  "original_source_sha256": "4b604f5b914b83715a7fedfba4a9da5825385c59decdc9cacd56552681316be7",
+  "root_source_sha256": "8af611747046b1ba39d21aa62e72071a67f47799da648fc236b200481b2bb0ac",
+  "operation": "Nearest real original triangle planes or exposed bridge halfspace planes, only within.18m and normal agreement>.72. Distance/angular confidence blends at most.65; cap fadeY3.15\u20133.45. Bridge transfer only belowY1 and facing its original outward frame. No density/vertices/colors/UV/material/decor change. Not a crease-angle sweep or geometry improvement claim; actual native isolation required."
+}
