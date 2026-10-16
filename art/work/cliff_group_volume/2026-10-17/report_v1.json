@@ -1,0 +1,37 @@
+{
+  "samples": 39339,
+  "changed_complete_nodes": 42806,
+  "source_state": {
+    "triangles": 3648,
+    "nonmanifold_edges": 0,
+    "signed_volume": 362.2216644598304,
+    "back_plane_y": 4.900700092315674,
+    "cap_plane_z": 4.8,
+    "cap_faces": 2
+  },
+  "scale": 1.1,
+  "yaw_degrees": 10,
+  "origin": [
+    -15.701391220092773,
+    -1.7799999713897705,
+    5.221765518188477
+  ],
+  "world_lo": [
+    -25.618003845214844,
+    -1.956939935684204,
+    -1.936622142791748
+  ],
+  "world_hi": [
+    -3.6804847717285156,
+    3.500000238418579,
+    7.7053327560424805
+  ],
+  "queries": 101029,
+  "outcrop_solids": 3,
+  "source_sha256": "1042411e6af58d6b34a559beddb24335647bf6d8e61a7eab29ece80d33d537d0",
+  "input_save_sha256": "dd1c09bed2d064e55437d7fc3601fbbec7ecd6e89c68be83db2934c9629861de",
+  "save_sha256": "51ba6c5b70f3289f6c144c441f4407882f58e38718f075e936327087d2f63099",
+  "closed_glb_sha256": "cece36ce0b4d1f44690b201827db71ed4543a3522629d6cd263fa3c4d896a6ce",
+  "stage": "Unaccepted local 3D-volume study, not a runtime source/model replacement. Single-ray classification requires independent consistency checks before trusting solid conversion.",
+  "operation": "Close one existing scan boundary onto an inboard back plane, clip source atZ4.8, triangulate/recalculate closed winding. Uniform1.1 scale, rigid10degree yaw. Local full3D solid union with canonical core sampled1.1m inboard; .3m contact smoothing. Existing complete-source high outcrop solids retained. Original cells and all densityY>=3.5 unchanged; no source-front extrusion or return profile."
+}

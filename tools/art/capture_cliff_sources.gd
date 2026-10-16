@@ -40,14 +40,17 @@ func run():
   for p:Vector3 in points:box=box.expand(p)
   model.position-=box.get_center();viewport.add_child(model)
   camera.size=maxf(box.size.x,maxf(box.size.y,box.size.z))*1.35
+  var camera_distance:=maxf(8.0,box.size.length()*1.2)
+  var positions:Dictionary={}
   var views={"front":Vector3(0,0,8),"left":Vector3(-8,0,0),"right":Vector3(8,0,0),"back":Vector3(0,0,-8),"quarter":Vector3(7,5,8)}
   for view:String in views:
-   camera.position=views[view];camera.look_at(Vector3.ZERO)
+   camera.position=views[view].normalized()*camera_distance;camera.look_at(Vector3.ZERO)
+   positions[view]=str(camera.position)
    for i in 8:RenderingServer.force_draw(false);await process_frame
    RenderingServer.force_draw(false)
    var error:=viewport.get_texture().get_image().save_png(OUT+id+"_"+view+".png")
    if error!=OK:push_error("Capture failed");quit(1);return
-  reports.append({"source":path,"source_bounds":str(box),"camera_size":camera.size,"views":views.keys(),"geometry":"Unchanged source geometry; neutral preview material override only"})
+  reports.append({"source":path,"source_bounds":str(box),"camera_size":camera.size,"camera_positions":positions,"views":views.keys(),"geometry":"Unchanged source geometry; neutral preview material override only"})
   viewport.remove_child(model);model.free()
  var report_name:="source_views" if source_path.is_empty() else source_path.get_file().get_basename()+"_views"
  FileAccess.open(OUT+report_name+".json",FileAccess.WRITE).store_string(JSON.stringify(reports,"\t"))

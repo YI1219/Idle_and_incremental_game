@@ -1,0 +1,14 @@
+00:00.063  translation      | WARNING Falling back to standard locale ("C")
+00:00.249  blend            | Read blend: "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/polyhaven_rocks/2026-10-17/namaqualand_cliff_02/namaqualand_cliff_02_study_4k.blend"
+Info: Saved as "closed_source_v2.blend"
+INFO Draco is available, use library at /Applications/Blender.app/Contents/Resources/5.2/scripts/addons_core/io_scene_gltf2/libbf_intern_draco_bridge.dylib
+INFO MeshOptimizer is available, use library at /Applications/Blender.app/Contents/Resources/5.2/scripts/addons_core/io_scene_gltf2/libbf_intern_meshopt_bridge.dylib
+02:58:11 | INFO: Starting glTF 2.0 export
+02:58:11 | INFO: Extracting primitive: drone_rock_02_10m
+02:58:11 | INFO: Primitives created: 1
+02:58:11 | INFO: Finished glTF 2.0 export in 0.0034780502319335938 s
+
+CLIFF GROUP VOLUME: {"samples": 29886, "changed_complete_nodes": 34035, "source_state": {"triangles": 3602, "nonmanifold_edges": 0, "signed_volume": 205.75209779712065, "back_plane_y": 0.320403516292572, "cap_plane_z": 4.8, "cap_faces": 1}, "scale": 1.1, "yaw_degrees": 10, "pitch_degrees": 45, "cap_front_y": -2.8619232177734375, "origin": [-14.891335487365723, -1.7799999713897705, 0.627711296081543], "world_lo": [-25.458160400390625, -3.4620885848999023, -1.5688936710357666], "world_hi": [-3.7453250885009766, 3.500000238418579, 5.004947185516357], "queries": 104038, "outcrop_solids": 3, "source_sha256": "1042411e6af58d6b34a559beddb24335647bf6d8e61a7eab29ece80d33d537d0", "input_save_sha256": "dd1c09bed2d064e55437d7fc3601fbbec7ecd6e89c68be83db2934c9629861de", "save_sha256": "e70ee0a39be46e0fee99dd9db0ad896d34cefcb72edb1bd5df4e1adbdba53e0d", "closed_glb_sha256": "0794ce11976521c1c2e3a5869242e329c377aafba6c2b2965701c3402c546e42", "stage": "Unaccepted local 3D-volume study, not a runtime source/model replacement. Single-ray classification requires independent consistency checks before trusting solid conversion.", "operation": "Close one existing scan boundary onto an inboard back plane, clip source atZ4.8, triangulate/recalculate closed winding. Uniform1.1 scale, rigid10degree yaw. Local full3D solid union with canonical core sampled1.1m inboard; .3m contact smoothing. Existing complete-source high outcrop solids retained. Original cells unchanged; no source-front extrusion or return profile. First rigidly pitch the scan45degrees, turning its flared terrestrial base inward. Fit actual source cap intersection to retained cap center. Recompute capY3.5 density; preserveY>=3.75. Fade contact smoothing to zero at grade to avoid a raised union cap."}
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

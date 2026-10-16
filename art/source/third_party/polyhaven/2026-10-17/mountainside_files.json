@@ -1,0 +1,834 @@
+{
+  "Diffuse": {
+    "8k": {
+      "jpg": {
+        "size": 51800248,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_diff_8k.jpg",
+        "md5": "846083dc14cc691dbd084b43c964a20a"
+      },
+      "png": {
+        "size": 276114452,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/8k/mountainside/mountainside_diff_8k.png",
+        "md5": "bc3202d0e7fd9d6ed16817e762b2e005"
+      },
+      "exr": {
+        "size": 105091192,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_diff_8k.exr",
+        "md5": "149bc88cc3190b90551b6bde9b6e8a5a"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 13492897,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_diff_4k.jpg",
+        "md5": "111e596e02d0ec169ab822427fb7ece9"
+      },
+      "png": {
+        "size": 75128547,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/mountainside/mountainside_diff_4k.png",
+        "md5": "3b6a077adac0c78b5925bf1aaec7af6f"
+      },
+      "exr": {
+        "size": 25657777,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_diff_4k.exr",
+        "md5": "7dfa284f01312627499d65c4b16214b6"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 3557566,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_diff_2k.jpg",
+        "md5": "b17b6412ee4b662bea39625add48952f"
+      },
+      "png": {
+        "size": 20430028,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/mountainside/mountainside_diff_2k.png",
+        "md5": "7f7301ec9164f7ce83e81888fdef2554"
+      },
+      "exr": {
+        "size": 6626710,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_diff_2k.exr",
+        "md5": "dea11a11e13de98848dad3737bf30483"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 942046,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_diff_1k.jpg",
+        "md5": "ab12251ec12488e2a0cf2a213d52bd7d"
+      },
+      "png": {
+        "size": 5449942,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/mountainside/mountainside_diff_1k.png",
+        "md5": "5930c27885d34019cf84975af2988d43"
+      },
+      "exr": {
+        "size": 1761762,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_diff_1k.exr",
+        "md5": "0c1de372e9d85f656170c1b49ad47820"
+      }
+    }
+  },
+  "nor_gl": {
+    "8k": {
+      "jpg": {
+        "size": 55765009,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_nor_gl_8k.jpg",
+        "md5": "51d943b4890d23be93e84b17d7f37fe0"
+      },
+      "png": {
+        "size": 211884494,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/8k/mountainside/mountainside_nor_gl_8k.png",
+        "md5": "7da8bf093371d9bcef76f37b120eb401"
+      },
+      "exr": {
+        "size": 111736739,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_nor_gl_8k.exr",
+        "md5": "770e9a561cc84fcb939f5989e8b6368f"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 16250646,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_nor_gl_4k.jpg",
+        "md5": "eb9ce5226771b941338360091f284ad4"
+      },
+      "png": {
+        "size": 69740798,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/mountainside/mountainside_nor_gl_4k.png",
+        "md5": "a365238554248ca7a5f432f4816b47d7"
+      },
+      "exr": {
+        "size": 32637047,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_nor_gl_4k.exr",
+        "md5": "249a4eed19216bf69e3fc78358950787"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 4568125,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_nor_gl_2k.jpg",
+        "md5": "7a83e68eb3f05eeb3e09da657019d9ad"
+      },
+      "png": {
+        "size": 20642417,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/mountainside/mountainside_nor_gl_2k.png",
+        "md5": "d860ac8d9876eb49670c08787c2531e8"
+      },
+      "exr": {
+        "size": 9134990,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_nor_gl_2k.exr",
+        "md5": "8de39f33f4fd806fcae6747777040b97"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 1240239,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_nor_gl_1k.jpg",
+        "md5": "95e78f9ae70da41e11ebe1489468e11d"
+      },
+      "png": {
+        "size": 5586785,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/mountainside/mountainside_nor_gl_1k.png",
+        "md5": "d58963d628cc8e8bde94d886a85440c7"
+      },
+      "exr": {
+        "size": 2487337,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_nor_gl_1k.exr",
+        "md5": "24f1a656a456802422c20660e6aef11c"
+      }
+    }
+  },
+  "gltf": {
+    "8k": {
+      "gltf": {
+        "include": {
+          "textures/mountainside_diff_8k.jpg": {
+            "size": 51800248,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_diff_8k.jpg",
+            "md5": "846083dc14cc691dbd084b43c964a20a"
+          },
+          "mountainside.bin": {
+            "size": 4409280,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/mountainside/mountainside.bin",
+            "md5": "a4ac37444e3313bd9f9ff459eb71418d"
+          },
+          "textures/mountainside_arm_8k.jpg": {
+            "size": 43295750,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_arm_8k.jpg",
+            "md5": "3c6ce33b7888677129059fa37cfa29ec"
+          },
+          "textures/mountainside_nor_gl_8k.jpg": {
+            "size": 55765009,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_nor_gl_8k.jpg",
+            "md5": "51d943b4890d23be93e84b17d7f37fe0"
+          }
+        },
+        "size": 2776,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/mountainside/mountainside_8k.gltf",
+        "md5": "cc8409285f177c0c4050225321a4395e"
+      }
+    },
+    "4k": {
+      "gltf": {
+        "include": {
+          "textures/mountainside_diff_4k.jpg": {
+            "size": 13492897,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_diff_4k.jpg",
+            "md5": "111e596e02d0ec169ab822427fb7ece9"
+          },
+          "textures/mountainside_arm_4k.jpg": {
+            "size": 10546227,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_arm_4k.jpg",
+            "md5": "7ac2b5f8a7a9717d42161a30d4a38031"
+          },
+          "mountainside.bin": {
+            "size": 4409280,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/mountainside/mountainside.bin",
+            "md5": "a4ac37444e3313bd9f9ff459eb71418d"
+          },
+          "textures/mountainside_nor_gl_4k.jpg": {
+            "size": 16250646,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_nor_gl_4k.jpg",
+            "md5": "eb9ce5226771b941338360091f284ad4"
+          }
+        },
+        "size": 2776,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/mountainside/mountainside_4k.gltf",
+        "md5": "6189b48359e782b3d116016af57e3606"
+      }
+    },
+    "2k": {
+      "gltf": {
+        "include": {
+          "textures/mountainside_nor_gl_2k.jpg": {
+            "size": 4568125,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_nor_gl_2k.jpg",
+            "md5": "7a83e68eb3f05eeb3e09da657019d9ad"
+          },
+          "textures/mountainside_diff_2k.jpg": {
+            "size": 3557566,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_diff_2k.jpg",
+            "md5": "b17b6412ee4b662bea39625add48952f"
+          },
+          "mountainside.bin": {
+            "size": 4409280,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/mountainside/mountainside.bin",
+            "md5": "a4ac37444e3313bd9f9ff459eb71418d"
+          },
+          "textures/mountainside_arm_2k.jpg": {
+            "size": 2829509,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_arm_2k.jpg",
+            "md5": "8e30dcef790c72c1334d4a5b5f88e5a0"
+          }
+        },
+        "size": 2776,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/mountainside/mountainside_2k.gltf",
+        "md5": "f9e86e343ba6cc47caed1ba69d1c3e8d"
+      }
+    },
+    "1k": {
+      "gltf": {
+        "include": {
+          "textures/mountainside_arm_1k.jpg": {
+            "size": 791031,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_arm_1k.jpg",
+            "md5": "543f19bc3f3cd4f7b08dddedd1824cec"
+          },
+          "textures/mountainside_diff_1k.jpg": {
+            "size": 942046,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_diff_1k.jpg",
+            "md5": "ab12251ec12488e2a0cf2a213d52bd7d"
+          },
+          "mountainside.bin": {
+            "size": 4409280,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/mountainside/mountainside.bin",
+            "md5": "a4ac37444e3313bd9f9ff459eb71418d"
+          },
+          "textures/mountainside_nor_gl_1k.jpg": {
+            "size": 1240239,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_nor_gl_1k.jpg",
+            "md5": "95e78f9ae70da41e11ebe1489468e11d"
+          }
+        },
+        "size": 2776,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/mountainside/mountainside_1k.gltf",
+        "md5": "3f809d8a668166c764f665dabe25af12"
+      }
+    }
+  },
+  "usd": {
+    "8k": {
+      "usd": {
+        "include": {
+          "textures/mountainside_rough_8k.exr": {
+            "size": 26273600,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_rough_8k.exr",
+            "md5": "2d457efdd10b3fc9727ae8a49eef5159"
+          },
+          "textures/mountainside_diff_8k.jpg": {
+            "size": 51800248,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_diff_8k.jpg",
+            "md5": "846083dc14cc691dbd084b43c964a20a"
+          },
+          "textures/mountainside_nor_gl_8k.exr": {
+            "size": 111736739,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_nor_gl_8k.exr",
+            "md5": "770e9a561cc84fcb939f5989e8b6368f"
+          }
+        },
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/usd/8k/mountainside/mountainside_8k.usdc",
+        "size": 11363690,
+        "md5": "be4b51e076c55c142dcf1ed04383e27b"
+      }
+    },
+    "4k": {
+      "usd": {
+        "include": {
+          "textures/mountainside_diff_4k.jpg": {
+            "size": 13492897,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_diff_4k.jpg",
+            "md5": "111e596e02d0ec169ab822427fb7ece9"
+          },
+          "textures/mountainside_rough_4k.exr": {
+            "size": 6686229,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_rough_4k.exr",
+            "md5": "b1277bb7cf053705c4116241672d5f48"
+          },
+          "textures/mountainside_nor_gl_4k.exr": {
+            "size": 32637047,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_nor_gl_4k.exr",
+            "md5": "249a4eed19216bf69e3fc78358950787"
+          }
+        },
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/usd/4k/mountainside/mountainside_4k.usdc",
+        "size": 11363690,
+        "md5": "73b8c320fce428873fbab95c9734e673"
+      }
+    },
+    "2k": {
+      "usd": {
+        "include": {
+          "textures/mountainside_rough_2k.exr": {
+            "size": 1816658,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_rough_2k.exr",
+            "md5": "8c630229225cc3d2653216850d3a81fa"
+          },
+          "textures/mountainside_diff_2k.jpg": {
+            "size": 3557566,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_diff_2k.jpg",
+            "md5": "b17b6412ee4b662bea39625add48952f"
+          },
+          "textures/mountainside_nor_gl_2k.exr": {
+            "size": 9134990,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_nor_gl_2k.exr",
+            "md5": "8de39f33f4fd806fcae6747777040b97"
+          }
+        },
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/usd/2k/mountainside/mountainside_2k.usdc",
+        "size": 11363690,
+        "md5": "49206f30e778cb5982d9f490c7c099e2"
+      }
+    },
+    "1k": {
+      "usd": {
+        "include": {
+          "textures/mountainside_diff_1k.jpg": {
+            "size": 942046,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_diff_1k.jpg",
+            "md5": "ab12251ec12488e2a0cf2a213d52bd7d"
+          },
+          "textures/mountainside_nor_gl_1k.exr": {
+            "size": 2487337,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_nor_gl_1k.exr",
+            "md5": "24f1a656a456802422c20660e6aef11c"
+          },
+          "textures/mountainside_rough_1k.exr": {
+            "size": 500221,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_rough_1k.exr",
+            "md5": "0d707f18aefcad749d57ba10df8cbe30"
+          }
+        },
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/usd/1k/mountainside/mountainside_1k.usdc",
+        "size": 11363690,
+        "md5": "35085b6f7e8b5c2404c2dd9be9b22d4f"
+      }
+    }
+  },
+  "fbx": {
+    "8k": {
+      "fbx": {
+        "include": {
+          "textures/mountainside_rough_8k.exr": {
+            "size": 26273600,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_rough_8k.exr",
+            "md5": "2d457efdd10b3fc9727ae8a49eef5159"
+          },
+          "textures/mountainside_diff_8k.jpg": {
+            "size": 51800248,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_diff_8k.jpg",
+            "md5": "846083dc14cc691dbd084b43c964a20a"
+          },
+          "textures/mountainside_nor_gl_8k.exr": {
+            "size": 111736739,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_nor_gl_8k.exr",
+            "md5": "770e9a561cc84fcb939f5989e8b6368f"
+          }
+        },
+        "size": 13829804,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/8k/mountainside/mountainside_8k.fbx",
+        "md5": "8c11ecf250344ca757d93a95ba9436fe"
+      }
+    },
+    "4k": {
+      "fbx": {
+        "include": {
+          "textures/mountainside_diff_4k.jpg": {
+            "size": 13492897,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_diff_4k.jpg",
+            "md5": "111e596e02d0ec169ab822427fb7ece9"
+          },
+          "textures/mountainside_rough_4k.exr": {
+            "size": 6686229,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_rough_4k.exr",
+            "md5": "b1277bb7cf053705c4116241672d5f48"
+          },
+          "textures/mountainside_nor_gl_4k.exr": {
+            "size": 32637047,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_nor_gl_4k.exr",
+            "md5": "249a4eed19216bf69e3fc78358950787"
+          }
+        },
+        "size": 13829804,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/4k/mountainside/mountainside_4k.fbx",
+        "md5": "58bbd60fa5fee24ef953d2c7b54448a2"
+      }
+    },
+    "2k": {
+      "fbx": {
+        "include": {
+          "textures/mountainside_rough_2k.exr": {
+            "size": 1816658,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_rough_2k.exr",
+            "md5": "8c630229225cc3d2653216850d3a81fa"
+          },
+          "textures/mountainside_diff_2k.jpg": {
+            "size": 3557566,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_diff_2k.jpg",
+            "md5": "b17b6412ee4b662bea39625add48952f"
+          },
+          "textures/mountainside_nor_gl_2k.exr": {
+            "size": 9134990,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_nor_gl_2k.exr",
+            "md5": "8de39f33f4fd806fcae6747777040b97"
+          }
+        },
+        "size": 13829804,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/2k/mountainside/mountainside_2k.fbx",
+        "md5": "d365823407e64a116ca1896a8e58883f"
+      }
+    },
+    "1k": {
+      "fbx": {
+        "include": {
+          "textures/mountainside_diff_1k.jpg": {
+            "size": 942046,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_diff_1k.jpg",
+            "md5": "ab12251ec12488e2a0cf2a213d52bd7d"
+          },
+          "textures/mountainside_nor_gl_1k.exr": {
+            "size": 2487337,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_nor_gl_1k.exr",
+            "md5": "24f1a656a456802422c20660e6aef11c"
+          },
+          "textures/mountainside_rough_1k.exr": {
+            "size": 500221,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_rough_1k.exr",
+            "md5": "0d707f18aefcad749d57ba10df8cbe30"
+          }
+        },
+        "size": 13829804,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/fbx/1k/mountainside/mountainside_1k.fbx",
+        "md5": "8a5a70807e066b78e4678e20dbdc5cca"
+      }
+    }
+  },
+  "AO": {
+    "8k": {
+      "jpg": {
+        "size": 44259926,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_ao_8k.jpg",
+        "md5": "a477fe403fd618ac31a508f16baf84b4"
+      },
+      "png": {
+        "size": 68183553,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/8k/mountainside/mountainside_ao_8k.png",
+        "md5": "b58d6033e8be7f40da5eab65eb392a89"
+      },
+      "exr": {
+        "size": 46105184,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_ao_8k.exr",
+        "md5": "0bf6706893a115f297c4cdfd18eb46df"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 10273673,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_ao_4k.jpg",
+        "md5": "5b798392cef0eca4d8496b9a77b23253"
+      },
+      "png": {
+        "size": 22327948,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/mountainside/mountainside_ao_4k.png",
+        "md5": "aa27169af2bccab811e118b04bfa64f7"
+      },
+      "exr": {
+        "size": 11271261,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_ao_4k.exr",
+        "md5": "5dbe185fe511f4fcd1ae33d95a43d069"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 2723151,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_ao_2k.jpg",
+        "md5": "c9ce5bbf86a36c19940d684e1e48c1b7"
+      },
+      "png": {
+        "size": 6570523,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/mountainside/mountainside_ao_2k.png",
+        "md5": "56f3bfca108091f7803d52a03770d691"
+      },
+      "exr": {
+        "size": 3014740,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_ao_2k.exr",
+        "md5": "4fb9fc0c4ac7d339170a1114903c6f3e"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 776268,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_ao_1k.jpg",
+        "md5": "2783c06f74196ec6bf4b9ba2dac40dc7"
+      },
+      "png": {
+        "size": 1804958,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/mountainside/mountainside_ao_1k.png",
+        "md5": "7f23f9c42d29ad35337491d145a1db58"
+      },
+      "exr": {
+        "size": 863389,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_ao_1k.exr",
+        "md5": "13deb7c68fa2e6b0a34d8097fc0b2ab6"
+      }
+    }
+  },
+  "Rough": {
+    "8k": {
+      "jpg": {
+        "size": 26479664,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_rough_8k.jpg",
+        "md5": "d5be33c38b21f466cb406a8265f47aa4"
+      },
+      "png": {
+        "size": 36358342,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/8k/mountainside/mountainside_rough_8k.png",
+        "md5": "07a1f52b4221e134c65842d411ba0d14"
+      },
+      "exr": {
+        "size": 26273600,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_rough_8k.exr",
+        "md5": "2d457efdd10b3fc9727ae8a49eef5159"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 6743419,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_rough_4k.jpg",
+        "md5": "e4891c973780e0396e9a004d083cff7d"
+      },
+      "png": {
+        "size": 17487054,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/mountainside/mountainside_rough_4k.png",
+        "md5": "1dba57c4210e24e3d257ee9b76b47fd2"
+      },
+      "exr": {
+        "size": 6686229,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_rough_4k.exr",
+        "md5": "b1277bb7cf053705c4116241672d5f48"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 1794839,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_rough_2k.jpg",
+        "md5": "ee02ff7fe1fcc00e18d2a3d4333c2e02"
+      },
+      "png": {
+        "size": 5932745,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/mountainside/mountainside_rough_2k.png",
+        "md5": "8c62b9b2fa988da6bfe384ee90817fcf"
+      },
+      "exr": {
+        "size": 1816658,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_rough_2k.exr",
+        "md5": "8c630229225cc3d2653216850d3a81fa"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 479644,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_rough_1k.jpg",
+        "md5": "7ad3482d078214ad27dd0e7d277dd1b7"
+      },
+      "png": {
+        "size": 1687119,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/mountainside/mountainside_rough_1k.png",
+        "md5": "ab6aca2df1adc4ab3d5ebe182573e81b"
+      },
+      "exr": {
+        "size": 500221,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_rough_1k.exr",
+        "md5": "0d707f18aefcad749d57ba10df8cbe30"
+      }
+    }
+  },
+  "arm": {
+    "4k": {
+      "jpg": {
+        "size": 10546227,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_arm_4k.jpg",
+        "md5": "7ac2b5f8a7a9717d42161a30d4a38031"
+      },
+      "png": {
+        "size": 45912349,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/mountainside/mountainside_arm_4k.png",
+        "md5": "d3cfb03b3204faba6ca5d72b181a64a4"
+      },
+      "exr": {
+        "size": 21953209,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_arm_4k.exr",
+        "md5": "29617caf27347c38477e098e93d4490e"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 2829509,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_arm_2k.jpg",
+        "md5": "8e30dcef790c72c1334d4a5b5f88e5a0"
+      },
+      "png": {
+        "size": 14344518,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/mountainside/mountainside_arm_2k.png",
+        "md5": "dad5098fd7b0b3a6c5b03e2b88392297"
+      },
+      "exr": {
+        "size": 5759820,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_arm_2k.exr",
+        "md5": "5aaaeee3e706e77e957b6bf1a2f3fbec"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 791031,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_arm_1k.jpg",
+        "md5": "543f19bc3f3cd4f7b08dddedd1824cec"
+      },
+      "png": {
+        "size": 4065565,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/mountainside/mountainside_arm_1k.png",
+        "md5": "67c250199d3b3d57b38e5ac61eddc093"
+      },
+      "exr": {
+        "size": 1629822,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_arm_1k.exr",
+        "md5": "461f58dc3fc386a2223183560686c8f4"
+      }
+    },
+    "8k": {
+      "jpg": {
+        "size": 43295750,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_arm_8k.jpg",
+        "md5": "3c6ce33b7888677129059fa37cfa29ec"
+      },
+      "exr": {
+        "size": 95403234,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_arm_8k.exr",
+        "md5": "3cf660f91c3562a7db1ea5cd0034e781"
+      },
+      "png": {
+        "size": 111207347,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/8k/mountainside/mountainside_arm_8k.png",
+        "md5": "494ED4F64A107667AF59BAF5D8DCDB74"
+      }
+    }
+  },
+  "nor_dx": {
+    "4k": {
+      "jpg": {
+        "size": 16205855,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_nor_dx_4k.jpg",
+        "md5": "a0f8803153f8ba39029f5adeb51c9ca2"
+      },
+      "png": {
+        "size": 69730834,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/4k/mountainside/mountainside_nor_dx_4k.png",
+        "md5": "7a3c5864cecae112d89f8cd1600e9b60"
+      },
+      "exr": {
+        "size": 32630549,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_nor_dx_4k.exr",
+        "md5": "07e965614a2378a3176af723e8432c10"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 4554398,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_nor_dx_2k.jpg",
+        "md5": "a3f5326f57bcec3391ae16d021e655d6"
+      },
+      "png": {
+        "size": 20644476,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/mountainside/mountainside_nor_dx_2k.png",
+        "md5": "87df486719cb0c5c7d50c93e8369fabc"
+      },
+      "exr": {
+        "size": 9132934,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_nor_dx_2k.exr",
+        "md5": "76833f36c0290b2e847796794e82a141"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 1235319,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_nor_dx_1k.jpg",
+        "md5": "e200afe4765c05204bb4dee53f6f46be"
+      },
+      "png": {
+        "size": 5588677,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/mountainside/mountainside_nor_dx_1k.png",
+        "md5": "66daaabc1b0605247f5ad598d3fae817"
+      },
+      "exr": {
+        "size": 2485802,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_nor_dx_1k.exr",
+        "md5": "b31a1e9c54ff020290cd1f07224faf2f"
+      }
+    },
+    "8k": {
+      "jpg": {
+        "size": 55596799,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_nor_dx_8k.jpg",
+        "md5": "1d7275f2797aff5010ed579a4933451e"
+      },
+      "exr": {
+        "size": 111719489,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_nor_dx_8k.exr",
+        "md5": "31399c89545f2998f54c99ba5d4e08dd"
+      },
+      "png": {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/8k/mountainside/mountainside_nor_dx_8k.png",
+        "md5": "CE9205BF5B7BF61AD6BC549F64CFDB2F",
+        "size": 210750716
+      }
+    }
+  },
+  "blend": {
+    "8k": {
+      "blend": {
+        "include": {
+          "textures/mountainside_rough_8k.exr": {
+            "size": 26273600,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_rough_8k.exr",
+            "md5": "2d457efdd10b3fc9727ae8a49eef5159"
+          },
+          "textures/mountainside_diff_8k.jpg": {
+            "size": 51800248,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/8k/mountainside/mountainside_diff_8k.jpg",
+            "md5": "846083dc14cc691dbd084b43c964a20a"
+          },
+          "textures/mountainside_nor_gl_8k.exr": {
+            "size": 111736739,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/8k/mountainside/mountainside_nor_gl_8k.exr",
+            "md5": "770e9a561cc84fcb939f5989e8b6368f"
+          }
+        },
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/8k/mountainside/mountainside_8k.blend",
+        "size": 11210967,
+        "md5": "297f1729504ad74366db29271efc652f"
+      }
+    },
+    "4k": {
+      "blend": {
+        "include": {
+          "textures/mountainside_diff_4k.jpg": {
+            "size": 13492897,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/mountainside/mountainside_diff_4k.jpg",
+            "md5": "111e596e02d0ec169ab822427fb7ece9"
+          },
+          "textures/mountainside_rough_4k.exr": {
+            "size": 6686229,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_rough_4k.exr",
+            "md5": "b1277bb7cf053705c4116241672d5f48"
+          },
+          "textures/mountainside_nor_gl_4k.exr": {
+            "size": 32637047,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/4k/mountainside/mountainside_nor_gl_4k.exr",
+            "md5": "249a4eed19216bf69e3fc78358950787"
+          }
+        },
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/mountainside/mountainside_4k.blend",
+        "size": 11210710,
+        "md5": "8d174d3826c26fffaa46b857dcbf1bc6"
+      }
+    },
+    "2k": {
+      "blend": {
+        "include": {
+          "textures/mountainside_rough_2k.exr": {
+            "size": 1816658,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_rough_2k.exr",
+            "md5": "8c630229225cc3d2653216850d3a81fa"
+          },
+          "textures/mountainside_diff_2k.jpg": {
+            "size": 3557566,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/mountainside/mountainside_diff_2k.jpg",
+            "md5": "b17b6412ee4b662bea39625add48952f"
+          },
+          "textures/mountainside_nor_gl_2k.exr": {
+            "size": 9134990,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/2k/mountainside/mountainside_nor_gl_2k.exr",
+            "md5": "8de39f33f4fd806fcae6747777040b97"
+          }
+        },
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/mountainside/mountainside_2k.blend",
+        "size": 11211054,
+        "md5": "61f84f2dc07514224e9fdb8865ca4799"
+      }
+    },
+    "1k": {
+      "blend": {
+        "include": {
+          "textures/mountainside_diff_1k.jpg": {
+            "size": 942046,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/mountainside/mountainside_diff_1k.jpg",
+            "md5": "ab12251ec12488e2a0cf2a213d52bd7d"
+          },
+          "textures/mountainside_nor_gl_1k.exr": {
+            "size": 2487337,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_nor_gl_1k.exr",
+            "md5": "24f1a656a456802422c20660e6aef11c"
+          },
+          "textures/mountainside_rough_1k.exr": {
+            "size": 500221,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/mountainside/mountainside_rough_1k.exr",
+            "md5": "0d707f18aefcad749d57ba10df8cbe30"
+          }
+        },
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/mountainside/mountainside_1k.blend",
+        "size": 11210941,
+        "md5": "670eb2c246f60c0999dc55052b5ec4e7"
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "slug": "mountainside",
+    "source_sha256": "7495ff954326a7f4c7121d4827008079235b1ddd1c21856bad105315eec7c1fb",
+    "before": {
+      "vertices": 77251,
+      "triangles": 153472,
+      "boundary_edges": 1028,
+      "nonmanifold_edges": 1028,
+      "lower": [
+        -5.026504993438721,
+        -1.565730094909668,
+        -0.19979140162467957
+      ],
+      "upper": [
+        5.182793617248535,
+        3.681164264678955,
+        10.322352409362793
+      ],
+      "signed_volume": 85.43294684003078
+    },
+    "after": {
+      "vertices": 2086,
+      "triangles": 3999,
+      "boundary_edges": 171,
+      "nonmanifold_edges": 171
+    },
+    "blend": "art/work/polyhaven_rocks/2026-10-17/mountainside/mountainside_study_4k.blend",
+    "glb": "art/work/polyhaven_rocks/2026-10-17/mountainside/mountainside_study_4k.glb",
+    "glb_sha256": "a4a6013262986e783b6bda796e1a0ed50b3db0f54d495e43d70fb636ebcf3318",
+    "operation": "Weld1e-6 and Blender collapse decimation toward4000triangles; preserve open-source face winding. Shape sources preserved; no backing invented or holes silently filled.",
+    "stage": "Unaccepted neutral shape/LOD study; not a runtime asset or performance acceptance."
+  },
+  {
+    "slug": "namaqualand_cliff_02",
+    "source_sha256": "ca773284e6457ce56456dfa185ecbcc505600573e7ddf2a7ec1989d96b9d66a5",
+    "before": {
+      "vertices": 97552,
+      "triangles": 194080,
+      "boundary_edges": 1030,
+      "nonmanifold_edges": 1030,
+      "lower": [
+        -9.681148529052734,
+        -2.1944217681884766,
+        -0.15984418988227844
+      ],
+      "upper": [
+        10.54635238647461,
+        4.398998737335205,
+        7.023976802825928
+      ],
+      "signed_volume": 118.99302249842626
+    },
+    "after": {
+      "vertices": 2090,
+      "triangles": 3998,
+      "boundary_edges": 188,
+      "nonmanifold_edges": 188
+    },
+    "blend": "art/work/polyhaven_rocks/2026-10-17/namaqualand_cliff_02/namaqualand_cliff_02_study_4k.blend",
+    "glb": "art/work/polyhaven_rocks/2026-10-17/namaqualand_cliff_02/namaqualand_cliff_02_study_4k.glb",
+    "glb_sha256": "d34d34941168f5875175a1518103048dee17b5f3c2dcb8fa0241f910757e18de",
+    "operation": "Weld1e-6 and Blender collapse decimation toward4000triangles; preserve open-source face winding. Shape sources preserved; no backing invented or holes silently filled.",
+    "stage": "Unaccepted neutral shape/LOD study; not a runtime asset or performance acceptance."
+  }
+]

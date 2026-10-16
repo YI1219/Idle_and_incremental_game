@@ -1,6 +1,10 @@
 extends 'res://tests/capture_rim_round.gd'
 func bytes_hash(bytes:PackedByteArray)->String:
  var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(bytes);return digest.finish().hex_encode()
+func transform_state(node:Node,items:Array)->void:
+ if node is Node3D:items.append([str(node.get_path()),node.transform])
+ if node is MultiMeshInstance3D and node.multimesh!=null:items.append([str(node.get_path()),node.multimesh.buffer])
+ for child in node.get_children():transform_state(child,items)
 func bind_spall(node:Node,texture:Texture2D,seen:Dictionary,strength:float)->void:
  var materials:Array=[]
  if node is GeometryInstance3D:materials.append(node.material_override)
@@ -68,6 +72,8 @@ func run():
  if args.has('renderedenvelopecap'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedenvelopecap')
  if args.has('renderedcomplete'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedcomplete')
  if args.has('retainedreturn'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'retainedreturn')
+ if args.has('cliffgroup'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'cliffgroup')
+ if args.has('cliffgroup2'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'cliffgroup2')
  if args.has('worn') or args.has('worn2') or args.has('worn3'):
   var source_report:Dictionary=preload('res://tools/art/worn_cliff_sources.gd').install(editor.renderer.decoration,'v3' if args.has('worn3') else ('v2' if args.has('worn2') else 'v1'),args.has('wearsmooth'))
   FileAccess.open(OUT+tag+'_worn_sources.json',FileAccess.WRITE).store_string(JSON.stringify(source_report,'\t'))
@@ -82,6 +88,25 @@ func run():
   for chunk in chunks:editor.renderer._rebuild(chunk)
   editor.renderer._publish()
   print('ACTUAL CAP STUDY: ',JSON.stringify(report))
+ if args.has('fieldnormals'):
+  var before:Array=[];transform_state(editor.renderer,before)
+  var report:Dictionary=preload('res://tools/art/field_gradient_normals.gd').apply(editor.renderer.contours,editor.data.rocks)
+  var replaced:=0
+  for chunk in editor.renderer.chunks:
+   var instance:MeshInstance3D=editor.renderer.chunks[chunk].get_node_or_null('sculpted_terrain')
+   if instance==null:continue
+   var old_arrays:Array=instance.mesh.surface_get_arrays(0)
+   var next:Mesh=editor.renderer.contours.build(chunk).sculpted_terrain
+   var arrays:Array=next.surface_get_arrays(0)
+   for key:int in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_COLOR,Mesh.ARRAY_TEX_UV]:assert(old_arrays[key].to_byte_array()==arrays[key].to_byte_array(),'Normal control must preserve actual uploaded geometry/color/UV')
+   instance.mesh=next;replaced+=1
+  var after:Array=[];transform_state(editor.renderer,after)
+  report['transform_buffer_sha256_before']=bytes_hash(var_to_bytes(before))
+  report['transform_buffer_sha256_after']=bytes_hash(var_to_bytes(after))
+  report['meshes_replaced']=replaced;report['uploaded_geometry_color_uv_unchanged']=true
+  assert(report.transform_buffer_sha256_before==report.transform_buffer_sha256_after)
+  FileAccess.open(OUT+tag+'_field_normals.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
+  print('FIELD GRADIENT NORMALS: ',JSON.stringify(report))
  if args.has('grasspatch') or args.has('grasspatch2') or args.has('grasspatch3') or args.has('grassarc') or args.has('grassworld'):
   var field=editor.renderer.contours
   var deco=editor.renderer.decoration

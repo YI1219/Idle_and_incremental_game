@@ -1,0 +1,22 @@
+[
+	{
+		"camera_positions": {
+			"back": "(0.0, 0.0, -26.05713)",
+			"front": "(0.0, 0.0, 26.05713)",
+			"left": "(-26.05713, 0.0, 0.0)",
+			"quarter": "(15.52691, 11.09065, 17.74504)",
+			"right": "(26.05713, 0.0, 0.0)"
+		},
+		"camera_size": 26.8855495452881,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://art/work/cliff_group_volume/2026-10-17/closed_source.glb",
+		"source_bounds": "[P: (-9.682669, -0.160854, -4.9007), S: (19.91522, 4.960855, 7.091097)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

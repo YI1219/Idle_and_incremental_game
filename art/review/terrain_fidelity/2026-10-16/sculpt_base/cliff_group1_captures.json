@@ -1,0 +1,35 @@
+{
+	"captures": [
+		{
+			"draw_calls": 415.0,
+			"error": 0,
+			"file": "cliff_group1_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 346.0,
+			"error": 0,
+			"file": "cliff_group1_grass.png",
+			"position": "(-12.4, 7.1, 11.0)",
+			"rotation": "(-23.8915, 18.65789, 0.0)"
+		},
+		{
+			"draw_calls": 377.0,
+			"error": 0,
+			"file": "cliff_group1_reverse.png",
+			"position": "(-30.34978, 9.0, -0.38091)",
+			"rotation": "(-28.0, -105.0, 0.0)"
+		}
+	],
+	"data_sha256": "cad25f2a15e70a1b7248570eaaff2d9a0020c7fb60d327638901d184d238e676",
+	"samples": 39339,
+	"sculpt_base": true,
+	"sculpt_profile": "local",
+	"skin_colors_sha256": "b2e4bbc8b171600a33a73e11c487a1d3452ff4f427c106aedcd226be5e9cd518",
+	"skin_normals_sha256": "9eefd6aaa2830beda6b2d513088ee0a2632af816ba2dd5999f74883b60e91d94",
+	"skin_uv_sha256": "5dba7fb6eb7ca953be5d4b85863a27f156ffa325e57b9360c453bf10e68f60a6",
+	"skin_vertices_sha256": "b41263f5e0773313ecea05c25ed4725dde7ba317f158d0b79ed3d3fdf164d5ea",
+	"source": "Actual Godot terrain scene",
+	"water_phase": 1.25
+}

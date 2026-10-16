@@ -1,0 +1,28 @@
+{
+  "source_blend_sha256": "29af91d2722a713aa7f73dd894bac8a340e08b7bd14fc15f375b0a844693643b",
+  "sampled_points": 500,
+  "rays_per_point": 3,
+  "analytic_bvh_sign_mismatches": 0,
+  "analytic_direction_disagreements": 0,
+  "mismatches": [],
+  "disagreements": [],
+  "components": [
+    {
+      "vertices": 1801,
+      "triangles": 3602,
+      "lo": [
+        -9.682668685913086,
+        -3.0380706787109375,
+        -1.5291715860366821
+      ],
+      "hi": [
+        10.23255443572998,
+        0.320403516292572,
+        4.800000190734863
+      ]
+    }
+  ],
+  "nonmanifold_edges": 0,
+  "degenerate_triangles": 0,
+  "scope": "Seeded500point/three-direction comparison of BVH traversal with independent float64 triangle intersections on closed source, before world transform/density extraction. Not proof for arbitrary points, self-intersections, final skin, editing or art."
+}

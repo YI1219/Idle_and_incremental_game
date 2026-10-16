@@ -1,0 +1,334 @@
+{
+  "new_neutral_frames": 30,
+  "new_local_frames_used": 9,
+  "superseded_nonisolated_normal_frames": {
+    "cliff_group2_gradient_close.png": "22d529fecffb74559dbd96ca8f2cd3d5d4fc7d103fd6cfe84aad688099cf33ec",
+    "cliff_group2_gradient_grass.png": "8d0b6b995321d54e483254d815c0a08ff9f29d4c9845b70d58df62dca87dfc1a",
+    "cliff_group2_gradient_reverse.png": "8bef973545a379eec4acdffde16a085eede8779b9cc7f8a71535161e90079c20"
+  },
+  "neutral": {
+    "mountainside_geometry": {
+      "front": "8f5d902502ec6d3926a1546e49e71fbb50efcccf56c5d21134cd4ee19ba4978c",
+      "left": "44629c1a5b50215083273a197ed490536862a36c6e2256d4240a789f22bd547f",
+      "right": "fdf2ae0cfac93eaf90a6d1322e32c1dcee66c92c3c0c3c98c3b6b1baaa368f19",
+      "back": "4c1bc3f077aa96cd1dd542e895aae2de2a340a19b70c59df8ec7154d4164639f",
+      "quarter": "bbe58b648671a10ec3c7c4be90827c091278c73b71765530596bb97b89abe2ab"
+    },
+    "mountainside_study_4k": {
+      "front": "d1ac53ce093a23b20f0b86cd556afd25465675ea0e8834824ac97a737b27b263",
+      "left": "e6db7d3530d62fd8db6ee077766a6cd99494e24bce0891052498c4eef4f747a2",
+      "right": "6b79b44102576726e2ffbd7a6d56c710092868960e97ff6f792a803fbd915e73",
+      "back": "7efa6c5a0bd5dd15fe28110220ad65de79dc3c3eb8e232d5e658c7f485ee17a0",
+      "quarter": "c9ac2d92bbebf5d86aaec0ab572c4ba0640533b3e562edcfdfa461037035a5d2"
+    },
+    "namaqualand_cliff_02_geometry": {
+      "front": "52c093ceb6c8a06cdf218fe5bcb1b1a46f864a54c43daf03b9a455398f69acf7",
+      "left": "52804f6376f00cc0bdddb4ba1632661977ee9e895bbcd901e0191fa9ed432b82",
+      "right": "4e911d5d254f94d21c8d5464a409edc5713550fe41ead84f90724c92db8dc05f",
+      "back": "cab749c46ee9a1f9758c92b312a043c49c1dd55770755d87aeb2c03cb5f27470",
+      "quarter": "09090299c4636b17baf5dbffe23e6df7ee078821f05d4065009ded822404bd22"
+    },
+    "namaqualand_cliff_02_study_4k": {
+      "front": "c8544d2ef511efd4785709617c7102f80a1eba0ecb88db8216661deccca5e47f",
+      "left": "f35d032fb2348712a52e5c8a8cb0701eb0cad318294107781b474f6683f7b56b",
+      "right": "c73e92afa8324de64cb3d0bfb298781c7deaf9df5c9ef2c08d9569b4652bb915",
+      "back": "745ac71157299c3e86ba0912b207838efd0e65059c2c456fa9e9ca8f8771d012",
+      "quarter": "9df10c66250c42e557d1720841f3cd160a0b09633345c55258640d6aa3101ed3"
+    },
+    "closed_source": {
+      "front": "024c3a1cf7b384a8961d42af38863f48f516a1cbfbba320fbc54a04fdc826777",
+      "left": "68bbb3cb17a60c1c49c04470ceb06780794385217a53c2217e4a150ff75f24c6",
+      "right": "1f4684e2dc701a7e2903e253f46b38908623560b423ce0f3018ae748c690382a",
+      "back": "42c9dcea56320a0f13b947a1e9a78501785162a63a064f21fbed7348fe02dee7",
+      "quarter": "1935cfaa3145403ffedbe75b7f9e2b0b99043da340640def0f4d4372514b6572"
+    },
+    "closed_source_v2": {
+      "front": "2735c6b57306b62e3d326d6954243e6a9516624c1d4f4d66191ec0b065a03248",
+      "left": "6081cd0e1a3bdb9a9a7f260df0928b28b168699b236f4a249d4bc769319bd931",
+      "right": "5aa502807bbeb5446aaf2d754871574c5caa2aae2ccbfd5eb1d8c9a73179bb40",
+      "back": "a3b3d700d735dfd0d5d2363ba05928b51aa89d6389fdedf4cbf693fdbcc93602",
+      "quarter": "f723a613f97a66032903cec0888279a11347bb2b97964f704895d15ca6c90655"
+    }
+  },
+  "captures": {
+    "cliff_group1": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 415.0,
+            "error": 0,
+            "file": "cliff_group1_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 346.0,
+            "error": 0,
+            "file": "cliff_group1_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 377.0,
+            "error": 0,
+            "file": "cliff_group1_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "cad25f2a15e70a1b7248570eaaff2d9a0020c7fb60d327638901d184d238e676",
+        "samples": 39339,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "b2e4bbc8b171600a33a73e11c487a1d3452ff4f427c106aedcd226be5e9cd518",
+        "skin_normals_sha256": "9eefd6aaa2830beda6b2d513088ee0a2632af816ba2dd5999f74883b60e91d94",
+        "skin_uv_sha256": "5dba7fb6eb7ca953be5d4b85863a27f156ffa325e57b9360c453bf10e68f60a6",
+        "skin_vertices_sha256": "b41263f5e0773313ecea05c25ed4725dde7ba317f158d0b79ed3d3fdf164d5ea",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "views": {
+        "cliff_group1_close.png": {
+          "sha256": "8aa7604c2b050c112c5a5782d1ead964e4f5c581429c1036829eb74aeca84cc8",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "cliff_group1_grass.png": {
+          "sha256": "243a30d8603d0231d06f59f3d7eeaa6fdb0f746d1921402068283fa7b6e25076",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "cliff_group1_reverse.png": {
+          "sha256": "a99fb526e4a343e1770d847ef76f85b5e800cbebe4265d6dbaf1456519e5e2e0",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      }
+    },
+    "cliff_group2": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 413.0,
+            "error": 0,
+            "file": "cliff_group2_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 344.0,
+            "error": 0,
+            "file": "cliff_group2_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 375.0,
+            "error": 0,
+            "file": "cliff_group2_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "ea44fc119c5d2603605581af947617067876d80655c8c0bd75c0c5fa8bfa4a05",
+        "samples": 29886,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "78bae053370ee0c4ace85a7dcf11109db08fdc46e39941677748274fd5028c67",
+        "skin_normals_sha256": "bdfefabc56fca892fa5d6bfe2081fd0ce8ff2b3e4e82c8639c75d0b1b9f9d9a7",
+        "skin_uv_sha256": "ee16fd9db3e757c490c0e5727617025a769139d1f492c5145889988954fe0661",
+        "skin_vertices_sha256": "427a452dd59c1753418065cce406a5b7751f10635fe271f4aa6d1ccb0d80d494",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "views": {
+        "cliff_group2_close.png": {
+          "sha256": "1cb1a56d5a917207642bf726db9b2c8ae628473a08d5edeb7101256f25a8d9d2",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "cliff_group2_grass.png": {
+          "sha256": "c4a9fc943548f3c26606f362557f28e957d63fb528e98d0d19045b764e016c5c",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "cliff_group2_reverse.png": {
+          "sha256": "cf3809fd850f87dd1fb358721269fd9c59bec893e3e5d18cb0ddf707503b68df",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      }
+    },
+    "cliff_group2_gradient": {
+      "metadata": {
+        "captures": [
+          {
+            "draw_calls": 413.0,
+            "error": 0,
+            "file": "cliff_group2_gradient_close.png",
+            "position": "(-10.18066, 8.0, 17.31963)",
+            "rotation": "(-30.0, 16.0, 0.0)"
+          },
+          {
+            "draw_calls": 344.0,
+            "error": 0,
+            "file": "cliff_group2_gradient_grass.png",
+            "position": "(-12.4, 7.1, 11.0)",
+            "rotation": "(-23.8915, 18.65789, 0.0)"
+          },
+          {
+            "draw_calls": 375.0,
+            "error": 0,
+            "file": "cliff_group2_gradient_reverse.png",
+            "position": "(-30.34978, 9.0, -0.38091)",
+            "rotation": "(-28.0, -105.0, 0.0)"
+          }
+        ],
+        "data_sha256": "ea44fc119c5d2603605581af947617067876d80655c8c0bd75c0c5fa8bfa4a05",
+        "samples": 29886,
+        "sculpt_base": true,
+        "sculpt_profile": "local",
+        "skin_colors_sha256": "78bae053370ee0c4ace85a7dcf11109db08fdc46e39941677748274fd5028c67",
+        "skin_normals_sha256": "cdc35d1889f8d9d08176ad6034c38a1b18fc36899180c65fd8e4fef9505ee8a2",
+        "skin_uv_sha256": "ee16fd9db3e757c490c0e5727617025a769139d1f492c5145889988954fe0661",
+        "skin_vertices_sha256": "427a452dd59c1753418065cce406a5b7751f10635fe271f4aa6d1ccb0d80d494",
+        "source": "Actual Godot terrain scene",
+        "water_phase": 1.25
+      },
+      "views": {
+        "cliff_group2_gradient_close.png": {
+          "sha256": "0ed0ce3b2199a4c6bb50bb273f2d115ef914257ef06311a2996d3d62b84fce33",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "cliff_group2_gradient_grass.png": {
+          "sha256": "4f2101ad881ef2280dd60f79e52772607f3e0c2c90222957da877dbe18507364",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "cliff_group2_gradient_reverse.png": {
+          "sha256": "a87f91e893262ef44fdb06f4867050fbffbf04d29dda5ecd3a62707d6a7617f8",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      }
+    }
+  },
+  "volumes": {
+    "v1": {
+      "save_sha256": "51ba6c5b70f3289f6c144c441f4407882f58e38718f075e936327087d2f63099",
+      "samples": 39339,
+      "source_check": {
+        "source_blend_sha256": "b39a7722bf72ec2a018af4ae325a730315ed167525ce10b07005c5606e8048de",
+        "sampled_points": 500,
+        "rays_per_point": 3,
+        "analytic_bvh_sign_mismatches": 0,
+        "analytic_direction_disagreements": 0,
+        "mismatches": [],
+        "disagreements": [],
+        "components": [
+          {
+            "vertices": 1824,
+            "triangles": 3648,
+            "lo": [
+              -9.682668685913086,
+              -2.190396547317505,
+              -0.16085445880889893
+            ],
+            "hi": [
+              10.23255443572998,
+              4.900700092315674,
+              4.800000190734863
+            ]
+          }
+        ],
+        "nonmanifold_edges": 0,
+        "degenerate_triangles": 0,
+        "scope": "Seeded500point/three-direction comparison of BVH traversal with independent float64 triangle intersections on closed source, before world transform/density extraction. Not proof for arbitrary points, self-intersections, final skin, editing or art."
+      },
+      "operation": "Close one existing scan boundary onto an inboard back plane, clip source atZ4.8, triangulate/recalculate closed winding. Uniform1.1 scale, rigid10degree yaw. Local full3D solid union with canonical core sampled1.1m inboard; .3m contact smoothing. Existing complete-source high outcrop solids retained. Original cells and all densityY>=3.5 unchanged; no source-front extrusion or return profile."
+    },
+    "v2": {
+      "save_sha256": "e70ee0a39be46e0fee99dd9db0ad896d34cefcb72edb1bd5df4e1adbdba53e0d",
+      "samples": 29886,
+      "source_check": {
+        "source_blend_sha256": "29af91d2722a713aa7f73dd894bac8a340e08b7bd14fc15f375b0a844693643b",
+        "sampled_points": 500,
+        "rays_per_point": 3,
+        "analytic_bvh_sign_mismatches": 0,
+        "analytic_direction_disagreements": 0,
+        "mismatches": [],
+        "disagreements": [],
+        "components": [
+          {
+            "vertices": 1801,
+            "triangles": 3602,
+            "lo": [
+              -9.682668685913086,
+              -3.0380706787109375,
+              -1.5291715860366821
+            ],
+            "hi": [
+              10.23255443572998,
+              0.320403516292572,
+              4.800000190734863
+            ]
+          }
+        ],
+        "nonmanifold_edges": 0,
+        "degenerate_triangles": 0,
+        "scope": "Seeded500point/three-direction comparison of BVH traversal with independent float64 triangle intersections on closed source, before world transform/density extraction. Not proof for arbitrary points, self-intersections, final skin, editing or art."
+      },
+      "operation": "Close one existing scan boundary onto an inboard back plane, clip source atZ4.8, triangulate/recalculate closed winding. Uniform1.1 scale, rigid10degree yaw. Local full3D solid union with canonical core sampled1.1m inboard; .3m contact smoothing. Existing complete-source high outcrop solids retained. Original cells unchanged; no source-front extrusion or return profile. First rigidly pitch the scan45degrees, turning its flared terrestrial base inward. Fit actual source cap intersection to retained cap center. Recompute capY3.5 density; preserveY>=3.75. Fade contact smoothing to zero at grade to avoid a raised union cap."
+    }
+  },
+  "normal_control": {
+    "gradient_nodes": 11017,
+    "meshes_replaced": 19,
+    "normal_occurrences_changed": 123222,
+    "scope": "Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.",
+    "transform_buffer_sha256_after": "b45b8510df8ab4f84b9f1466412188906af502d1d2e43881899473d2ffde6605",
+    "transform_buffer_sha256_before": "b45b8510df8ab4f84b9f1466412188906af502d1d2e43881899473d2ffde6605",
+    "unique_sample_points": 20538,
+    "uploaded_geometry_color_uv_unchanged": true
+  },
+  "raw_skin_v2": {
+    "version": "cliffgroup2",
+    "triangles": 242168,
+    "vertices": 121086,
+    "components": [
+      {
+        "triangles": 242144,
+        "vertices": 121072,
+        "lo": [
+          -21.303136825561523,
+          -4.689836025238037,
+          -11.999979972839355
+        ],
+        "hi": [
+          17.999980926513672,
+          4.836400032043457,
+          10.999979972839355
+        ]
+      },
+      {
+        "triangles": 24,
+        "vertices": 14,
+        "lo": [
+          -19.94550132751465,
+          0.5544986128807068,
+          1.72427237033844
+        ],
+        "hi": [
+          -19.72751808166504,
+          0.8052537441253662,
+          1.7934849262237549
+        ]
+      }
+    ],
+    "non_two_use_edges": 0,
+    "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+  },
+  "production_unchanged_from": "ac83a40",
+  "decision": "All art studies unaccepted; spall_finish1 remains default. Gradient control proves a substantial normal-shading contribution to staircase appearance, not adequate resolution or art acceptance. Final v2 raw skin has a detached24triangle component. No editor/support/water/whole/far/performance acceptance."
+}

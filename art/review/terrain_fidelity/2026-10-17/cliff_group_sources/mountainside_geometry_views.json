@@ -1,0 +1,22 @@
+[
+	{
+		"camera_positions": {
+			"back": "(0.0, 0.0, -18.68594)",
+			"front": "(0.0, 0.0, 18.68594)",
+			"left": "(-18.68594, 0.0, 0.0)",
+			"quarter": "(11.13457, 7.953263, 12.72522)",
+			"right": "(18.68594, 0.0, 0.0)"
+		},
+		"camera_size": 14.2048931121826,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://art/work/polyhaven_rocks/2026-10-17/mountainside/mountainside_geometry.gltf",
+		"source_bounds": "[P: (-5.026505, -0.199791, -3.681164), S: (10.2093, 10.52214, 5.246894)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "slug": "mountainside",
+    "page": "https://polyhaven.com/a/mountainside",
+    "license": "CC0-1.0",
+    "files": [
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/mountainside/mountainside_1k.gltf",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/mountainside/mountainside_1k.gltf",
+        "bytes": 2776,
+        "sha256": "73241a50748582e6a13b2462afbd57d18a1bae5ffef777b3119d064709604fcd",
+        "md5": "3f809d8a668166c764f665dabe25af12"
+      },
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/mountainside/mountainside.bin",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/mountainside/mountainside.bin",
+        "bytes": 4409280,
+        "sha256": "08e4ca60e050045de8224d12d23af84f9406bc558943038114d81e184158d953",
+        "md5": "a4ac37444e3313bd9f9ff459eb71418d"
+      }
+    ],
+    "work_geometry": "art/work/polyhaven_rocks/2026-10-17/mountainside/mountainside_geometry.gltf",
+    "geometry_sha256": "7495ff954326a7f4c7121d4827008079235b1ddd1c21856bad105315eec7c1fb",
+    "work_operation": "Strip material/image/texture/sampler references from a separate glTF copy; geometry, scene transforms, buffer bytes and originals unchanged.",
+    "stage": "Source evaluation only; no runtime promotion or downloaded preview/texture images."
+  },
+  {
+    "slug": "namaqualand_cliff_02",
+    "page": "https://polyhaven.com/a/namaqualand_cliff_02",
+    "license": "CC0-1.0",
+    "files": [
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/namaqualand_cliff_02/namaqualand_cliff_02_1k.gltf",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/namaqualand_cliff_02/namaqualand_cliff_02_1k.gltf",
+        "bytes": 2857,
+        "sha256": "025d245c7bbd0dfeb061c95a03a79699b5e39c9b3b04e7f0c8f729d2b99830cf",
+        "md5": "3a4f323a98171ce6670f906db122c538"
+      },
+      {
+        "path": "art/source/third_party/polyhaven/2026-10-17/namaqualand_cliff_02/namaqualand_cliff_02.bin",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/namaqualand_cliff_02/namaqualand_cliff_02.bin",
+        "bytes": 5697152,
+        "sha256": "da05a038b3a1f3b46cd8cf074d20b8d3e2b2148d30806e1feb0309e941200595",
+        "md5": "2920477744cce1a827a61c0d36a1061a"
+      }
+    ],
+    "work_geometry": "art/work/polyhaven_rocks/2026-10-17/namaqualand_cliff_02/namaqualand_cliff_02_geometry.gltf",
+    "geometry_sha256": "ca773284e6457ce56456dfa185ecbcc505600573e7ddf2a7ec1989d96b9d66a5",
+    "work_operation": "Strip material/image/texture/sampler references from a separate glTF copy; geometry, scene transforms, buffer bytes and originals unchanged.",
+    "stage": "Source evaluation only; no runtime promotion or downloaded preview/texture images."
+  }
+]

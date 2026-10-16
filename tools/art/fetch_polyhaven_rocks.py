@@ -14,8 +14,10 @@ ROOT=Path(__file__).resolve().parents[2]
 SOURCE=ROOT/'art/source/third_party/polyhaven/2026-10-17'
 WORK=ROOT/'art/work/polyhaven_rocks/2026-10-17'
 slugs=sys.argv[1:] or ['namaqualand_boulder_02','rock_face_02']
-assert all(slug in ['namaqualand_boulder_02','rock_face_02','boulder_01'] for slug in slugs)
-manifest=SOURCE/'download_manifest.json'
+groups=['namaqualand_cliff_02','mountainside']
+assert all(slug in ['namaqualand_boulder_02','rock_face_02','boulder_01']+groups for slug in slugs)
+assert all(slug in groups for slug in slugs) or not any(slug in groups for slug in slugs)
+manifest=SOURCE/('cliff_group_manifest.json' if all(slug in groups for slug in slugs) else 'download_manifest.json')
 report=[r for r in json.loads(manifest.read_text()) if r['slug'] not in slugs] if manifest.exists() else []
 for slug in slugs:
     metadata=json.loads((SOURCE/(slug+'_files.json')).read_text())
@@ -44,5 +46,5 @@ for slug in slugs:
         geometry_sha256=hashlib.sha256(target.read_bytes()).hexdigest(),
         work_operation='Strip material/image/texture/sampler references from a separate glTF copy; geometry, scene transforms, buffer bytes and originals unchanged.',
         stage='Source evaluation only; no runtime promotion or downloaded preview/texture images.'))
-(SOURCE/'download_manifest.json').write_text(json.dumps(report,indent=2)+'\n')
+manifest.write_text(json.dumps(report,indent=2)+'\n')
 print('POLY HAVEN GEOMETRY:',json.dumps([{ 'slug':r['slug'],'files':len(r['files']),'bytes':sum(f['bytes'] for f in r['files'])} for r in report]))

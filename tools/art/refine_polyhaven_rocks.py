@@ -14,8 +14,10 @@ from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[2]
 WORK=ROOT/'art/work/polyhaven_rocks/2026-10-17'
 slugs=sys.argv[1+sys.argv.index('--'):] if '--' in sys.argv else ['namaqualand_boulder_02','rock_face_02']
-assert all(slug in ['namaqualand_boulder_02','rock_face_02','boulder_01'] for slug in slugs)
-report_path=WORK/'refinement_report.json'
+groups=['namaqualand_cliff_02','mountainside']
+assert all(slug in ['namaqualand_boulder_02','rock_face_02','boulder_01']+groups for slug in slugs)
+assert all(slug in groups for slug in slugs) or not any(slug in groups for slug in slugs)
+report_path=WORK/('cliff_group_refinement.json' if all(slug in groups for slug in slugs) else 'refinement_report.json')
 reports=[r for r in json.loads(report_path.read_text()) if r['slug'] not in slugs] if report_path.exists() else []
 for slug in slugs:
     bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -51,5 +53,5 @@ for slug in slugs:
         blend=str(blend.relative_to(ROOT)),glb=str(glb.relative_to(ROOT)),glb_sha256=hashlib.sha256(glb.read_bytes()).hexdigest(),
         operation='Weld1e-6 and Blender collapse decimation toward4000triangles; preserve open-source face winding. Shape sources preserved; no backing invented or holes silently filled.',
         stage='Unaccepted neutral shape/LOD study; not a runtime asset or performance acceptance.'))
-(WORK/'refinement_report.json').write_text(json.dumps(reports,indent=2)+'\n')
+report_path.write_text(json.dumps(reports,indent=2)+'\n')
 print('POLY HAVEN REFINEMENT:',json.dumps(reports))

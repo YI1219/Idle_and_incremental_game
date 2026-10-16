@@ -1,0 +1,22 @@
+[
+	{
+		"camera_positions": {
+			"back": "(0.0, 0.0, -26.94614)",
+			"front": "(0.0, 0.0, 26.94614)",
+			"left": "(-26.94614, 0.0, 0.0)",
+			"quarter": "(16.05666, 11.46904, 18.35046)",
+			"right": "(26.94614, 0.0, 0.0)"
+		},
+		"camera_size": 27.3071269989014,
+		"geometry": "Unchanged source geometry; neutral preview material override only",
+		"source": "res://art/work/polyhaven_rocks/2026-10-17/namaqualand_cliff_02/namaqualand_cliff_02_geometry.gltf",
+		"source_bounds": "[P: (-9.681149, -0.159844, -4.398999), S: (20.2275, 7.183821, 6.593421)]",
+		"views": [
+			"front",
+			"left",
+			"right",
+			"back",
+			"quarter"
+		]
+	}
+]

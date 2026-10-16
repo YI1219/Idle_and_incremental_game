@@ -1,0 +1,31 @@
+# Existing 3D cliff groups and normal isolation — rejected
+
+Default remains `spall_finish1`; full goal active/incomplete. Production assets/scripts/shaders/scenes/tests/project settings are unchanged from `ac83a40`. This is source refinement and an offline ordinary-density authoring study, not a new player tool or automatic model assembly feature.
+
+There are **30 new native neutral images** (six inputs × five views), **nine formal native local images** (three stages × close/contact/reverse), and three superseded native normal-control images preserved separately. All formal local cameras and four water clocks match the actual original `rendered_legacy_control1`; clouds/mist remain live. The source inspector now places its camera outside the actual source bounds so large scans are not viewed from inside. Native image counts do not imply art acceptance.
+
+## Source and complete-volume construction
+
+Two further existing [Poly Haven](https://polyhaven.com) sources were downloaded as geometry only: [Mountainside](https://polyhaven.com/a/mountainside) and [Namaqualand Cliff 02](https://polyhaven.com/a/namaqualand_cliff_02). Both source pages and the [asset license](https://polyhaven.com/license) identify CC0; this round fetched no preview photographs, material maps or purchased assets. Originals, URL/size/MD5/SHA metadata and separate material-free glTF copies are retained in `art/source/third_party/polyhaven/2026-10-17/cliff_group_manifest.json`. The earlier three-source manifest remains unchanged. Powered by Poly Haven; no live game API dependency.
+
+Actual downloaded mesh counts after welding are153,472/194,080triangles, distinct from website asset statistics. Separate Blender copies reduce toward4,000triangles. Both remain open, with171/188boundary edges after reduction. Mountainside reads as a busy rocky sheet; Namaqualand has more useful unequal broad planes and deep clefts. Parent inspected their actual quarter/back views and the reduction/closed quarter views, not every pixel of all thirty neutral images.
+
+The selected Namaqualand4k copy has one188-edge boundary. The authoring tool preserves its front geometry, adds a back plane intended for burial, bridges its actual boundary, clips at sourceZ4.8, fills that cap and recalculates closed winding. These are refinements of an existing scan, not a new original official rock made from scratch. V1 is upright; v2 first rigidly pitches45degrees to turn the outward terrestrial foot inward. Both use uniform1.1scale and10degree yaw, with the v2 cap center fitted to an actual source intersection. There is no source-front extrusion or row-wise return profile.
+
+The full three-dimensional source SDF joins a canonical core sampled1.1m inboard, with.3m local contact smoothing. Three local original high-outcrop solids are retained. Results are bounded ordinary v4 density files loaded through the actual data loader; cells remain identical. V1 preserves densityY≥3.5, causing a thin cap/roof seam. V2 recomputes the3.5cap, fades contact smoothing to zero at grade and preserves densityY≥3.75. It restores much of the cap connection and reduces the flared foot. It still changes local visible contours and unified decoration; it is not exact original-scene preservation.
+
+## Native judgment and isolated normal control
+
+V1 has a wide outward-hanging frontage and broken cap. V2 improves those specific faults but creates heavy diagonal strata, a massive endpoint, a hard green lip and an unconvincing lower mass. Both are rejected against the stronger original broad planes and the user's target.
+
+The first normal diagnostic also republished decoration. Its original three PNGs, metadata and log are preserved in `republish_normal_control/`; the raw report's no-regeneration wording is explicitly corrected there. Those images are excluded from the pure-control claim.
+
+The corrected `cliff_group2_gradient` control replaces19existing terrain meshes only. It uses tetrahedrally interpolated **normalized node central-difference vectors**, not the exact derivative of the piecewise linear density. Upload positions/colors/UV remain byte-identical; the renderer tree's transforms and MultiMesh buffers hash identically before/after. No decoration rebuild, prop sync, density, geometry or material change occurs. The capture's full data/skin-position/color/UV hashes match v2 exactly; only normal hashes differ. This removes much of the regular diagonal staircase lighting, proving a substantial shading contribution. It does not prove adequate sampling resolution, fix the physical silhouette or make the softened form acceptable. Parent and independent review reject promotion.
+
+## Finite verification and remaining failures
+
+- Each closed source copy is one component, positive volume, zero nonmanifold edges/degenerate triangles. Independent float64 triangle intersections and BVH traversal agree at500seeded points × three directions per copy, with zero direction disagreements. Reports bind the exact tested `.blend` SHA. This is finite source-local evidence, not arbitrary-point/self-intersection/final-skin proof.
+- Actual final v2 raw skin has242,168triangles and **two components**: main242,144 plus a detached24triangle piece around x−19.95..−19.73, y.55...81, z1.72..1.79. Zero non-two-use edges does not make it a single island. It fails the no-orphan/connected-body direction.
+- No fresh carve/undo/support/vines/shore/picking/publication/editor/performance acceptance. Tool-only cap/grass overrides and the normal diagnostic do not persist through ordinary editing. Water, trees, buildings, production maps and default geometry are unchanged. No target-device claim.
+
+Run `python3 tools/art/build_cliff_group_review.py` for bound PNG/file/source checks and the local [comparison](http://127.0.0.1:18771/cliff_groups.html). All formal art studies remain unaccepted. The useful result is a checked 3D source route and a genuine normal-isolation diagnosis, not proof that this source/pose solves the target. A future local candidate needs a compatible shoulder, main planes and inward lower return together before placement; do not keep sweeping this group's angles or noise. No user model/Tripo delivery blocker is established.

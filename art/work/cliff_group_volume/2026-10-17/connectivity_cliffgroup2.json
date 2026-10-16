@@ -1,0 +1,37 @@
+{
+  "version": "cliffgroup2",
+  "triangles": 242168,
+  "vertices": 121086,
+  "components": [
+    {
+      "triangles": 242144,
+      "vertices": 121072,
+      "lo": [
+        -21.303136825561523,
+        -4.689836025238037,
+        -11.999979972839355
+      ],
+      "hi": [
+        17.999980926513672,
+        4.836400032043457,
+        10.999979972839355
+      ]
+    },
+    {
+      "triangles": 24,
+      "vertices": 14,
+      "lo": [
+        -19.94550132751465,
+        0.5544986128807068,
+        1.72427237033844
+      ],
+      "hi": [
+        -19.72751808166504,
+        0.8052537441253662,
+        1.7934849262237549
+      ]
+    }
+  ],
+  "non_two_use_edges": 0,
+  "scope": "Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance."
+}
