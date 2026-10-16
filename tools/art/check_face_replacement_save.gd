@@ -49,6 +49,7 @@ func run():
  var report:Dictionary={'checks':checks,'failures':failures,'support_probes':probes,'support_mismatches':mismatches,'study_samples':saved.rocks.size(),'skin_sha256_hex_algorithm':before_hash,'scope':'Finite ordinary density save/load/support/carve/undo/redo. No actual-cap render override persistence, publication/picking, props, arbitrary sculpture, water routing or performance acceptance.'}
  var path:='res://art/review/terrain_fidelity/2026-10-17/cliff_face_replacement/save_checks.json'
  if version.begins_with('rendered'):path='res://art/work/rendered_island/2026-10-17/save_checks_'+version+'.json'
+ if version=='exposedcleft':path='res://art/work/rendered_join/2026-10-17/exposed_cleft/save_checks.json'
  report['study']=version
  FileAccess.open(path,FileAccess.WRITE).store_string(JSON.stringify(report,'\t'))
  print('FACE STUDY SAVE: ',checks-failures,'/',checks,' support=',probes,' mismatches=',mismatches)

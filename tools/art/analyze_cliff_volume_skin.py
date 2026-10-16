@@ -30,10 +30,14 @@ _, incidence = np.unique(edges, axis=0, return_counts=True)
 components = []
 for root, count in sorted(zip(roots,counts), key=lambda pair:-pair[1]):
     subset = points[owners==root]
-    components.append(dict(triangles=int(count), vertices=len(subset), lo=subset.min(axis=0).tolist(), hi=subset.max(axis=0).tolist()))
+    # Godot source triangles face clockwise; reverse for outward signed volume.
+    origin=(subset.min(axis=0).astype(np.float64)+subset.max(axis=0))/2
+    faces=points[triangles[face_owners==root]].astype(np.float64)-origin
+    signed_volume=float(np.einsum('ij,ij->i',faces[:,0],np.cross(faces[:,2],faces[:,1])).sum()/6)
+    components.append(dict(triangles=int(count), vertices=len(subset), lo=subset.min(axis=0).tolist(), hi=subset.max(axis=0).tolist(), signed_volume_godot_clockwise=signed_volume))
 report = dict(version=version, triangles=len(triangles), vertices=len(points), components=components,
     non_two_use_edges=int((incidence!=2).sum()),
-    scope='Exact actual source-skin vertices, before chunk clipping. Does not establish props, arbitrary edits, publication, performance or art acceptance.')
+    scope='Exact actual source-skin vertices, before chunk clipping. Signed volume reverses Godot clockwise winding: negative components can be enclosed cavity shells, not detached solid pieces. Connectivity alone does not classify containment. Does not establish props, arbitrary edits, publication, performance or art acceptance.')
 OUT=Path(sys.argv[3]) if len(sys.argv)>3 else ROOT/'art/review/terrain_fidelity/2026-10-16/cliff_volume'
 OUT.mkdir(parents=True,exist_ok=True)
 (OUT/f'connectivity_{version}.json').write_text(json.dumps(report,indent=2)+'\n')

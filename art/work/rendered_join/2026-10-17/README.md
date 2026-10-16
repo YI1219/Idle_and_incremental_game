@@ -1,0 +1,3 @@
+# Original-body reconstruction and local root studies
+
+Offline ordinary v4 density studies; default/production untouched. The majority-vote reconstruction is approximate, not exact CSG. `cap_fix` repairs flat-cap shrink. Closing is rejected. `crown_roots/v2` is an unaccepted local structural lead; v3 whole-hull cuts generate inward cavity shells and are rejected. `exposed_cleft` follows one real exposed upper cleft and has no new cavity shells, but still retains the96triangle exterior orphan and unresolved art issues. Source cells and original geometry are preserved. [Current evidence](../../../review/terrain_fidelity/2026-10-17/rendered_join/README.md).

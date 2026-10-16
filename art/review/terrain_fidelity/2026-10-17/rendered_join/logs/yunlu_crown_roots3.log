@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-10-17 03:56:23.343 godot[17300:3722792] +[IMKClient subclass]: chose IMKClient_Modern
+EXPOSED BEDROCK: ordinary_loader=true samples=29142
+ACTUAL CAP STUDY: {"ambiguous_junctions":0,"grass_anchor_count":531,"loops":2,"open_boundaries":0,"painted_flat_cap_vertex_occurrences":123771,"section_y":3.4634917,"source_fans":true,"stage":"Tool-only actual-skin cap color and rooted original-grass contour. No new ground geometry, runtime regeneration/picking or full leaf support acceptance.","unsupported_anchor_samples":0}
+FIELD GRADIENT NORMALS: {"gradient_nodes":11919,"meshes_replaced":20,"normal_occurrences_changed":133108,"scope":"Local diagnostic normal replacement only; no geometry, density, material, prop regeneration or production change.","transform_buffer_sha256_after":"5fa82ecd0faffd8a5a0ec1f9176cc3e6a1a6b14de1573bbe0a42da7372df8912","transform_buffer_sha256_before":"5fa82ecd0faffd8a5a0ec1f9176cc3e6a1a6b14de1573bbe0a42da7372df8912","unique_sample_points":22180,"uploaded_geometry_color_uv_unchanged":true}
+2026-10-17 03:56:52.851 godot[17300:3722792] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+SCULPT BASE CAPTURES: 3 samples=29142 skin_vertices=736392

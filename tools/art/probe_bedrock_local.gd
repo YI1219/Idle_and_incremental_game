@@ -6,7 +6,7 @@ func run():
  var version:='fitcap' if args.has('fitcap') else ('replace' if args.has('replace') else ('single' if args.has('single') else ('v3' if args.has('v3') else ('v2' if args.has('v2') else 'v1'))))
  var face:=''
  for arg:String in args:
-  if arg.begins_with('face') or arg.begins_with('rendered') or arg.begins_with('cliffgroup'):face=arg;version=arg;scanned=false
+  if arg.begins_with('face') or arg.begins_with('rendered') or arg.begins_with('cliffgroup') or arg.begins_with('join') or arg.begins_with('crownroots') or arg=='exposedcleft':face=arg;version=arg;scanned=false
  preload('res://tools/art/author_exposed_bedrock.gd').author(data,scanned,version)
  var field=preload('res://scripts/terrain_editor/contour_terrain.gd').new();field.refresh(data)
  var surface=field.surfaces.sculpted_terrain
@@ -14,5 +14,10 @@ func run():
  if not face.is_empty():path='res://art/work/cliff_face_replacement/2026-10-17/'+face+'_skin.bin'
  if face.begins_with('rendered'):path='res://art/work/rendered_island/2026-10-17/'+face+'_skin.bin'
  if face.begins_with('cliffgroup'):path='res://art/work/cliff_group_volume/2026-10-17/'+face+'_skin.bin'
+ if face.begins_with('join'):path='res://art/work/rendered_join/2026-10-17/'+face+'_skin.bin'
+ if face=='crownroots':path='res://art/work/rendered_join/2026-10-17/crown_roots/crownroots_skin.bin'
+ if face=='crownroots2':path='res://art/work/rendered_join/2026-10-17/crown_roots/v2/crownroots2_skin.bin'
+ if face=='crownroots3':path='res://art/work/rendered_join/2026-10-17/crown_roots/v3/crownroots3_skin.bin'
+ if face=='exposedcleft':path='res://art/work/rendered_join/2026-10-17/exposed_cleft/exposedcleft_skin.bin'
  FileAccess.open(path,FileAccess.WRITE).store_buffer(surface.vertices.to_byte_array())
  print('BEDROCK RAW SKIN: vertices=',surface.vertices.size(),' samples=',data.rocks.samples.size());quit()

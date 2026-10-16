@@ -1,0 +1,10 @@
+{
+	"checks": 12,
+	"failures": 0,
+	"scope": "Finite ordinary density save/load/support/carve/undo/redo. No actual-cap render override persistence, publication/picking, props, arbitrary sculpture, water routing or performance acceptance.",
+	"skin_sha256_hex_algorithm": "2eb009ae8f0492c0fe8e0050efd1696a7862cf30bd086c3afc697cd0a902631a",
+	"study": "exposedcleft",
+	"study_samples": 26727,
+	"support_mismatches": 0,
+	"support_probes": 135
+}

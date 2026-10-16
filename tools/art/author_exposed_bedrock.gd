@@ -20,6 +20,14 @@ static func author(data,scanned:bool=false,version:String='v1')->void:
  if version=='retainedreturn':path='res://art/work/rendered_island/2026-10-17/complete/retained_return_v1.json'
  if version=='cliffgroup':path='res://art/work/cliff_group_volume/2026-10-17/group_volume_v1.json'
  if version=='cliffgroup2':path='res://art/work/cliff_group_volume/2026-10-17/group_volume_v2.json'
+ if version=='joinraw':path='res://art/work/rendered_join/2026-10-17/join_raw.json'
+ if version=='joinclosed':path='res://art/work/rendered_join/2026-10-17/join_closed.json'
+ if version=='joinrawcap':path='res://art/work/rendered_join/2026-10-17/cap_fix/join_raw.json'
+ if version=='joinclosedcap':path='res://art/work/rendered_join/2026-10-17/cap_fix/join_closed.json'
+ if version=='crownroots':path='res://art/work/rendered_join/2026-10-17/crown_roots/crown_roots_v1.json'
+ if version=='crownroots2':path='res://art/work/rendered_join/2026-10-17/crown_roots/v2/crown_roots_v2.json'
+ if version=='crownroots3':path='res://art/work/rendered_join/2026-10-17/crown_roots/v3/crown_roots_v3.json'
+ if version=='exposedcleft':path='res://art/work/rendered_join/2026-10-17/exposed_cleft/exposed_cleft_v1.json'
  var payload:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
  assert(data.deserialize(payload));data.ensure_sculpt_base()
  assert(data.serialize().cells==before)
