@@ -47,15 +47,25 @@ func run()->void:
  # pixels when the displaced UV lands in front of the curtain. Compare to an
  # intentionally unguarded control to prove the rejection branch is exercised.
  var strip:=QuadMesh.new();strip.size=Vector2(1.0,5.0);front.mesh=strip
- material.set_shader_parameter('refraction_strength',.15);var guarded:=await capture();guarded.save_png(OUT+'guarded_edge.png')
  var no_guard:=Shader.new();no_guard.code=shader.code.replace('if(depth<.00001 || behind_view.z/behind_view.w<VERTEX.z-.01)sample_uv=bent_uv;','sample_uv=bent_uv;')
- material.shader=no_guard;var leaking:=await capture();leaking.save_png(OUT+'unguarded_edge.png')
- var edge_rejections:=0
- var left:=camera.unproject_position(Vector3(-.5,1.5,1)).x;var right:=camera.unproject_position(Vector3(.5,1.5,1)).x
- for y in range(100,300):
-  for x in range(140,460):
-   if x>=left-1 and x<=right+1:continue
-   var a:=guarded.get_pixel(x,y);var b:=leaking.get_pixel(x,y)
-   if absf(a.r-b.r)+absf(a.g-b.g)+absf(a.b-b.b)>.02:edge_rejections+=1
+ var edge_rejections:=0;var cases:Array=[]
+ # A different strand phase may bend away from both edges of a centered
+ # strip. Exercise multiple actual phases/positions, keeping the same guard
+ # threshold and requiring an intentionally leaking control to differ.
+ for spec:Array in [[0.0,.5],[-1.0,.5],[1.0,.5],[0.0,1.25],[0.0,2.5]]:
+  front.position.x=spec[0]
+  material.shader=shader;material.set_shader_parameter('refraction_strength',.15);material.set_shader_parameter('flow_time',spec[1]);var guarded:=await capture()
+  material.shader=no_guard;material.set_shader_parameter('refraction_strength',.15);material.set_shader_parameter('flow_time',spec[1]);var leaking:=await capture()
+  var rejected:=0
+  var left:=camera.unproject_position(Vector3(spec[0]-.5,1.5,1)).x;var right:=camera.unproject_position(Vector3(spec[0]+.5,1.5,1)).x
+  for y in range(100,300):
+   for x in range(140,460):
+    if x>=left-1 and x<=right+1:continue
+    var a:=guarded.get_pixel(x,y);var b:=leaking.get_pixel(x,y)
+    if absf(a.r-b.r)+absf(a.g-b.g)+absf(a.b-b.b)>.02:rejected+=1
+  if rejected>edge_rejections:
+   guarded.save_png(OUT+'guarded_edge.png');leaking.save_png(OUT+'unguarded_edge.png')
+  edge_rejections=maxi(edge_rejections,rejected)
+  cases.append({'strip_x':spec[0],'flow_time':spec[1],'rejected_pixels':rejected})
  var ok:=changed>1000 and default_changed>300 and foreground==0 and edge_rejections>5
- var report:={'changed_background_pixels':changed,'foreground_difference_pixels':foreground,'production_default_changed_pixels':default_changed,'rejected_foreground_edge_samples':edge_rejections,'probes':64000,'passed':ok};FileAccess.open(OUT+'fixture_checks.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'));print('FALL REFRACTION RENDER: ',report);quit(0 if ok else 1)
+ var report:={'changed_background_pixels':changed,'foreground_difference_pixels':foreground,'production_default_changed_pixels':default_changed,'rejected_foreground_edge_samples':edge_rejections,'probes':64000,'guard_cases':cases,'passed':ok};FileAccess.open(OUT+'fixture_checks.json',FileAccess.WRITE).store_string(JSON.stringify(report,'\t'));print('FALL REFRACTION RENDER: ',report);quit(0 if ok else 1)

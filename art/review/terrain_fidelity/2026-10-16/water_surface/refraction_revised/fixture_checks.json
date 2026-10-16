@@ -1,0 +1,35 @@
+{
+	"changed_background_pixels": 5724,
+	"foreground_difference_pixels": 0,
+	"guard_cases": [
+		{
+			"flow_time": 0.5,
+			"rejected_pixels": 0,
+			"strip_x": 0.0
+		},
+		{
+			"flow_time": 0.5,
+			"rejected_pixels": 101,
+			"strip_x": -1.0
+		},
+		{
+			"flow_time": 0.5,
+			"rejected_pixels": 137,
+			"strip_x": 1.0
+		},
+		{
+			"flow_time": 1.25,
+			"rejected_pixels": 113,
+			"strip_x": 0.0
+		},
+		{
+			"flow_time": 2.5,
+			"rejected_pixels": 0,
+			"strip_x": 0.0
+		}
+	],
+	"passed": true,
+	"probes": 64000,
+	"production_default_changed_pixels": 2716,
+	"rejected_foreground_edge_samples": 137
+}

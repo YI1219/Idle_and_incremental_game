@@ -5,6 +5,7 @@ uniform sampler2D screen_texture : hint_screen_texture, filter_linear, repeat_di
 uniform sampler2D depth_texture : hint_depth_texture, filter_nearest, repeat_disable;
 // Convert approximate metre-scale displacement to projected UV at this fragment.
 uniform float refraction_strength : hint_range(0.0,.15) = .045;
+uniform float flow_time = -1.0;
 varying vec3 world_position;
 
 float hash_flow(vec2 p) {
@@ -35,6 +36,7 @@ void vertex() {
 }
 
 void fragment() {
+ float time=flow_time<0.0?TIME:flow_time;
 	float inverse_width = COLOR.b/max(1.0-COLOR.b,.0001);
 	// Connected-run coordinates survive chunk clipping and curved outlets.
 	// White metadata from legacy/closed rings keeps a continuous world fallback.
@@ -49,14 +51,15 @@ void fragment() {
 	// faster broken fall below. Blending by drop avoids shearing over time.
 	float y = world_position.y;
 	float accelerate = smoothstep(.15,1.6,drop);
-	vec2 slow = vec2(across*7.0,(y+TIME*1.25)*.55);
-	vec2 fast = vec2(across*13.0,(y+TIME*2.6)*.38);
+	across+=sin((y+time*1.8)*1.3+across*.8)*.028*accelerate;
+	vec2 slow = vec2(across*4.2,(y+time*1.25)*.55);
+	vec2 fast = vec2(across*8.2,(y+time*2.6)*.38);
 	float sheet = strands(slow);
 	float torrent = strands(fast+vec2(13.7,0.0));
 	float body = mix(sheet,torrent,accelerate);
-	float fine = strands(vec2(across*13.0,(y+TIME*2.9)*1.1)+vec2(3.1,17.0));
+	float fine = strands(vec2(across*9.5,(y+time*2.9)*1.1)+vec2(3.1,17.0));
 	// Falling packets: denser white clumps travel down the curtain.
-	float packets = flow_noise(vec2(across*2.6,(y+TIME*3.1)*1.9)+vec2(5.0,1.0));
+	float packets = flow_noise(vec2(across*2.6,(y+time*3.1)*1.9)+vec2(5.0,1.0));
 	// Aerated strands retain blue-green grooves under frontal sunlight;
 	// foam stays below clipping so the moving sheet remains readable.
 	float base_air = mix(.09,.48,smoothstep(.05,.80,drop));

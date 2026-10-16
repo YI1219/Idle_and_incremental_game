@@ -1,0 +1,55 @@
+{
+	"captures": [
+		{
+			"draw_calls": 800.0,
+			"error": 0,
+			"file": "flow5_shore.png",
+			"position": "(1.0, 10.0, 12.0)",
+			"rotation": "(-31.11139, 21.80141, 0.0)"
+		},
+		{
+			"draw_calls": 494.0,
+			"error": 0,
+			"file": "flow5_grazing.png",
+			"position": "(-4.0, 5.0, 9.0)",
+			"rotation": "(-9.405486, -6.34019, 0.0)"
+		},
+		{
+			"draw_calls": 841.0,
+			"error": 0,
+			"file": "flow5_lower.png",
+			"position": "(14.0, 7.0, 12.0)",
+			"rotation": "(-25.75182, 37.87498, 0.0)"
+		},
+		{
+			"draw_calls": 743.0,
+			"error": 0,
+			"file": "flow5_cascade.png",
+			"position": "(5.0, 6.2, 9.0)",
+			"rotation": "(-22.85893, 33.69007, 0.0)"
+		},
+		{
+			"draw_calls": 917.0,
+			"error": 0,
+			"file": "flow5_outer_fall.png",
+			"position": "(17.0, 1.0, 17.0)",
+			"rotation": "(-7.187382, 35.83765, 0.0)"
+		},
+		{
+			"draw_calls": 467.0,
+			"error": 0,
+			"file": "flow5_reverse.png",
+			"position": "(-4.0, 9.0, -12.0)",
+			"rotation": "(-24.54856, -175.2363, 0.0)"
+		},
+		{
+			"draw_calls": 739.0,
+			"error": 0,
+			"file": "flow5_overview.png",
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		}
+	],
+	"source": "Actual Godot default island, unchanged layout/lighting",
+	"water_phase": 1.25
+}

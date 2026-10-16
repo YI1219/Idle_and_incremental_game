@@ -24,7 +24,12 @@ void fragment(){
  ALPHA=COLOR.a*mix(broken,mix(.12,.62,smoothstep(.25,.65,churn)),crest);
  // Aerated plunge water scatters light; keeps the core white on the shaded side.
  EMISSION=vec3(.012,.020,.018)*core*froth;
- if(COLOR.r<.5){ALBEDO=vec3(.62,.75,.71); ALPHA=COLOR.a*smoothstep(.36,.66,churn*.4+patch*.6)*.72; EMISSION=vec3(0.0);}
+ if(COLOR.r<.5){
+  float arc=smoothstep(.30,.60,noise(world_xz*.95+vec2(phase*.12,-phase*.16)));
+  ALBEDO=vec3(.45,.62,.60);
+  ALPHA=COLOR.a*smoothstep(.38,.69,churn*.4+patch*.6)*arc*.65;
+  EMISSION=vec3(0.0);
+ }
  ROUGHNESS=.78;
  SPECULAR=.15;
 }

@@ -1,0 +1,6 @@
+{
+  "exit_code": 0,
+  "passed": true,
+  "seconds": 22.83871102333069,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:24:00.561 godot[76416:706493] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:24:16.103 godot[76416:706493] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER FINISH CAPTURES: 7\n"
+}

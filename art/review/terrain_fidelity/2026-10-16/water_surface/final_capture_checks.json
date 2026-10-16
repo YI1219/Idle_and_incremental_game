@@ -1,0 +1,47 @@
+[
+  {
+    "tag": "caustic",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_lake_bed_caustic_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:46:45.695 godot[82458:825987] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:46:46.659 godot[82458:825987] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nBED CAUSTIC RENDER: { \"shallow_changed_pixels\": 288, \"middle_changed_pixels\": 119, \"deep_changed_pixels\": 0, \"moving_shallow_pixels\": 413, \"production_strength\": 0.11999999731779, \"default_changed_pixels\": 377, \"default_motion_pixels\": 556, \"morph_equivalence_changed_pixels\": 0, \"passed\": true }\n"
+  },
+  {
+    "tag": "foam",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_foam_breakup_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:46:47.757 godot[82578:826829] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:46:48.569 godot[82578:826829] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nFOAM BREAKUP RENDER: { \"core\": { \"opaque\": 0, \"gaps\": 0, \"moving\": 26598, \"visible\": 40000, \"min_alpha\": 0.2392156869173, \"max_alpha\": 0.81960785388947, \"probes\": 40000 }, \"ring\": { \"opaque\": 0, \"gaps\": 25878, \"moving\": 13524, \"visible\": 12005, \"min_alpha\": 0.0, \"max_alpha\": 0.32156863808632, \"probes\": 40000 }, &\"passed\": true }\n"
+  },
+  {
+    "tag": "flow4",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tools/art/capture_water_finish.gd",
+      "--",
+      "flow4"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:46:49.181 godot[82603:827081] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:47:04.220 godot[82603:827081] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER FINISH CAPTURES: 7\n"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "caustic": {
+    "exit_code": 1,
+    "passed": false,
+    "seconds": 2.454928159713745,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:39:34.325 godot[80287:779304] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:39:35.406 godot[80287:779304] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nBED CAUSTIC RENDER: { \"shallow_changed_pixels\": 95, \"middle_changed_pixels\": 38, \"deep_changed_pixels\": 0, \"moving_shallow_pixels\": 105, \"production_strength\": 0.11999999731779, \"default_changed_pixels\": 295, \"default_motion_pixels\": 432, \"morph_equivalence_changed_pixels\": 0, \"passed\": false }\n"
+  },
+  "foam": {
+    "exit_code": 1,
+    "passed": false,
+    "seconds": 1.4540941715240479,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:39:36.469 godot[80307:779800] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:39:37.270 godot[80307:779800] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nFOAM BREAKUP RENDER: { \"core\": { \"opaque\": 0, \"gaps\": 0, \"moving\": 26598, \"visible\": 40000, \"min_alpha\": 0.2392156869173, \"max_alpha\": 0.81960785388947, \"probes\": 40000 }, \"ring\": { \"opaque\": 0, \"gaps\": 27930, \"moving\": 11367, \"visible\": 9464, \"min_alpha\": 0.0, \"max_alpha\": 0.32156863808632, \"probes\": 40000 }, &\"passed\": false }\n"
+  },
+  "refraction": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.5471727848052979,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:39:37.879 godot[80326:780085] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:39:38.014 godot[80326:780085] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nFALL REFRACTION RENDER: { \"changed_background_pixels\": 5724, \"foreground_difference_pixels\": 0, \"production_default_changed_pixels\": 2716, \"rejected_foreground_edge_samples\": 137, \"probes\": 64000, \"guard_cases\": [{ \"strip_x\": 0.0, \"flow_time\": 0.5, \"rejected_pixels\": 0 }, { \"strip_x\": -1.0, \"flow_time\": 0.5, \"rejected_pixels\": 101 }, { \"strip_x\": 1.0, \"flow_time\": 0.5, \"rejected_pixels\": 137 }, { \"strip_x\": 0.0, \"flow_time\": 1.25, \"rejected_pixels\": 113 }, { \"strip_x\": 0.0, \"flow_time\": 2.5, \"rejected_pixels\": 0 }], \"passed\": true }\n"
+  },
+  "reflection": {
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.846060037612915,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:39:39.432 godot[80332:780258] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:39:40.456 godot[80332:780258] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER REFLECTION RENDER: {\"angled_camera_red_pixels\":729,\"disabled_red_pixels\":0,\"moved_marker_red_pixels\":729,\"passed\":true,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":729,\"removed_marker_red_pixels\":0,\"stale_mirror_red_pixels\":0}\n"
+  }
+}

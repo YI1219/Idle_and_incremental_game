@@ -1,0 +1,250 @@
+[
+  {
+    "tag": "water_final",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tools/art/capture_water_finish.gd",
+      "--",
+      "water_final"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:49:08.306 godot[83222:833374] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:49:23.938 godot[83222:833374] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER FINISH CAPTURES: 7\n"
+  },
+  {
+    "tag": "main",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/capture_courtyard_finish.gd",
+      "--",
+      "surface_final",
+      "camera"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:49:30.668 godot[83353:834676] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:49:46.356 godot[83353:834676] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nCOURTYARD CAPTURES: surface_final 11\n"
+  },
+  {
+    "tag": "caustic",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_lake_bed_caustic_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:49:58.514 godot[83479:835741] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:49:58.756 godot[83479:835741] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nBED CAUSTIC RENDER: { \"shallow_changed_pixels\": 288, \"middle_changed_pixels\": 119, \"deep_changed_pixels\": 0, \"moving_shallow_pixels\": 413, \"production_strength\": 0.11999999731779, \"default_changed_pixels\": 377, \"default_motion_pixels\": 556, \"morph_equivalence_changed_pixels\": 0, \"passed\": true }\n"
+  },
+  {
+    "tag": "foam",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_foam_breakup_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:49:59.863 godot[83492:835874] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:49:59.965 godot[83492:835874] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nFOAM BREAKUP RENDER: { \"core\": { \"opaque\": 0, \"gaps\": 0, \"moving\": 26598, \"visible\": 40000, \"min_alpha\": 0.2392156869173, \"max_alpha\": 0.81960785388947, \"probes\": 40000 }, \"ring\": { \"opaque\": 0, \"gaps\": 25878, \"moving\": 13524, \"visible\": 12005, \"min_alpha\": 0.0, \"max_alpha\": 0.32156863808632, \"probes\": 40000 }, &\"passed\": true }\n"
+  },
+  {
+    "tag": "refraction",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_fall_refraction_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:50:00.602 godot[83509:835995] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:50:00.745 godot[83509:835995] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nFALL REFRACTION RENDER: { \"changed_background_pixels\": 5724, \"foreground_difference_pixels\": 0, \"production_default_changed_pixels\": 2716, \"rejected_foreground_edge_samples\": 137, \"probes\": 64000, \"guard_cases\": [{ \"strip_x\": 0.0, \"flow_time\": 0.5, \"rejected_pixels\": 0 }, { \"strip_x\": -1.0, \"flow_time\": 0.5, \"rejected_pixels\": 101 }, { \"strip_x\": 1.0, \"flow_time\": 0.5, \"rejected_pixels\": 137 }, { \"strip_x\": 0.0, \"flow_time\": 1.25, \"rejected_pixels\": 113 }, { \"strip_x\": 0.0, \"flow_time\": 2.5, \"rejected_pixels\": 0 }], \"passed\": true }\n"
+  },
+  {
+    "tag": "reflection",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_water_reflection_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:50:02.178 godot[83538:836175] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:50:02.566 godot[83538:836175] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER REFLECTION RENDER: {\"angled_camera_red_pixels\":729,\"disabled_red_pixels\":0,\"moved_marker_red_pixels\":729,\"passed\":true,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":729,\"removed_marker_red_pixels\":0,\"stale_mirror_red_pixels\":0}\n"
+  },
+  {
+    "tag": "editor",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_editor_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:50:03.430 godot[83549:836297] +[IMKClient subclass]: chose IMKClient_Modern\nTERRAIN EDITOR RENDER: 339/339 passed\n"
+  },
+  {
+    "tag": "regeneration",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_decoration_regen_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": -9,
+    "clean": false,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:50:44.120 godot[83713:837654] +[IMKClient subclass]: chose IMKClient_Modern\n"
+  },
+  {
+    "tag": "compression",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_grass_compression_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:54:44.084 godot[84379:843390] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:54:44.704 godot[84379:843390] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nGRASS COMPRESSION RENDER: {\"changed_pixels\":106279,\"flattened_half_error\":0.0,\"passed\":true,\"samples\":107520,\"standing_half_error\":0.0}\n"
+  },
+  {
+    "tag": "impact",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--headless",
+      "--script",
+      "tests/terrain_water_impact_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nWATER IMPACT: 8/8 passed\n"
+  },
+  {
+    "tag": "bed",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--headless",
+      "--script",
+      "tests/terrain_lake_bed_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nBED INTERIOR EDGES unmatched=0\nBED INTERIOR EDGES unmatched=0\nLAKE BED: probes=417 failures=0\n"
+  },
+  {
+    "tag": "shore",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--headless",
+      "--script",
+      "tests/terrain_shore_transition_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVISIBLE SHORE CRESTS: 1824/1824\nCONNECTED SHORE JOINS: 1345\nCURVED SHORE FIELD: 142 actual contour-distance/depth/impact samples\nSHORE TRANSITION: 912 triangles, wet/dry continuity true/true, 0 failures\n"
+  },
+  {
+    "tag": "shore_prop",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--headless",
+      "--script",
+      "tests/terrain_shore_prop_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSHORE PROPS default: { \"grass_clump\": 1, \"reeds\": 23, \"lily\": 16 } invalid=0\nSHORE PROPS dry: { \"grass_clump\": 2, \"reeds\": 13, \"lily\": 9 } invalid=0\nSHORE PROPS contract: { \"grass_clump\": 1, \"reeds\": 21, \"lily\": 14 } invalid=0\n"
+  },
+  {
+    "tag": "falls",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--headless",
+      "--script",
+      "tests/terrain_waterfall_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nTERRAIN WATERFALL: 35/35 passed\n"
+  },
+  {
+    "tag": "clearance",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--headless",
+      "--script",
+      "tests/terrain_rock_fall_clearance_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nROCK/FALL CLEARANCE: 140 curtain samples, 0 inside stones\n"
+  },
+  {
+    "tag": "vines",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--headless",
+      "--script",
+      "tests/terrain_vine_contact_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVINE WALL OWNERSHIP: closest=true, bounded=true\nTERRAIN VINE CONTACT: {\"failures\":0,\"reports\":[{\"checked_module_centroids\":392,\"fixture\":\"default\",\"max_absolute_gap\":0.0250011049211025,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":392,\"fixture\":\"raise\",\"max_absolute_gap\":0.0250011049211025,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":398,\"fixture\":\"lower\",\"max_absolute_gap\":0.0250014942139387,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":406,\"fixture\":\"expand\",\"max_absolute_gap\":0.0250011272728443,\"missing\":0,\"separated_over_010\":0},{\"checked_module_centroids\":422,\"fixture\":\"contract\",\"max_absolute_gap\":0.0250011049211025,\"missing\":0,\"separated_over_010\":0}],\"scope\":\"Actual mesh centroids and source cliff triangles, default/four edits; not every leaf vertex or arbitrary layout.\"}\n"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "baseline_commit": "d311c1a",
+  "source_sha256": {
+    "shaders/terrain_editor/water.gdshader": "2755783e79c24c37771b226fdf79af80301dd2329d98154270b40190204fdad6",
+    "shaders/terrain_editor/lake_bed.gdshader": "fbdcd3182641d657070be619f235d689130c0278017e542f149743582de9616e",
+    "shaders/terrain_editor/waterfall.gdshader": "14fc4b11fdf2c5a4c3180fba3af30f050dc00b541fe476cca4067fcc6c7dbac6",
+    "shaders/terrain_editor/foam.gdshader": "2cf44b8bdc31893f7fcdb39b048584d0b74bed056b06baf99df9b6ab56745d14",
+    "shaders/terrain_editor/shore.gdshader": "745423a13271b0f1eb675aaec9809f0575702cfe92d6d918a53f64f738363422",
+    "tests/terrain_fall_refraction_render_test.gd": "7c6344d23166104e2a815bcd881e649942806305d53cd6319731ef7261275c9a"
+  },
+  "review": "water_material_current_review independently ran four Metal fixtures; no remaining actionable correctness findings; modest art retention, full art incomplete"
+}

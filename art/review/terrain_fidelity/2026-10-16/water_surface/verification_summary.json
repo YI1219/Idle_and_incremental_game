@@ -1,0 +1,8 @@
+{
+  "final_checks_clean_except_recorded_timeout": true,
+  "regeneration_timeout_superseded_by": "regeneration_extended.json",
+  "extended_regeneration_clean": true,
+  "all_required_executed": true,
+  "full_art_accepted": false,
+  "target_device_performance_accepted": false
+}

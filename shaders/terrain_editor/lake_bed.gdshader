@@ -10,22 +10,17 @@ uniform float caustic_strength : hint_range(0.0,1.0) = .12;
 uniform float caustic_time = -1.0;
 varying vec3 world_position;
 varying float light_water_height;
+// Broken curved interference light, rather than a cellular polygon web.
+// Depth attenuation and real opaque-bed shadows remain outside this function.
 float bed_light(vec2 p,float t){
- vec2 warp=vec2(sin(p.y*2.1+sin(p.x*1.4)+t*.35),sin(p.x*1.8+sin(p.y*2.4)-t*.30));
- vec2 g=p*1.65+warp*.45;
- vec2 cell=floor(g),f=fract(g);
- float first=10.0,second=10.0;
- for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){
-  vec2 offset=vec2(float(x),float(y));
-  vec3 seed=rock_hash(vec3(cell+offset,13.0));
-  vec2 point=.20+seed.xy*.60+sin(vec2(t*.48,-t*.39)+seed.yz*6.28318)*.12;
-  vec2 delta=offset+point-f;
-  float distance=dot(delta,delta);
-  if(distance<first){second=first;first=distance;}
-  else second=min(second,distance);
- }
- float patches=smoothstep(.30,.70,stone_noise(vec3(p*.65,t*.10)));
- return (1.0-smoothstep(.006,.085,second-first))*patches;
+ vec2 q=p*1.50+vec2(sin(p.y*.8+t*.18),sin(p.x*.9-t*.14))*.60;
+ float a=q.x*2.8+sin(q.y*1.45+t*.34)*1.5+sin(q.x*.37-q.y*.75+t*.13)*.45;
+ float b=q.y*3.1+sin(q.x*1.25-t*.28)*1.4+sin(q.y*.47+q.x*.61-t*.10)*.50;
+ float focus=sin(a)+sin(b)*.78+sin(a*.43-b*.57+t*.19)*.50;
+ float width=max(.26,fwidth(focus)*1.3);
+ float ribbon=1.0-smoothstep(.04,width,abs(focus-.35));
+ float patch=.35+.65*smoothstep(.35,.85,.5+.5*sin(q.x*.65+q.y*.31+t*.12)*sin(q.y*.57-q.x*.44-t*.08));
+ return ribbon*patch;
 }
 void vertex(){
  world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
@@ -47,7 +42,9 @@ void fragment(){
  float light_depth=smoothstep(.035,.18,depth)*(1.0-smoothstep(.7,3.2,depth));
  float time=caustic_time<0.0?TIME:caustic_time;
  float light_web=0.0;
- if(caustic_strength>0.0 && light_depth>.0001)light_web=bed_light(world_position.xz,time)*light_depth*caustic_strength;
+ // Evaluate derivative-based ribbon width under a uniform toggle. Apply
+ // varying depth attenuation afterward, including the fully dark depths.
+ if(caustic_strength>0.0)light_web=bed_light(world_position.xz,time)*light_depth*caustic_strength;
  // Albedo modulation keeps the projected light inside real bed shadows.
  ALBEDO*=1.0+light_web;
  NORMAL=normalize((VIEW_MATRIX*vec4(n,0.0)).xyz);

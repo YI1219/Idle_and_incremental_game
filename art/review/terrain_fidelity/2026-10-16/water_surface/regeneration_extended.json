@@ -1,0 +1,14 @@
+{
+  "tag": "regeneration_extended",
+  "command": [
+    "/opt/homebrew/bin/godot",
+    "--path",
+    "/Users/yi/Projects/games/yunlu-pr9-astra",
+    "--script",
+    "tests/terrain_decoration_regen_test.gd"
+  ],
+  "exit": 0,
+  "clean": true,
+  "elapsed_seconds": 322.675649791,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:57:33.352 godot[85573:851085] +[IMKClient subclass]: chose IMKClient_Modern\nRIM BAKE us=77649\nTERRAIN DECORATION REGEN: 42/42 passed\n"
+}

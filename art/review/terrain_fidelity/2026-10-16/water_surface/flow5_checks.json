@@ -1,0 +1,32 @@
+[
+  {
+    "tag": "reflection5",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tests/terrain_water_reflection_render_test.gd",
+      "--",
+      "out=res://art/review/terrain_fidelity/2026-10-16/water_surface/final/"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:48:00.341 godot[82906:829692] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:48:01.360 godot[82906:829692] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER REFLECTION RENDER: {\"angled_camera_red_pixels\":729,\"disabled_red_pixels\":0,\"moved_marker_red_pixels\":729,\"passed\":true,\"projected_mirror\":\"(320.0, 255.0823)\",\"reflected_red_pixels\":729,\"removed_marker_red_pixels\":0,\"stale_mirror_red_pixels\":0}\n"
+  },
+  {
+    "tag": "flow5",
+    "command": [
+      "/opt/homebrew/bin/godot",
+      "--path",
+      "/Users/yi/Projects/games/yunlu-pr9-astra",
+      "--script",
+      "tools/art/capture_water_finish.gd",
+      "--",
+      "flow5"
+    ],
+    "exit": 0,
+    "clean": true,
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:48:02.183 godot[82924:830033] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-16 12:48:17.577 godot[82924:830033] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nWATER FINISH CAPTURES: 7\n"
+  }
+]

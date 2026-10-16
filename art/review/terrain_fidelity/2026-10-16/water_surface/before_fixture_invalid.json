@@ -1,0 +1,6 @@
+{
+  "exit_code": -15,
+  "passed": false,
+  "seconds": 66.43140625953674,
+  "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-16 12:22:54.329 godot[76055:703648] +[IMKClient subclass]: chose IMKClient_Modern\nSCRIPT ERROR: Invalid access to property or key 'foam' on a base object of type 'Dictionary'.\n          at: run (res://tools/art/capture_water_finish.gd:10)\n          GDScript backtrace (most recent call first):\n              [0] run (res://tools/art/capture_water_finish.gd:10)\n2026-10-16 12:23:09.795 godot[76055:703648] +[IMKInputSession subclass]: chose IMKInputSession_Modern\n"
+}

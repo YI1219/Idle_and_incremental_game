@@ -1,0 +1,11 @@
+{
+	"deep_changed_pixels": 0,
+	"default_changed_pixels": 276,
+	"default_motion_pixels": 409,
+	"middle_changed_pixels": 38,
+	"morph_equivalence_changed_pixels": 0,
+	"moving_shallow_pixels": 102,
+	"passed": false,
+	"production_strength": 0.119999997317791,
+	"shallow_changed_pixels": 92
+}

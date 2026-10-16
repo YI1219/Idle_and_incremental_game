@@ -8,6 +8,7 @@ uniform vec2 shore_origin = vec2(0.0);
 uniform vec2 shore_extent = vec2(1.0);
 uniform vec3 water_deep : source_color = vec3(.10,.35,.34);
 uniform float reflection_strength : hint_range(0.0,1.0) = .28;
+uniform float water_time = -1.0;
 varying vec3 world_position;
 
 float hash_water(vec2 p) {
@@ -82,6 +83,11 @@ vec4 water_reflection(vec3 origin,vec3 direction,mat4 view,mat4 projection,mat4 
    if(hit.y<=origin.y+.025 || error>.14+hi*.015)return vec4(0.0);
    vec2 margin=min(uv,vec2(1.0)-uv);
    float confidence=smoothstep(.008,.07,min(margin.x,margin.y))*(1.0-smoothstep(3.0,12.0,hi));
+   // Depth discontinuities and the waterline are uncertain reflection hits.
+   // Fade before rejecting them, so the finite trace does not paint a hard
+   // grey island onto otherwise clear transmitted water.
+   confidence*=1.0-smoothstep(.02,.14+hi*.015,error);
+   confidence*=smoothstep(.025,.28,hit.y-origin.y);
    return vec4(texture(screen_texture,uv).rgb,confidence);
   }
   previous=travel;
@@ -96,15 +102,16 @@ void vertex(){
 }
 
 void fragment(){
+ float time=water_time<0.0?TIME:water_time;
  vec2 p=world_position.xz;
  vec4 basin=texture(shore_field,(p-shore_origin)/shore_extent);
  mat2 turn=mat2(vec2(.80,.60),vec2(-.60,.80));
- vec3 broad=height_gradient(p*.95+vec2(TIME*.055,-TIME*.043));
- vec3 small=height_gradient(turn*p*2.8+vec2(-TIME*.08,TIME*.061)+vec2(17.3,5.8));
- vec3 fine=height_gradient(p*6.4+vec2(TIME*.03,-TIME*.07)+vec2(2.1,31.7));
- vec2 slope=broad.yz*.040+transpose(turn)*small.yz*.034+fine.yz*.013;
+ vec3 broad=height_gradient(p*.95+vec2(time*.055,-time*.043));
+ vec3 small=height_gradient(turn*p*2.8+vec2(-time*.08,time*.061)+vec2(17.3,5.8));
+ vec3 fine=height_gradient(p*6.4+vec2(time*.03,-time*.07)+vec2(2.1,31.7));
+ vec2 slope=broad.yz*.050+transpose(turn)*small.yz*.043+fine.yz*.016;
  slope*=mix(.50,1.0,smoothstep(.015,.35,basin.r));
- vec3 impact=height_gradient(p*4.1+vec2(TIME*.30,TIME*1.25)+vec2(41.2,7.3));
+ vec3 impact=height_gradient(p*4.1+vec2(time*.30,time*1.25)+vec2(41.2,7.3));
  slope+=impact.yz*.09*basin.b;
  vec3 normal_world=normalize(vec3(-slope.x,1.0,-slope.y));
  vec3 normal_view=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);

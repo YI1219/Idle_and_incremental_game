@@ -185,3 +185,10 @@ Base5's sphere/short-plane strokes still make clay-like walls. Larger plane cuts
 - [x] Preserve rejected plane/straight-foot studies; implement the chosen shoulder brush through bounded atomic volume edits/history/save and actual pointer use.
 - [x] Check original grass coverage, native rooted tuft/compression and sculpted mesh support; retain only useful art changes.
 - [x] Capture seven matched views including a correctly framed grass join; review shape and contacts separately from function, update current evidence and push.
+
+## Water material finish — current continuation
+
+Actual default shore view still shows a polygonal caustic web across the pond and a striped waterfall sheet. First freeze review clocks at the same phase in real engine captures. Replace the hard cellular bed-light network with broken curved interference light and inspect shallow/deep/shadow response; keep the physical bed/refraction and bounded reflection. Then test broader, subtly drifting waterfall strands instead of dense cloth-like streaks. No layout/source/lighting changes. Preserve only visibly useful candidates, rerun actual depth/motion/reflection/refraction and editor checks, review and push. Full island art remains open.
+
+
+Water checkpoint: retained curved interference light, larger broken ripple gaps, wider drifting fall strands with original opacity/transmission, and reflection confidence fades. Rejected thin gauze and unhelpful mip blur. Seven matched camera/principal-clock water comparisons and11main captures are current. Fresh native water fixtures, editor339/339, extended regeneration42/42, compression,417bed probes/0failures and finite shore/vine/fall checks pass. Initial two coverage failures corrected in production without lowering thresholds; phase-swept refraction negative control now exercises existing foreground rejection. Independent review supports modest retention and finds no actionable correctness issue. Full art remains open; next local study carves below retained shoulders using the same player plane brush, protecting the original grass cap.
