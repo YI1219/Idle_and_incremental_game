@@ -1,5 +1,5 @@
 {
-  "valid_native_frames": 42,
+  "valid_native_frames": 48,
   "failed_cap_frames": {
     "face_scan6_close.png": "618c4edc48753e66496e8a676e19e2055421b705e691f43d8c59c0c0ea4c6174",
     "face_scan6_grass.png": "7276a89d5a343058350c56197d0b21d63beb8b407ef8fb3d20186428464affc1",
@@ -299,6 +299,48 @@
       },
       "data_sha256": "8ebe589d5573f977783444b7aeb6922fbc84561b1fabfb42847ffe8f20fb829e",
       "samples": 28438
+    },
+    "rendered_complete1": {
+      "views": {
+        "close": {
+          "sha256": "57b19f5ea2c56659552d649af0059239ce5ff9019f4ba7dfa757560528577bca",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "634349f9cfad5f6883829b87fc6a4d0ab801372a2095c0557bf9f3c95cc399eb",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "1287cb2043e764142e31c2ffc34edd7ff3d6522e2de20e4c01cff4412ecfd8d2",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "b7787326560197254cc2d49732a01e8a9e6e479e083f648c68d0dd933f3c9fb1",
+      "samples": 28929
+    },
+    "retained_return1": {
+      "views": {
+        "close": {
+          "sha256": "81e38370ca2164a3c0903282ba2eda8c6e3777afb2210d587fe06a5ef47797f0",
+          "position": "(-10.18066, 8.0, 17.31963)",
+          "rotation": "(-30.0, 16.0, 0.0)"
+        },
+        "grass": {
+          "sha256": "81fe13ff7c7b78abc1806aba75a947b2f8aa63332be6a47ba6f191e518e61576",
+          "position": "(-12.4, 7.1, 11.0)",
+          "rotation": "(-23.8915, 18.65789, 0.0)"
+        },
+        "reverse": {
+          "sha256": "7c17a34c55ebac73aab9d0d78b81288f215afb710eaac7017cfdc829f2a3bb6b",
+          "position": "(-30.34978, 9.0, -0.38091)",
+          "rotation": "(-28.0, -105.0, 0.0)"
+        }
+      },
+      "data_sha256": "7bf7f527076d57878ff093e77aedc60d623f5e1e03d86a23c7cc4789b8fff73c",
+      "samples": 29225
     }
   },
   "saves": {
@@ -361,6 +403,16 @@
       "sha256": "7469fecf9dc600dc1dc819de53ab7d6def000eac2d2ea2e24dd4076ff52e7219",
       "samples": 28438,
       "operation": "Bounded vertical-envelope density of retained body/crown draw geometry. At each .25m XZ node, analytic float64 triangle intersections supply min/max Y; fill that entire interval, including visible air below overhangs. Nearest original face sets bounded magnitude. This is not a shape-preserving or exact CSG conversion. Outcrop props are excluded from the source and disappear in this unified study. Exact upper/lower ties belong to air. No new model or runtime overlay. Within .35m of a cap above a >.7m column, use vertical cap distance rather than nearest composite internal face, keeping the cap interpolation uniform."
+    },
+    "body_complete": {
+      "sha256": "dd1c09bed2d064e55437d7fc3601fbbec7ecd6e89c68be83db2934c9629861de",
+      "samples": 28929,
+      "operation": "Bounded vertical-envelope density of retained body/crown/outcrop draw geometry. At each .25m XZ node, analytic float64 triangle intersections supply min/max Y; fill that entire interval, including visible air below overhangs. Nearest original face sets bounded magnitude. This is not a shape-preserving or exact CSG conversion. All retained high outcrop/shelf meshes are included in this source; no separate runtime overlays. Exact upper/lower ties belong to air. No new model or runtime overlay. Within .35m of a cap above a >.7m column, use vertical cap distance rather than nearest composite internal face, keeping the cap interpolation uniform."
+    },
+    "body_return": {
+      "sha256": "e93f64c13a26c845bdef5095c1ed817042e5c463cea0d412a08f813789321b3c",
+      "samples": 29225,
+      "operation": "Bounded lower front replacement between actual complete-source front sections atY1.5 andY-3.5, inward t^1.4 return; feathered endpoints and upper/lower joins. Ground, upper rock faces and source high outcrops untouched by this operation. No added instances or new player brush."
     }
   },
   "source_sha256": "34077ba741fed9d013d6d71b5f6009e44e7eef3ba67683cefc4a4b7939dc635b",
@@ -458,5 +510,5 @@
   ],
   "production_paths_unchanged_from": "f7ccc00",
   "decision": "All shape studies unaccepted; default remains spall_finish1. No whole/far/shore/bottom, arbitrary editor or performance acceptance.",
-  "limitations": "Tool-only cap color/grass override; source excludes outcrop props and unified mode changes some decoration placement. Vertical envelope fills visible overhang air too; not exact CSG or shape preservation. Closed source ray classifier is disproven by independent analytic intersections. Clouds/mist live, four principal water clocks fixed."
+  "limitations": "Tool-only cap color/grass override. Original body source excludes outcrops; separate complete source adds all14, but density replacement remains local and unified mode changes some decoration placement. Vertical envelope fills visible overhang air too; not exact CSG or shape preservation. Closed source ray classifier is disproven by independent analytic intersections. Return trial fills a broad hull and is rejected. Clouds/mist live, four principal water clocks fixed."
 }

@@ -19,8 +19,9 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'art/work/rendered_island/2026-10-17'
 BASE=ROOT/'art/work/exposed_bedrock/2026-10-17'
 VERSION=sys.argv[sys.argv.index('--')+1] if '--' in sys.argv else 'v1'
-assert VERSION in ['v1','closed','envelope','envelopecap']
-IS_ENVELOPE=VERSION in ['envelope','envelopecap']
+assert VERSION in ['v1','closed','envelope','envelopecap','complete']
+if VERSION=='complete':OUT=OUT/'complete'
+IS_ENVELOPE=VERSION in ['envelope','envelopecap','complete']
 source=json.loads((OUT/'source.json').read_text())
 grid=json.loads((BASE/'source.json').read_text())
 payload=json.loads((BASE/'base_save.json').read_text())
@@ -79,7 +80,7 @@ def density(p):
     if IS_ENVELOPE:
         queries+=1
         heights=column_cache[(p.x,p.z)]
-        if VERSION=='envelopecap' and heights is not None and heights[1]-heights[0]>.7 and abs(p.y-heights[1])<=.35:
+        if VERSION in ['envelopecap','complete'] and heights is not None and heights[1]-heights[0]>.7 and abs(p.y-heights[1])<=.35:
             delta=p.y-heights[1]
             return max(.002,delta) if delta>=-1e-6 else delta
         inside=heights is not None and heights[0]+1e-6<p.y<heights[1]-1e-6
@@ -130,6 +131,7 @@ if IS_ENVELOPE:
     report['nonempty_columns']=sum(h is not None for h in column_cache.values())
     report['ray_vote_disagreements']=None
     report['ray_vote_note']='Not applicable: this version does not classify points with rays.'
-    if VERSION=='envelopecap':report['operation']+=' Within .35m of a cap above a >.7m column, use vertical cap distance rather than nearest composite internal face, keeping the cap interpolation uniform.'
+    if VERSION in ['envelopecap','complete']:report['operation']+=' Within .35m of a cap above a >.7m column, use vertical cap distance rather than nearest composite internal face, keeping the cap interpolation uniform.'
+    if VERSION=='complete':report['operation']=report['operation'].replace('body/crown','body/crown/outcrop').replace('Outcrop props are excluded from the source and disappear in this unified study.','All retained high outcrop/shelf meshes are included in this source; no separate runtime overlays.')
 (OUT/f'report_{VERSION}.json').write_text(json.dumps(report,indent=2)+'\n')
 print('RENDERED BODY BAKE:',json.dumps(report))

@@ -16,6 +16,8 @@ static func author(data,scanned:bool=false,version:String='v1')->void:
  if version=='renderedclosed':path='res://art/work/rendered_island/2026-10-17/rendered_body_closed.json'
  if version=='renderedenvelope':path='res://art/work/rendered_island/2026-10-17/rendered_body_envelope.json'
  if version=='renderedenvelopecap':path='res://art/work/rendered_island/2026-10-17/rendered_body_envelopecap.json'
+ if version=='renderedcomplete':path='res://art/work/rendered_island/2026-10-17/complete/rendered_body_complete.json'
+ if version=='retainedreturn':path='res://art/work/rendered_island/2026-10-17/complete/retained_return_v1.json'
  var payload:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(path))
  assert(data.deserialize(payload));data.ensure_sculpt_base()
  assert(data.serialize().cells==before)

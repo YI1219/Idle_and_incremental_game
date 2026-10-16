@@ -66,6 +66,8 @@ func run():
  if args.has('renderedclosed'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedclosed')
  if args.has('renderedenvelope'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedenvelope')
  if args.has('renderedenvelopecap'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedenvelopecap')
+ if args.has('renderedcomplete'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'renderedcomplete')
+ if args.has('retainedreturn'):preload('res://tools/art/author_exposed_bedrock.gd').author(editor.data,false,'retainedreturn')
  if args.has('worn') or args.has('worn2') or args.has('worn3'):
   var source_report:Dictionary=preload('res://tools/art/worn_cliff_sources.gd').install(editor.renderer.decoration,'v3' if args.has('worn3') else ('v2' if args.has('worn2') else 'v1'),args.has('wearsmooth'))
   FileAccess.open(OUT+tag+'_worn_sources.json',FileAccess.WRITE).store_string(JSON.stringify(source_report,'\t'))

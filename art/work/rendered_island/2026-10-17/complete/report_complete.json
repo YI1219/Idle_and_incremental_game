@@ -1,0 +1,17 @@
+{
+  "samples": 28929,
+  "source_sha256": "4b604f5b914b83715a7fedfba4a9da5825385c59decdc9cacd56552681316be7",
+  "save_sha256": "dd1c09bed2d064e55437d7fc3601fbbec7ecd6e89c68be83db2934c9629861de",
+  "queries": 126665,
+  "ray_vote_disagreements": null,
+  "source_state": {
+    "triangles": 56512,
+    "nonmanifold_edges": 6728,
+    "volume": 5321.24144613392
+  },
+  "flat_cap_air_ties": 0,
+  "operation": "Bounded vertical-envelope density of retained body/crown/outcrop draw geometry. At each .25m XZ node, analytic float64 triangle intersections supply min/max Y; fill that entire interval, including visible air below overhangs. Nearest original face sets bounded magnitude. This is not a shape-preserving or exact CSG conversion. All retained high outcrop/shelf meshes are included in this source; no separate runtime overlays. Exact upper/lower ties belong to air. No new model or runtime overlay. Within .35m of a cap above a >.7m column, use vertical cap distance rather than nearest composite internal face, keeping the cap interpolation uniform.",
+  "stage": "Unaccepted local conversion, not proof of source closure or default art acceptance.",
+  "nonempty_columns": 1796,
+  "ray_vote_note": "Not applicable: this version does not classify points with rays."
+}
