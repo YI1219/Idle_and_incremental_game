@@ -1,0 +1,7 @@
+libfive_dc 0 LIBFIVE RESULT triangles=6372 vertices=3188 signed_volume=101.782 raw_index_edge_defects=0 squared_cross_below_1e20=4 elapsed_seconds=0.12121
+libfive_dc_edited 0 LIBFIVE RESULT triangles=6214 vertices=3109 signed_volume=97.4038 raw_index_edge_defects=0 squared_cross_below_1e20=4 elapsed_seconds=0.116546
+libfive_simplex 0 LIBFIVE RESULT triangles=104812 vertices=52402 signed_volume=101.691 raw_index_edge_defects=0 squared_cross_below_1e20=21083 elapsed_seconds=1.74376
+libfive_simplex_edited 0 LIBFIVE RESULT triangles=103324 vertices=51658 signed_volume=97.2798 raw_index_edge_defects=0 squared_cross_below_1e20=20616 elapsed_seconds=1.85841
+libfive_hybrid 0 LIBFIVE RESULT triangles=129280 vertices=64636 signed_volume=101.755 raw_index_edge_defects=0 squared_cross_below_1e20=67790 elapsed_seconds=2.33827
+libfive_hybrid_edited 0 LIBFIVE RESULT triangles=125572 vertices=62782 signed_volume=97.3469 raw_index_edge_defects=0 squared_cross_below_1e20=65880 elapsed_seconds=6.69232
+KERNEL RUNS COMPLETE

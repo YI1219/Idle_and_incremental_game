@@ -1,0 +1,201 @@
+
+10/17 22:50:11 [[1;32mNOTICE[0m] Downloading 1 item(s)
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+ *** Download Progress Summary as of Sat Oct 17 22:50:42 2026 ***
+===============================================================================
+[#36021c 0B/0B CN:1 DL:0B]
+FILE: /tmp/yunlu_cliff_kernel_deps/boost_fast.tar.xz
+-------------------------------------------------------------------------------
+
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+ *** Download Progress Summary as of Sat Oct 17 22:51:12 2026 ***
+===============================================================================
+[#36021c 0B/0B CN:1 DL:0B]
+FILE: /tmp/yunlu_cliff_kernel_deps/boost_fast.tar.xz
+-------------------------------------------------------------------------------
+
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+ *** Download Progress Summary as of Sat Oct 17 22:51:42 2026 ***
+===============================================================================
+[#36021c 0B/0B CN:1 DL:0B]
+FILE: /tmp/yunlu_cliff_kernel_deps/boost_fast.tar.xz
+-------------------------------------------------------------------------------
+
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+ *** Download Progress Summary as of Sat Oct 17 22:52:13 2026 ***
+===============================================================================
+[#36021c 0B/0B CN:1 DL:0B]
+FILE: /tmp/yunlu_cliff_kernel_deps/boost_fast.tar.xz
+-------------------------------------------------------------------------------
+
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+ *** Download Progress Summary as of Sat Oct 17 22:52:44 2026 ***
+===============================================================================
+[#36021c 0B/0B CN:1 DL:0B]
+FILE: /tmp/yunlu_cliff_kernel_deps/boost_fast.tar.xz
+-------------------------------------------------------------------------------
+
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+[#36021c 0B/0B CN:1 DL:0B]
+
+10/17 22:52:48 [[1;31mERROR[0m] CUID#7 - Download aborted. URI=https://github.com/boostorg/boost/releases/download/boost-1.85.0/boost-1.85.0-b2-nodocs.tar.xz
+Exception: [AbstractCommand.cc:856] errorCode=1 Failed to establish connection, cause: Operation timed out
+
+10/17 22:52:48 [[1;32mNOTICE[0m] Download GID#36021c226719fe68 not complete: /tmp/yunlu_cliff_kernel_deps/boost_fast.tar.xz
+
+Download Results:
+gid   |stat|avg speed  |path/URI
+======+====+===========+=======================================================
+36021c|ERR |       0B/s|/tmp/yunlu_cliff_kernel_deps/boost_fast.tar.xz
+
+Status Legend:
+(ERR):error occurred.
+
+aria2 will resume download if the transfer is restarted.
+If there are any errors, then see the log file. See '-l' option in help/man page for details.

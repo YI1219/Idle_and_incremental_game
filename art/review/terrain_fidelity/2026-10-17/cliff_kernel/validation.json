@@ -1,0 +1,112 @@
+{
+  "successful_native_frames": 44,
+  "isolated_frames": 36,
+  "scene_frames": 8,
+  "camera_groups": {
+    "lab_near": [
+      "(-11.0, 6.5, 12.0)",
+      "(-0.382873, 0.436627, 0.0)",
+      8.0
+    ],
+    "lab_oblique": [
+      "(-8.0, 8.0, 17.0)",
+      "(-0.384619, 0.452154, 0.0)",
+      13.0
+    ],
+    "lab_reverse": [
+      "(-26.0, 7.0, -12.0)",
+      "(-0.279872, -2.50243, 0.0)",
+      13.0
+    ],
+    "scene_close": [
+      "(-10.18066, 8.0, 17.31963)",
+      "(-30.0, 16.0, 0.0)",
+      null
+    ],
+    "scene_grass": [
+      "(-12.4, 7.1, 11.0)",
+      "(-27.18981, 15.25512, 0.0)",
+      null
+    ],
+    "scene_reverse": [
+      "(-27.0, 7.0, -7.0)",
+      "(-16.07079, -129.8056, 0.0)",
+      null
+    ],
+    "scene_far": [
+      "(17.311, 32.0, 59.37063)",
+      "(-27.0, 16.0, 0.0)",
+      null
+    ]
+  },
+  "image_sha256": {
+    "boundary_flat_near.png": "7efbbffb67eccd0171eff589823249709222a8066fe6524d095d893bddfddd02",
+    "boundary_flat_oblique.png": "6fb4feae4c1b3d639dd48bc727fc234da7e5c3d496dcc5b7fa07e31bb5c31f06",
+    "boundary_flat_reverse.png": "30edcb30936d5c7a78fc6577c1cbd0ded997134d41161aed4a15c44a7b522259",
+    "boundary_edited_flat_near.png": "93fb25a41355553e703a489eeae233b095b8a18139287d7fbb17e8ba107f6046",
+    "boundary_edited_flat_oblique.png": "112aaf7ca1bb69c4d1600a796712e1b861ad330894c2e40200d20739745a9f55",
+    "boundary_edited_flat_reverse.png": "faddebaf9c30b148e761e9f22ccc0926148e2d8d315a3a02fd97bfd5f24307ad",
+    "boundary_grown_flat_near.png": "0fd2e67d275a21a184ec99b3f00bf4e9b6cc32f1a32dd822b20d4e9fee279cad",
+    "boundary_grown_flat_oblique.png": "4bc611e6743f674efb3cb5fd7ab6adda36ab5e629593ff55066305c4ffdf8025",
+    "boundary_grown_flat_reverse.png": "faddebaf9c30b148e761e9f22ccc0926148e2d8d315a3a02fd97bfd5f24307ad",
+    "boundary_localcut_flat_near.png": "be5517f5a2a613b2207f7afb4a90061465e3bcc9d9d6c4c6e4407e381e0347ee",
+    "boundary_localcut_flat_oblique.png": "f8c6a7b48790728a8d4f3c09e6485fd89deb8d01670a44c494d3f1c5191dfcbc",
+    "boundary_localcut_flat_reverse.png": "30edcb30936d5c7a78fc6577c1cbd0ded997134d41161aed4a15c44a7b522259",
+    "boundary_crease_near.png": "b1f36c748c130b85774fad57adf0c7920d468a8f761ae5a46972153d8428dbf9",
+    "boundary_crease_oblique.png": "e5f3073c1e19085bb27ab8dcaf7fe9e759fb431cfae8e9d3733e55b3688ae5ee",
+    "boundary_crease_reverse.png": "53b4fad2f42651bfdb0b6044f7f879c5670a9b46b5cf20cb104536977dc215a0",
+    "boundary_edited_crease_near.png": "69af85ce66eb849715d8738840145e91cac253a85eded94fb26a1c556a364157",
+    "boundary_edited_crease_oblique.png": "485eb1affcac3b223b56c03db1bff386d5a6b7f00b29e233dd540b8a80193ba8",
+    "boundary_edited_crease_reverse.png": "9812a32167b1fe26dd1b7de3bedde8916d378b10faf0692b34bbb849a9860ce3",
+    "boundary_grown_crease_near.png": "d88966e1fe9b1011a92ac3174174cec3179431e6665872a6e8cc7c6d137468da",
+    "boundary_grown_crease_oblique.png": "4740984b6c41e46d665a4862bb1f47d93f8bd48299e2710f77ebf334e116d99a",
+    "boundary_grown_crease_reverse.png": "9812a32167b1fe26dd1b7de3bedde8916d378b10faf0692b34bbb849a9860ce3",
+    "boundary_localcut_crease_near.png": "e9b46f0f724ce768c4cbaef465af16ddf3f382f223ea7c915c45fec12e71700f",
+    "boundary_localcut_crease_oblique.png": "006ba34f4f414c9e821d49230fcb997649b14687f0bee89c3ea39d722b5c657a",
+    "boundary_localcut_crease_reverse.png": "53b4fad2f42651bfdb0b6044f7f879c5670a9b46b5cf20cb104536977dc215a0",
+    "boundary_stone_near.png": "452b109a82726fd27246735723f9961ce72535ebb731b33bc72a1967160660cd",
+    "boundary_stone_oblique.png": "d940ab517e1326e50d83c8bcbe86842fc5d383f0d45ad8c3274d68b1cd65066f",
+    "boundary_stone_reverse.png": "a5e2683c00df088ccb0d346b861b64cf8906bce567bb22d1179aae46f41790ea",
+    "boundary_edited_stone_near.png": "400890ff6daae3b8de37251808439b83374f425ca70320cf8c88205471cd39fc",
+    "boundary_edited_stone_oblique.png": "185658adc76c162c3f5c236c43f7294c73946e7f86960bf14bd7022d8da384f6",
+    "boundary_edited_stone_reverse.png": "9d45f9dc5621729d4cbbb1506828f03c7f756559b2b508dd12d219c3df3c14c3",
+    "boundary_grown_stone_near.png": "a5d450201ed1c0cb3e5f898a4fdd1e6fbdd7a29d92f437d90c9517db46d55552",
+    "boundary_grown_stone_oblique.png": "75d01f4dd598b3eb66d6146dbfd920c2dbcad1b757039b332408abdc18a39c2a",
+    "boundary_grown_stone_reverse.png": "9d45f9dc5621729d4cbbb1506828f03c7f756559b2b508dd12d219c3df3c14c3",
+    "boundary_localcut_stone_near.png": "e8f23e7b48a1a99df704941055c4fe963d3f7af4e22bfc4cf483c7b017caed17",
+    "boundary_localcut_stone_oblique.png": "2a2b1028043c7c3ee9eea1b4710503bd0ce9534bcbb465cedfd9fa334e89d769",
+    "boundary_localcut_stone_reverse.png": "a5e2683c00df088ccb0d346b861b64cf8906bce567bb22d1179aae46f41790ea",
+    "scene_boundary_close.png": "5ef72c5f741b89529dd8e3db0c19a7b4bd1bfc08370fe3ea8b7c383a306258cc",
+    "scene_boundary_grass.png": "1ca949affa9bb7a02ca114dd7d81659181f9d2ce4dfbb737a94a7637ca0545df",
+    "scene_boundary_reverse.png": "52c9ace2f68f3ad3c3717df590b9d8ed26f2414d7a8aef4540ce9a06e4602d4f",
+    "scene_boundary_far.png": "718d227dfee402d6609f797e4af1a09463e88c03fe3d8ed3c3552b999ec52318",
+    "scene_boundary_localcut_close.png": "99826c9091e4472bee1202441badcb0afec623c1bc88e28047ca1e0b241f7345",
+    "scene_boundary_localcut_grass.png": "c162a4a59562b1645ef96da5062d6ceedc49dd9e598be7e350c93117e9228b3f",
+    "scene_boundary_localcut_reverse.png": "cb9f952899c5080cf0c31d7a7ff271b2d705ad7069dd8a990925cc22bc7d926a",
+    "scene_boundary_localcut_far.png": "a5c4e814f4822e6a21ecd37f5165f6ff546988c3199831af638748c53b816f3c"
+  },
+  "finite_geometry_passes": [
+    "boundary",
+    "boundary_edited",
+    "boundary_grown",
+    "boundary_localcut",
+    "boundary_undo"
+  ],
+  "failed_stages": [
+    "boundary_carved",
+    "boundary_redo",
+    "boundary_reload",
+    "libfive_dc",
+    "libfive_dc_edited",
+    "libfive_hybrid",
+    "libfive_hybrid_edited",
+    "libfive_simplex",
+    "libfive_simplex_edited"
+  ],
+  "recipe_mesh_replay_exact": true,
+  "arbitrary_sequence_accepted": false,
+  "production_backend_accepted": false,
+  "art_candidate_accepted": false,
+  "production_changed": false,
+  "decision": "Actual pinned libfive kernel built and tested; reject this adapter/settings combination. Direct-boundary plane/grow/localcut pass finite gates, but carve+redo/reload fail. Recipe replay equality does not validate geometry. Localcut looks like a circular incision and gives no useful far gain, so reject art promotion. Ground contact unchanged; no new material experiment or default change."
+}

@@ -1,0 +1,22 @@
+{
+	"commands": [
+		{
+			"center": [
+				-14.970627784729,
+				1.82452344894409,
+				4.2154107093811
+			],
+			"normal": [
+				0.0616079941391945,
+				-0.181126609444618,
+				0.981528222560883
+			],
+			"radius": 1.0,
+			"tool": "rock_plane"
+		}
+	],
+	"scope": "Single bounded side-face chisel; brush strictly below the unchanged grass cap. Tool-only draw comparison, not production editor integration.",
+	"source": "res://art/work/cliff_representation/2026-10-17/union.bin",
+	"source_sha256": "aa2a16c21c8c3eeeedb2c89cf5d8c5ba4ab1387d879e42a87ae3d2b73cd1bb4b",
+	"version": 1
+}

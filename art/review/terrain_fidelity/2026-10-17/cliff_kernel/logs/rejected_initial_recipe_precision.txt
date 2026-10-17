@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+RECIPE BEFORE: [{"center":[-15,3.25,3],"normal":[0,1,0],"radius":4.0,"tool":"rock_plane"},{"center":[-14.974940299987793,1.8372023105621338,4.146703720092773],"radius":0.8,"tool":"rock_add"},{"center":[-14.937975883483887,1.7285263538360596,4.735620498657227],"radius":0.55,"tool":"rock_cut"}]
+RECIPE AFTER: [{"center":[-15.0,3.25,3.0],"normal":[0.0,1.0,0.0],"radius":4.0,"tool":"rock_plane"},{"center":[-14.9749402999878,1.83720231056213,4.14670372009277],"radius":0.8,"tool":"rock_add"},{"center":[-14.9379758834839,1.72852635383606,4.73562049865723],"radius":0.55,"tool":"rock_cut"}]

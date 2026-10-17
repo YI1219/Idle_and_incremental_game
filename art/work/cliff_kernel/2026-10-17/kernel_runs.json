@@ -1,0 +1,100 @@
+{
+  "libfive_commit": "918387a9220dbac2f7ab32fb35e274c6794439cf",
+  "source_sha256": "aa2a16c21c8c3eeeedb2c89cf5d8c5ba4ab1387d879e42a87ae3d2b73cd1bb4b",
+  "adapter_sha256": "1d1f917e3ad21ae46f50f9d25749a48d917b3a1ff0a46fe869cdd95e9da25674",
+  "source_license": "libfive core MPL2; separate temporary unmodified build; no GUI or language bindings installed",
+  "settings": {
+    "region": [
+      [
+        -23,
+        -6,
+        -5
+      ],
+      [
+        -7,
+        10,
+        11
+      ]
+    ],
+    "min_feature": 0.25,
+    "max_err": 1e-08,
+    "workers": 4
+  },
+  "source_oracle": "Euclidean triangle distance, three-ray parity majority, center-distance plus half-diagonal Lipschitz interval with1e-4 float margin. One selected SDF gradient; no complete multi-feature fan.",
+  "edited_expression": "max(source_sdf,min(y-3.25,4-length(p-(-15,3.25,3))))",
+  "scope": "Offline kernel feasibility only; source/analytic operation data are additional to density-only records. No persistent editor/history/collision/support/backend or target-device performance acceptance.",
+  "stages": {
+    "libfive_dc": {
+      "returncode": 0,
+      "command": [
+        "/tmp/yunlu_cliff_libfive_probe",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_representation/2026-10-17/union.bin",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_kernel/2026-10-17/libfive_dc.bin",
+        "0",
+        "0"
+      ],
+      "log": "/tmp/yunlu_cliff_kernel_libfive_dc.log",
+      "result": "LIBFIVE RESULT triangles=6372 vertices=3188 signed_volume=101.782 raw_index_edge_defects=0 squared_cross_below_1e20=4 elapsed_seconds=0.12121\n"
+    },
+    "libfive_dc_edited": {
+      "returncode": 0,
+      "command": [
+        "/tmp/yunlu_cliff_libfive_probe",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_representation/2026-10-17/union.bin",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_kernel/2026-10-17/libfive_dc_edited.bin",
+        "0",
+        "1"
+      ],
+      "log": "/tmp/yunlu_cliff_kernel_libfive_dc_edited.log",
+      "result": "LIBFIVE RESULT triangles=6214 vertices=3109 signed_volume=97.4038 raw_index_edge_defects=0 squared_cross_below_1e20=4 elapsed_seconds=0.116546\n"
+    },
+    "libfive_simplex": {
+      "returncode": 0,
+      "command": [
+        "/tmp/yunlu_cliff_libfive_probe",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_representation/2026-10-17/union.bin",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_kernel/2026-10-17/libfive_simplex.bin",
+        "1",
+        "0"
+      ],
+      "log": "/tmp/yunlu_cliff_kernel_libfive_simplex.log",
+      "result": "LIBFIVE RESULT triangles=104812 vertices=52402 signed_volume=101.691 raw_index_edge_defects=0 squared_cross_below_1e20=21083 elapsed_seconds=1.74376\n"
+    },
+    "libfive_simplex_edited": {
+      "returncode": 0,
+      "command": [
+        "/tmp/yunlu_cliff_libfive_probe",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_representation/2026-10-17/union.bin",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_kernel/2026-10-17/libfive_simplex_edited.bin",
+        "1",
+        "1"
+      ],
+      "log": "/tmp/yunlu_cliff_kernel_libfive_simplex_edited.log",
+      "result": "LIBFIVE RESULT triangles=103324 vertices=51658 signed_volume=97.2798 raw_index_edge_defects=0 squared_cross_below_1e20=20616 elapsed_seconds=1.85841\n"
+    },
+    "libfive_hybrid": {
+      "returncode": 0,
+      "command": [
+        "/tmp/yunlu_cliff_libfive_probe",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_representation/2026-10-17/union.bin",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_kernel/2026-10-17/libfive_hybrid.bin",
+        "2",
+        "0"
+      ],
+      "log": "/tmp/yunlu_cliff_kernel_libfive_hybrid.log",
+      "result": "LIBFIVE RESULT triangles=129280 vertices=64636 signed_volume=101.755 raw_index_edge_defects=0 squared_cross_below_1e20=67790 elapsed_seconds=2.33827\n"
+    },
+    "libfive_hybrid_edited": {
+      "returncode": 0,
+      "command": [
+        "/tmp/yunlu_cliff_libfive_probe",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_representation/2026-10-17/union.bin",
+        "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/cliff_kernel/2026-10-17/libfive_hybrid_edited.bin",
+        "2",
+        "1"
+      ],
+      "log": "/tmp/yunlu_cliff_kernel_libfive_hybrid_edited.log",
+      "result": "LIBFIVE RESULT triangles=125572 vertices=62782 signed_volume=97.3469 raw_index_edge_defects=0 squared_cross_below_1e20=65880 elapsed_seconds=6.69232\n"
+    }
+  }
+}

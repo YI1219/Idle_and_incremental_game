@@ -1,0 +1,75 @@
+{
+  "libfive_commit": "918387a9220dbac2f7ab32fb35e274c6794439cf",
+  "upstream_url": "https://github.com/libfive/libfive",
+  "upstream_core_license": "MPL2",
+  "upstream_archive_sha256": "05badee75864c8ad13807a4dea40339018db9cfb14f0fd61de0b691472c4e89e",
+  "source_files_modified_against_archive": [],
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.3.0\nThread model: posix\nInstalledDir: /Applications/Xcode-16.4.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "cmake_version": "3.31.6 from an isolated temporary Python venv",
+  "eigen_version": "3.4.0",
+  "eigen_source": "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz",
+  "eigen_archive_sha256": "8586084f71f9bde545ee7fa6d00288b264a2b7ac3607b974e54d13e7162c1c72",
+  "boost_version": "1.85.0",
+  "boost_source": "https://github.com/boostorg/boost/releases/download/boost-1.85.0/boost-1.85.0-b2-nodocs.tar.xz",
+  "boost_download_note": "Official archive retrieval stopped at61701152/94792884bytes. Its initial complete boost/ header entries were recovered before the truncated later libs/ section. All core dependencies compiled successfully. This is not a verified complete archive; reproduce with a complete official Boost1.85distribution, not the partial file. Failed parallel download also recorded.",
+  "settings": [
+    "BUILD_STUDIO_APP=OFF",
+    "BUILD_GUILE_BINDINGS=OFF",
+    "BUILD_PYTHON_BINDINGS=OFF",
+    "BUILD_TESTS=OFF",
+    "ENABLE_DEBUG=OFF",
+    "CMAKE_BUILD_TYPE=Release"
+  ],
+  "temporary_build_dir": "/tmp/yunlu_cliff_kernel_build",
+  "dynamic_library_sha256": "93fea71db50b5abdc5484f5d06fc1422dd09826251639f4e8be37b78b82bc87b",
+  "scope": "Separate local feasibility build only; no global install, engine fork, runtime dependency or vendored upstream code.",
+  "commands": [
+    {
+      "env": {
+        "PKG_CONFIG_PATH": "/tmp/yunlu_cliff_kernel_deps/pkgconfig"
+      },
+      "args": [
+        "/tmp/yunlu_cliff_kernel_venv/bin/cmake",
+        "-S",
+        "/tmp/yunlu_cliff_kernel_deps/libfive-918387a9220dbac2f7ab32fb35e274c6794439cf",
+        "-B",
+        "/tmp/yunlu_cliff_kernel_build",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_STUDIO_APP=OFF",
+        "-DBUILD_GUILE_BINDINGS=OFF",
+        "-DBUILD_PYTHON_BINDINGS=OFF",
+        "-DBUILD_TESTS=OFF",
+        "-DENABLE_DEBUG=OFF",
+        "-DBOOST_ROOT=/tmp/yunlu_cliff_kernel_deps/boost_headers/boost-1.85.0",
+        "-DBoost_NO_SYSTEM_PATHS=ON"
+      ]
+    },
+    {
+      "args": [
+        "/tmp/yunlu_cliff_kernel_venv/bin/cmake",
+        "--build",
+        "/tmp/yunlu_cliff_kernel_build",
+        "--target",
+        "libfive",
+        "-j",
+        "4"
+      ]
+    },
+    {
+      "args": [
+        "clang++",
+        "-std=c++17",
+        "-O2",
+        "-I/tmp/yunlu_cliff_kernel_deps/libfive-918387a9220dbac2f7ab32fb35e274c6794439cf/libfive/include",
+        "-I/tmp/yunlu_cliff_kernel_deps/eigen-3.4.0",
+        "-I/tmp/yunlu_cliff_kernel_deps/boost_headers/boost-1.85.0",
+        "tools/art/cliff_libfive_probe.cpp",
+        "/tmp/yunlu_cliff_kernel_build/libfive/src/libfive.dylib",
+        "-Wl,-rpath,/tmp/yunlu_cliff_kernel_build/libfive/src",
+        "-o",
+        "/tmp/yunlu_cliff_libfive_probe"
+      ]
+    }
+  ],
+  "eigen_pkgconfig_note": "Temporary eigen3.pc declares3.4.0 and includes /tmp/yunlu_cliff_kernel_deps/eigen-3.4.0; no global install."
+}

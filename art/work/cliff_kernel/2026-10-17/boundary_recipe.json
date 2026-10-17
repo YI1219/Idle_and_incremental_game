@@ -1,0 +1,40 @@
+{
+	"commands": [
+		{
+			"center": [
+				-15.0,
+				3.25,
+				3.0
+			],
+			"normal": [
+				0.0,
+				1.0,
+				0.0
+			],
+			"radius": 4.0,
+			"tool": "rock_plane"
+		},
+		{
+			"center": [
+				-14.974940299987793,
+				1.8372023105621338,
+				4.146703720092773
+			],
+			"radius": 0.8,
+			"tool": "rock_add"
+		},
+		{
+			"center": [
+				-14.937975883483887,
+				1.7285263538360596,
+				4.735620498657227
+			],
+			"radius": 0.55,
+			"tool": "rock_cut"
+		}
+	],
+	"scope": "Tool-only source-plus-command recipe, not a TerrainData save.",
+	"source": "res://art/work/cliff_representation/2026-10-17/union.bin",
+	"source_sha256": "aa2a16c21c8c3eeeedb2c89cf5d8c5ba4ab1387d879e42a87ae3d2b73cd1bb4b",
+	"version": 1
+}

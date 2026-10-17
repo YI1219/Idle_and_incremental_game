@@ -1,0 +1,266 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"error": 0,
+			"file": "boundary_flat_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_flat_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_flat_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_flat_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_flat_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_flat_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_flat_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_flat_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_flat_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_flat_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_flat_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_flat_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_crease_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_crease_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_crease_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_crease_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_crease_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_crease_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_crease_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_crease_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_crease_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_crease_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_crease_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_crease_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_stone_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_stone_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_stone_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_stone_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_stone_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_edited_stone_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_stone_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_stone_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_grown_stone_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_stone_near.png",
+			"position": "(-11.0, 6.5, 12.0)",
+			"rotation": "(-0.382873, 0.436627, 0.0)",
+			"size": 8.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_stone_oblique.png",
+			"position": "(-8.0, 8.0, 17.0)",
+			"rotation": "(-0.384619, 0.452154, 0.0)",
+			"size": 13.0
+		},
+		{
+			"error": 0,
+			"file": "boundary_localcut_stone_reverse.png",
+			"position": "(-26.0, 7.0, -12.0)",
+			"rotation": "(-0.279872, -2.50243, 0.0)",
+			"size": 13.0
+		}
+	],
+	"geometry_only": true,
+	"input_dir": "res://art/work/cliff_kernel/2026-10-17/",
+	"material_control_geometry_sha256_hex_algorithm": "",
+	"renderer": "forward_plus",
+	"resolution": [
+		1440,
+		960
+	],
+	"scope": "Isolated existing-source native study, fixed environment and cameras. No lawn/physical grass, trees, bottom backing or production scene replacement; not final island art or performance acceptance."
+}

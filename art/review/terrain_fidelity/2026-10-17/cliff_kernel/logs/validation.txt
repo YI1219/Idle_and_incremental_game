@@ -1,0 +1,18 @@
+00:00.163  translation      | WARNING Falling back to standard locale ("C")
+KERNEL VALIDATION boundary True 2248 0
+KERNEL VALIDATION boundary_carved False 16564 8
+KERNEL VALIDATION boundary_edited True 2290 0
+KERNEL VALIDATION boundary_grown True 9126 0
+KERNEL VALIDATION boundary_localcut True 4910 0
+KERNEL VALIDATION boundary_redo False 16564 8
+KERNEL VALIDATION boundary_reload False 16564 8
+KERNEL VALIDATION boundary_undo True 9126 0
+KERNEL VALIDATION libfive_dc False 6372 100
+KERNEL VALIDATION libfive_dc_edited False 6214 76
+KERNEL VALIDATION libfive_hybrid False 129280 8
+KERNEL VALIDATION libfive_hybrid_edited False 125572 6
+KERNEL VALIDATION libfive_simplex False 104812 53
+KERNEL VALIDATION libfive_simplex_edited False 103324 46
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

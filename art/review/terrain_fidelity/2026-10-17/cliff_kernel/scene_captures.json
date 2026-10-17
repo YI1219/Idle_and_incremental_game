@@ -1,0 +1,77 @@
+{
+	"authoritative_data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+	"cap_draw_controls": {
+		"boundary": {
+			"lid_triangles_not_drawn": 195,
+			"side_triangles_drawn": 2053
+		},
+		"boundary_localcut": {
+			"lid_triangles_not_drawn": 195,
+			"side_triangles_drawn": 4715
+		}
+	},
+	"captures": [
+		{
+			"draw_calls": 671.0,
+			"error": 0,
+			"file": "scene_boundary_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 606.0,
+			"error": 0,
+			"file": "scene_boundary_grass.png",
+			"position": "(-12.4, 7.1, 11.0)",
+			"rotation": "(-27.18981, 15.25512, 0.0)"
+		},
+		{
+			"draw_calls": 550.0,
+			"error": 0,
+			"file": "scene_boundary_reverse.png",
+			"position": "(-27.0, 7.0, -7.0)",
+			"rotation": "(-16.07079, -129.8056, 0.0)"
+		},
+		{
+			"draw_calls": 569.0,
+			"error": 0,
+			"file": "scene_boundary_far.png",
+			"position": "(17.311, 32.0, 59.37063)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 671.0,
+			"error": 0,
+			"file": "scene_boundary_localcut_close.png",
+			"position": "(-10.18066, 8.0, 17.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 606.0,
+			"error": 0,
+			"file": "scene_boundary_localcut_grass.png",
+			"position": "(-12.4, 7.1, 11.0)",
+			"rotation": "(-27.18981, 15.25512, 0.0)"
+		},
+		{
+			"draw_calls": 550.0,
+			"error": 0,
+			"file": "scene_boundary_localcut_reverse.png",
+			"position": "(-27.0, 7.0, -7.0)",
+			"rotation": "(-16.07079, -129.8056, 0.0)"
+		},
+		{
+			"draw_calls": 569.0,
+			"error": 0,
+			"file": "scene_boundary_localcut_far.png",
+			"position": "(17.311, 32.0, 59.37063)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		}
+	],
+	"input_dir": "res://art/work/cliff_kernel/2026-10-17/",
+	"lid_plane_tolerance": 0.001,
+	"replaced_source_instances": 3,
+	"scope": "Tool-only replacement of three draw instances, same common material and crease normals across assembly/union/sampled. As with production walls, horizontal lids under authoritative grass are not drawn; all closed input/measurement geometry stays intact. Original includes production per-instance tone/shading, so is context only. Existing grass, backing, trees, buildings and props retained. No collision/picking/support/editor publication change or acceptance. Cloud/mist live.",
+	"unchanged_authoritative_data": true,
+	"water_phase": 1.25
+}
