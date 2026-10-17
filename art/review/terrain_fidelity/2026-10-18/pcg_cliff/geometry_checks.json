@@ -1,0 +1,115 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "control": {
+      "topology": {
+        "triangles": 36588,
+        "welded_vertices_1e5": 18296,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 302.37920015660796,
+        "vertex_components": [
+          18296
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "5fae10b90b15aec47933d9c5cac77bd931629a0b84345215a56365a271ba4e19",
+        "triangles": 36588,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "pcg_shape": {
+      "topology": {
+        "triangles": 50828,
+        "welded_vertices_1e5": 25416,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 500.7711368579104,
+        "vertex_components": [
+          25416
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "a51190dc1f805a4f8e3ef1823285d3c92391982928e8f34e2bffcfe27a578233",
+        "triangles": 50828,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "pcg_seed7319": {
+      "topology": {
+        "triangles": 50408,
+        "welded_vertices_1e5": 25206,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 493.56588396610897,
+        "vertex_components": [
+          25206
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "fcea6053ab7d6a6c108d093e2e23d5a2ae7846e818a2db45ac12ea4233f9afbf",
+        "triangles": 50408,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "pcg_layout": {
+      "topology": {
+        "triangles": 43728,
+        "welded_vertices_1e5": 21866,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 388.16727492976855,
+        "vertex_components": [
+          21866
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "e5b9e9c2e006459272f33bf5a7a1f5b7876ceb1da836f928f4805b3381c2ee13",
+        "triangles": 43728,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "pcg_carved": {
+      "topology": {
+        "triangles": 52604,
+        "welded_vertices_1e5": 26302,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 495.37332513929994,
+        "vertex_components": [
+          26302
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "38345308b861a2e4b37321d58b6cb5307099a2b5b519ad5dfe76813be3402b5d",
+        "triangles": 52604,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    }
+  }
+}

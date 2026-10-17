@@ -1,0 +1,9 @@
+00:00.060  translation      | WARNING Falling back to standard locale ("C")
+PCG GEOMETRY control True {'triangles': 36588, 'welded_vertices_1e5': 18296, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 302.37920015660796, 'vertex_components': [18296], 'vertex_link_defects': 0} crossings 0
+PCG GEOMETRY pcg_shape True {'triangles': 50828, 'welded_vertices_1e5': 25416, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 500.7711368579104, 'vertex_components': [25416], 'vertex_link_defects': 0} crossings 0
+PCG GEOMETRY pcg_seed7319 True {'triangles': 50408, 'welded_vertices_1e5': 25206, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 493.56588396610897, 'vertex_components': [25206], 'vertex_link_defects': 0} crossings 0
+PCG GEOMETRY pcg_layout True {'triangles': 43728, 'welded_vertices_1e5': 21866, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 388.16727492976855, 'vertex_components': [21866], 'vertex_link_defects': 0} crossings 0
+PCG GEOMETRY pcg_carved True {'triangles': 52604, 'welded_vertices_1e5': 26302, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 495.37332513929994, 'vertex_components': [26302], 'vertex_link_defects': 0} crossings 0
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

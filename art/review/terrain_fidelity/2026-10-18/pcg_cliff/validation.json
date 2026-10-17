@@ -1,0 +1,103 @@
+{
+  "native_frames": 35,
+  "matched_views": {
+    "close": [
+      "(9.0, 7.6, 15.0)",
+      "(-0.5, 0.8, 0.6)",
+      11.8
+    ],
+    "grass": [
+      "(5.0, 8.0, 12.0)",
+      "(-0.3, 2.9, 1.8)",
+      7.6
+    ],
+    "whole": [
+      "(13.0, 13.0, 19.0)",
+      "(-0.3, 0.0, 0.0)",
+      18.5
+    ],
+    "reverse": [
+      "(-13.0, 8.0, -14.0)",
+      "(-0.5, 0.4, 0.0)",
+      16.0
+    ],
+    "bottom": [
+      "(9.0, -8.0, 15.0)",
+      "(-0.5, -1.0, 0.0)",
+      15.5
+    ]
+  },
+  "image_sha256": {
+    "control_close.png": "ae3f056a3fac03b9793fbd14cac7c1f0e8f001119cd09d2456cdb37d4c44e24c",
+    "control_grass.png": "a223b9b6abadc98f31e18ccb3c174c10b776d487d9bab718b36efaafe4db9938",
+    "control_whole.png": "b4fec0b1b0576f6972910b113febfe88be9a6bd142308648370bf284c69408b9",
+    "control_reverse.png": "0896956a522c4eac6508896a78c74b476e8d6cf7cf50b8a292d2f1a79502c477",
+    "control_bottom.png": "bf3ed6ca1a401f6df983b53fc55498cb91cea70fb487bb06a6576177e6543f79",
+    "pcg_shape_close.png": "6b90f135b5ea338a20094391f03c18186c3fe9718235a09c1a0eef16383f5f78",
+    "pcg_shape_grass.png": "efae29e3b17d8b9ee242bfa5db975bb5c4c5ab8dd368a2442f0a562258b50267",
+    "pcg_shape_whole.png": "7782afb0380fdcd25405c4e62b5e8e11eac55cd16d818ad219133b5bb2e4d386",
+    "pcg_shape_reverse.png": "97f97d53132f47042baba447127ba8a2ba4779b96487a20bb74a104005148f02",
+    "pcg_shape_bottom.png": "28e3ee39ba86e68af64c1b209373d1a0f0394b68e60e581da4ba35a32b9c6955",
+    "pcg_contact_close.png": "e66853c0ecc7cc56e87fde2b12167289d50c8930b9c158f9f402277622b116f4",
+    "pcg_contact_grass.png": "115214b930cdff7cd670c5aa1569733974a04e778a80911f8c71dd7432861b1d",
+    "pcg_contact_whole.png": "e84693af8f614c10f3b4ce0593f93edb612a8c582eb8c413f37993ebd0f1b8b7",
+    "pcg_contact_reverse.png": "4cbfe16f037b5cda5e1242b397bb9b023159265c0af0259e82bfffdd4a557594",
+    "pcg_contact_bottom.png": "a78a923d28871d001a1ed7037dc78188fb9ea52f7b49681639fc0a52298215d2",
+    "pcg_seed7319_close.png": "c29ddcae712b60fc04c5b49c9ac575517acf160551431cafe29056897bb7603d",
+    "pcg_seed7319_grass.png": "bb8b1751aafba44cb3bbc8610e3889a17211663ef14b62b75ed41cd3d7027ccd",
+    "pcg_seed7319_whole.png": "6ea9a941118f46e3ab6618edeca7d8aac3c2ebf81e9319abab058f9bf8198340",
+    "pcg_seed7319_reverse.png": "7782a5e319865e763bfe77d826dec636dae4e8863f990a09d6fd2a01121fec75",
+    "pcg_seed7319_bottom.png": "1f8b54f261a89ee5c4638a60a0956c458d1a6d411538d4427c807431ab020906",
+    "pcg_layout_close.png": "b46d75cf88605308bfefa2fbab5251c5586ab659751bf9c058c671cd93bcd329",
+    "pcg_layout_grass.png": "32c6893d87f7f3fc622b41fc31d78d26fbe393a91a34082198e0123b0c843217",
+    "pcg_layout_whole.png": "e2eb0872bd14bf2913349574a7a4e9dc6d9a0b66f29e7078e7b8640e7af9143f",
+    "pcg_layout_reverse.png": "55b22a24d057bad4b55ee9dcd8a43cc9360233ede1dbea9d16e17fd9ae4cfa4a",
+    "pcg_layout_bottom.png": "165b4374ed3a1b2b8472c49463c27b3356a3167995bb22aa352674941e199248",
+    "pcg_carved_close.png": "d118f58e164439bcc3375c9be658f5621b94aad9fea9091375c7021b29de0a26",
+    "pcg_carved_grass.png": "b42fcd308ec7aa6b33bf6037fdd599f62cd4a5335095be4925a82975d8d9e597",
+    "pcg_carved_whole.png": "c094eff6781ec968c121e4d026a75304b5bd165db8a64e6df3e6e630ea969532",
+    "pcg_carved_reverse.png": "5c40fbda7b3d5f4585c0501dbd079c45c9535ae9549177c256d2bfd9133d4241",
+    "pcg_carved_bottom.png": "406526c8d53ad053bf73db726a7d01e6b5739d852fdf8f512a0d77be3186e27e",
+    "neutral_close.png": "ff097ba5d948624aeb2c437f3ee10830952fc35d4c32af9b0c90609a16801c51",
+    "neutral_grass.png": "44e4bdce9bb0f522059f23d25657f91421e11d9175da5d387ee2404a1ba59474",
+    "neutral_whole.png": "ed4b73c681f43dfa08fd003a0e213b4d75cf5489f0a85941c2d96dcd9a467921",
+    "neutral_reverse.png": "10eb4f5eea75e8f6e8b115cf7b90715c0dc19b8ebd086b94edc2acaa811e3527",
+    "neutral_bottom.png": "e39a54777a8315b68777926122a942fd771f5fa81a266d97f8afb2f757f64d80"
+  },
+  "approved_target_sha256": "1f16fa5540c7539175faa0b3d167b3a8b0e9df0651aba96397f47075009de2e7",
+  "finite_geometry_passes": [
+    "control",
+    "pcg_shape",
+    "pcg_seed7319",
+    "pcg_layout",
+    "pcg_carved"
+  ],
+  "contact": {
+    "pcg_contact": {
+      "supported_roots": 380,
+      "all_source_vertex_occurrences": 176700,
+      "max_support_error_m": 2.511007353156458e-07
+    },
+    "pcg_seed7319": {
+      "supported_roots": 382,
+      "all_source_vertex_occurrences": 177630,
+      "max_support_error_m": 2.387476540910427e-07
+    },
+    "pcg_layout": {
+      "supported_roots": 312,
+      "all_source_vertex_occurrences": 145080,
+      "max_support_error_m": 2.3094956835834068e-07
+    },
+    "pcg_carved": {
+      "supported_roots": 380,
+      "all_source_vertex_occurrences": 176700,
+      "max_support_error_m": 2.511007353156458e-07
+    }
+  },
+  "normal_control_identical_body_vertices": true,
+  "production_changed": false,
+  "default_promoted": false,
+  "field_tests": "14/14",
+  "production_data_tests": "301/301",
+  "scope": "One cropped, initially single-contour, dry preset fixture; second seed, one contracted-cell layout and one below-cap cut. Ordinary v2 densities/public data APIs; not automatic cell-edit regeneration in production, native pointer/picking integration, arbitrary terrain/holes, full-island art or target-hardware acceptance."
+}
