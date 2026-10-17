@@ -3,9 +3,14 @@ Maps are linear data, not sRGB. Run with Python + numpy + Pillow.
 No source photograph or AI artwork is used. Runtime shaders retain the palette.
 """
 from pathlib import Path
+import argparse
 import numpy as np
 from PIL import Image, ImageDraw
-OUT=Path(__file__).resolve().parents[2]/'assets/textures/terrain'
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--output',type=Path,default=Path(__file__).resolve().parents[2]/'assets/textures/terrain')
+parser.add_argument('--height-data',action='store_true',help='Also retain the actual float32 height fields for blending studies')
+args=parser.parse_args()
+OUT=args.output;OUT.mkdir(parents=True,exist_ok=True)
 N=1024
 rng=np.random.default_rng(121026)
 def noise(scale):
@@ -19,6 +24,7 @@ def save(name,value,height,rough,strength):
     dy=(np.roll(height,-1,0)-np.roll(height,1,0))*strength
     rgba=np.stack([value,.5+dx,.5+dy,rough],-1)
     Image.fromarray((np.clip(rgba,0,1)*255).astype('uint8')).save(OUT/name)
+    if args.height_data:height.astype('<f4').tofile(OUT/(Path(name).stem+'_height.bin'))
 # Broad mineral clouds, close-grained grit and sparse shallow pits. Scales
 # deliberately avoid painted cracks: mesh fractures provide the large cuts.
 cloud=noise(7);grain=noise(70);fine=noise(220);pits=np.maximum(noise(145)-1.25,0)

@@ -1,0 +1,1 @@
+Superseded scene capture: closed CSG-input lids were drawn coplanar with the existing authoritative grass. Production source_stone_crown uses render_mesh walls without those lids. Final capture applies the same horizontal-lid omission to all three controlled variants. Closed geometry validation is unchanged.

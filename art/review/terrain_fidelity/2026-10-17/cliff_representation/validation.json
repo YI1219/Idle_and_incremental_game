@@ -1,0 +1,534 @@
+{
+  "valid_native_frames": 49,
+  "isolated_frames": 33,
+  "scene_frames": 16,
+  "camera_groups": {
+    "lab_near": [
+      "(-11.0, 6.5, 12.0)",
+      "(-0.382873, 0.436627, 0.0)",
+      8.0
+    ],
+    "lab_oblique": [
+      "(-8.0, 8.0, 17.0)",
+      "(-0.384619, 0.452154, 0.0)",
+      13.0
+    ],
+    "lab_reverse": [
+      "(-26.0, 7.0, -12.0)",
+      "(-0.279872, -2.50243, 0.0)",
+      13.0
+    ],
+    "scene_close": [
+      "(-10.18066, 8.0, 17.31963)",
+      "(-30.0, 16.0, 0.0)",
+      null
+    ],
+    "scene_grass": [
+      "(-12.4, 7.1, 11.0)",
+      "(-27.18981, 15.25512, 0.0)",
+      null
+    ],
+    "scene_reverse": [
+      "(-27.0, 7.0, -7.0)",
+      "(-16.07079, -129.8056, 0.0)",
+      null
+    ],
+    "scene_far": [
+      "(17.311, 32.0, 59.37063)",
+      "(-27.0, 16.0, 0.0)",
+      null
+    ]
+  },
+  "image_sha256": {
+    "assembly_flat_near.png": "30a82e864627b83608303e86d75d9c84e0bec512201ba6915a44c7edcc972fd5",
+    "assembly_flat_oblique.png": "65528f7763439a0bc07527531e61f99e7085a77c785b26e478c87c4d428257a3",
+    "assembly_flat_reverse.png": "0e564de3dd1eec484c8d147938fabea6115bf6e4c7210c7082a129a24856f389",
+    "union_flat_near.png": "7efbbffb67eccd0171eff589823249709222a8066fe6524d095d893bddfddd02",
+    "union_flat_oblique.png": "6fb4feae4c1b3d639dd48bc727fc234da7e5c3d496dcc5b7fa07e31bb5c31f06",
+    "union_flat_reverse.png": "30edcb30936d5c7a78fc6577c1cbd0ded997134d41161aed4a15c44a7b522259",
+    "sampled_flat_near.png": "638277d9bf1d874512ec78547a519bc0be98cedfe577ccd2d1fcae19e679d2dc",
+    "sampled_flat_oblique.png": "9342e138ddf2915faf87e338ad900efbebe31746e826aa8d10dd8ea97044b67a",
+    "sampled_flat_reverse.png": "a4588c23edbc8af33ec2f846da82902b630645613b25c25a7c0177d7e5c21588",
+    "assembly_crease_near.png": "4b3b3c031f2a8a2c05e1615b2cf15ae9fa5adb85a5ed25a510a296c5009306e9",
+    "assembly_crease_oblique.png": "f3f2234cfc880dcef60023be824e95c67e820a7707b0b7c7f101eb19ec2c395d",
+    "assembly_crease_reverse.png": "ce9dff72e84a9ce6f997a7746786af22beefa854597e034897086ab1259ab9c2",
+    "union_crease_near.png": "b1f36c748c130b85774fad57adf0c7920d468a8f761ae5a46972153d8428dbf9",
+    "union_crease_oblique.png": "e5f3073c1e19085bb27ab8dcaf7fe9e759fb431cfae8e9d3733e55b3688ae5ee",
+    "union_crease_reverse.png": "53b4fad2f42651bfdb0b6044f7f879c5670a9b46b5cf20cb104536977dc215a0",
+    "sampled_crease_near.png": "e29ff74e5a5734660e9606b1d48e1ec0d407716002c08ba06b60f86cec29d16f",
+    "sampled_crease_oblique.png": "33740d366edd5bb8fb94a7c896e28f1f617d9cf75b830ad99aca55b681d8719a",
+    "sampled_crease_reverse.png": "134491d0181541ac40db43e8e326054eeda1522907d362b395d4fff51a0b4a30",
+    "assembly_stone_near.png": "15b54a5edeff58c8a60e9f9ca91fea375358a2c1548b8959c715f790ce604674",
+    "assembly_stone_oblique.png": "3edbd20d36e6eb4cde6f82b508e4625de93bfc93952cf34119c86fe810a8a315",
+    "assembly_stone_reverse.png": "d9c9cf0103546c801ae5d4c71e1da462f91e69ce83b0cb093483fafd004b3aca",
+    "union_stone_near.png": "452b109a82726fd27246735723f9961ce72535ebb731b33bc72a1967160660cd",
+    "union_stone_oblique.png": "d940ab517e1326e50d83c8bcbe86842fc5d383f0d45ad8c3274d68b1cd65066f",
+    "union_stone_reverse.png": "a5e2683c00df088ccb0d346b861b64cf8906bce567bb22d1179aae46f41790ea",
+    "sampled_stone_near.png": "1c777a564d70e9e651212a63b526eb1498af4257b33d07ba828dd280b03ba794",
+    "sampled_stone_oblique.png": "7df5de197f1f5a4aca3be3730114ffd8e4496f79eae4cafb4c2b9135dbe09998",
+    "sampled_stone_reverse.png": "48db7145da2007ab0bfad062e2cc6856ee965119906354b48f8f86dd61fca31e",
+    "union_linear_contact_near.png": "a1196ee31125cd40ecc0e754886a4327a35c0492f3eda3c709710710d9bbee90",
+    "union_linear_contact_oblique.png": "e11555507eef63ae1af00ee67cada1adce7535e74c244a5c3377f35d955545a6",
+    "union_linear_contact_reverse.png": "7016da681279610fac61a3e232d93acbaab624e2f46f88afd2d778a4c49d0986",
+    "union_height_contact_near.png": "6aa05858becd0dc41bf1aa8fa32094d77980632615117b30a8911b6b89521e63",
+    "union_height_contact_oblique.png": "a5e3fc2f97e4caacb119147e8c270bf6efe22aa5c170f859affa6db1333137f8",
+    "union_height_contact_reverse.png": "0702e4d567d2cad4e087e10c5f37fcdd82c9d8ae6e34e740687f4aced9d7cd65",
+    "scene_original_close.png": "f29cd637be686c538f436658564d07a5e902a9f33641e9a7c6555b047c27a7a1",
+    "scene_original_grass.png": "ed220f2969311151fb3d4b376612d4b299621ec5da5901f376f851952cb658c9",
+    "scene_original_reverse.png": "a3e8a7887de080fc59f538b4ad5cd7355c833f6b1cbee636d366185bc3a5d244",
+    "scene_original_far.png": "3c8f7674e664aaf1f8ffbd845d783003a4cf8700ecce0e68209038a51c0bc014",
+    "scene_assembly_close.png": "a74396cb91ea130cf27e3dc37211b27ddbd2e4c9ea5177dc77ce5c9dc6b32862",
+    "scene_assembly_grass.png": "f860e0f44d11ab4ef5b6f3e3e0b4bc8a30afd4665d04db83e8e5b5d8b9d08ae6",
+    "scene_assembly_reverse.png": "8c41a13cfba1490fd2240f6f8937edc5bf7eccb09472a790753c7e957915f53c",
+    "scene_assembly_far.png": "04f890f8281a827e2fee51db6c50b096682faccc40bb58438e752a6dacd92422",
+    "scene_union_close.png": "6444461beed7ff9e86b8a3715ead0d79e8765e7c4bd030a9364cfa1ca6a0785c",
+    "scene_union_grass.png": "9e0a7b99f421605f8b66dc840477f63d39e681c255453b76ceec1dcfedc990f2",
+    "scene_union_reverse.png": "2ed77dcbdebba35167c40424fb6ad28a2fee817b4594b257bf6f9b6817f4c196",
+    "scene_union_far.png": "414b0d354dd783e44ab6f168bd0337821e4fa3b2ecb472033e27885f7217b52a",
+    "scene_sampled_close.png": "44b7282d51ed1dca607da356864f259fc42e7c96724a30ce7190f64ce0d6f716",
+    "scene_sampled_grass.png": "68bbbffe7c8f849f0fb578a3e1d7f12d758208032e311b24d747f19ac190dbcc",
+    "scene_sampled_reverse.png": "940601113b4f01513adcb496ce256284c7260f77969fa19e8244985a816c4b4c",
+    "scene_sampled_far.png": "6fc0c2b71f24ab290bd16f038684061beb453d36f5a606a1a81a8860dcd38e43"
+  },
+  "reports": {
+    "native_kernel": {
+      "engine": {
+        "build": "official",
+        "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+        "hex": 263938,
+        "major": 4,
+        "minor": 7,
+        "patch": 2,
+        "status": "stable",
+        "string": "4.7.2-stable (official)",
+        "timestamp": 0
+      },
+      "inputs": [
+        {
+          "path": "res://art/work/rendered_island/2026-10-17/complete/crown_36.bin",
+          "sha256_hex_algorithm": "2e3bbdfc6f5bcb87fb997573f10b81ccb876e6eef54f7cd1f621ead9649550fd",
+          "triangles": 698
+        },
+        {
+          "path": "res://art/work/rendered_island/2026-10-17/complete/crown_37.bin",
+          "sha256_hex_algorithm": "5fb37bee50fb7139e9959d3956c236a096e801dda1e30fd6af52b2d008e3946d",
+          "triangles": 722
+        },
+        {
+          "path": "res://art/work/rendered_island/2026-10-17/complete/crown_38.bin",
+          "sha256_hex_algorithm": "f6e2b8ea6a50ba46572a16d7f14f51ec926b283639012bf0eb5080d7ed66eaa9",
+          "triangles": 768
+        }
+      ],
+      "scope": "Exact three retained source crowns; no new rock shape, production change, or real-time editing claim.",
+      "top_clip_y": 3.25,
+      "union": {
+        "cached_result_retrieval_and_export_usec_not_kernel_benchmark": 1727,
+        "sha256_hex_algorithm": "a599a4ea5101a655e6d60e763d3018250d63976c575c793004db46b890d679e0",
+        "triangles": 2248
+      },
+      "union_clip": {
+        "cached_result_retrieval_and_export_usec_not_kernel_benchmark": 8097,
+        "sha256_hex_algorithm": "8d342b862ef5c3f63c72cc39854e3ee003e258c89f46848f468bb9f19664cc00",
+        "triangles": 1948
+      }
+    },
+    "sampling": {
+      "input_topology": {
+        "assembly": {
+          "triangles": 2188,
+          "welded_vertices_1e5": 1100,
+          "non_two_use_edges": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 120.69477887168351,
+          "vertex_components": [
+            386,
+            363,
+            351
+          ]
+        },
+        "union": {
+          "triangles": 2248,
+          "welded_vertices_1e5": 1126,
+          "non_two_use_edges": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 101.7176045130399,
+          "vertex_components": [
+            1126
+          ]
+        },
+        "union_clip": {
+          "triangles": 1948,
+          "welded_vertices_1e5": 976,
+          "non_two_use_edges": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 96.14298609280618,
+          "vertex_components": [
+            976
+          ]
+        }
+      },
+      "grid_step": 0.25,
+      "source_sha256": "aa2a16c21c8c3eeeedb2c89cf5d8c5ba4ab1387d879e42a87ae3d2b73cd1bb4b",
+      "clip_max_y": 3.25,
+      "grid_lo": [
+        -85,
+        -3,
+        -10
+      ],
+      "grid_hi": [
+        -33,
+        17,
+        32
+      ],
+      "sample_records": 12169,
+      "bvh_disagreements_resolved_by_float64": [
+        {
+          "point": [
+            -15.75,
+            4.0,
+            -1.75
+          ],
+          "bvh_votes": [
+            false,
+            false,
+            true
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 2.917100667953491
+        },
+        {
+          "point": [
+            -15.5,
+            3.5,
+            -1.25
+          ],
+          "bvh_votes": [
+            false,
+            false,
+            true
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 2.42873477935791
+        },
+        {
+          "point": [
+            -19.0,
+            -0.5,
+            -0.75
+          ],
+          "bvh_votes": [
+            false,
+            true,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 1.2296168804168701
+        },
+        {
+          "point": [
+            -19.25,
+            0.0,
+            0.0
+          ],
+          "bvh_votes": [
+            false,
+            true,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 0.9351332187652588
+        },
+        {
+          "point": [
+            -19.5,
+            0.5,
+            0.0
+          ],
+          "bvh_votes": [
+            false,
+            true,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 0.4434700906276703
+        },
+        {
+          "point": [
+            -19.25,
+            0.25,
+            0.75
+          ],
+          "bvh_votes": [
+            false,
+            true,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 0.6527776122093201
+        },
+        {
+          "point": [
+            -17.5,
+            -0.25,
+            2.75
+          ],
+          "bvh_votes": [
+            false,
+            true,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 0.9920675754547119
+        },
+        {
+          "point": [
+            -20.75,
+            1.75,
+            2.75
+          ],
+          "bvh_votes": [
+            true,
+            false,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 1.1786673069000244
+        },
+        {
+          "point": [
+            -20.25,
+            1.75,
+            3.0
+          ],
+          "bvh_votes": [
+            true,
+            false,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 0.9613512754440308
+        },
+        {
+          "point": [
+            -16.75,
+            -0.5,
+            3.25
+          ],
+          "bvh_votes": [
+            false,
+            true,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 1.2273198366165161
+        },
+        {
+          "point": [
+            -19.75,
+            1.75,
+            3.25
+          ],
+          "bvh_votes": [
+            true,
+            false,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 0.7713851928710938
+        },
+        {
+          "point": [
+            -19.0,
+            2.0,
+            3.5
+          ],
+          "bvh_votes": [
+            true,
+            false,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 0.3495316207408905
+        },
+        {
+          "point": [
+            -18.75,
+            2.5,
+            3.5
+          ],
+          "bvh_votes": [
+            true,
+            false,
+            false
+          ],
+          "analytic_votes": [
+            false,
+            false,
+            false
+          ],
+          "distance": 0.05406143143773079
+        }
+      ],
+      "analytic_three_ray_crosschecks": 1174,
+      "bvh_majority_corrections": 0,
+      "near_surface_nodes": 321,
+      "seconds": 0.6352450847625732,
+      "scope": "Finite local conversion from validated native union, three BVH directions at every grid node, independent float64 three-ray fallback on every disagreement plus every41st node. No global terrain edit, shape optimization, or target hardware claim."
+    },
+    "reconstruction": {
+      "elapsed_usec_build_only": 115622,
+      "grid_step": 0.25,
+      "record_roundtrip_equal": true,
+      "records_loaded": 12169,
+      "scope": "Existing production mesher on a standalone local field; not a new full-island save or editor acceptance or comparable native boolean benchmark.",
+      "triangles": 19240
+    },
+    "measurements": {
+      "topology": {
+        "assembly": {
+          "triangles": 2188,
+          "welded_vertices_1e5": 1100,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 120.69477887168351,
+          "vertex_components": [
+            386,
+            363,
+            351
+          ]
+        },
+        "union": {
+          "triangles": 2248,
+          "welded_vertices_1e5": 1126,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 101.7176045130399,
+          "vertex_components": [
+            1126
+          ]
+        },
+        "sampled": {
+          "triangles": 19240,
+          "welded_vertices_1e5": 9622,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 101.15683263147618,
+          "vertex_components": [
+            9622
+          ]
+        },
+        "union_clip": {
+          "triangles": 1948,
+          "welded_vertices_1e5": 976,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 96.14298609280618,
+          "vertex_components": [
+            976
+          ]
+        }
+      },
+      "surface_error_m": {
+        "union_to_sampled": {
+          "count": 11240,
+          "mean": 0.026755116463977244,
+          "p95": 0.08898798376321793,
+          "maximum_sampled": 0.17289112508296967
+        },
+        "sampled_to_union": {
+          "count": 24050,
+          "mean": 0.004358876631709091,
+          "p95": 0.024508560076355934,
+          "maximum_sampled": 0.1252894401550293
+        },
+        "union_to_assembly": {
+          "count": 11240,
+          "mean": 1.7513515792087887e-05,
+          "p95": 4.519452941167394e-05,
+          "maximum_sampled": 0.00041314162081107497
+        }
+      },
+      "sampled_volume_change_fraction": -0.005513026818202649,
+      "source_height_maps_regenerated_byte_identical": {
+        "stone_detail.png": true,
+        "ground_detail.png": true
+      },
+      "scope": "Finite local geometry samples; 1e-5 position weld for topology. Not global surface bounds, shape beauty, edit latency or target device acceptance."
+    }
+  },
+  "scene_control": {
+    "authoritative_data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+    "cap_draw_controls": {
+      "assembly": {
+        "lid_triangles_not_drawn": 192,
+        "side_triangles_drawn": 1996
+      },
+      "sampled": {
+        "lid_triangles_not_drawn": 1825,
+        "side_triangles_drawn": 17415
+      },
+      "union": {
+        "lid_triangles_not_drawn": 195,
+        "side_triangles_drawn": 2053
+      }
+    },
+    "replaced_source_instances": 3,
+    "scope": "Tool-only replacement of three draw instances, same common material and crease normals across assembly/union/sampled. As with production walls, horizontal lids under authoritative grass are not drawn; all closed input/measurement geometry stays intact. Original includes production per-instance tone/shading, so is context only. Existing grass, backing, trees, buildings and props retained. No collision/picking/support/editor publication change or acceptance. Cloud/mist live.",
+    "unchanged_authoritative_data": true,
+    "water_phase": 1.25
+  },
+  "decision": "Diagnostic evidence only. Native union retains finite sampled exterior within1mm; .25m reconstruction loses narrow features and introduces facets. Source forms still broad and crease shading imperfect. Height contact still reads as paint; do not adopt. Production unchanged; no editor/performance/whole-art acceptance."
+}

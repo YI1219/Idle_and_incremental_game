@@ -1,0 +1,3 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+CLIFF REPRESENTATION RECONSTRUCTION: {"elapsed_usec_build_only":115622,"grid_step":0.25,"record_roundtrip_equal":true,"records_loaded":12169,"scope":"Existing production mesher on a standalone local field; not a new full-island save or editor acceptance or comparable native boolean benchmark.","triangles":19240}

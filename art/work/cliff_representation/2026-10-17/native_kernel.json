@@ -1,0 +1,42 @@
+{
+	"engine": {
+		"build": "official",
+		"hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+		"hex": 263938,
+		"major": 4,
+		"minor": 7,
+		"patch": 2,
+		"status": "stable",
+		"string": "4.7.2-stable (official)",
+		"timestamp": 0
+	},
+	"inputs": [
+		{
+			"path": "res://art/work/rendered_island/2026-10-17/complete/crown_36.bin",
+			"sha256_hex_algorithm": "2e3bbdfc6f5bcb87fb997573f10b81ccb876e6eef54f7cd1f621ead9649550fd",
+			"triangles": 698
+		},
+		{
+			"path": "res://art/work/rendered_island/2026-10-17/complete/crown_37.bin",
+			"sha256_hex_algorithm": "5fb37bee50fb7139e9959d3956c236a096e801dda1e30fd6af52b2d008e3946d",
+			"triangles": 722
+		},
+		{
+			"path": "res://art/work/rendered_island/2026-10-17/complete/crown_38.bin",
+			"sha256_hex_algorithm": "f6e2b8ea6a50ba46572a16d7f14f51ec926b283639012bf0eb5080d7ed66eaa9",
+			"triangles": 768
+		}
+	],
+	"scope": "Exact three retained source crowns; no new rock shape, production change, or real-time editing claim.",
+	"top_clip_y": 3.25,
+	"union": {
+		"cached_result_retrieval_and_export_usec_not_kernel_benchmark": 1727,
+		"sha256_hex_algorithm": "a599a4ea5101a655e6d60e763d3018250d63976c575c793004db46b890d679e0",
+		"triangles": 2248
+	},
+	"union_clip": {
+		"cached_result_retrieval_and_export_usec_not_kernel_benchmark": 8097,
+		"sha256_hex_algorithm": "8d342b862ef5c3f63c72cc39854e3ee003e258c89f46848f468bb9f19664cc00",
+		"triangles": 1948
+	}
+}

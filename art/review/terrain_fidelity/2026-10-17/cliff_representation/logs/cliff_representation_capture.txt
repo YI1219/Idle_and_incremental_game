@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-10-17 11:30:19.960 godot[15669:5393845] +[IMKClient subclass]: chose IMKClient_Modern
+2026-10-17 11:30:20.069 godot[15669:5393845] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+CLIFF REPRESENTATION CAPTURES: 33

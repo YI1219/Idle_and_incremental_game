@@ -1,0 +1,1 @@
+Initial capture is excluded: contact shader omitted cliff_palette dependency, so all material frames are invalid. Neutral frames are retained as diagnostics but superseded by the complete clean rerun.
