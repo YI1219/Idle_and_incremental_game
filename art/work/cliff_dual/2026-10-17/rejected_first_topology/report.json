@@ -1,0 +1,140 @@
+{
+  "source_sha256": "aa2a16c21c8c3eeeedb2c89cf5d8c5ba4ab1387d879e42a87ae3d2b73cd1bb4b",
+  "step": 0.25,
+  "stages": {
+    "dc_field": {
+      "topology": {
+        "triangles": 6556,
+        "welded_vertices_1e5": 3279,
+        "non_two_use_edges": 1,
+        "directed_edge_pair_defects": 369,
+        "degenerate_index_faces": 0,
+        "signed_volume": 98.220254506082,
+        "vertex_components": [
+          3279
+        ],
+        "nonmanifold_vertex_links": 2
+      },
+      "intersections": {
+        "missing_source_intersections": 0,
+        "multiple_intersections": 0
+      },
+      "reconstruction": {
+        "active_cells": 3279,
+        "crossing_edges": 3278,
+        "missing_quad_cells": 0,
+        "triangles": 6556
+      },
+      "seconds_including_validation": 1.280095100402832,
+      "residual": {
+        "implicit_residual_mean": 0.005147386009185785,
+        "implicit_residual_p95": 0.022151127457618713,
+        "implicit_residual_max_sampled": 0.05361897498369217,
+        "points": 4917
+      }
+    },
+    "dc_hermite": {
+      "topology": {
+        "triangles": 6556,
+        "welded_vertices_1e5": 3279,
+        "non_two_use_edges": 1,
+        "directed_edge_pair_defects": 351,
+        "degenerate_index_faces": 0,
+        "signed_volume": 97.71199985076841,
+        "vertex_components": [
+          3279
+        ],
+        "nonmanifold_vertex_links": 2
+      },
+      "intersections": {
+        "missing_source_intersections": 0,
+        "multiple_intersections": 1,
+        "source": 3278
+      },
+      "reconstruction": {
+        "active_cells": 3279,
+        "crossing_edges": 3278,
+        "missing_quad_cells": 0,
+        "triangles": 6556
+      },
+      "seconds_including_validation": 1.2956411838531494,
+      "residual": {
+        "implicit_residual_mean": 0.002041449474397862,
+        "implicit_residual_p95": 0.010578843764960766,
+        "implicit_residual_max_sampled": 0.11052975058555603,
+        "points": 4917
+      }
+    },
+    "dc_field_edited": {
+      "topology": {
+        "triangles": 6428,
+        "welded_vertices_1e5": 3216,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 350,
+        "degenerate_index_faces": 0,
+        "signed_volume": 95.52987654884875,
+        "vertex_components": [
+          3216
+        ],
+        "nonmanifold_vertex_links": 0
+      },
+      "intersections": {
+        "missing_source_intersections": 0,
+        "multiple_intersections": 0
+      },
+      "reconstruction": {
+        "active_cells": 3216,
+        "crossing_edges": 3214,
+        "missing_quad_cells": 0,
+        "triangles": 6428
+      },
+      "seconds_including_validation": 1.4061808586120605,
+      "residual": {
+        "implicit_residual_mean": 0.005046482351489221,
+        "implicit_residual_p95": 0.022151127457618713,
+        "implicit_residual_max_sampled": 0.07080507278442383,
+        "points": 4821
+      }
+    },
+    "dc_hermite_edited": {
+      "topology": {
+        "triangles": 6428,
+        "welded_vertices_1e5": 3216,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 324,
+        "degenerate_index_faces": 0,
+        "signed_volume": 93.15618485076662,
+        "vertex_components": [
+          3216
+        ],
+        "nonmanifold_vertex_links": 0
+      },
+      "intersections": {
+        "missing_source_intersections": 0,
+        "multiple_intersections": 4,
+        "source": 2892,
+        "cut_sphere": 25,
+        "cut_plane": 297
+      },
+      "reconstruction": {
+        "active_cells": 3216,
+        "crossing_edges": 3214,
+        "missing_quad_cells": 0,
+        "triangles": 6428
+      },
+      "seconds_including_validation": 1.3668320178985596,
+      "residual": {
+        "implicit_residual_mean": 0.0020326151479146933,
+        "implicit_residual_p95": 0.01106804609298706,
+        "implicit_residual_max_sampled": 0.11052975058555603,
+        "points": 4821
+      }
+    }
+  },
+  "references": [
+    "https://www.mattkeeter.com/projects/qef/",
+    "https://github.com/nickgildea/DualContouringSample",
+    "https://github.com/libfive/libfive"
+  ],
+  "implementation": "Own uniform one-vertex-per-cell constrained QEF; no upstream code vendored, no runtime backend change."
+}

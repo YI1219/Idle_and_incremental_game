@@ -1,0 +1,127 @@
+{
+  "successful_native_frames": 53,
+  "isolated_frames": 45,
+  "scene_frames": 8,
+  "reused_control_frames": 26,
+  "matched_camera_positions_rotations_and_lab_size": {
+    "lab_near": [
+      "(-11.0, 6.5, 12.0)",
+      "(-0.382873, 0.436627, 0.0)",
+      8.0
+    ],
+    "lab_oblique": [
+      "(-8.0, 8.0, 17.0)",
+      "(-0.384619, 0.452154, 0.0)",
+      13.0
+    ],
+    "lab_reverse": [
+      "(-26.0, 7.0, -12.0)",
+      "(-0.279872, -2.50243, 0.0)",
+      13.0
+    ],
+    "scene_close": [
+      "(-10.18066, 8.0, 17.31963)",
+      "(-30.0, 16.0, 0.0)",
+      null
+    ],
+    "scene_grass": [
+      "(-12.4, 7.1, 11.0)",
+      "(-27.18981, 15.25512, 0.0)",
+      null
+    ],
+    "scene_reverse": [
+      "(-27.0, 7.0, -7.0)",
+      "(-16.07079, -129.8056, 0.0)",
+      null
+    ],
+    "scene_far": [
+      "(17.311, 32.0, 59.37063)",
+      "(-27.0, 16.0, 0.0)",
+      null
+    ]
+  },
+  "image_sha256": {
+    "dc_field_flat_near.png": "3b2d6a717870334a14d66b8d24936d78fa8ae140535b78742a560b9de4e9d06e",
+    "dc_field_flat_oblique.png": "e4207bcc80b254ce6ad32d0d0f1b370d459e618257b064371c60beb192a79412",
+    "dc_field_flat_reverse.png": "f8d22482b6cd97c9f55a8f8c10c4da2caf83d663c63925e1b96432773bd0ad8f",
+    "dc_hermite_flat_near.png": "860c5e7384623699bba6c0c4e41375ee25f2ea3289e7ba812a3f12b8a4dc1e60",
+    "dc_hermite_flat_oblique.png": "b64402ebe4f27663648f3843dd0aff54996b310066056d9975d15df4b8732e19",
+    "dc_hermite_flat_reverse.png": "8236b3d1df69dec31672b0ca2969a269619b710b713f55aff0769f86b0922112",
+    "dc_field_edited_flat_near.png": "c54fa98167fbc9654f8fb42139a4505c86a45f7a8600a483fdbfd1ab393f4979",
+    "dc_field_edited_flat_oblique.png": "7e3112091894869f5bdf657b6d5a09b406ab5ee111472c5780eaa2bd3b2a6812",
+    "dc_field_edited_flat_reverse.png": "4d8dd800cbaf9135e0526dc4ae9b5145a7ebc952338f467be8b0991e9fe7c9df",
+    "dc_hermite_edited_flat_near.png": "58172ee7e88fc850e1c8192165e3feb943cb96ad5d6c6956ecf9fb113a41a53c",
+    "dc_hermite_edited_flat_oblique.png": "abf687e71a9ef099932479247519d87f5ce38d417962d29d3aacd44a88377b96",
+    "dc_hermite_edited_flat_reverse.png": "0d5d0afde2ca7458fc956f7b286e63e20e39b747dd1248693bcc9d435b6e5bb8",
+    "sampled_edited_flat_near.png": "62ebaec629461a59fa0f5b8835c6c21595cd2b6649f045834781b3026e515f78",
+    "sampled_edited_flat_oblique.png": "aa7ffc36e8207e0d280938238c929875ad8253763235b2c3eb26918239c7c539",
+    "sampled_edited_flat_reverse.png": "311a744f6374e69ed2752e5a1128e6f15bfda7db393716019b208a85b08c2498",
+    "dc_field_crease_near.png": "f06b79c6bd93232e4d4c9531e572c40a581788118c388a2c41e2ce5a9845abf0",
+    "dc_field_crease_oblique.png": "57a0e22376982950ae951b3a4d31161540b7f11f8f525d4f1a41b1a407dcaa45",
+    "dc_field_crease_reverse.png": "48e3e05cf3017db405fb87f8ad26884eea429a23bcc9eb1d2a4b1222ddbba393",
+    "dc_hermite_crease_near.png": "f6364dc8b22fae6b07410d413cf6c525a6c1e51be910aec1acbc777bb676ba27",
+    "dc_hermite_crease_oblique.png": "1b389f50fd039faa24cbde168a305350a4f781682d779aa2d4912490a40ea3bd",
+    "dc_hermite_crease_reverse.png": "a6fc7b9450042e28947c458d8d325039411e99d9532f58d3dc41c7eadedf57d0",
+    "dc_field_edited_crease_near.png": "1f4e05751423c61ad0716af6a12fcdbae92ecb921f256af8add63e32a3a761f3",
+    "dc_field_edited_crease_oblique.png": "6c6eb6f0da1729302b71dcdb7c49fc541f11aae7ac10a29bb086bf47c042f863",
+    "dc_field_edited_crease_reverse.png": "2057fc0ca487b51deeed1fffc2ef678c4721060272122fe765ee72c08dd1a605",
+    "dc_hermite_edited_crease_near.png": "8870c4420d3785189221f1ce2f5ab419f24880288582d1dbe6b2b8aa1f5c6e5a",
+    "dc_hermite_edited_crease_oblique.png": "4b2934aed32e39b3b8b0c5c637951ade44751fd3468c2910f6f95df0959abd2a",
+    "dc_hermite_edited_crease_reverse.png": "f5dea9b3d99849d45afeac6dfac63a0b98f1d0c840af7eee98d2ee7d025ea1d9",
+    "sampled_edited_crease_near.png": "a356ae273d8666141caeb32b62660a0df864be0db3a2620eca67e3adb06ef568",
+    "sampled_edited_crease_oblique.png": "ba56d8fe2770b9bb34e0e1ca8bd14297f32ce1f63569a3b26703f1ca58d8bca7",
+    "sampled_edited_crease_reverse.png": "f17ba8a90c623af9213f5d0a246782f02de0950174959bc82e5833433a5500cb",
+    "dc_field_stone_near.png": "381c3f184a55bcb5f53a6d9f068e1a91abcff045d64de37b85c8ca11e82201e4",
+    "dc_field_stone_oblique.png": "53c6547fedbb38227a6d1cdf16a9970f586f96f7ce9f7a2f6e5ba6d42832c61f",
+    "dc_field_stone_reverse.png": "bba9bb17d38292f5e604f9a915fccb16bb3f794282e55407dc16b6bc74ef01e8",
+    "dc_hermite_stone_near.png": "254dc0d6829ea8481a2f318dded07d042708b6d29e790fb9736d2fc5fd20f5fd",
+    "dc_hermite_stone_oblique.png": "00e8d2e6d97df441bec425aeb2c61f6ba514073b7be0bfeb953cdfa4ab849d85",
+    "dc_hermite_stone_reverse.png": "b6f6104fae3c83d1d00decbf934b30cf335f53c3d785dcf041663a0f385bbf09",
+    "dc_field_edited_stone_near.png": "c7ee1b666dca30a48924f343e237b8549eef069190c533a7a951433a611ade51",
+    "dc_field_edited_stone_oblique.png": "5091ee194f73ab84813eaabb68430b981c97031dba4a17855319bb1f4ea22784",
+    "dc_field_edited_stone_reverse.png": "75b60a70e18fb8dcb3cbf79fc6fb9232baf18064edee56f77ae2f26faabd397f",
+    "dc_hermite_edited_stone_near.png": "a45765faef0c3e936cfd7699a596c536b24a8e2884cbaf6d1f6861bc1f4ffa24",
+    "dc_hermite_edited_stone_oblique.png": "327e6a439f72c4686c49978de2ccc6ea1331278504cacdfbee5832ea5db9c56f",
+    "dc_hermite_edited_stone_reverse.png": "03b85242bd1aa5b6ef443319320e2c9e604a145c47c53700a9b5e3a599b527d4",
+    "sampled_edited_stone_near.png": "387ecf6cf689bb7c3e2fb4776cfaabadb2da50125d29f018cf5fa86373b97099",
+    "sampled_edited_stone_oblique.png": "373219975612263766d38653498ca7d8cc5d46adba794b3aa7fea18d5bdd3d04",
+    "sampled_edited_stone_reverse.png": "95f0b70493b544756f907ce0baf14027bff6c86ce87db24282dac951cff0729a",
+    "scene_dc_field_close.png": "920502898dc30e0a1941e52e7309cbf4dcb69ce9fc9c2ddb8341ecc52a658f5c",
+    "scene_dc_field_grass.png": "10743fa99a219b93abbf9b87c154678d5d4b8a50cf4f726c1f3f932aafc9daaf",
+    "scene_dc_field_reverse.png": "9454ad3703f0e0f10dcde3457a8fd63086aa908b87dd97bfd08f9f4fd003a113",
+    "scene_dc_field_far.png": "2aa8e062881fd4fe15a99259c4f3b4e5ceddbd75cb6b18e3e4275be7dedcf449",
+    "scene_dc_hermite_close.png": "e7b876ae09acf783f3bc644f7d014a37aaa4669921a84018bbeffee302d6fd5d",
+    "scene_dc_hermite_grass.png": "9e1b6e859cbf59bed827fadd0a4629af60267c4e8ea0cf8aa830b916f6c9ceb7",
+    "scene_dc_hermite_reverse.png": "2655ad14e5c815751c79746a8b39ad2c0418f4d32bf703ae9566e4ed997d94ed",
+    "scene_dc_hermite_far.png": "500a6fc6f88a7ceb4773c60882beb0a62714c2f6230c6cdc79e6b8b68fd7da71"
+  },
+  "topology_passes_but_geometry_rejected": {
+    "dc_field": 120,
+    "dc_hermite": 79,
+    "dc_field_edited": 108,
+    "dc_hermite_edited": 77
+  },
+  "geometry_accepted": false,
+  "production_changed": false,
+  "public_brush": {
+    "brush": "rock_plane",
+    "center": [
+      -15.0,
+      3.25,
+      3.0
+    ],
+    "changed_nodes": 1236,
+    "edited_records": 11846,
+    "normal": [
+      0,
+      1,
+      0
+    ],
+    "radius": 4.0,
+    "redo_exact": true,
+    "reload_exact": true,
+    "scope": "One standalone public rock field brush; not TerrainData editor integration, surface support, collision, or arbitrary-edit acceptance.",
+    "undo_exact": true
+  },
+  "decision": "Reject all four DC candidates: confirmed proper self-intersections. Captures are diagnostic only. Some shoulder planes are cleaner, but large source masses, cap contact and far appearance remain inadequate. No editor/backend, collision/support, arbitrary-edit, performance or whole-art acceptance."
+}

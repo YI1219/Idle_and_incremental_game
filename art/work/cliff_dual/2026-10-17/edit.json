@@ -1,0 +1,20 @@
+{
+	"brush": "rock_plane",
+	"center": [
+		-15.0,
+		3.25,
+		3.0
+	],
+	"changed_nodes": 1236,
+	"edited_records": 11846,
+	"normal": [
+		0,
+		1,
+		0
+	],
+	"radius": 4.0,
+	"redo_exact": true,
+	"reload_exact": true,
+	"scope": "One standalone public rock field brush; not TerrainData editor integration, surface support, collision, or arbitrary-edit acceptance.",
+	"undo_exact": true
+}

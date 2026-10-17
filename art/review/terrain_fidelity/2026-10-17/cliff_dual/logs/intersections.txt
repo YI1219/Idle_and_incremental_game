@@ -1,0 +1,11 @@
+00:00.065  translation      | WARNING Falling back to standard locale ("C")
+dc_field 120 120
+dc_hermite 81 79
+dc_field_edited 114 108
+dc_hermite_edited 83 77
+union 0 0
+sampled 0 0
+sampled_edited 0 0
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

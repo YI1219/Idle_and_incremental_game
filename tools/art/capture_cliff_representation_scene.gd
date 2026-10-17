@@ -1,5 +1,5 @@
 extends 'res://tests/capture_rim_round.gd'
-const DIR='res://art/work/cliff_representation/2026-10-17/'
+var DIR='res://art/work/cliff_representation/2026-10-17/'
 const Probe=preload('res://tools/art/probe_cliff_manifold.gd')
 var cap_counts:Dictionary={}
 func side_mesh(shape:String)->ArrayMesh:
@@ -9,13 +9,19 @@ func side_mesh(shape:String)->ArrayMesh:
   var a:Vector3=points[i];var b:Vector3=points[i+1];var c:Vector3=points[i+2]
   # Production crowns expose walls only; their closed boolean-input lids
   # must not be drawn coplanar with the unchanged authoritative grass cap.
-  if maxf(absf(a.y-3.5),maxf(absf(b.y-3.5),absf(c.y-3.5)))<.0001 and absf((b-a).cross(c-a).normalized().y)>.99999:
+  if maxf(absf(a.y-3.5),maxf(absf(b.y-3.5),absf(c.y-3.5)))<.001 and absf((b-a).cross(c-a).normalized().y)>.99999:
    omitted+=1;continue
   sides.append_array(PackedVector3Array([a,b,c]))
  cap_counts[shape]={'lid_triangles_not_drawn':omitted,'side_triangles_drawn':sides.size()/3}
  return preload('res://scripts/terrain_editor/stone_normals.gd').soften(Probe.mesh_from_points(sides),65.0,1.0)
 func run():
  OUT='res://art/review/terrain_fidelity/2026-10-17/cliff_representation/'
+ var shapes:Array=['original','assembly','union','sampled']
+ for arg:String in OS.get_cmdline_user_args():
+  if arg.begins_with('--input='):DIR=arg.trim_prefix('--input=')
+  elif arg.begins_with('--output='):OUT=arg.trim_prefix('--output=')
+  elif arg.begins_with('--shapes='):shapes=Array(arg.trim_prefix('--shapes=').split(','))
+ DirAccess.make_dir_recursive_absolute(OUT)
  viewport=SubViewport.new();viewport.size=Vector2i(1671,941);viewport.own_world_3d=true;viewport.msaa_3d=Viewport.MSAA_4X;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
  editor=load('res://scenes/terrain_editor.tscn').instantiate();viewport.add_child(editor)
  editor.hud.hide();editor.brush.hide();editor.set_process(false);editor.camera.set_process(false)
@@ -36,7 +42,7 @@ func run():
  assert(slots.size()==3,'Must isolate exactly the three original source instances')
  var replacement:=MeshInstance3D.new();replacement.visible=false;viewport.add_child(replacement)
  var material:=ShaderMaterial.new();material.shader=preload('res://tools/art/cliff_probe_contact.gdshader');preload('res://scripts/terrain_editor/material_detail.gd').bind(material);replacement.material_override=material
- for shape:String in ['original','assembly','union','sampled']:
+ for shape:String in shapes:
   for slot:Array in slots:
    var pose:Transform3D=slot[2]
    if shape!='original':pose.basis=Basis.from_scale(Vector3.ONE*.000001)
@@ -48,5 +54,5 @@ func run():
   editor.camera.position=Vector3(-27,7,-7);editor.camera.look_at(Vector3(-15,2.5,3));await capture('scene_'+shape+'_reverse')
   frame(Vector2(0,-1),32,16,27);await capture('scene_'+shape+'_far')
  assert(data_hash==JSON.stringify(editor.data.serialize()).sha256_text())
- FileAccess.open(OUT+'scene_captures.json',FileAccess.WRITE).store_string(JSON.stringify({'captures':captures,'replaced_source_instances':slots.size(),'cap_draw_controls':cap_counts,'authoritative_data_sha256':data_hash,'unchanged_authoritative_data':true,'water_phase':1.25,'scope':'Tool-only replacement of three draw instances, same common material and crease normals across assembly/union/sampled. As with production walls, horizontal lids under authoritative grass are not drawn; all closed input/measurement geometry stays intact. Original includes production per-instance tone/shading, so is context only. Existing grass, backing, trees, buildings and props retained. No collision/picking/support/editor publication change or acceptance. Cloud/mist live.'},'\t'))
+ FileAccess.open(OUT+'scene_captures.json',FileAccess.WRITE).store_string(JSON.stringify({'captures':captures,'input_dir':DIR,'lid_plane_tolerance':.001,'replaced_source_instances':slots.size(),'cap_draw_controls':cap_counts,'authoritative_data_sha256':data_hash,'unchanged_authoritative_data':true,'water_phase':1.25,'scope':'Tool-only replacement of three draw instances, same common material and crease normals across assembly/union/sampled. As with production walls, horizontal lids under authoritative grass are not drawn; all closed input/measurement geometry stays intact. Original includes production per-instance tone/shading, so is context only. Existing grass, backing, trees, buildings and props retained. No collision/picking/support/editor publication change or acceptance. Cloud/mist live.'},'\t'))
  print('CLIFF REPRESENTATION SCENE: ',captures.size(),' native frames, exactly3draw instances, data unchanged');quit()
