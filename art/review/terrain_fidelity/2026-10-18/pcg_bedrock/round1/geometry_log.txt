@@ -1,0 +1,6 @@
+00:00.120  translation      | WARNING Falling back to standard locale ("C")
+PCG GEOMETRY ring_neutral True {'triangles': 50828, 'welded_vertices_1e5': 25416, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 500.7711368579104, 'vertex_components': [25416], 'vertex_link_defects': 0} crossings 0
+PCG GEOMETRY bedrock_neutral False {'triangles': 54752, 'welded_vertices_1e5': 27380, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 571.1567791645992, 'vertex_components': [27342, 38], 'vertex_link_defects': 0} crossings 0
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

@@ -7,6 +7,8 @@ func check(ok:bool,message:String)->void:
 func _initialize()->void:call_deferred('run')
 func run()->void:
  var path:='res://tools/art/pcg_cliff_field.gd'
+ for argument:String in OS.get_cmdline_user_args():
+  if argument.begins_with('--compiler='):path=argument.trim_prefix('--compiler=')
  check(ResourceLoader.exists(path),'PCG compiler exists')
  if failures:print('PCG CLIFF: ',checks-failures,'/',checks,' passed');quit(1);return
  var compiler=load(path).new()

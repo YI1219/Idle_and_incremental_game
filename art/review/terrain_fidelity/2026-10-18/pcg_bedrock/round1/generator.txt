@@ -1,0 +1,98 @@
+extends RefCounted
+## Goal round1: 3D geological domains compiled into the public sculpt field.
+## Domains are analytic density constraints, never placed runtime rock assets.
+const Guide=preload('res://tools/art/pcg_cliff_field.gd')
+const Data=preload('res://scripts/terrain_editor/terrain_data.gd')
+const STEP:=.25
+const TOP:=3.5
+var guide=Guide.new()
+var sectors:Array=[]
+var perimeter:=0.0
+var center:=Vector2.ZERO
+func fixture()->Dictionary:return guide.fixture()
+func horizontal(p:Vector2)->Dictionary:return guide.horizontal(p)
+func cap_height(distance:float,arc:float)->float:
+ var phase:=arc/maxf(perimeter,.01)*TAU
+ return TOP+.035*sin(phase*3)-(.07+.055*sin(phase*5))*(1.0-smoothstep(.02,.60,-distance))
+static func smin(a:float,b:float,k:float)->float:
+ var h:=maxf(k-absf(a-b),0.0)/k
+ return minf(a,b)-h*h*k*.25
+static func smax(a:float,b:float,k:float)->float:return -smin(-a,-b,k)
+func lower_height(p:Vector2)->float:
+ var q:=p-center
+ return -3.6+.045*(q.x*q.x+.65*q.y*q.y)+.07*q.x-.06*q.y
+func prepare(records:Dictionary,seed_value:int)->void:
+ guide.prepare(records,seed_value);perimeter=guide.perimeter
+ center=Vector2.ZERO
+ for cell:Vector2i in records:center+=(Vector2(cell)+Vector2.ONE*.5)/records.size()
+ sectors.clear()
+ var rng:=RandomNumberGenerator.new();rng.seed=seed_value
+ var arc:=0.0
+ while arc<perimeter:
+  var width:=rng.randf_range(3.25,4.75)
+  if perimeter-arc<width*1.45:width=perimeter-arc
+  var at:=guide.point_at(arc+width*.5)
+  var tangent:=guide.tangent_at(arc+width*.5)
+  var out:=Vector2(tangent.y,-tangent.x)
+  if Geometry2D.is_point_in_polygon(at+out*.1,guide.loops[0]):out=-out
+  var tilt:=rng.randf_range(-.10,.14)
+  var top:=rng.randf_range(3.42,3.78)
+  var planes:Array[Vector4]=[
+   Vector4(rng.randf_range(-.12,.12),tilt,1.0,rng.randf_range(.03,.16)),
+   Vector4(-1.0,rng.randf_range(-.07,.07),.06,width*.56),
+   Vector4(1.0,rng.randf_range(-.08,.08),.04,width*.52),
+   Vector4(-.64,.08,.77,width*.30),
+   Vector4(.60,-.08,.80,width*.29),
+   Vector4(.10,1.0,.09,top),
+   Vector4(-.13,.58,.81,2.14+rng.randf_range(-.13,.18)),
+   Vector4(.19,-.74,.67,1.04+rng.randf_range(-.22,.22)),
+   Vector4(-.60,-.52,.30,2.24+rng.randf_range(-.15,.20)),
+   Vector4(.58,-.40,.27,2.14+rng.randf_range(-.18,.18)),
+   Vector4(0,0,-1.0,3.5+width*.22),
+   Vector4(.08,-1,-.12,3.8)
+  ]
+  for i in planes.size():
+   var plane:=planes[i];var length:=Vector3(plane.x,plane.y,plane.z).length();planes[i]=plane/length
+  sectors.append({'arc':arc,'width':width,'at':at,'tangent':tangent,'outward':out,'planes':planes})
+  arc+=width
+func rock_distance(p:Vector3,h:Dictionary)->float:
+ var horizontal_position:=Vector2(p.x,p.z)
+ # Interior support is part of the same geological solid. It is behind the
+ # exposed domains, not an independent decorative lower skin.
+ var value:=maxf(h.distance+.72,p.y-3.12)
+ for sector:Dictionary in sectors:
+  var delta:Vector2=horizontal_position-sector.at
+  var q:=Vector3(delta.dot(sector.tangent),p.y,delta.dot(sector.outward))
+  var distance:=-INF
+  for plane:Vector4 in sector.planes:distance=maxf(distance,q.x*plane.x+q.y*plane.y+q.z*plane.z-plane.w)
+  value=smin(value,distance,.14)
+ # Limit extreme outboard corners, while letting actual oblique plane
+ # intersections define the exposed wall. No common radial section.
+ return maxf(value,h.distance-.30)
+func soil_distance(p:Vector3,h:Dictionary)->float:
+ var roof:=cap_height(h.distance,h.arc)
+ var phase:float=h.arc/maxf(perimeter,.01)*TAU
+ var thickness:=.32+.18*(.5+.5*sin(phase*4+.6*sin(phase*7)))
+ var depth:=clampf((roof-p.y)/thickness,0,1)
+ var side:float=h.distance+.13*depth*depth
+ return smax(smax(side,p.y-roof,.10),roof-thickness-p.y,.10)
+func density(p:Vector3,h:Dictionary)->float:
+ var solid:=smin(rock_distance(p,h),soil_distance(p,h),.12)
+ return smax(solid,lower_height(Vector2(p.x,p.z))-p.y,.16)
+func generate(seed_value:int,control:bool=false,records:Dictionary={}):
+ if control:return guide.generate(seed_value,true,records)
+ var data=Data.new();data.cells.assign(fixture() if records.is_empty() else records);data.seed=seed_value
+ prepare(data.cells,seed_value)
+ var lo:=Vector2i(4096,4096);var hi:=-lo
+ for cell:Vector2i in data.cells:lo=lo.min(cell);hi=hi.max(cell+Vector2i.ONE)
+ for z in range(lo.y*4-4,hi.y*4+5):
+  for x in range(lo.x*4-4,hi.x*4+5):
+   var h:=horizontal(Vector2(x,z)*STEP)
+   for y in range(-20,19):
+    var key:=Vector3i(x,y,z)
+    var value:=roundf(clampf(density(Vector3(key)*STEP,h),-.5,.5)*100000.0)/100000.0
+    if absf(value)<.00001:value=.00002
+    if value<.5:data.rocks.samples[key]=value
+ assert(data.rocks.samples.size()<data.rocks.MAX_SAMPLES)
+ data.rocks._height_bounds_dirty=true
+ return data

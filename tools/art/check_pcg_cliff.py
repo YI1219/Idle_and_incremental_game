@@ -5,6 +5,7 @@ The existing detector excludes coplanar and shared-position pairs.
 """
 import importlib.util
 import json
+import sys
 from pathlib import Path
 import numpy as np
 from mathutils import Vector
@@ -21,11 +22,19 @@ def module(name, filename):
 
 
 def run():
+    work = WORK
+    stages = ['control', 'pcg_shape', 'pcg_seed7319', 'pcg_layout', 'pcg_carved']
+    arguments = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
+    for argument in arguments:
+        if argument.startswith('--input='):
+            work = Path(argument.split('=', 1)[1]).resolve()
+        elif argument.startswith('--stages='):
+            stages = argument.split('=', 1)[1].split(',')
     sample = module('pcg_sample', 'sample_cliff_representation.py')
     crossing = module('pcg_crossing', 'check_cliff_dual_intersections.py')
     report = {'scope': 'Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.', 'stages': {}}
-    for stage in ['control', 'pcg_shape', 'pcg_seed7319', 'pcg_layout', 'pcg_carved']:
-        file = WORK / f'{stage}.bin'
+    for stage in stages:
+        file = work / f'{stage}.bin'
         if not file.exists():
             continue
         points = np.fromfile(file, dtype='<f4').reshape(-1, 3)
@@ -38,7 +47,7 @@ def run():
                   intersections['strict_crossing_pairs_at_least'] == 0)
         report['stages'][stage] = {'topology': topology, 'crossings': intersections, 'finite_gate_passes': bool(passed)}
         print('PCG GEOMETRY', stage, passed, topology, 'crossings', intersections['strict_crossing_pairs_at_least'], flush=True)
-        (WORK / 'geometry_checks.json').write_text(json.dumps(report, indent=2) + '\n')
+        (work / 'geometry_checks.json').write_text(json.dumps(report, indent=2) + '\n')
 
 
 if __name__ == '__main__':

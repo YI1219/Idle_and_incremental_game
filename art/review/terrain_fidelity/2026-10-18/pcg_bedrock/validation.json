@@ -1,0 +1,72 @@
+{
+  "native_frames": 24,
+  "matched_cameras": {
+    "close": [
+      "(9.0, 7.6, 15.0)",
+      "(-0.5, 0.8, 0.6)",
+      11.8
+    ],
+    "whole": [
+      "(13.0, 13.0, 19.0)",
+      "(-0.3, 0.0, 0.0)",
+      18.5
+    ],
+    "reverse": [
+      "(-13.0, 8.0, -14.0)",
+      "(-0.5, 0.4, 0.0)",
+      16.0
+    ],
+    "bottom": [
+      "(9.0, -8.0, 15.0)",
+      "(-0.5, -1.0, 0.0)",
+      15.5
+    ]
+  },
+  "image_sha256": {
+    "round1/ring_neutral_close.png": "ff097ba5d948624aeb2c437f3ee10830952fc35d4c32af9b0c90609a16801c51",
+    "round1/ring_neutral_whole.png": "ed4b73c681f43dfa08fd003a0e213b4d75cf5489f0a85941c2d96dcd9a467921",
+    "round1/ring_neutral_reverse.png": "10eb4f5eea75e8f6e8b115cf7b90715c0dc19b8ebd086b94edc2acaa811e3527",
+    "round1/ring_neutral_bottom.png": "e39a54777a8315b68777926122a942fd771f5fa81a266d97f8afb2f757f64d80",
+    "round1/bedrock_neutral_close.png": "9b62e60af0ac2935000181f7239d91216d567244c04a6bedc2369550955f8146",
+    "round1/bedrock_neutral_whole.png": "0937324dd2be596180a5dd96f2552ee7bf9d4327068ac5a1ff8dfb7af30e5430",
+    "round1/bedrock_neutral_reverse.png": "bfc30baf43e0c3cfc9fe7ad6542e949ee84fa479ed2ede1ebf48898ac5e16c16",
+    "round1/bedrock_neutral_bottom.png": "81e97bf76cb9878bda6cf80749b6d4d6cd3e631eb31c762dec9c0dfe3c1fe9c1",
+    "round1/bedrock_stone_close.png": "8989f3ad8f53f8e6ac2620d1904bb694a428368635c7387f8816ae718231ff2d",
+    "round1/bedrock_stone_whole.png": "7731a60f80289163d784939c91667de9ce13a7e2ba47d263ef6cc49a3ce4fa54",
+    "round1/bedrock_stone_reverse.png": "273fd3e87fe8771a2a9d9cfa696e956994ec981bce11fb92a1ce10456487a155",
+    "round1/bedrock_stone_bottom.png": "69bff831341ac051c0859126ff123dcb59044d1a69adda6e03f3d68ff6cffdca",
+    "round2/ring_neutral_close.png": "ff097ba5d948624aeb2c437f3ee10830952fc35d4c32af9b0c90609a16801c51",
+    "round2/ring_neutral_whole.png": "ed4b73c681f43dfa08fd003a0e213b4d75cf5489f0a85941c2d96dcd9a467921",
+    "round2/ring_neutral_reverse.png": "10eb4f5eea75e8f6e8b115cf7b90715c0dc19b8ebd086b94edc2acaa811e3527",
+    "round2/ring_neutral_bottom.png": "e39a54777a8315b68777926122a942fd771f5fa81a266d97f8afb2f757f64d80",
+    "round2/bedrock_neutral_close.png": "80e21d473763b5c7981669f1d543ac2c2518b59ae0cb29ee7e10c001d1035786",
+    "round2/bedrock_neutral_whole.png": "5946cc4e90cd69c9ff04631fc23a12faf02bac9351dff4bf93e982c1d6f5aa0a",
+    "round2/bedrock_neutral_reverse.png": "5950630f001cae63ac81ab5327bdf1df801a6706873e00b53ae26eedd56158df",
+    "round2/bedrock_neutral_bottom.png": "fa83df1ecd9b5ff76f4c99f73b6f146587e2c79fdd49243fb40564f972a34a30",
+    "round2/bedrock_stone_close.png": "0ca05818fb42b7911ff59aab8f6bb21c9dbde05a3547d2659b427a31d9b33549",
+    "round2/bedrock_stone_whole.png": "ec9a473d84a28fba2eedbf8f22c887c08755f14258dfeb4d26791e2b592201f6",
+    "round2/bedrock_stone_reverse.png": "4e4aa5da7b3668390591667588332a4d35695fa2a8cd700b78faa8acf82bbf75",
+    "round2/bedrock_stone_bottom.png": "b90c3edc689c55964efc5049fcfbc849f67f96142f58c05a0fa41f7040446372"
+  },
+  "target_sha256": "1f16fa5540c7539175faa0b3d167b3a8b0e9df0651aba96397f47075009de2e7",
+  "finite_gate_passes": {
+    "round1/ring_neutral": true,
+    "round1/bedrock_neutral": false,
+    "round2/ring_neutral": true,
+    "round2/bedrock_neutral": true
+  },
+  "data_tests": "14/14",
+  "art_accepted": false,
+  "goal_complete": false,
+  "stop_condition_reached": true,
+  "production_changed": false,
+  "default_promoted": false,
+  "unverified": [
+    "edited mesh validity",
+    "leaf/root support",
+    "native editor integration",
+    "two contour/two seed visual coverage",
+    "target device performance"
+  ],
+  "decision": "Stop tuning; request scope decision on saved editable construction constraints before further shape work."
+}
