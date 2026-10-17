@@ -1,0 +1,1 @@
+Initial per-vertex plane fitting breaks geometric embedding on narrow source triangles: crown37/38 and union have35/18/44strict crossing pairs. Topological closure alone passes. Eight native captures are rejected diagnostic evidence, not accepted geometry. Replace independent vertex shifts with a coherent piecewise-affine cage and split faces at its region boundaries.

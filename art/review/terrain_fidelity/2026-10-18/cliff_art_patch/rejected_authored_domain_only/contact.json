@@ -1,0 +1,146 @@
+{
+	"all_source_faces_preserved": true,
+	"patches": [
+		{
+			"center": [
+				-19.4279727935791,
+				2.5076513290405273
+			],
+			"outward": [
+				-0.7652541399002075,
+				0.6437283158302307
+			],
+			"width": 0.68
+		},
+		{
+			"center": [
+				-17.27869415283203,
+				3.86594820022583
+			],
+			"outward": [
+				-0.7664412260055542,
+				0.6423144340515137
+			],
+			"width": 0.8
+		},
+		{
+			"center": [
+				-15.191131591796875,
+				4.436984539031982
+			],
+			"outward": [
+				0.047373317182064056,
+				0.998877227306366
+			],
+			"width": 0.92
+		},
+		{
+			"center": [
+				-13.40365982055664,
+				5.547507286071777
+			],
+			"outward": [
+				-0.7897735238075256,
+				0.6133984327316284
+			],
+			"width": 0.68
+		},
+		{
+			"center": [
+				-11.634047508239746,
+				6.114021301269531
+			],
+			"outward": [
+				0.4339025914669037,
+				0.900959849357605
+			],
+			"width": 0.8
+		},
+		{
+			"center": [
+				-10.916289329528809,
+				6.109679222106934
+			],
+			"outward": [
+				-0.9929121136665344,
+				0.1188507154583931
+			],
+			"width": 0.92
+		}
+	],
+	"roots": [
+		{
+			"at": [
+				-14.77344799041748,
+				4.227404594421387
+			],
+			"height": 3.5,
+			"inside_authored_dry_land": true,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-10.842097282409668,
+				6.001523494720459
+			],
+			"height": 3.5,
+			"inside_authored_dry_land": true,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.742573738098145,
+				5.923427104949951
+			],
+			"height": 3.5,
+			"inside_authored_dry_land": true,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.848670959472656,
+				5.869943618774414
+			],
+			"height": 3.5,
+			"inside_authored_dry_land": true,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.818995475769043,
+				5.80020809173584
+			],
+			"height": 3.5,
+			"inside_authored_dry_land": true,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.783751487731934,
+				5.729805946350098
+			],
+			"height": 3.5,
+			"inside_authored_dry_land": true,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.892484664916992,
+				5.676638126373291
+			],
+			"height": 3.5,
+			"inside_authored_dry_land": true,
+			"inside_drawn_cap": true,
+			"patch": 5
+		}
+	],
+	"scope": "Tool-only composed six existing-grass-source cushions, rooted inside unchanged actual cap and dry authored surface. Original rim grass remains; no solid ground, collar/outline, material paint, tree/model replacement or production publication. Source leaf positions are for this local art fixture, not a final placement algorithm.",
+	"source_vertex_occurrences": 465,
+	"uploaded_vertex_occurrences": 3255
+}

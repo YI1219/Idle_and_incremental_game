@@ -1,0 +1,13 @@
+00:00.062  translation      | WARNING Falling back to standard locale ("C")
+baseline True {'triangles': 2248, 'welded_vertices_1e5': 1126, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 101.7176045130399, 'vertex_components': [1126], 'vertex_link_defects': 0} 0
+cage_36 True {'triangles': 1290, 'welded_vertices_1e5': 647, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 38.49424562093916, 'vertex_components': [647], 'vertex_link_defects': 0} 0
+cage_37 True {'triangles': 1242, 'welded_vertices_1e5': 623, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 40.71488818442839, 'vertex_components': [623], 'vertex_link_defects': 0} 0
+cage_38 True {'triangles': 1246, 'welded_vertices_1e5': 625, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 41.48577910188276, 'vertex_components': [625], 'vertex_link_defects': 0} 0
+cage False {'triangles': 3670, 'welded_vertices_1e5': 1835, 'non_two_use_edges': 4, 'directed_edge_pair_defects': 6, 'degenerate_index_faces': 4, 'signed_volume': 102.23764372382054, 'vertex_components': [1835], 'vertex_link_defects': 6} 0
+seated_36 True {'triangles': 1650, 'welded_vertices_1e5': 827, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 49.442257106896, 'vertex_components': [827], 'vertex_link_defects': 0} 0
+seated_37 True {'triangles': 1550, 'welded_vertices_1e5': 777, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 58.12338445186225, 'vertex_components': [777], 'vertex_link_defects': 0} 0
+seated_38 True {'triangles': 1556, 'welded_vertices_1e5': 780, 'non_two_use_edges': 0, 'directed_edge_pair_defects': 0, 'degenerate_index_faces': 0, 'signed_volume': 49.08604913506011, 'vertex_components': [780], 'vertex_link_defects': 0} 0
+seated False {'triangles': 4484, 'welded_vertices_1e5': 2238, 'non_two_use_edges': 12, 'directed_edge_pair_defects': 16, 'degenerate_index_faces': 12, 'signed_volume': 133.48478570481916, 'vertex_components': [2238], 'vertex_link_defects': 16} 2
+Blender 5.2.1 LTS (hash 9e2066aef7ef built 2026-08-25 01:35:57)
+
+Blender quit

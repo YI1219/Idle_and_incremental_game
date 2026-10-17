@@ -1,0 +1,69 @@
+{
+  "current_native_frames": 20,
+  "rejected_or_incomplete_frames": {
+    "rejected_plane_fit": 8,
+    "rejected_authored_domain_only": 8,
+    "rejected_low_comb": 8
+  },
+  "image_sha256": {
+    "scene_assembly_baseline_close.png": "c607991a220b3f1c34ad78827dec4eae365ba92a1abfa7e22fdb17a24aae1212",
+    "scene_assembly_baseline_grass.png": "1bbf9de4ec1fbb7a14f73968ff320fe36a245f85c6c4f30deb10f858fbdec63e",
+    "scene_assembly_baseline_reverse.png": "d8a946bb0ea5c125aeb136f801cfae3ff679ee3833a0fa0a86e59e7075a379b6",
+    "scene_assembly_baseline_far.png": "dca41f990ad5129a37ff157224f1d94655f7d26c0b6eb6409ed9154d99934aa1",
+    "scene_assembly_cage_close.png": "707850a93e171342e26ea858eb63c239f0b733066dd48dfc5904f95a67bfd1be",
+    "scene_assembly_cage_grass.png": "cc31716a0b41ca089c269cd537c40998409f8518a7ed4e642bb5e8ecd4a88d1d",
+    "scene_assembly_cage_reverse.png": "1fb604271812b0bdb13ac27b7f08b2a8826766de2007604d0d3a2a7ec7203291",
+    "scene_assembly_cage_far.png": "2965ad9057996ace957b7e0e43f1bee4bb98535cece31e4614fa1880d7aa9bcb",
+    "scene_assembly_seated_close.png": "a851917c452c9747ed1eec8fe5c8b3d8d3621520bdd14311531daeddb1bb1735",
+    "scene_assembly_seated_grass.png": "e5959e330d7fb9dcadccd9f7aec882bb6b77a8d5ef02873b9f6e1a7fb82c0fb7",
+    "scene_assembly_seated_reverse.png": "58dd447a49b8e676efb9174f7cd2d8c6b85b8c7b2830da6094b59c8dc4cc6e55",
+    "scene_assembly_seated_far.png": "f07594e61a37365bdee81b1470c7e063016112fa9e6591988f5d6e565d132968",
+    "contact/scene_assembly_baseline_contact_close.png": "5acc7f33658b36ead8e1b0733e77c23ed8d2a4e43e2e84c0e74dec3d1eb1b214",
+    "contact/scene_assembly_baseline_contact_grass.png": "8a82ab9133eb62bd5fa5523a3065e0d954196139b2e169e41e25cd5c875055ed",
+    "contact/scene_assembly_baseline_contact_reverse.png": "0aebb9f4bd483e1dd47da5913f216d5099033bcecc4215c92cd957962da7f604",
+    "contact/scene_assembly_baseline_contact_far.png": "1dd0ea452856e011a923c5f707410c10beae068ec8bdec82ba74b620241f71f1",
+    "contact/scene_assembly_seated_contact_close.png": "f34f1ce6bef5088ffa03f7f645510f18525e0fb23b02b8bd94729c0445f71509",
+    "contact/scene_assembly_seated_contact_grass.png": "d18f4486cd55af32c78a09d18b5d4480b601ff1627cc737ebd11d8754a28e154",
+    "contact/scene_assembly_seated_contact_reverse.png": "3a9d7d1f579d1a977ccafc54986a87b5ab1487fd256dc1e5f9468fe3e7c9d6fc",
+    "contact/scene_assembly_seated_contact_far.png": "55948ef899c5ec39731b63159be93810980e68282a9d9f0a3521841da5db1810"
+  },
+  "camera_groups": {
+    "close": [
+      "(-10.18066, 8.0, 17.31963)",
+      "(-30.0, 16.0, 0.0)"
+    ],
+    "grass": [
+      "(-12.4, 7.1, 11.0)",
+      "(-27.18981, 15.25512, 0.0)"
+    ],
+    "reverse": [
+      "(-27.0, 7.0, -7.0)",
+      "(-16.07079, -129.8056, 0.0)"
+    ],
+    "far": [
+      "(17.311, 32.0, 59.37063)",
+      "(-27.0, 16.0, 0.0)"
+    ]
+  },
+  "cap_checks": {
+    "cage_36": "equal area within 1e-4 m2; bidirectional cap-vertex coverage within 1e-5 barycentric or 1e-6 m edge tolerance; changed triangulation",
+    "cage_37": "equal area within 1e-4 m2; bidirectional cap-vertex coverage within 1e-5 barycentric or 1e-6 m edge tolerance; changed triangulation",
+    "cage_38": "equal area within 1e-4 m2; bidirectional cap-vertex coverage within 1e-5 barycentric or 1e-6 m edge tolerance; changed triangulation",
+    "seated_36": "equal area within 1e-4 m2; bidirectional cap-vertex coverage within 1e-5 barycentric or 1e-6 m edge tolerance; changed triangulation",
+    "seated_37": "equal area within 1e-4 m2; bidirectional cap-vertex coverage within 1e-5 barycentric or 1e-6 m edge tolerance; changed triangulation",
+    "seated_38": "equal area within 1e-4 m2; bidirectional cap-vertex coverage within 1e-5 barycentric or 1e-6 m edge tolerance; changed triangulation"
+  },
+  "independent_parts_passed": 6,
+  "unions_rejected": [
+    "cage",
+    "seated"
+  ],
+  "grass_supported_roots": 84,
+  "grass_uploaded_vertices": 39060,
+  "authoritative_data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+  "production_changed": false,
+  "default_promoted": false,
+  "editor_integration_accepted": false,
+  "performance_accepted": false,
+  "decision": "Seated is a limited unaccepted local structural lead only. Shelf exposure reduces, but broad walls, hard lip and distinct underside persist. Contact cushions give a small near benefit, not a far improvement or final sod transition. No art promotion."
+}

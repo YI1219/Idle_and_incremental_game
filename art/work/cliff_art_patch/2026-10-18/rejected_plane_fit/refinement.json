@@ -1,0 +1,74 @@
+{
+  "sources": {
+    "36": {
+      "plane_groups": 9,
+      "vertices": 351,
+      "triangles": 698,
+      "source_bounds": [
+        [
+          -14.13107967376709,
+          0.019320249557495117,
+          2.286583423614502
+        ],
+        [
+          -9.238779067993164,
+          3.5,
+          7.167418479919434
+        ]
+      ],
+      "max_vertex_shift": 0.16000000000000006,
+      "mean_vertex_shift": 0.0871165465628227,
+      "protected_cap_vertices": 75,
+      "nonmanifold_edges": 0,
+      "signed_volume": 38.2699200079541,
+      "sha256": "fad699927ec532a67f8f18bc16dcad41f141853e0711d5a27f6e0d379965a242"
+    },
+    "37": {
+      "plane_groups": 7,
+      "vertices": 363,
+      "triangles": 722,
+      "source_bounds": [
+        [
+          -18.777257919311523,
+          0.05432009696960449,
+          0.7283639907836914
+        ],
+        [
+          -12.157439231872559,
+          3.5,
+          4.5511345863342285
+        ]
+      ],
+      "max_vertex_shift": 0.16000000000000003,
+      "mean_vertex_shift": 0.12379358911142754,
+      "protected_cap_vertices": 70,
+      "nonmanifold_edges": 0,
+      "signed_volume": 39.14902747091106,
+      "sha256": "45e631960ade70eec1ae4a29f1723333478d8bbf73136698d530881b03b2ed97"
+    },
+    "38": {
+      "plane_groups": 10,
+      "vertices": 386,
+      "triangles": 768,
+      "source_bounds": [
+        [
+          -20.290607452392578,
+          0.30520033836364746,
+          -1.749244213104248
+        ],
+        [
+          -15.49089241027832,
+          3.5,
+          4.47987174987793
+        ]
+      ],
+      "max_vertex_shift": 0.16000000000000003,
+      "mean_vertex_shift": 0.12583183243505094,
+      "protected_cap_vertices": 53,
+      "nonmanifold_edges": 0,
+      "signed_volume": 40.15726908471815,
+      "sha256": "f558cd2c72502a7f3be96866f9c0f2653b1f8e38a1eb43402d0ff85148c9c2c0"
+    }
+  },
+  "operation": "Plane-group sculpt of retained closed source copies; shared existing topology and exactY3.5cap preserved. No source replacement, generation, circular CSG cut or density remeshing."
+}

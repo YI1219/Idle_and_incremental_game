@@ -1,0 +1,1 @@
+Initial root support used original authored contour instead of the final derived drawn lawn. Only7of84intended source fans survived; all leaf triangles of those7fans are preserved, but the six-patch footprint test is incomplete. Corrected control queries actual authoritative drawn grass cap triangles. No new ground is added.

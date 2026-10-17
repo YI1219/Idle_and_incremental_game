@@ -1,0 +1,916 @@
+{
+	"all_source_faces_preserved": true,
+	"patches": [
+		{
+			"center": [
+				-19.4279727935791,
+				2.5076513290405273
+			],
+			"outward": [
+				-0.7652541399002075,
+				0.6437283158302307
+			],
+			"width": 0.68
+		},
+		{
+			"center": [
+				-17.27869415283203,
+				3.86594820022583
+			],
+			"outward": [
+				-0.7664412260055542,
+				0.6423144340515137
+			],
+			"width": 0.8
+		},
+		{
+			"center": [
+				-15.191131591796875,
+				4.436984539031982
+			],
+			"outward": [
+				0.047373317182064056,
+				0.998877227306366
+			],
+			"width": 0.92
+		},
+		{
+			"center": [
+				-13.40365982055664,
+				5.547507286071777
+			],
+			"outward": [
+				-0.7897735238075256,
+				0.6133984327316284
+			],
+			"width": 0.68
+		},
+		{
+			"center": [
+				-11.634047508239746,
+				6.114021301269531
+			],
+			"outward": [
+				0.4339025914669037,
+				0.900959849357605
+			],
+			"width": 0.8
+		},
+		{
+			"center": [
+				-10.916289329528809,
+				6.109679222106934
+			],
+			"outward": [
+				-0.9929121136665344,
+				0.1188507154583931
+			],
+			"width": 0.92
+		}
+	],
+	"roots": [
+		{
+			"at": [
+				-19.339242935180664,
+				2.3490469455718994
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.227313995361328,
+				2.446000099182129
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.339618682861328,
+				2.417274236679077
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.332902908325195,
+				2.2920048236846924
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.183368682861328,
+				2.5501015186309814
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.440507888793945,
+				2.2839512825012207
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.207042694091797,
+				2.3987064361572266
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.275096893310547,
+				2.5308778285980225
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.4374942779541,
+				2.189568281173706
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.10604476928711,
+				2.5739259719848633
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.43986701965332,
+				2.357937812805176
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.289997100830078,
+				2.26700758934021
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.155067443847656,
+				2.643725872039795
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-19.525100708007813,
+				2.164447546005249
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 0
+		},
+		{
+			"at": [
+				-17.17530632019043,
+				3.7045090198516846
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.063486099243164,
+				3.856332778930664
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.2497501373291,
+				3.684162139892578
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.101409912109375,
+				3.731204032897949
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.090927124023438,
+				3.896836042404175
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.300920486450195,
+				3.5605998039245605
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-16.973163604736328,
+				3.902597427368164
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.247644424438477,
+				3.7549850940704346
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.193115234375,
+				3.592752456665039
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-16.96704864501953,
+				4.014212131500244
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.379619598388672,
+				3.540219783782959
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-16.99138641357422,
+				3.8073878288269043
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.137313842773438,
+				3.9152331352233887
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-17.335491180419922,
+				3.459226608276367
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 1
+		},
+		{
+			"at": [
+				-15.21315860748291,
+				4.24819803237915
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.080972671508789,
+				4.283134937286377
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.392803192138672,
+				4.279251575469971
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.042206764221191,
+				4.221743106842041
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.201685905456543,
+				4.326877593994141
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.391894340515137,
+				4.226875305175781
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-14.887499809265137,
+				4.259974002838135
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.467461585998535,
+				4.3256330490112305
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.134794235229492,
+				4.183713912963867
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-14.997550964355469,
+				4.331391334533691
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.583091735839844,
+				4.260464668273926
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-14.829045295715332,
+				4.2068705558776855
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.34890365600586,
+				4.367135047912598
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-15.370966911315918,
+				4.1794514656066895
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 2
+		},
+		{
+			"at": [
+				-13.235204696655273,
+				5.459833145141602
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.283638000488281,
+				5.479987144470215
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.318771362304688,
+				5.336183071136475
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.16157054901123,
+				5.573706150054932
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.383307456970215,
+				5.3688578605651855
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.219016075134277,
+				5.400815963745117
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.213199615478516,
+				5.600551605224609
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.417180061340332,
+				5.2437615394592285
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.101855278015137,
+				5.57620906829834
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.364057540893555,
+				5.460581302642822
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.308980941772461,
+				5.268552780151367
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.104214668273926,
+				5.693490982055664
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.479960441589355,
+				5.249374866485596
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-13.125950813293457,
+				5.4689154624938965
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 3
+		},
+		{
+			"at": [
+				-11.645336151123047,
+				5.924228191375732
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.754207611083984,
+				6.016181468963623
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.759252548217773,
+				5.937528610229492
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.547255516052246,
+				5.917022228240967
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.907037734985352,
+				6.065395355224609
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.584548950195313,
+				5.845523834228516
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.665810585021973,
+				6.019961833953857
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.918224334716797,
+				6.001995086669922
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.425786018371582,
+				5.828743934631348
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.910306930541992,
+				6.120354652404785
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.707588195800781,
+				5.860628128051758
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.485360145568848,
+				5.939929485321045
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-12.049774169921875,
+				6.102368354797363
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-11.425202369689941,
+				5.766848087310791
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 4
+		},
+		{
+			"at": [
+				-10.74583625793457,
+				6.169627666473389
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.775592803955078,
+				5.949582099914551
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.69775104522705,
+				6.176349639892578
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.791295051574707,
+				6.151706695556641
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.741053581237793,
+				5.868947505950928
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.703079223632813,
+				6.3706889152526855
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.82637882232666,
+				5.904067516326904
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.674507141113281,
+				6.054534912109375
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.771773338317871,
+				6.356301784515381
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.79181957244873,
+				5.713161468505859
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.651847839355469,
+				6.375838756561279
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.846212387084961,
+				6.061934471130371
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.700204849243164,
+				5.819331645965576
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		},
+		{
+			"at": [
+				-10.712946891784668,
+				6.5329670906066895
+			],
+			"drawn_grass_triangle_support": true,
+			"height": 3.5,
+			"inside_drawn_cap": true,
+			"patch": 5
+		}
+	],
+	"scope": "Tool-only composed six existing-grass-source cushions, rooted inside actual authoritative-derived drawn dry cap with direct grass-triangle support. Original rim grass remains; no solid ground, collar/outline, material paint, tree/model replacement or production publication. Source leaf positions are for this local art fixture, not a final placement algorithm.",
+	"source_vertex_occurrences": 465,
+	"uploaded_vertex_occurrences": 39060
+}

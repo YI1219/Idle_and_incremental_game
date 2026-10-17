@@ -1,0 +1,94 @@
+{
+  "sources": {
+    "cage_36": {
+      "source_sha256": "fad699927ec532a67f8f18bc16dcad41f141853e0711d5a27f6e0d379965a242",
+      "triangles": 1290,
+      "nonmanifold_edges": 0,
+      "signed_volume": 38.49415989767305,
+      "moved_vertices_after_cage_splits": 532,
+      "maximum_displacement": 0.20929189970348946,
+      "cap_area_before": 7.056339263916016,
+      "cap_area_after": 7.056339263916016
+    },
+    "seated_36": {
+      "source_sha256": "fad699927ec532a67f8f18bc16dcad41f141853e0711d5a27f6e0d379965a242",
+      "triangles": 1650,
+      "nonmanifold_edges": 0,
+      "signed_volume": 49.442195729098316,
+      "moved_vertices_after_cage_splits": 712,
+      "maximum_displacement": 0.9580941947820961,
+      "cap_area_before": 7.056339263916016,
+      "cap_area_after": 7.056339263916016
+    },
+    "cage_37": {
+      "source_sha256": "45e631960ade70eec1ae4a29f1723333478d8bbf73136698d530881b03b2ed97",
+      "triangles": 1242,
+      "nonmanifold_edges": 0,
+      "signed_volume": 40.71487866884492,
+      "moved_vertices_after_cage_splits": 514,
+      "maximum_displacement": 0.33228673062075326,
+      "cap_area_before": 7.328169345855713,
+      "cap_area_after": 7.328169822692871
+    },
+    "seated_37": {
+      "source_sha256": "45e631960ade70eec1ae4a29f1723333478d8bbf73136698d530881b03b2ed97",
+      "triangles": 1550,
+      "nonmanifold_edges": 0,
+      "signed_volume": 58.12335654520223,
+      "moved_vertices_after_cage_splits": 668,
+      "maximum_displacement": 1.4104279368782926,
+      "cap_area_before": 7.328169345855713,
+      "cap_area_after": 7.328169822692871
+    },
+    "cage_38": {
+      "source_sha256": "f558cd2c72502a7f3be96866f9c0f2653b1f8e38a1eb43402d0ff85148c9c2c0",
+      "triangles": 1246,
+      "nonmanifold_edges": 0,
+      "signed_volume": 41.485779793628595,
+      "moved_vertices_after_cage_splits": 552,
+      "maximum_displacement": 0.24449198887235118,
+      "cap_area_before": 5.93774938583374,
+      "cap_area_after": 5.93774938583374
+    },
+    "seated_38": {
+      "source_sha256": "f558cd2c72502a7f3be96866f9c0f2653b1f8e38a1eb43402d0ff85148c9c2c0",
+      "triangles": 1556,
+      "nonmanifold_edges": 0,
+      "signed_volume": 49.08602906205289,
+      "moved_vertices_after_cage_splits": 707,
+      "maximum_displacement": 0.5371160033786488,
+      "cap_area_before": 5.93774938583374,
+      "cap_area_after": 5.93774938583374
+    }
+  },
+  "design": {
+    "36": {
+      "left": -0.1,
+      "right": 0.06,
+      "offset": -0.14,
+      "knot": 0.1,
+      "tilt": 0.04,
+      "foot": -0.95,
+      "middle": 1.25
+    },
+    "37": {
+      "left": -0.12,
+      "right": 0.07,
+      "offset": -0.24,
+      "knot": -0.4,
+      "tilt": 0.06,
+      "foot": -1.4,
+      "middle": 1.25
+    },
+    "38": {
+      "left": -0.06,
+      "right": 0.12,
+      "offset": -0.12,
+      "knot": 0.35,
+      "tilt": -0.015,
+      "foot": -0.6,
+      "middle": 1.6
+    }
+  },
+  "scope": "Existing source copies, own frame-aligned piecewise-affine cage. No new original model, sphere cut or density reconstruction. Extra closed volume is not authoritative editor data."
+}

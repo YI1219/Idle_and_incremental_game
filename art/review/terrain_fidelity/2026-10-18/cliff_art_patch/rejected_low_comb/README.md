@@ -1,0 +1,1 @@
+Root support and source-face upload are complete (84fans), but low uniformly leaning fans form combed straw-like strips. Rejected as art; final composition keeps the same fan count and uses a two-dimensional irregular footprint with mixed upright/leaning orientations.
