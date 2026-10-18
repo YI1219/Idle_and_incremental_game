@@ -1,0 +1,166 @@
+{
+	"base_low": [
+		-75,
+		-20,
+		-47
+	],
+	"base_size": [
+		71,
+		37,
+		55
+	],
+	"base_values_sha256": "e97bd0f95cb229aa9b055a0d15074d5d8a4ac8b19c1def22dcd886e2b2704160",
+	"cells": 153,
+	"density_step": 0.25,
+	"layout": "control.layout",
+	"layout_kind": "bay",
+	"pieces": [
+		{
+			"file": "crown_00.bin",
+			"kind": "cliff_column",
+			"pose": "[X: (-3.704256, 0.0, 2.418827), Y: (0.0, 2.8, 0.0), Z: (-1.311252, 0.0, -2.008086), O: (-15.62166, 3.5, -9.249725)]",
+			"sha256": "6897fb8c90c42ea67052c21135f432892d741219a6377a3ab6b0e1c4603eb36b",
+			"stage": "crown_00",
+			"triangles": 722
+		},
+		{
+			"file": "crown_01.bin",
+			"kind": "cliff_column_c",
+			"pose": "[X: (-2.538881, 0.0, -0.267679), Y: (0.0, 1.824663, 0.0), Z: (0.222315, 0.0, -2.108609), O: (-13.8586, 3.5, -11.05853)]",
+			"sha256": "5ea1d022530a78e375622734cfb3005cabc21e6c7e1eff2a71f5f7e86d1b3a22",
+			"stage": "crown_01",
+			"triangles": 768
+		},
+		{
+			"file": "crown_02.bin",
+			"kind": "cliff_column",
+			"pose": "[X: (-4.329176, 0.0, 0.99713), Y: (0.0, 2.8, 0.0), Z: (-0.564485, 0.0, -2.45079), O: (-11.04114, 3.5, -10.38413)]",
+			"sha256": "c5fe457766e9f3a67f9a11fba30d67b44b45d69e778d5c88fc718e5a33ebed35",
+			"stage": "crown_02",
+			"triangles": 722
+		},
+		{
+			"file": "crown_03.bin",
+			"kind": "cliff_column_c",
+			"pose": "[X: (-2.679341, 0.0, -0.735443), Y: (0.0, 1.74827, 0.0), Z: (0.586532, 0.0, -2.136836), O: (-8.203737, 3.5, -10.75501)]",
+			"sha256": "f23d00b7077c07b83d6e33c5bc46d182eee83b194cf1582776e1d2e6e69925fa",
+			"stage": "crown_03",
+			"triangles": 768
+		},
+		{
+			"file": "crown_04.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (-0.648651, 0.0, -2.269217), Y: (0.0, 2.04032, 0.0), Z: (2.5512, 0.0, -0.729256), O: (-6.8567, 3.5, -9.843323)]",
+			"sha256": "708ea6fb753006687ecb8d7ec26b0002781033ef850b0cca3ee813d6bae5a237",
+			"stage": "crown_04",
+			"triangles": 602
+		},
+		{
+			"file": "crown_05.bin",
+			"kind": "cliff_column",
+			"pose": "[X: (-1.748764, 0.0, -0.448547), Y: (0.0, 1.364962, 0.0), Z: (0.533419, 0.0, -2.079657), O: (-5.397073, 3.5, -8.776467)]",
+			"sha256": "4b85a3b829858b971314cb3600e2e316e76fcf96a93d1a77c62da3f0ff7f8775",
+			"stage": "crown_05",
+			"triangles": 722
+		},
+		{
+			"file": "crown_06.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (-1.194602, 0.0, -3.504559), Y: (0.0, 2.672573, 0.0), Z: (2.059618, 0.0, -0.702064), O: (-4.0607, 3.5, -7.659079)]",
+			"sha256": "5dc4ae185134491e191704a5027860beb429a52f316aa20bd5636973a792e7f1",
+			"stage": "crown_06",
+			"triangles": 602
+		},
+		{
+			"file": "crown_07.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (-1.895619, 0.0, -2.569716), Y: (0.0, 1.983986, 0.0), Z: (1.859078, 0.0, -1.371399), O: (-3.105787, 3.5, -5.251029)]",
+			"sha256": "472c5c042563153c62648086ab0d39374c704400430f4cf5e7e8893af13f99e7",
+			"stage": "crown_07",
+			"triangles": 602
+		},
+		{
+			"file": "crown_08.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (1.347695, 0.0, -3.714487), Y: (0.0, 2.8, 0.0), Z: (2.380797, 0.0, 0.863804), O: (-2.585785, 3.5, -3.1)]",
+			"sha256": "8408e53bc9b6237ff484ca104237d78d0d32ab92cf52d306354f9762a540f9f3",
+			"stage": "crown_08",
+			"triangles": 602
+		},
+		{
+			"file": "crown_09.bin",
+			"kind": "cliff_column_b",
+			"pose": "[X: (4.484882, 0.0, -0.098511), Y: (0.0, 2.8, 0.0), Z: (0.056996, 0.0, 2.594836), O: (-3.80433, 3.5, -1.245358)]",
+			"sha256": "94512d62b48ff89280df79816b111c9e0919a56426f0448de0b315749437a8b6",
+			"stage": "crown_09",
+			"triangles": 698
+		},
+		{
+			"file": "crown_10.bin",
+			"kind": "cliff_column",
+			"pose": "[X: (4.34099, 0.0, -0.658609), Y: (0.0, 2.8, 0.0), Z: (0.385135, 0.0, 2.538479), O: (-7.166766, 3.5, 0.197485)]",
+			"sha256": "10fb6f82076e4c5ec0ce58132a4f5ec2341c8b1fd79a36e1180d613bb4efd97d",
+			"stage": "crown_10",
+			"triangles": 722
+		},
+		{
+			"file": "crown_11.bin",
+			"kind": "cliff_column_b",
+			"pose": "[X: (4.323817, 0.0, 1.413277), Y: (0.0, 2.8, 0.0), Z: (-0.784706, 0.0, 2.400752), O: (-10.60535, 3.5, 0.595625)]",
+			"sha256": "87640e1fd5ae894fe9515fb5303989f0a90f94f66b8dad8b8f0207cedacf428b",
+			"stage": "crown_11",
+			"triangles": 698
+		},
+		{
+			"file": "crown_12.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (1.972435, 0.0, -0.49844), Y: (0.0, 1.534302, 0.0), Z: (0.502834, 0.0, 1.989823), O: (-13.16196, 3.5, 0.797231)]",
+			"sha256": "648d936111f78adbab8008e1676240e1cb97d55ce9beab09f48dd73fdfc15cfb",
+			"stage": "crown_12",
+			"triangles": 602
+		},
+		{
+			"file": "crown_13.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (-0.07504, 0.0, 1.761172), Y: (0.0, 1.580811, 0.0), Z: (-2.05994, 0.0, -0.087769), O: (-13.47458, 3.5, 0.352957)]",
+			"sha256": "a445ee3d8405dc78e50b12c386dfba1c3b442a30e1658888cab268fae6aa8b1d",
+			"stage": "crown_13",
+			"triangles": 602
+		},
+		{
+			"file": "crown_14.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (4.162099, 0.0, 1.239593), Y: (0.0, 2.8, 0.0), Z: (-0.729489, 0.0, 2.449357), O: (-15.03736, 3.5, -1.670432)]",
+			"sha256": "9421d05ecfddefe23573877ea73ad53ec729c988de6af58da4d1c3e09b421c3b",
+			"stage": "crown_14",
+			"triangles": 602
+		},
+		{
+			"file": "crown_15.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (2.011248, 0.0, 4.078656), Y: (0.0, 2.8, 0.0), Z: (-1.97113, 0.0, 0.971994), O: (-17.86767, 3.5, -3.121748)]",
+			"sha256": "87d5286f15fed4ccc61d87e142c2b1d51d7792a1bb3d24edd8f94e7aa0f0297b",
+			"stage": "crown_15",
+			"triangles": 602
+		},
+		{
+			"file": "crown_16.bin",
+			"kind": "cliff_column_d",
+			"pose": "[X: (-0.345781, 0.0, 3.436841), Y: (0.0, 2.471277, 0.0), Z: (-2.24987, 0.0, -0.22636), O: (-17.45902, 3.5, -6.323466)]",
+			"sha256": "16d678a52fbe160f21a72a173bfd5111bc1d02df31c4597d1f6b62890890d309",
+			"stage": "crown_16",
+			"triangles": 602
+		},
+		{
+			"file": "crown_17.bin",
+			"kind": "cliff_column_b",
+			"pose": "[X: (-1.332356, 0.0, 1.127846), Y: (0.0, 1.501958, 0.0), Z: (-1.495584, 0.0, -1.766775), O: (-17.3806, 3.5, -7.755353)]",
+			"sha256": "096354412d21818eede2cdc071916db5b209da07da95895937f67936f99b7697",
+			"stage": "crown_17",
+			"triangles": 698
+		}
+	],
+	"scope": "Operands must pass finite gates before scalar union. Same baseline local-derived volume and standard version4cells/rocks; no save-format change.",
+	"seed": 7319,
+	"source": "Actual retained closed crown meshes for compact editable cells. Not a final combined mesh. No asset geometry edit."
+}

@@ -1,0 +1,4017 @@
+{
+  "method": "Local-derived baseline with a shallow rounded underside subtracted in saved density records, then pointwise min of independently finite-gated original closed crown SDFs, at native .25m grid. Ordinary version4overrides, no visible overlapping props.",
+  "underside_edit": {
+    "changed_base_nodes": 20323,
+    "floor_range_m": [
+      -0.85,
+      -0.05
+    ],
+    "rule": "floor=-.85+.8*exp(-inward_contour_distance/1.5), scalar intersection before source union"
+  },
+  "original_layout": "control.layout",
+  "candidate_layout": "candidate.layout",
+  "candidate_sha256": "6fb49d72cb3849d971c3cc9de2ccb473e7340a013e2967b5778568a4677d0e70",
+  "density_overrides": 42381,
+  "operands": [
+    {
+      "operand": "crown_00",
+      "source_sha256": "488749567f5eea66d00a71ba806300cf415c08bfe5fba7ae52216eee0a8a00bf",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 7657,
+        "near_surface_nodes": 100,
+        "sample_records": 5837,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -17.215330123901367,
+            0.30520033836364746,
+            -13.147245407104492
+          ],
+          [
+            -12.454103469848633,
+            3.5,
+            -5.392331123352051
+          ]
+        ]
+      },
+      "union_record_updates": 2733
+    },
+    {
+      "operand": "crown_01",
+      "source_sha256": "9ce5b02a480549846ed00816c121cc4c98be6c943c394add681aa02d6ab24933",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 3800,
+        "near_surface_nodes": 79,
+        "sample_records": 3680,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -16.18069076538086,
+            1.088425636291504,
+            -11.847519874572754
+          ],
+          [
+            -11.145601272583008,
+            3.5,
+            -7.180176734924316
+          ]
+        ]
+      },
+      "union_record_updates": 425
+    },
+    {
+      "operand": "crown_02",
+      "source_sha256": "33ac0c1a9bd032f2ef7322c83254dd25ad0b2398381e42e7ebb1681c1e101176",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 4095,
+        "near_surface_nodes": 151,
+        "sample_records": 5455,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -13.98176097869873,
+            -0.2351999282836914,
+            -11.735891342163086
+          ],
+          [
+            -8.576018333435059,
+            3.5,
+            -8.357748985290527
+          ]
+        ]
+      },
+      "union_record_updates": 1698
+    },
+    {
+      "operand": "crown_03",
+      "source_sha256": "f1aea347c5c6a98718c80fdda6d388ea01a4b1e0d4ad6615cee3983131a46ebb",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 2652,
+        "near_surface_nodes": 72,
+        "sample_records": 2952,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -10.348137855529785,
+            0.619762659072876,
+            -11.52936840057373
+          ],
+          [
+            -6.22159481048584,
+            3.5,
+            -8.401203155517578
+          ]
+        ]
+      },
+      "union_record_updates": 954
+    },
+    {
+      "operand": "crown_04",
+      "source_sha256": "4686e764b8fa9ed85a7f981573e9c36a9a861169bee4d63663896304b5e0eaab",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 2240,
+        "near_surface_nodes": 79,
+        "sample_records": 2786,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -9.241716384887695,
+            1.1005253791809082,
+            -11.699577331542969
+          ],
+          [
+            -5.526171684265137,
+            3.5,
+            -7.634246349334717
+          ]
+        ]
+      },
+      "union_record_updates": 749
+    },
+    {
+      "operand": "crown_05",
+      "source_sha256": "bc1b5f85373572976c4c416d4a3579795ec6929cc626f4c1683cfcbdd7f52632",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 1287,
+        "near_surface_nodes": 56,
+        "sample_records": 1643,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -7.19883918762207,
+            1.425344705581665,
+            -9.652470588684082
+          ],
+          [
+            -4.49466609954834,
+            3.5,
+            -6.47733211517334
+          ]
+        ]
+      },
+      "union_record_updates": 215
+    },
+    {
+      "operand": "crown_06",
+      "source_sha256": "e7eac478ae31debc5a4d857739331e2772b424a27066d846c815391bdaa3e0a2",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 5265,
+        "near_surface_nodes": 82,
+        "sample_records": 4845,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -7.211795806884766,
+            0.44132041931152344,
+            -10.639640808105469
+          ],
+          [
+            -3.3573012351989746,
+            3.5,
+            -3.8337531089782715
+          ]
+        ]
+      },
+      "union_record_updates": 1580
+    },
+    {
+      "operand": "crown_07",
+      "source_sha256": "8df00075c94c1df143b4b75272f25d3878237f1348544d2c681062bb5ec63be7",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 3094,
+        "near_surface_nodes": 82,
+        "sample_records": 3467,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -5.691309928894043,
+            0.29680776596069336,
+            -6.863374710083008
+          ],
+          [
+            -1.430778980255127,
+            3.5,
+            -3.3907876014709473
+          ]
+        ]
+      },
+      "union_record_updates": 1538
+    },
+    {
+      "operand": "crown_08",
+      "source_sha256": "72cc8f6ec55b02eaeccc4d8ab839f40e95c06418ff7c8f8b2dede3f1f16acdcd",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 3724,
+        "near_surface_nodes": 107,
+        "sample_records": 3906,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -4.645063400268555,
+            0.13590002059936523,
+            -5.756872177124023
+          ],
+          [
+            -1.2226531505584717,
+            3.5,
+            -1.1881773471832275
+          ]
+        ]
+      },
+      "union_record_updates": 1407
+    },
+    {
+      "operand": "crown_09",
+      "source_sha256": "8f168742281339e87833b2f563e1b9c5103c9c62534bddc075e51129ca39fb39",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 5175,
+        "near_surface_nodes": 149,
+        "sample_records": 5301,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -6.779137134552002,
+            -0.2351999282836914,
+            -3.7800369262695312
+          ],
+          [
+            -1.0426216125488281,
+            3.5,
+            -0.011205911636352539
+          ]
+        ]
+      },
+      "union_record_updates": 2943
+    },
+    {
+      "operand": "crown_10",
+      "source_sha256": "d830895e4ef3d9370e33f0cc31f0a1c3412da77e55a78c8c71aa9b9fdce00e92",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 5880,
+        "near_surface_nodes": 131,
+        "sample_records": 5661,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -10.292612075805664,
+            0.019320249557495117,
+            -2.031562089920044
+          ],
+          [
+            -3.431183338165283,
+            3.5,
+            1.7132877111434937
+          ]
+        ]
+      },
+      "union_record_updates": 3034
+    },
+    {
+      "operand": "crown_11",
+      "source_sha256": "72e0f7610ca28f9f522b89eec38aa195d784e2dccef520eef0151a4701fa598f",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 6048,
+        "near_surface_nodes": 154,
+        "sample_records": 6404,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -13.262704849243164,
+            0.019320249557495117,
+            -1.9285767078399658
+          ],
+          [
+            -6.748331069946289,
+            3.5,
+            2.0226991176605225
+          ]
+        ]
+      },
+      "union_record_updates": 1970
+    },
+    {
+      "operand": "crown_12",
+      "source_sha256": "1aa60ce1022033afd42f99ac6b3285d2613fe2145037ac5b9c535e88f622e5aa",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 1638,
+        "near_surface_nodes": 55,
+        "sample_records": 1967,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -14.862639427185059,
+            1.3991179466247559,
+            -1.9942468404769897
+          ],
+          [
+            -11.690749168395996,
+            3.5,
+            1.6383733749389648
+          ]
+        ]
+      },
+      "union_record_updates": 595
+    },
+    {
+      "operand": "crown_13",
+      "source_sha256": "bb8cd988342b6fc4d0cf2af22160c3525beff5b7c2e9f82877cc7a17788242b2",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 1904,
+        "near_surface_nodes": 49,
+        "sample_records": 2184,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -14.575369834899902,
+            1.528259038925171,
+            -1.2929246425628662
+          ],
+          [
+            -10.277092933654785,
+            3.5,
+            2.051252841949463
+          ]
+        ]
+      },
+      "union_record_updates": 475
+    },
+    {
+      "operand": "crown_14",
+      "source_sha256": "1db3bc73926bbe049d5928f7d5d1a3d7fd8e5d1724593b70dd26f70a54798ca2",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 6174,
+        "near_surface_nodes": 115,
+        "sample_records": 5298,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -17.720600128173828,
+            0.05432009696960449,
+            -4.987707614898682
+          ],
+          [
+            -12.420957565307617,
+            3.5,
+            0.27250516414642334
+          ]
+        ]
+      },
+      "union_record_updates": 1186
+    },
+    {
+      "operand": "crown_15",
+      "source_sha256": "50115eb62180cfc24a150af64e99ace3b6a54ec94a4638a53161b1fa213a1a84",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 8294,
+        "near_surface_nodes": 117,
+        "sample_records": 6544,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -20.108877182006836,
+            0.30520033836364746,
+            -7.6410627365112305
+          ],
+          [
+            -14.694253921508789,
+            3.5,
+            -0.411099910736084
+          ]
+        ]
+      },
+      "union_record_updates": 3548
+    },
+    {
+      "operand": "crown_16",
+      "source_sha256": "c70326eacd5d7a409fa22bf06795cd2330eb9d66099d7af7c782b14ca69fa678",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 4004,
+        "near_surface_nodes": 86,
+        "sample_records": 4130,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -19.107341766357422,
+            0.05432009696960449,
+            -9.485008239746094
+          ],
+          [
+            -15.858729362487793,
+            3.5,
+            -3.9529285430908203
+          ]
+        ]
+      },
+      "union_record_updates": 1761
+    },
+    {
+      "operand": "crown_17",
+      "source_sha256": "0bef437e607ef33b0add3f48a258a8e24daa71c3d585da9a4832625a8c1d67ef",
+      "sampling": {
+        "method": "Every node uses independent float64 all-triangle face/edge distance; every AABB-interior node uses three independent float64 triangle ray windings without ray advancement; AABB-exterior nodes are outside. Native BVH is not used for distance or sign.",
+        "analytic_three_ray_nodes": 1404,
+        "near_surface_nodes": 51,
+        "sample_records": 1866,
+        "grid_step": 0.25,
+        "bounds": [
+          [
+            -18.59257698059082,
+            1.4058573246002197,
+            -8.70329475402832
+          ],
+          [
+            -15.703295707702637,
+            3.5,
+            -5.325887680053711
+          ]
+        ]
+      },
+      "union_record_updates": 176
+    }
+  ],
+  "near_zero_sign_preserving_guard": [
+    {
+      "key": [
+        -53,
+        -3,
+        -13
+      ],
+      "before": -6.838741683168337e-05,
+      "after": -0.0002
+    },
+    {
+      "key": [
+        -50,
+        -3,
+        -11
+      ],
+      "before": -6.838741683168337e-05,
+      "after": -0.0002
+    },
+    {
+      "key": [
+        -62,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -61,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -60,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -63,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -62,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -61,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -60,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -64,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -63,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -62,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -61,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -60,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -65,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -64,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -63,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -62,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -61,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -65,
+        14,
+        -41
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -64,
+        14,
+        -41
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -63,
+        14,
+        -41
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -62,
+        14,
+        -41
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -66,
+        14,
+        -40
+      ],
+      "before": 9.000000136438757e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -65,
+        14,
+        -40
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -64,
+        14,
+        -40
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -63,
+        14,
+        -40
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -66,
+        14,
+        -39
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -65,
+        14,
+        -39
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -64,
+        14,
+        -39
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -63,
+        14,
+        -39
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -66,
+        14,
+        -38
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -65,
+        14,
+        -38
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -64,
+        14,
+        -38
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -66,
+        14,
+        -37
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -65,
+        14,
+        -37
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -67,
+        14,
+        -36
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -66,
+        14,
+        -36
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -56,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -55,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -54,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -53,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -49,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -57,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -56,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -55,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -54,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -53,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -52,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -51,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -50,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -57,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -56,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -48,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -47,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -46,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -45,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -44,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -43,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -42,
+        14,
+        -46
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -49,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -48,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -47,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -46,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -45,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -44,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -43,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -42,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -41,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -40,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -35,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -34,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -33,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -32,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -31,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -30,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -29,
+        14,
+        -45
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -30,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -29,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -27,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        -44
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -28,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -27,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        -43
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -27,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        -42
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        -41
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        -41
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        -41
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        -41
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        -40
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        -40
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        -40
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        -39
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        -39
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        -38
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        -38
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -21,
+        14,
+        -38
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -22,
+        14,
+        -37
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -21,
+        14,
+        -37
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -20,
+        14,
+        -37
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -19,
+        14,
+        -37
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -19,
+        9,
+        -40
+      ],
+      "before": -0.00011000000085914508,
+      "after": -0.0002
+    },
+    {
+      "key": [
+        -18,
+        14,
+        -35
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -17,
+        14,
+        -34
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -17,
+        14,
+        -33
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -16,
+        14,
+        -32
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -32
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -31
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -30
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -29
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -28
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -27
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -26
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -14,
+        14,
+        -25
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -13,
+        14,
+        -25
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -12,
+        14,
+        -25
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -11,
+        14,
+        -25
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -12,
+        14,
+        -24
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -11,
+        14,
+        -24
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -10,
+        14,
+        -24
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -9,
+        14,
+        -24
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -11,
+        14,
+        -23
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -10,
+        14,
+        -23
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -9,
+        14,
+        -23
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -8,
+        14,
+        -23
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -10,
+        14,
+        -22
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -9,
+        14,
+        -22
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -8,
+        14,
+        -22
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -22
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -9,
+        14,
+        -21
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -8,
+        14,
+        -21
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -21
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -9,
+        14,
+        -20
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -8,
+        14,
+        -20
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -20
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -8,
+        14,
+        -19
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -19
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -12,
+        14,
+        -17
+      ],
+      "before": 9.999999747378752e-06,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -17
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -6,
+        14,
+        -16
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -16
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -15
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -6,
+        14,
+        -15
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -14
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -6,
+        14,
+        -14
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -13
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -6,
+        14,
+        -13
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -12
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -7,
+        14,
+        -11
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -12,
+        14,
+        -12
+      ],
+      "before": 9.999999747378752e-06,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -8,
+        14,
+        -6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -6,
+        12,
+        -5
+      ],
+      "before": -7.000000186963007e-05,
+      "after": -0.0002
+    },
+    {
+      "key": [
+        -10,
+        14,
+        -5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -9,
+        14,
+        -5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -8,
+        14,
+        -5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -12,
+        14,
+        -4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -11,
+        14,
+        -4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -10,
+        14,
+        -4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -9,
+        14,
+        -4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -20,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -19,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -18,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -17,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -16,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -14,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -13,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -12,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -11,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -10,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -21,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -20,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -19,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -18,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -17,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -16,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -14,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -13,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -12,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -22,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -21,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -20,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -19,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -18,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -17,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -16,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -15,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -14,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -22,
+        14,
+        0
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -22,
+        14,
+        1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        0
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        0
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        0
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -27,
+        14,
+        1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -28,
+        14,
+        2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -27,
+        14,
+        2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -22,
+        14,
+        2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -29,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -28,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -27,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -23,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -22,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -30,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -29,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -28,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -27,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -25,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -24,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -31,
+        2,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -38,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -37,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -36,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -35,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -34,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -33,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -32,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -31,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -30,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -29,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -28,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -27,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -26,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -38,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -36,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -35,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -34,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -33,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -32,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -31,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -30,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -29,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -28,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -47,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -46,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -45,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -44,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -43,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -42,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -41,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -40,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -39,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -45,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -44,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -43,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -42,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -41,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -40,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -39,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -56,
+        14,
+        2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -56,
+        14,
+        3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -56,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -55,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -54,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -53,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -52,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -51,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -55,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -54,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -53,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -52,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -51,
+        14,
+        5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -53,
+        14,
+        6
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -58,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -57,
+        14,
+        0
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -57,
+        14,
+        1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -56,
+        14,
+        1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -50,
+        14,
+        4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -66,
+        14,
+        -5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -65,
+        14,
+        -5
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -68,
+        6,
+        -4
+      ],
+      "before": 0.00011000000085914508,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -65,
+        14,
+        -4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -64,
+        14,
+        -4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -63,
+        14,
+        -4
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -64,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -63,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -62,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -61,
+        14,
+        -3
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -62,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -61,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -60,
+        14,
+        -2
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -61,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -60,
+        14,
+        -1
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -19
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -19
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -77,
+        14,
+        -18
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -18
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -18
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -18
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -18
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -77,
+        14,
+        -17
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -17
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -17
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -17
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -17
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -77,
+        14,
+        -16
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -16
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -16
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -16
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -16
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -15
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -15
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -15
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -15
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -14
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -14
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -14
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -14
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -13
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -13
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -13
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -13
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -12
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -12
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -12
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -12
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -12
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -11
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -11
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -11
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -11
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -71,
+        14,
+        -11
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -10
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -10
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -10
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -71,
+        14,
+        -10
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -9
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -9
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -71,
+        14,
+        -9
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -70,
+        14,
+        -9
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -8
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -70,
+        14,
+        -8
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -69,
+        14,
+        -8
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -69,
+        14,
+        -7
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -31
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -31
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -31
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -30
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -30
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -30
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -30
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -29
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -29
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -29
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -29
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -28
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -28
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -28
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -28
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        14,
+        -27
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -27
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -27
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -27
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -27
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -76,
+        12,
+        -26
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -26
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -26
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -26
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -26
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -25
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -25
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -25
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -72,
+        14,
+        -25
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -75,
+        14,
+        -24
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -24
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -24
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -23
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -23
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -74,
+        14,
+        -22
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -73,
+        14,
+        -22
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -70,
+        14,
+        -34
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -69,
+        14,
+        -34
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -71,
+        14,
+        -33
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -70,
+        14,
+        -33
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -69,
+        14,
+        -33
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -71,
+        14,
+        -32
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    },
+    {
+      "key": [
+        -70,
+        14,
+        -32
+      ],
+      "before": 1.9999999494757503e-05,
+      "after": 0.0002
+    }
+  ],
+  "geometry_and_art_accepted": false,
+  "limits": "Fixed compact contour/seed authoring cases. Reconstructed output, support, actual history/editor and visual fidelity require fresh checks; source validity is not output/art acceptance."
+}

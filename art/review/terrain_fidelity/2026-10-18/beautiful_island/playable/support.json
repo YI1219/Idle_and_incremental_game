@@ -1,0 +1,122 @@
+{
+	"cases": {
+		"bay_7301": {
+			"passed": true,
+			"roots": {
+				"bush": {
+					"instances": 12,
+					"max_absolute_vertical_gap": 0.02000000973349847,
+					"missing": 0,
+					"root_points": 3276,
+					"separated_over_012": 0
+				},
+				"flower": {
+					"instances": 47,
+					"max_absolute_vertical_gap": 0.06800010696231551,
+					"missing": 0,
+					"root_points": 282,
+					"separated_over_012": 0
+				},
+				"tree": {
+					"instances": 2,
+					"max_absolute_vertical_gap": 2.8761021564349676e-08,
+					"missing": 0,
+					"root_points": 8,
+					"separated_over_012": 0
+				}
+			},
+			"vine_centroids": 122,
+			"vine_max_absolute_triangle_gap": 0.025001343339681625,
+			"vine_separated_or_missing": 0
+		},
+		"bay_7319": {
+			"passed": true,
+			"roots": {
+				"bush": {
+					"instances": 8,
+					"max_absolute_vertical_gap": 0.020000009758498916,
+					"missing": 0,
+					"root_points": 2184,
+					"separated_over_012": 0
+				},
+				"flower": {
+					"instances": 43,
+					"max_absolute_vertical_gap": 0.06800010696231551,
+					"missing": 0,
+					"root_points": 258,
+					"separated_over_012": 0
+				},
+				"tree": {
+					"instances": 2,
+					"max_absolute_vertical_gap": 2.8761021564349676e-08,
+					"missing": 0,
+					"root_points": 8,
+					"separated_over_012": 0
+				}
+			},
+			"vine_centroids": 112,
+			"vine_max_absolute_triangle_gap": 0.025001421570777893,
+			"vine_separated_or_missing": 0
+		},
+		"courtyard_7301": {
+			"passed": true,
+			"roots": {
+				"bush": {
+					"instances": 11,
+					"max_absolute_vertical_gap": 0.02000000973707472,
+					"missing": 0,
+					"root_points": 3003,
+					"separated_over_012": 0
+				},
+				"flower": {
+					"instances": 53,
+					"max_absolute_vertical_gap": 0.06800010696231551,
+					"missing": 0,
+					"root_points": 318,
+					"separated_over_012": 0
+				},
+				"tree": {
+					"instances": 2,
+					"max_absolute_vertical_gap": 2.8761021564349676e-08,
+					"missing": 0,
+					"root_points": 8,
+					"separated_over_012": 0
+				}
+			},
+			"vine_centroids": 142,
+			"vine_max_absolute_triangle_gap": 0.025001555681228638,
+			"vine_separated_or_missing": 0
+		},
+		"courtyard_7319": {
+			"passed": true,
+			"roots": {
+				"bush": {
+					"instances": 7,
+					"max_absolute_vertical_gap": 0.020000009758498916,
+					"missing": 0,
+					"root_points": 1911,
+					"separated_over_012": 0
+				},
+				"flower": {
+					"instances": 41,
+					"max_absolute_vertical_gap": 0.06800010696231551,
+					"missing": 0,
+					"root_points": 246,
+					"separated_over_012": 0
+				},
+				"tree": {
+					"instances": 2,
+					"max_absolute_vertical_gap": 2.8761021564349676e-08,
+					"missing": 0,
+					"root_points": 8,
+					"separated_over_012": 0
+				}
+			},
+			"vine_centroids": 122,
+			"vine_max_absolute_triangle_gap": 0.025001421570777893,
+			"vine_separated_or_missing": 0
+		}
+	},
+	"failures": 0,
+	"scope": "Actual published plant mesh vertices within .035m of source bottom; .12m vertical gap gate, dry top required. Hanging vine centroids nearest actual skin triangles within .10m. Not every leaf/branch, arbitrary edit or full building collision proof."
+}

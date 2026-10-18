@@ -1,10 +1,10 @@
 # Current Tripo generation task
-Updated:2026-10-18. Latest user explicitly authorizes new rock-master references
+Updated:2026-10-19. Latest user explicitly authorizes new rock-master references
 AND direct existing-pipeline submission/model production for this selected asset.
 
 ## Current state — no submittable task
 
-Latest [beauty-first longer island goal](review/terrain_fidelity/2026-10-18/beautiful_island/README.md) is active. Local complete-scene style and whole-object volume trials have no qualified art winner yet; no paid job, new texture generation or purchase is started. No submittable generation task or repeated permission/route-choice request is pending. Earlier neighbor/plane rejections are historical evidence; current target no longer requires imagegen-cliff likeness. Preserve all completed originals below.
+Latest [beauty-first longer island goal](review/terrain_fidelity/2026-10-18/beautiful_island/README.md) remains active. Current reversible local editor candidate uses retained original closed rock sources converted to ordinary editable densities, two contours/two seeds, coordinated finish and ONE completed built-in imagegen 2Dpainted albedo. That [actual texture and prompt](source/painted_rock/2026-10-18/manifest.json) is not a Tripo task or new fixed terrain target. No paid 3Djob, purchase, submittable generation task or repeated strategy permission is pending. Current art remains unaccepted; earlier negative studies are history, not an exact-image requirement. Preserve all completed originals below.
 
 ## Previous code-guide probe — completed and rejected
 

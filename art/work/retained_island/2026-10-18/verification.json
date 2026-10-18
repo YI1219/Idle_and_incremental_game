@@ -1,0 +1,485 @@
+{
+  "cases": {
+    "courtyard_7301": {
+      "edit_checks": {
+        "art_accepted": false,
+        "brush_ms": 1.102,
+        "checks": [
+          {
+            "label": "real editor loads the generated ordinary candidate",
+            "passed": true
+          },
+          {
+            "label": "candidate uses ordinary unified base plus saved density overrides",
+            "passed": true
+          },
+          {
+            "label": "real loaded editor reproduces captured source vertex bytes",
+            "passed": true
+          },
+          {
+            "label": "no retained wall props hide behind the editable surface",
+            "passed": true
+          },
+          {
+            "label": "probe lies in a source rock extension outside the old baseline solid",
+            "passed": true
+          },
+          {
+            "label": "public carve removes actual source-derived rock and changes visible geometry",
+            "passed": true
+          },
+          {
+            "label": "ordinary undo restores exact source records",
+            "passed": true
+          },
+          {
+            "label": "ordinary undo restores captured geometry bytes",
+            "passed": true
+          },
+          {
+            "label": "ordinary redo restores exact carved records",
+            "passed": true
+          },
+          {
+            "label": "ordinary redo restores actual carved geometry bytes",
+            "passed": true
+          },
+          {
+            "label": "actual file roundtrip preserves all native density bits and cells (float64 parser error bounded)",
+            "passed": true
+          },
+          {
+            "label": "editor file reload reproduces actual carved geometry bytes",
+            "passed": true
+          }
+        ],
+        "edited_samples": 39231,
+        "file_maximum_float64_error": 5.551115123125783e-17,
+        "file_native_float32_density_bits_equal": true,
+        "full_publish_ms": 3080.958,
+        "geometry_gate_not_established_by_history": true,
+        "operation": {
+          "center": "(-12.75, 2.0, 2.0)",
+          "changed": 289,
+          "radius": 0.9,
+          "tool": "rock_cut"
+        },
+        "passed": 12,
+        "scope": "One actual candidate; direct public edit and real editor file roundtrip. Float64 JSON parsing may shift one ULP; native float32 densities and geometry must be bit identical. Not pointer/placement/full support/layout/seed/device or user-art acceptance.",
+        "source_samples": 39231,
+        "timing_scope": "Headless real editor on development CPU; no live finish/top-cover overhead here. Full rebuild latency, not interactive FPS.",
+        "total": 12
+      },
+      "finite_gates": {
+        "playable": {
+          "source_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05",
+          "topology": {
+            "triangles": 68292,
+            "welded_vertices_1e5": 34148,
+            "non_two_use_edges": 0,
+            "directed_edge_pair_defects": 0,
+            "degenerate_index_faces": 0,
+            "signed_volume": 636.4863997377735,
+            "vertex_components": [
+              34148
+            ],
+            "vertex_link_defects": 0
+          },
+          "crossings": {
+            "mesh_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05",
+            "triangles": 68292,
+            "disjoint_position_bvh_pairs": 0,
+            "strict_crossing_pairs_at_least": 0,
+            "crossings": []
+          },
+          "finite_gate_passes": true
+        },
+        "retained_carved": {
+          "source_sha256": "fc5406e01c6d022299c7fce09a314588867c26cf929ab2f9c94ee584d48165a3",
+          "topology": {
+            "triangles": 68520,
+            "welded_vertices_1e5": 34262,
+            "non_two_use_edges": 0,
+            "directed_edge_pair_defects": 0,
+            "degenerate_index_faces": 0,
+            "signed_volume": 634.9821177361148,
+            "vertex_components": [
+              34262
+            ],
+            "vertex_link_defects": 0
+          },
+          "crossings": {
+            "mesh_sha256": "fc5406e01c6d022299c7fce09a314588867c26cf929ab2f9c94ee584d48165a3",
+            "triangles": 68520,
+            "disjoint_position_bvh_pairs": 0,
+            "strict_crossing_pairs_at_least": 0,
+            "crossings": []
+          },
+          "finite_gate_passes": true
+        }
+      }
+    },
+    "courtyard_7319": {
+      "edit_checks": {
+        "art_accepted": false,
+        "brush_ms": 1.124,
+        "checks": [
+          {
+            "label": "real editor loads the generated ordinary candidate",
+            "passed": true
+          },
+          {
+            "label": "candidate uses ordinary unified base plus saved density overrides",
+            "passed": true
+          },
+          {
+            "label": "real loaded editor reproduces captured source vertex bytes",
+            "passed": true
+          },
+          {
+            "label": "no retained wall props hide behind the editable surface",
+            "passed": true
+          },
+          {
+            "label": "probe lies in a source rock extension outside the old baseline solid",
+            "passed": true
+          },
+          {
+            "label": "public carve removes actual source-derived rock and changes visible geometry",
+            "passed": true
+          },
+          {
+            "label": "ordinary undo restores exact source records",
+            "passed": true
+          },
+          {
+            "label": "ordinary undo restores captured geometry bytes",
+            "passed": true
+          },
+          {
+            "label": "ordinary redo restores exact carved records",
+            "passed": true
+          },
+          {
+            "label": "ordinary redo restores actual carved geometry bytes",
+            "passed": true
+          },
+          {
+            "label": "actual file roundtrip preserves all native density bits and cells (float64 parser error bounded)",
+            "passed": true
+          },
+          {
+            "label": "editor file reload reproduces actual carved geometry bytes",
+            "passed": true
+          }
+        ],
+        "edited_samples": 38586,
+        "file_maximum_float64_error": 5.551115123125783e-17,
+        "file_native_float32_density_bits_equal": true,
+        "full_publish_ms": 3034.582,
+        "geometry_gate_not_established_by_history": true,
+        "operation": {
+          "center": "(-14.5, 2.25, 1.75)",
+          "changed": 283,
+          "radius": 0.9,
+          "tool": "rock_cut"
+        },
+        "passed": 12,
+        "scope": "One actual candidate; direct public edit and real editor file roundtrip. Float64 JSON parsing may shift one ULP; native float32 densities and geometry must be bit identical. Not pointer/placement/full support/layout/seed/device or user-art acceptance.",
+        "source_samples": 38586,
+        "timing_scope": "Headless real editor on development CPU; no live finish/top-cover overhead here. Full rebuild latency, not interactive FPS.",
+        "total": 12
+      },
+      "finite_gates": {
+        "playable": {
+          "source_sha256": "42fe8aa77c426957050043295e169cb2d8f5969bb95e9aea0964f1866c0428cd",
+          "topology": {
+            "triangles": 67680,
+            "welded_vertices_1e5": 33842,
+            "non_two_use_edges": 0,
+            "directed_edge_pair_defects": 0,
+            "degenerate_index_faces": 0,
+            "signed_volume": 629.5269601061544,
+            "vertex_components": [
+              33842
+            ],
+            "vertex_link_defects": 0
+          },
+          "crossings": {
+            "mesh_sha256": "42fe8aa77c426957050043295e169cb2d8f5969bb95e9aea0964f1866c0428cd",
+            "triangles": 67680,
+            "disjoint_position_bvh_pairs": 0,
+            "strict_crossing_pairs_at_least": 0,
+            "crossings": []
+          },
+          "finite_gate_passes": true
+        },
+        "retained_carved": {
+          "source_sha256": "86db5d36e87bc8a130bcb36170fee81d5cc5795211e0e8d45100a59505229953",
+          "topology": {
+            "triangles": 67900,
+            "welded_vertices_1e5": 33952,
+            "non_two_use_edges": 0,
+            "directed_edge_pair_defects": 0,
+            "degenerate_index_faces": 0,
+            "signed_volume": 627.9820707484143,
+            "vertex_components": [
+              33952
+            ],
+            "vertex_link_defects": 0
+          },
+          "crossings": {
+            "mesh_sha256": "86db5d36e87bc8a130bcb36170fee81d5cc5795211e0e8d45100a59505229953",
+            "triangles": 67900,
+            "disjoint_position_bvh_pairs": 0,
+            "strict_crossing_pairs_at_least": 0,
+            "crossings": []
+          },
+          "finite_gate_passes": true
+        }
+      }
+    },
+    "bay_7301": {
+      "edit_checks": {
+        "art_accepted": false,
+        "brush_ms": 1.094,
+        "checks": [
+          {
+            "label": "real editor loads the generated ordinary candidate",
+            "passed": true
+          },
+          {
+            "label": "candidate uses ordinary unified base plus saved density overrides",
+            "passed": true
+          },
+          {
+            "label": "real loaded editor reproduces captured source vertex bytes",
+            "passed": true
+          },
+          {
+            "label": "no retained wall props hide behind the editable surface",
+            "passed": true
+          },
+          {
+            "label": "probe lies in a source rock extension outside the old baseline solid",
+            "passed": true
+          },
+          {
+            "label": "public carve removes actual source-derived rock and changes visible geometry",
+            "passed": true
+          },
+          {
+            "label": "ordinary undo restores exact source records",
+            "passed": true
+          },
+          {
+            "label": "ordinary undo restores captured geometry bytes",
+            "passed": true
+          },
+          {
+            "label": "ordinary redo restores exact carved records",
+            "passed": true
+          },
+          {
+            "label": "ordinary redo restores actual carved geometry bytes",
+            "passed": true
+          },
+          {
+            "label": "actual file roundtrip preserves all native density bits and cells (float64 parser error bounded)",
+            "passed": true
+          },
+          {
+            "label": "editor file reload reproduces actual carved geometry bytes",
+            "passed": true
+          }
+        ],
+        "edited_samples": 42385,
+        "file_maximum_float64_error": 5.551115123125783e-17,
+        "file_native_float32_density_bits_equal": true,
+        "full_publish_ms": 3297.201,
+        "geometry_gate_not_established_by_history": true,
+        "operation": {
+          "center": "(-12.75, 2.0, 1.75)",
+          "changed": 206,
+          "radius": 0.9,
+          "tool": "rock_cut"
+        },
+        "passed": 12,
+        "scope": "One actual candidate; direct public edit and real editor file roundtrip. Float64 JSON parsing may shift one ULP; native float32 densities and geometry must be bit identical. Not pointer/placement/full support/layout/seed/device or user-art acceptance.",
+        "source_samples": 42381,
+        "timing_scope": "Headless real editor on development CPU; no live finish/top-cover overhead here. Full rebuild latency, not interactive FPS.",
+        "total": 12
+      },
+      "finite_gates": {
+        "playable": {
+          "source_sha256": "e76d0aedd66bf4aca8a0f30660b823ee66e3b73ab6bbbcb93769c5bc693c7997",
+          "topology": {
+            "triangles": 73316,
+            "welded_vertices_1e5": 36660,
+            "non_two_use_edges": 0,
+            "directed_edge_pair_defects": 0,
+            "degenerate_index_faces": 0,
+            "signed_volume": 686.0677266376849,
+            "vertex_components": [
+              36660
+            ],
+            "vertex_link_defects": 0
+          },
+          "crossings": {
+            "mesh_sha256": "e76d0aedd66bf4aca8a0f30660b823ee66e3b73ab6bbbcb93769c5bc693c7997",
+            "triangles": 73316,
+            "disjoint_position_bvh_pairs": 0,
+            "strict_crossing_pairs_at_least": 0,
+            "crossings": []
+          },
+          "finite_gate_passes": true
+        },
+        "retained_carved": {
+          "source_sha256": "56ac92f13a8de2057ff98698746f25c38866b1bd3d75b5f88d072c7b4b0767b6",
+          "topology": {
+            "triangles": 73256,
+            "welded_vertices_1e5": 36630,
+            "non_two_use_edges": 0,
+            "directed_edge_pair_defects": 0,
+            "degenerate_index_faces": 0,
+            "signed_volume": 684.9039617186177,
+            "vertex_components": [
+              36630
+            ],
+            "vertex_link_defects": 0
+          },
+          "crossings": {
+            "mesh_sha256": "56ac92f13a8de2057ff98698746f25c38866b1bd3d75b5f88d072c7b4b0767b6",
+            "triangles": 73256,
+            "disjoint_position_bvh_pairs": 0,
+            "strict_crossing_pairs_at_least": 0,
+            "crossings": []
+          },
+          "finite_gate_passes": true
+        }
+      }
+    },
+    "bay_7319": {
+      "edit_checks": {
+        "art_accepted": false,
+        "brush_ms": 1.164,
+        "checks": [
+          {
+            "label": "real editor loads the generated ordinary candidate",
+            "passed": true
+          },
+          {
+            "label": "candidate uses ordinary unified base plus saved density overrides",
+            "passed": true
+          },
+          {
+            "label": "real loaded editor reproduces captured source vertex bytes",
+            "passed": true
+          },
+          {
+            "label": "no retained wall props hide behind the editable surface",
+            "passed": true
+          },
+          {
+            "label": "probe lies in a source rock extension outside the old baseline solid",
+            "passed": true
+          },
+          {
+            "label": "public carve removes actual source-derived rock and changes visible geometry",
+            "passed": true
+          },
+          {
+            "label": "ordinary undo restores exact source records",
+            "passed": true
+          },
+          {
+            "label": "ordinary undo restores captured geometry bytes",
+            "passed": true
+          },
+          {
+            "label": "ordinary redo restores exact carved records",
+            "passed": true
+          },
+          {
+            "label": "ordinary redo restores actual carved geometry bytes",
+            "passed": true
+          },
+          {
+            "label": "actual file roundtrip preserves all native density bits and cells (float64 parser error bounded)",
+            "passed": true
+          },
+          {
+            "label": "editor file reload reproduces actual carved geometry bytes",
+            "passed": true
+          }
+        ],
+        "edited_samples": 43768,
+        "file_maximum_float64_error": 5.551115123125783e-17,
+        "file_native_float32_density_bits_equal": true,
+        "full_publish_ms": 3159.466,
+        "geometry_gate_not_established_by_history": true,
+        "operation": {
+          "center": "(-9.0, 2.25, 2.25)",
+          "changed": 322,
+          "radius": 0.9,
+          "tool": "rock_cut"
+        },
+        "passed": 12,
+        "scope": "One actual candidate; direct public edit and real editor file roundtrip. Float64 JSON parsing may shift one ULP; native float32 densities and geometry must be bit identical. Not pointer/placement/full support/layout/seed/device or user-art acceptance.",
+        "source_samples": 43768,
+        "timing_scope": "Headless real editor on development CPU; no live finish/top-cover overhead here. Full rebuild latency, not interactive FPS.",
+        "total": 12
+      },
+      "finite_gates": {
+        "playable": {
+          "source_sha256": "dde42a7b323b6fccdeaba99205a6a9de99a12df34f283e5ec463de65ac7bdd40",
+          "topology": {
+            "triangles": 75428,
+            "welded_vertices_1e5": 37712,
+            "non_two_use_edges": 0,
+            "directed_edge_pair_defects": 0,
+            "degenerate_index_faces": 0,
+            "signed_volume": 702.2053575231205,
+            "vertex_components": [
+              37712
+            ],
+            "vertex_link_defects": 0
+          },
+          "crossings": {
+            "mesh_sha256": "dde42a7b323b6fccdeaba99205a6a9de99a12df34f283e5ec463de65ac7bdd40",
+            "triangles": 75428,
+            "disjoint_position_bvh_pairs": 0,
+            "strict_crossing_pairs_at_least": 0,
+            "crossings": []
+          },
+          "finite_gate_passes": true
+        },
+        "retained_carved": {
+          "source_sha256": "49e17fd5a9c1b952907d4d017a19ce372b94fa7def0501f3b1265d8b74994d19",
+          "topology": {
+            "triangles": 75752,
+            "welded_vertices_1e5": 37874,
+            "non_two_use_edges": 0,
+            "directed_edge_pair_defects": 0,
+            "degenerate_index_faces": 0,
+            "signed_volume": 700.4125577101233,
+            "vertex_components": [
+              37874
+            ],
+            "vertex_link_defects": 0
+          },
+          "crossings": {
+            "mesh_sha256": "49e17fd5a9c1b952907d4d017a19ce372b94fa7def0501f3b1265d8b74994d19",
+            "triangles": 75752,
+            "disjoint_position_bvh_pairs": 0,
+            "strict_crossing_pairs_at_least": 0,
+            "crossings": []
+          },
+          "finite_gate_passes": true
+        }
+      }
+    }
+  },
+  "scope": "Fresh four ordinary-data candidates and one public rock cut each. Geometry gates are finite; support/native screen input/performance/art acceptance separate."
+}

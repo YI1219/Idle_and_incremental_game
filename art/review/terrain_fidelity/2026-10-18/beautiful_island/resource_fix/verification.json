@@ -1,0 +1,12 @@
+{
+  "mode": "Native capture after replacing raw-file texture load with imported Texture2D and moving deserialization outside assert",
+  "before": "../playable/courtyard_7301_whole.png",
+  "after": "courtyard_7301_whole.png",
+  "mean_absolute_channel_delta_0_255": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "same_native_vertex_sha256": true,
+  "release_export_tested": false
+}

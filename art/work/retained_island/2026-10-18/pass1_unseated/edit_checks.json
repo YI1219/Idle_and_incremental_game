@@ -1,0 +1,67 @@
+{
+	"art_accepted": false,
+	"checks": [
+		{
+			"label": "real editor loads the generated ordinary candidate",
+			"passed": true
+		},
+		{
+			"label": "candidate uses ordinary unified base plus saved density overrides",
+			"passed": true
+		},
+		{
+			"label": "real loaded editor reproduces captured source vertex bytes",
+			"passed": true
+		},
+		{
+			"label": "no retained wall props hide behind the editable surface",
+			"passed": true
+		},
+		{
+			"label": "probe lies in a source rock extension outside the old baseline solid",
+			"passed": true
+		},
+		{
+			"label": "public carve removes actual source-derived rock and changes visible geometry",
+			"passed": true
+		},
+		{
+			"label": "ordinary undo restores exact source records",
+			"passed": true
+		},
+		{
+			"label": "ordinary undo restores captured geometry bytes",
+			"passed": true
+		},
+		{
+			"label": "ordinary redo restores exact carved records",
+			"passed": true
+		},
+		{
+			"label": "ordinary redo restores actual carved geometry bytes",
+			"passed": true
+		},
+		{
+			"label": "actual file roundtrip preserves all native density bits and cells (float64 parser error bounded)",
+			"passed": true
+		},
+		{
+			"label": "editor file reload reproduces actual carved geometry bytes",
+			"passed": true
+		}
+	],
+	"edited_samples": 20697,
+	"file_maximum_float64_error": 5.551115123125783e-17,
+	"file_native_float32_density_bits_equal": true,
+	"geometry_gate_not_established_by_history": true,
+	"operation": {
+		"center": "(-13.5, 2.0, 2.0)",
+		"changed": 284,
+		"radius": 0.9,
+		"tool": "rock_cut"
+	},
+	"passed": 12,
+	"scope": "One actual candidate; direct public edit and real editor file roundtrip. Float64 JSON parsing may shift one ULP; native float32 densities and geometry must be bit identical. Not pointer/placement/full support/layout/seed/device or user-art acceptance.",
+	"source_samples": 20697,
+	"total": 12
+}

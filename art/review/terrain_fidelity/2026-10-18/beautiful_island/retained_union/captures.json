@@ -1,0 +1,183 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 273.0,
+			"error": 0,
+			"file": "retained_source_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 314.0,
+			"error": 0,
+			"file": "retained_source_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 346.0,
+			"error": 0,
+			"file": "retained_source_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 274.0,
+			"error": 0,
+			"file": "retained_source_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 284.0,
+			"error": 0,
+			"file": "retained_source_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 186.0,
+			"error": 0,
+			"file": "retained_union_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 214.0,
+			"error": 0,
+			"file": "retained_union_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 237.0,
+			"error": 0,
+			"file": "retained_union_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 186.0,
+			"error": 0,
+			"file": "retained_union_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 191.0,
+			"error": 0,
+			"file": "retained_union_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 186.0,
+			"error": 0,
+			"file": "retained_union_soft_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 214.0,
+			"error": 0,
+			"file": "retained_union_soft_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 237.0,
+			"error": 0,
+			"file": "retained_union_soft_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 186.0,
+			"error": 0,
+			"file": "retained_union_soft_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 191.0,
+			"error": 0,
+			"file": "retained_union_soft_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		}
+	],
+	"renderer": "forward_plus",
+	"scope": "Actual source draw versus ordinary v4scalar union, same native scene/cameras/material family. Soft case changes normals only. Fresh geometry/support/history/editor checks and user art acceptance still required.",
+	"stages": {
+		"retained_source": {
+			"art_accepted": false,
+			"cell_sha256": "8811ee0d58064d3d5b2545a9e783aa6198014802be32acd4e6e782f194035b1d",
+			"cells": 143,
+			"density_records": 0,
+			"input": "res://art/work/retained_island/2026-10-18/control.layout",
+			"normal_report": {},
+			"ordinary_data_loader": true,
+			"saved_version": 1,
+			"source_draws": 15,
+			"style": "retained_source",
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			]
+		},
+		"retained_union": {
+			"art_accepted": false,
+			"cell_sha256": "8811ee0d58064d3d5b2545a9e783aa6198014802be32acd4e6e782f194035b1d",
+			"cells": 143,
+			"density_records": 20697,
+			"input": "res://art/work/retained_island/2026-10-18/candidate.layout",
+			"mesh_vertex_sha256": "56f28c71c70b0bd1f53a32c04393cc8ec1b2d307dbf61144bb2df57f9d9750fd",
+			"normal_report": {},
+			"ordinary_data_loader": true,
+			"saved_version": 4,
+			"source_draws": 0,
+			"style": "retained_union",
+			"triangles": 77844,
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			]
+		},
+		"retained_union_soft": {
+			"art_accepted": false,
+			"cell_sha256": "8811ee0d58064d3d5b2545a9e783aa6198014802be32acd4e6e782f194035b1d",
+			"cells": 143,
+			"density_records": 20697,
+			"input": "res://art/work/retained_island/2026-10-18/candidate.layout",
+			"mesh_vertex_sha256": "56f28c71c70b0bd1f53a32c04393cc8ec1b2d307dbf61144bb2df57f9d9750fd",
+			"normal_report": {
+				"method": "Tetrahedrally interpolated authoritative-field gradients for intentionally smooth sculptural finish.",
+				"normal_occurrences": 233532,
+				"same_vertex_bytes": true,
+				"unique_points": 38924
+			},
+			"ordinary_data_loader": true,
+			"saved_version": 4,
+			"source_draws": 0,
+			"style": "retained_union_soft",
+			"triangles": 77844,
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			]
+		}
+	}
+}

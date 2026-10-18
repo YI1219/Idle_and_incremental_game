@@ -8,6 +8,8 @@ uniform vec4 stone_tint: source_color = vec4(.62,.65,.58,1.0);
 uniform vec4 lower_tint: source_color = vec4(.43,.51,.51,1.0);
 uniform float layer_style = 0.0;
 uniform float painted_rock_strength=0.0;
+uniform float facet_tone_strength=0.0;
+uniform float painted_albedo_strength=0.0;
 uniform bool show_grid = false;
 varying vec3 world_position;
 void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;}
@@ -24,6 +26,9 @@ void fragment(){
  rock*=vec3(.84)+paint*.32;
  rock*=.96+.08*tw_noise(world_position*.58);
  rock=mix(rock,stone_surface(world_position,n),painted_rock_strength);
+ rock=mix(rock,paint*vec3(.91,.98,1.02),painted_albedo_strength);
+ float face_tone=rock_hash(floor(n*17.0)).x-.5;
+ rock*=1.0+face_tone*facet_tone_strength;
  if(layer_style>.5){
   float layer=smoothstep(.04,.13,abs(sin(depth*1.55+world_position.x*.025)));
   rock*=mix(.86,1.02,layer);

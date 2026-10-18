@@ -1,0 +1,56 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "courtyard_7301_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		}
+	],
+	"msaa": "4X",
+	"os": "macOS",
+	"performance_scope": "Development-machine native 1671x941SubViewport; elapsed frame samples include synchronization and app scheduling. Not target hardware/power/long-idle performance. Editing latency and complete support checks separate.",
+	"processor": "Apple M4 Pro",
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Actual separately launchable ordinary-data editor candidate; source props removed. Four fixed contour/seed cases, five matched cameras. Current visual study, no user art acceptance.",
+	"stages": {
+		"courtyard_7301": {
+			"art_accepted": false,
+			"cells": 145,
+			"cover": {
+				"changed_vertex_coverage": 6473,
+				"maximum_top_support_error": 1.992656749827404e-06,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 10549,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 39231,
+			"frame_ms_median": 8.362,
+			"frame_ms_p95": 10.665,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 192.0,
+			"load_rebuild_ms": 3606,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7301,
+			"source_draws": 0,
+			"triangles": 68292,
+			"vertex_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05"
+		}
+	},
+	"startup_ms": 14194,
+	"vsync_mode": 1
+}

@@ -88,6 +88,7 @@ func _ready()->void:
 	_button(files,"Load",func():_file_status(editor.load_layout(SAVE_PATH),"Loaded"))
 	column.add_child(files)
 	var preset:=OptionButton.new()
+	preset.name="TerrainPresets"
 	for name in ["Terraces & ponds","Long island","Holes & meadow"]:preset.add_item(name)
 	preset.item_selected.connect(func(index:int):editor.select_preset(index))
 	column.add_child(preset)

@@ -1,0 +1,11 @@
+{
+  "reason": "Current supported/shallow-bottom contour-seed source supersedes first study. Original native capture metadata paths are historical.",
+  "earlier_root_inputs_now": "pass1_unseated/",
+  "old_native_stages": [
+    "retained_union",
+    "retained_union_soft",
+    "retained_union_turf"
+  ],
+  "current_case_source": "operands.json",
+  "user_art_accepted": false
+}

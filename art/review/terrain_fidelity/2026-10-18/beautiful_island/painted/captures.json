@@ -1,0 +1,137 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 138.0,
+			"error": 0,
+			"file": "polyrock_painted_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 157.0,
+			"error": 0,
+			"file": "polyrock_painted_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 177.0,
+			"error": 0,
+			"file": "polyrock_painted_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 138.0,
+			"error": 0,
+			"file": "polyrock_painted_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 139.0,
+			"error": 0,
+			"file": "polyrock_painted_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 273.0,
+			"error": 0,
+			"file": "retained_painted_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 314.0,
+			"error": 0,
+			"file": "retained_painted_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 346.0,
+			"error": 0,
+			"file": "retained_painted_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 274.0,
+			"error": 0,
+			"file": "retained_painted_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 284.0,
+			"error": 0,
+			"file": "retained_painted_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		}
+	],
+	"lighting_difference": "Candidates soften sun angular distance3.2/shadow opacity.82 and SSAO.9/power1.2 as coordinated finish; control retains original. Clouds/mist live, water phase fixed1.25.",
+	"recipes": {
+		"polyrock_painted": {
+			"cells": 143,
+			"cells_sha256": "8811ee0d58064d3d5b2545a9e783aa6198014802be32acd4e6e782f194035b1d",
+			"density_values_sha256": "79e6ddea019d3ad7dc144f1634ca02be53ea4277fe8b505c6884e79a88c7e45e",
+			"experimental_field_not_portable_profile": true,
+			"geometry_not_yet_finite_checked": true,
+			"layout_kind": "courtyard",
+			"lobes": 3,
+			"mesh_vertex_sha256": "5c5f82e6de6bebbf4acfaa362695d633d2dc499924daeff1f13711a9ad19df6f",
+			"normal_report": {
+				"method": "Tetrahedrally interpolated authoritative-field gradients for intentionally smooth sculptural finish.",
+				"normal_occurrences": 146400,
+				"same_vertex_bytes": true,
+				"unique_points": 24402
+			},
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"post_scene_style_build_ms": 7178,
+			"quiet_backdrop": true,
+			"seed": 7301,
+			"style": "polyrock_painted",
+			"triangles": 48800,
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			]
+		},
+		"retained_painted": {
+			"cells": 143,
+			"cells_sha256": "8811ee0d58064d3d5b2545a9e783aa6198014802be32acd4e6e782f194035b1d",
+			"experimental_field_not_portable_profile": false,
+			"layout_kind": "courtyard",
+			"lobes": 0,
+			"normal_report": {},
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"post_scene_style_build_ms": 7884,
+			"quiet_backdrop": true,
+			"seed": 7301,
+			"style": "retained_painted",
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			]
+		}
+	},
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Stage1finished native alternatives, original cells/buildings/trees retained; styles use real experimental density authority, not portable saved profiles yet. No editor/default adoption or art acceptance."
+}

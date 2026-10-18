@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-19",
+  "goal_status": "active",
+  "user_art_accepted": false,
+  "preview_integration": {
+    "passed": 21,
+    "total": 21,
+    "includes": "all current non-ASCII control glyphs,720p panel,Home,actual pointer carve/land placement/history and separate save"
+  },
+  "old_editor_runtime": {
+    "passed": 22,
+    "total": 22
+  },
+  "old_data": {
+    "passed": 301,
+    "total": 301
+  },
+  "precise_editor_save": {
+    "passed": 4,
+    "total": 4
+  },
+  "resource_and_assertion_contract": {
+    "passed": 2,
+    "total": 2,
+    "release_export_tested": false
+  },
+  "actual_case_edit_file_checks": {
+    "passed": 48,
+    "total": 48,
+    "report": "/art/work/retained_island/2026-10-18/verification.json"
+  },
+  "finite_geometry_cases": 8,
+  "published_native_support_cases": 4,
+  "native_main_viewport": "live_hud.png",
+  "source_geometry_unchanged_by_font": true,
+  "limits": "Fixed presets, land placement only. Functional and finite evidence never substitutes for art acceptance. Full rebuild3sec remains a limitation; no target-device/power/release-build acceptance."
+}

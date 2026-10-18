@@ -64,6 +64,7 @@ def run():
     html=html.replace('<h2>本阶段的判断</h2>', '<p><a href="/art/review/terrain_fidelity/2026-10-18/beautiful_island/index.html">完整大岛比较</a> · <a href="/art/review/terrain_fidelity/2026-10-18/beautiful_island/courtyard/index.html">紧凑庭院比较</a> · <a href="/art/review/terrain_fidelity/2026-10-18/beautiful_island/whole_object.html">整座岛三维主形试验</a></p>'+'<h2>本阶段的判断</h2>')
     if recipes['control'].get('layout_kind')=='courtyard':
         html=html.replace('本轮实拍 · 正式原版','相同小场景 · 原渲染规则').replace('正式原版与完整场景方案','小庭院：相同布局的完整风格比较')
+    html=html.replace('<main>','<main><div class="status">本页为早期阶段证据。<a href="/art/review/terrain_fidelity/2026-10-18/beautiful_island/playable/index.html">查看当前可操作候选与40张实机对比</a>。长目标仍在进行。</div>',1)
     (OUT/'index.html').write_text(html)
     print('BEAUTY REVIEW: 20 native frames; same cells/props/cameras; long goal ACTIVE, no art/function acceptance claim.')
 

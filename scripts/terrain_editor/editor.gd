@@ -244,7 +244,7 @@ func save_layout(path:String)->Error:
 	if error!=OK:return error
 	var file:=FileAccess.open(path,FileAccess.WRITE)
 	if file==null:return FileAccess.get_open_error()
-	file.store_string(JSON.stringify(data.serialize()))
+	file.store_string(JSON.stringify(data.serialize(),"",true,true))
 	return file.get_error()
 func load_layout(path:String)->Error:
 	if not FileAccess.file_exists(path):return ERR_FILE_NOT_FOUND

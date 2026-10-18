@@ -1,0 +1,14 @@
+{
+  "source": "https://github.com/notofonts/noto-cjk/tree/main/Sans/Variable/TTF/Subset",
+  "download": "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/Variable/TTF/Subset/NotoSansSC-VF.ttf",
+  "license": "SIL Open Font License1.1; original LICENSE.txt retained and distributed with derivative",
+  "source_sha256": "d68bafcb48a2707749396aa12bbbd833cb70401f3a9a689fd2902c7e0d295964",
+  "derivative": "assets/fonts/YunluUI-Regular.ttf",
+  "derivative_sha256": "020d13d0bf83b7a3df3e6e2caa2396b61e5d4d36127074403881f1aafc63f683",
+  "recipe": "fontTools4.60.2: instantiate weight400, subset ASCII + current island/editorHUD strings and CJK punctuation, remove hinting; rename family Yunlu UI",
+  "covered_unicode_count": 290,
+  "size_bytes": 59636,
+  "scope": "Bundled interface subset, not all future Chinese text. Avoids machine-installed/system-download font dependency; no purchase.",
+  "generator": "tools/art/build_island_ui_font.py",
+  "system_font_failure": "GodotSystemFont matching stalled in CoreText downloadable-font request; native process sample /tmp/yunlu-font-hang.txt. Bundled subset disables system fallback."
+}

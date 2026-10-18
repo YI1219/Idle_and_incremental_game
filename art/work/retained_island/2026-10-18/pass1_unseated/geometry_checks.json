@@ -1,0 +1,350 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "crown_00": {
+      "source_sha256": "488749567f5eea66d00a71ba806300cf415c08bfe5fba7ae52216eee0a8a00bf",
+      "topology": {
+        "triangles": 768,
+        "welded_vertices_1e5": 386,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 43.023332484842555,
+        "vertex_components": [
+          386
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "488749567f5eea66d00a71ba806300cf415c08bfe5fba7ae52216eee0a8a00bf",
+        "triangles": 768,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_01": {
+      "source_sha256": "9ce5b02a480549846ed00816c121cc4c98be6c943c394add681aa02d6ab24933",
+      "topology": {
+        "triangles": 768,
+        "welded_vertices_1e5": 386,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 24.9984326957104,
+        "vertex_components": [
+          386
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "9ce5b02a480549846ed00816c121cc4c98be6c943c394add681aa02d6ab24933",
+        "triangles": 768,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_02": {
+      "source_sha256": "33ac0c1a9bd032f2ef7322c83254dd25ad0b2398381e42e7ebb1681c1e101176",
+      "topology": {
+        "triangles": 602,
+        "welded_vertices_1e5": 303,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 43.552452458922424,
+        "vertex_components": [
+          303
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "33ac0c1a9bd032f2ef7322c83254dd25ad0b2398381e42e7ebb1681c1e101176",
+        "triangles": 602,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_03": {
+      "source_sha256": "f1aea347c5c6a98718c80fdda6d388ea01a4b1e0d4ad6615cee3983131a46ebb",
+      "topology": {
+        "triangles": 698,
+        "welded_vertices_1e5": 351,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 20.133733037354745,
+        "vertex_components": [
+          351
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "f1aea347c5c6a98718c80fdda6d388ea01a4b1e0d4ad6615cee3983131a46ebb",
+        "triangles": 698,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_04": {
+      "source_sha256": "b8615057e345ce63abb67786cb6a888815c0235da1ca8f103912805701adaf78",
+      "topology": {
+        "triangles": 722,
+        "welded_vertices_1e5": 363,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 19.09700828429777,
+        "vertex_components": [
+          363
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "b8615057e345ce63abb67786cb6a888815c0235da1ca8f103912805701adaf78",
+        "triangles": 722,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_05": {
+      "source_sha256": "8389aa681490c3b2d6aae2f2f49808a75ad1dfcb2010848554530f1370042003",
+      "topology": {
+        "triangles": 602,
+        "welded_vertices_1e5": 303,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 35.996615047333755,
+        "vertex_components": [
+          303
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "8389aa681490c3b2d6aae2f2f49808a75ad1dfcb2010848554530f1370042003",
+        "triangles": 602,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_06": {
+      "source_sha256": "fa323dc50833012f17fb3cd7bfc0608a0b8329f0592789db6b67f90b768f0674",
+      "topology": {
+        "triangles": 698,
+        "welded_vertices_1e5": 351,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 22.907476629634992,
+        "vertex_components": [
+          351
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "fa323dc50833012f17fb3cd7bfc0608a0b8329f0592789db6b67f90b768f0674",
+        "triangles": 698,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_07": {
+      "source_sha256": "c311d8ec2d5e5469a82e2c8cf0e9a65d14790ea325eb2d9155a85dad173ed117",
+      "topology": {
+        "triangles": 768,
+        "welded_vertices_1e5": 386,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 21.33254187809265,
+        "vertex_components": [
+          386
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "c311d8ec2d5e5469a82e2c8cf0e9a65d14790ea325eb2d9155a85dad173ed117",
+        "triangles": 768,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_08": {
+      "source_sha256": "b8fb1c42d34003f898a68b84a885c19e45a77c6a61cdb64cebb903e835a91642",
+      "topology": {
+        "triangles": 602,
+        "welded_vertices_1e5": 303,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 29.999526891818558,
+        "vertex_components": [
+          303
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "b8fb1c42d34003f898a68b84a885c19e45a77c6a61cdb64cebb903e835a91642",
+        "triangles": 602,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_09": {
+      "source_sha256": "98be23099d4287681672c1925fd15512f5795a6b65cd3c545c700cd7fe6ab80c",
+      "topology": {
+        "triangles": 722,
+        "welded_vertices_1e5": 363,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 39.69128401253449,
+        "vertex_components": [
+          363
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "98be23099d4287681672c1925fd15512f5795a6b65cd3c545c700cd7fe6ab80c",
+        "triangles": 722,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_10": {
+      "source_sha256": "dcc9d6f740a897888918f2a0c2991c14b3e5f359c768c0dfc4c599757192b45e",
+      "topology": {
+        "triangles": 602,
+        "welded_vertices_1e5": 303,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 33.50769326816711,
+        "vertex_components": [
+          303
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "dcc9d6f740a897888918f2a0c2991c14b3e5f359c768c0dfc4c599757192b45e",
+        "triangles": 602,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_11": {
+      "source_sha256": "c24244d618453180b203eb33950e21fb47a97f9652304c6f34d7d07b7d10818c",
+      "topology": {
+        "triangles": 768,
+        "welded_vertices_1e5": 386,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 50.349756411368915,
+        "vertex_components": [
+          386
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "c24244d618453180b203eb33950e21fb47a97f9652304c6f34d7d07b7d10818c",
+        "triangles": 768,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_12": {
+      "source_sha256": "50115eb62180cfc24a150af64e99ace3b6a54ec94a4638a53161b1fa213a1a84",
+      "topology": {
+        "triangles": 768,
+        "welded_vertices_1e5": 386,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 50.61814750013098,
+        "vertex_components": [
+          386
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "50115eb62180cfc24a150af64e99ace3b6a54ec94a4638a53161b1fa213a1a84",
+        "triangles": 768,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_13": {
+      "source_sha256": "c70326eacd5d7a409fa22bf06795cd2330eb9d66099d7af7c782b14ca69fa678",
+      "topology": {
+        "triangles": 722,
+        "welded_vertices_1e5": 363,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 29.064851391362044,
+        "vertex_components": [
+          363
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "c70326eacd5d7a409fa22bf06795cd2330eb9d66099d7af7c782b14ca69fa678",
+        "triangles": 722,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "crown_14": {
+      "source_sha256": "0bef437e607ef33b0add3f48a258a8e24daa71c3d585da9a4832625a8c1d67ef",
+      "topology": {
+        "triangles": 698,
+        "welded_vertices_1e5": 351,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 10.80527989554685,
+        "vertex_components": [
+          351
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "0bef437e607ef33b0add3f48a258a8e24daa71c3d585da9a4832625a8c1d67ef",
+        "triangles": 698,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    }
+  }
+}

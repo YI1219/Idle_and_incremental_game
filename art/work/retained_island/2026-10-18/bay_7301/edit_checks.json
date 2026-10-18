@@ -1,0 +1,70 @@
+{
+	"art_accepted": false,
+	"brush_ms": 1.094,
+	"checks": [
+		{
+			"label": "real editor loads the generated ordinary candidate",
+			"passed": true
+		},
+		{
+			"label": "candidate uses ordinary unified base plus saved density overrides",
+			"passed": true
+		},
+		{
+			"label": "real loaded editor reproduces captured source vertex bytes",
+			"passed": true
+		},
+		{
+			"label": "no retained wall props hide behind the editable surface",
+			"passed": true
+		},
+		{
+			"label": "probe lies in a source rock extension outside the old baseline solid",
+			"passed": true
+		},
+		{
+			"label": "public carve removes actual source-derived rock and changes visible geometry",
+			"passed": true
+		},
+		{
+			"label": "ordinary undo restores exact source records",
+			"passed": true
+		},
+		{
+			"label": "ordinary undo restores captured geometry bytes",
+			"passed": true
+		},
+		{
+			"label": "ordinary redo restores exact carved records",
+			"passed": true
+		},
+		{
+			"label": "ordinary redo restores actual carved geometry bytes",
+			"passed": true
+		},
+		{
+			"label": "actual file roundtrip preserves all native density bits and cells (float64 parser error bounded)",
+			"passed": true
+		},
+		{
+			"label": "editor file reload reproduces actual carved geometry bytes",
+			"passed": true
+		}
+	],
+	"edited_samples": 42385,
+	"file_maximum_float64_error": 5.551115123125783e-17,
+	"file_native_float32_density_bits_equal": true,
+	"full_publish_ms": 3297.201,
+	"geometry_gate_not_established_by_history": true,
+	"operation": {
+		"center": "(-12.75, 2.0, 1.75)",
+		"changed": 206,
+		"radius": 0.9,
+		"tool": "rock_cut"
+	},
+	"passed": 12,
+	"scope": "One actual candidate; direct public edit and real editor file roundtrip. Float64 JSON parsing may shift one ULP; native float32 densities and geometry must be bit identical. Not pointer/placement/full support/layout/seed/device or user-art acceptance.",
+	"source_samples": 42381,
+	"timing_scope": "Headless real editor on development CPU; no live finish/top-cover overhead here. Full rebuild latency, not interactive FPS.",
+	"total": 12
+}

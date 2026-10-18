@@ -1,0 +1,9 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "prompt": "prompt.txt",
+  "source": "/Users/yi/.codex/generated_images/01a14bda-a4ef-7703-8dc6-f9d0862aa5bb/exec-6edebb33-0eec-4c80-80ee-5d05d73cc009.png",
+  "workspace_asset": "assets/textures/terrain/stone_painted_v1.png",
+  "sha256": "a9d402624b7858104d0f36b586179454177f2669a06faa566d7fed4113662e62",
+  "purpose": "Actual hand-painted rock albedo candidate, not a new fixed imagegen terrain target. Original mineral map preserved. No Tripo job or purchase.",
+  "status": "Generated image inspected, broad gouache regions present; tile seams/material style still require real native review."
+}

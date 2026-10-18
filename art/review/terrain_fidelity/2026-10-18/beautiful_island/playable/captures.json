@@ -1,0 +1,279 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "courtyard_7301_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 222.0,
+			"error": 0,
+			"file": "courtyard_7301_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 246.0,
+			"error": 0,
+			"file": "courtyard_7301_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "courtyard_7301_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 197.0,
+			"error": 0,
+			"file": "courtyard_7301_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 195.0,
+			"error": 0,
+			"file": "courtyard_7319_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 224.0,
+			"error": 0,
+			"file": "courtyard_7319_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 250.0,
+			"error": 0,
+			"file": "courtyard_7319_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 195.0,
+			"error": 0,
+			"file": "courtyard_7319_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 199.0,
+			"error": 0,
+			"file": "courtyard_7319_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 189.0,
+			"error": 0,
+			"file": "bay_7301_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 217.0,
+			"error": 0,
+			"file": "bay_7301_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 242.0,
+			"error": 0,
+			"file": "bay_7301_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 189.0,
+			"error": 0,
+			"file": "bay_7301_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 194.0,
+			"error": 0,
+			"file": "bay_7301_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "bay_7319_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 222.0,
+			"error": 0,
+			"file": "bay_7319_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 247.0,
+			"error": 0,
+			"file": "bay_7319_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "bay_7319_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 199.0,
+			"error": 0,
+			"file": "bay_7319_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		}
+	],
+	"msaa": "4X",
+	"os": "macOS",
+	"performance_scope": "Development-machine native 1671x941SubViewport; elapsed frame samples include synchronization and app scheduling. Not target hardware/power/long-idle performance. Editing latency and complete support checks separate.",
+	"processor": "Apple M4 Pro",
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Actual separately launchable ordinary-data editor candidate; source props removed. Four fixed contour/seed cases, five matched cameras. Current visual study, no user art acceptance.",
+	"stages": {
+		"bay_7301": {
+			"art_accepted": false,
+			"cells": 153,
+			"cover": {
+				"changed_vertex_coverage": 6968,
+				"maximum_top_support_error": 9.09960741868332e-07,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 11186,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 42381,
+			"frame_ms_median": 8.384,
+			"frame_ms_p95": 10.216,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 194.0,
+			"load_rebuild_ms": 3802,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7301,
+			"source_draws": 0,
+			"triangles": 73316,
+			"vertex_sha256": "e76d0aedd66bf4aca8a0f30660b823ee66e3b73ab6bbbcb93769c5bc693c7997"
+		},
+		"bay_7319": {
+			"art_accepted": false,
+			"cells": 153,
+			"cover": {
+				"changed_vertex_coverage": 8633,
+				"maximum_top_support_error": 1.1146464951039547e-06,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 11479,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 43768,
+			"frame_ms_median": 8.4,
+			"frame_ms_p95": 10.4,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 199.0,
+			"load_rebuild_ms": 3738,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7319,
+			"source_draws": 0,
+			"triangles": 75428,
+			"vertex_sha256": "dde42a7b323b6fccdeaba99205a6a9de99a12df34f283e5ec463de65ac7bdd40"
+		},
+		"courtyard_7301": {
+			"art_accepted": false,
+			"cells": 145,
+			"cover": {
+				"changed_vertex_coverage": 6473,
+				"maximum_top_support_error": 1.992656749827404e-06,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 10549,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 39231,
+			"frame_ms_median": 8.874,
+			"frame_ms_p95": 9.884,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 197.0,
+			"load_rebuild_ms": 3673,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7301,
+			"source_draws": 0,
+			"triangles": 68292,
+			"vertex_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05"
+		},
+		"courtyard_7319": {
+			"art_accepted": false,
+			"cells": 145,
+			"cover": {
+				"changed_vertex_coverage": 7434,
+				"maximum_top_support_error": 2.7635383998969587e-06,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 10725,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 38586,
+			"frame_ms_median": 8.299,
+			"frame_ms_p95": 10.512,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 199.0,
+			"load_rebuild_ms": 3555,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7319,
+			"source_draws": 0,
+			"triangles": 67680,
+			"vertex_sha256": "42fe8aa77c426957050043295e169cb2d8f5969bb95e9aea0964f1866c0428cd"
+		}
+	},
+	"startup_ms": 14332,
+	"vsync_mode": 1
+}
