@@ -1,5 +1,7 @@
 # Scene art and module spec
 
+Latest 2026-10-18 clarification: beauty, coherence and playful stylization take precedence over geological realism or matching the old imagegen cliff. Brushland/Tiny Glade/Townscaper are finish references; do not copy European subject matter. Terrain may simplify/exaggerate forms and adjust proportions, material and light. Retain existing building/tree assets and major placements; preserve shared editable authority. See [active design](../superpowers/specs/2026-10-18-beautiful-editable-island-design.md). Earlier reference-specific cliff shape criteria are historical, not mandatory aesthetic tests.
+
 Current consensus: [CURRENT_CONTEXT.md](../../CURRENT_CONTEXT.md). This spec implements the user's requirements for the three scene types and the sandbox. Module specs and verification combinations below are production suggestions; they do not mean the system is already implemented.
 
 ## Presentation constraint

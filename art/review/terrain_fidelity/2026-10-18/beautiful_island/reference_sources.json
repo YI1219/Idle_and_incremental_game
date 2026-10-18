@@ -1,0 +1,72 @@
+{
+  "checked": "2026-10-18",
+  "scope": "Official game screenshots for visual observation only; no cliff implementation claim; remote art not imported.",
+  "sources": [
+    {
+      "game": "Brushland",
+      "official_page": "https://store.steampowered.com/app/5163450/",
+      "api": "https://store.steampowered.com/api/appdetails?appids=5163450",
+      "screenshots": [
+        {
+          "id": 0,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5163450/d200aa7b040d8cf885dafbf187ac2ecc8755a670/ss_d200aa7b040d8cf885dafbf187ac2ecc8755a670.600x338.jpg?t=1792151953",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5163450/d200aa7b040d8cf885dafbf187ac2ecc8755a670/ss_d200aa7b040d8cf885dafbf187ac2ecc8755a670.1920x1080.jpg?t=1792151953"
+        },
+        {
+          "id": 1,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5163450/853869115929484db5f2c417ddcda1bfddaf5925/ss_853869115929484db5f2c417ddcda1bfddaf5925.600x338.jpg?t=1792151953",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5163450/853869115929484db5f2c417ddcda1bfddaf5925/ss_853869115929484db5f2c417ddcda1bfddaf5925.1920x1080.jpg?t=1792151953"
+        },
+        {
+          "id": 2,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5163450/948e65fcaac9e53b3ed904b8a3dc04ab9abf6430/ss_948e65fcaac9e53b3ed904b8a3dc04ab9abf6430.600x338.jpg?t=1792151953",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5163450/948e65fcaac9e53b3ed904b8a3dc04ab9abf6430/ss_948e65fcaac9e53b3ed904b8a3dc04ab9abf6430.1920x1080.jpg?t=1792151953"
+        }
+      ]
+    },
+    {
+      "game": "Tiny Glade",
+      "official_page": "https://store.steampowered.com/app/2198150/",
+      "api": "https://store.steampowered.com/api/appdetails?appids=2198150",
+      "screenshots": [
+        {
+          "id": 0,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2198150/ss_1a98b0d5e8111f100b3ececda8f682333337e3cb.600x338.jpg?t=1790175461",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2198150/ss_1a98b0d5e8111f100b3ececda8f682333337e3cb.1920x1080.jpg?t=1790175461"
+        },
+        {
+          "id": 1,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2198150/ss_6a8c7a510715796a659bd9fd828cc02cf73e11de.600x338.jpg?t=1790175461",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2198150/ss_6a8c7a510715796a659bd9fd828cc02cf73e11de.1920x1080.jpg?t=1790175461"
+        },
+        {
+          "id": 2,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2198150/ss_c9086858afd32f9c2bd49c164ddc2494af1e7f31.600x338.jpg?t=1790175461",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2198150/ss_c9086858afd32f9c2bd49c164ddc2494af1e7f31.1920x1080.jpg?t=1790175461"
+        }
+      ]
+    },
+    {
+      "game": "Townscaper",
+      "official_page": "https://store.steampowered.com/app/1291340/",
+      "api": "https://store.steampowered.com/api/appdetails?appids=1291340",
+      "screenshots": [
+        {
+          "id": 0,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1291340/ss_989ff1808d9416c7b22da3e16ee54874697b1cea.600x338.jpg?t=1790002949",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1291340/ss_989ff1808d9416c7b22da3e16ee54874697b1cea.1920x1080.jpg?t=1790002949"
+        },
+        {
+          "id": 1,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1291340/ss_fcd697b91c82dfd151954070ce20bda18fcb6475.600x338.jpg?t=1790002949",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1291340/ss_fcd697b91c82dfd151954070ce20bda18fcb6475.1920x1080.jpg?t=1790002949"
+        },
+        {
+          "id": 2,
+          "path_thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1291340/ss_07f2bedd6f510cb08bf5a0708e3a2e8ed299fbbd.600x338.jpg?t=1790002949",
+          "path_full": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1291340/ss_07f2bedd6f510cb08bf5a0708e3a2e8ed299fbbd.1920x1080.jpg?t=1790002949"
+        }
+      ]
+    }
+  ]
+}

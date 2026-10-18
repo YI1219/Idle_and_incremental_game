@@ -4,7 +4,7 @@ AND direct existing-pipeline submission/model production for this selected asset
 
 ## Current state — no submittable task
 
-Latest [Brushland/similar reference research and small decision goal](review/terrain_fidelity/2026-10-18/neighbor_cliff/README.md) executes two local neighbor-constrained geometry rules and rejects this generator from matched neutral art. No paid job, texture, downloaded art or production/default change. No density conversion follows a failed source-art gate. No new generation task is prepared or submittable; no repeated selected-asset permission or route-choice question is pending. Preserve completed originals/manifests below. Earlier plane-rhythm rejection remains historical evidence, not a current pending route gate.
+Latest [beauty-first longer island goal](review/terrain_fidelity/2026-10-18/beautiful_island/README.md) is active. Local complete-scene style and whole-object volume trials have no qualified art winner yet; no paid job, new texture generation or purchase is started. No submittable generation task or repeated permission/route-choice request is pending. Earlier neighbor/plane rejections are historical evidence; current target no longer requires imagegen-cliff likeness. Preserve all completed originals below.
 
 ## Previous code-guide probe — completed and rejected
 

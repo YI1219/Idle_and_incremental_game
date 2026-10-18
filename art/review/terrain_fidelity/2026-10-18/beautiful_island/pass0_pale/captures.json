@@ -1,0 +1,233 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 567.0,
+			"error": 0,
+			"file": "control_whole.png",
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 709.0,
+			"error": 0,
+			"file": "control_play.png",
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 704.0,
+			"error": 0,
+			"file": "control_close.png",
+			"position": "(-9.180656, 8.0, 15.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 873.0,
+			"error": 0,
+			"file": "control_reverse.png",
+			"position": "(-31.0, 8.0, -20.0)",
+			"rotation": "(-11.53047, -125.3112, 0.0)"
+		},
+		{
+			"draw_calls": 826.0,
+			"error": 0,
+			"file": "control_low.png",
+			"position": "(24.0, -4.0, 22.0)",
+			"rotation": "(10.02499, 45.0, 0.0)"
+		},
+		{
+			"draw_calls": 327.0,
+			"error": 0,
+			"file": "soft_whole.png",
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 406.0,
+			"error": 0,
+			"file": "soft_play.png",
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 395.0,
+			"error": 0,
+			"file": "soft_close.png",
+			"position": "(-9.180656, 8.0, 15.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 491.0,
+			"error": 0,
+			"file": "soft_reverse.png",
+			"position": "(-31.0, 8.0, -20.0)",
+			"rotation": "(-11.53047, -125.3112, 0.0)"
+		},
+		{
+			"draw_calls": 457.0,
+			"error": 0,
+			"file": "soft_low.png",
+			"position": "(24.0, -4.0, 22.0)",
+			"rotation": "(10.02499, 45.0, 0.0)"
+		},
+		{
+			"draw_calls": 357.0,
+			"error": 0,
+			"file": "graphic_whole.png",
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 445.0,
+			"error": 0,
+			"file": "graphic_play.png",
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 431.0,
+			"error": 0,
+			"file": "graphic_close.png",
+			"position": "(-9.180656, 8.0, 15.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 539.0,
+			"error": 0,
+			"file": "graphic_reverse.png",
+			"position": "(-31.0, 8.0, -20.0)",
+			"rotation": "(-11.53047, -125.3112, 0.0)"
+		},
+		{
+			"draw_calls": 502.0,
+			"error": 0,
+			"file": "graphic_low.png",
+			"position": "(24.0, -4.0, 22.0)",
+			"rotation": "(10.02499, 45.0, 0.0)"
+		},
+		{
+			"draw_calls": 353.0,
+			"error": 0,
+			"file": "terraced_whole.png",
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 442.0,
+			"error": 0,
+			"file": "terraced_play.png",
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 427.0,
+			"error": 0,
+			"file": "terraced_close.png",
+			"position": "(-9.180656, 8.0, 15.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 533.0,
+			"error": 0,
+			"file": "terraced_reverse.png",
+			"position": "(-31.0, 8.0, -20.0)",
+			"rotation": "(-11.53047, -125.3112, 0.0)"
+		},
+		{
+			"draw_calls": 494.0,
+			"error": 0,
+			"file": "terraced_low.png",
+			"position": "(24.0, -4.0, 22.0)",
+			"rotation": "(10.02499, 45.0, 0.0)"
+		}
+	],
+	"recipes": {
+		"control": {
+			"cells": 623,
+			"cells_sha256": "5270b239c4df412c606beccf03dbe00121ee1349c78b2af238bc26896148e0c2",
+			"elapsed_build_ms": 1,
+			"experimental_field_not_portable_profile": false,
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"seed": 7301,
+			"style": "control",
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4",
+				"BenchPlaceholder",
+				"LanternPlaceholder"
+			]
+		},
+		"graphic": {
+			"cells": 623,
+			"cells_sha256": "5270b239c4df412c606beccf03dbe00121ee1349c78b2af238bc26896148e0c2",
+			"elapsed_build_ms": 12257,
+			"experimental_field_not_portable_profile": true,
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"seed": 7301,
+			"style": "graphic",
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4",
+				"BenchPlaceholder",
+				"LanternPlaceholder"
+			]
+		},
+		"soft": {
+			"cells": 623,
+			"cells_sha256": "5270b239c4df412c606beccf03dbe00121ee1349c78b2af238bc26896148e0c2",
+			"elapsed_build_ms": 11531,
+			"experimental_field_not_portable_profile": true,
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"seed": 7301,
+			"style": "soft",
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4",
+				"BenchPlaceholder",
+				"LanternPlaceholder"
+			]
+		},
+		"terraced": {
+			"cells": 623,
+			"cells_sha256": "5270b239c4df412c606beccf03dbe00121ee1349c78b2af238bc26896148e0c2",
+			"elapsed_build_ms": 11803,
+			"experimental_field_not_portable_profile": true,
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"seed": 7301,
+			"style": "terraced",
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4",
+				"BenchPlaceholder",
+				"LanternPlaceholder"
+			]
+		}
+	},
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Stage1finished native alternatives, original cells/buildings/trees retained; styles use real experimental density authority, not portable saved profiles yet. No editor/default adoption or art acceptance."
+}

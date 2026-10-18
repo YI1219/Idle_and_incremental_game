@@ -1,0 +1,90 @@
+{
+  "goal_status": "active",
+  "user_art_accepted": false,
+  "portable_profile": false,
+  "geometry_gate_run": false,
+  "routes": {
+    "cumulus": {
+      "recipe": {
+        "cells": 143,
+        "cells_sha256": "8811ee0d58064d3d5b2545a9e783aa6198014802be32acd4e6e782f194035b1d",
+        "density_values_sha256": "9ee45dacab96d1610f5f62fa592d49cfcc74d3773aa789e95da1edbd72bf148e",
+        "experimental_field_not_portable_profile": true,
+        "geometry_not_yet_finite_checked": true,
+        "layout_kind": "courtyard",
+        "lobes": 3,
+        "mesh_vertex_sha256": "cafae1fa71a6877a40753f2869a3f6a72ffd13466021d27d2ce04eb4b7d086c1",
+        "normal_report": {
+          "method": "Tetrahedrally interpolated authoritative-field gradients for intentionally smooth sculptural finish.",
+          "normal_occurrences": 133032,
+          "same_vertex_bytes": true,
+          "unique_points": 22174
+        },
+        "not_user_art_accepted": true,
+        "original_cells_unchanged": true,
+        "post_scene_style_build_ms": 6245,
+        "quiet_backdrop": true,
+        "seed": 7301,
+        "style": "cumulus",
+        "triangles": 44344,
+        "visible_props": [
+          "ReferenceCottage",
+          "KitchenGardenRow0",
+          "KitchenGardenRow1",
+          "KitchenGardenRow2",
+          "KitchenGardenRow3",
+          "KitchenGardenRow4"
+        ]
+      },
+      "png_sha256": {
+        "cumulus_whole.png": "e6b0dad2299a80ff7ad676596af9bceef86314478aaddb64ff42ad7864f32b99",
+        "cumulus_play.png": "d72172cc8e761fc1773725b04eec9201e1af61774fbf8ce89fc286b90ef00523",
+        "cumulus_close.png": "449927125f1bce38969d3f8c9c97df68fb6ec463d20ef6b0671d8a1d51007f6f",
+        "cumulus_reverse.png": "329df6f6b0c6363a8b75ae3e0d459e030cc54b05fa6d86784cf84a4f8d664491",
+        "cumulus_low.png": "104661426aa386184c3b11bfadc539b3af19ef14747823a4e07dbf5f5e3ee940"
+      },
+      "art_status": "Still too smooth/simple; no qualified winner or adoption."
+    },
+    "cumulus_facets": {
+      "recipe": {
+        "cells": 143,
+        "cells_sha256": "8811ee0d58064d3d5b2545a9e783aa6198014802be32acd4e6e782f194035b1d",
+        "density_values_sha256": "ada3239ae49cf43795284128b684bc4107552c3682016dec0ca406c98123b4e8",
+        "experimental_field_not_portable_profile": true,
+        "geometry_not_yet_finite_checked": true,
+        "layout_kind": "courtyard",
+        "lobes": 3,
+        "mesh_vertex_sha256": "cfa915fb1866260b1487dc627931557e88ad2bf8436c2b08d46f859fb0f0fde0",
+        "normal_report": {
+          "method": "Tetrahedrally interpolated authoritative-field gradients for intentionally smooth sculptural finish.",
+          "normal_occurrences": 131208,
+          "same_vertex_bytes": true,
+          "unique_points": 21870
+        },
+        "not_user_art_accepted": true,
+        "original_cells_unchanged": true,
+        "post_scene_style_build_ms": 6466,
+        "quiet_backdrop": true,
+        "seed": 7301,
+        "style": "cumulus_facets",
+        "triangles": 43736,
+        "visible_props": [
+          "ReferenceCottage",
+          "KitchenGardenRow0",
+          "KitchenGardenRow1",
+          "KitchenGardenRow2",
+          "KitchenGardenRow3",
+          "KitchenGardenRow4"
+        ]
+      },
+      "png_sha256": {
+        "cumulus_facets_whole.png": "4ea6a0c8a35fd5220dd30f17b12f33ca19492f5ca4e20383435417c7261c6cfa",
+        "cumulus_facets_play.png": "88b2cdce74548ce43eb6399e6c6978eeecbb7f78b09bd4e9471ea50a660b43b4",
+        "cumulus_facets_close.png": "77a059dcbceb2eec78fb0668d4c82c687236ff44e4b1b83429a4f86e97dbf4e4",
+        "cumulus_facets_reverse.png": "dde14aa6cf9a0cbefb49f5bf4a155a5506cfd30f63314acfe6727e445faf85e4",
+        "cumulus_facets_low.png": "2728360d4fbbdc22c0afc4412a1be7b591855699dcc66545b99d281a457795ba"
+      },
+      "art_status": "Still too smooth/simple; no qualified winner or adoption."
+    }
+  }
+}

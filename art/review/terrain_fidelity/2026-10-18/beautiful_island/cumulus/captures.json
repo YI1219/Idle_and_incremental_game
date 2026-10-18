@@ -1,0 +1,80 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 117.0,
+			"error": 0,
+			"file": "cumulus_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 135.0,
+			"error": 0,
+			"file": "cumulus_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 154.0,
+			"error": 0,
+			"file": "cumulus_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 117.0,
+			"error": 0,
+			"file": "cumulus_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 118.0,
+			"error": 0,
+			"file": "cumulus_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		}
+	],
+	"lighting_difference": "Candidates soften sun angular distance3.2/shadow opacity.82 and SSAO.9/power1.2 as coordinated finish; control retains original. Clouds/mist live, water phase fixed1.25.",
+	"recipes": {
+		"cumulus": {
+			"cells": 143,
+			"cells_sha256": "8811ee0d58064d3d5b2545a9e783aa6198014802be32acd4e6e782f194035b1d",
+			"density_values_sha256": "9ee45dacab96d1610f5f62fa592d49cfcc74d3773aa789e95da1edbd72bf148e",
+			"experimental_field_not_portable_profile": true,
+			"geometry_not_yet_finite_checked": true,
+			"layout_kind": "courtyard",
+			"lobes": 3,
+			"mesh_vertex_sha256": "cafae1fa71a6877a40753f2869a3f6a72ffd13466021d27d2ce04eb4b7d086c1",
+			"normal_report": {
+				"method": "Tetrahedrally interpolated authoritative-field gradients for intentionally smooth sculptural finish.",
+				"normal_occurrences": 133032,
+				"same_vertex_bytes": true,
+				"unique_points": 22174
+			},
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"post_scene_style_build_ms": 6245,
+			"quiet_backdrop": true,
+			"seed": 7301,
+			"style": "cumulus",
+			"triangles": 44344,
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			]
+		}
+	},
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Stage1finished native alternatives, original cells/buildings/trees retained; styles use real experimental density authority, not portable saved profiles yet. No editor/default adoption or art acceptance."
+}

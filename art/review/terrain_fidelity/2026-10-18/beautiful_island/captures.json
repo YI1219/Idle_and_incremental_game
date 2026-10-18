@@ -1,0 +1,250 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"draw_calls": 567.0,
+			"error": 0,
+			"file": "control_whole.png",
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 709.0,
+			"error": 0,
+			"file": "control_play.png",
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 704.0,
+			"error": 0,
+			"file": "control_close.png",
+			"position": "(-9.180656, 8.0, 15.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 873.0,
+			"error": 0,
+			"file": "control_reverse.png",
+			"position": "(-31.0, 8.0, -20.0)",
+			"rotation": "(-11.53047, -125.3112, 0.0)"
+		},
+		{
+			"draw_calls": 826.0,
+			"error": 0,
+			"file": "control_low.png",
+			"position": "(24.0, -4.0, 22.0)",
+			"rotation": "(10.02499, 45.0, 0.0)"
+		},
+		{
+			"draw_calls": 349.0,
+			"error": 0,
+			"file": "soft_whole.png",
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 430.0,
+			"error": 0,
+			"file": "soft_play.png",
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 419.0,
+			"error": 0,
+			"file": "soft_close.png",
+			"position": "(-9.180656, 8.0, 15.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 526.0,
+			"error": 0,
+			"file": "soft_reverse.png",
+			"position": "(-31.0, 8.0, -20.0)",
+			"rotation": "(-11.53047, -125.3112, 0.0)"
+		},
+		{
+			"draw_calls": 488.0,
+			"error": 0,
+			"file": "soft_low.png",
+			"position": "(24.0, -4.0, 22.0)",
+			"rotation": "(10.02499, 45.0, 0.0)"
+		},
+		{
+			"draw_calls": 361.0,
+			"error": 0,
+			"file": "graphic_whole.png",
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 443.0,
+			"error": 0,
+			"file": "graphic_play.png",
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 433.0,
+			"error": 0,
+			"file": "graphic_close.png",
+			"position": "(-9.180656, 8.0, 15.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 544.0,
+			"error": 0,
+			"file": "graphic_reverse.png",
+			"position": "(-31.0, 8.0, -20.0)",
+			"rotation": "(-11.53047, -125.3112, 0.0)"
+		},
+		{
+			"draw_calls": 509.0,
+			"error": 0,
+			"file": "graphic_low.png",
+			"position": "(24.0, -4.0, 22.0)",
+			"rotation": "(10.02499, 45.0, 0.0)"
+		},
+		{
+			"draw_calls": 351.0,
+			"error": 0,
+			"file": "terraced_whole.png",
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 439.0,
+			"error": 0,
+			"file": "terraced_play.png",
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 425.0,
+			"error": 0,
+			"file": "terraced_close.png",
+			"position": "(-9.180656, 8.0, 15.31963)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 529.0,
+			"error": 0,
+			"file": "terraced_reverse.png",
+			"position": "(-31.0, 8.0, -20.0)",
+			"rotation": "(-11.53047, -125.3112, 0.0)"
+		},
+		{
+			"draw_calls": 492.0,
+			"error": 0,
+			"file": "terraced_low.png",
+			"position": "(24.0, -4.0, 22.0)",
+			"rotation": "(10.02499, 45.0, 0.0)"
+		}
+	],
+	"lighting_difference": "Candidates soften sun angular distance3.2/shadow opacity.82 and SSAO.9/power1.2 as coordinated finish; control retains original. Clouds/mist live, water phase fixed1.25.",
+	"recipes": {
+		"control": {
+			"cells": 623,
+			"cells_sha256": "5270b239c4df412c606beccf03dbe00121ee1349c78b2af238bc26896148e0c2",
+			"experimental_field_not_portable_profile": false,
+			"lobes": 0,
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"post_scene_style_build_ms": 2,
+			"seed": 7301,
+			"style": "control",
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4",
+				"BenchPlaceholder",
+				"LanternPlaceholder"
+			]
+		},
+		"graphic": {
+			"cells": 623,
+			"cells_sha256": "5270b239c4df412c606beccf03dbe00121ee1349c78b2af238bc26896148e0c2",
+			"density_values_sha256": "0c40dc8eb7519dbf80f06523ea940e0d1b73b7d861fc83f7cc1c81858f488471",
+			"experimental_field_not_portable_profile": true,
+			"geometry_not_yet_finite_checked": true,
+			"lobes": 13,
+			"mesh_vertex_sha256": "a998f72222e9a673adf189613b60c1950a25c497f8d979a10c2cf3e9bcc2d881",
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"post_scene_style_build_ms": 13219,
+			"seed": 7301,
+			"style": "graphic",
+			"triangles": 226678,
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4",
+				"BenchPlaceholder",
+				"LanternPlaceholder"
+			]
+		},
+		"soft": {
+			"cells": 623,
+			"cells_sha256": "5270b239c4df412c606beccf03dbe00121ee1349c78b2af238bc26896148e0c2",
+			"density_values_sha256": "5821ea0a748b1f68e9645b7294384dcac0295f49dd1e5e03b590ad3b61395b2e",
+			"experimental_field_not_portable_profile": true,
+			"geometry_not_yet_finite_checked": true,
+			"lobes": 13,
+			"mesh_vertex_sha256": "382834d2d070ece535fe3cd608a68fd3eec88a6237ca3eb565078bae28fbfca9",
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"post_scene_style_build_ms": 12158,
+			"seed": 7301,
+			"style": "soft",
+			"triangles": 215911,
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4",
+				"BenchPlaceholder",
+				"LanternPlaceholder"
+			]
+		},
+		"terraced": {
+			"cells": 623,
+			"cells_sha256": "5270b239c4df412c606beccf03dbe00121ee1349c78b2af238bc26896148e0c2",
+			"density_values_sha256": "6cc7ba7eda5fc737d53c765fc4652ea5ff46c8ce3063907b5a99d6ff374446c7",
+			"experimental_field_not_portable_profile": true,
+			"geometry_not_yet_finite_checked": true,
+			"lobes": 0,
+			"mesh_vertex_sha256": "66360148fc7197bbda58a41520cf9b2c3c0be4247e87fb62ab67eb3b6fa99fd4",
+			"not_user_art_accepted": true,
+			"original_cells_unchanged": true,
+			"post_scene_style_build_ms": 11952,
+			"seed": 7301,
+			"style": "terraced",
+			"triangles": 207230,
+			"visible_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4",
+				"BenchPlaceholder",
+				"LanternPlaceholder"
+			]
+		}
+	},
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Stage1finished native alternatives, original cells/buildings/trees retained; styles use real experimental density authority, not portable saved profiles yet. No editor/default adoption or art acceptance."
+}
