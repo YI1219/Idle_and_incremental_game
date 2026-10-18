@@ -2,7 +2,15 @@
 Updated:2026-10-18. Latest user explicitly authorizes new rock-master references
 AND direct existing-pipeline submission/model production for this selected asset.
 
-## Latest code-guide probe — completed and rejected
+## Current state — no submittable task
+
+The subsequent [two local plane-rhythm rules](review/terrain_fidelity/2026-10-18/cliff_planes/README.md)
+are art-rejected and reach the active goal’s stop gate. No new paid job/texture
+was attempted. The next source-authoring route is pending user direction; do
+not interpret already-granted selected-asset permission as a reason to blindly
+repeat paid generation. Preserve all completed originals/manifests below.
+
+## Previous code-guide probe — completed and rejected
 
 The user explicitly asks to try code-authored geometry as generation constraints
 and a model series. Six local complete-form guide variants are actual GLB/Blender

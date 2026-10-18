@@ -1,0 +1,167 @@
+{
+  "rule": "Unequal convex faces, differently located shoulders and cleft termination into shared irregular lower return.",
+  "parameters": {
+    "front": [
+      [
+        -5.5,
+        1.2
+      ],
+      [
+        -5.3,
+        1.85
+      ],
+      [
+        -4.75,
+        2.05
+      ],
+      [
+        -3.7,
+        2.15
+      ],
+      [
+        -3.3,
+        1.95
+      ],
+      [
+        -3.05,
+        1.25
+      ],
+      [
+        -2.75,
+        1.75
+      ],
+      [
+        -2.2,
+        2.2
+      ],
+      [
+        -0.25,
+        2.55
+      ],
+      [
+        0.9,
+        2.5
+      ],
+      [
+        1.35,
+        2.1
+      ],
+      [
+        1.55,
+        1.35
+      ],
+      [
+        1.9,
+        1.85
+      ],
+      [
+        2.6,
+        2.25
+      ],
+      [
+        3.65,
+        2.4
+      ],
+      [
+        4.0,
+        1.9
+      ],
+      [
+        4.2,
+        1.15
+      ],
+      [
+        4.5,
+        1.55
+      ],
+      [
+        5.15,
+        1.75
+      ],
+      [
+        5.5,
+        1.1
+      ]
+    ],
+    "back": [
+      [
+        5.2,
+        -1.2
+      ],
+      [
+        4.0,
+        -2.35
+      ],
+      [
+        2.7,
+        -2.5
+      ],
+      [
+        1.9,
+        -2.1
+      ],
+      [
+        1.65,
+        -1.7
+      ],
+      [
+        1.25,
+        -2.0
+      ],
+      [
+        -0.6,
+        -2.5
+      ],
+      [
+        -2.2,
+        -2.3
+      ],
+      [
+        -2.45,
+        -1.7
+      ],
+      [
+        -2.8,
+        -2.05
+      ],
+      [
+        -4.3,
+        -2.25
+      ],
+      [
+        -5.2,
+        -1.25
+      ]
+    ],
+    "clefts": [
+      5,
+      11,
+      16,
+      24,
+      28
+    ],
+    "section_scales": [
+      0.99,
+      0.94,
+      0.73,
+      0.45
+    ],
+    "section_y": [
+      2.35,
+      0.45,
+      -1.18,
+      -2.3
+    ],
+    "section_y_amplitude": [
+      0.42,
+      0.62,
+      0.4,
+      0.28
+    ]
+  },
+  "vertices": 161,
+  "triangles": 318,
+  "control_sha256": "bd68a367063aff97ff731e10dc55738319c609e85add8f48ed77fc93e7489e57",
+  "candidate_sha256": "450a29843fceb0450a226a2b5be3c65cef76b606aa00c5f1fc63ec66395f85b8",
+  "scope": "Selected user-authorized code guide refinement. No new remote assets, accepted art or arbitrary contour/editor integration."
+}

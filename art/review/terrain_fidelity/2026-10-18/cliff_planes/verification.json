@@ -1,0 +1,110 @@
+{
+  "scope": "Two shape-rule art failures; stop gate reached. No new field/contact/history/performance claims.",
+  "current_native_frames": 19,
+  "direct_frames": 15,
+  "fresh_default_context_frames": 4,
+  "default_is_context_not_camera_matched_to_isolated_candidates": true,
+  "source_geometry_gates": {
+    "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+    "stages": {
+      "control": {
+        "source_sha256": "bd68a367063aff97ff731e10dc55738319c609e85add8f48ed77fc93e7489e57",
+        "topology": {
+          "triangles": 112,
+          "welded_vertices_1e5": 58,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 204.10681465481562,
+          "vertex_components": [
+            58
+          ],
+          "vertex_link_defects": 0
+        },
+        "crossings": {
+          "mesh_sha256": "bd68a367063aff97ff731e10dc55738319c609e85add8f48ed77fc93e7489e57",
+          "triangles": 112,
+          "disjoint_position_bvh_pairs": 0,
+          "strict_crossing_pairs_at_least": 0,
+          "crossings": []
+        },
+        "finite_gate_passes": true
+      },
+      "planes1": {
+        "source_sha256": "bf822f264ec817addea75465a15f940f54b7188d6de3efa1c71a7730306b1d55",
+        "topology": {
+          "triangles": 316,
+          "welded_vertices_1e5": 160,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 190.642996886192,
+          "vertex_components": [
+            160
+          ],
+          "vertex_link_defects": 0
+        },
+        "crossings": {
+          "mesh_sha256": "bf822f264ec817addea75465a15f940f54b7188d6de3efa1c71a7730306b1d55",
+          "triangles": 316,
+          "disjoint_position_bvh_pairs": 0,
+          "strict_crossing_pairs_at_least": 0,
+          "crossings": []
+        },
+        "finite_gate_passes": true
+      },
+      "planes2": {
+        "source_sha256": "18554e8a77c777062befe32e4b8126cc215a268d2a0e88a63bcddddbd22ae872",
+        "topology": {
+          "triangles": 316,
+          "welded_vertices_1e5": 160,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 208.5255828599135,
+          "vertex_components": [
+            160
+          ],
+          "vertex_link_defects": 0
+        },
+        "crossings": {
+          "mesh_sha256": "18554e8a77c777062befe32e4b8126cc215a268d2a0e88a63bcddddbd22ae872",
+          "triangles": 316,
+          "disjoint_position_bvh_pairs": 0,
+          "strict_crossing_pairs_at_least": 0,
+          "crossings": []
+        },
+        "finite_gate_passes": true
+      }
+    }
+  },
+  "png_sha256": {
+    "direct/control_close.png": "d4a195af297d76695d176d02e27fdb4666b7279c3c78f4017c88f09414d33097",
+    "direct/control_grass.png": "e5396f67c1f92540f3fefa9bd30499ea42eb3611d2890b762af402cfea34f980",
+    "direct/control_whole.png": "db0f134f6c9fc0696e5d5d513fa0f202894ffc994a7442b50682d0faf3e3c31a",
+    "direct/control_reverse.png": "5091ffc0428c251723170cd0dadf91333ca0c0ef02a1b759c08ce6932dfafe9d",
+    "direct/control_bottom.png": "e6f8e3b83ee137f02ff89012288e5d6673aa5b233fb23255c39cfb7e596ab538",
+    "direct/planes1_close.png": "e7843322e5e3e2b60763b8fef6463bfc550f31b4f924d0dfce25bb170523b44f",
+    "direct/planes1_grass.png": "c9032e18d3b244412b1e4420306c1c922310acd50b99915dfee890e9a152c22c",
+    "direct/planes1_whole.png": "425e7b8e183073a536e0f024863c0d5444ac8b8aaa13e116ac1007ad37a9e8f1",
+    "direct/planes1_reverse.png": "81c79d93392dc1c2d296662153110d9a78089dd88426d8253dce74723e4a818e",
+    "direct/planes1_bottom.png": "76f9a360048c6a68a798930fbffb2da5d6c61960e58798d34208b8cc3610e7ce",
+    "direct/planes2_close.png": "2cd7e8663d6dcd5fe36d8c7ffdcce724f4a00af3ad6cb469524a62c0b227c8a6",
+    "direct/planes2_grass.png": "d17dc21b5aec2f736f9521765ccdcea550d9c1dfc98dab9085cb6d0cdc8f93a2",
+    "direct/planes2_whole.png": "33e49a156e642654d45fcf8a6c3fd0e7c55038d8b796a10883ab35286bedcfdd",
+    "direct/planes2_reverse.png": "c45cf8388b176b0b6c3b500341d37f4f0977ce7f68a1ca5563d32cd6ba058614",
+    "direct/planes2_bottom.png": "6f5d17d0e4be6c145357fbe6741ed70441a0232495c840c83b19c6945946a8d7",
+    "default/scene_original_close.png": "b95433ad8401b7e1e0e95ddcfa421ad673aba63f5d8a42b992563404636e259f",
+    "default/scene_original_grass.png": "38f04a47554f91c59ca97c05733c5d8998113346f32520e41d9ade6da5655f11",
+    "default/scene_original_reverse.png": "db30c505f775cbefc5a254ed9d71ff98cbc005d1be598a291cc18e9db637dacf",
+    "default/scene_original_far.png": "53dc1c50cdec2d2093089fc1ca442961e9e0d325afe1940f0aa7b521fcf47ce2"
+  },
+  "initial_invalid_frames": "direct_initial/captures.json",
+  "promoted": false,
+  "sampled": false,
+  "paid_jobs": 0,
+  "art_accepted": false,
+  "full_goal_complete": false,
+  "stop_reason": "Two substantive rules remain column/panel-like with poor basal rhythm; no clear target-art benefit.",
+  "next_user_decision": "Deliberately author one standard mother face by face, or use an already-qualified model as geometry authority before PCG extraction."
+}
