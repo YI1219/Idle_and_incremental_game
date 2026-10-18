@@ -55,7 +55,7 @@ Files: targeted tests for selected integration, capture/review tooling and final
 - [x] Fresh actual candidate geometry/support, sculpt/place, undo/redo/save/reload checks; no reuse of older pass claims.
 - [x] Matched old/candidate five-view comparisons across two layouts/two seeds and actual performance records with device/settings.
 - [x] Fresh independent milestone review per executing-plans; both Important export-loading findings resolved and independently rechecked. Final art acceptance stays open.
-- [ ] Commit/push reversible work; show practical preview and concrete limitations to user.
+- [x] Commit reversible milestone9e6733e; practical preview and40frame page shown, limitations recorded. Push result recorded in execution ledger.
 
 ### Task 5: User art acceptance
 
