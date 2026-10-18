@@ -1,0 +1,118 @@
+{
+  "grid_step": 0.25,
+  "sample_records": 20752,
+  "analytic_three_ray_crosschecks": 1179,
+  "bvh_disagreements_resolved": [
+    {
+      "point": [
+        -4.5,
+        0.0,
+        -0.75
+      ],
+      "bvh": [
+        true,
+        false,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -6.25,
+        0.75,
+        0.0
+      ],
+      "bvh": [
+        true,
+        false,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "bounds": [
+    [
+      -5.454711437225342,
+      -2.869612216949463,
+      -2.7292258739471436
+    ],
+    [
+      5.570810794830322,
+      3.25,
+      2.6734049320220947
+    ]
+  ],
+  "scope": "One finite-gated actual source translated only to peak3.25, unchanged proportions, production.25m records. Not arbitrary contour generation or art acceptance.",
+  "original_source": "art/work/cliff_guides/2026-10-18/broad_turn_7301.bin",
+  "original_source_sha256": "bd68a367063aff97ff731e10dc55738319c609e85add8f48ed77fc93e7489e57",
+  "top_translation_y": -0.13961219787597656,
+  "sampled_source_sha256": "a3afd5369185bf5cce65132f0eeb741ed9480300aa92dff7544613f10e4e3e58",
+  "near_zero_sign_preserving_guard": {
+    "minimum_absolute_density": 0.0002,
+    "changed": [
+      {
+        "key": [
+          -5,
+          7,
+          -9
+        ],
+        "before": -9e-05,
+        "after": -0.0002
+      },
+      {
+        "key": [
+          -6,
+          -8,
+          -7
+        ],
+        "before": -1e-05,
+        "after": -0.0002
+      },
+      {
+        "key": [
+          17,
+          -3,
+          5
+        ],
+        "before": 0.00015,
+        "after": 0.0002
+      },
+      {
+        "key": [
+          -11,
+          0,
+          7
+        ],
+        "before": 0.00011,
+        "after": 0.0002
+      },
+      {
+        "key": [
+          -7,
+          1,
+          7
+        ],
+        "before": 7e-05,
+        "after": 0.0002
+      },
+      {
+        "key": [
+          -7,
+          5,
+          8
+        ],
+        "before": 1e-05,
+        "after": 0.0002
+      }
+    ],
+    "reason": "Prevent real microscopic omitted faces at float32 area cutoff; finite gates rerun, not a general mesher robustness claim."
+  }
+}

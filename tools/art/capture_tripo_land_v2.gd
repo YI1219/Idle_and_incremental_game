@@ -1,24 +1,33 @@
 extends 'res://tools/art/capture_pcg_cliff.gd'
 ## Matched native source inspection, no deformation or default promotion.
+var review_width:=6.5
 func collect(node:Node,result:Array):
  if node is MeshInstance3D:result.append(node)
  for child:Node in node.get_children():collect(child,result)
 func views(stage:String):
- await capture(stage,'front',Vector3(0,0,12),Vector3.ZERO,6.8)
- await capture(stage,'back',Vector3(0,0,-12),Vector3.ZERO,6.8)
- await capture(stage,'left',Vector3(-12,0,0),Vector3.ZERO,6.8)
- await capture(stage,'right',Vector3(12,0,0),Vector3.ZERO,6.8)
- await capture(stage,'close',Vector3(9,7.6,15),Vector3.ZERO,7.2)
- await capture(stage,'whole',Vector3(13,13,19),Vector3.ZERO,11)
- await capture(stage,'reverse',Vector3(-13,8,-14),Vector3.ZERO,7.2)
- await capture(stage,'bottom',Vector3(9,-8,15),Vector3.ZERO,7.2)
+ var ratio:=review_width/6.5
+ await capture(stage,'front',Vector3(0,0,12),Vector3.ZERO,6.8*ratio)
+ await capture(stage,'back',Vector3(0,0,-12),Vector3.ZERO,6.8*ratio)
+ await capture(stage,'left',Vector3(-12,0,0),Vector3.ZERO,6.8*ratio)
+ await capture(stage,'right',Vector3(12,0,0),Vector3.ZERO,6.8*ratio)
+ await capture(stage,'close',Vector3(9,7.6,15),Vector3.ZERO,7.2*ratio)
+ await capture(stage,'whole',Vector3(13,13,19),Vector3.ZERO,11*ratio)
+ await capture(stage,'reverse',Vector3(-13,8,-14),Vector3.ZERO,7.2*ratio)
+ await capture(stage,'bottom',Vector3(9,-8,15),Vector3.ZERO,7.2*ratio)
 func run():
  OUT='res://art/review/terrain_fidelity/2026-10-18/tripo_land_v2/'
  WORK='res://art/work/cliff_land_v2/2026-10-18/'
- DirAccess.make_dir_recursive_absolute(OUT);DirAccess.make_dir_recursive_absolute(WORK)
- setup();grass.visible=false
  var stages:Dictionary={}
  var paths:Dictionary={'old':'res://art/source/cliff_master/2026-10-18/tripo/cliff_master_white_v1.glb','new':'res://art/source/cliff_master_v2/2026-10-18/tripo/cliff_land_master_v2_white.glb'}
+ for arg:String in OS.get_cmdline_user_args():
+  if arg.begins_with('--output='):OUT=arg.trim_prefix('--output=')
+  elif arg.begins_with('--input='):WORK=arg.trim_prefix('--input=')
+  elif arg.begins_with('--old-source='):paths.old=arg.trim_prefix('--old-source=')
+  elif arg.begins_with('--new-source='):paths.new=arg.trim_prefix('--new-source=')
+  elif arg.begins_with('--width='):review_width=arg.trim_prefix('--width=').to_float()
+ assert(review_width>0)
+ DirAccess.make_dir_recursive_absolute(OUT);DirAccess.make_dir_recursive_absolute(WORK)
+ setup();grass.visible=false
  var neutral:=StandardMaterial3D.new();neutral.albedo_color=Color(.60,.60,.57);neutral.roughness=.95
  for label:String in paths:
   body.visible=false
@@ -33,7 +42,7 @@ func run():
     p=part.global_transform*p
     if first:bounds=AABB(p,Vector3.ZERO);first=false
     else:bounds=bounds.expand(p)
-  var scale_value:float=6.5/bounds.size.x
+  var scale_value:float=review_width/bounds.size.x
   original.scale=Vector3.ONE*scale_value;original.position=-bounds.get_center()*scale_value
   var points:=PackedVector3Array()
   for part:MeshInstance3D in parts:
@@ -52,5 +61,5 @@ func run():
   await views(label+'_crease')
   stages[label]={'source':paths[label],'source_sha256':FileAccess.get_sha256(paths[label]),'triangles':points.size()/3,'parts':parts.size(),'front_alignment_y_degrees':-90,'uniform_scale':scale_value,'normalized_bounds_size':str(bounds.size*scale_value),'triangle_bytes_sha256':FileAccess.get_sha256(WORK+label+'.bin'),'crease_positions_exact':true}
   original.queue_free();await process_frame
- FileAccess.open(OUT+'captures.json',FileAccess.WRITE).store_string(JSON.stringify({'frames':frames,'stages':stages,'resolution':[1671,941],'scope':'Actual old/new GLB rigid front alignment and uniform6.5m width, identical cameras/light/neutral material; imported versus42degree unchanged-position normal control. No density conversion, grass, build data, editor or art acceptance.'},'\t',true,true))
+ FileAccess.open(OUT+'captures.json',FileAccess.WRITE).store_string(JSON.stringify({'frames':frames,'stages':stages,'resolution':[1671,941],'uniform_width':review_width,'scope':'Actual old/new GLB rigid front alignment and uniform width, identical cameras/light/neutral material; imported versus42degree unchanged-position normal control. No density conversion, grass, build data, editor or art acceptance.'},'\t',true,true))
  print('TRIPO LAND V2: ',frames.size(),' native frames');quit()

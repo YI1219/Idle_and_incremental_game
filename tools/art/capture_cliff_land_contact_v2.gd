@@ -48,6 +48,9 @@ func fields()->Dictionary:
 func run():
  OUT='res://art/review/terrain_fidelity/2026-10-18/tripo_land_v2/contact/'
  WORK='res://art/work/cliff_land_v2/2026-10-18/contact/'
+ for arg:String in OS.get_cmdline_user_args():
+  if arg.begins_with('--input='):WORK=arg.trim_prefix('--input=')
+  elif arg.begins_with('--output='):OUT=arg.trim_prefix('--output=')
  DirAccess.make_dir_recursive_absolute(OUT);setup();grass.visible=false;compiler.prepare(compiler.fixture(),7301)
  var variants:=fields();var candidate=variants.candidate
  var neutral:=StandardMaterial3D.new();neutral.albedo_color=Color(.60,.60,.57);neutral.roughness=.95
@@ -77,5 +80,5 @@ func run():
   await capture_views(stage)
   if stage=='carved':
    var edited:Dictionary=data.serialize();assert(data.undo() and data.serialize()==before);assert(data.redo() and data.serialize()==edited)
- FileAccess.open(OUT+'captures.json',FileAccess.WRITE).store_string(JSON.stringify({'frames':frames,'stages':reports,'source_points_sha256':FileAccess.get_sha256(WORK+'master_source.bin'),'scope':'Second-source bounded11m strip, production .25m densities, exact occupied-cell soil clip, complete source grass with actual root support. Source-defined cells, not arbitrary cell regeneration/editor/contour-seed/performance or full art acceptance.'},'\t',true,true))
+ FileAccess.open(OUT+'captures.json',FileAccess.WRITE).store_string(JSON.stringify({'frames':frames,'stages':reports,'source_points_sha256':FileAccess.get_sha256(WORK+'master_source.bin'),'scope':'Selected-source bounded strip, production .25m densities, exact occupied-cell soil clip, complete source grass with actual root support. Source-defined cells, not arbitrary cell regeneration/editor/contour-seed/performance or full art acceptance.'},'\t',true,true))
  print('LAND CONTACT V2: ',frames.size(),' native frames');quit()

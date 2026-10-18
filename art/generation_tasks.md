@@ -2,7 +2,24 @@
 Updated:2026-10-18. Latest user explicitly authorizes new rock-master references
 AND direct existing-pipeline submission/model production for this selected asset.
 
-## Latest selected source — second master generated
+## Latest code-guide probe — completed and rejected
+
+The user explicitly asks to try code-authored geometry as generation constraints
+and a model series. Six local complete-form guide variants are actual GLB/Blender
+outputs. Same-model independent front/left/right/back renders guide four AI detail
+references; images are soft guidance, not hard geometry constraints. Selected
+[manifest/prompts/review](source/code_guided_cliff/2026-10-18/README.md).
+ONE P2.0 Smart Mesh task, quantity1, Triangle5000requested/5021actualtriangles,
+2516vertices,100credits,no texture/rig/animation. Paid16:28:44/download16:29:09,
+original121892byteGLB preserved, taskIDunknown. Do not resubmit completedmanifest.
+Actual returned19edge/18link defects and excessive depth cause rejection. Patch
+and nearest-guide projection copies also fail; NONEsampled. No texture/paidretry
+or default promotion follows. [Current actual study](review/terrain_fidelity/2026-10-18/cliff_guides/README.md)
+retains local code-guide library plus editable shallow contact as the practical
+direction; art remains unaccepted. No currently submittable tasks or further
+user strategy choice required.
+
+## Previous selected source — second master generated
 
 User selected “重设崖壁四视图，再走 Tripo（建议）”. New independent inputs,
 [prompts/manifest](source/cliff_master_v2/2026-10-18/manifest.json) and

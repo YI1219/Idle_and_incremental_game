@@ -4,6 +4,7 @@ No zero-crossing count establishes arbitrary edit robustness or art acceptance.
 The existing detector excludes coplanar and shared-position pairs.
 """
 import importlib.util
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -45,7 +46,7 @@ def run():
                   all(topology[k] == 0 for k in ['non_two_use_edges', 'directed_edge_pair_defects', 'degenerate_index_faces', 'vertex_link_defects']) and
                   len(topology['vertex_components']) == 1 and topology['signed_volume'] > 0 and
                   intersections['strict_crossing_pairs_at_least'] == 0)
-        report['stages'][stage] = {'topology': topology, 'crossings': intersections, 'finite_gate_passes': bool(passed)}
+        report['stages'][stage] = {'source_sha256': hashlib.sha256(file.read_bytes()).hexdigest(), 'topology': topology, 'crossings': intersections, 'finite_gate_passes': bool(passed)}
         print('PCG GEOMETRY', stage, passed, topology, 'crossings', intersections['strict_crossing_pairs_at_least'], flush=True)
         (work / 'geometry_checks.json').write_text(json.dumps(report, indent=2) + '\n')
 

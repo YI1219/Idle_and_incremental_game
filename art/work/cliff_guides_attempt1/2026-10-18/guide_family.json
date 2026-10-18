@@ -1,0 +1,468 @@
+{
+  "authorization": "Latest user explicitly invites code modeling as generation constraints and model-series replacement trials. These guides are new authorized original geometry, not older existing-source refinement.",
+  "scope": "Bounded source family for actual comparison; not art acceptance, arbitrary contour PCG or formal defaults. No Tripo submission/credits.",
+  "stages": {
+    "broad_turn_7301": {
+      "profile": "broad_turn",
+      "seed": 7301,
+      "top_vertices": 19,
+      "cleft_vertex_indices": [
+        4,
+        8
+      ],
+      "source_parameters": {
+        "front": [
+          [
+            -5.5,
+            1.2
+          ],
+          [
+            -5.1,
+            2.0
+          ],
+          [
+            -4.0,
+            2.35
+          ],
+          [
+            -3.2,
+            2.22
+          ],
+          [
+            -2.95,
+            1.8
+          ],
+          [
+            -2.55,
+            2.1
+          ],
+          [
+            -0.2,
+            2.65
+          ],
+          [
+            1.5,
+            2.35
+          ],
+          [
+            1.75,
+            1.9
+          ],
+          [
+            2.1,
+            2.25
+          ],
+          [
+            3.55,
+            2.65
+          ],
+          [
+            4.9,
+            2.1
+          ],
+          [
+            5.5,
+            1.4
+          ]
+        ],
+        "clefts": [
+          4,
+          8
+        ],
+        "knee": -0.45,
+        "low": -2.35,
+        "return": 0.55,
+        "left_lift": 0.05
+      },
+      "geometry_rules": "Wide top; unequal major face spans; two upper clefts terminate at shared middle; one common irregular lower fan, no flat sole or separate shell.",
+      "vertices": 58,
+      "triangles": 112,
+      "sha256": "1d6a872578eaa59e22a0acdf12209600b5963a3518715c28db27873784adbd37"
+    },
+    "broad_turn_7319": {
+      "profile": "broad_turn",
+      "seed": 7319,
+      "top_vertices": 19,
+      "cleft_vertex_indices": [
+        4,
+        8
+      ],
+      "source_parameters": {
+        "front": [
+          [
+            -5.5,
+            1.2
+          ],
+          [
+            -5.1,
+            2.0
+          ],
+          [
+            -4.0,
+            2.35
+          ],
+          [
+            -3.2,
+            2.22
+          ],
+          [
+            -2.95,
+            1.8
+          ],
+          [
+            -2.55,
+            2.1
+          ],
+          [
+            -0.2,
+            2.65
+          ],
+          [
+            1.5,
+            2.35
+          ],
+          [
+            1.75,
+            1.9
+          ],
+          [
+            2.1,
+            2.25
+          ],
+          [
+            3.55,
+            2.65
+          ],
+          [
+            4.9,
+            2.1
+          ],
+          [
+            5.5,
+            1.4
+          ]
+        ],
+        "clefts": [
+          4,
+          8
+        ],
+        "knee": -0.45,
+        "low": -2.35,
+        "return": 0.55,
+        "left_lift": 0.05
+      },
+      "geometry_rules": "Wide top; unequal major face spans; two upper clefts terminate at shared middle; one common irregular lower fan, no flat sole or separate shell.",
+      "vertices": 58,
+      "triangles": 112,
+      "sha256": "0beff8ba048c92a83482da909cc6a0e6976cbfcaf04178605dfceb3dd2317ce7"
+    },
+    "high_left_7301": {
+      "profile": "high_left",
+      "seed": 7301,
+      "top_vertices": 19,
+      "cleft_vertex_indices": [
+        4,
+        8
+      ],
+      "source_parameters": {
+        "front": [
+          [
+            -5.5,
+            1.35
+          ],
+          [
+            -5.0,
+            2.35
+          ],
+          [
+            -3.6,
+            2.65
+          ],
+          [
+            -2.55,
+            2.2
+          ],
+          [
+            -2.3,
+            1.6
+          ],
+          [
+            -1.95,
+            2.1
+          ],
+          [
+            0.8,
+            2.45
+          ],
+          [
+            2.1,
+            2.4
+          ],
+          [
+            2.4,
+            1.85
+          ],
+          [
+            2.75,
+            2.05
+          ],
+          [
+            4.15,
+            2.25
+          ],
+          [
+            5.0,
+            1.8
+          ],
+          [
+            5.5,
+            1.1
+          ]
+        ],
+        "clefts": [
+          4,
+          8
+        ],
+        "knee": -0.9,
+        "low": -2.65,
+        "return": 0.58,
+        "left_lift": 0.4
+      },
+      "geometry_rules": "Wide top; unequal major face spans; two upper clefts terminate at shared middle; one common irregular lower fan, no flat sole or separate shell.",
+      "vertices": 58,
+      "triangles": 112,
+      "sha256": "08f990054d861ee085011ab1efe6464d80d7c5da5c0eed4b0438ac7bfac67e90"
+    },
+    "high_left_7319": {
+      "profile": "high_left",
+      "seed": 7319,
+      "top_vertices": 19,
+      "cleft_vertex_indices": [
+        4,
+        8
+      ],
+      "source_parameters": {
+        "front": [
+          [
+            -5.5,
+            1.35
+          ],
+          [
+            -5.0,
+            2.35
+          ],
+          [
+            -3.6,
+            2.65
+          ],
+          [
+            -2.55,
+            2.2
+          ],
+          [
+            -2.3,
+            1.6
+          ],
+          [
+            -1.95,
+            2.1
+          ],
+          [
+            0.8,
+            2.45
+          ],
+          [
+            2.1,
+            2.4
+          ],
+          [
+            2.4,
+            1.85
+          ],
+          [
+            2.75,
+            2.05
+          ],
+          [
+            4.15,
+            2.25
+          ],
+          [
+            5.0,
+            1.8
+          ],
+          [
+            5.5,
+            1.1
+          ]
+        ],
+        "clefts": [
+          4,
+          8
+        ],
+        "knee": -0.9,
+        "low": -2.65,
+        "return": 0.58,
+        "left_lift": 0.4
+      },
+      "geometry_rules": "Wide top; unequal major face spans; two upper clefts terminate at shared middle; one common irregular lower fan, no flat sole or separate shell.",
+      "vertices": 58,
+      "triangles": 112,
+      "sha256": "7ecf8ca5bce088bfbeb63e589fd6eea66b6fe6bcc7c858653b39e28b0af26810"
+    },
+    "shallow_corner_7301": {
+      "profile": "shallow_corner",
+      "seed": 7301,
+      "top_vertices": 19,
+      "cleft_vertex_indices": [
+        4,
+        8
+      ],
+      "source_parameters": {
+        "front": [
+          [
+            -5.5,
+            1.15
+          ],
+          [
+            -5.0,
+            1.7
+          ],
+          [
+            -3.8,
+            2.0
+          ],
+          [
+            -2.5,
+            1.7
+          ],
+          [
+            -2.2,
+            1.25
+          ],
+          [
+            -1.85,
+            1.7
+          ],
+          [
+            0.4,
+            2.1
+          ],
+          [
+            2.0,
+            2.65
+          ],
+          [
+            2.2,
+            2.1
+          ],
+          [
+            2.55,
+            2.5
+          ],
+          [
+            3.65,
+            2.35
+          ],
+          [
+            4.95,
+            1.6
+          ],
+          [
+            5.5,
+            0.8
+          ]
+        ],
+        "clefts": [
+          4,
+          8
+        ],
+        "knee": 0.05,
+        "low": -1.7,
+        "return": 0.63,
+        "left_lift": -0.15
+      },
+      "geometry_rules": "Wide top; unequal major face spans; two upper clefts terminate at shared middle; one common irregular lower fan, no flat sole or separate shell.",
+      "vertices": 58,
+      "triangles": 112,
+      "sha256": "65677b7e00a3fb926fb1587fd29b53e2a53ebe5427419ffe6dc77e0f771f720c"
+    },
+    "shallow_corner_7319": {
+      "profile": "shallow_corner",
+      "seed": 7319,
+      "top_vertices": 19,
+      "cleft_vertex_indices": [
+        4,
+        8
+      ],
+      "source_parameters": {
+        "front": [
+          [
+            -5.5,
+            1.15
+          ],
+          [
+            -5.0,
+            1.7
+          ],
+          [
+            -3.8,
+            2.0
+          ],
+          [
+            -2.5,
+            1.7
+          ],
+          [
+            -2.2,
+            1.25
+          ],
+          [
+            -1.85,
+            1.7
+          ],
+          [
+            0.4,
+            2.1
+          ],
+          [
+            2.0,
+            2.65
+          ],
+          [
+            2.2,
+            2.1
+          ],
+          [
+            2.55,
+            2.5
+          ],
+          [
+            3.65,
+            2.35
+          ],
+          [
+            4.95,
+            1.6
+          ],
+          [
+            5.5,
+            0.8
+          ]
+        ],
+        "clefts": [
+          4,
+          8
+        ],
+        "knee": 0.05,
+        "low": -1.7,
+        "return": 0.63,
+        "left_lift": -0.15
+      },
+      "geometry_rules": "Wide top; unequal major face spans; two upper clefts terminate at shared middle; one common irregular lower fan, no flat sole or separate shell.",
+      "vertices": 58,
+      "triangles": 112,
+      "sha256": "d39d714aa53c60872519a608ca34c3955f3ccd24d2e2a5d64c3c224fec51c891"
+    }
+  }
+}

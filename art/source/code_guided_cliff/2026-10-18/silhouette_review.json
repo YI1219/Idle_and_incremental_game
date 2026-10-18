@@ -1,0 +1,91 @@
+{
+  "front": {
+    "mask_threshold": 235,
+    "guide_bbox": [
+      194,
+      130,
+      1491,
+      851
+    ],
+    "refined_bbox": [
+      193,
+      126,
+      1492,
+      853
+    ],
+    "foreground_iou": 0.9913013661790018,
+    "dimensions": [
+      1670,
+      941
+    ],
+    "scope": "Actual pixel silhouette overlap on same canvas (onepixel front width resized for analysis only); not geometry/depth proof."
+  },
+  "left": {
+    "mask_threshold": 235,
+    "guide_bbox": [
+      514,
+      131,
+      1150,
+      851
+    ],
+    "refined_bbox": [
+      514,
+      128,
+      1152,
+      852
+    ],
+    "foreground_iou": 0.9902549008001635,
+    "dimensions": [
+      1671,
+      941
+    ],
+    "scope": "Actual pixel silhouette overlap on same canvas (onepixel front width resized for analysis only); not geometry/depth proof."
+  },
+  "right": {
+    "mask_threshold": 235,
+    "guide_bbox": [
+      521,
+      130,
+      1157,
+      851
+    ],
+    "refined_bbox": [
+      519,
+      129,
+      1160,
+      852
+    ],
+    "foreground_iou": 0.9919310880008163,
+    "dimensions": [
+      1671,
+      941
+    ],
+    "scope": "Actual pixel silhouette overlap on same canvas (onepixel front width resized for analysis only); not geometry/depth proof."
+  },
+  "back": {
+    "foreground_iou": 0.9857269731899457,
+    "mask_threshold": 235,
+    "scope": "Same actual code-guide canvas silhouette after corrected back edit, no 3D proof"
+  },
+  "back_attempt1": {
+    "mask_threshold": 235,
+    "guide_bbox": [
+      180,
+      130,
+      1477,
+      851
+    ],
+    "refined_bbox": [
+      169,
+      101,
+      1493,
+      850
+    ],
+    "foreground_iou": 0.906543718951914,
+    "dimensions": [
+      1671,
+      941
+    ],
+    "scope": "Actual pixel silhouette overlap on same canvas (onepixel front width resized for analysis only); not geometry/depth proof."
+  }
+}

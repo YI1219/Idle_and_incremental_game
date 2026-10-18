@@ -1,0 +1,322 @@
+{
+	"frames": [
+		{
+			"error": 0,
+			"file": "old_white_front.png",
+			"position": "(0.0, 0.0, 12.0)",
+			"size": 11.507692307692308,
+			"stage": "old_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "front"
+		},
+		{
+			"error": 0,
+			"file": "old_white_back.png",
+			"position": "(0.0, 0.0, -12.0)",
+			"size": 11.507692307692308,
+			"stage": "old_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "back"
+		},
+		{
+			"error": 0,
+			"file": "old_white_left.png",
+			"position": "(-12.0, 0.0, 0.0)",
+			"size": 11.507692307692308,
+			"stage": "old_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "left"
+		},
+		{
+			"error": 0,
+			"file": "old_white_right.png",
+			"position": "(12.0, 0.0, 0.0)",
+			"size": 11.507692307692308,
+			"stage": "old_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "right"
+		},
+		{
+			"error": 0,
+			"file": "old_white_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 12.184615384615384,
+			"stage": "old_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "old_white_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.615384615384617,
+			"stage": "old_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "old_white_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 12.184615384615384,
+			"stage": "old_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "old_white_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 12.184615384615384,
+			"stage": "old_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "old_crease_front.png",
+			"position": "(0.0, 0.0, 12.0)",
+			"size": 11.507692307692308,
+			"stage": "old_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "front"
+		},
+		{
+			"error": 0,
+			"file": "old_crease_back.png",
+			"position": "(0.0, 0.0, -12.0)",
+			"size": 11.507692307692308,
+			"stage": "old_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "back"
+		},
+		{
+			"error": 0,
+			"file": "old_crease_left.png",
+			"position": "(-12.0, 0.0, 0.0)",
+			"size": 11.507692307692308,
+			"stage": "old_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "left"
+		},
+		{
+			"error": 0,
+			"file": "old_crease_right.png",
+			"position": "(12.0, 0.0, 0.0)",
+			"size": 11.507692307692308,
+			"stage": "old_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "right"
+		},
+		{
+			"error": 0,
+			"file": "old_crease_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 12.184615384615384,
+			"stage": "old_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "old_crease_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.615384615384617,
+			"stage": "old_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "old_crease_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 12.184615384615384,
+			"stage": "old_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "old_crease_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 12.184615384615384,
+			"stage": "old_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "new_white_front.png",
+			"position": "(0.0, 0.0, 12.0)",
+			"size": 11.507692307692308,
+			"stage": "new_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "front"
+		},
+		{
+			"error": 0,
+			"file": "new_white_back.png",
+			"position": "(0.0, 0.0, -12.0)",
+			"size": 11.507692307692308,
+			"stage": "new_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "back"
+		},
+		{
+			"error": 0,
+			"file": "new_white_left.png",
+			"position": "(-12.0, 0.0, 0.0)",
+			"size": 11.507692307692308,
+			"stage": "new_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "left"
+		},
+		{
+			"error": 0,
+			"file": "new_white_right.png",
+			"position": "(12.0, 0.0, 0.0)",
+			"size": 11.507692307692308,
+			"stage": "new_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "right"
+		},
+		{
+			"error": 0,
+			"file": "new_white_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 12.184615384615384,
+			"stage": "new_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "new_white_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.615384615384617,
+			"stage": "new_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "new_white_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 12.184615384615384,
+			"stage": "new_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "new_white_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 12.184615384615384,
+			"stage": "new_white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "new_crease_front.png",
+			"position": "(0.0, 0.0, 12.0)",
+			"size": 11.507692307692308,
+			"stage": "new_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "front"
+		},
+		{
+			"error": 0,
+			"file": "new_crease_back.png",
+			"position": "(0.0, 0.0, -12.0)",
+			"size": 11.507692307692308,
+			"stage": "new_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "back"
+		},
+		{
+			"error": 0,
+			"file": "new_crease_left.png",
+			"position": "(-12.0, 0.0, 0.0)",
+			"size": 11.507692307692308,
+			"stage": "new_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "left"
+		},
+		{
+			"error": 0,
+			"file": "new_crease_right.png",
+			"position": "(12.0, 0.0, 0.0)",
+			"size": 11.507692307692308,
+			"stage": "new_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "right"
+		},
+		{
+			"error": 0,
+			"file": "new_crease_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 12.184615384615384,
+			"stage": "new_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "new_crease_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.615384615384617,
+			"stage": "new_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "new_crease_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 12.184615384615384,
+			"stage": "new_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "new_crease_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 12.184615384615384,
+			"stage": "new_crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "bottom"
+		}
+	],
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Actual old/new GLB rigid front alignment and uniform width, identical cameras/light/neutral material; imported versus42degree unchanged-position normal control. No density conversion, grass, build data, editor or art acceptance.",
+	"stages": {
+		"new": {
+			"crease_positions_exact": true,
+			"front_alignment_y_degrees": -90,
+			"normalized_bounds_size": "(11.0, 6.270308, 7.344337)",
+			"parts": 1,
+			"source": "res://art/source/code_guided_cliff/2026-10-18/tripo/code_guided_cliff_white.glb",
+			"source_sha256": "93ad0e8fe0fcecd0de71d03f3686f6015885f52d99d50df0999dd25cb113e0e9",
+			"triangle_bytes_sha256": "c868ccdd699cfe5abf53db28f3eaa91958fae6ac9fe0db16f04c9a44ed72e639",
+			"triangles": 5021,
+			"uniform_scale": 11.00440117906997
+		},
+		"old": {
+			"crease_positions_exact": true,
+			"front_alignment_y_degrees": -90,
+			"normalized_bounds_size": "(11.0, 5.690376, 6.378152)",
+			"parts": 1,
+			"source": "res://art/source/cliff_master_v2/2026-10-18/tripo/cliff_land_master_v2_white.glb",
+			"source_sha256": "7474502a790d11f7ed9e06be565a3af362c9c92f6d309dde6f281978a2259adc",
+			"triangle_bytes_sha256": "0259585fbe35f495f279bddb432ca15f3c7030d33d25b09ea227fe77a0c808b5",
+			"triangles": 5028,
+			"uniform_scale": 11.004401835245867
+		}
+	},
+	"uniform_width": 11.0
+}

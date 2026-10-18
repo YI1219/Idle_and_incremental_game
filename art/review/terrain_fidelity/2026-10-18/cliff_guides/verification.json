@@ -1,0 +1,401 @@
+{
+  "date": "2026-10-18",
+  "scope": "Bounded local code-guide strategy study. Function/art/performance separate. Art unaccepted; full goal incomplete. No arbitrary-contour/editor/performance acceptance.",
+  "current_native_frames": 176,
+  "frame_groups": [
+    {
+      "capture_report": "art/review/terrain_fidelity/2026-10-18/cliff_guides/captures.json",
+      "frames": 64,
+      "report_sha256": "ba4f4d4e06e8c5b4ae2030584b50fe1142c2253ca0e0ac0c4fb7464d62eada11"
+    },
+    {
+      "capture_report": "art/review/terrain_fidelity/2026-10-18/cliff_guides/contact_control/captures.json",
+      "frames": 25,
+      "report_sha256": "ad9bd76f5872bb2aedafe2a944c8acc8dffb6755a5c712cd5437993b3e066716"
+    },
+    {
+      "capture_report": "art/review/terrain_fidelity/2026-10-18/cliff_guides/contact_soft/captures.json",
+      "frames": 25,
+      "report_sha256": "0e4147d647bc92fdaf80d711463664c910ed6adfa8cfc363fee10e8dd4b717f5"
+    },
+    {
+      "capture_report": "art/review/terrain_fidelity/2026-10-18/code_guided_result/captures.json",
+      "frames": 32,
+      "report_sha256": "86ea56586017bc0900e48db590132585aa2eb3d4e36e7450c0dd08607726e870"
+    },
+    {
+      "capture_report": "art/review/terrain_fidelity/2026-10-18/code_guided_result/constraint/captures.json",
+      "frames": 20,
+      "report_sha256": "663aff692253462a40698a9e1912d5ea109db6d18a0c70c2808ad15d83d3680c"
+    },
+    {
+      "capture_report": "art/review/terrain_fidelity/2026-10-18/cliff_lower/direct/captures.json",
+      "frames": 10,
+      "report_sha256": "7ad24841a5ecc8e49ad6ee543ff66abdce8787e4b0a7ce01fdd4b6b0e7f2e03e"
+    }
+  ],
+  "geometry_evidence": [
+    {
+      "file": "art/work/cliff_guides/2026-10-18/broad_turn_7301.bin",
+      "sha256": "bd68a367063aff97ff731e10dc55738319c609e85add8f48ed77fc93e7489e57",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/broad_turn_7319.bin",
+      "sha256": "c6e5731abd4cb3387e82197af2badf3da546ff8817741a98948c83c121f84591",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/high_left_7301.bin",
+      "sha256": "0e5d20dac2c2dc1172f55fe1086cafab9677dd60075a26ef277ad7397a98c9d8",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/high_left_7319.bin",
+      "sha256": "9b7d15cea6089229f0ccaa4ccaebd53734760c131d146a8f7275c8f2098ad81a",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/shallow_corner_7301.bin",
+      "sha256": "b816e2b9962cc04fc0fdbf790bc25a7236d301363286348206d1f6c0a0b4b495",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/shallow_corner_7319.bin",
+      "sha256": "d3284959b6d7ec8e09a3a0e245b5317d07155278cd2bc2f2cce7d164eb7d0050",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_control/master_source.bin",
+      "sha256": "a3afd5369185bf5cce65132f0eeb741ed9480300aa92dff7544613f10e4e3e58",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_control/sampled_neutral.bin",
+      "sha256": "3ff9a752b63744fec7f7a78a2f1f960e08be6f24cd80d5adc5175add51f51d08",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_control/soil_neutral.bin",
+      "sha256": "df7a21d141af80e398e907a4bbec5542d92548b5293e7ee08a221b2e4b690141",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_control/contact.bin",
+      "sha256": "df7a21d141af80e398e907a4bbec5542d92548b5293e7ee08a221b2e4b690141",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_control/carved.bin",
+      "sha256": "fbede83b0e3fec271fabb082fa5af6c2b6b889edbbb81fb6b2a6ce65a689af8a",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_soft/master_source.bin",
+      "sha256": "a3afd5369185bf5cce65132f0eeb741ed9480300aa92dff7544613f10e4e3e58",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_soft/sampled_neutral.bin",
+      "sha256": "3ff9a752b63744fec7f7a78a2f1f960e08be6f24cd80d5adc5175add51f51d08",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_soft/soil_neutral.bin",
+      "sha256": "7d1831f1f954aeb5725c130c10c45708c75a66e61f09dabb3bf8be5f3d7525d1",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_soft/contact.bin",
+      "sha256": "7d1831f1f954aeb5725c130c10c45708c75a66e61f09dabb3bf8be5f3d7525d1",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/cliff_guides/2026-10-18/contact_soft/carved.bin",
+      "sha256": "b3893e7ac95bc0deb01953a8c57668a0919d114828be36c77f3bdace5bc32c3a",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/code_guided_result/2026-10-18/guide.bin",
+      "sha256": "000a5694aa9056a70bd9d887112b7966fc9b044683d4ce568c247e15ae441226",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/code_guided_result/2026-10-18/old.bin",
+      "sha256": "0259585fbe35f495f279bddb432ca15f3c7030d33d25b09ea227fe77a0c808b5",
+      "finite_gate_passes": true,
+      "non_two_use_edges": 0,
+      "vertex_link_defects": 0,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/code_guided_result/2026-10-18/new.bin",
+      "sha256": "c868ccdd699cfe5abf53db28f3eaa91958fae6ac9fe0db16f04c9a44ed72e639",
+      "finite_gate_passes": false,
+      "non_two_use_edges": 19,
+      "vertex_link_defects": 18,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/code_guided_result/2026-10-18/closed.bin",
+      "sha256": "ffe07ec1f8096d03d9b3597da053736eef3f7c004f2b0efe981e37fdefc8f0dc",
+      "finite_gate_passes": false,
+      "non_two_use_edges": 6,
+      "vertex_link_defects": 6,
+      "strict_crossing_pairs_at_least": 0
+    },
+    {
+      "file": "art/work/code_guided_result/2026-10-18/constrained.bin",
+      "sha256": "cf425cb62b307311f79517cd001a31ffe7af5f68ad3167d4e87018eb7ca3a845",
+      "finite_gate_passes": false,
+      "non_two_use_edges": 6,
+      "vertex_link_defects": 6,
+      "strict_crossing_pairs_at_least": 1222
+    }
+  ],
+  "contact_evidence": {
+    "contact_control": {
+      "operation": {
+        "air_to_solid": 635,
+        "cells": 45,
+        "changed_records": 2003,
+        "construction": "Union in ordinary saved densities; same one skin, no decorative backing or separate soil surface.",
+        "contour": "Exact exterior edges of occupied authoring cells, not smoothed contour",
+        "outside_cell_changed_nodes": 0,
+        "soil_vertical_shift": 0.25
+      },
+      "carve_operation": {
+        "center": "(-0.5, -0.5, 2.0)",
+        "changed": 470,
+        "radius": 1.1
+      },
+      "roots": 170,
+      "complete_uploaded_leaf_vertices": 79050,
+      "max_support_error": 1.7791091000418646e-07,
+      "soil_neutral_contact_mesh_and_layout_identical": true,
+      "near_zero_sign_preserving_guard": {
+        "minimum_absolute_density": 0.0002,
+        "changed": [
+          {
+            "key": [
+              -5,
+              7,
+              -9
+            ],
+            "before": -9e-05,
+            "after": -0.0002
+          },
+          {
+            "key": [
+              -6,
+              -8,
+              -7
+            ],
+            "before": -1e-05,
+            "after": -0.0002
+          },
+          {
+            "key": [
+              17,
+              -3,
+              5
+            ],
+            "before": 0.00015,
+            "after": 0.0002
+          },
+          {
+            "key": [
+              -11,
+              0,
+              7
+            ],
+            "before": 0.00011,
+            "after": 0.0002
+          },
+          {
+            "key": [
+              -7,
+              1,
+              7
+            ],
+            "before": 7e-05,
+            "after": 0.0002
+          },
+          {
+            "key": [
+              -7,
+              5,
+              8
+            ],
+            "before": 1e-05,
+            "after": 0.0002
+          }
+        ],
+        "reason": "Prevent real microscopic omitted faces at float32 area cutoff; finite gates rerun, not a general mesher robustness claim."
+      }
+    },
+    "contact_soft": {
+      "operation": {
+        "air_to_solid": 148,
+        "cells": 45,
+        "changed_records": 1966,
+        "construction": "Shallow variable upper translation sampled through production tetrahedral field, unioned into same saved records. No separate skin/cuff.",
+        "contour": "Same exact occupied-cell exterior as uniform control",
+        "outside_cell_changed_nodes": 0,
+        "soil_thickness_max": 0.16998982068477778,
+        "soil_thickness_min": 0.014259259848734034
+      },
+      "carve_operation": {
+        "center": "(-0.5, -0.5, 2.0)",
+        "changed": 470,
+        "radius": 1.1
+      },
+      "roots": 171,
+      "complete_uploaded_leaf_vertices": 79515,
+      "max_support_error": 2.0033188530277357e-07,
+      "soil_neutral_contact_mesh_and_layout_identical": true,
+      "near_zero_sign_preserving_guard": {
+        "minimum_absolute_density": 0.0002,
+        "changed": [
+          {
+            "key": [
+              -5,
+              7,
+              -9
+            ],
+            "before": -9e-05,
+            "after": -0.0002
+          },
+          {
+            "key": [
+              -6,
+              -8,
+              -7
+            ],
+            "before": -1e-05,
+            "after": -0.0002
+          },
+          {
+            "key": [
+              17,
+              -3,
+              5
+            ],
+            "before": 0.00015,
+            "after": 0.0002
+          },
+          {
+            "key": [
+              -11,
+              0,
+              7
+            ],
+            "before": 0.00011,
+            "after": 0.0002
+          },
+          {
+            "key": [
+              -7,
+              1,
+              7
+            ],
+            "before": 7e-05,
+            "after": 0.0002
+          },
+          {
+            "key": [
+              -7,
+              5,
+              8
+            ],
+            "before": 1e-05,
+            "after": 0.0002
+          }
+        ],
+        "reason": "Prevent real microscopic omitted faces at float32 area cutoff; finite gates rerun, not a general mesher robustness claim."
+      }
+    }
+  },
+  "identical_source_and_sampled_bytes_between_contact_controls": true,
+  "fresh_test_results": [
+    {
+      "command": "godot --headless --path . --script tests/pcg_master_data_test.gd -- --input=res://art/work/cliff_guides/2026-10-18/contact_soft/contact.layout",
+      "exit_code": 0,
+      "observed_output": "MASTER DATA: 9/9 passed"
+    },
+    {
+      "command": "godot --headless --path . --script tests/master_mantle_replay_test.gd -- --work=res://art/work/cliff_guides/2026-10-18/contact_soft/ --capture=res://art/review/terrain_fidelity/2026-10-18/cliff_guides/contact_soft/captures.json",
+      "exit_code": 0,
+      "observed_output": "MASTER MANTLE REPLAY: 12/12 passed"
+    }
+  ],
+  "paid_probe": {
+    "jobs": 1,
+    "credits": 100,
+    "texture": false,
+    "result": "rejected; original/patch/projection never sampled",
+    "original_bytes": 121892,
+    "original_sha256": "93ad0e8fe0fcecd0de71d03f3686f6015885f52d99d50df0999dd25cb113e0e9"
+  },
+  "independent_review": "independent_review.md",
+  "remaining": [
+    "natural unequal major faces and common basal return",
+    "target grass/stone visual contact",
+    "arbitrary layouts/neighbor relations and regeneration",
+    "formal editor/publication/picking/collision integration",
+    "two authored layouts/two seeds of accepted editable scene",
+    "target-hardware and long-idle performance",
+    "user art acceptance"
+  ]
+}

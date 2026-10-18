@@ -1,0 +1,13 @@
+{
+  "source_sha256": "c868ccdd699cfe5abf53db28f3eaa91958fae6ac9fe0db16f04c9a44ed72e639",
+  "boundary_edges_before": 15,
+  "triangles_closed": 5030,
+  "closed_sha256": "ffe07ec1f8096d03d9b3597da053736eef3f7c004f2b0efe981e37fdefc8f0dc",
+  "constrained_sha256": "cf425cb62b307311f79517cd001a31ffe7af5f68ad3167d4e87018eb7ca3a845",
+  "guide_uniform_width": 11.0,
+  "guide_alignment": "Both bounding centers zero; guide uniformly normalized11mwidth",
+  "vertex_distance_band": 0.15,
+  "vertices_outside_band_before": 1530,
+  "max_before_distance": 1.1683545507237694,
+  "scope": "One repaired/projected copy of returned model, vertices within.15m of canonical code surface. Does NOT prove triangle-distance bound, nonintersections, art or editor acceptance. Original unchanged."
+}

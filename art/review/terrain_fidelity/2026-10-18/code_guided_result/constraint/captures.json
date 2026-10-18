@@ -1,0 +1,203 @@
+{
+	"frames": [
+		{
+			"error": 0,
+			"file": "guide_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "guide",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "guide_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "guide",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "guide_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "guide",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "guide_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "guide",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "guide_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "guide",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "new_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "new",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "new_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "new",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "new_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "new",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "new_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "new",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "new_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "new",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "closed_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "closed",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "closed_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "closed",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "closed_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "closed",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "closed_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "closed",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "closed_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "closed",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "constrained_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "constrained",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "constrained_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "constrained",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "constrained_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "constrained",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "constrained_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "constrained",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "constrained_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "constrained",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		}
+	],
+	"scope": "Actual unchanged-position direct source/candidate neutral geometry with same42degree normals and five cameras. No sampling/grass/editor/art/performance acceptance.",
+	"stages": {
+		"closed": {
+			"sha256": "ffe07ec1f8096d03d9b3597da053736eef3f7c004f2b0efe981e37fdefc8f0dc",
+			"triangles": 5030
+		},
+		"constrained": {
+			"sha256": "cf425cb62b307311f79517cd001a31ffe7af5f68ad3167d4e87018eb7ca3a845",
+			"triangles": 5030
+		},
+		"guide": {
+			"sha256": "000a5694aa9056a70bd9d887112b7966fc9b044683d4ce568c247e15ae441226",
+			"triangles": 112
+		},
+		"new": {
+			"sha256": "c868ccdd699cfe5abf53db28f3eaa91958fae6ac9fe0db16f04c9a44ed72e639",
+			"triangles": 5021
+		}
+	}
+}

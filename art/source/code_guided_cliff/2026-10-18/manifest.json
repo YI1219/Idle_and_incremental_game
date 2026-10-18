@@ -1,0 +1,106 @@
+{
+  "asset": "code_guided_cliff_white",
+  "date": "2026-10-18",
+  "status": "ONE actual model generated/downloaded, original REJECTED finite/art; repair/projection copies also rejected; not sampled",
+  "authorization": "Latest user explicitly invites code-authored modeling constraints, model-series replacement and direct feasible trials; existing selected cliff Tripo operation permission. ONE selected guided geometry model, no texture/purchase.",
+  "guide": "art/work/cliff_guides/2026-10-18/broad_turn_7301.bin",
+  "views": {
+    "front": {
+      "file": "inputs/front.png"
+    },
+    "left": {
+      "file": "inputs/left.png"
+    },
+    "right": {
+      "file": "inputs/right.png"
+    },
+    "back": {
+      "file": "inputs/back.png"
+    }
+  },
+  "selected": {
+    "front": {
+      "file": "inputs/front.png",
+      "sha256": "8c025c72ea4a5c58f182845cc97c41fc673929718e4ad892e8369f4479befb5d",
+      "dimensions": [
+        1670,
+        941
+      ]
+    },
+    "left": {
+      "file": "inputs/left.png",
+      "sha256": "63c536edcee06f747db6913186e9a57eeea6f934c45149a886eefa67c2bd493e",
+      "dimensions": [
+        1671,
+        941
+      ]
+    },
+    "right": {
+      "file": "inputs/right.png",
+      "sha256": "a35c6860a81b5ef907579168b3e6d91762b8e14e5aab233c85d3db9bfdfcab17",
+      "dimensions": [
+        1671,
+        941
+      ]
+    },
+    "back": {
+      "file": "inputs/back.png",
+      "sha256": "8add12d78df2d3bee5ba7f94c417f0a9ff701e18aa810ca15f9ad50d03fe575e",
+      "dimensions": [
+        1671,
+        941
+      ]
+    }
+  },
+  "studio": {
+    "route": "smart_mesh",
+    "topology": "triangles",
+    "target_faces": 5000,
+    "texture": false
+  },
+  "recommended_parameters": {
+    "mode": "Smart Mesh multiview, record actual model UI",
+    "quantity": 1,
+    "topology": "Triangle",
+    "target_faces": 5000,
+    "texture": false,
+    "rig": false,
+    "animation": false,
+    "export": "GLB"
+  },
+  "download_directory": "tripo",
+  "suggested_filename": "code_guided_cliff_white.glb",
+  "model_task_id": null,
+  "input_review": "input_review.md",
+  "prompts": "prompts.json",
+  "constraint_scope": "Local code locks guide family exactly. AI views/Tripo are soft guidance; returned model requires explicit geometry/silhouette comparison, no hard-constrained AI claim.",
+  "actual_generation_parameters": {
+    "model": "P2.0",
+    "quantity": 1,
+    "topology": "triangles",
+    "requested_faces": 5000,
+    "actual_Godot_triangles": 5021,
+    "welded_vertices": 2516,
+    "texture": false,
+    "credits": 100,
+    "paid_click_local": "2026-10-18T16:28:44",
+    "log": "tripo/studio_run_20261018_162826.json"
+  },
+  "model_original": {
+    "file": "tripo/code_guided_cliff_white.glb",
+    "sha256": "93ad0e8fe0fcecd0de71d03f3686f6015885f52d99d50df0999dd25cb113e0e9",
+    "bytes": 121892
+  },
+  "actual_rejection": {
+    "normalized_width": 11,
+    "height": 6.270308,
+    "depth": 7.344337,
+    "non_two_use_edges": 19,
+    "vertex_link_defects": 18,
+    "strict_crossings": 0,
+    "repair_edges_remaining": 6,
+    "projected_strict_crossings": 1222,
+    "sampled": false,
+    "scope": "Photosoft guidance failed to preserve canonical geometry; no general model/provider verdict"
+  }
+}

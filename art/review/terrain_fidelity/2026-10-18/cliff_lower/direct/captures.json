@@ -1,0 +1,105 @@
+{
+	"frames": [
+		{
+			"error": 0,
+			"file": "source_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "source",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "source_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "source",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "source_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "source",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "source_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "source",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "source_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "source",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "refined_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "refined",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "refined_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "refined",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "refined_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "refined",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "refined_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "refined",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "refined_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "refined",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		}
+	],
+	"scope": "Actual unchanged-position direct source/candidate neutral geometry with same42degree normals and five cameras. No sampling/grass/editor/art/performance acceptance.",
+	"stages": {
+		"refined": {
+			"sha256": "97d9496baa8e3c61e10ba7a4f1631a906316134c94b69c693400c152ceb02bbf",
+			"triangles": 5028
+		},
+		"source": {
+			"sha256": "52339e28e2e60e5bca4f9bafbc9a0837ed8d785df5bf3960dcf6ea73a8b94cfa",
+			"triangles": 5028
+		}
+	}
+}

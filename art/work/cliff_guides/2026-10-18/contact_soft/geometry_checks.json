@@ -1,0 +1,120 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "master_source": {
+      "source_sha256": "a3afd5369185bf5cce65132f0eeb741ed9480300aa92dff7544613f10e4e3e58",
+      "topology": {
+        "triangles": 112,
+        "welded_vertices_1e5": 58,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 204.1068152896284,
+        "vertex_components": [
+          58
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "a3afd5369185bf5cce65132f0eeb741ed9480300aa92dff7544613f10e4e3e58",
+        "triangles": 112,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "sampled_neutral": {
+      "source_sha256": "3ff9a752b63744fec7f7a78a2f1f960e08be6f24cd80d5adc5175add51f51d08",
+      "topology": {
+        "triangles": 28444,
+        "welded_vertices_1e5": 14224,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 203.4225258162316,
+        "vertex_components": [
+          14224
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "3ff9a752b63744fec7f7a78a2f1f960e08be6f24cd80d5adc5175add51f51d08",
+        "triangles": 28444,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "soil_neutral": {
+      "source_sha256": "7d1831f1f954aeb5725c130c10c45708c75a66e61f09dabb3bf8be5f3d7525d1",
+      "topology": {
+        "triangles": 28728,
+        "welded_vertices_1e5": 14366,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 206.0873836086234,
+        "vertex_components": [
+          14366
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "7d1831f1f954aeb5725c130c10c45708c75a66e61f09dabb3bf8be5f3d7525d1",
+        "triangles": 28728,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "contact": {
+      "source_sha256": "7d1831f1f954aeb5725c130c10c45708c75a66e61f09dabb3bf8be5f3d7525d1",
+      "topology": {
+        "triangles": 28728,
+        "welded_vertices_1e5": 14366,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 206.0873836086234,
+        "vertex_components": [
+          14366
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "7d1831f1f954aeb5725c130c10c45708c75a66e61f09dabb3bf8be5f3d7525d1",
+        "triangles": 28728,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "carved": {
+      "source_sha256": "b3893e7ac95bc0deb01953a8c57668a0919d114828be36c77f3bdace5bc32c3a",
+      "topology": {
+        "triangles": 29160,
+        "welded_vertices_1e5": 14582,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 203.4784807731217,
+        "vertex_components": [
+          14582
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "b3893e7ac95bc0deb01953a8c57668a0919d114828be36c77f3bdace5bc32c3a",
+        "triangles": 29160,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source": "art/work/cliff_land_v2/2026-10-18/contact/master_source.bin",
+  "source_sha256": "52339e28e2e60e5bca4f9bafbc9a0837ed8d785df5bf3960dcf6ea73a8b94cfa",
+  "refined_sha256": "97d9496baa8e3c61e10ba7a4f1631a906316134c94b69c693400c152ceb02bbf",
+  "vertices": 2516,
+  "triangles": 5028,
+  "pinned_vertices": 1505,
+  "pinned_above_y": 0.6,
+  "pinned_positions_exact": true,
+  "moved_vertices": 1011,
+  "max_displacement": 0.46902015073494047,
+  "mean_moved_displacement": 0.14958119347455714,
+  "iterations": 18,
+  "factor": 0.38,
+  "source_bounds": [
+    [
+      -5.5,
+      -2.440376043319702,
+      -3.1890759468078613
+    ],
+    [
+      5.5,
+      3.25,
+      3.189074993133545
+    ]
+  ],
+  "refined_bounds": [
+    [
+      -5.5,
+      -2.058372735977173,
+      -3.1890759468078613
+    ],
+    [
+      5.5,
+      3.25,
+      3.189074993133545
+    ]
+  ],
+  "scope": "One lower-only weighted neighbor fairing of existing valid source. Same faces/upper positions, original preserved. Validity and art require separate actual checks; connectivity is not validity proof."
+}

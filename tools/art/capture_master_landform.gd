@@ -2,9 +2,14 @@ extends 'res://tools/art/capture_pcg_cliff.gd'
 func run():
  OUT='res://art/review/terrain_fidelity/2026-10-18/master_landform/'
  WORK='res://art/work/master_landform/2026-10-18/'
+ var stages:Array[String]=['source','candidate']
+ for arg:String in OS.get_cmdline_user_args():
+  if arg.begins_with('--input='):WORK=arg.trim_prefix('--input=')
+  elif arg.begins_with('--output='):OUT=arg.trim_prefix('--output=')
+  elif arg.begins_with('--stages='):stages.assign(arg.trim_prefix('--stages=').split(','))
  DirAccess.make_dir_recursive_absolute(OUT);setup();grass.visible=false
  var neutral:=StandardMaterial3D.new();neutral.albedo_color=Color(.60,.60,.57);neutral.roughness=.95;body.material_override=neutral
- for stage:String in ['source','candidate']:
+ for stage:String in stages:
   var values:PackedVector3Array=preload('res://tools/art/probe_cliff_manifold.gd').read_points(WORK+stage+'.bin')
   var surface=Surface.new()
   for i:int in range(0,values.size(),3):

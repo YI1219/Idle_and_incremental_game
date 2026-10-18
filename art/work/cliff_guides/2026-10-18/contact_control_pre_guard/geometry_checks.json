@@ -1,0 +1,120 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "master_source": {
+      "source_sha256": "a3afd5369185bf5cce65132f0eeb741ed9480300aa92dff7544613f10e4e3e58",
+      "topology": {
+        "triangles": 112,
+        "welded_vertices_1e5": 58,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 204.1068152896284,
+        "vertex_components": [
+          58
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "a3afd5369185bf5cce65132f0eeb741ed9480300aa92dff7544613f10e4e3e58",
+        "triangles": 112,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "sampled_neutral": {
+      "source_sha256": "030c6064dfdc37bbc53d86479e45e84bdf854b0c61806909b53174869579aab3",
+      "topology": {
+        "triangles": 28442,
+        "welded_vertices_1e5": 14224,
+        "non_two_use_edges": 4,
+        "directed_edge_pair_defects": 4,
+        "degenerate_index_faces": 0,
+        "signed_volume": 203.4225404365071,
+        "vertex_components": [
+          14224
+        ],
+        "vertex_link_defects": 4
+      },
+      "crossings": {
+        "mesh_sha256": "030c6064dfdc37bbc53d86479e45e84bdf854b0c61806909b53174869579aab3",
+        "triangles": 28442,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": false
+    },
+    "soil_neutral": {
+      "source_sha256": "d4cdf5915332ff07ae07aa37d054aac487ac8bac0ef34668d498379b03bdb757",
+      "topology": {
+        "triangles": 29038,
+        "welded_vertices_1e5": 14522,
+        "non_two_use_edges": 4,
+        "directed_edge_pair_defects": 4,
+        "degenerate_index_faces": 0,
+        "signed_volume": 213.1241084635745,
+        "vertex_components": [
+          14522
+        ],
+        "vertex_link_defects": 4
+      },
+      "crossings": {
+        "mesh_sha256": "d4cdf5915332ff07ae07aa37d054aac487ac8bac0ef34668d498379b03bdb757",
+        "triangles": 29038,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": false
+    },
+    "contact": {
+      "source_sha256": "d4cdf5915332ff07ae07aa37d054aac487ac8bac0ef34668d498379b03bdb757",
+      "topology": {
+        "triangles": 29038,
+        "welded_vertices_1e5": 14522,
+        "non_two_use_edges": 4,
+        "directed_edge_pair_defects": 4,
+        "degenerate_index_faces": 0,
+        "signed_volume": 213.1241084635745,
+        "vertex_components": [
+          14522
+        ],
+        "vertex_link_defects": 4
+      },
+      "crossings": {
+        "mesh_sha256": "d4cdf5915332ff07ae07aa37d054aac487ac8bac0ef34668d498379b03bdb757",
+        "triangles": 29038,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": false
+    },
+    "carved": {
+      "source_sha256": "3a8034fcdda59389a257ace7e743600af4d2cf31b4040e16eef919647ccfee51",
+      "topology": {
+        "triangles": 29470,
+        "welded_vertices_1e5": 14738,
+        "non_two_use_edges": 4,
+        "directed_edge_pair_defects": 4,
+        "degenerate_index_faces": 0,
+        "signed_volume": 210.5152056280728,
+        "vertex_components": [
+          14738
+        ],
+        "vertex_link_defects": 4
+      },
+      "crossings": {
+        "mesh_sha256": "3a8034fcdda59389a257ace7e743600af4d2cf31b4040e16eef919647ccfee51",
+        "triangles": 29470,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": false
+    }
+  }
+}
