@@ -15,12 +15,11 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'art/work/cliff_master/2026-10-18'
 
 
-def run():
+def sample_geometry(data):
+    """Return ordinary .25m records without mutating the source or any files."""
     spec = importlib.util.spec_from_file_location('source_sample', ROOT / 'tools/art/sample_cliff_representation.py')
     sample = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(sample)
-    source = OUT / 'tripo_original.bin'
-    data = np.fromfile(source, dtype='<f4').reshape(-1, 3).astype(float)
     tree = sample.tree_for([Vector(v) for v in data])
     lo = np.floor((data.min(0)-.75)/.25).astype(int)
     hi = np.ceil((data.max(0)+.75)/.25).astype(int)
@@ -50,11 +49,19 @@ def run():
         value = round(max(-.5,min(.5,(-1 if sum(votes)>=2 else 1)*distance)),5)
         if abs(value)<.00001: value=.00002
         if value<.5: records.append(dict(x=int(key[0]),y=int(key[1]),z=int(key[2]),density=value))
-    (OUT/'samples.json').write_text(json.dumps(records,separators=(',',':'))+'\n')
-    report = {'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'grid_step':.25,
+    report = {'grid_step':.25,
               'sample_records':len(records),'analytic_three_ray_crosschecks':crosschecks,
               'bvh_disagreements_resolved':disagreements,'bounds':[data.min(0).tolist(),data.max(0).tolist()],
               'scope':'One original-model conversion; every grid node uses three BVH rays, disagreement/every41st crosschecked in float64. Not art, editing robustness or target-hardware acceptance.'}
+    return records, report
+
+
+def run():
+    source = OUT / 'tripo_original.bin'
+    data = np.fromfile(source, dtype='<f4').reshape(-1, 3).astype(float)
+    records, report = sample_geometry(data)
+    report['source_sha256'] = hashlib.sha256(source.read_bytes()).hexdigest()
+    (OUT/'samples.json').write_text(json.dumps(records,separators=(',',':'))+'\n')
     (OUT/'sampling.json').write_text(json.dumps(report,indent=2)+'\n')
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=str(ROOT/'art/source/cliff_master/2026-10-18/tripo/cliff_master_white_v1.glb'))

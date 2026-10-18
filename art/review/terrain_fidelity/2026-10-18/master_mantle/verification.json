@@ -1,0 +1,23 @@
+{
+  "source_hashes_match": true,
+  "old_sampler_records_identical": true,
+  "neutral_contact_positions_and_density_exact": true,
+  "native_frames": 25,
+  "finite_geometry_stages_passed": [
+    "master_source",
+    "sampled_neutral",
+    "soil_neutral",
+    "contact",
+    "carved"
+  ],
+  "contact_roots": 71,
+  "complete_leaf_vertices": 33015,
+  "max_field_mesh_root_error": 1.5193019242687456e-07,
+  "actual_cell_ownership_roots": true,
+  "air_to_solid_nodes_outside_actual_cells": 35,
+  "outside_nodes_not_on_cell_boundaries": 10,
+  "scope": "Current artifact consistency and bounded support checks only. Smoothed-contour soil may extend beyond actual cells; material vertices/roots checked separately. Not full art/editor/PCG/performance acceptance.",
+  "exact_captured_edit_replay_checks_passed": 12,
+  "replay_command": "godot --headless --path . --script tests/master_mantle_replay_test.gd",
+  "replay_scope": "Exact captured stroke and exact triangle vertex bytes after load/edit/undo/redo/reload; expected JSON numeric types normalized through ordinary Data.deserialize, no geometric tolerance."
+}

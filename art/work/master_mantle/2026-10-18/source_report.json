@@ -1,0 +1,179 @@
+{
+  "grid_step": 0.25,
+  "sample_records": 23768,
+  "analytic_three_ray_crosschecks": 2081,
+  "bvh_disagreements_resolved": [
+    {
+      "point": [
+        -5.0,
+        0.0,
+        -5.0
+      ],
+      "bvh": [
+        false,
+        false,
+        true
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -5.5,
+        -1.0,
+        -4.75
+      ],
+      "bvh": [
+        false,
+        false,
+        true
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -6.25,
+        1.75,
+        -3.0
+      ],
+      "bvh": [
+        false,
+        false,
+        true
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -6.0,
+        1.25,
+        -2.5
+      ],
+      "bvh": [
+        false,
+        false,
+        true
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -5.5,
+        0.5,
+        -0.75
+      ],
+      "bvh": [
+        false,
+        false,
+        true
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        0.0,
+        -3.75,
+        1.0
+      ],
+      "bvh": [
+        false,
+        true,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        2.0,
+        -3.75,
+        1.0
+      ],
+      "bvh": [
+        false,
+        true,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -5.5,
+        -2.25,
+        2.25
+      ],
+      "bvh": [
+        true,
+        false,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        3.75,
+        -2.25,
+        2.25
+      ],
+      "bvh": [
+        false,
+        true,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "bounds": [
+    [
+      -5.5,
+      -4.138355731964111,
+      -4.73079252243042
+    ],
+    [
+      5.5,
+      3.25,
+      4.73079252243042
+    ]
+  ],
+  "scope": "One source-defined strip at11mwidth, original proportions. Sampling regression retained. No claim of arbitrary cell-contour compiler or complete editor integration.",
+  "source_sha256": "75178ba35204c44a4618e17c872aac31da0cd1e1aab8ea1942a0ca0565e73234",
+  "trial_points_sha256": "e54ac6588a674ca4c8929d25024dd9358513e1088c28f296cdf739a5fe6ecd9a",
+  "uniform_scale_from_5_5m_control": 2.0,
+  "translation_y": -0.44417762756347656,
+  "old_sampler_records_byte_identical": true,
+  "roof_nodes": 1243
+}

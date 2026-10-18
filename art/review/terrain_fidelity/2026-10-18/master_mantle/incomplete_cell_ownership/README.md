@@ -1,0 +1,1 @@
+First25frames incomplete: contact_leaves assertion aborted fan upload because smoothed contours can include unoccupied cell concavities. Not counted as complete contact evidence. Root ownership corrected at its shared material/leaf owner function, not by dropping the assertion.
