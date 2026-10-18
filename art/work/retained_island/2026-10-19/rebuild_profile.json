@@ -1,0 +1,18 @@
+{
+	"before": {
+		"full_rebuild_ms": 3412.401,
+		"node_value_reads": 1389172,
+		"refresh_phases_ms": {
+			"index_passes": 104.65,
+			"legacy_caps": 0.038,
+			"legacy_cliff_bands": 45.18,
+			"legacy_normal_passes": 17.586,
+			"total_refresh": 1691.977
+		},
+		"standalone_mesh_ms": 1385.888,
+		"vertex_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05"
+	},
+	"density_records": 39231,
+	"processor": "Apple M4 Pro",
+	"scope": "Actual current C0candidate, exact native vertex/data identity asserted. Diagnostic headless CPU timing, not FPS, hardware acceptance or artistic gain."
+}

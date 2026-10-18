@@ -24,11 +24,19 @@ static func build(field)->Surface:
  var keys:=cells.keys();keys.sort()
  for cell:Vector3i in keys:
   var points:Array[Vector3i]=[]
-  for corner:Vector3i in CORNERS:points.append(cell+corner)
+  var values:=PackedFloat64Array();var least:=INF;var greatest:=-INF
+  for corner:Vector3i in CORNERS:
+   var node:=cell+corner;var value:float=field.node_value(node)
+   points.append(node);values.append(value)
+   least=minf(least,value);greatest=maxf(greatest,value)
+  # A linear tetrahedron cannot cross zero if every cube corner has the
+  # same sign. Saved subtractive air can occupy many full interior cubes;
+  # do not build six empty tetrahedra or look up their nodes repeatedly.
+  if least>=0.0 or greatest<0.0:continue
   for tet:Array in TETS:
    var inside:Array[Vector3i]=[];var outside:Array[Vector3i]=[]
    for index:int in tet:
-    if field.node_value(points[index])<0:inside.append(points[index])
+    if values[index]<0:inside.append(points[index])
     else:outside.append(points[index])
    if inside.is_empty() or outside.is_empty():continue
    var toward_air:=Vector3.ZERO;var toward_rock:=Vector3.ZERO
@@ -59,7 +67,11 @@ static func build(field)->Surface:
      # field gradients has already erased every sharp carved edge.
      surface.normals.append(cross.normalized() if field.base!=null else entry.normal)
      if field.base!=null:
-      var tag:Dictionary=field.base.tag(entry.point,entry.normal)
+      # A cached crossing has one immutable point/gradient during this build.
+      # Adjacent triangles reuse its material classification as well as its
+      # geometry. The crossing cache is discarded on every new mesh build.
+      if not entry.has('tag'):entry.tag=field.base.tag(entry.point,entry.normal)
+      var tag:Dictionary=entry.tag
       surface.colors.append(tag.color);surface.uv.append(tag.uv)
      else:surface.colors.append(Color.WHITE);surface.uv.append(Vector2.ZERO)
  if field.base!=null:

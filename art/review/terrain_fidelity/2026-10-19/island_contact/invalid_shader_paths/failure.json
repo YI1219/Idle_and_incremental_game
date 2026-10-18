@@ -1,0 +1,4 @@
+{
+  "reason": "Copied shader relative include paths resolve against tools/art rather than production shader folder; native compile failed, fallback material makes 5variant frames invalid. Not an art verdict or adoption.",
+  "fix": "Absolute res://shader include references"
+}

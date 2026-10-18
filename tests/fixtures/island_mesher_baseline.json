@@ -1,0 +1,50 @@
+{
+	"cases": {
+		"bay_7301": {
+			"attributes": {
+				"colors": "98f7b3f311676c95f20567ed530be02fdd1222d0d31d354eae45587a24be8c5d",
+				"normals": "6a0abcee30deaeda48212e48c322ba482dda4ae22a5e0b595d16ace5d5672e8f",
+				"uv": "f12f44acde28d88007f9e7c51931cbd188f1864ea965df47d2d955dd030764a7",
+				"vertices": "e76d0aedd66bf4aca8a0f30660b823ee66e3b73ab6bbbcb93769c5bc693c7997"
+			},
+			"elapsed_ms": 1494.926,
+			"node_value_reads": 1499478,
+			"vertex_occurrences": 219948
+		},
+		"bay_7319": {
+			"attributes": {
+				"colors": "fbe29f3ec9a451e276003a6f2ad7d291cda0aadfcc9235a5eb779797029aa3b6",
+				"normals": "4c484050c09ec910e6f1d81e68fa229a1ffb802303e8297c7a6576abbd4c8ba0",
+				"uv": "2e9047305832055cb4b2d00d335cc0f707ef27e3e0a53f9acb3c0f4816f75171",
+				"vertices": "dde42a7b323b6fccdeaba99205a6a9de99a12df34f283e5ec463de65ac7bdd40"
+			},
+			"elapsed_ms": 1535.815,
+			"node_value_reads": 1538110,
+			"vertex_occurrences": 226284
+		},
+		"courtyard_7301": {
+			"attributes": {
+				"colors": "d6dbe9908d7d9010391c9cd1d0dc55252562c2b39b41097873ff8d7d936e5951",
+				"normals": "4c60cb9708fdb102e88e81931032a0767aae4630a3a8d1c5b4ed21bee7ca7634",
+				"uv": "add96ee2aa5ab173ac6a944d3764113c343dd62f749118201941dd9915b38410",
+				"vertices": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05"
+			},
+			"elapsed_ms": 1389.544,
+			"node_value_reads": 1389172,
+			"vertex_occurrences": 204876
+		},
+		"courtyard_7319": {
+			"attributes": {
+				"colors": "3af8c3b0eeca7f58a41214563a15e1ee9ec68ac087901c3ec1d0430fb720e784",
+				"normals": "c6c57a701a2822986f6ddec11b8ad89dc97d48a0236695f7434e5bf54765bc93",
+				"uv": "76ec881cb8dbc408e80c3e7fd12a42d52ab04ac4196b1b0f9ce4a3cc9f06ac46",
+				"vertices": "42fe8aa77c426957050043295e169cb2d8f5969bb95e9aea0964f1866c0428cd"
+			},
+			"elapsed_ms": 1376.392,
+			"node_value_reads": 1370062,
+			"vertex_occurrences": 203040
+		}
+	},
+	"mesher_source_sha256": "7e8bc3f49fa752f1cb9d25ebba34e9242033af0263785506cc15ab80f3319794",
+	"scope": "Actual pre-optimization mesh attributes from four ordinary tracked presets. Counter records algorithmic density reads, not wall-time/target-device acceptance."
+}

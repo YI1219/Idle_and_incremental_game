@@ -1,0 +1,112 @@
+{
+  "captures": [
+    {
+      "draw_calls": 192.0,
+      "error": 0,
+      "file": "control_whole.png",
+      "position": "(-4.373102, 18.61659, 18.11074)",
+      "rotation": "(-34.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 222.0,
+      "error": 0,
+      "file": "control_play.png",
+      "position": "(-6.484222, 15.27153, 9.74839)",
+      "rotation": "(-35.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 246.0,
+      "error": 0,
+      "file": "control_close.png",
+      "position": "(-8.75244, 7.994038, 11.32559)",
+      "rotation": "(-25.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 192.0,
+      "error": 0,
+      "file": "control_reverse.png",
+      "position": "(-17.31135, 16.70782, -27.0103)",
+      "rotation": "(-32.0, -164.0, 0.0)"
+    },
+    {
+      "draw_calls": 197.0,
+      "error": 0,
+      "file": "control_low.png",
+      "position": "(4.224263, 3.266049, 15.9544)",
+      "rotation": "(-5.0, 36.0, 0.0)"
+    },
+    {
+      "draw_calls": 192.0,
+      "error": 0,
+      "file": "world_boundary_whole.png",
+      "position": "(-4.373102, 18.61659, 18.11074)",
+      "rotation": "(-34.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 222.0,
+      "error": 0,
+      "file": "world_boundary_play.png",
+      "position": "(-6.484222, 15.27153, 9.74839)",
+      "rotation": "(-35.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 246.0,
+      "error": 0,
+      "file": "world_boundary_close.png",
+      "position": "(-8.75244, 7.994038, 11.32559)",
+      "rotation": "(-25.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 192.0,
+      "error": 0,
+      "file": "world_boundary_reverse.png",
+      "position": "(-17.31135, 16.70782, -27.0103)",
+      "rotation": "(-32.0, -164.0, 0.0)"
+    },
+    {
+      "draw_calls": 197.0,
+      "error": 0,
+      "file": "world_boundary_low.png",
+      "position": "(4.224263, 3.266049, 15.9544)",
+      "rotation": "(-5.0, 36.0, 0.0)"
+    }
+  ],
+  "scope": "Matched native contact experiments: identical terrain vertices and saved data. World boundary changes material coverage; rooted styles add instances of the existing grass module. No extra terrain, production adoption or user art acceptance.",
+  "stages": {
+    "control": {
+      "art_accepted": false,
+      "layout_sha256": "52f9f2d1837cad95cd0fde3a9388d41753f9cc81497d3b6ebbe928de96182eb9",
+      "props": [
+        "ReferenceCottage",
+        "KitchenGardenRow0",
+        "KitchenGardenRow1",
+        "KitchenGardenRow2",
+        "KitchenGardenRow3",
+        "KitchenGardenRow4"
+      ],
+      "rule": {},
+      "triangles": 68292,
+      "vertex_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05"
+    },
+    "world_boundary": {
+      "art_accepted": false,
+      "layout_sha256": "52f9f2d1837cad95cd0fde3a9388d41753f9cc81497d3b6ebbe928de96182eb9",
+      "props": [
+        "ReferenceCottage",
+        "KitchenGardenRow0",
+        "KitchenGardenRow1",
+        "KitchenGardenRow2",
+        "KitchenGardenRow3",
+        "KitchenGardenRow4"
+      ],
+      "rule": {
+        "criterion": "Real topmost field roof within.03m of dry cap; side band no deeper than.4m supplies interpolation. Fragment grass actual depth only.045\u2013.12m. Not a new shell/geometry.",
+        "owned_vertex_occurrences": 62741,
+        "unique_roof_queries": 11030
+      },
+      "triangles": 68292,
+      "vertex_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05"
+    }
+  },
+  "metadata_correction": "Scope wording corrected after capture: original material-only label did not describe added plant instances in rooted styles. Images, camera and measured terrain/data records unchanged."
+}

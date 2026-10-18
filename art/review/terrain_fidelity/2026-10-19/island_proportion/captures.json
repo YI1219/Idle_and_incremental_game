@@ -1,0 +1,119 @@
+{
+	"captures": [
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "control_whole.png",
+			"position": "(-4.373102, 18.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 222.0,
+			"error": 0,
+			"file": "control_play.png",
+			"position": "(-6.484222, 15.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 246.0,
+			"error": 0,
+			"file": "control_close.png",
+			"position": "(-8.75244, 7.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "control_reverse.png",
+			"position": "(-17.31135, 16.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 197.0,
+			"error": 0,
+			"file": "control_low.png",
+			"position": "(4.224263, 3.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "shallow_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 224.0,
+			"error": 0,
+			"file": "shallow_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 246.0,
+			"error": 0,
+			"file": "shallow_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "shallow_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 197.0,
+			"error": 0,
+			"file": "shallow_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		}
+	],
+	"scope": "Native whole-island vertical proportion comparison; actual source data differs. Terrain surface3.5→1.5, all five cameras translate down2m to retain same ground-relative angles/distances. Existing house/tree geometry and XZplacements stay. Tools-only, not default/adopted or user art acceptance.",
+	"stages": {
+		"control": {
+			"art_accepted": false,
+			"camera_vertical_shift": 0.0,
+			"cells": 145,
+			"props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"records": 39231,
+			"rule": {},
+			"same_camera_relative_to_ground": true,
+			"triangles": 68292,
+			"vertex_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05"
+		},
+		"shallow": {
+			"art_accepted": false,
+			"camera_vertical_shift": -2.0,
+			"cells": 145,
+			"props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"records": 54285,
+			"rule": {
+				"construction_ms": 3158.159,
+				"method": "Ordinary saved field samples F_new(x,y,z)=.52*F_old(x,3.5+(y-1.5)/.52,z); distant saturated air stays+.5; five-decimal values and sign-preserving tiny-value guards. Same XZcells, new cellheight1.5. No scene geometry transform/hidden body.",
+				"near_zero_guards": 2695,
+				"records": 54285,
+				"scope": "Tools-only native whole-scene art experiment. Reconstructed geometry/source fidelity/support/editor/preset adoption require fresh checks if selected."
+			},
+			"same_camera_relative_to_ground": true,
+			"triangles": 56320,
+			"vertex_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269"
+		}
+	}
+}

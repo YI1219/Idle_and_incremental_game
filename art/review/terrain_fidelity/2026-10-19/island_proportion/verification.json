@@ -1,0 +1,157 @@
+{
+  "native_frames": 30,
+  "contact_frames": 20,
+  "proportion_frames": 10,
+  "contact_terrain_and_data_identical": true,
+  "rooted_styles_add_existing_plant_geometry": true,
+  "proportion_cameras_same_ground_relative_view_but_world_y_minus_2": true,
+  "proportion_cases": [
+    "courtyard_7301"
+  ],
+  "ordinary_edit_history_file_checks": "12/12",
+  "geometry_reports": [
+    {
+      "file": "art/work/retained_island/2026-10-19/proportion/geometry_checks.json",
+      "report": {
+        "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+        "stages": {
+          "control": {
+            "source_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05",
+            "topology": {
+              "triangles": 68292,
+              "welded_vertices_1e5": 34148,
+              "non_two_use_edges": 0,
+              "directed_edge_pair_defects": 0,
+              "degenerate_index_faces": 0,
+              "signed_volume": 636.4863997377735,
+              "vertex_components": [
+                34148
+              ],
+              "vertex_link_defects": 0
+            },
+            "crossings": {
+              "mesh_sha256": "109e8d94bd4dc0290ba620145c9244b1320b4ce86c4fb3912460c2691b29ed05",
+              "triangles": 68292,
+              "disjoint_position_bvh_pairs": 0,
+              "strict_crossing_pairs_at_least": 0,
+              "crossings": []
+            },
+            "finite_gate_passes": true
+          },
+          "shallow": {
+            "source_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269",
+            "topology": {
+              "triangles": 56320,
+              "welded_vertices_1e5": 28162,
+              "non_two_use_edges": 0,
+              "directed_edge_pair_defects": 0,
+              "degenerate_index_faces": 0,
+              "signed_volume": 330.18346142528236,
+              "vertex_components": [
+                28162
+              ],
+              "vertex_link_defects": 0
+            },
+            "crossings": {
+              "mesh_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269",
+              "triangles": 56320,
+              "disjoint_position_bvh_pairs": 0,
+              "strict_crossing_pairs_at_least": 0,
+              "crossings": []
+            },
+            "finite_gate_passes": true
+          }
+        }
+      }
+    },
+    {
+      "file": "art/work/retained_island/2026-10-19/proportion/output_geometry/geometry_checks.json",
+      "report": {
+        "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+        "stages": {
+          "playable": {
+            "source_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269",
+            "topology": {
+              "triangles": 56320,
+              "welded_vertices_1e5": 28162,
+              "non_two_use_edges": 0,
+              "directed_edge_pair_defects": 0,
+              "degenerate_index_faces": 0,
+              "signed_volume": 330.18346142528236,
+              "vertex_components": [
+                28162
+              ],
+              "vertex_link_defects": 0
+            },
+            "crossings": {
+              "mesh_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269",
+              "triangles": 56320,
+              "disjoint_position_bvh_pairs": 0,
+              "strict_crossing_pairs_at_least": 0,
+              "crossings": []
+            },
+            "finite_gate_passes": true
+          },
+          "retained_carved": {
+            "source_sha256": "331d32ef86d49b0b9275d4cf5c2afdee17c571dbebc96c8ac29058d9b4249a2d",
+            "topology": {
+              "triangles": 56288,
+              "welded_vertices_1e5": 28146,
+              "non_two_use_edges": 0,
+              "directed_edge_pair_defects": 0,
+              "degenerate_index_faces": 0,
+              "signed_volume": 328.9472554622154,
+              "vertex_components": [
+                28146
+              ],
+              "vertex_link_defects": 0
+            },
+            "crossings": {
+              "mesh_sha256": "331d32ef86d49b0b9275d4cf5c2afdee17c571dbebc96c8ac29058d9b4249a2d",
+              "triangles": 56288,
+              "disjoint_position_bvh_pairs": 0,
+              "strict_crossing_pairs_at_least": 0,
+              "crossings": []
+            },
+            "finite_gate_passes": true
+          }
+        }
+      }
+    }
+  ],
+  "png_sha256": {
+    "island_proportion/control_whole.png": "fddfd4f4271c59181e6d671c26b9c8ef6dfb0fe19e277102f2462b365d182fac",
+    "island_proportion/control_play.png": "dbd6983ad00ef2dfb5b64d839b1ac984efbc8e34934853d610ed9b05aaf1f03e",
+    "island_proportion/control_close.png": "cb51b8177ee821f8aff60d311ab771029a7b4b3683a2a4b335d208885eb6ac96",
+    "island_proportion/control_reverse.png": "356b818670583751641fd59abf460ee6d902560b4ed4a3d7bc3d88054c0b85c3",
+    "island_proportion/control_low.png": "6e2c8baa71c857def5ad51c32f7fc9390eed53ef5ffe2641c6c343531d5f0bea",
+    "island_proportion/shallow_whole.png": "de78a07ae5da37363d3888905403c8deec268566a98f1f37eaf1d012786b21cc",
+    "island_proportion/shallow_play.png": "d9a144108471e0d808917f3c88b11a3314ece63a9a43e863315cac9531861847",
+    "island_proportion/shallow_close.png": "d428e6fe79a2a47ef97c7b570a3660a60a245e3ee3a47b043ca5bd06ed607b6e",
+    "island_proportion/shallow_reverse.png": "a1442f903908c43ba661e0649ec52713bca95b354668b4d55d89c914a446c6d8",
+    "island_proportion/shallow_low.png": "9a4627a2dc143fe469dd9782c7035701b87401805ac352ce2a6a1bd618db90f8",
+    "island_contact/control_whole.png": "fddfd4f4271c59181e6d671c26b9c8ef6dfb0fe19e277102f2462b365d182fac",
+    "island_contact/control_play.png": "dbd6983ad00ef2dfb5b64d839b1ac984efbc8e34934853d610ed9b05aaf1f03e",
+    "island_contact/control_close.png": "cb51b8177ee821f8aff60d311ab771029a7b4b3683a2a4b335d208885eb6ac96",
+    "island_contact/control_reverse.png": "356b818670583751641fd59abf460ee6d902560b4ed4a3d7bc3d88054c0b85c3",
+    "island_contact/control_low.png": "6e2c8baa71c857def5ad51c32f7fc9390eed53ef5ffe2641c6c343531d5f0bea",
+    "island_contact/world_boundary_whole.png": "5df6c85194e432689a09cd46d559908eceaef3e3d48497196bfc0c5920001b3d",
+    "island_contact/world_boundary_play.png": "12d5204a338db66367e139717d1f0e9c152b756f987e833139934c456cec9a9d",
+    "island_contact/world_boundary_close.png": "6b835817530c66f498530db6747e24b8afd5e7b2c5988e821a2b3d50b8fd2863",
+    "island_contact/world_boundary_reverse.png": "acb8abac3adc757d96f5c5f63b9674af11d890cfc4328c1410f4bc3414841a19",
+    "island_contact/world_boundary_low.png": "1b5bb8fba7887f269530bde3e4758affccf62ac3fbdaa3f327997a623634489f",
+    "island_contact/rim_grass/rooted_rim_whole.png": "d470a9a16a48720ff6b54787ed96053ac2992939fd1128bc3bb25a4be3b3e068",
+    "island_contact/rim_grass/rooted_rim_play.png": "f9f0bf4142d7f5bb5ca4f390221a8d3aac54cc57fb47771f91f6098847592c39",
+    "island_contact/rim_grass/rooted_rim_close.png": "68f2077ae32121061c6bb50a119c4258d79dbf0a3bf104b9108a82a150da4b35",
+    "island_contact/rim_grass/rooted_rim_reverse.png": "e993a7783652d99923d97f567fdb041b8347926d5fa855176bf0f4c76ac89684",
+    "island_contact/rim_grass/rooted_rim_low.png": "a25c18161a1a91bed98d080908009fa17ae87a858a304f6311bbb5e21cf4694b",
+    "island_contact/rim_low/rooted_low_whole.png": "7e48bd6a1dc30d3a322d213fdd9ab83f5eddd247b1f0cd3e47acae90941d8bc2",
+    "island_contact/rim_low/rooted_low_play.png": "d71a6ab525dc471d2bbacbe60d65e7ec42136081fea8d19170a995ae8d49fa5e",
+    "island_contact/rim_low/rooted_low_close.png": "486c0f97582ded3edc7e5690b57f09479c3495c5799f9ac7656eab3ac5a8f79d",
+    "island_contact/rim_low/rooted_low_reverse.png": "e838c77df46323e66d23cfba3332ec742dc5a001fb097a53a1ea5aa5cea15824",
+    "island_contact/rim_low/rooted_low_low.png": "429733c6ed98a3f69f8dc57fc00bf607956ac1577d0dcd0c20de6592c833516a"
+  },
+  "art_accepted": false,
+  "goal_status": "active",
+  "limits": "Contact rules not adopted. Shallow is one tools-only contour/seed, not current four-preset UI or complete support/placement/hardware acceptance. Invalid initial shader frames excluded."
+}
