@@ -1,0 +1,28 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "fracture_neutral": {
+      "topology": {
+        "triangles": 52986,
+        "welded_vertices_1e5": 26494,
+        "non_two_use_edges": 4,
+        "directed_edge_pair_defects": 4,
+        "degenerate_index_faces": 0,
+        "signed_volume": 493.700262106289,
+        "vertex_components": [
+          26480,
+          14
+        ],
+        "vertex_link_defects": 4
+      },
+      "crossings": {
+        "mesh_sha256": "a7a86751071a707465d43df5f51f489b7969f5ae175e13dae01de7caa467d8e9",
+        "triangles": 52986,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": false
+    }
+  }
+}

@@ -1,0 +1,253 @@
+{
+	"frames": [
+		{
+			"error": 0,
+			"file": "master_source_neutral_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "master_source_neutral",
+			"target": "(-0.5, 0.8, 0.6)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "master_source_neutral_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "master_source_neutral",
+			"target": "(-0.3, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "master_source_neutral_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 16.0,
+			"stage": "master_source_neutral",
+			"target": "(-0.5, 0.4, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "master_source_neutral_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 15.5,
+			"stage": "master_source_neutral",
+			"target": "(-0.5, -1.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "master_source_stone_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "master_source_stone",
+			"target": "(-0.5, 0.8, 0.6)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "master_source_stone_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "master_source_stone",
+			"target": "(-0.3, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "master_source_stone_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 16.0,
+			"stage": "master_source_stone",
+			"target": "(-0.5, 0.4, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "master_source_stone_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 15.5,
+			"stage": "master_source_stone",
+			"target": "(-0.5, -1.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "master_warp_neutral_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "master_warp_neutral",
+			"target": "(-0.5, 0.8, 0.6)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "master_warp_neutral_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "master_warp_neutral",
+			"target": "(-0.3, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "master_warp_neutral_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 16.0,
+			"stage": "master_warp_neutral",
+			"target": "(-0.5, 0.4, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "master_warp_neutral_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 15.5,
+			"stage": "master_warp_neutral",
+			"target": "(-0.5, -1.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "master_warp_stone_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "master_warp_stone",
+			"target": "(-0.5, 0.8, 0.6)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "master_warp_stone_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "master_warp_stone",
+			"target": "(-0.3, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "master_warp_stone_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 16.0,
+			"stage": "master_warp_stone",
+			"target": "(-0.5, 0.4, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "master_warp_stone_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 15.5,
+			"stage": "master_warp_stone",
+			"target": "(-0.5, -1.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "master_sampled_neutral_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "master_sampled_neutral",
+			"target": "(-0.5, 0.8, 0.6)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "master_sampled_neutral_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "master_sampled_neutral",
+			"target": "(-0.3, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "master_sampled_neutral_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 16.0,
+			"stage": "master_sampled_neutral",
+			"target": "(-0.5, 0.4, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "master_sampled_neutral_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 15.5,
+			"stage": "master_sampled_neutral",
+			"target": "(-0.5, -1.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "master_sampled_stone_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "master_sampled_stone",
+			"target": "(-0.5, 0.8, 0.6)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "master_sampled_stone_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "master_sampled_stone",
+			"target": "(-0.3, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "master_sampled_stone_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 16.0,
+			"stage": "master_sampled_stone",
+			"target": "(-0.5, 0.4, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "master_sampled_stone_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 15.5,
+			"stage": "master_sampled_stone",
+			"target": "(-0.5, -1.0, 0.0)",
+			"view": "bottom"
+		}
+	],
+	"scope": "Route2 existing-source master candidate and density conversion. Not an accepted master, asset replacement or complete PCG workflow.",
+	"stages": {
+		"master_sampled_neutral": {
+			"records": 15780,
+			"scope": "Existing-source strip, different footprint from route1; direct source/warp and sampled body use identical views/material.",
+			"triangles": 23584
+		},
+		"master_sampled_stone": {
+			"records": 15780,
+			"scope": "Existing-source strip, different footprint from route1; direct source/warp and sampled body use identical views/material.",
+			"triangles": 23584
+		},
+		"master_source_neutral": {
+			"records": 15780,
+			"scope": "Existing-source strip, different footprint from route1; direct source/warp and sampled body use identical views/material.",
+			"triangles": 2248
+		},
+		"master_source_stone": {
+			"records": 15780,
+			"scope": "Existing-source strip, different footprint from route1; direct source/warp and sampled body use identical views/material.",
+			"triangles": 2248
+		},
+		"master_warp_neutral": {
+			"records": 15780,
+			"scope": "Existing-source strip, different footprint from route1; direct source/warp and sampled body use identical views/material.",
+			"triangles": 8992
+		},
+		"master_warp_stone": {
+			"records": 15780,
+			"scope": "Existing-source strip, different footprint from route1; direct source/warp and sampled body use identical views/material.",
+			"triangles": 8992
+		}
+	}
+}

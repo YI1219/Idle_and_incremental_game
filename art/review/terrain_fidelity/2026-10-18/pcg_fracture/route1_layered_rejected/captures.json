@@ -1,0 +1,91 @@
+{
+	"frames": [
+		{
+			"error": 0,
+			"file": "fracture_neutral_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "fracture_neutral",
+			"target": "(-0.5, 0.8, 0.6)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "fracture_neutral_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "fracture_neutral",
+			"target": "(-0.3, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "fracture_neutral_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 16.0,
+			"stage": "fracture_neutral",
+			"target": "(-0.5, 0.4, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "fracture_neutral_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 15.5,
+			"stage": "fracture_neutral",
+			"target": "(-0.5, -1.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "fracture_stone_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "fracture_stone",
+			"target": "(-0.5, 0.8, 0.6)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "fracture_stone_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "fracture_stone",
+			"target": "(-0.3, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "fracture_stone_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 16.0,
+			"stage": "fracture_stone",
+			"target": "(-0.5, 0.4, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "fracture_stone_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 15.5,
+			"stage": "fracture_stone",
+			"target": "(-0.5, -1.0, 0.0)",
+			"view": "bottom"
+		}
+	],
+	"scope": "Route1 full3D shared fracture planes. Ordinary editable density; no leaves, native editor or default promotion.",
+	"stages": {
+		"fracture_neutral": {
+			"cells": 81,
+			"records": 43599,
+			"save_hash": "3895d5bf09a3cf3a49fab5ab281628c5aa05a2faa38a0b009739b986db920673",
+			"triangles": 54078
+		},
+		"fracture_stone": {
+			"cells": 81,
+			"records": 43599,
+			"save_hash": "3895d5bf09a3cf3a49fab5ab281628c5aa05a2faa38a0b009739b986db920673",
+			"triangles": 54078
+		}
+	}
+}

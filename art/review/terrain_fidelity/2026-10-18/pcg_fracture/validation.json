@@ -1,0 +1,93 @@
+{
+  "native_frames": 40,
+  "image_sha256": {
+    "route1_layered_rejected/fracture_neutral_close.png": "2f4c4e8f8c909c544ba68bece6c4b5afee242d85530c79c4aa4c8fefc0d822a2",
+    "route1_layered_rejected/fracture_neutral_whole.png": "76d62b8fe8ced6c9e3fcc58453d70ff39d7086c98d9ce0bf8336c2d936acad24",
+    "route1_layered_rejected/fracture_neutral_reverse.png": "3d935ad60405fea69c3f70ffacaa17624aa128a9be1b102b9348a792cf985316",
+    "route1_layered_rejected/fracture_neutral_bottom.png": "7a27a92523a48e51b846bb38eee93c607d29d2a0abbd9163a9cddbfa24480ee0",
+    "route1_layered_rejected/fracture_stone_close.png": "bcf5deaa4ece8548b2b91f01592e9c14f588736f42fa07229d2fd2473161e7a2",
+    "route1_layered_rejected/fracture_stone_whole.png": "2717dbc1072158faa01cfab853c7b0d8ba306cf3c1bd33665656319d45e50f70",
+    "route1_layered_rejected/fracture_stone_reverse.png": "341d9755f751cc04422f6a6b019a8c4cec6172de4e85c164c7c268b6df354cf3",
+    "route1_layered_rejected/fracture_stone_bottom.png": "dec9baed369949ffa84418ca027c04baca838c450b1ee9ce4c8190b69c68e090",
+    "route1/fracture_neutral_close.png": "e89299764981f0199585481db4eabba10f699981e87dafabc3e4a0d4bc4c1849",
+    "route1/fracture_neutral_whole.png": "8ced6595ab30bc132468bed90235fb9046bb303fa2ef24da9b678b7bc126ed7b",
+    "route1/fracture_neutral_reverse.png": "b5c592db2b06819abd3bf5be2cc3fae9d8a6b6c98c504d5b73bee604b08d43e8",
+    "route1/fracture_neutral_bottom.png": "ffcc733c4188a47edd2fe1218c06b456f89e13714e6973dba8de31fd269991eb",
+    "route1/fracture_stone_close.png": "bce48735e937cf95d632eddbf4dc611ee9106b53d5f6810afb4687c3c982667b",
+    "route1/fracture_stone_whole.png": "c4c8234d23b53fd10cd5c962516f4f9b982fea1b7167e6ab77c9d2eb1c4d1191",
+    "route1/fracture_stone_reverse.png": "e933d1da2c427d98df2f369806fc570cd923c2fca0e6b35adfc88119c281ad8f",
+    "route1/fracture_stone_bottom.png": "812f3090fbe70c129f7d50c2fc646f1dad065c4f03fdba1e0446dec68d82eff1",
+    "route2/master_source_neutral_close.png": "0102e01284baf2843d2381b65d375b0110092a5e3744db9971c5dd967c402cc3",
+    "route2/master_source_neutral_whole.png": "6951c990d6d6193a6f34f552c258965c266e278485394bd3f0f11797cdb439ac",
+    "route2/master_source_neutral_reverse.png": "02b4e1f80ebe17084c9cd58e94d099cc85250477c4d1f790be9044e22f1e2734",
+    "route2/master_source_neutral_bottom.png": "b71fe19f2f37e5c08f55116367049c789ab888bb10822244994ecde86aa4eda0",
+    "route2/master_source_stone_close.png": "c43283c3345d6447714a3afd66fff4773b0de3ed89b50f180ac6f811ce3e8fa2",
+    "route2/master_source_stone_whole.png": "37f8e50e5e338b55ddff6cff29651fbfee6682ecbd8cf1c11daec172e5ac424b",
+    "route2/master_source_stone_reverse.png": "77d3d5f3b69a8df009b3322a301b5c78c8b3c46b6297a834660d92d3f5d80ddb",
+    "route2/master_source_stone_bottom.png": "79f0bbfaa7a165a02af05bf9c6595fe448b614ab25661792dfccc2b40aac8f08",
+    "route2/master_warp_neutral_close.png": "4ee1118ff9b510d0e85bf1521af514d56a1f5896005f71bc024d48154e215d56",
+    "route2/master_warp_neutral_whole.png": "9972f62f6334c966dabbf653e68951bcc5c9aa4241b8b24bf47faa4e114d538a",
+    "route2/master_warp_neutral_reverse.png": "8d28e0a41a06bce08070153f38e9912cdf7898aa84deea4595c559e517ee5fe0",
+    "route2/master_warp_neutral_bottom.png": "e2f510a468e355ebb6013d75d7ff82083217664f6fc699aa6b17143a4ed21752",
+    "route2/master_warp_stone_close.png": "a7978f9bef4354ca9409aa04bc11e7248294828f36cbb919cb3a8f3150b7b277",
+    "route2/master_warp_stone_whole.png": "4f831c06d8a3b1179e7d33d29d8062af67109ed176b7c4b2e24d21ee82463da4",
+    "route2/master_warp_stone_reverse.png": "d396e5a4bf85de14bb4595fabd5c840944c9534292543554590728c609aec82a",
+    "route2/master_warp_stone_bottom.png": "a70a67772865d566e7890815ba21885d3cc95ce5e5afadc7822b8969a414dbcf",
+    "route2/master_sampled_neutral_close.png": "050243d36cc85a8900405320c2af4271ea1ffd9965e10b3b91253adcb0400899",
+    "route2/master_sampled_neutral_whole.png": "8ea3423bfb5644aada335c282fa79c183329d64b1780fcc68a6b260d082bac05",
+    "route2/master_sampled_neutral_reverse.png": "f7a43e66bfeded96721eacc483d3435d59bea7963e218b81d14902286bdd00d3",
+    "route2/master_sampled_neutral_bottom.png": "70f433802aa28f29c814de852cedeed59b016d24b08c875a9a43eda83b17a44b",
+    "route2/master_sampled_stone_close.png": "2b3ee5d9c52e9c819cd995289f02e38941e20a5b120636a7076401e56adf053e",
+    "route2/master_sampled_stone_whole.png": "dc188210796babd3a16fe00051fe1902c8ed95bfb8faefe49fee9fdae5139fcd",
+    "route2/master_sampled_stone_reverse.png": "357b5273fb606e932d9a8e38b7ed7c8e7cf247fc6ec1b074bf897975484a5825",
+    "route2/master_sampled_stone_bottom.png": "1e47463f6b5a7f3f909d4f6e99ff56876e418c8cb56e36c59d4aa7410dd5830b"
+  },
+  "target_sha256": "1f16fa5540c7539175faa0b3d167b3a8b0e9df0651aba96397f47075009de2e7",
+  "matched_cameras": {
+    "close": [
+      "(9.0, 7.6, 15.0)",
+      "(-0.5, 0.8, 0.6)",
+      11.8
+    ],
+    "whole": [
+      "(13.0, 13.0, 19.0)",
+      "(-0.3, 0.0, 0.0)",
+      18.5
+    ],
+    "reverse": [
+      "(-13.0, 8.0, -14.0)",
+      "(-0.5, 0.4, 0.0)",
+      16.0
+    ],
+    "bottom": [
+      "(9.0, -8.0, 15.0)",
+      "(-0.5, -1.0, 0.0)",
+      15.5
+    ]
+  },
+  "finite_geometry": {
+    "route1_layered_rejected/fracture_neutral": false,
+    "route1/fracture_neutral": false,
+    "route2/master_source": true,
+    "route2/master_warp": true,
+    "route2/master_sampled": true
+  },
+  "fracture_data_tests": "14/14",
+  "pair_plane_metric_tests": "4/4",
+  "master_data_history_tests": "9/9",
+  "master_material_control": "Recaptured all24 frames with identical actual cap depth3.5-y; neutral/stone geometry hashes match checked bodies.",
+  "art_accepted": false,
+  "goal_complete": false,
+  "production_changed": false,
+  "default_promoted": false,
+  "next": "Qualified main-face/cleft/shoulder/basal composition in one existing-source master, before further PCG variation.",
+  "unverified": [
+    "qualified master art",
+    "grass/root support",
+    "edited mesh geometry",
+    "native editor controls",
+    "two contour/two seed visual coverage",
+    "target-device performance"
+  ],
+  "comparison_scope": "Same cameras/lights/material parameters; route1 is81cell crop, route2 is a different existing-source strip. Not identical layouts or target composition."
+}

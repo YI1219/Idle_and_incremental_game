@@ -1,0 +1,65 @@
+{
+  "source": "art/work/cliff_representation/2026-10-17/union.bin",
+  "source_sha256": "aa2a16c21c8c3eeeedb2c89cf5d8c5ba4ab1387d879e42a87ae3d2b73cd1bb4b",
+  "control_triangles": 2248,
+  "candidate_triangles": 8992,
+  "translation": [
+    15,
+    0,
+    -3
+  ],
+  "subdivision": "one linear midpoint split before deformation",
+  "sample_records": 15780,
+  "grid_step": 0.25,
+  "analytic_three_ray_crosschecks": 556,
+  "bvh_disagreements": [
+    {
+      "point": [
+        1.0,
+        -1.75,
+        -3.75
+      ],
+      "bvh": [
+        false,
+        true,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        0.5,
+        -1.25,
+        -3.75
+      ],
+      "bvh": [
+        false,
+        true,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "candidate_bounds": [
+    [
+      -5.001710437294527,
+      -3.4103064734135105,
+      -4.2403293959224255
+    ],
+    [
+      5.18528210731346,
+      3.5,
+      4.055655792573874
+    ]
+  ],
+  "scope": "Unaccepted master candidate from existing closed source; no new original model. Direct mesh and sampled density must be judged separately. No production integration, grass support or target art acceptance.",
+  "cap_vertex_occurrences_preserved": 3299
+}

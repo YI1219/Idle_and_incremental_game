@@ -1,0 +1,71 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "master_source": {
+      "topology": {
+        "triangles": 2248,
+        "welded_vertices_1e5": 1126,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 101.71757097965732,
+        "vertex_components": [
+          1126
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "7ab4ceeefc94baabba67be0da02e792991256a2c44e56eb35a29271bbaf8e28c",
+        "triangles": 2248,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "master_warp": {
+      "topology": {
+        "triangles": 8992,
+        "welded_vertices_1e5": 4498,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 139.31014291061544,
+        "vertex_components": [
+          4498
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "4eb53bbf0340ea9440ebff7abcfd8532cefe8b88d21dbb72b479b1cc5b3f58c8",
+        "triangles": 8992,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "master_sampled": {
+      "topology": {
+        "triangles": 23584,
+        "welded_vertices_1e5": 11794,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 138.70550196683703,
+        "vertex_components": [
+          11794
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "92beed81f9e6303c200cba9c718976f0a15bcb87be7379facf36e0d31f3bccdf",
+        "triangles": 23584,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    }
+  }
+}
