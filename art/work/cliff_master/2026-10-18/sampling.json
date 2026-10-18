@@ -1,0 +1,20 @@
+{
+  "source_sha256": "75178ba35204c44a4618e17c872aac31da0cd1e1aab8ea1942a0ca0565e73234",
+  "grid_step": 0.25,
+  "sample_records": 4408,
+  "analytic_three_ray_crosschecks": 440,
+  "bvh_disagreements_resolved": [],
+  "bounds": [
+    [
+      -2.75,
+      -1.8470890522003174,
+      -2.36539626121521
+    ],
+    [
+      2.75,
+      1.8470888137817383,
+      2.36539626121521
+    ]
+  ],
+  "scope": "One original-model conversion; every grid node uses three BVH rays, disagreement/every41st crosschecked in float64. Not art, editing robustness or target-hardware acceptance."
+}

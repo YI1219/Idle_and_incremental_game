@@ -273,6 +273,7 @@ async def main_async(args: argparse.Namespace) -> int:
     async with async_playwright() as pw:
         ctx = await pw.chromium.launch_persistent_context(
             user_data_dir=str(args.profile), headless=args.headless,
+            channel=args.channel,
             viewport={"width": 1440, "height": 960}, accept_downloads=True, locale="zh-CN",
         )
         ctx.set_default_timeout(30000)
@@ -298,7 +299,18 @@ async def main_async(args: argparse.Namespace) -> int:
             run.ev("multiview selected")
             await upload_by_label(page, run)
             await page.wait_for_timeout(2500)
+            # Studio persists batch size across sessions; always request one model.
+            quantity_group = page.get_by_text("生成数量", exact=True).locator("..").locator("..")
+            await quantity_group.locator('button[value="1"]').click()
+            await page.wait_for_timeout(500)
             run.log["actual_ui"] = await set_topology(page, run, req["topology"], req["target_faces"])
+            run.log["actual_ui"]["requested_quantity"] = 1
+            selected_quantity = await quantity_group.locator('button[aria-pressed="true"]').evaluate_all("buttons => buttons.map(b => b.value)")
+            run.log["actual_ui"]["selected_quantity"] = selected_quantity
+            if selected_quantity != ["1"]:
+                raise sp.PrepareError(f"single-model quantity was not retained: {selected_quantity}")
+            if req["target_faces"] is not None and run.log["actual_ui"]["faces_after_reopen"] != str(req["target_faces"]):
+                raise sp.PrepareError("target face count was not retained")
             # read back model + cost
             model_txt = await page.evaluate(
                 """() => { const h=[...document.querySelectorAll('*')].find(e=>e.childElementCount===0&&(e.innerText||'').trim()==='AI 模型');
@@ -380,6 +392,7 @@ def main() -> int:
     p.add_argument("manifest", type=Path)
     p.add_argument("--profile", type=Path, default=sp.DEFAULT_PROFILE)
     p.add_argument("--headless", action="store_true")
+    p.add_argument("--channel", choices=["chrome", "msedge"], help="use an installed browser instead of the bundled Chromium")
     p.add_argument("--dry-run", action="store_true", help="fill everything, screenshot, do not click")
     p.add_argument("--yes", action="store_true", help="actually click 生成模型 once")
     p.add_argument("--download-only", action="store_true", help="no generation; download newest asset")

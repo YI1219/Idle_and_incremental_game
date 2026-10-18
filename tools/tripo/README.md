@@ -56,3 +56,16 @@ Upload slot order matches Studio: **前 → 左侧 → 右侧 → 后** = front 
 
 - The script refuses to click any control whose label contains `生成模型`.
 - Do not pass credentials on the command line; use the persistent browser profile after a manual login.
+## Authorized geometry generation helper
+
+`studio_generate.py MANIFEST --dry-run` uploads/settings/screenshots without
+Generate. After explicit task authorization, `--yes` clicks Generate once,
+waits and exports GLB. It forces quantity1 because Studio persists prior batch
+size. Inspect dry-run screenshots and logs before submission. Texturing is
+refused by this helper. After an ambiguous paid click, do not rerun `--yes`;
+inspect existing task and use `--download-only` only after matching the asset.
+
+If bundled Chromium is absent, `--channel chrome` uses installed Google Chrome
+with the same dedicated persistent Tripo profile. Never use a personal browser
+profile or expose stored credentials. Manual login/security challenges remain
+user-operated.

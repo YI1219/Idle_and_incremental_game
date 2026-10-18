@@ -1,0 +1,18 @@
+{
+  "input_hashes_and_dimensions": true,
+  "original_glb_hash": "b9728e2e94fd1061e5bc1b3ca466ae639bc06f4f8bd8530dd80be19596013d81",
+  "source_points_hash": "75178ba35204c44a4618e17c872aac31da0cd1e1aab8ea1942a0ca0565e73234",
+  "density_hash": "59ab52cec768cf232c7b28fab0b0d6ccca7d321aad08c0414a0b5d38ff0885b4",
+  "native_frames": 24,
+  "geometry_stages_passed": [
+    "tripo_original",
+    "tripo_sampled"
+  ],
+  "paid_generate_actions": 1,
+  "actual_credits": 100,
+  "final_dry_run_quantity_readback": [
+    "1"
+  ],
+  "target_hash_preserved": true,
+  "scope": "Artifact hashes/counts/current native evidence and actual transaction log consistency, not final art/editor/performance acceptance."
+}

@@ -1,0 +1,49 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "tripo_original": {
+      "topology": {
+        "triangles": 5424,
+        "welded_vertices_1e5": 2714,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 27.593382908970156,
+        "vertex_components": [
+          2714
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "75178ba35204c44a4618e17c872aac31da0cd1e1aab8ea1942a0ca0565e73234",
+        "triangles": 5424,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "tripo_sampled": {
+      "topology": {
+        "triangles": 8504,
+        "welded_vertices_1e5": 4254,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 27.28095585696226,
+        "vertex_components": [
+          4254
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "a6986353e5fe889eab2ee568a608c9d2efa22e614cb4899f00852dde70bc7171",
+        "triangles": 8504,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    }
+  }
+}

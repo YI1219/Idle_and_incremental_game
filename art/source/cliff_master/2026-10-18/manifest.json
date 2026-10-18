@@ -1,0 +1,118 @@
+{
+  "asset": "cliff_master_white_v1",
+  "date": "2026-10-18",
+  "tool": "built-in image_gen",
+  "status": "v2 actual pixels inspected by parent and independent reviewer; qualified for one exploratory white model only",
+  "authorization": "Latest user explicitly requests master images and direct existing-pipeline Tripo submission/model production. Supersedes earlier no-new-assets/deferred/user-operated-only restrictions for this task.",
+  "views": {
+    "front": {
+      "file": "inputs/front.png"
+    },
+    "left": {
+      "file": "inputs/left.png"
+    },
+    "right": {
+      "file": "inputs/right.png"
+    },
+    "back": {
+      "file": "inputs/back.png"
+    }
+  },
+  "selected": {
+    "front": {
+      "source": "front_v2.png",
+      "input": "inputs/front.png",
+      "sha256": "ba7c91794fa6d156582f4103cbf12f3c4ba7bc625b2718ac2e0b1b1f2c00f934",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    "left": {
+      "source": "left_v2.png",
+      "input": "inputs/left.png",
+      "sha256": "bf1d43f9bb2b51608ca35291c5246b2e226b7a79aad21e5322d162380f890adc",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    "right": {
+      "source": "right_v2.png",
+      "input": "inputs/right.png",
+      "sha256": "52320ad68b943971abaaf5394adcbf5a4d30a9dd0fef4540d8f8e0bcc41ee865",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    "back": {
+      "source": "back_v2.png",
+      "input": "inputs/back.png",
+      "sha256": "c25092fdbdef1f79f7d4393cecdd9468defe7c7404a31df7cd441eb52a38ebb4",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    }
+  },
+  "studio": {
+    "route": "smart_mesh",
+    "topology": "triangles",
+    "target_faces": 5000,
+    "texture": false
+  },
+  "recommended_parameters": {
+    "mode": "Smart Topology Mesh multiview (P2.0 if available; actual UI to be recorded)",
+    "target_faces": 5000,
+    "topology": "Triangle",
+    "texture": false,
+    "rig": false,
+    "animation": false,
+    "export": "GLB"
+  },
+  "approximate_module_meters": {
+    "width": 5.5,
+    "height": 4.0,
+    "depth": 3.0
+  },
+  "download_directory": "tripo",
+  "suggested_filename": "cliff_master_white_v1.glb",
+  "actual_generation_parameters": {
+    "model": "P2.0",
+    "route": "smart_mesh",
+    "quantity": 1,
+    "topology": "triangles",
+    "requested_faces": 5000,
+    "ui_result_triangles": 5424,
+    "ui_result_vertices": 2714,
+    "texture": false,
+    "credits": 100,
+    "generate_clicked_local": "2026-10-18T13:24:34",
+    "pipeline_log": "tripo/studio_run_20261018_132416.json"
+  },
+  "model_task_id": null,
+  "model_status": "downloaded; parent/independent white-model review retains unaccepted candidate only; bounded density conversion also art-unaccepted",
+  "review": "concept_review.md",
+  "prompts": [
+    "prompts.json",
+    "prompts_v2.json"
+  ],
+  "input_review": "concept_review.md",
+  "known_input_risks": [
+    "Right side normalized width remains about25% greater than left; illustrative camera/side uncertainty, inspect returned thickness",
+    "Curved common lower mass may become hull-like; inspect white result before retention"
+  ],
+  "model_original": {
+    "file": "tripo/cliff_master_white_v1.glb",
+    "sha256": "b9728e2e94fd1061e5bc1b3ca466ae639bc06f4f8bd8530dd80be19596013d81",
+    "bytes": 131508
+  },
+  "white_review": "../../../review/terrain_fidelity/2026-10-18/tripo_master/README.md",
+  "known_model_risks": [
+    "Uniform5.5m width gives3.694m height and4.731m depth, thicker than intended3m",
+    "Side crest/ledge configuration differs from illustrated inputs",
+    "Broad flat benches, rounded thick wedge/hull underside; source not art accepted",
+    "Production .25m conversion softens main planes/clefts and adds lattice facets"
+  ]
+}

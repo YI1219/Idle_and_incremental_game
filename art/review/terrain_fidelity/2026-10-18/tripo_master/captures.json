@@ -1,0 +1,242 @@
+{
+	"aligned_original_bounds_position": "(-0.4998, 0.0, -0.4299)",
+	"aligned_original_bounds_size": "(0.9996, 0.6714, 0.8598)",
+	"conversion": {
+		"density_records": 4408,
+		"layout": "res://art/work/cliff_master/2026-10-18/tripo_sampled.layout",
+		"samples_sha256": "59ab52cec768cf232c7b28fab0b0d6ccca7d321aad08c0414a0b5d38ff0885b4",
+		"scope": "Bounded explicit rock data with empty build cells; no turf/ground/editor integration.",
+		"triangles": 8504
+	},
+	"crease_control": {
+		"degrees": 42,
+		"vertex_positions_exact": true
+	},
+	"frames": [
+		{
+			"error": 0,
+			"file": "white_front.png",
+			"position": "(0.0, 0.0, 12.0)",
+			"size": 4.8,
+			"stage": "white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "front"
+		},
+		{
+			"error": 0,
+			"file": "white_back.png",
+			"position": "(0.0, 0.0, -12.0)",
+			"size": 4.8,
+			"stage": "white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "back"
+		},
+		{
+			"error": 0,
+			"file": "white_left.png",
+			"position": "(-12.0, 0.0, 0.0)",
+			"size": 5.0,
+			"stage": "white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "left"
+		},
+		{
+			"error": 0,
+			"file": "white_right.png",
+			"position": "(12.0, 0.0, 0.0)",
+			"size": 5.0,
+			"stage": "white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "right"
+		},
+		{
+			"error": 0,
+			"file": "white_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 4.8,
+			"stage": "white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "white_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 9.0,
+			"stage": "white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "white_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 4.8,
+			"stage": "white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "white_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 4.8,
+			"stage": "white",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "crease_front.png",
+			"position": "(0.0, 0.0, 12.0)",
+			"size": 4.8,
+			"stage": "crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "front"
+		},
+		{
+			"error": 0,
+			"file": "crease_back.png",
+			"position": "(0.0, 0.0, -12.0)",
+			"size": 4.8,
+			"stage": "crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "back"
+		},
+		{
+			"error": 0,
+			"file": "crease_left.png",
+			"position": "(-12.0, 0.0, 0.0)",
+			"size": 5.0,
+			"stage": "crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "left"
+		},
+		{
+			"error": 0,
+			"file": "crease_right.png",
+			"position": "(12.0, 0.0, 0.0)",
+			"size": 5.0,
+			"stage": "crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "right"
+		},
+		{
+			"error": 0,
+			"file": "crease_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 4.8,
+			"stage": "crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "crease_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 9.0,
+			"stage": "crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "crease_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 4.8,
+			"stage": "crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "crease_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 4.8,
+			"stage": "crease",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "sampled_front.png",
+			"position": "(0.0, 0.0, 12.0)",
+			"size": 4.8,
+			"stage": "sampled",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "front"
+		},
+		{
+			"error": 0,
+			"file": "sampled_back.png",
+			"position": "(0.0, 0.0, -12.0)",
+			"size": 4.8,
+			"stage": "sampled",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "back"
+		},
+		{
+			"error": 0,
+			"file": "sampled_left.png",
+			"position": "(-12.0, 0.0, 0.0)",
+			"size": 5.0,
+			"stage": "sampled",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "left"
+		},
+		{
+			"error": 0,
+			"file": "sampled_right.png",
+			"position": "(12.0, 0.0, 0.0)",
+			"size": 5.0,
+			"stage": "sampled",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "right"
+		},
+		{
+			"error": 0,
+			"file": "sampled_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 4.8,
+			"stage": "sampled",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "sampled_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 9.0,
+			"stage": "sampled",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "sampled_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 4.8,
+			"stage": "sampled",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "sampled_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 4.8,
+			"stage": "sampled",
+			"target": "(0.0, 0.0, 0.0)",
+			"view": "reverse"
+		}
+	],
+	"front_alignment_y_degrees": -90,
+	"mesh_parts": 1,
+	"normalized_bounds_size": "(5.5, 3.694178, 4.730793)",
+	"points_sha256": "75178ba35204c44a4618e17c872aac31da0cd1e1aab8ea1942a0ca0565e73234",
+	"scope": "Original GLB versus unchanged-position crease control and optional production .25m explicit-density conversion, same cameras/neutral material. No ground/grass/editor/performance/full-art acceptance.",
+	"source": "res://art/source/cliff_master/2026-10-18/tripo/cliff_master_white_v1.glb",
+	"source_sha256": "b9728e2e94fd1061e5bc1b3ca466ae639bc06f4f8bd8530dd80be19596013d81",
+	"triangles": 5424,
+	"uniform_scale": 5.502200917622933
+}
