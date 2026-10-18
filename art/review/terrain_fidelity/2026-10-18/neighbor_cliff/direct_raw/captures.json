@@ -1,0 +1,105 @@
+{
+	"frames": [
+		{
+			"error": 0,
+			"file": "control_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "control",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "control_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "control",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "control_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "control",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "control_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "control",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "control_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "control",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "neighbor1_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "neighbor1",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "neighbor1_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "neighbor1",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "neighbor1_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "neighbor1",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "neighbor1_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "neighbor1",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "neighbor1_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "neighbor1",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		}
+	],
+	"scope": "Actual unchanged-position direct source/candidate neutral geometry with same42degree normals and five cameras. No sampling/grass/editor/art/performance acceptance.",
+	"stages": {
+		"control": {
+			"sha256": "bd68a367063aff97ff731e10dc55738319c609e85add8f48ed77fc93e7489e57",
+			"triangles": 112
+		},
+		"neighbor1": {
+			"sha256": "190990dc3f5c8806587a48ee2c9f04361e2a1fa17903aa58ba7cedfcf13adb0f",
+			"triangles": 746
+		}
+	}
+}

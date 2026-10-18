@@ -4,11 +4,7 @@ AND direct existing-pipeline submission/model production for this selected asset
 
 ## Current state — no submittable task
 
-The subsequent [two local plane-rhythm rules](review/terrain_fidelity/2026-10-18/cliff_planes/README.md)
-are art-rejected and reach the active goal’s stop gate. No new paid job/texture
-was attempted. The next source-authoring route is pending user direction; do
-not interpret already-granted selected-asset permission as a reason to blindly
-repeat paid generation. Preserve all completed originals/manifests below.
+Latest [Brushland/similar reference research and small decision goal](review/terrain_fidelity/2026-10-18/neighbor_cliff/README.md) executes two local neighbor-constrained geometry rules and rejects this generator from matched neutral art. No paid job, texture, downloaded art or production/default change. No density conversion follows a failed source-art gate. No new generation task is prepared or submittable; no repeated selected-asset permission or route-choice question is pending. Preserve completed originals/manifests below. Earlier plane-rhythm rejection remains historical evidence, not a current pending route gate.
 
 ## Previous code-guide probe — completed and rejected
 

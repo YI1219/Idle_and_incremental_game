@@ -1,0 +1,131 @@
+{
+  "small_goal": "Reference-informed adopt/reject decision, not complete original art target",
+  "decision": "reject_current_convex_region_union_generator",
+  "current_native_frames": 15,
+  "source_and_camera_checks": true,
+  "source_finite_gates": {
+    "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+    "stages": {
+      "control": {
+        "source_sha256": "bd68a367063aff97ff731e10dc55738319c609e85add8f48ed77fc93e7489e57",
+        "topology": {
+          "triangles": 112,
+          "welded_vertices_1e5": 58,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 204.10681465481562,
+          "vertex_components": [
+            58
+          ],
+          "vertex_link_defects": 0
+        },
+        "crossings": {
+          "mesh_sha256": "bd68a367063aff97ff731e10dc55738319c609e85add8f48ed77fc93e7489e57",
+          "triangles": 112,
+          "disjoint_position_bvh_pairs": 0,
+          "strict_crossing_pairs_at_least": 0,
+          "crossings": []
+        },
+        "finite_gate_passes": true
+      },
+      "neighbor1": {
+        "source_sha256": "f2de0870bddf5582c6a9788e96756f8e6c98be1b79fd0f539af853e47c563bc9",
+        "topology": {
+          "triangles": 746,
+          "welded_vertices_1e5": 375,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 256.19288625559665,
+          "vertex_components": [
+            375
+          ],
+          "vertex_link_defects": 0
+        },
+        "crossings": {
+          "mesh_sha256": "f2de0870bddf5582c6a9788e96756f8e6c98be1b79fd0f539af853e47c563bc9",
+          "triangles": 746,
+          "disjoint_position_bvh_pairs": 0,
+          "strict_crossing_pairs_at_least": 0,
+          "crossings": []
+        },
+        "finite_gate_passes": true
+      },
+      "neighbor2": {
+        "source_sha256": "8cbbbc5ee5e0db5c85e73d9fa30c1a65848168689cfae65b55b9bcdb0a7cddf5",
+        "topology": {
+          "triangles": 752,
+          "welded_vertices_1e5": 378,
+          "non_two_use_edges": 0,
+          "directed_edge_pair_defects": 0,
+          "degenerate_index_faces": 0,
+          "signed_volume": 216.4223850016631,
+          "vertex_components": [
+            378
+          ],
+          "vertex_link_defects": 0
+        },
+        "crossings": {
+          "mesh_sha256": "8cbbbc5ee5e0db5c85e73d9fa30c1a65848168689cfae65b55b9bcdb0a7cddf5",
+          "triangles": 752,
+          "disjoint_position_bvh_pairs": 0,
+          "strict_crossing_pairs_at_least": 0,
+          "crossings": []
+        },
+        "finite_gate_passes": true
+      }
+    }
+  },
+  "png_sha256": {
+    "control_close.png": "d4a195af297d76695d176d02e27fdb4666b7279c3c78f4017c88f09414d33097",
+    "control_grass.png": "e5396f67c1f92540f3fefa9bd30499ea42eb3611d2890b762af402cfea34f980",
+    "control_whole.png": "db0f134f6c9fc0696e5d5d513fa0f202894ffc994a7442b50682d0faf3e3c31a",
+    "control_reverse.png": "5091ffc0428c251723170cd0dadf91333ca0c0ef02a1b759c08ce6932dfafe9d",
+    "control_bottom.png": "e6f8e3b83ee137f02ff89012288e5d6673aa5b233fb23255c39cfb7e596ab538",
+    "neighbor1_close.png": "8e055ef217f8edf39ca9a40f3a2ed2fb9bff6c21e98939f922cbc5c21aa3de98",
+    "neighbor1_grass.png": "75a5347be73f2298094dbe7dd29c641f0e3bd82a162d43008140866e6a942ead",
+    "neighbor1_whole.png": "77bdf289aabcfd30a89f01e08795313fe6d2d1b915797552e7444eeb92fe0edd",
+    "neighbor1_reverse.png": "f76f6f366ba801c2512ea871d70bc7c2be3b1e17e7ffe49fc26b005caa2c1b44",
+    "neighbor1_bottom.png": "f7197d600654d6d1ba0c45ebe103eb73e8079bdca4dcc29465c99ccb978553ab",
+    "neighbor2_close.png": "2b947d496bab3707e9594ed8b65ec5a1145b3a3a1913510e85350ba735cb5de5",
+    "neighbor2_grass.png": "7961b982e788af0afb57ee631b745e454393a472c38263cd2ec8a46f3044285a",
+    "neighbor2_whole.png": "f40f43806ff3804548dcb8465cf65b6d6aa0dafadd06051a857b6ef19d669f73",
+    "neighbor2_reverse.png": "ecb5f821b27d8ce73297be39d8406a6746e25e63ca7c19bfe692fe9a8deb70ae",
+    "neighbor2_bottom.png": "a59085ef19f1eedbb15d6d0d33e744b93f060a8b21e304aff463b203d9c5a404"
+  },
+  "dimensions_xyz": {
+    "control": [
+      11.025522232055664,
+      6.119612216949463,
+      5.402630805969238
+    ],
+    "neighbor1": [
+      11.025522232055664,
+      6.2387542724609375,
+      5.571462154388428
+    ],
+    "neighbor2": [
+      11.025522232055664,
+      5.686448574066162,
+      5.5294294357299805
+    ]
+  },
+  "same_width_peak_and_xz_center": true,
+  "only_uniform_similarity_transform": true,
+  "target_sha256": "1f16fa5540c7539175faa0b3d167b3a8b0e9df0651aba96397f47075009de2e7",
+  "source_evidence_sha256": "c03a16f1729016b563f1685340b9a6fd266ee31d05fa316e22405526909ad026",
+  "early_public_prototype_revision": "3f6a459c0424ed9177a0dceec4d72a380cbd80c2",
+  "actual_shipped_cliff_algorithms_known": false,
+  "not_complete_neighbor_state_or_arbitrary_footprint_compiler": true,
+  "substantive_rules": 2,
+  "extra_raw_frames": "direct_raw/captures.json",
+  "paid_jobs": 0,
+  "external_art_assets": 0,
+  "converted_to_density": false,
+  "full_art_accepted": false,
+  "formal_default_promoted": false,
+  "reason": "Some3Dface/bevel and plinth gains, but box-like repeated faces, blank rear, broad flat/angular bottom and abrupt ends remain; insufficient overall natural cliff composition.",
+  "conditional_phases_omitted": "No new density/support/history/layout/seed/performance acceptance after failed source art.",
+  "independent_review": "independent_review.md"
+}
