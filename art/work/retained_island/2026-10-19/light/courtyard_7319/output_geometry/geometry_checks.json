@@ -1,0 +1,51 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "playable": {
+      "source_sha256": "adbcf0b643f7b82ba00d9e78c3f3d47ce1b001a0f80b52e8ff94887c49a51ea9",
+      "topology": {
+        "triangles": 55472,
+        "welded_vertices_1e5": 27738,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 326.54586126609723,
+        "vertex_components": [
+          27738
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "adbcf0b643f7b82ba00d9e78c3f3d47ce1b001a0f80b52e8ff94887c49a51ea9",
+        "triangles": 55472,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "retained_carved": {
+      "source_sha256": "545e118f0030dec1c8f6c9c35fda9f54e34d812fe15a6715ea6ebdff2ac12e91",
+      "topology": {
+        "triangles": 55248,
+        "welded_vertices_1e5": 27626,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 325.54731781610377,
+        "vertex_components": [
+          27626
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "545e118f0030dec1c8f6c9c35fda9f54e34d812fe15a6715ea6ebdff2ac12e91",
+        "triangles": 55248,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    }
+  }
+}

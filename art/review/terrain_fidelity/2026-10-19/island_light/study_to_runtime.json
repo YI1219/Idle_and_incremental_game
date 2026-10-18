@@ -1,0 +1,50 @@
+{
+  "views": {
+    "whole": {
+      "mean_rgb_absolute_difference": [
+        5.1513249398535115e-05,
+        4.515358897896288e-05,
+        3.625006439156175e-05
+      ],
+      "maximum_channel_difference": 11,
+      "identical": false
+    },
+    "play": {
+      "mean_rgb_absolute_difference": [
+        0.0001806143559158515,
+        0.00014118446131450364,
+        0.0001208335479718725
+      ],
+      "maximum_channel_difference": 20,
+      "identical": false
+    },
+    "close": {
+      "mean_rgb_absolute_difference": [
+        0.00012719320839144473,
+        0.00010620632900685635,
+        8.903524587401131e-05
+      ],
+      "maximum_channel_difference": 20,
+      "identical": false
+    },
+    "reverse": {
+      "mean_rgb_absolute_difference": [
+        1.907898125871671e-06,
+        5.723694377615013e-06,
+        4.4517622937005655e-06
+      ],
+      "maximum_channel_difference": 9,
+      "identical": false
+    },
+    "low": {
+      "mean_rgb_absolute_difference": [
+        1.9714947300673933e-05,
+        1.907898125871671e-05,
+        1.5263185006973367e-05
+      ],
+      "maximum_channel_difference": 20,
+      "identical": false
+    }
+  },
+  "scope": "Same C0geometry/cameras and promoted finish; native integration comparison against earlier single-case daylight study. Pixel identity does not establish user beauty acceptance."
+}

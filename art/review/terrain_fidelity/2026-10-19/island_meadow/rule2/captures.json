@@ -1,0 +1,138 @@
+{
+	"captures": [
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "shallow_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 224.0,
+			"error": 0,
+			"file": "shallow_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 246.0,
+			"error": 0,
+			"file": "shallow_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "shallow_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 197.0,
+			"error": 0,
+			"file": "shallow_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 138.0,
+			"error": 0,
+			"file": "meadow_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 160.0,
+			"error": 0,
+			"file": "meadow_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 180.0,
+			"error": 0,
+			"file": "meadow_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 138.0,
+			"error": 0,
+			"file": "meadow_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 140.0,
+			"error": 0,
+			"file": "meadow_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		}
+	],
+	"rule_source_sha256": "5cb6d3be53940b9e3a43ed733f734c09d4c706c33615c9c126574b6a1f5f7a4d",
+	"scope": "Native full-scene rolling meadow/lower-return shape experiment against shallow saved-data control. Same cameras relative to1.5m central ground; same assets/major placements. Tools-only, new data, no adoption or art acceptance.",
+	"stages": {
+		"meadow": {
+			"art_accepted": false,
+			"camera_vertical_shift": -2.0,
+			"cells": 145,
+			"props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"published_tree_count": 2,
+			"records": 55200,
+			"rule": {
+				"construction_ms": 2000.733,
+				"cover": {
+					"actual_top_vertex_occurrences": 36941,
+					"maximum_roof_error": 6.420472089285756e-05,
+					"rule": "Slope-based grass on actual topmost dry roots between.72–1.53m; no color shell or geometry. Prototype-only; not edit-refresh integration.",
+					"terrain_vertex_bytes_unchanged": true,
+					"unique_roof_queries": 12163
+				},
+				"maximum_top_drop": 0.58,
+				"method": "Original retained field compressed uniformly.52 around cap1.5; independent analytic top cut cap1.5 minus rolling drop up to.58m; independent lower cut floor−.55→−1.30 from signed contour depth. Protected full live prop/tree/path footprints. Saturated far air+.5, five decimals, sign-preserving near-zero guard. Ordinary v4records; not renderer scaling or extra terrain.",
+				"near_zero_guards": 1424,
+				"normals": {
+					"method": "Tetrahedrally interpolated authoritative-field gradients for intentionally smooth sculptural finish.",
+					"normal_occurrences": 161436,
+					"same_vertex_bytes": true,
+					"unique_points": 26908
+				},
+				"protected_flat_zones": 20,
+				"protected_path_footprints": 12,
+				"records": 55200,
+				"rule": "meadow_cut2",
+				"sampled_xz_columns": 4485,
+				"scope": "One tools-only whole-scene shape study. New support, geometry, editing and preset adoption remain unverified until separate evidence."
+			},
+			"triangles": 53812,
+			"vertex_sha256": "3746bc3a60a1041a4b6d70e85352bce21d3bf699d3d662f37b41d501205b0651"
+		},
+		"shallow": {
+			"art_accepted": false,
+			"camera_vertical_shift": -2.0,
+			"cells": 145,
+			"props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"published_tree_count": 2,
+			"records": 54285,
+			"rule": {},
+			"triangles": 56320,
+			"vertex_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269"
+		}
+	}
+}

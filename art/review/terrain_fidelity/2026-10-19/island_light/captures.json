@@ -1,0 +1,280 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"camera_vertical_shift_from_original": -2.0,
+	"captures": [
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "courtyard_7301_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 224.0,
+			"error": 0,
+			"file": "courtyard_7301_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 246.0,
+			"error": 0,
+			"file": "courtyard_7301_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "courtyard_7301_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 197.0,
+			"error": 0,
+			"file": "courtyard_7301_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 195.0,
+			"error": 0,
+			"file": "courtyard_7319_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 224.0,
+			"error": 0,
+			"file": "courtyard_7319_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 250.0,
+			"error": 0,
+			"file": "courtyard_7319_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 195.0,
+			"error": 0,
+			"file": "courtyard_7319_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 199.0,
+			"error": 0,
+			"file": "courtyard_7319_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 189.0,
+			"error": 0,
+			"file": "bay_7301_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 219.0,
+			"error": 0,
+			"file": "bay_7301_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 242.0,
+			"error": 0,
+			"file": "bay_7301_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 189.0,
+			"error": 0,
+			"file": "bay_7301_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 194.0,
+			"error": 0,
+			"file": "bay_7301_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "bay_7319_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 222.0,
+			"error": 0,
+			"file": "bay_7319_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 247.0,
+			"error": 0,
+			"file": "bay_7319_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "bay_7319_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 198.0,
+			"error": 0,
+			"file": "bay_7319_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		}
+	],
+	"msaa": "4X",
+	"os": "macOS",
+	"performance_scope": "Development-machine native 1671x941SubViewport; elapsed frame samples include synchronization and app scheduling. Not target hardware/power/long-idle performance. Editing latency and complete support checks separate.",
+	"processor": "Apple M4 Pro",
+	"renderer": "forward_plus",
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Actual separately launchable ordinary-data editor candidate; source props removed. Four fixed contour/seed cases, five cameras. Light variant shifts all cameras down2m to preserve central-ground-relative views; not same global cameras as original3.5m cap. No user art acceptance.",
+	"stages": {
+		"bay_7301": {
+			"art_accepted": false,
+			"cells": 153,
+			"cover": {
+				"changed_vertex_coverage": 7576,
+				"maximum_top_support_error": 1.6932846398365342e-06,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 11295,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 57766,
+			"frame_ms_median": 8.412,
+			"frame_ms_p95": 10.876,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 194.0,
+			"load_rebuild_ms": 2988,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7301,
+			"source_draws": 0,
+			"triangles": 60496,
+			"vertex_sha256": "2a1b6734c9999dda6b97f2c0787cd69d43151f9951df6e46168f2e706e6bf74b"
+		},
+		"bay_7319": {
+			"art_accepted": false,
+			"cells": 153,
+			"cover": {
+				"changed_vertex_coverage": 8996,
+				"maximum_top_support_error": 1.1601234466418475e-06,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 11541,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 58436,
+			"frame_ms_median": 8.422,
+			"frame_ms_p95": 11.219,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 198.0,
+			"load_rebuild_ms": 2949,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7319,
+			"source_draws": 0,
+			"triangles": 61792,
+			"vertex_sha256": "2392fe88a59bf6314c42ae251cfaaf4c7d6aee26b1740cd3d96664a3f4b5b406"
+		},
+		"courtyard_7301": {
+			"art_accepted": false,
+			"cells": 145,
+			"cover": {
+				"changed_vertex_coverage": 7080,
+				"maximum_top_support_error": 9.107840175381909e-07,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 10661,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 54285,
+			"frame_ms_median": 8.337,
+			"frame_ms_p95": 10.963,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 197.0,
+			"load_rebuild_ms": 2918,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7301,
+			"source_draws": 0,
+			"triangles": 56320,
+			"vertex_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269"
+		},
+		"courtyard_7319": {
+			"art_accepted": false,
+			"cells": 145,
+			"cover": {
+				"changed_vertex_coverage": 7989,
+				"maximum_top_support_error": 1.1601234466418475e-06,
+				"scope": "Color coverage on actual dry upward cap faces confirmed topmost by the authoritative tetrahedral field. No extra mesh or data alteration.",
+				"unique_top_queries": 10812,
+				"vertex_bytes_unchanged": true
+			},
+			"density_records": 53814,
+			"frame_ms_median": 8.462,
+			"frame_ms_p95": 10.939,
+			"frame_sample_count": 120,
+			"global_render_draw_calls": 199.0,
+			"load_rebuild_ms": 2801,
+			"major_props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"ordinary_version": 4,
+			"seed": 7319,
+			"source_draws": 0,
+			"triangles": 55472,
+			"vertex_sha256": "adbcf0b643f7b82ba00d9e78c3f3d47ce1b001a0f80b52e8ff94887c49a51ea9"
+		}
+	},
+	"startup_ms": 13703,
+	"vsync_mode": 1
+}

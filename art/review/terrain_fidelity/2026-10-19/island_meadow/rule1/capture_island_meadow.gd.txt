@@ -1,0 +1,39 @@
+extends 'res://tools/art/capture_storybook_island.gd'
+## Five matched ground-relative views, actual shallow control and rolled body.
+const Form=preload('res://tools/art/island_meadow_form.gd')
+const WORK='res://art/work/retained_island/2026-10-19/meadow1/'
+func photo(target:Vector3,distance:float,yaw:float,pitch:float)->void:
+ super.photo(target-Vector3.UP*2.0,distance,yaw,pitch)
+func tree_count()->int:
+ var count:=0
+ for chunk:Node in editor.renderer.chunks.values():
+  for child:Node in chunk.get_children():
+   if child is MultiMeshInstance3D and str(child.name).begins_with('tree_'):count+=child.multimesh.instance_count
+ return count
+func run():
+ OUT='res://art/review/terrain_fidelity/2026-10-19/island_meadow/rule1/'
+ if FileAccess.file_exists(OUT+'captures.json'):push_error('Preserve existing meadow evidence');quit(1);return
+ layout_kind='courtyard';quiet_backdrop=true
+ DirAccess.make_dir_recursive_absolute(OUT);DirAccess.make_dir_recursive_absolute(WORK)
+ viewport=SubViewport.new();viewport.size=Vector2i(1671,941);viewport.own_world_3d=true;viewport.msaa_3d=Viewport.MSAA_4X;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(viewport)
+ var reports:Dictionary={}
+ for style:String in ['shallow','meadow']:
+  editor=load('res://scenes/beautiful_island.tscn').instantiate();viewport.add_child(editor)
+  editor.hud.hide();editor.brush.hide();editor.set_process(false);editor.camera.set_process(false);editor.camera.reparent(editor,true)
+  var rule:Dictionary={}
+  if style=='shallow':
+   var payload:Dictionary=JSON.parse_string(FileAccess.get_file_as_string('res://art/work/retained_island/2026-10-19/proportion/shallow.layout'))
+   assert(editor.data.deserialize(payload));editor.renderer.rebuild_all()
+  else:rule=Form.apply(editor);rule.cover=Form.cover(editor)
+  var before:Dictionary=editor.data.serialize()
+  var points:PackedVector3Array=editor.renderer.contours.surfaces.sculpted_terrain.vertices
+  FileAccess.open(WORK+style+'.bin',FileAccess.WRITE).store_buffer(points.to_byte_array())
+  FileAccess.open(WORK+style+'.layout',FileAccess.WRITE).store_string(JSON.stringify(before,'',true,true))
+  var props:Array=[]
+  for entry:Dictionary in editor.renderer.props.entries:
+   if entry.node.visible:props.append(str(entry.node.name))
+  reports[style]={'rule':rule,'triangles':points.size()/3,'vertex_sha256':digest(points.to_byte_array()),'records':editor.data.rocks.samples.size(),'cells':editor.data.cells.size(),'props':props,'published_tree_count':tree_count(),'camera_vertical_shift':-2.0,'art_accepted':false}
+  await views(style);assert(before==editor.data.serialize())
+  editor.queue_free();await process_frame
+ FileAccess.open(OUT+'captures.json',FileAccess.WRITE).store_string(JSON.stringify({'stages':reports,'captures':captures,'rule_source_sha256':FileAccess.get_sha256('res://tools/art/island_meadow_form.gd'),'scope':'Native full-scene rolling meadow/lower-return shape experiment against shallow saved-data control. Same cameras relative to1.5m central ground; same assets/major placements. Tools-only, new data, no adoption or art acceptance.'},'\t',true,true))
+ print('NATIVE MEADOW STUDY: ',captures.size(),' frames');quit()

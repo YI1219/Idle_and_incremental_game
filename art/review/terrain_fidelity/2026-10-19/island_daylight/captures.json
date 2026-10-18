@@ -1,0 +1,120 @@
+{
+	"captures": [
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "control_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 224.0,
+			"error": 0,
+			"file": "control_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 246.0,
+			"error": 0,
+			"file": "control_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "control_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 197.0,
+			"error": 0,
+			"file": "control_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "daylight_whole.png",
+			"position": "(-4.373102, 16.61659, 18.11074)",
+			"rotation": "(-34.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 224.0,
+			"error": 0,
+			"file": "daylight_play.png",
+			"position": "(-6.484222, 13.27153, 9.74839)",
+			"rotation": "(-35.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 246.0,
+			"error": 0,
+			"file": "daylight_close.png",
+			"position": "(-8.75244, 5.994038, 11.32559)",
+			"rotation": "(-25.0, 16.0, 0.0)"
+		},
+		{
+			"draw_calls": 192.0,
+			"error": 0,
+			"file": "daylight_reverse.png",
+			"position": "(-17.31135, 14.70782, -27.0103)",
+			"rotation": "(-32.0, -164.0, 0.0)"
+		},
+		{
+			"draw_calls": 197.0,
+			"error": 0,
+			"file": "daylight_low.png",
+			"position": "(4.224263, 1.266049, 15.9544)",
+			"rotation": "(-5.0, 36.0, 0.0)"
+		}
+	],
+	"scope": "Exact same shallow terrain vertices/data/major props and five global cameras. Native coordinated grass/rock palette and lighting comparison. Tools-only, no adoption/user art acceptance.",
+	"stages": {
+		"control": {
+			"art_accepted": false,
+			"layout_sha256": "5d3221522cda82f31168196c2bf701dc87b241dfb0e869e8db506eba25e0d721",
+			"props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"rule": {},
+			"triangles": 56320,
+			"vertex_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269"
+		},
+		"daylight": {
+			"art_accepted": false,
+			"layout_sha256": "5d3221522cda82f31168196c2bf701dc87b241dfb0e869e8db506eba25e0d721",
+			"props": [
+				"ReferenceCottage",
+				"KitchenGardenRow0",
+				"KitchenGardenRow1",
+				"KitchenGardenRow2",
+				"KitchenGardenRow3",
+				"KitchenGardenRow4"
+			],
+			"rule": {
+				"ambient_energy": 0.64,
+				"ambient_srgb": "c0d2e4",
+				"grass_srgb": [
+					"78a85c",
+					"a9c57b"
+				],
+				"rule": "daylight1",
+				"scope": "Coordinated full-scene finish study, not single-variable isolation or shipped-game algorithm claim. No geometry, data, view or prop-placement change.",
+				"sun_energy": 1.05,
+				"sun_srgb": "fff4dd",
+				"underside_bounce_energy": 0.2,
+				"underside_bounce_srgb": "c5d7e3"
+			},
+			"triangles": 56320,
+			"vertex_sha256": "49fc2f677706f6fe3a695a74c5b9b9c775d941005b57f16c3ee12239b147f269"
+		}
+	}
+}

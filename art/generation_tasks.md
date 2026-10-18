@@ -4,7 +4,7 @@ AND direct existing-pipeline submission/model production for this selected asset
 
 ## Current state — no submittable task
 
-Latest [beauty-first longer island goal](review/terrain_fidelity/2026-10-18/beautiful_island/README.md) remains active. Current reversible local editor candidate uses retained original closed rock sources converted to ordinary editable densities, two contours/two seeds, coordinated finish and ONE completed built-in imagegen 2Dpainted albedo. That [actual texture and prompt](source/painted_rock/2026-10-18/manifest.json) is not a Tripo task or new fixed terrain target. No paid 3Djob, purchase, submittable generation task or repeated strategy permission is pending. Current art remains unaccepted; earlier negative studies are history, not an exact-image requirement. Preserve all completed originals below.
+Latest [beauty-first longer island goal](review/terrain_fidelity/2026-10-18/beautiful_island/README.md) remains active. Original retained-source editable candidate and a new [浅岛柔光 alternative](review/terrain_fidelity/2026-10-19/island_light/README.md) each offer two contours/two seeds with separate scenes/presets/save. Both use original sources and ordinary editable densities. ONE earlier completed built-in imagegen [2Dpainted albedo/prompt](source/painted_rock/2026-10-18/manifest.json) remains; no new generation this continuation. This is not a Tripo task or fixed terrain target. No paid 3Djob, purchase, submittable task or repeated strategy permission is pending. Art remains unaccepted; earlier negative studies are history, not exact-image requirements. Preserve all completed originals below.
 
 ## Previous code-guide probe — completed and rejected
 

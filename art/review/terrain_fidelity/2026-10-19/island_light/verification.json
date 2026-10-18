@@ -1,0 +1,51 @@
+{
+  "new_runtime_frames": 20,
+  "retained_control_frames": 40,
+  "rejected_meadow_frames": 20,
+  "four_cases": [
+    "courtyard_7301",
+    "courtyard_7319",
+    "bay_7301",
+    "bay_7319"
+  ],
+  "five_ground_relative_views": [
+    "whole",
+    "play",
+    "close",
+    "reverse",
+    "low"
+  ],
+  "world_camera_shift_from_controls": [
+    0,
+    -2,
+    0
+  ],
+  "same_original_resources_verified": true,
+  "png_sha256": {
+    "courtyard_7301_whole.png": "663646cd7ecc066c5796ce77db40fd979e6ee5585cd624ca3189f4a5379c730f",
+    "courtyard_7301_play.png": "b9ab2e127649e6a8a60208a10e95d6f063f7aa18fe4d7aa67201dab97d624cba",
+    "courtyard_7301_close.png": "47ed51c8d379c8cb1b890ed4e0595e895d959d9653438368d3e616cbfd598042",
+    "courtyard_7301_reverse.png": "655a911e1e7566c1338c191b103a631e87358400cdfff997b45f40fc3e14a677",
+    "courtyard_7301_low.png": "94a17304a0d65837a490a9a2d9a9cc62035fd710462d7cb2ed7b51a6afe342ec",
+    "courtyard_7319_whole.png": "e97bf21321d24b860a9ab05f2256f078fce85b1e0421290503c87cf7ea888bed",
+    "courtyard_7319_play.png": "673a379c77c811af5a58de5edf835feff9d552d148a2c1bd3705539ee48c596f",
+    "courtyard_7319_close.png": "5b750f11d1e59d5df8c35f232b01644147714a3bae6c070ed1b1b8f7d1014306",
+    "courtyard_7319_reverse.png": "eaf2a24d686dd19311fe72bdc6fd88a9aca0b4f9cb123f3f084e29cf39595918",
+    "courtyard_7319_low.png": "f37f45b1e98f97ad5307d35247e33edf9f101eb26d9b9eae47089b7ff02408f8",
+    "bay_7301_whole.png": "531dfb42d36eed2e7f4ba669eb1ead4402304cc50c8b13d812014d20d5787f79",
+    "bay_7301_play.png": "3f1c9d81beacecf3bc912154555bb8ad2e69fcb87d7d3769dfe9aa6659330853",
+    "bay_7301_close.png": "f5ff4490392fb1fd3aa7bf73ca659edc88add1fd9b4f2740148734bf629a4410",
+    "bay_7301_reverse.png": "38931f575e69d1adc8a936a044cd054a411b8db0e4e84ec49bc627d410884e13",
+    "bay_7301_low.png": "ce08c613a92caa9f3513b86036a0e133261983740e757fd022baca0c3d08812c",
+    "bay_7319_whole.png": "b67ffea9085a86caa6adb0ce280c90bd9b66ac7214b02b05c5cb9a16981b5462",
+    "bay_7319_play.png": "13ea335eb402f8e053697b42eafe090fd2b8e9b0bc97535f02215432c11eb677",
+    "bay_7319_close.png": "0c94b06ef9585bd7cf75b92b198cd867e49c1f3429d59e364d11e2e06610f887",
+    "bay_7319_reverse.png": "cd5a5811743263d01e0d0470238005dba34f55ba472953a6a8736189098c86c1",
+    "bay_7319_low.png": "2e0c053ef8f3c2268d1a677324231cceedd3eed2d6e6ee05829f3f08e7de67bf"
+  },
+  "fresh_four_case_edit_and_finite_reports": true,
+  "fresh_native_support": true,
+  "user_art_accepted": false,
+  "goal_status": "active",
+  "limits": "Two offline contours x two seeds, ordinary editable data; not arbitrary-contour crown compiler. Broad walls/platter/painted triangle rim, rebuild latency and user beauty acceptance remain. Target hardware and release export untested."
+}

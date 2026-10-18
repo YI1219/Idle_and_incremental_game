@@ -3,19 +3,24 @@ extends 'res://scripts/terrain_editor/editor.gd'
 const CASES=['courtyard_7301','courtyard_7319','bay_7301','bay_7319']
 const LABELS=['圆庭 · 种子 7301','圆庭 · 种子 7319','曲湾 · 种子 7301','曲湾 · 种子 7319']
 const PREVIEW_SAVE='user://beautiful_island/layout.json'
+const PREVIEW_SAVE_LIGHT='user://beautiful_island_light/layout.json'
+@export var light_variant:=false
 var selected_case:=0
 func _ready()->void:
  super._ready()
+ if light_variant and get_viewport()==get_tree().root:get_window().title='浮庭 · 浅岛柔光试作'
  renderer.contours=preload('res://scripts/terrain_editor/island_contours.gd').new()
  preload('res://scripts/terrain_editor/island_finish.gd').apply(self)
+ if light_variant:preload('res://scripts/terrain_editor/island_light_finish.gd').apply(self)
  hud.free();hud=preload('res://scripts/terrain_editor/island_hud.gd').new();hud.editor=self;add_child(hud)
- var pivot:=Node3D.new();pivot.name='CameraFocus';pivot.position.y=2.4;add_child(pivot)
+ var pivot:=Node3D.new();pivot.name='CameraFocus';pivot.position.y=.4 if light_variant else 2.4;add_child(pivot)
  camera.reparent(pivot,false)
  select_preset(0)
 func select_preset(kind:int)->void:
  if kind<0 or kind>=CASES.size():return
  cancel_input()
- var preset:Resource=load('res://assets/terrain_editor/island_presets/'+CASES[kind]+'.res')
+ var folder:='island_presets_light' if light_variant else 'island_presets'
+ var preset:Resource=load('res://assets/terrain_editor/'+folder+'/'+CASES[kind]+'.res')
  if preset==null or not data.deserialize(preset.layout):
   push_error('Cannot load island preset: '+CASES[kind]);return
  selected_case=kind
@@ -25,9 +30,11 @@ func select_preset(kind:int)->void:
  camera._yaw=16;camera._yaw_goal=16;camera._pitch=34;camera._pitch_goal=34
  camera.advance(0)
 func save_layout(path:String)->Error:
- return super.save_layout(PREVIEW_SAVE if path=='user://terrain_editor/layout.json' else path)
+ var target:=PREVIEW_SAVE_LIGHT if light_variant else PREVIEW_SAVE
+ return super.save_layout(target if path=='user://terrain_editor/layout.json' else path)
 func load_layout(path:String)->Error:
- return super.load_layout(PREVIEW_SAVE if path=='user://terrain_editor/layout.json' else path)
+ var target:=PREVIEW_SAVE_LIGHT if light_variant else PREVIEW_SAVE
+ return super.load_layout(target if path=='user://terrain_editor/layout.json' else path)
 func _unhandled_input(event:InputEvent)->void:
  if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_HOME:
   camera.recenter(Vector2(-11,-5));get_viewport().set_input_as_handled()

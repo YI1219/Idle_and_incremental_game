@@ -1,7 +1,7 @@
 extends SceneTree
 ## Fresh finite contact evidence from actual published MultiMeshes, not
 ## requested placements. Root vertices and vine centroids have separate scope.
-const OUT='res://art/review/terrain_fidelity/2026-10-18/beautiful_island/playable/'
+var OUT='res://art/review/terrain_fidelity/2026-10-18/beautiful_island/playable/'
 func _initialize():call_deferred('run')
 func nearest(field,p:Vector3)->float:
  var vertices:PackedVector3Array=field.surfaces.sculpted_terrain.vertices
@@ -18,7 +18,9 @@ func nearest(field,p:Vector3)->float:
   for edge in [[a,b],[b,c],[c,a]]:result=minf(result,p.distance_to(Geometry3D.get_closest_point_to_segment(p,edge[0],edge[1])))
  return result
 func run():
- var editor=load('res://scenes/beautiful_island.tscn').instantiate();root.add_child(editor)
+ var light_variant:=OS.get_cmdline_user_args().has('--light')
+ if light_variant:OUT='res://art/review/terrain_fidelity/2026-10-19/island_light/'
+ var editor=load('res://scenes/beautiful_island_light.tscn' if light_variant else 'res://scenes/beautiful_island.tscn').instantiate();root.add_child(editor)
  editor.set_process(false);editor.camera.set_process(false)
  var reports:Dictionary={};var failures:=0
  for case:int in editor.CASES.size():
