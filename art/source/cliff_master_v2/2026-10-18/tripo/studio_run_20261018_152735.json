@@ -1,0 +1,129 @@
+{
+  "manifest": "/Users/yi/Projects/games/yunlu-pr9-astra/art/source/cliff_master_v2/2026-10-18/manifest.json",
+  "started_local": "2026-10-18T15:27:35",
+  "mode": "generate",
+  "requested": {
+    "route": "smart_mesh",
+    "topology": "triangles",
+    "target_faces": 5000,
+    "texture": false
+  },
+  "events": [
+    {
+      "t": 4.1,
+      "msg": "workbench ready",
+      "balance": 25200
+    },
+    {
+      "t": 5.3,
+      "msg": "multiview selected"
+    },
+    {
+      "t": 5.3,
+      "msg": "uploaded",
+      "slot": "前",
+      "file": "front.png"
+    },
+    {
+      "t": 6.9,
+      "msg": "uploaded",
+      "slot": "左侧",
+      "file": "left.png"
+    },
+    {
+      "t": 8.4,
+      "msg": "uploaded",
+      "slot": "右侧",
+      "file": "right.png"
+    },
+    {
+      "t": 9.9,
+      "msg": "uploaded",
+      "slot": "后",
+      "file": "back.png"
+    },
+    {
+      "t": 18.2,
+      "msg": "ready to generate",
+      "button": "生成模型 100",
+      "cost": 100
+    },
+    {
+      "t": 18.2,
+      "msg": "clicked 生成模型 once"
+    },
+    {
+      "t": 27.3,
+      "msg": "progress",
+      "state": "busy"
+    },
+    {
+      "t": 87.6,
+      "msg": "progress",
+      "state": null
+    },
+    {
+      "t": 87.6,
+      "msg": "generation finished (progress gone, new asset card)"
+    },
+    {
+      "t": 91.7,
+      "msg": "balance after",
+      "balance": 25100
+    },
+    {
+      "t": 93.8,
+      "msg": "downloaded",
+      "file": "/Users/yi/Projects/games/yunlu-pr9-astra/art/source/cliff_master_v2/2026-10-18/tripo/cliff_land_master_v2_white.glb",
+      "suggested": "岩石平台3d模型.glb",
+      "bytes": 121988
+    }
+  ],
+  "balance_before": 25200,
+  "actual_ui": {
+    "topology_clicked": "三角面",
+    "faces_input_value": "5000",
+    "topology_buttons": [
+      {
+        "t": "四边面",
+        "state": "off"
+      },
+      {
+        "t": "三角面",
+        "state": "on"
+      }
+    ],
+    "panel_screenshot": "/Users/yi/Projects/games/yunlu-pr9-astra/art/source/cliff_master_v2/2026-10-18/tripo/studio_20261018_152735/02_topology_panel.png",
+    "faces_after_reopen": "5000",
+    "topology_after_reopen": [
+      {
+        "t": "四边面",
+        "state": "off"
+      },
+      {
+        "t": "三角面",
+        "state": "on"
+      }
+    ],
+    "requested_quantity": 1,
+    "selected_quantity": [
+      "1"
+    ],
+    "ai_model_block": "通用设置\n\n拓扑\n\n订阅专享\n\n模型私密性\n\n仅分享\n\n生成数量\n\n1\n2\n4\n\nAI 模型\n\nP2.0\n\n生成模型\n100",
+    "generate_button_text": "生成模型 100",
+    "cost_shown": 100,
+    "left_panel_screenshot": "/Users/yi/Projects/games/yunlu-pr9-astra/art/source/cliff_master_v2/2026-10-18/tripo/studio_20261018_152735/03_parameter_panel.png"
+  },
+  "generate_clicked_local": "2026-10-18T15:27:53",
+  "result_screenshot": "/Users/yi/Projects/games/yunlu-pr9-astra/art/source/cliff_master_v2/2026-10-18/tripo/studio_20261018_152735/04_result.png",
+  "balance_after": 25100,
+  "export_panel_text": "导出\n\n文件名\n\n格式\n\nGLB\n\n底部中心轴点\n\n发送至\n\n导出",
+  "export_panel_screenshot": "/Users/yi/Projects/games/yunlu-pr9-astra/art/source/cliff_master_v2/2026-10-18/tripo/studio_20261018_152735/05_export_panel.png",
+  "download": {
+    "file": "/Users/yi/Projects/games/yunlu-pr9-astra/art/source/cliff_master_v2/2026-10-18/tripo/cliff_land_master_v2_white.glb",
+    "suggested_filename": "岩石平台3d模型.glb",
+    "bytes": 121988
+  },
+  "finished_local": "2026-10-18T15:29:08",
+  "elapsed_s": 93.8
+}

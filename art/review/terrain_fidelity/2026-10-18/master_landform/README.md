@@ -1,4 +1,4 @@
-# Two full landform rules rejected; stop-condition decision pending
+# Two full landform rules rejected; source decision subsequently resolved
 
 2026-10-18. This continuation actually executes the prior source-refinement
 brief, rather than adding another grass/material sweep.20new native Godot
@@ -38,13 +38,15 @@ No grass/support/edited-mesh/editor/two-contour/two-seed/performance/user-art
 acceptance. No input from crossed direct candidate. Field parameters/record
 counts/camera/source hashes are recorded alongside actual captures.
 
-## Stop and next human decision
+## Historical stop and subsequent decision
 
 Parent and independent read-only actual-image review agree rejection of both
 substantive form rules. This satisfies the user's explicit condition to stop
 after two substantive rule changes without useful art gain. No further local
 shape/normal/noise/leaf trial follows this report. Goal remains incomplete.
-A single user question asks which source-production route to take next:
+The subsequent user explicitly selected redesigned cliff four views then Tripo.
+[New source and actual result](../tripo_land_v2/README.md) supersede this report's
+pending route checkpoint. The original choice presented was:
 
 - Recommended: redesign independent cliff-master reference views so a broad
   calm land surface directly turns into unequal cliff faces,retiring platform

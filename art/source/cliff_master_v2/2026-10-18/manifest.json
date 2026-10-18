@@ -1,0 +1,111 @@
+{
+  "asset": "cliff_land_master_v2_white",
+  "date": "2026-10-18",
+  "status": "One new model generated/downloaded; actual-source review retains bounded structural improvement only",
+  "authorization": "User explicitly selected redesigned cliff four independent views then Tripo. Existing direct pipeline permission applies. One geometry-only exploratory model, no texture or purchase.",
+  "views": {
+    "front": {
+      "file": "inputs/front.png"
+    },
+    "left": {
+      "file": "inputs/left.png"
+    },
+    "right": {
+      "file": "inputs/right.png"
+    },
+    "back": {
+      "file": "inputs/back.png"
+    }
+  },
+  "selected": {
+    "front": {
+      "file": "inputs/front.png",
+      "sha256": "b1e3a40d10780f9a4468a2ad24c1711b54fe8700cfd526a3e5034d9569734c14",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    "left": {
+      "file": "inputs/left.png",
+      "sha256": "c48c8e39a7b3ad299003c4abd3411b4edc1e1067be4cf68f21e618eaefb4cb54",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    "right": {
+      "file": "inputs/right.png",
+      "sha256": "8fd30989ca3d753eaedef0cf28dc5cdc62a223dfce3853331eb41673823bbe82",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    "back": {
+      "file": "inputs/back.png",
+      "sha256": "27053e099e875cefc963eb496f43a3458dcfd1218be4e631ed6aea9e0b8ccf38",
+      "dimensions": [
+        1639,
+        959
+      ]
+    }
+  },
+  "studio": {
+    "route": "smart_mesh",
+    "topology": "triangles",
+    "target_faces": 5000,
+    "texture": false
+  },
+  "recommended_parameters": {
+    "mode": "Smart Mesh multiview; record actual UI model",
+    "quantity": 1,
+    "target_faces": 5000,
+    "topology": "Triangle",
+    "texture": false,
+    "rig": false,
+    "animation": false,
+    "export": "GLB"
+  },
+  "approximate_module_meters": {
+    "width": 6.5,
+    "height": 3.8,
+    "depth": 3.0
+  },
+  "download_directory": "tripo",
+  "suggested_filename": "cliff_land_master_v2_white.glb",
+  "prompts": "prompts.json",
+  "model_task_id": null,
+  "known_input_risks": [
+    "Illustrative rotations are not calibrated projections; side detailing remains inconsistent",
+    "Side and underside may become narrow/pointed or rounded in reconstruction; inspect returned model first",
+    "Back is quieter broad plane; target geological rhythm remains qualitative, not accepted art",
+    "Independent review estimates back10-15percent shorter after width normalization; inspect actual height/depth"
+  ],
+  "input_review": "input_review.md",
+  "actual_generation_parameters": {
+    "model": "P2.0",
+    "route": "smart_mesh",
+    "quantity": 1,
+    "topology": "triangles",
+    "requested_faces": 5000,
+    "actual_triangles": 5028,
+    "actual_vertices": 2516,
+    "texture": false,
+    "credits": 100,
+    "generate_clicked_local": "2026-10-18T15:27:53",
+    "pipeline_log": "tripo/studio_run_20261018_152735.json"
+  },
+  "model_original": {
+    "file": "tripo/cliff_land_master_v2_white.glb",
+    "sha256": "7474502a790d11f7ed9e06be565a3af362c9c92f6d309dde6f281978a2259adc",
+    "bytes": 121988
+  },
+  "white_review": "../../../review/terrain_fidelity/2026-10-18/tripo_land_v2/README.md",
+  "actual_dimensions_at_6_5m_width": {
+    "width": 6.5,
+    "height": 3.362495,
+    "depth": 3.768908
+  },
+  "model_status": "Useful broad-upperland/direct-cliff improvement, art unaccepted; bounded density/contact proof in progress"
+}

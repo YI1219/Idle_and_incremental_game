@@ -1,0 +1,41 @@
+{
+  "grid_step": 0.25,
+  "sample_records": 17955,
+  "analytic_three_ray_crosschecks": 1233,
+  "bvh_disagreements_resolved": [
+    {
+      "point": [
+        -5.25,
+        1.25,
+        -0.5
+      ],
+      "bvh": [
+        false,
+        false,
+        true
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "bounds": [
+    [
+      -5.5,
+      -2.440376043319702,
+      -3.1890759468078613
+    ],
+    [
+      5.5,
+      3.25,
+      3.189074993133545
+    ]
+  ],
+  "scope": "Unchanged second Tripo source, rigid alignment/uniform11m width/upper peak3.25; production .25m samples. No shape edits, arbitrary contour compiler, grass or editor acceptance.",
+  "source_sha256": "7306957bfe4307909b0625a4ef66451ca0ae734b5ae98724144bed433ae40ea7",
+  "trial_points_sha256": "52339e28e2e60e5bca4f9bafbc9a0837ed8d785df5bf3960dcf6ea73a8b94cfa",
+  "uniform_scale_from_6_5m": 1.6923076923076923,
+  "translation_y": 0.4048119691702037
+}

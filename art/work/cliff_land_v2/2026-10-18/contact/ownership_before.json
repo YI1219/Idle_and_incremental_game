@@ -1,0 +1,6 @@
+{
+	"air_to_solid_nodes_below_cap": 5,
+	"hypothesis": "All projected roofs accepted as upper land, so low rock shoulders receive soil and owned colour. Both construction and material must use same upper-cap eligibility.",
+	"minimum_owned_y": 0.967578649520874,
+	"owned_vertex_occurrences_below_cap": 1105
+}

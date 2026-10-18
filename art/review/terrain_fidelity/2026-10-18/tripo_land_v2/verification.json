@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-18",
+  "current_native_frames": 57,
+  "frame_groups": "32source comparison +25final density/contact, current1671x941;25old contact attempt archived separately",
+  "source_old_sha256_preserved": "b9728e2e94fd1061e5bc1b3ca466ae639bc06f4f8bd8530dd80be19596013d81",
+  "source_new_sha256": "7474502a790d11f7ed9e06be565a3af362c9c92f6d309dde6f281978a2259adc",
+  "finite_gate_stages": 7,
+  "finite_gate_scope": "2source +5source/conversion/soil/contact/actualcarved finite reports, not global proof",
+  "ordinary_actual_data_checks": "9/9 freshly passed",
+  "exact_captured_operation_and_triangle_bytes": "12/12 freshly passed, same capture center/radius397changed nodes",
+  "original_replay_regression": "12/12 default fixture freshly passed after adding optional inputs",
+  "source_records": 17955,
+  "contact_records": 18643,
+  "contact_triangles": 29032,
+  "carved_triangles": 29236,
+  "source_defined_cells": 49,
+  "physical_soil_operation": {
+    "air_to_solid": 688,
+    "cells": 49,
+    "changed_records": 2070,
+    "construction": "Union in ordinary saved densities; same one skin, no decorative backing or separate soil surface.",
+    "contour": "Exact exterior edges of occupied authoring cells, not smoothed contour",
+    "outside_cell_changed_nodes": 0,
+    "soil_vertical_shift": 0.25
+  },
+  "grass_roots": 145,
+  "grass_uploaded_vertices": 67425,
+  "root_support_max_error": 2.83761408148564e-07,
+  "low_ownership_before": {
+    "air_to_solid_nodes_below_cap": 5,
+    "hypothesis": "All projected roofs accepted as upper land, so low rock shoulders receive soil and owned colour. Both construction and material must use same upper-cap eligibility.",
+    "minimum_owned_y": 0.967578649520874,
+    "owned_vertex_occurrences_below_cap": 1105
+  },
+  "low_ownership_after": {
+    "air_to_solid_nodes_below_cap": 0,
+    "hypothesis": "All projected roofs accepted as upper land, so low rock shoulders receive soil and owned colour. Both construction and material must use same upper-cap eligibility.",
+    "minimum_owned_y": null,
+    "owned_vertex_occurrences_below_cap": 0
+  },
+  "same_soil_contact_mesh_and_layout_bytes": true,
+  "python_parse": true,
+  "scope": "Useful broad land/cliff structural progress, not final art. Source-derived cells only. No arbitrary contour regeneration, 2contours2seeds/editor/publication/picking/collision/targetdevice/userart acceptance. Formal default control not captured here: old control is prior ORIGINAL MASTER."
+}

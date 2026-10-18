@@ -2,17 +2,21 @@
 Updated:2026-10-18. Latest user explicitly authorizes new rock-master references
 AND direct existing-pipeline submission/model production for this selected asset.
 
-## Latest source-route checkpoint
+## Latest selected source — second master generated
 
-[Two whole-form revisions](review/terrain_fidelity/2026-10-18/master_landform/README.md)
-are rejected and reach the agreed two-rule stop condition. A single human route
-question is pending: redesigned cliff-source views and another geometry-first
-Tripo task,or user-led manual refinement of existing Blender copy. No new four
-inputs/manifest/job are ready. Do not resubmit the completed original manifest
-or infer texture approval. Previous selected-task Tripo operation permission
-remains granted; this checkpoint concerns source strategy.
+User selected “重设崖壁四视图，再走 Tripo（建议）”. New independent inputs,
+[prompts/manifest](source/cliff_master_v2/2026-10-18/manifest.json) and
+[actual input review](source/cliff_master_v2/2026-10-18/input_review.md) supersede
+that pending route question. ONE P2.0 Smart Mesh task completed:quantity1,
+Triangle5000requested/5028actual triangles,2516vertices,100credits,no texture.
+Paid15:27:53/download15:29:08, original121988byte GLB preserved;taskIDunknown.
+Do not resubmit completed manifest. [Actual57frame review](review/terrain_fidelity/2026-10-18/tripo_land_v2/README.md)
+retains useful broad-upperland/directface progress,not full art acceptance.
+Bounded density/soil/contact proof and edited geometry pass finite checks;
+hard soil lip,puffy bottom,sampling losses remain. No texture/purchases or next
+paid task follows this report. Original prior task remains preserved.
 
-## One connected cliff master — generated, unaccepted candidate
+## Previous connected cliff master — generated, unaccepted candidate
 
 Selected [manifest](source/cliff_master/2026-10-18/manifest.json),
 [reference review](source/cliff_master/2026-10-18/concept_review.md),
