@@ -1,0 +1,18 @@
+{
+  "new_native_frames": 20,
+  "original_source_bytes_preserved": true,
+  "original_samples_preserved_and_used": true,
+  "inverse_source_field_triangle_bytes_match_prior_valid_source": true,
+  "direct_candidate_strict_crossings": 32,
+  "inverse_candidate_surface_components": [
+    22200,
+    50
+  ],
+  "inverse_secondary_shell_triangles": 96,
+  "inverse_secondary_shell_signed_volume": -0.006229902236013994,
+  "inverse_strict_crossings": 0,
+  "geometry_gates": "both candidates fail; valid sources pass",
+  "ordinary_inverse_data_checks_passed": 9,
+  "decision": "Both art changes rejected; two-rule stop condition reached, ask human source-production route before further trials",
+  "scope": "Current hashes/native evidence and rejection gates. No full PCG/editor/grass/performance/art acceptance."
+}

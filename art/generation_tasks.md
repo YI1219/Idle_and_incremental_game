@@ -2,6 +2,16 @@
 Updated:2026-10-18. Latest user explicitly authorizes new rock-master references
 AND direct existing-pipeline submission/model production for this selected asset.
 
+## Latest source-route checkpoint
+
+[Two whole-form revisions](review/terrain_fidelity/2026-10-18/master_landform/README.md)
+are rejected and reach the agreed two-rule stop condition. A single human route
+question is pending: redesigned cliff-source views and another geometry-first
+Tripo task,or user-led manual refinement of existing Blender copy. No new four
+inputs/manifest/job are ready. Do not resubmit the completed original manifest
+or infer texture approval. Previous selected-task Tripo operation permission
+remains granted; this checkpoint concerns source strategy.
+
 ## One connected cliff master — generated, unaccepted candidate
 
 Selected [manifest](source/cliff_master/2026-10-18/manifest.json),

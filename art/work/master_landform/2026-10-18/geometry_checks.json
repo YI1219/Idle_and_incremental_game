@@ -1,0 +1,1330 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "source": {
+      "topology": {
+        "triangles": 5424,
+        "welded_vertices_1e5": 2714,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 220.74705926854136,
+        "vertex_components": [
+          2714
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "e54ac6588a674ca4c8929d25024dd9358513e1088c28f296cdf739a5fe6ecd9a",
+        "triangles": 5424,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "candidate": {
+      "topology": {
+        "triangles": 5424,
+        "welded_vertices_1e5": 2714,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 343.6684661437367,
+        "vertex_components": [
+          2714
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "c35db2e65584f026129421ccb458bff2a1ebaff61bed529396cfb7c347b39081",
+        "triangles": 5424,
+        "disjoint_position_bvh_pairs": 32,
+        "strict_crossing_pairs_at_least": 32,
+        "crossings": [
+          {
+            "zero_based_faces": [
+              2221,
+              2404
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.12626164719260297,
+                "triangle_barycentric": [
+                  0.37941738063776664,
+                  0.4315130296672654,
+                  0.189069589694968
+                ],
+                "position": [
+                  2.19921739358249,
+                  -0.9090969856154775,
+                  -2.4562640299713387
+                ],
+                "edge_face": 2221,
+                "edge_corner": 0,
+                "interior_face": 2404
+              },
+              {
+                "segment_fraction": 0.24385132505115617,
+                "triangle_barycentric": [
+                  0.773804330560562,
+                  0.16669024712514793,
+                  0.05950542231429012
+                ],
+                "position": [
+                  2.1820941001032,
+                  -0.7249926349182645,
+                  -2.472723120244226
+                ],
+                "edge_face": 2404,
+                "edge_corner": 0,
+                "interior_face": 2221
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              2221,
+              2405
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.19179298819839802,
+                "triangle_barycentric": [
+                  0.6671430835374039,
+                  0.11124216411566949,
+                  0.22161475234692665
+                ],
+                "position": [
+                  2.180355414274934,
+                  -0.5971618191032815,
+                  -2.4668944773176253
+                ],
+                "edge_face": 2221,
+                "edge_corner": 0,
+                "interior_face": 2405
+              },
+              {
+                "segment_fraction": 0.7561486749488437,
+                "triangle_barycentric": [
+                  0.773804330560562,
+                  0.16669024712514793,
+                  0.05950542231429012
+                ],
+                "position": [
+                  2.1820941001032,
+                  -0.7249926349182645,
+                  -2.472723120244226
+                ],
+                "edge_face": 2405,
+                "edge_corner": 2,
+                "interior_face": 2221
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              2279,
+              2327
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.978158386412774,
+                "triangle_barycentric": [
+                  0.8080604155888657,
+                  0.10087564831229559,
+                  0.09106393609883875
+                ],
+                "position": [
+                  4.296933594101287,
+                  3.167871343409418,
+                  -2.488541305599871
+                ],
+                "edge_face": 2279,
+                "edge_corner": 0,
+                "interior_face": 2327
+              },
+              {
+                "segment_fraction": 0.8858105740381873,
+                "triangle_barycentric": [
+                  0.002189610900750323,
+                  0.9608043720270505,
+                  0.037006017072199186
+                ],
+                "position": [
+                  4.293779779572696,
+                  3.1470269175394012,
+                  -2.496879999226196
+                ],
+                "edge_face": 2327,
+                "edge_corner": 2,
+                "interior_face": 2279
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              2281,
+              2327
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9782728383546455,
+                "triangle_barycentric": [
+                  0.8444292728287197,
+                  0.08211630536269865,
+                  0.0734544218085817
+                ],
+                "position": [
+                  4.300807571405725,
+                  3.1837356326140887,
+                  -2.4858726424598556
+                ],
+                "edge_face": 2281,
+                "edge_corner": 0,
+                "interior_face": 2327
+              },
+              {
+                "segment_fraction": 0.021841613587225892,
+                "triangle_barycentric": [
+                  0.8080604155888663,
+                  0.100875648312295,
+                  0.09106393609883867
+                ],
+                "position": [
+                  4.296933594101287,
+                  3.1678713434094186,
+                  -2.488541305599871
+                ],
+                "edge_face": 2281,
+                "edge_corner": 1,
+                "interior_face": 2327
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              2294,
+              2319
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.18915592644619567,
+                "triangle_barycentric": [
+                  0.44811512907929585,
+                  0.02035079542773099,
+                  0.5315340754929732
+                ],
+                "position": [
+                  4.307035270004166,
+                  2.699672121185179,
+                  -2.060073963073876
+                ],
+                "edge_face": 2294,
+                "edge_corner": 0,
+                "interior_face": 2319
+              },
+              {
+                "segment_fraction": 0.9777096919972036,
+                "triangle_barycentric": [
+                  0.48555751618840903,
+                  0.42694205823900117,
+                  0.08750042557258988
+                ],
+                "position": [
+                  4.313322717012604,
+                  3.1587849377017037,
+                  -2.007791325230289
+                ],
+                "edge_face": 2294,
+                "edge_corner": 2,
+                "interior_face": 2319
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              2295,
+              2319
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9822176293958506,
+                "triangle_barycentric": [
+                  0.512067300757385,
+                  0.4139340438557321,
+                  0.07399865538688279
+                ],
+                "position": [
+                  4.314463154658772,
+                  3.1727071672826797,
+                  -2.0015669169251256
+                ],
+                "edge_face": 2295,
+                "edge_corner": 1,
+                "interior_face": 2319
+              },
+              {
+                "segment_fraction": 0.022290308002796376,
+                "triangle_barycentric": [
+                  0.48555751618840914,
+                  0.42694205823900117,
+                  0.08750042557258973
+                ],
+                "position": [
+                  4.313322717012604,
+                  3.1587849377017037,
+                  -2.007791325230289
+                ],
+                "edge_face": 2295,
+                "edge_corner": 2,
+                "interior_face": 2319
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              2304,
+              2319
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9227886031991072,
+                "triangle_barycentric": [
+                  0.703261411002098,
+                  0.0372797949966196,
+                  0.2594587940012824
+                ],
+                "position": [
+                  4.31957562153154,
+                  2.980638666044868,
+                  -1.9856211280524725
+                ],
+                "edge_face": 2304,
+                "edge_corner": 0,
+                "interior_face": 2319
+              },
+              {
+                "segment_fraction": 0.0177823706041494,
+                "triangle_barycentric": [
+                  0.5120673007573846,
+                  0.41393404385573235,
+                  0.07399865538688302
+                ],
+                "position": [
+                  4.314463154658772,
+                  3.17270716728268,
+                  -2.0015669169251256
+                ],
+                "edge_face": 2304,
+                "edge_corner": 1,
+                "interior_face": 2319
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              2307,
+              2319
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.8957609492804384,
+                "triangle_barycentric": [
+                  0.7589069081041129,
+                  0.07157485869637577,
+                  0.1695182331995113
+                ],
+                "position": [
+                  4.322647361914382,
+                  3.0735614776167006,
+                  -1.9662515767355522
+                ],
+                "edge_face": 2307,
+                "edge_corner": 1,
+                "interior_face": 2319
+              },
+              {
+                "segment_fraction": 0.07721139680089321,
+                "triangle_barycentric": [
+                  0.7032614110020979,
+                  0.0372797949966196,
+                  0.25945879400128247
+                ],
+                "position": [
+                  4.31957562153154,
+                  2.9806386660448667,
+                  -1.9856211280524723
+                ],
+                "edge_face": 2307,
+                "edge_corner": 2,
+                "interior_face": 2319
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              2353,
+              2359
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.8790676511320865,
+                "triangle_barycentric": [
+                  0.31594672611804864,
+                  0.20568901449216376,
+                  0.47836425938978766
+                ],
+                "position": [
+                  2.9342099273487627,
+                  3.249820167076373,
+                  -3.0755820081604393
+                ],
+                "edge_face": 2353,
+                "edge_corner": 0,
+                "interior_face": 2359
+              },
+              {
+                "segment_fraction": 0.3760450253302639,
+                "triangle_barycentric": [
+                  0.04988918314376292,
+                  0.9500902222211804,
+                  2.059463505663117e-05
+                ],
+                "position": [
+                  2.90099348853442,
+                  3.2497674616613943,
+                  -3.063386132368804
+                ],
+                "edge_face": 2359,
+                "edge_corner": 2,
+                "interior_face": 2353
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3321,
+              3351
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9795118925071029,
+                "triangle_barycentric": [
+                  0.0047589391426065,
+                  0.42958146974828865,
+                  0.5656595911091048
+                ],
+                "position": [
+                  -5.184183491724757,
+                  3.234640279614749,
+                  -0.22106834980647022
+                ],
+                "edge_face": 3321,
+                "edge_corner": 0,
+                "interior_face": 3351
+              },
+              {
+                "segment_fraction": 0.5217262963986061,
+                "triangle_barycentric": [
+                  7.795032750806952e-06,
+                  0.8387753229465252,
+                  0.16121688202072396
+                ],
+                "position": [
+                  -5.183216120773684,
+                  3.2499757125254023,
+                  -0.1985517821010108
+                ],
+                "edge_face": 3351,
+                "edge_corner": 1,
+                "interior_face": 3321
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3321,
+              3498
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9999923233205371,
+                "triangle_barycentric": [
+                  0.5774607938810861,
+                  0.3894082610303744,
+                  0.033130945088539525
+                ],
+                "position": [
+                  -5.187473971097457,
+                  3.249974225216839,
+                  -0.22888885855204433
+                ],
+                "edge_face": 3321,
+                "edge_corner": 0,
+                "interior_face": 3498
+              },
+              {
+                "segment_fraction": 0.47827370360139393,
+                "triangle_barycentric": [
+                  7.795032750029796e-06,
+                  0.838775322946526,
+                  0.16121688202072396
+                ],
+                "position": [
+                  -5.183216120773684,
+                  3.2499757125254023,
+                  -0.1985517821010108
+                ],
+                "edge_face": 3498,
+                "edge_corner": 0,
+                "interior_face": 3321
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3323,
+              3348
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9462183887068313,
+                "triangle_barycentric": [
+                  0.3242053812882055,
+                  0.6230820448969525,
+                  0.052712573814842026
+                ],
+                "position": [
+                  -5.062213433203641,
+                  2.179268360062565,
+                  -0.07090923562461762
+                ],
+                "edge_face": 3323,
+                "edge_corner": 0,
+                "interior_face": 3348
+              },
+              {
+                "segment_fraction": 0.6966258531104311,
+                "triangle_barycentric": [
+                  0.24559971225752925,
+                  0.605214263120713,
+                  0.14918602462175773
+                ],
+                "position": [
+                  -5.073423661193739,
+                  2.4070099564086878,
+                  -0.04719658309782335
+                ],
+                "edge_face": 3348,
+                "edge_corner": 0,
+                "interior_face": 3323
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3323,
+              3349
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.4592428500760698,
+                "triangle_barycentric": [
+                  0.01319922745908464,
+                  0.37396900830523766,
+                  0.6128317642356778
+                ],
+                "position": [
+                  -5.043993229976282,
+                  2.34498687297979,
+                  0.044306562861215246
+                ],
+                "edge_face": 3323,
+                "edge_corner": 0,
+                "interior_face": 3349
+              },
+              {
+                "segment_fraction": 0.3033741468895688,
+                "triangle_barycentric": [
+                  0.24559971225752897,
+                  0.6052142631207131,
+                  0.1491860246217579
+                ],
+                "position": [
+                  -5.073423661193739,
+                  2.4070099564086878,
+                  -0.04719658309782333
+                ],
+                "edge_face": 3349,
+                "edge_corner": 2,
+                "interior_face": 3323
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3323,
+              3351
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9704012082753984,
+                "triangle_barycentric": [
+                  0.010001605240070877,
+                  0.4204995604671041,
+                  0.569498834292825
+                ],
+                "position": [
+                  -5.183827167275699,
+                  3.2177464868030445,
+                  -0.22459232525822326
+                ],
+                "edge_face": 3323,
+                "edge_corner": 1,
+                "interior_face": 3351
+              },
+              {
+                "segment_fraction": 0.020488107492897197,
+                "triangle_barycentric": [
+                  0.004758939142606611,
+                  0.42958146974828876,
+                  0.5656595911091047
+                ],
+                "position": [
+                  -5.184183491724757,
+                  3.234640279614749,
+                  -0.2210683498064702
+                ],
+                "edge_face": 3323,
+                "edge_corner": 2,
+                "interior_face": 3351
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3323,
+              3498
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9999947219768088,
+                "triangle_barycentric": [
+                  0.577463796769233,
+                  0.38939874975800476,
+                  0.03313745347276227
+                ],
+                "position": [
+                  -5.187474553953892,
+                  3.249974225000443,
+                  -0.22889102323748445
+                ],
+                "edge_face": 3323,
+                "edge_corner": 1,
+                "interior_face": 3498
+              },
+              {
+                "segment_fraction": 7.67667946288274e-06,
+                "triangle_barycentric": [
+                  0.5774607938810862,
+                  0.3894082610303745,
+                  0.03313094508853931
+                ],
+                "position": [
+                  -5.187473971097457,
+                  3.249974225216839,
+                  -0.22888885855204436
+                ],
+                "edge_face": 3323,
+                "edge_corner": 2,
+                "interior_face": 3498
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3325,
+              3351
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.02959879172460167,
+                "triangle_barycentric": [
+                  0.010001605240070655,
+                  0.4204995604671041,
+                  0.5694988342928252
+                ],
+                "position": [
+                  -5.183827167275699,
+                  3.2177464868030445,
+                  -0.22459232525822323
+                ],
+                "edge_face": 3325,
+                "edge_corner": 0,
+                "interior_face": 3351
+              },
+              {
+                "segment_fraction": 0.5993293246423386,
+                "triangle_barycentric": [
+                  0.963191707179412,
+                  4.212968239852051e-06,
+                  0.03680407985234814
+                ],
+                "position": [
+                  -5.185692650976664,
+                  3.249974972445253,
+                  -0.23561429318159027
+                ],
+                "edge_face": 3351,
+                "edge_corner": 1,
+                "interior_face": 3325
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3325,
+              3498
+            ],
+            "hits": [
+              {
+                "segment_fraction": 5.278023191111572e-06,
+                "triangle_barycentric": [
+                  0.5774637967692332,
+                  0.38939874975800476,
+                  0.03313745347276207
+                ],
+                "position": [
+                  -5.187474553953892,
+                  3.249974225000443,
+                  -0.22889102323748448
+                ],
+                "edge_face": 3325,
+                "edge_corner": 0,
+                "interior_face": 3498
+              },
+              {
+                "segment_fraction": 0.4006706753576615,
+                "triangle_barycentric": [
+                  0.9631917071794119,
+                  4.212968239852051e-06,
+                  0.036804079852348195
+                ],
+                "position": [
+                  -5.185692650976664,
+                  3.249974972445253,
+                  -0.23561429318159027
+                ],
+                "edge_face": 3498,
+                "edge_corner": 0,
+                "interior_face": 3325
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3326,
+              3348
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9603369669030831,
+                "triangle_barycentric": [
+                  0.34433162546200613,
+                  0.5994558626079969,
+                  0.05621251192999698
+                ],
+                "position": [
+                  -5.055714550737743,
+                  2.1120665014802666,
+                  -0.07852700066510165
+                ],
+                "edge_face": 3326,
+                "edge_corner": 1,
+                "interior_face": 3348
+              },
+              {
+                "segment_fraction": 0.05378161129316893,
+                "triangle_barycentric": [
+                  0.32420538128820553,
+                  0.6230820448969525,
+                  0.052712573814841984
+                ],
+                "position": [
+                  -5.062213433203641,
+                  2.179268360062565,
+                  -0.07090923562461757
+                ],
+                "edge_face": 3326,
+                "edge_corner": 2,
+                "interior_face": 3348
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3329,
+              3348
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.03966303309691704,
+                "triangle_barycentric": [
+                  0.3443316254620062,
+                  0.5994558626079969,
+                  0.05621251192999695
+                ],
+                "position": [
+                  -5.055714550737743,
+                  2.1120665014802666,
+                  -0.07852700066510164
+                ],
+                "edge_face": 3329,
+                "edge_corner": 0,
+                "interior_face": 3348
+              },
+              {
+                "segment_fraction": 0.4623219916663154,
+                "triangle_barycentric": [
+                  0.5200539623056271,
+                  0.22941779903518505,
+                  0.2505282386591879
+                ],
+                "position": [
+                  -5.001487087125857,
+                  1.7559614094460083,
+                  -0.12274293005857523
+                ],
+                "edge_face": 3348,
+                "edge_corner": 0,
+                "interior_face": 3329
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3376,
+              3385
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.3056825572822218,
+                "triangle_barycentric": [
+                  0.059750469999762745,
+                  0.6207499978622031,
+                  0.31949953213803417
+                ],
+                "position": [
+                  -5.286735987963133,
+                  3.1331578708326626,
+                  -1.2898426524620135
+                ],
+                "edge_face": 3385,
+                "edge_corner": 0,
+                "interior_face": 3376
+              },
+              {
+                "segment_fraction": 0.38862720429540437,
+                "triangle_barycentric": [
+                  0.7240134503636346,
+                  0.006178192498905674,
+                  0.26980835713745965
+                ],
+                "position": [
+                  -5.29509890345977,
+                  3.247624495451329,
+                  -1.2906129056131215
+                ],
+                "edge_face": 3376,
+                "edge_corner": 1,
+                "interior_face": 3385
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3460,
+              3468
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.6111789652934345,
+                "triangle_barycentric": [
+                  0.17986762484697094,
+                  0.06642997374387143,
+                  0.7537024014091577
+                ],
+                "position": [
+                  -5.0125016972742165,
+                  -0.9487436908714235,
+                  -0.8660545607089309
+                ],
+                "edge_face": 3460,
+                "edge_corner": 1,
+                "interior_face": 3468
+              },
+              {
+                "segment_fraction": 0.18297140293903816,
+                "triangle_barycentric": [
+                  0.09083990170494016,
+                  0.3359089506684256,
+                  0.5732511476266342
+                ],
+                "position": [
+                  -5.001327752649182,
+                  -0.9424666862244124,
+                  -0.8809314184968177
+                ],
+                "edge_face": 3468,
+                "edge_corner": 2,
+                "interior_face": 3460
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3793,
+              3802
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.929038712992795,
+                "triangle_barycentric": [
+                  0.40237316872258155,
+                  0.17067538596994652,
+                  0.42695144530747187
+                ],
+                "position": [
+                  -2.5653375385801658,
+                  2.689538948092728,
+                  0.6268470563345752
+                ],
+                "edge_face": 3793,
+                "edge_corner": 0,
+                "interior_face": 3802
+              },
+              {
+                "segment_fraction": 0.47865214206692447,
+                "triangle_barycentric": [
+                  0.07789967062491995,
+                  0.7917670435683436,
+                  0.13033328580673645
+                ],
+                "position": [
+                  -2.5619882011747905,
+                  2.6445650262489955,
+                  0.6440540384198936
+                ],
+                "edge_face": 3802,
+                "edge_corner": 2,
+                "interior_face": 3793
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3963,
+              3968
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.08434104885295654,
+                "triangle_barycentric": [
+                  0.2532573859318219,
+                  0.05479822791342923,
+                  0.6919443861547488
+                ],
+                "position": [
+                  -4.122076844029458,
+                  2.7216802737338455,
+                  -4.2704638697866715
+                ],
+                "edge_face": 3963,
+                "edge_corner": 0,
+                "interior_face": 3968
+              },
+              {
+                "segment_fraction": 0.9563649654539114,
+                "triangle_barycentric": [
+                  0.2630583521200194,
+                  0.06792552859261006,
+                  0.6690161192873706
+                ],
+                "position": [
+                  -4.127754580129674,
+                  2.6745849530605184,
+                  -4.266302763311001
+                ],
+                "edge_face": 3963,
+                "edge_corner": 2,
+                "interior_face": 3968
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3965,
+              3968
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.8740282377754056,
+                "triangle_barycentric": [
+                  0.5289956944944173,
+                  0.298749430110046,
+                  0.17225487539553677
+                ],
+                "position": [
+                  -4.057103950881403,
+                  2.9447774303524024,
+                  -4.2677961829620985
+                ],
+                "edge_face": 3968,
+                "edge_corner": 1,
+                "interior_face": 3965
+              },
+              {
+                "segment_fraction": 0.9156589511470435,
+                "triangle_barycentric": [
+                  0.253257385931822,
+                  0.0547982279134292,
+                  0.6919443861547488
+                ],
+                "position": [
+                  -4.122076844029458,
+                  2.7216802737338455,
+                  -4.2704638697866715
+                ],
+                "edge_face": 3965,
+                "edge_corner": 2,
+                "interior_face": 3968
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3965,
+              3972
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.3155752494383408,
+                "triangle_barycentric": [
+                  0.07497727542196242,
+                  0.08668466001937412,
+                  0.8383380645586634
+                ],
+                "position": [
+                  -4.035309126378723,
+                  2.855097668385093,
+                  -4.263745822556446
+                ],
+                "edge_face": 3965,
+                "edge_corner": 0,
+                "interior_face": 3972
+              },
+              {
+                "segment_fraction": 0.12597176222459436,
+                "triangle_barycentric": [
+                  0.5289956944944175,
+                  0.2987494301100459,
+                  0.1722548753955365
+                ],
+                "position": [
+                  -4.057103950881403,
+                  2.9447774303524024,
+                  -4.2677961829620985
+                ],
+                "edge_face": 3972,
+                "edge_corner": 2,
+                "interior_face": 3965
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3972,
+              4896
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.8211876837686015,
+                "triangle_barycentric": [
+                  0.14574779396176685,
+                  0.232809097084258,
+                  0.6214431089539751
+                ],
+                "position": [
+                  -4.008006674553267,
+                  2.8101128424737336,
+                  -4.265020928803589
+                ],
+                "edge_face": 3972,
+                "edge_corner": 1,
+                "interior_face": 4896
+              },
+              {
+                "segment_fraction": 0.6844247505616591,
+                "triangle_barycentric": [
+                  0.07497727542196242,
+                  0.08668466001937412,
+                  0.8383380645586634
+                ],
+                "position": [
+                  -4.035309126378723,
+                  2.855097668385093,
+                  -4.263745822556446
+                ],
+                "edge_face": 4896,
+                "edge_corner": 1,
+                "interior_face": 3972
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              3973,
+              4896
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.17881231623139837,
+                "triangle_barycentric": [
+                  0.14574779396176685,
+                  0.23280909708425815,
+                  0.621443108953975
+                ],
+                "position": [
+                  -4.008006674553267,
+                  2.810112842473734,
+                  -4.265020928803589
+                ],
+                "edge_face": 3973,
+                "edge_corner": 2,
+                "interior_face": 4896
+              },
+              {
+                "segment_fraction": 0.43022190114553993,
+                "triangle_barycentric": [
+                  0.15480835859896136,
+                  0.12054520466754823,
+                  0.7246464367334904
+                ],
+                "position": [
+                  -3.97236200985927,
+                  2.6811923923938283,
+                  -4.2686076164245605
+                ],
+                "edge_face": 4896,
+                "edge_corner": 2,
+                "interior_face": 3973
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              4792,
+              4802
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.8270591384786269,
+                "triangle_barycentric": [
+                  0.640790591070875,
+                  0.34103001288370444,
+                  0.018179396045420564
+                ],
+                "position": [
+                  -1.3381118047217524,
+                  2.365083645874757,
+                  -2.3609776927365433
+                ],
+                "edge_face": 4792,
+                "edge_corner": 1,
+                "interior_face": 4802
+              },
+              {
+                "segment_fraction": 0.26813629074368883,
+                "triangle_barycentric": [
+                  0.6965179292662038,
+                  0.16554699509479098,
+                  0.13793507563900523
+                ],
+                "position": [
+                  -1.3488475864742435,
+                  2.4669190454323404,
+                  -2.288927437400002
+                ],
+                "edge_face": 4792,
+                "edge_corner": 2,
+                "interior_face": 4802
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              4802,
+              4995
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.32524737755669747,
+                "triangle_barycentric": [
+                  0.7444648421002363,
+                  0.2104549298062687,
+                  0.04508022809349496
+                ],
+                "position": [
+                  -1.341243693141957,
+                  2.4534771163939855,
+                  -2.3459597375084837
+                ],
+                "edge_face": 4802,
+                "edge_corner": 0,
+                "interior_face": 4995
+              },
+              {
+                "segment_fraction": 0.183716985677549,
+                "triangle_barycentric": [
+                  0.643876054920693,
+                  0.3517921795223548,
+                  0.004331765556952171
+                ],
+                "position": [
+                  -1.3379400233900465,
+                  2.3766369765979283,
+                  -2.363478551871575
+                ],
+                "edge_face": 4995,
+                "edge_corner": 0,
+                "interior_face": 4802
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              4802,
+              4997
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.17294086152137303,
+                "triangle_barycentric": [
+                  0.640790591070875,
+                  0.34103001288370444,
+                  0.018179396045420525
+                ],
+                "position": [
+                  -1.3381118047217524,
+                  2.365083645874757,
+                  -2.3609776927365433
+                ],
+                "edge_face": 4997,
+                "edge_corner": 0,
+                "interior_face": 4802
+              },
+              {
+                "segment_fraction": 0.8162830143224508,
+                "triangle_barycentric": [
+                  0.6438760549206929,
+                  0.35179217952235475,
+                  0.004331765556952338
+                ],
+                "position": [
+                  -1.3379400233900465,
+                  2.3766369765979287,
+                  -2.363478551871575
+                ],
+                "edge_face": 4997,
+                "edge_corner": 2,
+                "interior_face": 4802
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              4968,
+              4972
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.9102871527783791,
+                "triangle_barycentric": [
+                  0.3418254262509126,
+                  0.22381355585225737,
+                  0.43436101789683
+                ],
+                "position": [
+                  -0.8611456484817624,
+                  3.076822890531272,
+                  -3.3004518714576467
+                ],
+                "edge_face": 4968,
+                "edge_corner": 1,
+                "interior_face": 4972
+              },
+              {
+                "segment_fraction": 0.5392916508106788,
+                "triangle_barycentric": [
+                  0.06393119235167954,
+                  0.046481727976005215,
+                  0.8895870796723152
+                ],
+                "position": [
+                  -0.8676808152736373,
+                  2.976928026480217,
+                  -3.315015777697847
+                ],
+                "edge_face": 4972,
+                "edge_corner": 2,
+                "interior_face": 4968
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              4972,
+              4973
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.7577608212644152,
+                "triangle_barycentric": [
+                  0.06833663116468336,
+                  0.20064675302114351,
+                  0.7310166158141731
+                ],
+                "position": [
+                  -0.8522944394781483,
+                  2.866568880565784,
+                  -3.265731215411119
+                ],
+                "edge_face": 4972,
+                "edge_corner": 2,
+                "interior_face": 4973
+              },
+              {
+                "segment_fraction": 0.08971284722162091,
+                "triangle_barycentric": [
+                  0.34182542625091294,
+                  0.2238135558522571,
+                  0.4343610178968299
+                ],
+                "position": [
+                  -0.8611456484817624,
+                  3.0768228905312713,
+                  -3.3004518714576467
+                ],
+                "edge_face": 4973,
+                "edge_corner": 2,
+                "interior_face": 4972
+              }
+            ]
+          }
+        ]
+      },
+      "finite_gate_passes": false
+    }
+  }
+}

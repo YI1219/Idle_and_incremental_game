@@ -1,0 +1,120 @@
+{
+	"frames": [
+		{
+			"error": 0,
+			"file": "source_field_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "source_field",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "source_field_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "source_field",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "source_field_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "source_field",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "source_field_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "source_field",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "source_field_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "source_field",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		},
+		{
+			"error": 0,
+			"file": "candidate_field_close.png",
+			"position": "(9.0, 7.6, 15.0)",
+			"size": 11.8,
+			"stage": "candidate_field",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "close"
+		},
+		{
+			"error": 0,
+			"file": "candidate_field_grass.png",
+			"position": "(5.0, 8.0, 12.0)",
+			"size": 8.0,
+			"stage": "candidate_field",
+			"target": "(0.0, 1.5, 1.0)",
+			"view": "grass"
+		},
+		{
+			"error": 0,
+			"file": "candidate_field_whole.png",
+			"position": "(13.0, 13.0, 19.0)",
+			"size": 18.5,
+			"stage": "candidate_field",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "whole"
+		},
+		{
+			"error": 0,
+			"file": "candidate_field_reverse.png",
+			"position": "(-13.0, 8.0, -14.0)",
+			"size": 14.0,
+			"stage": "candidate_field",
+			"target": "(0.0, -0.2, 0.0)",
+			"view": "reverse"
+		},
+		{
+			"error": 0,
+			"file": "candidate_field_bottom.png",
+			"position": "(9.0, -8.0, 15.0)",
+			"size": 13.0,
+			"stage": "candidate_field",
+			"target": "(0.0, -0.8, 0.0)",
+			"view": "bottom"
+		}
+	],
+	"scope": "Source-field comparison, same neutral material/normals/cameras. No crossed mesh input, texture, grass, official default or full art claim.",
+	"stages": {
+		"candidate_field": {
+			"mesh_sha256": "1513f3a1020a2ae83ad9104ea74458be3b9e58e4dfd9f9daf89c712256608f6a",
+			"records": 35642,
+			"triangles": 44496
+		},
+		"inverse_operation": {
+			"anchor_y": -1.4,
+			"flat_interior_cap": 3.25,
+			"mapped_grid_queries": 62663,
+			"max_column_lift": 2.8435624964756108,
+			"records": 35642,
+			"roof_columns": 1232,
+			"scope": "Source-derived inverse scalar resampling, not metric-exact SDF, not arbitrary-contour PCG/editor. Source topology and new finite geometry checked separately.",
+			"source_layout": "Valid original explicit field from master_mantle samples, NOT rejected candidate.bin",
+			"source_records": 23768,
+			"unchanged_grid_queries": 26026
+		},
+		"source_field": {
+			"mesh_sha256": "ffb6d632520993f8d646bf5d7614dda33466e943b85c61ecd7bf8a7bbfd1631f",
+			"records": 23768,
+			"triangles": 35900
+		}
+	},
+	"valid_original_samples_sha256": "8b0399af8d9c80ce1d6546c48814eca91dbf81acd8a2f60784b2ceb406dd13b2"
+}

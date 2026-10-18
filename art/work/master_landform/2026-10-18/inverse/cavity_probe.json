@@ -1,0 +1,6 @@
+{
+	"candidate_density": 0.024431146669387817,
+	"point": "(-2.495, 2.3, 0.98)",
+	"scope": "One interior-box probe plus negative signed shell classifies air cavity, not detached solid. Not a complete cavity inclusion proof.",
+	"source_density": 0.5
+}

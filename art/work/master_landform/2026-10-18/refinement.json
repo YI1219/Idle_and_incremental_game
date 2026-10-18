@@ -1,0 +1,38 @@
+{
+  "source_sha256": "e54ac6588a674ca4c8929d25024dd9358513e1088c28f296cdf739a5fe6ecd9a",
+  "candidate_sha256": "c35db2e65584f026129421ccb458bff2a1ebaff61bed529396cfb7c347b39081",
+  "original_unique_vertices": 2714,
+  "triangles": 5424,
+  "lifted_vertices": 919,
+  "max_upper_lift": 4.808774903045599,
+  "setback_vertices": 169,
+  "max_ledge_setback": 1.014031167984009,
+  "basal_return_vertices": 932,
+  "held_front_core_vertices": 364,
+  "roof_ray_misses": 0,
+  "source_bounds": [
+    [
+      -5.5,
+      -4.138355731964111,
+      -4.73079252243042
+    ],
+    [
+      5.5,
+      3.25,
+      4.73079252243042
+    ]
+  ],
+  "candidate_bounds": [
+    [
+      -5.5,
+      -4.138355731964111,
+      -4.73079252243042
+    ],
+    [
+      5.5,
+      3.25,
+      4.73079252243042
+    ]
+  ],
+  "scope": "One bounded existing-source copy revision; no new original geometry/Tripo/default. Same faces do not prove valid embedding. Inspect neutral art and finite geometry before sampling or finishing."
+}

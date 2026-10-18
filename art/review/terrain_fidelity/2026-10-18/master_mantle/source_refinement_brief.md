@@ -1,6 +1,6 @@
-# Next source criteria, not a new generation task
+# Prior source criteria — attempted and rejected
 
-The contact experiment changes the next art action: the current master has a
+This prior brief was executed in the [two-rule landform study](../master_landform/README.md); both candidates were rejected. No additional local trial follows before the human source-route decision. The original rationale was: the current master has a
 narrow upper ridge and broad lower shelves. Target reference has a calm broad
 land surface turning into unequal major faces and then a common lower return.
 A mantle follows its source top, so this source arrangement still produces a
