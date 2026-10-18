@@ -31,6 +31,18 @@ def subdivide(tri):
     return np.stack([np.stack(t, axis=1) for t in [(a, ab, ca), (ab, b, bc), (ca, bc, c), (ab, bc, ca)]]).reshape(-1, 3, 3)
 
 
+def warp(tri):
+    """Original comparison deformation, retained unchanged for reproduction."""
+    p = tri.reshape(-1, 3).copy()
+    x, y, z = p[:, 0].copy(), p[:, 1].copy(), p[:, 2].copy()
+    depth = np.clip((3.5-y)/3.5, 0, 1)
+    easing = depth*depth*(3-2*depth)
+    p[:, 0] = x*(1-.24*easing)+.22*depth*np.sin(x*.65)
+    p[:, 2] = z*(1-.20*easing)+.30*depth*(1-depth)*np.sin(x*.8)-.18*depth
+    p[:, 1] = 3.5-(3.5-y)*(1.70+.22*np.sin(.63*x)+.10*np.sin(.9*z))
+    return p
+
+
 def run():
     OUT.mkdir(parents=True, exist_ok=True)
     before = SOURCE.read_bytes()
@@ -39,15 +51,9 @@ def run():
     raw += np.array([15., 0., -3.])
     raw.astype('<f4').tofile(OUT / 'master_source.bin')
     tri = subdivide(raw)
-    p = tri.reshape(-1, 3).copy()
-    x, y, z = p[:, 0].copy(), p[:, 1].copy(), p[:, 2].copy()
-    depth = np.clip((3.5-y)/3.5, 0, 1)
-    easing = depth*depth*(3-2*depth)
-    p[:, 0] = x*(1-.24*easing)+.22*depth*np.sin(x*.65)
-    p[:, 2] = z*(1-.20*easing)+.30*depth*(1-depth)*np.sin(x*.8)-.18*depth
-    p[:, 1] = 3.5-(3.5-y)*(1.70+.22*np.sin(.63*x)+.10*np.sin(.9*z))
+    p = warp(tri)
     # Keep all real original cap vertices exact, including translated XZ.
-    cap = np.abs(y-3.5) < 1e-5
+    cap = np.abs(tri.reshape(-1,3)[:,1]-3.5) < 1e-5
     assert np.array_equal(p[cap], tri.reshape(-1, 3)[cap])
     p.astype('<f4').tofile(OUT / 'master_warp.bin')
     sample = load_helper()

@@ -1,0 +1,192 @@
+{
+  "scope": "Finite 1e-5 position-weld topology/vertex-link checks and zero-epsilon BVH with float64 strict segment/triangle crossing checks. Shared-position and coplanar overlaps excluded. Not an exact global proof.",
+  "stages": {
+    "master_source": {
+      "topology": {
+        "triangles": 2248,
+        "welded_vertices_1e5": 1126,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 101.71757097965732,
+        "vertex_components": [
+          1126
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "7ab4ceeefc94baabba67be0da02e792991256a2c44e56eb35a29271bbaf8e28c",
+        "triangles": 2248,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    },
+    "master_warp": {
+      "topology": {
+        "triangles": 8992,
+        "welded_vertices_1e5": 4498,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 156.5842778378664,
+        "vertex_components": [
+          4498
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "302f4a73f9963c2a67a2a595dc183592b350f4583321a1a1d57b3dde9ddff605",
+        "triangles": 8992,
+        "disjoint_position_bvh_pairs": 3,
+        "strict_crossing_pairs_at_least": 3,
+        "crossings": [
+          {
+            "zero_based_faces": [
+              6143,
+              6149
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.885998368051285,
+                "triangle_barycentric": [
+                  0.6201426924042879,
+                  0.15858515515494917,
+                  0.22127215244076295
+                ],
+                "position": [
+                  -1.1488279731394995,
+                  0.4736589507126511,
+                  1.9511886867867387
+                ],
+                "edge_face": 6143,
+                "edge_corner": 0,
+                "interior_face": 6149
+              },
+              {
+                "segment_fraction": 0.13125566600871003,
+                "triangle_barycentric": [
+                  0.5714896307076849,
+                  0.18228361495963902,
+                  0.2462267543326762
+                ],
+                "position": [
+                  -1.1529118781740908,
+                  0.5064503765881146,
+                  1.958553187510884
+                ],
+                "edge_face": 6143,
+                "edge_corner": 1,
+                "interior_face": 6149
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              6149,
+              6150
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.23466798005232709,
+                "triangle_barycentric": [
+                  0.5475768162533665,
+                  0.19481913319577868,
+                  0.2576040505508548
+                ],
+                "position": [
+                  -1.1550102242231304,
+                  0.5225767664411664,
+                  1.9621280752950898
+                ],
+                "edge_face": 6150,
+                "edge_corner": 0,
+                "interior_face": 6149
+              },
+              {
+                "segment_fraction": 0.86874433399129,
+                "triangle_barycentric": [
+                  0.5714896307076848,
+                  0.18228361495963907,
+                  0.24622675433267613
+                ],
+                "position": [
+                  -1.1529118781740908,
+                  0.5064503765881148,
+                  1.958553187510884
+                ],
+                "edge_face": 6150,
+                "edge_corner": 2,
+                "interior_face": 6149
+              }
+            ]
+          },
+          {
+            "zero_based_faces": [
+              6149,
+              8398
+            ],
+            "hits": [
+              {
+                "segment_fraction": 0.7653320199476732,
+                "triangle_barycentric": [
+                  0.5475768162533666,
+                  0.19481913319577862,
+                  0.2576040505508548
+                ],
+                "position": [
+                  -1.1550102242231304,
+                  0.5225767664411665,
+                  1.9621280752950898
+                ],
+                "edge_face": 8398,
+                "edge_corner": 1,
+                "interior_face": 6149
+              },
+              {
+                "segment_fraction": 0.5351938935311779,
+                "triangle_barycentric": [
+                  0.33380663138258115,
+                  0.14973167189177727,
+                  0.5164616967256416
+                ],
+                "position": [
+                  -1.1576393663296625,
+                  0.6650553670497971,
+                  2.002005274804302
+                ],
+                "edge_face": 8398,
+                "edge_corner": 2,
+                "interior_face": 6149
+              }
+            ]
+          }
+        ]
+      },
+      "finite_gate_passes": false
+    },
+    "master_sampled": {
+      "topology": {
+        "triangles": 25340,
+        "welded_vertices_1e5": 12672,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 156.02389294346835,
+        "vertex_components": [
+          12672
+        ],
+        "vertex_link_defects": 0
+      },
+      "crossings": {
+        "mesh_sha256": "fc63d509aa1ebd024b86adfad3338cfcb11879507e6550a76e0bf73d717fb3a3",
+        "triangles": 25340,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passes": true
+    }
+  }
+}

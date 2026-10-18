@@ -1,8 +1,39 @@
 # Two-route PCG continuation
 
 Latest user approval: try fracture-network route1, then actually try master
-route2 if route1 fails. Both have now been rendered. **No art candidate is
+route2 if route1 fails. Both have now been rendered, including one additional
+existing-master main-face refinement;64native frames in total. **No art candidate is
 accepted; full goal incomplete.** No production/default change or new asset.
+
+## Latest: main-face / shoulder / basal refinement also rejected
+
+The earlier blanket handoff of all master refinement to the user was too broad:
+AGENTS also permits refinement of existing sources. Within that existing-source
+scope, one further deliberate coordinate deformation creates an asymmetric
+central major-face turn, unequal shoulder projection and shared inward basal
+return. The original and earlier trial remain untouched.24new native frames in
+`route2_faces` compare original/direct/sampled, neutral/stone, all4views.
+
+The turn is more visible, but the wide slab/three-pillar composition, hard green
+roof and hanging/angular lower masses remain. Direct geometry also fails with
+3strict self-crossings near face6149 despite closed oriented topology. The
+sampled25,340triangle body passes the finite gate, but this cannot validate the
+crossed input or faithful conversion. Source remains2248triangles, direct8992.
+Never use sampled validity to promote the rejected source.
+
+17,359samples,569independent float64 three-ray crosschecks and3resolved BVH
+disagreements. New actual-data/history9/9 pass. The extracted default deformation
+is byte-identical to its archived old output; exact cap occurrences and finite
+values pass3/3regression checks. These do not validate geometry or art. Positive
+coordinate scales and monotone profiles do not guarantee an embedded final
+triangle mesh. Code now explicitly says so.
+
+Parent and targeted independent reviewer reject retention. This is the second
+mother study without useful target-art gain, so the goal's stop condition now
+requires a source-strategy decision: deliberately refine an existing-source copy
+against approved shape direction, or explicitly authorize a new master concept/
+four-view reference package. Neither means master-based PCG is disproven. No new
+Tripo task, user submission or automatic generation is implied or authorized.
 
 ## Route1: reject the present implementation
 
@@ -21,7 +52,7 @@ establish bounded data behavior and the declared shared-plane metric only.
 Four candidate cells per sample are a tool approximation, not an exact global
 distance-to-partition proof. No more rule tuning or leaves proceeded.
 
-## Route2: conversion feasible here; qualified master missing
+## First route2 study: conversion feasible here; qualified master missing
 
 Actually tested the preserved closed2248triangle union of crowns36/37/38,
 translated by(15,0,-3). Original source SHA256 remains
@@ -56,7 +87,7 @@ not checked**; data history is not a surface-validity guarantee.
 
 ## Evidence limits and next work
 
-All40new native frames are1671×941, same4cameras/light/material settings. Route1
+All64native frames are1671×941, same4cameras/light/material settings. Route1
 uses the81cell crop; route2 uses a different existing-source strip. Reference
 composition differs. Four older ring-neutral images are labeled reused.
 No leaf/contact decoration, rooted support, native editor controls, arbitrary
@@ -82,6 +113,14 @@ godot --headless --path . --script tests/pcg_master_data_test.gd
 /Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --python tools/art/check_pcg_cliff.py -- --input=art/work/pcg_fracture/2026-10-18/route2 --stages=master_source,master_warp,master_sampled
 python3 tools/art/build_fracture_master_review.py
 ```
+
+For the additional mother study run Blender `tools/art/refine_master_faces.py`,
+then `capture_pcg_master.gd` with user args
+`--input=res://art/work/pcg_fracture/2026-10-18/route2_faces/`
+`--output=res://art/review/terrain_fidelity/2026-10-18/pcg_fracture/route2_faces/`.
+Run the same geometry checker on route2_faces with all3stages. Data test accepts
+`--input=res://art/work/pcg_fracture/2026-10-18/route2_faces/master_sampled.layout`.
+Blender `tools/art/check_master_refinement.py` reproduces3regression checks.
 
 Archive first layered compiler snapshot separately; current compiler is the
 unlayered correction. Generate route1 geometry checks similarly with its input

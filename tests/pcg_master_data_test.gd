@@ -8,6 +8,8 @@ func _initialize():call_deferred('run')
 func run():
  var Data=preload('res://scripts/terrain_editor/terrain_data.gd')
  var path:='res://art/work/pcg_fracture/2026-10-18/route2/master_sampled.layout'
+ for arg:String in OS.get_cmdline_user_args():
+  if arg.begins_with('--input='):path=arg.trim_prefix('--input=')
  var data=Data.new();check(data.deserialize(JSON.parse_string(FileAccess.get_file_as_string(path))),'actual sampled master loads through ordinary production API')
  var before:Dictionary=data.serialize();var copy=Data.new()
  check(copy.deserialize(before) and copy.serialize()==before,'actual master density/cells survive exact ordinary save/load')

@@ -3,6 +3,9 @@ const Probe=preload('res://tools/art/probe_cliff_manifold.gd')
 func run():
  OUT='res://art/review/terrain_fidelity/2026-10-18/pcg_fracture/route2/'
  WORK='res://art/work/pcg_fracture/2026-10-18/route2/'
+ for arg:String in OS.get_cmdline_user_args():
+  if arg.begins_with('--input='):WORK=arg.trim_prefix('--input=')
+  if arg.begins_with('--output='):OUT=arg.trim_prefix('--output=')
  DirAccess.make_dir_recursive_absolute(OUT)
  setup();grass.visible=false
  compiler.prepare(compiler.fixture(),7301)

@@ -1,5 +1,5 @@
 {
-  "native_frames": 40,
+  "native_frames": 64,
   "image_sha256": {
     "route1_layered_rejected/fracture_neutral_close.png": "2f4c4e8f8c909c544ba68bece6c4b5afee242d85530c79c4aa4c8fefc0d822a2",
     "route1_layered_rejected/fracture_neutral_whole.png": "76d62b8fe8ced6c9e3fcc58453d70ff39d7086c98d9ce0bf8336c2d936acad24",
@@ -40,7 +40,31 @@
     "route2/master_sampled_stone_close.png": "2b3ee5d9c52e9c819cd995289f02e38941e20a5b120636a7076401e56adf053e",
     "route2/master_sampled_stone_whole.png": "dc188210796babd3a16fe00051fe1902c8ed95bfb8faefe49fee9fdae5139fcd",
     "route2/master_sampled_stone_reverse.png": "357b5273fb606e932d9a8e38b7ed7c8e7cf247fc6ec1b074bf897975484a5825",
-    "route2/master_sampled_stone_bottom.png": "1e47463f6b5a7f3f909d4f6e99ff56876e418c8cb56e36c59d4aa7410dd5830b"
+    "route2/master_sampled_stone_bottom.png": "1e47463f6b5a7f3f909d4f6e99ff56876e418c8cb56e36c59d4aa7410dd5830b",
+    "route2_faces/master_source_neutral_close.png": "0102e01284baf2843d2381b65d375b0110092a5e3744db9971c5dd967c402cc3",
+    "route2_faces/master_source_neutral_whole.png": "6951c990d6d6193a6f34f552c258965c266e278485394bd3f0f11797cdb439ac",
+    "route2_faces/master_source_neutral_reverse.png": "02b4e1f80ebe17084c9cd58e94d099cc85250477c4d1f790be9044e22f1e2734",
+    "route2_faces/master_source_neutral_bottom.png": "b71fe19f2f37e5c08f55116367049c789ab888bb10822244994ecde86aa4eda0",
+    "route2_faces/master_source_stone_close.png": "c43283c3345d6447714a3afd66fff4773b0de3ed89b50f180ac6f811ce3e8fa2",
+    "route2_faces/master_source_stone_whole.png": "37f8e50e5e338b55ddff6cff29651fbfee6682ecbd8cf1c11daec172e5ac424b",
+    "route2_faces/master_source_stone_reverse.png": "77d3d5f3b69a8df009b3322a301b5c78c8b3c46b6297a834660d92d3f5d80ddb",
+    "route2_faces/master_source_stone_bottom.png": "79f0bbfaa7a165a02af05bf9c6595fe448b614ab25661792dfccc2b40aac8f08",
+    "route2_faces/master_warp_neutral_close.png": "7e6f65bb9e8b52f82c7336db11bae82ce6ff57417ba1390d80004545697d5300",
+    "route2_faces/master_warp_neutral_whole.png": "602573d160fe75f22cf450d5531d721ae8c10eebea4b1fc078bdd78c324ddabe",
+    "route2_faces/master_warp_neutral_reverse.png": "8e9aec60f8df3dbf7e13efc6b454111c276b252f9927078acf787fb0396075e7",
+    "route2_faces/master_warp_neutral_bottom.png": "dc4c3e3774a322c7045b19da68dc71d8fa560218143a47571c0c5a4888dfc2b5",
+    "route2_faces/master_warp_stone_close.png": "e1fb652cf34ff843da512a896befa9a0882a552cb511114e54caa39c859c2821",
+    "route2_faces/master_warp_stone_whole.png": "6abb14a6a0613e07fdd0fa426bce47eaad8f6b8b30e8c5b9e1d3f8cc543334ee",
+    "route2_faces/master_warp_stone_reverse.png": "a1dee3c2fff266a75053ba9e7f421c1813f4b8ab8c2848a1de55e477f14fdff3",
+    "route2_faces/master_warp_stone_bottom.png": "762bf20b8715a6e5921d3a8c5c16bd779efa7afdac8421991f7e6c524961a567",
+    "route2_faces/master_sampled_neutral_close.png": "1423acd3bc3e2794e84479d1ff847e42d0462abfd4fc1284b670f0fea13a7d2c",
+    "route2_faces/master_sampled_neutral_whole.png": "20d0581eba31983750ba2e580e8e4de8d123c608a042e8a404d281a6a6084160",
+    "route2_faces/master_sampled_neutral_reverse.png": "98f6031a9dbaf143541422b6c0ccd6478ceb95200b1d5be230bd54154a2344b8",
+    "route2_faces/master_sampled_neutral_bottom.png": "c190580302ff5109e7493f989fa7ec0b2eac8bba46e0cf46d14467daf4ba6e5c",
+    "route2_faces/master_sampled_stone_close.png": "eaf36cb84af07d2c5d1d6a06aa4f1cc9352e188dbd45a941197f19d154e9541b",
+    "route2_faces/master_sampled_stone_whole.png": "1a516d18c7faadddebca64ac38a337fb218b5d0cb6c5d44b18364308fe6f7690",
+    "route2_faces/master_sampled_stone_reverse.png": "e3998be84853588fb0e8c780dc474013ac4ab3d4cf91c5d87df03045578dc123",
+    "route2_faces/master_sampled_stone_bottom.png": "143dc2e263be718b0548ea05274ad43d38851f71d59410b26c7dcb87d0934f6b"
   },
   "target_sha256": "1f16fa5540c7539175faa0b3d167b3a8b0e9df0651aba96397f47075009de2e7",
   "matched_cameras": {
@@ -70,7 +94,10 @@
     "route1/fracture_neutral": false,
     "route2/master_source": true,
     "route2/master_warp": true,
-    "route2/master_sampled": true
+    "route2/master_sampled": true,
+    "route2_faces/master_source": true,
+    "route2_faces/master_warp": false,
+    "route2_faces/master_sampled": true
   },
   "fracture_data_tests": "14/14",
   "pair_plane_metric_tests": "4/4",
@@ -80,7 +107,8 @@
   "goal_complete": false,
   "production_changed": false,
   "default_promoted": false,
-  "next": "Qualified main-face/cleft/shoulder/basal composition in one existing-source master, before further PCG variation.",
+  "new_master_revision": "Main-face/shoulder/basal refinement: direct source3strict crossings, sampled finite pass cannot validate crossed input; art rejected.",
+  "next": "Two mother studies fail art; stop and ask source-strategy decision before further trials. Existing-source art refinement or explicitly authorized new reference/four-view package, before further PCG variation.",
   "unverified": [
     "qualified master art",
     "grass/root support",

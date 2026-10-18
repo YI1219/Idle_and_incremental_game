@@ -29,3 +29,10 @@ Route2 actually tests existing-source/direct-deformation/density controls; all
 source master is not qualified. No random variation/contact expansion before
 a deliberate master redesign; source copy and shape brief handed off. This
 spike checklist is complete, full art goal is not.
+
+Continuation: corrected the overly broad user-only refinement handoff; existing
+source refinement is permitted. One further directed main-face/shoulder/basal
+revision adds24native frames. It fails art and has3direct self-crossings; sampled
+finite pass is not input validation. Data9/9/regression3/3 pass their scope. Two
+mother studies without useful target-art gain trigger stop and a concrete new
+source-strategy decision; no new reference assets produced pending that choice.

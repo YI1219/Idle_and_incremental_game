@@ -6,6 +6,14 @@ Open `art/work/pcg_fracture/2026-10-18/route2/existing_master_refinement.blend`:
 `source` is the translated original, hidden; `candidate` is the rejected
 deformation. Preserve both as evidence and refine a separate copy.
 
+An additional rejected refinement is preserved separately at
+`art/work/pcg_fracture/2026-10-18/route2_faces/existing_master_refinement.blend`.
+It has a stronger major turn but3strict self-crossings and insufficient art
+gain. It is evidence, not a qualified source. Existing-source refinement is
+permitted; the earlier blanket assignment of every further refinement to the
+user is not a project requirement. New custom model creation remains a separate
+scope decision and follows the user-operated pipeline.
+
 The current three-pillar shape is rejected. Do not simply extend it downward.
 
 1. Compose unequal main faces, with changes in facing direction and shoulder

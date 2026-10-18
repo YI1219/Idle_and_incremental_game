@@ -1,0 +1,84 @@
+{
+  "source": "art/work/cliff_representation/2026-10-17/union.bin",
+  "source_sha256": "aa2a16c21c8c3eeeedb2c89cf5d8c5ba4ab1387d879e42a87ae3d2b73cd1bb4b",
+  "control_triangles": 2248,
+  "candidate_triangles": 8992,
+  "translation": [
+    15,
+    0,
+    -3
+  ],
+  "subdivision": "one linear midpoint split before deformation",
+  "cap_vertex_occurrences_preserved": 3299,
+  "sample_records": 17359,
+  "grid_step": 0.25,
+  "analytic_three_ray_crosschecks": 569,
+  "bvh_disagreements": [
+    {
+      "point": [
+        -1.25,
+        -1.0,
+        -4.25
+      ],
+      "bvh": [
+        false,
+        false,
+        true
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -6.0,
+        2.25,
+        -3.0
+      ],
+      "bvh": [
+        true,
+        false,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -4.75,
+        -1.0,
+        1.5
+      ],
+      "bvh": [
+        true,
+        false,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "candidate_bounds": [
+    [
+      -5.436413941978967,
+      -2.8333780844671934,
+      -4.371714380439466
+    ],
+    [
+      5.3675275677088905,
+      3.5,
+      4.461155174038011
+    ]
+  ],
+  "scope": "Unaccepted master candidate from existing closed source; no new original model. Direct mesh and sampled density must be judged separately. No production integration, grass support or target art acceptance.",
+  "design": "Coherent source-frame central main-face turn, unequal shoulder projection and shared narrowing basal return; exact cap preserved.",
+  "source_original_model_created": false
+}
