@@ -49,7 +49,12 @@ void fragment(){
 		float depth=abs(field.r-p.y);
 		cover=field.g*inside*(1.-smoothstep(grass_contact_depth.x,grass_contact_depth.y,depth))*smoothstep(grass_contact_slope.x,grass_contact_slope.y,n.y);
 		local_soil=field.g*inside*(1.-smoothstep(soil_contact_depth.x,soil_contact_depth.y,depth))*smoothstep(-.5,.2,n.y);
-		wet=lake_enabled?(1.-smoothstep(1.15,1.65,length(p.xz-lake_center)))*(1.-smoothstep(lake_level+.04,lake_level+.12,p.y)):0.;
+		// B stores immutable source soil height, A the validated basin footprint.
+		// Cutting into rock cannot drag the old turf down onto the new floor.
+		float source_depth=field.b-p.y;
+		cover*=1.-smoothstep(.12,.35,source_depth);
+		local_soil*=1.-smoothstep(.22,.65,source_depth);
+		wet=lake_enabled?field.a*inside*(1.-smoothstep(lake_level+.04,lake_level+.12,p.y))*(1.-smoothstep(.12,.32,field.r-p.y))*smoothstep(-.1,.35,n.y):0.;
 		cover*=1.-wet;
 	}
 	float grass=clamp(cover+(patches-.55)*.25*cover,0.,1.);

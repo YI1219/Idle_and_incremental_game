@@ -1,0 +1,129 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"captures": [
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "pond_before.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "pond_after.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "low_before.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "low_after.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 6.6, 10.0)",
+			"error": 0,
+			"file": "cut_before.png",
+			"size": 4.5,
+			"target": "(1.0, 2.5, 0.8)"
+		},
+		{
+			"at": "(6.0, 6.6, 10.0)",
+			"error": 0,
+			"file": "cut_after.png",
+			"size": 4.5,
+			"target": "(1.0, 2.5, 0.8)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "breach_before.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "breach_after.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"gpu": {
+		"actual_gpu_contact_matches": true,
+		"bed_wet": 1.0,
+		"breach_wet_pixels": 0,
+		"cut_cover": 0.0117647061124444,
+		"cut_wet": 0.007843137718737125,
+		"uncut_cover": 1.0
+	},
+	"pairs": [
+		{
+			"mesh_sha256": "59530130d2810de6cba3d6495fe4caa31bf62f0fb35b7aeca823c011dc19bf07",
+			"same_document": true,
+			"same_vertices_normals": true,
+			"state": "pond"
+		},
+		{
+			"mesh_sha256": "59530130d2810de6cba3d6495fe4caa31bf62f0fb35b7aeca823c011dc19bf07",
+			"same_document": true,
+			"same_vertices_normals": true,
+			"state": "low"
+		},
+		{
+			"mesh_sha256": "03aa34319841cbbef0bdeadd55e0f4c509983d95bebbcea5d52ed1ebf84952ac",
+			"same_document": true,
+			"same_vertices_normals": true,
+			"state": "cut"
+		},
+		{
+			"mesh_sha256": "678375da2ec94d4ee82b5e648af9b24193c165728efad0e375c49fb7a79fc4b6",
+			"same_document": true,
+			"same_vertices_normals": true,
+			"state": "breach"
+		}
+	],
+	"restored_exactly": true,
+	"scope": "Actual same-geometry old/new production-shader comparison with identical grass and camera/light. GPU false colors instrument production calculations; no art approval, default/save/source modification, target-device or whole-scene claim. Water TIME live.",
+	"states": {
+		"breach": {
+			"build_ms": 433.715,
+			"lake_valid": false,
+			"source_sha256": "0b9010ab398d5157c0b7338440d656091e07e19119c63522e953eedef357e7e7",
+			"triangles": 18848,
+			"water_triangles": 0
+		},
+		"cut": {
+			"build_ms": 478.358,
+			"lake_valid": true,
+			"source_sha256": "0b9010ab398d5157c0b7338440d656091e07e19119c63522e953eedef357e7e7",
+			"triangles": 18272,
+			"water_triangles": 79
+		},
+		"initial": {
+			"build_ms": 462.122,
+			"lake_valid": true,
+			"source_sha256": "0b9010ab398d5157c0b7338440d656091e07e19119c63522e953eedef357e7e7",
+			"triangles": 17684,
+			"water_triangles": 79
+		},
+		"restored": {
+			"build_ms": 462.82,
+			"lake_valid": true,
+			"source_sha256": "0b9010ab398d5157c0b7338440d656091e07e19119c63522e953eedef357e7e7",
+			"triangles": 17684,
+			"water_triangles": 79
+		}
+	},
+	"valid": true
+}

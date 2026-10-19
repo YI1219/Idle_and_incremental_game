@@ -22,6 +22,8 @@ static func build(doc: RefCounted) -> Dictionary:
 	var arrays := mesh.surface_get_arrays(0)
 	var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
 	var top := _top_grid(doc.field)
+	var status: Dictionary = doc.lake_status()
+	var contact := contact_field(doc,top,status)
 	var colors := PackedColorArray()
 	var uv := PackedVector2Array()
 	for i: int in solid.vertices.size():
@@ -30,14 +32,17 @@ static func build(doc: RefCounted) -> Dictionary:
 		var depth := h - p.y
 		var cover := (1. - smoothstep(.06, .28, absf(depth))) * smoothstep(.35, .82, normals[i].y)
 		var soil := (1. - smoothstep(.12, .48, absf(depth))) * smoothstep(-.5, .2, normals[i].y)
+		var source_depth := top_height(doc.field.base.surface_heights,Vector2(p.x,p.z))-p.y
+		cover *= 1.-smoothstep(.12,.35,source_depth)
+		soil *= 1.-smoothstep(.22,.65,source_depth)
 		var covered: bool = doc.field.base.cover_columns.has(Vector2i(roundi(p.x/STEP), roundi(p.z/STEP)))
 		if not covered:
 			cover = 0.
 			soil = 0.
 		var wet := 0.
-		if doc.lake.enabled and p.y < float(doc.lake.level) + .12:
-			var lake_at := Vector2(float(doc.lake.center[0]), float(doc.lake.center[1]))
-			wet = 1. - smoothstep(1.15, 1.65, Vector2(p.x,p.z).distance_to(lake_at))
+		if status.valid and p.y < float(doc.lake.level) + .12:
+			wet = wet_at(contact,Vector2(p.x,p.z))*(1.-smoothstep(.12,.32,depth))*smoothstep(-.1,.35,normals[i].y)
+			wet *= 1.-smoothstep(float(doc.lake.level)+.04,float(doc.lake.level)+.12,p.y)
 			cover *= 1. - wet
 		colors.append(Color(cover, soil, wet, 1.))
 		uv.append(Vector2(h, float(doc.lake.level)))
@@ -45,13 +50,15 @@ static func build(doc: RefCounted) -> Dictionary:
 	arrays[Mesh.ARRAY_TEX_UV] = uv
 	mesh = ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	var status: Dictionary = doc.lake_status()
 	var water := _water(doc, status)
 	return {'terrain': mesh, 'water': water, 'lake': status, 'top': top,
-		'contact': contact_field(doc, top),
+		'contact': contact,
 		'mesh_ms': mesh_us / 1000., 'build_ms': (Time.get_ticks_usec()-start)/1000.,
 		'triangles': solid.vertices.size()/3, 'water_triangles': water.get_faces().size()/3}
-static func contact_field(doc: RefCounted, top: Dictionary) -> Dictionary:
+static func contact_field(doc: RefCounted, top: Dictionary, status: Dictionary = {}) -> Dictionary:
+	if status.is_empty(): status = doc.lake_status()
+	var wet: Dictionary = {}
+	for key: Vector3i in status.surface: wet[Vector2i(key.x,key.z)] = true
 	var low: Vector3i = doc.field.base.low
 	var size: Vector3i = doc.field.base.size
 	var image := Image.create(size.x,size.z,false,Image.FORMAT_RGBAF)
@@ -59,6 +66,7 @@ static func contact_field(doc: RefCounted, top: Dictionary) -> Dictionary:
 		for x: int in size.x:
 			var key := Vector2i(low.x+x,low.z+z)
 			var height: float = top.get(key,-100.)
+			var original: float = doc.field.base.surface_heights.get(key,-100.)
 			var planted := 1. if top.has(key) and doc.field.base.cover_columns.has(key) else 0.
 			# Height padding avoids interpolation against the missing-column
 			# sentinel; coverage remains zero outside the actual edited top.
@@ -71,9 +79,32 @@ static func contact_field(doc: RefCounted, top: Dictionary) -> Dictionary:
 						if top.has(neighbor) and distance < nearest:
 							height = top[neighbor]
 							nearest = distance
-			image.set_pixel(x,z,Color(height,planted,0.,1.))
+			# Source-height padding is independent: a fresh cut must never
+			# lower its original soil level. Unplanted outside columns stay dry.
+			if original < -90.:
+				var nearest := INF
+				for dz: int in range(-2,3):
+					for dx: int in range(-2,3):
+						var neighbor := key+Vector2i(dx,dz)
+						var distance := float(dx*dx+dz*dz)
+						if doc.field.base.surface_heights.has(neighbor) and distance<nearest:
+							original = doc.field.base.surface_heights[neighbor]
+							nearest = distance
+			image.set_pixel(x,z,Color(height,planted,original,1. if wet.has(key) else 0.))
 	return {'map': image,'origin': (Vector2(low.x,low.z)-Vector2.ONE*.5)*STEP,
 		'extent': Vector2(size.x,size.z)*STEP}
+static func wet_at(contact: Dictionary, p: Vector2) -> float:
+	var image: Image = contact.map
+	var q: Vector2 = (p-contact.origin)/contact.extent*Vector2(image.get_size())-Vector2.ONE*.5
+	var low := Vector2i(q.floor())
+	var f: Vector2 = q-Vector2(low)
+	var value := 0.
+	for dz: int in 2:
+		for dx: int in 2:
+			var key := low+Vector2i(dx,dz)
+			if key.x<0 or key.y<0 or key.x>=image.get_width() or key.y>=image.get_height(): continue
+			value += image.get_pixelv(key).a*(f.x if dx else 1.-f.x)*(f.y if dz else 1.-f.y)
+	return value
 static func _top_grid(field: RefCounted) -> Dictionary:
 	var low: Vector3i = field.base.low
 	var high: Vector3i = low + field.base.size - Vector3i.ONE

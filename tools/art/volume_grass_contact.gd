@@ -82,6 +82,7 @@ static func build(doc: RefCounted) -> Dictionary:
 		var at := Vector2(key)*STEP
 		var h: float = top[key]
 		if h<doc.field.base.planting_min_y+.1 or not doc.field.base.cover_columns.has(key): continue
+		if float(doc.field.base.surface_heights.get(key,-100.))-h>.35: continue
 		if h<float(doc.lake.level)+.12:
 			var near_water := false
 			for dz: int in range(-1,2):

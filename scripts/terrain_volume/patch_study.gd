@@ -133,7 +133,7 @@ func rebuild() -> void:
 		material.set_shader_parameter('contact_extent', contact.extent)
 		material.set_shader_parameter('lake_center', Vector2(document.lake.center[0],document.lake.center[1]))
 		material.set_shader_parameter('lake_level', document.lake.level)
-		material.set_shader_parameter('lake_enabled', document.lake.enabled)
+		material.set_shader_parameter('lake_enabled', last_build.lake.valid)
 	collision.shape = body.mesh.create_trimesh_shape() if body.mesh.get_surface_count() > 0 else null
 	water.mesh = last_build.water
 	water.visible = last_build.lake.valid

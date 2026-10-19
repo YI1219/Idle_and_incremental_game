@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-20",
+  "base_commit": "71c0abf",
+  "tests": [
+    {
+      "test": "volume_patch_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME PATCH: 21/21"
+      ],
+      "log": "/tmp/yunlu-strata-volume_patch_test.log"
+    },
+    {
+      "test": "volume_refined_source_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME REFINED SOURCE: 8/8"
+      ],
+      "log": "/tmp/yunlu-strata-volume_refined_source_test.log"
+    },
+    {
+      "test": "volume_plane_source_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME PLANE SOURCE: 15/15"
+      ],
+      "log": "/tmp/yunlu-strata-volume_plane_source_test.log"
+    },
+    {
+      "test": "volume_module_source_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME MODULE SOURCE: 7/7"
+      ],
+      "log": "/tmp/yunlu-strata-volume_module_source_test.log"
+    },
+    {
+      "test": "volume_grass_contact_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "",
+        "VOLUME GRASS ROOT EVIDENCE: {\"maximum_actual_density\":-0.00166667416044497,\"maximum_position_drift_m\":0.0000787925610557295,\"mesh_sha256\":\"6a8d931c118c90a7d72c2ac485883841bde7ac4be96b31da32f449a8b61fa8f7\",\"roots\":306}",
+        "VOLUME GRASS CONTACT: 8/8"
+      ],
+      "log": "/tmp/yunlu-strata-volume_grass_contact_test.log"
+    },
+    {
+      "test": "volume_strata_contact_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME STRATA CONTACT: 8/8"
+      ],
+      "log": "/tmp/yunlu-strata-volume_strata_contact_test.log"
+    },
+    {
+      "test": "volume_grass_contact_test",
+      "args": [
+        "--",
+        "--modules"
+      ],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "",
+        "VOLUME GRASS ROOT EVIDENCE: {\"maximum_actual_density\":-0.0020963160575052,\"maximum_position_drift_m\":0.0000770908143215013,\"mesh_sha256\":\"f29957194135076c373442b91cc9983923cb9cd9e977113615637e9cc94bc688\",\"roots\":144}",
+        "VOLUME MODULE GRASS CONTACT: 9/9"
+      ],
+      "log": "/tmp/yunlu-strata-volume_grass_contact_test-modules.log"
+    }
+  ],
+  "native_original_runtime": {
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)",
+      "",
+      "2026-10-20 02:10:26.191 godot[19275:6590986] +[IMKClient subclass]: chose IMKClient_Modern",
+      "VOLUME PATCH RUNTIME: 12/12"
+    ],
+    "log": "/tmp/yunlu-strata-runtime.log"
+  },
+  "new_native_capture": "captures.json",
+  "source_preservation": "source_preservation.json",
+  "red_phase": {
+    "checks": "3/8",
+    "log": "/tmp/yunlu-strata-red.log",
+    "scope": "Behavioral failures for immutable source height, actual wet channel, deep cut classification and draining; no parse errors in RED."
+  },
+  "independent_review": {
+    "findings": "No Critical, Important or actionable Minor findings.",
+    "fresh_checks": [
+      "strata8/8",
+      "original21/21",
+      "module7/7",
+      "module grass9/9",
+      "prior grass8/8"
+    ],
+    "scope": "Source-height preservation, texel centers, independent padding, wet interpolation, invalid-basin clearing, shader filters, physical grass. GPU evidence inspected, not regenerated."
+  },
+  "art_accepted": false,
+  "goal_complete": false,
+  "pending_optional_direction": "Earlier optional main-mass direction question remains unanswered; not an approval to expand.",
+  "limits": [
+    "Local single static-level basin, not full 3D fluid/soil simulation.",
+    "Main ledges/feet/turf facets remain visually inadequate.",
+    "Existing degenerate mesher output unchanged.",
+    "No target-device or async/chunk acceptance."
+  ]
+}
