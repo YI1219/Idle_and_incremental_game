@@ -1,10 +1,9 @@
 # Current Tripo generation task
-Updated:2026-10-19. Latest user explicitly authorizes new rock-master references
-AND direct existing-pipeline submission/model production for this selected asset.
+Updated:2026-10-19. Current authority is the user-approved [authored island design](../docs/superpowers/specs/2026-10-19-authored-island-design.md).
 
 ## Current state — no submittable task
 
-Latest [beauty-first longer island goal](review/terrain_fidelity/2026-10-18/beautiful_island/README.md) remains active. Original retained-source editable candidate and a new [浅岛柔光 alternative](review/terrain_fidelity/2026-10-19/island_light/README.md) each offer two contours/two seeds with separate scenes/presets/save. Both use original sources and ordinary editable densities. ONE earlier completed built-in imagegen [2Dpainted albedo/prompt](source/painted_rock/2026-10-18/manifest.json) remains; no new generation this continuation. This is not a Tripo task or fixed terrain target. No paid 3Djob, purchase, submittable task or repeated strategy permission is pending. Art remains unaccepted; earlier negative studies are history, not exact-image requirements. Preserve all completed originals below.
+The new goal first establishes a complete house/terrain mother scene, then derives editable rules after explicit user art acceptance. User now requires a house remake or resource replacement; no specific input/model/source or paid operation is selected yet. Prepare and inspect a concrete candidate before publishing any generation task. Old model/refinement sources remain preserved. Shallow daylight and smooth island trials are art-rejected, not current production directions. No new paid generation, texture, purchase or submittable reference set exists this round. Earlier cliff-specific generation authorizations and completed jobs below do not become blanket authorization for new house spending.
 
 ## Previous code-guide probe — completed and rejected
 

@@ -1,0 +1,50 @@
+{
+  "repository": "https://github.com/henjicc/yipiantian",
+  "commit": "f816a91242d6bb607aeb80f1cd2c12507fee66b2",
+  "date": "2026-10-19",
+  "scope": "Read-only source study. No upstream code executed, no asset imported, no runtime adoption, no assertion that this is the version previously studied.",
+  "files": [
+    {
+      "path": "Game/layout/bank_geometry.gd",
+      "url": "https://raw.githubusercontent.com/henjicc/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/Game/layout/bank_geometry.gd",
+      "local_cache": "third_party/reference_research/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/Game/layout/bank_geometry.gd",
+      "sha256": "30e3423bbe96ceba4a2a5bb13e3819c94d685779df07169ee62fed93c6dfd3ab",
+      "bytes": 4958
+    },
+    {
+      "path": "Game/layout/island_space.gd",
+      "url": "https://raw.githubusercontent.com/henjicc/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/Game/layout/island_space.gd",
+      "local_cache": "third_party/reference_research/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/Game/layout/island_space.gd",
+      "sha256": "eddfe7c5bd329ec7b853d48d1d69a476277235d66d639bd2fbb6b450a69c01e0",
+      "bytes": 3477
+    },
+    {
+      "path": "Game/layout/courtyard_plan.gd",
+      "url": "https://raw.githubusercontent.com/henjicc/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/Game/layout/courtyard_plan.gd",
+      "local_cache": "third_party/reference_research/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/Game/layout/courtyard_plan.gd",
+      "sha256": "dd5f3c21d8e2d0ef84627225d2f041e5d93f8ed2580db7dc77fc39c7135a604b",
+      "bytes": 22365
+    },
+    {
+      "path": "Game/scenes/procedural_lab/island_generator.gd",
+      "url": "https://raw.githubusercontent.com/henjicc/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/Game/scenes/procedural_lab/island_generator.gd",
+      "local_cache": "third_party/reference_research/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/Game/scenes/procedural_lab/island_generator.gd",
+      "sha256": "270ad3bbe4177f36e02888f9ae05bd135314c087eb77dd18012ad1811bc6f252",
+      "bytes": 8374
+    },
+    {
+      "path": "ArtSource/Environment/Banks/README.md",
+      "url": "https://raw.githubusercontent.com/henjicc/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/ArtSource/Environment/Banks/README.md",
+      "local_cache": "third_party/reference_research/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/ArtSource/Environment/Banks/README.md",
+      "sha256": "d33e05dc27394231ee3be8c232eb7a72d4b2d6775d522d09110d1f4457e0f338",
+      "bytes": 17070
+    },
+    {
+      "path": "ArtSource/Environment/Archipelago/README.md",
+      "url": "https://raw.githubusercontent.com/henjicc/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/ArtSource/Environment/Archipelago/README.md",
+      "local_cache": "third_party/reference_research/yipiantian/f816a91242d6bb607aeb80f1cd2c12507fee66b2/ArtSource/Environment/Archipelago/README.md",
+      "sha256": "455b79c2bbdbead772da8ad33bda16ac1bb455b9d205fcbc074f4c2bf658cf02",
+      "bytes": 6694
+    }
+  ]
+}

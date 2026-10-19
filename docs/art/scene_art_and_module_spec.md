@@ -1,6 +1,6 @@
 # Scene art and module spec
 
-Latest 2026-10-18 clarification: beauty, coherence and playful stylization take precedence over geological realism or matching the old imagegen cliff. Brushland/Tiny Glade/Townscaper are finish references; do not copy European subject matter. Terrain may simplify/exaggerate forms and adjust proportions, material and light. Retain existing building/tree assets and major placements; preserve shared editable authority. See [active design](../superpowers/specs/2026-10-18-beautiful-editable-island-design.md). Earlier reference-specific cliff shape criteria are historical, not mandatory aesthetic tests.
+Latest 2026-10-19: user approves [authored mother scene first](../superpowers/specs/2026-10-19-authored-island-design.md), then editable rules. Existing assets are not presumed accepted: house must be remade or replaced with a sourced resource, while originals and rollback remain. Preserve main layout; no blind asset batch, paid purchase or new character work. Continuous outlines and controlled profiles are a research lead, not a proven floating-cliff solution. Native screenshots only, no display websites. Discuss material visual/scope deviations immediately and obtain explicit mother-scene art acceptance before expanding editor/layout integration.
 
 Current consensus: [CURRENT_CONTEXT.md](../../CURRENT_CONTEXT.md). This spec implements the user's requirements for the three scene types and the sandbox. Module specs and verification combinations below are production suggestions; they do not mean the system is already implemented.
 
@@ -46,7 +46,7 @@ The three types share look. They are not required to share the same landform, de
 6. **Natural variation:** a few coordinated shape variants and community pairings reduce repetition. Change size/direction only when the form allows it. Avoid arbitrary stretching of buildings and traversal openings.
 7. **Clear function:** player objects, decoration, and distant views have distinct duties. Every blade of grass need not be a logic object; every picture element need not be pickable. Exact interaction is decided by systems.
 
-Evaluate valid free resources for the chosen representation. Demonstrated custom 3D gaps may use user-operated Tripo after inspected four-view preparation. Preserve the running character, sword and cottage during the 3D rendering study; Qinglan corrections require evidence and a bounded scope. Do not batch-redo existing assets.
+Evaluate valid free resources for the chosen representation. Demonstrated custom 3D gaps may use user-operated Tripo after inspected four-view preparation. Preserve running character/sword and cottage source originals; the latest house remake/resource request supersedes the earlier unchanged-cottage restriction. Qinglan corrections require evidence and a bounded scope. Do not batch-redo existing assets.
 
 ## Minimal verification (suggested)
 

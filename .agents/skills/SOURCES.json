@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/henjicc/yipiantian",
+  "commit": "f816a91242d6bb607aeb80f1cd2c12507fee66b2",
+  "installed": "2026-10-19",
+  "scope": "Project-local only. User authorized skill additions. No upstream project-specific farm pipeline installed.",
+  "skills": [
+    {
+      "name": "godot",
+      "upstream_path": ".agents/skills/godot",
+      "skill_sha256": "9d5ec313088aca7da0a7bb3ea05a82f271e8cda3d40f6259846945113cf6e73a",
+      "license": ".agents/skills/godot/LICENSE",
+      "files": 31
+    },
+    {
+      "name": "blender-3d-asset-generation",
+      "upstream_path": ".agents/skills/blender-3d-asset-generation",
+      "skill_sha256": "329825526622cc51e9f8428434bd7bfd981bf33e3b4ea798095f2a82712dc3ad",
+      "license": ".agents/skills/blender-3d-asset-generation/LICENSE",
+      "files": 9
+    }
+  ]
+}

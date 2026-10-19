@@ -1,0 +1,69 @@
+{
+  "adapter": "Apple M4 Pro (Apple9)",
+  "art_accepted": false,
+  "capture_success": true,
+  "captures": [
+    {
+      "draw_calls": 567.0,
+      "error": 0,
+      "file": "whole.png",
+      "position": "(13.27737, 32.0, 52.27853)",
+      "rotation": "(-30.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 709.0,
+      "error": 0,
+      "file": "play.png",
+      "position": "(-3.793567, 13.0, 16.6444)",
+      "rotation": "(-30.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 704.0,
+      "error": 0,
+      "file": "close.png",
+      "position": "(-9.180656, 8.0, 15.31963)",
+      "rotation": "(-30.0, 16.0, 0.0)"
+    },
+    {
+      "draw_calls": 873.0,
+      "error": 0,
+      "file": "reverse.png",
+      "position": "(-31.0, 8.0, -20.0)",
+      "rotation": "(-11.53047, -125.3112, 0.0)"
+    },
+    {
+      "draw_calls": 826.0,
+      "error": 0,
+      "file": "low.png",
+      "position": "(24.0, -4.0, 22.0)",
+      "rotation": "(10.02499, 45.0, 0.0)"
+    }
+  ],
+  "cottage_display_scale": "(0.6825, 0.455, 0.533)",
+  "cottage_scope": "Original GLB plus current nonuniform instance scale, roof shader and added door detail; none changed by this capture.",
+  "cottage_source": "res://assets/buildings/cottage/cottage_tripo.glb",
+  "data_unchanged": true,
+  "godot": "4.7.2-stable (official)",
+  "purpose": "Current formal default, not the compact old comparison or earliest historical screenshot.",
+  "resolution": [
+    1671,
+    941
+  ],
+  "save_access": "No user save loaded or written.",
+  "scene": "res://scenes/terrain_editor.tscn",
+  "source_sha256": {
+    "project.godot": "290211808061ea9ad108b00a050a3c6f782bba8150234340cd4978bd4d4b7377",
+    "scenes/terrain_editor.tscn": "a52cec5ee0b0d816a4bac5ee4748e008820aa4a96db58d41ece7e7adf5c2752d",
+    "scripts/terrain_editor/editor.gd": "27fb17e631ed5deae65721ab1959a6d17be2aaa27e405347790d667b08bdcf85",
+    "scripts/terrain_editor/terrain_props.gd": "a20553deea4fee8867d7e85bd03a5cb221b998a1987eaf23a2c226656aac0251",
+    "scripts/world/cottage.gd": "39332b350e00a89f7fb283f0c4a0977f28231ccd37625c10694e2d4ca35c2f88",
+    "assets/buildings/cottage/cottage_tripo.glb": "e344e7d935f555b8bc947d716fb35a45f396ae3bc7379268c3bc30a51a99976b"
+  },
+  "image_sha256": {
+    "whole.png": "8a17d5dfdabfece7575617e72e6cdd84dcf6dafd446dd66cca47667b04204b40",
+    "play.png": "37c51eb3c8e8bb1c59ce09db03a0a5e5f3aa367ea846780c9c1428598c450d9c",
+    "close.png": "996bb005c017e1f74e198460bcfb8352ff0ad8fedb12adf1c0e754bff16ea5f5",
+    "reverse.png": "f3fbeda886279c3f281bd65e95f5224a32559e21b232da311776cc3766280335",
+    "low.png": "9dcb30c2b27152c64a686552f690d1452375a68b623dbe9f292f982de1b7e03b"
+  }
+}
