@@ -1,0 +1,72 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"capture_success": true,
+	"captures": [
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "current_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "current_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "current_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "current_low.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "side_key_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "side_key_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "side_key_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "side_key_low.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		}
+	],
+	"current_sun_degrees": "(-42.0, 40.0, 0.0)",
+	"diagnostic_sun_degrees": "(-42.0, -35.0, 0.0)",
+	"godot": "4.7.2-stable (official)",
+	"light_energy_unchanged": 1.1799999475479126,
+	"same_document": true,
+	"same_grass_attributes": true,
+	"same_terrain_attributes": true,
+	"scope": "One-variable key-light yaw40 to -35 degrees; all geometry, normals, colors, materials, grass, pond, environment, fill, energy and exact cameras unchanged. Water TIME live. Diagnostic only, no source/default/save/style adoption, art or performance acceptance.",
+	"source_sha256": "0b9010ab398d5157c0b7338440d656091e07e19119c63522e953eedef357e7e7",
+	"terrain_attributes_sha256": "1d2af8fcb72c44b3bf7b032ddb788df0cda3466dd61d3bf6239cfaf1898df77f"
+}
