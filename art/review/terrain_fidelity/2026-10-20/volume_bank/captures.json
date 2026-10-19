@@ -1,0 +1,95 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"art_accepted": false,
+	"capture_success": true,
+	"captures": [
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "sphere_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "sphere_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "sphere_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "profile_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "profile_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "profile_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "profile_breach.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "profile_restored.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"outer_check_scope": "Outside the original sphere brush support, including its finite signed-distance band; not only the visible water/bank outline.",
+	"outer_samples_identical": true,
+	"profile_restored": true,
+	"scope": "One lake design change: sphere/low water versus designed profile/higher water. Same source rock, camera, shader, textures and lights. Not a single scalar parameter change. No full-island, default preset/save, paid model job or mother-rock shape replacement.",
+	"source_preset_sha256": "1e2c95fd20a94cd3f8a0acb6725a95720c3999586734a8e7fe723d0002e39f12",
+	"states": {
+		"breach": {
+			"build_ms": 364.3,
+			"center_floor": 1.5712771461903854,
+			"lake_valid": false,
+			"triangles": 17824,
+			"water_level": 3.0,
+			"water_triangles": 0
+		},
+		"profile": {
+			"build_ms": 342.5,
+			"center_floor": 2.5605559837997,
+			"lake_valid": true,
+			"triangles": 16592,
+			"water_level": 3.0,
+			"water_triangles": 78
+		},
+		"sphere": {
+			"build_ms": 347.893,
+			"center_floor": 2.1037771429383527,
+			"lake_valid": true,
+			"triangles": 16980,
+			"water_level": 2.5,
+			"water_triangles": 128
+		}
+	}
+}

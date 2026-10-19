@@ -1,7 +1,6 @@
 # Current asset status
 
-2026-10-20 checkpoint: [local freely sculptable volume study](review/terrain_fidelity/2026-10-19/volume_patch/README.md) reuses an existing rock source. Native prototype only; art not accepted, no whole-island promotion/new house/new Tripo job/high-poly bake. Formal scene and source originals remain.
-Updated:2026-10-19.
+2026-10-20 checkpoint: [existing-source shape/bank continuation](review/terrain_fidelity/2026-10-20/volume_shape/README.md), following the user's explicit selection. Separate refined5028triangle mother preserves original/cap/height; new shallow pond and narrower grass contact remain local candidates.27new native frames; fresh original21/21,bank10/10,refined8/8,native12/12. Pond/lower-contour gains are modest local judgments; bulbous middle,broad rear wall and sampled grass edge remain. **Art unaccepted**, full goal active, no whole-island promotion/new house/Tripo job/bake. Original scene/source/preset/saves preserved. Updated:2026-10-20.
 
 Current 2026-10-19 approved scope: [authored island design](../docs/superpowers/specs/2026-10-19-authored-island-design.md). User rejects the shallow daylight/smooth presentation as worse than the original. Preserve all those sources/evidence but do not promote or refine that aesthetic. First build one complete designed mother scene, obtain explicit user art acceptance, then derive editable rules. Only actual screenshots; no display website.
 

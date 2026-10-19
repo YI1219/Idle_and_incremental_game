@@ -47,4 +47,10 @@ Ruling: a bounded0.25m/single-lake study is the first deliverable, not productio
 
 Diagnosed legacy cover without lighting and measured unchanged conversion with finite nearest-surface probes. A single world-space height/planting map now evaluates contact per fragment in the isolated study, reducing triangle color smearing without replacing geometry or changing source/save data. Old shader branch remains for matched controls. Fresh document21/21 and native12/12, old/new vertex+normal hashes identical, tunnel/breach/undo freshly captured. See `art/review/terrain_fidelity/2026-10-20/volume_diagnosis/`.
 
-Still pending: user judgment on the mother's main shape. Do not promote this local contact correction to whole-island art acceptance or start stage2/3. No changed asset-generation budget or new model job.
+The user has since selected refinement of the existing mother's main shape, grass/stone contact and bank; that direction question is answered. Do not treat this as art acceptance or start stage2/3. No changed generation budget or new model job.
+
+## Existing-source local revision2026-10-20
+
+One separate existing-vertex Blender correction preserves the cap/height/topology and converges the lower body; a designed shallow pond and optional narrower world-space grass contact are captured separately. [Evidence and limitations](../../../art/review/terrain_fidelity/2026-10-20/volume_shape/README.md). Fresh document21/21,bank10/10,refined-source8/8,native12/12. Mother-shape/bank captures verify real tunnel/breach/exact undo; old/new save-source cross-replay rejected. Independent bounded review found no Critical/Important defect. Original source/default/preset/save remain.
+
+Local visual judgment is still insufficient: pond/lower contour improve, but middle/rear major forms and cap-edge facets remain unfinished. User art gate stays unchecked. No whole-island expansion or stage2/3/paid job. Full goal remains active.

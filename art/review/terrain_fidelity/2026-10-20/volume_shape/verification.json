@@ -1,0 +1,242 @@
+{
+  "stage": "local art gate, unaccepted",
+  "original_glb_sha256": "7474502a790d11f7ed9e06be565a3af362c9c92f6d309dde6f281978a2259adc",
+  "original_preset_sha256": "1e2c95fd20a94cd3f8a0acb6725a95720c3999586734a8e7fe723d0002e39f12",
+  "candidate_preset_sha256": "31e4cfcd94c5e0743d0490c499a5864f803e9dd678c6fb4f9809b99af921572e",
+  "capture_reports": {
+    "art/review/terrain_fidelity/2026-10-20/volume_shape/captures.json": "f8db44f930c2a6250aee9f4dee24174826b5b6897c9540d3d3314489a544d872",
+    "art/review/terrain_fidelity/2026-10-20/volume_shape/contact_comparison.json": "d5145e7e54e40ca38810e9b3669b899324f853678c5a8e59d89bb10001fb2f75",
+    "art/review/terrain_fidelity/2026-10-20/volume_bank/captures.json": "c87d32663abdecb3cdf0c652e8049871b37e3b9ff0ef6fc2d09ebb683151afa1"
+  },
+  "frames": [
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/narrow_close.png",
+      "sha256": "b7d4339c43378efa3f0ed28dc7a7113695e74039d4fc506f0825d9c9905bdb9f",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/narrow_play.png",
+      "sha256": "26514372e680eec19e36a222ad0578857db87c3958673aa27cd18d349b8b80fe",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/narrow_reverse.png",
+      "sha256": "820a18ba98a3db91f5849ac9eff9229dd54db934ba00f738c958de95d3372d6b",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/old_close.png",
+      "sha256": "a652d8c14416b6c4fd5789b90bb2b8d86e3078ca9d2faf8f906c4462f3cf1f92",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/old_low.png",
+      "sha256": "a7ccbb63eac8bb6db3b8944084ead6b24f2c86d38ed2a2431109a97a5b0841fb",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/old_neutral.png",
+      "sha256": "3b60b02701691eebd17acd95e9b6ec6821180aaa80022f41a65a8ec0981f2c4a",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/old_play.png",
+      "sha256": "8f1080984e3288559309e74b7b2c00591ffa923f4f6346a6f2b3fdc8f48ef4f8",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/old_reverse.png",
+      "sha256": "f81a311ca66b5df7dba7c3055359ae4ed85b4adb20912eb4239d961eb678bdd2",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/refined_breach.png",
+      "sha256": "af5c54e38e86dd1e2c9d3616faaf80233648858f5c3d1a202f4bbc2233bfad5d",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/refined_close.png",
+      "sha256": "b3efbf6a541380c8ba2f1b159930bcef074f4eb61488ec5deab5c3b8391735d5",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/refined_low.png",
+      "sha256": "f4c75ae75010ace9e41abab14a502726c65437469420fdf0fadf1e97f7db2045",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/refined_neutral.png",
+      "sha256": "0cbb578db1c6f2765c1f8a3fa8199bf13156df66726ab1d49e33462d9ba962f5",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/refined_play.png",
+      "sha256": "eea7f4a1132717a1507aafce36cc0ffb4b0213dd6c6f7c55860084886b5b4e0f",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/refined_restored.png",
+      "sha256": "8e2fceb62b4a257c3ddfce61b2ae21fbb9450330db91e1f4faea0d37105460ec",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/refined_reverse.png",
+      "sha256": "a8b2bafd39c273b7a340ee53d3e862acdcc745043f5f4d7233201d13935b5006",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/refined_tunnel.png",
+      "sha256": "24531ddcdd4eda41ad2ea1da5f370e1adf00963dc70264c81adde2d157f62972",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/wide_close.png",
+      "sha256": "bbc35ca43f6ae66a4183412de793de33b2a1ee6edbb284c1f8d096519ec942a3",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/wide_play.png",
+      "sha256": "273afde9b20c4677e86d6f3fd54d93f159bd2680133491d98e422193c216a0ea",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_shape/wide_reverse.png",
+      "sha256": "edbe3d553cc50b68ab72390078419fc8f1f48b2007a78b0e78660c3333a29e46",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_bank/profile_breach.png",
+      "sha256": "55b309a1e6159415321bdca01b8545840cb47e1fbec63612901603956b7ffa34",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_bank/profile_close.png",
+      "sha256": "3e156edf479b4754e3de65c3e9bb9ea264c56ef5e516c4cfebe563c045449c20",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_bank/profile_play.png",
+      "sha256": "4a7c14c7c3f911169e45c3f6eca7efaca0d0ff436dc959fe136dfbb5d559e208",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_bank/profile_restored.png",
+      "sha256": "9fc7b3bdaaa12b3bf07f83ac33987bb1867f08380dbcdc7585e1ba07fae3248f",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_bank/profile_reverse.png",
+      "sha256": "ac0b554d1ebd6fa1cf686f9d8a22beb6056ce89fdabd57755f75f95ce2a5d2bf",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_bank/sphere_close.png",
+      "sha256": "77886685a76c7484bcfbb2f1c45d82f33ecbfe4c99343675692e4061e7aa2909",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_bank/sphere_play.png",
+      "sha256": "41e4c62bacb8cbb9518365a391a69a0160cc781b87d9aebd23f2d9a2dcbf2b90",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_bank/sphere_reverse.png",
+      "sha256": "68fbd292c30e32d10f72550b555b788be4fcc7a65d715379e5e098b3e783ddb5",
+      "size": [
+        1671,
+        941
+      ]
+    }
+  ],
+  "clean_native_logs": {
+    "volume-bank-capture": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-20 00:38:06.518 godot[99937:6437795] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-20 00:38:07.027 godot[99937:6437795] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nVOLUME BANK CAPTURES: true; frames=8; restored=true; outer=true\n",
+    "volume-refined-capture": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-20 00:47:51.216 godot[2085:6452683] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-20 00:47:52.219 godot[2085:6452683] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nREFINED VOLUME CAPTURES: true; frames=13; restored=true\n",
+    "volume-refined-contact": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-20 00:50:43.723 godot[2919:6458180] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-20 00:50:44.673 godot[2919:6458180] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nREFINED CONTACT CAPTURES: true; frames=6; geometry unchanged=true\n",
+    "volume-shape-runtime": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-20 00:50:58.675 godot[3033:6458926] +[IMKClient subclass]: chose IMKClient_Modern\nVOLUME PATCH RUNTIME: 12/12\n"
+  },
+  "independent_review": "Bounded reviewer: no Critical/Important delta finding; bank10/10/refined8/8 independently rerun, source/hash/cross-source atomicity checked. Review does not grant art acceptance.",
+  "limits": "Native12/12 exercises the original study scene; candidate edit captures exercise inherited document strokes/undo. No new target hardware, async/chunks, release or whole-scene art acceptance.",
+  "fresh_headless_logs": {
+    "document": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME PATCH: 21/21\n",
+    "bank": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME BANK PROFILE: 10/10\n",
+    "refined": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME REFINED SOURCE: 8/8\n"
+  }
+}

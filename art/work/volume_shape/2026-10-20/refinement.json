@@ -1,0 +1,54 @@
+{
+  "source": "art/source/cliff_master_v2/2026-10-18/tripo/cliff_land_master_v2_white.glb",
+  "source_sha256": "7474502a790d11f7ed9e06be565a3af362c9c92f6d309dde6f281978a2259adc",
+  "blender": "5.2.1 LTS",
+  "pre_conformance_import_difference_m": 0.000784758129157126,
+  "conformed_to_preserved_godot_baseline": true,
+  "conformed_unique_vertices": 2516,
+  "before_topology": {
+    "triangles": 5028,
+    "welded_vertices_1e5": 2516,
+    "non_two_use_edges": 0,
+    "directed_edge_pair_defects": 0,
+    "degenerate_index_faces": 0,
+    "signed_volume": 76.38167338111313,
+    "vertex_components": [
+      2516
+    ]
+  },
+  "after_topology": {
+    "triangles": 5028,
+    "welded_vertices_1e5": 2516,
+    "non_two_use_edges": 0,
+    "directed_edge_pair_defects": 0,
+    "degenerate_index_faces": 0,
+    "signed_volume": 66.94822051580208,
+    "vertex_components": [
+      2516
+    ]
+  },
+  "cap_y_at_or_above": 2.15,
+  "cap_max_displacement_m": 0.0,
+  "y_coordinates_identical": true,
+  "max_vertex_displacement_m": 0.8918701821704692,
+  "horizontal_smoothing": {
+    "iterations": 8,
+    "lower_weight": 0.35
+  },
+  "bottom_scale": 0.62,
+  "bounds": [
+    [
+      -4.25,
+      -1.1471086740493774,
+      -2.4642858505249023
+    ],
+    [
+      4.25,
+      3.250000476837158,
+      2.464285373687744
+    ]
+  ],
+  "source_triangles_sha256": "efacd34f72e8386b8817d71786dde2a8815dd95e90650c34db75e5c14d566a56",
+  "export_sha256": "ac54a93918774636890571f8aebf7823e2637c844ed7e1c20e1a792e16227f10",
+  "scope": "Existing-source horizontal smoothing and lower return only. UV/topology preserved; no new bake or custom generation. Art unaccepted."
+}

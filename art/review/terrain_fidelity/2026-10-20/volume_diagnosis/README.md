@@ -1,6 +1,6 @@
 # Volume contact correction and shape diagnosis
 
-This continues the local art gate, not whole-island integration. **Overall art remains unaccepted.** The pending user question concerns the rock mother's main shape; this correction does not decide or change that shape.
+This continues the local art gate, not whole-island integration. **Overall art remains unaccepted.** The then-pending direction question is now answered: the user chose existing-mother shape/contact/bank refinement. This earlier correction did not change shape; see the subsequent [local candidate](../volume_shape/README.md).
 
 ## What changed
 

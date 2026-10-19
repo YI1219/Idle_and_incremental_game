@@ -1,0 +1,91 @@
+{
+  "actions": [],
+  "armatures": [],
+  "blender_version": "5.2.1 LTS",
+  "failures": [],
+  "meshes": [
+    {
+      "dimensions": [
+        8.5,
+        4.928571,
+        4.397109
+      ],
+      "edges": 7542,
+      "faces": 5028,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "loose_vertices": 0,
+      "material_slots": 1,
+      "modifiers": [],
+      "name": "tripo_node_c3d52c91-7ca7-4560-92d4-9821b3eafba3",
+      "non_manifold_edges": 0,
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "triangles": 5028,
+      "uv_layers": [],
+      "vertices": 2516
+    },
+    {
+      "dimensions": [
+        8.5,
+        4.928571,
+        4.397109
+      ],
+      "edges": 7542,
+      "faces": 5028,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "loose_vertices": 0,
+      "material_slots": 1,
+      "modifiers": [],
+      "name": "cliff_land_v2_lower_return_v1",
+      "non_manifold_edges": 0,
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "triangles": 5028,
+      "uv_layers": [],
+      "vertices": 2516
+    }
+  ],
+  "missing_files": [],
+  "passed": true,
+  "scene": "Scene",
+  "schema_version": 1,
+  "source_file": "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/volume_shape/2026-10-20/cliff_land_v2_lower_return_v1.blend",
+  "summary": {
+    "actions": 0,
+    "armatures": 0,
+    "images": 0,
+    "materials": 1,
+    "mesh_objects": 2,
+    "objects": 2,
+    "triangles": 10056
+  },
+  "units": {
+    "scale_length": 1.0,
+    "system": "METRIC"
+  },
+  "warnings": []
+}

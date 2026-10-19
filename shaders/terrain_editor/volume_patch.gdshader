@@ -5,6 +5,10 @@ uniform sampler2D stone_mineral_map : source_color, filter_linear_mipmap_anisotr
 uniform sampler2D ground_detail_map : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform bool detailed = true;
 uniform bool use_contact_field = false;
+// Study-only controls; defaults preserve the previous contact comparison.
+uniform vec2 grass_contact_depth = vec2(.06,.28);
+uniform vec2 grass_contact_slope = vec2(.35,.82);
+uniform vec2 soil_contact_depth = vec2(.12,.48);
 uniform sampler2D contact_field : filter_linear, repeat_disable;
 uniform vec2 contact_origin;
 uniform vec2 contact_extent = vec2(1.);
@@ -43,8 +47,8 @@ void fragment(){
 		vec4 field=texture(contact_field,uv_contact);
 		float inside=step(0.,uv_contact.x)*step(0.,uv_contact.y)*step(uv_contact.x,1.)*step(uv_contact.y,1.);
 		float depth=abs(field.r-p.y);
-		cover=field.g*inside*(1.-smoothstep(.06,.28,depth))*smoothstep(.35,.82,n.y);
-		local_soil=field.g*inside*(1.-smoothstep(.12,.48,depth))*smoothstep(-.5,.2,n.y);
+		cover=field.g*inside*(1.-smoothstep(grass_contact_depth.x,grass_contact_depth.y,depth))*smoothstep(grass_contact_slope.x,grass_contact_slope.y,n.y);
+		local_soil=field.g*inside*(1.-smoothstep(soil_contact_depth.x,soil_contact_depth.y,depth))*smoothstep(-.5,.2,n.y);
 		wet=lake_enabled?(1.-smoothstep(1.15,1.65,length(p.xz-lake_center)))*(1.-smoothstep(lake_level+.04,lake_level+.12,p.y)):0.;
 		cover*=1.-wet;
 	}
