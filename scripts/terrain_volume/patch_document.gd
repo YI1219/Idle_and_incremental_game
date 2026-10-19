@@ -12,6 +12,8 @@ var data := Data.new()
 var field: RefCounted:
 	get: return data.rocks
 var lake := {'center': [-.8, 0.], 'level': 2.5, 'enabled': true}
+func source_id() -> String:
+	return SOURCE_ID
 func load_preset() -> bool:
 	if not ResourceLoader.exists(PRESET): return false
 	var base := Base.new()
@@ -42,10 +44,10 @@ func undo() -> bool:
 func redo() -> bool:
 	return data.redo()
 func serialize() -> Dictionary:
-	return {'version': 5, 'source_id': SOURCE_ID, 'source_sha256': field.base.source_sha256,
+	return {'version': 5, 'source_id': source_id(), 'source_sha256': field.base.source_sha256,
 		'step': STEP, 'rocks': field.records(), 'lake': lake.duplicate(true)}
 func deserialize(payload: Dictionary) -> bool:
-	if payload.get('version') != 5 or payload.get('source_id') != SOURCE_ID or payload.get('step') != STEP:
+	if payload.get('version') != 5 or payload.get('source_id') != source_id() or payload.get('step') != STEP:
 		return false
 	var candidate = get_script().new()
 	if not candidate.load_preset() or payload.get('source_sha256') != candidate.field.base.source_sha256:

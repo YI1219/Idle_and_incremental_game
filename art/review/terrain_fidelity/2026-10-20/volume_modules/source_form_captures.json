@@ -1,0 +1,75 @@
+{
+	"capture_success": true,
+	"captures": [
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "lower_source_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "lower_source_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "lower_source_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "lower_source_low.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "assembled_source_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "assembled_source_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "assembled_source_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "assembled_source_low.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"scope": "Unconverted source forms, same camera/light/neutral material/common42degree crease. No grass/pond/texture. Not an editable-scene or art acceptance claim.",
+	"states": {
+		"assembled_source": {
+			"sha256": "d15fa27f6f0f5910dd60ea50126a230474262e7049ecdafbc5f6cc0a814e0289",
+			"source": "res://art/work/volume_modules/2026-10-20/three_rock_assembly_v1.glb",
+			"triangles": 1816
+		},
+		"lower_source": {
+			"sha256": "ac54a93918774636890571f8aebf7823e2637c844ed7e1c20e1a792e16227f10",
+			"source": "res://art/work/volume_shape/2026-10-20/cliff_land_v2_lower_return_v1.glb",
+			"triangles": 5028
+		}
+	}
+}

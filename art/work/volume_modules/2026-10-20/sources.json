@@ -1,0 +1,56 @@
+{
+	"scope": "Existing source inspection, no geometry changes. Catalog uniformly fits each source to2.8m maximum dimension, order medium/main/tall. Neutral imported normals; not an authored assembly or accepted game scene.",
+	"sources": [
+		{
+			"bounds_high": [
+				1.4979002475738525,
+				1.9886996746063232,
+				1.8393001556396484
+			],
+			"bounds_low": [
+				-1.7272999286651611,
+				-0.2710999846458435,
+				-1.149899959564209
+			],
+			"file_sha256": "5d1ab1fa03218f4a908728ed0eabe6486344a7e4f510b0d3d6f837fd1d011bd8",
+			"id": "medium",
+			"path": "res://assets/nature/quaternius/Rock_Medium_1.gltf",
+			"triangles": 342,
+			"triangles_sha256": "9b08a1b4db4234fb9cd4aef77bfcefa3f3fd0334e4cc151462ece501e5746b32"
+		},
+		{
+			"bounds_high": [
+				1.3595998287200928,
+				1.8326998949050903,
+				1.3729997873306274
+			],
+			"bounds_low": [
+				-1.7135999202728271,
+				-0.05079999938607216,
+				-1.2303999662399292
+			],
+			"file_sha256": "a8a0659cc07190b27aefe5fb4d5404f9d1f1101c417c59f0f2fa3b9bb16f3483",
+			"id": "main",
+			"path": "res://assets/nature/refined/cliff_main_v4.glb",
+			"triangles": 634,
+			"triangles_sha256": "de9de81d48bcc205634d2bd6c097a440f13e48b964cd0213b89da916de5651d1"
+		},
+		{
+			"bounds_high": [
+				1.5386000871658325,
+				2.0023999214172363,
+				1.8931998014450073
+			],
+			"bounds_low": [
+				-1.7275999784469604,
+				-0.2710999846458435,
+				-1.1866999864578247
+			],
+			"file_sha256": "8719f745175718d1ac240e7293c1ede88894aaece93d3035a20cdab00f7f24b9",
+			"id": "tall",
+			"path": "res://assets/nature/refined/cliff_tall_v2.glb",
+			"triangles": 816,
+			"triangles_sha256": "62be8ce899851560ab07644a34157be69785e345fb90adcbec97f502a9a6d7b3"
+		}
+	]
+}

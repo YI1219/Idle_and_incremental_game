@@ -1,0 +1,43 @@
+{
+  "grid_step": 0.25,
+  "sample_records": 10312,
+  "analytic_three_ray_crosschecks": 775,
+  "bvh_disagreements_resolved": [],
+  "bounds": [
+    [
+      -4.25,
+      -1.147109031677246,
+      -2.9568610191345215
+    ],
+    [
+      4.25,
+      3.25,
+      2.9568610191345215
+    ]
+  ],
+  "scope": "One original-model conversion; every grid node uses three BVH rays, disagreement/every41st crosschecked in float64. Not art, editing robustness or target-hardware acceptance.",
+  "low": [
+    -20,
+    -8,
+    -15
+  ],
+  "size": [
+    41,
+    25,
+    31
+  ],
+  "input_topology": {
+    "triangles": 1816,
+    "welded_vertices_1e5": 910,
+    "non_two_use_edges": 0,
+    "directed_edge_pair_defects": 0,
+    "degenerate_index_faces": 0,
+    "signed_volume": 87.058136115817,
+    "vertex_components": [
+      910
+    ],
+    "vertex_link_defects": 0
+  },
+  "density_sha256": "b6bce67a051b10d49db7d0acd24a729703b2b4a469bbab4431405d6990067ca7",
+  "source_triangles_sha256": "1f1e6026d6892dab61a2c6ee81c7be3c30e73f1e3088334a18072f94a978ad4b"
+}

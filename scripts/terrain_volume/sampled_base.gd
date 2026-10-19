@@ -8,6 +8,7 @@ var values := PackedFloat32Array()
 var surface_cells: Array[Vector3i] = []
 var source_sha256 := ''
 var cover_columns: Dictionary = {}
+var planting_min_y := 2.85
 func configure(preset: Resource) -> bool:
 	if preset == null or preset.get_meta('step', 0.) != STEP:
 		return false
@@ -19,6 +20,9 @@ func configure(preset: Resource) -> bool:
 	for value: float in values:
 		if not is_finite(value) or value < -AIR or value > AIR:
 			return false
+	var planting_value: Variant = preset.get_meta('planting_min_y',2.85)
+	if not (planting_value is int or planting_value is float) or not is_finite(float(planting_value)): return false
+	planting_min_y = float(planting_value)
 	source_sha256 = preset.get_meta('source_sha256', '')
 	# This source's authored planting surface is its broad upper cap. Small
 	# upward rock ledges around the lower wall are not additional grassland.
@@ -26,7 +30,7 @@ func configure(preset: Resource) -> bool:
 		for x: int in size.x:
 			for y: int in range(size.y - 1, -1, -1):
 				if node_value(low + Vector3i(x,y,z)) < 0:
-					if (low.y+y)*STEP >= 2.85:
+					if (low.y+y)*STEP >= planting_min_y:
 						cover_columns[Vector2i(low.x+x, low.z+z)] = true
 					break
 	for z: int in range(size.z - 1):

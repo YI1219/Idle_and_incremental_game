@@ -1,0 +1,22 @@
+{
+  "source_triangles": 1816,
+  "converted_triangles": 17556,
+  "source_sha256": "1f1e6026d6892dab61a2c6ee81c7be3c30e73f1e3088334a18072f94a978ad4b",
+  "converted_sha256": "9aac63eab22a82f0f7eed67c8294c2f167614fa74d8abbd41a08ea8cd0e8f72e",
+  "planting_metadata_geometry_unchanged": true,
+  "source_to_converted": {
+    "samples": 2726,
+    "mean_m": 0.022358758691967868,
+    "p95_m": 0.08272553980350494,
+    "max_m": 0.20567065477371216,
+    "over_0125m": 21
+  },
+  "converted_to_source": {
+    "samples": 25740,
+    "mean_m": 0.006258792431412728,
+    "p95_m": 0.030269599985331276,
+    "max_m": 0.1136476919054985,
+    "over_0125m": 0
+  },
+  "scope": "Finite bidirectional vertices and triangle-centroid distances; not a continuous Hausdorff bound or art acceptance. No source modification."
+}

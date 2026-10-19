@@ -1,0 +1,226 @@
+{
+  "source_manifest": {
+    "scope": "Existing source inspection, no geometry changes. Catalog uniformly fits each source to2.8m maximum dimension, order medium/main/tall. Neutral imported normals; not an authored assembly or accepted game scene.",
+    "sources": [
+      {
+        "bounds_high": [
+          1.4979002475738525,
+          1.9886996746063232,
+          1.8393001556396484
+        ],
+        "bounds_low": [
+          -1.7272999286651611,
+          -0.2710999846458435,
+          -1.149899959564209
+        ],
+        "file_sha256": "5d1ab1fa03218f4a908728ed0eabe6486344a7e4f510b0d3d6f837fd1d011bd8",
+        "id": "medium",
+        "path": "res://assets/nature/quaternius/Rock_Medium_1.gltf",
+        "triangles": 342,
+        "triangles_sha256": "9b08a1b4db4234fb9cd4aef77bfcefa3f3fd0334e4cc151462ece501e5746b32"
+      },
+      {
+        "bounds_high": [
+          1.3595998287200928,
+          1.8326998949050903,
+          1.3729997873306274
+        ],
+        "bounds_low": [
+          -1.7135999202728271,
+          -0.05079999938607216,
+          -1.2303999662399292
+        ],
+        "file_sha256": "a8a0659cc07190b27aefe5fb4d5404f9d1f1101c417c59f0f2fa3b9bb16f3483",
+        "id": "main",
+        "path": "res://assets/nature/refined/cliff_main_v4.glb",
+        "triangles": 634,
+        "triangles_sha256": "de9de81d48bcc205634d2bd6c097a440f13e48b964cd0213b89da916de5651d1"
+      },
+      {
+        "bounds_high": [
+          1.5386000871658325,
+          2.0023999214172363,
+          1.8931998014450073
+        ],
+        "bounds_low": [
+          -1.7275999784469604,
+          -0.2710999846458435,
+          -1.1866999864578247
+        ],
+        "file_sha256": "8719f745175718d1ac240e7293c1ede88894aaece93d3035a20cdab00f7f24b9",
+        "id": "tall",
+        "path": "res://assets/nature/refined/cliff_tall_v2.glb",
+        "triangles": 816,
+        "triangles_sha256": "62be8ce899851560ab07644a34157be69785e345fb90adcbec97f502a9a6d7b3"
+      }
+    ]
+  },
+  "source_checks": {
+    "medium": {
+      "topology": {
+        "triangles": 342,
+        "welded_vertices_1e5": 173,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 8.223671095849268,
+        "vertex_components": [
+          173
+        ],
+        "vertex_link_defects": 0
+      },
+      "intersections": {
+        "mesh_sha256": "9b08a1b4db4234fb9cd4aef77bfcefa3f3fd0334e4cc151462ece501e5746b32",
+        "triangles": 342,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passed": true
+    },
+    "main": {
+      "topology": {
+        "triangles": 634,
+        "welded_vertices_1e5": 319,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 8.232221246650019,
+        "vertex_components": [
+          319
+        ],
+        "vertex_link_defects": 0
+      },
+      "intersections": {
+        "mesh_sha256": "de9de81d48bcc205634d2bd6c097a440f13e48b964cd0213b89da916de5651d1",
+        "triangles": 634,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passed": true
+    },
+    "tall": {
+      "topology": {
+        "triangles": 816,
+        "welded_vertices_1e5": 410,
+        "non_two_use_edges": 0,
+        "directed_edge_pair_defects": 0,
+        "degenerate_index_faces": 0,
+        "signed_volume": 8.600004232732699,
+        "vertex_components": [
+          410
+        ],
+        "vertex_link_defects": 0
+      },
+      "intersections": {
+        "mesh_sha256": "62be8ce899851560ab07644a34157be69785e345fb90adcbec97f502a9a6d7b3",
+        "triangles": 816,
+        "disjoint_position_bvh_pairs": 0,
+        "strict_crossing_pairs_at_least": 0,
+        "crossings": []
+      },
+      "finite_gate_passed": true
+    }
+  },
+  "placements": [
+    {
+      "source": "medium",
+      "span": [
+        4.7,
+        4.6,
+        4.3
+      ],
+      "center_xz": [
+        1.1,
+        0.3
+      ],
+      "yaw": -22.0,
+      "pitch": -5.0,
+      "y_range": [
+        -1.147109,
+        3.58
+      ]
+    },
+    {
+      "source": "tall",
+      "span": [
+        4.1,
+        3.8,
+        3.8
+      ],
+      "center_xz": [
+        -2.05,
+        -0.1
+      ],
+      "yaw": 27.0,
+      "pitch": 8.0,
+      "y_range": [
+        -0.45,
+        3.55
+      ]
+    },
+    {
+      "source": "main",
+      "span": [
+        3.9,
+        3.2,
+        3.8
+      ],
+      "center_xz": [
+        -0.25,
+        -1.15
+      ],
+      "yaw": 105.0,
+      "pitch": -8.0,
+      "y_range": [
+        0.2,
+        3.52
+      ]
+    }
+  ],
+  "horizontal_scale": 1.1276182127523608,
+  "horizontal_center": [
+    -0.2048817991333971,
+    -0.3676708686594241
+  ],
+  "top": 3.25,
+  "bounds": [
+    [
+      -4.25,
+      -1.147109031677246,
+      -2.9568610191345215
+    ],
+    [
+      4.25,
+      3.25,
+      2.9568610191345215
+    ]
+  ],
+  "validation": {
+    "topology": {
+      "triangles": 1816,
+      "welded_vertices_1e5": 910,
+      "non_two_use_edges": 0,
+      "directed_edge_pair_defects": 0,
+      "degenerate_index_faces": 0,
+      "signed_volume": 87.058136115817,
+      "vertex_components": [
+        910
+      ],
+      "vertex_link_defects": 0
+    },
+    "intersections": {
+      "mesh_sha256": "1f1e6026d6892dab61a2c6ee81c7be3c30e73f1e3088334a18072f94a978ad4b",
+      "triangles": 1816,
+      "disjoint_position_bvh_pairs": 0,
+      "strict_crossing_pairs_at_least": 0,
+      "crossings": []
+    },
+    "finite_gate_passed": true
+  },
+  "blender": "5.2.1 LTS",
+  "source_triangles_sha256": "1f1e6026d6892dab61a2c6ee81c7be3c30e73f1e3088334a18072f94a978ad4b",
+  "scope": "One hand-organized3existing-rock assembly, inverted/posed/unioned/top-trimmed. Original sources preserved. Neutral inspection required before sampling; no new scratch official geometry or art acceptance.",
+  "export_sha256": "d15fa27f6f0f5910dd60ea50126a230474262e7049ecdafbc5f6cc0a814e0289"
+}

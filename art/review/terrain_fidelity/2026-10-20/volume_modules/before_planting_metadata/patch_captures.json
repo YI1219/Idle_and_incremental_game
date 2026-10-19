@@ -1,0 +1,161 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"capture_success": true,
+	"captures": [
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "lower_patch_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "lower_patch_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "lower_patch_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "lower_patch_low.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "module_patch_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "module_patch_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "module_patch_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "module_patch_low.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "module_patch_tunnel.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "module_patch_breach.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "module_patch_restored.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "module_converted_neutral.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"restored_exactly": true,
+	"scope": "Same cameras/lights/terrain shader/grass/pond profile. Different derived source only. Source assembly1816tri vs old5028; converted neutral is unedited. Water TIME live. Actual document strokes/mesh collision, no official save/default or art acceptance.",
+	"states": {
+		"breach": {
+			"build_ms": 390.282,
+			"collision_matches_mesh": true,
+			"grass_anchors": 25,
+			"grass_roots": 150,
+			"grass_triangles": 525,
+			"lake_valid": false,
+			"source_sha256": "79a8148219d800cb653f4660d4bbd76d0228c87c20f5f08aa51f561e6eaa10f5",
+			"triangles": 18848,
+			"water_triangles": 0
+		},
+		"lower_patch": {
+			"build_ms": 308.77,
+			"collision_matches_mesh": true,
+			"grass_anchors": 48,
+			"grass_roots": 288,
+			"grass_triangles": 1008,
+			"lake_valid": true,
+			"source_sha256": "31e4cfcd94c5e0743d0490c499a5864f803e9dd678c6fb4f9809b99af921572e",
+			"triangles": 14904,
+			"water_triangles": 78
+		},
+		"module_patch": {
+			"build_ms": 366.118,
+			"collision_matches_mesh": true,
+			"grass_anchors": 25,
+			"grass_roots": 150,
+			"grass_triangles": 525,
+			"lake_valid": true,
+			"source_sha256": "79a8148219d800cb653f4660d4bbd76d0228c87c20f5f08aa51f561e6eaa10f5",
+			"triangles": 17684,
+			"water_triangles": 79
+		},
+		"restored": {
+			"build_ms": 362.579,
+			"collision_matches_mesh": true,
+			"grass_anchors": 25,
+			"grass_roots": 150,
+			"grass_triangles": 525,
+			"lake_valid": true,
+			"source_sha256": "79a8148219d800cb653f4660d4bbd76d0228c87c20f5f08aa51f561e6eaa10f5",
+			"triangles": 17684,
+			"water_triangles": 79
+		},
+		"tunnel": {
+			"build_ms": 398.082,
+			"collision_matches_mesh": true,
+			"grass_anchors": 25,
+			"grass_roots": 150,
+			"grass_triangles": 525,
+			"lake_valid": true,
+			"source_sha256": "79a8148219d800cb653f4660d4bbd76d0228c87c20f5f08aa51f561e6eaa10f5",
+			"triangles": 19456,
+			"water_triangles": 79
+		},
+		"unedited_conversion": {
+			"build_ms": 344.986,
+			"collision_matches_mesh": true,
+			"grass_anchors": 36,
+			"grass_roots": 216,
+			"grass_triangles": 756,
+			"lake_valid": false,
+			"source_sha256": "79a8148219d800cb653f4660d4bbd76d0228c87c20f5f08aa51f561e6eaa10f5",
+			"triangles": 17556,
+			"water_triangles": 0
+		}
+	}
+}

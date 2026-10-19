@@ -1,0 +1,65 @@
+{
+  "medium": {
+    "topology": {
+      "triangles": 342,
+      "welded_vertices_1e5": 173,
+      "non_two_use_edges": 0,
+      "directed_edge_pair_defects": 0,
+      "degenerate_index_faces": 0,
+      "signed_volume": 8.223671095849268,
+      "vertex_components": [
+        173
+      ],
+      "vertex_link_defects": 0
+    },
+    "intersections": {
+      "mesh_sha256": "9b08a1b4db4234fb9cd4aef77bfcefa3f3fd0334e4cc151462ece501e5746b32",
+      "triangles": 342,
+      "disjoint_position_bvh_pairs": 0,
+      "strict_crossing_pairs_at_least": 0,
+      "crossings": []
+    }
+  },
+  "main": {
+    "topology": {
+      "triangles": 634,
+      "welded_vertices_1e5": 319,
+      "non_two_use_edges": 0,
+      "directed_edge_pair_defects": 0,
+      "degenerate_index_faces": 0,
+      "signed_volume": 8.232221246650019,
+      "vertex_components": [
+        319
+      ],
+      "vertex_link_defects": 0
+    },
+    "intersections": {
+      "mesh_sha256": "de9de81d48bcc205634d2bd6c097a440f13e48b964cd0213b89da916de5651d1",
+      "triangles": 634,
+      "disjoint_position_bvh_pairs": 0,
+      "strict_crossing_pairs_at_least": 0,
+      "crossings": []
+    }
+  },
+  "tall": {
+    "topology": {
+      "triangles": 816,
+      "welded_vertices_1e5": 410,
+      "non_two_use_edges": 0,
+      "directed_edge_pair_defects": 0,
+      "degenerate_index_faces": 0,
+      "signed_volume": 8.600004232732699,
+      "vertex_components": [
+        410
+      ],
+      "vertex_link_defects": 0
+    },
+    "intersections": {
+      "mesh_sha256": "62be8ce899851560ab07644a34157be69785e345fb90adcbec97f502a9a6d7b3",
+      "triangles": 816,
+      "disjoint_position_bvh_pairs": 0,
+      "strict_crossing_pairs_at_least": 0,
+      "crossings": []
+    }
+  }
+}

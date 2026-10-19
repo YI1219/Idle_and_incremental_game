@@ -13,7 +13,8 @@ func run() -> void:
 	var path := 'res://tools/art/volume_grass_contact.gd'
 	if not ResourceLoader.exists(path):
 		check(false,'Existing grass contact study is not implemented'); quit(1); return
-	var doc = load('res://tools/art/volume_refined_document.gd').new()
+	var modules := OS.get_cmdline_user_args().has('--modules')
+	var doc = load('res://tools/art/volume_module_document.gd' if modules else 'res://tools/art/volume_refined_document.gd').new()
 	doc.load_preset()
 	var saved: Dictionary = doc.serialize()
 	var grass: Dictionary = load(path).build(doc)
@@ -43,6 +44,11 @@ func run() -> void:
 	hash.update(faces.to_byte_array())
 	print('VOLUME GRASS ROOT EVIDENCE: ',JSON.stringify({'roots':grass.roots.size(),'maximum_position_drift_m':max_root_distance,'maximum_actual_density':max_root_density,'mesh_sha256':hash.finish().hex_encode()}))
 	check(doc.serialize()==saved,'Decorative contact never changes the authoritative terrain')
+	if modules:
+		var dry_low_anchor := false
+		for p: Vector3 in grass.anchors:
+			if p.y<float(doc.lake.level)-.1: dry_low_anchor = true
+		check(dry_low_anchor,'Dry lower land outside the isolated pond can carry grass below its water level')
 	var first: Vector3 = grass.anchors[0]
 	doc.begin_stroke()
 	doc.apply_brush(first,.55,'rock_cut')
@@ -60,5 +66,5 @@ func run() -> void:
 	doc.undo()
 	var restored: Dictionary = load(path).build(doc)
 	check(restored.mesh.get_faces()==grass.mesh.get_faces() and doc.serialize()==saved,'Undo deterministically restores terrain and grass together')
-	print('VOLUME GRASS CONTACT: ',checks-failures,'/',checks)
+	print('VOLUME MODULE GRASS CONTACT: ' if modules else 'VOLUME GRASS CONTACT: ',checks-failures,'/',checks)
 	quit(0 if failures==0 else 1)

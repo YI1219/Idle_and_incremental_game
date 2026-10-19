@@ -68,6 +68,9 @@ static func build(doc: RefCounted) -> Dictionary:
 	_source()
 	var result := Surface.new()
 	var top := PatchSurface._top_grid(doc.field)
+	var wet_columns: Dictionary = {}
+	var lake: Dictionary = doc.lake_status()
+	for p: Vector3i in lake.surface: wet_columns[Vector2i(p.x,p.z)] = true
 	var anchors: Array[Vector3] = []
 	var supported_roots := PackedVector3Array()
 	var root_checks := 0
@@ -78,8 +81,13 @@ static func build(doc: RefCounted) -> Dictionary:
 	for key: Vector2i in keys:
 		var at := Vector2(key)*STEP
 		var h: float = top[key]
-		if h<2.95 or not doc.field.base.cover_columns.has(key): continue
-		if doc.lake.enabled and h<float(doc.lake.level)+.12: continue
+		if h<doc.field.base.planting_min_y+.1 or not doc.field.base.cover_columns.has(key): continue
+		if h<float(doc.lake.level)+.12:
+			var near_water := false
+			for dz: int in range(-1,2):
+				for dx: int in range(-1,2):
+					if wet_columns.has(key+Vector2i(dx,dz)): near_water = true
+			if near_water: continue
 		var choice := _hash(at+Vector2(17,31))
 		if choice<.42 or _hash((at*.75).floor()+Vector2(6,13))<.38: continue
 		var outward := Vector2.ZERO

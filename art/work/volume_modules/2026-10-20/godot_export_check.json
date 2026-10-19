@@ -1,0 +1,10 @@
+{
+	"expected_to_imported_vertex_max_m": 0.00022523528605233878,
+	"godot": "4.7.2-stable (official)",
+	"imported_to_expected_vertex_max_m": 0.00022523528605233878,
+	"pack_error": 0,
+	"preset": "res://assets/terrain/volume_patch/source_rock_modules_v1.res",
+	"preset_sha256": "0b9010ab398d5157c0b7338440d656091e07e19119c63522e953eedef357e7e7",
+	"scope": "Reimport of canonical GLB at identity transform. Vertex proximity only, not continuous surface bound or art acceptance.",
+	"triangles": 1816
+}

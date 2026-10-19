@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-20",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "blender": "5.2.1 LTS",
+  "tests": [
+    {
+      "test": "volume_patch_test",
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME PATCH: 21/21"
+      ],
+      "log": "/tmp/yunlu-module-final-volume_patch_test.log"
+    },
+    {
+      "test": "volume_refined_source_test",
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME REFINED SOURCE: 8/8"
+      ],
+      "log": "/tmp/yunlu-module-final-volume_refined_source_test.log"
+    },
+    {
+      "test": "volume_plane_source_test",
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME PLANE SOURCE: 15/15"
+      ],
+      "log": "/tmp/yunlu-module-final-volume_plane_source_test.log"
+    },
+    {
+      "test": "volume_module_source_test",
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME MODULE SOURCE: 7/7"
+      ],
+      "log": "/tmp/yunlu-module-final-volume_module_source_test.log"
+    },
+    {
+      "test": "volume_grass_contact_test",
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "",
+        "VOLUME GRASS ROOT EVIDENCE: {\"maximum_actual_density\":-0.00166667416044497,\"maximum_position_drift_m\":0.0000787925610557295,\"mesh_sha256\":\"6a8d931c118c90a7d72c2ac485883841bde7ac4be96b31da32f449a8b61fa8f7\",\"roots\":306}",
+        "VOLUME GRASS CONTACT: 8/8"
+      ],
+      "log": "/tmp/yunlu-module-final-volume_grass_contact_test.log"
+    },
+    {
+      "test": "volume_module_grass_contact",
+      "errors": [],
+      "tail": [
+        "",
+        "VOLUME GRASS ROOT EVIDENCE: {\"maximum_actual_density\":-0.0020963160575052,\"maximum_position_drift_m\":0.0000770908143215013,\"mesh_sha256\":\"f29957194135076c373442b91cc9983923cb9cd9e977113615637e9cc94bc688\",\"roots\":144}",
+        "VOLUME MODULE GRASS CONTACT: 9/9"
+      ],
+      "log": "/tmp/yunlu-volume-modules-grass-test.log"
+    },
+    {
+      "test": "volume_patch_runtime",
+      "errors": [],
+      "tail": [
+        "",
+        "2026-10-20 02:01:38.511 godot[17179:6575599] +[IMKClient subclass]: chose IMKClient_Modern",
+        "VOLUME PATCH RUNTIME: 12/12"
+      ],
+      "log": "/tmp/yunlu-module-final-runtime.log"
+    }
+  ],
+  "capture_report": "patch_captures.json",
+  "conversion_report": "conversion_distance.json",
+  "preservation_report": "source_preservation.json",
+  "source_assembly_report": "../../../../work/volume_modules/2026-10-20/assembly.json",
+  "art_accepted": false,
+  "user_direction": "First fix existing mother main form, grass contact and bank; this is direction authorization, not art acceptance.",
+  "pending_optional_question": "Do fewer large masses and a clear recess feel closer? No answer received at checkpoint.",
+  "review": {
+    "findings": "No actionable Critical/Important delta issue.",
+    "independent_checks": [
+      "original21/21",
+      "refined8/8",
+      "module7/7",
+      "default grass8/8",
+      "module grass9/9",
+      "six ordered cross-source deserialization rejections atomic",
+      "old planting2.85/module2.4",
+      "density resource matches density.bin",
+      "manifest/raw/assembly/GLB/preset hashes match"
+    ],
+    "converted_geometry": {
+      "collapsed_triangles": 1192,
+      "remaining_skin_components": 1,
+      "remaining_skin_bad_edges": 0,
+      "production_mesher_modified": false
+    }
+  },
+  "limits": [
+    "Local fixture only, no whole-island default promotion.",
+    "Source terraces and separated bottom feet remain.",
+    "Fresh upward cuts may inherit source-column grass classification.",
+    "Material wet classification still uses radial lake approximation; only physical grass now uses actual basin columns.",
+    "Synchronous fixture build timings on M4 Pro are not frame-rate or target-device acceptance."
+  ]
+}

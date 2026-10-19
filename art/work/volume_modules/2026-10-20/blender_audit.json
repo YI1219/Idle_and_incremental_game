@@ -1,0 +1,155 @@
+{
+  "actions": [],
+  "armatures": [],
+  "blender_version": "5.2.1 LTS",
+  "failures": [],
+  "meshes": [
+    {
+      "dimensions": [
+        5.159127,
+        4.687651,
+        4.727109
+      ],
+      "edges": 513,
+      "faces": 342,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "loose_vertices": 0,
+      "material_slots": 0,
+      "modifiers": [],
+      "name": "posed_0_medium",
+      "non_manifold_edges": 0,
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "triangles": 342,
+      "uv_layers": [],
+      "vertices": 173
+    },
+    {
+      "dimensions": [
+        4.44133,
+        4.107771,
+        4.0
+      ],
+      "edges": 1224,
+      "faces": 816,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "loose_vertices": 0,
+      "material_slots": 0,
+      "modifiers": [],
+      "name": "posed_1_tall",
+      "non_manifold_edges": 0,
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "triangles": 816,
+      "uv_layers": [],
+      "vertices": 410
+    },
+    {
+      "dimensions": [
+        4.309693,
+        4.560072,
+        3.32
+      ],
+      "edges": 951,
+      "faces": 634,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "loose_vertices": 0,
+      "material_slots": 0,
+      "modifiers": [],
+      "name": "posed_2_main",
+      "non_manifold_edges": 0,
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "triangles": 634,
+      "uv_layers": [],
+      "vertices": 319
+    },
+    {
+      "dimensions": [
+        8.5,
+        5.913722,
+        4.397109
+      ],
+      "edges": 2724,
+      "faces": 1816,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "loose_vertices": 0,
+      "material_slots": 1,
+      "modifiers": [],
+      "name": "three_rock_assembly_v1",
+      "non_manifold_edges": 0,
+      "rotation_euler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "triangles": 1816,
+      "uv_layers": [],
+      "vertices": 910
+    }
+  ],
+  "missing_files": [],
+  "passed": true,
+  "scene": "Scene",
+  "schema_version": 1,
+  "source_file": "/Users/yi/Projects/games/yunlu-pr9-astra/art/work/volume_modules/2026-10-20/three_rock_assembly_v1.blend",
+  "summary": {
+    "actions": 0,
+    "armatures": 0,
+    "images": 0,
+    "materials": 0,
+    "mesh_objects": 4,
+    "objects": 4,
+    "triangles": 3608
+  },
+  "units": {
+    "scale_length": 1.0,
+    "system": "METRIC"
+  },
+  "warnings": []
+}

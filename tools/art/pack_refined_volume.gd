@@ -4,6 +4,10 @@ const SOURCE := WORK+'cliff_land_v2_lower_return_v1.glb'
 const PRESET := 'res://assets/terrain/volume_patch/source_rock_lower_return_v1.res'
 func locations() -> Array[String]:
 	return [WORK,SOURCE,PRESET]
+func triangle_file() -> String:
+	return locations()[0]+'source.bin'
+func preset_metadata() -> Dictionary:
+	return {}
 func _initialize() -> void:
 	call_deferred('run')
 func collect(node: Node, result: Array[MeshInstance3D]) -> void:
@@ -42,11 +46,11 @@ func run() -> void:
 	var actual := PackedVector3Array()
 	for part: MeshInstance3D in parts:
 		for p: Vector3 in part.mesh.get_faces(): actual.append(part.global_transform*p)
-	var file := FileAccess.open(work+'source.bin',FileAccess.READ)
+	var file := FileAccess.open(triangle_file(),FileAccess.READ)
 	var expected: PackedVector3Array = file.get_buffer(file.get_length()).to_float32_array().to_byte_array().to_vector3_array()
 	var forward := max_distance(expected,actual)
 	var reverse := max_distance(actual,expected)
-	if actual.size()!=15084 or maxf(forward,reverse)>.002:
+	if expected.is_empty() or actual.size()!=expected.size() or maxf(forward,reverse)>.002:
 		push_error('Refined GLB roundtrip geometry mismatch'); quit(1); return
 	var report: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(work+'sampling.json'))
 	var density := FileAccess.get_file_as_bytes(work+'density.bin')
@@ -57,7 +61,9 @@ func run() -> void:
 	preset.set_meta('source_sha256',FileAccess.get_sha256(source))
 	preset.set_meta('source',source)
 	preset.set_meta('step',.25)
-	preset.set_meta('triangles',5028)
+	preset.set_meta('triangles',int(expected.size()/3))
+	var metadata := preset_metadata()
+	for key: String in metadata: preset.set_meta(key,metadata[key])
 	var error := ResourceSaver.save(preset,preset_path)
 	FileAccess.open(work+'godot_export_check.json',FileAccess.WRITE).store_string(JSON.stringify({
 		'godot':Engine.get_version_info().string,'triangles':actual.size()/3,
