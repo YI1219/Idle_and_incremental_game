@@ -11,6 +11,7 @@ static func build(doc: RefCounted) -> Dictionary:
 	if solid.vertices.is_empty():
 		var empty_status: Dictionary = doc.lake_status()
 		return {'terrain': ArrayMesh.new(), 'water': ArrayMesh.new(), 'lake': empty_status, 'top': {},
+			'contact': {},
 			'mesh_ms': mesh_us/1000., 'build_ms': (Time.get_ticks_usec()-start)/1000.,
 			'triangles': 0, 'water_triangles': 0}
 	# Recover face normals before applying a deliberate, tighter crease rule.
@@ -47,8 +48,32 @@ static func build(doc: RefCounted) -> Dictionary:
 	var status: Dictionary = doc.lake_status()
 	var water := _water(doc, status)
 	return {'terrain': mesh, 'water': water, 'lake': status, 'top': top,
+		'contact': contact_field(doc, top),
 		'mesh_ms': mesh_us / 1000., 'build_ms': (Time.get_ticks_usec()-start)/1000.,
 		'triangles': solid.vertices.size()/3, 'water_triangles': water.get_faces().size()/3}
+static func contact_field(doc: RefCounted, top: Dictionary) -> Dictionary:
+	var low: Vector3i = doc.field.base.low
+	var size: Vector3i = doc.field.base.size
+	var image := Image.create(size.x,size.z,false,Image.FORMAT_RGBAF)
+	for z: int in size.z:
+		for x: int in size.x:
+			var key := Vector2i(low.x+x,low.z+z)
+			var height: float = top.get(key,-100.)
+			var planted := 1. if top.has(key) and doc.field.base.cover_columns.has(key) else 0.
+			# Height padding avoids interpolation against the missing-column
+			# sentinel; coverage remains zero outside the actual edited top.
+			if height < -90.:
+				var nearest := INF
+				for dz: int in range(-2,3):
+					for dx: int in range(-2,3):
+						var neighbor := key+Vector2i(dx,dz)
+						var distance := float(dx*dx+dz*dz)
+						if top.has(neighbor) and distance < nearest:
+							height = top[neighbor]
+							nearest = distance
+			image.set_pixel(x,z,Color(height,planted,0.,1.))
+	return {'map': image,'origin': (Vector2(low.x,low.z)-Vector2.ONE*.5)*STEP,
+		'extent': Vector2(size.x,size.z)*STEP}
 static func _top_grid(field: RefCounted) -> Dictionary:
 	var low: Vector3i = field.base.low
 	var high: Vector3i = low + field.base.size - Vector3i.ONE

@@ -37,8 +37,14 @@ Water default (question unanswered): static levels and explicit waterfall outlet
 
 Work in the current checkout using independent new entrypoints: latest reference/design changes and ignored source binaries live here; do not move, reset or clean them. This is a local validation scene, not production integration. No implementer delegation. No final-goal completion claim before user art and target-device acceptance.
 
-## Checkpoint2026-10-20
+## Initial checkpoint2026-10-20 (c8c558f)
 
 Fresh document19/19 and native11/11; legacy sculpt29/29/base23/23.11native captures, clean final runtime/capture logs. TwoP2review findings reproduced RED and fixed GREEN in one pass: empty terrain publication and a center pillar falsely invalidating surviving lake water. No deferred review minors. Full-project headless scan encountered old .blend import configuration; it is not claimed as a successful release build.
 
-Ruling: a bounded0.25m/single-lake study is the first deliverable, not production architecture. Cover mask is source-specific and vertex interpolated, water opaque; no high-poly bake claimed. Actual art defects are recorded and a concrete direction question sent. Do not proceed to whole-island until user local art acceptance.
+Ruling: a bounded0.25m/single-lake study is the first deliverable, not production architecture. At this initial checkpoint cover was source-specific and vertex interpolated; water opaque; no high-poly bake claimed. Actual art defects are recorded and a concrete direction question sent. Do not proceed to whole-island until user local art acceptance.
+
+## Local contact correction2026-10-20
+
+Diagnosed legacy cover without lighting and measured unchanged conversion with finite nearest-surface probes. A single world-space height/planting map now evaluates contact per fragment in the isolated study, reducing triangle color smearing without replacing geometry or changing source/save data. Old shader branch remains for matched controls. Fresh document21/21 and native12/12, old/new vertex+normal hashes identical, tunnel/breach/undo freshly captured. See `art/review/terrain_fidelity/2026-10-20/volume_diagnosis/`.
+
+Still pending: user judgment on the mother's main shape. Do not promote this local contact correction to whole-island art acceptance or start stage2/3. No changed asset-generation budget or new model job.

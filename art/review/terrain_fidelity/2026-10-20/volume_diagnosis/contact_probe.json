@@ -1,0 +1,21 @@
+{
+	"captures": [
+		{
+			"error": 0,
+			"file": "contact_vertex.png"
+		},
+		{
+			"error": 0,
+			"file": "contact_fragment.png"
+		}
+	],
+	"document_unchanged": true,
+	"scope": "Native old vertex/new adopted per-fragment material control in isolated study only. Same mesh/normals/camera/light; no source/default geometry change or art acceptance.",
+	"texture_cpu_bytes": 17712,
+	"texture_size": [
+		41,
+		27
+	],
+	"vertices_normals_sha256_after": "c0a9258654540aa8304f349333ec0c89b8607b0f133ed100c92c2454b493f4b6",
+	"vertices_normals_sha256_before": "c0a9258654540aa8304f349333ec0c89b8607b0f133ed100c92c2454b493f4b6"
+}

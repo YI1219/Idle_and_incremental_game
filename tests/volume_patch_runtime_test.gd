@@ -38,6 +38,8 @@ func run() -> void:
 	for i: int in 3: await physics_frame
 	check(scene.document.serialize() != before, 'Public mouse input carves actual density')
 	check(scene.collision.shape.get_faces() == scene.body.mesh.get_faces(), 'Collision and displayed triangles publish together')
+	var contact_texture: Texture2D = scene.material.get_shader_parameter('contact_field')
+	check(scene.material.get_shader_parameter('use_contact_field') == true and contact_texture.get_image().get_data() == scene.last_build.contact.map.get_data(), 'GPU contact data matches the published edited terrain')
 	var undo := InputEventKey.new()
 	undo.keycode = KEY_Z
 	undo.ctrl_pressed = true
@@ -60,7 +62,7 @@ func run() -> void:
 	scene.document.end_stroke()
 	scene.rebuild()
 	for i: int in 3: await physics_frame
-	check(scene.body.mesh.get_surface_count() == 0 and scene.collision.shape == null and not scene.water.visible, 'Erasing the island publishes empty display, collision and water together')
+	check(scene.body.mesh.get_surface_count() == 0 and scene.collision.shape == null and not scene.water.visible and scene.material.get_shader_parameter('use_contact_field') == false, 'Erasing the island publishes empty display, collision, contact and water together')
 	scene.undo()
 	for i: int in 3: await physics_frame
 	check(scene.body.mesh.get_surface_count() > 0 and scene.collision.shape != null, 'Undo restores the real solid after total erasure')

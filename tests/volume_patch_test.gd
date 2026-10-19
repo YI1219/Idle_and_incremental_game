@@ -66,6 +66,19 @@ func run() -> void:
 				grass += 1
 				if vertices[i].y < 2.: lower_grass += 1
 		check(grass > 50 and lower_grass == 0, 'Cover stays on upper land, not the bottom')
+		check(built.has('contact'), 'Continuous contact field is available independently of triangle colors')
+		if built.has('contact'):
+			var raised = load(path).new()
+			raised.load_preset()
+			raised.begin_stroke()
+			raised.apply_brush(Vector3(2.,3.3,0.),.85,'rock_add')
+			raised.end_stroke()
+			var changed: Dictionary = load(surface_path).build(raised)
+			var at := Vector2(2.,0.)
+			var image: Image = changed.contact.map
+			var uv: Vector2 = (at-changed.contact.origin)/changed.contact.extent
+			var h := image.get_pixel(roundi(uv.x*image.get_width()-.5),roundi(uv.y*image.get_height()-.5)).r
+			check(h > 3.5 and absf(h-raised.field.height_at(at)) < .00001, 'Contact height follows raised solid rather than old source cap')
 	# Actual tetrahedra connect same-sign face/body diagonals as well as axes.
 	var diagonal = load(path).new()
 	diagonal.load_preset()

@@ -2,6 +2,8 @@
 
 Started2026-10-19, verification continued2026-10-20. **Art is not accepted; do not expand this shape to the whole island.** This is a local native study, not a replacement for the original complete scene or a completed game-art goal.
 
+2026-10-20 update: [continuous contact correction](../../2026-10-20/volume_diagnosis/README.md) supersedes this initial vertex-contact display. Counts and pictures below remain the initialc8c558f evidence; current source is21/21document and12/12native. No user art acceptance.
+
 ## Delivered
 
 - Native scene `res://scenes/volume_patch_study.tscn`: real subtract/add/plane/smooth brushes, orbit/zoom, stroke undo/redo, separate study save/load.

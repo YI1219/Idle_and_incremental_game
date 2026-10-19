@@ -1,0 +1,21 @@
+{
+  "source_triangles": 5028,
+  "converted_triangles": 16464,
+  "source_sha256": "19eca7c80591077b25c7a761c754d753979b57b854ad0e9de93db3aebe9c5567",
+  "converted_sha256": "bffc35068e61a3350794152a55ded6263c0296d1d91e06cf8ac088ba7c9eb223",
+  "source_to_converted": {
+    "samples": 7544,
+    "mean_m": 0.028471376836042887,
+    "p95_m": 0.09325063303112976,
+    "max_m": 0.2528495192527771,
+    "over_0125m": 149
+  },
+  "converted_to_source": {
+    "samples": 24693,
+    "mean_m": 0.011731912196559292,
+    "p95_m": 0.045386874675750706,
+    "max_m": 0.12157753854990005,
+    "over_0125m": 0
+  },
+  "scope": "Finite bidirectional vertex+triangle-centroid distances on unedited conversion. Not a continuous Hausdorff bound, normal-map comparison, user art acceptance or performance test. No source modified."
+}

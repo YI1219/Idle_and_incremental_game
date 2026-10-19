@@ -1,0 +1,24 @@
+{
+	"art_variant_created": false,
+	"captures": [
+		{
+			"error": 0,
+			"file": "cover_without_lighting.png"
+		},
+		{
+			"error": 0,
+			"file": "world_normals.png"
+		}
+	],
+	"coincident_positions_with_cover_difference_gt025": 226,
+	"converted_triangle_sha256": "bffc35068e61a3350794152a55ded6263c0296d1d91e06cf8ac088ba7c9eb223",
+	"cover_triangles_spanning_025_to_075": 264,
+	"document_unchanged": true,
+	"geometry_changed": false,
+	"notes": "Diagnostic false colors, not proposed art. Normal-dependent cover differences may be intentional at hard top/wall creases; counts alone do not prove a bug. Inspect against rendered views. No shader, preset, save or official scene modified.",
+	"source_preset_sha256": "1e2c95fd20a94cd3f8a0acb6725a95720c3999586734a8e7fe723d0002e39f12",
+	"triangles": 16980,
+	"triangles_crossing_boolean_planting_footprint": 1603,
+	"unedited_conversion_triangles": 16464,
+	"unique_positions": 8492
+}

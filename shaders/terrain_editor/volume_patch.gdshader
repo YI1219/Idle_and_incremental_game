@@ -4,6 +4,13 @@ uniform sampler2D stone_detail_map : filter_linear_mipmap_anisotropic, repeat_en
 uniform sampler2D stone_mineral_map : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D ground_detail_map : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform bool detailed = true;
+uniform bool use_contact_field = false;
+uniform sampler2D contact_field : filter_linear, repeat_disable;
+uniform vec2 contact_origin;
+uniform vec2 contact_extent = vec2(1.);
+uniform vec2 lake_center;
+uniform float lake_level;
+uniform bool lake_enabled = true;
 varying vec3 world_position;
 float hash21(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
 float noise21(vec2 p) {
@@ -30,14 +37,25 @@ void fragment(){
 		shading_n=normalize(n-(slope-n*dot(slope,n))*.27);
 	}
 	float patches=noise21(p.xz*1.7)+noise21(p.xz*5.1)*.2;
-	float grass=clamp(COLOR.r+(patches-.55)*.25*COLOR.r,0.,1.);
-	float soil=clamp(COLOR.g*(.30+noise21(p.xz*3.8)*.45),0.,1.);
+	float cover=COLOR.r,local_soil=COLOR.g,wet=COLOR.b;
+	if(use_contact_field){
+		vec2 uv_contact=(p.xz-contact_origin)/contact_extent;
+		vec4 field=texture(contact_field,uv_contact);
+		float inside=step(0.,uv_contact.x)*step(0.,uv_contact.y)*step(uv_contact.x,1.)*step(uv_contact.y,1.);
+		float depth=abs(field.r-p.y);
+		cover=field.g*inside*(1.-smoothstep(.06,.28,depth))*smoothstep(.35,.82,n.y);
+		local_soil=field.g*inside*(1.-smoothstep(.12,.48,depth))*smoothstep(-.5,.2,n.y);
+		wet=lake_enabled?(1.-smoothstep(1.15,1.65,length(p.xz-lake_center)))*(1.-smoothstep(lake_level+.04,lake_level+.12,p.y)):0.;
+		cover*=1.-wet;
+	}
+	float grass=clamp(cover+(patches-.55)*.25*cover,0.,1.);
+	float soil=clamp(local_soil*(.30+noise21(p.xz*3.8)*.45),0.,1.);
 	vec3 earth=mix(vec3(.24,.18,.105),vec3(.34,.27,.16),broad);
 	vec3 green=mix(vec3(.19,.265,.065),vec3(.29,.355,.115),noise21(p.xz*.85));
 	if(detailed) green*=1.+(texture(ground_detail_map,p.xz*.48).r-.5)*.13;
 	vec3 color=mix(rock,earth,soil);
 	color=mix(color,green,grass);
-	color=mix(color,color*vec3(.65,.77,.75),COLOR.b*.52);
+	color=mix(color,color*vec3(.65,.77,.75),wet*.52);
 	ALBEDO=color;
 	NORMAL=normalize((VIEW_MATRIX*vec4(mix(shading_n,n,grass),0.)).xyz);
 	ROUGHNESS=.93; SPECULAR=.14;

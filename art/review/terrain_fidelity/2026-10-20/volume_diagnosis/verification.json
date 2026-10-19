@@ -1,0 +1,35 @@
+{
+  "verified_at": "2026-10-19T16:27:33.518517+00:00",
+  "document_checks": [
+    21,
+    21
+  ],
+  "native_runtime_checks": [
+    12,
+    12
+  ],
+  "logs": {
+    "document": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME PATCH: 21/21\n",
+    "native_runtime": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nVOLUME PATCH RUNTIME: 12/12\n",
+    "native_probe": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nVOLUME CONTACT PROBE: true; exact geometry/normal identity=true\n",
+    "native_diagnosis": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nVOLUME DIAGNOSIS: true; 264 broad cover transitions; 1603 footprint crossings\n"
+  },
+  "preset_identical_to_c8c558f": true,
+  "contact_control_geometry_identity": true,
+  "pixel_data_bytes": 17712,
+  "native_png_sha256": {
+    "cover_without_lighting.png": "8bfb357d8c48c2bd80e81dd33244afc612a5585a369da3fcfdec6445f902cdc8",
+    "world_normals.png": "434f6fb219cb820021585a7c6f21c59850fc3ea1383fb210b69120ebc88e8672",
+    "contact_vertex.png": "d16e12750f9503554962984ee2dd8ad63858d952ea4f631a4a6cc9d7c233c9fa",
+    "contact_breach.png": "7323e96659daace135fd0bc8179e10fd795d27a07bf68e5fec0df369bcc1024f",
+    "contact_tunnel.png": "f504a33d76b2efedd7fdf7d3f3df36677eea1302243b2386b78c13bff503cdfe",
+    "contact_fragment.png": "2f474490b8d069c9dc384adcbff9354a4183f5b04497e3fb6342b7a1aa65d083"
+  },
+  "art_accepted": false,
+  "target_device_performance_verified": false,
+  "source_or_default_scene_replaced": false,
+  "source_to_converted_sample_p95_m": 0.09325063303112976,
+  "source_to_converted_sample_max_m": 0.2528495192527771,
+  "sample_distance_is_global_bound": false,
+  "next_gate": "User judgment of rock shape; no whole-island expansion."
+}

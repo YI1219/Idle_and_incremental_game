@@ -125,6 +125,15 @@ func _setup_hud() -> void:
 func rebuild() -> void:
 	last_build = Surface.build(document)
 	body.mesh = last_build.terrain
+	var contact: Dictionary = last_build.contact
+	material.set_shader_parameter('use_contact_field', not contact.is_empty())
+	if not contact.is_empty():
+		material.set_shader_parameter('contact_field', ImageTexture.create_from_image(contact.map))
+		material.set_shader_parameter('contact_origin', contact.origin)
+		material.set_shader_parameter('contact_extent', contact.extent)
+		material.set_shader_parameter('lake_center', Vector2(document.lake.center[0],document.lake.center[1]))
+		material.set_shader_parameter('lake_level', document.lake.level)
+		material.set_shader_parameter('lake_enabled', document.lake.enabled)
 	collision.shape = body.mesh.create_trimesh_shape() if body.mesh.get_surface_count() > 0 else null
 	water.mesh = last_build.water
 	water.visible = last_build.lake.valid

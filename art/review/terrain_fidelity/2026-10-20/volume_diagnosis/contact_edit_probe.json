@@ -1,0 +1,25 @@
+{
+	"art_accepted": false,
+	"breach_water_hidden": true,
+	"build_ms_restored": 342.859,
+	"captures": [
+		{
+			"error": 0,
+			"file": "contact_vertex.png"
+		},
+		{
+			"error": 0,
+			"file": "contact_fragment.png"
+		},
+		{
+			"error": 0,
+			"file": "contact_tunnel.png"
+		},
+		{
+			"error": 0,
+			"file": "contact_breach.png"
+		}
+	],
+	"contact_refreshed_with_edits": true,
+	"source_restored": true
+}
