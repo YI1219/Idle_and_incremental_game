@@ -1,0 +1,23 @@
+# Display/collision precision correction — no shape or art change
+
+Earlier review incorrectly described1192collapsed faces as production display-mesher degeneration. The measurement used `Mesh.get_faces()`, which is not the direct display vertex buffer. This checkpoint corrects that diagnosis and fixes the actual collision publication path without changing density, source, geometry, materials or lighting. It does not fix the source's rejected silhouette or claim a visible shadow improvement.
+
+## Local measured cause
+
+In the unedited three-rock fixture, raw mesher vertices, first `ArrayMesh` vertex arrays and final displayed `Mesh.ARRAY_VERTEX` all contain17556nonzero-area triangles. Each `Mesh.get_faces()` path instead returns1192collapsed triangles. The original and lower-return sources show the same distinction with10collapsed helper faces each. See `stages.json` and `verification.json`.
+
+Current upstream [TriangleMesh::create](https://github.com/godotengine/godot/blob/master/core/math/triangle_mesh.cpp#L127) rounds coordinates to0.0001m. [Mesh::get_faces and create_trimesh_shape](https://github.com/godotengine/godot/blob/master/scene/resources/mesh.cpp#L479) use that helper path. This matches the installed4.7.2measurement; the local measurements are the version-specific evidence. The observed effect is not GPU vertex compression: direct arrays remain nondegenerate and the compression flag is absent in the measured format. Do not remove valid tiny display faces to cure a snapped-helper artifact.
+
+The previous native invariant compared collision faces against `Mesh.get_faces()` too, so it verified two identically rounded representations rather than the actual display buffer. Grass-root measurements likewise attributed≤.079mm of helper rounding to uploaded/retrieved display vertices; that explanation was incorrect. Source binaries and historical numbers/hashes remain preserved, with their corrected interpretation recorded here.
+
+## Minimal implementation and verification
+
+`PatchSurface.display_faces()` reads actual vertex/index arrays, preserving triangle order and positions. The local study now passes those faces directly to `ConcavePolygonShape3D.set_faces()` rather than `Mesh.create_trimesh_shape()`. Empty-terrain publication remains null collision. The module capture assertion and native runtime test compare the actual display arrays. Grass support now independently checks direct displayed root positions; root drift is0m in both retained fixtures (306/144roots), maximum sampled root densities−.001682/−.002129. Historical grass helper hashes differ because those hashes measured the snapped helper representation, not because leaf geometry changed.
+
+New real-scene precision regression RED3/6→GREEN6/6 across original/refined/module unedited sources: direct display and published collision have0degenerate faces and positions agree exactly. The engine helper still reports10/10/1192, a retained negative control. Fresh native original-study runtime12/12 covers ray picking, mouse carving, GPU contact, undo/redo, full erasure and restoration with the stronger direct-buffer assertion. Fresh original21/21, strata8/8, module7/7, prior grass8/8 and module grass9/9 pass. Bounded independent review reports no actionable finding and separately checks indexed winding, mixed surface expansion, empty meshes and tiny-position preservation.
+
+Exact resource publication is not proof of every backend collision behavior on microscopic faces. No exhaustive arbitrary-sculpt or target-device test is claimed. Reproduce `tests/volume_collision_precision_test.gd` and the existing native runtime test on Godot4.7.2. No new screenshot is presented as an art improvement: display arrays are unchanged by this collision-path correction. Default game scenes/source files/presets/saves are unchanged; only the independent local study's collision publication changes.
+
+## Remaining direction dependency
+
+The prior no-work turn merely revalidated the pending shape question. This turn makes an independent, authorized precision correction while keeping that question open. Source-form work, whole-island expansion, architecture stages and house work remain gated by the approved art/deviation sequence. The same unanswered discard/retain direction dependency has now persisted across the light-diagnosis turn, the revalidation turn and this precision turn. No human answer or new art acceptance has appeared. After this fix, no further known independent stage1 correction is needed to reach that decision point; do not start another unbounded aesthetic sweep to avoid the requested discussion. The full goal is incomplete.

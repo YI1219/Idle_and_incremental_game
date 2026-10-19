@@ -71,3 +71,10 @@ Completed one [existing-module local trial](../../../art/review/terrain_fidelity
 ## Form-versus-light decision2026-10-20
 
 [Native light diagnosis](../../../art/review/terrain_fidelity/2026-10-20/volume_light_diagnosis/README.md):8fresh matched frames, only key yaw40→−35°, exact terrain/grass attributes and data unchanged. Front readability improves; separate feet/ledges/blank rear persist, reverse worsens. No side-light adoption or numeric sweep. Agent rejects the three-rock composition and recommends structural reshaping of the preserved single-body mother, with the user-required deviation discussion before changing route. New concrete discard/retain question pending; supersedes older optional closeness question. No new source generation/whole-island/stage2–5/house job. Previous strata/basin implementation retained, full goal active/incomplete.
+
+
+## Collision precision correction and direction dependency2026-10-20
+
+[Correction evidence](../../../art/review/terrain_fidelity/2026-10-20/volume_collision_precision/README.md): raw/direct display triangles never had the1192collapsed faces. Mesh.get_faces uses0.1mm TriangleMesh snapping, also used by old create_trimesh_shape. Publish local collision from exact vertex/index arrays, preserve display/density/source. New precision RED3/6→GREEN6/6 across3sources; native12/12,original21/21,strata8/8,module7/7,grass8/8+9/9 fresh; independent review no actionable findings. Direct grass-root drift0, prior≤.079mm was helper rounding. This supersedes earlier degeneration/GPU-drift descriptions, not historical hashes/data.
+
+The discard/retain shape-route question remains unanswered over light diagnosis, revalidation and this precision correction. Known independent stage1 correction is now complete; further form work requires the user-requested deviation discussion. No next aesthetic sweep or stage2–5/whole-island/house/paid job. Full goal incomplete and awaiting that decision.

@@ -37,7 +37,7 @@ func run() -> void:
 	viewport.push_input(up, true)
 	for i: int in 3: await physics_frame
 	check(scene.document.serialize() != before, 'Public mouse input carves actual density')
-	check(scene.collision.shape.get_faces() == scene.body.mesh.get_faces(), 'Collision and displayed triangles publish together')
+	check(scene.collision.shape.get_faces() == scene.body.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX], 'Collision and exact displayed triangles publish together')
 	var contact_texture: Texture2D = scene.material.get_shader_parameter('contact_field')
 	check(scene.material.get_shader_parameter('use_contact_field') == true and contact_texture.get_image().get_data() == scene.last_build.contact.map.get_data(), 'GPU contact data matches the published edited terrain')
 	var undo := InputEventKey.new()

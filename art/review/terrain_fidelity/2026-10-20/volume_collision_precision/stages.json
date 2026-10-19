@@ -1,0 +1,66 @@
+{
+  "first_arrays": {
+    "min_cross2": 1.5991548032834e-19,
+    "tiny": 0,
+    "triangles": 17556,
+    "zero": 0
+  },
+  "flags": [
+    {
+      "key": "ARRAY_CUSTOM_R_FLOAT",
+      "value": 4
+    },
+    {
+      "key": "ARRAY_CUSTOM_RG_FLOAT",
+      "value": 5
+    },
+    {
+      "key": "ARRAY_CUSTOM_RGB_FLOAT",
+      "value": 6
+    },
+    {
+      "key": "ARRAY_CUSTOM_RGBA_FLOAT",
+      "value": 7
+    },
+    {
+      "key": "ARRAY_COMPRESS_FLAGS_BASE",
+      "value": 25
+    },
+    {
+      "key": "ARRAY_FLAG_COMPRESS_ATTRIBUTES",
+      "value": 536870912
+    }
+  ],
+  "format": 34359738399,
+  "published_arrays": {
+    "min_cross2": 1.5991548032834e-19,
+    "tiny": 0,
+    "triangles": 17556,
+    "zero": 0
+  },
+  "raw": {
+    "min_cross2": 1.5991548032834e-19,
+    "tiny": 0,
+    "triangles": 17556,
+    "zero": 0
+  },
+  "first_mesh_get_faces": {
+    "min_cross2": 1.00006764714927e-16,
+    "tiny": 1192,
+    "triangles": 17556,
+    "zero": 1192
+  },
+  "softened_mesh_get_faces": {
+    "min_cross2": 1.00006764714927e-16,
+    "tiny": 1192,
+    "triangles": 17556,
+    "zero": 1192
+  },
+  "published_mesh_get_faces": {
+    "min_cross2": 1.00006764714927e-16,
+    "tiny": 1192,
+    "triangles": 17556,
+    "zero": 1192
+  },
+  "scope": "Local Godot4.7.2 unedited module fixture. raw=Mesher packed vertices; *_arrays=direct Mesh.ARRAY_VERTEX; *_get_faces=engine TriangleMesh helper with0.1mm snapping. Not GPU degeneration."
+}

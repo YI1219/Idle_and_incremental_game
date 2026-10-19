@@ -8,7 +8,7 @@ The retained `Grass_Common_Short.gltf` contains three short9vertex leaf componen
 
 The first helper used the generic terrain triangle builder and flattened every bottom10%point onto the ground. That discarded/collapsed tiny root triangles, leaving some rendered bases about1.5cm from recorded roots. An independent actual-mesh support test caught it. The final helper retains nondegenerate small leaf triangles (cross²threshold1e-14 rather than terrain1e-8), follows local slopes without flattening lower stems, and buries literal source-base points9mm. Fans with unsupported bases are rejected.
 
-Godot uploaded/retrieved positions differ by up to.079mm in the diagnostic fixture. The independent test locates each actual emitted root within.2mm and checks its density≤.0001 in the authoritative edited solid. This tolerance still rejects the earlier1.5cm gap. It does not assume metadata counters alone prove rooting or promise every leaf-tip support after arbitrary edits.
+Correction2026-10-20: the up-to.079mm measured difference was Mesh.get_faces helper snapping, not uploaded/retrieved display vertices. Direct vertex-array tests now show0m root drift; [precision correction](../volume_collision_precision/README.md). The following historical tolerances/results remain measurements of that earlier helper representation. The independent test locates each actual emitted root within.2mm and checks its density≤.0001 in the authoritative edited solid. This tolerance still rejects the earlier1.5cm gap. It does not assume metadata counters alone prove rooting or promise every leaf-tip support after arbitrary edits.
 
 ## Actual evidence
 

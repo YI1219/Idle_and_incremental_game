@@ -23,11 +23,10 @@ func run() -> void:
 	var valid_roots := true
 	var max_root_distance := 0.
 	var max_root_density := -INF
-	var faces: PackedVector3Array = grass.mesh.get_faces()
+	var faces: PackedVector3Array = grass.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	for p: Vector3 in grass.roots:
-		# Godot's uploaded/retrieved mesh positions differ by<=.079mm here.
-		# Inspect the actual nearest emitted position within.2mm, not an exact
-		# float identity that says nothing about rooting. A1.5cm floating gap fails.
+		# Inspect the direct display buffer; Mesh.get_faces() instead snaps
+		# its helper TriangleMesh to0.1mm. A1.5cm floating gap must still fail.
 		var nearest := Vector3(INF,INF,INF)
 		var distance := INF
 		for q: Vector3 in faces:

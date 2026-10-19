@@ -15,7 +15,7 @@ func publish(doc: RefCounted, name: String) -> void:
 	states[name]['grass_triangles'] = grass.triangles
 	states[name]['grass_anchors'] = grass.anchors.size()
 	states[name]['grass_roots'] = grass.root_checks
-	states[name]['collision_matches_mesh'] = study.collision.shape.get_faces()==study.body.mesh.get_faces()
+	states[name]['collision_matches_mesh'] = study.collision.shape.get_faces()==study.body.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 func run() -> void:
 	create_timer(60.).timeout.connect(func() -> void: push_error('Module patch capture timed out'); quit(1))
 	viewport = SubViewport.new()

@@ -1,0 +1,132 @@
+{
+  "base_commit": "caddb7d",
+  "tests": [
+    {
+      "test": "volume_patch_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME PATCH: 21/21"
+      ],
+      "log": "/tmp/yunlu-collision-volume_patch_test.log"
+    },
+    {
+      "test": "volume_strata_contact_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME STRATA CONTACT: 8/8"
+      ],
+      "log": "/tmp/yunlu-collision-volume_strata_contact_test.log"
+    },
+    {
+      "test": "volume_module_source_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+        "",
+        "VOLUME MODULE SOURCE: 7/7"
+      ],
+      "log": "/tmp/yunlu-collision-volume_module_source_test.log"
+    },
+    {
+      "test": "volume_grass_contact_test",
+      "args": [],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "",
+        "VOLUME GRASS ROOT EVIDENCE: {\"maximum_actual_density\":-0.00168192500473729,\"maximum_position_drift_m\":0.0,\"mesh_sha256\":\"59456870821f9b0bdaa92c3d5101cdaffe80903b731c06d32994e2b7f5052fbd\",\"roots\":306}",
+        "VOLUME GRASS CONTACT: 8/8"
+      ],
+      "log": "/tmp/yunlu-collision-volume_grass_contact_test.log"
+    },
+    {
+      "test": "volume_grass_contact_test",
+      "args": [
+        "--",
+        "--modules"
+      ],
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "",
+        "VOLUME GRASS ROOT EVIDENCE: {\"maximum_actual_density\":-0.00212864973705083,\"maximum_position_drift_m\":0.0,\"mesh_sha256\":\"36aecece005b6684c4a052eccf6ca599480047ac4f0397b98ff99eee0dc68b66\",\"roots\":144}",
+        "VOLUME MODULE GRASS CONTACT: 9/9"
+      ],
+      "log": "/tmp/yunlu-collision-volume_grass_contact_test-modules.log"
+    }
+  ],
+  "native_original_runtime": {
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)",
+      "",
+      "2026-10-20 02:25:43.275 godot[22598:6615635] +[IMKClient subclass]: chose IMKClient_Modern",
+      "VOLUME PATCH RUNTIME: 12/12"
+    ],
+    "log": "/tmp/yunlu-collision-native.log"
+  },
+  "precision_regression": {
+    "red": "3/6",
+    "green": "6/6",
+    "red_log": "/tmp/yunlu-collision-precision-red.log",
+    "green_log": "/tmp/yunlu-collision-precision-green.log",
+    "sources": [
+      {
+        "collision_degenerate": 0,
+        "display_degenerate": 0,
+        "display_triangles": 16464,
+        "mesh_get_faces_degenerate": 10,
+        "source": "res://scripts/terrain_volume/patch_document.gd"
+      },
+      {
+        "collision_degenerate": 0,
+        "display_degenerate": 0,
+        "display_triangles": 14776,
+        "mesh_get_faces_degenerate": 10,
+        "source": "res://tools/art/volume_refined_document.gd"
+      },
+      {
+        "collision_degenerate": 0,
+        "display_degenerate": 0,
+        "display_triangles": 17556,
+        "mesh_get_faces_degenerate": 1192,
+        "source": "res://tools/art/volume_module_document.gd"
+      }
+    ]
+  },
+  "independent_review": {
+    "findings": "No actionable issue.",
+    "fresh": [
+      "precision6/6",
+      "native12/12",
+      "refined grass8/8",
+      "module grass9/9"
+    ],
+    "scratch_probe": [
+      "Indexed winding/expansion",
+      "Mixed indexed/unindexed multisurface",
+      "Empty mesh",
+      "Tiny-position shape preservation"
+    ],
+    "limits": "Exact collision-resource publication and finite original native picking, not exhaustive physics backend behavior."
+  },
+  "art_accepted": false,
+  "shape_changed": false,
+  "goal_complete": false,
+  "pending_direction": "Discard three-rock composition and reshape single mother, or retain outline and repair ledges/bottom. No human answer yet.",
+  "primary_sources": [
+    "https://raw.githubusercontent.com/godotengine/godot/master/core/math/triangle_mesh.cpp",
+    "https://raw.githubusercontent.com/godotengine/godot/master/scene/resources/mesh.cpp"
+  ]
+}

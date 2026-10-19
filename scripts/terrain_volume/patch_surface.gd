@@ -4,6 +4,18 @@ const Mesher := preload('res://scripts/terrain_editor/rock_sculpt_mesh.gd')
 const Surface := preload('res://scripts/terrain_editor/chunk_geometry.gd').Surface
 const Normals := preload('res://scripts/terrain_editor/stone_normals.gd')
 const STEP := .25
+static func display_faces(mesh: Mesh) -> PackedVector3Array:
+	# Mesh.get_faces() passes through TriangleMesh's0.1mm snapping. Read the
+	# actual display buffer so collision/measurements preserve small faces.
+	var result := PackedVector3Array()
+	for surface: int in mesh.get_surface_count():
+		var arrays := mesh.surface_get_arrays(surface)
+		var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+		var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX]!=null else PackedInt32Array()
+		if indices.is_empty(): result.append_array(vertices)
+		else:
+			for index: int in indices: result.append(vertices[index])
+	return result
 static func build(doc: RefCounted) -> Dictionary:
 	var start := Time.get_ticks_usec()
 	var solid = Mesher.build(doc.field)
