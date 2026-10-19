@@ -1,4 +1,6 @@
 # Current asset status
+
+2026-10-20 checkpoint: [local freely sculptable volume study](review/terrain_fidelity/2026-10-19/volume_patch/README.md) reuses an existing rock source. Native prototype only; art not accepted, no whole-island promotion/new house/new Tripo job/high-poly bake. Formal scene and source originals remain.
 Updated:2026-10-19.
 
 Current 2026-10-19 approved scope: [authored island design](../docs/superpowers/specs/2026-10-19-authored-island-design.md). User rejects the shallow daylight/smooth presentation as worse than the original. Preserve all those sources/evidence but do not promote or refine that aesthetic. First build one complete designed mother scene, obtain explicit user art acceptance, then derive editable rules. Only actual screenshots; no display website.

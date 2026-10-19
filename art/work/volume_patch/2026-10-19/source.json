@@ -1,0 +1,12 @@
+{
+	"rotation_y": -90,
+	"scope": "Existing source, rigid rotation + uniform scale + translation only; no new geometry or source overwrite.",
+	"source": "res://art/source/cliff_master_v2/2026-10-18/tripo/cliff_land_master_v2_white.glb",
+	"source_sha256": "7474502a790d11f7ed9e06be565a3af362c9c92f6d309dde6f281978a2259adc",
+	"top": 3.25,
+	"translation": "(0.0, -1.147109, -0.0)",
+	"triangle_sha256": "19eca7c80591077b25c7a761c754d753979b57b854ad0e9de93db3aebe9c5567",
+	"triangles": 5028,
+	"uniform_scale": 8.503401418144534,
+	"width": 8.5
+}

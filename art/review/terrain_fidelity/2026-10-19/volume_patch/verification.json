@@ -1,0 +1,59 @@
+{
+  "verified_at": "2026-10-19T16:12:47.093768+00:00",
+  "checks": {
+    "document": {
+      "pass": 19,
+      "total": 19
+    },
+    "native_runtime": {
+      "pass": 11,
+      "total": 11
+    },
+    "legacy_sculpt": {
+      "pass": 29,
+      "total": 29
+    },
+    "legacy_base": {
+      "pass": 23,
+      "total": 23
+    }
+  },
+  "logs": {
+    "unit": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME PATCH: 19/19\n",
+    "runtime": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nVOLUME PATCH RUNTIME: 11/11\n",
+    "capture": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\nVOLUME PATCH CAPTURES: true; frames=11; restored=true\n"
+  },
+  "native_frames": 11,
+  "png_sha256": {
+    "source_neutral.png": "e11860e4cc00822e633bd5fcb56dcc7e465ff9933d351eacf74f6a3b04e5a160",
+    "converted_neutral.png": "fce35f4e9c13504423a784e5073adf5ec353d0eecd3681f456d7cfae5e35c92c",
+    "initial_play.png": "22b94f5b2fd07df6c9c848135b8a392759de5bcd990ccc5c077b80ffa6106cab",
+    "initial_close.png": "4ceb94fba9f3cfeccb19111a649177fe33efe8cd0c01ee9e6712f46f14dc0ad4",
+    "initial_reverse.png": "b9bc07cde6ab4d4e720874e67d382d091f7968983fa61f57742a306a9a69ff3a",
+    "initial_low.png": "5d71015729460c3caceffc40eb1870f996c8534ecd3022d1dbdb28abe7ab4e29",
+    "simple_material.png": "dbe46875b65972e72753c9c2c43f6cbb033d99cb482df158f5cdaca238602f55",
+    "tunnel_play.png": "64dccad6e1cb0331f17b6717faee256bab6ec1496b986af09f12f337f6461869",
+    "tunnel_low.png": "a979754bedb718faa74105eca5c205b6593fea5fcec682d36df5288ae23676a2",
+    "lake_breach.png": "ca2594b347771d5f50d39e4f53f239fea8b072776e1317eb49bc84e1d3993836",
+    "restored.png": "50f855c3d06aa7aef0306baba2133822eb69edc832cd72b7b56729d67b4711bc"
+  },
+  "preset_sha256": "1e2c95fd20a94cd3f8a0acb6725a95720c3999586734a8e7fe723d0002e39f12",
+  "source_original_sha256": "7474502a790d11f7ed9e06be565a3af362c9c92f6d309dde6f281978a2259adc",
+  "font_sha256": "79e52b34edd1cf85e9b3a5553aa96788f7be664136035f407696cb02adb255d5",
+  "art_accepted": false,
+  "target_device_performance_verified": false,
+  "new_tripo_jobs": 0,
+  "high_poly_bake_made": false,
+  "review": {
+    "important": 2,
+    "fixed": 2,
+    "red_green": "Empty terrain and occupied lake anchor reproduced before fixes; final document19/19 and native11/11."
+  },
+  "limitations": [
+    "Synchronous bounded local study; not async/chunked production",
+    "Art gate not passed",
+    "Opaque water study; not arbitrary lake networks or fluid simulation",
+    "Release export and target-device/idle performance not verified",
+    "Whole-project headless import not a pass: old art .blend imports require Blender editor setting; runtime tests/captures above are clean."
+  ]
+}

@@ -1,4 +1,6 @@
-# Authored Island First Art Gate Implementation Plan
+# Authored Island First Art Gate Implementation Plan — superseded
+
+Superseded2026-10-19 by [volume-island implementation](2026-10-19-volume-island-implementation.md) after the user explicitly chose arbitrary3Dsculpting. Task1 remains historical baseline evidence; do not execute the old Task2 sequence.
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans inline. Do not delegate implementation tasks. Stop at the user art gate before expanding functionality.
 

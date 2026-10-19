@@ -1,0 +1,96 @@
+{
+  "grid_step": 0.25,
+  "sample_records": 9380,
+  "analytic_three_ray_crosschecks": 705,
+  "bvh_disagreements_resolved": [
+    {
+      "point": [
+        2.5,
+        2.25,
+        -1.25
+      ],
+      "bvh": [
+        false,
+        true,
+        true
+      ],
+      "exact": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "point": [
+        -4.25,
+        3.5,
+        -0.5
+      ],
+      "bvh": [
+        false,
+        false,
+        true
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "point": [
+        -4.0,
+        -2.0,
+        -0.25
+      ],
+      "bvh": [
+        true,
+        false,
+        false
+      ],
+      "exact": [
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "bounds": [
+    [
+      -4.25,
+      -1.1471086740493774,
+      -2.4642858505249023
+    ],
+    [
+      4.25,
+      3.250000476837158,
+      2.464285373687744
+    ]
+  ],
+  "scope": "One original-model conversion; every grid node uses three BVH rays, disagreement/every41st crosschecked in float64. Not art, editing robustness or target-hardware acceptance.",
+  "low": [
+    -20,
+    -8,
+    -13
+  ],
+  "size": [
+    41,
+    26,
+    27
+  ],
+  "input_topology": {
+    "triangles": 5028,
+    "welded_vertices_1e5": 2516,
+    "non_two_use_edges": 0,
+    "directed_edge_pair_defects": 0,
+    "degenerate_index_faces": 0,
+    "signed_volume": 76.38167862978044,
+    "vertex_components": [
+      2516
+    ]
+  },
+  "seconds": 0.6700289249420166,
+  "source_triangles_sha256": "19eca7c80591077b25c7a761c754d753979b57b854ad0e9de93db3aebe9c5567",
+  "density_sha256": "7d4103f998fcf54f0b00c6055fdea44360bfb5e00d353f9ff328b7a963477e60",
+  "bake_scope": "Signed-distance conversion only. Existing material maps are reused; no high-poly normal bake has been made."
+}

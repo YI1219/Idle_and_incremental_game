@@ -1,0 +1,121 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"art_accepted": false,
+	"capture_success": true,
+	"captures": [
+		{
+			"error": 0,
+			"file": "source_neutral.png",
+			"position": "(9.0, 8.0, 15.0)",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "converted_neutral.png",
+			"position": "(9.0, 8.0, 15.0)",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "initial_play.png",
+			"position": "(9.0, 8.0, 15.0)",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "initial_close.png",
+			"position": "(6.0, 5.4, 10.0)",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"error": 0,
+			"file": "initial_reverse.png",
+			"position": "(-9.0, 6.0, -12.0)",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "initial_low.png",
+			"position": "(8.0, -3.0, 12.0)",
+			"size": 7.0,
+			"target": "(0.0, 1.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "simple_material.png",
+			"position": "(6.0, 5.4, 10.0)",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"error": 0,
+			"file": "tunnel_play.png",
+			"position": "(9.0, 8.0, 15.0)",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "tunnel_low.png",
+			"position": "(3.0, 1.0, 12.0)",
+			"size": 6.0,
+			"target": "(0.8, 0.4, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "lake_breach.png",
+			"position": "(9.0, 8.0, 15.0)",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "restored.png",
+			"position": "(9.0, 8.0, 15.0)",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"resolution": [
+		1671,
+		941
+	],
+	"scope": "Native isolated sculpt study. No whole-island replacement, new house, high-poly bake or target-device claim. Small synchronous rebuild, not final async chunk architecture.",
+	"source_sha256": "1e2c95fd20a94cd3f8a0acb6725a95720c3999586734a8e7fe723d0002e39f12",
+	"states": {
+		"initial": {
+			"build_ms": 335.841,
+			"lake_reason": "closed",
+			"lake_valid": true,
+			"mesh_ms": 179.227,
+			"overrides": 606,
+			"triangles": 16980,
+			"water_triangles": 128
+		},
+		"lake_breach": {
+			"build_ms": 348.155,
+			"lake_reason": "breach",
+			"lake_valid": false,
+			"mesh_ms": 185.784,
+			"overrides": 943,
+			"triangles": 17552,
+			"water_triangles": 0
+		},
+		"tunnel": {
+			"build_ms": 354.626,
+			"lake_reason": "closed",
+			"lake_valid": true,
+			"mesh_ms": 189.572,
+			"overrides": 1347,
+			"triangles": 17756,
+			"water_triangles": 128
+		}
+	},
+	"undo_restored": true
+}
