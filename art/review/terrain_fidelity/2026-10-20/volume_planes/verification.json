@@ -1,0 +1,223 @@
+{
+  "art_status": "Side-plane rejected; sparse grass contact only a local candidate. User local art gate unchecked; full goal active.",
+  "frames": [
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/lower_return_close.png",
+      "sha256": "691d5c8aea680b6a6cea62c49893891a7c3350a30d8340a7e913689d6c8ed7e7",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/lower_return_low.png",
+      "sha256": "a2911590372a9900ddf34b8cbb9dfc26bc102a7c8b09da0a364d275623ac0702",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/lower_return_neutral.png",
+      "sha256": "0cbb578db1c6f2765c1f8a3fa8199bf13156df66726ab1d49e33462d9ba962f5",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/lower_return_play.png",
+      "sha256": "65a064f1b1e2ea4523b97cfd200e53b8532d9680fc71eebd55f26d4ffd7dc982",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/lower_return_reverse.png",
+      "sha256": "8a80be31188fd69810a8521cfc8652502ce8cfc20f7778b290cc3e059f848d36",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/side_planes_breach.png",
+      "sha256": "dedb963e217a3ecc20504182f541f6ed3c6316ec20de97e962ecb29bd9ede1bd",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/side_planes_close.png",
+      "sha256": "ef9c417bc5961aef2ae40195f8a380d7e4846304a29821b4b95ed1b89e1d00f8",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/side_planes_low.png",
+      "sha256": "60da10c12e65b09913b4112687e503683b2ec4bb1217cebe2674ff61bce41556",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/side_planes_neutral.png",
+      "sha256": "32692d046afe031c42eebdd53aa03a507f38d2ea69612ed0eeeabdd118fd2eee",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/side_planes_play.png",
+      "sha256": "530c1efaf6681a26d74d4bfd0accb555ea9434ce008f947d7f7a27c76969c1ad",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/side_planes_restored.png",
+      "sha256": "8c2b50dd083fadea6c41853daa69d761deaedbd336924f9f5387024a1dff0ff5",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/side_planes_reverse.png",
+      "sha256": "ce490bacee21f3e0461db0b210dc8c8f7655a0d059314e0818d24b6e57c9c700",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_planes/side_planes_tunnel.png",
+      "sha256": "2959117299f26b43d5fe6e71636747b6231d439a67f55cf6ec32cc8fa7b6ba31",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/bare_close.png",
+      "sha256": "f109a1419ad442659e51cc16abbf1b691557214252444ad9ec14d257d06e1011",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/bare_edge.png",
+      "sha256": "0b138bc284db7e46ae19977448c7844ac45f1c1adfea21ad0f8e4b1dcd2424a6",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/bare_play.png",
+      "sha256": "cc31acd04468815afea2c4b373a5836e689cdb84c4777ea3d2ed6e25a3657ec8",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/bare_reverse.png",
+      "sha256": "0e6ef433d22aa28e93d77daa4258cbdfd5e80687f1c55dd709db6385d6d393ee",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/grass_close.png",
+      "sha256": "13f8c1deeee9f73fc924e798fe7a392e8da0db472ee11447f005bb8d9324cfa6",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/grass_cut.png",
+      "sha256": "b89bb2229a08d16719dcdeb51a84231deb284f7445b0555a7ef876783bbb59ca",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/grass_cut_before.png",
+      "sha256": "1871c78c61d8e2dff07ba01ed1f54979e2cdd9d1de868830363b54f74d2103cb",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/grass_edge.png",
+      "sha256": "4e10c90022fb7d2bb1b060a28eb76a2e645925c1e151620bda76b74a1da37880",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/grass_play.png",
+      "sha256": "5323627f4030bcbe06e77d0f9435bf4c424bea80e2712210cdae2bf56ee7689d",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/grass_restored.png",
+      "sha256": "3dbef705593957a97027ae28f8efaa5389675fb426075b6b2bb28da72c61c823",
+      "size": [
+        1671,
+        941
+      ]
+    },
+    {
+      "file": "art/review/terrain_fidelity/2026-10-20/volume_grass/grass_reverse.png",
+      "sha256": "8371ec5be7317130bcd052edff83fa633e24250376d043b21e2657c5457c9162",
+      "size": [
+        1671,
+        941
+      ]
+    }
+  ],
+  "fresh_headless_logs": {
+    "patch": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME PATCH: 21/21\n",
+    "refined": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME REFINED SOURCE: 8/8\n",
+    "planes": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME PLANE SOURCE: 15/15\n",
+    "grass": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVOLUME GRASS ROOT EVIDENCE: {\"maximum_actual_density\":-0.00166667416044497,\"maximum_position_drift_m\":0.0000787925610557295,\"mesh_sha256\":\"b73d8e9e16c29e84b174285f6925d55ee276b186389a8db34fb9a86ac07c10e3\",\"roots\":288}\nVOLUME GRASS CONTACT: 8/8\n"
+  },
+  "clean_native_logs": {
+    "planes": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-20 01:09:15.219 godot[6469:6487940] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-20 01:09:16.204 godot[6469:6487940] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nVOLUME SIDE PLANES CAPTURES: true; frames=13; restored=true\n",
+    "grass": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nMetal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)\n\n2026-10-20 01:27:04.153 godot[9877:6516490] +[IMKClient subclass]: chose IMKClient_Modern\n2026-10-20 01:27:05.093 godot[9877:6516490] +[IMKInputSession subclass]: chose IMKInputSession_Modern\nVOLUME GRASS CAPTURES: true; frames=11; same solid=true; restored=true\n"
+  },
+  "actual_grass_root_evidence": {
+    "maximum_actual_density": -0.00166667416044497,
+    "maximum_position_drift_m": 7.87925610557295e-05,
+    "mesh_sha256": "b73d8e9e16c29e84b174285f6925d55ee276b186389a8db34fb9a86ac07c10e3",
+    "roots": 288
+  },
+  "preserved_sources": {
+    "assets/terrain/volume_patch/source_rock_v1.res": "1e2c95fd20a94cd3f8a0acb6725a95720c3999586734a8e7fe723d0002e39f12",
+    "assets/terrain/volume_patch/source_rock_lower_return_v1.res": "31e4cfcd94c5e0743d0490c499a5864f803e9dd678c6fb4f9809b99af921572e",
+    "assets/nature/quaternius/Grass_Common_Short.gltf": "6957b50622c9e26e7296c1b47ea8653bc0d957e0a547de444e2ed96f0075a21a",
+    "assets/nature/quaternius/Grass_Common_Short.bin": "7a0f0f7a9ac39cfa4b303bac03a6594f43e48d873b73553fa06a79e4df1271e9",
+    "art/source/cliff_master_v2/2026-10-18/tripo/cliff_land_master_v2_white.glb": "7474502a790d11f7ed9e06be565a3af362c9c92f6d309dde6f281978a2259adc"
+  },
+  "candidate_preset_sha256": "78c63f2e9395e59f3ed95a13d3d9d4b681e5214d450de29598d544310761e03c",
+  "independent_review": "No Critical/Important findings. Independently reran15/15,8/8,8/8,21/21, checked source hashes and root/erase/history coverage. Not art approval.",
+  "limits": "Finite source/root fixtures, no arbitrary-edit proof, no new public mouse-input fixture, no target-device/async/export/whole-island acceptance."
+}

@@ -1,0 +1,108 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"capture_success": true,
+	"captures": [
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "bare_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "bare_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "bare_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(5.0, 4.7, 8.0)",
+			"error": 0,
+			"file": "bare_edge.png",
+			"size": 2.8,
+			"target": "(0.5, 2.7, 1.5)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "grass_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "grass_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "grass_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(5.0, 4.7, 8.0)",
+			"error": 0,
+			"file": "grass_edge.png",
+			"size": 2.8,
+			"target": "(0.5, 2.7, 1.5)"
+		},
+		{
+			"at": "(3.827782, 6.168286, 8.978786)",
+			"error": 0,
+			"file": "grass_cut_before.png",
+			"size": 2.8,
+			"target": "(-0.172218, 3.048286, 1.978787)"
+		},
+		{
+			"at": "(3.827782, 6.168286, 8.978786)",
+			"error": 0,
+			"file": "grass_cut.png",
+			"size": 2.8,
+			"target": "(-0.172218, 3.048286, 1.978787)"
+		},
+		{
+			"at": "(3.827782, 6.168286, 8.978786)",
+			"error": 0,
+			"file": "grass_restored.png",
+			"size": 2.8,
+			"target": "(-0.172218, 3.048286, 1.978787)"
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"grass_sha256": "b73d8e9e16c29e84b174285f6925d55ee276b186389a8db34fb9a86ac07c10e3",
+	"restore_exactly": true,
+	"same_solid_and_data": true,
+	"scope": "Same lower-return mother, shore, narrow contact, camera and lights. Existing supported grass only; side-plane candidate not adopted. Water TIME live. No new ground, tree/rock tool, source/default/save change or art acceptance.",
+	"source_preset_sha256": "31e4cfcd94c5e0743d0490c499a5864f803e9dd678c6fb4f9809b99af921572e",
+	"states": {
+		"cut": {
+			"anchors": 44,
+			"build_ms": 23.791,
+			"rejected_fans": 4,
+			"root_checks": 264,
+			"triangles": 924,
+			"unsupported_roots": 0
+		},
+		"grass": {
+			"anchors": 48,
+			"build_ms": 32.872,
+			"rejected_fans": 2,
+			"root_checks": 288,
+			"triangles": 1008,
+			"unsupported_roots": 0
+		}
+	},
+	"terrain_sha256": "73e94875dcf47f37c0caa702c69ba50a454e90e5490c4ddec48ba2fd7de7b41c"
+}

@@ -1,0 +1,130 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"capture_success": true,
+	"captures": [
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "lower_return_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "lower_return_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "lower_return_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "lower_return_low.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "side_planes_play.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "side_planes_close.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(-9.0, 6.0, -12.0)",
+			"error": 0,
+			"file": "side_planes_reverse.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, -3.0, 14.0)",
+			"error": 0,
+			"file": "side_planes_low.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "side_planes_tunnel.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "side_planes_breach.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(6.0, 5.4, 10.0)",
+			"error": 0,
+			"file": "side_planes_restored.png",
+			"size": 5.0,
+			"target": "(0.3, 1.7, 0.2)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "lower_return_neutral.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		},
+		{
+			"at": "(9.0, 8.0, 15.0)",
+			"error": 0,
+			"file": "side_planes_neutral.png",
+			"size": 7.0,
+			"target": "(0.0, 1.1, 0.0)"
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"restored_exactly": true,
+	"scope": "Same cameras/lights/narrow contact/lake profile. Side-plane compression changes existing mother only; water TIME live. Neutral views omit maps and pond. No original/default/save changes or art acceptance.",
+	"states": {
+		"breach": {
+			"build_ms": 322.154,
+			"lake_valid": false,
+			"source_sha256": "78c63f2e9395e59f3ed95a13d3d9d4b681e5214d450de29598d544310761e03c",
+			"triangles": 15576,
+			"water_triangles": 0
+		},
+		"lower_return": {
+			"build_ms": 313.143,
+			"lake_valid": true,
+			"source_sha256": "31e4cfcd94c5e0743d0490c499a5864f803e9dd678c6fb4f9809b99af921572e",
+			"triangles": 14904,
+			"water_triangles": 78
+		},
+		"side_planes": {
+			"build_ms": 297.065,
+			"lake_valid": true,
+			"source_sha256": "78c63f2e9395e59f3ed95a13d3d9d4b681e5214d450de29598d544310761e03c",
+			"triangles": 14356,
+			"water_triangles": 78
+		},
+		"tunnel": {
+			"build_ms": 315.998,
+			"lake_valid": true,
+			"source_sha256": "78c63f2e9395e59f3ed95a13d3d9d4b681e5214d450de29598d544310761e03c",
+			"triangles": 15112,
+			"water_triangles": 78
+		}
+	}
+}

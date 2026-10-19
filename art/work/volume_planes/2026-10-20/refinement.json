@@ -1,0 +1,67 @@
+{
+  "input": "art/work/volume_shape/2026-10-20/cliff_land_v2_lower_return_v1.blend",
+  "input_sha256": "d0b3e224a24ad324d20f031329f81350850daac7a182564c7f819c67c054c03d",
+  "blender": "5.2.1 LTS",
+  "plane_parameters": {
+    "front": [
+      1.23,
+      0.21,
+      0.09
+    ],
+    "rear": [
+      1.1,
+      0.22,
+      0.22,
+      0.25
+    ],
+    "sides": [
+      2.6,
+      0.39,
+      0.14
+    ],
+    "compression_span": 0.28
+  },
+  "maximum_weight": 0.9,
+  "protected_y": 2.85,
+  "protected_vertices": 618,
+  "changed_vertices": 726,
+  "all_y_coordinates_preserved": true,
+  "upper_source_positions_identical": true,
+  "maximum_displacement_m": 0.46032781531629774,
+  "minimum_sampled_composed_axis_derivative": 0.15675587449108608,
+  "bounds": [
+    [
+      -4.25,
+      -1.1471086740493774,
+      -2.4642858505249023
+    ],
+    [
+      4.25,
+      3.250000476837158,
+      2.464285373687744
+    ]
+  ],
+  "topology": {
+    "triangles": 5028,
+    "welded_vertices_1e5": 2516,
+    "non_two_use_edges": 0,
+    "directed_edge_pair_defects": 0,
+    "degenerate_index_faces": 0,
+    "signed_volume": 63.89681084922416,
+    "vertex_components": [
+      2516
+    ],
+    "vertex_link_defects": 0
+  },
+  "intersections": {
+    "mesh_sha256": "b2f3d5dc949054ae152778cee2e860113dc153da2f7c4d74c30ad60718defa0f",
+    "triangles": 5028,
+    "disjoint_position_bvh_pairs": 0,
+    "strict_crossing_pairs_at_least": 0,
+    "crossings": []
+  },
+  "source_triangles_sha256": "b2f3d5dc949054ae152778cee2e860113dc153da2f7c4d74c30ad60718defa0f",
+  "scope": "One authored monotone plane compression, existing topology/height/cap retained. No new original mesh, random sweep, source overwrite, extra rendered guide or art acceptance.",
+  "finite_gate_passed": true,
+  "export_sha256": "1b48c15c0dd338c87a052a3484075d78f1623956de1820988af24a7c0d2ce43c"
+}

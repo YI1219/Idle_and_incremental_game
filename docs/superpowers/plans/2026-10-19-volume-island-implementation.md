@@ -54,3 +54,10 @@ The user has since selected refinement of the existing mother's main shape, gras
 One separate existing-vertex Blender correction preserves the cap/height/topology and converges the lower body; a designed shallow pond and optional narrower world-space grass contact are captured separately. [Evidence and limitations](../../../art/review/terrain_fidelity/2026-10-20/volume_shape/README.md). Fresh document21/21,bank10/10,refined-source8/8,native12/12. Mother-shape/bank captures verify real tunnel/breach/exact undo; old/new save-source cross-replay rejected. Independent bounded review found no Critical/Important defect. Original source/default/preset/save remain.
 
 Local visual judgment is still insufficient: pond/lower contour improve, but middle/rear major forms and cap-edge facets remain unfinished. User art gate stays unchecked. No whole-island expansion or stage2/3/paid job. Full goal remains active.
+
+
+## Main-plane and contact continuation2026-10-20
+
+[Side-plane evidence](../../../art/review/terrain_fidelity/2026-10-20/volume_planes/README.md): initial radial implementation failed source intersections and stopped before sampling; corrected inward monotone plane compression passes source checks but is art-rejected (broad wall/angular turf). No third whole-mother squeeze/taper parameter rule. [Short-leaf resource pairing](../../../art/review/terrain_fidelity/2026-10-20/volume_grass/README.md) preserves old geometry, uses3existing short leaf components, fixes tiny-root triangle handling,1008triangles/288roots. Local cut/full erasure/undo verified, art gain modest and incomplete. Fresh original21/21,refined8/8,new-source15/15,grass8/8; independent bounded review no Critical/Important findings. All stage2–5/art gates remain incomplete.
+
+Next within stage1: inspect a few existing rock modules and hand-organize primary unequal masses/recesses; neutral front/rear proof first, one common editable solid if useful. No whole-island/perimeter-column scatter, hidden ground, new scratch official geometry or paid job. Original sources/default/presets/saves retained. Full goal remains active.

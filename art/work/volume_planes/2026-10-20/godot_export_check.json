@@ -1,0 +1,10 @@
+{
+	"expected_to_imported_vertex_max_m": 0.00020596233662217855,
+	"godot": "4.7.2-stable (official)",
+	"imported_to_expected_vertex_max_m": 0.00020596233662217855,
+	"pack_error": 0,
+	"preset": "res://assets/terrain/volume_patch/source_rock_side_planes_v1.res",
+	"preset_sha256": "78c63f2e9395e59f3ed95a13d3d9d4b681e5214d450de29598d544310761e03c",
+	"scope": "Reimport of canonical GLB at identity transform. Vertex proximity only, not continuous surface bound or art acceptance.",
+	"triangles": 5028
+}

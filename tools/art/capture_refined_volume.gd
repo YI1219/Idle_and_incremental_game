@@ -7,6 +7,8 @@ var viewport: SubViewport
 var study: Node3D
 var captures: Array[Dictionary] = []
 var states: Dictionary = {}
+func output_dir() -> String:
+	return OUT
 func _initialize() -> void:
 	call_deferred('run')
 func capture(name: String, at: Vector3, target: Vector3, size_value: float) -> void:
@@ -17,7 +19,7 @@ func capture(name: String, at: Vector3, target: Vector3, size_value: float) -> v
 		RenderingServer.force_draw(false)
 		await process_frame
 	RenderingServer.force_draw(false)
-	var error := viewport.get_texture().get_image().save_png(OUT+name+'.png')
+	var error := viewport.get_texture().get_image().save_png(output_dir()+name+'.png')
 	captures.append({'file':name+'.png','error':error,'at':str(at),'target':str(target),'size':size_value})
 func record(name: String) -> void:
 	states[name] = {'triangles':study.last_build.triangles,'water_triangles':study.last_build.water_triangles,
