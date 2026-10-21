@@ -1,26 +1,28 @@
 extends RefCounted
-## Convex grass→soil lip outside the exterior crown edge.
-## The flat cap stays where it is. Only a short outward chamfer is added,
-## so the island silhouette gains a soft spill instead of a new outline.
+## Convex grass overhang outside the exterior crown edge.
+## The flat cap stays where it is. The lip is one shallow roll, wide enough
+## to read from the game camera, not a second curb.
 const ContourTerrain = preload("res://scripts/terrain_editor/contour_terrain.gd")
-const SAMPLE_SPACING := 0.38
-const MAX_REACH := 0.42
-const RING_COUNT := 4
+const SAMPLE_SPACING := 0.36
+const MAX_REACH := 0.92
+const RING_COUNT := 5
 
 static func _ring_out(ring:int)->float:
-	# First step leaves the lawn gently; later steps turn toward the stone
-	# without folding back into the cap.
+	# Most of the width stays nearly level grass. Only the outer third
+	# turns down toward the stone, so the lip does not read as a ledge.
 	match ring:
-		1:return 0.48
-		2:return 0.78
-		3:return 1.0
+		1:return 0.28
+		2:return 0.52
+		3:return 0.76
+		4:return 1.0
 	return 0.0
 
 static func _ring_drop(ring:int)->float:
 	match ring:
-		1:return 0.018
-		2:return 0.055
-		3:return 0.105
+		1:return 0.010
+		2:return 0.032
+		3:return 0.070
+		4:return 0.145
 	return 0.0
 
 static func apply(field)->void:
@@ -45,7 +47,7 @@ static func _open_loop(loop:PackedVector2Array)->PackedVector2Array:
 
 static func _width(p:Vector2)->float:
 	# World-anchored, so a closed rim does not kink where the loop index starts.
-	return 0.24+0.075*sin(p.x*0.83+p.y*0.57)+0.035*sin(p.x*1.67-p.y*1.21+1.2)
+	return 0.62+0.11*sin(p.x*0.83+p.y*0.57)+0.045*sin(p.x*1.67-p.y*1.21+1.2)
 
 static func _drop(p:Vector2,base:float)->float:
 	# Scale the scallop with the drop so the lawn edge itself stays on the cap.
@@ -53,10 +55,13 @@ static func _drop(p:Vector2,base:float)->float:
 	return base*(1.0+0.08*sin(p.x*1.15+p.y*0.72+0.4))
 
 static func _ring_color(ring:int)->Color:
+	# Stay in the grass until the outer third, then warm into soil.
+	# A grey outer band on this wider lip would read as a second ring.
 	match ring:
-		1:return Color(0.98,0.95,0.90,1.0)
-		2:return Color(0.86,0.70,0.58,1.0)
-		3:return Color(0.78,0.76,0.70,1.0)
+		1:return Color(0.99,0.98,0.96,1.0)
+		2:return Color(0.97,0.93,0.86,1.0)
+		3:return Color(0.92,0.82,0.70,1.0)
+		4:return Color(0.84,0.74,0.62,1.0)
 	return Color(1,1,1,1)
 
 static func _is_outer(field,loops:Array,a:Vector2,b:Vector2)->bool:
@@ -77,7 +82,7 @@ static func _mouth_weight(field,p:Vector2,h:float)->float:
 		var lip:Vector3 = veil.lip
 		if absf(lip.y-h)>1.8:continue
 		var clearance:float = p.distance_to(Vector2(lip.x,lip.z))-float(veil.half_width)
-		weight = minf(weight,smoothstep(0.20,1.05,clearance))
+		weight = minf(weight,smoothstep(0.45,1.70,clearance))
 	return weight
 
 static func _skirt_loop(field,surface,loop:PackedVector2Array,loops:Array,h:float)->void:
@@ -198,7 +203,7 @@ static func _emit_run(field,surface,loop:PackedVector2Array,loops:Array,edges:Ar
 		var fade:float = 1.0
 		if not closed:
 			var end_distance:float = minf(float(samples[i].arc),total-float(samples[i].arc))
-			fade = smoothstep(0.05,0.75,end_distance)
+			fade = smoothstep(0.08,1.15,end_distance)
 		var at:Vector2 = samples[i].p
 		samples[i].weight = fade*_mouth_weight(field,at,h)
 	var segments:int = samples.size() if closed else samples.size()-1
@@ -244,8 +249,8 @@ static func _escape(loops:Array,point:Vector3)->Vector3:
 
 static func _reenters(loops:Array,origin:Vector2,out:Vector2,reach:float)->bool:
 	# The tip can sit back outside a concave crown while the span crosses it.
-	for step in 4:
-		var distance:float = reach*float(step+1)/4.0
+	for step in 6:
+		var distance:float = reach*float(step+1)/6.0
 		if ContourTerrain.contains(loops,origin+out*distance):return true
 	return false
 

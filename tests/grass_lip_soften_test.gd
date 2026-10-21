@@ -80,7 +80,7 @@ func _expect_lip(editor,label:String)->void:
 	print("%s lowered=%d outside=%.3f..%.3f lip_normal=%.3f crossings=%d deepest=%.3f at %s"%[label,lowered,min_outside,max_outside,min_lip_normal,skirt_inside,deepest_inside,deepest_at])
 	check(lowered>80,label+" has an exterior lip skirt")
 	check(tinted*2>lowered,label+" lip carries a soil tint")
-	check(min_outside>-0.02 and max_outside<0.45,label+" spill stays a short outward chamfer")
+	check(min_outside>-0.02 and max_outside>0.55 and max_outside<0.95,label+" spill is a wider shallow overhang")
 	check(min_lip_normal>0.35,label+" lip normals stay above the stone, not folded under")
 	check(skirt_inside==0,label+" chamfer triangles stay outside the crown")
 	check(deepest_inside>-0.02 and interior==0,label+" chamfer does not cut a trench into the crown")
