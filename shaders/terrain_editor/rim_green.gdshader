@@ -14,8 +14,7 @@ void vertex(){
 void fragment(){
  vec2 slope;
  vec3 green=ground_cover(world_position,.65,slope);
- float fleck=gc_noise(world_position.xz*19.0+world_position.y*7.0);
- ALBEDO=green*(.97+.06*fleck);
+ ALBEDO=green;
  vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
  NORMAL=normalize(mix(NORMAL,up,.35));
  // Leaf roots share lawn relief; upper leaves keep their curved lighting.

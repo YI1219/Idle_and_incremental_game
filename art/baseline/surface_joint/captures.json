@@ -1,0 +1,48 @@
+{
+	"adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"art_accepted": false,
+	"captures": [
+		{
+			"error": 0,
+			"file": "game.png",
+			"fov": 31.0,
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "whole.png",
+			"fov": 31.0,
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "reverse.png",
+			"fov": 31.0,
+			"position": "(-17.27737, 32.0, -54.27853)",
+			"rotation": "(-30.0, 196.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "close.png",
+			"fov": 31.0,
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		}
+	],
+	"data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+	"data_unchanged": true,
+	"godot": "4.7.2-stable (official)",
+	"house_absent": true,
+	"phase": 1.25,
+	"renderer": "forward_plus",
+	"resolution": [
+		1280,
+		720
+	],
+	"scene": "res://scenes/terrain_editor.tscn",
+	"seed": 7301,
+	"user_layouts_accessed": false,
+	"valid": true
+}

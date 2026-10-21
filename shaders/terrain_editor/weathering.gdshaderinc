@@ -16,4 +16,10 @@ vec3 tw_deposits(vec3 p){
  float grain=tw_noise(p*17.0+vec3(2.3,9.1,31.7));
  return vec3(smoothstep(.49,.68,broad*.55+broken*.30+grain*.15),smoothstep(.53,.73,broken*.60+grain*.40),smoothstep(.62,.79,grain*.65+broken*.35));
 }
+// Warm beige-grey soil. Shared by the path, open wear and the grass-stone shoulder
+// so those joints sit in one matte family instead of a separate brown scar.
+vec3 tw_soil(vec2 p){
+ float tone=tw_noise(vec3(p.x*.70,1.5,p.y*.70));
+ return mix(vec3(.40,.36,.30),vec3(.50,.45,.37),tone);
+}
 #endif

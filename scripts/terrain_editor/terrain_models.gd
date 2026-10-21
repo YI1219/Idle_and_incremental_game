@@ -202,8 +202,8 @@ func _grass_clump_models()->Array:
 		var foot:=Vector3(box.position.x+box.size.x*.5,box.position.y,box.position.z+box.size.z*.5)
 		part.pose=Transform3D(basis,-(basis*foot))*part.pose
 		var material:ShaderMaterial=part.mesh.surface_get_material(0)
-		material.set_shader_parameter("dark_color",Vector3(.17,.19,.12))
-		material.set_shader_parameter("light_color",Vector3(.38,.39,.27))
+		material.set_shader_parameter("dark_color",Vector3(.36,.41,.31))
+		material.set_shader_parameter("light_color",Vector3(.52,.57,.44))
 	return parts
 
 func _rock_body_models(seed_value:int,root:bool=false)->Array:
@@ -311,11 +311,11 @@ func _extract(node:Node,parent:Transform3D,parts:Array,kind:String)->void:
 			if kind in ["tree_wood","fence"]:tint=Color("79634e") if not name_value.contains("Dark") else Color("615447")
 			elif kind in ["surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","path","rim_outcrop","rim_shelf"]:tint=Color("aaa89b")
 			elif kind=="tree_leaf":tint=Color("697547")
-			elif kind=="bush":tint=Color("73844e")
+			elif kind=="bush":tint=Color("7e9158")
 			elif kind=="vine":tint=Color("68785c")
 			elif kind=="grass" or kind=="reeds":tint=Color("939b72")
 			elif kind=="lily":tint=Color("a8ad55")
-			elif kind=="flower":tint=Color("e2dcc1") if name_value.to_lower().contains("yellow") else Color("788665")
+			elif kind=="flower":tint=Color("d4cbb4") if name_value.to_lower().contains("yellow") else Color("809270")
 			var arrays:Array=node.mesh.surface_get_arrays(surface)
 			var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
 			var indices:PackedInt32Array=arrays[Mesh.ARRAY_INDEX]

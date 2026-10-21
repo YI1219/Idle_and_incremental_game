@@ -17,11 +17,11 @@ void fragment(){
  vec3 earth=wet_bank_earth(world_position);
  earth*=mix(1.0,.78,wet);
  vec3 damp=wet_bank_material(world_position);
- float cover=smoothstep(.12,.95,COLOR.a*(.70+.45*gc_noise(p*4.0)));
- // Small remnants interrupt the dry bank edge. Only above-water soil can
+ float cover=smoothstep(.20,.82,COLOR.a*(.78+.22*gc_noise(p*1.5)));
+ // Soft grass clumps interrupt the dry bank. Only above-water soil can
  // retain ground cover; the submerged substrate stays mineral/earth.
  float above=smoothstep(-.01,.025,world_position.y-UV.x);
- float remnants=smoothstep(.56,.82,gc_noise(p*7.8)*.65+gc_noise(p*17.3+vec2(9.1,3.2))*.35)*(.25+.75*gc_noise(p*.85));
+ float remnants=smoothstep(.58,.86,gc_noise(p*2.4)*.70+gc_noise(p*4.6+vec2(9.1,3.2))*.30)*(.40+.60*gc_noise(p*.55));
  float exposed=max(cover,wet*.90)*(1.0-remnants*.45*above);
  ALBEDO=mix(grass,mix(earth,damp,wet),exposed);
  vec3 n=normalize(vec3(-slope.x*.2,1.0,-slope.y*.2));

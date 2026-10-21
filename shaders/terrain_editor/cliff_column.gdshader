@@ -32,7 +32,7 @@ void fragment(){
 	// Vertical weathering streaks run the height of this body.
 	vec2 q=vec2(local_position.x*6.0+local_position.z*6.0+variation.y*19.0,local_position.y*2.6);
 	float streak=noise_column(q)*.6+noise_column(q*vec2(2.7,1.9)+vec2(4.1,7.3))*.4;
-	stone*=.96+.08*streak;
+	stone*=.988+.024*streak;
 	stone*=mix(.94,1.0,smoothstep(-.85,.25,world_normal.y));
 	// Metres below this body's shoulder; lower facets weather darker.
 	float below=column_origin.y-world_position.y;
