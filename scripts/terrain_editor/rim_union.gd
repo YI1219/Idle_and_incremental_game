@@ -129,6 +129,7 @@ static func apply(field,columns:Array,assets:Dictionary,fit_core_to_feet:bool=fa
  field.surfaces.stone_mantle=mantle.stone
  field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lip(regions,crowns,assets)
  field._smooth_normals(field.surfaces.rim_green)
+ preload("res://scripts/terrain_editor/grass_lip_soften.gd").apply(field)
  field._index_triangles()
 
 static func _union(polygons:Array,addition:PackedVector2Array)->void:

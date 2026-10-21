@@ -1199,10 +1199,12 @@ func build(chunk:Vector2i)->Dictionary:
 			for j in range(1,polygon.size()-1):
 				var before:=local.vertices.size()
 				local.triangle(polygon[0],polygon[j],polygon[j+1],colors[i],kind in ["grass","water","bank"])
-				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock","sculpted_terrain"]:
+				# Grass carries the lip chamfer's per-vertex soil tint and skirt
+				# normals. Chunk clips must keep both; the flat cap stays white/up.
+				if kind in ["grass","cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock","sculpted_terrain"]:
 					for index in range(before,local.vertices.size()):
 						local.colors[index]=_interpolated_color(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],colors[i],colors[i+1],colors[i+2])
-				if kind in ["cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock","sculpted_terrain"]:
+				if kind in ["grass","cliff","shore","bank","waterfall","rim_green","stone_mantle","lake_bed","sculpted_rock","sculpted_terrain"]:
 					for index in range(before,local.vertices.size()):
 						local.normals[index]=_interpolated_normal(local.vertices[index],vertices[i],vertices[i+1],vertices[i+2],normals[i],normals[i+1],normals[i+2])
 				if kind in ["cliff","grass","rim_green","shore","sculpted_terrain"]:
