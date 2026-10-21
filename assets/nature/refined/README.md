@@ -1,0 +1,5 @@
+# 历史基准所需岩石变体
+
+保留四个运行依赖：cliff_main_v4、cliff_tall_v2、cliff_integrated_main_v1、cliff_integrated_tall_v1。它们派生自Quaternius Stylized Nature MegaKit Standard的Rock_Medium_1／2；沿用CC0。源模型、许可和来源记录在相邻quaternius目录。
+
+它们仅用于恢复历史场景，不表示最新美术接受。旧生成试验、Blender工作稿、重复评审和命令入口已按用户要求删除；后续不依据这些旧版本扩大资产生产。

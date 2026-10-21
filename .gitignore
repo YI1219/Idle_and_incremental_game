@@ -1,0 +1,16 @@
+# Godot generated cache
+.godot/
+*.translation
+export.cfg
+export_presets.cfg
+*.tmp
+# Local machine / Python cache
+.DS_Store
+**/.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+.venv/
+# Credentials must remain outside the repository
+.env
+.env.*

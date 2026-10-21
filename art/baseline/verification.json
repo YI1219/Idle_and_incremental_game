@@ -1,0 +1,63 @@
+{
+  "date_hkt": "2026-10-21",
+  "scene": "scenes/terrain_editor.tscn",
+  "seed": 7301,
+  "house_absent": true,
+  "original_baseline_replay": {
+    "game_different_pixels": 2,
+    "whole_different_pixels": 1,
+    "total_pixels_per_image": 921600
+  },
+  "house_removal_matched_views": {
+    "game": {
+      "different_pixels": 7918,
+      "bbox": [
+        267,
+        122,
+        531,
+        217
+      ]
+    },
+    "whole": {
+      "different_pixels": 5526,
+      "bbox": [
+        384,
+        173,
+        597,
+        256
+      ]
+    },
+    "reverse": {
+      "different_pixels": 13206,
+      "bbox": [
+        697,
+        318,
+        978,
+        474
+      ]
+    },
+    "close": {
+      "different_pixels": 31377,
+      "bbox": [
+        356,
+        35,
+        791,
+        215
+      ]
+    }
+  },
+  "authoritative_terrain_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+  "terrain_exact_before_after_house_removal": true,
+  "retained_runtime_changes": [
+    "distant_landscape.gd restored to historical source",
+    "terrain_props.gd removed old cottage model and its supplemental door parts",
+    "terrain_paths.gd replaced removed cottage scale dependency with the equivalent historical route coordinate"
+  ],
+  "verification": {
+    "native_capture_frames": 4,
+    "native_runtime_checks_passed": 22,
+    "tripo_local_checks_passed": 6,
+    "missing_literal_resource_paths": 0
+  },
+  "limits": "Pixel comparisons include house shadows; original baseline replay differs by1-2 pixels. Path-dependent node-name mesh hash was discarded as unsuitable for across-process comparison; no claim of full raw mesh array equivalence. These checks do not establish art acceptance or target-device performance."
+}
