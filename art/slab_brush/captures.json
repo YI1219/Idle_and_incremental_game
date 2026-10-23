@@ -1,0 +1,48 @@
+{
+	"adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"art_accepted": false,
+	"captures": [
+		{
+			"camera": "(10.662, 8.662112, 11.68415)",
+			"distance": 16.5,
+			"error": 0,
+			"file": "single.png",
+			"focus": "(0.161717, 3.563331, 0.022397)",
+			"fov": 31.0,
+			"modules": 1,
+			"pitch": 18.0,
+			"yaw": 42.0
+		},
+		{
+			"camera": "(17.22182, 15.81959, 15.55686)",
+			"distance": 26.0,
+			"error": 0,
+			"file": "cluster.png",
+			"focus": "(0.161717, 3.613331, 0.195876)",
+			"fov": 31.0,
+			"modules": 3,
+			"pitch": 28.0,
+			"yaw": 48.0
+		},
+		{
+			"camera": "(7.655479, 22.07039, 9.126594)",
+			"distance": 22.0,
+			"error": 0,
+			"file": "cluster_top.png",
+			"focus": "(0.161717, 3.413331, 0.195876)",
+			"fov": 31.0,
+			"modules": 3,
+			"pitch": 58.0,
+			"yaw": 40.0
+		}
+	],
+	"courtyard_scene_untouched": true,
+	"godot": "4.7.2-stable (official)",
+	"renderer": "gl_compatibility",
+	"resolution": [
+		1280,
+		720
+	],
+	"sample_seed": 7301,
+	"scene": "res://scenes/slab_brush_study.tscn"
+}

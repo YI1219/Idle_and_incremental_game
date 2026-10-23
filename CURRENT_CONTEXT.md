@@ -1,6 +1,12 @@
 # 当前上下文
 
-更新：2026-10-21。用户最新明确指示优先。
+更新：2026-10-23。用户最新明确指示优先。
+
+2026-10-23 用户批准一条独立小样：程序化 DREDGE 式硬平面板岩，用笔刷一块块往外长，拼成小岛轮廓。不改 seed 7301 整岛轮廓，不改草缘／倒角，不用 Tripo 崖壁。主场景仍是 `scenes/terrain_editor.tscn`。小样入口是 `scenes/slab_brush_study.tscn`。
+
+试刷子：运行该场景。左键空地放下第一块，左键侧面长出下一块并对齐焊接。1 崖壁，2 坡肩，Z 撤销，R 清空，Q／E 旋转新块，右键环视，滚轮远近。预设三块小岛是 seed 7301 的 `paint_sample`，只活在这个小样里。
+
+采集脚本 `tools/art/capture_slab_brush.gd`，画面在 `art/slab_brush/`（single、cluster、cluster_top）。这台 Linux 机器是 llvmpipe／gl_compatibility，正式观感等 Mac Metal 再采。水面接合、真草网格、多层台地还没做。顶面是一层平涂鼠尾草绿。
 
 唯一目标：第一阶段PCG与真实游戏画面；游戏内容填充须等用户明确启动第二阶段。
 

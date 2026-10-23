@@ -1,6 +1,6 @@
 # Floating Isle：美术基准工程
 
-当前仅保留一个 Godot 场景：`scenes/terrain_editor.tscn`。它恢复本阶段接手时的庭院与远景基准；旧房屋已按用户要求移除，模型、纹理和对应源文件已从工程删除，等待重新设计。
+庭院入口仍是 `scenes/terrain_editor.tscn`。它恢复本阶段接手时的庭院与远景基准；旧房屋已按用户要求移除，模型、纹理和对应源文件已从工程删除，等待重新设计。硬平面板岩小样另开 `scenes/slab_brush_study.tscn`，不改这条庭院场景。
 
 用 Godot 4.7.2 打开 `project.godot` 后运行，或双击 `打开美术基准.command`。
 
