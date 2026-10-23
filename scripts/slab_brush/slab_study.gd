@@ -31,16 +31,26 @@ func _ready() -> void:
 	_build_world()
 	_apply_camera()
 
-func show_single() -> void:
-	field.clear()
-	field.place_seed(Vector3.ZERO, deg_to_rad(18.0), SLAB.WALL, 7301)
+func show_one() -> void:
+	field.paint_one(7301)
 	_sync_meshes()
-	frame_on_bounds(28.0, 14.0, 20.0, 0.35)
+	frame_on_bounds(46.0, 22.0, 16.0, 0.2)
+
+func show_strip() -> void:
+	field.paint_strip(7301)
+	_sync_meshes()
+	frame_on_bounds(18.0, 14.0, 52.0, 0.6)
+
+func show_island() -> void:
+	field.paint_island(7301)
+	_sync_meshes()
+	frame_on_bounds(180.0, 58.0, 42.0, 0.4)
+
+func show_single() -> void:
+	show_one()
 
 func show_cluster() -> void:
-	field.paint_sample(7301)
-	_sync_meshes()
-	frame_on_bounds(36.0, 20.0, 32.0, 0.45)
+	show_island()
 
 func frame_on_bounds(yaw_deg: float, pitch_deg: float, distance: float, lift: float) -> void:
 	var box := field.bounds()
@@ -52,19 +62,19 @@ func frame_on_bounds(yaw_deg: float, pitch_deg: float, distance: float, lift: fl
 
 func _build_world() -> void:
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-24.0, 78.0, 0.0)
-	sun.light_color = Color("ffe7c9")
-	sun.light_energy = 1.25
-	sun.light_specular = 0.12
+	sun.rotation_degrees = Vector3(-28.0, 118.0, 0.0)
+	sun.light_color = Color("efe4d8")
+	sun.light_energy = 1.05
+	sun.light_specular = 0.08
 	sun.shadow_enabled = true
-	sun.directional_shadow_max_distance = 60.0
-	sun.shadow_bias = 0.04
-	sun.shadow_normal_bias = 0.9
+	sun.directional_shadow_max_distance = 110.0
+	sun.shadow_bias = 0.03
+	sun.shadow_normal_bias = 0.8
 	add_child(sun)
 	var fill := DirectionalLight3D.new()
-	fill.rotation_degrees = Vector3(-22.0, -124.0, 0.0)
-	fill.light_color = Color("d7d2e8")
-	fill.light_energy = 0.26
+	fill.rotation_degrees = Vector3(-18.0, -48.0, 0.0)
+	fill.light_color = Color("d5d0e6")
+	fill.light_energy = 0.22
 	fill.shadow_enabled = false
 	add_child(fill)
 	var world := WorldEnvironment.new()
@@ -80,8 +90,8 @@ func _build_world() -> void:
 	sky.process_mode = Sky.PROCESS_MODE_QUALITY
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("c5c0d4")
-	env.ambient_light_energy = 0.30
+	env.ambient_light_color = Color("b7b3c6")
+	env.ambient_light_energy = 0.34
 	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
 	env.ssao_enabled = true
 	env.ssao_radius = 1.1
@@ -89,8 +99,8 @@ func _build_world() -> void:
 	env.ssao_power = 1.5
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_EXPONENTIAL
-	env.fog_light_color = Color("c9d5e2")
-	env.fog_density = 0.0045
+	env.fog_light_color = Color("b9c8d6")
+	env.fog_density = 0.0022
 	env.fog_sky_affect = 0.15
 	env.adjustment_enabled = true
 	env.adjustment_contrast = 1.05
@@ -98,13 +108,13 @@ func _build_world() -> void:
 	add_child(world)
 	var deck := MeshInstance3D.new()
 	var deck_mesh := PlaneMesh.new()
-	deck_mesh.size = Vector2(90.0, 90.0)
+	deck_mesh.size = Vector2(220.0, 220.0)
 	deck.mesh = deck_mesh
-	deck.position = Vector3(0.0, -1.85, 0.0)
-	deck.material_override = _matte(Color(0.58, 0.72, 0.74), 1.0)
+	deck.position = Vector3(0.0, -0.35, 0.0)
+	deck.material_override = _matte(Color(0.36, 0.52, 0.58), 0.92)
 	add_child(deck)
 	camera = Camera3D.new()
-	camera.fov = 31.0
+	camera.fov = 30.0
 	camera.near = 0.1
 	camera.far = 400.0
 	camera.current = true
@@ -165,7 +175,7 @@ func _refresh_status() -> void:
 	if status == null:
 		return
 	var tool := "崖壁" if kind == SLAB.WALL else "坡肩"
-	status.text = "硬面岩刷  ·  %s\n左键空地放下第一块，左键侧面长出下一块\n1 崖壁    2 坡肩    Z 撤销    R 清空\n右键环视   滚轮远近   Q/E 转   已放 %d 块" % [tool, field.modules.size()]
+	status.text = "硬面岩刷  ·  %s\n左键空地放下第一块，左键端面把岸接长\n1 崖壁   2 坡肩   Z 撤销   R 清空\nF1 单石   F2 长岸   F3 环岛   已放 %d 块" % [tool, field.modules.size()]
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -209,6 +219,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_E:
 				_yaw += 8.0
 				_apply_camera()
+			KEY_F1:
+				show_one()
+			KEY_F2:
+				show_strip()
+			KEY_F3:
+				show_island()
 		_refresh_status()
 
 func _stamp() -> void:

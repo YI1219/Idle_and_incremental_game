@@ -18,7 +18,7 @@ func place_seed(origin: Vector3, yaw: float, kind: int, seed_value: int) -> int:
 	_undo.append({})
 	return modules.size() - 1
 
-func expand(module_index: int, face_index: int, kind: int, seed_value: int) -> int:
+func expand(module_index: int, face_index: int, kind: int, seed_value: int, turn_deg: float = 0.0) -> int:
 	if module_index < 0 or module_index >= modules.size():
 		return -1
 	var host: Dictionary = modules[module_index]
@@ -28,7 +28,7 @@ func expand(module_index: int, face_index: int, kind: int, seed_value: int) -> i
 	var face: Dictionary = faces[face_index]
 	if face["role"] != "side" or face["welded"]:
 		return -1
-	var guest := HardSlab.expand_module(face, kind, seed_value)
+	var guest := HardSlab.expand_module(face, kind, seed_value, turn_deg)
 	if not _acceptable_guest(guest):
 		face["welded"] = false
 		return -1
@@ -52,18 +52,117 @@ func undo() -> bool:
 		host["mesh"] = HardSlab.render_mesh(faces, int(host["seed"]))
 	return true
 
-func paint_sample(seed_value: int = 7301) -> void:
+func paint_one(seed_value: int = 7301) -> void:
 	clear()
-	place_seed(Vector3.ZERO, deg_to_rad(18.0), HardSlab.WALL, seed_value)
-	var steps: Array[Dictionary] = [
-		{"direction": Vector3(0.05, 0.0, 1.0), "kind": HardSlab.SHOULDER, "salt": 11},
-		{"direction": Vector3(-0.05, 0.0, -1.0), "kind": HardSlab.WALL, "salt": 29},
-	]
-	for step: Dictionary in steps:
-		var chosen := _best_toward(step["direction"])
+	place_seed(Vector3.ZERO, deg_to_rad(24.0), HardSlab.WALL, seed_value)
+
+func paint_strip(seed_value: int = 7301) -> void:
+	clear()
+	place_seed(Vector3.ZERO, 0.0, HardSlab.WALL, seed_value)
+	_grow(Vector3(1.0, 0.0, 0.0), 3, HardSlab.WALL, seed_value, 0.0)
+	_grow(Vector3(-1.0, 0.0, 0.0), 2, HardSlab.WALL, seed_value + 300, 0.0, 0)
+
+func paint_island(seed_value: int = 7301) -> void:
+	clear()
+	place_seed(Vector3(0.0, 0.0, 14.0), 0.0, HardSlab.WALL, seed_value)
+	# Three continuations bend the wall into a court. The next piece stops meeting the chain.
+	_grow(Vector3(1.0, 0.0, 0.0), 3, HardSlab.WALL, seed_value + 200, 58.0)
+
+func paint_sample(seed_value: int = 7301) -> void:
+	paint_island(seed_value)
+
+func _grow(direction: Vector3, steps: int, kind: int, seed_value: int, turn_deg: float, start_tip: int = -1) -> void:
+	var travel := Vector3(direction.x, 0.0, direction.z).normalized()
+	if travel.length_squared() < 0.01:
+		travel = Vector3(1.0, 0.0, 0.0)
+	var tip := modules.size() - 1 if start_tip < 0 else start_tip
+	for step in steps:
+		var chosen := _tip_face(travel, tip)
 		if chosen.is_empty():
+			return
+		var placed := false
+		for attempt in 6:
+			var salt := seed_value + 40 + step * 17 + attempt * 5
+			var id := expand(chosen["module"], chosen["face"], kind, salt, turn_deg)
+			if id < 0:
+				continue
+			tip = id
+			var cap := _far_end(id)
+			if not cap.is_empty():
+				var normal: Vector3 = cap["normal"]
+				var flat := Vector3(normal.x, 0.0, normal.z)
+				if flat.length_squared() > 0.04:
+					travel = flat.normalized()
+			placed = true
+			break
+		if placed:
 			continue
-		expand(chosen["module"], chosen["face"], step["kind"], seed_value + int(step["salt"]))
+		modules[chosen["module"]]["faces"][chosen["face"]]["blocked"] = true
+		var other := _tip_face(travel, tip)
+		if other.is_empty():
+			return
+		var id_other := expand(other["module"], other["face"], kind, seed_value + 90 + step * 13, turn_deg)
+		if id_other < 0:
+			return
+		tip = id_other
+
+func _tip_face(direction: Vector3, module_index: int = -1) -> Dictionary:
+	if modules.is_empty():
+		return {}
+	direction = Vector3(direction.x, 0.0, direction.z).normalized()
+	if module_index < 0:
+		module_index = modules.size() - 1
+	var faces: Array[Dictionary] = modules[module_index]["faces"]
+	var best := {}
+	var best_score := -INF
+	for face_index in faces.size():
+		var face: Dictionary = faces[face_index]
+		if face["role"] != "side" or face["welded"] or face.get("blocked", false) or float(face["area"]) < 6.0:
+			continue
+		var flat := Vector3(face["normal"].x, 0.0, face["normal"].z)
+		if flat.length_squared() < 0.04:
+			continue
+		if _face_width(face) > 7.2:
+			continue
+		var align: float = flat.normalized().dot(direction)
+		if align < 0.35:
+			continue
+		var score := align * 8.0 - float(face["area"]) * 0.02
+		if score > best_score:
+			best_score = score
+			best = {"module": module_index, "face": face_index}
+	return best
+
+func _face_width(face: Dictionary) -> float:
+	var polygon: PackedVector3Array = face["polygon"]
+	var width := 0.0
+	for index in polygon.size():
+		var a: Vector3 = polygon[index]
+		var b: Vector3 = polygon[(index + 1) % polygon.size()]
+		width = maxf(width, Vector2(b.x - a.x, b.z - a.z).length())
+	return width
+
+func _far_end(module_index: int) -> Dictionary:
+	var faces: Array[Dictionary] = modules[module_index]["faces"]
+	var origin := Vector3.ZERO
+	var found := false
+	for face: Dictionary in faces:
+		if face["welded"]:
+			origin = face["center"]
+			found = true
+			break
+	if not found:
+		return {}
+	var best: Dictionary = {}
+	var best_dist := 1.5
+	for face: Dictionary in faces:
+		if face["welded"] or face["role"] != "side" or _face_width(face) > 7.2:
+			continue
+		var dist: float = face["center"].distance_to(origin)
+		if dist > best_dist:
+			best_dist = dist
+			best = face
+	return best
 
 func raycast(origin: Vector3, direction: Vector3) -> Dictionary:
 	var dir := direction.normalized()
@@ -131,12 +230,12 @@ func _best_toward(direction: Vector3) -> Dictionary:
 		var faces: Array[Dictionary] = modules[module_index]["faces"]
 		for face_index in faces.size():
 			var face: Dictionary = faces[face_index]
-			if face["role"] != "side" or face["welded"] or float(face["area"]) < 8.0:
+			if face["role"] != "side" or face["welded"] or face.get("blocked", false) or float(face["area"]) < 8.0:
 				continue
 			var align: float = face["normal"].dot(direction)
 			if align < 0.45:
 				continue
-			var score := align * 4.0 + sqrt(float(face["area"])) * 0.08
+			var score := align * 4.0 + sqrt(float(face["area"])) * 0.08 + float(module_index) * 0.35
 			if score > best_score:
 				best_score = score
 				best = {"module": module_index, "face": face_index}
@@ -161,15 +260,21 @@ func _acceptable_guest(body: Dictionary) -> bool:
 		return false
 	var side_max := 0.0
 	var top_sum := 0.0
-	var min_area := INF
 	for face: Dictionary in faces:
 		var area: float = face["area"]
-		min_area = minf(min_area, area)
+		if face["role"] == "bottom":
+			if area < 0.8:
+				return false
+		elif area < 2.4:
+			return false
 		if face["role"] == "side":
 			side_max = maxf(side_max, area)
 		elif face["role"] == "top":
 			top_sum += area
-	if side_max < 8.0 or top_sum < 6.0 or min_area < 2.4:
+	if side_max < 8.0 or top_sum < 6.0:
+		return false
+	var span := HardSlab.aabb_of(vertices).size
+	if span.x > 16.0 or span.z > 16.0:
 		return false
 	var welded := false
 	for face: Dictionary in faces:

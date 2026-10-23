@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cqwrorkle64wp"
-path="res://.godot/imported/single.png-4af6685ad9a3137e9f3df5e09ac980f3.ctex"
+uid="uid://b2t0buc4dfvf6"
+path="res://.godot/imported/step3_island_face.png-cdce68dbf80dbe80ae00325b1a8f1978.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/slab_brush/single.png"
-dest_files=["res://.godot/imported/single.png-4af6685ad9a3137e9f3df5e09ac980f3.ctex"]
+source_file="res://art/slab_brush/step3_island_face.png"
+dest_files=["res://.godot/imported/step3_island_face.png-cdce68dbf80dbe80ae00325b1a8f1978.ctex"]
 
 [params]
 

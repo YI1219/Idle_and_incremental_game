@@ -32,10 +32,10 @@ static func seed_module(kind: int, seed_value: int, yaw: float, origin: Vector3)
 	body["seed"] = seed_value
 	return body
 
-static func expand_module(host_face: Dictionary, kind: int, seed_value: int) -> Dictionary:
+static func expand_module(host_face: Dictionary, kind: int, seed_value: int, turn_deg: float = 0.0) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value
-	var planes := _expand_planes(host_face, kind, rng)
+	var planes := _expand_planes(host_face, kind, rng, turn_deg)
 	var pruned := prune(planes, [0], seed_value)
 	var snap := PackedVector3Array()
 	var polygon: PackedVector3Array = host_face["polygon"]
@@ -104,7 +104,7 @@ static func _slab_planes(kind: int, rng: RandomNumberGenerator) -> Array[Plane]:
 		planes.append(_through(_jitter_normal(rng, spec["normal"]), point))
 	return planes
 
-static func _expand_planes(host_face: Dictionary, kind: int, rng: RandomNumberGenerator) -> Array[Plane]:
+static func _expand_planes(host_face: Dictionary, kind: int, rng: RandomNumberGenerator, turn_deg: float = 0.0) -> Array[Plane]:
 	var normal: Vector3 = host_face["normal"].normalized()
 	var polygon := _order(host_face["polygon"], normal)
 	var center := _mean(polygon)
@@ -113,8 +113,13 @@ static func _expand_planes(host_face: Dictionary, kind: int, rng: RandomNumberGe
 		var a: Vector3 = polygon[index]
 		var b: Vector3 = polygon[(index + 1) % polygon.size()]
 		width = maxf(width, Vector2(b.x - a.x, b.z - a.z).length())
+	# A narrow host is a slab end. Continue with another full panel instead of a short stub.
+	var along_end := width < 7.2
 	var depth := clampf(width * (0.62 if kind == WALL else 0.70), 3.8, 5.4)
-	depth *= rng.randf_range(0.96, 1.04)
+	if along_end:
+		depth = rng.randf_range(8.1, 9.3)
+	else:
+		depth *= rng.randf_range(0.96, 1.04)
 	var planes: Array[Plane] = [_through(-normal, center)]
 	for index in polygon.size():
 		var a: Vector3 = polygon[index]
@@ -134,13 +139,17 @@ static func _expand_planes(host_face: Dictionary, kind: int, rng: RandomNumberGe
 			outward = -outward
 		var n_perp := (normal - e_hat * normal.dot(e_hat)).normalized()
 		var taper := rng.randf_range(0.05, 0.22) if kind == WALL else rng.randf_range(-0.12, 0.08)
+		if along_end:
+			taper = 0.0
 		planes.append(_through(outward + n_perp * taper, a))
 	var side := normal.cross(Vector3.UP).normalized()
 	if side.length_squared() < 0.04:
 		side = Vector3.RIGHT
-	var cap_n := (normal + side * rng.randf_range(-0.10, 0.10) + Vector3.UP * (0.02 if kind == WALL else 0.0)).normalized()
+	var travel := Basis(Vector3.UP, deg_to_rad(turn_deg)) * normal
+	var cap_swing := rng.randf_range(-0.05, 0.05) if along_end else rng.randf_range(-0.10, 0.10)
+	var cap_n := (travel + side * cap_swing + Vector3.UP * (0.02 if kind == WALL else 0.0)).normalized()
 	var cap_point := center + normal * depth
-	for _push in 8:
+	for _push in 14:
 		var clear := true
 		var cap_d := cap_n.dot(cap_point)
 		for point: Vector3 in polygon:
@@ -149,7 +158,7 @@ static func _expand_planes(host_face: Dictionary, kind: int, rng: RandomNumberGe
 				break
 		if clear:
 			break
-		cap_point += normal * 0.4
+		cap_point += normal * 0.45
 	planes.append(_through(cap_n, cap_point))
 	var swing := side if rng.randf() < 0.5 else -side
 	var top_y := -INF
@@ -170,7 +179,7 @@ static func _expand_planes(host_face: Dictionary, kind: int, rng: RandomNumberGe
 		if shave_n.dot(point) - shave_d >= -0.2:
 			cuts_mating = true
 			break
-	if not cuts_mating:
+	if not along_end and not cuts_mating:
 		planes.append(_through(shave_n, shave_point))
 	return planes
 

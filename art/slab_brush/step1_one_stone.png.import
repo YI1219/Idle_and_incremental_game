@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6ysl1nfylr81"
-path="res://.godot/imported/cluster.png-a990cf42a2151b67132f3bd50784c475.ctex"
+uid="uid://cxn08kcq4mpvn"
+path="res://.godot/imported/step1_one_stone.png-abd1794973b0741c21a7152669eb659e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/slab_brush/cluster.png"
-dest_files=["res://.godot/imported/cluster.png-a990cf42a2151b67132f3bd50784c475.ctex"]
+source_file="res://art/slab_brush/step1_one_stone.png"
+dest_files=["res://.godot/imported/step1_one_stone.png-abd1794973b0741c21a7152669eb659e.ctex"]
 
 [params]
 

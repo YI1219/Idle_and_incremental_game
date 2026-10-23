@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1ia8y6kgrp74"
-path="res://.godot/imported/cluster_top.png-0c8fe1cdd383a7609525c40747362052.ctex"
+uid="uid://drnm5sbenuekq"
+path="res://.godot/imported/step2_continuous_strip.png-655c0f0da35c1b20c5d198d7160eb1da.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/slab_brush/cluster_top.png"
-dest_files=["res://.godot/imported/cluster_top.png-0c8fe1cdd383a7609525c40747362052.ctex"]
+source_file="res://art/slab_brush/step2_continuous_strip.png"
+dest_files=["res://.godot/imported/step2_continuous_strip.png-655c0f0da35c1b20c5d198d7160eb1da.ctex"]
 
 [params]
 

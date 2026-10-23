@@ -53,14 +53,15 @@ func run() -> void:
 	study.status.visible = false
 	await process_frame
 	var shots: Array = []
-	study.show_single()
-	await _ready_frame(42.0, 18.0, 16.5, 0.15)
-	await _save("single", shots)
-	study.show_cluster()
-	await _ready_frame(48.0, 28.0, 26.0, 0.2)
-	await _save("cluster", shots)
-	await _ready_frame(40.0, 58.0, 22.0, 0.0)
-	await _save("cluster_top", shots)
+	study.show_one()
+	await _ready_frame(46.0, 22.0, 16.0, 0.2)
+	await _save("step1_one_stone", shots)
+	study.show_strip()
+	await _ready_frame(18.0, 14.0, 52.0, 0.6)
+	await _save("step2_continuous_strip", shots)
+	study.show_island()
+	await _ready_frame(180.0, 58.0, 42.0, 0.4)
+	await _save("step3_island_face", shots)
 	var report := {
 		"scene": "res://scenes/slab_brush_study.tscn",
 		"godot": Engine.get_version_info().string,
