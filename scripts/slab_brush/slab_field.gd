@@ -5,10 +5,14 @@ extends RefCounted
 
 var modules: Array[Dictionary] = []
 var _undo: Array[Dictionary] = []
+var deck_polygon := PackedVector2Array()
+var deck_y := 0.0
 
 func clear() -> void:
 	modules.clear()
 	_undo.clear()
+	deck_polygon = PackedVector2Array()
+	deck_y = 0.0
 
 func place_seed(origin: Vector3, yaw: float, kind: int, seed_value: int) -> int:
 	var body := HardSlab.seed_module(kind, seed_value, yaw, origin)
@@ -28,15 +32,12 @@ func expand(module_index: int, face_index: int, kind: int, seed_value: int, turn
 	var face: Dictionary = faces[face_index]
 	if face["role"] != "side" or face["welded"]:
 		return -1
-	var guest := HardSlab.expand_module(face, kind, seed_value, turn_deg)
-	if not _acceptable_guest(guest):
-		face["welded"] = false
+	var guest := HardSlab.attach_module(face, kind, seed_value, turn_deg)
+	if not _chunky(guest):
 		return -1
 	if _overlaps_sibling(guest, module_index):
-		face["welded"] = false
 		return -1
 	modules.append(guest)
-	host["mesh"] = HardSlab.render_mesh(faces, int(host["seed"]))
 	_undo.append({"module": module_index, "face": face_index})
 	return modules.size() - 1
 
@@ -54,22 +55,71 @@ func undo() -> bool:
 
 func paint_one(seed_value: int = 7301) -> void:
 	clear()
-	place_seed(Vector3.ZERO, deg_to_rad(24.0), HardSlab.WALL, seed_value)
+	place_seed(Vector3.ZERO, deg_to_rad(18.0), HardSlab.WALL, seed_value)
 
-func paint_strip(seed_value: int = 7301) -> void:
+func paint_two(seed_value: int = 7301) -> void:
 	clear()
-	place_seed(Vector3.ZERO, 0.0, HardSlab.WALL, seed_value)
-	_grow(Vector3(1.0, 0.0, 0.0), 3, HardSlab.WALL, seed_value, 0.0)
-	_grow(Vector3(-1.0, 0.0, 0.0), 2, HardSlab.WALL, seed_value + 300, 0.0, 0)
+	place_seed(Vector3(-4.15, 0.0, 0.05), deg_to_rad(4.0), HardSlab.WALL, seed_value)
+	place_seed(Vector3(3.85, -0.7, 0.35), deg_to_rad(-6.0), HardSlab.WALL, seed_value + 19)
 
 func paint_island(seed_value: int = 7301) -> void:
 	clear()
-	place_seed(Vector3(0.0, 0.0, 14.0), 0.0, HardSlab.WALL, seed_value)
-	# Three continuations bend the wall into a court. The next piece stops meeting the chain.
-	_grow(Vector3(1.0, 0.0, 0.0), 3, HardSlab.WALL, seed_value + 200, 58.0)
+	var count := 8
+	var radius := 3.15
+	for index in count:
+		var angle := TAU * float(index) / float(count)
+		var outward := Vector3(cos(angle), 0.0, sin(angle))
+		place_seed(outward * radius, HardSlab.yaw_facing(outward), HardSlab.WALL, seed_value + index * 11)
+	_cap_deck()
 
 func paint_sample(seed_value: int = 7301) -> void:
 	paint_island(seed_value)
+
+func _cap_deck() -> void:
+	var centroid := Vector3.ZERO
+	for body: Dictionary in modules:
+		centroid += HardSlab.aabb_of(body["vertices"]).get_center()
+	if not modules.is_empty():
+		centroid /= float(modules.size())
+	var points := PackedVector2Array()
+	var crown := 0.0
+	for body: Dictionary in modules:
+		var chunk_center: Vector3 = HardSlab.aabb_of(body["vertices"]).get_center()
+		var outward := Vector3(chunk_center.x - centroid.x, 0.0, chunk_center.z - centroid.z)
+		if outward.length_squared() < 0.01:
+			outward = Vector3(0.0, 0.0, 1.0)
+		outward = outward.normalized()
+		for face: Dictionary in body["faces"]:
+			if face["role"] == "top":
+				crown = maxf(crown, float(face["center"].y))
+				for point: Vector3 in face["polygon"]:
+					points.append(Vector2(point.x, point.z))
+				face["hidden"] = true
+				continue
+			if face["role"] == "bottom":
+				face["hidden"] = true
+				continue
+			var flat_n := Vector3(face["normal"].x, 0.0, face["normal"].z)
+			var facing_out := flat_n.length_squared() > 0.04 and flat_n.normalized().dot(outward) >= 0.2
+			face["hidden"] = not facing_out
+		body["mesh"] = HardSlab.render_mesh(body["faces"], int(body["seed"]), true)
+	if points.size() < 3:
+		return
+	deck_polygon = Geometry2D.convex_hull(points)
+	deck_y = crown + 0.16
+
+func _chunky(body: Dictionary) -> bool:
+	var box: AABB = HardSlab.aabb_of(body["vertices"])
+	var flat := Vector2(box.size.x, box.size.z)
+	if box.size.y < 5.2 or flat.x < 6.5 or flat.y < 6.5:
+		return false
+	if maxf(flat.x, flat.y) / minf(flat.x, flat.y) > 1.85:
+		return false
+	var top := 0.0
+	for face: Dictionary in body["faces"]:
+		if face["role"] == "top":
+			top += float(face["area"])
+	return top > 18.0
 
 func _grow(direction: Vector3, steps: int, kind: int, seed_value: int, turn_deg: float, start_tip: int = -1) -> void:
 	var travel := Vector3(direction.x, 0.0, direction.z).normalized()
@@ -295,7 +345,7 @@ func _overlaps_sibling(guest: Dictionary, host_index: int) -> bool:
 		for point: Vector3 in guest_verts:
 			var inside := true
 			for plane: Plane in other["planes"]:
-				if plane.distance_to(point) >= -0.05:
+				if plane.distance_to(point) >= -0.9:
 					inside = false
 					break
 			if inside:

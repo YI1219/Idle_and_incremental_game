@@ -4,9 +4,11 @@
 
 2026-10-23 用户批准一条独立小样：程序化 DREDGE 式硬平面板岩，用笔刷一块块往外长，拼成小岛轮廓。不改 seed 7301 整岛轮廓，不改草缘／倒角，不用 Tripo 崖壁。主场景仍是 `scenes/terrain_editor.tscn`。小样入口是 `scenes/slab_brush_study.tscn`。
 
-试刷子：运行该场景。左键空地放下第一块，左键端面把岸接长。1 崖壁，2 坡肩，Z 撤销，R 清空。F1 单石，F2 长岸，F3 环岛，都是 seed 7301 的预设，只活在这个小样里。
+试刷子：运行该场景。左键空地放下一块厚岩，左键侧面再靠上一块。1 崖壁，2 坡肩，Z 撤销，R 清空。F1 单石，F2 两块相靠，F3 小岛，都是 seed 7301 的预设，只活在这个小样里。
 
-采集脚本 `tools/art/capture_slab_brush.gd`，三张对照在 `art/slab_brush/`：`step1_one_stone`、`step2_continuous_strip`、`step3_island_face`。这台 Linux 机器是 llvmpipe／gl_compatibility，正式观感等 Mac Metal 再采。水面接合、真草网格、多层台地还没做。顶面是一层平涂鼠尾草绿。
+每块是一坨有顶冠、底面和几面大崖壁的厚石头，大约 11×7×12 米。两块是两坨靠在一起，顶面错开一阶。小岛是八块围成一圈，朝内的面不画，顶上盖一层鼠尾草绿平地。镜头是四分之三，能同时看见顶面和崖壁。水面是一块深青色平面，天是平色。
+
+采集脚本 `tools/art/capture_slab_brush.gd`，三张在 `art/slab_brush/`：`fix_one_stone`、`fix_two_stones`、`fix_small_island`。这台 Linux 机器是 llvmpipe／gl_compatibility，正式观感等 Mac Metal 再采。水面接合、真草网格、多层台地还没做。
 
 唯一目标：第一阶段PCG与真实游戏画面；游戏内容填充须等用户明确启动第二阶段。
 

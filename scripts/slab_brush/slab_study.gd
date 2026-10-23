@@ -17,13 +17,17 @@ var _pitch := 18.0
 var _distance := 24.0
 var _focus := Vector3(0.0, 2.2, 0.0)
 var _orbiting := false
-var _rock: Material
+var sun: DirectionalLight3D
+var _rock: StandardMaterial3D
+var _top_mat: StandardMaterial3D
 var _ghost_mat: StandardMaterial3D
 var _hover_key := ""
 
 func _ready() -> void:
-	_rock = ShaderMaterial.new()
-	_rock.shader = load("res://shaders/slab_brush/slab_rock.gdshader")
+	_rock = _matte(Color(0.62, 0.60, 0.66), 0.94)
+	_top_mat = _matte(Color(0.50, 0.69, 0.38), 1.0)
+	_top_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_top_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	_ghost_mat = _matte(Color(0.72, 0.70, 0.78, 0.38), 0.9)
 	_ghost_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_ghost_mat.vertex_color_use_as_albedo = true
@@ -34,17 +38,20 @@ func _ready() -> void:
 func show_one() -> void:
 	field.paint_one(7301)
 	_sync_meshes()
-	frame_on_bounds(46.0, 22.0, 16.0, 0.2)
+	frame_on_bounds(48.0, 34.0, 17.0, 0.9)
+	_aim_sun(42.0)
 
-func show_strip() -> void:
-	field.paint_strip(7301)
+func show_two() -> void:
+	field.paint_two(7301)
 	_sync_meshes()
-	frame_on_bounds(18.0, 14.0, 52.0, 0.6)
+	frame_on_bounds(40.0, 32.0, 24.0, 1.0)
+	_aim_sun(36.0)
 
 func show_island() -> void:
 	field.paint_island(7301)
 	_sync_meshes()
-	frame_on_bounds(180.0, 58.0, 42.0, 0.4)
+	frame_on_bounds(34.0, 32.0, 26.0, 0.8)
+	_aim_sun(28.0)
 
 func show_single() -> void:
 	show_one()
@@ -60,61 +67,61 @@ func frame_on_bounds(yaw_deg: float, pitch_deg: float, distance: float, lift: fl
 	_distance = distance
 	_apply_camera()
 
+func _aim_sun(view_yaw: float) -> void:
+	if sun == null:
+		return
+	var source := deg_to_rad(view_yaw - 36.0)
+	var travel := Vector3(-sin(source), -0.62, -cos(source))
+	sun.look_at(travel, Vector3.UP)
+
 func _build_world() -> void:
-	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-28.0, 118.0, 0.0)
-	sun.light_color = Color("efe4d8")
-	sun.light_energy = 1.05
-	sun.light_specular = 0.08
-	sun.shadow_enabled = true
-	sun.directional_shadow_max_distance = 110.0
-	sun.shadow_bias = 0.03
-	sun.shadow_normal_bias = 0.8
+	sun = DirectionalLight3D.new()
+	sun.rotation_degrees = Vector3(-38.0, -20.0, 0.0)
+	sun.light_color = Color("f4efe6")
+	sun.light_energy = 2.05
+	sun.light_specular = 0.02
+	sun.shadow_enabled = false
+	sun.directional_shadow_max_distance = 140.0
+	sun.shadow_bias = 0.05
+	sun.shadow_normal_bias = 1.1
 	add_child(sun)
 	var fill := DirectionalLight3D.new()
-	fill.rotation_degrees = Vector3(-18.0, -48.0, 0.0)
-	fill.light_color = Color("d5d0e6")
-	fill.light_energy = 0.22
+	fill.rotation_degrees = Vector3(-28.0, 140.0, 0.0)
+	fill.light_color = Color("c5ced8")
+	fill.light_energy = 0.1
 	fill.shadow_enabled = false
 	add_child(fill)
 	var world := WorldEnvironment.new()
 	var env := Environment.new()
-	env.background_mode = Environment.BG_SKY
-	var sky := Sky.new()
-	var sky_material := ShaderMaterial.new()
-	sky_material.shader = load("res://shaders/terrain_editor/sky.gdshader")
-	sky_material.set_shader_parameter("haze", 0.62)
-	var backdrop: Texture2D = load("res://assets/terrain_editor/cloud_backdrop_v01.png")
-	sky_material.set_shader_parameter("cloud_backdrop", backdrop)
-	sky.sky_material = sky_material
-	sky.process_mode = Sky.PROCESS_MODE_QUALITY
-	env.sky = sky
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0.82, 0.88, 0.92)
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("b7b3c6")
-	env.ambient_light_energy = 0.34
+	env.ambient_light_color = Color(0.72, 0.76, 0.82)
+	env.ambient_light_energy = 0.18
 	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
-	env.ssao_enabled = true
-	env.ssao_radius = 1.1
-	env.ssao_intensity = 1.15
-	env.ssao_power = 1.5
+	env.ssao_enabled = false
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_EXPONENTIAL
-	env.fog_light_color = Color("b9c8d6")
-	env.fog_density = 0.0022
-	env.fog_sky_affect = 0.15
+	env.fog_light_color = Color(0.82, 0.88, 0.92)
+	env.fog_density = 0.0011
+	env.fog_sky_affect = 0.0
 	env.adjustment_enabled = true
-	env.adjustment_contrast = 1.05
+	env.adjustment_contrast = 1.08
 	world.environment = env
 	add_child(world)
-	var deck := MeshInstance3D.new()
-	var deck_mesh := PlaneMesh.new()
-	deck_mesh.size = Vector2(220.0, 220.0)
-	deck.mesh = deck_mesh
-	deck.position = Vector3(0.0, -0.35, 0.0)
-	deck.material_override = _matte(Color(0.36, 0.52, 0.58), 0.92)
-	add_child(deck)
+	var water := MeshInstance3D.new()
+	water.name = "Water"
+	var water_mesh := PlaneMesh.new()
+	water_mesh.size = Vector2(90.0, 90.0)
+	water.mesh = water_mesh
+	water.position = Vector3(0.0, 0.55, 0.0)
+	var water_mat := _matte(Color(0.13, 0.32, 0.40), 1.0)
+	water_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	water.material_override = water_mat
+	water.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(water)
 	camera = Camera3D.new()
-	camera.fov = 30.0
+	camera.fov = 42.0
 	camera.near = 0.1
 	camera.far = 400.0
 	camera.current = true
@@ -166,16 +173,78 @@ func _sync_meshes() -> void:
 	for body: Dictionary in field.modules:
 		var instance := MeshInstance3D.new()
 		instance.mesh = body["mesh"]
-		instance.material_override = _rock
+		_paint_chunk(instance)
 		instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 		slab_root.add_child(instance)
+	if field.deck_polygon.size() >= 3:
+		var land := MeshInstance3D.new()
+		land.mesh = _land_deck()
+		var turf := _matte(Color(0.50, 0.69, 0.38), 1.0)
+		turf.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		turf.cull_mode = BaseMaterial3D.CULL_DISABLED
+		land.material_override = turf
+		land.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+		slab_root.add_child(land)
 	_refresh_status()
+
+func _land_deck() -> ArrayMesh:
+	var polygon := field.deck_polygon
+	var crown := field.deck_y
+	var centroid := Vector2.ZERO
+	for point: Vector2 in polygon:
+		centroid += point
+	centroid /= float(polygon.size())
+	var vertices := PackedVector3Array()
+	var normals := PackedVector3Array()
+	var colors := PackedColorArray()
+	var uvs := PackedVector2Array()
+	var origin := Vector3(centroid.x, crown, centroid.y)
+	for index in polygon.size():
+		var a := polygon[index]
+		var b := polygon[(index + 1) % polygon.size()]
+		var pa := Vector3(a.x, crown, a.y)
+		var pb := Vector3(b.x, crown, b.y)
+		if (pa - origin).cross(pb - origin).y < 0.0:
+			var swap := pa
+			pa = pb
+			pb = swap
+		for point in [origin, pa, pb]:
+			vertices.append(point)
+			normals.append(Vector3.UP)
+			colors.append(Color(0.34, 0.56, 0.32))
+			uvs.append(Vector2(1.0, 0.4))
+	var mesh := ArrayMesh.new()
+	var arrays: Array = []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_COLOR] = colors
+	arrays[Mesh.ARRAY_TEX_UV] = uvs
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return mesh
+
+func _paint_chunk(instance: MeshInstance3D) -> void:
+	if instance.mesh == null:
+		return
+	var count := instance.mesh.get_surface_count()
+	if count == 0:
+		return
+	instance.set_surface_override_material(0, _rock if count > 1 or _surface_is_side(instance) else _top_mat)
+	if count > 1:
+		instance.set_surface_override_material(1, _top_mat)
+
+func _surface_is_side(instance: MeshInstance3D) -> bool:
+	var arrays: Array = instance.mesh.surface_get_arrays(0)
+	var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+	if normals.is_empty():
+		return true
+	return normals[0].y < 0.8
 
 func _refresh_status() -> void:
 	if status == null:
 		return
 	var tool := "崖壁" if kind == SLAB.WALL else "坡肩"
-	status.text = "硬面岩刷  ·  %s\n左键空地放下第一块，左键端面把岸接长\n1 崖壁   2 坡肩   Z 撤销   R 清空\nF1 单石   F2 长岸   F3 环岛   已放 %d 块" % [tool, field.modules.size()]
+	status.text = "硬面岩刷  ·  %s\n左键空地放下一块，左键侧面再靠上一块\n1 崖壁   2 坡肩   Z 撤销   R 清空\nF1 单石   F2 两块   F3 小岛   已放 %d 块" % [tool, field.modules.size()]
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -222,7 +291,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_F1:
 				show_one()
 			KEY_F2:
-				show_strip()
+				show_two()
 			KEY_F3:
 				show_island()
 		_refresh_status()
@@ -260,8 +329,7 @@ func _update_hover() -> void:
 	var faces: Array[Dictionary] = host["faces"]
 	var face: Dictionary = faces[op["face"]]
 	highlight.mesh = _face_overlay(face)
-	var guest := SLAB.expand_module(face, kind, salt)
-	face["welded"] = false
+	var guest := SLAB.attach_module(face, kind, salt, 6.0)
 	if guest["faces"].size() >= 5:
 		ghost.mesh = guest["mesh"]
 

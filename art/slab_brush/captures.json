@@ -3,37 +3,37 @@
 	"art_accepted": false,
 	"captures": [
 		{
-			"camera": "(10.79607, 9.607037, 10.17502)",
-			"distance": 16.0,
+			"camera": "(10.3056, 14.17228, 9.67592)",
+			"distance": 17.0,
 			"error": 0,
-			"file": "step1_one_stone.png",
-			"focus": "(0.124702, 3.613331, -0.130201)",
-			"fov": 30.0,
+			"file": "fix_one_stone.png",
+			"focus": "(-0.168017, 4.666002, 0.245436)",
+			"fov": 42.0,
 			"modules": 1,
-			"pitch": 22.0,
-			"yaw": 46.0
+			"pitch": 34.0,
+			"yaw": 48.0
 		},
 		{
-			"camera": "(17.11074, 16.59327, 47.22065)",
-			"distance": 52.0,
+			"camera": "(12.77378, 17.13406, 16.17448)",
+			"distance": 24.0,
 			"error": 0,
-			"file": "step2_continuous_strip.png",
-			"focus": "(1.519175, 4.013331, -0.76527)",
-			"fov": 30.0,
-			"modules": 5,
-			"pitch": 14.0,
-			"yaw": 18.0
+			"file": "fix_two_stones.png",
+			"focus": "(-0.308975, 4.416002, 0.583063)",
+			"fov": 42.0,
+			"modules": 2,
+			"pitch": 32.0,
+			"yaw": 40.0
 		},
 		{
-			"camera": "(8.615761, 39.43135, -13.67513)",
-			"distance": 42.0,
+			"camera": "(12.21394, 18.3439, 18.3281)",
+			"distance": 26.0,
 			"error": 0,
-			"file": "step3_island_face.png",
-			"focus": "(8.615761, 3.813331, 8.581482)",
-			"fov": 30.0,
-			"modules": 4,
-			"pitch": 58.0,
-			"yaw": 180.0
+			"file": "fix_small_island.png",
+			"focus": "(-0.115846, 4.566001, 0.048446)",
+			"fov": 42.0,
+			"modules": 8,
+			"pitch": 32.0,
+			"yaw": 34.0
 		}
 	],
 	"courtyard_scene_untouched": true,

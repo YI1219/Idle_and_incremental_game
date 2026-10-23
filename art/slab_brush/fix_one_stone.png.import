@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drnm5sbenuekq"
-path="res://.godot/imported/step2_continuous_strip.png-655c0f0da35c1b20c5d198d7160eb1da.ctex"
+uid="uid://68kn5e7ftdhv"
+path="res://.godot/imported/fix_one_stone.png-424337d157b7449da3ed79ed186ba069.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/slab_brush/step2_continuous_strip.png"
-dest_files=["res://.godot/imported/step2_continuous_strip.png-655c0f0da35c1b20c5d198d7160eb1da.ctex"]
+source_file="res://art/slab_brush/fix_one_stone.png"
+dest_files=["res://.godot/imported/fix_one_stone.png-424337d157b7449da3ed79ed186ba069.ctex"]
 
 [params]
 

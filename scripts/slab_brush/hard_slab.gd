@@ -1,8 +1,7 @@
 class_name HardSlab
 extends RefCounted
-## One convex cliff slab: a handful of large flat faces, not a triangulated shell.
-## Adjacent slabs weld by reusing an exposed side polygon as the mating face.
-## This study path does not edit the seed-island contour.
+## One convex cliff chunk: large flat side panels on a thick mass with a crown and a base.
+## A second chunk abuts the first as its own volume. This path does not edit the seed island.
 
 const WALL := 0
 const SHOULDER := 1
@@ -79,30 +78,92 @@ static func prune(planes: Array[Plane], protect: Array[int], salt: int) -> Dicti
 	return body
 
 static func _slab_planes(kind: int, rng: RandomNumberGenerator) -> Array[Plane]:
-	# Long axis X, thickness Z. Two unequal panels on each long side, plus one corner panel.
-	var height := 6.7 if kind == WALL else 5.6
-	height *= rng.randf_range(0.97, 1.03)
+	# Irregular cliff mass. Local +Z is the broad cliff panel. Walls lean out toward the base.
+	var height := 7.2 if kind == WALL else 6.2
+	height *= rng.randf_range(0.98, 1.02)
+	var crown := Vector3(0.03, 0.998, 0.04).normalized()
 	var planes: Array[Plane] = [
-		Plane(Vector3.UP, height),
+		_through(crown, Vector3(0.0, height, 0.0)),
 		Plane(Vector3.DOWN, 0.0),
 	]
+	# Six wall panels around a thick footprint. Tilt is only enough to show the base is wider.
 	var specs: Array[Dictionary] = [
-		{"normal": Vector3(-0.34, 0.10, 0.94), "point": Vector3(-2.15, height * 0.42, 2.05)},
-		{"normal": Vector3(0.46, -0.16, 0.87), "point": Vector3(2.35, height * 0.55, 2.28)},
-		{"normal": Vector3(0.28, 0.20, -0.94), "point": Vector3(1.7, height * 0.40, -1.95)},
-		{"normal": Vector3(-0.50, -0.08, -0.86), "point": Vector3(-2.25, height * 0.58, -2.15)},
-		{"normal": Vector3(0.93, 0.16, 0.30), "point": Vector3(5.15, height * 0.46, 0.35)},
-		{"normal": Vector3(-0.90, -0.12, -0.38), "point": Vector3(-4.85, height * 0.50, -0.25)},
-		{"normal": Vector3(0.74, 0.10, 0.66), "point": Vector3(4.15, height * 0.48, 1.85)},
+		{"normal": Vector3(0.00, 0.12, 1.00), "point": Vector3(0.10, height * 0.45, 5.35)},
+		{"normal": Vector3(0.86, 0.11, 0.50), "point": Vector3(4.15, height * 0.45, 2.55)},
+		{"normal": Vector3(0.92, 0.10, -0.38), "point": Vector3(4.55, height * 0.45, -1.85)},
+		{"normal": Vector3(0.08, 0.12, -1.00), "point": Vector3(0.20, height * 0.45, -4.85)},
+		{"normal": Vector3(-0.78, 0.11, -0.62), "point": Vector3(-3.85, height * 0.45, -2.65)},
+		{"normal": Vector3(-0.88, 0.12, 0.46), "point": Vector3(-4.35, height * 0.45, 2.15)},
 	]
 	if kind == SHOULDER:
-		specs[0] = {"normal": Vector3(-0.30, 0.28, 0.91), "point": Vector3(-1.6, height * 0.58, 1.85)}
-		specs[1] = {"normal": Vector3(0.36, 0.24, 0.90), "point": Vector3(2.1, height * 0.56, 2.05)}
+		specs[1] = {"normal": Vector3(0.62, 0.55, 0.56), "point": Vector3(3.4, height * 0.7, 2.2)}
 	for spec: Dictionary in specs:
 		var point: Vector3 = spec["point"]
-		point += Vector3(rng.randf_range(-0.12, 0.12), rng.randf_range(-0.08, 0.08), rng.randf_range(-0.12, 0.12))
+		point += Vector3(rng.randf_range(-0.12, 0.12), rng.randf_range(-0.05, 0.05), rng.randf_range(-0.12, 0.12))
 		planes.append(_through(_jitter_normal(rng, spec["normal"]), point))
 	return planes
+
+static func yaw_facing(direction: Vector3) -> float:
+	var flat := Vector3(direction.x, 0.0, direction.z)
+	if flat.length_squared() < 0.0001:
+		return 0.0
+	flat = flat.normalized()
+	return atan2(flat.x, flat.z)
+
+static func attach_module(host_face: Dictionary, kind: int, seed_value: int, yaw_deg: float = 0.0) -> Dictionary:
+	# Keep the guest upright. Bite a little into the host, step the crown, slide along the seam.
+	var host_n := Vector3(host_face["normal"].x, 0.0, host_face["normal"].z)
+	if host_n.length_squared() < 0.04:
+		host_n = Vector3(1.0, 0.0, 0.0)
+	host_n = host_n.normalized()
+	var probe := seed_module(kind, seed_value, 0.0, Vector3.ZERO)
+	var mate := _side_facing(probe["faces"], -host_n)
+	if mate.is_empty():
+		return probe
+	var mate_n := Vector3(mate["normal"].x, 0.0, mate["normal"].z).normalized()
+	var yaw := atan2(-host_n.x, -host_n.z) - atan2(mate_n.x, mate_n.z) + deg_to_rad(yaw_deg)
+	var guest := seed_module(kind, seed_value, yaw, Vector3.ZERO)
+	mate = _side_facing(guest["faces"], -host_n)
+	if mate.is_empty():
+		return guest
+	var tangent := host_n.cross(Vector3.UP)
+	if tangent.length_squared() < 0.0001:
+		tangent = Vector3(0.0, 0.0, 1.0)
+	tangent = tangent.normalized()
+	var dest: Vector3 = host_face["center"] + host_n * 0.22 + tangent * 0.35
+	dest.y = float(mate["center"].y) - 0.72
+	return _shift_body(guest, dest - mate["center"], seed_value)
+
+static func _side_facing(faces: Array, direction: Vector3) -> Dictionary:
+	var flat_dir := Vector3(direction.x, 0.0, direction.z)
+	if flat_dir.length_squared() < 0.0001:
+		flat_dir = Vector3(1.0, 0.0, 0.0)
+	flat_dir = flat_dir.normalized()
+	var best: Dictionary = {}
+	var best_score := -INF
+	for face: Dictionary in faces:
+		if str(face["role"]) != "side":
+			continue
+		var flat := Vector3(face["normal"].x, 0.0, face["normal"].z)
+		if flat.length_squared() < 0.04:
+			continue
+		var score: float = flat.normalized().dot(flat_dir) * 5.0 + float(face["area"]) * 0.012
+		if score > best_score:
+			best_score = score
+			best = face
+	return best
+
+static func _shift_body(body: Dictionary, shift: Vector3, salt: int) -> Dictionary:
+	var moved: Array[Plane] = []
+	var planes: Array[Plane] = body["planes"]
+	for plane: Plane in planes:
+		var normal := plane.normal.normalized()
+		var point: Vector3 = normal * plane.d + shift
+		moved.append(Plane(normal, normal.dot(point)))
+	var next := build(moved, salt)
+	next["kind"] = body["kind"]
+	next["seed"] = body["seed"]
+	return next
 
 static func _expand_planes(host_face: Dictionary, kind: int, rng: RandomNumberGenerator, turn_deg: float = 0.0) -> Array[Plane]:
 	var normal: Vector3 = host_face["normal"].normalized()
@@ -212,7 +273,7 @@ static func _jitter_normal(rng: RandomNumberGenerator, normal: Vector3) -> Vecto
 	normal = normal.normalized()
 	var axis := normal.cross(Vector3.UP if absf(normal.y) < 0.9 else Vector3.RIGHT).normalized()
 	var other := normal.cross(axis).normalized()
-	return (normal + axis * sin(deg_to_rad(rng.randf_range(-2.2, 2.2))) + other * sin(deg_to_rad(rng.randf_range(-2.2, 2.2)))).normalized()
+	return (normal + axis * sin(deg_to_rad(rng.randf_range(-1.6, 1.6))) + other * sin(deg_to_rad(rng.randf_range(-1.6, 1.6)))).normalized()
 
 static func _vertices(planes: Array[Plane], snap_plane: Plane, snap_points: PackedVector3Array) -> PackedVector3Array:
 	var found := PackedVector3Array()
@@ -340,50 +401,53 @@ static func _mean(points: PackedVector3Array) -> Vector3:
 		sum += point
 	return sum / maxf(points.size(), 1)
 
-static func render_mesh(faces: Array[Dictionary], salt: int) -> ArrayMesh:
-	return _mesh(faces, salt, true)
+static func render_mesh(faces: Array[Dictionary], salt: int, hide_top: bool = false) -> ArrayMesh:
+	return _mesh(faces, salt, true, hide_top)
 
-static func _mesh(faces: Array[Dictionary], salt: int, hide_welded: bool) -> ArrayMesh:
-	var vertices := PackedVector3Array()
-	var normals := PackedVector3Array()
-	var colors := PackedColorArray()
-	var uvs := PackedVector2Array()
+static func _mesh(faces: Array[Dictionary], salt: int, hide_welded: bool, hide_top: bool = false) -> ArrayMesh:
+	var side_v := PackedVector3Array()
+	var side_n := PackedVector3Array()
+	var top_v := PackedVector3Array()
+	var top_n := PackedVector3Array()
 	for face: Dictionary in faces:
 		if hide_welded and face["welded"]:
 			continue
+		if face.get("hidden", false):
+			continue
+		if hide_top and face["role"] == "top":
+			continue
 		var polygon: PackedVector3Array = face["polygon"]
 		var normal: Vector3 = face["normal"]
-		var tint := _tint(face, salt)
-		var role := 0.0
-		if face["role"] == "top":
-			role = 1.0
-		elif face["role"] == "bottom":
-			role = 2.0
-		var shift := absf(sin(float(salt) * 0.17 + float(face["plane"]) * 1.7))
+		var into_top: bool = face["role"] == "top"
 		for index in range(1, polygon.size() - 1):
 			var tri := PackedVector3Array([polygon[0], polygon[index], polygon[index + 1]])
-			if (tri[1] - tri[0]).cross(tri[2] - tri[0]).dot(normal) < 0.0:
+			# Godot treats clockwise as the front face. Keep the vertex normal pointing outward.
+			if (tri[1] - tri[0]).cross(tri[2] - tri[0]).dot(normal) > 0.0:
 				var swap := tri[1]
 				tri[1] = tri[2]
 				tri[2] = swap
 			if (tri[1] - tri[0]).cross(tri[2] - tri[0]).length_squared() < 0.00000001:
 				continue
 			for point: Vector3 in tri:
-				vertices.append(point)
-				normals.append(normal)
-				colors.append(tint)
-				uvs.append(Vector2(role, shift))
+				if into_top:
+					top_v.append(point)
+					top_n.append(normal)
+				else:
+					side_v.append(point)
+					side_n.append(normal)
 	var mesh := ArrayMesh.new()
+	_add_surface(mesh, side_v, side_n)
+	_add_surface(mesh, top_v, top_n)
+	return mesh
+
+static func _add_surface(mesh: ArrayMesh, vertices: PackedVector3Array, normals: PackedVector3Array) -> void:
 	if vertices.is_empty():
-		return mesh
+		return
 	var arrays: Array = []
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = vertices
 	arrays[Mesh.ARRAY_NORMAL] = normals
-	arrays[Mesh.ARRAY_COLOR] = colors
-	arrays[Mesh.ARRAY_TEX_UV] = uvs
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	return mesh
 
 static func _tint(face: Dictionary, salt: int) -> Color:
 	var shift := absf(sin(float(salt) * 0.17 + float(face["plane"]) * 1.7))

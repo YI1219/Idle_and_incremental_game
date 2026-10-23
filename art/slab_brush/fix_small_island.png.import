@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxn08kcq4mpvn"
-path="res://.godot/imported/step1_one_stone.png-abd1794973b0741c21a7152669eb659e.ctex"
+uid="uid://bbpp52se3wgre"
+path="res://.godot/imported/fix_small_island.png-e967c5677e723d5eb182983696f34f75.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/slab_brush/step1_one_stone.png"
-dest_files=["res://.godot/imported/step1_one_stone.png-abd1794973b0741c21a7152669eb659e.ctex"]
+source_file="res://art/slab_brush/fix_small_island.png"
+dest_files=["res://.godot/imported/fix_small_island.png-e967c5677e723d5eb182983696f34f75.ctex"]
 
 [params]
 

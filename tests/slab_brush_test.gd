@@ -16,24 +16,77 @@ func _initialize() -> void:
 func run() -> void:
 	var one := SlabField.new()
 	one.paint_one(7301)
-	check(one.modules.size() == 1, "one stone should be a single slab, got %d" % one.modules.size())
+	check(one.modules.size() == 1, "one stone should be a single chunk, got %d" % one.modules.size())
 	if not one.modules.is_empty():
-		_check_module(one.modules[0], 0)
-	var strip := SlabField.new()
-	strip.paint_strip(7301)
-	check(strip.modules.size() >= 4, "continuous strip needs several welded slabs, got %d" % strip.modules.size())
-	_check_chain(strip)
-	var strip_box := strip.bounds().size
-	check(maxf(strip_box.x, strip_box.z) / minf(strip_box.x, strip_box.z) >= 2.4, "strip should read longer than it is thick: %s" % strip_box)
+		_check_chunk(one.modules[0], 0)
+	var pair := SlabField.new()
+	pair.paint_two(7301)
+	check(pair.modules.size() == 2, "two stones should be exactly two chunks, got %d" % pair.modules.size())
+	if pair.modules.size() == 2:
+		_check_chunk(pair.modules[0], 0)
+		_check_chunk(pair.modules[1], 1)
+		var a := HardSlab.aabb_of(pair.modules[0]["vertices"]).get_center()
+		var b := HardSlab.aabb_of(pair.modules[1]["vertices"]).get_center()
+		var apart := Vector2(a.x, a.z).distance_to(Vector2(b.x, b.z))
+		check(apart > 6.0 and apart < 14.0, "two stones should sit beside each other, centers %.2f m apart" % apart)
+		check(absf(a.y - b.y) > 0.25, "two crowns should step, heights %.2f and %.2f" % [a.y, b.y])
+	check(pair.undo(), "undo should remove the second stone")
+	check(pair.modules.size() == 1, "undo should leave one stone")
+	var grown := SlabField.new()
+	grown.place_seed(Vector3.ZERO, 0.0, HardSlab.WALL, 7301)
+	var side := _any_side(grown)
+	check(not side.is_empty(), "a fresh chunk should expose a side to paint on")
+	if not side.is_empty():
+		var added := grown.expand(side["module"], side["face"], HardSlab.WALL, 7320, 4.0)
+		check(added == 1, "clicking a side should add a second chunk, got %d" % added)
+		if added == 1:
+			_check_chunk(grown.modules[1], 1)
 	var island := SlabField.new()
 	island.paint_island(7301)
-	check(island.modules.size() >= 4, "island face needs a run of slabs, got %d" % island.modules.size())
-	_check_chain(island)
-	check(_turns(island) >= 35.0, "island wall should bend, heading change %.1f" % _turns(island))
-	var before := island.modules.size()
-	check(island.undo(), "undo should remove the last slab")
-	check(island.modules.size() == before - 1, "undo did not pop one slab")
+	check(island.modules.size() == 8, "small island should be eight chunks, got %d" % island.modules.size())
+	check(island.deck_polygon.size() >= 6, "island needs a deck, verts %d" % island.deck_polygon.size())
+	check(island.deck_y > 5.0, "deck should sit on the crowns, y %.2f" % island.deck_y)
+	if island.modules.size() >= 3:
+		var centroid := Vector3.ZERO
+		for body: Dictionary in island.modules:
+			centroid += HardSlab.aabb_of(body["vertices"]).get_center()
+		centroid /= float(island.modules.size())
+		var radii: Array[float] = []
+		for body: Dictionary in island.modules:
+			var center := HardSlab.aabb_of(body["vertices"]).get_center()
+			radii.append(Vector2(center.x - centroid.x, center.z - centroid.z).length())
+		var mean := 0.0
+		for radius in radii:
+			mean += radius
+		mean /= float(radii.size())
+		var ring := true
+		for radius in radii:
+			if absf(radius - mean) > 1.6:
+				ring = false
+		check(ring and mean > 2.0 and mean < 8.0, "island chunks should ring the deck, mean radius %.2f" % mean)
 	_finish()
+
+func _any_side(field: SlabField) -> Dictionary:
+	if field.modules.is_empty():
+		return {}
+	var faces: Array[Dictionary] = field.modules[0]["faces"]
+	for face_index in faces.size():
+		var face: Dictionary = faces[face_index]
+		if face["role"] == "side" and float(face["area"]) >= 12.0:
+			return {"module": 0, "face": face_index}
+	return {}
+
+func _check_chunk(body: Dictionary, index: int) -> void:
+	_check_module(body, index)
+	var box := HardSlab.aabb_of(body["vertices"]).size
+	var flat := Vector2(box.x, box.z)
+	check(box.y >= 5.2 and flat.x >= 6.5 and flat.y >= 6.5, "chunk %d is not a thick mass %s" % [index, box])
+	check(maxf(flat.x, flat.y) / minf(flat.x, flat.y) <= 1.85, "chunk %d is a ribbon %s" % [index, box])
+	var top_y := -1.0
+	for face: Dictionary in body["faces"]:
+		if face["role"] == "top":
+			top_y = maxf(top_y, float(face["normal"].y))
+	check(top_y > 0.9, "chunk %d crown is not upright, ny %.2f" % [index, top_y])
 
 func _check_module(body: Dictionary, index: int) -> void:
 	var big := 0

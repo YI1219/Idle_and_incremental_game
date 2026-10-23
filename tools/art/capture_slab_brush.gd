@@ -9,8 +9,7 @@ var output := "res://art/slab_brush"
 func _initialize() -> void:
 	call_deferred("run")
 
-func _ready_frame(yaw: float, pitch: float, distance: float, lift: float) -> void:
-	study.frame_on_bounds(yaw, pitch, distance, lift)
+func _settle() -> void:
 	for _i in 8:
 		await process_frame
 	for _i in 12:
@@ -54,14 +53,14 @@ func run() -> void:
 	await process_frame
 	var shots: Array = []
 	study.show_one()
-	await _ready_frame(46.0, 22.0, 16.0, 0.2)
-	await _save("step1_one_stone", shots)
-	study.show_strip()
-	await _ready_frame(18.0, 14.0, 52.0, 0.6)
-	await _save("step2_continuous_strip", shots)
+	await _settle()
+	await _save("fix_one_stone", shots)
+	study.show_two()
+	await _settle()
+	await _save("fix_two_stones", shots)
 	study.show_island()
-	await _ready_frame(180.0, 58.0, 42.0, 0.4)
-	await _save("step3_island_face", shots)
+	await _settle()
+	await _save("fix_small_island", shots)
 	var report := {
 		"scene": "res://scenes/slab_brush_study.tscn",
 		"godot": Engine.get_version_info().string,
