@@ -32,19 +32,46 @@ func run() -> void:
 	check(not island.embeds.is_empty() and island.embeds.size() < 80, "preset places a sparse embed set")
 	check(island.cliff_embed_placements() == island.embeds, "embed placement hook returns the same set")
 	var inward := 0
-	var outward := 0
-	for edge in island._boundary:
-		var points: PackedVector2Array = edge.points
-		var mid: Vector2 = points[mini(1, points.size() - 1)]
-		var outward_dir: Vector2 = edge.outward
-		var top: Vector2 = mid
-		var keel: Vector2 = island._displace(mid, outward_dir, float(edge.y), maxf(float(edge.y) - Island.KEEL_Y, 0.8))
-		var moved := (top - keel).dot(outward_dir)
+	var flared := 0
+	var nonmono := 0
+	var length_sum := 0.0
+	var short := 0
+	var facet_count := 0
+	for facet in island.facets:
+		facet_count += 1
+		var length: float = facet.length
+		length_sum += length
+		if length < 1.15:
+			short += 1
+		var outward_dir: Vector2 = facet.outward
+		var lip: Vector2 = facet.lip
+		var keel: Vector2 = facet.keel
+		var moved := (lip - keel).dot(outward_dir)
 		if moved > 0.15:
 			inward += 1
 		if moved < -0.02:
-			outward += 1
-	check(inward > 8 and outward == 0, "skirt samples fold inward and do not flare")
+			flared += 1
+		var previous := -0.02
+		for sample in facet.band_xz:
+			var xz: Vector2 = sample
+			var inset := (lip - xz).dot(outward_dir)
+			if inset < previous - 0.08:
+				nonmono += 1
+			previous = maxf(previous, inset)
+	var rim_points := 0
+	var lattice := 0
+	for loop in island.rim_loops:
+		var ring: PackedVector2Array = loop
+		for point in ring:
+			rim_points += 1
+			if absf(point.x - roundf(point.x)) < 0.05 and absf(point.y - roundf(point.y)) < 0.05:
+				lattice += 1
+	var mean := length_sum / float(maxi(facet_count, 1))
+	print("RIM facets=%d mean=%.2f short=%d lattice=%d/%d inward=%d flared=%d nonmono=%d embeds=%d" % [facet_count, mean, short, lattice, rim_points, inward, flared, nonmono, island.embeds.size()])
+	check(facet_count > 8 and mean > 2.5, "cliff facets are wide panels, mean %.2f over %d" % [mean, facet_count])
+	check(short * 5 < facet_count, "rim is not a run of cell-length stairs")
+	check(rim_points > 8 and lattice * 4 < rim_points, "rim vertices leave the integer grid")
+	check(inward > 8 and flared == 0 and nonmono == 0, "faceted underside folds inward and does not flare")
 	var occupied := data.cells.size()
 	var empty := _empty_neighbor(data)
 	check(empty != Vector2i(99999, 99999), "preset has a cell outside the footprint")

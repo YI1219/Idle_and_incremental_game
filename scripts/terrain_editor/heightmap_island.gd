@@ -1,7 +1,9 @@
 class_name HeightmapIsland
 extends RefCounted
-## Playable island shell. One top heightmap plus its footprint, a generated
-## underside, and sparse cliff embeds. Contour columns are not this mesh.
+## Playable island shell. One top heightmap plus its footprint.
+## The lip is a contour ring (smoothed, then widened into long chords) so the
+## silhouette is not the cell grid. The cliff is that ring extruded as a few
+## wide flat bands that step inward — a faceted cone, not a column skirt.
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Geometry = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
@@ -9,9 +11,7 @@ const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
 const ROCK_RISE := 0.75
 const FOLD_DEPTH := 1.05
 const KEEL_Y := -4.6
-const UPPER_LEAN := 0.14
-const FOLD_LEAN := 0.78
-const PROFILE_COUNT := 7
+const BAND_DEPTHS: Array[float] = [0.0, 0.70, 1.05, 2.20, 3.60, 5.00, 6.80, 8.80]
 
 var source: Data
 var seed := 0
@@ -28,20 +28,30 @@ var fall_veils: Array = []
 ## with position, normal, depth, width, height, cell and side.
 var embeds: Array = []
 var keel_inset_mean := 0.0
+## Prepared outer rings. Each entry is a CCW PackedVector2Array.
+var rim_loops: Array = []
+## One entry per cliff facet: lip, keel, outward, length, band_xz, cell, side.
+var facets: Array = []
 var _inset_sum := 0.0
 var _inset_count := 0
-var _corners := {}
-var _boundary: Array = []
+var _plateaus: Array = []
 
 static func wall_inset(depth: float) -> float:
-	# Positive is inward. The lip leans in slightly, then past the fold the
-	# wall breaks and pinches. It never flares outward.
+	# Positive is inward. Each band is steeper than the one above it, so the
+	# wall reads as separate planes folding into a cone. It never flares out.
 	if depth <= 0.0:
 		return 0.0
-	if depth < FOLD_DEPTH:
-		return depth * UPPER_LEAN
-	var past := depth - FOLD_DEPTH
-	return FOLD_DEPTH * UPPER_LEAN + past * FOLD_LEAN + past * past * 0.05
+	var breaks: Array[float] = [0.70, 1.05, 2.20, 3.60, 5.00, 6.80]
+	var slopes: Array[float] = [0.18, 0.42, 0.66, 0.86, 1.02, 1.18, 1.32]
+	var cursor := 0.0
+	var inset := 0.0
+	for index in breaks.size():
+		var stop: float = breaks[index]
+		if depth <= stop:
+			return inset + (depth - cursor) * slopes[index]
+		inset += (stop - cursor) * slopes[index]
+		cursor = stop
+	return inset + (depth - cursor) * slopes[slopes.size() - 1]
 
 func shore_weight(p: Vector2, height: float) -> float:
 	return Contours.shore_weight(p, height)
@@ -78,20 +88,31 @@ func refresh(data: Data) -> void:
 	land_regions.clear()
 	lawn_boundaries.clear()
 	water_anchor_regions.clear()
-	_corners.clear()
-	_boundary.clear()
+	rim_loops.clear()
+	facets.clear()
+	_plateaus.clear()
 	_inset_sum = 0.0
 	_inset_count = 0
 	keel_inset_mean = 0.0
 	surfaces.clear()
 	for kind in ["grass", "cliff", "water", "waterfall", "lake_bed", "shore", "bank"]:
 		surfaces[kind] = Geometry.Surface.new()
+	if data.cells.is_empty():
+		_index()
+		return
+	var occupied := {}
 	for cell: Vector2i in data.cells:
-		_cell(cell)
-	_stitch_corners()
-	_smooth(surfaces.cliff)
+		occupied[cell] = true
+	for raw in Contours._outlines(occupied):
+		var loop := _prepare_loop(raw as PackedVector2Array, true)
+		if loop.size() >= 3:
+			rim_loops.append(loop)
+	_build_plateaus()
+	_fill_tops()
+	_terrace_walls()
+	_cone()
+	_interior_hydro()
 	_embeds()
-	_cap()
 	_water_loops()
 	if _inset_count > 0:
 		keel_inset_mean = _inset_sum / float(_inset_count)
@@ -115,90 +136,323 @@ func build(chunk: Vector2i) -> Dictionary:
 		result[kind] = local.mesh()
 	return result
 
-func _cell(cell: Vector2i) -> void:
-	var record: Dictionary = source.cells[cell]
-	var ring := _ring(cell)
-	var top := _top(record)
-	if int(record.water) >= 0:
-		_fan(surfaces.water, ring, top + 0.045, Color.WHITE, Vector2(top, 1.0))
-		_fan(surfaces.lake_bed, ring, float(record.height), Color(float(record.water) / 255.0, 0.0, 0.0, 1.0), Vector2(top, 0.0))
-	else:
-		_fan(surfaces.grass, ring, top, Color(1, 1, 1, 1), Vector2(0.0, 1.0))
-	for side in 4:
-		var neighbor: Vector2i = cell + _offset(side)
-		if not source.cells.has(neighbor):
-			_skirt(cell, side)
-		else:
-			var drop := top - _top(source.cells[neighbor])
-			if drop >= ROCK_RISE:
-				_step_wall(cell, side, surfaces.cliff, top, _top(source.cells[neighbor]), true)
-			elif drop > 0.04 and int(record.water) < 0:
-				_step_wall(cell, side, surfaces.grass, top, _top(source.cells[neighbor]), false)
-		if int(record.water) >= 0 and _spills(cell, side):
-			_fall(cell, side)
-		elif int(record.water) >= 0 and source.cells.has(neighbor):
-			_basin(cell, side)
-
-func _ring(cell: Vector2i) -> PackedVector2Array:
-	var ring := PackedVector2Array()
-	var corners := _corners_of(cell)
-	for side in 4:
-		ring.append(_corner_xz(corners[side].x, corners[side].y))
-		if _notch_on(cell, side):
-			var nxt: Vector2i = corners[(side + 1) % 4]
-			var a := _corner_xz(corners[side].x, corners[side].y)
-			var b := _corner_xz(nxt.x, nxt.y)
-			ring.append(_notch(a, b, cell, side))
-	return ring
-
-func _fan(surface, ring: PackedVector2Array, y: float, color: Color, uv: Vector2) -> void:
-	if ring.size() < 3:
+func _build_plateaus() -> void:
+	var levels: Array[float] = []
+	for cell: Vector2i in source.cells:
+		var height := _top(source.cells[cell])
+		var known := false
+		for existing in levels:
+			if absf(existing - height) < 0.02:
+				known = true
+				break
+		if not known:
+			levels.append(height)
+	levels.sort()
+	if levels.size() < 2:
 		return
-	var center2 := Vector2.ZERO
-	for point in ring:
-		center2 += point
-	center2 /= float(ring.size())
-	var center := Vector3(center2.x, y, center2.y)
-	for i in ring.size():
-		var a: Vector2 = ring[i]
-		var b: Vector2 = ring[(i + 1) % ring.size()]
-		_tri(surface, center, Vector3(a.x, y, a.y), Vector3(b.x, y, b.y), color, uv, true)
+	for index in range(1, levels.size()):
+		var height: float = levels[index]
+		var region := {}
+		for cell: Vector2i in source.cells:
+			if _top(source.cells[cell]) >= height - 0.02:
+				region[cell] = true
+		for raw in Contours._outlines(region):
+			var loop := _prepare_loop(raw as PackedVector2Array, false)
+			if loop.size() >= 3:
+				_plateaus.append({"height": height, "loop": loop})
 
-func _skirt(cell: Vector2i, side: int) -> void:
-	var record: Dictionary = source.cells[cell]
-	var rim_y := _top(record)
-	var outward := Vector2(Geometry.SIDES[side])
-	var points := _edge_points(cell, side, true)
-	var straight := _straight_points(cell, side)
-	var depths := _depths(rim_y)
-	var columns: Array = []
-	for index in points.size():
-		var jagged: Vector2 = points[index]
-		var room := _room(jagged, outward)
-		var column: Array[Vector3] = []
-		for depth in depths:
-			column.append(_profile_point(jagged, straight[index], outward, rim_y, float(depth), room))
-		columns.append(column)
-		_inset_sum += minf(wall_inset(float(depths[depths.size() - 1])), room)
-		_inset_count += 1
-	for i in columns.size() - 1:
-		_column_quads(surfaces.cliff, columns[i], columns[i + 1], depths, outward, rim_y)
-	var corners := _corners_of(cell)
-	_remember(corners[side], columns[0], outward)
-	_remember(corners[(side + 1) % 4], columns[columns.size() - 1], outward)
-	_boundary.append({"a": corners[side], "b": corners[(side + 1) % 4], "cell": cell, "side": side, "y": rim_y, "points": points, "straight": straight, "outward": outward})
+func _fill_tops() -> void:
+	for cell: Vector2i in source.cells:
+		var record: Dictionary = source.cells[cell]
+		var top := _top(record)
+		var square := _square(cell)
+		var polys: Array = [square]
+		if _open_side(cell):
+			polys = _clip_loops(square, rim_loops, true)
+		if int(record.water) >= 0:
+			var bed_color := Color(float(record.water) / 255.0, 0.0, 0.0, 1.0)
+			for poly in polys:
+				_emit_poly(surfaces.water, poly, top + 0.045, Color.WHITE, Vector2(top, 1.0))
+				_emit_poly(surfaces.lake_bed, poly, float(record.height), bed_color, Vector2(top, 0.0))
+			continue
+		if not _plateaus.is_empty():
+			polys = _clip_plateaus(cell, top, polys)
+		for poly in polys:
+			_emit_poly(surfaces.grass, poly, top, Color(1, 1, 1, 1), Vector2(0.0, 1.0))
+	_terrace_bulges()
+	_bulges()
+	_grass_risers()
 
-func _step_wall(cell: Vector2i, side: int, surface, high: float, low: float, rock: bool) -> void:
-	var outward := Vector2(Geometry.SIDES[side])
-	var points := _edge_points(cell, side, rock)
-	var color := Color.WHITE if rock else Color(1, 1, 1, 1)
-	var uv := Vector2(high, 1.0 if rock else 0.0)
-	for i in points.size() - 1:
-		var a := Vector3(points[i].x, high, points[i].y)
-		var b := Vector3(points[i + 1].x, high, points[i + 1].y)
-		var c := Vector3(points[i + 1].x, low, points[i + 1].y)
-		var d := Vector3(points[i].x, low, points[i].y)
-		_quad(surface, a, b, c, d, outward, color, uv)
+func _clip_plateaus(cell: Vector2i, top: float, polys: Array) -> Array:
+	var current: Array = polys
+	for plateau in _plateaus:
+		var height: float = plateau.height
+		var loop: PackedVector2Array = plateau.loop
+		var next: Array = []
+		if top >= height - 0.02:
+			if not _has_lower_neighbor(cell):
+				next = current
+			else:
+				var low := _lower_beside(cell, top)
+				for poly in current:
+					var shape: PackedVector2Array = poly
+					for piece: PackedVector2Array in _intersect_one(shape, loop):
+						next.append(piece)
+					if _has_lower_neighbor(cell):
+						for piece: PackedVector2Array in _difference(shape, loop):
+							_emit_poly(surfaces.grass, piece, low, Color(1, 1, 1, 1), Vector2(0.0, 1.0))
+		else:
+			for poly in current:
+				var shape: PackedVector2Array = poly
+				for piece: PackedVector2Array in _difference(shape, loop):
+					next.append(piece)
+		current = next
+	return current
+
+func _terrace_bulges() -> void:
+	# Where the terrace chord leaves the high cells, fill up to that chord so
+	# the lip is the outline and the old stair becomes an internal edge.
+	for plateau in _plateaus:
+		var height: float = plateau.height
+		var loop: PackedVector2Array = plateau.loop
+		var count := loop.size()
+		for index in count:
+			var a: Vector2 = loop[index]
+			var b: Vector2 = loop[(index + 1) % count]
+			var outward := _edge_outward(a, b)
+			if outward.length_squared() < 0.000001:
+				continue
+			var mid := (a + b) * 0.5
+			var outside := _record_near(mid + outward * 0.45)
+			if outside.is_empty() or height - _top(outside) < ROCK_RISE:
+				continue
+			var under := Vector2i(floori(mid.x), floori(mid.y))
+			if source.cells.has(under) and _top(source.cells[under]) >= height - 0.02:
+				continue
+			var host := _nearest_high(mid - outward * 0.55, height)
+			if host.x == 99999:
+				continue
+			var anchor := Vector2(host) + Vector2(0.5, 0.5)
+			_tri(surfaces.grass, Vector3(anchor.x, height, anchor.y), Vector3(a.x, height, a.y), Vector3(b.x, height, b.y), Color(1, 1, 1, 1), Vector2(0.0, 1.0), true)
+
+func _bulges() -> void:
+	for loop in rim_loops:
+		var ring: PackedVector2Array = loop
+		var count := ring.size()
+		for index in count:
+			var a: Vector2 = ring[index]
+			var b: Vector2 = ring[(index + 1) % count]
+			var mid := (a + b) * 0.5
+			if source.cells.has(Vector2i(floori(mid.x), floori(mid.y))):
+				continue
+			var host := _nearest_cell(mid)
+			if host.x == 99999:
+				continue
+			var record: Dictionary = source.cells[host]
+			var top := _top(record)
+			var anchor := Vector2(host) + Vector2(0.5, 0.5)
+			if int(record.water) >= 0:
+				var bed_color := Color(float(record.water) / 255.0, 0.0, 0.0, 1.0)
+				_tri(surfaces.water, Vector3(anchor.x, top + 0.045, anchor.y), Vector3(a.x, top + 0.045, a.y), Vector3(b.x, top + 0.045, b.y), Color.WHITE, Vector2(top, 1.0), true)
+				_tri(surfaces.lake_bed, Vector3(anchor.x, float(record.height), anchor.y), Vector3(a.x, float(record.height), a.y), Vector3(b.x, float(record.height), b.y), bed_color, Vector2(top, 0.0), true)
+			else:
+				_tri(surfaces.grass, Vector3(anchor.x, top, anchor.y), Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Color(1, 1, 1, 1), Vector2(0.0, 1.0), true)
+
+func _grass_risers() -> void:
+	for cell: Vector2i in source.cells:
+		var record: Dictionary = source.cells[cell]
+		if int(record.water) >= 0:
+			continue
+		var top := _top(record)
+		for side in 4:
+			var neighbor: Vector2i = cell + _offset(side)
+			if not source.cells.has(neighbor):
+				continue
+			if int(source.cells[neighbor].water) >= 0:
+				continue
+			var drop := top - _top(source.cells[neighbor])
+			if drop <= 0.04 or drop >= ROCK_RISE:
+				continue
+			var ends := _corners_of(cell)
+			var a := Vector2(ends[side])
+			var b := Vector2(ends[(side + 1) % 4])
+			var low := _top(source.cells[neighbor])
+			_flat_quad(surfaces.grass, Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Vector3(b.x, low, b.y), Vector3(a.x, low, a.y), Vector2(_offset(side)), Color(1, 1, 1, 1), Vector2(0.0, 1.0))
+
+func _terrace_walls() -> void:
+	for plateau in _plateaus:
+		var height: float = plateau.height
+		var loop: PackedVector2Array = plateau.loop
+		var count := loop.size()
+		for index in count:
+			var a: Vector2 = loop[index]
+			var b: Vector2 = loop[(index + 1) % count]
+			var outward := _edge_outward(a, b)
+			if outward.length_squared() < 0.000001:
+				continue
+			var mid := (a + b) * 0.5
+			var outside: Dictionary = _record_near(mid + outward * 0.45)
+			if outside.is_empty():
+				continue
+			var low := _top(outside)
+			if height - low < ROCK_RISE:
+				continue
+			var lean := minf(0.18, (height - low) * 0.08)
+			var inset_a := a - outward * lean
+			var inset_b := b - outward * lean
+			_flat_quad(surfaces.cliff, Vector3(a.x, height, a.y), Vector3(b.x, height, b.y), Vector3(inset_b.x, low, inset_b.y), Vector3(inset_a.x, low, inset_a.y), outward, Color.WHITE, Vector2(height, 1.0))
+
+func _cone() -> void:
+	for loop in rim_loops:
+		var ring: PackedVector2Array = loop
+		var count := ring.size()
+		if count < 3:
+			continue
+		var columns: Array = []
+		var bisectors: Array = []
+		var rooms: Array = []
+		var heights: Array = []
+		for index in count:
+			var point: Vector2 = ring[index]
+			var bis := _bisector(ring, index)
+			var edge_n := _edge_outward(ring[(index + count - 1) % count], point)
+			if edge_n.length_squared() < 0.000001:
+				edge_n = bis
+			var total := maxf(_height_near(point) - KEEL_Y, 0.8)
+			var room := _room_along(point, -bis)
+			columns.append(_column(point, bis, edge_n, _height_near(point), total, room))
+			bisectors.append(bis)
+			rooms.append(room)
+			heights.append(_height_near(point))
+		for index in count:
+			var nxt := (index + 1) % count
+			var left: Array = columns[index]
+			var right: Array = columns[nxt]
+			var a: Vector2 = ring[index]
+			var b: Vector2 = ring[nxt]
+			var outward := _edge_outward(a, b)
+			var ya: float = heights[index]
+			var yb: float = heights[nxt]
+			var bands := mini(left.size(), right.size())
+			for band in bands - 1:
+				var la: Vector3 = left[band]
+				var ra: Vector3 = right[band]
+				var rb: Vector3 = right[band + 1]
+				var lb: Vector3 = left[band + 1]
+				_flat_quad(surfaces.cliff, la, ra, rb, lb, outward, Color.WHITE, Vector2(maxf(ya, yb), 1.0))
+			var lip := (Vector2(left[0].x, left[0].z) + Vector2(right[0].x, right[0].z)) * 0.5
+			var keel := (Vector2(left[left.size() - 1].x, left[left.size() - 1].z) + Vector2(right[right.size() - 1].x, right[right.size() - 1].z)) * 0.5
+			var band_xz: Array = []
+			for band in bands:
+				var sample: Vector3 = left[band]
+				var other: Vector3 = right[band]
+				band_xz.append((Vector2(sample.x, sample.z) + Vector2(other.x, other.z)) * 0.5)
+			var mid := (a + b) * 0.5 - outward * 0.35
+			var owner := _nearest_cell(mid)
+			var moved := (lip - keel).dot(outward)
+			_inset_sum += maxf(moved, 0.0)
+			_inset_count += 1
+			facets.append({
+				"a": a,
+				"b": b,
+				"outward": outward,
+				"length": a.distance_to(b),
+				"y": (ya + yb) * 0.5,
+				"ya": ya,
+				"yb": yb,
+				"lip": lip,
+				"keel": keel,
+				"band_xz": band_xz,
+				"bis_a": bisectors[index],
+				"bis_b": bisectors[nxt],
+				"room_a": rooms[index],
+				"room_b": rooms[nxt],
+				"cell": owner,
+				"side": _side_of(outward),
+			})
+			_shell_fall(a, b, outward)
+		var cap := PackedVector2Array()
+		for column in columns:
+			var pts: Array = column
+			var last: Vector3 = pts[pts.size() - 1]
+			cap.append(Vector2(last.x, last.z))
+		_emit_cap(cap)
+
+func _shell_fall(a: Vector2, b: Vector2, outward: Vector2) -> void:
+	var from := 1.0
+	var to := 0.0
+	var lip_y := 0.0
+	var found := false
+	for step in 5:
+		var weight := 0.15 + float(step) * 0.175
+		var point := a.lerp(b, weight)
+		var record := _record_near(point - outward * 0.35)
+		if record.is_empty() or int(record.water) < 0:
+			continue
+		var outside := _record_near(point + outward * 0.55)
+		var here := _top(record)
+		if not outside.is_empty() and here - _top(outside) <= 0.35:
+			continue
+		found = true
+		from = minf(from, weight)
+		to = maxf(to, weight)
+		lip_y = here
+	if not found or to - from < 0.08:
+		return
+	from = maxf(0.02, from - 0.06)
+	to = minf(0.98, to + 0.06)
+	var a2 := a.lerp(b, from)
+	var b2 := a.lerp(b, to)
+	var dest := maxf(KEEL_Y + 0.8, lip_y - 3.3)
+	var outside_mid := _record_near((a2 + b2) * 0.5 + outward * 0.6)
+	var external := outside_mid.is_empty()
+	if not external:
+		dest = _top(outside_mid) + 0.06
+	var push := 0.42 if external else 0.16
+	var n := Vector3(outward.x, 0.0, outward.y)
+	var lip_a := Vector3(a2.x, lip_y + 0.04, a2.y) + n * 0.06
+	var lip_b := Vector3(b2.x, lip_y + 0.04, b2.y) + n * 0.06
+	var foot_a := Vector3(a2.x, dest, a2.y) + n * push
+	var foot_b := Vector3(b2.x, dest, b2.y) + n * push
+	_flat_quad(surfaces.waterfall, lip_a, lip_b, foot_b, foot_a, outward, Color.WHITE, Vector2(lip_y, 1.0))
+	var lip := (lip_a + lip_b) * 0.5
+	var foot := (foot_a + foot_b) * 0.5
+	var half := a2.distance_to(b2) * 0.5
+	fall_veils.append({"lip": lip, "foot": foot, "half_width": half, "out": outward, "external": external})
+	splash_points.append({"center": foot, "out": outward, "half_width": half})
+
+func _interior_hydro() -> void:
+	for cell: Vector2i in source.cells:
+		var record: Dictionary = source.cells[cell]
+		if int(record.water) < 0:
+			continue
+		for side in 4:
+			var neighbor: Vector2i = cell + _offset(side)
+			if not source.cells.has(neighbor):
+				continue
+			if _spills(cell, side):
+				_fall(cell, side)
+			else:
+				_basin(cell, side)
+
+func _fall(cell: Vector2i, side: int) -> void:
+	var here := _top(source.cells[cell]) + 0.04
+	var outward := Vector2(_offset(side))
+	var ends := _corners_of(cell)
+	var a2 := Vector2(ends[side]).lerp(Vector2(ends[(side + 1) % 4]), 0.16)
+	var b2 := Vector2(ends[side]).lerp(Vector2(ends[(side + 1) % 4]), 0.84)
+	var neighbor: Vector2i = cell + _offset(side)
+	var dest := _top(source.cells[neighbor]) + 0.06
+	var n := Vector3(outward.x, 0.0, outward.y)
+	var lip_a := Vector3(a2.x, here, a2.y) + n * 0.04
+	var lip_b := Vector3(b2.x, here, b2.y) + n * 0.04
+	var foot_a := Vector3(a2.x, dest, a2.y) + n * 0.16
+	var foot_b := Vector3(b2.x, dest, b2.y) + n * 0.16
+	_flat_quad(surfaces.waterfall, lip_a, lip_b, foot_b, foot_a, outward, Color.WHITE, Vector2(here, 1.0))
+	var lip := (lip_a + lip_b) * 0.5
+	var foot := (foot_a + foot_b) * 0.5
+	fall_veils.append({"lip": lip, "foot": foot, "half_width": 0.46, "out": outward, "external": false})
+	splash_points.append({"center": foot, "out": outward, "half_width": 0.46})
 
 func _basin(cell: Vector2i, side: int) -> void:
 	var record: Dictionary = source.cells[cell]
@@ -206,107 +460,49 @@ func _basin(cell: Vector2i, side: int) -> void:
 	var bed := float(record.height)
 	if lip - bed < 0.08:
 		return
-	var neighbor: Dictionary = source.cells[cell + Geometry.SIDES[side]]
+	var neighbor: Dictionary = source.cells[cell + _offset(side)]
 	if int(neighbor.water) >= 0 and float(neighbor.height) <= bed + 0.04:
 		return
-	var outward := Vector2(Geometry.SIDES[side])
-	var points := _edge_points(cell, side, false)
+	var outward := Vector2(_offset(side))
+	var ends := _corners_of(cell)
+	var a := Vector2(ends[side])
+	var b := Vector2(ends[(side + 1) % 4])
 	var color := Color(float(record.water) / 255.0, 0.0, 0.0, 1.0)
-	for i in points.size() - 1:
-		var a := Vector3(points[i].x, lip, points[i].y)
-		var b := Vector3(points[i + 1].x, lip, points[i + 1].y)
-		var c := Vector3(points[i + 1].x, bed, points[i + 1].y)
-		var d := Vector3(points[i].x, bed, points[i].y)
-		_quad(surfaces.lake_bed, a, b, c, d, outward, color, Vector2(lip, 0.0))
-
-func _fall(cell: Vector2i, side: int) -> void:
-	var here := _top(source.cells[cell]) + 0.04
-	var outward := Vector2(Geometry.SIDES[side])
-	var points := _edge_points(cell, side, true)
-	var end := points.size() - 1
-	var a2: Vector2 = points[0].lerp(points[end], 0.16)
-	var b2: Vector2 = points[0].lerp(points[end], 0.84)
-	var neighbor: Vector2i = cell + _offset(side)
-	var external := not source.cells.has(neighbor)
-	var dest := maxf(KEEL_Y + 0.8, here - 3.3) if external else _top(source.cells[neighbor]) + 0.06
-	var push := 0.42 if external else 0.16
-	var n := Vector3(outward.x, 0.0, outward.y)
-	var lip_a := Vector3(a2.x, here, a2.y) + n * 0.06
-	var lip_b := Vector3(b2.x, here, b2.y) + n * 0.06
-	var foot_a := Vector3(a2.x, dest, a2.y) + n * push
-	var foot_b := Vector3(b2.x, dest, b2.y) + n * push
-	_quad(surfaces.waterfall, lip_a, lip_b, foot_b, foot_a, outward, Color.WHITE, Vector2(here, 1.0))
-	var lip := (lip_a + lip_b) * 0.5
-	var foot := (foot_a + foot_b) * 0.5
-	fall_veils.append({"lip": lip, "foot": foot, "half_width": 0.46, "out": outward, "external": external})
-	splash_points.append({"center": foot, "out": outward, "half_width": 0.46})
-
-func _column_quads(surface, left: Array, right: Array, depths: Array, outward: Vector2, rim_y: float) -> void:
-	for j in depths.size() - 1:
-		_quad(surface, left[j], right[j], right[j + 1], left[j + 1], outward, Color.WHITE, Vector2(rim_y, 1.0))
-
-func _stitch_corners() -> void:
-	for key in _corners:
-		var group: Array = _corners[key]
-		if group.size() < 2:
-			continue
-		group.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-			var ao: Vector2 = a.outward
-			var bo: Vector2 = b.outward
-			return atan2(ao.y, ao.x) < atan2(bo.y, bo.x))
-		var best_delta := INF
-		var pair: Array = []
-		for i in group.size():
-			var a: Dictionary = group[i]
-			var b: Dictionary = group[(i + 1) % group.size()]
-			var ao: Vector2 = a.outward
-			var bo: Vector2 = b.outward
-			var delta := fposmod(atan2(bo.y, bo.x) - atan2(ao.y, ao.x), TAU)
-			if delta < best_delta:
-				best_delta = delta
-				pair = [a, b]
-		if pair.is_empty() or best_delta > PI * 1.15:
-			continue
-		var hint: Vector2 = pair[0].outward + pair[1].outward
-		if hint.length_squared() < 0.0001:
-			hint = pair[0].outward
-		var left: Array = pair[0].column
-		var right: Array = pair[1].column
-		var depths: Array = _depths(float(pair[0].y))
-		if depths.size() != left.size():
-			depths = []
-			depths.resize(left.size())
-			for j in left.size():
-				depths[j] = float(j)
-		_column_quads(surfaces.cliff, left, right, depths, hint.normalized(), float(pair[0].y))
+	_flat_quad(surfaces.lake_bed, Vector3(a.x, lip, a.y), Vector3(b.x, lip, b.y), Vector3(b.x, bed, b.y), Vector3(a.x, bed, a.y), outward, color, Vector2(lip, 0.0))
 
 func _embeds() -> void:
-	for edge in _boundary:
-		var cell: Vector2i = edge.cell
-		var side: int = edge.side
-		if _unit(cell.x, cell.y, 90 + side) < 0.93:
+	for facet in facets:
+		var length: float = facet.length
+		if length < 3.1:
 			continue
-		if _spills(cell, side):
+		var cell: Vector2i = facet.cell
+		if cell.x == 99999:
 			continue
-		var outward: Vector2 = edge.outward
-		var points: PackedVector2Array = edge.points
-		var straight: PackedVector2Array = edge.straight
-		var mid: Vector2 = points[mini(1, points.size() - 1)]
-		var mid_straight: Vector2 = straight[mini(1, straight.size() - 1)]
-		var rim_y: float = edge.y
-		var depth := lerpf(1.05, 2.35, _unit(cell.x, cell.y, 91 + side))
-		var room := _room(mid, outward)
-		var origin := _profile_point(mid, mid_straight, outward, rim_y, depth, room)
-		var width := lerpf(0.55, 1.15, _unit(cell.x, cell.y, 92 + side))
-		var height := lerpf(0.42, 0.95, _unit(cell.x, cell.y, 93 + side))
-		var protrude := lerpf(0.16, 0.42, _unit(cell.x, cell.y, 94 + side))
+		var side: int = facet.side
+		if _unit(cell.x, cell.y, 90 + side) < 0.80:
+			continue
+		if _facet_spills(cell, facet.outward):
+			continue
+		var outward: Vector2 = facet.outward
+		var ya: float = facet.ya
+		var yb: float = facet.yb
+		var depth := lerpf(1.7, 2.7, _unit(cell.x, cell.y, 91 + side))
+		var total := maxf(maxf(ya, yb) - KEEL_Y, 0.8)
+		depth = clampf(depth, 1.15, total - 0.35)
+		var a: Vector2 = facet.a
+		var b: Vector2 = facet.b
+		var along := lerpf(0.38, 0.62, _unit(cell.x, cell.y, 92 + side))
+		var origin := _facet_point(facet, along, depth)
+		var width := lerpf(0.85, 1.45, _unit(cell.x, cell.y, 93 + side))
+		var height := lerpf(0.48, 1.05, _unit(cell.x, cell.y, 94 + side))
+		var protrude := lerpf(0.16, 0.40, _unit(cell.x, cell.y, 95 + side))
 		var n := Vector3(outward.x, 0.0, outward.y)
 		var tangent := Vector3(-outward.y, 0.0, outward.x)
 		var front := origin + n * protrude
-		var back := origin - n * 0.2
+		var back := origin - n * 0.22
 		var up := Vector3.UP * height * 0.5
 		var side_v := tangent * width * 0.5
-		var uv := Vector2(rim_y, 1.0)
+		var uv := Vector2(maxf(ya, yb), 1.0)
 		_tri_facing(surfaces.cliff, front + up, front - up + side_v, front - up - side_v, n, uv)
 		_tri_facing(surfaces.cliff, back, front - up - side_v, front + up, -tangent, uv)
 		_tri_facing(surfaces.cliff, back, front + up, front - up + side_v, tangent, uv)
@@ -321,26 +517,213 @@ func _embeds() -> void:
 			"side": side,
 		})
 
-func _cap() -> void:
-	for loop in _trace_loops():
-		var poly := PackedVector2Array()
-		for edge in loop:
-			var points: PackedVector2Array = edge.points
-			var straight: PackedVector2Array = edge.straight
-			var outward: Vector2 = edge.outward
-			var rim_y: float = edge.y
-			var room_depth := maxf(rim_y - KEEL_Y, 0.8)
-			for index in points.size() - 1:
-				var jagged: Vector2 = points[index]
-				poly.append(_profile_xz(jagged, straight[index], outward, rim_y, room_depth, _room(jagged, outward)))
-		if poly.size() < 3:
+func _emit_cap(poly: PackedVector2Array) -> void:
+	if poly.size() < 3:
+		return
+	var indices := Geometry2D.triangulate_polygon(poly)
+	if indices.is_empty():
+		var center2 := Vector2.ZERO
+		for point in poly:
+			center2 += point
+		center2 /= float(poly.size())
+		var center := Vector3(center2.x, KEEL_Y, center2.y)
+		for index in poly.size():
+			var a: Vector2 = poly[index]
+			var b: Vector2 = poly[(index + 1) % poly.size()]
+			_tri(surfaces.cliff, center, Vector3(b.x, KEEL_Y, b.y), Vector3(a.x, KEEL_Y, a.y), Color.WHITE, Vector2(KEEL_Y, -1.0), false)
+		return
+	for index in range(0, indices.size(), 3):
+		var a: Vector2 = poly[indices[index]]
+		var b: Vector2 = poly[indices[index + 1]]
+		var c: Vector2 = poly[indices[index + 2]]
+		_tri(surfaces.cliff, Vector3(a.x, KEEL_Y, a.y), Vector3(c.x, KEEL_Y, c.y), Vector3(b.x, KEEL_Y, b.y), Color.WHITE, Vector2(KEEL_Y, -1.0), false)
+
+func _column(point: Vector2, bis: Vector2, edge_n: Vector2, rim_y: float, total: float, room: float) -> Array:
+	# Every column on a ring has the same sample count so bands stay aligned.
+	# Depths past this vertex clamp to the keel; duplicate quads drop out.
+	var column: Array = []
+	var last := BAND_DEPTHS.size() - 1
+	for index in BAND_DEPTHS.size():
+		var depth := minf(BAND_DEPTHS[index], total)
+		if index == last:
+			depth = total
+		column.append(_inset_point(point, bis, edge_n, rim_y, depth, room))
+	return column
+
+func _inset_point(point: Vector2, bis: Vector2, edge_n: Vector2, rim_y: float, depth: float, room: float) -> Vector3:
+	var denom := maxf(bis.dot(edge_n), 0.42)
+	var used := minf(wall_inset(depth), room * denom)
+	var scale := clampf(used / denom, 0.0, room)
+	var xz := point - bis * scale
+	return Vector3(xz.x, rim_y - depth, xz.y)
+
+func _facet_point(facet: Dictionary, along: float, depth: float) -> Vector3:
+	var a: Vector2 = facet.a
+	var b: Vector2 = facet.b
+	var bis_a: Vector2 = facet.bis_a
+	var bis_b: Vector2 = facet.bis_b
+	var ya: float = facet.ya
+	var yb: float = facet.yb
+	var edge_n: Vector2 = facet.outward
+	var left := _inset_point(a, bis_a, edge_n, ya, depth, float(facet.room_a))
+	var right := _inset_point(b, bis_b, edge_n, yb, depth, float(facet.room_b))
+	return left.lerp(right, along)
+
+func _prepare_loop(raw: PackedVector2Array, rugged: bool) -> PackedVector2Array:
+	var loop := _dedupe(raw)
+	if loop.size() < 3:
+		return loop
+	if Contours._area(loop) < 0.0:
+		loop.reverse()
+	var perimeter := _perimeter(loop)
+	if perimeter >= 18.0 and loop.size() >= 10:
+		loop = _widen(loop)
+	if rugged and perimeter >= 18.0:
+		loop = _ruggedize(loop)
+		loop = _dedupe(loop)
+	if perimeter >= 18.0 and loop.size() >= 10:
+		loop = _collapse_slivers(loop)
+	return loop
+
+func _widen(loop: PackedVector2Array) -> PackedVector2Array:
+	var guard := 0
+	while loop.size() > 8 and guard < 600:
+		guard += 1
+		var count := loop.size()
+		var remove := -1
+		var best := 10.0
+		for index in count:
+			var a: Vector2 = loop[(index + count - 1) % count]
+			var b: Vector2 = loop[index]
+			var c: Vector2 = loop[(index + 1) % count]
+			var turn := _turn(a, b, c)
+			if turn >= 0.50:
+				continue
+			if a.distance_to(b) >= 2.8 and b.distance_to(c) >= 2.8:
+				continue
+			if turn < best:
+				best = turn
+				remove = index
+		if remove < 0:
+			break
+		loop.remove_at(remove)
+	return loop
+
+func _ruggedize(loop: PackedVector2Array) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	var count := loop.size()
+	for index in count:
+		var point: Vector2 = loop[index]
+		var outward := _bisector(loop, index)
+		var jag := _unit(floori(point.x / 5.0), floori(point.y / 5.0), 21) - 0.5
+		var wave := sin(point.x * 0.58 + point.y * 0.47 + float(seed) * 0.013)
+		out.append(point + outward * (0.30 * jag + 0.12 * wave))
+	return out
+
+func _collapse_slivers(loop: PackedVector2Array) -> PackedVector2Array:
+	# A sub-meter chord extruded down the keel reads as a pillar. Fold it into
+	# the neighboring wide facet unless that would cut a real corner.
+	var blocked := {}
+	var guard := 0
+	while loop.size() > 8 and guard < 80:
+		guard += 1
+		var count := loop.size()
+		var edge := -1
+		var shortest := 1.35
+		for index in count:
+			if blocked.has(index):
+				continue
+			var length := loop[index].distance_to(loop[(index + 1) % count])
+			if length < shortest:
+				shortest = length
+				edge = index
+		if edge < 0:
+			break
+		var right := (edge + 1) % count
+		var left_error := _chord_error(loop, edge)
+		var right_error := _chord_error(loop, right)
+		if shortest >= 0.75 and minf(left_error, right_error) > 0.65:
+			blocked[edge] = true
 			continue
-		var indices := Geometry2D.triangulate_polygon(poly)
-		for i in range(0, indices.size(), 3):
-			var a: Vector2 = poly[indices[i]]
-			var b: Vector2 = poly[indices[i + 1]]
-			var c: Vector2 = poly[indices[i + 2]]
-			_tri(surfaces.cliff, Vector3(a.x, KEEL_Y, a.y), Vector3(c.x, KEEL_Y, c.y), Vector3(b.x, KEEL_Y, b.y), Color.WHITE, Vector2(KEEL_Y, -1.0), false)
+		loop.remove_at(edge if left_error <= right_error else right)
+		blocked.clear()
+	return loop
+
+func _chord_error(loop: PackedVector2Array, index: int) -> float:
+	var count := loop.size()
+	var prev: Vector2 = loop[(index + count - 1) % count]
+	var point: Vector2 = loop[index]
+	var next: Vector2 = loop[(index + 1) % count]
+	var span := next - prev
+	var denom := span.length_squared()
+	if denom < 0.000001:
+		return point.distance_to(prev)
+	var weight := clampf((point - prev).dot(span) / denom, 0.0, 1.0)
+	return point.distance_to(prev + span * weight)
+
+func _clip_loops(square: PackedVector2Array, loops: Array, keep_inside: bool) -> Array:
+	var acc: Array = []
+	for loop in loops:
+		var ring: PackedVector2Array = loop
+		if keep_inside:
+			for piece: PackedVector2Array in _intersect_one(square, ring):
+				acc.append(piece)
+		else:
+			for piece: PackedVector2Array in _difference(square, ring):
+				acc.append(piece)
+	if acc.is_empty() and keep_inside:
+		var center := (square[0] + square[2]) * 0.5
+		for loop in loops:
+			var ring: PackedVector2Array = loop
+			if Geometry2D.is_point_in_polygon(center, ring):
+				acc.append(square)
+				break
+	return acc
+
+func _intersect_one(poly: PackedVector2Array, loop: PackedVector2Array) -> Array:
+	var pieces: Array = []
+	if poly.size() < 3 or loop.size() < 3:
+		return pieces
+	for piece: PackedVector2Array in Geometry2D.intersect_polygons(poly, loop):
+		if piece.size() >= 3:
+			pieces.append(piece)
+	if pieces.is_empty():
+		var center := _centroid(poly)
+		if Geometry2D.is_point_in_polygon(center, loop) and Geometry2D.is_point_in_polygon(center, poly):
+			pieces.append(poly)
+	return pieces
+
+func _difference(poly: PackedVector2Array, loop: PackedVector2Array) -> Array:
+	var pieces: Array = []
+	if poly.size() < 3 or loop.size() < 3:
+		pieces.append(poly)
+		return pieces
+	for piece: PackedVector2Array in Geometry2D.clip_polygons(poly, loop):
+		if piece.size() >= 3:
+			pieces.append(piece)
+	if pieces.is_empty():
+		var center := _centroid(poly)
+		if not Geometry2D.is_point_in_polygon(center, loop):
+			pieces.append(poly)
+	return pieces
+
+func _emit_poly(surface, poly: PackedVector2Array, y: float, color: Color, uv: Vector2) -> void:
+	if poly.size() < 3:
+		return
+	var indices := Geometry2D.triangulate_polygon(poly)
+	if indices.is_empty():
+		var center2 := _centroid(poly)
+		var center := Vector3(center2.x, y, center2.y)
+		for index in poly.size():
+			var a: Vector2 = poly[index]
+			var b: Vector2 = poly[(index + 1) % poly.size()]
+			_tri(surface, center, Vector3(a.x, y, a.y), Vector3(b.x, y, b.y), color, uv, true)
+		return
+	for index in range(0, indices.size(), 3):
+		var a: Vector2 = poly[indices[index]]
+		var b: Vector2 = poly[indices[index + 1]]
+		var c: Vector2 = poly[indices[index + 2]]
+		_tri(surface, Vector3(a.x, y, a.y), Vector3(b.x, y, b.y), Vector3(c.x, y, c.y), color, uv, true)
 
 func _water_loops() -> void:
 	water_regions = {}
@@ -354,50 +737,6 @@ func _water_loops() -> void:
 		groups[level][cell] = true
 	for level in groups:
 		water_regions[level] = _outline_loops(groups[level])
-
-func _trace_loops() -> Array:
-	var outgoing := {}
-	for edge in _boundary:
-		var a: Vector2i = edge.a
-		if not outgoing.has(a):
-			outgoing[a] = []
-		outgoing[a].append(edge)
-	var seen := {}
-	var loops: Array = []
-	for edge in _boundary:
-		var id := "%s|%s" % [edge.a, edge.b]
-		if seen.has(id):
-			continue
-		var loop: Array = []
-		var guard := 0
-		var current = edge
-		while guard < 8000:
-			guard += 1
-			var current_id := "%s|%s" % [current.a, current.b]
-			if seen.has(current_id):
-				break
-			seen[current_id] = true
-			loop.append(current)
-			if not outgoing.has(current.b):
-				break
-			var options: Array = outgoing[current.b]
-			var incoming := Vector2(current.b - current.a)
-			var best := -INF
-			var pick = null
-			for candidate in options:
-				var candidate_id := "%s|%s" % [candidate.a, candidate.b]
-				if seen.has(candidate_id):
-					continue
-				var turn := atan2(incoming.cross(Vector2(candidate.b - candidate.a)), incoming.dot(Vector2(candidate.b - candidate.a)))
-				if turn > best:
-					best = turn
-					pick = candidate
-			if pick == null:
-				break
-			current = pick
-		if loop.size() >= 3:
-			loops.append(loop)
-	return loops
 
 func _outline_loops(occupied: Dictionary) -> Array:
 	var edges := {}
@@ -464,139 +803,183 @@ func _index() -> void:
 				triangle_chunks[chunk][kind] = []
 			triangle_chunks[chunk][kind].append(i)
 
-func _smooth(surface) -> void:
-	var sums := {}
-	var vertices: PackedVector3Array = surface.vertices
-	for i in range(0, vertices.size(), 3):
-		var weighted: Vector3 = -(vertices[i + 1] - vertices[i]).cross(vertices[i + 2] - vertices[i])
-		for point in [vertices[i], vertices[i + 1], vertices[i + 2]]:
-			var key := Vector3i(roundi(point.x * 80.0), roundi(point.y * 80.0), roundi(point.z * 80.0))
-			sums[key] = sums.get(key, Vector3.ZERO) + weighted
-	for i in vertices.size():
-		var point: Vector3 = vertices[i]
-		var key := Vector3i(roundi(point.x * 80.0), roundi(point.y * 80.0), roundi(point.z * 80.0))
-		var sum: Vector3 = sums[key]
-		if sum.length_squared() > 0.00000001:
-			surface.normals[i] = sum.normalized()
-
-func _remember(key: Vector2i, column: Array, outward: Vector2) -> void:
-	if not _corners.has(key):
-		_corners[key] = []
-	_corners[key].append({"column": column, "outward": outward, "y": column[0].y})
-
-func _profile_point(jagged: Vector2, straight: Vector2, outward: Vector2, rim_y: float, depth: float, room: float) -> Vector3:
-	var xz := _profile_xz(jagged, straight, outward, rim_y, depth, room)
-	return Vector3(xz.x, rim_y - depth, xz.y)
-
-func _profile_xz(jagged: Vector2, straight: Vector2, outward: Vector2, rim_y: float, depth: float, room: float) -> Vector2:
-	# The lip keeps the rugged plan. Below the fold the ribs fade so the cliff
-	# reads as one stone mass, then the mouth pinches inward.
-	var total := maxf(rim_y - KEEL_Y, 0.8)
-	var used := clampf(depth, 0.0, total)
-	var fade := clampf(1.0 - used / FOLD_DEPTH, 0.0, 1.0)
-	var xz := straight.lerp(jagged, fade)
-	return xz - outward * minf(wall_inset(used), room)
-
-func _sample(base: Vector2, outward: Vector2, rim_y: float, depth: float) -> Vector3:
-	var xz := _displace(base, outward, rim_y, depth)
-	return Vector3(xz.x, rim_y - depth, xz.y)
-
-func _displace(base: Vector2, outward: Vector2, rim_y: float, depth: float) -> Vector2:
-	var total := maxf(rim_y - KEEL_Y, 0.8)
-	var used := clampf(depth, 0.0, total)
-	return base - outward * minf(wall_inset(used), _room(base, outward))
-
-func _straight_points(cell: Vector2i, side: int) -> PackedVector2Array:
-	var corners := _corners_of(cell)
-	var a := Vector2(corners[side])
-	var b := Vector2(corners[(side + 1) % 4])
-	var points := PackedVector2Array()
-	points.append(a)
-	points.append(a.lerp(b, 0.5))
-	points.append(b)
-	return points
-
-func _depths(rim_y: float) -> Array:
-	var total := maxf(rim_y - KEEL_Y, 0.8)
-	var raw: Array[float] = [0.0, 0.42, 0.9, minf(FOLD_DEPTH, total * 0.5), minf(FOLD_DEPTH + 0.85, total * 0.72), minf(FOLD_DEPTH + 1.9, total * 0.88), total]
-	var result: Array[float] = []
-	var previous := -1.0
-	for value in raw:
-		var depth := clampf(value, 0.0, total)
-		if depth <= previous + 0.025:
-			continue
-		result.append(depth)
-		previous = depth
-	while result.size() < PROFILE_COUNT and result.size() >= 2:
-		var last: float = result[result.size() - 1]
-		var before: float = result[result.size() - 2]
-		result.insert(result.size() - 1, (before + last) * 0.5)
-	return result
-
-func _room(xz: Vector2, outward: Vector2) -> float:
-	var inward := -outward
+func _room_along(xz: Vector2, inward: Vector2) -> float:
+	if inward.length_squared() < 0.000001:
+		return 0.16
+	var dir := inward.normalized()
 	var reached := 0.0
-	for step in range(1, 24):
-		var p := xz + inward * (float(step) * 0.5)
-		if not source.cells.has(Vector2i(floori(p.x), floori(p.y))):
+	for step in range(1, 28):
+		var probe := xz + dir * (float(step) * 0.45)
+		if not source.cells.has(Vector2i(floori(probe.x), floori(probe.y))):
 			break
-		reached = float(step) * 0.5
-	return clampf(reached * 0.34, 0.22, 2.35)
+		reached = float(step) * 0.45
+	return clampf(reached * 0.45, 0.16, 5.4)
 
-func _edge_points(cell: Vector2i, side: int, notched: bool) -> PackedVector2Array:
-	var corners := _corners_of(cell)
-	var a := _corner_xz(corners[side].x, corners[side].y)
-	var b := _corner_xz(corners[(side + 1) % 4].x, corners[(side + 1) % 4].y)
-	var points := PackedVector2Array()
-	points.append(a)
-	if notched:
-		points.append(_notch(a, b, cell, side))
-	points.append(b)
-	return points
+func _bisector(loop: PackedVector2Array, index: int) -> Vector2:
+	var count := loop.size()
+	var prev: Vector2 = loop[(index + count - 1) % count]
+	var point: Vector2 = loop[index]
+	var next: Vector2 = loop[(index + 1) % count]
+	var d0 := point - prev
+	var d1 := next - point
+	if d0.length_squared() < 0.000001 or d1.length_squared() < 0.000001:
+		var fallback := d1 if d0.length_squared() < 0.000001 else d0
+		if fallback.length_squared() < 0.000001:
+			return Vector2.RIGHT
+		fallback = fallback.normalized()
+		return Vector2(fallback.y, -fallback.x)
+	d0 = d0.normalized()
+	d1 = d1.normalized()
+	var n0 := Vector2(d0.y, -d0.x)
+	var n1 := Vector2(d1.y, -d1.x)
+	var bis := n0 + n1
+	if bis.length_squared() < 0.0001:
+		return n0
+	return bis.normalized()
 
-func _notch_on(cell: Vector2i, side: int) -> bool:
-	var neighbor: Vector2i = cell + _offset(side)
+func _edge_outward(a: Vector2, b: Vector2) -> Vector2:
+	var dir := b - a
+	if dir.length_squared() < 0.000001:
+		return Vector2.ZERO
+	dir = dir.normalized()
+	return Vector2(dir.y, -dir.x)
+
+func _turn(a: Vector2, b: Vector2, c: Vector2) -> float:
+	var left := b - a
+	var right := c - b
+	if left.length_squared() < 0.000001 or right.length_squared() < 0.000001:
+		return 0.0
+	left = left.normalized()
+	right = right.normalized()
+	return absf(atan2(left.cross(right), left.dot(right)))
+
+func _perimeter(loop: PackedVector2Array) -> float:
+	var total := 0.0
+	for index in loop.size():
+		total += loop[index].distance_to(loop[(index + 1) % loop.size()])
+	return total
+
+func _dedupe(loop: PackedVector2Array) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	for point in loop:
+		if out.is_empty() or out[out.size() - 1].distance_squared_to(point) > 0.0004:
+			out.append(point)
+	if out.size() > 1 and out[0].distance_squared_to(out[out.size() - 1]) < 0.0004:
+		out.remove_at(out.size() - 1)
+	return out
+
+func _centroid(poly: PackedVector2Array) -> Vector2:
+	var center := Vector2.ZERO
+	for point in poly:
+		center += point
+	return center / float(maxi(poly.size(), 1))
+
+func _square(cell: Vector2i) -> PackedVector2Array:
+	return PackedVector2Array([
+		Vector2(float(cell.x), float(cell.y)),
+		Vector2(float(cell.x + 1), float(cell.y)),
+		Vector2(float(cell.x + 1), float(cell.y + 1)),
+		Vector2(float(cell.x), float(cell.y + 1)),
+	])
+
+func _open_side(cell: Vector2i) -> bool:
+	for side in 4:
+		if not source.cells.has(cell + _offset(side)):
+			return true
+	return false
+
+func _has_lower_neighbor(cell: Vector2i) -> bool:
+	var top := _top(source.cells[cell])
+	for side in 4:
+		var neighbor: Vector2i = cell + _offset(side)
+		if source.cells.has(neighbor) and top - _top(source.cells[neighbor]) >= ROCK_RISE:
+			return true
+	return false
+
+func _has_higher_neighbor(cell: Vector2i) -> bool:
+	var top := _top(source.cells[cell])
+	for side in 4:
+		var neighbor: Vector2i = cell + _offset(side)
+		if source.cells.has(neighbor) and _top(source.cells[neighbor]) - top >= ROCK_RISE:
+			return true
+	return false
+
+func _lower_beside(cell: Vector2i, top: float) -> float:
+	var best := top
+	var found := false
+	for side in 4:
+		var neighbor: Vector2i = cell + _offset(side)
+		if not source.cells.has(neighbor):
+			continue
+		var height := _top(source.cells[neighbor])
+		if top - height < ROCK_RISE:
+			continue
+		if not found or height > best:
+			best = height
+			found = true
+	return best if found else top - ROCK_RISE
+
+func _height_near(point: Vector2) -> float:
+	var record := _record_near(point)
+	if record.is_empty():
+		return 1.5
+	return _top(record)
+
+func _record_near(point: Vector2) -> Dictionary:
+	var cell := Vector2i(floori(point.x), floori(point.y))
+	if source.cells.has(cell):
+		return source.cells[cell]
+	var host := _nearest_cell(point)
+	if host.x == 99999:
+		return {}
+	return source.cells[host]
+
+func _nearest_high(point: Vector2, height: float) -> Vector2i:
+	var best := Vector2i(99999, 99999)
+	var best_d := INF
+	var base := Vector2i(floori(point.x), floori(point.y))
+	for dz in range(-3, 4):
+		for dx in range(-3, 4):
+			var cell := base + Vector2i(dx, dz)
+			if not source.cells.has(cell) or _top(source.cells[cell]) < height - 0.02:
+				continue
+			var distance := point.distance_squared_to(Vector2(cell) + Vector2(0.5, 0.5))
+			if distance < best_d:
+				best_d = distance
+				best = cell
+	return best
+
+func _nearest_cell(point: Vector2) -> Vector2i:
+	var best := Vector2i(99999, 99999)
+	var best_d := INF
+	var base := Vector2i(floori(point.x), floori(point.y))
+	for dz in range(-4, 5):
+		for dx in range(-4, 5):
+			var cell := base + Vector2i(dx, dz)
+			if not source.cells.has(cell):
+				continue
+			var distance := point.distance_squared_to(Vector2(cell) + Vector2(0.5, 0.5))
+			if distance < best_d:
+				best_d = distance
+				best = cell
+	return best
+
+func _facet_spills(cell: Vector2i, outward: Vector2) -> bool:
+	if not source.cells.has(cell):
+		return false
+	var record: Dictionary = source.cells[cell]
+	if int(record.water) < 0:
+		return false
+	var ahead := Vector2(cell) + Vector2(0.5, 0.5) + outward * 1.15
+	var neighbor := Vector2i(floori(ahead.x), floori(ahead.y))
 	if not source.cells.has(neighbor):
 		return true
-	return absf(_top(source.cells[cell]) - _top(source.cells[neighbor])) >= ROCK_RISE
+	return _top(record) - _top(source.cells[neighbor]) > 0.35
 
-func _notch(a: Vector2, b: Vector2, cell: Vector2i, side: int) -> Vector2:
-	var neighbor: Vector2i = cell + _offset(side)
-	var amp := 0.38
-	var key_cell := cell
-	var key_side := side
-	var push := Vector2(Geometry.SIDES[side])
-	if source.cells.has(neighbor):
-		amp = 0.18
-		if neighbor.x < cell.x or (neighbor.x == cell.x and neighbor.y < cell.y):
-			key_cell = neighbor
-			key_side = (side + 2) % 4
-		var high: Vector2i = cell if _top(source.cells[cell]) >= _top(source.cells[neighbor]) else neighbor
-		var high_side := side if high == cell else (side + 2) % 4
-		push = Vector2(Geometry.SIDES[high_side])
-	var along := _unit(key_cell.x, key_cell.y, 40 + key_side)
-	var side_h := _unit(key_cell.x, key_cell.y, 41 + key_side)
-	var tangent := Vector2(-push.y, push.x)
-	var lo := a if (a.x < b.x or (is_equal_approx(a.x, b.x) and a.y <= b.y)) else b
-	var hi := b if lo == a else a
-	return lo.lerp(hi, 0.34 + along * 0.32) + push * ((side_h - 0.5) * amp) + tangent * ((_unit(key_cell.x, key_cell.y, 42 + key_side) - 0.5) * amp * 0.28)
-
-func _corner_xz(ix: int, iz: int) -> Vector2:
-	var base := Vector2(float(ix), float(iz))
-	var count := 0
-	var empty := Vector2.ZERO
-	for dz in [-1, 0]:
-		for dx in [-1, 0]:
-			if source.cells.has(Vector2i(ix + dx, iz + dz)):
-				count += 1
-			else:
-				empty += Vector2(float(dx) + 0.5, float(dz) + 0.5)
-	if count == 0 or count == 4:
-		return base
-	var jag := Vector2(_unit(ix, iz, 11) - 0.5, _unit(ix, iz, 12) - 0.5) * 0.34
-	if empty.length_squared() > 0.0001:
-		jag += empty.normalized() * (0.05 + _unit(ix, iz, 13) * 0.16)
-	return base + jag
+func _side_of(outward: Vector2) -> int:
+	if absf(outward.x) >= absf(outward.y):
+		return 1 if outward.x >= 0.0 else 3
+	return 2 if outward.y >= 0.0 else 0
 
 func _offset(side: int) -> Vector2i:
 	return Geometry.SIDES[side] as Vector2i
@@ -623,6 +1006,22 @@ func _unit(x: int, z: int, salt: int) -> float:
 	var value := (x * 374761393 + z * 668265263 + seed * 69069 + salt * 144269) & 0x7fffffff
 	value = ((value ^ (value >> 13)) * 1274126177) & 0x7fffffff
 	return float(value) / 2147483647.0
+
+func _flat_quad(surface, a: Vector3, b: Vector3, c: Vector3, d: Vector3, outward: Vector2, color: Color, uv: Vector2) -> void:
+	var before: int = surface.vertices.size()
+	_quad(surface, a, b, c, d, outward, color, uv)
+	var after: int = surface.vertices.size()
+	if after <= before + 2:
+		return
+	var origin: Vector3 = surface.vertices[before]
+	var left: Vector3 = surface.vertices[before + 1]
+	var right: Vector3 = surface.vertices[before + 2]
+	var normal := -(left - origin).cross(right - origin)
+	if normal.length_squared() < 0.00000001:
+		return
+	normal = normal.normalized()
+	for index in range(before, after):
+		surface.normals[index] = normal
 
 func _quad(surface, a: Vector3, b: Vector3, c: Vector3, d: Vector3, outward: Vector2, color: Color, uv: Vector2) -> void:
 	var hint := Vector3(outward.x, 0.0, outward.y)
