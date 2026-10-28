@@ -1,10 +1,9 @@
 class_name HeightmapIsland
 extends RefCounted
 ## Playable island shell. One top heightmap plus its footprint.
-## The lip is one simplified contour ring. Grass stops on the inset copy of
-## that ring; the cliff wall and a thin stone bevel share the outer ring.
-## Stairs are removed first. The clean ring is then split into many wide
-## planar faces. Depth bands step inward.
+## The lip is one simplified contour ring. Grass stops on a thin inset.
+## Stairs are removed first. The wall is a few wide planes per side, broken
+## into large irregular faces that step inward. It is not a stack of rings.
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Geometry = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
@@ -308,10 +307,19 @@ func _terrace_walls() -> void:
 			var low := _top(outside)
 			if height - low < ROCK_RISE:
 				continue
-			var lean := minf(0.18, (height - low) * 0.08)
+			var lean := minf(0.22, (height - low) * 0.1)
 			var inset_a := a - outward * lean
 			var inset_b := b - outward * lean
-			_flat_quad(surfaces.cliff, Vector3(a.x, height, a.y), Vector3(b.x, height, b.y), Vector3(inset_b.x, low, inset_b.y), Vector3(inset_a.x, low, inset_a.y), outward, Color.WHITE, Vector2(height, 1.0))
+			var uv := Vector2(height, 1.0)
+			if a.distance_to(b) > 3.6:
+				var mid_t := lerpf(0.38, 0.62, _unit(floori(a.x + b.x), floori(a.y + b.y), 71))
+				var top_m := a.lerp(b, mid_t)
+				var bot_m := inset_a.lerp(inset_b, mid_t) - outward * lerpf(0.0, 0.16, _unit(floori(top_m.x), floori(top_m.y), 73))
+				var break_y := lerpf(low + (height - low) * 0.35, low + (height - low) * 0.62, _unit(floori(b.x), floori(a.y), 79))
+				_flat_quad(surfaces.cliff, Vector3(a.x, height, a.y), Vector3(top_m.x, height, top_m.y), Vector3(bot_m.x, break_y, bot_m.y), Vector3(inset_a.x, low, inset_a.y), outward, Color.WHITE, uv)
+				_flat_quad(surfaces.cliff, Vector3(top_m.x, height, top_m.y), Vector3(b.x, height, b.y), Vector3(inset_b.x, low, inset_b.y), Vector3(bot_m.x, break_y, bot_m.y), outward, Color.WHITE, uv)
+			else:
+				_flat_quad(surfaces.cliff, Vector3(a.x, height, a.y), Vector3(b.x, height, b.y), Vector3(inset_b.x, low, inset_b.y), Vector3(inset_a.x, low, inset_a.y), outward, Color.WHITE, uv)
 
 func _cone() -> void:
 	for loop in rim_loops:
@@ -333,9 +341,10 @@ func _cone() -> void:
 			var lip_y := _height_near(point) - _lip_drop(point, bis)
 			var total := maxf(lip_y - KEEL_Y, 0.8)
 			var room := _room_along(point, -bis)
-			var wobble := lerpf(0.82, 1.18, _unit(floori(point.x), floori(point.y), 17 + index))
-			var lean := lerpf(0.88, 1.14, _unit(floori(point.x * 0.5), floori(point.y * 0.5), 19))
-			columns.append(_column(point, bis, edge_n, lip_y, total, room, wobble, lean))
+			var wobble := lerpf(0.86, 1.16, _unit(floori(point.x), floori(point.y), 17 + index))
+			var lean := lerpf(0.84, 1.18, _unit(floori(point.x * 0.5), floori(point.y * 0.5), 19))
+			var tangent := Vector2(-bis.y, bis.x)
+			columns.append(_column(point, bis, edge_n, tangent, lip_y, total, room, wobble, lean, index))
 			bisectors.append(bis)
 			rooms.append(room)
 			heights.append(lip_y)
@@ -355,7 +364,12 @@ func _cone() -> void:
 				var ra: Vector3 = right[band]
 				var rb: Vector3 = right[band + 1]
 				var lb: Vector3 = left[band + 1]
-				_flat_quad(surfaces.cliff, la, ra, rb, lb, outward, Color.WHITE, Vector2(maxf(ya, yb), 1.0))
+				var uv := Vector2(maxf(ya, yb), 1.0)
+				if a.distance_to(b) > 3.3 and _unit(index * 5 + band, floori(a.x + b.y), 61) > 0.38:
+					var push := lerpf(0.18, 0.42, _unit(index + band, floori(b.x - a.y), 67))
+					_bulged_quad(surfaces.cliff, la, ra, rb, lb, outward, uv, push)
+				else:
+					_flat_quad(surfaces.cliff, la, ra, rb, lb, outward, Color.WHITE, uv)
 			var lip := (Vector2(left[0].x, left[0].z) + Vector2(right[0].x, right[0].z)) * 0.5
 			var keel := (Vector2(left[left.size() - 1].x, left[left.size() - 1].z) + Vector2(right[right.size() - 1].x, right[right.size() - 1].z)) * 0.5
 			var band_xz: Array = []
@@ -497,7 +511,7 @@ func _embeds() -> void:
 		if cell.x == 99999:
 			continue
 		var side: int = facet.side
-		if _unit(cell.x, cell.y, 90 + side) < 0.84:
+		if _unit(cell.x, cell.y, 90 + side) < 0.70:
 			continue
 		if _facet_spills(cell, facet.outward):
 			continue
@@ -556,23 +570,18 @@ func _emit_cap(poly: PackedVector2Array) -> void:
 		var c: Vector2 = poly[indices[index + 2]]
 		_tri(surfaces.cliff, Vector3(a.x, KEEL_Y, a.y), Vector3(c.x, KEEL_Y, c.y), Vector3(b.x, KEEL_Y, b.y), Color.WHITE, Vector2(KEEL_Y, -1.0), false)
 
-func _column(point: Vector2, bis: Vector2, edge_n: Vector2, rim_y: float, total: float, room: float, wobble: float, lean: float) -> Array:
-	# Same sample count on every column so neighboring panels still meet.
-	# Band depths wander per vertex; the keel sample stays shared.
+func _column(point: Vector2, bis: Vector2, edge_n: Vector2, tangent: Vector2, rim_y: float, total: float, room: float, wobble: float, lean: float, salt: int) -> Array:
+	# Four shared samples so neighbors meet. The two middle breaks wander,
+	# and the seam leans as it drops, so the wall is not a stack of rings.
+	var upper := clampf(lerpf(0.55, minf(3.8, total * 0.58), _unit(floori(point.x), floori(point.y), 43 + salt)), 0.45, total * 0.7)
+	var lower := clampf(lerpf(upper + 1.1, minf(upper + 3.4, total * 0.86), _unit(floori(point.y), floori(point.x), 47 + salt)), upper + 0.8, maxf(total - 0.15, upper + 0.4))
+	var depths: Array[float] = [0.0, upper, lower, total]
+	var sway := lerpf(-0.55, 0.55, _unit(floori(point.x * 2.0), floori(point.y * 2.0), 41 + salt))
 	var column: Array = []
-	var last := BAND_DEPTHS.size() - 1
-	var prev := -1.0
-	for index in BAND_DEPTHS.size():
-		var depth := BAND_DEPTHS[index] * wobble
-		if index == 0:
-			depth = 0.0
-		depth = minf(depth, total)
-		if index != last and depth < prev + 0.05:
-			depth = minf(prev + 0.05, total)
-		if index == last:
-			depth = total
-		prev = depth
-		column.append(_inset_point(point, bis, edge_n, rim_y, depth, room, lean))
+	for depth in depths:
+		var along := tangent * sway * (depth / maxf(total, 0.8))
+		var placed := _inset_point(point, bis, edge_n, rim_y, depth, room, lean)
+		column.append(placed + Vector3(along.x, 0.0, along.y))
 	return column
 
 func _inset_point(point: Vector2, bis: Vector2, edge_n: Vector2, rim_y: float, depth: float, room: float, lean: float) -> Vector3:
@@ -616,11 +625,11 @@ func _lip_metrics(point: Vector2, bis: Vector2) -> Dictionary:
 	var width := 0.0
 	var drop := 0.0
 	if room >= 0.22:
-		width = minf(0.28 + _unit(floori(point.x * 2.0), floori(point.y * 2.0), 31) * 0.14, room * 0.42)
-		if width < 0.08:
+		width = minf(0.05 + _unit(floori(point.x * 2.0), floori(point.y * 2.0), 31) * 0.06, room * 0.16)
+		if width < 0.04:
 			width = 0.0
 		else:
-			drop = 0.12 * (width / 0.36)
+			drop = 0.04 * (width / 0.08)
 	return {"width": width, "drop": drop, "inner": point - bis * width}
 
 func _inset_ring(loop: PackedVector2Array) -> PackedVector2Array:
@@ -675,10 +684,10 @@ func _prepare_loop(raw: PackedVector2Array, rugged: bool) -> PackedVector2Array:
 	var loop := _dp_closed(guide, 1.05)
 	if rugged:
 		loop = _panelize(loop, guide)
-		loop = _collapse_slivers(loop, 1.9)
+		loop = _collapse_slivers(loop, 2.7)
 		loop = _ruggedize(loop)
 		loop = _dedupe(loop)
-		loop = _collapse_slivers(loop, 1.35)
+		loop = _collapse_slivers(loop, 2.35)
 	else:
 		loop = _split_long(loop, guide)
 		loop = _collapse_slivers(loop, 3.0)
@@ -811,11 +820,11 @@ func _panelize(loop: PackedVector2Array, guide: PackedVector2Array) -> PackedVec
 		var total := float(lengths[lengths.size() - 1])
 		var chord := a.distance_to(b)
 		var span := maxf(chord, total)
-		var cap := int(floor(span / 2.15))
+		var cap := int(floor(span / 3.6))
 		if cap < 2:
 			continue
-		var target := lerpf(2.2, 2.65, _unit(index * 7 + count, int(roundf(a.x * 3.0 + a.y)), 11))
-		var pieces := clampi(mini(int(round(span / target)), cap), 2, 12)
+		var target := lerpf(3.8, 5.6, _unit(index * 7 + count, int(roundf(a.x * 3.0 + a.y)), 11))
+		var pieces := clampi(mini(int(round(span / target)), cap), 2, 6)
 		var outward := _edge_outward(a, b)
 		var last := a
 		for step in range(1, pieces):
@@ -827,7 +836,7 @@ func _panelize(loop: PackedVector2Array, guide: PackedVector2Array) -> PackedVec
 				point += outward * amp
 			if _on_lattice(point):
 				point += outward * 0.16
-			if last.distance_to(point) < 1.9 or point.distance_to(b) < 1.9:
+			if last.distance_to(point) < 3.05 or point.distance_to(b) < 3.05:
 				continue
 			out.append(point)
 			last = point
@@ -1280,6 +1289,15 @@ func _unit(x: int, z: int, salt: int) -> float:
 	var value := (x * 374761393 + z * 668265263 + seed * 69069 + salt * 144269) & 0x7fffffff
 	value = ((value ^ (value >> 13)) * 1274126177) & 0x7fffffff
 	return float(value) / 2147483647.0
+
+func _bulged_quad(surface, a: Vector3, b: Vector3, c: Vector3, d: Vector3, outward: Vector2, uv: Vector2, push: float) -> void:
+	var center := (a + b + c + d) * 0.25
+	center += Vector3(outward.x, 0.15, outward.y) * push
+	var hint := Vector3(outward.x, 0.0, outward.y)
+	_tri_facing(surface, a, b, center, hint, uv)
+	_tri_facing(surface, b, c, center, hint, uv)
+	_tri_facing(surface, c, d, center, hint, uv)
+	_tri_facing(surface, d, a, center, hint, uv)
 
 func _flat_quad(surface, a: Vector3, b: Vector3, c: Vector3, d: Vector3, outward: Vector2, color: Color, uv: Vector2) -> void:
 	var before: int = surface.vertices.size()

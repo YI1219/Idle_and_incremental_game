@@ -57,7 +57,7 @@ func run() -> void:
 		elif length < 4.5:
 			bucket = 3
 		buckets[bucket] += 1
-		if length < 1.9:
+		if length < 2.3:
 			short += 1
 		var end_a: Vector2 = facet.a
 		var end_b: Vector2 = facet.b
@@ -109,8 +109,8 @@ func run() -> void:
 			if turn > 0.22:
 				hard_turns += 1
 	print("RIM facets=%d min=%.2f mean=%.2f max=%.2f buckets=%s short=%d axis=%d lattice=%d/%d gridline=%d/%d inward=%d flared=%d nonmono=%d embeds=%d teeth=%d hard_turns=%d/%d mean_turn=%.1fdeg" % [facet_count, min_len, mean, max_len, str(buckets), short, axis, lattice, rim_points, grid_line, rim_points, inward, flared, nonmono, island.embeds.size(), teeth, hard_turns, turn_count, rad_to_deg(turn_sum / float(maxi(turn_count, 1)))])
-	check(facet_count >= 36 and facet_count <= 52 and mean >= 2.3 and mean <= 4.2, "cliff has many wide panels, mean %.2f over %d" % [mean, facet_count])
-	check(min_len >= 1.95 and max_len <= 4.6 and short == 0, "rim panels stay wide and stair-free, %.2f..%.2f" % [min_len, max_len])
+	check(facet_count >= 16 and facet_count <= 34 and mean >= 3.0 and mean <= 6.5, "cliff has wide irregular panels, mean %.2f over %d" % [mean, facet_count])
+	check(min_len >= 2.4 and max_len <= 7.4 and short == 0, "rim panels stay wide and stair-free, %.2f..%.2f" % [min_len, max_len])
 	check(rim_points > 8 and lattice * 5 < rim_points, "rim vertices leave the integer grid")
 	check(inward > 8 and flared == 0 and nonmono == 0, "faceted underside folds inward and does not flare")
 	check(teeth == 0, "grass stays inside the stone lip")
