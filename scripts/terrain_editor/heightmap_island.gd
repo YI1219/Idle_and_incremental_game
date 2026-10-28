@@ -3,7 +3,8 @@ extends RefCounted
 ## Playable island shell. One top heightmap plus its footprint.
 ## The lip is one simplified contour ring. Grass stops on the inset copy of
 ## that ring; the cliff wall and a thin stone bevel share the outer ring.
-## Circumferential faces stay wide and irregular. Depth bands step inward.
+## Stairs are removed first. The clean ring is then split into many wide
+## planar faces. Depth bands step inward.
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Geometry = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
@@ -332,7 +333,7 @@ func _cone() -> void:
 			var lip_y := _height_near(point) - _lip_drop(point, bis)
 			var total := maxf(lip_y - KEEL_Y, 0.8)
 			var room := _room_along(point, -bis)
-			var wobble := lerpf(0.90, 1.12, _unit(floori(point.x), floori(point.y), 17 + index))
+			var wobble := lerpf(0.82, 1.18, _unit(floori(point.x), floori(point.y), 17 + index))
 			var lean := lerpf(0.88, 1.14, _unit(floori(point.x * 0.5), floori(point.y * 0.5), 19))
 			columns.append(_column(point, bis, edge_n, lip_y, total, room, wobble, lean))
 			bisectors.append(bis)
@@ -490,13 +491,13 @@ func _basin(cell: Vector2i, side: int) -> void:
 func _embeds() -> void:
 	for facet in facets:
 		var length: float = facet.length
-		if length < 3.1:
+		if length < 2.15:
 			continue
 		var cell: Vector2i = facet.cell
 		if cell.x == 99999:
 			continue
 		var side: int = facet.side
-		if _unit(cell.x, cell.y, 90 + side) < 0.80:
+		if _unit(cell.x, cell.y, 90 + side) < 0.84:
 			continue
 		if _facet_spills(cell, facet.outward):
 			continue
@@ -661,10 +662,8 @@ func _lip_bevel() -> void:
 			_flat_quad(surfaces.cliff, Vector3(outer_a.x, ya - drop_a, outer_a.y), Vector3(outer_b.x, yb - drop_b, outer_b.y), Vector3(inner_b.x, grass_b, inner_b.y), Vector3(inner_a.x, grass_a, inner_a.y), outward, Color.WHITE, Vector2(maxf(ya, yb), 1.0))
 
 func _prepare_loop(raw: PackedVector2Array, rugged: bool) -> PackedVector2Array:
-	# The contour ring is already smooth. Douglas-Peucker removes leftover
-	# stair wiggles; long chords split back along that ring into irregular
-	# hard faces. Short teeth are folded away. No second Chaikin — that would
-	# turn the faces back into one soft band.
+	# Douglas-Peucker removes stair wiggles first. The outer ring is then
+	# resampled along that clean arc into wide panels. No second Chaikin.
 	var guide := _dedupe(raw)
 	if guide.size() < 3:
 		return guide
@@ -674,12 +673,15 @@ func _prepare_loop(raw: PackedVector2Array, rugged: bool) -> PackedVector2Array:
 	if perimeter < 18.0 or guide.size() < 10:
 		return guide
 	var loop := _dp_closed(guide, 1.05)
-	loop = _split_long(loop, guide)
-	loop = _collapse_slivers(loop, 3.0)
 	if rugged:
+		loop = _panelize(loop, guide)
+		loop = _collapse_slivers(loop, 1.9)
 		loop = _ruggedize(loop)
 		loop = _dedupe(loop)
-		loop = _collapse_slivers(loop, 2.8)
+		loop = _collapse_slivers(loop, 1.35)
+	else:
+		loop = _split_long(loop, guide)
+		loop = _collapse_slivers(loop, 3.0)
 	return loop
 
 func _dp_closed(loop: PackedVector2Array, epsilon: float) -> PackedVector2Array:
@@ -793,15 +795,71 @@ func _nearest_index(loop: PackedVector2Array, point: Vector2) -> int:
 			best = index
 	return best
 
+func _panelize(loop: PackedVector2Array, guide: PackedVector2Array) -> PackedVector2Array:
+	# After the stairs are gone, every long side becomes several wide faces.
+	# Samples stay on the smooth arc, so the lip does not snap back to the grid.
+	var out := PackedVector2Array()
+	var count := loop.size()
+	for index in count:
+		var a: Vector2 = loop[index]
+		var b: Vector2 = loop[(index + 1) % count]
+		out.append(a)
+		var arc := _arc_between(guide, a, b)
+		if arc.size() < 3:
+			continue
+		var lengths := _arc_lengths(arc)
+		var total := float(lengths[lengths.size() - 1])
+		var chord := a.distance_to(b)
+		var span := maxf(chord, total)
+		var cap := int(floor(span / 2.15))
+		if cap < 2:
+			continue
+		var target := lerpf(2.2, 2.65, _unit(index * 7 + count, int(roundf(a.x * 3.0 + a.y)), 11))
+		var pieces := clampi(mini(int(round(span / target)), cap), 2, 12)
+		var outward := _edge_outward(a, b)
+		var last := a
+		for step in range(1, pieces):
+			var jitter := lerpf(-0.06, 0.06, _unit(index * 13 + step, int(roundf(b.y - b.x)), 23))
+			var dist := clampf((float(step) + jitter) / float(pieces) * total, 0.0, total)
+			var point := _sample_arc(arc, lengths, dist)
+			if _point_segment_distance(point, a, b) < 0.12 and outward.length_squared() > 0.5:
+				var amp := lerpf(0.1, 0.24, _unit(index * 17 + step, floori(point.x + point.y), 29))
+				point += outward * amp
+			if _on_lattice(point):
+				point += outward * 0.16
+			if last.distance_to(point) < 1.9 or point.distance_to(b) < 1.9:
+				continue
+			out.append(point)
+			last = point
+	return out
+
+func _arc_lengths(arc: PackedVector2Array) -> PackedFloat32Array:
+	var lengths := PackedFloat32Array()
+	lengths.append(0.0)
+	for index in range(1, arc.size()):
+		lengths.append(lengths[index - 1] + arc[index - 1].distance_to(arc[index]))
+	return lengths
+
+func _sample_arc(arc: PackedVector2Array, lengths: PackedFloat32Array, distance: float) -> Vector2:
+	for index in range(1, arc.size()):
+		if lengths[index] + 0.00001 >= distance:
+			var span := lengths[index] - lengths[index - 1]
+			var weight := 0.0 if span < 0.0001 else (distance - lengths[index - 1]) / span
+			return arc[index - 1].lerp(arc[index], clampf(weight, 0.0, 1.0))
+	return arc[arc.size() - 1]
+
+func _on_lattice(point: Vector2) -> bool:
+	return absf(point.x - roundf(point.x)) < 0.1 and absf(point.y - roundf(point.y)) < 0.1
+
 func _ruggedize(loop: PackedVector2Array) -> PackedVector2Array:
 	var out := PackedVector2Array()
 	var count := loop.size()
 	for index in count:
 		var point: Vector2 = loop[index]
 		var outward := _bisector(loop, index)
-		var jag := _unit(floori(point.x / 7.0), floori(point.y / 7.0), 21) - 0.5
-		var wave := sin(point.x * 0.31 + point.y * 0.27 + float(seed) * 0.01)
-		out.append(point + outward * (0.20 * jag + 0.06 * wave))
+		var jag := _unit(index * 5 + floori(point.x), floori(point.y * 2.0), 21) - 0.5
+		var wave := sin(point.x * 0.37 + point.y * 0.29 + float(seed) * 0.01)
+		out.append(point + outward * (0.22 * jag + 0.05 * wave))
 	return out
 
 func _collapse_slivers(loop: PackedVector2Array, minimum: float) -> PackedVector2Array:

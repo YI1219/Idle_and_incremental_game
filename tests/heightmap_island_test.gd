@@ -29,7 +29,7 @@ func run() -> void:
 	check(island.surfaces.grass.vertices.size() > 30, "heightmap top has a grass surface")
 	check(island.surfaces.cliff.vertices.size() > 30, "heightmap builds a cliff shell")
 	check(island.keel_inset_mean > 0.2, "preset underside regenerates inside the rim")
-	check(not island.embeds.is_empty() and island.embeds.size() < 80, "preset places a sparse embed set")
+	check(island.embeds.size() >= 3 and island.embeds.size() <= 8, "preset places a sparse embed set")
 	check(island.cliff_embed_placements() == island.embeds, "embed placement hook returns the same set")
 	var inward := 0
 	var flared := 0
@@ -39,6 +39,7 @@ func run() -> void:
 	var axis := 0
 	var min_len := 999.0
 	var max_len := 0.0
+	var buckets: Array[int] = [0, 0, 0, 0, 0]
 	var facet_count := 0
 	for facet in island.facets:
 		facet_count += 1
@@ -46,7 +47,17 @@ func run() -> void:
 		length_sum += length
 		min_len = minf(min_len, length)
 		max_len = maxf(max_len, length)
+		var bucket := 4
 		if length < 2.5:
+			bucket = 0
+		elif length < 3.2:
+			bucket = 1
+		elif length < 3.8:
+			bucket = 2
+		elif length < 4.5:
+			bucket = 3
+		buckets[bucket] += 1
+		if length < 1.9:
 			short += 1
 		var end_a: Vector2 = facet.a
 		var end_b: Vector2 = facet.b
@@ -97,9 +108,9 @@ func run() -> void:
 			turn_count += 1
 			if turn > 0.22:
 				hard_turns += 1
-	print("RIM facets=%d min=%.2f mean=%.2f max=%.2f short=%d axis=%d lattice=%d/%d gridline=%d/%d inward=%d flared=%d nonmono=%d embeds=%d teeth=%d hard_turns=%d/%d mean_turn=%.1fdeg" % [facet_count, min_len, mean, max_len, short, axis, lattice, rim_points, grid_line, rim_points, inward, flared, nonmono, island.embeds.size(), teeth, hard_turns, turn_count, rad_to_deg(turn_sum / float(maxi(turn_count, 1)))])
-	check(facet_count >= 14 and facet_count <= 64 and mean >= 3.15 and mean <= 7.5, "cliff facets are several wide panels, mean %.2f over %d" % [mean, facet_count])
-	check(min_len >= 2.7 and short == 0, "rim has no cell-length stairs, min %.2f" % min_len)
+	print("RIM facets=%d min=%.2f mean=%.2f max=%.2f buckets=%s short=%d axis=%d lattice=%d/%d gridline=%d/%d inward=%d flared=%d nonmono=%d embeds=%d teeth=%d hard_turns=%d/%d mean_turn=%.1fdeg" % [facet_count, min_len, mean, max_len, str(buckets), short, axis, lattice, rim_points, grid_line, rim_points, inward, flared, nonmono, island.embeds.size(), teeth, hard_turns, turn_count, rad_to_deg(turn_sum / float(maxi(turn_count, 1)))])
+	check(facet_count >= 36 and facet_count <= 52 and mean >= 2.3 and mean <= 4.2, "cliff has many wide panels, mean %.2f over %d" % [mean, facet_count])
+	check(min_len >= 1.95 and max_len <= 4.6 and short == 0, "rim panels stay wide and stair-free, %.2f..%.2f" % [min_len, max_len])
 	check(rim_points > 8 and lattice * 5 < rim_points, "rim vertices leave the integer grid")
 	check(inward > 8 and flared == 0 and nonmono == 0, "faceted underside folds inward and does not flare")
 	check(teeth == 0, "grass stays inside the stone lip")
