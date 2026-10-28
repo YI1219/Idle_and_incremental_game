@@ -36,13 +36,25 @@ func run() -> void:
 	var nonmono := 0
 	var length_sum := 0.0
 	var short := 0
+	var axis := 0
+	var min_len := 999.0
+	var max_len := 0.0
 	var facet_count := 0
 	for facet in island.facets:
 		facet_count += 1
 		var length: float = facet.length
 		length_sum += length
-		if length < 1.15:
+		min_len = minf(min_len, length)
+		max_len = maxf(max_len, length)
+		if length < 2.5:
 			short += 1
+		var end_a: Vector2 = facet.a
+		var end_b: Vector2 = facet.b
+		var dir := end_b - end_a
+		if dir.length_squared() > 0.000001:
+			dir = dir.normalized()
+			if absf(dir.x) < 0.12 or absf(dir.y) < 0.12:
+				axis += 1
 		var outward_dir: Vector2 = facet.outward
 		var lip: Vector2 = facet.lip
 		var keel: Vector2 = facet.keel
@@ -60,18 +72,37 @@ func run() -> void:
 			previous = maxf(previous, inset)
 	var rim_points := 0
 	var lattice := 0
+	var grid_line := 0
 	for loop in island.rim_loops:
 		var ring: PackedVector2Array = loop
 		for point in ring:
 			rim_points += 1
-			if absf(point.x - roundf(point.x)) < 0.05 and absf(point.y - roundf(point.y)) < 0.05:
+			var on_x := absf(point.x - roundf(point.x)) < 0.08
+			var on_y := absf(point.y - roundf(point.y)) < 0.08
+			if on_x or on_y:
+				grid_line += 1
+			if on_x and on_y:
 				lattice += 1
 	var mean := length_sum / float(maxi(facet_count, 1))
-	print("RIM facets=%d mean=%.2f short=%d lattice=%d/%d inward=%d flared=%d nonmono=%d embeds=%d" % [facet_count, mean, short, lattice, rim_points, inward, flared, nonmono, island.embeds.size()])
-	check(facet_count > 8 and mean > 2.5, "cliff facets are wide panels, mean %.2f over %d" % [mean, facet_count])
-	check(short * 5 < facet_count, "rim is not a run of cell-length stairs")
-	check(rim_points > 8 and lattice * 4 < rim_points, "rim vertices leave the integer grid")
+	var teeth := _grass_teeth(island)
+	var turn_sum := 0.0
+	var hard_turns := 0
+	var turn_count := 0
+	for loop in island.rim_loops:
+		var ring: PackedVector2Array = loop
+		var count := ring.size()
+		for index in count:
+			var turn := absf(atan2((ring[index] - ring[(index + count - 1) % count]).normalized().cross((ring[(index + 1) % count] - ring[index]).normalized()), (ring[index] - ring[(index + count - 1) % count]).normalized().dot((ring[(index + 1) % count] - ring[index]).normalized())))
+			turn_sum += turn
+			turn_count += 1
+			if turn > 0.22:
+				hard_turns += 1
+	print("RIM facets=%d min=%.2f mean=%.2f max=%.2f short=%d axis=%d lattice=%d/%d gridline=%d/%d inward=%d flared=%d nonmono=%d embeds=%d teeth=%d hard_turns=%d/%d mean_turn=%.1fdeg" % [facet_count, min_len, mean, max_len, short, axis, lattice, rim_points, grid_line, rim_points, inward, flared, nonmono, island.embeds.size(), teeth, hard_turns, turn_count, rad_to_deg(turn_sum / float(maxi(turn_count, 1)))])
+	check(facet_count >= 14 and facet_count <= 64 and mean >= 3.15 and mean <= 7.5, "cliff facets are several wide panels, mean %.2f over %d" % [mean, facet_count])
+	check(min_len >= 2.7 and short == 0, "rim has no cell-length stairs, min %.2f" % min_len)
+	check(rim_points > 8 and lattice * 5 < rim_points, "rim vertices leave the integer grid")
 	check(inward > 8 and flared == 0 and nonmono == 0, "faceted underside folds inward and does not flare")
+	check(teeth == 0, "grass stays inside the stone lip")
 	var occupied := data.cells.size()
 	var empty := _empty_neighbor(data)
 	check(empty != Vector2i(99999, 99999), "preset has a cell outside the footprint")
@@ -115,6 +146,41 @@ func _has_rock_step(data: Data) -> bool:
 				continue
 			if absf(_shown(data.cells[cell]) - _shown(data.cells[neighbor])) >= Island.ROCK_RISE:
 				return true
+	return false
+
+func _grass_teeth(island: Island) -> int:
+	var teeth := 0
+	var seen := {}
+	var vertices: PackedVector3Array = island.surfaces.grass.vertices
+	for vertex in vertices:
+		var key := Vector2i(roundi(vertex.x * 25.0), roundi(vertex.z * 25.0))
+		if seen.has(key):
+			continue
+		seen[key] = true
+		var point := Vector2(vertex.x, vertex.z)
+		var inside := false
+		var near := false
+		for loop in island.grass_loops:
+			var ring: PackedVector2Array = loop
+			if Geometry2D.is_point_in_polygon(point, ring):
+				inside = true
+				break
+			if _near_ring(point, ring, 0.2):
+				near = true
+		if not inside and not near:
+			teeth += 1
+	return teeth
+
+func _near_ring(point: Vector2, ring: PackedVector2Array, limit: float) -> bool:
+	var count := ring.size()
+	for index in count:
+		var a: Vector2 = ring[index]
+		var b: Vector2 = ring[(index + 1) % count]
+		var span := b - a
+		var denom := span.length_squared()
+		var weight := 0.0 if denom < 0.000001 else clampf((point - a).dot(span) / denom, 0.0, 1.0)
+		if point.distance_to(a + span * weight) <= limit:
+			return true
 	return false
 
 func _empty_neighbor(data: Data) -> Vector2i:

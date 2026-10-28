@@ -1,9 +1,9 @@
 class_name HeightmapIsland
 extends RefCounted
 ## Playable island shell. One top heightmap plus its footprint.
-## The lip is a contour ring (smoothed, then widened into long chords) so the
-## silhouette is not the cell grid. The cliff is that ring extruded as a few
-## wide flat bands that step inward — a faceted cone, not a column skirt.
+## The lip is one simplified contour ring. Grass stops on the inset copy of
+## that ring; the cliff wall and a thin stone bevel share the outer ring.
+## Circumferential faces stay wide and irregular. Depth bands step inward.
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Geometry = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
@@ -30,6 +30,8 @@ var embeds: Array = []
 var keel_inset_mean := 0.0
 ## Prepared outer rings. Each entry is a CCW PackedVector2Array.
 var rim_loops: Array = []
+## Same rings, inset by the stone lip. Grass is clipped to these.
+var grass_loops: Array = []
 ## One entry per cliff facet: lip, keel, outward, length, band_xz, cell, side.
 var facets: Array = []
 var _inset_sum := 0.0
@@ -89,6 +91,7 @@ func refresh(data: Data) -> void:
 	lawn_boundaries.clear()
 	water_anchor_regions.clear()
 	rim_loops.clear()
+	grass_loops.clear()
 	facets.clear()
 	_plateaus.clear()
 	_inset_sum = 0.0
@@ -107,9 +110,11 @@ func refresh(data: Data) -> void:
 		var loop := _prepare_loop(raw as PackedVector2Array, true)
 		if loop.size() >= 3:
 			rim_loops.append(loop)
+			grass_loops.append(_inset_ring(loop))
 	_build_plateaus()
 	_fill_tops()
 	_terrace_walls()
+	_lip_bevel()
 	_cone()
 	_interior_hydro()
 	_embeds()
@@ -166,9 +171,8 @@ func _fill_tops() -> void:
 		var record: Dictionary = source.cells[cell]
 		var top := _top(record)
 		var square := _square(cell)
-		var polys: Array = [square]
-		if _open_side(cell):
-			polys = _clip_loops(square, rim_loops, true)
+		var lip_loops: Array = rim_loops if int(record.water) >= 0 else grass_loops
+		var polys: Array = _clip_to_rings(square, lip_loops)
 		if int(record.water) >= 0:
 			var bed_color := Color(float(record.water) / 255.0, 0.0, 0.0, 1.0)
 			for poly in polys:
@@ -233,10 +237,13 @@ func _terrace_bulges() -> void:
 			if host.x == 99999:
 				continue
 			var anchor := Vector2(host) + Vector2(0.5, 0.5)
-			_tri(surfaces.grass, Vector3(anchor.x, height, anchor.y), Vector3(a.x, height, a.y), Vector3(b.x, height, b.y), Color(1, 1, 1, 1), Vector2(0.0, 1.0), true)
+			var tri := PackedVector2Array([anchor, a, b])
+			for piece in _clip_to_rings(tri, grass_loops):
+				var shape: PackedVector2Array = piece
+				_emit_poly(surfaces.grass, shape, height, Color(1, 1, 1, 1), Vector2(0.0, 1.0))
 
 func _bulges() -> void:
-	for loop in rim_loops:
+	for loop in grass_loops:
 		var ring: PackedVector2Array = loop
 		var count := ring.size()
 		for index in count:
@@ -274,6 +281,9 @@ func _grass_risers() -> void:
 			if drop <= 0.04 or drop >= ROCK_RISE:
 				continue
 			var ends := _corners_of(cell)
+			var edge_mid := (Vector2(ends[side]) + Vector2(ends[(side + 1) % 4])) * 0.5
+			if not grass_loops.is_empty() and not _inside_loops(edge_mid, grass_loops):
+				continue
 			var a := Vector2(ends[side])
 			var b := Vector2(ends[(side + 1) % 4])
 			var low := _top(source.cells[neighbor])
@@ -312,18 +322,23 @@ func _cone() -> void:
 		var bisectors: Array = []
 		var rooms: Array = []
 		var heights: Array = []
+		var leans: Array[float] = []
 		for index in count:
 			var point: Vector2 = ring[index]
 			var bis := _bisector(ring, index)
 			var edge_n := _edge_outward(ring[(index + count - 1) % count], point)
 			if edge_n.length_squared() < 0.000001:
 				edge_n = bis
-			var total := maxf(_height_near(point) - KEEL_Y, 0.8)
+			var lip_y := _height_near(point) - _lip_drop(point, bis)
+			var total := maxf(lip_y - KEEL_Y, 0.8)
 			var room := _room_along(point, -bis)
-			columns.append(_column(point, bis, edge_n, _height_near(point), total, room))
+			var wobble := lerpf(0.90, 1.12, _unit(floori(point.x), floori(point.y), 17 + index))
+			var lean := lerpf(0.88, 1.14, _unit(floori(point.x * 0.5), floori(point.y * 0.5), 19))
+			columns.append(_column(point, bis, edge_n, lip_y, total, room, wobble, lean))
 			bisectors.append(bis)
 			rooms.append(room)
-			heights.append(_height_near(point))
+			heights.append(lip_y)
+			leans.append(lean)
 		for index in count:
 			var nxt := (index + 1) % count
 			var left: Array = columns[index]
@@ -367,6 +382,8 @@ func _cone() -> void:
 				"bis_b": bisectors[nxt],
 				"room_a": rooms[index],
 				"room_b": rooms[nxt],
+				"lean_a": leans[index],
+				"lean_b": leans[nxt],
 				"cell": owner,
 				"side": _side_of(outward),
 			})
@@ -538,22 +555,31 @@ func _emit_cap(poly: PackedVector2Array) -> void:
 		var c: Vector2 = poly[indices[index + 2]]
 		_tri(surfaces.cliff, Vector3(a.x, KEEL_Y, a.y), Vector3(c.x, KEEL_Y, c.y), Vector3(b.x, KEEL_Y, b.y), Color.WHITE, Vector2(KEEL_Y, -1.0), false)
 
-func _column(point: Vector2, bis: Vector2, edge_n: Vector2, rim_y: float, total: float, room: float) -> Array:
-	# Every column on a ring has the same sample count so bands stay aligned.
-	# Depths past this vertex clamp to the keel; duplicate quads drop out.
+func _column(point: Vector2, bis: Vector2, edge_n: Vector2, rim_y: float, total: float, room: float, wobble: float, lean: float) -> Array:
+	# Same sample count on every column so neighboring panels still meet.
+	# Band depths wander per vertex; the keel sample stays shared.
 	var column: Array = []
 	var last := BAND_DEPTHS.size() - 1
+	var prev := -1.0
 	for index in BAND_DEPTHS.size():
-		var depth := minf(BAND_DEPTHS[index], total)
+		var depth := BAND_DEPTHS[index] * wobble
+		if index == 0:
+			depth = 0.0
+		depth = minf(depth, total)
+		if index != last and depth < prev + 0.05:
+			depth = minf(prev + 0.05, total)
 		if index == last:
 			depth = total
-		column.append(_inset_point(point, bis, edge_n, rim_y, depth, room))
+		prev = depth
+		column.append(_inset_point(point, bis, edge_n, rim_y, depth, room, lean))
 	return column
 
-func _inset_point(point: Vector2, bis: Vector2, edge_n: Vector2, rim_y: float, depth: float, room: float) -> Vector3:
+func _inset_point(point: Vector2, bis: Vector2, edge_n: Vector2, rim_y: float, depth: float, room: float, lean: float) -> Vector3:
 	var denom := maxf(bis.dot(edge_n), 0.42)
-	var used := minf(wall_inset(depth), room * denom)
+	var target := wall_inset(depth) * lean
+	var used := minf(target, room * denom)
 	var scale := clampf(used / denom, 0.0, room)
+	scale = minf(scale, target * 1.35)
 	var xz := point - bis * scale
 	return Vector3(xz.x, rim_y - depth, xz.y)
 
@@ -565,49 +591,207 @@ func _facet_point(facet: Dictionary, along: float, depth: float) -> Vector3:
 	var ya: float = facet.ya
 	var yb: float = facet.yb
 	var edge_n: Vector2 = facet.outward
-	var left := _inset_point(a, bis_a, edge_n, ya, depth, float(facet.room_a))
-	var right := _inset_point(b, bis_b, edge_n, yb, depth, float(facet.room_b))
+	var left := _inset_point(a, bis_a, edge_n, ya, depth, float(facet.room_a), float(facet.lean_a))
+	var right := _inset_point(b, bis_b, edge_n, yb, depth, float(facet.room_b), float(facet.lean_b))
 	return left.lerp(right, along)
 
+func _point_segment_distance(point: Vector2, a: Vector2, b: Vector2) -> float:
+	var span := b - a
+	var denom := span.length_squared()
+	if denom < 0.000001:
+		return point.distance_to(a)
+	var weight := clampf((point - a).dot(span) / denom, 0.0, 1.0)
+	return point.distance_to(a + span * weight)
+
+func _segment_weight(point: Vector2, a: Vector2, b: Vector2) -> float:
+	var span := b - a
+	var denom := span.length_squared()
+	if denom < 0.000001:
+		return 0.0
+	return (point - a).dot(span) / denom
+
+func _lip_metrics(point: Vector2, bis: Vector2) -> Dictionary:
+	var room := _room_along(point, -bis)
+	var width := 0.0
+	var drop := 0.0
+	if room >= 0.22:
+		width = minf(0.28 + _unit(floori(point.x * 2.0), floori(point.y * 2.0), 31) * 0.14, room * 0.42)
+		if width < 0.08:
+			width = 0.0
+		else:
+			drop = 0.12 * (width / 0.36)
+	return {"width": width, "drop": drop, "inner": point - bis * width}
+
+func _inset_ring(loop: PackedVector2Array) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	for index in loop.size():
+		var point: Vector2 = loop[index]
+		var metrics: Dictionary = _lip_metrics(point, _bisector(loop, index))
+		out.append(metrics.inner as Vector2)
+	return out
+
+func _lip_drop(point: Vector2, bis: Vector2) -> float:
+	return float(_lip_metrics(point, bis).drop)
+
+func _lip_bevel() -> void:
+	var rings := mini(rim_loops.size(), grass_loops.size())
+	for ring_index in rings:
+		var outer: PackedVector2Array = rim_loops[ring_index]
+		var inner: PackedVector2Array = grass_loops[ring_index]
+		if outer.size() != inner.size() or outer.size() < 3:
+			continue
+		var count := outer.size()
+		for index in count:
+			var nxt := (index + 1) % count
+			var outer_a: Vector2 = outer[index]
+			var outer_b: Vector2 = outer[nxt]
+			var inner_a: Vector2 = inner[index]
+			var inner_b: Vector2 = inner[nxt]
+			if outer_a.distance_to(inner_a) < 0.05 and outer_b.distance_to(inner_b) < 0.05:
+				continue
+			var outward := _edge_outward(outer_a, outer_b)
+			if outward.length_squared() < 0.000001:
+				continue
+			var ya := _height_near(outer_a)
+			var yb := _height_near(outer_b)
+			var drop_a := _lip_drop(outer_a, _bisector(outer, index))
+			var drop_b := _lip_drop(outer_b, _bisector(outer, nxt))
+			var grass_a := _height_near(inner_a)
+			var grass_b := _height_near(inner_b)
+			_flat_quad(surfaces.cliff, Vector3(outer_a.x, ya - drop_a, outer_a.y), Vector3(outer_b.x, yb - drop_b, outer_b.y), Vector3(inner_b.x, grass_b, inner_b.y), Vector3(inner_a.x, grass_a, inner_a.y), outward, Color.WHITE, Vector2(maxf(ya, yb), 1.0))
+
 func _prepare_loop(raw: PackedVector2Array, rugged: bool) -> PackedVector2Array:
-	var loop := _dedupe(raw)
-	if loop.size() < 3:
-		return loop
-	if Contours._area(loop) < 0.0:
-		loop.reverse()
-	var perimeter := _perimeter(loop)
-	if perimeter >= 18.0 and loop.size() >= 10:
-		loop = _widen(loop)
-	if rugged and perimeter >= 18.0:
+	# The contour ring is already smooth. Douglas-Peucker removes leftover
+	# stair wiggles; long chords split back along that ring into irregular
+	# hard faces. Short teeth are folded away. No second Chaikin — that would
+	# turn the faces back into one soft band.
+	var guide := _dedupe(raw)
+	if guide.size() < 3:
+		return guide
+	if Contours._area(guide) < 0.0:
+		guide.reverse()
+	var perimeter := _perimeter(guide)
+	if perimeter < 18.0 or guide.size() < 10:
+		return guide
+	var loop := _dp_closed(guide, 1.05)
+	loop = _split_long(loop, guide)
+	loop = _collapse_slivers(loop, 3.0)
+	if rugged:
 		loop = _ruggedize(loop)
 		loop = _dedupe(loop)
-	if perimeter >= 18.0 and loop.size() >= 10:
-		loop = _collapse_slivers(loop)
+		loop = _collapse_slivers(loop, 2.8)
 	return loop
 
-func _widen(loop: PackedVector2Array) -> PackedVector2Array:
+func _dp_closed(loop: PackedVector2Array, epsilon: float) -> PackedVector2Array:
+	var count := loop.size()
+	var start := 0
+	var best_turn := -1.0
+	for index in count:
+		var turn := _turn(loop[(index + count - 1) % count], loop[index], loop[(index + 1) % count])
+		if turn > best_turn:
+			best_turn = turn
+			start = index
+	var open := PackedVector2Array()
+	for index in count:
+		open.append(loop[(start + index) % count])
+	open.append(loop[start])
+	var simplified := _dp_open(open, epsilon)
+	if simplified.size() > 1 and simplified[0].distance_squared_to(simplified[simplified.size() - 1]) < 0.0001:
+		simplified.remove_at(simplified.size() - 1)
+	return simplified if simplified.size() >= 3 else loop
+
+
+func _dp_open(pts: PackedVector2Array, epsilon: float) -> PackedVector2Array:
+	if pts.size() < 3:
+		return pts
+	var max_d := 0.0
+	var index := 0
+	var a: Vector2 = pts[0]
+	var b: Vector2 = pts[pts.size() - 1]
+	for i in range(1, pts.size() - 1):
+		var dist := _point_segment_distance(pts[i], a, b)
+		if dist > max_d:
+			max_d = dist
+			index = i
+	if max_d <= epsilon:
+		var ends := PackedVector2Array()
+		ends.append(a)
+		ends.append(b)
+		return ends
+	var left := _dp_open(pts.slice(0, index + 1), epsilon)
+	var right := _dp_open(pts.slice(index, pts.size()), epsilon)
+	var out := left.slice(0, left.size() - 1)
+	out.append_array(right)
+	return out
+
+
+func _split_long(loop: PackedVector2Array, guide: PackedVector2Array) -> PackedVector2Array:
+	# Long chords become several hard faces only along their own contour arc.
+	# A point elsewhere on the island must not be pulled in as a shortcut.
+	var blocked := {}
 	var guard := 0
-	while loop.size() > 8 and guard < 600:
+	while loop.size() < 42 and guard < 80:
 		guard += 1
 		var count := loop.size()
-		var remove := -1
-		var best := 10.0
+		var edge := -1
+		var longest := 0.0
 		for index in count:
-			var a: Vector2 = loop[(index + count - 1) % count]
-			var b: Vector2 = loop[index]
-			var c: Vector2 = loop[(index + 1) % count]
-			var turn := _turn(a, b, c)
-			if turn >= 0.50:
+			if blocked.has(index):
 				continue
-			if a.distance_to(b) >= 2.8 and b.distance_to(c) >= 2.8:
-				continue
-			if turn < best:
-				best = turn
-				remove = index
-		if remove < 0:
+			var length := loop[index].distance_to(loop[(index + 1) % count])
+			var limit := lerpf(4.0, 6.0, _unit(index * 5 + count, int(roundf(loop[index].x + loop[index].y)), 11))
+			if length > limit and length > longest:
+				longest = length
+				edge = index
+		if edge < 0:
 			break
-		loop.remove_at(remove)
+		var a: Vector2 = loop[edge]
+		var b: Vector2 = loop[(edge + 1) % count]
+		var best_d := 0.20
+		var best := Vector2.ZERO
+		var found := false
+		for point in _arc_between(guide, a, b):
+			var weight := _segment_weight(point, a, b)
+			if weight < 0.22 or weight > 0.78:
+				continue
+			if minf(weight, 1.0 - weight) * longest < 3.05:
+				continue
+			var dist := _point_segment_distance(point, a, b)
+			if dist > best_d:
+				best_d = dist
+				best = point
+				found = true
+		if not found:
+			blocked[edge] = true
+			continue
+		loop.insert(edge + 1, best)
+		blocked.clear()
 	return loop
+
+func _arc_between(guide: PackedVector2Array, a: Vector2, b: Vector2) -> PackedVector2Array:
+	var count := guide.size()
+	var arc := PackedVector2Array()
+	if count == 0:
+		return arc
+	var start := _nearest_index(guide, a)
+	var end := _nearest_index(guide, b)
+	var index := start
+	for _step in count + 1:
+		arc.append(guide[index])
+		if index == end:
+			break
+		index = (index + 1) % count
+	return arc
+
+func _nearest_index(loop: PackedVector2Array, point: Vector2) -> int:
+	var best := 0
+	var best_d := INF
+	for index in loop.size():
+		var dist := loop[index].distance_squared_to(point)
+		if dist < best_d:
+			best_d = dist
+			best = index
+	return best
 
 func _ruggedize(loop: PackedVector2Array) -> PackedVector2Array:
 	var out := PackedVector2Array()
@@ -615,21 +799,19 @@ func _ruggedize(loop: PackedVector2Array) -> PackedVector2Array:
 	for index in count:
 		var point: Vector2 = loop[index]
 		var outward := _bisector(loop, index)
-		var jag := _unit(floori(point.x / 5.0), floori(point.y / 5.0), 21) - 0.5
-		var wave := sin(point.x * 0.58 + point.y * 0.47 + float(seed) * 0.013)
-		out.append(point + outward * (0.30 * jag + 0.12 * wave))
+		var jag := _unit(floori(point.x / 7.0), floori(point.y / 7.0), 21) - 0.5
+		var wave := sin(point.x * 0.31 + point.y * 0.27 + float(seed) * 0.01)
+		out.append(point + outward * (0.20 * jag + 0.06 * wave))
 	return out
 
-func _collapse_slivers(loop: PackedVector2Array) -> PackedVector2Array:
-	# A sub-meter chord extruded down the keel reads as a pillar. Fold it into
-	# the neighboring wide facet unless that would cut a real corner.
+func _collapse_slivers(loop: PackedVector2Array, minimum: float) -> PackedVector2Array:
 	var blocked := {}
 	var guard := 0
-	while loop.size() > 8 and guard < 80:
+	while loop.size() > 8 and guard < 100:
 		guard += 1
 		var count := loop.size()
 		var edge := -1
-		var shortest := 1.35
+		var shortest := minimum
 		for index in count:
 			if blocked.has(index):
 				continue
@@ -642,7 +824,7 @@ func _collapse_slivers(loop: PackedVector2Array) -> PackedVector2Array:
 		var right := (edge + 1) % count
 		var left_error := _chord_error(loop, edge)
 		var right_error := _chord_error(loop, right)
-		if shortest >= 0.75 and minf(left_error, right_error) > 0.65:
+		if shortest >= 2.2 and minf(left_error, right_error) > 1.15:
 			blocked[edge] = true
 			continue
 		loop.remove_at(edge if left_error <= right_error else right)
@@ -680,6 +862,35 @@ func _clip_loops(square: PackedVector2Array, loops: Array, keep_inside: bool) ->
 				break
 	return acc
 
+func _inside_loops(point: Vector2, loops: Array) -> bool:
+	for loop in loops:
+		var ring: PackedVector2Array = loop
+		if ring.size() >= 3 and Geometry2D.is_point_in_polygon(point, ring):
+			return true
+	return false
+
+func _clip_to_rings(square: PackedVector2Array, loops: Array) -> Array:
+	if loops.is_empty():
+		return [square]
+	var acc: Array = []
+	var crosses := false
+	for loop in loops:
+		var ring: PackedVector2Array = loop
+		for corner in square:
+			if not Geometry2D.is_point_in_polygon(corner, ring):
+				crosses = true
+				break
+		if crosses:
+			break
+	if not crosses:
+		return [square]
+	for loop in loops:
+		var ring: PackedVector2Array = loop
+		for piece: PackedVector2Array in _intersect_one(square, ring):
+			acc.append(piece)
+	return acc
+
+
 func _intersect_one(poly: PackedVector2Array, loop: PackedVector2Array) -> Array:
 	var pieces: Array = []
 	if poly.size() < 3 or loop.size() < 3:
@@ -687,9 +898,14 @@ func _intersect_one(poly: PackedVector2Array, loop: PackedVector2Array) -> Array
 	for piece: PackedVector2Array in Geometry2D.intersect_polygons(poly, loop):
 		if piece.size() >= 3:
 			pieces.append(piece)
+	# A failed clip must not restore a square that hangs past the ring.
 	if pieces.is_empty():
-		var center := _centroid(poly)
-		if Geometry2D.is_point_in_polygon(center, loop) and Geometry2D.is_point_in_polygon(center, poly):
+		var outside := false
+		for corner in poly:
+			if not Geometry2D.is_point_in_polygon(corner, loop):
+				outside = true
+				break
+		if not outside:
 			pieces.append(poly)
 	return pieces
 
