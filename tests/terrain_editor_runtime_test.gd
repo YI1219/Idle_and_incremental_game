@@ -22,8 +22,8 @@ func run()->void:
 		for child in chunk.get_children():
 			if String(child.name).begins_with("cliff_column"):column_nodes+=1
 	check(column_nodes==0,"contour column cliffs are not the default shell")
-	check(editor.renderer.island.embeds.size()>0 and editor.renderer.island.embeds.size()<80,"sparse cliff embeds are placed")
-	check(editor.renderer.island.keel_inset_mean>0.2,"underside fold is inward of the rim")
+	check(editor.renderer.island.embeds.size()==0,"stage 1 does not scatter cliff embeds")
+	check(editor.renderer.island.keel_inset_mean==0.0,"stage 1 does not rebuild the keel cap")
 	var camera=editor.camera
 	camera.set_process(false)
 	var initial:Vector3=camera.position

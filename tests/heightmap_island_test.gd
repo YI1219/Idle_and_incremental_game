@@ -1,5 +1,5 @@
 extends SceneTree
-## Heightmap shell: brushes, inward fold, sparse embeds. No viewport.
+## Heightmap shell, stage 1: cell-edge rim, full cell tops. No viewport.
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Island = preload("res://scripts/terrain_editor/heightmap_island.gd")
 var checks := 0
@@ -28,92 +28,29 @@ func run() -> void:
 	island.refresh(data)
 	check(island.surfaces.grass.vertices.size() > 30, "heightmap top has a grass surface")
 	check(island.surfaces.cliff.vertices.size() > 30, "heightmap builds a cliff shell")
-	check(island.keel_inset_mean > 0.2, "preset underside regenerates inside the rim")
-	check(island.embeds.size() >= 3 and island.embeds.size() <= 8, "preset places a sparse embed set")
+	check(island.keel_inset_mean == 0.0, "stage 1 does not rebuild the keel cap")
+	check(island.embeds.is_empty(), "stage 1 does not scatter embeds")
 	check(island.cliff_embed_placements() == island.embeds, "embed placement hook returns the same set")
-	var inward := 0
-	var flared := 0
-	var nonmono := 0
-	var length_sum := 0.0
-	var short := 0
-	var axis := 0
-	var min_len := 999.0
+	var wide := 0
+	var diagonal := 0
+	var off_grid := 0
 	var max_len := 0.0
-	var buckets: Array[int] = [0, 0, 0, 0, 0]
-	var facet_count := 0
 	for facet in island.facets:
-		facet_count += 1
 		var length: float = facet.length
-		length_sum += length
-		min_len = minf(min_len, length)
 		max_len = maxf(max_len, length)
-		var bucket := 4
-		if length < 2.5:
-			bucket = 0
-		elif length < 3.2:
-			bucket = 1
-		elif length < 3.8:
-			bucket = 2
-		elif length < 4.5:
-			bucket = 3
-		buckets[bucket] += 1
-		if length < 2.3:
-			short += 1
+		if length >= 2.0 - 0.01:
+			wide += 1
 		var end_a: Vector2 = facet.a
 		var end_b: Vector2 = facet.b
-		var dir := end_b - end_a
-		if dir.length_squared() > 0.000001:
-			dir = dir.normalized()
-			if absf(dir.x) < 0.12 or absf(dir.y) < 0.12:
-				axis += 1
-		var outward_dir: Vector2 = facet.outward
-		var lip: Vector2 = facet.lip
-		var keel: Vector2 = facet.keel
-		var moved := (lip - keel).dot(outward_dir)
-		if moved > 0.15:
-			inward += 1
-		if moved < -0.02:
-			flared += 1
-		var previous := -0.02
-		for sample in facet.band_xz:
-			var xz: Vector2 = sample
-			var inset := (lip - xz).dot(outward_dir)
-			if inset < previous - 0.08:
-				nonmono += 1
-			previous = maxf(previous, inset)
-	var rim_points := 0
-	var lattice := 0
-	var grid_line := 0
-	for loop in island.rim_loops:
-		var ring: PackedVector2Array = loop
-		for point in ring:
-			rim_points += 1
-			var on_x := absf(point.x - roundf(point.x)) < 0.08
-			var on_y := absf(point.y - roundf(point.y)) < 0.08
-			if on_x or on_y:
-				grid_line += 1
-			if on_x and on_y:
-				lattice += 1
-	var mean := length_sum / float(maxi(facet_count, 1))
-	var teeth := _grass_teeth(island)
-	var turn_sum := 0.0
-	var hard_turns := 0
-	var turn_count := 0
-	for loop in island.rim_loops:
-		var ring: PackedVector2Array = loop
-		var count := ring.size()
-		for index in count:
-			var turn := absf(atan2((ring[index] - ring[(index + count - 1) % count]).normalized().cross((ring[(index + 1) % count] - ring[index]).normalized()), (ring[index] - ring[(index + count - 1) % count]).normalized().dot((ring[(index + 1) % count] - ring[index]).normalized())))
-			turn_sum += turn
-			turn_count += 1
-			if turn > 0.22:
-				hard_turns += 1
-	print("RIM facets=%d min=%.2f mean=%.2f max=%.2f buckets=%s short=%d axis=%d lattice=%d/%d gridline=%d/%d inward=%d flared=%d nonmono=%d embeds=%d teeth=%d hard_turns=%d/%d mean_turn=%.1fdeg" % [facet_count, min_len, mean, max_len, str(buckets), short, axis, lattice, rim_points, grid_line, rim_points, inward, flared, nonmono, island.embeds.size(), teeth, hard_turns, turn_count, rad_to_deg(turn_sum / float(maxi(turn_count, 1)))])
-	check(facet_count >= 16 and facet_count <= 34 and mean >= 3.0 and mean <= 6.5, "cliff has wide irregular panels, mean %.2f over %d" % [mean, facet_count])
-	check(min_len >= 2.4 and max_len <= 7.4 and short == 0, "rim panels stay wide and stair-free, %.2f..%.2f" % [min_len, max_len])
-	check(rim_points > 8 and lattice * 5 < rim_points, "rim vertices leave the integer grid")
-	check(inward > 8 and flared == 0 and nonmono == 0, "faceted underside folds inward and does not flare")
-	check(teeth == 0, "grass stays inside the stone lip")
+		if absf(end_a.x - end_b.x) > 0.01 and absf(end_a.y - end_b.y) > 0.01:
+			diagonal += 1
+		if not _on_lattice(end_a) or not _on_lattice(end_b):
+			off_grid += 1
+	print("RIM facets=%d wide=%d max=%.2f diagonal=%d off_grid=%d embeds=%d" % [island.facets.size(), wide, max_len, diagonal, off_grid, island.embeds.size()])
+	check(wide > 0 and diagonal == 0 and off_grid == 0, "preset rim is merged cell edges on the grid")
+	check(is_equal_approx(_rim_length(island), float(_exposed_count(data))), "preset wall length matches exposed cell edges")
+	_check_straight_run()
+	_check_step_and_brushes()
 	var occupied := data.cells.size()
 	var empty := _empty_neighbor(data)
 	check(empty != Vector2i(99999, 99999), "preset has a cell outside the footprint")
@@ -122,7 +59,7 @@ func run() -> void:
 	data.end_stroke()
 	check(expanded > 0 and data.cells.size() > occupied, "expand grows the footprint")
 	island.refresh(data)
-	check(island.keel_inset_mean > 0.2, "underside rebuilds after expand")
+	check(is_equal_approx(_rim_length(island), float(_exposed_count(data))), "expand wall length matches the new footprint")
 	var raised_cell: Vector2i = empty
 	var raised_before: float = data.cells[raised_cell].height
 	data.begin_stroke()
@@ -138,7 +75,7 @@ func run() -> void:
 	data.end_stroke()
 	check(shrunk > 0 and not data.cells.has(raised_cell), "shrink removes footprint")
 	island.refresh(data)
-	check(island.keel_inset_mean > 0.2, "underside rebuilds after shrink")
+	check(is_equal_approx(_rim_length(island), float(_exposed_count(data))), "contract wall length matches the shrunk footprint")
 	check(_has_rock_step(data), "preset keeps a steep step that reads as a rock wall")
 	print("HEIGHTMAP ISLAND: %d/%d passed" % [checks - failures, checks])
 	quit(1 if failures else 0)
@@ -159,40 +96,115 @@ func _has_rock_step(data: Data) -> bool:
 				return true
 	return false
 
-func _grass_teeth(island: Island) -> int:
-	var teeth := 0
-	var seen := {}
-	var vertices: PackedVector3Array = island.surfaces.grass.vertices
-	for vertex in vertices:
-		var key := Vector2i(roundi(vertex.x * 25.0), roundi(vertex.z * 25.0))
-		if seen.has(key):
-			continue
-		seen[key] = true
-		var point := Vector2(vertex.x, vertex.z)
-		var inside := false
-		var near := false
-		for loop in island.grass_loops:
-			var ring: PackedVector2Array = loop
-			if Geometry2D.is_point_in_polygon(point, ring):
-				inside = true
-				break
-			if _near_ring(point, ring, 0.2):
-				near = true
-		if not inside and not near:
-			teeth += 1
-	return teeth
+func _check_straight_run() -> void:
+	var row := Data.new()
+	for x in 3:
+		row.cells[Vector2i(x, 0)] = {"height": 2.0, "water": -1}
+	var island := Island.new()
+	island.refresh(row)
+	check(_facet_length(island, Vector2(0, -1), 2.0) == 3.0, "three collinear cells share one north wall")
+	check(_facet_length(island, Vector2(0, 1), 2.0) == 3.0, "three collinear cells share one south wall")
+	check(_has_corner(island.surfaces.grass, Vector3(0, 2, 0)), "grass keeps the cell corner")
+	check(_has_corner(island.surfaces.grass, Vector3(3, 2, 0)), "grass reaches the far cell corner")
+	var one := Data.new()
+	one.cells[Vector2i.ZERO] = {"height": 1.5, "water": -1}
+	var single := Island.new()
+	single.refresh(one)
+	check(_steep_face(single, 0) and _steep_face(single, 2), "single cell has an east and a south steep face")
 
-func _near_ring(point: Vector2, ring: PackedVector2Array, limit: float) -> bool:
-	var count := ring.size()
-	for index in count:
-		var a: Vector2 = ring[index]
-		var b: Vector2 = ring[(index + 1) % count]
-		var span := b - a
-		var denom := span.length_squared()
-		var weight := 0.0 if denom < 0.000001 else clampf((point - a).dot(span) / denom, 0.0, 1.0)
-		if point.distance_to(a + span * weight) <= limit:
+func _check_step_and_brushes() -> void:
+	var data := Data.new()
+	data.cells[Vector2i(0, 0)] = {"height": 2.0, "water": -1}
+	data.cells[Vector2i(1, 0)] = {"height": 2.0, "water": -1}
+	data.cells[Vector2i(0, 1)] = {"height": 2.0, "water": -1}
+	var island := Island.new()
+	island.refresh(data)
+	check(_facet_length(island, Vector2(0, -1), 2.0) == 2.0, "the straight coast stays one face")
+	check(_has_segment(island, Vector2(2, 1), Vector2(1, 1)), "the one-cell step keeps its own edge")
+	var diagonal := 0
+	for facet in island.facets:
+		var end_a: Vector2 = facet.a
+		var end_b: Vector2 = facet.b
+		if absf(end_a.x - end_b.x) > 0.01 and absf(end_a.y - end_b.y) > 0.01:
+			diagonal += 1
+	check(diagonal == 0, "a footprint step is not bridged by a diagonal")
+	data.cells[Vector2i(0, 1)].height = 3.5
+	island.refresh(data)
+	check(_interior_span(island, 3.5, 2.0), "an interior step spans the cell height delta")
+	data.begin_stroke()
+	var raised := data.apply_brush(Vector2(0.5, 0.5), 0.4, "raise", true, 2.0, 0)
+	data.end_stroke()
+	island.refresh(data)
+	check(raised > 0 and _facet_length(island, Vector2(0, -1), 2.5) == 1.0, "raise lifts only that cell's wall")
+	check(_facet_length(island, Vector2(0, -1), 2.0) == 1.0, "the unraised neighbor wall stays put")
+
+func _facet_length(island: Island, outward: Vector2, height: float) -> float:
+	for facet in island.facets:
+		var dir: Vector2 = facet.outward
+		var top: float = facet.y
+		if dir.distance_to(outward) < 0.01 and absf(top - height) < 0.01:
+			return float(facet.length)
+	return -1.0
+
+func _has_segment(island: Island, a: Vector2, b: Vector2) -> bool:
+	for facet in island.facets:
+		var end_a: Vector2 = facet.a
+		var end_b: Vector2 = facet.b
+		if end_a.distance_to(a) < 0.01 and end_b.distance_to(b) < 0.01:
 			return true
 	return false
+
+func _rim_length(island: Island) -> float:
+	var total := 0.0
+	for facet in island.facets:
+		total += float(facet.length)
+	return total
+
+func _exposed_count(data: Data) -> int:
+	var count := 0
+	for cell: Vector2i in data.cells:
+		for offset in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]:
+			if not data.cells.has(cell + offset):
+				count += 1
+	return count
+
+func _interior_span(island: Island, high: float, low: float) -> bool:
+	var vertices: PackedVector3Array = island.surfaces.cliff.vertices
+	for index in range(0, vertices.size(), 3):
+		var top_y := -100.0
+		var bot_y := 100.0
+		for corner in 3:
+			var y: float = vertices[index + corner].y
+			top_y = maxf(top_y, y)
+			bot_y = minf(bot_y, y)
+		if absf(top_y - high) < 0.05 and absf(bot_y - low) < 0.05:
+			return true
+	return false
+
+func _steep_face(island: Island, axis: int) -> bool:
+	var vertices: PackedVector3Array = island.surfaces.cliff.vertices
+	for index in range(0, vertices.size(), 3):
+		var a: Vector3 = vertices[index]
+		var b: Vector3 = vertices[index + 1]
+		var c: Vector3 = vertices[index + 2]
+		var normal := -((b - a).cross(c - a))
+		if normal.length_squared() < 0.00000001:
+			continue
+		normal = normal.normalized()
+		var center := (a + b + c) / 3.0
+		if normal[axis] > 0.7 and center.y > 0.0 and center.y < 1.3:
+			return true
+	return false
+
+func _has_corner(surface, point: Vector3) -> bool:
+	var vertices: PackedVector3Array = surface.vertices
+	for vertex in vertices:
+		if vertex.distance_to(point) < 0.02:
+			return true
+	return false
+
+func _on_lattice(point: Vector2) -> bool:
+	return absf(point.x - roundf(point.x)) < 0.02 and absf(point.y - roundf(point.y)) < 0.02
 
 func _empty_neighbor(data: Data) -> Vector2i:
 	for cell: Vector2i in data.cells:

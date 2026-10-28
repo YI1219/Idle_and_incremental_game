@@ -1,9 +1,10 @@
 class_name HeightmapIsland
 extends RefCounted
 ## Playable island shell. One top heightmap plus its footprint.
-## The lip is one simplified contour ring. Grass stops on a thin inset.
-## Stairs are removed first. The wall is a few wide planes per side, broken
-## into large irregular faces that step inward. It is not a stack of rings.
+## Stage 1 rim: exposed cell edges, merged when they are collinear and the
+## same display height, extruded straight down. Grass is the full cell.
+## The fitted contour ring is not used for this shell. Shoulder, blunt foot,
+## and the keel cap are later stages; KEEL_Y stays for the old helpers.
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Geometry = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
@@ -11,6 +12,7 @@ const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
 const ROCK_RISE := 0.75
 const FOLD_DEPTH := 1.05
 const KEEL_Y := -4.6
+const RIM_DROP := 2.0
 const BAND_DEPTHS: Array[float] = [0.0, 0.70, 1.05, 2.20, 3.60, 5.00, 6.80, 8.80]
 
 var source: Data
@@ -103,24 +105,10 @@ func refresh(data: Data) -> void:
 	if data.cells.is_empty():
 		_index()
 		return
-	var occupied := {}
-	for cell: Vector2i in data.cells:
-		occupied[cell] = true
-	for raw in Contours._outlines(occupied):
-		var loop := _prepare_loop(raw as PackedVector2Array, true)
-		if loop.size() >= 3:
-			rim_loops.append(loop)
-			grass_loops.append(_inset_ring(loop))
-	_build_plateaus()
 	_fill_tops()
-	_terrace_walls()
-	_lip_bevel()
-	_cone()
+	_cell_rim()
 	_interior_hydro()
-	_embeds()
 	_water_loops()
-	if _inset_count > 0:
-		keel_inset_mean = _inset_sum / float(_inset_count)
 	_index()
 
 func build(chunk: Vector2i) -> Dictionary:
@@ -171,21 +159,94 @@ func _fill_tops() -> void:
 		var record: Dictionary = source.cells[cell]
 		var top := _top(record)
 		var square := _square(cell)
-		var lip_loops: Array = rim_loops if int(record.water) >= 0 else grass_loops
-		var polys: Array = _clip_to_rings(square, lip_loops)
 		if int(record.water) >= 0:
 			var bed_color := Color(float(record.water) / 255.0, 0.0, 0.0, 1.0)
-			for poly in polys:
-				_emit_poly(surfaces.water, poly, top + 0.045, Color.WHITE, Vector2(top, 1.0))
-				_emit_poly(surfaces.lake_bed, poly, float(record.height), bed_color, Vector2(top, 0.0))
+			_emit_poly(surfaces.water, square, top + 0.045, Color.WHITE, Vector2(top, 1.0))
+			_emit_poly(surfaces.lake_bed, square, float(record.height), bed_color, Vector2(top, 0.0))
 			continue
-		if not _plateaus.is_empty():
-			polys = _clip_plateaus(cell, top, polys)
-		for poly in polys:
-			_emit_poly(surfaces.grass, poly, top, Color(1, 1, 1, 1), Vector2(0.0, 1.0))
-	_terrace_bulges()
-	_bulges()
+		_emit_poly(surfaces.grass, square, top, Color(1, 1, 1, 1), Vector2(0.0, 1.0))
 	_grass_risers()
+
+func _cell_rim() -> void:
+	# One record per exposed cell side. A missing neighbor is the boundary.
+	var edges: Array[Dictionary] = []
+	for cell: Vector2i in source.cells:
+		var height := _top(source.cells[cell])
+		for side in 4:
+			if source.cells.has(cell + _offset(side)):
+				continue
+			var ends := _corners_of(cell)
+			var a := Vector2(ends[side])
+			var b := Vector2(ends[(side + 1) % 4])
+			edges.append({
+				"a": a,
+				"b": b,
+				"outward": Vector2(_offset(side)),
+				"height": height,
+				"cell": cell,
+				"side": side,
+			})
+	var by_start := {}
+	for index in edges.size():
+		var edge: Dictionary = edges[index]
+		by_start[_rim_key(edge.a, edge.outward, float(edge.height))] = index
+	var used: Array[bool] = []
+	used.resize(edges.size())
+	used.fill(false)
+	for index in edges.size():
+		if used[index]:
+			continue
+		var head := index
+		var guard := edges.size() + 1
+		while guard > 0:
+			guard -= 1
+			var current: Dictionary = edges[head]
+			var step: Vector2 = current.b - current.a
+			var pred_key := _rim_key(current.a - step, current.outward, float(current.height))
+			if not by_start.has(pred_key):
+				break
+			var pred: int = int(by_start[pred_key])
+			if pred == head or used[pred]:
+				break
+			head = pred
+		var cursor := head
+		var run: Array[Dictionary] = []
+		while not used[cursor]:
+			used[cursor] = true
+			var piece: Dictionary = edges[cursor]
+			run.append(piece)
+			var next_key := _rim_key(piece.b, piece.outward, float(piece.height))
+			if not by_start.has(next_key):
+				break
+			var nxt: int = int(by_start[next_key])
+			if nxt == cursor or used[nxt]:
+				break
+			cursor = nxt
+		if run.is_empty():
+			continue
+		var first: Dictionary = run[0]
+		var last: Dictionary = run[run.size() - 1]
+		var start: Vector2 = first.a
+		var finish: Vector2 = last.b
+		var top := float(first.height)
+		var outward: Vector2 = first.outward
+		_flat_quad(surfaces.cliff, Vector3(start.x, top, start.y), Vector3(finish.x, top, finish.y), Vector3(finish.x, top - RIM_DROP, finish.y), Vector3(start.x, top - RIM_DROP, start.y), outward, Color.WHITE, Vector2(top, 1.0))
+		_shell_fall(start, finish, outward)
+		facets.append({
+			"a": start,
+			"b": finish,
+			"outward": outward,
+			"length": start.distance_to(finish),
+			"y": top,
+			"ya": top,
+			"yb": top,
+			"cell": first.cell,
+			"side": int(first.side),
+			"run": run.size(),
+		})
+
+func _rim_key(point: Vector2, outward: Vector2, height: float) -> String:
+	return "%d,%d,%d,%d,%d" % [roundi(point.x), roundi(point.y), roundi(outward.x), roundi(outward.y), roundi(height * 2.0)]
 
 func _clip_plateaus(cell: Vector2i, top: float, polys: Array) -> Array:
 	var current: Array = polys
@@ -278,16 +339,19 @@ func _grass_risers() -> void:
 			if int(source.cells[neighbor].water) >= 0:
 				continue
 			var drop := top - _top(source.cells[neighbor])
-			if drop <= 0.04 or drop >= ROCK_RISE:
+			if drop <= 0.04:
 				continue
 			var ends := _corners_of(cell)
-			var edge_mid := (Vector2(ends[side]) + Vector2(ends[(side + 1) % 4])) * 0.5
-			if not grass_loops.is_empty() and not _inside_loops(edge_mid, grass_loops):
-				continue
 			var a := Vector2(ends[side])
 			var b := Vector2(ends[(side + 1) % 4])
 			var low := _top(source.cells[neighbor])
-			_flat_quad(surfaces.grass, Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Vector3(b.x, low, b.y), Vector3(a.x, low, a.y), Vector2(_offset(side)), Color(1, 1, 1, 1), Vector2(0.0, 1.0))
+			var outward := Vector2(_offset(side))
+			if drop >= ROCK_RISE:
+				# The step is the shared cell edge. Its height is the cell delta,
+				# not the outer rim and not a fitted terrace ring.
+				_flat_quad(surfaces.cliff, Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Vector3(b.x, low, b.y), Vector3(a.x, low, a.y), outward, Color.WHITE, Vector2(top, 1.0))
+			else:
+				_flat_quad(surfaces.grass, Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Vector3(b.x, low, b.y), Vector3(a.x, low, a.y), outward, Color(1, 1, 1, 1), Vector2(0.0, 1.0))
 
 func _terrace_walls() -> void:
 	for plateau in _plateaus:

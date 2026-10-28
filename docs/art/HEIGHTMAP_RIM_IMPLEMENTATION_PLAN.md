@@ -1,6 +1,6 @@
 # 高度图外缘实现计划
 
-状态：计划，未改网格。分支 `cursor/heightmap-island-shell-6210`。对照图 `floating-isle-rim-plan/ref_01.png`–`ref_04.png` 只规定岩面语言（宽竖面、错肩、斜角相接、钝厚的合并底），不规定岛形、道具数量或瀑布位置。
+状态：阶段 1 已写入 `heightmap_island.gd`。外缘改为暴露格边的共线合并，向下 2 米一面竖墙；草地是完整格子。拟合外环不再进入 `refresh`。肩、钝脚、全岛 `KEEL_Y` 盖和嵌石仍未做。内部高差 ≥ 0.75 的共边暂时用格子本身的高差封住，避免拿掉拟合台地后留下穿洞；这不是阶段 2 的底。分支 `cursor/heightmap-island-shell-6210`。对照图 `floating-isle-rim-plan/ref_01.png`–`ref_04.png` 只规定岩面语言（宽竖面、错肩、斜角相接、钝厚的合并底），不规定岛形、道具数量或瀑布位置。
 
 不重新启用 Contour 岛体，不用 marching squares、样条、可编辑轮廓、轮廓偏移，也不再把拟合外环重新三角化。下面凡是写到 `Contours._outlines` / Douglas-Peucker，都是当前代码的现状，阶段 1 要从高度图壳上拿掉。
 
@@ -160,7 +160,7 @@
 
 ## 9. 第一笔最小改动
 
-只做阶段 1，并且单独提交。
+阶段 1 已按下面落地，单独提交。肩、钝脚和全岛底盖没有一起改。
 
 在 `HeightmapIsland.refresh` 里，外圈不再调用 `Contours._outlines`。遍历 `source.cells` 的四边，邻居缺失则记下这条边；把同一直线上、高度相同、首尾相接的边收成一条。每条从显示顶面向下 2 m 生一块平面（`_flat_quad`，崖材质）。`_fill_tops` 对每个格子直接出方块，不再裁到内缩环。
 
