@@ -16,6 +16,14 @@ func run()->void:
 	root.add_child(editor)
 	await process_frame
 	editor.set_process(false)
+	check(editor.renderer.active_shell=="heightmap","default visible shell is the heightmap")
+	var column_nodes:=0
+	for chunk in editor.renderer.chunks.values():
+		for child in chunk.get_children():
+			if String(child.name).begins_with("cliff_column"):column_nodes+=1
+	check(column_nodes==0,"contour column cliffs are not the default shell")
+	check(editor.renderer.island.embeds.size()>0 and editor.renderer.island.embeds.size()<80,"sparse cliff embeds are placed")
+	check(editor.renderer.island.keel_inset_mean>0.2,"underside fold is inward of the rim")
 	var camera=editor.camera
 	camera.set_process(false)
 	var initial:Vector3=camera.position

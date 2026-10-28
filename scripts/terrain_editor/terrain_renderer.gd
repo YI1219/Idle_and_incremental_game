@@ -3,7 +3,13 @@ extends Node3D
 const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
 const Geometry=preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours=preload("res://scripts/terrain_editor/contour_terrain.gd")
+const Island=preload("res://scripts/terrain_editor/heightmap_island.gd")
 var contours:=Contours.new()
+var island:=Island.new()
+## Heightmap shell is the form. Contour columns stay available for the sculpt trial.
+var use_heightmap_shell:=true
+var active_shell:="heightmap"
+var _shell:RefCounted
 var _contour_revision:=-1
 var _pick_faces:Dictionary={}
 var _pick_bounds:Dictionary={}
@@ -98,10 +104,25 @@ func configure(source:Data)->void:
 		shore.shader=load("res://shaders/terrain_editor/shore.gdshader")
 		materials.shore=shore
 	for material in materials.values():preload("res://scripts/terrain_editor/material_detail.gd").bind(material)
+	_quiet_blocks()
 	_bind_grass_compression()
 	for cell:Vector2i in data.cells:
 		for z in range(-1,2):
 			for x in range(-1,2):data.dirty_chunks[Data.chunk_of(cell+Vector2i(x,z))]=true
+
+func _quiet_blocks()->void:
+	# Large olive / soft-grey blocks. Fine tufts and stone grain stay available,
+	# turned down so the masses read before the micro-noise.
+	var grass_base:=Color(0.44,0.51,0.36)
+	var grass_highlight:=Color(0.62,0.66,0.49)
+	for kind in ["grass","shore","rim_green"]:
+		if not materials.has(kind):continue
+		materials[kind].set_shader_parameter("ground_fine_strength",0.22)
+		materials[kind].set_shader_parameter("grass_base",grass_base)
+		materials[kind].set_shader_parameter("grass_highlight",grass_highlight)
+	if materials.has("grass"):materials.grass.set_shader_parameter("cover_relief",0.16)
+	for kind in ["cliff","sculpted_rock","stone_mantle","lake_bed"]:
+		if materials.has(kind):materials[kind].set_shader_parameter("stone_relief_strength",0.1)
 
 func _solid(color:Color,vertex:bool=false)->StandardMaterial3D:
 	var result:=StandardMaterial3D.new()
@@ -126,18 +147,33 @@ func flush_dirty(max_chunks:int=2)->int:
 		_build_data.sculpt_base_enabled=data.sculpt_base_enabled and data.ensure_sculpt_base()
 		if _build_data.sculpt_base_enabled:_build_data.rocks.base=data.rocks.base
 		for cell in data.cells:_build_data.cells[cell]=data.cells[cell].duplicate()
-		contours.refresh(_build_data)
+		var heightmap:=use_heightmap_shell and not _build_data.sculpt_base_enabled
+		active_shell="heightmap" if heightmap else "contour"
+		_shell=island if heightmap else contours
+		if heightmap:
+			island.refresh(_build_data)
+		else:
+			contours.refresh(_build_data)
 		if decoration!=null:
 			decoration.load_assets()
-			decoration._column_layout(contours,_build_data.seed)
+			decoration.omit_contour_columns=heightmap
+			if heightmap:
+				decoration._columns.clear()
+				decoration._column_cells.clear()
+				decoration._mass.clear()
+				decoration._outcrops.clear()
+				decoration._column_field=null
+				decoration._column_key=Vector2i(-1,-1)
+			else:
+				decoration._column_layout(contours,_build_data.seed)
 		_contour_revision=data.revision
 		_discard_pending()
-		_pending_shore=preload("res://scripts/terrain_editor/water_shore_field.gd").build(_build_data,contours)
+		_pending_shore=preload("res://scripts/terrain_editor/water_shore_field.gd").build(_build_data,_shell)
 		# Shared cap triangulation can cross distant chunks. Reconstruct the owning
 		# chunks under the ordinary two-chunk budget, including removed geometry.
 		# The triangle index avoids scanning the whole island per chunk.
 		for chunk in chunks:data.dirty_chunks[chunk]=true
-		for chunk in contours.triangle_chunks:data.dirty_chunks[chunk]=true
+		for chunk in _shell.triangle_chunks:data.dirty_chunks[chunk]=true
 		_build_queue=data.dirty_chunks.keys()
 		data.dirty_chunks.clear()
 	while not _build_queue.is_empty() and count<max_chunks:
@@ -148,8 +184,9 @@ func flush_dirty(max_chunks:int=2)->int:
 	return count
 
 func _rebuild(chunk:Vector2i)->void:
-	var geometry:Dictionary=contours.build(chunk)
-	if not contours.lawn_boundaries.is_empty():
+	var field=_shell if _shell!=null else contours
+	var geometry:Dictionary=field.build(chunk)
+	if field==contours and not contours.lawn_boundaries.is_empty():
 		geometry.grass=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lawn(geometry.grass,contours.lawn_boundaries,contours.water_regions,0.0)
 	_pending_chunks[chunk]=null
 	_pending_faces.erase(chunk)
@@ -187,7 +224,8 @@ func _rebuild(chunk:Vector2i)->void:
 		node.add_child(instance)
 	_pending_chunks[chunk]=node
 	if decoration!=null:
-		decoration.contours=contours
+		decoration.contours=field
+		decoration.omit_contour_columns=active_shell=="heightmap"
 		decoration.populate(node,_build_data,chunk)
 	rebuild_count+=1
 
@@ -227,8 +265,9 @@ func _publish()->void:
 		materials.water.set_shader_parameter("shore_origin",_pending_shore.origin)
 		materials.water.set_shader_parameter("shore_extent",_pending_shore.extent)
 		_pending_shore.clear()
-	props.sync(contours)
-	mist.sync(contours.splash_points,contours.fall_veils)
+	var field=_shell if _shell!=null else contours
+	props.sync(field)
+	mist.sync(field.splash_points,field.fall_veils)
 
 func _exit_tree()->void:_discard_pending()
 

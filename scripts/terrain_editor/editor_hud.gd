@@ -34,6 +34,7 @@ func _ready()->void:
 	var title:=_label("FLOATING GARDEN",19)
 	column.add_child(title)
 	column.add_child(_label("Terrain workshop · low quality",12))
+	column.add_child(_label("岛面是一张高度图。扩／缩改占地，抬／降改高度。底面随占地内收。",11))
 	column.add_child(HSeparator.new())
 	var tools:=OptionButton.new()
 	tools.name="TerrainTools"
