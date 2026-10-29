@@ -6,7 +6,7 @@ const Contours=preload("res://scripts/terrain_editor/contour_terrain.gd")
 const Island=preload("res://scripts/terrain_editor/heightmap_island.gd")
 var contours:=Contours.new()
 var island:=Island.new()
-## Heightmap shell is the form. Contour columns stay available for the sculpt trial.
+## Heightmap mode never falls back to the explicitly selected legacy sculpt path.
 var use_heightmap_shell:=true
 var active_shell:="heightmap"
 var _shell:RefCounted
@@ -144,10 +144,10 @@ func flush_dirty(max_chunks:int=2)->int:
 		_build_data.seed=data.seed
 		_build_data.rocks.samples=data.rocks.samples.duplicate()
 		_build_data.sculpt_base_profile=data.sculpt_base_profile
-		_build_data.sculpt_base_enabled=data.sculpt_base_enabled and data.ensure_sculpt_base()
+		_build_data.sculpt_base_enabled=not use_heightmap_shell and data.sculpt_base_enabled and data.ensure_sculpt_base()
 		if _build_data.sculpt_base_enabled:_build_data.rocks.base=data.rocks.base
 		for cell in data.cells:_build_data.cells[cell]=data.cells[cell].duplicate()
-		var heightmap:=use_heightmap_shell and not _build_data.sculpt_base_enabled
+		var heightmap:=use_heightmap_shell
 		active_shell="heightmap" if heightmap else "contour"
 		_shell=island if heightmap else contours
 		if heightmap:
@@ -169,8 +169,8 @@ func flush_dirty(max_chunks:int=2)->int:
 		_contour_revision=data.revision
 		_discard_pending()
 		_pending_shore=preload("res://scripts/terrain_editor/water_shore_field.gd").build(_build_data,_shell)
-		# Shared cap triangulation can cross distant chunks. Reconstruct the owning
-		# chunks under the ordinary two-chunk budget, including removed geometry.
+		# Shell refresh still regenerates the whole island. Reconstruct both old
+		# and new owning chunks under the budget, including removed geometry.
 		# The triangle index avoids scanning the whole island per chunk.
 		for chunk in chunks:data.dirty_chunks[chunk]=true
 		for chunk in _shell.triangle_chunks:data.dirty_chunks[chunk]=true

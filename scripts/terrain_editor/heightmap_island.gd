@@ -89,6 +89,7 @@ func refresh(data: Data) -> void:
 	splash_points.clear()
 	fall_veils.clear()
 	embeds.clear()
+	water_regions.clear()
 	land_regions.clear()
 	lawn_boundaries.clear()
 	water_anchor_regions.clear()
@@ -230,8 +231,14 @@ func _cell_rim() -> void:
 		var finish: Vector2 = last.b
 		var top := float(first.height)
 		var outward: Vector2 = first.outward
-		_flat_quad(surfaces.cliff, Vector3(start.x, top, start.y), Vector3(finish.x, top, finish.y), Vector3(finish.x, top - RIM_DROP, finish.y), Vector3(start.x, top - RIM_DROP, start.y), outward, Color.WHITE, Vector2(top, 1.0))
-		_shell_fall(start, finish, outward)
+		# Keep every source-cell seam so the top and rim sample the edit morph
+		# at the same positions. Coplanar normals/materials still read as one
+		# broad face; facets below describe that face independently of its mesh.
+		for piece in run:
+			var a: Vector2 = piece.a
+			var b: Vector2 = piece.b
+			_flat_quad(surfaces.cliff, Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Vector3(b.x, top - RIM_DROP, b.y), Vector3(a.x, top - RIM_DROP, a.y), outward, Color.WHITE, Vector2(top, 1.0))
+		_shell_fall(run)
 		facets.append({
 			"a": start,
 			"b": finish,
@@ -329,14 +336,10 @@ func _bulges() -> void:
 func _grass_risers() -> void:
 	for cell: Vector2i in source.cells:
 		var record: Dictionary = source.cells[cell]
-		if int(record.water) >= 0:
-			continue
 		var top := _top(record)
 		for side in 4:
 			var neighbor: Vector2i = cell + _offset(side)
 			if not source.cells.has(neighbor):
-				continue
-			if int(source.cells[neighbor].water) >= 0:
 				continue
 			var drop := top - _top(source.cells[neighbor])
 			if drop <= 0.04:
@@ -346,9 +349,11 @@ func _grass_risers() -> void:
 			var b := Vector2(ends[(side + 1) % 4])
 			var low := _top(source.cells[neighbor])
 			var outward := Vector2(_offset(side))
-			if drop >= ROCK_RISE:
+			var wet_edge := int(record.water) >= 0 or int(source.cells[neighbor].water) >= 0
+			if drop >= ROCK_RISE or wet_edge:
 				# The step is the shared cell edge. Its height is the cell delta,
-				# not the outer rim and not a fitted terrace ring.
+				# including water's display level. Underwater basin sides stop at
+				# the lower display level; transparent falls are separate overlays.
 				_flat_quad(surfaces.cliff, Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Vector3(b.x, low, b.y), Vector3(a.x, low, a.y), outward, Color.WHITE, Vector2(top, 1.0))
 			else:
 				_flat_quad(surfaces.grass, Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Vector3(b.x, low, b.y), Vector3(a.x, low, a.y), outward, Color(1, 1, 1, 1), Vector2(0.0, 1.0))
@@ -466,7 +471,6 @@ func _cone() -> void:
 				"cell": owner,
 				"side": _side_of(outward),
 			})
-			_shell_fall(a, b, outward)
 		var cap := PackedVector2Array()
 		for column in columns:
 			var pts: Array = column
@@ -474,47 +478,45 @@ func _cone() -> void:
 			cap.append(Vector2(last.x, last.z))
 		_emit_cap(cap)
 
-func _shell_fall(a: Vector2, b: Vector2, outward: Vector2) -> void:
-	var from := 1.0
-	var to := 0.0
-	var lip_y := 0.0
-	var found := false
-	for step in 5:
-		var weight := 0.15 + float(step) * 0.175
-		var point := a.lerp(b, weight)
-		var record := _record_near(point - outward * 0.35)
-		if record.is_empty() or int(record.water) < 0:
-			continue
-		var outside := _record_near(point + outward * 0.55)
-		var here := _top(record)
-		if not outside.is_empty() and here - _top(outside) <= 0.35:
-			continue
-		found = true
-		from = minf(from, weight)
-		to = maxf(to, weight)
-		lip_y = here
-	if not found or to - from < 0.08:
+func _shell_fall(run: Array[Dictionary]) -> void:
+	# Rock faces can merge dry and wet cells at the same display height.
+	# Water outlets must keep the actual contiguous wet source-edge runs.
+	var first := -1
+	for index in range(run.size() + 1):
+		var wet := false
+		if index < run.size():
+			var edge: Dictionary = run[index]
+			var cell: Vector2i = edge.cell
+			wet = int(source.cells[cell].water) >= 0 and not source.cells.has(cell + _offset(int(edge.side)))
+		if wet:
+			if first < 0:
+				first = index
+		elif first >= 0:
+			var start: Dictionary = run[first]
+			var finish: Dictionary = run[index - 1]
+			_outer_fall(start.a, finish.b, start.outward, float(start.height))
+			first = -1
+
+func _outer_fall(a: Vector2, b: Vector2, outward: Vector2, lip_y: float) -> void:
+	# Keep a small rock shoulder at each outlet without extending over dry
+	# source edges. Its destination is open space, never a nearest land cell.
+	var length := a.distance_to(b)
+	if length <= 0.0001:
 		return
-	from = maxf(0.02, from - 0.06)
-	to = minf(0.98, to + 0.06)
-	var a2 := a.lerp(b, from)
-	var b2 := a.lerp(b, to)
-	var dest := maxf(KEEL_Y + 0.8, lip_y - 3.3)
-	var outside_mid := _record_near((a2 + b2) * 0.5 + outward * 0.6)
-	var external := outside_mid.is_empty()
-	if not external:
-		dest = _top(outside_mid) + 0.06
-	var push := 0.42 if external else 0.16
+	var inset := minf(0.16, length * 0.16) / length
+	var a2 := a.lerp(b, inset)
+	var b2 := a.lerp(b, 1.0 - inset)
+	var dest := lip_y - 3.3
 	var n := Vector3(outward.x, 0.0, outward.y)
 	var lip_a := Vector3(a2.x, lip_y + 0.04, a2.y) + n * 0.06
 	var lip_b := Vector3(b2.x, lip_y + 0.04, b2.y) + n * 0.06
-	var foot_a := Vector3(a2.x, dest, a2.y) + n * push
-	var foot_b := Vector3(b2.x, dest, b2.y) + n * push
+	var foot_a := Vector3(a2.x, dest, a2.y) + n * 0.42
+	var foot_b := Vector3(b2.x, dest, b2.y) + n * 0.42
 	_flat_quad(surfaces.waterfall, lip_a, lip_b, foot_b, foot_a, outward, Color.WHITE, Vector2(lip_y, 1.0))
 	var lip := (lip_a + lip_b) * 0.5
 	var foot := (foot_a + foot_b) * 0.5
 	var half := a2.distance_to(b2) * 0.5
-	fall_veils.append({"lip": lip, "foot": foot, "half_width": half, "out": outward, "external": external})
+	fall_veils.append({"lip": lip, "foot": foot, "half_width": half, "out": outward, "external": true})
 	splash_points.append({"center": foot, "out": outward, "half_width": half})
 
 func _interior_hydro() -> void:
@@ -1129,11 +1131,8 @@ func _outline_loops(occupied: Dictionary) -> Array:
 			if current == start:
 				break
 		if points.size() >= 3:
-			var area := 0.0
-			for i in points.size():
-				area += points[i].cross(points[(i + 1) % points.size()])
-			if area < 0.0:
-				points.reverse()
+			# Source edges keep water on their left. Preserve hole winding so
+			# consumers' right-hand outward normal points toward the dry bank.
 			loops.append(points)
 	return loops
 

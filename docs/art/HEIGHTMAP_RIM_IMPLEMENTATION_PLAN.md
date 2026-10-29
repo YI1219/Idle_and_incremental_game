@@ -2,16 +2,30 @@
 
 状态：阶段 1 已写入 `heightmap_island.gd`。外缘改为暴露格边的共线合并，向下 2 米一面竖墙；草地是完整格子。拟合外环不再进入 `refresh`。肩、钝脚、全岛 `KEEL_Y` 盖和嵌石仍未做。内部高差 ≥ 0.75 的共边暂时用格子本身的高差封住，避免拿掉拟合台地后留下穿洞；这不是阶段 2 的底。分支 `cursor/heightmap-island-shell-6210`。对照图 `floating-isle-rim-plan/ref_01.png`–`ref_04.png` 只规定岩面语言（宽竖面、错肩、斜角相接、钝厚的合并底），不规定岛形、道具数量或瀑布位置。
 
-不重新启用 Contour 岛体，不用 marching squares、样条、可编辑轮廓、轮廓偏移，也不再把拟合外环重新三角化。下面凡是写到 `Contours._outlines` / Douglas-Peucker，都是当前代码的现状，阶段 1 要从高度图壳上拿掉。
+不重新启用 Contour 岛体，不用 marching squares、样条、可编辑轮廓、轮廓偏移，也不再把拟合外环重新三角化。下面涉及旧侧壁、顶面裁切及 `Contours._outlines` / Douglas-Peucker 的描述，是迁移前的历史依据；阶段 1 的 `refresh` 已不再调用这些拟合入口。
+
+## 2026-10-29：阶段 1 代码复查校正
+
+PR #20 的 `d830c37` 已实现主路径改造，但原有 31 + 26 项测试没有覆盖全部编辑和水边界。复查补丁修正以下行为：
+
+- 共线、同高外缘仍归为一个宽面（`facets`），但实际网格保留每个源格的上下接头，法线和材质保持一致。只保留宽墙两端会使逐格 morph 时顶面与墙体分离；10 m 测试边上原始最大差为 0.375 m。按实际发布网格和 shader 公式复算，补丁后该差为 0。此项是数值验证，不是 GPU 截图。
+- 内部高差墙覆盖干湿相邻格的显示顶面；涉水共边统一用岩壁，水帘仍是独立覆盖层。
+- 外缘水口按真实、连续的湿源边生成，不能用宽墙上五个采样点或邻近格回退来判定。相隔水口不能跨过干格连成一条瀑布。
+- 水域孔洞保留有向源边的绕向，空岛刷新清空 `water_regions`。这些是水域派生数据，不是重新接入 Contour 岛体。
+- 默认 heightmap 模式不再因 `sculpt_base_enabled` 自动切回 contour。旧塑岩工具禁用；旧布局先在临时数据上验证，含塑岩内容时返回 `ERR_UNAVAILABLE`，不改当前地形、历史或原存档。显式开发兼容开关仍保留，未删除整套旧代码。
+
+新增 `tests/heightmap_regression_test.gd`、`tests/heightmap_renderer_test.gd`、`tests/heightmap_mode_test.gd`。覆盖实际预算刷新、原网格保留到完整发布、点选、撤销／重做、空岛和已有独立 props 的身份。肩、钝脚、封底、草石过渡和嵌石仍属于后续阶段；本轮没有美术验收结论。
+
+刷新目前仍是整岛生成。Godot 4.7.2 headless 调试单次样本：seed 7301，半径 2 的 raise / expand 均重建 20 块，经 10 次 `flush_dirty(2)` 完成。补丁后累计调用耗时分别约 114.646 / 116.798 ms，最长调用约 28.923 / 27.557 ms；这不是 GPU 帧率、目标电脑性能或稳定基准，也不能据此声称比原版更快。
 
 ## 证据表
 
 | 职责 | 文件 / 函数 | 当前行为 | 计划中的改动 |
 | --- | --- | --- | --- |
 | 高度与占地 | `scripts/terrain_editor/terrain_data.gd` `cells` | `Dictionary[Vector2i, {height, water}]`。有格子即占地。`height` 以 0.5 为步长，范围 -4..12。`water` 为 -1 或 0..7，显示高度是 `water * 0.5`，且必须低于岸高。 | 仍是唯一外形权威。外缘顶点不写回 `cells`。 |
-| 脏块 | `TerrainData.invalidate` / `chunk_of` | 块边长 8。改一格会脏周围 3×3 块，并使 `revision` 加一。 | 外缘更新只读这些脏格。不要另做一套轮廓编辑。 |
+| 脏块 | `TerrainData.invalidate` / `chunk_of` | 块边长 8。改一格会标脏周围 3×3 格所触及的块，并使 `revision` 加一；不是周围 3×3 块。 | 阶段 5 用这些脏格定位外缘更新。不要另做一套轮廓编辑。 |
 | 笔刷 | `TerrainData.apply_brush` | 仅 `raise` `lower` `expand` `contract` `water` `dry`。`expand` 在空位新增格子；`contract` 删除格子；抬降只改已有格的 `height`（水格若岸被抬过水面则变干）。半径 0.1..16。 | 外缘只响应这六种。不新增笔刷。 |
-| 连续拖动与提交 | `editor.gd` `begin_paint` / `continue_paint` / `_input`；`TerrainData.begin_stroke` / `end_stroke` | 按下 `begin_stroke`，拖动按距离插值多次 `apply_brush`（最多 256 步）。松开 `end_stroke`，把本次前后状态压入撤销栈（最多 64）。 | 保持。外缘在 `end_stroke` 之后的现有刷新里更新，不在每一步鼠标事件里重做全岛。 |
+| 连续拖动与提交 | `editor.gd` `begin_paint` / `continue_paint` / `_input`；`TerrainData.begin_stroke` / `end_stroke` | 按下 `begin_stroke`，拖动按距离插值多次 `apply_brush`（最多 256 步）。松开 `end_stroke`，把本次前后状态压入撤销栈（最多 64）。拖动期间也可能刷新。 | 保持 `TerrainEditor._process` 调用 `flush_dirty` 的现有节奏；`end_stroke` 提交历史，不是唯一网格刷新时机。 |
 | 撤销 / 重做 / 存档 / 种子 | `undo` / `redo` / `serialize` / `deserialize` / `make_preset` | 撤销的是格子和岩石采样，不是网格。存档版本 1–4，含 `seed`（默认 7301）和格子。`editor.gd` `save_layout` / `load_layout` 写 JSON。 | 外缘不进存档。种子只继续驱动装饰哈希。 |
 | 顶面网格 | `heightmap_island.gd` `_fill_tops` / `_emit_poly`；`chunk_geometry.gd` `Surface` | CPU 组三角，再 `Surface.mesh()` 成 `ArrayMesh`。没有把高度图采样到 GPU 再位移出顶面。格子先被裁到 `grass_loops`（外环内缩）和台地环。 | 顶面改回未裁切的格子方块。与外缘共用同一批角点。 |
 | GPU 位移 | `terrain_renderer.gd` `_start_morph`；`cliff.gdshader` `terrain_morph_offset` | 发布后用着色器把顶点 Y 从上一顶面插到下一顶面。不是顶面的生成方式。 | 不改这条过渡。外缘几何仍在 CPU。 |
@@ -23,11 +37,11 @@
 | 碰撞 | — | `scenes/` 与 `scripts/terrain_editor` 中没有 `StaticBody3D` / `CollisionShape3D`。点选是 `TerrainRenderer.pick` 对已发布三角做射线。 | 不新增物理体。外缘三角必须继续进入 `_pick_faces`，否则笔刷打不中新侧壁。 |
 | 装饰与水面 | `terrain_decoration.gd` `populate`；`heightmap_island.gd` `_interior_hydro` / `_shell_fall` / `_water_loops` | 树、路、栏、岸石由种子和格子生成，不是用户逐个摆放。水是笔刷写在格子上的字段。瀑布由水格向外或向低邻溢出时生成。 | 不新增路刷或瀑布刷。外缘改动不得改 `surface_at` 的含义。 |
 | 道具 | `terrain_props.gd` `sync` | 长椅、灯、菜畦是代码里的固定节点，用 `surface_at` 贴地；脚印上有水或高差则隐藏。没有找到用户拖移 / 旋转后再存档的路径。 | 不补这套编辑。道具继续独立于外缘网格。 |
-| 性能计数 | `TerrainRenderer.last_rebuild_ms` / `rebuild_count`；`editor.gd` `last_edit_ms` | 有计时字段。本轮没有测量数值。 | 阶段 0 先记基线。未测量前不判断谁更便宜。 |
+| 性能计数 | `TerrainRenderer.last_rebuild_ms` / `rebuild_count`；`editor.gd` `last_edit_ms` | 有计时字段；2026-10-29 补充了 headless 编辑样本，见上。 | 后续还需目标设备实测，不能把上传预算当作局部生成或 60 FPS 的证明。 |
 | 旧单元挤出 | `chunk_geometry.gd` `build` | 能把格边挤到 `BOTTOM = -6`。全库没有调用点。高度图走的是 `HeightmapIsland.build`。 | 不把它接回主路径，避免第二套侧壁。 |
-| 塑岩回退 | `TerrainRenderer.flush_dirty` | `sculpt_base_enabled` 时 `active_shell` 变为 `"contour"` 并调用 `contours.refresh`。默认 `use_heightmap_shell` 为真，预设不打开塑岩底。 | 不扩展这条回退，新外缘不调用它。 |
+| 旧塑岩兼容 | `TerrainRenderer.flush_dirty`、`editor.gd`、`editor_hud.gd` | 复查前旧塑岩标记会使默认模式回退到 contour。补丁后默认 heightmap 始终使用高度图壳，禁用不支持的塑岩入口，并在修改现场前拒绝含旧塑岩内容的布局。 | 不把旧塑岩生成器接入新外缘；旧代码只留在显式开发兼容路径。 |
 
-未在代码中确认、因此不写进步骤的事项：本机耗时数字、物理碰撞、地形 LOD、用户道具的自由变换存档、顶面的 GPU 位移生成、紫/橙调试墙（当前崖和草着色器里没有）。
+尚未具备或确认的事项：目标设备耗时、物理碰撞、地形 LOD、用户道具的自由变换存档、顶面的 GPU 位移生成、紫/橙调试墙（当前崖和草着色器里没有）。
 
 ## 1. 建议方案（对应现有代码）
 
@@ -46,7 +60,7 @@
 
 ## 2. 要改的模块
 
-阶段 1 及以后才改代码。本文件提交时不动这些函数。
+下表是阶段划分。阶段 1 主路径及上述复查修正已落地，后续形体与材质工作仍待实施。
 
 | 位置 | 改动 |
 | --- | --- |
@@ -59,7 +73,7 @@
 | `tests/heightmap_island_test.gd`、`tests/terrain_editor_runtime_test.gd` | 阶段 1 同时改断言：外缘跟格边走，单格仍有朝外的陡面，默认壳仍是 heightmap。 |
 | 着色器、`terrain_props.gd`、`terrain_decoration.gd`、`terrain_data.gd` 笔刷 | 阶段 1 不改。过渡与嵌入在阶段 4 只调已有材质参数。 |
 
-`wall_inset` 的现有数值被测试锁住。新剖面用自己的段深，不改这个函数的契约，直到测试明确改掉。塑岩分支保持原样，新代码不调用 `contours.refresh`。
+`wall_inset` 的旧辅助函数数值仍有测试，但已不在阶段 1 活跃路径，不能当作新外缘的形体验收。新剖面用自己的段深。本轮不顺带清理全部遗留函数；默认 heightmap 不调用 `contours.refresh`。
 
 ## 3. 数据流与更新顺序
 
@@ -71,7 +85,7 @@
 6. 用户实体：`TerrainProps.sync` 用 `surface_at` 贴已有节点。没有用户摆放数据要迁移。
 7. 缓存与点选：`triangle_chunks`、`_pick_faces`。缓存可以有边 id 和邻接，但不进 `serialize`，也不能当笔刷去改。
 
-`continue_paint` 里的每一步只改权威数据。网格仍由 `TerrainRenderer._process` → `flush_dirty` 在笔刷提交后的帧里上传。不要改成每帧重做全岛。
+`continue_paint` 里的每一步只改权威数据。网格由 `TerrainEditor._process` → `renderer.flush_dirty` 按预算构建，完整一批就绪后发布。拖动期间也可能发生刷新；松开提交的是撤销历史。当前一次壳刷新仍重算全岛，局部化属于阶段 5。
 
 ## 4. 分阶段
 
@@ -130,7 +144,7 @@
 | 参数 | 含义 | 来源 | 范围 | 代价 |
 | --- | --- | --- | --- | --- |
 | `ROCK_RISE` 0.75 | 多高算岩壁 | 现有常量 | 外缘与台地共用 | 只影响分类，几乎无算量 |
-| 竖面深度 2 m | 阶段 1 单段墙有多高 | 试验 | 仅阶段 1 | 每条边 2 个三角 |
+| 竖面深度 2 m | 阶段 1 单段墙有多高 | 试验 | 仅阶段 1 | 每条源格边 2 个三角；宽面分组不删除 morph 所需的源格接头 |
 | 肩深 0.4–1.6 m | 错开的上段 | 试验，哈希用现有 `_unit` | 每段一个值 | 多一截四边形 |
 | 脚深 1.5–3 m，内收 0.4–1.2 m | 钝脚多深、收多少 | 试验 | 每段 | 底边变短；过大就会在窄湾相交 |
 | 斜角外探 ≤ 0.35 m | 凸角外侧的短面 | 试验 | 只在凸角 | 每角 1–2 个三角 |
@@ -154,7 +168,7 @@
 
 ## 8. 架构问题（其余已按代码默认）
 
-1. 塑岩打开时仍会切到 Contour。默认：留下这段现有分支，新外缘不接入、也不在本计划里删除它。
+1. 默认 heightmap 不允许旧塑岩入口隐式切回 Contour。复查补丁已限制入口和旧布局载入；显式开发兼容路径暂留，不做额外旧代码清理。
 2. 底用“每段钝脚”而不是现在的全岛盖。默认采用钝脚，因为全岛盖是 `flush_dirty` 把所有块标脏的原因。
 3. 用户自由摆放道具在当前代码里不存在。默认：不做。若以后要做，另开存档字段，不放进外缘缓存。
 
@@ -162,6 +176,6 @@
 
 阶段 1 已按下面落地，单独提交。肩、钝脚和全岛底盖没有一起改。
 
-在 `HeightmapIsland.refresh` 里，外圈不再调用 `Contours._outlines`。遍历 `source.cells` 的四边，邻居缺失则记下这条边；把同一直线上、高度相同、首尾相接的边收成一条。每条从显示顶面向下 2 m 生一块平面（`_flat_quad`，崖材质）。`_fill_tops` 对每个格子直接出方块，不再裁到内缩环。
+在 `HeightmapIsland.refresh` 里，外圈不再调用 `Contours._outlines`。遍历 `source.cells` 的四边，邻居缺失则记下这条边；把同一直线上、高度相同、首尾相接的边收成一个面分组。每个源格边从显示顶面向下 2 m 出面（`_flat_quad`，相同法线及崖材质），保留逐格 morph 接头，视觉上仍是连续宽面。`_fill_tops` 对每个格子直接出方块，不再裁到内缩环。
 
 做完应看到：沿直线的若干格共用一块宽墙；拐进去一格的台阶仍然是台阶；`expand` 后新格的外缘出现在新边界上，`contract` 后消失；`raise` 只把这块墙的顶抬高。单格测试仍能在东侧或南侧打到一面朝外的陡崖。画面上的台阶是占地本身，不是拟合失败。

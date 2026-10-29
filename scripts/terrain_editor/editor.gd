@@ -96,6 +96,7 @@ func _pointer(screen:Vector2)->Dictionary:
 	return hit
 func begin_paint(screen:Vector2,from_ui:bool=false)->bool:
 	if from_ui or hud.is_over_panel(screen):return false
+	if _block_unsupported_sculpt():return false
 	var focus:=get_viewport().gui_get_focus_owner()
 	if focus:focus.release_focus()
 	painting=true
@@ -129,6 +130,7 @@ func _sculpt_center(hit:Dictionary)->Vector3:
 	elif tool=="rock_plane":center-=normal*size*.12
 	return center
 func _sculpt_at(screen:Vector2,hit:Dictionary)->void:
+	if _block_unsupported_sculpt():return
 	# Stationary holding must not grow again merely because a new mesh publishes.
 	if _last_sculpt_screen.is_finite() and screen.distance_squared_to(_last_sculpt_screen)<4.0:return
 	var normal:Vector3=hit.get("normal",Vector3.UP)
@@ -140,7 +142,14 @@ func _sculpt_at(screen:Vector2,hit:Dictionary)->void:
 	for i in steps:data.apply_rock_brush(start.lerp(center,float(i+1)/steps),size,tool,normal)
 	_last_sculpt=center;_last_sculpt_screen=screen
 	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
+func _block_unsupported_sculpt()->bool:
+	if not renderer.use_heightmap_shell or not tool.begins_with("rock_"):return false
+	if hud!=null:hud.status.text=HUD.SCULPT_DISABLED_REASON
+	return true
 func _update_brush(screen:Vector2)->void:
+	if renderer.use_heightmap_shell and tool.begins_with("rock_"):
+		brush.visible=false
+		return
 	var hit:=_pointer(screen)
 	brush.visible=not hit.is_empty()
 	if not brush.visible:return
@@ -186,6 +195,10 @@ func load_layout(path:String)->Error:
 	if parser.parse(file.get_as_text())!=OK:return ERR_INVALID_DATA
 	var candidate:Variant=parser.data
 	if not candidate is Dictionary:return ERR_INVALID_DATA
+	# Validate mode compatibility before touching the live data or its history.
+	var imported:=Data.new()
+	if not imported.deserialize(candidate):return ERR_INVALID_DATA
+	if renderer.use_heightmap_shell and (imported.sculpt_base_enabled or not imported.rocks.samples.is_empty()):return ERR_UNAVAILABLE
 	if not data.deserialize(candidate):return ERR_INVALID_DATA
 	cancel_input()
 	renderer.rebuild_all()
