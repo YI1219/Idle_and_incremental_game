@@ -4,6 +4,7 @@ var panel:PanelContainer
 var status:Label
 var diagnostics:Label
 const SAVE_PATH:="user://terrain_editor/layout.json"
+const SCULPT_DISABLED_REASON:="高度图模式暂不支持旧版岩体塑形"
 func _ready()->void:
 	var root:=Control.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -34,14 +35,24 @@ func _ready()->void:
 	var title:=_label("FLOATING GARDEN",19)
 	column.add_child(title)
 	column.add_child(_label("Terrain workshop · low quality",12))
+	column.add_child(_label("扩／缩调整岛边，抬／降调整地面。",11))
 	column.add_child(HSeparator.new())
 	var tools:=OptionButton.new()
 	tools.name="TerrainTools"
 	for name in ["Raise land","Lower land","Expand island","Contract island","Paint water","Remove water","塑岩试作 · 增岩","塑岩试作 · 削岩","塑岩试作 · 切面","塑岩试作 · 斜肩增岩","塑岩试作 · 局部柔化","塑岩试作 · 棱面削岩"]:tools.add_item(name)
+	if editor.renderer.use_heightmap_shell:
+		for index in range(6,12):
+			tools.set_item_disabled(index,true)
+			tools.set_item_tooltip(index,SCULPT_DISABLED_REASON)
 	column.add_child(tools)
 	var convert:=Button.new()
 	convert.name="ConvertRockBase";convert.text="整体岩体塑形 · 试验模式"
+	convert.disabled=editor.renderer.use_heightmap_shell
+	if convert.disabled:convert.tooltip_text=SCULPT_DISABLED_REASON
 	convert.pressed.connect(func():
+		if editor.renderer.use_heightmap_shell:
+			status.text=SCULPT_DISABLED_REASON
+			return
 		editor.cancel_input()
 		if editor.data.set_sculpt_base(not editor.data.sculpt_base_enabled):
 			editor.renderer.rebuild_all()
@@ -67,7 +78,7 @@ func _ready()->void:
 	snap.button_pressed=editor.snap
 	snap.toggled.connect(func(enabled:bool):editor.snap=enabled)
 	column.add_child(snap)
-	column.add_child(_label("吸附仅用于土地笔刷\n开启整体模式后可直接塑造原地形",11))
+	column.add_child(_label("吸附仅用于土地笔刷\n"+(SCULPT_DISABLED_REASON if editor.renderer.use_heightmap_shell else "开启整体模式后可直接塑造原地形"),11))
 	column.add_child(_label("Expansion height",12))
 	var height:=SpinBox.new()
 	height.min_value=-4
@@ -122,6 +133,9 @@ func _button(parent:Node,text:String,action:Callable)->void:
 func is_over_panel(screen:Vector2)->bool:
 	return panel!=null and panel.get_global_rect().has_point(screen)
 func _file_status(error:Error,success:String)->void:
+	if error==ERR_UNAVAILABLE and success=="Loaded":
+		status.text="未载入：含旧版岩体塑形数据。\n高度图模式暂不支持；当前地形未变。"
+		return
 	status.text=success+" layout" if error==OK else "Layout: "+error_string(error)
 func update_diagnostics()->void:
 	diagnostics.text="%d cells · %d chunks · %d pending\n%d FPS · edit %.2f ms\n%d draw calls"%[editor.data.cells.size(),editor.renderer.chunks.size(),editor.renderer.pending_chunk_count(),Engine.get_frames_per_second(),editor.last_edit_ms,Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)]

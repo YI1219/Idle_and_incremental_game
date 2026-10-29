@@ -39,6 +39,8 @@ var blend_core_joints:bool=false:
 var layout_hits:=0
 var layout_misses:=0
 var layout_ms:=0.0
+## Heightmap shell owns the cliff. Contour crowns stay off unless a caller opts in.
+var omit_contour_columns:=false
 static func random_at(cell:Vector2i,seed_value:int,salt:int)->float:
 	var value:int=(cell.x*374761393+cell.y*668265263+seed_value*69069+salt*144269)&0x7fffffff
 	value=((value^(value>>13))*1274126177)&0x7fffffff
@@ -65,7 +67,15 @@ func placements(data:Data,chunk:Vector2i)->Dictionary:
 	if field==null:field=Contours.new();field.refresh(data)
 	var result:Dictionary={}
 	for kind in ["rim_outcrop","rim_shelf","grass","grass_clump","bush","tree","surface_rock","cliff_rock","shore_rock","shore_boulder","shore_pebble","underside_rock","underside_rock_b","cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","path","fence","reeds","lily","flower","vine"]:result[kind]=[]
-	_column_layout(field,data.seed)
+	if omit_contour_columns or not field.has_method("_cliff_profile"):
+		_columns.clear()
+		_column_cells.clear()
+		_mass.clear()
+		_outcrops.clear()
+		_column_field=null
+		_column_key=Vector2i(-1,-1)
+	else:
+		_column_layout(field,data.seed)
 	for rock:Dictionary in _outcrops:
 		if Data.chunk_of(Vector2i(Vector2(rock.pose.origin.x,rock.pose.origin.z).floor()))==chunk:result[rock.kind].append(rock.pose)
 	var crown_tufts:Array=[]

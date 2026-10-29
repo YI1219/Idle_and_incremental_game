@@ -1,0 +1,83 @@
+{
+	"adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+	"art_accepted": false,
+	"captures": [
+		{
+			"error": 0,
+			"file": "gray_form.png",
+			"fov": 31.0,
+			"position": "(3.143187, 7.5, 25.59272)",
+			"rotation": "(-24.0, 16.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "gray_corner.png",
+			"fov": 31.0,
+			"position": "(4.403872, 6.5, 17.51749)",
+			"rotation": "(-26.0, 48.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "gray_game.png",
+			"fov": 31.0,
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "game.png",
+			"fov": 31.0,
+			"position": "(11.36034, 21.0, 38.61823)",
+			"rotation": "(-27.0, 16.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "whole.png",
+			"fov": 31.0,
+			"position": "(13.27737, 32.0, 52.27853)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "reverse.png",
+			"fov": 31.0,
+			"position": "(-17.27737, 32.0, -54.27853)",
+			"rotation": "(-30.0, -164.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "close.png",
+			"fov": 31.0,
+			"position": "(-3.793567, 13.0, 16.6444)",
+			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "underside.png",
+			"fov": 31.0,
+			"position": "(0.5, -8.0, 18.0)",
+			"rotation": "(27.96789, 1.789911, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "underside_sample.png",
+			"fov": 31.0,
+			"position": "(-1.0, -3.2, 16.5)",
+			"rotation": "(32.08664, 4.085617, 0.0)"
+		}
+	],
+	"forward_plus": false,
+	"generate_ms": 223.0,
+	"last_rebuild_ms": 321.974,
+	"phase": 1.25,
+	"piece_count": 33,
+	"rebuild_count": 60,
+	"renderer": "gl_compatibility",
+	"resolution": [
+		1280,
+		720
+	],
+	"scene": "res://scenes/terrain_editor.tscn",
+	"seed": 7301,
+	"shell_triangles": 4573
+}
