@@ -1,10 +1,10 @@
 class_name HeightmapIsland
 extends RefCounted
 ## Playable island shell. One top heightmap plus its footprint.
-## Stage 1 rim: exposed cell edges, merged when they are collinear and the
-## same display height, extruded straight down. Grass is the full cell.
-## The fitted contour ring is not used for this shell. Shoulder, blunt foot,
-## and the keel cap are later stages; KEEL_Y stays for the old helpers.
+## Cell-edge rim. Collinear same-height edges stay one wide face, with a
+## vertex at every source corner so edit morph matches the grass. Each face
+## has a soft shoulder, a vertical wall, and a blunt foot welded only to the
+## next boundary run. Grass is the full cell. KEEL_Y is not a full-island cap.
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Geometry = preload("res://scripts/terrain_editor/chunk_geometry.gd")
 const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
@@ -13,6 +13,14 @@ const ROCK_RISE := 0.75
 const FOLD_DEPTH := 1.05
 const KEEL_Y := -4.6
 const RIM_DROP := 2.0
+const SHOULDER_LO := 0.46
+const SHOULDER_HI := 0.88
+const SHELF_LO := 0.34
+const SHELF_HI := 0.62
+const FOOT_INSET := 0.72
+const FOOT_DROP := 1.72
+const FOOT_LIP := 0.38
+const CORNER_OVERHANG := 0.26
 const BAND_DEPTHS: Array[float] = [0.0, 0.70, 1.05, 2.20, 3.60, 5.00, 6.80, 8.80]
 
 var source: Data
@@ -194,6 +202,7 @@ func _cell_rim() -> void:
 	var used: Array[bool] = []
 	used.resize(edges.size())
 	used.fill(false)
+	var runs: Array[Dictionary] = []
 	for index in edges.size():
 		if used[index]:
 			continue
@@ -231,26 +240,158 @@ func _cell_rim() -> void:
 		var finish: Vector2 = last.b
 		var top := float(first.height)
 		var outward: Vector2 = first.outward
-		# Keep every source-cell seam so the top and rim sample the edit morph
-		# at the same positions. Coplanar normals/materials still read as one
-		# broad face; facets below describe that face independently of its mesh.
-		for piece in run:
-			var a: Vector2 = piece.a
-			var b: Vector2 = piece.b
-			_flat_quad(surfaces.cliff, Vector3(a.x, top, a.y), Vector3(b.x, top, b.y), Vector3(b.x, top - RIM_DROP, b.y), Vector3(a.x, top - RIM_DROP, a.y), outward, Color.WHITE, Vector2(top, 1.0))
-		_shell_fall(run)
-		facets.append({
-			"a": start,
-			"b": finish,
+		var salt_cell: Vector2i = first.cell
+		var side := int(first.side)
+		runs.append({
+			"edges": run,
+			"start": start,
+			"finish": finish,
+			"start_key": _corner_key(start),
+			"end_key": _corner_key(finish),
 			"outward": outward,
-			"length": start.distance_to(finish),
-			"y": top,
-			"ya": top,
-			"yb": top,
-			"cell": first.cell,
-			"side": int(first.side),
-			"run": run.size(),
+			"height": top,
+			"shoulder": lerpf(SHOULDER_LO, SHOULDER_HI, _unit(salt_cell.x, salt_cell.y, 41 + side)),
+			"shelf": lerpf(SHELF_LO, SHELF_HI, _unit(salt_cell.x, salt_cell.y, 57 + side)),
+			"cell": salt_cell,
+			"side": side,
 		})
+	var starts := {}
+	var ends := {}
+	for built in runs:
+		starts[built.start_key] = built
+		ends[built.end_key] = built
+	for built in runs:
+		_emit_rim_run(built, starts, ends)
+	for built in runs:
+		_stitch_rim_corner(built, starts, ends)
+
+func _emit_rim_run(run: Dictionary, starts: Dictionary, ends: Dictionary) -> void:
+	var edges: Array[Dictionary] = []
+	for item in run.edges:
+		edges.append(item as Dictionary)
+	var outward: Vector2 = run.outward
+	var top := float(run.height)
+	var uv := Vector2(top, 1.0)
+	# One quad per source edge keeps the cell joints. Coplanar pieces still
+	# read as the wide face recorded in facets.
+	for piece_index in edges.size():
+		var piece: Dictionary = edges[piece_index]
+		var left: Array = _rim_profile(piece.a, run, piece_index == 0, true, starts, ends)
+		var right: Array = _rim_profile(piece.b, run, piece_index == edges.size() - 1, false, starts, ends)
+		for band in 3:
+			_flat_quad(surfaces.cliff, left[band], right[band], right[band + 1], left[band + 1], outward, Color.WHITE, uv)
+		_flat_quad(surfaces.cliff, left[3], right[3], right[4], left[4], -outward, Color.WHITE, Vector2(top, -1.0))
+	_shell_fall(edges)
+	facets.append({
+		"a": run.start,
+		"b": run.finish,
+		"outward": outward,
+		"length": run.start.distance_to(run.finish),
+		"y": top,
+		"ya": top,
+		"yb": top,
+		"cell": run.cell,
+		"side": int(run.side),
+		"run": edges.size(),
+	})
+
+func _rim_profile(corner: Vector2, run: Dictionary, miter: bool, at_start: bool, starts: Dictionary, ends: Dictionary) -> Array:
+	var top := float(run.height)
+	var outward: Vector2 = run.outward
+	var inland := -outward
+	var room := _land_room(corner, inland)
+	var shelf_dist: float = minf(float(run.shelf), maxf(0.12, room * 0.34))
+	var shelf_xz: Vector2 = corner + inland * shelf_dist
+	var pair: Array = _foot_pair(corner, run, miter, at_start, starts, ends)
+	var foot_xz: Vector2 = pair[0]
+	var inner_xz: Vector2 = pair[1]
+	var lip := Vector3(corner.x, top, corner.y)
+	var shoulder := Vector3(shelf_xz.x, top - float(run.shoulder), shelf_xz.y)
+	var base := Vector3(shelf_xz.x, top - RIM_DROP, shelf_xz.y)
+	var foot := Vector3(foot_xz.x, top - RIM_DROP - FOOT_DROP, foot_xz.y)
+	var inner := Vector3(inner_xz.x, foot.y, inner_xz.y)
+	return [lip, shoulder, base, foot, inner]
+
+func _foot_pair(corner: Vector2, run: Dictionary, miter: bool, at_start: bool, starts: Dictionary, ends: Dictionary) -> Array:
+	var outward: Vector2 = run.outward
+	var raw := -outward * FOOT_INSET
+	if miter:
+		var other := _other_run(run, at_start, starts, ends)
+		if not other.is_empty():
+			var other_out: Vector2 = other.outward
+			if outward.distance_to(other_out) >= 0.01:
+				raw = -(outward + other_out) * FOOT_INSET
+	var span := raw.length()
+	if span < 0.0001:
+		var stuck := corner - outward * 0.12
+		return [stuck, stuck]
+	var dir := raw / span
+	var room := _land_room(corner, dir)
+	var want := span + FOOT_LIP
+	var budget := minf(want, room * 0.46)
+	if budget < 0.05:
+		var tiny := corner - outward * 0.05
+		return [tiny, tiny]
+	var inset := budget * (span / want)
+	var lip := budget - inset
+	return [corner + dir * inset, corner + dir * (inset + lip)]
+
+func _other_run(run: Dictionary, at_start: bool, starts: Dictionary, ends: Dictionary) -> Dictionary:
+	var key: String = run.start_key if at_start else run.end_key
+	var table: Dictionary = ends if at_start else starts
+	if not table.has(key):
+		return {}
+	var other: Dictionary = table[key]
+	if other == run:
+		return {}
+	return other
+
+func _land_room(origin: Vector2, dir: Vector2) -> float:
+	if dir.length_squared() < 0.000001:
+		return 0.2
+	var n := dir.normalized()
+	var limit := 4.2
+	var steps := 42
+	var last := 0.0
+	for i in range(1, steps + 1):
+		var dist := limit * float(i) / float(steps)
+		var probe := origin + n * dist - n * 0.04
+		if not source.cells.has(Vector2i(floori(probe.x), floori(probe.y))):
+			return last
+		last = dist
+	return last
+
+func _stitch_rim_corner(run: Dictionary, starts: Dictionary, ends: Dictionary) -> void:
+	if not starts.has(run.end_key):
+		return
+	var next: Dictionary = starts[run.end_key]
+	if next == run:
+		return
+	var corner: Vector2 = run.finish
+	var here: Array = _rim_profile(corner, run, true, false, starts, ends)
+	var there: Array = _rim_profile(corner, next, true, true, starts, ends)
+	var hint: Vector2 = run.outward + next.outward
+	if hint.length_squared() < 0.0001:
+		hint = run.outward
+	var top := maxf(float(run.height), float(next.height))
+	for band in 4:
+		var uv := Vector2(top, -1.0 if band == 3 else 1.0)
+		_flat_quad(surfaces.cliff, here[band], there[band], there[band + 1], here[band + 1], hint, Color.WHITE, uv)
+	var incoming: Vector2 = run.finish - run.start
+	var outgoing: Vector2 = next.finish - next.start
+	if incoming.length_squared() < 0.0001 or outgoing.length_squared() < 0.0001:
+		return
+	incoming = incoming.normalized()
+	outgoing = outgoing.normalized()
+	if incoming.cross(outgoing) <= 0.05 or absf(float(run.height) - float(next.height)) > 0.02:
+		return
+	var lip := Vector3(corner.x, float(run.height), corner.y)
+	var left := lip + Vector3(run.outward.x, 0.0, run.outward.y) * CORNER_OVERHANG + Vector3(0.0, -0.2, 0.0)
+	var right := lip + Vector3(next.outward.x, 0.0, next.outward.y) * CORNER_OVERHANG + Vector3(0.0, -0.2, 0.0)
+	_tri_facing(surfaces.cliff, lip, left, right, Vector3(hint.x, 0.0, hint.y), Vector2(float(run.height), 1.0))
+
+func _corner_key(point: Vector2) -> String:
+	return "%d,%d" % [roundi(point.x), roundi(point.y)]
 
 func _rim_key(point: Vector2, outward: Vector2, height: float) -> String:
 	return "%d,%d,%d,%d,%d" % [roundi(point.x), roundi(point.y), roundi(outward.x), roundi(outward.y), roundi(height * 2.0)]
@@ -1375,6 +1516,8 @@ func _flat_quad(surface, a: Vector3, b: Vector3, c: Vector3, d: Vector3, outward
 	if normal.length_squared() < 0.00000001:
 		return
 	normal = normal.normalized()
+	if uv.y < -0.5 and normal.y > 0.0:
+		normal = -normal
 	for index in range(before, after):
 		surface.normals[index] = normal
 

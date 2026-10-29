@@ -1,5 +1,5 @@
 extends SceneTree
-## Heightmap shell, stage 1: cell-edge rim, full cell tops. No viewport.
+## Heightmap shell: cell-edge rim, full cell tops, stage-2 blunt feet. No viewport.
 const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
 const Island = preload("res://scripts/terrain_editor/heightmap_island.gd")
 var checks := 0
@@ -77,6 +77,7 @@ func run() -> void:
 	island.refresh(data)
 	check(is_equal_approx(_rim_length(island), float(_exposed_count(data))), "contract wall length matches the shrunk footprint")
 	check(_has_rock_step(data), "preset keeps a steep step that reads as a rock wall")
+	_check_blunt_feet()
 	print("HEIGHTMAP ISLAND: %d/%d passed" % [checks - failures, checks])
 	quit(1 if failures else 0)
 
@@ -205,6 +206,110 @@ func _has_corner(surface, point: Vector3) -> bool:
 
 func _on_lattice(point: Vector2) -> bool:
 	return absf(point.x - roundf(point.x)) < 0.02 and absf(point.y - roundf(point.y)) < 0.02
+
+func _check_blunt_feet() -> void:
+	var data := Data.new()
+	for z in 4:
+		for x in 4:
+			data.cells[Vector2i(x, z)] = {"height": 2.0, "water": -1}
+	var island := Island.new()
+	island.refresh(data)
+	var foot_y := 2.0 - Island.RIM_DROP - Island.FOOT_DROP
+	var foot := Vector3(2.0, foot_y, Island.FOOT_INSET)
+	var inner := Vector3(2.0, foot_y, Island.FOOT_INSET + Island.FOOT_LIP)
+	check(_has_corner(island.surfaces.cliff, Vector3(2, 2, 0)), "blunt wall keeps the grass-lip morph joint")
+	check(not _has_corner(island.surfaces.cliff, Vector3(2, 0, 0)), "the 2m wall does not end as an open skirt on the lip")
+	check(_has_corner(island.surfaces.cliff, foot), "straight wall foot sits inward of the lip")
+	check(_has_corner(island.surfaces.cliff, inner), "straight wall has a thick underside past the foot")
+	var underside := Vector3(2.5, foot_y, Island.FOOT_INSET + Island.FOOT_LIP * 0.5)
+	check(_downward_cover(island, underside), "underside faces down and closes under the wall")
+	check(_has_corner(island.surfaces.cliff, Vector3(Island.FOOT_INSET, foot_y, Island.FOOT_INSET)), "adjacent runs weld the blunt foot at the convex corner")
+	check(_covers(island, (Vector3(1, foot_y, Island.FOOT_INSET) + foot) * 0.5), "blunt feet connect along a straight run")
+	check(_has_shoulder(island), "the grass break has an inset shoulder above the vertical face")
+	data.begin_stroke()
+	var raised := data.apply_brush(Vector2(2.5, 0.5), 0.4, "raise", true, 2.0, 0)
+	data.end_stroke()
+	island.refresh(data)
+	var raised_y := 2.5 - Island.RIM_DROP - Island.FOOT_DROP
+	check(raised > 0 and _has_corner(island.surfaces.cliff, foot), "raise keeps the unraised foot on the same inward line")
+	check(_has_corner(island.surfaces.cliff, Vector3(2, raised_y, Island.FOOT_INSET)), "raise lifts that cell's blunt foot without sliding it")
+	var before := _low_signature(island)
+	data.begin_stroke()
+	var expanded := data.apply_brush(Vector2(0.5, -0.5), 0.55, "expand", true, 2.0, 0)
+	data.end_stroke()
+	island.refresh(data)
+	check(expanded > 0 and data.cells.has(Vector2i(0, -1)) and _low_signature(island) != before, "expand changes blunt-foot connectivity")
+	var notch := Data.new()
+	notch.cells[Vector2i(0, 0)] = {"height": 2.0, "water": -1}
+	notch.cells[Vector2i(1, 0)] = {"height": 2.0, "water": -1}
+	notch.cells[Vector2i(0, 1)] = {"height": 2.0, "water": -1}
+	var open_bay := Island.new()
+	open_bay.refresh(notch)
+	check(not _foot_in_bay(open_bay), "a one-cell notch does not grow a blunt foot across the bay")
+
+func _has_shoulder(island: Island) -> bool:
+	var vertices: PackedVector3Array = island.surfaces.cliff.vertices
+	for vertex in vertices:
+		if absf(vertex.x - 2.0) > 0.02:
+			continue
+		if vertex.z < 0.2 or vertex.z > 0.75:
+			continue
+		if vertex.y < 2.0 - 1.05 or vertex.y > 2.0 - 0.3:
+			continue
+		return true
+	return false
+
+func _downward_cover(island: Island, point: Vector3) -> bool:
+	var vertices: PackedVector3Array = island.surfaces.cliff.vertices
+	var normals: PackedVector3Array = island.surfaces.cliff.normals
+	for index in range(0, vertices.size(), 3):
+		var a: Vector3 = vertices[index]
+		var b: Vector3 = vertices[index + 1]
+		var c: Vector3 = vertices[index + 2]
+		var normal := -((b - a).cross(c - a))
+		if normal.length_squared() < 0.00000001:
+			continue
+		if absf(normal.normalized().dot(point - a)) > 0.02:
+			continue
+		var weights := Geometry3D.get_triangle_barycentric_coords(point, a, b, c)
+		if minf(weights.x, minf(weights.y, weights.z)) < -0.02:
+			continue
+		if normals[index].y < -0.5:
+			return true
+	return false
+
+func _covers(island: Island, point: Vector3) -> bool:
+	var vertices: PackedVector3Array = island.surfaces.cliff.vertices
+	for index in range(0, vertices.size(), 3):
+		var a: Vector3 = vertices[index]
+		var b: Vector3 = vertices[index + 1]
+		var c: Vector3 = vertices[index + 2]
+		var normal := (b - a).cross(c - a)
+		if normal.length_squared() < 0.00000001:
+			continue
+		if absf(normal.normalized().dot(point - a)) > 0.02:
+			continue
+		var weights := Geometry3D.get_triangle_barycentric_coords(point, a, b, c)
+		if minf(weights.x, minf(weights.y, weights.z)) >= -0.02:
+			return true
+	return false
+
+func _low_signature(island: Island) -> String:
+	var rows := PackedStringArray()
+	var vertices: PackedVector3Array = island.surfaces.cliff.vertices
+	for vertex in vertices:
+		if vertex.y > -0.8:
+			continue
+		rows.append("%.2f,%.2f,%.2f" % [vertex.x, vertex.y, vertex.z])
+	rows.sort()
+	return "\n".join(rows)
+
+func _foot_in_bay(island: Island) -> bool:
+	var vertices: PackedVector3Array = island.surfaces.cliff.vertices
+	for vertex in vertices:
+		if vertex.y < 1.0 and vertex.x > 1.08 and vertex.z > 1.08:
+			return true
+	return false
 
 func _empty_neighbor(data: Data) -> Vector2i:
 	for cell: Vector2i in data.cells:

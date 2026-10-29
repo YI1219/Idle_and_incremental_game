@@ -21,7 +21,7 @@
 			"file": "reverse.png",
 			"fov": 31.0,
 			"position": "(-17.27737, 32.0, -54.27853)",
-			"rotation": "(-30.0, 196.0, 0.0)"
+			"rotation": "(-30.0, -164.0, 0.0)"
 		},
 		{
 			"error": 0,
@@ -29,12 +29,30 @@
 			"fov": 31.0,
 			"position": "(-3.793567, 13.0, 16.6444)",
 			"rotation": "(-30.0, 16.0, 0.0)"
+		},
+		{
+			"error": 0,
+			"file": "underside.png",
+			"fov": 31.0,
+			"position": "(0.5, -7.72, 20.26)",
+			"rotation": "(30.40715, 11.09372, 0.0)"
 		}
+	],
+	"cliff_aabb_position": [
+		-21.260000228881836,
+		-2.2200000286102295,
+		-12.260000228881836
+	],
+	"cliff_aabb_size": [
+		39.52000045776367,
+		5.720000267028809,
+		23.520000457763672
 	],
 	"data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
 	"data_unchanged": true,
 	"godot": "4.7.2-stable (official)",
 	"house_absent": true,
+	"label": "OpenGL llvmpipe software frame. Not Forward+. Not art acceptance.",
 	"phase": 1.25,
 	"renderer": "gl_compatibility",
 	"resolution": [
