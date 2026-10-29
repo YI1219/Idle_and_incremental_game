@@ -32,6 +32,8 @@ func _ready()->void:
 	renderer.configure(data)
 	renderer.decoration=_create_decoration()
 	renderer.rebuild_all()
+	# Preset-only face composition. The shell under it stays authoritative.
+	add_child(preload("res://scripts/terrain_editor/rock_face_sample.gd").new())
 	add_child(camera)
 	add_child(landscape)
 	_setup_environment()

@@ -27,6 +27,9 @@ var chunks:Dictionary={}
 var materials:Dictionary={}
 var rebuild_count:=0
 var last_rebuild_ms:=0.0
+## Matte gray mass sample. Restores the live materials and props when cleared.
+var mass_sample:=false
+var _sample_material:ShaderMaterial
 var decoration:RefCounted
 ## Edits grow into place over MORPH_SECONDS. A full rebuild snaps.
 const MORPH_SECONDS:=.55
@@ -220,10 +223,13 @@ func _rebuild(chunk:Vector2i)->void:
 		instance.name=key
 		instance.mesh=geometry[key]
 		instance.material_override=materials[key]
+		if mass_sample and (key=="grass" or key=="cliff"):
+			instance.material_override=_mass_sample_material()
+		instance.visible=not mass_sample or key=="grass" or key=="cliff"
 		instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if key in ["water","waterfall"] else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 		node.add_child(instance)
 	_pending_chunks[chunk]=node
-	if decoration!=null:
+	if decoration!=null and not mass_sample:
 		decoration.contours=field
 		decoration.omit_contour_columns=active_shell=="heightmap"
 		decoration.populate(node,_build_data,chunk)
@@ -348,6 +354,18 @@ func pending_chunk_count()->int:
 
 func has_pending_updates()->bool:
 	return data!=null and (not _build_queue.is_empty() or not data.dirty_chunks.is_empty() or _contour_revision!=data.revision)
+
+func set_mass_sample(enabled:bool)->void:
+	mass_sample=enabled
+	if props!=null:
+		props.visible=not enabled
+	rebuild_all()
+
+func _mass_sample_material()->ShaderMaterial:
+	if _sample_material==null:
+		_sample_material=ShaderMaterial.new()
+		_sample_material.shader=load("res://shaders/terrain_editor/mass_sample.gdshader")
+	return _sample_material
 
 func rebuild_all()->void:
 	_snap_next=true
