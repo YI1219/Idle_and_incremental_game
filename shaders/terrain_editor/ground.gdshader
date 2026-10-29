@@ -15,11 +15,12 @@ void fragment(){
 	float detail=1.0-smoothstep(.35,1.0,footprint);
 	vec2 slope;
 	vec3 color=ground_cover(world_position,detail,slope);
-	// Exposed crown patches, never a perimeter-distance stroke. Most of the
- // shared cap is turf, including its edge; sparse mineral windows stop inland.
- float patch=gc_noise(p*1.65+vec2(11.0,3.0));
- float exposed=(1.0-COLOR.a)*smoothstep(.70,.83,patch)*(1.0-smoothstep(.04,.20,UV.x));
- color=mix(color,stone_surface(world_position,vec3(0.0,1.0,0.0)),exposed*.8);
+	// COLOR.a is the turf mask written from the rock groups. Low alpha is bare
+	// stone at that lip; the interior stays covered. Noise only softens the edge.
+	float mask=clamp(1.0-COLOR.a,0.0,1.0);
+	float grain=gc_noise(p*1.65+vec2(11.0,3.0));
+	float exposed=mask*mix(0.72,1.0,smoothstep(0.35,0.82,grain));
+	color=mix(color,stone_surface(world_position,vec3(0.0,1.0,0.0)),exposed);
 	if(show_grid){vec2 grid=abs(fract(p)-0.5);float edge=step(0.486,max(grid.x,grid.y));color=mix(color,vec3(0.91,0.95,0.66),edge*0.35);}
 	ALBEDO=color*COLOR.rgb;
 	vec3 base_normal=normalize(cross(dFdx(world_position),dFdy(world_position)));

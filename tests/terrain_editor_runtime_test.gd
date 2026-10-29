@@ -22,7 +22,7 @@ func run()->void:
 		for child in chunk.get_children():
 			if String(child.name).begins_with("cliff_column"):column_nodes+=1
 	check(column_nodes==0,"contour column cliffs are not the default shell")
-	check(editor.renderer.island.embeds.size()==0,"stage 1 does not scatter cliff embeds")
+	check(editor.renderer.island.embeds.size()<8,"embeds stay sparse instead of a cliff skirt")
 	check(editor.renderer.island.keel_inset_mean==0.0,"stage 1 does not rebuild the keel cap")
 	var camera=editor.camera
 	camera.set_process(false)
