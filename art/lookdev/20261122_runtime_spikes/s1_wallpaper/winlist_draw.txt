@@ -1,0 +1,6 @@
+display points=1800x1169 backing_pixels=3600x2338 refresh=120
+     order=34 owner=Finder layer=-2147483603 bounds=0,0 1800x1169
+MINE order=35 owner=s1_wallpaper layer=-2147483623 bounds=0,0 1800x1169
+     order=36 owner=Dock layer=-2147483624 bounds=0,0 1800x1169
+     order=37 owner=Window Server layer=-2147483626 bounds=0,0 1800x1169
+onscreen_windows=37

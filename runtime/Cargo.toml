@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = ["spikes/s1_wallpaper"]
+
+[workspace.package]
+edition = "2021"
+publish = false
+
+[profile.release]
+opt-level = 3
+debug = 1
