@@ -1,0 +1,146 @@
+--- water_renderer_before.gd
++++ water_renderer.gd
+@@ -43,6 +43,9 @@
+ var _sync_pending: bool = false
+ var _nodes: Dictionary[String, MeshInstance3D] = {}
+ var _shore_rect: Rect2 = Rect2(Vector2.ZERO, Vector2.ONE)
++# Last successfully published state; never accept a discarded worker as visible.
++var _visual_state: Array = []
++var _shape_cache: Array[Dictionary] = []
+ 
+ class FlowField:
+ 	extends "res://scripts/terrain_editor/contour_terrain.gd"
+@@ -51,6 +54,7 @@
+ 	var basin_ids: Dictionary = {}
+ 	var outgoing: Dictionary = {}
+ 	var _basin: int = -1
++	var shape_cache: Array[Dictionary] = []
+ 
+ 	func build_live(snapshot: Data, solver: RefCounted) -> void:
+ 		source = snapshot
+@@ -62,6 +66,7 @@
+ 			for cell: Vector2i in basin.cells:
+ 				basin_ids[cell] = int(basin.id)
+ 		_build_outgoing(solver.last_transfers)
++		var next_cache: Array[Dictionary] = []
+ 		for basin: Dictionary in solver.basins:
+ 			var visible: Dictionary = {}
+ 			for cell: Vector2i in basin.cells:
+@@ -70,12 +75,37 @@
+ 			if visible.is_empty():
+ 				continue
+ 			_basin = int(basin.id)
+-			var loops: Array = _outlines(visible)
++			var shape: Dictionary = {}
++			for cached: Dictionary in shape_cache:
++				if cached.cells == visible:
++					shape = cached
++					break
++			if shape.is_empty():
++				var loops: Array = _outlines(visible)
++				var subdivided: Array[PackedVector2Array] = []
++				for loop: PackedVector2Array in loops:
++					subdivided.append(_subdivide_outline(loop))
++				var cap: RefCounted = Legacy.Surface.new()
++				_cap(cap, loops, 0.0, Color.WHITE)
++				shape = {"cells": visible, "loops": loops, "subdivided": subdivided, "cap": cap}
++			next_cache.append(shape)
++			var loops: Array = shape.loops
+ 			water_regions[_basin] = loops
+ 			var water_y: float = float(basin.height) + SURFACE_LIFT
+-			_cap(surfaces.water, loops, water_y, Color.WHITE)
+-			for loop: PackedVector2Array in loops:
+-				_falls(_subdivide_outline(loop), water_y)
++			# Only height and its UV component vary until visible membership changes.
++			var cap: RefCounted = shape.cap
++			var vertices: PackedVector3Array = cap.vertices.duplicate()
++			var uv: PackedVector2Array = cap.uv.duplicate()
++			for index: int in vertices.size():
++				vertices[index].y = water_y
++				uv[index].y = water_y
++			surfaces.water.vertices.append_array(vertices)
++			surfaces.water.normals.append_array(cap.normals)
++			surfaces.water.colors.append_array(cap.colors)
++			surfaces.water.uv.append_array(uv)
++			for loop: PackedVector2Array in shape.subdivided:
++				_falls(loop, water_y)
++		shape_cache = next_cache
+ 		for kind: String in ["waterfall", "bank"]:
+ 			_smooth_normals(surfaces[kind])
+ 		for veil: Dictionary in fall_veils:
+@@ -86,6 +116,28 @@
+ 			var measured: Dictionary = _nearest_outflow(Vector2(splash.center.x, splash.center.z), splash.out)
+ 			splash.rate = measured.get("rate", 0.0)
+ 			splash.intensity = clampf(float(splash.rate) / 0.45, 0.0, 1.0)
++
++	func _smooth_normals(surface) -> void:
++		# Preserve the original accumulation order and rounding, but normalize
++		# each shared position once rather than once per duplicated vertex.
++		var vertices: PackedVector3Array = surface.vertices
++		var keys: PackedVector3Array = PackedVector3Array()
++		keys.resize(vertices.size())
++		var sums: Dictionary[Vector3, Vector3] = {}
++		for index: int in range(0, vertices.size(), 3):
++			var a: Vector3 = vertices[index]
++			var weighted: Vector3 = -(vertices[index + 1] - a).cross(vertices[index + 2] - a)
++			for corner: int in range(index, index + 3):
++				var key: Vector3 = (vertices[corner] * 10000.0).round()
++				keys[corner] = key
++				sums[key] = sums.get(key, Vector3.ZERO) + weighted
++		for key: Vector3 in sums:
++			sums[key] = sums[key].normalized()
++		var normals: PackedVector3Array = PackedVector3Array()
++		normals.resize(vertices.size())
++		for index: int in keys.size():
++			normals[index] = sums[keys[index]]
++		surface.normals = normals
+ 
+ 	func surface_at(point: Vector2) -> Dictionary:
+ 		var cell: Vector2i = Vector2i(point.floor())
+@@ -220,6 +272,8 @@
+ 
+ func reset(data: Data) -> void:
+ 	_wait_discard()
++	_visual_state.clear()
++	_shape_cache.clear()
+ 	_data = data
+ 	queued_seconds = 0.0
+ 	simulated_seconds = 0.0
+@@ -307,8 +361,15 @@
+ 	if duration > 0.0:
+ 		flow.step(duration)
+ 	var solved: int = Time.get_ticks_usec()
++	var state: Array = [flow.depths, flow.heights, flow.last_transfers, flow._beds, snapshot.seed]
++	if state == _visual_state:
++		_worker_result = {"unchanged": true, "duration": duration, "worker_ms": float(solved - started) / 1000.0,
++			"stages": {"solver": float(solved - started) / 1000.0, "mesh": 0.0, "images": 0.0}}
++		return
+ 	var field: FlowField = FlowField.new()
++	field.shape_cache = _shape_cache
+ 	field.build_live(snapshot, flow)
++	_shape_cache = field.shape_cache
+ 	var meshes: Dictionary = {}
+ 	for kind: String in WATER_LAYERS:
+ 		meshes[kind] = field.surfaces[kind].mesh()
+@@ -316,7 +377,7 @@
+ 	var fields: Dictionary = _build_images(snapshot, field)
+ 	var finished: int = Time.get_ticks_usec()
+ 	_worker_result = {
+-		"meshes": meshes, "surfaces": field.surfaces,
++		"state": state.duplicate(true), "meshes": meshes, "surfaces": field.surfaces,
+ 		"depths": field.live_depths, "heights": field.live_heights,
+ 		"basins": flow.basins.duplicate(true), "splashes": field.splash_points,
+ 		"volume": flow.total_volume(), "discharged": flow.discharged_volume,
+@@ -345,8 +406,12 @@
+ 		_reconcile()
+ 		_start_worker(0.0)
+ 		return
++	if result.get("unchanged", false):
++		last_publish_ms = 0.0
++		return
+ 	var started: int = Time.get_ticks_usec()
+ 	flow.write_to_data(_data)
++	_visual_state = result.state
+ 	_publish(result)
+ 	last_publish_ms = float(Time.get_ticks_usec() - started) / 1000.0
+ 

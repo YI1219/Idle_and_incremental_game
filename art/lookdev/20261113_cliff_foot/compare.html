@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>岩壁底缘收束 · Godot 实拍</title>
+<style>
+body{margin:0;background:#202826;color:#e5ece5;font:16px/1.6 system-ui,sans-serif}main{max-width:1800px;margin:auto;padding:24px}h1{font-size:26px;margin:0}p{color:#bac8bd}select{padding:9px 14px;background:#35433d;color:white;border:1px solid #718675;border-radius:6px;font:inherit}label{display:inline-block;margin:8px 16px 8px 0}.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}figure{margin:0}figcaption{padding:6px 0;color:#bec9c0}img{display:block;width:100%;height:auto;border-radius:5px}a{color:#bdd8c1}section{margin-top:30px}@media(max-width:900px){.pair{grid-template-columns:1fr}}
+</style>
+<main><h1>外层岩壁底缘收束</h1><p><strong>本压短方案已被用户否定。<a href="../20261113_cliff_join/compare.html">查看保留岩层错落的当前版本</a></strong></p>
+<p>缩短向下挂出的外层岩块，让它结束在主岩体与对应地形底缘之上。上部岩肩保留，主岩体、顶冠、材质、原有岩石取色和光照参数保持。以下均为实际 Godot 输出。</p>
+<label>同机位对照 <select id="view">
+<option value="foot_front">正面岩底近景</option><option value="whole">正面全景</option><option value="reverse">背面全景</option><option value="foot_reverse">背面低角度</option><option value="side_106">侧面 106°</option><option value="side_286">侧面 286°</option><option value="cliff_close">岩壁近景</option><option value="game">游戏距离</option><option value="close">庭院近景</option>
+</select></label>
+<div class="pair"><figure><figcaption>调整前</figcaption><a id="oldLink" href="before/foot_front.png"><img id="old" src="before/foot_front.png" alt="调整前 Godot 实拍"></a></figure><figure><figcaption>调整后</figcaption><a id="newLink" href="final/foot_front.png"><img id="new" src="final/foot_front.png" alt="调整后 Godot 实拍"></a></figure></div>
+<p>默认种子 7301；原生 2560×1440，Forward+、4×MSAA、日照 .29、相位 1.25；相机、权威地形与采集条件匹配。点击图片可查看原图。</p>
+<section><h2>多种子与夜景检查</h2>
+<label>布局 <select id="seed"><option value="final">7301 · 默认庭院</option><option value="final_held2104">2104 · 庭院</option><option value="final_held4242">4242 · 预设 1</option><option value="final_held913">913 · 无水预设</option><option value="final_night">7301 · 夜景</option></select></label>
+<label>机位 <select id="heldView"><option value="whole">正面全景</option><option value="reverse">背面全景</option><option value="side_106">侧面 106°</option><option value="side_286">侧面 286°</option><option value="foot_front">正面岩底近景</option><option value="foot_reverse">背面低角度</option><option value="cliff_close">岩壁近景</option><option value="game">游戏距离</option><option value="close">庭院近景</option></select></label>
+<figure><a id="heldLink" href="final/whole.png"><img id="held" src="final/whole.png" alt="当前生成与夜景 Godot 实拍"></a></figure></section>
+<p>保留种子用于检查生成稳定性；仅默认日景有本轮修改前后的严格对照。局部原有接缝与主岩体薄尖仍在；本轮结果待视觉确认。</p>
+<p><a href="checks/audit.json">采集核对</a> · <a href="checks/suite.json">回归结果</a> · <a href="README.md">范围与证据说明</a></p>
+</main><script>
+const view=document.getElementById('view'),seed=document.getElementById('seed'),heldView=document.getElementById('heldView');
+function setImage(id,path){document.getElementById(id).src=path;document.getElementById(id+'Link').href=path}
+function pair(){setImage('old','before/'+view.value+'.png');setImage('new','final/'+view.value+'.png')}
+function held(){setImage('held',seed.value+'/'+heldView.value+'.png')}
+view.addEventListener('change',pair);seed.addEventListener('change',held);heldView.addEventListener('change',held);
+</script></html>

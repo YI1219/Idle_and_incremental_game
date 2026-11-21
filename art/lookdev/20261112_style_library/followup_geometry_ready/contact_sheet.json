@@ -1,0 +1,45 @@
+{
+  "source": "art/lookdev/20261112_style_library/followup_geometry_ready/captures.json",
+  "actual_frames": [
+    {
+      "file": "art/lookdev/20261112_style_library/followup_geometry_ready/props/clay_planter/lod0_iso.png",
+      "sha256": "0d4f0294fa2feb580d779e45e93ccee8907e0fe44581c8e01c09818d55936792",
+      "model_sha256": "8d6ba89e6f8ab35238cc3381e797246b7dc4d055793c14db8183b63ebc7d9cd1"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/followup_geometry_ready/props/bamboo_fence/lod0_iso.png",
+      "sha256": "4ba8db30cafba10e52204e506eb72a136585c99ee66636957e15aff1a8ed7398",
+      "model_sha256": "e9a481edac7ff323d45eaae667374c885da8997870b489c2678550c60798c7a4"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/followup_geometry_ready/props/stone_stool_v02/lod0_iso.png",
+      "sha256": "7dd47984af3886f3ab950db14dfc347f9fa4f8b6469f59f4bd3386978d986365",
+      "model_sha256": "cbbf217057c67e9722cb4ff60b04a63f9843511e0ea95d26c51555f306bba903"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/followup_geometry_ready/nature/round_low_shrub/lod0_iso.png",
+      "sha256": "2d4163594bc9c423b72772844f6703396ff84e27f10d20db05705108e4864780",
+      "model_sha256": "ae8d74d0cc6e5d1a0a17d6c1dca9521b4c2dd3af91853b7ef698f3221619b135"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/followup_geometry_ready/nature/narrow_shrub/lod0_iso.png",
+      "sha256": "4a9f0024f19764f0f8fb0868dbf6a942c3b6d6461f143c968a57c991ba1073fc",
+      "model_sha256": "2f2cc426fa70cd8a9cdcfc267fef888e0dfabe7bdd5a98d4733dd21355eff55e"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/followup_geometry_ready/nature/hosta/lod0_iso.png",
+      "sha256": "b2bfef72d1f45767a534edfe45805326b2c49aa4f18f159f848a5feb091eba7e",
+      "model_sha256": "e9eb422ec4312e4d319109568a5402983fc4b2f1c989a1bc7841fc757ca184fc"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/followup_geometry_ready/nature/fern/lod0_iso.png",
+      "sha256": "353c7e5f21ace7889fd561229c8e30683787ae608e8086f88695f99a965380d5",
+      "model_sha256": "bb9a12e4702eb3daf1137e0086f2735602462b60154dc1926e115477c7b2936f"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/followup_geometry_ready/nature/ornamental_grass/lod0_iso.png",
+      "sha256": "d487d4f893dd4d3afa3c4a6089ad8dd036dbcace4b01b70976819c904594e88d",
+      "model_sha256": "6f5891c94eaf09b0b47c3ac90ed607a5692076ba2863760dd51672ceab848972"
+    }
+  ]
+}

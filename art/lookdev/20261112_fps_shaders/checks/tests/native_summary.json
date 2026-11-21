@@ -1,0 +1,46 @@
+[
+  {
+    "test": "flooded_ground",
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "",
+      "2026-11-12 17:11:11.281 godot[70235:75418372] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-11-12 17:11:11.355 godot[70235:75418372] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "FLOODED GROUND: 20 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "grass_lod",
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)",
+      "",
+      "2026-11-12 17:11:12.119 godot[70247:75418489] +[IMKClient subclass]: chose IMKClient_Modern",
+      "GRASS LOD 96 -> 14; 4 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "grass_recovery_render",
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "2026-11-12 17:11:12.638 godot[70262:75418563] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "blades pixels 2249 -> 1031 -> 0 -> 700",
+      "rim pixels 6628 -> 3045 -> 0 -> 2047",
+      "GRASS RECOVERY PIXELS 8 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "sky_direction",
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "SKY ERROR night=false max=0.0 mean=0.0",
+      "2026-11-12 17:11:13.502 godot[70265:75418634] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "SKY ERROR night=true max=0.0 mean=0.0",
+      "SKY DIRECTION 4 checks, 0 failures"
+    ]
+  }
+]

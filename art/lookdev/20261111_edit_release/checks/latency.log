@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-11 09:57:03.359 Godot[7631:72512194] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-11 09:57:05.819 Godot[7631:72512194] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+{"feedback_immediate":true,"feedback_mesh_ms":0.793,"name":"short_raise","release_callback_ms":0.101,"release_to_complete_ms":1255.833,"release_to_first_draw_ms":14.28,"release_to_publication_ms":709.973,"started":true}
+{"feedback_immediate":true,"feedback_mesh_ms":0.815,"name":"held_raise","release_callback_ms":6.994,"release_to_complete_ms":578.369,"release_to_first_draw_ms":28.594,"release_to_publication_ms":6.863,"started":true}
+{"feedback_immediate":true,"feedback_mesh_ms":0.739,"name":"short_contract","release_callback_ms":0.102,"release_to_complete_ms":1299.052,"release_to_first_draw_ms":14.141,"release_to_publication_ms":753.031,"started":true}
+{"feedback_immediate":true,"feedback_mesh_ms":0.833,"name":"wide_short_raise","release_callback_ms":0.249,"release_to_complete_ms":1271.476,"release_to_first_draw_ms":14.564,"release_to_publication_ms":726.298,"started":true}

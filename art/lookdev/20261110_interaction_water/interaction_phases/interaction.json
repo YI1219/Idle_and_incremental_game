@@ -1,0 +1,113 @@
+{
+	"actor_absent": true,
+	"errors": [
+		"Input did not begin draft"
+	],
+	"method": "production Viewport.push_input; staged morph sampling, not a latency recording",
+	"phases": [
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "00_before.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "01_held_removal_blueprint.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "02_cancelled.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "03_released_waiting.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "04_removal_000.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "04_removal_025.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "04_removal_050.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "04_removal_075.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": false,
+			"file": "04_removal_100.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 623,
+			"draft": true,
+			"file": "05_held_addition_blueprint.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 632,
+			"draft": false,
+			"file": "06_addition_000.png",
+			"morph_progress": 0.0
+		},
+		{
+			"cells": 632,
+			"draft": false,
+			"file": "06_addition_025.png",
+			"morph_progress": 0.25
+		},
+		{
+			"cells": 632,
+			"draft": false,
+			"file": "06_addition_050.png",
+			"morph_progress": 0.5
+		},
+		{
+			"cells": 632,
+			"draft": false,
+			"file": "06_addition_075.png",
+			"morph_progress": 0.75
+		},
+		{
+			"cells": 632,
+			"draft": false,
+			"file": "06_addition_100.png",
+			"morph_progress": 1.0
+		},
+		{
+			"cells": 632,
+			"draft": false,
+			"file": "07_invalid_red.png",
+			"morph_progress": 1.0
+		}
+	],
+	"preset": 0,
+	"resolution": [
+		2560,
+		1440
+	],
+	"scene": "scenes/terrain_editor.tscn",
+	"seed": 7301,
+	"valid": false
+}

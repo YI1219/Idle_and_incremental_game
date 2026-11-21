@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{ "fixture": "baseline", "implementation": "before", "pass": 0, "layout_ms": 325.579, "stages": { &"runs": 29.748, &"union": 209.253, &"outcrops": 13.525, &"trim": 50.483, &"index": 22.566 }, "hits": 0, "misses": 44 }
+{ "fixture": "baseline", "implementation": "before", "pass": 1, "layout_ms": 296.108, "stages": { &"runs": 2.419, &"union": 206.939, &"outcrops": 14.786, &"trim": 49.33, &"index": 22.561 }, "hits": 44, "misses": 0 }
+{ "fixture": "baseline", "implementation": "before", "pass": 2, "layout_ms": 298.415, "stages": { &"runs": 2.259, &"union": 207.4, &"outcrops": 15.48, &"trim": 50.733, &"index": 22.505 }, "hits": 44, "misses": 0 }
+{ "fixture": "baseline", "implementation": "after", "pass": 0, "layout_ms": 311.897, "stages": { &"runs": 30.921, &"union": 199.898, &"outcrops": 12.901, &"trim": 47.023, &"index": 21.153 }, "hits": 0, "misses": 44 }
+{ "fixture": "baseline", "implementation": "after", "pass": 1, "layout_ms": 284.421, "stages": { &"runs": 3.604, &"union": 199.474, &"outcrops": 14.066, &"trim": 45.834, &"index": 21.406 }, "hits": 44, "misses": 0 }
+{ "fixture": "baseline", "implementation": "after", "pass": 2, "layout_ms": 284.193, "stages": { &"runs": 3.548, &"union": 198.833, &"outcrops": 14.589, &"trim": 45.952, &"index": 21.241 }, "hits": 44, "misses": 0 }
+{ "fixture": "upper_four", "implementation": "before", "pass": 0, "layout_ms": 350.507, "stages": { &"runs": 36.009, &"union": 225.274, &"outcrops": 14.39, &"trim": 51.116, &"index": 23.714 }, "hits": 0, "misses": 51 }
+{ "fixture": "upper_four", "implementation": "before", "pass": 1, "layout_ms": 313.272, "stages": { &"runs": 2.805, &"union": 222.231, &"outcrops": 15.228, &"trim": 50.039, &"index": 22.922 }, "hits": 51, "misses": 0 }
+{ "fixture": "upper_four", "implementation": "before", "pass": 2, "layout_ms": 313.168, "stages": { &"runs": 2.771, &"union": 221.255, &"outcrops": 15.551, &"trim": 50.148, &"index": 23.402 }, "hits": 51, "misses": 0 }
+{ "fixture": "upper_four", "implementation": "after", "pass": 0, "layout_ms": 330.734, "stages": { &"runs": 38.136, &"union": 210.53, &"outcrops": 13.695, &"trim": 46.666, &"index": 21.703 }, "hits": 0, "misses": 51 }
+{ "fixture": "upper_four", "implementation": "after", "pass": 1, "layout_ms": 296.727, "stages": { &"runs": 4.262, &"union": 210.446, &"outcrops": 14.696, &"trim": 45.549, &"index": 21.741 }, "hits": 51, "misses": 0 }
+{ "fixture": "upper_four", "implementation": "after", "pass": 2, "layout_ms": 296.711, "stages": { &"runs": 4.391, &"union": 209.007, &"outcrops": 14.59, &"trim": 46.925, &"index": 21.758 }, "hits": 51, "misses": 0 }
+{ "fixture": "lower_four", "implementation": "before", "pass": 0, "layout_ms": 369.075, "stages": { &"runs": 36.072, &"union": 237.934, &"outcrops": 13.638, &"trim": 56.566, &"index": 24.863 }, "hits": 0, "misses": 73 }
+{ "fixture": "lower_four", "implementation": "before", "pass": 1, "layout_ms": 339.334, "stages": { &"runs": 3.671, &"union": 237.222, &"outcrops": 15.446, &"trim": 57.866, &"index": 25.089 }, "hits": 73, "misses": 0 }
+{ "fixture": "lower_four", "implementation": "before", "pass": 2, "layout_ms": 342.51, "stages": { &"runs": 3.616, &"union": 240.859, &"outcrops": 15.423, &"trim": 57.122, &"index": 25.453 }, "hits": 73, "misses": 0 }
+{ "fixture": "lower_four", "implementation": "after", "pass": 0, "layout_ms": 349.176, "stages": { &"runs": 37.796, &"union": 225.111, &"outcrops": 12.601, &"trim": 50.512, &"index": 23.155 }, "hits": 0, "misses": 73 }
+{ "fixture": "lower_four", "implementation": "after", "pass": 1, "layout_ms": 318.307, "stages": { &"runs": 5.159, &"union": 223.898, &"outcrops": 14.377, &"trim": 51.254, &"index": 23.579 }, "hits": 73, "misses": 0 }
+{ "fixture": "lower_four", "implementation": "after", "pass": 2, "layout_ms": 318.121, "stages": { &"runs": 5.088, &"union": 225.024, &"outcrops": 14.385, &"trim": 50.369, &"index": 23.227 }, "hits": 73, "misses": 0 }

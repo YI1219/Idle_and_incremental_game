@@ -1,0 +1,398 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+NODE @MeshInstance3D@10|MeshInstance3D|cloud_deck.gdshader|vis=true|parent=@Node3D@7 {"instances":1,"nodes":1,"triangles":0}
+NODE @MeshInstance3D@11|MeshInstance3D|cloud_deck.gdshader|vis=true|parent=@Node3D@7 {"instances":1,"nodes":1,"triangles":0}
+NODE @MeshInstance3D@12|MeshInstance3D|cloud_deck.gdshader|vis=true|parent=@Node3D@7 {"instances":1,"nodes":1,"triangles":0}
+NODE @MeshInstance3D@13|MeshInstance3D|cloud_deck.gdshader|vis=true|parent=@Node3D@7 {"instances":1,"nodes":1,"triangles":0}
+NODE @MeshInstance3D@38|MeshInstance3D|none|vis=true|parent=TerrainEditor {"instances":1,"nodes":1,"triangles":0}
+NODE @MeshInstance3D@39|MeshInstance3D|edit_preview.gdshader|vis=false|parent=TerrainEditor {"instances":1,"nodes":1,"triangles":0}
+NODE @MeshInstance3D@8|MeshInstance3D|cloud_deck.gdshader|vis=true|parent=@Node3D@7 {"instances":1,"nodes":1,"triangles":0}
+NODE @MeshInstance3D@9|MeshInstance3D|cloud_deck.gdshader|vis=true|parent=@Node3D@7 {"instances":1,"nodes":1,"triangles":0}
+NODE @MultiMeshInstance3D@14|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":3,"nodes":1,"triangles":30522}
+NODE @MultiMeshInstance3D@15|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40696}
+NODE @MultiMeshInstance3D@16|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40696}
+NODE @MultiMeshInstance3D@17|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40696}
+NODE @MultiMeshInstance3D@18|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":3,"nodes":1,"triangles":30522}
+NODE @MultiMeshInstance3D@19|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40696}
+NODE @MultiMeshInstance3D@20|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40696}
+NODE @MultiMeshInstance3D@21|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40696}
+NODE @MultiMeshInstance3D@22|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40880}
+NODE @MultiMeshInstance3D@23|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40880}
+NODE @MultiMeshInstance3D@24|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40880}
+NODE @MultiMeshInstance3D@25|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":5,"nodes":1,"triangles":51100}
+NODE @MultiMeshInstance3D@26|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40880}
+NODE @MultiMeshInstance3D@27|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40880}
+NODE @MultiMeshInstance3D@28|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40880}
+NODE @MultiMeshInstance3D@29|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":5,"nodes":1,"triangles":51100}
+NODE @MultiMeshInstance3D@30|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40424}
+NODE @MultiMeshInstance3D@31|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":5,"nodes":1,"triangles":50530}
+NODE @MultiMeshInstance3D@32|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":5,"nodes":1,"triangles":50530}
+NODE @MultiMeshInstance3D@33|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":5,"nodes":1,"triangles":50530}
+NODE @MultiMeshInstance3D@34|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":4,"nodes":1,"triangles":40424}
+NODE @MultiMeshInstance3D@35|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":5,"nodes":1,"triangles":50530}
+NODE @MultiMeshInstance3D@36|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":5,"nodes":1,"triangles":50530}
+NODE @MultiMeshInstance3D@37|MultiMeshInstance3D|distant_mountain.gdshader|vis=true|parent=@Node3D@7 {"instances":5,"nodes":1,"triangles":50530}
+NODE AmbientMotes|MultiMeshInstance3D|ambient_motes.gdshader|vis=true|parent=TerrainEditor {"instances":88,"nodes":1,"triangles":0}
+NODE BreakthroughWave|MeshInstance3D|-|vis=true|parent=@Node3D@45 {"instances":1,"nodes":1,"triangles":0}
+NODE FishingSilkAndRipples|MeshInstance3D|-|vis=true|parent=@Node3D@45 {"instances":1,"nodes":1,"triangles":0}
+NODE JadeBobber|MeshInstance3D|none|vis=false|parent=@Node3D@45 {"instances":1,"nodes":1,"triangles":0}
+NODE Mesh|MeshInstance3D|cliff_rock.gdshader|vis=true|parent=InkStoneDaybed {"instances":1,"nodes":1,"triangles":1888}
+NODE Mesh|MeshInstance3D|cliff_rock.gdshader|vis=true|parent=TaihuScholarRock {"instances":1,"nodes":1,"triangles":3442}
+NODE Mesh|MeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=BambooGrove {"instances":1,"nodes":1,"triangles":5566}
+NODE Mesh|MeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=SongStoneLantern {"instances":1,"nodes":1,"triangles":356}
+NODE WaterfallMist|MultiMeshInstance3D|waterfall_mist.gdshader|vis=true|parent=@Node3D@4 {"instances":63,"nodes":1,"triangles":0}
+NODE bank|MeshInstance3D|foam.gdshader|vis=false|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":288}
+NODE bank|MeshInstance3D|foam.gdshader|vis=false|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":24}
+NODE bank|MeshInstance3D|foam.gdshader|vis=true|parent=@Node3D@48 {"instances":1,"nodes":1,"triangles":374}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":3,"nodes":1,"triangles":564}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-1_0 {"instances":4,"nodes":1,"triangles":752}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":5,"nodes":1,"triangles":940}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":3,"nodes":1,"triangles":564}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-2_0 {"instances":2,"nodes":1,"triangles":376}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":4,"nodes":1,"triangles":752}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_0_-1 {"instances":2,"nodes":1,"triangles":376}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_0_0 {"instances":2,"nodes":1,"triangles":376}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_0_1 {"instances":2,"nodes":1,"triangles":376}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_1_-1 {"instances":5,"nodes":1,"triangles":940}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_1_0 {"instances":4,"nodes":1,"triangles":752}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_1_1 {"instances":3,"nodes":1,"triangles":564}
+NODE bush_0|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_2_0 {"instances":1,"nodes":1,"triangles":188}
+NODE cliff_column_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_0_1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_b_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-3_-2 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_b_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_c_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-1_1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_c_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":2,"nodes":1,"triangles":162}
+NODE cliff_column_c_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_c_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-3_0 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_c_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_c_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_d_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-1_-2 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_d_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-2_0 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_d_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_d_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_e_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_0_-2 {"instances":1,"nodes":1,"triangles":99}
+NODE cliff_column_e_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_2_0 {"instances":1,"nodes":1,"triangles":99}
+NODE cliff_column_f_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-1_1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_f_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_0_-1 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_column_g_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1,"nodes":1,"triangles":99}
+NODE cliff_column_g_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-3_0 {"instances":1,"nodes":1,"triangles":99}
+NODE cliff_column_g_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_0_1 {"instances":1,"nodes":1,"triangles":99}
+NODE cliff_column_g_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_2_0 {"instances":1,"nodes":1,"triangles":99}
+NODE cliff_column_h_0|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-1_-2 {"instances":1,"nodes":1,"triangles":81}
+NODE cliff_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-1_0 {"instances":2,"nodes":1,"triangles":136}
+NODE cliff_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_0_0 {"instances":2,"nodes":1,"triangles":136}
+NODE cliff_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_1_1 {"instances":2,"nodes":1,"triangles":136}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":72}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-1_-2 {"instances":1,"nodes":1,"triangles":589}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":771}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-1_1 {"instances":1,"nodes":1,"triangles":128}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":1,"nodes":1,"triangles":465}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":1,"nodes":1,"triangles":570}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-2_0 {"instances":1,"nodes":1,"triangles":595}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-2_1 {"instances":1,"nodes":1,"triangles":4}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1,"nodes":1,"triangles":756}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-3_-2 {"instances":1,"nodes":1,"triangles":38}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_-3_0 {"instances":1,"nodes":1,"triangles":210}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_0_-1 {"instances":1,"nodes":1,"triangles":735}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_0_-2 {"instances":1,"nodes":1,"triangles":109}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":326}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_0_1 {"instances":1,"nodes":1,"triangles":272}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":387}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_1_0 {"instances":1,"nodes":1,"triangles":574}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":211}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_2_-1 {"instances":1,"nodes":1,"triangles":23}
+NODE cliff|MeshInstance3D|cliff.gdshader|vis=true|parent=Chunk_2_0 {"instances":1,"nodes":1,"triangles":171}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":2,"nodes":1,"triangles":180}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_0 {"instances":2,"nodes":1,"triangles":180}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":3,"nodes":1,"triangles":270}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":2,"nodes":1,"triangles":180}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_0 {"instances":4,"nodes":1,"triangles":360}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":2,"nodes":1,"triangles":180}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_0_-1 {"instances":1,"nodes":1,"triangles":90}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_0_0 {"instances":3,"nodes":1,"triangles":270}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_-1 {"instances":3,"nodes":1,"triangles":270}
+NODE flower_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_0 {"instances":4,"nodes":1,"triangles":360}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":999,"nodes":1,"triangles":95904}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-1_-2 {"instances":1024,"nodes":1,"triangles":98304}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1007,"nodes":1,"triangles":96672}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-1_1 {"instances":251,"nodes":1,"triangles":24096}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":1415,"nodes":1,"triangles":135840}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":1140,"nodes":1,"triangles":109440}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-2_0 {"instances":1210,"nodes":1,"triangles":116160}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-2_1 {"instances":14,"nodes":1,"triangles":1344}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1234,"nodes":1,"triangles":118464}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-3_-2 {"instances":195,"nodes":1,"triangles":18720}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_-3_0 {"instances":609,"nodes":1,"triangles":58464}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_0_-1 {"instances":1308,"nodes":1,"triangles":125568}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_0_-2 {"instances":399,"nodes":1,"triangles":38304}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_0_0 {"instances":394,"nodes":1,"triangles":37824}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_0_1 {"instances":765,"nodes":1,"triangles":73440}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_1_-1 {"instances":562,"nodes":1,"triangles":53952}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_1_0 {"instances":544,"nodes":1,"triangles":52224}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_1_1 {"instances":228,"nodes":1,"triangles":21888}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_2_-1 {"instances":61,"nodes":1,"triangles":5856}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_2_0 {"instances":353,"nodes":1,"triangles":33888}
+NODE grass_blades|MultiMeshInstance3D|grass_blades.gdshader|vis=true|parent=Chunk_2_1 {"instances":12,"nodes":1,"triangles":1152}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":2,"nodes":1,"triangles":390}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_0 {"instances":2,"nodes":1,"triangles":390}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":2,"nodes":1,"triangles":390}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":2,"nodes":1,"triangles":390}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_0 {"instances":4,"nodes":1,"triangles":780}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":3,"nodes":1,"triangles":585}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_0_-1 {"instances":2,"nodes":1,"triangles":390}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":195}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_0_1 {"instances":1,"nodes":1,"triangles":195}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_-1 {"instances":2,"nodes":1,"triangles":390}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_0 {"instances":4,"nodes":1,"triangles":780}
+NODE grass_clump_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_1 {"instances":3,"nodes":1,"triangles":585}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":145}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-1_-2 {"instances":1,"nodes":1,"triangles":532}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":507}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-1_1 {"instances":1,"nodes":1,"triangles":398}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":1,"nodes":1,"triangles":376}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":1,"nodes":1,"triangles":402}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-2_0 {"instances":1,"nodes":1,"triangles":436}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-2_1 {"instances":1,"nodes":1,"triangles":104}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1,"nodes":1,"triangles":479}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-3_-2 {"instances":1,"nodes":1,"triangles":182}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_-3_0 {"instances":1,"nodes":1,"triangles":299}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_0_-1 {"instances":1,"nodes":1,"triangles":482}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_0_-2 {"instances":1,"nodes":1,"triangles":257}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":270}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_0_1 {"instances":1,"nodes":1,"triangles":347}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":529}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_1_0 {"instances":1,"nodes":1,"triangles":142}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":333}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_2_-1 {"instances":1,"nodes":1,"triangles":179}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_2_0 {"instances":1,"nodes":1,"triangles":415}
+NODE grass|MeshInstance3D|ground.gdshader|vis=true|parent=Chunk_2_1 {"instances":1,"nodes":1,"triangles":33}
+NODE lake_bed|MeshInstance3D|lake_bed.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":695}
+NODE lake_bed|MeshInstance3D|lake_bed.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":680}
+NODE lake_bed|MeshInstance3D|lake_bed.gdshader|vis=true|parent=Chunk_0_-1 {"instances":1,"nodes":1,"triangles":263}
+NODE lake_bed|MeshInstance3D|lake_bed.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":1684}
+NODE lake_bed|MeshInstance3D|lake_bed.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":42}
+NODE lake_bed|MeshInstance3D|lake_bed.gdshader|vis=true|parent=Chunk_1_0 {"instances":1,"nodes":1,"triangles":1459}
+NODE lake_bed|MeshInstance3D|lake_bed.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":324}
+NODE lily_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":2,"nodes":1,"triangles":182}
+NODE lily_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_0 {"instances":2,"nodes":1,"triangles":182}
+NODE lily_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_0 {"instances":2,"nodes":1,"triangles":182}
+NODE lily_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_0_-1 {"instances":2,"nodes":1,"triangles":182}
+NODE lily_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":91}
+NODE lily_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":91}
+NODE lily_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_0 {"instances":4,"nodes":1,"triangles":364}
+NODE lily_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":91}
+NODE path_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":70}
+NODE path_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":6,"nodes":1,"triangles":420}
+NODE path_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-2_0 {"instances":8,"nodes":1,"triangles":560}
+NODE reeds_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":228}
+NODE reeds_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":228}
+NODE reeds_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":228}
+NODE reeds_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":228}
+NODE reeds_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_0 {"instances":2,"nodes":1,"triangles":456}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_-1_-2 {"instances":1,"nodes":1,"triangles":1121}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_-1_1 {"instances":1,"nodes":1,"triangles":382}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":1,"nodes":1,"triangles":1804}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_-2_0 {"instances":1,"nodes":1,"triangles":1561}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_-2_1 {"instances":1,"nodes":1,"triangles":282}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1,"nodes":1,"triangles":4032}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_-3_-2 {"instances":1,"nodes":1,"triangles":708}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_-3_0 {"instances":1,"nodes":1,"triangles":1852}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_0_-2 {"instances":1,"nodes":1,"triangles":711}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":1081}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_0_1 {"instances":1,"nodes":1,"triangles":1090}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":2036}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_2_-1 {"instances":1,"nodes":1,"triangles":382}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_2_0 {"instances":1,"nodes":1,"triangles":755}
+NODE rim_green|MeshInstance3D|rim_green.gdshader|vis=true|parent=Chunk_2_1 {"instances":1,"nodes":1,"triangles":169}
+NODE shore_boulder_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":70}
+NODE shore_boulder_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":70}
+NODE shore_boulder_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_0_-1 {"instances":2,"nodes":1,"triangles":140}
+NODE shore_boulder_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_0_0 {"instances":10,"nodes":1,"triangles":700}
+NODE shore_boulder_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_1_1 {"instances":3,"nodes":1,"triangles":210}
+NODE shore_pebble_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":7,"nodes":1,"triangles":448}
+NODE shore_pebble_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-1_0 {"instances":4,"nodes":1,"triangles":256}
+NODE shore_pebble_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-2_0 {"instances":3,"nodes":1,"triangles":192}
+NODE shore_pebble_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_0_-1 {"instances":7,"nodes":1,"triangles":448}
+NODE shore_pebble_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_0_0 {"instances":10,"nodes":1,"triangles":640}
+NODE shore_pebble_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_1_-1 {"instances":3,"nodes":1,"triangles":192}
+NODE shore_pebble_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_1_0 {"instances":5,"nodes":1,"triangles":320}
+NODE shore_pebble_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_1_1 {"instances":5,"nodes":1,"triangles":320}
+NODE shore_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":3,"nodes":1,"triangles":198}
+NODE shore_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_0_0 {"instances":3,"nodes":1,"triangles":198}
+NODE shore_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_1_0 {"instances":2,"nodes":1,"triangles":132}
+NODE shore_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":66}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":160}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":166}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":1,"nodes":1,"triangles":13}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_-2_0 {"instances":1,"nodes":1,"triangles":11}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_0_-1 {"instances":1,"nodes":1,"triangles":104}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":196}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":57}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_1_0 {"instances":1,"nodes":1,"triangles":223}
+NODE shore|MeshInstance3D|shore.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":96}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":20}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":113}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":1,"nodes":1,"triangles":26}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_-2_0 {"instances":1,"nodes":1,"triangles":91}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1,"nodes":1,"triangles":24}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_-3_0 {"instances":1,"nodes":1,"triangles":18}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_0_-1 {"instances":1,"nodes":1,"triangles":105}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":70}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_0_1 {"instances":1,"nodes":1,"triangles":28}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":91}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_1_0 {"instances":1,"nodes":1,"triangles":287}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":106}
+NODE stone_mantle|MeshInstance3D|stone_mantle.gdshader|vis=true|parent=Chunk_2_0 {"instances":1,"nodes":1,"triangles":20}
+NODE surface_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":1,"nodes":1,"triangles":67}
+NODE surface_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_-2_0 {"instances":3,"nodes":1,"triangles":201}
+NODE surface_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_0_-1 {"instances":2,"nodes":1,"triangles":134}
+NODE surface_rock_0|MultiMeshInstance3D|cliff_rock.gdshader|vis=true|parent=Chunk_1_0 {"instances":2,"nodes":1,"triangles":134}
+NODE tree_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":1,"nodes":1,"triangles":2702}
+NODE tree_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_0 {"instances":1,"nodes":1,"triangles":2702}
+NODE tree_1|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-2_-1 {"instances":1,"nodes":1,"triangles":4100}
+NODE tree_1|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_1_0 {"instances":1,"nodes":1,"triangles":4100}
+NODE tree_b_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":3956}
+NODE tree_b_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":1,"nodes":1,"triangles":3956}
+NODE tree_b_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1,"nodes":1,"triangles":3956}
+NODE tree_b_0|MultiMeshInstance3D|decor_vertex_color.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":3956}
+NODE tree_b_1|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":3008}
+NODE tree_b_1|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-2_-2 {"instances":1,"nodes":1,"triangles":3008}
+NODE tree_b_1|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_-3_-1 {"instances":1,"nodes":1,"triangles":3008}
+NODE tree_b_1|MultiMeshInstance3D|foliage_cards.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":3008}
+NODE underside_rock_b_joined_17|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":106}
+NODE underside_rock_b_joined_18|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":104}
+NODE underside_rock_c_joined_8|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_0_1 {"instances":1,"nodes":1,"triangles":98}
+NODE underside_rock_d_joined_4|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-3_-2 {"instances":1,"nodes":1,"triangles":112}
+NODE underside_rock_joined_13|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_-2_0 {"instances":1,"nodes":1,"triangles":100}
+NODE underside_rock_joined_4|MultiMeshInstance3D|cliff_column.gdshader|vis=true|parent=Chunk_0_-2 {"instances":1,"nodes":1,"triangles":112}
+NODE waterfall|MeshInstance3D|waterfall.gdshader|vis=false|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":220}
+NODE waterfall|MeshInstance3D|waterfall.gdshader|vis=false|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":528}
+NODE waterfall|MeshInstance3D|waterfall.gdshader|vis=true|parent=@Node3D@48 {"instances":1,"nodes":1,"triangles":1356}
+NODE water|MeshInstance3D|water.gdshader|vis=false|parent=Chunk_-1_-1 {"instances":1,"nodes":1,"triangles":10}
+NODE water|MeshInstance3D|water.gdshader|vis=false|parent=Chunk_-1_0 {"instances":1,"nodes":1,"triangles":7}
+NODE water|MeshInstance3D|water.gdshader|vis=false|parent=Chunk_0_-1 {"instances":1,"nodes":1,"triangles":10}
+NODE water|MeshInstance3D|water.gdshader|vis=false|parent=Chunk_0_0 {"instances":1,"nodes":1,"triangles":43}
+NODE water|MeshInstance3D|water.gdshader|vis=false|parent=Chunk_1_-1 {"instances":1,"nodes":1,"triangles":4}
+NODE water|MeshInstance3D|water.gdshader|vis=false|parent=Chunk_1_0 {"instances":1,"nodes":1,"triangles":20}
+NODE water|MeshInstance3D|water.gdshader|vis=false|parent=Chunk_1_1 {"instances":1,"nodes":1,"triangles":34}
+NODE water|MeshInstance3D|water.gdshader|vis=true|parent=@Node3D@48 {"instances":1,"nodes":1,"triangles":128}
+INFO draw_calls=274 primitives=853138 shadow_draw_calls=185 shadow_primitives=114223 texture=(1920.0, 1080.0) msaa=1 scale=1.0 bg_active=false
+SAMPLE round=0 base {"draw_calls":274,"fps":81.1157939189611,"idle":325,"ms":12.3280553846154,"p50":12.214,"p95":13.321,"primitives":853108,"rendered":325}
+SAMPLE round=0 native {"draw_calls":274,"fps":68.4055661159769,"idle":274,"ms":14.6186934306569,"p50":14.547,"p95":15.699,"primitives":853060,"rendered":274}
+SAMPLE round=0 msaa0 {"draw_calls":274,"fps":89.1383764680679,"idle":357,"ms":11.218512605042,"p50":10.02,"p95":16.053,"primitives":853108,"rendered":357}
+SAMPLE round=0 msaa4 {"draw_calls":274,"fps":71.8332749687974,"idle":288,"ms":13.921125,"p50":13.911,"p95":14.856,"primitives":853106,"rendered":288}
+SAMPLE round=0 ssao0 {"draw_calls":274,"fps":82.0306704947646,"idle":329,"ms":12.1905623100304,"p50":12.112,"p95":13.281,"primitives":853060,"rendered":329}
+SAMPLE round=0 ssil0 {"draw_calls":274,"fps":84.0765291013317,"idle":337,"ms":11.8939258160237,"p50":11.813,"p95":12.903,"primitives":853090,"rendered":337}
+SAMPLE round=0 ssao0&ssil0 {"draw_calls":274,"fps":86.9132388593087,"idle":348,"ms":11.5057270114943,"p50":11.206,"p95":14.206,"primitives":853090,"rendered":348}
+SAMPLE round=0 dof0 {"draw_calls":274,"fps":84.2909374025074,"idle":338,"ms":11.8636715976331,"p50":11.731,"p95":13.069,"primitives":853090,"rendered":338}
+SAMPLE round=0 glow0 {"draw_calls":274,"fps":82.5230821548447,"idle":331,"ms":12.1178217522659,"p50":12.055,"p95":13.235,"primitives":853090,"rendered":331}
+SAMPLE round=0 adj0 {"draw_calls":274,"fps":80.5103207750527,"idle":323,"ms":12.4207678018576,"p50":12.338,"p95":13.485,"primitives":853090,"rendered":323}
+SAMPLE round=0 fog0 {"draw_calls":274,"fps":81.3216615961197,"idle":326,"ms":12.2968466257669,"p50":12.22,"p95":13.233,"primitives":853090,"rendered":326}
+SAMPLE round=0 shadow0 {"draw_calls":274,"fps":88.0958542789754,"idle":353,"ms":11.3512719546742,"p50":11.09,"p95":14.138,"primitives":853088,"rendered":353}
+SAMPLE round=0 softq0 {"draw_calls":274,"fps":83.3448119601302,"idle":334,"ms":11.9983473053892,"p50":11.929,"p95":12.859,"primitives":853090,"rendered":334}
+SAMPLE round=0 fill0 {"draw_calls":274,"fps":81.8365111099301,"idle":328,"ms":12.2194847560976,"p50":12.158,"p95":13.133,"primitives":853090,"rendered":328}
+SAMPLE round=0 bg0 {"draw_calls":274,"fps":79.7349500281822,"idle":319,"ms":12.5415517241379,"p50":12.473,"p95":13.66,"primitives":853090,"rendered":319}
+SAMPLE round=0 motes0 {"draw_calls":273,"fps":79.7261208433728,"idle":320,"ms":12.542940625,"p50":12.447,"p95":13.575,"primitives":852914,"rendered":320}
+SAMPLE round=0 unshaded {"draw_calls":274,"fps":88.9665485777348,"idle":356,"ms":11.2401797752809,"p50":9.187,"p95":17.031,"primitives":853090,"rendered":356}
+HIDE ["*"] -> 264 nodes
+SAMPLE round=0 nogeo {"draw_calls":4,"fps":84.9672026597733,"idle":340,"ms":11.7692470588235,"p50":9.091,"p95":18.312,"primitives":1858,"rendered":340}
+SAMPLE round=0 skycolor {"draw_calls":274,"fps":80.6799697862256,"idle":323,"ms":12.3946501547988,"p50":12.321,"p95":13.417,"primitives":853090,"rendered":323}
+SAMPLE round=0 noproc {"draw_calls":274,"fps":82.6739193257405,"idle":331,"ms":12.0957129909366,"p50":12.029,"p95":13.078,"primitives":853090,"rendered":331}
+SAMPLE round=0 nowater {"draw_calls":274,"fps":80.3433705990172,"idle":322,"ms":12.4465776397516,"p50":12.368,"p95":13.518,"primitives":853090,"rendered":322}
+HIDE SHADER ["grass_blades.gdshader"] -> 21 nodes
+SAMPLE round=0 hideshader:grass_blades.gdshader {"draw_calls":253,"fps":88.1184831638779,"idle":353,"ms":11.3483569405099,"p50":10.862,"p95":14.908,"primitives":852796,"rendered":353}
+HIDE SHADER ["distant_mountain.gdshader"] -> 24 nodes
+SAMPLE round=0 hideshader:distant_mountain.gdshader {"draw_calls":257,"fps":85.5149194863321,"idle":343,"ms":11.6938658892128,"p50":11.628,"p95":12.58,"primitives":121500,"rendered":343}
+HIDE SHADER ["cloud_deck.gdshader"] -> 6 nodes
+SAMPLE round=0 hideshader:cloud_deck.gdshader {"draw_calls":268,"fps":85.0794369986769,"idle":341,"ms":11.7537214076246,"p50":11.664,"p95":12.641,"primitives":853078,"rendered":341}
+HIDE SHADER ["water.gdshader", "waterfall.gdshader", "foam.gdshader", "waterfall_mist.gdshader"] -> 4 nodes
+SAMPLE round=0 hideshader:water.gdshader+waterfall.gdshader+foam.gdshader+waterfall_mist.gdshader {"draw_calls":273,"fps":80.2179328813307,"idle":321,"ms":12.4660404984424,"p50":12.439,"p95":13.377,"primitives":852964,"rendered":321}
+HIDE SHADER ["cliff_column.gdshader", "cliff.gdshader", "stone_mantle.gdshader", "cliff_rock.gdshader"] -> 91 nodes
+SAMPLE round=0 hideshader:cliff_column.gdshader+cliff.gdshader+stone_mantle.gdshader+cliff_rock.gdshader {"draw_calls":183,"fps":82.0759169800852,"idle":329,"ms":12.1838419452888,"p50":12.148,"p95":13.096,"primitives":830477,"rendered":329}
+HIDE SHADER ["ground.gdshader", "rim_green.gdshader", "lake_bed.gdshader", "shore.gdshader"] -> 52 nodes
+SAMPLE round=0 hideshader:ground.gdshader+rim_green.gdshader+lake_bed.gdshader+shore.gdshader {"draw_calls":222,"fps":85.5861880360989,"idle":343,"ms":11.6841282798834,"p50":11.619,"p95":12.713,"primitives":822104,"rendered":343}
+HIDE SHADER ["foliage_cards.gdshader", "decor_vertex_color.gdshader"] -> 62 nodes
+SAMPLE round=0 hideshader:foliage_cards.gdshader+decor_vertex_color.gdshader {"draw_calls":193,"fps":88.3467845888268,"idle":354,"ms":11.3190310734463,"p50":10.692,"p95":15.05,"primitives":787607,"rendered":354}
+SAMPLE round=0 scale0.67 {"draw_calls":274,"fps":87.2481677884764,"idle":349,"ms":11.461558739255,"p50":10.262,"p95":15.93,"primitives":853090,"rendered":349}
+SAMPLE round=0 scale0.5 {"draw_calls":274,"fps":84.6476962880491,"idle":340,"ms":11.8136705882353,"p50":9.542,"p95":17.703,"primitives":853090,"rendered":340}
+SAMPLE round=0 msaa0&ssao0&ssil0&dof0&glow0 {"draw_calls":274,"fps":84.9550587739086,"idle":340,"ms":11.7709294117647,"p50":8.815,"p95":18.522,"primitives":853090,"rendered":340}
+SAMPLE round=0 msaa0&ssao0&ssil0&dof0&glow0&shadow0 {"draw_calls":274,"fps":88.0376531805286,"idle":353,"ms":11.358776203966,"p50":8.817,"p95":18.479,"primitives":853090,"rendered":353}
+HIDE SHADER ["grass_blades.gdshader"] -> 21 nodes
+SAMPLE round=0 msaa0&ssao0&ssil0&dof0&glow0&shadow0&hideshader:grass_blades.gdshader {"draw_calls":253,"fps":89.1251618505471,"idle":358,"ms":11.2201759776536,"p50":8.927,"p95":18.255,"primitives":852796,"rendered":358}
+HIDE SHADER ["grass_blades.gdshader"] -> 21 nodes
+SAMPLE round=1 msaa0&ssao0&ssil0&dof0&glow0&shadow0&hideshader:grass_blades.gdshader {"draw_calls":253,"fps":90.8648839176145,"idle":364,"ms":11.0053516483516,"p50":8.748,"p95":18.259,"primitives":852796,"rendered":364}
+SAMPLE round=1 msaa0&ssao0&ssil0&dof0&glow0&shadow0 {"draw_calls":274,"fps":83.0707126344567,"idle":333,"ms":12.0379369369369,"p50":8.87,"p95":18.437,"primitives":853090,"rendered":333}
+SAMPLE round=1 msaa0&ssao0&ssil0&dof0&glow0 {"draw_calls":274,"fps":85.3540658858517,"idle":342,"ms":11.7159035087719,"p50":8.966,"p95":18.208,"primitives":853090,"rendered":342}
+SAMPLE round=1 scale0.5 {"draw_calls":274,"fps":84.1915500164011,"idle":337,"ms":11.8776765578635,"p50":9.305,"p95":17.856,"primitives":853090,"rendered":337}
+SAMPLE round=1 scale0.67 {"draw_calls":274,"fps":85.9946038386091,"idle":344,"ms":11.628636627907,"p50":10.376,"p95":16.417,"primitives":853090,"rendered":344}
+HIDE SHADER ["foliage_cards.gdshader", "decor_vertex_color.gdshader"] -> 62 nodes
+SAMPLE round=1 hideshader:foliage_cards.gdshader+decor_vertex_color.gdshader {"draw_calls":193,"fps":87.5954378499138,"idle":351,"ms":11.4161196581197,"p50":10.737,"p95":14.798,"primitives":787655,"rendered":351}
+HIDE SHADER ["ground.gdshader", "rim_green.gdshader", "lake_bed.gdshader", "shore.gdshader"] -> 52 nodes
+SAMPLE round=1 hideshader:ground.gdshader+rim_green.gdshader+lake_bed.gdshader+shore.gdshader {"draw_calls":222,"fps":83.7078321795396,"idle":335,"ms":11.9463134328358,"p50":11.864,"p95":12.972,"primitives":822104,"rendered":335}
+HIDE SHADER ["cliff_column.gdshader", "cliff.gdshader", "stone_mantle.gdshader", "cliff_rock.gdshader"] -> 91 nodes
+SAMPLE round=1 hideshader:cliff_column.gdshader+cliff.gdshader+stone_mantle.gdshader+cliff_rock.gdshader {"draw_calls":183,"fps":81.0098261180166,"idle":325,"ms":12.3441815384615,"p50":12.239,"p95":13.404,"primitives":830477,"rendered":325}
+HIDE SHADER ["water.gdshader", "waterfall.gdshader", "foam.gdshader", "waterfall_mist.gdshader"] -> 4 nodes
+SAMPLE round=1 hideshader:water.gdshader+waterfall.gdshader+foam.gdshader+waterfall_mist.gdshader {"draw_calls":273,"fps":79.4551078640568,"idle":318,"ms":12.5857232704403,"p50":12.573,"p95":13.666,"primitives":852964,"rendered":318}
+HIDE SHADER ["cloud_deck.gdshader"] -> 6 nodes
+SAMPLE round=1 hideshader:cloud_deck.gdshader {"draw_calls":268,"fps":84.5451260233639,"idle":339,"ms":11.8280029498525,"p50":11.761,"p95":12.775,"primitives":853078,"rendered":339}
+HIDE SHADER ["distant_mountain.gdshader"] -> 24 nodes
+SAMPLE round=1 hideshader:distant_mountain.gdshader {"draw_calls":257,"fps":85.2162543632721,"idle":341,"ms":11.7348504398827,"p50":11.623,"p95":12.804,"primitives":121500,"rendered":341}
+HIDE SHADER ["grass_blades.gdshader"] -> 21 nodes
+SAMPLE round=1 hideshader:grass_blades.gdshader {"draw_calls":253,"fps":86.8124417196647,"idle":348,"ms":11.5190862068966,"p50":11.055,"p95":14.69,"primitives":852796,"rendered":348}
+SAMPLE round=1 nowater {"draw_calls":274,"fps":79.67592131216,"idle":319,"ms":12.5508432601881,"p50":12.493,"p95":13.518,"primitives":853090,"rendered":319}
+SAMPLE round=1 noproc {"draw_calls":274,"fps":81.7387609203735,"idle":327,"ms":12.2340978593272,"p50":12.161,"p95":13.402,"primitives":853090,"rendered":327}
+SAMPLE round=1 skycolor {"draw_calls":274,"fps":80.4665661417681,"idle":322,"ms":12.4275217391304,"p50":12.339,"p95":13.426,"primitives":853090,"rendered":322}
+HIDE ["*"] -> 264 nodes
+SAMPLE round=1 nogeo {"draw_calls":4,"fps":84.8158224415681,"idle":340,"ms":11.7902529411765,"p50":8.886,"p95":18.156,"primitives":1858,"rendered":340}
+SAMPLE round=1 unshaded {"draw_calls":274,"fps":87.5683831732986,"idle":351,"ms":11.4196467236467,"p50":9.128,"p95":17.286,"primitives":853090,"rendered":351}
+SAMPLE round=1 motes0 {"draw_calls":273,"fps":80.4789748678158,"idle":322,"ms":12.4256055900621,"p50":12.382,"p95":13.56,"primitives":852914,"rendered":322}
+SAMPLE round=1 bg0 {"draw_calls":274,"fps":80.3106075098399,"idle":322,"ms":12.4516552795031,"p50":12.361,"p95":13.502,"primitives":853090,"rendered":322}
+SAMPLE round=1 fill0 {"draw_calls":274,"fps":82.1921572693217,"idle":329,"ms":12.1666109422492,"p50":12.096,"p95":13.119,"primitives":853090,"rendered":329}
+SAMPLE round=1 softq0 {"draw_calls":274,"fps":84.0356251203181,"idle":337,"ms":11.8997151335312,"p50":11.817,"p95":12.831,"primitives":853090,"rendered":337}
+SAMPLE round=1 shadow0 {"draw_calls":274,"fps":86.5802810041616,"idle":347,"ms":11.5499740634006,"p50":11.116,"p95":14.466,"primitives":853090,"rendered":347}
+SAMPLE round=1 fog0 {"draw_calls":274,"fps":81.4679830826485,"idle":326,"ms":12.2747607361963,"p50":12.219,"p95":13.289,"primitives":853090,"rendered":326}
+SAMPLE round=1 adj0 {"draw_calls":274,"fps":80.9832567116749,"idle":324,"ms":12.3482314814815,"p50":12.274,"p95":13.328,"primitives":853090,"rendered":324}
+SAMPLE round=1 glow0 {"draw_calls":274,"fps":83.229899979155,"idle":333,"ms":12.0149129129129,"p50":11.925,"p95":13.149,"primitives":853090,"rendered":333}
+SAMPLE round=1 dof0 {"draw_calls":274,"fps":85.300503447562,"idle":342,"ms":11.7232602339181,"p50":11.653,"p95":12.73,"primitives":853090,"rendered":342}
+SAMPLE round=1 ssao0&ssil0 {"draw_calls":274,"fps":87.8145795153533,"idle":352,"ms":11.3876306818182,"p50":10.998,"p95":14.425,"primitives":853090,"rendered":352}
+SAMPLE round=1 ssil0 {"draw_calls":274,"fps":84.9794774561943,"idle":340,"ms":11.7675470588235,"p50":11.641,"p95":12.956,"primitives":853042,"rendered":340}
+SAMPLE round=1 ssao0 {"draw_calls":274,"fps":82.9491107205729,"idle":332,"ms":12.0555843373494,"p50":11.981,"p95":13.097,"primitives":853090,"rendered":332}
+SAMPLE round=1 msaa4 {"draw_calls":274,"fps":73.0502987458037,"idle":293,"ms":13.6891979522184,"p50":13.627,"p95":14.596,"primitives":853090,"rendered":293}
+SAMPLE round=1 msaa0 {"draw_calls":274,"fps":96.0889309295294,"idle":385,"ms":10.407025974026,"p50":9.79,"p95":14.449,"primitives":853090,"rendered":385}
+SAMPLE round=1 native {"draw_calls":274,"fps":70.2940735116476,"idle":282,"ms":14.2259503546099,"p50":14.128,"p95":15.432,"primitives":853090,"rendered":282}
+SAMPLE round=1 base {"draw_calls":274,"fps":80.6719901854906,"idle":323,"ms":12.3958761609907,"p50":12.352,"p95":13.307,"primitives":853090,"rendered":323}
+RESULT base                                           12.36 ms  80.89 fps  delta  +0.00 ms
+RESULT native                                         14.42 ms  69.34 fps  delta  +2.06 ms
+RESULT msaa0                                          10.81 ms  92.48 fps  delta  -1.55 ms
+RESULT msaa4                                          13.81 ms  72.44 fps  delta  +1.44 ms
+RESULT ssao0                                          12.12 ms  82.49 fps  delta  -0.24 ms
+RESULT ssil0                                          11.83 ms  84.53 fps  delta  -0.53 ms
+RESULT ssao0&ssil0                                    11.45 ms  87.36 fps  delta  -0.92 ms
+RESULT dof0                                           11.79 ms  84.79 fps  delta  -0.57 ms
+RESULT glow0                                          12.07 ms  82.87 fps  delta  -0.30 ms
+RESULT adj0                                           12.38 ms  80.75 fps  delta  +0.02 ms
+RESULT fog0                                           12.29 ms  81.39 fps  delta  -0.08 ms
+RESULT shadow0                                        11.45 ms  87.33 fps  delta  -0.91 ms
+RESULT softq0                                         11.95 ms  83.69 fps  delta  -0.41 ms
+RESULT fill0                                          12.19 ms  82.01 fps  delta  -0.17 ms
+RESULT bg0                                            12.50 ms  80.02 fps  delta  +0.13 ms
+RESULT motes0                                         12.48 ms  80.10 fps  delta  +0.12 ms
+RESULT unshaded                                       11.33 ms  88.26 fps  delta  -1.03 ms
+RESULT nogeo                                          11.78 ms  84.89 fps  delta  -0.58 ms
+RESULT skycolor                                       12.41 ms  80.57 fps  delta  +0.05 ms
+RESULT noproc                                         12.16 ms  82.20 fps  delta  -0.20 ms
+RESULT nowater                                        12.50 ms  80.01 fps  delta  +0.14 ms
+RESULT hideshader:grass_blades.gdshader               11.43 ms  87.46 fps  delta  -0.93 ms
+RESULT hideshader:distant_mountain.gdshader           11.71 ms  85.37 fps  delta  -0.65 ms
+RESULT hideshader:cloud_deck.gdshader                 11.79 ms  84.81 fps  delta  -0.57 ms
+RESULT hideshader:water.gdshader+waterfall.gdshader+foam.gdshader+waterfall_mist.gdshader   12.53 ms  79.83 fps  delta  +0.16 ms
+RESULT hideshader:cliff_column.gdshader+cliff.gdshader+stone_mantle.gdshader+cliff_rock.gdshader   12.26 ms  81.54 fps  delta  -0.10 ms
+RESULT hideshader:ground.gdshader+rim_green.gdshader+lake_bed.gdshader+shore.gdshader   11.82 ms  84.64 fps  delta  -0.55 ms
+RESULT hideshader:foliage_cards.gdshader+decor_vertex_color.gdshader   11.37 ms  87.97 fps  delta  -0.99 ms
+RESULT scale0.67                                      11.55 ms  86.62 fps  delta  -0.82 ms
+RESULT scale0.5                                       11.85 ms  84.42 fps  delta  -0.52 ms
+RESULT msaa0&ssao0&ssil0&dof0&glow0                   11.74 ms  85.15 fps  delta  -0.62 ms
+RESULT msaa0&ssao0&ssil0&dof0&glow0&shadow0           11.70 ms  85.48 fps  delta  -0.66 ms
+RESULT msaa0&ssao0&ssil0&dof0&glow0&shadow0&hideshader:grass_blades.gdshader   11.11 ms  89.99 fps  delta  -1.25 ms

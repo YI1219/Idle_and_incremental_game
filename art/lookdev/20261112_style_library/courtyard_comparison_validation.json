@@ -1,0 +1,30 @@
+{
+  "valid": true,
+  "data_sha256": "dd496c63342cc53ad9b8c858919c0fd72a55796cbb2fd65ba20658d66740ed18",
+  "data_same": true,
+  "common_source_changes": [],
+  "frames": [
+    {
+      "file": "game.png",
+      "condition_differences": []
+    },
+    {
+      "file": "whole.png",
+      "condition_differences": []
+    },
+    {
+      "file": "reverse.png",
+      "condition_differences": []
+    },
+    {
+      "file": "close.png",
+      "condition_differences": []
+    },
+    {
+      "file": "cliff_close.png",
+      "condition_differences": []
+    }
+  ],
+  "placed_count": 6,
+  "scope": "Transient six independent shared-LOD candidates in the unchanged production courtyard; not default adoption or art acceptance"
+}

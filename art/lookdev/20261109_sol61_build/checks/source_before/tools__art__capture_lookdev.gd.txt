@@ -1,0 +1,377 @@
+extends SceneTree
+## Deterministic native 2K evidence from the sole playable scene. No user layout IO.
+## godot --path . --script tools/art/capture_lookdev.gd -- --out=<new-dir> --suite=full
+## Or: --job=res://art/lookdev/capture_job.json (specified fields override CLI options).
+
+const SIZE := Vector2i(2560, 1440)
+const PHASE: float = 1.25
+const SOURCE_FILES: Array[String] = [
+	"res://project.godot", "res://scenes/terrain_editor.tscn",
+	"res://scripts/terrain_editor/editor.gd", "res://scripts/terrain_editor/editor_camera.gd",
+	"res://scripts/terrain_editor/terrain_data.gd", "res://scripts/terrain_editor/terrain_renderer.gd",
+	"res://scripts/terrain_editor/terrain_environment.gd", "res://scripts/gameplay/systems/time_solar_system.gd",
+	"res://scripts/terrain_editor/procedural_shard.gd", "res://scripts/terrain_editor/procedural_stone.gd",
+	"res://scripts/terrain_editor/terrain_decoration.gd", "res://scripts/terrain_editor/terrain_models.gd",
+	"res://scripts/terrain_editor/terrain_props.gd", "res://scripts/terrain_editor/contour_terrain.gd",
+	"res://scripts/terrain_editor/rim_union.gd", "res://scripts/terrain_editor/block_mantle.gd",
+	"res://scripts/terrain_editor/rim_outcrops.gd", "res://scripts/terrain_editor/grass_field.gd", "res://scripts/terrain_editor/grass_lip_soften.gd",
+	"res://shaders/terrain_editor/cliff.gdshader", "res://shaders/terrain_editor/cliff_column.gdshader", "res://shaders/terrain_editor/cliff_rock.gdshader",
+	"res://shaders/terrain_editor/stone_surface.gdshaderinc", "res://shaders/terrain_editor/ground.gdshader",
+	"res://shaders/terrain_editor/grass_blades.gdshader", "res://shaders/terrain_editor/ground_cover.gdshaderinc", "res://shaders/terrain_editor/rim_green.gdshader",
+	"res://shaders/terrain_editor/foliage_cards.gdshader", "res://shaders/terrain_editor/decor_vertex_color.gdshader",
+	"res://shaders/terrain_editor/water.gdshader", "res://shaders/terrain_editor/foam.gdshader",
+	"res://shaders/terrain_editor/waterfall_mist.gdshader", "res://shaders/terrain_editor/waterfall.gdshader", "res://tools/art/capture_lookdev.gd",
+]
+var output: String = ""
+var job_path: String = ""
+var suite: String = "quick"
+var seed_value: int = 7301
+var preset: int = 0
+var progress: float = 0.29
+var progress_override: bool = false
+var viewport: SubViewport
+var editor: Node3D
+var captures: Array[Dictionary] = []
+var errors: Array[String] = []
+var frozen_shaders: Dictionary = {}
+var frozen_materials: Dictionary = {}
+var f11_handled: bool = false
+var bootstrap_scenes: Array[String] = []
+
+func _initialize() -> void:
+	call_deferred("run")
+
+func _vector(v: Vector3) -> Array[float]:
+	return [v.x, v.y, v.z]
+
+func _color(c: Color) -> Array[float]:
+	return [c.r, c.g, c.b, c.a]
+
+func _apply_options(options: Dictionary) -> bool:
+	for key: Variant in options:
+		var value: Variant = options[key]
+		if key in ["out", "suite"]:
+			if not value is String or String(value).strip_edges().is_empty():
+				push_error("Capture option '%s' must be a nonempty string" % str(key))
+				return false
+			if key == "out":
+				output = String(value)
+			else:
+				suite = String(value)
+		elif key in ["seed", "preset"]:
+			if not (value is int or (value is float and is_finite(float(value)) \
+					and float(value) == floorf(float(value)) and absf(float(value)) <= 9007199254740991.0)):
+				push_error("Capture option '%s' must be an exact integer" % str(key))
+				return false
+			if key == "seed":
+				seed_value = int(value)
+			else:
+				preset = int(value)
+		elif key == "progress":
+			if not (value is int or value is float) or not is_finite(float(value)) \
+					or float(value) < 0.0 or float(value) >= 1.0:
+				push_error("Capture progress must be a finite number in [0, 1)")
+				return false
+			progress = float(value)
+			progress_override = true
+		else:
+			push_error("Unknown capture option: " + str(key))
+			return false
+	return true
+
+func _read_options() -> bool:
+	var cli: Dictionary = {}
+	for arg: String in OS.get_cmdline_user_args():
+		if not arg.begins_with("--") or not arg.contains("="):
+			push_error("Expected --key=value capture option, received: " + arg)
+			return false
+		var key: String = arg.substr(2, arg.find("=") - 2)
+		var value: String = arg.substr(arg.find("=") + 1)
+		if key == "job":
+			if value.strip_edges().is_empty():
+				push_error("--job requires a JSON file path")
+				return false
+			job_path = value
+		elif key in ["seed", "preset"] and value.is_valid_int():
+			cli[key] = int(value)
+		elif key == "progress" and value.is_valid_float():
+			cli[key] = float(value)
+		else:
+			cli[key] = value
+	if not _apply_options(cli):
+		return false
+	if not job_path.is_empty():
+		var file := FileAccess.open(job_path, FileAccess.READ)
+		if file == null:
+			push_error("Cannot read capture job: " + job_path)
+			return false
+		var json := JSON.new()
+		if json.parse(file.get_as_text()) != OK:
+			push_error("Invalid capture job JSON at line %d: %s" % [json.get_error_line(), json.get_error_message()])
+			return false
+		if not json.data is Dictionary:
+			push_error("Capture job must be a JSON object")
+			return false
+		if not _apply_options(json.data as Dictionary):
+			return false
+	if output.is_empty() or suite not in ["quick", "full", "night"] or preset < 0 or preset > 2:
+		push_error("Required: nonempty out; suite=quick|full|night; terrain preset=0|1|2")
+		return false
+	if not output.is_absolute_path():
+		output = "res://" + output
+	return true
+
+func _source_hashes() -> Dictionary:
+	var hashes: Dictionary = {}
+	for path: String in SOURCE_FILES:
+		var digest: String = FileAccess.get_sha256(path)
+		if digest.is_empty():
+			errors.append("Cannot fingerprint source: " + path)
+		hashes[path] = digest
+	return hashes
+
+func _dof_settings(camera: Camera3D) -> Dictionary:
+	if not camera.attributes is CameraAttributesPractical:
+		return {}
+	var attributes := camera.attributes as CameraAttributesPractical
+	return {
+		"far_enabled": attributes.dof_blur_far_enabled,
+		"far_distance": attributes.dof_blur_far_distance,
+		"far_transition": attributes.dof_blur_far_transition,
+		"near_enabled": attributes.dof_blur_near_enabled,
+		"near_distance": attributes.dof_blur_near_distance,
+		"near_transition": attributes.dof_blur_near_transition,
+		"blur_amount": attributes.dof_blur_amount,
+	}
+
+func _expand_includes(source: String, base: String) -> String:
+	var result: PackedStringArray = []
+	for line: String in source.split("\n"):
+		if line.strip_edges().begins_with("#include"):
+			var relative: String = line.get_slice('"', 1)
+			var path: String = relative if relative.begins_with("res://") else base.path_join(relative)
+			result.append(_expand_includes(FileAccess.get_file_as_string(path), path.get_base_dir()))
+		else:
+			result.append(line)
+	return "\n".join(result)
+
+func _freeze_material(material: Material) -> void:
+	if material == null or frozen_materials.has(material.get_instance_id()):
+		return
+	frozen_materials[material.get_instance_id()] = true
+	if material.next_pass != null:
+		_freeze_material(material.next_pass)
+	if not material is ShaderMaterial:
+		return
+	var mat := material as ShaderMaterial
+	if mat.shader == null:
+		return
+	var original: Shader = mat.shader
+	var shader_id: int = original.get_instance_id()
+	if not frozen_shaders.has(shader_id):
+		var base: String = original.resource_path.get_base_dir()
+		if base.is_empty():
+			base = "res://shaders/terrain_editor"
+		var source: String = _expand_includes(original.code, base)
+		var token := RegEx.new()
+		token.compile("\\bTIME\\b")
+		# Change only this process's cached resource, never a source file. Keep its path:
+		# time_solar_system dispatches foliage palettes using shader.resource_path.
+		original.code = token.sub(source, str(PHASE), true)
+		frozen_shaders[shader_id] = original
+	for parameter: Dictionary in mat.shader.get_shader_uniform_list():
+		var uniform_name: String = parameter.name
+		if uniform_name in ["grass_time", "water_time", "caustic_time", "flow_time", "foam_time", "mote_time"]:
+			mat.set_shader_parameter(uniform_name, PHASE)
+
+func _freeze_mesh(mesh: Mesh) -> void:
+	if mesh == null:
+		return
+	for index: int in mesh.get_surface_count():
+		_freeze_material(mesh.surface_get_material(index))
+
+func _freeze_node(node: Node) -> void:
+	if node is GeometryInstance3D:
+		_freeze_material(node.material_override)
+		_freeze_material(node.material_overlay)
+	if node is MeshInstance3D:
+		_freeze_mesh(node.mesh)
+		if node.mesh != null:
+			for index: int in node.mesh.get_surface_count():
+				_freeze_material(node.get_surface_override_material(index))
+	elif node is MultiMeshInstance3D and node.multimesh != null:
+		_freeze_mesh(node.multimesh.mesh)
+	elif node is WorldEnvironment:
+		var environment: Environment = node.environment
+		if environment != null and environment.sky != null:
+			_freeze_material(environment.sky.sky_material)
+	for child: Node in node.get_children():
+		_freeze_node(child)
+
+func _frame(center: Vector2, height: float, yaw: float, pitch: float) -> void:
+	var camera: Camera3D = editor.camera
+	camera._center = center
+	camera._center_goal = center
+	camera._height = height
+	camera.height_goal = height
+	camera._yaw = yaw
+	camera._yaw_goal = yaw
+	camera._pitch = pitch
+	camera._pitch_goal = pitch
+	camera.advance(0.0)
+	# Match normal editor _process tracking without advancing time or actor simulation.
+	editor.landscape.position = Vector3(center.x, 0.0, center.y)
+
+func _hud_clear() -> bool:
+	var hud: Control = editor.gameplay.shihai_hud
+	return bool(editor.gameplay.wallpaper_mode) and bool(hud._wallpaper) \
+		and not editor.brush.visible and not editor.hud.panel.visible \
+		and not hud._log_panel.visible and not hud._scroll_leaf_open \
+		and float(hud._wake_alpha) <= 0.01 and float(hud._dock_alpha) <= 0.01 \
+		and float(hud._whisper_timer) <= 0.01
+
+func _capture(label: String, time_progress: float) -> void:
+	editor.gameplay.time_system.set_progress(time_progress, editor)
+	for index: int in 24:
+		RenderingServer.force_draw(false)
+		await process_frame
+	RenderingServer.force_draw(false)
+	var expected: Dictionary = editor.gameplay.time_system.current_blended_preset()
+	var grass_material: ShaderMaterial = editor.renderer.materials.grass_blades
+	var grass_base: Color = grass_material.get_shader_parameter("grass_base")
+	var grass_highlight: Color = grass_material.get_shader_parameter("grass_highlight")
+	if not grass_base.is_equal_approx(expected.grass_base) or not grass_highlight.is_equal_approx(expected.grass_highlight):
+		errors.append("Grass palette changed while rendering: " + label)
+	var image: Image = viewport.get_texture().get_image()
+	var result: Error = image.save_png(output.path_join(label + ".png"))
+	if result != OK:
+		errors.append("PNG save failed: %s (%d)" % [label, result])
+	if image.get_size() != SIZE:
+		errors.append("Non-native resolution: " + label)
+	if not _hud_clear():
+		errors.append("Wallpaper HUD not clear: " + label)
+	var sun: DirectionalLight3D = editor.get_node("SunLight")
+	var fill: DirectionalLight3D = editor.get_node("FillLight")
+	var env: Environment = editor.get_node("WorldEnvironment").environment
+	captures.append({
+		"file": label + ".png", "save_error": result,
+		"position": _vector(editor.camera.position), "rotation_degrees": _vector(editor.camera.rotation_degrees),
+		"fov": editor.camera.fov, "dof": _dof_settings(editor.camera), "day_progress": time_progress,
+		"grass_base": _color(grass_base), "grass_highlight": _color(grass_highlight),
+		"shichen": editor.gameplay.time_system.shichen_label(), "wallpaper_hud_clear": _hud_clear(),
+		"sun_rotation": _vector(sun.rotation_degrees), "sun_energy": sun.light_energy,
+		"sun_color": _color(sun.light_color), "fill_rotation": _vector(fill.rotation_degrees),
+		"fill_energy": fill.light_energy, "ambient_energy": env.ambient_light_energy,
+		"ssil_enabled": env.ssil_enabled, "ssil_intensity": env.ssil_intensity,
+		"fog_color": _color(env.fog_light_color), "fog_density": env.fog_density,
+	})
+	print("LOOKDEV saved: ", output.path_join(label + ".png"))
+
+func run() -> void:
+	if not _read_options():
+		quit(1)
+		return
+	if FileAccess.file_exists(output.path_join("captures.json")) or FileAccess.file_exists(output.path_join("game.png")):
+		push_error("Refusing to overwrite existing evidence; select a new --out directory")
+		quit(1)
+		return
+	if DisplayServer.get_name() == "headless" or RenderingServer.get_current_rendering_method() != "forward_plus":
+		push_error("Native capture requires a graphical Forward+ renderer; do not use --headless")
+		quit(1)
+		return
+	var directory_error: Error = DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
+	if directory_error != OK:
+		push_error("Cannot create evidence directory: %d" % directory_error)
+		quit(1)
+		return
+	var initial_sources: Dictionary = _source_hashes()
+	if not errors.is_empty():
+		push_error(str(errors))
+		quit(1)
+		return
+	# F5 adds the project entry as a positional scene even with --script.
+	# Remove that tool-owned bootstrap scene before creating the capture world:
+	# its live time system otherwise overwrites GrassField's shared static material.
+	for child: Node in root.get_children():
+		if child.scene_file_path == "res://scenes/terrain_editor.tscn":
+			bootstrap_scenes.append(child.scene_file_path)
+			if current_scene == child:
+				current_scene = null
+			root.remove_child(child)
+			child.free()
+	viewport = SubViewport.new()
+	viewport.size = SIZE
+	viewport.own_world_3d = true
+	viewport.msaa_3d = Viewport.MSAA_4X
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	root.add_child(viewport)
+	editor = (load("res://scenes/terrain_editor.tscn") as PackedScene).instantiate()
+	viewport.add_child(editor)
+	# _ready builds the default preset synchronously; no layout load/save methods are called.
+	editor.process_mode = Node.PROCESS_MODE_DISABLED
+	editor.renderer.animate_edits = false
+	if preset != 0 or seed_value != int(editor.data.seed):
+		editor.data.make_preset(preset)
+		editor.data.seed = seed_value
+		editor.renderer.rebuild_all()
+		editor.motes.rebuild_from_data(editor.data)
+		editor.gameplay.on_preset_changed()
+	var f11 := InputEventKey.new()
+	f11.keycode = KEY_F11
+	f11.pressed = true
+	f11_handled = editor.gameplay.handle_unhandled_input(f11)
+	# Advance UI alone to let the normal F11 hint disappear, without changing the world.
+	editor.gameplay.shihai_hud.tick_ui(4.0, editor.gameplay.state, editor.gameplay.time_system,
+		editor.gameplay.fishing, editor.data.cells.size(), editor.gameplay.stance, editor.gameplay.wallpaper_mode)
+	if not f11_handled or not _hud_clear():
+		errors.append("F11 wallpaper mode failed")
+	_freeze_node(editor)
+	var initial_data: String = JSON.stringify(editor.data.serialize(), "", true, true).sha256_text()
+	var initial_actor: Vector3 = editor.gameplay.actor.position
+	if suite == "night" and not progress_override:
+		progress = 0.02
+	_frame(Vector2(0, -1), 21, 16, 27)
+	await _capture("game", progress)
+	_frame(Vector2(-2, -1), 32, 16, 30)
+	await _capture("whole", progress)
+	_frame(Vector2(-2, -1), 32, 196, 30)
+	await _capture("reverse", progress)
+	_frame(Vector2(-10, -5), 13, 16, 30)
+	await _capture("close", progress)
+	_frame(Vector2(-8, 6), 10, 16, 20)
+	await _capture("cliff_close", progress)
+	if suite == "full":
+		_frame(Vector2(-2, -1), 32, 16, 30)
+		for hour: int in 12:
+			await _capture("shichen_%02d" % hour, float(hour) / 12.0)
+	var unchanged: bool = initial_data == JSON.stringify(editor.data.serialize(), "", true, true).sha256_text()
+	var actor_static: bool = initial_actor == editor.gameplay.actor.position
+	var house_absent: bool = editor.renderer.props.get_node_or_null("ReferenceCottage") == null
+	if not unchanged or not actor_static or not house_absent:
+		errors.append("Scene invariants failed")
+	var sources_unchanged: bool = initial_sources == _source_hashes()
+	if not sources_unchanged:
+		errors.append("Source files changed during capture")
+	var report: Dictionary = {
+		"scene": "res://scenes/terrain_editor.tscn", "godot": Engine.get_version_info().string,
+		"renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(),
+		"resolution": [SIZE.x, SIZE.y], "msaa": "4x", "preset": preset, "seed": seed_value,
+		"bootstrap_scenes_removed": bootstrap_scenes, "single_scene_capture": true,
+		"suite": suite, "phase": PHASE, "frozen_shader_count": frozen_shaders.size(),
+		"job": job_path, "source_sha256": initial_sources, "sources_unchanged": sources_unchanged,
+		"f11_handled": f11_handled, "data_sha256": initial_data, "data_unchanged": unchanged,
+		"actor_static": actor_static, "house_absent": house_absent, "user_layouts_accessed": false,
+		"captures": captures, "errors": errors, "valid": errors.is_empty(), "art_accepted": false,
+	}
+	var report_file := FileAccess.open(output.path_join("captures.json"), FileAccess.WRITE)
+	if report_file == null:
+		errors.append("Cannot write captures.json")
+	else:
+		report_file.store_string(JSON.stringify(report, "\t", true, true))
+	print("LOOKDEV: ", captures.size(), " frames; valid=", errors.is_empty(), "; errors=", errors)
+	viewport.remove_child(editor)
+	editor.free()
+	await process_frame
+	viewport.queue_free()
+	await process_frame
+	quit(0 if errors.is_empty() else 1)

@@ -1,0 +1,22 @@
+--- a/scripts/terrain_editor/procedural_shard.gd
++++ b/scripts/terrain_editor/procedural_shard.gd
+@@ -252,14 +252,14 @@
+ 	full: Surface, walls: Surface, collar: Array[Vector3], arch: int, tone: Color
+ ) -> void:
+ 	# The two front planes meet on a diagonal ridge inside fixed-width side walls.
+-	const RIDGE := [1, 2, 1, 4, 1, 2, 1, 3]
+-	const SLANT := [0.52, 0.40, 0.48, -0.46, 0.54, 0.36, 0.50, -0.38]
+-	const FOLD := [-0.70, -0.78, -0.64, -0.81, -0.72, -0.68, -0.76, -0.83]
+-	const TILT := [0.22, -0.18, 0.28, -0.22, -0.24, 0.16, 0.20, -0.16]
++	const RIDGE := [1, 4, 2, 3, 1, 4, 3, 2]
++	const SLANT := [0.46, -0.34, 0.28, -0.52, 0.16, -0.22, 0.54, -0.12]
++	const FOLD := [-0.54, -0.79, -0.66, -0.47, -0.86, -0.61, -0.74, -0.56]
++	const TILT := [0.32, -0.18, -0.30, 0.20, -0.26, 0.34, -0.12, 0.16]
+ 	const FOOT := [-1.08, -0.98, -1.10, -1.02, -1.12, -0.96, -1.06, -1.01]
+ 	const FOOT_TILT := [-0.04, -0.06, 0.05, -0.08, -0.03, 0.06, -0.05, 0.04]
+ 	const ROOT_FOLD := [0.22, 0.30, 0.18, 0.26, 0.20, 0.28, 0.24, 0.18]
+-	const CREST := [0.52, 0.49, 0.54, 0.48, 0.54, 0.49, 0.52, 0.48]
++	const CREST := [0.54, 0.47, 0.51, 0.56, 0.48, 0.53, 0.50, 0.55]
+ 	var shoulder: Array[Vector3] = []
+ 	var fold: Array[Vector3] = []
+ 	var foot: Array[Vector3] = []

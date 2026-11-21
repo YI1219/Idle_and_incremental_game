@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>识海浮空岛 · 编辑响应审阅</title>
+<style>
+:root {color-scheme:dark; --ink:#e4e8df; --muted:#a4b4ac; --line:#35473f; --jade:#b6d8c6}
+* {box-sizing:border-box}
+body {margin:0;background:#14201c;color:var(--ink);font:16px/1.7 system-ui,"PingFang SC",sans-serif}
+main {max-width:1440px;margin:auto;padding:38px 28px 70px}
+h1 {font-size:clamp(26px,3vw,42px);line-height:1.3;margin:8px 0 14px}
+h2 {font-size:24px;margin:0 0 14px}
+h3 {font-size:17px;margin:0 0 10px}
+p {margin:8px 0 16px} a {color:var(--jade)}
+nav {display:flex;gap:20px;flex-wrap:wrap;margin:24px 0 36px}
+.eyebrow,.note,figcaption {color:var(--muted)}
+.eyebrow {font-size:13px;letter-spacing:.1em}
+section {border-top:1px solid var(--line);padding:28px 0 36px;scroll-margin-top:20px}
+.grid {display:grid;grid-template-columns:1fr 1fr;gap:22px}
+figure {margin:0;min-width:0} img {display:block;width:100%;height:auto;background:#203128;border:1px solid var(--line);border-radius:6px}
+figcaption {font-size:14px;margin-top:9px}
+.panel {padding:20px;background:#1b2b24;border:1px solid var(--line);border-radius:8px;margin-top:24px}
+.controls {display:flex;gap:16px;align-items:center;margin:12px 0;flex-wrap:wrap}
+input[type=range] {flex:1;min-width:150px;accent-color:#a5ceb7}
+select,button {font:inherit;color:var(--ink);background:#2b4136;border:1px solid #577161;border-radius:5px;padding:7px 12px}
+button {cursor:pointer} output {min-width:100px;font-variant-numeric:tabular-nums}
+table {width:100%;border-collapse:collapse;margin:22px 0;font-variant-numeric:tabular-nums}
+th,td {padding:11px 10px;text-align:left;border-bottom:1px solid var(--line)}
+th {color:var(--muted);font-weight:500}
+.table-wrap {overflow-x:auto}
+.metric {font-size:30px;color:#c1e1cd;line-height:1.3}
+.metrics {display:flex;gap:52px;flex-wrap:wrap;margin:25px 0}
+.metrics small {display:block;font-size:13px;color:var(--muted);margin-top:6px}
+@media(max-width:780px) {.grid{grid-template-columns:1fr}main{padding:26px 16px}.metrics{gap:24px}th,td{padding:9px 7px;font-size:14px}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">GODOT 4.7.2 · 2026-11-11 · 实机审阅</div>
+<h1>整笔锁高，草随水退生</h1>
+<p>落笔高度统一用于地面编辑。草坪局部渐隐、邻接恢复。4K 流畅预览加入动态三维像素预算与界面重绘缓存。</p>
+<nav><a href="#grass">草坪动画</a><a href="#plane">落笔高度</a><a href="#quality">4K 画质</a><a href="#performance">运行性能</a><a href="README.md">完整说明</a></nav>
+
+<section id="grass">
+<h2>水覆盖处渐隐，干草向内部恢复</h2>
+<div class="grid">
+<figure><a href="review/flood.webp"><img src="review/flood.webp" alt="草叶随淹水渐隐的循环动画"></a><figcaption>淹水渐隐 · 约 0.65 秒 · 草叶、草唇与地表一起过渡</figcaption></figure>
+<figure><a href="review/regrow.webp"><img src="review/regrow.webp" alt="草从相邻草坪向坑地内部恢复的循环动画"></a><figcaption>退水恢复 · 从邻草逐步传播 · 6 秒观察窗</figcaption></figure>
+</div>
+<p class="note">动画为生产草时钟每次推进 0.05 秒的原生帧序列。淹水由沉降后运行 3 秒守恒水流形成，随后冻结物理水以观察草。恢复演示使用现有退水工具。循环末尾回到首帧。</p>
+<div class="panel">
+<h3>2K 关键帧逐张观察</h3>
+<div class="controls">
+<label for="phase">阶段</label><select id="phase"><option value="flood">淹水渐隐</option><option value="regrow">退水恢复</option></select>
+<label for="frame">时间</label><input id="frame" type="range" min="0" max="4" value="0" step="1"><output id="stamp" for="frame">0.00 秒</output>
+<a id="frame-link" href="review/flood_00.png">打开原图</a>
+</div>
+<img id="frame-image" src="review/flood_00.png" alt="淹水渐隐 0.00 秒关键帧" loading="lazy">
+</div>
+</section>
+
+<section id="plane">
+<h2>目标高度取自鼠标起点</h2>
+<p>工具栏恢复六项操作。落笔拾取高度图顶部，整笔沿起点示意平面投影。扩张可从高台内部取高后拖出边缘，新地与起点同高。</p>
+<div class="grid">
+<figure><a href="review/upper_plane_expansion.png"><img src="review/upper_plane_expansion.png" alt="3.5 米高台向外扩张的蓝图" loading="lazy"></a><figcaption>真实鼠标落笔 · 采样 3.5m · 示意圈 3.56m</figcaption></figure>
+<figure><a href="review/upper_plane_committed.png"><img src="review/upper_plane_committed.png" alt="同高度扩张提交后的实际地形" loading="lazy"></a><figcaption>松手提交 · 新增三格 · 顶面均为 3.5m</figcaption></figure>
+</div>
+</section>
+
+<section id="quality">
+<h2>4K 输出中的清晰度取舍</h2>
+<p>默认流畅预览的三维内部在 1080p–2K 间自动调节，UI 保持原生。下面两张使用同一相机、同一地形与水量，点击查看 3840×2160 原图。</p>
+<div class="grid">
+<figure><a href="review/4K_native.png"><img src="review/4K_native.png" alt="原生 4K 三维画质" loading="lazy"></a><figcaption>原生画质 · 三维 3840×2160 · 4×MSAA</figcaption></figure>
+<figure><a href="review/4K_adaptive.png"><img src="review/4K_adaptive.png" alt="4K 输出和 1080p 内部三维的流畅预览" loading="lazy"></a><figcaption>流畅预览 · 当前三维 1920×1080 · FSR1 放大、2×MSAA</figcaption></figure>
+</div>
+<p class="note">细草和远景边缘在流畅预览下更软。卷菜单可切回“原生画质”。</p>
+</section>
+
+<section id="performance">
+<h2>实际运行仍有慢帧</h2>
+<div class="metrics"><div class="metric">33.8 → 22.5ms<small>4K 流畅预览 · 界面重绘优化前后均值</small></div><div class="metric">120 → 13 次<small>120 帧采样中的界面重绘数</small></div></div>
+<div class="table-wrap"><table>
+<thead><tr><th>运行模式</th><th>三维内部</th><th>平均</th><th>中位数</th><th>95 分位</th></tr></thead>
+<tbody><tr><td>重绘优化前流畅预览</td><td>1920×1080</td><td>33.80ms</td><td>33.13ms</td><td>36.34ms</td></tr>
+<tr><td>当前流畅预览</td><td>1920×1080</td><td>22.48ms</td><td>17.73ms</td><td>35.33ms</td></tr>
+<tr><td>当前原生 4K</td><td>3840×2160</td><td>92.90ms</td><td>93.94ms</td><td>95.49ms</td></tr></tbody>
+</table></div>
+<p>原生 4K 运行仍明显偏慢，当前流畅预览的 95 分位约 35ms。约 60FPS 的目标硬件表现仍待实测。</p>
+<p class="note">Apple M4 Pro，BASE_A 相机，生产编辑、悬停与水流开启，预热 240 帧后采样 120 帧。不同运行速度使采样结束水量存在差异。旧记录约 47ms 属于冻结场景；上表均为运行测量。显式整帧绘制，GPU 计时不可用。</p>
+<p><a href="checks/performance_interactive.json">优化前记录</a> · <a href="checks/performance_interactive_hud_cached.json">当前流畅预览记录</a> · <a href="checks/performance_interactive_native.json">原生运行记录</a></p>
+</section>
+
+<section>
+<h2>验证记录</h2>
+<p>24 组最终检查通过，包含输入、草覆盖度、原生着色器像素、水量与地形支撑。坑地右侧仍可见较直的台阶接缝。动画与预览清晰度待实际体验验收。</p>
+<p><a href="checks/tests/final_summary.json">最终测试记录</a> · <a href="review/captures.json">采集与源码校验</a> · <a href="review/whole_current.png">当前 2K 全景</a> · <a href="README.md">方法与边界</a></p>
+</section>
+</main>
+<script>
+const frames = {
+  flood: [["flood_00.png",0],["flood_04.png",.2],["flood_08.png",.4],["flood_14.png",.7],["flood_18.png",.9]],
+  regrow: [["regrow_00.png",0],["regrow_010.png",.5],["regrow_020.png",1],["regrow_040.png",2],["regrow_080.png",4],["regrow_120.png",6]]
+};
+const phase = document.getElementById("phase");
+const frame = document.getElementById("frame");
+const frameImage = document.getElementById("frame-image");
+const frameLink = document.getElementById("frame-link");
+const stamp = document.getElementById("stamp");
+function showFrame() {
+  const [file, seconds] = frames[phase.value][Number(frame.value)];
+  frameImage.src = "review/" + file;
+  frameLink.href = frameImage.getAttribute("src");
+  stamp.textContent = seconds.toFixed(2) + " 秒";
+  frameImage.alt = (phase.value === "flood" ? "淹水渐隐 " : "退水恢复 ") + stamp.textContent + "关键帧";
+}
+phase.addEventListener("change", () => {
+  frame.max = String(frames[phase.value].length - 1);
+  frame.value = "0";
+  showFrame();
+});
+frame.addEventListener("input", showFrame);
+showFrame();
+</script>
+</body></html>

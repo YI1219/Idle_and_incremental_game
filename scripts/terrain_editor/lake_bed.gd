@@ -16,7 +16,7 @@ class BedSurface extends Surface:
 
 static func build(field):
  if field.soft_water_corners:
-  var local=preload('res://scripts/terrain_editor/local_lake_bed.gd').build(field,BedSurface,height_at)
+  var local=preload('res://scripts/terrain_editor/local_lake_bed.gd').build(field,BedSurface,height_at,outlet_height)
   local=_weld(local)
   local=preload('res://scripts/terrain_editor/local_lake_bed.gd').conform(local,BedSurface)
   field._smooth_normals(local)
@@ -85,7 +85,9 @@ static func build(field):
      var p:=a.lerp(b,ts[j]).snapped(Vector2.ONE*.00001)
      var q:=a.lerp(b,ts[j+1]).snapped(Vector2.ONE*.00001)
      if p.distance_squared_to(q)<1e-14:continue
-     result.quad(Vector3(p.x,h,p.y),Vector3(p.x,height_at(field.source,p,level,shores),p.y),Vector3(q.x,height_at(field.source,q,level,shores),q.y),Vector3(q.x,h,q.y),Color(level/255.0,0,0))
+     var top_p:float=minf(h,outlet_height(field.source,p,level))
+     var top_q:float=minf(h,outlet_height(field.source,q,level))
+     result.quad(Vector3(p.x,top_p,p.y),Vector3(p.x,height_at(field.source,p,level,shores),p.y),Vector3(q.x,height_at(field.source,q,level,shores),q.y),Vector3(q.x,top_q,q.y),Color(level/255.0,0,0))
  result=_weld(result)
  field._smooth_normals(result)
  if field.rocky_water_banks:preload('res://scripts/terrain_editor/rock_bank.gd').annotate(field,result)
@@ -135,6 +137,31 @@ static func height_at(data,p:Vector2,level:int,shores:Array)->float:
    var w:float=(f.x if x else 1.0-f.x)*(f.y if z else 1.0-f.y)
    total+=float(record.height)*w;weight+=w
  var bed:=minf(h-.06,total/weight if weight>.000001 else h-.30)
+ # A real outlet is a fixed cut down to the authored bed. The ornamental
+ # dry-bank ramp must not bridge a narrow mouth above receding pool water.
+ if is_finite(outlet_height(data,p,level)):return bed
  var distance:=INF
  for edge:Array in shores:distance=minf(distance,p.distance_to(Geometry2D.get_closest_point_to_segment(p,edge[0],edge[1])))
  return lerpf(h-.06,bed,smoothstep(.0,1.45,distance))
+
+static func outlet_height(data,p:Vector2,level:int,normal:Vector2=Vector2.ZERO)->float:
+ var result:float=INF
+ var center:=Vector2i(p.floor())
+ for z:int in range(-2,3):
+  for x:int in range(-2,3):
+   var cell:=center+Vector2i(x,z)
+   var record:Dictionary=data.cells.get(cell,{})
+   if record.get("water",-1)!=level:continue
+   var bed:float=float(record.height)
+   for direction:Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+    var out:=Vector2(direction)
+    if normal!=Vector2.ZERO and normal.dot(out)<.35:continue
+    var receiver:Dictionary=data.cells.get(cell+direction,{})
+    if not receiver.is_empty():
+     var top:float=float(receiver.water)*.5 if int(receiver.water)>=0 else float(receiver.height)
+     if top>=level*.5-.1 or float(receiver.height)>bed+.00001:continue
+    var offset:=p-(Vector2(cell)+Vector2.ONE*.5+out*.5)
+    var along:float=offset.dot(out)
+    if along< -2.0 or along>.45 or absf(offset.dot(Vector2(-out.y,out.x)))>.50001:continue
+    result=minf(result,bed)
+ return result

@@ -1,0 +1,52 @@
+{
+  "paired_frames": [
+    "game.png",
+    "whole.png",
+    "reverse.png",
+    "close.png",
+    "cliff_close.png"
+  ],
+  "camera_light_metadata_exact_match": true,
+  "data_exact_match": true,
+  "changed_production_sources": [
+    "res://scripts/terrain_editor/procedural_shard.gd"
+  ],
+  "current_disk_matches_final_capture": true,
+  "final_capture_sets": [
+    {
+      "folder": "final",
+      "seed": 7301,
+      "preset": 0,
+      "frames": 7,
+      "valid": true
+    },
+    {
+      "folder": "held2104",
+      "seed": 2104,
+      "preset": 0,
+      "frames": 7,
+      "valid": true
+    },
+    {
+      "folder": "held4242",
+      "seed": 4242,
+      "preset": 1,
+      "frames": 7,
+      "valid": true
+    },
+    {
+      "folder": "held913",
+      "seed": 913,
+      "preset": 2,
+      "frames": 7,
+      "valid": true
+    }
+  ],
+  "final_native_frames": 28,
+  "baseline_native_frames": 5,
+  "functional_groups_passed": 10,
+  "protected_geometry_checks": 16,
+  "comparison_page_local_links_valid": true,
+  "browser_interaction_tested": false,
+  "art_accepted": false
+}

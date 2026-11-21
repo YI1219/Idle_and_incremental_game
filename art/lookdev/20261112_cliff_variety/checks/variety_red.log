@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: form 6 finite and stays within placement guard
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_form_variety_test.gd:10)
+       [1] _initialize (res://tests/cliff_form_variety_test.gd:40)
+ERROR: at least two forms have two separate outward relief breaks instead of one long column
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_form_variety_test.gd:10)
+       [1] _initialize (res://tests/cliff_form_variety_test.gd:52)
+CLIFF FORM VARIETY: 33 checks, 2 failures

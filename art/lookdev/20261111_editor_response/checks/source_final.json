@@ -1,0 +1,67 @@
+[
+  {
+    "file": "project.godot",
+    "before": "657728fcdf1af7b7a11ebfb38c90801c8b9ae44054214c65364c29a624aa2d23",
+    "after": "d4d275e78e2a5105b8ffe0e01f6d19174d92b0de4b4f13b4558e2aec80297acf"
+  },
+  {
+    "file": "scripts/terrain_editor/editor.gd",
+    "before": "aa87cf7069e247e7940ffe94a764bedb263b4d87e8900d03d99bbf67f4ec1e0d",
+    "after": "3ca111acec2104572b570127351ba1896d1d162fb44a419c6bb9a65f4ea2c486"
+  },
+  {
+    "file": "scripts/terrain_editor/terrain_data.gd",
+    "before": "3027f770b347064501f518727cb91d9d7cc2108c0f8865cb4022a2cde1968eec",
+    "after": "545d0b07385599548607aeebcf5036ae26822aaef37178bf300aec26cb083d49"
+  },
+  {
+    "file": "scripts/gameplay/ui/shihai_hud.gd",
+    "before": "7e42fe23c2713c97f32c7a870b947346d86637192dc12f6ffdf903452de9f950",
+    "after": "27f408aeb5bc0097204a4180c56859850489921934340453250392737ea24252"
+  },
+  {
+    "file": "scripts/terrain_editor/water_renderer.gd",
+    "before": "c3dd5beac37e98138b7b054699ab42b07393009245d1da3d68338dc1e29e66be",
+    "after": "fa111014fd016a67761b5849ce85b3d24d34a772453c98bea6f3203e1b664e4a"
+  },
+  {
+    "file": "scripts/terrain_editor/grass_recovery.gd",
+    "before": null,
+    "after": "40d4b1e9802c05ac03adbfbbafb018dc3f2dff6808b04500865c4f7c1ae84ba9"
+  },
+  {
+    "file": "scripts/terrain_editor/preview_quality.gd",
+    "before": "fe93ec1b5512c21b57af7a2c335e1c53a98c71bd045432899f0354d5d59ec62e",
+    "after": "b6d83c57e83ee3beeb3212ca3d972eea58ecb2c4ab23e23438e75dec05943fab"
+  },
+  {
+    "file": "scripts/terrain_editor/distant_landscape.gd",
+    "before": "7fa9121f65d02cc274b1db433716aa3cda8bdad114c480147f014bbf9b474077",
+    "after": "b87ebc7e2b3e39f527f55eefefdedebaabcb15a9669faf4e6ef14010f41c4369"
+  },
+  {
+    "file": "shaders/terrain_editor/live_water.gdshaderinc",
+    "before": "7a5e5663f63074eb0b394d22ec9f6510cb46275231d71a29b7b3c91b69523fad",
+    "after": "0274ef71707e0c6086c5705411819a54cda419753d9b18a974b9018b54eb80e6"
+  },
+  {
+    "file": "shaders/terrain_editor/grass_blades.gdshader",
+    "before": "d807c75654afec9a0d0cd04cbb5c9953ccfffd8abe2afe38d60bcc47b00e329b",
+    "after": "7de9a63236d8ce12ded18c09a1c444c7f97a464d202febad305429e95ee1c0e5"
+  },
+  {
+    "file": "shaders/terrain_editor/rim_green.gdshader",
+    "before": "edd5f2811c1cd0a8ae0aa14cddcb6958ac551f765225196a953fbf1b78e1caec",
+    "after": "d2deb6bc3f299b8cead259ddbd90fa498fb37dee4614c4625df156a0b508ed6a"
+  },
+  {
+    "file": "shaders/terrain_editor/ground.gdshader",
+    "before": "2b3be899c00f0a213b56220b842dc2a4b388090feeb39b06b12cfa641950571a",
+    "after": "11a043f7f9513a934f1fb0262e5acf7607f555a8ede1740685195a6e2c159b2d"
+  },
+  {
+    "file": "shaders/terrain_editor/cloud_deck.gdshader",
+    "before": "9ab0bc69b8b947bfd9bb59d1bb96f269b9cdbdafd97d56a2950864bdd120f79a",
+    "after": "56c04970bcd5edb79be43f469e3bfb7622632ad656bf8d7cdebaf6235f15f1ea"
+  }
+]

@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-12 00:12:18.671 godot[84238:73645684] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-12 00:12:21.129 godot[84238:73645684] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+{"adapter":"Apple M4 Pro (Apple9)","frame_ms":{"max":96.277,"mean":65.768025,"p50":46.245,"p95":94.68},"method":"native 4x MSAA explicit draw, frozen light/camera, live water at fixed 1/60s per frame;40 warmup+120 samples;no capture I/O;no limiter","resolution":[3840,2160],"scale":1.0,"water_main_ms":{"max":7.121,"mean":1.05286666666667,"p50":0.52,"p95":4.756},"water_volume":69.3404360226604}

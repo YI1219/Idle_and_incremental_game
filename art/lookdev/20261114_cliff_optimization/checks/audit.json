@@ -1,0 +1,28 @@
+{
+  "task": "20261114_cliff_optimization",
+  "updated_at": "2026-11-16",
+  "valid": true,
+  "final_frames": 64,
+  "capture_sets": {
+    "before": 12,
+    "before_edits": 4,
+    "rejected_flat_v1": 64,
+    "rejected_busy_v2": 64,
+    "final": 12,
+    "final_held2104": 12,
+    "final_held4242": 12,
+    "final_held913": 12,
+    "final_night": 12,
+    "final_edits": 4
+  },
+  "validation_groups": 40,
+  "validation_passed": 40,
+  "validation_failed": 0,
+  "smoke_frames": 90,
+  "smoke_rc": 0,
+  "smoke_tail": "SMOKE 90 FRAMES: pending=false chunks=21",
+  "protected_files_intact": true,
+  "art_accepted": false,
+  "target_hardware_performance_measured": false,
+  "notes": "Aligned with user-selected Option A layout (~70% calm planar stone faces + 2..3 bold bevel-capped primary-secondary shoulders), eliminated standing-column zig-zag kinks, tightened hard low-poly bevel edges, disabled auto-placed loose rim boulder props, added deterministic exterior cliff-into-turf balding & exposed-stone interaction without outer-lip green eyelash fringes, and verified 64 native 2560x1440 Forward+ captures plus 40/40 automated tests and 90-frame smoke test on Apple M4 Pro. Pending user visual acceptance."
+}

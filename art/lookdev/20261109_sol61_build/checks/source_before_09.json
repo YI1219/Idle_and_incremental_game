@@ -1,0 +1,10 @@
+{
+  "scripts/terrain_editor/grass_field.gd": "ce0396b1f41f50ebc748bdfa6b88eaa8de3d9495908e4580cbf39d8da2c5b782",
+  "shaders/terrain_editor/grass_blades.gdshader": "07d56377781ceec58f5ddac8220f24733b74ccd4559fedf37f3d78db6a59bb0b",
+  "shaders/terrain_editor/ground_cover.gdshaderinc": "0e846302ddba1d903929f0a436323b97aecb42183b896eec4b40f449922dacc2",
+  "shaders/terrain_editor/stone_surface.gdshaderinc": "9061a4be082c0704713f80aa72295eee422c1a828117d4fd88492da90cefd139",
+  "shaders/terrain_editor/cliff.gdshader": "10dd6e286298e3a402fc06be6dfb838aaff3a6bfc43445f928b4b53261d7fcb6",
+  "shaders/terrain_editor/cliff_column.gdshader": "37ac7ce3679d877f00bc93e71d4de68435a84ab05b9b2ca7b2a8d99dc2603aa4",
+  "scripts/gameplay/systems/time_solar_system.gd": "f9b89188d81dbd9e466d323ee9de8ec95fce240ddfcb4cebac8e485221469d3d",
+  "scripts/terrain_editor/terrain_environment.gd": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4"
+}

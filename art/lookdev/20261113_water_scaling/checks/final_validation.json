@@ -1,0 +1,25 @@
+{
+  "production_files": [
+    "scripts/terrain_editor/water_flow.gd",
+    "scripts/terrain_editor/water_renderer.gd"
+  ],
+  "tests_passed": 32,
+  "equivalence_checks": 4560,
+  "native_captures": 28,
+  "runtime_runs": 12,
+  "protected_source_changes": [],
+  "engine_error_logs": [],
+  "godot_processes": [
+    "29442 /Applications/Godot.app/Contents/MacOS/Godot --path /Users/yi/Projects/games/the-scroll-within -e res://scenes/terrain_editor.tscn"
+  ],
+  "source_sha256": {
+    "scripts/terrain_editor/water_flow.gd": "aa35f375e9358d17a114ed95879c3b373b164c65bca978993aa48162321201ef",
+    "scripts/terrain_editor/water_renderer.gd": "5a1793446fb5c870c1e9db72f1a49ead46b5217db0b9392e8070ac7b7b06f689",
+    "tests/water_scaling_test.gd": "93611f3f95bf660443c61b9203875c48fa49784272e9f5b24708a539ef5367d3"
+  },
+  "limits": [
+    "Water-only dry expansion benchmark, not complete island/visible-content scaling",
+    "Runtime FPS unchanged within sampling variation; no target-device/power/temperature claim",
+    "Cold authoring sync and full field images remain area-dependent"
+  ]
+}

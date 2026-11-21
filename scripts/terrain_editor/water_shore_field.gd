@@ -2,18 +2,28 @@ class_name WaterShoreField
 extends RefCounted
 const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
 const SIDES=[Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]
+static var _cached_signature:String=""
+static var _cached_result:Dictionary={}
+
 static func build(data:Data,contours=null)->Dictionary:
 	var wet:Dictionary={}
+	var lo:=Vector2i(1025,1025)
+	var hi:=Vector2i(-1025,-1025)
+	var sig_parts:=PackedStringArray()
+	for cell:Vector2i in data.cells:
+		var rec:Dictionary=data.cells[cell]
+		if int(rec.water)<0:continue
+		var w:int=int(rec.water)
+		wet[cell]=w
+		lo=lo.min(cell);hi=hi.max(cell)
+		sig_parts.append("%d,%d:%d,%.2f"%[cell.x,cell.y,w,float(rec.height)])
+	var sig:="|".join(sig_parts)
+	if sig==_cached_signature and not _cached_result.is_empty():
+		return _cached_result
 	var distance:Dictionary={}
 	var queue:Array[Vector2i]=[]
 	var impact_distance:Dictionary={}
 	var impact_queue:Array[Vector2i]=[]
-	var lo:=Vector2i(1025,1025)
-	var hi:=Vector2i(-1025,-1025)
-	for cell:Vector2i in data.cells:
-		if data.cells[cell].water<0:continue
-		wet[cell]=int(data.cells[cell].water)
-		lo=lo.min(cell);hi=hi.max(cell)
 	for cell:Vector2i in wet:
 		distance[cell]=3.0
 		impact_distance[cell]=4.0
@@ -27,8 +37,6 @@ static func build(data:Data,contours=null)->Dictionary:
 		if bank_edge:
 			distance[cell]=.5
 			queue.append(cell)
-	# Only the shallow band needs propagation. A cursor avoids quadratic queue
-	# removal, and coordinates stay in world cells across all render chunks.
 	var cursor:=0
 	while cursor<queue.size():
 		var cell:=queue[cursor]
@@ -40,8 +48,6 @@ static func build(data:Data,contours=null)->Dictionary:
 			if wet.get(neighbor,-1)!=wet[cell] or distance[neighbor]<=next:continue
 			distance[neighbor]=next
 			queue.append(neighbor)
-	# Only receiving wet cells seed turbulence. Dry cliffs and the outer fall
-	# cannot create a splash; propagation stays within the receiving lake level.
 	cursor=0
 	while cursor<impact_queue.size():
 		var cell:=impact_queue[cursor]
@@ -68,4 +74,12 @@ static func build(data:Data,contours=null)->Dictionary:
 			distance[cell]=nearest
 		var bed:float=clampf((wet[cell]*.5-data.cells[cell].height)/4.0,0,1)
 		image.set_pixel(cell.x-lo.x,cell.y-lo.y,Color(distance[cell]/3.0,bed,1.0-impact_distance[cell]/4.0,1))
-	return {"texture":ImageTexture.create_from_image(image),"origin":Vector2(lo),"extent":Vector2(size)}
+	_cached_signature=sig
+	# The texture is made on first use by the main thread (see texture_of);
+	# worker-thread builds only produce the image.
+	_cached_result={"image":image,"origin":Vector2(lo),"extent":Vector2(size)}
+	return _cached_result
+
+static func texture_of(result:Dictionary)->Texture2D:
+	if not result.has("texture"):result["texture"]=ImageTexture.create_from_image(result.image)
+	return result.texture

@@ -1,0 +1,66 @@
+[
+  {
+    "candidate": "base",
+    "fps": 28.9476120590761,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 35.225,
+    "p99_ms": 35.707,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "bg",
+    "fps": 30.4525321155649,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 33.632,
+    "p99_ms": 33.985,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "bg",
+    "fps": 30.3673588133386,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 33.767,
+    "p99_ms": 34.149,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "base",
+    "fps": 28.8862819296136,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 35.414,
+    "p99_ms": 35.78,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  }
+]

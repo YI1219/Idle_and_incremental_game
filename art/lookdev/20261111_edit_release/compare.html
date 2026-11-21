@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>松手后的渐变反馈 · 识海浮空岛</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#17231e;color:#e3e9df;font:16px/1.7 system-ui,"PingFang SC",sans-serif}main{max-width:1450px;margin:auto;padding:36px 26px 65px}h1{font-size:36px;line-height:1.3;margin:8px 0 16px}h2{font-size:22px;margin:28px 0 10px}p{margin:9px 0 18px}a{color:#b8dbc8}.note,figcaption{color:#a2b7a8;font-size:14px}.controls{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin:20px 0}select{background:#30473a;border:1px solid #5d7d68;color:#edf2e8;font:inherit;padding:7px 12px;border-radius:5px}input{accent-color:#a7d8bb;flex:1;min-width:160px}img{display:block;width:100%;height:auto;border:1px solid #405a49;border-radius:6px}figure{margin:0;min-width:0}figcaption{margin-top:8px}.labels,.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.labels{text-align:center;color:#c4d7c8;margin:18px 0 8px}.grid{margin-top:15px}output{font-variant-numeric:tabular-nums;min-width:80px}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;margin:20px 0}th,td{text-align:left;border-bottom:1px solid #3a5141;padding:10px}th{font-weight:500;color:#a2b7a8}@media(max-width:700px){main{padding:24px 14px}h1{font-size:28px}.grid{grid-template-columns:1fr}th,td{padding:8px;font-size:14px}}
+</style>
+</head>
+<body><main>
+<div class="note">GODOT 4.7.2 · 2026-11-11 · 原生画面</div>
+<h1>松手即开始，渐变承接等待</h1>
+<p>蓝图松手后立即开始流动、浮升与浮散。真实地形大部分显现后，特效渐隐，接上最终地面。</p>
+<div class="controls"><label for="operation">操作</label><select id="operation"><option value="raise">抬升</option><option value="contract">收缩</option></select><a id="movie-link" href="review/raise_compare.webp">打开动图原件</a><a href="README.md">完整方法</a></div>
+<div class="labels"><div>上轮蓝图反馈</div><div>本轮松手渐变</div></div>
+<img id="movie" src="review/raise_compare.webp" alt="左侧上轮蓝图、右侧本轮渐变的同步原生对照">
+<p class="note">两边按固定 0.70 秒发布地形演示交接，生产动画时钟每步推进 0.05 秒，末尾停留后循环。实测时延见下方。</p>
+
+<h2>同时间关键帧</h2>
+<div class="controls"><label for="frame">时间</label><input id="frame" type="range" min="0" max="4" value="0" step="1"><output id="time">0.00 秒</output></div>
+<div class="grid"><figure><a id="before-link" href="review/raise_before_000.png"><img id="before" src="review/raise_before_000.png" alt="上轮蓝图关键帧" loading="lazy"></a><figcaption>上轮蓝图 · 点击查看 2K 原图</figcaption></figure><figure><a id="after-link" href="review/raise_after_000.png"><img id="after" src="review/raise_after_000.png" alt="本轮渐变关键帧" loading="lazy"></a><figcaption>本轮渐变 · 点击查看 2K 原图</figcaption></figure></div>
+
+<h2>首帧反馈约 14–29ms，网格仍需处理</h2>
+<p>原生 2K，Apple M4 Pro 开发机。短点与阔笔松手后约 14–15ms 完成首帧绘制，长按已预建案例约 29ms。短点真实网格仍需约 710–753ms，完整过渡约 1.3 秒。</p>
+<div class="table-wrap"><table><thead><tr><th>操作</th><th>松手回调</th><th>首帧反馈</th><th>网格发布</th></tr></thead><tbody><tr><td>中笔短点抬升</td><td>0.10ms</td><td>14.28ms</td><td>709.97ms</td></tr><tr><td>长按预建抬升</td><td>6.99ms</td><td>28.59ms</td><td>6.86ms</td></tr><tr><td>中笔短点收缩</td><td>0.10ms</td><td>14.14ms</td><td>753.03ms</td></tr><tr><td>阔笔短点抬升</td><td>0.25ms</td><td>14.56ms</td><td>726.30ms</td></tr></tbody></table></div>
+<p class="note">时延采样独立运行，无截图写盘。编辑器父循环由测量工具按生产顺序调用，保留原有异步工作和动画时钟。当前原生 4K 仍有性能缺口。</p>
+<p>临时青玉遮罩仍有较直的边界，待实际操作验收。</p>
+<p><a href="checks/latency.json">时延记录</a> · <a href="checks/tests.json">回归记录</a> · <a href="review/captures.json">机位、数据与源码校验</a></p>
+</main>
+<script>
+const operation = document.getElementById("operation");
+const frame = document.getElementById("frame");
+const phases = [["000",0],["005",.25],["014",.7],["017",.85],["031",1.55]];
+function showFrame() {
+  const [suffix, seconds] = phases[Number(frame.value)];
+  document.getElementById("time").textContent = seconds.toFixed(2) + " 秒";
+  for (const variant of ["before","after"]) {
+    const src = "review/" + operation.value + "_" + variant + "_" + suffix + ".png";
+    document.getElementById(variant).src = src;
+    document.getElementById(variant + "-link").href = src;
+  }
+}
+operation.addEventListener("change", () => {
+  const src = "review/" + operation.value + "_compare.webp";
+  document.getElementById("movie").src = src;
+  document.getElementById("movie-link").href = src;
+  frame.value = "0";
+  showFrame();
+});
+frame.addEventListener("input", showFrame);
+showFrame();
+</script>
+</body></html>

@@ -1,0 +1,25 @@
+{
+  "valid": true,
+  "art_accepted": false,
+  "final_frames": 45,
+  "matched_pairs_to_original": 9,
+  "matched_pairs_to_rejected": 9,
+  "resolution": [
+    2560,
+    1440
+  ],
+  "camera_light_quality_phase_metadata_equal": true,
+  "data_equal": true,
+  "changed_common_sources": [
+    "res://scripts/terrain_editor/terrain_decoration.gd"
+  ],
+  "new_production_sources": [
+    "res://scripts/terrain_editor/cliff_shoulder_join.gd"
+  ],
+  "protected_source_hashes_equal": true,
+  "final_sources_match_disk": true,
+  "test_groups": 38,
+  "headless": 30,
+  "native": 8,
+  "user_layouts_accessed": false
+}

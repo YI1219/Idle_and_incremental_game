@@ -1,0 +1,202 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"cases": [
+		{
+			"commit_ms": 0.089,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 19.228,
+				"n": 3,
+				"p50": 18.578,
+				"p95": 19.228
+			},
+			"name": "short_raise",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 29.383,
+				"n": 52,
+				"p50": 20.065,
+				"p95": 28.331
+			},
+			"release_to_complete_ms": 1161.11,
+			"release_to_start_ms": 589.892,
+			"started": true,
+			"worker_ms": 633.863,
+			"worker_stages": {
+				"chunks": 100.262,
+				"contours": 193.66,
+				"grass": 34.535,
+				"layout": 339.703,
+				"populate": 18.021,
+				"shore": 0.219
+			}
+		},
+		{
+			"commit_ms": 10.197,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 20.768,
+				"n": 62,
+				"p50": 19.288,
+				"p95": 20.311
+			},
+			"name": "held_raise",
+			"prepared_on_release": true,
+			"release_frames_ms": {
+				"max": 28.74,
+				"n": 22,
+				"p50": 25.715,
+				"p95": 28.163
+			},
+			"release_to_complete_ms": 574.603,
+			"release_to_start_ms": 10.057,
+			"started": true,
+			"worker_ms": 648.702,
+			"worker_stages": {
+				"chunks": 104.134,
+				"contours": 194.6,
+				"grass": 35.357,
+				"layout": 349.731,
+				"populate": 18.399,
+				"shore": 0.214
+			}
+		},
+		{
+			"commit_ms": 0.154,
+			"continue_ms": {
+				"max": 0.53,
+				"n": 62,
+				"p50": 0.21,
+				"p95": 0.413
+			},
+			"held_frames_ms": {
+				"max": 22.046,
+				"n": 62,
+				"p50": 18.588,
+				"p95": 21.466
+			},
+			"name": "drag_raise",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 1003.895,
+				"n": 133,
+				"p50": 6.891,
+				"p95": 28.092
+			},
+			"release_to_complete_ms": 2232.89,
+			"release_to_start_ms": 1690.768,
+			"started": true,
+			"worker_ms": 1459.864,
+			"worker_stages": {
+				"chunks": 166.903,
+				"contours": 196.111,
+				"grass": 51.864,
+				"layout": 1096.048,
+				"populate": 33.171,
+				"shore": 0.786
+			}
+		},
+		{
+			"commit_ms": 0.073,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 19.908,
+				"n": 7,
+				"p50": 6.68,
+				"p95": 19.908
+			},
+			"name": "short_contract",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 38.077,
+				"n": 136,
+				"p50": 6.893,
+				"p95": 25.842
+			},
+			"release_to_complete_ms": 1158.682,
+			"release_to_start_ms": 610.411,
+			"started": true,
+			"worker_ms": 650.787,
+			"worker_stages": {
+				"chunks": 104.171,
+				"contours": 225.921,
+				"grass": 34.127,
+				"layout": 320.431,
+				"populate": 18.103,
+				"shore": 0.234
+			}
+		},
+		{
+			"commit_ms": 8.721,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 20.665,
+				"n": 148,
+				"p50": 6.89,
+				"p95": 18.874
+			},
+			"name": "held_contract",
+			"prepared_on_release": true,
+			"release_frames_ms": {
+				"max": 27.996,
+				"n": 48,
+				"p50": 6.902,
+				"p95": 27.243
+			},
+			"release_to_complete_ms": 530.747,
+			"release_to_start_ms": 8.506,
+			"started": true,
+			"worker_ms": 712.979,
+			"worker_stages": {
+				"chunks": 111.928,
+				"contours": 223.138,
+				"grass": 35.311,
+				"layout": 377.636,
+				"populate": 20.493,
+				"shore": 0.213
+			}
+		},
+		{
+			"commit_ms": 0.114,
+			"continue_ms": {
+				"max": 0.856,
+				"n": 112,
+				"p50": 0.222,
+				"p95": 0.521
+			},
+			"held_frames_ms": {
+				"max": 31.921,
+				"n": 112,
+				"p50": 6.691,
+				"p95": 20.397
+			},
+			"name": "drag_contract",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 34.931,
+				"n": 188,
+				"p50": 6.887,
+				"p95": 27.415
+			},
+			"release_to_complete_ms": 1554.111,
+			"release_to_start_ms": 1011.427,
+			"started": true,
+			"worker_ms": 693.14,
+			"worker_stages": {
+				"chunks": 140.114,
+				"contours": 208.394,
+				"grass": 45.274,
+				"layout": 343.824,
+				"populate": 17.769,
+				"shore": 0.791
+			}
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"method": "production begin/continue + global release input; water active; no capture I/O",
+	"rendering_method": "forward_plus",
+	"resolution": [
+		1280,
+		720
+	]
+}

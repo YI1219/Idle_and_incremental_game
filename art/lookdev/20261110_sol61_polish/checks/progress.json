@@ -1,0 +1,29 @@
+{
+  "baseline": "user approved rock_readability, 2026-11-10",
+  "retained": [
+    "01_planted_junction_day",
+    "02_path_contact_day",
+    "03_cliff_rhythm_day",
+    "04_planar_roots_day",
+    "06_final_day",
+    "06_final_night",
+    "held_seed_2104",
+    "held_seed_4242",
+    "held_seed_913"
+  ],
+  "rejected": {
+    "04_blunt_roots_day": "whole-foot shrink exposed hull",
+    "04_root_bevel_day": "new heel ring produced thin plates",
+    "04_integrated_roots_day": "visually mild improvement, but lower quads noncoplanar; regression test RED 8/24"
+  },
+  "currently_capturing": null,
+  "root_fix": "ROOT_FOLD original plane equation; 24/24 cap/coplanarity/closure passed",
+  "water_patch_state": "final fine ribbons, metadata/tail, core density and screen removal applied; source frozen",
+  "protected": [
+    "terrain_environment.gd",
+    "stone_surface.gdshaderinc",
+    "stone_normals.gd",
+    "time_solar_system.gd"
+  ],
+  "delivery": "native evidence, source audits and normal entry/F11 complete; mirror staged"
+}

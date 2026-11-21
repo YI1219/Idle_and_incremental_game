@@ -1,0 +1,84 @@
+{
+  "art_accepted": false,
+  "groups": {
+    "clean_stone_day": {
+      "valid": true,
+      "actor_absent": true,
+      "seed": 7301,
+      "preset": 0,
+      "frames": 5
+    },
+    "planted_meadow_day": {
+      "valid": true,
+      "actor_absent": true,
+      "seed": 7301,
+      "preset": 0,
+      "frames": 5
+    },
+    "planted_meadow_night": {
+      "valid": true,
+      "actor_absent": true,
+      "seed": 7301,
+      "preset": 0,
+      "frames": 5
+    },
+    "continued_seed_2104": {
+      "valid": true,
+      "actor_absent": true,
+      "seed": 2104,
+      "preset": 0,
+      "frames": 5
+    },
+    "continued_seed_4242": {
+      "valid": true,
+      "actor_absent": true,
+      "seed": 4242,
+      "preset": 1,
+      "frames": 5
+    },
+    "continued_seed_913": {
+      "valid": true,
+      "actor_absent": true,
+      "seed": 913,
+      "preset": 2,
+      "frames": 5
+    }
+  },
+  "pngs": {
+    "clean_stone_day/game.png": "b083c4283e1273465080c8b66d4e8b0186e61d87a7676bbc14f6f4f5d2350889",
+    "clean_stone_day/whole.png": "2b787f876400ed3c122cef579dc98e4477485e780b3d5a0ea1eec1c9a03b2462",
+    "clean_stone_day/reverse.png": "f6ecc4a5e4ac22b6eba731cd9c742c35622b40a0e24a4f2daca63435e8ac4e67",
+    "clean_stone_day/close.png": "fbd9ae8cc800b8dbd511e8f282788718091cc8c28df97e572aafb7ccd0314dd6",
+    "clean_stone_day/cliff_close.png": "e3dea2126aa9d78ccf67dfca54880a45f9d060b3a520f42660d44b461fd132ad",
+    "planted_meadow_day/game.png": "5c1080a05d5530adc67406841f22f8fac7ee09277a539706dff2cccecae337ea",
+    "planted_meadow_day/whole.png": "fa33e11545c90eb04ff424ee8b56bcf670ef4e0f3e73820c8fd8d34d38fc6722",
+    "planted_meadow_day/reverse.png": "4942861c9adf9281c9edd81bc9e73c8f286f8140c251cda0a65f75a7337e322a",
+    "planted_meadow_day/close.png": "db6161d18653db9e9184e997a833f2aae0e734c583401c064326f03c947be3cb",
+    "planted_meadow_day/cliff_close.png": "67345ce004ec71762041c99aa4b3c72df5f2e3fbd923135af58c34ac7e82e477",
+    "planted_meadow_night/game.png": "81c10f5caa5230c7dcf2f9fc376afbf28cf977bd1d9b003d203be0e9f14a1586",
+    "planted_meadow_night/whole.png": "8ed15c39884cb62d7b88063509d8b11809efc51a7e518631160e6203f545778f",
+    "planted_meadow_night/reverse.png": "300c68006ce4a5ebffbee83f9ecba1c2fbef2db48af34d5b6de348ab1d34ded4",
+    "planted_meadow_night/close.png": "c1da668c3625d0f65a215f505111df17d35798b35dbd70157e166ccaeb819406",
+    "planted_meadow_night/cliff_close.png": "9f7d1dd90e6c3473ed81ca0a252b727ee2f55394bdb611347022bd8e08490785",
+    "continued_seed_2104/game.png": "fa6a47d5bf6b77105efff19619bf979ba556daa38d838f261ac4431c43c2673a",
+    "continued_seed_2104/whole.png": "f561f26f3cd0e236d06be87cd3981a6e58d1a3b4c2326448e875534beb0adf2e",
+    "continued_seed_2104/reverse.png": "ae9c12d6effa5586a9fab999686775d65e41d0680c92545729265321aeadcd37",
+    "continued_seed_2104/close.png": "b7ae549f8c7f7ca089966c134febe5b1a51d6bda58e1eda2d3dfd5dcf766c76f",
+    "continued_seed_2104/cliff_close.png": "414767815cb84ca3e3d889d8008d420250b6978f15d341a7d1b51f66021d0634",
+    "continued_seed_4242/game.png": "890b3079cecfd405bc5b38099c97f80c866d9735979bdfefbf9cb242b3136699",
+    "continued_seed_4242/whole.png": "d427e0e14f266072bec818be04caadcd2095bc8565e574ba5b28340c3e5b2adb",
+    "continued_seed_4242/reverse.png": "f958821d770e57854eb0aac71e1460276e1668e0a0ae65d0fd280ba06bdca101",
+    "continued_seed_4242/close.png": "175a3e4b3c4b32b4cd1aebfe5361fa61260de63236a2d8fb6373deed50585ade",
+    "continued_seed_4242/cliff_close.png": "60ae31a0264191048611534982c16ec379dd53c89086606decfdad8ae957305b",
+    "continued_seed_913/game.png": "c290ce3505d9b7e2be1aeed421f585fdc0c12b8c3ac4d96c14a754740dddd104",
+    "continued_seed_913/whole.png": "4d88280b7ada07743358c902a2b8beb75c879837ca6fac2cc03c006fd9a16d9a",
+    "continued_seed_913/reverse.png": "792f52f3872275a332f908663b126789b03d196587588c034aef63a81b80fc83",
+    "continued_seed_913/close.png": "d62e8b73d9e9e4f2cdbdb1cfa0496cc3c6b6cb9ae3f4780cabb18e2ada33f525",
+    "continued_seed_913/cliff_close.png": "f70343e7c9d69619a58f6285003002e0b85c48bc4499c95046dc3e1c32839418"
+  },
+  "grass_conditions_identical": true,
+  "grass_source_diff": [
+    "res://scripts/terrain_editor/grass_field.gd"
+  ],
+  "all_final_sources_match_production": true
+}

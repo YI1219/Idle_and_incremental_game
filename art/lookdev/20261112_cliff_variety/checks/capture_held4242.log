@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-12 00:18:00.406 godot[90916:73666391] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-12 00:18:04.183 godot[90916:73666391] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+LOOKDEV saved: res://art/lookdev/20261112_cliff_variety/held4242/game.png
+LOOKDEV saved: res://art/lookdev/20261112_cliff_variety/held4242/whole.png
+LOOKDEV saved: res://art/lookdev/20261112_cliff_variety/held4242/reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_cliff_variety/held4242/side_106.png
+LOOKDEV saved: res://art/lookdev/20261112_cliff_variety/held4242/side_286.png
+LOOKDEV saved: res://art/lookdev/20261112_cliff_variety/held4242/close.png
+LOOKDEV saved: res://art/lookdev/20261112_cliff_variety/held4242/cliff_close.png
+LOOKDEV: 7 frames; valid=true; errors=[]

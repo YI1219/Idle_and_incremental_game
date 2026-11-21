@@ -1,0 +1,56 @@
+[
+  {
+    "job": "waterfall_before_day",
+    "manifest": "captures.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  },
+  {
+    "job": "final_day",
+    "manifest": "captures.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  },
+  {
+    "job": "final_night",
+    "manifest": "captures.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  },
+  {
+    "job": "held2104",
+    "manifest": "captures.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  },
+  {
+    "job": "held4242",
+    "manifest": "captures.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  },
+  {
+    "job": "held913",
+    "manifest": "captures.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  },
+  {
+    "job": "interaction_ready",
+    "manifest": "interaction.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  },
+  {
+    "job": "water_evolution_review",
+    "manifest": "water_evolution.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  },
+  {
+    "job": "controls_review",
+    "manifest": "controls.json",
+    "valid": true,
+    "source_stable_during_capture": true
+  }
+]

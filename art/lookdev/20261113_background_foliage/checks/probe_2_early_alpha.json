@@ -1,0 +1,16 @@
+{
+	"candidate": "early_alpha",
+	"fps": 27.3473833692109,
+	"method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+	"p95_ms": 38.156,
+	"p99_ms": 38.504,
+	"resolution": [
+		3840,
+		2160
+	],
+	"scale": 1.0,
+	"texture_size": [
+		3840.0,
+		2160.0
+	]
+}

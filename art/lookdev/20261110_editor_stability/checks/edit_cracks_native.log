@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-10 18:33:11.631 Godot[44337:71277275] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-10 18:33:15.077 Godot[44337:71277275] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_native/00_upper_baseline.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_native/01_upper_half_morph.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_native/02_upper_final.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_native/03_upper_final_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_native/04_upper_deep_final.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_native/05_lower_final.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_native/06_lower_final_reverse.png

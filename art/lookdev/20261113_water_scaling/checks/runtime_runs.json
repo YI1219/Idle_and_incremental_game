@@ -1,0 +1,290 @@
+[
+  {
+    "name": "runtime_2k_0_before",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 56.8015626796505,
+    "frames": 455,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 20.41,
+    "p99_ms": 21.111,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 10.1,
+    "size": "2k",
+    "snapshots": null,
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "variant": "before"
+  },
+  {
+    "name": "runtime_2k_1_after",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 56.8284291023506,
+    "frames": 455,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 20.425,
+    "p99_ms": 20.913,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.1,
+    "size": "2k",
+    "snapshots": 1,
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "variant": "after"
+  },
+  {
+    "name": "runtime_2k_2_after",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 56.8744881296068,
+    "frames": 455,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 20.265,
+    "p99_ms": 20.776,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.1,
+    "size": "2k",
+    "snapshots": 1,
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "variant": "after"
+  },
+  {
+    "name": "runtime_2k_3_before",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 56.8674349008168,
+    "frames": 456,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 20.438,
+    "p99_ms": 20.879,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.1,
+    "size": "2k",
+    "snapshots": null,
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "variant": "before"
+  },
+  {
+    "name": "runtime_4k_0_before",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 28.2508059257994,
+    "frames": 227,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 38.094,
+    "p99_ms": 38.502,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.0,
+    "size": "4k",
+    "snapshots": null,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "before"
+  },
+  {
+    "name": "runtime_4k_1_after",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 28.2410228848505,
+    "frames": 226,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 37.874,
+    "p99_ms": 38.337,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.0,
+    "size": "4k",
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "after"
+  },
+  {
+    "name": "runtime_4k_2_after",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 28.2667559912759,
+    "frames": 227,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 37.923,
+    "p99_ms": 38.356,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.0,
+    "size": "4k",
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "after"
+  },
+  {
+    "name": "runtime_4k_3_before",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 28.2399183491494,
+    "frames": 226,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 37.905,
+    "p99_ms": 38.412,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.0,
+    "size": "4k",
+    "snapshots": null,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "before"
+  },
+  {
+    "name": "runtime_scaled4k_0_before",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 67.9869040226126,
+    "frames": 544,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 17.182,
+    "p99_ms": 17.641,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 0.5,
+    "simulated_seconds": 11.0,
+    "size": "scaled4k",
+    "snapshots": null,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "before"
+  },
+  {
+    "name": "runtime_scaled4k_1_after",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 67.9727089573536,
+    "frames": 544,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 17.225,
+    "p99_ms": 17.714,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 0.5,
+    "simulated_seconds": 11.1,
+    "size": "scaled4k",
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "after"
+  },
+  {
+    "name": "runtime_scaled4k_2_after",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 67.855483066683,
+    "frames": 543,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 17.294,
+    "p99_ms": 17.849,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 0.5,
+    "simulated_seconds": 11.1,
+    "size": "scaled4k",
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "after"
+  },
+  {
+    "name": "runtime_scaled4k_3_before",
+    "ok": true,
+    "exit": 0,
+    "draw_calls": 460.0,
+    "fps": 68.0787404958331,
+    "frames": 545,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 17.209,
+    "p99_ms": 17.933,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 0.5,
+    "simulated_seconds": 11.1,
+    "size": "scaled4k",
+    "snapshots": null,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "before"
+  }
+]

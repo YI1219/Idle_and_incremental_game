@@ -1,0 +1,12 @@
+[
+  {
+    "job": "capture_pairs",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "job": "dynamic",
+    "ok": true,
+    "exit": 0
+  }
+]

@@ -1,0 +1,46 @@
+{
+  "checks": 348,
+  "failures": 0,
+  "results": [
+    {
+      "apron_puffs": 4,
+      "curtains": 2,
+      "external_vertices": 3168,
+      "puffs": 46,
+      "seed": 7301,
+      "vertices_after": 4488,
+      "vertices_before": 4212,
+      "zero_alpha_end_vertices": 72
+    },
+    {
+      "apron_puffs": 4,
+      "curtains": 2,
+      "external_vertices": 3168,
+      "puffs": 46,
+      "seed": 2104,
+      "vertices_after": 4488,
+      "vertices_before": 4212,
+      "zero_alpha_end_vertices": 72
+    },
+    {
+      "apron_puffs": 4,
+      "curtains": 2,
+      "external_vertices": 3168,
+      "puffs": 46,
+      "seed": 4242,
+      "vertices_after": 4488,
+      "vertices_before": 4212,
+      "zero_alpha_end_vertices": 72
+    },
+    {
+      "apron_puffs": 4,
+      "curtains": 2,
+      "external_vertices": 3168,
+      "puffs": 46,
+      "seed": 913,
+      "vertices_after": 4488,
+      "vertices_before": 4212,
+      "zero_alpha_end_vertices": 72
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "scope": "Visual review of actual isolated Godot white-model captures; no production courtyard adoption",
+  "assets": {
+    "architecture/open_four_post_pavilion": {
+      "status": "rejected_requires_rebuild",
+      "reviewer": "root visual review, 2026-11-12",
+      "reason": "Square four-slope roof reconstructed as a rounded cone. Technical geometry passing does not authorize texturing or adoption.",
+      "evidence": "architecture/open_four_post_pavilion/lod0_iso.png",
+      "next_candidate": "art/source/style_library_20261112/architecture/pavilion_v02"
+    },
+    "architecture/short_tiled_courtyard_gate": {
+      "status": "geometry_candidate_for_texture",
+      "reviewer": "root visual review, 2026-11-12",
+      "reason": "Opening retained and overall form can proceed to texture exploration; not final art acceptance."
+    },
+    "architecture/short_roofed_corridor": {
+      "status": "geometry_candidate_for_texture",
+      "reviewer": "root visual review, 2026-11-12",
+      "reason": "Form can proceed to texture exploration; not final art acceptance."
+    },
+    "architecture/low_mountain_dwelling": {
+      "status": "requires_refinement",
+      "reviewer": "root visual review, 2026-11-12",
+      "reason": "Some local forms are too soft; roof ridge has thin pointed protrusions in actual capture."
+    }
+  }
+}

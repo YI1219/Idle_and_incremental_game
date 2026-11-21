@@ -1,0 +1,17 @@
+[
+  {
+    "test": "flooded_ground_test",
+    "exit": 0,
+    "errors": false
+  },
+  {
+    "test": "grass_recovery_render_test",
+    "exit": 0,
+    "errors": false
+  },
+  {
+    "test": "grass_lod_test",
+    "exit": 0,
+    "errors": false
+  }
+]

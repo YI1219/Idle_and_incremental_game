@@ -1,0 +1,27 @@
+{
+  "valid": true,
+  "art_accepted": false,
+  "frames": 54,
+  "default_matched_pairs": 9,
+  "resolution": [
+    2560,
+    1440
+  ],
+  "camera_light_quality_metadata_equal": true,
+  "data_equal": true,
+  "changed_sources": [
+    "res://scripts/terrain_editor/terrain_decoration.gd"
+  ],
+  "protected_source_hashes_equal": true,
+  "final_sources_match_disk": true,
+  "test_groups": 37,
+  "reports": [
+    "before",
+    "final",
+    "final_held2104",
+    "final_held4242",
+    "final_held913",
+    "final_night"
+  ],
+  "user_layouts_accessed": false
+}

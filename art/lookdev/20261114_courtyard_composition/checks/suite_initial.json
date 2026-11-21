@@ -1,0 +1,44 @@
+[
+  {
+    "test": "tests/courtyard_composition_test.gd",
+    "headless": true,
+    "ok": true,
+    "exit": 0,
+    "seconds": 5.21
+  },
+  {
+    "test": "tests/cliff_outer_foot_test.gd",
+    "headless": true,
+    "ok": true,
+    "exit": 0,
+    "seconds": 11.32
+  },
+  {
+    "test": "tests/argon_world_lock_test.gd",
+    "headless": true,
+    "ok": true,
+    "exit": 0,
+    "seconds": 2.17
+  },
+  {
+    "test": "tests/cliff_form_variety_test.gd",
+    "headless": true,
+    "ok": true,
+    "exit": 0,
+    "seconds": 0.26
+  },
+  {
+    "test": "tests/cliff_mantle_seam_test.gd",
+    "headless": true,
+    "ok": true,
+    "exit": 0,
+    "seconds": 0.26
+  },
+  {
+    "test": "tests/cliff_partial_crown_seal_test.gd",
+    "headless": true,
+    "ok": false,
+    "exit": 1,
+    "seconds": 3.03
+  }
+]

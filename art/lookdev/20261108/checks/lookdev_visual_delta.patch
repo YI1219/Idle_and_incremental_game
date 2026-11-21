@@ -1,0 +1,568 @@
+--- a/scripts/terrain_editor/procedural_shard.gd
++++ b/scripts/terrain_editor/procedural_shard.gd
+@@ -246,11 +246,103 @@
+ static func _soften_pair(full: Surface, walls: Surface) -> Array[ArrayMesh]:
+ 	return [full.mesh(), walls.mesh()]
+ 
++static func _add_continuous_body(
++	full: Surface, walls: Surface, collar: Array[Vector3], arch: int, tone: Color
++) -> void:
++	# The two front planes meet on a diagonal ridge inside fixed-width side walls.
++	const RIDGE := [1, 2, 1, 4, 1, 2, 1, 3]
++	const SLANT := [0.52, 0.40, 0.48, -0.46, 0.54, 0.36, 0.50, -0.38]
++	const FOLD := [-0.70, -0.78, -0.64, -0.81, -0.72, -0.68, -0.76, -0.83]
++	const TILT := [0.22, -0.18, 0.28, -0.22, -0.24, 0.16, 0.20, -0.16]
++	const FOOT := [-1.08, -0.98, -1.10, -1.02, -1.12, -0.96, -1.06, -1.01]
++	const FOOT_TILT := [-0.04, -0.06, 0.05, -0.08, -0.03, 0.06, -0.05, 0.04]
++	const ROOT_FOLD := [0.22, 0.30, 0.18, 0.26, 0.20, 0.28, 0.24, 0.18]
++	const CREST := [0.52, 0.49, 0.54, 0.48, 0.54, 0.49, 0.52, 0.48]
++	var shoulder: Array[Vector3] = []
++	var fold: Array[Vector3] = []
++	var foot: Array[Vector3] = []
++	var ridge_index: int = RIDGE[arch]
++	var ridge_x: float = collar[ridge_index].x * (0.49 / 0.51)
++	var left_z: float = 0.392 if ridge_index > 2 else 0.410
++	var right_z: float = 0.410 if ridge_index > 2 else 0.392
++	var neck_y: float = -0.145
++	var left_m: float = (CREST[arch] - left_z) / (ridge_x + 0.49)
++	var right_m: float = (right_z - CREST[arch]) / (0.49 - ridge_x)
++	var left_q: float = 0.025 + left_m * SLANT[arch]
++	var right_q: float = 0.025 + right_m * SLANT[arch]
++	for i in collar.size():
++		var p: Vector3 = collar[i]
++		if i < 6:
++			p.x *= 0.49 / 0.51
++			if i <= ridge_index:
++				p.z = lerpf(left_z, CREST[arch], (p.x + 0.49) / (ridge_x + 0.49))
++			else:
++				p.z = lerpf(CREST[arch], right_z, (p.x - ridge_x) / (0.49 - ridge_x))
++		elif i == 6:
++			p = Vector3(0.49, neck_y, -0.085)
++		elif i == 7:
++			p = Vector3(0.0, neck_y, -0.42)
++		else:
++			p = Vector3(-0.49, neck_y, -0.085)
++		p.y = neck_y
++		shoulder.append(p)
++		var ridge_weight: float = 0.0
++		var plane_m: float = 0.0
++		var plane_q: float = 0.0
++		if i < 6:
++			if i <= ridge_index:
++				ridge_weight = (p.x + 0.49) / (ridge_x + 0.49)
++				plane_m = left_m
++				plane_q = left_q
++			else:
++				ridge_weight = (0.49 - p.x) / (0.49 - ridge_x)
++				plane_m = right_m
++				plane_q = right_q
++		var drift: float = ridge_weight * SLANT[arch]
++		var fold_x: float = (p.x + drift * (neck_y - FOLD[arch])) / (1.0 + drift * TILT[arch])
++		var fold_y: float = FOLD[arch] + TILT[arch] * fold_x
++		var fold_z: float = p.z
++		if i < 6:
++			fold_z = CREST[arch] + plane_m * (fold_x - ridge_x) + plane_q * (fold_y - neck_y)
++		fold.append(Vector3(fold_x, fold_y, fold_z))
++		var foot_x: float = (p.x + drift * (neck_y - FOOT[arch])) / (1.0 + drift * FOOT_TILT[arch])
++		var foot_y: float = FOOT[arch] + FOOT_TILT[arch] * foot_x
++		var foot_z: float = p.z
++		if i < 6:
++			foot_z = CREST[arch] + plane_m * (foot_x - ridge_x) + plane_q * (foot_y - neck_y)
++			# Adding distance from the fold plane preserves its shared edge exactly.
++			foot_z += ROOT_FOLD[arch] * (foot_y - FOLD[arch] - TILT[arch] * foot_x)
++		foot.append(Vector3(foot_x, foot_y, foot_z))
++	var rings: Array = [collar, shoulder, fold, foot]
++	for band in 3:
++		var upper: Array = rings[band]
++		var lower: Array = rings[band + 1]
++		for i in collar.size():
++			var ni: int = (i + 1) % collar.size()
++			var a: Vector3 = upper[i]
++			var b: Vector3 = upper[ni]
++			var c: Vector3 = lower[ni]
++			var d: Vector3 = lower[i]
++			var along: Vector3 = b - a
++			var outward := Vector3(-along.z, 0.0, along.x).normalized()
++			var cols: Array = [tone, tone, tone, tone]
++			var brow: float = 0.68 if band == 0 else (0.52 if band == 1 else 0.28)
++			var uvs: Array = [Vector2(brow, 0.0), Vector2(brow, 0.0), Vector2(brow, 0.0), Vector2(brow, 0.0)]
++			_emit_quad(full, a, b, c, d, outward, cols, uvs)
++			_emit_quad(walls, a, b, c, d, outward, cols, uvs)
++	var bottom_center := Vector3.ZERO
++	for p: Vector3 in foot:
++		bottom_center += p
++	bottom_center /= float(foot.size())
++	for i in foot.size():
++		var ni: int = (i + 1) % foot.size()
++		_emit_tri(full, bottom_center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
++		_emit_tri(walls, bottom_center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
++
+ static func _build_cliff_crag(seed_value: int) -> Dictionary:
+ 	var full := Surface.new()
+ 	var walls := Surface.new()
+ 	var arch := posmod(seed_value, 8)
+-	var dip_dir := 1.0 if posmod(seed_value, 4) != 3 else -1.0
+ 
+ 	# 1. Canonical 10-point Ring 0 (y = 0.0) cap preserved 100% for seamless notch-free grass lips:
+ 	const U_COLS := [-1.0, -0.62, -0.20, 0.22, 0.62, 1.0]
+@@ -281,38 +373,7 @@
+ 		_emit_quad(full, a, b, c, d, out_c, col_c, uv_c)
+ 		_emit_quad(walls, a, b, c, d, out_c, col_c, uv_c)
+ 
+-	# 2. Monumental Full-Height 3D Polyhedral Cliff Monoliths (Refs 01, 03 & 04):
+-	#    Every primary column is a colossal, full-height 3D polyhedral boulder with a pitched sky-lit
+-	#    upper brow slab, diagonal-ridged main cleavage faces, and a steep undercut lower belly.
+-	#    Zero co-level horizontal cuts across adjacent columns -> zero ruler lines or small stones!
+-	if arch == 0:
+-		var rot0 := Basis(Vector3.UP, 0.05 * dip_dir) * Basis(Vector3.FORWARD, 0.04 * dip_dir)
+-		_add_chiseled_block(full, walls, Vector3(0.0, -0.52, 0.19), Vector3(0.67, 0.65, 0.55), seed_value, 110.0, rot0, seed_tone + 0.014, 0.24, Vector3.ZERO, 0.58, false, 0.74, false, true)
+-	elif arch == 1:
+-		var rot1 := Basis(Vector3.UP, -0.05 * dip_dir) * Basis(Vector3.FORWARD, -0.03 * dip_dir)
+-		_add_chiseled_block(full, walls, Vector3(0.02 * dip_dir, -0.53, 0.20), Vector3(0.66, 0.66, 0.56), seed_value, 210.0, rot1, seed_tone - 0.014, 0.26, Vector3.ZERO, 0.62, false, 0.76, false, true)
+-	elif arch == 2:
+-		var rot2 := Basis(Vector3.UP, 0.06 * dip_dir) * Basis(Vector3.FORWARD, -0.04 * dip_dir)
+-		_add_chiseled_block(full, walls, Vector3(-0.02 * dip_dir, -0.52, 0.21), Vector3(0.67, 0.65, 0.56), seed_value, 310.0, rot2, seed_tone + 0.018, 0.24, Vector3.ZERO, 0.56, false, 0.74, true, true)
+-	elif arch == 3:
+-		# Recessed Sheer Bay Monolith (steps inward so neighboring headland boulders pop forward in 3D!):
+-		var rot3 := Basis(Vector3.UP, 0.04 * dip_dir)
+-		_add_chiseled_block(full, walls, Vector3(0.0, -0.52, 0.14), Vector3(0.66, 0.65, 0.49), seed_value, 410.0, rot3, seed_tone - 0.020, 0.28, Vector3.ZERO, 0.64, false, 0.76, true, true)
+-	elif arch == 4:
+-		# Commanding Headland Prow Monolith (bold diagonal ridge arête, single colossal 3D boulder):
+-		var rot4 := Basis(Vector3.UP, 0.05 * dip_dir) * Basis(Vector3.FORWARD, 0.04 * dip_dir)
+-		_add_chiseled_block(full, walls, Vector3(0.0, -0.53, 0.22), Vector3(0.68, 0.66, 0.57), seed_value, 510.0, rot4, seed_tone + 0.018, 0.22, Vector3.ZERO, 0.55, false, 0.72, true, true)
+-	elif arch == 5:
+-		var rot5 := Basis(Vector3.UP, -0.06 * dip_dir) * Basis(Vector3.FORWARD, 0.03 * dip_dir)
+-		_add_chiseled_block(full, walls, Vector3(-0.02 * dip_dir, -0.53, 0.19), Vector3(0.66, 0.66, 0.55), seed_value, 610.0, rot5, seed_tone + 0.014, 0.25, Vector3.ZERO, 0.60, false, 0.74, false, true)
+-	elif arch == 6:
+-		# Deep Mountain-Root Buttress Monolith (Ref 03 / 04 colossal bluff):
+-		var rot6 := Basis(Vector3.UP, -0.05 * dip_dir) * Basis(Vector3.FORWARD, 0.04 * dip_dir)
+-		_add_chiseled_block(full, walls, Vector3(0.0, -0.54, 0.20), Vector3(0.67, 0.66, 0.55), seed_value, 710.0, rot6, seed_tone - 0.014, 0.26, Vector3.ZERO, 0.58, false, 0.76, true, true)
+-	else:
+-		# Grand Towering Buttress Boulder (broad convex face with bold diagonal cleavage):
+-		var rot7 := Basis(Vector3.UP, 0.06 * dip_dir) * Basis(Vector3.FORWARD, -0.03 * dip_dir)
+-		_add_chiseled_block(full, walls, Vector3(0.02 * dip_dir, -0.53, 0.21), Vector3(0.68, 0.66, 0.56), seed_value, 810.0, rot7, seed_tone + 0.016, 0.24, Vector3.ZERO, 0.56, false, 0.72, false, true)
++	_add_continuous_body(full, walls, r1, arch, top_col)
+ 
+ 	var cap_poly := PackedVector2Array([
+ 		Vector2(-0.52, 0.402),
+@@ -344,39 +405,60 @@
+ 		"cap_polygon": cap_poly,
+ 	}
+ 
++static func _buttress_point(p: Vector3, arch: int) -> Vector3:
++	const SIDE_TILT := [-0.18, 0.16, -0.12, 0.20]
++	const TAPER := [0.22, 0.18, 0.26, 0.20]
++	const LEAN := [0.20, -0.16, 0.24, -0.18]
++	var depth: float = p.y + 0.145
++	var denominator: float = 1.0 - TAPER[arch] * depth
++	# Projective taper keeps the broad faces planar while the rooted silhouette narrows.
++	p.x = (p.x - depth * LEAN[arch]) / denominator
++	p.z = 0.60 + (p.z - 0.60) / denominator
++	p.y = -0.145 + depth * (1.0 + TAPER[arch] * 0.90) / denominator
++	p.y += 0.025 - 0.24 * p.z + SIDE_TILT[arch] * p.x
++	p.x *= 1.24
++	p.z = p.z * 1.12 + 0.11
++	return p
++
+ static func _build_root_boulders(seed_value: int) -> Dictionary:
+-	var full := Surface.new()
+-	var walls := Surface.new()
+-	var r_arch := posmod(seed_value, 4)
+-	var base_tone := _r(seed_value, 401.0, -0.010, 0.010)
+-
+-	# 4 Colossal Single-Block Full-Height Outer Buttress Monoliths (UNDERSIDE_KINDS):
+-	# Crisp 2-plane 3D chiseled mountain shoulder + 2-plane diagonal-ridged outer cliff wall (sharp_prow=true) + V-keel root!
+-	if r_arch == 0:
+-		var rr0 := Basis(Vector3.UP, 0.04)
+-		_add_chiseled_block(full, walls, Vector3(0.0, -0.50, 0.15), Vector3(0.68, 0.59, 0.57), seed_value, 10.0, rr0, base_tone + 0.014, 0.28, Vector3.ZERO, 0.38, true, 0.74, true, false)
+-	elif r_arch == 1:
+-		var rr1 := Basis(Vector3.UP, -0.05)
+-		_add_chiseled_block(full, walls, Vector3(0.0, -0.50, 0.15), Vector3(0.68, 0.59, 0.57), seed_value, 20.0, rr1, base_tone + 0.012, 0.28, Vector3.ZERO, 0.39, true, 0.74, true, false)
+-	elif r_arch == 2:
+-		var rr2 := Basis(Vector3.UP, 0.05)
+-		_add_chiseled_block(full, walls, Vector3(0.0, -0.51, 0.16), Vector3(0.68, 0.60, 0.58), seed_value, 30.0, rr2, base_tone - 0.012, 0.30, Vector3.ZERO, 0.40, true, 0.76, true, false)
+-	else:
+-		var rr3 := Basis(Vector3.UP, -0.04)
+-		_add_chiseled_block(full, walls, Vector3(0.0, -0.51, 0.15), Vector3(0.67, 0.60, 0.57), seed_value, 40.0, rr3, base_tone - 0.014, 0.30, Vector3.ZERO, 0.41, true, 0.76, true, false)
+-
+-	var pair := _soften_pair(full, walls)
+-	var full_mesh: ArrayMesh = pair[0]
+-	var wall_mesh: ArrayMesh = pair[1]
+-	var box := full_mesh.get_aabb()
++	# A single oblique shoulder joins the full-height front; no grass-crown collar.
++	var built: Dictionary = _build_cliff_crag(seed_value)
++	var arrays: Array = built.mesh.surface_get_arrays(0)
++	var points: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
++	var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
++	var uvs: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV]
++	var root := Surface.new()
++	var arch: int = posmod(seed_value, 4)
++	var cap: Array[Vector3] = []
++	for i in range(0, points.size(), 3):
++		if maxf(points[i].y, maxf(points[i + 1].y, points[i + 2].y)) > -0.1449:
++			continue
++		var tri: Array[Vector3] = []
++		for k in 3:
++			var p: Vector3 = points[i + k]
++			if absf(p.y + 0.145) < 0.00001 and not cap.has(p):
++				cap.append(p)
++			tri.append(_buttress_point(p, arch))
++		var start: int = root.vertices.size()
++		root.triangle(tri[0], tri[1], tri[2], colors[i])
++		for k in 3:
++			root.colors[start + k] = colors[i + k]
++			root.uv[start + k] = uvs[i + k]
++	var center := Vector3.ZERO
++	for p: Vector3 in cap:
++		center += p
++	center /= float(cap.size())
++	cap.sort_custom(func(a: Vector3, b: Vector3) -> bool:
++		return atan2(a.z-center.z,a.x-center.x) < atan2(b.z-center.z,b.x-center.x))
++	for i in cap.size():
++		root.triangle(_buttress_point(center,arch), _buttress_point(cap[i],arch),
++			_buttress_point(cap[(i+1)%cap.size()],arch), colors[0], true)
++	var mesh: ArrayMesh = root.mesh()
++	var box: AABB = mesh.get_aabb()
+ 	return {
+-		"mesh": full_mesh,
+-		"render_mesh": wall_mesh,
+-		"height": 1.0,
+-		"geometry_height": box.size.y,
+-		"crown_z": 0.35,
+-		"span_x": box.size.x,
+-		"span_z": box.size.z,
++		"mesh": mesh, "render_mesh": mesh, "height": 1.0,
++		"geometry_height": box.size.y, "crown_z": 0.35,
++		"span_x": box.size.x, "span_z": box.size.z,
+ 		"cap_polygon": PackedVector2Array(),
+ 	}
+ 
+--- a/scripts/terrain_editor/terrain_decoration.gd
++++ b/scripts/terrain_editor/terrain_decoration.gd
+@@ -613,7 +613,7 @@
+ 			var t:=clampf((sub[k]-a).dot(ab)/l2,0.0,1.0)
+ 			var d:=sub[k].distance_to(a+ab*t)
+ 			if d>max_sag:max_sag=d;best_i=k
+-		if max_sag>.28:
++		if max_sag>.53:
+ 			var left:=sub.slice(0,best_i+1)
+ 			var right:=sub.slice(best_i)
+ 			_append_sagitta_safe(runs,left)
+@@ -621,8 +621,8 @@
+ 			return
+ 	runs.append([a,b,sub])
+ static func _runs(loop:PackedVector2Array)->Array:
+-	# Monumental 4.4..6.2m Cliff Massif Span Partitioning (grand architectural scale WITHOUT
+-	# top-rim scallops; sagitta-guarded so rim_union & grass_lip_soften stay 100% seamless):
++	# Unequal broad spans keep long facades together; curved sections still split
++	# when their chord leaves the authoritative contour by more than 0.53m:
+ 	var sections:Array=[]
+ 	var points:=PackedVector2Array([loop[0]])
+ 	var walked:=0.0
+@@ -632,7 +632,7 @@
+ 		var turn:=absf((next-b).angle_to(b-points[0])) if b.distance_squared_to(points[0])>.00001 else 0.0
+ 		if walked>=28.0 or (walked>=3.85 and turn>.95) or i==loop.size()-1:
+ 			sections.append(points);points=PackedVector2Array([b]);walked=0.0
+-	const RHYTHM:=[6.35,4.85,7.15,5.15,6.10,4.95]
++	const RHYTHM:=[10.5,7.2,12.1,8.7,9.5,6.9]
+ 	var runs:Array=[]
+ 	for section:PackedVector2Array in sections:
+ 		var total:=0.0
+@@ -647,7 +647,7 @@
+ 		var step_i:=0
+ 		while sum_w<total-2.35 or weights.is_empty():
+ 			var base_w:float=RHYTHM[(phase_idx+step_i)%RHYTHM.size()]
+-			var mod_w:=clampf(base_w*(1.0+phase_wave*cos(float(step_i)*1.9)),4.35,7.35)
++			var mod_w:=clampf(base_w*(1.0+phase_wave*cos(float(step_i)*1.9)),6.0,12.2)
+ 			weights.append(mod_w)
+ 			sum_w+=mod_w
+ 			step_i+=1
+@@ -833,7 +833,7 @@
+ 	var span_x:float=maxf(.45,float(part.span_x))
+ 	var span_z:float=maxf(.45,float(part.span_z))
+ 	var min_step_w:float=2.65 if use_len>=1.85 else maxf(1.35,use_len*1.20)
+-	var want_w:=clampf(use_len*1.26,min_step_w,6.45) if step else clampf(use_len*(1.34 if is_narrow_wedge else 1.26),2.05 if (mode_filter==1 or terrace_trimmed) else 3.55,7.55)
++	var want_w:=clampf(use_len*1.26,min_step_w,6.45) if step else clampf(use_len*(1.34 if is_narrow_wedge else 1.26),2.05 if (mode_filter==1 or terrace_trimmed) else 3.55,11.5)
+ 	var depth_wave:float=.5+.5*cos(c.x*.22-c.y*.24+.8+s_phase)
+ 	var want_d:=lerpf(3.55,4.42,clampf(depth_wave*.42+proud_smooth*.28+relief_pulse*.30,0.0,1.0))
+ 	var sx:=want_w/span_x
+@@ -917,7 +917,7 @@
+ 	var yaw:=(random_at(cell,seed_value,3005)-.5)*yaw_amp
+ 	var width_mult:float=lerpf(1.26,1.34,random_at(cell,seed_value,3024)) if step else (1.12 if curtain_trimmed else lerpf(1.30,1.38,random_at(cell,seed_value,3024)))
+ 	var frame:=Basis(-tangent,Vector3.UP,outward)
+-	var basis:=frame*Basis(Vector3.UP,yaw)*Basis.from_scale(Vector3(minf(sx*width_mult,8.35),sy,sz))
++	var basis:=frame*Basis(Vector3.UP,yaw)*Basis.from_scale(Vector3(minf(sx*width_mult,8.35 if step else 12.5),sy,sz))
+ 	var pose:=Transform3D(basis,Vector3(c.x,h,c.y)+outward*(proud-crown_z*sz))
+ 	var crown_extent:=Vector2(INF,-INF)
+ 	var cap_poly:PackedVector2Array=part.get("cap_polygon",PackedVector2Array())
+--- a/shaders/terrain_editor/cliff_column.gdshader
++++ b/shaders/terrain_editor/cliff_column.gdshader
+@@ -8,7 +8,6 @@
+ varying vec3 column_origin;
+ varying vec3 world_position;
+ varying vec3 world_facet_n;
+-varying vec3 v_col_outward;
+ varying float v_world_ny;
+ 
+ void vertex(){
+@@ -16,7 +15,6 @@
+ 	column_origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;
+ 	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+ 	world_facet_n=normalize(MODEL_NORMAL_MATRIX*NORMAL);
+-	v_col_outward=normalize(MODEL_NORMAL_MATRIX*vec3(0.0,0.0,1.0));
+ 	v_world_ny=world_facet_n.y;
+ 	if(terrain_morph_progress<1.0){
+ 		vec3 origin=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;
+@@ -33,13 +31,14 @@
+ 
+ 	// 2. Per-boulder & per-sub-block mineral value/temperature separation (4A: clear boulder-to-boulder identity):
+ 	vec3 stone=stone_surface(world_position,shade_normal)*mix(vec3(1.0),COLOR.rgb/.708,.84);
++	// Broad mineral washes remain subordinate to the authored planar silhouette.
++	float wash_luma=dot(stone_gouache(world_position,base_normal),vec3(.299,.587,.114));
++	float mineral_luma=dot(stone_mineral(world_position*.72,base_normal),vec3(.299,.587,.114));
++	float wash_value=clamp(mix(1.0,wash_luma/.50,.75),.88,1.10);
++	float mineral_value=clamp(mix(1.0,mineral_luma/.34,.16),.94,1.06);
++	stone*=wash_value*mineral_value;
+ 
+-	// 3. Delicate sunlit mineral bevel catch ONLY along crisp inter-face boulder arêtes:
+-	vec3 sun_ref=normalize(vec3(.897,.431,.097));
+-	float macro_sun=dot(normalize(v_col_outward),sun_ref);
+-	float ridge_edge=smoothstep(.16,.54,length(fwidth(base_normal)))*.82;
+-	float sun_ridge=smoothstep(.02,.62,dot(base_normal,sun_ref))*smoothstep(-.16,.88,base_normal.y)*smoothstep(-.22,.22,macro_sun);
+-	stone+=stone*ridge_edge*(.016+.040*sun_ridge);
++	// Key and fill directions are evaluated only in light(), without a baked sun vector.
+ 
+ 	// 4. Clean, uniform gouache planes (zero artificial local_position.z / UV.y dark bands across flat faces!):
+ 	float top_gate=(crown_cover>.5) ? smoothstep(-.03,-.14,local_position.y) : 1.0;
+@@ -59,11 +58,18 @@
+ }
+ 
+ void light(){
+-	vec3 col_out_v=normalize((VIEW_MATRIX*vec4(v_col_outward,0.0)).xyz);
+-	float is_key=step(.45,max(LIGHT_COLOR.r,max(LIGHT_COLOR.g,LIGHT_COLOR.b))/PI);
+-	float sun_side_wall=smoothstep(.02,.24,dot(col_out_v,LIGHT));
+-	float top_unshadow=sun_side_wall*smoothstep(.64,.88,v_world_ny);
+-	float macro_shadow_wall=is_key*smoothstep(.15,-.03,dot(col_out_v,LIGHT))*(1.0-top_unshadow);
+-	float eff_atten=1.0-.92*macro_shadow_wall;
+-	stone_crisp_facet_light(NORMAL,LIGHT,LIGHT_COLOR,eff_atten,LIGHT_IS_DIRECTIONAL,v_world_ny,DIFFUSE_LIGHT);
++	vec3 lc=LIGHT_COLOR/PI;
++	float energy=dot(lc,vec3(.299,.587,.114));
++	float ndl=dot(NORMAL,LIGHT);
++	if(LIGHT_IS_DIRECTIONAL && max(lc.r,max(lc.g,lc.b))>.45){
++		// Continuous matte response keeps the root part of the same rock mass.
++		// The previous narrow terminator turned every short foot into a black cuff.
++		float direct=max(ndl,0.0)*.86*ATTENUATION;
++		float sky_weight=smoothstep(-.80,.90,v_world_ny);
++		vec3 sky=vec3(.62,.77,1.08)*(.095+.075*sky_weight);
++		vec3 cloud=vec3(.88,.85,.76)*(.055*(1.0-sky_weight));
++		DIFFUSE_LIGHT+=lc*direct+(sky+cloud)*energy;
++	}else{
++		stone_crisp_facet_light(NORMAL,LIGHT,LIGHT_COLOR,ATTENUATION,LIGHT_IS_DIRECTIONAL,v_world_ny,DIFFUSE_LIGHT);
++	}
+ }
+--- a/shaders/terrain_editor/cliff.gdshader
++++ b/shaders/terrain_editor/cliff.gdshader
+@@ -20,9 +20,23 @@
+ 	vec3 stone=stone_root_contact(stone_surface(world_position,shade_n),world_position,material_normal,UV.x,UV.y)*mix(vec3(1.0),COLOR.rgb,.16);
+ 	ALBEDO=stone_mist_dissolve(stone,world_position,material_normal);
+ 	ROUGHNESS=.952;SPECULAR=.016;
+-	AO=mix(1.0,.74,smoothstep(.12,-.52,dot(shade_n,normalize(vec3(.88,.43,.11)))));
++	// Occlusion follows downward shelter, independently of the moving key light.
++	AO=mix(1.0,.88,1.0-smoothstep(-.65,.15,material_normal.y));
+ 	NORMAL=normalize((VIEW_MATRIX*vec4(material_normal,0.0)).xyz);
+ }
+ void light(){
+-	stone_crisp_facet_light(NORMAL,LIGHT,LIGHT_COLOR,1.0,LIGHT_IS_DIRECTIONAL,v_world_ny,DIFFUSE_LIGHT);
++	vec3 lc=LIGHT_COLOR/PI;
++	float energy=dot(lc,vec3(.299,.587,.114));
++	float ndl=dot(NORMAL,LIGHT);
++	if(LIGHT_IS_DIRECTIONAL && max(lc.r,max(lc.g,lc.b))>.45){
++		// Continuous matte response keeps the root part of the same rock mass.
++		// The previous narrow terminator turned every short foot into a black cuff.
++		float direct=max(ndl,0.0)*.86*ATTENUATION;
++		float sky_weight=smoothstep(-.80,.90,v_world_ny);
++		vec3 sky=vec3(.62,.77,1.08)*(.095+.075*sky_weight);
++		vec3 cloud=vec3(.88,.85,.76)*(.055*(1.0-sky_weight));
++		DIFFUSE_LIGHT+=lc*direct+(sky+cloud)*energy;
++	}else{
++		stone_crisp_facet_light(NORMAL,LIGHT,LIGHT_COLOR,ATTENUATION,LIGHT_IS_DIRECTIONAL,v_world_ny,DIFFUSE_LIGHT);
++	}
+ }
+--- a/scripts/terrain_editor/terrain_environment.gd
++++ b/scripts/terrain_editor/terrain_environment.gd
+@@ -3,8 +3,8 @@
+ 
+ const STYLE_PRESETS: Array[Dictionary] = [
+ 	{
+-		"name": "温润青绿 · 晨光浮岛",
+-		"sun_rot": Vector3(-25.5, 83.8, 0.0),
++		"name": "天青烟岚 · 宋韵青绿",
++		"sun_rot": Vector3(-25.5, 38.0, 0.0),
+ 		"sun_color": Color(1.0, 0.94, 0.80),
+ 		"sun_energy": 2.02,
+ 		"sun_angular": 1.15,
+@@ -15,7 +15,7 @@
+ 		"ambient_color": Color(0.38, 0.54, 0.84),
+ 		"ambient_energy": 0.070,
+ 		"ssao_intensity": 1.24,
+-		"fog_color": Color(0.92, 0.90, 0.85),
++		"fog_color": Color(0.78, 0.84, 0.88),
+ 		"fog_density": 0.00016,
+ 		"fog_sun_scatter": 0.58,
+ 		"sky_zenith": Color(0.50, 0.69, 0.79),
+@@ -383,7 +383,7 @@
+ 							sm.set_shader_parameter("stone_lit_color", p.stone_lit)
+ 							if p.has("stone_mist"):
+ 								sm.set_shader_parameter("stone_mist_color", p.stone_mist)
+-						elif kind in ["grass", "grass_clump", "reeds"]:
++						elif sm.shader != null and sm.shader.resource_path.ends_with("foliage.gdshader"):
+ 							sm.set_shader_parameter("dark_color", p.foliage_dark)
+ 							sm.set_shader_parameter("light_color", p.foliage_light)
+ 						elif sm.shader != null and sm.shader.resource_path.ends_with("foliage_cards.gdshader"):
+--- a/scripts/gameplay/systems/time_solar_system.gd
++++ b/scripts/gameplay/systems/time_solar_system.gd
+@@ -18,7 +18,7 @@
+ 	{
+ 		"at": 0.0,
+ 		"mood": "烟渚星灯",
+-		"sun_rot": Vector3(-28.0, 72.0, 0.0),
++		"sun_rot": Vector3(-28.0, 28.0, 0.0),
+ 		"sun_color": Color(0.68, 0.82, 0.98),
+ 		"sun_energy": 0.84,
+ 		"sun_angular": 2.8,
+@@ -63,7 +63,7 @@
+ 	{
+ 		"at": 0.29,
+ 		"mood": "晨光青绿",
+-		"sun_rot": Vector3(-25.5, 83.8, 0.0),
++		"sun_rot": Vector3(-25.5, 38.0, 0.0),
+ 		"sun_color": Color(1.0, 0.94, 0.80),
+ 		"sun_energy": 2.02,
+ 		"sun_angular": 1.15,
+@@ -74,7 +74,7 @@
+ 		"ambient_color": Color(0.38, 0.54, 0.84),
+ 		"ambient_energy": 0.070,
+ 		"ssao_intensity": 1.24,
+-		"fog_color": Color(0.92, 0.90, 0.85),
++		"fog_color": Color(0.78, 0.84, 0.88),
+ 		"fog_density": 0.00016,
+ 		"fog_sun_scatter": 0.58,
+ 		"sky_zenith": Color(0.50, 0.69, 0.79),
+@@ -108,7 +108,7 @@
+ 	{
+ 		"at": 0.52,
+ 		"mood": "苍黛留白",
+-		"sun_rot": Vector3(-25.0, 78.0, 0.0),
++		"sun_rot": Vector3(-25.0, 42.0, 0.0),
+ 		"sun_color": Color(1.0, 0.93, 0.80),
+ 		"sun_energy": 1.40,
+ 		"sun_angular": 2.4,
+@@ -119,7 +119,7 @@
+ 		"ambient_color": Color(0.62, 0.65, 0.64),
+ 		"ambient_energy": 0.32,
+ 		"ssao_intensity": 0.90,
+-		"fog_color": Color(0.90, 0.88, 0.81),
++		"fog_color": Color(0.78, 0.82, 0.85),
+ 		"fog_density": 0.00058,
+ 		"fog_sun_scatter": 0.42,
+ 		"sky_zenith": Color(0.77, 0.76, 0.71),
+@@ -153,7 +153,7 @@
+ 	{
+ 		"at": 0.76,
+ 		"mood": "暖玉流霞",
+-		"sun_rot": Vector3(-22.0, 80.0, 0.0),
++		"sun_rot": Vector3(-22.0, 34.0, 0.0),
+ 		"sun_color": Color(1.0, 0.80, 0.56),
+ 		"sun_energy": 1.40,
+ 		"sun_angular": 2.0,
+@@ -164,7 +164,7 @@
+ 		"ambient_color": Color(0.66, 0.64, 0.74),
+ 		"ambient_energy": 0.30,
+ 		"ssao_intensity": 1.20,
+-		"fog_color": Color(0.90, 0.79, 0.69),
++		"fog_color": Color(0.71, 0.76, 0.81),
+ 		"fog_density": 0.00048,
+ 		"fog_sun_scatter": 0.48,
+ 		"sky_zenith": Color(0.50, 0.56, 0.72),
+@@ -172,7 +172,7 @@
+ 		"sky_horizon": Color(0.96, 0.83, 0.67),
+ 		"sky_sun_glow": Color(1.0, 0.74, 0.42),
+ 		"sky_sun_core": Color(1.0, 0.90, 0.68),
+-		"sky_cloud_dark": Color(0.62, 0.58, 0.70),
++		"sky_cloud_dark": Color(0.54, 0.60, 0.67),
+ 		"sky_cloud_light": Color(0.98, 0.88, 0.75),
+ 		"mountain_dark": Color(0.46, 0.42, 0.52),
+ 		"mountain_light": Color(0.78, 0.64, 0.52),
+@@ -409,7 +409,7 @@
+ 							sm.set_shader_parameter("stone_lit_color", p["stone_lit"])
+ 							if p.has("stone_mist"):
+ 								sm.set_shader_parameter("stone_mist_color", p["stone_mist"])
+-						elif kind in ["grass", "grass_clump", "reeds"]:
++						elif sm.shader != null and sm.shader.resource_path.ends_with("foliage.gdshader"):
+ 							sm.set_shader_parameter("dark_color", p["foliage_dark"])
+ 							sm.set_shader_parameter("light_color", p["foliage_light"])
+ 						elif sm.shader != null and sm.shader.resource_path.ends_with("foliage_cards.gdshader"):
+--- a/scripts/terrain_editor/grass_field.gd
++++ b/scripts/terrain_editor/grass_field.gd
+@@ -104,11 +104,13 @@
+ 			var v:=_hash(tri_s*0.73+float(k)*31.41,b.x*2.3+c.z*3.7,3.0)
+ 			if u+v>1.0:u=1.0-u;v=1.0-v
+ 			var w0:=1.0-u-v
++			var soft_lip_sample:=false
+ 			if has_cols:
+ 				var ca:Color=colors[i];var cb:Color=colors[i+1];var cc:Color=colors[i+2]
+ 				var col_a:=ca.a*w0+cb.a*u+cc.a*v
+ 				var col_g:=ca.g*w0+cb.g*u+cc.g*v
+-				if col_a<.945 or col_g<.982:continue
++				if col_a<.945 or col_g<.82:continue
++				soft_lip_sample=col_g<.982
+ 			var p:=a+(b-a)*u+(c-a)*v
+ 			var p2:=Vector2(p.x,p.z)
+ 			var rim_taper:=1.0
+@@ -132,6 +134,12 @@
+ 			var scale:=lerpf(.86,1.20,_hash(p.z*1.7+p.x*.5,p.x*2.3,5.0))*lerpf(.88,1.16,drift)*lerpf(.72,1.0,lip_factor)*rim_taper*path_taper
+ 			var h_scale:=scale*lerpf(.82,1.18,_hash(p.x*1.9,p.z*2.1+p.x*.3,6.0))*lerpf(.78,1.22,plume_drift)*lerpf(.46,1.0,lip_factor)*rim_taper*path_taper
+ 			var basis:=Basis(Vector3.UP,yaw).scaled(Vector3(scale,h_scale,scale))
++			if soft_lip_sample:
++				# Newly planted lip roots follow the rendered triangle, not the flat crown.
++				var surface_up:=n.normalized()
++				if surface_up.y<0.0:surface_up=-surface_up
++				basis=Basis(Quaternion(Vector3.UP,surface_up))*basis
++				p-=surface_up*.008
+ 			buffer.append_array([basis.x.x,basis.y.x,basis.z.x,p.x,basis.x.y,basis.y.y,basis.z.y,p.y,basis.x.z,basis.y.z,basis.z.z,p.z])
+ 			count+=1
+ 	if count==0:return null
+--- a/shaders/terrain_editor/ground.gdshader
++++ b/shaders/terrain_editor/ground.gdshader
+@@ -23,7 +23,11 @@
+ 	float lip_warm=clamp((0.985-COLOR.g)*3.2,0.0,1.0);
+ 	vec3 lip_tint=mix(vec3(1.0),vec3(1.08,1.07,0.88),lip_warm*0.44);
+ 	vec3 safe_vcol=max(COLOR.rgb,vec3(.88,.93,.82));
+-	ALBEDO=color*mix(vec3(1.0),safe_vcol,.30)*lip_tint;
++	vec3 lawn=color*mix(vec3(1.0),safe_vcol,.30)*lip_tint;
++	// Only the outer two roll rings expose the muted root/stone transition.
++	float lip_soil=1.0-smoothstep(.74,.92,COLOR.g);
++	vec3 rooted_sod=mix(color*.72,stone_mid_color*.55,.38);
++	ALBEDO=mix(lawn,rooted_sod,lip_soil*.84);
+ 	vec3 base_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ 	if(base_normal.y<0.0)base_normal=-base_normal;
+ 	// Smooth 0.6m–2.2m plush moss-meadow cushion swells on turf:
+--- a/shaders/terrain_editor/water.gdshader
++++ b/shaders/terrain_editor/water.gdshader
+@@ -168,13 +168,13 @@
+  float sun_glint=(spec_align*.75+pin_sparkle*mix(.25,.85,sunward_lane))*smoothstep(.06,.28,basin.r)*(1.0-reflected.a*.55);
+  color+=vec3(.98,.93,.76)*clamp(sun_glint*.55,0.0,.38);
+  // Silky plunge-pool mist foam & delicate shoreline water-lap ring:
+- float plunge_ring=sin((1.0-basin.b)*18.0-time*2.8+broad.x*2.4);
+- float plunge_foam=smoothstep(.16,.88,basin.b)*(smoothstep(.25,.78,plunge_ring)*.28+smoothstep(.45,.88,basin.b)*.62);
++ float plunge_foot=smoothstep(.60,.95,basin.b+(broad.x-.5)*.12);
++ float plunge_foam=plunge_foot*smoothstep(.52,.76,impact.x*.68+small.x*.32)*.30;
+  float bank_foam=(1.0-smoothstep(.008,.065,basin.r))*smoothstep(.42,.74,small.x)*.14;
+  float foam_mask=clamp(plunge_foam+bank_foam,0.0,1.0);
+  color=mix(color,vec3(.89,.93,.90),foam_mask*.72);
+  ALBEDO=vec3(0.0);
+  EMISSION=color*(1.0-fresnel);
+  ALPHA=1.0;
+- METALLIC=0.0;ROUGHNESS=.042+basin.b*.10;SPECULAR=.46;
++ METALLIC=0.0;ROUGHNESS=.26+basin.b*.10;SPECULAR=.12;
+ }

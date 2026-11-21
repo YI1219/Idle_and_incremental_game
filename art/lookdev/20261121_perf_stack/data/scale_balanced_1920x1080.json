@@ -1,0 +1,200 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"fits": {
+		"empty": {
+			"floor_ms": 11.6698420443581,
+			"ms_per_render": -0.0618643462964371
+		},
+		"scene": {
+			"floor_ms": 0.238538932092162,
+			"ms_per_render": 12.2091166755314
+		}
+	},
+	"method": "K identical fixed-pixel viewports sharing one world in the normal render loop, visible 1280x720 window, no cap or vsync; slope of frame time against K is one scene render, intercept is the machine floor; repeated with all 3D nodes hidden",
+	"mode": "balanced",
+	"resolution": [
+		1920,
+		1080
+	],
+	"rounds": 2,
+	"sample_seconds": 4.0,
+	"samples": [
+		{
+			"k": 1,
+			"ms": 12.355287037037,
+			"process_ms": 13.4094444444445,
+			"rendered": 324,
+			"round": 0,
+			"scene": true,
+			"setup_cpu_ms": 0.0564598765432098,
+			"viewport_cpu_ms": 0.550950617701919,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 2,
+			"ms": 24.4512926829268,
+			"process_ms": 26.0015182926829,
+			"rendered": 164,
+			"round": 0,
+			"scene": true,
+			"setup_cpu_ms": 0.312012195121951,
+			"viewport_cpu_ms": 0.75951829370929,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 3,
+			"ms": 37.1798148148148,
+			"process_ms": 39.6010833333333,
+			"rendered": 108,
+			"round": 0,
+			"scene": true,
+			"setup_cpu_ms": 0.210157407407407,
+			"viewport_cpu_ms": 0.952453704343902,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 4,
+			"ms": 49.0854390243902,
+			"process_ms": 51.3596219512195,
+			"rendered": 82,
+			"round": 0,
+			"scene": true,
+			"setup_cpu_ms": 0.332768292682927,
+			"viewport_cpu_ms": 1.13300000094786,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 1,
+			"ms": 11.8609023668639,
+			"process_ms": 18.383449704142,
+			"rendered": 338,
+			"round": 0,
+			"scene": false,
+			"setup_cpu_ms": 0.103227810650888,
+			"viewport_cpu_ms": 0.286118342227043,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 2,
+			"ms": 11.2246134453782,
+			"process_ms": 20.4907478991598,
+			"rendered": 357,
+			"round": 0,
+			"scene": false,
+			"setup_cpu_ms": 0.0846834733893558,
+			"viewport_cpu_ms": 0.302114845657883,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 3,
+			"ms": 11.1631504178273,
+			"process_ms": 17.2963370473538,
+			"rendered": 359,
+			"round": 0,
+			"scene": false,
+			"setup_cpu_ms": 0.0594401114206128,
+			"viewport_cpu_ms": 0.226545960800644,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 4,
+			"ms": 11.6803032069971,
+			"process_ms": 14.873413994169,
+			"rendered": 343,
+			"round": 0,
+			"scene": false,
+			"setup_cpu_ms": 0.0709533527696793,
+			"viewport_cpu_ms": 0.235454810180487,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 4,
+			"ms": 48.9004024390244,
+			"process_ms": 50.8051707317073,
+			"rendered": 82,
+			"round": 1,
+			"scene": true,
+			"setup_cpu_ms": 0.338707317073171,
+			"viewport_cpu_ms": 1.07084146142006,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 3,
+			"ms": 36.7898623853211,
+			"process_ms": 40.1226513761468,
+			"rendered": 109,
+			"round": 1,
+			"scene": true,
+			"setup_cpu_ms": 0.174082568807339,
+			"viewport_cpu_ms": 0.94827522706548,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 2,
+			"ms": 24.8789627329193,
+			"process_ms": 26.472298136646,
+			"rendered": 161,
+			"round": 1,
+			"scene": true,
+			"setup_cpu_ms": 0.0942981366459627,
+			"viewport_cpu_ms": 0.775093164132989,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 1,
+			"ms": 12.4495838509317,
+			"process_ms": 14.868645962733,
+			"rendered": 322,
+			"round": 1,
+			"scene": true,
+			"setup_cpu_ms": 0.0698354037267081,
+			"viewport_cpu_ms": 0.71077018730944,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 4,
+			"ms": 11.8035280235988,
+			"process_ms": 15.2049144542773,
+			"rendered": 339,
+			"round": 1,
+			"scene": false,
+			"setup_cpu_ms": 0.0697079646017699,
+			"viewport_cpu_ms": 0.233182890609918,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 3,
+			"ms": 11.1021052631579,
+			"process_ms": 17.9205734072022,
+			"rendered": 361,
+			"round": 1,
+			"scene": false,
+			"setup_cpu_ms": 0.0629750692520776,
+			"viewport_cpu_ms": 0.227742382756065,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 2,
+			"ms": 11.3569121813031,
+			"process_ms": 18.1068016997166,
+			"rendered": 353,
+			"round": 1,
+			"scene": false,
+			"setup_cpu_ms": 0.0723682719546743,
+			"viewport_cpu_ms": 0.294566571744154,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 1,
+			"ms": 11.9299345238095,
+			"process_ms": 19.4875922619048,
+			"rendered": 336,
+			"round": 1,
+			"scene": false,
+			"setup_cpu_ms": 0.072672619047619,
+			"viewport_cpu_ms": 0.339375000214204,
+			"viewport_gpu_ms": 0.0
+		}
+	],
+	"warm_seconds": 1.5
+}

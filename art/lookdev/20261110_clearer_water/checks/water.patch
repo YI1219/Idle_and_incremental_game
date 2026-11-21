@@ -1,0 +1,29 @@
+--- a/shaders/terrain_editor/water.gdshader
++++ b/shaders/terrain_editor/water.gdshader
+@@ -7,7 +7,7 @@
+ uniform vec2 shore_origin = vec2(0.0);
+ uniform vec2 shore_extent = vec2(1.0);
+ uniform vec3 water_deep : source_color = vec3(.10,.38,.36);
+-uniform float reflection_strength : hint_range(0.0,1.0) = .58;
++uniform float reflection_strength : hint_range(0.0,1.0) = .47;
+ uniform float water_time = -1.0;
+ uniform vec3 sun_direction = vec3(.56,.43,.71);
+ uniform vec3 glint_color : source_color = vec3(1.0,.94,.80);
+@@ -128,7 +128,7 @@
+  vec3 view_world=normalize(CAMERA_POSITION_WORLD-world_position);
+  vec3 behind=scene_position(SCREEN_UV,INV_PROJECTION_MATRIX,INV_VIEW_MATRIX);
+  float vertical_depth=clamp(world_position.y-behind.y,.01,4.0);
+- vec2 bend=normal_view.xy*.012*min(vertical_depth,1.4);
++ vec2 bend=normal_view.xy*.009*min(vertical_depth,1.4);
+  vec2 bent_uv=clamp(SCREEN_UV+bend,vec2(.001),vec2(.999));
+  vec3 bent_position=scene_position(bent_uv,INV_PROJECTION_MATRIX,INV_VIEW_MATRIX);
+  // Refraction cannot pull foreground lawn or the cloud sea over a bank.
+@@ -138,7 +138,7 @@
+  if(valid)vertical_depth=clamp(world_position.y-bent_position.y,.01,4.0);
+  float path=vertical_depth/max(abs(view_world.y),.25);
+  float shallow_clear=1.0-smoothstep(.02,.24,basin.r);
+- vec3 transmission=exp(-vec3(2.35,1.12,.98)*path*mix(1.0,.62,shallow_clear));
++ vec3 transmission=exp(-vec3(1.78,.84,.76)*path*mix(1.0,.58,shallow_clear));
+  vec3 bed=texture(screen_texture,sample_uv).rgb;
+  // Crystal-clear shallow pebble rim transitioning into tranquil celadon-jade deep basin (Europa / Resonance):
+  float shore_t=smoothstep(.02,.42,basin.r);

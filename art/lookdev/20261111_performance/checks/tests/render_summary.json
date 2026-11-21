@@ -1,0 +1,32 @@
+[
+  {
+    "test": "flooded_ground",
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "2026-11-12 00:11:35.774 godot[83086:73642434] +[IMKClient subclass]: chose IMKClient_Modern",
+      "2026-11-12 00:11:35.857 godot[83086:73642434] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+      "FLOODED GROUND: 20 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "grass_lod",
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "",
+      "2026-11-12 00:11:36.658 godot[83115:73642718] +[IMKClient subclass]: chose IMKClient_Modern",
+      "GRASS LOD 96 -> 28; 4 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "grass_recovery_render",
+    "exit": 0,
+    "errors": [],
+    "tail": [
+      "blades pixels 2249 -> 1031 -> 0 -> 700",
+      "rim pixels 6628 -> 3045 -> 0 -> 2047",
+      "GRASS RECOVERY PIXELS 8 checks, 0 failures"
+    ]
+  }
+]

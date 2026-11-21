@@ -1,0 +1,90 @@
+{
+	"method": "normal render loop, no cap or vsync, 2.5 s samples; all 3D hidden unless scene_visible",
+	"resolution": [
+		1920,
+		1080
+	],
+	"rows": [
+		{
+			"case": "base",
+			"ms": 12.0843913043478
+		},
+		{
+			"case": "editor subtree off",
+			"ms": 11.5073899082569
+		},
+		{
+			"case": "editor own process off",
+			"ms": 11.2157533632287
+		},
+		{
+			"case": "child off: @Node3D@4 (Node3D, terrain_renderer.gd)",
+			"ms": 12.0406746411483
+		},
+		{
+			"case": "child off: @Camera3D@6 (Camera3D, editor_camera.gd)",
+			"ms": 12.1995268292683
+		},
+		{
+			"case": "child off: @Node3D@7 (Node3D, distant_landscape.gd)",
+			"ms": 12.0984711538462
+		},
+		{
+			"case": "child off: AmbientMotes (MultiMeshInstance3D, ambient_motes.gd)",
+			"ms": 12.0018421052632
+		},
+		{
+			"case": "child off: SunLight (DirectionalLight3D)",
+			"ms": 12.0538221153846
+		},
+		{
+			"case": "child off: FillLight (DirectionalLight3D)",
+			"ms": 12.1000576923077
+		},
+		{
+			"case": "child off: WorldEnvironment (WorldEnvironment)",
+			"ms": 11.8158122065728
+		},
+		{
+			"case": "child off: @MeshInstance3D@38 (MeshInstance3D)",
+			"ms": 11.5602488479263
+		},
+		{
+			"case": "child off: @MeshInstance3D@39 (MeshInstance3D, edit_preview.gd)",
+			"ms": 11.8865687203791
+		},
+		{
+			"case": "child off: @CanvasLayer@40 (CanvasLayer, editor_hud.gd)",
+			"ms": 11.9798
+		},
+		{
+			"case": "child off: GameplayDirector (Node3D, director.gd)",
+			"ms": 11.7945660377358
+		},
+		{
+			"case": "child off: @Node3D@48 (Node3D, water_renderer.gd)",
+			"ms": 11.8907867298578
+		},
+		{
+			"case": "child off: @Node3D@49 (Node3D, background_renderer.gd)",
+			"ms": 11.7833849765258
+		},
+		{
+			"case": "child off: @Node@50 (Node, runtime_power.gd)",
+			"ms": 11.8844881516588
+		},
+		{
+			"case": "viewport not shown in window",
+			"ms": 11.5566958525346
+		},
+		{
+			"case": "scene viewport update disabled",
+			"ms": 11.99504784689
+		},
+		{
+			"case": "base again",
+			"ms": 11.683808411215
+		}
+	],
+	"scene_visible": false
+}

@@ -1,0 +1,6031 @@
+{
+	"godot": "4.7.2-stable (official)",
+	"issues": [],
+	"list": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/capture_final_geometry_ready.json",
+	"records": [
+		{
+			"angle": "front",
+			"asset": "low_mountain_dwelling_v02",
+			"bounds_min_m": [
+				-1.95735466480255,
+				0.0,
+				-3.01444458961487
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"far": 158.19287109375,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					1.64999997615814,
+					23.7289295196533
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.95735466480255,
+					0.0,
+					-3.01444458961487
+				],
+				"reference_dimensions_m": [
+					3.9147093296051,
+					3.29999995231628,
+					6.02888917922974
+				],
+				"size": 3.96000003814697,
+				"target": [
+					0.0,
+					1.64999997615814,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				3.9147093296051,
+				3.29999995231628,
+				6.02888917922974
+			],
+			"family": "architecture",
+			"file": "architecture/low_mountain_dwelling_v02/lod0_front.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "low_mountain_dwelling_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.95735466480255,
+							0.0,
+							-3.01444458961487
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							3.9147093296051,
+							3.29999995231628,
+							6.02888917922974
+						],
+						"material_overlay": null,
+						"node": "low_mountain_dwelling_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 8102
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/low_mountain_dwelling_v02/manifest.json",
+			"manifest_sha256": "e2cc9d0c6d7b5c9198f45ab01b2e80a2e6994a8f945fe573af25ce4d3234ec3a",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling_v02/lod0.glb",
+			"model_sha256": "a5d1637489d0c6b5ea03a9f2964f2171f24c3390f58415d1feb854a7de15fddb",
+			"msaa": 4,
+			"original_source_sha256": "69c0bed881045daf266eb546666a768c24471cc9345a4551437c1a046ee944f0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "back",
+			"asset": "low_mountain_dwelling_v02",
+			"bounds_min_m": [
+				-1.95735466480255,
+				0.0,
+				-3.01444458961487
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					-1.0
+				],
+				"far": 158.19287109375,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					1.64999997615814,
+					-23.7289295196533
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.95735466480255,
+					0.0,
+					-3.01444458961487
+				],
+				"reference_dimensions_m": [
+					3.9147093296051,
+					3.29999995231628,
+					6.02888917922974
+				],
+				"size": 3.96000003814697,
+				"target": [
+					0.0,
+					1.64999997615814,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				3.9147093296051,
+				3.29999995231628,
+				6.02888917922974
+			],
+			"family": "architecture",
+			"file": "architecture/low_mountain_dwelling_v02/lod0_back.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "low_mountain_dwelling_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.95735466480255,
+							0.0,
+							-3.01444458961487
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							3.9147093296051,
+							3.29999995231628,
+							6.02888917922974
+						],
+						"material_overlay": null,
+						"node": "low_mountain_dwelling_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 8102
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/low_mountain_dwelling_v02/manifest.json",
+			"manifest_sha256": "e2cc9d0c6d7b5c9198f45ab01b2e80a2e6994a8f945fe573af25ce4d3234ec3a",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling_v02/lod0.glb",
+			"model_sha256": "a5d1637489d0c6b5ea03a9f2964f2171f24c3390f58415d1feb854a7de15fddb",
+			"msaa": 4,
+			"original_source_sha256": "69c0bed881045daf266eb546666a768c24471cc9345a4551437c1a046ee944f0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "left",
+			"asset": "low_mountain_dwelling_v02",
+			"bounds_min_m": [
+				-1.95735466480255,
+				0.0,
+				-3.01444458961487
+			],
+			"camera": {
+				"direction": [
+					-1.0,
+					0.0,
+					0.0
+				],
+				"far": 158.19287109375,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					-23.7289295196533,
+					1.64999997615814,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.95735466480255,
+					0.0,
+					-3.01444458961487
+				],
+				"reference_dimensions_m": [
+					3.9147093296051,
+					3.29999995231628,
+					6.02888917922974
+				],
+				"size": 5.42600011825562,
+				"target": [
+					0.0,
+					1.64999997615814,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				3.9147093296051,
+				3.29999995231628,
+				6.02888917922974
+			],
+			"family": "architecture",
+			"file": "architecture/low_mountain_dwelling_v02/lod0_left.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "low_mountain_dwelling_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.95735466480255,
+							0.0,
+							-3.01444458961487
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							3.9147093296051,
+							3.29999995231628,
+							6.02888917922974
+						],
+						"material_overlay": null,
+						"node": "low_mountain_dwelling_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 8102
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/low_mountain_dwelling_v02/manifest.json",
+			"manifest_sha256": "e2cc9d0c6d7b5c9198f45ab01b2e80a2e6994a8f945fe573af25ce4d3234ec3a",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling_v02/lod0.glb",
+			"model_sha256": "a5d1637489d0c6b5ea03a9f2964f2171f24c3390f58415d1feb854a7de15fddb",
+			"msaa": 4,
+			"original_source_sha256": "69c0bed881045daf266eb546666a768c24471cc9345a4551437c1a046ee944f0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "right",
+			"asset": "low_mountain_dwelling_v02",
+			"bounds_min_m": [
+				-1.95735466480255,
+				0.0,
+				-3.01444458961487
+			],
+			"camera": {
+				"direction": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"far": 158.19287109375,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					23.7289295196533,
+					1.64999997615814,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.95735466480255,
+					0.0,
+					-3.01444458961487
+				],
+				"reference_dimensions_m": [
+					3.9147093296051,
+					3.29999995231628,
+					6.02888917922974
+				],
+				"size": 5.42600011825562,
+				"target": [
+					0.0,
+					1.64999997615814,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				3.9147093296051,
+				3.29999995231628,
+				6.02888917922974
+			],
+			"family": "architecture",
+			"file": "architecture/low_mountain_dwelling_v02/lod0_right.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "low_mountain_dwelling_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.95735466480255,
+							0.0,
+							-3.01444458961487
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							3.9147093296051,
+							3.29999995231628,
+							6.02888917922974
+						],
+						"material_overlay": null,
+						"node": "low_mountain_dwelling_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 8102
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/low_mountain_dwelling_v02/manifest.json",
+			"manifest_sha256": "e2cc9d0c6d7b5c9198f45ab01b2e80a2e6994a8f945fe573af25ce4d3234ec3a",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling_v02/lod0.glb",
+			"model_sha256": "a5d1637489d0c6b5ea03a9f2964f2171f24c3390f58415d1feb854a7de15fddb",
+			"msaa": 4,
+			"original_source_sha256": "69c0bed881045daf266eb546666a768c24471cc9345a4551437c1a046ee944f0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "low_mountain_dwelling_v02",
+			"bounds_min_m": [
+				-1.95735466480255,
+				0.0,
+				-3.01444458961487
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 158.19287109375,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					12.2699375152588,
+					10.2389545440674,
+					18.4049072265625
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.95735466480255,
+					0.0,
+					-3.01444458961487
+				],
+				"reference_dimensions_m": [
+					3.9147093296051,
+					3.29999995231628,
+					6.02888917922974
+				],
+				"size": 6.81354427337646,
+				"target": [
+					0.0,
+					1.64999997615814,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				3.9147093296051,
+				3.29999995231628,
+				6.02888917922974
+			],
+			"family": "architecture",
+			"file": "architecture/low_mountain_dwelling_v02/lod0_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "low_mountain_dwelling_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.95735466480255,
+							0.0,
+							-3.01444458961487
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							3.9147093296051,
+							3.29999995231628,
+							6.02888917922974
+						],
+						"material_overlay": null,
+						"node": "low_mountain_dwelling_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 8102
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/low_mountain_dwelling_v02/manifest.json",
+			"manifest_sha256": "e2cc9d0c6d7b5c9198f45ab01b2e80a2e6994a8f945fe573af25ce4d3234ec3a",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling_v02/lod0.glb",
+			"model_sha256": "a5d1637489d0c6b5ea03a9f2964f2171f24c3390f58415d1feb854a7de15fddb",
+			"msaa": 4,
+			"original_source_sha256": "69c0bed881045daf266eb546666a768c24471cc9345a4551437c1a046ee944f0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "low_mountain_dwelling_v02",
+			"bounds_min_m": [
+				-1.95638024806976,
+				0.000116959054139443,
+				-3.0140688419342
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 158.19287109375,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					12.2699375152588,
+					10.2389545440674,
+					18.4049072265625
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.95735466480255,
+					0.0,
+					-3.01444458961487
+				],
+				"reference_dimensions_m": [
+					3.9147093296051,
+					3.29999995231628,
+					6.02888917922974
+				],
+				"size": 6.81354427337646,
+				"target": [
+					0.0,
+					1.64999997615814,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				3.91325807571411,
+				3.29988288879395,
+				6.02851343154907
+			],
+			"family": "architecture",
+			"file": "architecture/low_mountain_dwelling_v02/lod1_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "low_mountain_dwelling_v02_LOD1_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.95638024806976,
+							0.000116959054139443,
+							-3.0140688419342
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							3.91325807571411,
+							3.29988288879395,
+							6.02851343154907
+						],
+						"material_overlay": null,
+						"node": "low_mountain_dwelling_v02_LOD1_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 3968
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 1,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/low_mountain_dwelling_v02/manifest.json",
+			"manifest_sha256": "e2cc9d0c6d7b5c9198f45ab01b2e80a2e6994a8f945fe573af25ce4d3234ec3a",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling_v02/lod1.glb",
+			"model_sha256": "8decceed1db25402e976863b4928c5dc8fd1f422f1dea7daa84247d6dc6bd360",
+			"msaa": 4,
+			"original_source_sha256": "69c0bed881045daf266eb546666a768c24471cc9345a4551437c1a046ee944f0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "low_mountain_dwelling_v02",
+			"bounds_min_m": [
+				-1.95641851425171,
+				0.00105152372270823,
+				-3.02348804473877
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 158.19287109375,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					12.2699375152588,
+					10.2389545440674,
+					18.4049072265625
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.95735466480255,
+					0.0,
+					-3.01444458961487
+				],
+				"reference_dimensions_m": [
+					3.9147093296051,
+					3.29999995231628,
+					6.02888917922974
+				],
+				"size": 6.81354427337646,
+				"target": [
+					0.0,
+					1.64999997615814,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				3.90732264518738,
+				3.27827119827271,
+				6.03230476379395
+			],
+			"family": "architecture",
+			"file": "architecture/low_mountain_dwelling_v02/lod2_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "low_mountain_dwelling_v02_LOD2_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.95641851425171,
+							0.00105152372270823,
+							-3.02348804473877
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							3.90732264518738,
+							3.27827119827271,
+							6.03230476379395
+						],
+						"material_overlay": null,
+						"node": "low_mountain_dwelling_v02_LOD2_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1190
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 2,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/low_mountain_dwelling_v02/manifest.json",
+			"manifest_sha256": "e2cc9d0c6d7b5c9198f45ab01b2e80a2e6994a8f945fe573af25ce4d3234ec3a",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling_v02/lod2.glb",
+			"model_sha256": "2c5e79fc534535c5dd9c952a8a0368f77d780852fa7427e3faa3d3e8e3dccdf2",
+			"msaa": 4,
+			"original_source_sha256": "69c0bed881045daf266eb546666a768c24471cc9345a4551437c1a046ee944f0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "front",
+			"asset": "small_white_flowers",
+			"bounds_min_m": [
+				-0.29705485701561,
+				0.0,
+				-0.330180078744888
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"far": 19.9152393341064,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.225000008940697,
+					2.98728585243225
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.29705485701561,
+					0.0,
+					-0.330180078744888
+				],
+				"reference_dimensions_m": [
+					0.594109714031219,
+					0.450000017881393,
+					0.660360157489777
+				],
+				"size": 0.540000021457672,
+				"target": [
+					0.0,
+					0.225000008940697,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.594109714031219,
+				0.450000017881393,
+				0.660360157489777
+			],
+			"family": "nature",
+			"file": "nature/small_white_flowers/lod0_front.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_white_flowers_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.29705485701561,
+							0.0,
+							-0.330180078744888
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.594109714031219,
+							0.450000017881393,
+							0.660360157489777
+						],
+						"material_overlay": null,
+						"node": "small_white_flowers_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 814
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_white_flowers/manifest.json",
+			"manifest_sha256": "c8485119c0fc026d56f835193bbf2547528dec897a2d403405d69c5a6a28b598",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_white_flowers/lod0.glb",
+			"model_sha256": "882968b2bf8f4d85da5abfa3cdd80fd7063bce471e38870d5353a66c782c5b53",
+			"msaa": 4,
+			"original_source_sha256": "432bfd453174e4c72b33686d968a12c5ff4c82e17672259f5a2bf62786ac06f4",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "back",
+			"asset": "small_white_flowers",
+			"bounds_min_m": [
+				-0.29705485701561,
+				0.0,
+				-0.330180078744888
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					-1.0
+				],
+				"far": 19.9152393341064,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.225000008940697,
+					-2.98728585243225
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.29705485701561,
+					0.0,
+					-0.330180078744888
+				],
+				"reference_dimensions_m": [
+					0.594109714031219,
+					0.450000017881393,
+					0.660360157489777
+				],
+				"size": 0.540000021457672,
+				"target": [
+					0.0,
+					0.225000008940697,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.594109714031219,
+				0.450000017881393,
+				0.660360157489777
+			],
+			"family": "nature",
+			"file": "nature/small_white_flowers/lod0_back.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_white_flowers_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.29705485701561,
+							0.0,
+							-0.330180078744888
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.594109714031219,
+							0.450000017881393,
+							0.660360157489777
+						],
+						"material_overlay": null,
+						"node": "small_white_flowers_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 814
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_white_flowers/manifest.json",
+			"manifest_sha256": "c8485119c0fc026d56f835193bbf2547528dec897a2d403405d69c5a6a28b598",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_white_flowers/lod0.glb",
+			"model_sha256": "882968b2bf8f4d85da5abfa3cdd80fd7063bce471e38870d5353a66c782c5b53",
+			"msaa": 4,
+			"original_source_sha256": "432bfd453174e4c72b33686d968a12c5ff4c82e17672259f5a2bf62786ac06f4",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "left",
+			"asset": "small_white_flowers",
+			"bounds_min_m": [
+				-0.29705485701561,
+				0.0,
+				-0.330180078744888
+			],
+			"camera": {
+				"direction": [
+					-1.0,
+					0.0,
+					0.0
+				],
+				"far": 19.9152393341064,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					-2.98728585243225,
+					0.225000008940697,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.29705485701561,
+					0.0,
+					-0.330180078744888
+				],
+				"reference_dimensions_m": [
+					0.594109714031219,
+					0.450000017881393,
+					0.660360157489777
+				],
+				"size": 0.594324111938477,
+				"target": [
+					0.0,
+					0.225000008940697,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.594109714031219,
+				0.450000017881393,
+				0.660360157489777
+			],
+			"family": "nature",
+			"file": "nature/small_white_flowers/lod0_left.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_white_flowers_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.29705485701561,
+							0.0,
+							-0.330180078744888
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.594109714031219,
+							0.450000017881393,
+							0.660360157489777
+						],
+						"material_overlay": null,
+						"node": "small_white_flowers_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 814
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_white_flowers/manifest.json",
+			"manifest_sha256": "c8485119c0fc026d56f835193bbf2547528dec897a2d403405d69c5a6a28b598",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_white_flowers/lod0.glb",
+			"model_sha256": "882968b2bf8f4d85da5abfa3cdd80fd7063bce471e38870d5353a66c782c5b53",
+			"msaa": 4,
+			"original_source_sha256": "432bfd453174e4c72b33686d968a12c5ff4c82e17672259f5a2bf62786ac06f4",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "right",
+			"asset": "small_white_flowers",
+			"bounds_min_m": [
+				-0.29705485701561,
+				0.0,
+				-0.330180078744888
+			],
+			"camera": {
+				"direction": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"far": 19.9152393341064,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.98728585243225,
+					0.225000008940697,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.29705485701561,
+					0.0,
+					-0.330180078744888
+				],
+				"reference_dimensions_m": [
+					0.594109714031219,
+					0.450000017881393,
+					0.660360157489777
+				],
+				"size": 0.594324111938477,
+				"target": [
+					0.0,
+					0.225000008940697,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.594109714031219,
+				0.450000017881393,
+				0.660360157489777
+			],
+			"family": "nature",
+			"file": "nature/small_white_flowers/lod0_right.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_white_flowers_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.29705485701561,
+							0.0,
+							-0.330180078744888
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.594109714031219,
+							0.450000017881393,
+							0.660360157489777
+						],
+						"material_overlay": null,
+						"node": "small_white_flowers_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 814
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_white_flowers/manifest.json",
+			"manifest_sha256": "c8485119c0fc026d56f835193bbf2547528dec897a2d403405d69c5a6a28b598",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_white_flowers/lod0.glb",
+			"model_sha256": "882968b2bf8f4d85da5abfa3cdd80fd7063bce471e38870d5353a66c782c5b53",
+			"msaa": 4,
+			"original_source_sha256": "432bfd453174e4c72b33686d968a12c5ff4c82e17672259f5a2bf62786ac06f4",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "small_white_flowers",
+			"bounds_min_m": [
+				-0.29705485701561,
+				0.0,
+				-0.330180078744888
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 19.9152393341064,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					1.54468882083893,
+					1.30628204345703,
+					2.31703305244446
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.29705485701561,
+					0.0,
+					-0.330180078744888
+				],
+				"reference_dimensions_m": [
+					0.594109714031219,
+					0.450000017881393,
+					0.660360157489777
+				],
+				"size": 0.88518363237381,
+				"target": [
+					0.0,
+					0.225000008940697,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.594109714031219,
+				0.450000017881393,
+				0.660360157489777
+			],
+			"family": "nature",
+			"file": "nature/small_white_flowers/lod0_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_white_flowers_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.29705485701561,
+							0.0,
+							-0.330180078744888
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.594109714031219,
+							0.450000017881393,
+							0.660360157489777
+						],
+						"material_overlay": null,
+						"node": "small_white_flowers_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 814
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_white_flowers/manifest.json",
+			"manifest_sha256": "c8485119c0fc026d56f835193bbf2547528dec897a2d403405d69c5a6a28b598",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_white_flowers/lod0.glb",
+			"model_sha256": "882968b2bf8f4d85da5abfa3cdd80fd7063bce471e38870d5353a66c782c5b53",
+			"msaa": 4,
+			"original_source_sha256": "432bfd453174e4c72b33686d968a12c5ff4c82e17672259f5a2bf62786ac06f4",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "small_white_flowers",
+			"bounds_min_m": [
+				-0.295438796281815,
+				0.00200280663557351,
+				-0.330180078744888
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 19.9152393341064,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					1.54468882083893,
+					1.30628204345703,
+					2.31703305244446
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.29705485701561,
+					0.0,
+					-0.330180078744888
+				],
+				"reference_dimensions_m": [
+					0.594109714031219,
+					0.450000017881393,
+					0.660360157489777
+				],
+				"size": 0.88518363237381,
+				"target": [
+					0.0,
+					0.225000008940697,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.592427551746368,
+				0.443415403366089,
+				0.654809415340424
+			],
+			"family": "nature",
+			"file": "nature/small_white_flowers/lod1_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_white_flowers_LOD1_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.295438796281815,
+							0.00200280663557351,
+							-0.330180078744888
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.592427551746368,
+							0.443415403366089,
+							0.654809415340424
+						],
+						"material_overlay": null,
+						"node": "small_white_flowers_LOD1_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 336
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 1,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_white_flowers/manifest.json",
+			"manifest_sha256": "c8485119c0fc026d56f835193bbf2547528dec897a2d403405d69c5a6a28b598",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_white_flowers/lod1.glb",
+			"model_sha256": "a6e22c457c934eda9b5a4de3a30530dfd9b0042b58f17d620d677deabb478929",
+			"msaa": 4,
+			"original_source_sha256": "432bfd453174e4c72b33686d968a12c5ff4c82e17672259f5a2bf62786ac06f4",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "small_white_flowers",
+			"bounds_min_m": [
+				-0.297138601541519,
+				0.00515234610065818,
+				-0.311453551054001
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 19.9152393341064,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					1.54468882083893,
+					1.30628204345703,
+					2.31703305244446
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.29705485701561,
+					0.0,
+					-0.330180078744888
+				],
+				"reference_dimensions_m": [
+					0.594109714031219,
+					0.450000017881393,
+					0.660360157489777
+				],
+				"size": 0.88518363237381,
+				"target": [
+					0.0,
+					0.225000008940697,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.579785704612732,
+				0.429653823375702,
+				0.636327981948853
+			],
+			"family": "nature",
+			"file": "nature/small_white_flowers/lod2_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_white_flowers_LOD2_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.297138601541519,
+							0.00515234610065818,
+							-0.311453551054001
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.579785704612732,
+							0.429653823375702,
+							0.636327981948853
+						],
+						"material_overlay": null,
+						"node": "small_white_flowers_LOD2_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 126
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 2,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_white_flowers/manifest.json",
+			"manifest_sha256": "c8485119c0fc026d56f835193bbf2547528dec897a2d403405d69c5a6a28b598",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_white_flowers/lod2.glb",
+			"model_sha256": "b9a508db07e65156dfb5a41092c6bf91211c4118ebd332753cbb45c8db4edc1d",
+			"msaa": 4,
+			"original_source_sha256": "432bfd453174e4c72b33686d968a12c5ff4c82e17672259f5a2bf62786ac06f4",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "front",
+			"asset": "small_bamboo",
+			"bounds_min_m": [
+				-0.197219789028168,
+				0.0,
+				-0.375931948423386
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"far": 27.7912349700928,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.550000011920929,
+					4.16868543624878
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.197219789028168,
+					0.0,
+					-0.375931948423386
+				],
+				"reference_dimensions_m": [
+					0.394439578056335,
+					1.10000002384186,
+					0.751863896846771
+				],
+				"size": 1.32000005245209,
+				"target": [
+					0.0,
+					0.550000011920929,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.394439578056335,
+				1.10000002384186,
+				0.751863896846771
+			],
+			"family": "nature",
+			"file": "nature/small_bamboo/lod0_front.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_bamboo_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.197219789028168,
+							0.0,
+							-0.375931948423386
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.394439578056335,
+							1.10000002384186,
+							0.751863896846771
+						],
+						"material_overlay": null,
+						"node": "small_bamboo_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1120
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_bamboo/manifest.json",
+			"manifest_sha256": "c5077fae253d4e58319d361c63cd9e00c8f0a62bd3e44b04ff47ea3767491d32",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_bamboo/lod0.glb",
+			"model_sha256": "e0a95cbfbf111fa9134647d13d19db78bf3ae4116019a7469674410945e82d6c",
+			"msaa": 4,
+			"original_source_sha256": "f12724ea788d2a110b244c1509294ede8e0a53ae928543dca68340b239e90761",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "back",
+			"asset": "small_bamboo",
+			"bounds_min_m": [
+				-0.197219789028168,
+				0.0,
+				-0.375931948423386
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					-1.0
+				],
+				"far": 27.7912349700928,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.550000011920929,
+					-4.16868543624878
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.197219789028168,
+					0.0,
+					-0.375931948423386
+				],
+				"reference_dimensions_m": [
+					0.394439578056335,
+					1.10000002384186,
+					0.751863896846771
+				],
+				"size": 1.32000005245209,
+				"target": [
+					0.0,
+					0.550000011920929,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.394439578056335,
+				1.10000002384186,
+				0.751863896846771
+			],
+			"family": "nature",
+			"file": "nature/small_bamboo/lod0_back.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_bamboo_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.197219789028168,
+							0.0,
+							-0.375931948423386
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.394439578056335,
+							1.10000002384186,
+							0.751863896846771
+						],
+						"material_overlay": null,
+						"node": "small_bamboo_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1120
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_bamboo/manifest.json",
+			"manifest_sha256": "c5077fae253d4e58319d361c63cd9e00c8f0a62bd3e44b04ff47ea3767491d32",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_bamboo/lod0.glb",
+			"model_sha256": "e0a95cbfbf111fa9134647d13d19db78bf3ae4116019a7469674410945e82d6c",
+			"msaa": 4,
+			"original_source_sha256": "f12724ea788d2a110b244c1509294ede8e0a53ae928543dca68340b239e90761",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "left",
+			"asset": "small_bamboo",
+			"bounds_min_m": [
+				-0.197219789028168,
+				0.0,
+				-0.375931948423386
+			],
+			"camera": {
+				"direction": [
+					-1.0,
+					0.0,
+					0.0
+				],
+				"far": 27.7912349700928,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					-4.16868543624878,
+					0.550000011920929,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.197219789028168,
+					0.0,
+					-0.375931948423386
+				],
+				"reference_dimensions_m": [
+					0.394439578056335,
+					1.10000002384186,
+					0.751863896846771
+				],
+				"size": 1.32000005245209,
+				"target": [
+					0.0,
+					0.550000011920929,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.394439578056335,
+				1.10000002384186,
+				0.751863896846771
+			],
+			"family": "nature",
+			"file": "nature/small_bamboo/lod0_left.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_bamboo_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.197219789028168,
+							0.0,
+							-0.375931948423386
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.394439578056335,
+							1.10000002384186,
+							0.751863896846771
+						],
+						"material_overlay": null,
+						"node": "small_bamboo_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1120
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_bamboo/manifest.json",
+			"manifest_sha256": "c5077fae253d4e58319d361c63cd9e00c8f0a62bd3e44b04ff47ea3767491d32",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_bamboo/lod0.glb",
+			"model_sha256": "e0a95cbfbf111fa9134647d13d19db78bf3ae4116019a7469674410945e82d6c",
+			"msaa": 4,
+			"original_source_sha256": "f12724ea788d2a110b244c1509294ede8e0a53ae928543dca68340b239e90761",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "right",
+			"asset": "small_bamboo",
+			"bounds_min_m": [
+				-0.197219789028168,
+				0.0,
+				-0.375931948423386
+			],
+			"camera": {
+				"direction": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"far": 27.7912349700928,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					4.16868543624878,
+					0.550000011920929,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.197219789028168,
+					0.0,
+					-0.375931948423386
+				],
+				"reference_dimensions_m": [
+					0.394439578056335,
+					1.10000002384186,
+					0.751863896846771
+				],
+				"size": 1.32000005245209,
+				"target": [
+					0.0,
+					0.550000011920929,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.394439578056335,
+				1.10000002384186,
+				0.751863896846771
+			],
+			"family": "nature",
+			"file": "nature/small_bamboo/lod0_right.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_bamboo_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.197219789028168,
+							0.0,
+							-0.375931948423386
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.394439578056335,
+							1.10000002384186,
+							0.751863896846771
+						],
+						"material_overlay": null,
+						"node": "small_bamboo_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1120
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_bamboo/manifest.json",
+			"manifest_sha256": "c5077fae253d4e58319d361c63cd9e00c8f0a62bd3e44b04ff47ea3767491d32",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_bamboo/lod0.glb",
+			"model_sha256": "e0a95cbfbf111fa9134647d13d19db78bf3ae4116019a7469674410945e82d6c",
+			"msaa": 4,
+			"original_source_sha256": "f12724ea788d2a110b244c1509294ede8e0a53ae928543dca68340b239e90761",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "small_bamboo",
+			"bounds_min_m": [
+				-0.197219789028168,
+				0.0,
+				-0.375931948423386
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 27.7912349700928,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.1555757522583,
+					2.05890297889709,
+					3.23336410522461
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.197219789028168,
+					0.0,
+					-0.375931948423386
+				],
+				"reference_dimensions_m": [
+					0.394439578056335,
+					1.10000002384186,
+					0.751863896846771
+				],
+				"size": 1.59725630283356,
+				"target": [
+					0.0,
+					0.550000011920929,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.394439578056335,
+				1.10000002384186,
+				0.751863896846771
+			],
+			"family": "nature",
+			"file": "nature/small_bamboo/lod0_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_bamboo_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.197219789028168,
+							0.0,
+							-0.375931948423386
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.394439578056335,
+							1.10000002384186,
+							0.751863896846771
+						],
+						"material_overlay": null,
+						"node": "small_bamboo_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1120
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_bamboo/manifest.json",
+			"manifest_sha256": "c5077fae253d4e58319d361c63cd9e00c8f0a62bd3e44b04ff47ea3767491d32",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_bamboo/lod0.glb",
+			"model_sha256": "e0a95cbfbf111fa9134647d13d19db78bf3ae4116019a7469674410945e82d6c",
+			"msaa": 4,
+			"original_source_sha256": "f12724ea788d2a110b244c1509294ede8e0a53ae928543dca68340b239e90761",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "small_bamboo",
+			"bounds_min_m": [
+				-0.180398985743523,
+				-0.000647182867396623,
+				-0.375275433063507
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 27.7912349700928,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.1555757522583,
+					2.05890297889709,
+					3.23336410522461
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.197219789028168,
+					0.0,
+					-0.375931948423386
+				],
+				"reference_dimensions_m": [
+					0.394439578056335,
+					1.10000002384186,
+					0.751863896846771
+				],
+				"size": 1.59725630283356,
+				"target": [
+					0.0,
+					0.550000011920929,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.370759725570679,
+				1.09691059589386,
+				0.748023331165314
+			],
+			"family": "nature",
+			"file": "nature/small_bamboo/lod1_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_bamboo_LOD1_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.180398985743523,
+							-0.000647182867396623,
+							-0.375275433063507
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.370759725570679,
+							1.09691059589386,
+							0.748023331165314
+						],
+						"material_overlay": null,
+						"node": "small_bamboo_LOD1_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 476
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 1,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_bamboo/manifest.json",
+			"manifest_sha256": "c5077fae253d4e58319d361c63cd9e00c8f0a62bd3e44b04ff47ea3767491d32",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_bamboo/lod1.glb",
+			"model_sha256": "74194a42167f9edb3b94e3c5a93b7b1181c1b9e6b6f4c3a446ec8f6e570686c1",
+			"msaa": 4,
+			"original_source_sha256": "f12724ea788d2a110b244c1509294ede8e0a53ae928543dca68340b239e90761",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "small_bamboo",
+			"bounds_min_m": [
+				-0.15229594707489,
+				0.0129114547744393,
+				-0.339750707149506
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 27.7912349700928,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.1555757522583,
+					2.05890297889709,
+					3.23336410522461
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.197219789028168,
+					0.0,
+					-0.375931948423386
+				],
+				"reference_dimensions_m": [
+					0.394439578056335,
+					1.10000002384186,
+					0.751863896846771
+				],
+				"size": 1.59725630283356,
+				"target": [
+					0.0,
+					0.550000011920929,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.3119116127491,
+				1.07793962955475,
+				0.690339207649231
+			],
+			"family": "nature",
+			"file": "nature/small_bamboo/lod2_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "small_bamboo_LOD2_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.15229594707489,
+							0.0129114547744393,
+							-0.339750707149506
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.3119116127491,
+							1.07793962955475,
+							0.690339207649231
+						],
+						"material_overlay": null,
+						"node": "small_bamboo_LOD2_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 178
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 2,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/small_bamboo/manifest.json",
+			"manifest_sha256": "c5077fae253d4e58319d361c63cd9e00c8f0a62bd3e44b04ff47ea3767491d32",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/small_bamboo/lod2.glb",
+			"model_sha256": "3a6e0e99f8ce9e20f59535fb2c432718963cd9ccbf9dcbdec3ffba002b76c885",
+			"msaa": 4,
+			"original_source_sha256": "f12724ea788d2a110b244c1509294ede8e0a53ae928543dca68340b239e90761",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "front",
+			"asset": "iris_sweetflag",
+			"bounds_min_m": [
+				-0.342459052801132,
+				0.0,
+				-0.377721428871155
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"far": 25.3164520263672,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.375,
+					3.79746794700623
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.342459052801132,
+					0.0,
+					-0.377721428871155
+				],
+				"reference_dimensions_m": [
+					0.684918105602264,
+					0.75,
+					0.75544285774231
+				],
+				"size": 0.899999976158142,
+				"target": [
+					0.0,
+					0.375,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.684918105602264,
+				0.75,
+				0.75544285774231
+			],
+			"family": "nature",
+			"file": "nature/iris_sweetflag/lod0_front.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "iris_sweetflag_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.342459052801132,
+							0.0,
+							-0.377721428871155
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.684918105602264,
+							0.75,
+							0.75544285774231
+						],
+						"material_overlay": null,
+						"node": "iris_sweetflag_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 622
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/iris_sweetflag/manifest.json",
+			"manifest_sha256": "4cda01700ecb4a98eec3d7001f37a7238245f8e3ac237a3e48e16f5e66d77552",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/iris_sweetflag/lod0.glb",
+			"model_sha256": "cb85bf855161dbf05e915368116a6622198188ce117d9dac53ebf84fa001620e",
+			"msaa": 4,
+			"original_source_sha256": "259daf5465659430b9750bdd5a60efd07a16b955123265baa3560601e2d45922",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "back",
+			"asset": "iris_sweetflag",
+			"bounds_min_m": [
+				-0.342459052801132,
+				0.0,
+				-0.377721428871155
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					-1.0
+				],
+				"far": 25.3164520263672,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.375,
+					-3.79746794700623
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.342459052801132,
+					0.0,
+					-0.377721428871155
+				],
+				"reference_dimensions_m": [
+					0.684918105602264,
+					0.75,
+					0.75544285774231
+				],
+				"size": 0.899999976158142,
+				"target": [
+					0.0,
+					0.375,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.684918105602264,
+				0.75,
+				0.75544285774231
+			],
+			"family": "nature",
+			"file": "nature/iris_sweetflag/lod0_back.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "iris_sweetflag_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.342459052801132,
+							0.0,
+							-0.377721428871155
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.684918105602264,
+							0.75,
+							0.75544285774231
+						],
+						"material_overlay": null,
+						"node": "iris_sweetflag_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 622
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/iris_sweetflag/manifest.json",
+			"manifest_sha256": "4cda01700ecb4a98eec3d7001f37a7238245f8e3ac237a3e48e16f5e66d77552",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/iris_sweetflag/lod0.glb",
+			"model_sha256": "cb85bf855161dbf05e915368116a6622198188ce117d9dac53ebf84fa001620e",
+			"msaa": 4,
+			"original_source_sha256": "259daf5465659430b9750bdd5a60efd07a16b955123265baa3560601e2d45922",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "left",
+			"asset": "iris_sweetflag",
+			"bounds_min_m": [
+				-0.342459052801132,
+				0.0,
+				-0.377721428871155
+			],
+			"camera": {
+				"direction": [
+					-1.0,
+					0.0,
+					0.0
+				],
+				"far": 25.3164520263672,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					-3.79746794700623,
+					0.375,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.342459052801132,
+					0.0,
+					-0.377721428871155
+				],
+				"reference_dimensions_m": [
+					0.684918105602264,
+					0.75,
+					0.75544285774231
+				],
+				"size": 0.899999976158142,
+				"target": [
+					0.0,
+					0.375,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.684918105602264,
+				0.75,
+				0.75544285774231
+			],
+			"family": "nature",
+			"file": "nature/iris_sweetflag/lod0_left.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "iris_sweetflag_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.342459052801132,
+							0.0,
+							-0.377721428871155
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.684918105602264,
+							0.75,
+							0.75544285774231
+						],
+						"material_overlay": null,
+						"node": "iris_sweetflag_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 622
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/iris_sweetflag/manifest.json",
+			"manifest_sha256": "4cda01700ecb4a98eec3d7001f37a7238245f8e3ac237a3e48e16f5e66d77552",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/iris_sweetflag/lod0.glb",
+			"model_sha256": "cb85bf855161dbf05e915368116a6622198188ce117d9dac53ebf84fa001620e",
+			"msaa": 4,
+			"original_source_sha256": "259daf5465659430b9750bdd5a60efd07a16b955123265baa3560601e2d45922",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "right",
+			"asset": "iris_sweetflag",
+			"bounds_min_m": [
+				-0.342459052801132,
+				0.0,
+				-0.377721428871155
+			],
+			"camera": {
+				"direction": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"far": 25.3164520263672,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					3.79746794700623,
+					0.375,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.342459052801132,
+					0.0,
+					-0.377721428871155
+				],
+				"reference_dimensions_m": [
+					0.684918105602264,
+					0.75,
+					0.75544285774231
+				],
+				"size": 0.899999976158142,
+				"target": [
+					0.0,
+					0.375,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.684918105602264,
+				0.75,
+				0.75544285774231
+			],
+			"family": "nature",
+			"file": "nature/iris_sweetflag/lod0_right.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "iris_sweetflag_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.342459052801132,
+							0.0,
+							-0.377721428871155
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.684918105602264,
+							0.75,
+							0.75544285774231
+						],
+						"material_overlay": null,
+						"node": "iris_sweetflag_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 622
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/iris_sweetflag/manifest.json",
+			"manifest_sha256": "4cda01700ecb4a98eec3d7001f37a7238245f8e3ac237a3e48e16f5e66d77552",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/iris_sweetflag/lod0.glb",
+			"model_sha256": "cb85bf855161dbf05e915368116a6622198188ce117d9dac53ebf84fa001620e",
+			"msaa": 4,
+			"original_source_sha256": "259daf5465659430b9750bdd5a60efd07a16b955123265baa3560601e2d45922",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "iris_sweetflag",
+			"bounds_min_m": [
+				-0.342459052801132,
+				0.0,
+				-0.377721428871155
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 25.3164520263672,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					1.96362400054932,
+					1.74953675270081,
+					2.94543600082397
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.342459052801132,
+					0.0,
+					-0.377721428871155
+				],
+				"reference_dimensions_m": [
+					0.684918105602264,
+					0.75,
+					0.75544285774231
+				],
+				"size": 1.27701544761658,
+				"target": [
+					0.0,
+					0.375,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.684918105602264,
+				0.75,
+				0.75544285774231
+			],
+			"family": "nature",
+			"file": "nature/iris_sweetflag/lod0_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "iris_sweetflag_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.342459052801132,
+							0.0,
+							-0.377721428871155
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.684918105602264,
+							0.75,
+							0.75544285774231
+						],
+						"material_overlay": null,
+						"node": "iris_sweetflag_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 622
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/iris_sweetflag/manifest.json",
+			"manifest_sha256": "4cda01700ecb4a98eec3d7001f37a7238245f8e3ac237a3e48e16f5e66d77552",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/iris_sweetflag/lod0.glb",
+			"model_sha256": "cb85bf855161dbf05e915368116a6622198188ce117d9dac53ebf84fa001620e",
+			"msaa": 4,
+			"original_source_sha256": "259daf5465659430b9750bdd5a60efd07a16b955123265baa3560601e2d45922",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "iris_sweetflag",
+			"bounds_min_m": [
+				-0.329381465911865,
+				0.0000376098760170862,
+				-0.377721428871155
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 25.3164520263672,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					1.96362400054932,
+					1.74953675270081,
+					2.94543600082397
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.342459052801132,
+					0.0,
+					-0.377721428871155
+				],
+				"reference_dimensions_m": [
+					0.684918105602264,
+					0.75,
+					0.75544285774231
+				],
+				"size": 1.27701544761658,
+				"target": [
+					0.0,
+					0.375,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.671528100967407,
+				0.749962389469147,
+				0.733573198318481
+			],
+			"family": "nature",
+			"file": "nature/iris_sweetflag/lod1_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "iris_sweetflag_LOD1_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.329381465911865,
+							0.0000376098760170862,
+							-0.377721428871155
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.671528100967407,
+							0.749962389469147,
+							0.733573198318481
+						],
+						"material_overlay": null,
+						"node": "iris_sweetflag_LOD1_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 276
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 1,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/iris_sweetflag/manifest.json",
+			"manifest_sha256": "4cda01700ecb4a98eec3d7001f37a7238245f8e3ac237a3e48e16f5e66d77552",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/iris_sweetflag/lod1.glb",
+			"model_sha256": "7bc80bd38dbd828d2610ec03d0d21683eebb0b7319e55a5ec690cf138c93a65f",
+			"msaa": 4,
+			"original_source_sha256": "259daf5465659430b9750bdd5a60efd07a16b955123265baa3560601e2d45922",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "iris_sweetflag",
+			"bounds_min_m": [
+				-0.282793343067169,
+				-0.0032092584297061,
+				-0.330889195203781
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 25.3164520263672,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					1.96362400054932,
+					1.74953675270081,
+					2.94543600082397
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.342459052801132,
+					0.0,
+					-0.377721428871155
+				],
+				"reference_dimensions_m": [
+					0.684918105602264,
+					0.75,
+					0.75544285774231
+				],
+				"size": 1.27701544761658,
+				"target": [
+					0.0,
+					0.375,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.588066220283508,
+				0.738791644573212,
+				0.676933765411377
+			],
+			"family": "nature",
+			"file": "nature/iris_sweetflag/lod2_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "iris_sweetflag_LOD2_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.282793343067169,
+							-0.0032092584297061,
+							-0.330889195203781
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.588066220283508,
+							0.738791644573212,
+							0.676933765411377
+						],
+						"material_overlay": null,
+						"node": "iris_sweetflag_LOD2_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 104
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 2,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/iris_sweetflag/manifest.json",
+			"manifest_sha256": "4cda01700ecb4a98eec3d7001f37a7238245f8e3ac237a3e48e16f5e66d77552",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/iris_sweetflag/lod2.glb",
+			"model_sha256": "30d13df0e0d8fae5ab1cdc07a4ebac0dc42b7d6052d2c5fba003c1fbd2125503",
+			"msaa": 4,
+			"original_source_sha256": "259daf5465659430b9750bdd5a60efd07a16b955123265baa3560601e2d45922",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		}
+	],
+	"renderer": "forward_plus",
+	"scope": "Isolated imported-material asset review only; art acceptance and hardware FPS unmeasured",
+	"script_sha256": "361718fb3d829f904f4232392aca5c298c6218748f745f0103ed7feefebc1a59",
+	"valid": true
+}

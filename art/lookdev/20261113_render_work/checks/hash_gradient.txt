@@ -1,0 +1,27 @@
+float stone_noise_mix(vec3 f,float h000,float h100,float h010,float h110,float h001,float h101,float h011,float h111){
+ return mix(mix(mix(h000,h100,f.x),mix(h010,h110,f.x),f.y),mix(mix(h001,h101,f.x),mix(h011,h111,f.x),f.y),f.z);
+}
+vec3 stone_mineral_gradient(vec3 p){
+ vec3 q=p*.95;
+ vec3 qx=(p+vec3(.10,0.0,0.0))*.95;
+ vec3 qy=(p+vec3(0.0,.10,0.0))*.95;
+ vec3 qz=(p+vec3(0.0,0.0,.10))*.95;
+ vec3 i=floor(q);
+ float h000=rock_hash(i).x;
+ float h100=rock_hash(i+vec3(1,0,0)).x;
+ float h010=rock_hash(i+vec3(0,1,0)).x;
+ float h110=rock_hash(i+vec3(1,1,0)).x;
+ float h001=rock_hash(i+vec3(0,0,1)).x;
+ float h101=rock_hash(i+vec3(1,0,1)).x;
+ float h011=rock_hash(i+vec3(0,1,1)).x;
+ float h111=rock_hash(i+vec3(1,1,1)).x;
+ vec3 f=fract(q);f=f*f*(3.0-2.0*f);
+ float h=stone_noise_mix(f,h000,h100,h010,h110,h001,h101,h011,h111);
+ vec3 fx=fract(qx);fx=fx*fx*(3.0-2.0*fx);
+ vec3 fy=fract(qy);fy=fy*fy*(3.0-2.0*fy);
+ vec3 fz=fract(qz);fz=fz*fz*(3.0-2.0*fz);
+ float hx=floor(qx.x)==i.x?stone_noise_mix(fx,h000,h100,h010,h110,h001,h101,h011,h111):stone_noise(qx);
+ float hy=floor(qy.y)==i.y?stone_noise_mix(fy,h000,h100,h010,h110,h001,h101,h011,h111):stone_noise(qy);
+ float hz=floor(qz.z)==i.z?stone_noise_mix(fz,h000,h100,h010,h110,h001,h101,h011,h111):stone_noise(qz);
+ return vec3(hx-h,hy-h,hz-h)/.10;
+}

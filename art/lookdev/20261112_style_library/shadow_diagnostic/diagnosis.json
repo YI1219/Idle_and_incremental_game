@@ -1,0 +1,24 @@
+{
+  "asset": "props/wood_bench",
+  "original_evidence": "../initial_geometry_v2/props/wood_bench/lod0_iso.png",
+  "source_assets_materials_normals_culling": "unchanged",
+  "runs": {
+    "production_settings": "Production sun bias .035, normal bias .70, angular distance 3.6 retained; previously omitted max_distance 78, splits .14/.34/.62, blend_splits and extra SSAO settings now matched. Dense diagonal stippling remains.",
+    "no_shadows": "Identical settings except sun shadow disabled for diagnosis only. Dense diagonal stippling disappears; geometry still visibly unchanged.",
+    "no_ssao": "Identical production settings except SSAO disabled for diagnosis only. Dense diagonal stippling remains."
+  },
+  "conclusion": "Pattern is dominated by directional self-shadow sampling/acne under these isolated-camera conditions. Matching the missing production cascade settings alone does not remove it. No evidence supports assigning this to a source texture or SSAO. Exact cause within shadow-map precision/filtering versus mesh interaction remains unresolved.",
+  "use": "Keep initial and production-shadow evidence. no_shadows is diagnostic shape inspection only, never the final lighting result. No production lighting or model data modified.",
+  "all_capture_processes": "self-exited",
+  "matched_invariants": {
+    "groups": 3,
+    "frames_per_group": 7,
+    "model_sha256": "identical",
+    "camera": "identical",
+    "geometry_and_actual_material_parameters": "identical",
+    "intended_variants": [
+      "sun.shadow_enabled",
+      "environment.ssao_enabled"
+    ]
+  }
+}

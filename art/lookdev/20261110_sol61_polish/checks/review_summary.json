@@ -1,0 +1,29 @@
+{
+  "baseline_accepted_by_user": true,
+  "new_polish_art_accepted": false,
+  "retained_visual_findings": {
+    "junction": "rounder contact, modest benefit, no new gap or dirty band",
+    "path": "baked dark blue sidewall removed; real lighting retained",
+    "rhythm": "readable irregular turns, main painted response preserved",
+    "roots": "conservative planar-root contraction, no added foot ring",
+    "water": "06 restores fine silver ribbons after the rejected thick-cyan curtain; lip/tail improved"
+  },
+  "remaining": [
+    "some straight grass edges and rock joins",
+    "small root seams/left outline fragment",
+    "path shapes still regular",
+    "water slightly white/even, short bright strip on outer-fall left edge"
+  ],
+  "code_review_important_fixed": "arbitrary foot point offsets broke lower quad coplanarity; RED8/24 then original plane formulation with ROOT_FOLD tuning GREEN24/24",
+  "rejected": [
+    "04_blunt_roots_day",
+    "04_root_bevel_day",
+    "04_integrated_roots_day",
+    "05_waterfall_day",
+    "05_refined_waterfall_day",
+    "05_final_day",
+    "final_night"
+  ],
+  "protected_lighting_and_main_stone_sources_unchanged": true,
+  "night_and_held_seed_review": "No new rollback-level issue. Night flow/paths readable; two-fall presets stable, 913 no-water stable; root cover retained. Dark reverse lower faces and narrow seams/outer-fall bright strip remain."
+}

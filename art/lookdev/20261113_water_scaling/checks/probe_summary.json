@@ -1,0 +1,122 @@
+[
+  {
+    "mode": "solver",
+    "kind": "flowing",
+    "factor": 1,
+    "cells": 623,
+    "before_ms": 874.81,
+    "after_ms": 833.338,
+    "saved_percent": 4.740686549079232,
+    "mass_exact": true
+  },
+  {
+    "mode": "solver",
+    "kind": "flowing",
+    "factor": 4,
+    "cells": 2492,
+    "before_ms": 1112.5965,
+    "after_ms": 821.559,
+    "saved_percent": 26.15840513609382,
+    "mass_exact": true
+  },
+  {
+    "mode": "solver",
+    "kind": "flowing",
+    "factor": 16,
+    "cells": 9968,
+    "before_ms": 2062.0294999999996,
+    "after_ms": 822.191,
+    "saved_percent": 60.127098084678224,
+    "mass_exact": true
+  },
+  {
+    "mode": "solver",
+    "kind": "stable",
+    "factor": 1,
+    "cells": 268,
+    "before_ms": 1.4895,
+    "after_ms": 0.0165,
+    "saved_percent": 98.89224572004028,
+    "mass_exact": true
+  },
+  {
+    "mode": "solver",
+    "kind": "stable",
+    "factor": 4,
+    "cells": 1072,
+    "before_ms": 5.4595,
+    "after_ms": 0.0175,
+    "saved_percent": 99.67945782580823,
+    "mass_exact": true
+  },
+  {
+    "mode": "solver",
+    "kind": "stable",
+    "factor": 16,
+    "cells": 4288,
+    "before_ms": 20.652,
+    "after_ms": 0.020499999999999997,
+    "saved_percent": 99.90073600619795,
+    "mass_exact": true
+  },
+  {
+    "mode": "pipeline",
+    "kind": "flowing",
+    "factor": 1,
+    "cells": 623,
+    "before_ms": 807.3805,
+    "after_ms": 720.2375,
+    "saved_percent": 10.7933000611236,
+    "mass_exact": true
+  },
+  {
+    "mode": "pipeline",
+    "kind": "flowing",
+    "factor": 4,
+    "cells": 2492,
+    "before_ms": 1334.1305,
+    "after_ms": 788.8245,
+    "saved_percent": 40.87351274856545,
+    "mass_exact": true
+  },
+  {
+    "mode": "pipeline",
+    "kind": "flowing",
+    "factor": 16,
+    "cells": 9968,
+    "before_ms": 3397.7205,
+    "after_ms": 1064.6239999999998,
+    "saved_percent": 68.66652215801741,
+    "mass_exact": true
+  },
+  {
+    "mode": "pipeline",
+    "kind": "stable",
+    "factor": 1,
+    "cells": 268,
+    "before_ms": 4.9245,
+    "after_ms": 0.382,
+    "saved_percent": 92.24286729617221,
+    "mass_exact": true
+  },
+  {
+    "mode": "pipeline",
+    "kind": "stable",
+    "factor": 4,
+    "cells": 1072,
+    "before_ms": 17.012500000000003,
+    "after_ms": 0.385,
+    "saved_percent": 97.73695811903012,
+    "mass_exact": true
+  },
+  {
+    "mode": "pipeline",
+    "kind": "stable",
+    "factor": 16,
+    "cells": 4288,
+    "before_ms": 69.90100000000001,
+    "after_ms": 0.406,
+    "saved_percent": 99.41917855252429,
+    "mass_exact": true
+  }
+]

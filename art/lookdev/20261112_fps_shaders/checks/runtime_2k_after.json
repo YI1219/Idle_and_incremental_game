@@ -1,0 +1,21 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"before": false,
+	"elapsed_seconds": 8.015884,
+	"fps": 57.5108122822137,
+	"frames": 461,
+	"method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+	"msaa": 1,
+	"p50_ms": 16.777,
+	"p95_ms": 19.858,
+	"resolution": [
+		2560,
+		1440
+	],
+	"scale": 1.0,
+	"texture_size": [
+		2560,
+		1440
+	],
+	"water_seconds": 11.1
+}

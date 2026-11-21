@@ -5,7 +5,7 @@ static func soften(mesh:ArrayMesh,crease_degrees:float=55.0,strength:float=.80)-
  var result:=ArrayMesh.new()
  var cosine:=cos(deg_to_rad(crease_degrees))
  for surface in mesh.get_surface_count():
-  var arrays:=mesh.surface_get_arrays(surface)
+  var arrays:=preload("res://scripts/terrain_editor/chunk_geometry.gd").arrays_of(mesh,surface)
   var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
   var normals:PackedVector3Array=arrays[Mesh.ARRAY_NORMAL]
   if normals.size()!=vertices.size():

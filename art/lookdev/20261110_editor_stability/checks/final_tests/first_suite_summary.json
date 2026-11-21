@@ -1,0 +1,122 @@
+[
+  {
+    "test": "terrain_blueprint",
+    "exit": 0,
+    "seconds": 2.459,
+    "errors": false
+  },
+  {
+    "test": "terrain_blueprint_async",
+    "exit": 0,
+    "seconds": 5.822,
+    "errors": false
+  },
+  {
+    "test": "terrain_transition",
+    "exit": 0,
+    "seconds": 3.577,
+    "errors": false
+  },
+  {
+    "test": "terrain_locality",
+    "exit": 0,
+    "seconds": 7.059,
+    "errors": false
+  },
+  {
+    "test": "terrain_water_integration",
+    "exit": 0,
+    "seconds": 4.167,
+    "errors": false
+  },
+  {
+    "test": "water_flow",
+    "exit": 0,
+    "seconds": 0.646,
+    "errors": false
+  },
+  {
+    "test": "water_renderer",
+    "exit": 0,
+    "seconds": 0.941,
+    "errors": false
+  },
+  {
+    "test": "waterfall_flow_shape",
+    "exit": 0,
+    "seconds": 0.245,
+    "errors": false
+  },
+  {
+    "test": "waterfall_terrace_seal",
+    "exit": 0,
+    "seconds": 3.147,
+    "errors": false
+  },
+  {
+    "test": "terrain_editor_runtime",
+    "exit": 0,
+    "seconds": 6.174,
+    "errors": false
+  },
+  {
+    "test": "sol61_scene",
+    "exit": 0,
+    "seconds": 2.815,
+    "errors": false
+  },
+  {
+    "test": "argon_world_lock",
+    "exit": 0,
+    "seconds": 1.925,
+    "errors": false
+  },
+  {
+    "test": "grass_lip_soften",
+    "exit": 0,
+    "seconds": 4.754,
+    "errors": false
+  },
+  {
+    "test": "sol61_grass_contact",
+    "exit": 0,
+    "seconds": 0.246,
+    "errors": false
+  },
+  {
+    "test": "water_recession",
+    "exit": 1,
+    "seconds": 5.471,
+    "errors": false
+  },
+  {
+    "test": "terrain_controls",
+    "exit": 0,
+    "seconds": 1.946,
+    "errors": false
+  },
+  {
+    "test": "terrain_surface_anchor",
+    "exit": 0,
+    "seconds": 2.264,
+    "errors": false
+  },
+  {
+    "test": "interior_terrain_edit",
+    "exit": 0,
+    "seconds": 39.696,
+    "errors": false
+  },
+  {
+    "test": "terrain_level",
+    "exit": 0,
+    "seconds": 2.023,
+    "errors": false
+  },
+  {
+    "test": "preview_quality",
+    "exit": 0,
+    "seconds": 0.141,
+    "errors": false
+  }
+]

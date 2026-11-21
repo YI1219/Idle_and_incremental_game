@@ -16,7 +16,7 @@ static func height_at(field,p:Vector2,water_y:float)->float:
  return height
 
 static func seat(field,mesh:Mesh,pose:Transform3D,water_y:float)->Dictionary:
- var faces:=mesh.get_faces();var lo:=INF;var hi:=-INF
+ var faces:=preload("res://scripts/terrain_editor/chunk_geometry.gd").faces_of(mesh);var lo:=INF;var hi:=-INF
  for i in faces.size():
   faces[i]=pose*faces[i];lo=minf(lo,faces[i].y);hi=maxf(hi,faces[i].y)
  # Bury the lower third rather than resting a pinched foot on the lawn.

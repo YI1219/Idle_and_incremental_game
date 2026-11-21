@@ -1,0 +1,10 @@
+{
+  "scripts/terrain_editor/grass_field.gd": "8a47d073f63081a35a45d3ae8fe82eca755676b546a2ca0dfb41bf0013cd1a3a",
+  "scripts/terrain_editor/grass_lip_soften.gd": "bcde4cda1d394d372b67fcfaa6221c4f2d9891f86d2eaf7a99eb5395fa1f4770",
+  "scripts/terrain_editor/terrain_data.gd": "ebe1c4f12ec7927fe7d81925b909271cead735d906dd664b22e9f8551c3380c4",
+  "scripts/terrain_editor/terrain_decoration.gd": "d79c861afe9aaa17324d1cc5f150a1469f3030a60ddfbc67939ed50005620823",
+  "tests/courtyard_composition_test.gd": "2ac52fe90447de806f18ba14b510053ecce384181d277d30b62125651cac8575",
+  "tests/courtyard_grass_clearance_test.gd": "f1f9002765bfef13e2a6cb61c332d9dccaef1f086b66dae1b6986da0f0f3bc11",
+  "tests/cliff_partial_crown_seal_test.gd": "ad1c05896392464d32ba39bab134c46035522c9c9da53a85bb94c922088f076d",
+  "tests/fixtures/partial_crown_terrain.json": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f"
+}

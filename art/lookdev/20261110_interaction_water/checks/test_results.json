@@ -1,0 +1,104 @@
+[
+  {
+    "test": "terrain_blueprint",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "TERRAIN BLUEPRINT: 13 checks, 0 failures"
+  },
+  {
+    "test": "terrain_blueprint_async",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "TERRAIN BLUEPRINT ASYNC: 16 checks, 0 failures"
+  },
+  {
+    "test": "terrain_transition",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "TERRAIN TRANSITION: 8 checks, 0 failures"
+  },
+  {
+    "test": "terrain_locality",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "TERRAIN LOCALITY: 15 checks, 0 failures"
+  },
+  {
+    "test": "terrain_water_integration",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "TERRAIN WATER INTEGRATION: 11 checks, 0 failures"
+  },
+  {
+    "test": "water_flow",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "WATER FLOW: 92 checks, 0 failures"
+  },
+  {
+    "test": "water_renderer",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "water_renderer_test: 48/48 passed"
+  },
+  {
+    "test": "waterfall_flow_shape",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "WATERFALL FLOW SHAPE: 9 checks, 0 failures"
+  },
+  {
+    "test": "waterfall_terrace_seal",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "WATERFALL TERRACE SEAL: 16 checks, 0 failures"
+  },
+  {
+    "test": "terrain_editor_runtime",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "TERRAIN EDITOR RUNTIME: 22/22 passed"
+  },
+  {
+    "test": "sol61_scene",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "SOL61 SCENE: 7 checks, 0 failures"
+  },
+  {
+    "test": "argon_world_lock",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "ARGON WORLD LOCK: 9/9 passed; 0 failures"
+  },
+  {
+    "test": "grass_lip_soften",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "GRASS LIP CHECKS: 24 failures: 0"
+  },
+  {
+    "test": "sol61_grass_contact",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "SOL61 GRASS CONTACT failures: 0"
+  },
+  {
+    "test": "water_recession",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "WATER RECESSION: 16 checks, 0 failures"
+  },
+  {
+    "test": "terrain_controls",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "terrain_controls_test: 29 checks, 0 failures"
+  },
+  {
+    "test": "terrain_surface_anchor",
+    "exit_code": 0,
+    "clean": true,
+    "last_line": "TERRAIN SURFACE ANCHOR: 12 checks, 0 failures"
+  }
+]

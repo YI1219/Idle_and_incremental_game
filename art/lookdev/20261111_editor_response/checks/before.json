@@ -1,0 +1,19 @@
+{
+  "project.godot": "657728fcdf1af7b7a11ebfb38c90801c8b9ae44054214c65364c29a624aa2d23",
+  "scripts/terrain_editor/editor.gd": "aa87cf7069e247e7940ffe94a764bedb263b4d87e8900d03d99bbf67f4ec1e0d",
+  "scripts/terrain_editor/terrain_data.gd": "3027f770b347064501f518727cb91d9d7cc2108c0f8865cb4022a2cde1968eec",
+  "scripts/gameplay/ui/shihai_hud.gd": "7e42fe23c2713c97f32c7a870b947346d86637192dc12f6ffdf903452de9f950",
+  "scripts/terrain_editor/water_renderer.gd": "c3dd5beac37e98138b7b054699ab42b07393009245d1da3d68338dc1e29e66be",
+  "scripts/terrain_editor/preview_quality.gd": "fe93ec1b5512c21b57af7a2c335e1c53a98c71bd045432899f0354d5d59ec62e",
+  "scripts/terrain_editor/grass_field.gd": "2d050a47e85bfa0a42f6ae6fd300439b7d042ee4524ed507f2bf5612249188c6",
+  "scripts/terrain_editor/terrain_renderer.gd": "406369ec1c618613d4bb0dd0cd10e8804a66caa66fb24641b81badabbffe49c8",
+  "scripts/terrain_editor/terrain_environment.gd": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+  "scripts/terrain_editor/distant_landscape.gd": "7fa9121f65d02cc274b1db433716aa3cda8bdad114c480147f014bbf9b474077",
+  "shaders/terrain_editor/live_water.gdshaderinc": "7a5e5663f63074eb0b394d22ec9f6510cb46275231d71a29b7b3c91b69523fad",
+  "shaders/terrain_editor/grass_blades.gdshader": "d807c75654afec9a0d0cd04cbb5c9953ccfffd8abe2afe38d60bcc47b00e329b",
+  "shaders/terrain_editor/rim_green.gdshader": "edd5f2811c1cd0a8ae0aa14cddcb6958ac551f765225196a953fbf1b78e1caec",
+  "shaders/terrain_editor/ground.gdshader": "2b3be899c00f0a213b56220b842dc2a4b388090feeb39b06b12cfa641950571a",
+  "shaders/terrain_editor/stone_surface.gdshaderinc": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90",
+  "shaders/terrain_editor/cloud_deck.gdshader": "9ab0bc69b8b947bfd9bb59d1bb96f269b9cdbdafd97d56a2950864bdd120f79a",
+  "shaders/terrain_editor/foliage_cards.gdshader": "45aa35dd5d206e862ae817f6fb9454bef5e53d0b25328e19da326aa145cccbd0"
+}

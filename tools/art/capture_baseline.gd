@@ -3,6 +3,9 @@ extends SceneTree
 var viewport: SubViewport
 var editor: Node3D
 var output := "res://art/baseline/current"
+var capture_size := Vector2i(1280, 720)
+var override_preset := -1
+var override_seed := -1
 var captures: Array[Dictionary] = []
 
 func _initialize() -> void:
@@ -39,13 +42,19 @@ func run() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out="):
 			output = arg.trim_prefix("--out=")
+		elif arg == "--res=2k" or arg == "--res=2560x1440":
+			capture_size = Vector2i(2560, 1440)
+		elif arg.begins_with("--preset="):
+			override_preset = int(arg.trim_prefix("--preset="))
+		elif arg.begins_with("--seed="):
+			override_seed = int(arg.trim_prefix("--seed="))
 	if FileAccess.file_exists(output.path_join("captures.json")):
 		push_error("Capture directory already contains evidence; choose a new --out directory")
 		quit(1)
 		return
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	viewport = SubViewport.new()
-	viewport.size = Vector2i(1280, 720)
+	viewport.size = capture_size
 	viewport.own_world_3d = true
 	viewport.msaa_3d = Viewport.MSAA_4X
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -57,8 +66,20 @@ func run() -> void:
 	editor.set_process(false)
 	editor.camera.set_process(false)
 	editor.renderer.animate_edits = false
+	if override_preset >= 0 or override_seed >= 0:
+		if override_preset >= 0:
+			editor.data.make_preset(override_preset)
+		if override_seed >= 0:
+			editor.data.seed = override_seed
+		editor.renderer.rebuild_all()
+		if editor.get("motes") != null:
+			editor.motes.rebuild_from_data(editor.data)
+		if editor.get("gameplay") != null:
+			editor.gameplay.on_preset_changed()
 	for spec: Array in [["water", "water_time"], ["lake_bed", "caustic_time"], ["waterfall", "flow_time"], ["bank", "foam_time"]]:
 		editor.renderer.materials[spec[0]].set_shader_parameter(spec[1], 1.25)
+	if editor.get("motes") != null and editor.motes.has_method("set_frozen_time"):
+		editor.motes.set_frozen_time(1.25)
 	editor.renderer.mist.multimesh.mesh.material.shader = frozen_shader("res://shaders/terrain_editor/waterfall_mist.gdshader")
 	var cloud := frozen_shader("res://shaders/terrain_editor/cloud_deck.gdshader")
 	for material: ShaderMaterial in editor.landscape.cloud_materials:
@@ -80,7 +101,7 @@ func run() -> void:
 	var valid := not has_house and unchanged
 	for item: Dictionary in captures:
 		valid = valid and item.error == OK
-	var report := {"scene": "res://scenes/terrain_editor.tscn", "godot": Engine.get_version_info().string, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "resolution": [1280, 720], "seed": editor.data.seed, "phase": 1.25, "house_absent": not has_house, "data_unchanged": unchanged, "data_sha256": data_hash, "captures": captures, "valid": valid, "art_accepted": false, "user_layouts_accessed": false}
+	var report := {"scene": "res://scenes/terrain_editor.tscn", "godot": Engine.get_version_info().string, "renderer": RenderingServer.get_current_rendering_method(), "adapter": RenderingServer.get_video_adapter_name(), "resolution": [capture_size.x, capture_size.y], "seed": editor.data.seed, "phase": 1.25, "house_absent": not has_house, "data_unchanged": unchanged, "data_sha256": data_hash, "captures": captures, "valid": valid, "art_accepted": false, "user_layouts_accessed": false}
 	FileAccess.open(output.path_join("captures.json"), FileAccess.WRITE).store_string(JSON.stringify(report, "\t", true, true))
 	print("BASELINE CAPTURE: ", captures.size(), " frames; house_absent=", not has_house, "; data_unchanged=", unchanged)
 	viewport.remove_child(editor)

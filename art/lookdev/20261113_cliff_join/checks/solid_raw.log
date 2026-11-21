@@ -1,0 +1,119 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+OPEN HEEL seed 7301 (1, 9) bad_edges=1 first=[[[(2003, -10979, 337), (2314, -10991, -290)], 4]]
+ERROR: seed 7301 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:116)
+OPEN HEEL fresh 7301 (1, 9) bad_edges=1 first=[[[(2003, -10979, 337), (2314, -10991, -290)], 4]]
+ERROR: fresh 7301 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:119)
+OPEN HEEL seed 4242 (9, -5) bad_edges=1 first=[[[(2526, -10392, -1804), (2776, -10382, -950)], 4]]
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:116)
+OPEN HEEL seed 4242 (-7, -9) bad_edges=1 first=[[[(1782, -10915, -478), (2032, -10906, 33)], 4]]
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:116)
+OPEN HEEL seed 4242 (-12, -9) bad_edges=5 first=[[[(1455, -9236, -230), (1883, -9237, -340)], 1], [[(1272, -9235, -183), (1455, -9236, -230)], 1], [[(1456, -9236, -230), (1883, -9237, -340)], 1], [[(1272, -9235, -183), (1456, -9236, -230)], 1], [[(-1690, -9263, -2272), (558, -9249, -1242)], 4]]
+RAW EDGE (-12, -9) [(0.18829, -0.923731, -0.033978), (0.14555, -0.923586, -0.023005), -5.90887355804443, -5.90887355804443] count=1 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-12, -9) [(0.14555, -0.923586, -0.023005), (0.127218, -0.923524, -0.018299), -5.90887355804443, -5.90887260437012] count=1 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-12, -9) [(0.14555, -0.923586, -0.023004), (0.18829, -0.923731, -0.033978), -5.90887355804443, -5.90887355804443] count=1 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-12, -9) [(0.127218, -0.923524, -0.018299), (0.14555, -0.923586, -0.023004), -5.90887260437012, -5.90887355804443] count=1 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-12, -9) [(-0.169024, -0.926287, -0.227219), (0.055827, -0.924924, -0.124205), -5.90887355804443, -5.90887355804443] count=4 floor=-5.90887272357941 join=-4.71409523487091
+SOURCE BAD (-12, -9) []
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:116)
+OPEN HEEL fresh 4242 (9, -5) bad_edges=1 first=[[[(2526, -10392, -1804), (2776, -10382, -950)], 4]]
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:119)
+OPEN HEEL fresh 4242 (-7, -9) bad_edges=1 first=[[[(1782, -10915, -478), (2032, -10906, 33)], 4]]
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:119)
+OPEN HEEL fresh 4242 (-12, -9) bad_edges=5 first=[[[(1455, -9236, -230), (1883, -9237, -340)], 1], [[(1272, -9235, -183), (1455, -9236, -230)], 1], [[(1456, -9236, -230), (1883, -9237, -340)], 1], [[(1272, -9235, -183), (1456, -9236, -230)], 1], [[(-1690, -9263, -2272), (558, -9249, -1242)], 4]]
+RAW EDGE (-12, -9) [(0.18829, -0.923731, -0.033978), (0.14555, -0.923586, -0.023005), -5.90887355804443, -5.90887355804443] count=1 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-12, -9) [(0.14555, -0.923586, -0.023005), (0.127218, -0.923524, -0.018299), -5.90887355804443, -5.90887260437012] count=1 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-12, -9) [(0.14555, -0.923586, -0.023004), (0.18829, -0.923731, -0.033978), -5.90887355804443, -5.90887355804443] count=1 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-12, -9) [(0.127218, -0.923524, -0.018299), (0.14555, -0.923586, -0.023004), -5.90887260437012, -5.90887355804443] count=1 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-12, -9) [(-0.169024, -0.926287, -0.227219), (0.055827, -0.924924, -0.124205), -5.90887355804443, -5.90887355804443] count=4 floor=-5.90887272357941 join=-4.71409523487091
+SOURCE BAD (-12, -9) []
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:119)
+OPEN HEEL seed 913 (-6, 1) bad_edges=2 first=[[[(482, -7814, 6355), (919, -9297, 597)], 4], [[(630, -9311, -368), (919, -9297, 597)], 4]]
+RAW EDGE (-6, 1) [(0.091882, -0.929682, 0.059694), (0.048212, -0.781372, 0.635544), -5.90887260437012, -4.71409511566162] count=4 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-6, 1) [(0.09186, -0.929682, 0.059693), (0.062982, -0.931145, -0.036773), -5.90887260437012, -5.90887260437012] count=4 floor=-5.90887272357941 join=-4.71409523487091
+SOURCE BAD (-6, 1) []
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:116)
+OPEN HEEL seed 913 (-2, 1) bad_edges=4 first=[[[(-2916, -11256, -1945), (-2438, -11256, -2068)], 1], [[(-3503, -11254, -1796), (-2916, -11256, -1945)], 1], [[(-3503, -11254, -1796), (-2916, -11256, -1946)], 1], [[(-2916, -11256, -1946), (-2438, -11256, -2068)], 1]]
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:116)
+OPEN HEEL seed 913 (13, 9) bad_edges=1 first=[[[(1512, -10480, -1267), (1553, -10492, -2312)], 4]]
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:116)
+OPEN HEEL fresh 913 (-6, 1) bad_edges=2 first=[[[(482, -7814, 6355), (919, -9297, 597)], 4], [[(630, -9311, -368), (919, -9297, 597)], 4]]
+RAW EDGE (-6, 1) [(0.091882, -0.929682, 0.059694), (0.048212, -0.781372, 0.635544), -5.90887260437012, -4.71409511566162] count=4 floor=-5.90887272357941 join=-4.71409523487091
+RAW EDGE (-6, 1) [(0.09186, -0.929682, 0.059693), (0.062982, -0.931145, -0.036773), -5.90887260437012, -5.90887260437012] count=4 floor=-5.90887272357941 join=-4.71409523487091
+SOURCE BAD (-6, 1) []
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:119)
+OPEN HEEL fresh 913 (-2, 1) bad_edges=4 first=[[[(-2916, -11256, -1945), (-2438, -11256, -2068)], 1], [[(-3503, -11254, -1796), (-2916, -11256, -1945)], 1], [[(-3503, -11254, -1796), (-2916, -11256, -1946)], 1], [[(-2916, -11256, -1946), (-2438, -11256, -2068)], 1]]
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:119)
+OPEN HEEL fresh 913 (13, 9) bad_edges=1 first=[[[(1512, -10480, -1267), (1553, -10492, -2312)], 4]]
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:101)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:119)
+CLIFF OUTER FOOT: 516 checks, 14 failures

@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-13 12:56:38.825 Godot[28336:77635023] +[IMKClient subclass]: chose IMKClient_Modern
+ERROR: ordinary daylight ticks distribute the high quality filter after the first draw
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/sky_update_test.gd:7)
+       [1] run (res://tests/sky_update_test.gd:23)
+ERROR: routine updates resume after the manual preset is drawn
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/sky_update_test.gd:7)
+       [1] run (res://tests/sky_update_test.gd:32)
+SKY UPDATE 8 checks, 2 failures

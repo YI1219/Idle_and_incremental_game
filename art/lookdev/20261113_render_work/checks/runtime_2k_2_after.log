@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-13 12:59:11.246 Godot[32002:77646519] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-13 12:59:13.336 Godot[32002:77646519] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+{"draw_calls":460.0,"fps":57.5976411204678,"frames":461,"method":"3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O","p95_ms":18.285,"p99_ms":18.66,"resolution":[2560,1440],"scale":1.0,"simulated_seconds":11.1,"size":"2k","sky_mode":2,"snapshots":1,"texture_size":[2560.0,1440.0],"variant":"after"}

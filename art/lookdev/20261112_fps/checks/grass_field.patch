@@ -1,0 +1,16 @@
+--- grass_field_before.gd
++++ grass_field.gd
+@@ -95,7 +95,12 @@
+ 			var last:int=roundi(float(part+1)*leaf.y/steps)
+ 			var a:=PackedInt32Array([leaf.x,leaf.x+1,leaf.x+7]) if first==0 else PackedInt32Array([leaf.x+(first-1)*12+5,leaf.x+(first-1)*12+2,leaf.x+(first-1)*12+8])
+ 			var b:=PackedInt32Array([leaf.x+(last-1)*12+5,leaf.x+(last-1)*12+2,leaf.x+(last-1)*12+8])
+-			for half:int in 2:result.append_array(PackedInt32Array([a[half],a[half+1],b[half+1],a[half],b[half+1],b[half]]))
++			if steps == 1:
++				# At subpixel distance keep all seven leaf silhouettes, roots, tips
++				# and pigments. Only omit the tiny interior cross-section ridge.
++				result.append_array(PackedInt32Array([a[0],a[2],b[2],a[0],b[2],b[0]]))
++			else:
++				for half:int in 2:result.append_array(PackedInt32Array([a[half],a[half+1],b[half+1],a[half],b[half+1],b[half]]))
+ 	return result
+ 
+ static func material()->ShaderMaterial:

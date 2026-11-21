@@ -1,0 +1,17 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+CAP seed=88 coplanarity=0.00000000745058 projected_fan_area=0.96661285683513 hull_area=0.966612868011 body_quad_planarity=0.00000011920929
+ROOT_QUADS seed=88 min_pair_normal_dot=0.99999988079071
+ROOT arch=0 triangles=54 box=[P: (-0.6076, -1.258162, -0.3604), S: (1.305395, 1.246762, 1.0528)] max_y=-0.01139998435974 min_area=0.00931808631867 volume=0.70744740248968 nonmanifold=0 winding=0 degenerate=0 normals=0
+CAP seed=97 coplanarity=0.00000001490116 projected_fan_area=0.94876984134316 hull_area=0.94876985251904 body_quad_planarity=0.00000011920929
+ROOT_QUADS seed=97 min_pair_normal_dot=0.99999994039536
+ROOT arch=1 triangles=54 box=[P: (-0.670241, -1.093933, -0.3604), S: (1.277841, 1.074733, 1.0192)] max_y=-0.01919996738434 min_area=0.00560307875276 volume=0.68216327453653 nonmanifold=0 winding=0 degenerate=0 normals=0
+CAP seed=106 coplanarity=0.00000001490116 projected_fan_area=0.98022311553359 hull_area=0.9802231118083 body_quad_planarity=0.00000011920929
+ROOT_QUADS seed=106 min_pair_normal_dot=0.99999994039536
+ROOT arch=2 triangles=54 box=[P: (-0.6076, -1.208963, -0.3604), S: (1.319812, 1.189763, 1.0752)] max_y=-0.01919996738434 min_area=0.01051209401339 volume=0.70371486836423 nonmanifold=0 winding=0 degenerate=0 normals=0
+CAP seed=115 coplanarity=0.00000002235174 projected_fan_area=0.93939238227904 hull_area=0.93939238786697 body_quad_planarity=0.00000011920929
+ROOT_QUADS seed=115 min_pair_normal_dot=0.99999988079071
+ROOT arch=3 triangles=54 box=[P: (-0.680413, -1.165541, -0.3604), S: (1.288013, 1.163941, 1.008)] max_y=-0.00160002708435 min_area=0.00995748210698 volume=0.68386731451998 nonmanifold=0 winding=0 degenerate=0 normals=0
+ROOT_ROUND16 failures=0

@@ -1,0 +1,25 @@
+ERROR: Failed to open 'user://logs/godot2026-11-10T14.14.29.log'.
+   at: copy (core/io/dir_access.cpp:429)
+ERROR: Failed to open log file for writing: user://logs/godot.log
+   at: rotate_file (core/io/logger.cpp:169)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+ERROR: Waterfall shoulder exposes cavity, seed 7301, pixel (1420.0, 880.0), hit (1.686976, -5.493513, -6.114035)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/waterfall_terrace_seal_test.gd:42)
+ERROR: Waterfall shoulder exposes cavity, seed 2104, pixel (1420.0, 880.0), hit (1.686976, -5.493513, -6.114035)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/waterfall_terrace_seal_test.gd:42)
+ERROR: Waterfall shoulder exposes cavity, seed 4242, pixel (1420.0, 880.0), hit (1.686976, -5.493513, -6.114035)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/waterfall_terrace_seal_test.gd:42)
+ERROR: Waterfall shoulder exposes cavity, seed 913, pixel (1420.0, 880.0), hit (1.686976, -5.493513, -6.114035)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/waterfall_terrace_seal_test.gd:42)
+WATERFALL TERRACE SEAL: 16 checks, 4 failures

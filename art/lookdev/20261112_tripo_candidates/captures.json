@@ -1,0 +1,297 @@
+{
+	"godot": "4.7.2-stable (official)",
+	"issues": [],
+	"records": [
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.67999935150146,
+			"file": "mountain_study_v02_lod0_front_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				2.00053739547729,
+				18.5999984741211
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.67999935150146,
+			"file": "mountain_study_v02_lod0_right_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				18.5999984741211,
+				2.00053739547729,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.67999935150146,
+			"file": "mountain_study_v02_lod0_back_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				2.00053739547729,
+				-18.5999984741211
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.67999935150146,
+			"file": "mountain_study_v02_lod0_left_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				-18.5999984741211,
+				2.00053739547729,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.67999935150146,
+			"file": "mountain_study_v02_lod0_iso_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73301887512207,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.67999935150146,
+			"file": "mountain_study_v02_lod0_iso_palette.png",
+			"lod": 0,
+			"material": "coarse palette only",
+			"position": [
+				9.61783027648926,
+				8.73301887512207,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.67999935150146,
+			"file": "mountain_study_v02_lod1_iso_clay.png",
+			"lod": 1,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73301887512207,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 3988
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.67999935150146,
+			"file": "mountain_study_v02_lod2_iso_clay.png",
+			"lod": 2,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73301887512207,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 1194
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_front_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				0.244772851467133,
+				3.30000019073486
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_right_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				3.30000019073486,
+				0.244772851467133,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_back_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				0.244772851467133,
+				-3.30000019073486
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_left_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				-3.30000019073486,
+				0.244772851467133,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_iso_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				1.70638942718506,
+				1.4392454624176,
+				2.55958414077759
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_iso_palette.png",
+			"lod": 0,
+			"material": "coarse palette only",
+			"position": [
+				1.70638942718506,
+				1.4392454624176,
+				2.55958414077759
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod1_iso_clay.png",
+			"lod": 1,
+			"material": "neutral clay override",
+			"position": [
+				1.70638942718506,
+				1.4392454624176,
+				2.55958414077759
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 598
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod2_iso_clay.png",
+			"lod": 2,
+			"material": "neutral clay override",
+			"position": [
+				1.70638942718506,
+				1.4392454624176,
+				2.55958414077759
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"surfaces": 1,
+			"triangles": 238
+		}
+	],
+	"renderer": "forward_plus",
+	"scope": "Isolated native asset inspection; not the default courtyard composition or target hardware performance.",
+	"valid": true
+}

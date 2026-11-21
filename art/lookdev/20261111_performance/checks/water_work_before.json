@@ -1,0 +1,47 @@
+[
+	{
+		"discharged": 6.39827959005502,
+		"preset": 0,
+		"publications": 101,
+		"publish_mean_ms": 2.71082,
+		"simulated_seconds": 9.99999999999998,
+		"stages_mean_ms": {
+			"images": 0.75658,
+			"mesh": 8.98662,
+			"solver": 0.00028
+		},
+		"total_ms": 3465.315,
+		"volume": 64.6017204099456,
+		"worker_mean_ms": 9.74348
+	},
+	{
+		"discharged": 6.49147187357186,
+		"preset": 1,
+		"publications": 101,
+		"publish_mean_ms": 2.41847,
+		"simulated_seconds": 9.99999999999998,
+		"stages_mean_ms": {
+			"images": 0.72637,
+			"mesh": 56.86802,
+			"solver": 0.00025
+		},
+		"total_ms": 13014.905,
+		"volume": 59.008528126425,
+		"worker_mean_ms": 57.59464
+	},
+	{
+		"discharged": 0.0,
+		"preset": 2,
+		"publications": 101,
+		"publish_mean_ms": 2.41831,
+		"simulated_seconds": 9.99999999999998,
+		"stages_mean_ms": {
+			"images": 0.28456,
+			"mesh": 0.01671,
+			"solver": 0.00018
+		},
+		"total_ms": 629.093,
+		"volume": 0.0,
+		"worker_mean_ms": 0.30145
+	}
+]

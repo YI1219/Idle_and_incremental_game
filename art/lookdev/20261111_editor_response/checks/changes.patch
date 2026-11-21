@@ -1,0 +1,742 @@
+--- before/project.godot
++++ after/project.godot
+@@ -101,3 +101,16 @@
+ "type": "float",
+ "value": 0.0
+ }
++
++grass_recovery_field={
++"type": "sampler2D",
++"value": ""
++}
++grass_recovery_rect={
++"type": "vec4",
++"value": Vector4(0, 0, 1, 1)
++}
++grass_recovery_active={
++"type": "float",
++"value": 0.0
++}
+--- before/scripts/terrain_editor/editor.gd
++++ after/scripts/terrain_editor/editor.gd
+@@ -54,6 +54,7 @@
+ var blueprint_data:Data
+ var _blueprint_tool:String=""
+ var _stroke_plane_height:float=NAN
++var _stroke_plane_offset := Vector2.ZERO
+ var _brush_shape_key:String=""
+ var last_edit_ms:=0.0
+ var brush:=MeshInstance3D.new()
+@@ -99,7 +100,7 @@
+ func _setup_environment()->void:
+ 	preload("res://scripts/terrain_editor/terrain_environment.gd").setup(self,landscape,sunlight_energy,fill_energy,ambient_energy,background_haze)
+ func _process(delta:float)->void:
+-	preview_quality.refresh()
++	preview_quality.advance(delta)
+ 	landscape.position=Vector3(camera._center.x,0,camera._center.y)
+ 	renderer.flush_dirty(6)
+ 	# During a committed terrain build, keep water matched to the visible bed.
+@@ -130,6 +131,7 @@
+ 	blueprint_data=null
+ 	_blueprint_tool=""
+ 	_stroke_plane_height=NAN
++	_stroke_plane_offset = Vector2.ZERO
+ 	data.end_stroke()
+ 	camera.cancel_input()
+ func _input(event:InputEvent)->void:
+@@ -177,14 +179,44 @@
+ 		if distance<best-.0001 or (absf(distance-best)<.0001 and h>height):best=distance;height=h
+ 	return height
+ 
++func _pick_heightmap(origin: Vector3, direction: Vector3, source: Data) -> Dictionary:
++	var nearest := INF
++	var result: Dictionary = {}
++	for cell: Vector2i in source.cells:
++		var top: float = Data._record_top(source.cells[cell])
++		var bounds := AABB(Vector3(cell.x, -12.0, cell.y), Vector3(1.0, top + 12.0, 1.0))
++		var point: Variant = bounds.intersects_ray(origin, direction)
++		if point == null:
++			continue
++		var distance: float = origin.distance_squared_to(point)
++		if distance >= nearest:
++			continue
++		nearest = distance
++		var normal := Vector3.UP
++		if absf(point.y - top) > .001:
++			var offset: Vector2 = Vector2(point.x, point.z) - Vector2(cell) - Vector2.ONE * .5
++			normal = Vector3(signf(offset.x), 0.0, 0.0) if absf(offset.x) > absf(offset.y) else Vector3(0.0, 0.0, signf(offset.y))
++		result = {"position": point, "cell": cell, "normal": normal}
++	return result
++
+ func _pointer(screen:Vector2)->Dictionary:
+ 	var origin:Vector3=camera.project_ray_origin(screen)
+ 	var direction:Vector3=camera.project_ray_normal(screen)
+-	var hit:Dictionary=renderer.pick(origin,direction)
+-	if tool.begins_with("rock_"):return hit
+-	if absf(direction.y)<.0001:return {}
++	if tool.begins_with("rock_"):
++		return renderer.pick(origin, direction)
++	if absf(direction.y) < .0001:
++		return {}
++	if painting and is_finite(_stroke_plane_height):
++		var distance: float = (_stroke_plane_height - origin.y) / direction.y
++		if distance <= 0.0:
++			return {}
++		var point: Vector3 = origin + direction * distance
++		point.x += _stroke_plane_offset.x
++		point.z += _stroke_plane_offset.y
++		return {"position": point, "cell": Vector2i(floori(point.x), floori(point.z)), "normal": Vector3.UP, "surface_height": _stroke_plane_height}
+ 	var source:Data=renderer._published_data if renderer._published_data!=null else data
+-	var plane:float=_stroke_plane_height if painting else NAN
++	var hit: Dictionary = _pick_heightmap(origin, direction, source)
++	var plane: float = NAN
+ 	if not hit.is_empty() and source.cells.has(hit.cell):
+ 		# On a terrace wall, floor(XZ) can belong to the lower receiver even
+ 		# though the visible face belongs to the taller cell behind it.
+@@ -224,15 +256,18 @@
+ 	if from_ui or hud.is_over_panel(screen):return false
+ 	var hit:Dictionary=_pointer(screen)
+ 	if hit.is_empty():return false
+-	if tool=="level":
+-		if not data.cells.has(Vector2i(_brush_center(hit).floor())):return false
+-	elif not tool.begins_with("rock_") and not data.can_apply_brush(_brush_center(hit),radius,tool,snap,float(hit.get("surface_height",build_height)),water_level,float(hit.get("surface_height",NAN))):return false
++	var samples_land: bool = tool == "expand" and data.cells.has(Vector2i(_brush_center(hit).floor()))
++	if not tool.begins_with("rock_") and not samples_land and not data.can_apply_brush(_brush_center(hit),radius,tool,snap,float(hit.get("surface_height",build_height)),water_level,float(hit.get("surface_height",NAN))):return false
+ 	if gameplay!=null and not gameplay.prepare_brush_step(tool):return false
+ 	var focus:=get_viewport().gui_get_focus_owner()
+ 	if focus:focus.release_focus()
+ 	_stroke_plane_height=float(hit.get("surface_height",NAN))
+-	if tool in ["expand","level"] and is_finite(_stroke_plane_height):build_height=_stroke_plane_height
+-	if tool=="level" and gameplay!=null:gameplay.shihai_hud.show_toast("齐平高度 · %.1f 米"%build_height,1.8)
++	if is_finite(_stroke_plane_height):
++		build_height = _stroke_plane_height
++		var origin: Vector3 = camera.project_ray_origin(screen)
++		var direction: Vector3 = camera.project_ray_normal(screen)
++		var projected: Vector3 = origin + direction * ((_stroke_plane_height-origin.y)/direction.y)
++		_stroke_plane_offset = Vector2(hit.position.x-projected.x,hit.position.z-projected.z)
+ 	painting=true
+ 	blueprint_data=data.copy()
+ 	_blueprint_tool=tool
+@@ -255,6 +290,7 @@
+ 	blueprint_data=null
+ 	_blueprint_tool=""
+ 	_stroke_plane_height=NAN
++	_stroke_plane_offset = Vector2.ZERO
+ 	return changed
+ 
+ func _brush_center(hit:Dictionary)->Vector2:
+@@ -305,7 +341,6 @@
+ 	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
+ func _brush_valid(hit:Dictionary)->bool:
+ 	if tool.begins_with("rock_"):return true
+-	if tool=="level":return data.cells.has(Vector2i(_brush_center(hit).floor()))
+ 	var center:Vector2=_brush_center(hit)
+ 	var source:Data=blueprint_data if blueprint_data!=null else data
+ 	if source.can_apply_brush(center,radius,tool,snap,float(hit.get("surface_height",build_height)),water_level,float(hit.get("surface_height",NAN))):return true
+--- before/scripts/terrain_editor/terrain_data.gd
++++ after/scripts/terrain_editor/terrain_data.gd
+@@ -60,11 +60,11 @@
+ 			if old == null and cells.size() < mini(MAX_CELLS, cell_quota):
+ 				next = {"height": height, "water": -1}
+ 		"contract": next = null
+-		"raise", "lower", "level":
++		"raise", "lower":
+ 			if next != null:
+ 				if next.water >= 0 and not next.has("water_volume"):
+ 					next.water_volume = maxf(0.0, float(next.water) * .5 - float(next.height))
+-				next.height = height if tool == "level" else clampf(next.height + (.5 if tool == "raise" else -.5), -4.0, 12.0)
++				next.height = clampf(next.height + (.5 if tool == "raise" else -.5), -4.0, 12.0)
+ 				if next.water >= 0 and next.height >= next.water * .5: next.water = -1
+ 		"water":
+ 			if next != null and next.height < water * .5:
+@@ -79,11 +79,11 @@
+ 	return next
+ 
+ static func _record_top(record:Dictionary)->float:
+-	return float(record.water)*.5 if int(record.water)>=0 else float(record.height)
++	return float(record.height)
+ 
+ func _surface_brush_cells(center:Vector2,radius:float,tool:String,surface_height:float)->Dictionary:
+ 	var result:Dictionary={}
+-	if not is_finite(surface_height) or tool not in ["expand","contract","raise","lower"]:return result
++	if not is_finite(surface_height) or tool not in ["expand","contract","raise","lower","water","dry"]:return result
+ 	var candidates:Dictionary={}
+ 	for z:int in range(floori(center.y-radius),ceili(center.y+radius)):
+ 		for x:int in range(floori(center.x-radius),ceili(center.x+radius)):
+@@ -115,7 +115,7 @@
+ 
+ func can_apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int, surface_height: float = NAN) -> bool:
+ 	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return false
+-	if tool not in ["raise", "lower", "expand", "contract", "water", "dry", "level"]: return false
++	if tool not in ["raise", "lower", "expand", "contract", "water", "dry"]: return false
+ 	if tool == "water" and (water < 0 or water > 7): return false
+ 	if snap: center = center.floor() + Vector2.ONE * .5
+ 	radius = clampf(radius, .1, 16.0)
+@@ -129,7 +129,7 @@
+ 		for x: int in range(floori(center.x - radius), ceili(center.x + radius)):
+ 			var cell := Vector2i(x, z)
+ 			if absi(x) > 1024 or absi(z) > 1024: continue
+-			if is_finite(surface_height) and tool in ["expand","contract","raise","lower"] and not allowed.has(cell):continue
++			if is_finite(surface_height) and tool in ["expand","contract","raise","lower","water","dry"] and not allowed.has(cell):continue
+ 			if (Vector2(cell) + Vector2.ONE * .5).distance_squared_to(center) > radius * radius: continue
+ 			var old: Variant = cells.get(cell)
+ 			if _brush_record(old, tool, height, water) != old: return true
+@@ -146,7 +146,7 @@
+ 			next = next.duplicate()
+ 			# Water keeps moving while a blueprint is held. Bed edits retain the
+ 			# current amount instead of restoring the draft's older water volume.
+-			if tool in ["raise", "lower", "level"] and old != null and old.has("water_volume"):
++			if tool in ["raise", "lower"] and old != null and old.has("water_volume"):
+ 				next.water_volume = old.water_volume
+ 		if old == next: continue
+ 		_before[cell] = old.duplicate() if old != null else null
+@@ -164,7 +164,7 @@
+ 
+ func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int, surface_height: float = NAN) -> int:
+ 	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return 0
+-	if tool not in ["raise","lower","expand","contract","water","dry","level"]: return 0
++	if tool not in ["raise","lower","expand","contract","water","dry"]: return 0
+ 	if tool == "water" and (water < 0 or water > 7): return 0
+ 	if not _active: begin_stroke()
+ 	_stroke_tool = tool if _stroke_tool.is_empty() or _stroke_tool == tool else "mixed"
+@@ -181,7 +181,7 @@
+ 		for x in range(floori(center.x-radius), ceili(center.x+radius)):
+ 			var cell := Vector2i(x,z)
+ 			if absi(x)>1024 or absi(z)>1024 or _visited.has(cell): continue
+-			if is_finite(surface_height) and tool in ["expand","contract","raise","lower"] and not allowed.has(cell):continue
++			if is_finite(surface_height) and tool in ["expand","contract","raise","lower","water","dry"] and not allowed.has(cell):continue
+ 			if (Vector2(cell)+Vector2(0.5,0.5)).distance_squared_to(center)>radius*radius: continue
+ 			_visited[cell] = true
+ 			var old: Variant = cells.get(cell)
+@@ -271,7 +271,7 @@
+ 	end_stroke()
+ 	if _undo.is_empty():return false
+ 	var entry:Dictionary=_undo.back()
+-	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower","level"]):return false
++	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower"]):return false
+ 	_undo.pop_back();_redo.append(entry)
+ 	return true
+ 
+@@ -279,7 +279,7 @@
+ 	end_stroke()
+ 	if _redo.is_empty():return false
+ 	var entry:Dictionary=_redo.back()
+-	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower","level"]):return false
++	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower"]):return false
+ 	_redo.pop_back();_undo.append(entry)
+ 	return true
+ 
+--- before/scripts/gameplay/ui/shihai_hud.gd
++++ after/scripts/gameplay/ui/shihai_hud.gd
+@@ -19,7 +19,6 @@
+ 	{"id": "lower",    "name": "夷谷", "hint": "削平低谷"},
+ 	{"id": "water",    "name": "引泉", "hint": "引注灵泉"},
+ 	{"id": "dry",      "name": "涸泽", "hint": "退水成陆"},
+-	{"id": "level",    "name": "齐平", "hint": "取落笔处高度，拖动对齐邻地"},
+ ]
+ const BRUSH_RADII: Array[float] = [1.0, 2.2, 3.8]
+ const WATER_PRESETS: Array[Dictionary] = [
+@@ -41,6 +40,7 @@
+ var _dock_alpha: float = 0.0
+ var _hover_pos: Vector2 = Vector2(-999.0, -999.0)
+ var _pulse_time: float = 0.0
++var _last_draw_key: Array = []
+ var _night_blend: float = 0.0
+ 
+ # Whisper (frameless poetic toast)
+@@ -326,7 +326,7 @@
+ 		"load":
+ 			if int(ed.call("load_layout", "user://terrain_editor/layout.json")) == OK:
+ 				show_toast("已展阅旧藏画卷", 2.2)
+-		"preview_auto": ed.call("set_native_preview",false); show_toast("流畅预览 · 界面保持清晰",1.8)
++		"preview_auto": ed.call("set_native_preview",false); show_toast("流畅预览 · 自动调节场景清晰度",1.8)
+ 		"preview_native": ed.call("set_native_preview",true); show_toast("原生画质 · 更清晰，绘制更耗时",1.8)
+ 		"grid_snap": ed.call("toggle_grid_snap"); show_toast("贴格已开启" if bool(ed.get("snap")) else "贴格已关闭",1.8)
+ 		"log":
+@@ -402,7 +402,29 @@
+ 	if _whisper_timer > 0.0:
+ 		_whisper_timer = maxf(0.0, _whisper_timer - delta)
+ 
+-	queue_redraw()
++	_request_snapshot_redraw()
++
++func _request_snapshot_redraw() -> void:
++	var ed: Node3D = director.get("editor") as Node3D if director != null else null
++	var fade_in: float = clampf((_whisper_max-_whisper_timer)/.18,0.0,1.0)
++	var fade_out: float = clampf(_whisper_timer/.65,0.0,1.0)
++	var hover: Vector2 = _hover_pos if is_over_ui(_hover_pos) else Vector2(-999,-999)
++	var key: Array = [size,_wallpaper,_stance,_realm_short,_time_title,_mood_title,
++		_time_paused,_cur_cells,_max_cells,_can_break,roundf(_qi_val),
++		snappedf(_qi_ratio,1.0/256.0),snappedf(_dao_ratio,1.0/256.0),
++		snappedf(_wake_alpha,1.0/255.0),snappedf(_dock_alpha,1.0/255.0),
++		snappedf(_night_blend,1.0/1024.0),_scroll_leaf_open,_log_open,hover,
++		_whisper_text,snappedf(minf(fade_in,fade_out),1.0/255.0)]
++	if _can_break:
++		key.append(snappedf(_pulse_time,1.0/60.0))
++	if ed != null:
++		key.append_array([ed.tool,ed.radius,ed.water_level,ed.snap,ed.preview_quality.native])
++	if _log_open and director != null:
++		var state: State = director.get("state") as State
++		key.append_array([state.total_fish_caught,roundf(state.meditation_seconds),hash(state.discoveries)])
++	if key != _last_draw_key:
++		_last_draw_key = key
++		queue_redraw()
+ 
+ # --- Custom Frameless Song-Scroll Vector & Calligraphy Rendering ---
+ 
+@@ -670,10 +692,7 @@
+ 			var pv := PackedVector2Array([c + Vector2(-9.5, -4.0), c + Vector2(-4.0, 5.2), c + Vector2(4.0, 5.2), c + Vector2(9.5, -4.0)])
+ 			draw_polyline(pv, col, width, true)
+ 			draw_line(c + Vector2(-5.5, -1.5), c + Vector2(5.5, -1.5), Color(col.r, col.g, col.b, col.a * 0.55), 1.1, true)
+-		"level":
+-			draw_line(c+Vector2(-9.0,1.0),c+Vector2(9.0,1.0),col,width,true)
+-			draw_line(c+Vector2(-5,-6),c+Vector2(-5,-2),col,width,true)
+-			draw_line(c+Vector2(5,7),c+Vector2(5,3),col,width,true)
++
+ 		"water":
+ 			for row_i: int in [-1, 0, 1]:
+ 				var wy: float = c.y + float(row_i) * 4.4
+--- before/scripts/terrain_editor/water_renderer.gd
++++ after/scripts/terrain_editor/water_renderer.gd
+@@ -12,6 +12,7 @@
+ const WATER_LAYERS: Array[String] = ["water", "waterfall", "bank"]
+ 
+ var flow: RefCounted = Flow.new()
++var grass_recovery: RefCounted = preload("res://scripts/terrain_editor/grass_recovery.gd").new()
+ var published_surfaces: Dictionary = {}
+ var published_depths: Dictionary = {}
+ var published_heights: Dictionary = {}
+@@ -223,10 +224,23 @@
+ 	queued_seconds = 0.0
+ 	simulated_seconds = 0.0
+ 	_sync_pending = false
++	grass_recovery.clear()
+ 	flow.configure(data)
+ 	_hide_legacy(_terrain)
+ 	_start_worker(0.0)
+ 	_collect_worker(true)
++
++func _process(delta: float) -> void:
++	if grass_recovery.advance(delta):
++		_bind_grass_recovery()
++
++func _bind_grass_recovery() -> void:
++	if grass_recovery.texture == null:
++		return
++	var bounds: Rect2 = grass_recovery.rect
++	RenderingServer.global_shader_parameter_set("grass_recovery_field", grass_recovery.texture)
++	RenderingServer.global_shader_parameter_set("grass_recovery_rect", Vector4(bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y))
++	RenderingServer.global_shader_parameter_set("grass_recovery_active", 1.0)
+ 
+ func tick(delta: float) -> void:
+ 	if _data == null:
+@@ -346,6 +360,8 @@
+ 	published_discharged_volume = float(result.discharged)
+ 	splash_points = result.splashes
+ 	fall_veils = result.veils
++	grass_recovery.sync(_data.cells, published_depths, published_heights)
++	_bind_grass_recovery()
+ 	live_field_image = result.fields.live
+ 	live_field_rect = result.fields.rect
+ 	_shore_rect = result.fields.rect
+@@ -403,6 +419,7 @@
+ 	_wait_discard()
+ 	_disconnect_terrain()
+ 	RenderingServer.global_shader_parameter_set("live_water_active", 0.0)
++	RenderingServer.global_shader_parameter_set("grass_recovery_active", 0.0)
+ 
+ func _notification(what: int) -> void:
+ 	# Detached nodes do not receive _exit_tree, but can still own a task.
+@@ -411,6 +428,7 @@
+ 		_disconnect_terrain()
+ 		if _data != null:
+ 			RenderingServer.global_shader_parameter_set("live_water_active", 0.0)
++			RenderingServer.global_shader_parameter_set("grass_recovery_active", 0.0)
+ 
+ static func _build_images(snapshot: Data, field: FlowField) -> Dictionary:
+ 	var low: Vector2i = Vector2i.ZERO
+--- before/scripts/terrain_editor/grass_recovery.gd
++++ after/scripts/terrain_editor/grass_recovery.gd
+@@ -0,0 +1,118 @@
++extends RefCounted
++## Visual grass coverage, separate from conserved physical water.
++const FADE_SECONDS: float = .65
++const GROW_SECONDS: float = .85
++const SIDES: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
++var coverage: Dictionary = {}
++var _wet: Dictionary = {}
++var _heights: Dictionary = {}
++var _water_heights: Dictionary = {}
++var _dry_age: Dictionary = {}
++var _changing: Dictionary = {}
++var _fringe_owners: Dictionary = {}
++var rect := Rect2(Vector2.ZERO, Vector2.ONE)
++var image: Image
++var texture: ImageTexture
++
++func clear() -> void:
++	coverage.clear()
++	_wet.clear()
++	_heights.clear()
++	_dry_age.clear()
++	_changing.clear()
++	image = null
++	_fringe_owners.clear()
++
++func sync(cells: Dictionary, depths: Dictionary, water_heights: Dictionary = {}) -> void:
++	var next: Dictionary = {}
++	_wet.clear()
++	_heights.clear()
++	_water_heights = water_heights.duplicate()
++	_changing.clear()
++	var low := Vector2i.ZERO
++	var high := Vector2i.ZERO
++	if not cells.is_empty():
++		low = cells.keys()[0]
++		high = low
++	for cell: Vector2i in cells:
++		low = low.min(cell)
++		high = high.max(cell)
++		var wet: bool = float(depths.get(cell, 0.0)) > .0005
++		_wet[cell] = wet
++		_heights[cell] = float(cells[cell].height)
++		next[cell] = coverage.get(cell, 0.0 if wet else 1.0)
++		if wet:
++			_dry_age[cell] = 0.0
++		if (wet and next[cell] > 0.0) or (not wet and next[cell] < 1.0):
++			_changing[cell] = true
++	coverage = next
++	for cell: Vector2i in _dry_age.keys():
++		if not coverage.has(cell):
++			_dry_age.erase(cell)
++	rect = Rect2(Vector2(low - Vector2i.ONE), Vector2(high - low + Vector2i(3,3)))
++	_write_image(true)
++
++func advance(delta: float) -> bool:
++	if _changing.is_empty() or delta <= 0.0 or not is_finite(delta):
++		return false
++	# Fixed small steps make the spreading front independent of frame rate.
++	var any_changed := false
++	var remaining: float = minf(delta, 5.0)
++	while remaining > .000001:
++		var step: float = minf(remaining, 1.0/30.0)
++		var next: Dictionary = {}
++		for cell: Vector2i in _changing:
++			var value: float = coverage[cell]
++			if _wet[cell]:
++				next[cell] = maxf(0.0, value - step/FADE_SECONDS)
++				continue
++			_dry_age[cell] = float(_dry_age.get(cell, 0.0)) + step
++			var neighbour: float = 0.0
++			var boundary := false
++			for side: Vector2i in SIDES:
++				var adjacent: Vector2i = cell + side
++				if not coverage.has(adjacent):
++					boundary = true
++				elif not bool(_wet[adjacent]):
++					neighbour = maxf(neighbour, float(coverage[adjacent]))
++			# A completely submerged island can reseed along its exposed outer
++			# shore after a pause. Interior cells still grow in from neighbours.
++			if boundary and float(_dry_age[cell]) > 3.0:
++				neighbour = 1.0
++			var growth: float = smoothstep(.25, .9, neighbour)
++			next[cell] = minf(1.0, value + step*growth/GROW_SECONDS)
++		for cell: Vector2i in next:
++			any_changed = any_changed or not is_equal_approx(float(coverage[cell]),float(next[cell]))
++			coverage[cell] = next[cell]
++			if (_wet[cell] and next[cell] <= 0.0) or (not _wet[cell] and next[cell] >= 1.0):
++				_changing.erase(cell)
++		remaining -= step
++	if any_changed:
++		_write_image()
++	return any_changed
++
++func _write_image(rebuild: bool = false) -> void:
++	var size := Vector2i(rect.size)
++	if rebuild:
++		image = Image.create(size.x,size.y,false,Image.FORMAT_RGBAF)
++		image.fill(Color(1.0,0.0,0.0,0.0))
++		_fringe_owners.clear()
++		# Rim roots overhang their authoritative cell. Reuse the highest
++		# adjacent crown for the one-cell border around land and holes.
++		for cell: Vector2i in coverage:
++			for dz: int in range(-1,2):
++				for dx: int in range(-1,2):
++					var adjacent := cell + Vector2i(dx,dz)
++					if coverage.has(adjacent):
++						continue
++					if not _fringe_owners.has(adjacent) or float(_heights[cell]) > float(_heights[_fringe_owners[adjacent]]):
++						_fringe_owners[adjacent] = cell
++	for cell: Vector2i in coverage:
++		image.set_pixelv(cell-Vector2i(rect.position),Color(coverage[cell],_heights[cell],_water_heights.get(cell,_heights[cell]),1.0))
++	for cell: Vector2i in _fringe_owners:
++		var owner: Vector2i = _fringe_owners[cell]
++		image.set_pixelv(cell-Vector2i(rect.position),Color(coverage[owner],_heights[owner],_water_heights.get(owner,_heights[owner]),1.0))
++	if texture != null and Vector2i(texture.get_size()) == size:
++		texture.update(image)
++	else:
++		texture = ImageTexture.create_from_image(image)
+--- before/scripts/terrain_editor/preview_quality.gd
++++ after/scripts/terrain_editor/preview_quality.gd
+@@ -1,31 +1,70 @@
+ extends RefCounted
+-## Limit interactive 3D pixel work independently of the native UI resolution.
+-## Capture tools can explicitly request native rendering for exported stills.
+-const BUDGET:=Vector2(2560,1440)
+-var native:bool=false
+-var viewport:Viewport
+-var _native_msaa:int=Viewport.MSAA_DISABLED
+-var _last_size:=Vector2i.ZERO
+-var _last_native:bool=true
+-func configure(target:Viewport)->void:
+-	viewport=target
+-	_native_msaa=target.msaa_3d
++## Keep UI native while adapting high-resolution interactive 3D pixel work.
++const BUDGET := Vector2(2560,1440)
++const MINIMUM_BUDGET := Vector2(1920,1080)
++const SAMPLE_SECONDS: float = .75
++var native: bool = false
++var viewport: Viewport
++var _native_msaa: int = Viewport.MSAA_DISABLED
++var _last_size := Vector2i.ZERO
++var _last_native: bool = true
++var _scale: float = 1.0
++var _sample_seconds: float = 0.0
++var _sample_count: int = 0
++
++func configure(target: Viewport) -> void:
++	viewport = target
++	_native_msaa = target.msaa_3d
+ 	refresh()
+-func set_native(value:bool)->void:
+-	native=value
++
++func set_native(value: bool) -> void:
++	native = value
+ 	refresh()
+-func refresh()->void:
+-	if not is_instance_valid(viewport):return
+-	var size:Vector2i
+-	if viewport is SubViewport:size=(viewport as SubViewport).size
++
++func _budget_scale(budget: Vector2) -> float:
++	return minf(1.0, minf(budget.x / maxf(_last_size.x,1), budget.y / maxf(_last_size.y,1)))
++
++func refresh() -> void:
++	if not is_instance_valid(viewport):
++		return
++	var size: Vector2i
++	if viewport is SubViewport:
++		size = (viewport as SubViewport).size
+ 	else:
+-		size=Vector2i(viewport.get_texture().get_size())
++		size = Vector2i(viewport.get_texture().get_size())
+ 		if viewport is Window:
+-			var window_size:Vector2i=(viewport as Window).size
+-			size.x=maxi(size.x,window_size.x);size.y=maxi(size.y,window_size.y)
+-	if size==_last_size and native==_last_native:return
+-	_last_size=size;_last_native=native
+-	var scale:float=1.0 if native else minf(1.0,minf(BUDGET.x/maxf(size.x,1),BUDGET.y/maxf(size.y,1)))
+-	viewport.scaling_3d_mode=Viewport.SCALING_3D_MODE_FSR if scale<.999 else Viewport.SCALING_3D_MODE_BILINEAR
+-	viewport.scaling_3d_scale=maxf(.1,scale)
+-	viewport.msaa_3d=mini(_native_msaa,Viewport.MSAA_2X) if scale<.999 else _native_msaa
++			var window_size: Vector2i = (viewport as Window).size
++			size = size.max(window_size)
++	if size == _last_size and native == _last_native:
++		return
++	_last_size = size
++	_last_native = native
++	_sample_seconds = 0.0
++	_sample_count = 0
++	_scale = 1.0 if native else _budget_scale(BUDGET)
++	_apply()
++
++func advance(delta: float) -> void:
++	refresh()
++	if native or _budget_scale(BUDGET) >= .999 or delta < .004 or delta > .25:
++		return
++	_sample_seconds += delta
++	_sample_count += 1
++	if _sample_seconds < SAMPLE_SECONDS:
++		return
++	var mean: float = _sample_seconds / _sample_count
++	_sample_seconds = 0.0
++	_sample_count = 0
++	var next: float = _scale
++	if mean > 1.0/55.0:
++		next = maxf(_budget_scale(MINIMUM_BUDGET), _scale*.9)
++	elif mean < 1.0/72.0:
++		next = minf(_budget_scale(BUDGET), _scale*1.04)
++	if absf(next - _scale) > .001:
++		_scale = next
++		_apply()
++
++func _apply() -> void:
++	viewport.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR if _scale < .999 else Viewport.SCALING_3D_MODE_BILINEAR
++	viewport.scaling_3d_scale = maxf(.1,_scale)
++	viewport.msaa_3d = mini(_native_msaa,Viewport.MSAA_2X) if _scale < .999 else _native_msaa
+--- before/scripts/terrain_editor/distant_landscape.gd
++++ after/scripts/terrain_editor/distant_landscape.gd
+@@ -83,8 +83,6 @@
+ 	var image := noise.get_seamless_image(256, 256)
+ 	image.generate_mipmaps()
+ 	var billow := ImageTexture.create_from_image(image)
+-	var plane := PlaneMesh.new()
+-	plane.size = Vector2(6800, 6800)
+ 	var shader := load("res://shaders/terrain_editor/cloud_deck.gdshader")
+ 	for spec: Dictionary in CLOUD_DECKS:
+ 		var deck_material := ShaderMaterial.new()
+@@ -97,6 +95,11 @@
+ 		deck_material.set_shader_parameter("inner_clear_radius", float(spec.get("inner_clear", 0.0)))
+ 		deck_material.set_shader_parameter("uv_offset", spec.offset)
+ 		cloud_materials.append(deck_material)
++		# The shader reaches zero opacity inside this radius. Keep the quad
++		# around that support instead of rasterizing a 6800m transparent sheet.
++		var extent: float = float(spec.get("fade", 2200.0))
++		var plane := PlaneMesh.new()
++		plane.size = Vector2.ONE * extent * 2.0
+ 		var deck := MeshInstance3D.new()
+ 		deck.mesh = plane
+ 		deck.material_override = deck_material
+--- before/shaders/terrain_editor/live_water.gdshaderinc
++++ after/shaders/terrain_editor/live_water.gdshaderinc
+@@ -12,3 +12,22 @@
+  if(water.a<.5 || water.g<=.0001)return 0.0;
+  return max(0.0,water.r-root.y);
+ }
++
++global uniform sampler2D grass_recovery_field : filter_linear, repeat_disable;
++global uniform vec4 grass_recovery_rect;
++global uniform float grass_recovery_active;
++float live_grass_coverage(vec3 root){
++ if(grass_recovery_active<.5)return 1.0-smoothstep(.0005,.004,live_water_depth(root));
++ vec2 uv=(root.xz-grass_recovery_rect.xy)/grass_recovery_rect.zw;
++ if(any(lessThan(uv,vec2(0.0))) || any(greaterThan(uv,vec2(1.0))))return 1.0;
++ vec4 growth=texture(grass_recovery_field,uv);
++ if(growth.a<.5)return 1.0;
++ // A high crown projecting into a lower neighbour keeps its own dry grass.
++ if(root.y>growth.g+.25 && root.y>growth.b+.004)return 1.0;
++ return clamp(growth.r,0.0,1.0);
++}
++bool grass_coverage_visible(float coverage,vec2 pixel){
++ if(coverage>=.999)return true;
++ float threshold=fract(52.9829189*fract(dot(floor(pixel),vec2(.06711056,.00583715))));
++ return coverage>threshold;
++}
+--- before/shaders/terrain_editor/grass_blades.gdshader
++++ after/shaders/terrain_editor/grass_blades.gdshader
+@@ -19,7 +19,7 @@
+ varying vec3 v_canopy_n;
+ varying float blade_t;
+ varying float v_gust;
+-varying float root_water_depth;
++varying float grass_coverage;
+ void vertex(){
+ 	float t_wind=grass_time<0.0?TIME:grass_time;
+ 	vec3 root_world=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;
+@@ -31,8 +31,8 @@
+ 	float keep=1.0-smoothstep(74.0,108.0,dist);
+ 	vec3 shown_root=root_world;
+ 	shown_root.y+=terrain_morph_offset(root_world);
+-	root_water_depth=live_water_depth(shown_root);
+-	float water_keep=1.0-smoothstep(.0005,.004,root_water_depth);
++	grass_coverage=live_grass_coverage(shown_root);
++	float water_keep=smoothstep(0.0,.65,grass_coverage);
+ 	float standing=gc_standing(root_world.xz);
+ 	float press=1.0-standing;
+ 	keep*=mix(1.0,0.24,press);
+@@ -82,7 +82,7 @@
+ }
+ void fragment(){
+  if(!terrain_transition_visible(FRAGCOORD.xy))discard;
+-	if(root_water_depth>=.004)discard;
++	if(!grass_coverage_visible(grass_coverage,FRAGCOORD.xy))discard;
+ 	// Preserve the visible leaf at the lip; aggregate narrow leaves into the
+ 	// same painted canopy as the ground instead of shimmering dark/light pixels.
+ 	float width_pixels=1.0/max(fwidth(UV.x),.0001);
+--- before/shaders/terrain_editor/rim_green.gdshader
++++ after/shaders/terrain_editor/rim_green.gdshader
+@@ -7,7 +7,7 @@
+ #include "cliff_palette.gdshaderinc"
+ #include "stone_surface.gdshaderinc"
+ varying vec3 world_position;
+-varying float root_water_depth;
++varying float grass_coverage;
+ void vertex(){
+ 	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+ 	float standing=gc_standing(UV2);
+@@ -16,14 +16,14 @@
+ 	// buries the leaf foot and must not turn a dry crown into a wet root.
+ 	vec3 root_world=(MODEL_MATRIX*vec4(UV2.x,UV.x,UV2.y,1.0)).xyz;
+ 	root_world.y+=terrain_morph_offset(root_world);
+-	root_water_depth=live_water_depth(root_world);
+-	float water_keep=1.0-smoothstep(.0005,.004,root_water_depth);
++	grass_coverage=live_grass_coverage(root_world);
++	float water_keep=smoothstep(0.0,.65,grass_coverage);
+ 	VERTEX=mix(anchor,VERTEX,standing*water_keep);
+ 	VERTEX.y+=terrain_morph_offset(world_position);
+ }
+ void fragment(){
+  if(!terrain_transition_visible(FRAGCOORD.xy))discard;
+-	if(root_water_depth>=.004)discard;
++	if(!grass_coverage_visible(grass_coverage,FRAGCOORD.xy))discard;
+ 	vec2 slope;
+ 	vec3 green=ground_cover(world_position,.65,slope);
+ 	vec3 n_world=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+--- before/shaders/terrain_editor/ground.gdshader
++++ after/shaders/terrain_editor/ground.gdshader
+@@ -42,7 +42,7 @@
+ 	vec3 rooted_sod=mix(color*vec3(.92,.86,.65),stone_mid_color*vec3(.96,.88,.72),.50);
+ 	float root_exposure=.28+.56*smoothstep(.30,.72,root_patch);
+ 	ALBEDO=mix(lawn,rooted_sod,lip_soil*root_exposure);
+-	float submerged=smoothstep(.0005,.004,live_water_depth(world_position));
++	float submerged=1.0-live_grass_coverage(world_position);
+ 	if(submerged>0.0)ALBEDO=mix(ALBEDO,wet_bank_material(world_position),submerged);
+ 	vec3 base_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ 	if(base_normal.y<0.0)base_normal=-base_normal;
+--- before/shaders/terrain_editor/cloud_deck.gdshader
++++ after/shaders/terrain_editor/cloud_deck.gdshader
+@@ -30,19 +30,27 @@
+ 	return mix(b0,b1,cloud_detail_weight);
+ }
+ void fragment(){
++	vec3 view=world_position-CAMERA_POSITION_WORLD;
++	float distance=max(length(view),.001);
++	vec2 p=sky_coord(view/distance);
++	float horizontal=length(world_position.xz-NODE_POSITION_WORLD.xz);
++	float inner_mask=inner_clear_radius>.5 ? smoothstep(inner_clear_radius*.45,inner_clear_radius,length(world_position.xz)) : 1.0;
++	float horizon=smoothstep(.04,.34,p.y);
++	float edge_fade=1.0-smoothstep(fade_radius*.48,fade_radius*.94,horizontal);
++	float support=horizon*inner_mask*edge_fade;
++	if(support<=0.0)discard;
++
+ 	vec2 uv=world_position.xz*uv_scale*cloud_spatial_scale+uv_offset+vec2(TIME*.0009,TIME*.0004);
+ 	float body=shape(uv);
++	float density=smoothstep(coverage-.07,coverage+.17,body);
++	if(density<=0.0)discard;
+ 	vec2 sun_xz=length(sun_direction.xz)>.001 ? normalize(sun_direction.xz) : vec2(.7,.7);
+ 	float toward_sun=shape(uv+sun_xz*.022);
+ 	float toward_sun_fine=shape(uv+sun_xz*.009);
+ 	// Sculpted 3D cloud-billow cushions with silver-gold forward-scattered crests (Journey / Europa):
+-	float density=smoothstep(coverage-.07,coverage+.17,body);
+ 	float thick=smoothstep(coverage-.02,coverage+.32,body);
+ 	float lit=clamp(.44+(body-toward_sun)*(cloud_light_gradient*1.25),0.0,1.0);
+ 	float crest_rim=clamp((body-toward_sun_fine)*22.0,0.0,1.0)*smoothstep(coverage-.03,coverage+.18,body)*(1.0-smoothstep(coverage+.20,coverage+.42,body));
+-	vec3 view=world_position-CAMERA_POSITION_WORLD;
+-	float distance=max(length(view),.001);
+-	vec2 p=sky_coord(view/distance);
+ 	float sun_d=sky_sun_distance(p);
+ 	float h_sun=sky_horiz_sun(p);
+ 	float billow_t=clamp(lit*.58+thick*.48-.05,0.0,1.0);
+@@ -58,10 +66,5 @@
+ 	float aerial=1.0-exp(-distance*aerial_density*.55);
+ 	vec3 dir_haze=sky_gradient(p);
+ 	ALBEDO=mix(color,dir_haze,clamp(aerial*.36,0.0,.42));
+-	float horizontal=length(world_position.xz-NODE_POSITION_WORLD.xz);
+-	float inner_mask=inner_clear_radius>.5 ? smoothstep(inner_clear_radius*.45,inner_clear_radius,length(world_position.xz)) : 1.0;
+-	float horizon=smoothstep(.04,.34,p.y);
+-	// Smooth radial fade well inside the 4800m PlaneMesh so square corners never appear!
+-	float edge_fade=1.0-smoothstep(fade_radius*.48,fade_radius*.94,horizontal);
+-	ALPHA=density*opacity*horizon*inner_mask*edge_fade;
++	ALPHA=density*opacity*support;
+ }

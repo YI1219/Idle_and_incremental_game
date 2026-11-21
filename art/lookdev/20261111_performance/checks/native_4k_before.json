@@ -1,0 +1,22 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"frame_ms": {
+		"max": 94.471,
+		"mean": 64.8900250000001,
+		"p50": 45.366,
+		"p95": 93.287
+	},
+	"method": "native 4x MSAA explicit draw, frozen light/camera, live water at fixed 1/60s per frame;40 warmup+120 samples;no capture I/O;no limiter",
+	"resolution": [
+		3840,
+		2160
+	],
+	"scale": 1.0,
+	"water_main_ms": {
+		"max": 8.959,
+		"mean": 1.22351666666667,
+		"p50": 0.417,
+		"p95": 4.786
+	},
+	"water_volume": 69.3404360226604
+}

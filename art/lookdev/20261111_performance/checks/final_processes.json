@@ -1,0 +1,5 @@
+[
+  "29442   0.7 /Applications/Go /Applications/Godot.app/Contents/MacOS/Godot --path /Users/yi/Projects/games/the-scroll-within -e res://scenes/terrain_editor.tscn",
+  "87444  51.0 godot            godot --path . --script art/lookdev/20261112_cliff_variety/checks/capture_forms.gd -- --out=art/lookdev/20261112_cliff_variety/final --suite=quick --seed=7301 --preset=0",
+  "87509  99.9 godot            godot --headless --path . --script tests/interior_terrain_edit_test.gd"
+]

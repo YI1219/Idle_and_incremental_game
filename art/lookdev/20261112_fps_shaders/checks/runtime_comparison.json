@@ -1,0 +1,140 @@
+[
+  {
+    "mode": "2k",
+    "before": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": true,
+      "elapsed_seconds": 8.019737,
+      "fps": 51.872025229755,
+      "frames": 416,
+      "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+      "msaa": 1,
+      "p50_ms": 18.693,
+      "p95_ms": 21.705,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "scale": 1.0,
+      "texture_size": [
+        2560,
+        1440
+      ],
+      "water_seconds": 11.1
+    },
+    "after": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": false,
+      "elapsed_seconds": 8.015884,
+      "fps": 57.5108122822137,
+      "frames": 461,
+      "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+      "msaa": 1,
+      "p50_ms": 16.777,
+      "p95_ms": 19.858,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "scale": 1.0,
+      "texture_size": [
+        2560,
+        1440
+      ],
+      "water_seconds": 11.1
+    },
+    "fps_gain_percent": 10.870574317241344
+  },
+  {
+    "mode": "4k",
+    "before": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": true,
+      "elapsed_seconds": 8.00194,
+      "fps": 25.4938177491958,
+      "frames": 204,
+      "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+      "msaa": 1,
+      "p50_ms": 38.353,
+      "p95_ms": 41.787,
+      "resolution": [
+        3840,
+        2160
+      ],
+      "scale": 1.0,
+      "texture_size": [
+        3840,
+        2160
+      ],
+      "water_seconds": 11.1
+    },
+    "after": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": false,
+      "elapsed_seconds": 8.000715,
+      "fps": 28.6224418692579,
+      "frames": 229,
+      "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+      "msaa": 1,
+      "p50_ms": 34.17,
+      "p95_ms": 37.362,
+      "resolution": [
+        3840,
+        2160
+      ],
+      "scale": 1.0,
+      "texture_size": [
+        3840,
+        2160
+      ],
+      "water_seconds": 11.1
+    },
+    "fps_gain_percent": 12.272089456514589
+  },
+  {
+    "mode": "scaled4k",
+    "before": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": true,
+      "elapsed_seconds": 8.008842,
+      "fps": 64.0542040909285,
+      "frames": 513,
+      "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+      "msaa": 1,
+      "p50_ms": 15.18,
+      "p95_ms": 18.102,
+      "resolution": [
+        3840,
+        2160
+      ],
+      "scale": 0.5,
+      "texture_size": [
+        3840,
+        2160
+      ],
+      "water_seconds": 11.1
+    },
+    "after": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": false,
+      "elapsed_seconds": 8.010152,
+      "fps": 68.6628668220029,
+      "frames": 550,
+      "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+      "msaa": 1,
+      "p50_ms": 14.136,
+      "p95_ms": 16.904,
+      "resolution": [
+        3840,
+        2160
+      ],
+      "scale": 0.5,
+      "texture_size": [
+        3840,
+        2160
+      ],
+      "water_seconds": 11.1
+    },
+    "fps_gain_percent": 7.1949418410260035
+  }
+]

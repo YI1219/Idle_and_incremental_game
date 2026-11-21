@@ -1,0 +1,70 @@
+{
+  "valid": true,
+  "cases": [
+    {
+      "case": "default",
+      "matched_frames": 10,
+      "final_frames": 10,
+      "intentional_data_change": true,
+      "production_changes": [
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://scripts/terrain_editor/grass_lip_soften.gd",
+        "res://scripts/terrain_editor/terrain_data.gd",
+        "res://scripts/terrain_editor/terrain_decoration.gd"
+      ]
+    },
+    {
+      "case": "held2104",
+      "matched_frames": 9,
+      "final_frames": 10,
+      "intentional_data_change": true,
+      "production_changes": [
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://scripts/terrain_editor/grass_lip_soften.gd",
+        "res://scripts/terrain_editor/terrain_data.gd",
+        "res://scripts/terrain_editor/terrain_decoration.gd"
+      ]
+    },
+    {
+      "case": "held4242",
+      "matched_frames": 9,
+      "final_frames": 10,
+      "intentional_data_change": false,
+      "production_changes": [
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://scripts/terrain_editor/grass_lip_soften.gd",
+        "res://scripts/terrain_editor/terrain_data.gd",
+        "res://scripts/terrain_editor/terrain_decoration.gd"
+      ]
+    },
+    {
+      "case": "held913",
+      "matched_frames": 9,
+      "final_frames": 10,
+      "intentional_data_change": false,
+      "production_changes": [
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://scripts/terrain_editor/grass_lip_soften.gd",
+        "res://scripts/terrain_editor/terrain_data.gd",
+        "res://scripts/terrain_editor/terrain_decoration.gd"
+      ]
+    },
+    {
+      "case": "night",
+      "matched_frames": 9,
+      "final_frames": 10,
+      "intentional_data_change": true,
+      "production_changes": [
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://scripts/terrain_editor/grass_lip_soften.gd",
+        "res://scripts/terrain_editor/terrain_data.gd",
+        "res://scripts/terrain_editor/terrain_decoration.gd"
+      ]
+    }
+  ],
+  "final_frames": 50,
+  "matched_frames": 46,
+  "validation_groups": 39,
+  "art_accepted": false,
+  "target_hardware_performance_measured": false
+}

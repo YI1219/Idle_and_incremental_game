@@ -1,0 +1,6 @@
+{
+  "states_checked": 40,
+  "all_image_and_manifest_paths_exist": true,
+  "slider_and_mode_local_state_passed": true,
+  "browser_visual_interaction_tested": false
+}

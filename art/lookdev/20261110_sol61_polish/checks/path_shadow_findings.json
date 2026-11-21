@@ -1,0 +1,139 @@
+{
+  "task": "path side shadow diagnostic and reversible patch only",
+  "patch": "art/lookdev/20261110_sol61_polish/checks/path_shadow.patch",
+  "production_files_modified_by_this_task": [],
+  "patch_scope": {
+    "file": "shaders/terrain_editor/cliff_rock.gdshader",
+    "function": "fragment",
+    "branch": "prop_kind == 2 path only",
+    "changes": "replace baked cold shadow pigment on sidewall with a darker limestone pigment derived from existing time palette"
+  },
+  "root_cause": [
+    "Path side normals ny=.132..195 lie wholly below the top_face smoothstep lower bound .38, so every sidewall takes 100 percent rim_tone.",
+    "Original rim_tone multiplies the source_color stone_shadow_color by (.78,.82,.82). At progress .29 its palette is (.21,.27,.42), so the sidewall is already dark blue albedo before real sunlight, blue fill and local AO.",
+    "The mesh/placement probe finds all bottom ring samples about .014m below authoritative terrain in default preset for seeds 7301,2104,4242,913. It does not support a floating path diagnosis.",
+    "Side normals point outward and slightly upward. They are not inverted. The 14-degree normal crease preserves the top/side break.",
+    "Real cast shadows and AO remain contributing factors. Their quantitative share needs the native in-memory diagnostic. The hard all-around pigment band is independently established by source and geometry."
+  ],
+  "preserved": [
+    "path points and transforms",
+    "mesh positions, thickness and normals",
+    "local AO",
+    "path cast shadows",
+    "all non-path prop_kind branches",
+    "global stone_shadow_color",
+    "global shadow_bias .035",
+    "lighting, fog and exposure"
+  ],
+  "geometry": {
+    "art_accepted": false,
+    "failures": 0,
+    "mesh_aabb": {
+      "position": [
+        -0.351116836071014,
+        -0.0179999992251396,
+        -0.233180329203606
+      ],
+      "size": [
+        0.674197137355804,
+        0.136000007390976,
+        0.469092667102814
+      ]
+    },
+    "seeds": [
+      {
+        "bottom_ring_samples": 630,
+        "bottom_ring_vs_terrain": [
+          -0.0139999389648438,
+          -0.0139999389648438
+        ],
+        "bottom_vs_center_ground": [
+          -0.0140000507235527,
+          -0.0140000507235527
+        ],
+        "count": 15,
+        "seed": 7301,
+        "top_vs_center_ground": [
+          0.121999956667423,
+          0.121999956667423
+        ]
+      },
+      {
+        "bottom_ring_samples": 630,
+        "bottom_ring_vs_terrain": [
+          -0.0139999389648438,
+          -0.0139999389648438
+        ],
+        "bottom_vs_center_ground": [
+          -0.0140000507235527,
+          -0.0140000507235527
+        ],
+        "count": 15,
+        "seed": 2104,
+        "top_vs_center_ground": [
+          0.121999956667423,
+          0.121999956667423
+        ]
+      },
+      {
+        "bottom_ring_samples": 630,
+        "bottom_ring_vs_terrain": [
+          -0.0139999389648438,
+          -0.0139999389648438
+        ],
+        "bottom_vs_center_ground": [
+          -0.0140000507235527,
+          -0.0140000507235527
+        ],
+        "count": 15,
+        "seed": 4242,
+        "top_vs_center_ground": [
+          0.121999956667423,
+          0.121999956667423
+        ]
+      },
+      {
+        "bottom_ring_samples": 630,
+        "bottom_ring_vs_terrain": [
+          -0.0139999389648438,
+          -0.0139999389648438
+        ],
+        "bottom_vs_center_ground": [
+          -0.0140000507235527,
+          -0.0140000507235527
+        ],
+        "count": 15,
+        "seed": 913,
+        "top_vs_center_ground": [
+          0.121999956667423,
+          0.121999956667423
+        ]
+      }
+    ],
+    "side_normal_y": [
+      0.132439851760864,
+      0.194700360298157
+    ],
+    "side_radial_dot_min": 0.69449782371521,
+    "vertices": 210
+  },
+  "validation": {
+    "git_apply_check": "passed against current production source",
+    "probe_gdscript_parse": "passed with Godot 4.7.2 --check-only",
+    "native_capture": "not produced. Direct terminal graphical process stalled with macOS Connection Invalid and was terminated. Editor-driven capture remains required.",
+    "geometry_environment_note": "macOS system CA certificate lookup reports ret != noErr in restricted headless invocation. Probe completed and exited 0.",
+    "initial_probe_note": "An initial outward radial-dot threshold .9 was too strict for the deliberately irregular elliptical mesh. It was corrected to require positive outward-facing normals. Original log retained as geometry_initial.log.",
+    "art_accepted": false
+  },
+  "native_reproduction": "Run checks/path_shadow_diagnostic/probe.gd using the existing editor capture launch workflow with --out=res://art/lookdev/20261110_sol61_polish/checks/path_shadow_diagnostic/render --suite=quick. It emits original, original path casts off, candidate path casts off, candidate with casts on at the existing close camera, seed7301/progress.29/2K/phase1.25. The cast-off states are diagnostic process-local only.",
+  "sha256": {
+    "scripts/terrain_editor/terrain_models.gd": "c4e84e4d01b8658f1ba9a08c490e444a9c9182897397140b1995af1fb862bcc4",
+    "scripts/terrain_editor/terrain_decoration.gd": "34118d7d5190d558b3ffafa51363a84e3d1b443e986ca35f2708a7284ef89a57",
+    "shaders/terrain_editor/cliff_rock.gdshader": "e8195da4d303e95e8b50d4170399fea74cd536c00ba31fbcf4641c9791f7a717",
+    "shaders/terrain_editor/stone_surface.gdshaderinc": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90",
+    "scripts/gameplay/systems/time_solar_system.gd": "f9b89188d81dbd9e466d323ee9de8ec95fce240ddfcb4cebac8e485221469d3d",
+    "scripts/terrain_editor/terrain_environment.gd": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+    "art/lookdev/20261109_sol61_build/rock_readability_day/close.png": "c4269503523fb2cdd09ee51a25ab243265833708a10afb8e98ecd40e84949c0e",
+    "art/lookdev/20261109_sol61_build/rock_readability_day/cliff_close.png": "93f245b53d52380c38ac4d1c89ddfb6769ca355d728204ded5618c7146aa04b6"
+  }
+}

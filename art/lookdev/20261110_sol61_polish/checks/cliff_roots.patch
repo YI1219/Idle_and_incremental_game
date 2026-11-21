@@ -1,0 +1,24 @@
+--- a/scripts/terrain_editor/procedural_shard.gd
++++ b/scripts/terrain_editor/procedural_shard.gd
+@@ -257,7 +257,7 @@
+ 	const FOLD := [-0.54, -0.79, -0.66, -0.47, -0.86, -0.61, -0.74, -0.56]
+ 	const TILT := [0.32, -0.18, -0.30, 0.20, -0.26, 0.34, -0.12, 0.16]
+ 	const FOOT := [-1.08, -0.98, -1.10, -1.02, -1.12, -0.96, -1.06, -1.01]
+-	const FOOT_TILT := [-0.04, -0.06, 0.05, -0.08, -0.03, 0.06, -0.05, 0.04]
++	const FOOT_TILT := [-0.16, 0.12, -0.10, 0.18, 0.06, -0.14, 0.10, -0.08]
+ 	const ROOT_FOLD := [0.22, 0.30, 0.18, 0.26, 0.20, 0.28, 0.24, 0.18]
+ 	const CREST := [0.54, 0.47, 0.51, 0.56, 0.48, 0.53, 0.50, 0.55]
+ 	var shoulder: Array[Vector3] = []
+@@ -314,7 +314,11 @@
+ 			foot_z = CREST[arch] + plane_m * (foot_x - ridge_x) + plane_q * (foot_y - neck_y)
+ 			# Adding distance from the fold plane preserves its shared edge exactly.
+ 			foot_z += ROOT_FOLD[arch] * (foot_y - FOLD[arch] - TILT[arch] * foot_x)
+-		foot.append(Vector3(foot_x, foot_y, foot_z))
++		# Broad blunt roots turn inward instead of ending as repeated box heels.
++		# This affine tuck keeps the foot ring closed and its cut face planar.
++		var root_tuck: float = [0.78, 0.86, 0.74, 0.88, 0.82, 0.76, 0.85, 0.80][arch]
++		foot.append(Vector3(lerpf(ridge_x * 0.18, foot_x, root_tuck), foot_y,
++			lerpf(-0.10, foot_z, root_tuck)))
+ 	var rings: Array = [collar, shoulder, fold, foot]
+ 	for band in 3:
+ 		var upper: Array = rings[band]

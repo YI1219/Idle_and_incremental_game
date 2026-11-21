@@ -1,0 +1,106 @@
+{
+  "game": {
+    "after_vs_before": {
+      "mean_abs_rgb": 0.021259403935185186,
+      "max": 4,
+      "pixels_differ_percent": 5.251356336805555,
+      "pixels_over_2_percent": 0.0037977430555555555,
+      "pixels_over_8_percent": 0.0,
+      "pixels_over_24_percent": 0.0
+    },
+    "repeat_vs_before_noise_floor": {
+      "mean_abs_rgb": 0.0,
+      "max": 0,
+      "pixels_differ_percent": 0.0,
+      "pixels_over_2_percent": 0.0,
+      "pixels_over_8_percent": 0.0,
+      "pixels_over_24_percent": 0.0
+    },
+    "densest_difference_crop": {
+      "left": 586,
+      "top": 263,
+      "width": 480,
+      "height": 360,
+      "file": "game_crop_before_after_diff8.png",
+      "window_mean_diff": 0.6059027910232544
+    }
+  },
+  "outer_hull": {
+    "after_vs_before": {
+      "mean_abs_rgb": 0.06312192563657408,
+      "max": 4,
+      "pixels_differ_percent": 12.640190972222221,
+      "pixels_over_2_percent": 0.03903537326388889,
+      "pixels_over_8_percent": 0.0,
+      "pixels_over_24_percent": 0.0
+    },
+    "repeat_vs_before_noise_floor": {
+      "mean_abs_rgb": 0.0,
+      "max": 0,
+      "pixels_differ_percent": 0.0,
+      "pixels_over_2_percent": 0.0,
+      "pixels_over_8_percent": 0.0,
+      "pixels_over_24_percent": 0.0
+    },
+    "densest_difference_crop": {
+      "left": 0,
+      "top": 937,
+      "width": 480,
+      "height": 360,
+      "file": "outer_hull_crop_before_after_diff8.png",
+      "window_mean_diff": 1.2638888359069824
+    }
+  },
+  "terrace_close": {
+    "after_vs_before": {
+      "mean_abs_rgb": 0.08339237919560186,
+      "max": 6,
+      "pixels_differ_percent": 20.110677083333332,
+      "pixels_over_2_percent": 0.016465928819444444,
+      "pixels_over_8_percent": 0.0,
+      "pixels_over_24_percent": 0.0
+    },
+    "repeat_vs_before_noise_floor": {
+      "mean_abs_rgb": 0.0,
+      "max": 0,
+      "pixels_differ_percent": 0.0,
+      "pixels_over_2_percent": 0.0,
+      "pixels_over_8_percent": 0.0,
+      "pixels_over_24_percent": 0.0
+    },
+    "densest_difference_crop": {
+      "left": 784,
+      "top": 0,
+      "width": 480,
+      "height": 360,
+      "file": "terrace_close_crop_before_after_diff8.png",
+      "window_mean_diff": 1.0579427480697632
+    }
+  },
+  "whole": {
+    "after_vs_before": {
+      "mean_abs_rgb": 0.005319100839120371,
+      "max": 2,
+      "pixels_differ_percent": 1.4101833767361112,
+      "pixels_over_2_percent": 0.0,
+      "pixels_over_8_percent": 0.0,
+      "pixels_over_24_percent": 0.0
+    },
+    "repeat_vs_before_noise_floor": {
+      "mean_abs_rgb": 0.0,
+      "max": 0,
+      "pixels_differ_percent": 0.0,
+      "pixels_over_2_percent": 0.0,
+      "pixels_over_8_percent": 0.0,
+      "pixels_over_24_percent": 0.0
+    },
+    "densest_difference_crop": {
+      "left": 961,
+      "top": 364,
+      "width": 480,
+      "height": 360,
+      "file": "whole_crop_before_after_diff8.png",
+      "window_mean_diff": 0.3506944477558136
+    }
+  }
+}

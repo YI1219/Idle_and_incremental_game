@@ -1,0 +1,594 @@
+{
+  "source_sha256": {
+    "shaders/terrain_editor/sky_palette.gdshaderinc": "ba1da5176925e67a44ee913b36f2442e6a295e531f85dfd7c844bf81737e6d88",
+    "shaders/terrain_editor/sky.gdshader": "b712d3154e1a2262e8c7ef1085cce6562861afb43c662dbf96fad2cb58f8d0d6",
+    "shaders/terrain_editor/cloud_deck.gdshader": "9c6f740c3b446255f470c9c1adbe7a6b99ce4852cf2e0b96bc53c4bcb4e85e54",
+    "shaders/terrain_editor/distant_mountain.gdshader": "928fb4f6bbd3eb24a9bd6844870359fb84fef30101adb3e1fd270e58a1bd417e",
+    "scripts/terrain_editor/preview_quality.gd": "1da6b88ee3ab48f92a3d50e2dd61ece3e2d5fa61d177e96a29f4d3039490062c",
+    "tools/art/capture_lookdev.gd": "f1d048a6875ba5e97e141fabbec34d527f3a808e9d88f0abd22d98bb653996fb"
+  },
+  "tests": {
+    "headless": [
+      {
+        "test": "argon_world_lock_test",
+        "exit": 0,
+        "seconds": 2.07,
+        "errors": [],
+        "tail": [
+          "ok: scene retains enabled SSIL with a positive intensity",
+          "ARGON WORLD LOCK: 9/9 passed; 0 failures"
+        ]
+      },
+      {
+        "test": "cliff_form_variety_test",
+        "exit": 0,
+        "seconds": 0.25,
+        "errors": [],
+        "tail": [
+          "",
+          "CLIFF FORM VARIETY: 49 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "cliff_mantle_seam_test",
+        "exit": 0,
+        "seconds": 0.25,
+        "errors": [],
+        "tail": [
+          "",
+          "CLIFF MANTLE SEAM: 28 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "cliff_partial_crown_seal_test",
+        "exit": 0,
+        "seconds": 2.53,
+        "errors": [],
+        "tail": [
+          "",
+          "CLIFF PARTIAL CROWN SEAL: 24 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "grass_lip_soften_test",
+        "exit": 0,
+        "seconds": 4.77,
+        "errors": [],
+        "tail": [
+          "ok: seed 7301 preset 1 chunk meshes keep the lip and the flat crown",
+          "GRASS LIP CHECKS: 24 failures: 0"
+        ]
+      },
+      {
+        "test": "grass_recovery_test",
+        "exit": 0,
+        "seconds": 0.15,
+        "errors": [],
+        "tail": [
+          "",
+          "GRASS RECOVERY 11 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "interior_terrain_edit_test",
+        "exit": 0,
+        "seconds": 39.92,
+        "errors": [],
+        "tail": [
+          "INTERIOR FIXTURE seed 7301 center (-8.0, -5.0) strokes 4 joined true",
+          "INTERIOR TERRAIN EDIT: 60 checks, 0 failures, 460 downward rays, 672 horizontal support rays"
+        ]
+      },
+      {
+        "test": "preview_quality_test",
+        "exit": 0,
+        "seconds": 0.14,
+        "errors": [],
+        "tail": [
+          "",
+          "PREVIEW QUALITY 12 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "runtime_power_test",
+        "exit": 0,
+        "seconds": 0.14,
+        "errors": [],
+        "tail": [
+          "",
+          "RUNTIME POWER 16 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "sol61_grass_contact_test",
+        "exit": 0,
+        "seconds": 0.24,
+        "errors": [],
+        "tail": [
+          "ok: grass continues onto the rounded outer slope",
+          "SOL61 GRASS CONTACT failures: 0"
+        ]
+      },
+      {
+        "test": "sol61_scene_test",
+        "exit": 0,
+        "seconds": 2.83,
+        "errors": [],
+        "tail": [
+          "ok: night water does not retain daytime highlight energy",
+          "SOL61 SCENE: 7 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_blueprint_async_test",
+        "exit": 0,
+        "seconds": 5.89,
+        "errors": [],
+        "tail": [
+          "",
+          "TERRAIN BLUEPRINT ASYNC: 16 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_blueprint_test",
+        "exit": 0,
+        "seconds": 2.56,
+        "errors": [],
+        "tail": [
+          "",
+          "TERRAIN BLUEPRINT: 13 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_controls_test",
+        "exit": 0,
+        "seconds": 2.05,
+        "errors": [],
+        "tail": [
+          "",
+          "terrain_controls_test: 29 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_editor_runtime_test",
+        "exit": 0,
+        "seconds": 6.26,
+        "errors": [],
+        "tail": [
+          "",
+          "TERRAIN EDITOR RUNTIME: 22/22 passed"
+        ]
+      },
+      {
+        "test": "terrain_locality_test",
+        "exit": 0,
+        "seconds": 7.18,
+        "errors": [],
+        "tail": [
+          "",
+          "TERRAIN LOCALITY: 15 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_release_feedback_test",
+        "exit": 0,
+        "seconds": 2.85,
+        "errors": [],
+        "tail": [
+          "",
+          "TERRAIN RELEASE FEEDBACK 19 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_stroke_plane_test",
+        "exit": 0,
+        "seconds": 2.08,
+        "errors": [],
+        "tail": [
+          "",
+          "STROKE PLANE 15 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_surface_anchor_test",
+        "exit": 0,
+        "seconds": 2.27,
+        "errors": [],
+        "tail": [
+          "",
+          "TERRAIN SURFACE ANCHOR: 12 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_transition_test",
+        "exit": 0,
+        "seconds": 3.64,
+        "errors": [],
+        "tail": [
+          "",
+          "TERRAIN TRANSITION: 8 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "terrain_water_integration_test",
+        "exit": 0,
+        "seconds": 4.16,
+        "errors": [],
+        "tail": [
+          "",
+          "TERRAIN WATER INTEGRATION: 11 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "water_flow_test",
+        "exit": 0,
+        "seconds": 0.73,
+        "errors": [],
+        "tail": [
+          "ok: actual preset 2 basin levels and volumes match consumer-facing cell data",
+          "WATER FLOW: 92 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "water_idle_work_test",
+        "exit": 0,
+        "seconds": 0.56,
+        "errors": [],
+        "tail": [
+          "ok: moving or raising terrain rebuilds grass fringe ownership",
+          "WATER IDLE 10 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "water_recession_test",
+        "exit": 0,
+        "seconds": 5.48,
+        "errors": [],
+        "tail": [
+          "RECESSION BASELINE grass=2711592339 columns=2506595779 mass=3039416512",
+          "WATER RECESSION: 16 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "water_renderer_test",
+        "exit": 0,
+        "seconds": 1.05,
+        "errors": [],
+        "tail": [
+          "ok: sub-visible water can omit geometry without deleting mass",
+          "water_renderer_test: 48/48 passed"
+        ]
+      },
+      {
+        "test": "waterfall_flow_shape_test",
+        "exit": 0,
+        "seconds": 0.24,
+        "errors": [],
+        "tail": [
+          "",
+          "WATERFALL FLOW SHAPE: 9 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "waterfall_terrace_seal_test",
+        "exit": 0,
+        "seconds": 3.21,
+        "errors": [],
+        "tail": [
+          "",
+          "WATERFALL TERRACE SEAL: 16 checks, 0 failures"
+        ]
+      }
+    ],
+    "native": [
+      {
+        "test": "flooded_ground",
+        "exit": 0,
+        "errors": [],
+        "tail": [
+          "",
+          "2026-11-12 17:11:11.281 godot[70235:75418372] +[IMKClient subclass]: chose IMKClient_Modern",
+          "2026-11-12 17:11:11.355 godot[70235:75418372] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+          "FLOODED GROUND: 20 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "grass_lod",
+        "exit": 0,
+        "errors": [],
+        "tail": [
+          "Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)",
+          "",
+          "2026-11-12 17:11:12.119 godot[70247:75418489] +[IMKClient subclass]: chose IMKClient_Modern",
+          "GRASS LOD 96 -> 14; 4 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "grass_recovery_render",
+        "exit": 0,
+        "errors": [],
+        "tail": [
+          "2026-11-12 17:11:12.638 godot[70262:75418563] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+          "blades pixels 2249 -> 1031 -> 0 -> 700",
+          "rim pixels 6628 -> 3045 -> 0 -> 2047",
+          "GRASS RECOVERY PIXELS 8 checks, 0 failures"
+        ]
+      },
+      {
+        "test": "sky_direction",
+        "exit": 0,
+        "errors": [],
+        "tail": [
+          "SKY ERROR night=false max=0.0 mean=0.0",
+          "2026-11-12 17:11:13.502 godot[70265:75418634] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+          "SKY ERROR night=true max=0.0 mean=0.0",
+          "SKY DIRECTION 4 checks, 0 failures"
+        ]
+      }
+    ]
+  },
+  "passed_groups": 31,
+  "capture_frames": 36,
+  "capture_pairs": 18,
+  "pixel_metrics": [
+    {
+      "before": "pairs/2104_before_close.png",
+      "after": "pairs/2104_after_close.png",
+      "mean_abs_8bit": 0.021477955005787034,
+      "max_abs_8bit": 4
+    },
+    {
+      "before": "pairs/2104_before_reverse.png",
+      "after": "pairs/2104_after_reverse.png",
+      "mean_abs_8bit": 0.009346788194444443,
+      "max_abs_8bit": 3
+    },
+    {
+      "before": "pairs/2104_before_whole.png",
+      "after": "pairs/2104_after_whole.png",
+      "mean_abs_8bit": 0.005495424623842592,
+      "max_abs_8bit": 2
+    },
+    {
+      "before": "pairs/4242_before_close.png",
+      "after": "pairs/4242_after_close.png",
+      "mean_abs_8bit": 0.02019802517361111,
+      "max_abs_8bit": 7
+    },
+    {
+      "before": "pairs/4242_before_reverse.png",
+      "after": "pairs/4242_after_reverse.png",
+      "mean_abs_8bit": 0.00855857566550926,
+      "max_abs_8bit": 2
+    },
+    {
+      "before": "pairs/4242_before_whole.png",
+      "after": "pairs/4242_after_whole.png",
+      "mean_abs_8bit": 0.005527072482638889,
+      "max_abs_8bit": 3
+    },
+    {
+      "before": "pairs/7301_before_close.png",
+      "after": "pairs/7301_after_close.png",
+      "mean_abs_8bit": 0.022552083333333334,
+      "max_abs_8bit": 4
+    },
+    {
+      "before": "pairs/7301_before_low.png",
+      "after": "pairs/7301_after_low.png",
+      "mean_abs_8bit": 0.014648618344907405,
+      "max_abs_8bit": 7
+    },
+    {
+      "before": "pairs/7301_before_night.png",
+      "after": "pairs/7301_after_night.png",
+      "mean_abs_8bit": 0.003851634837962963,
+      "max_abs_8bit": 1
+    },
+    {
+      "before": "pairs/7301_before_reverse.png",
+      "after": "pairs/7301_after_reverse.png",
+      "mean_abs_8bit": 0.009086733217592591,
+      "max_abs_8bit": 3
+    },
+    {
+      "before": "pairs/7301_before_whole.png",
+      "after": "pairs/7301_after_whole.png",
+      "mean_abs_8bit": 0.00600197120949074,
+      "max_abs_8bit": 2
+    },
+    {
+      "before": "pairs/913_before_close.png",
+      "after": "pairs/913_after_close.png",
+      "mean_abs_8bit": 0.02706497757523148,
+      "max_abs_8bit": 7
+    },
+    {
+      "before": "pairs/913_before_reverse.png",
+      "after": "pairs/913_after_reverse.png",
+      "mean_abs_8bit": 0.009105360243055556,
+      "max_abs_8bit": 3
+    },
+    {
+      "before": "pairs/913_before_whole.png",
+      "after": "pairs/913_after_whole.png",
+      "mean_abs_8bit": 0.006132902922453704,
+      "max_abs_8bit": 2
+    },
+    {
+      "before": "pairs4k/full_before_close.png",
+      "after": "pairs4k/full_after_close.png",
+      "mean_abs_8bit": 0.01846748006687243,
+      "max_abs_8bit": 4
+    },
+    {
+      "before": "pairs4k/full_before_whole.png",
+      "after": "pairs4k/full_after_whole.png",
+      "mean_abs_8bit": 0.0051640866126543205,
+      "max_abs_8bit": 2
+    },
+    {
+      "before": "pairs4k/scaled_before_close.png",
+      "after": "pairs4k/scaled_after_close.png",
+      "mean_abs_8bit": 0.21455910011574073,
+      "max_abs_8bit": 103
+    },
+    {
+      "before": "pairs4k/scaled_before_whole.png",
+      "after": "pairs4k/scaled_after_whole.png",
+      "mean_abs_8bit": 0.07861275880915637,
+      "max_abs_8bit": 90
+    }
+  ],
+  "runtime": [
+    {
+      "mode": "2k",
+      "before": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": true,
+        "elapsed_seconds": 8.019737,
+        "fps": 51.872025229755,
+        "frames": 416,
+        "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+        "msaa": 1,
+        "p50_ms": 18.693,
+        "p95_ms": 21.705,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "scale": 1.0,
+        "texture_size": [
+          2560,
+          1440
+        ],
+        "water_seconds": 11.1
+      },
+      "after": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": false,
+        "elapsed_seconds": 8.015884,
+        "fps": 57.5108122822137,
+        "frames": 461,
+        "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+        "msaa": 1,
+        "p50_ms": 16.777,
+        "p95_ms": 19.858,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "scale": 1.0,
+        "texture_size": [
+          2560,
+          1440
+        ],
+        "water_seconds": 11.1
+      },
+      "fps_gain_percent": 10.870574317241344
+    },
+    {
+      "mode": "4k",
+      "before": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": true,
+        "elapsed_seconds": 8.00194,
+        "fps": 25.4938177491958,
+        "frames": 204,
+        "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+        "msaa": 1,
+        "p50_ms": 38.353,
+        "p95_ms": 41.787,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "scale": 1.0,
+        "texture_size": [
+          3840,
+          2160
+        ],
+        "water_seconds": 11.1
+      },
+      "after": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": false,
+        "elapsed_seconds": 8.000715,
+        "fps": 28.6224418692579,
+        "frames": 229,
+        "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+        "msaa": 1,
+        "p50_ms": 34.17,
+        "p95_ms": 37.362,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "scale": 1.0,
+        "texture_size": [
+          3840,
+          2160
+        ],
+        "water_seconds": 11.1
+      },
+      "fps_gain_percent": 12.272089456514589
+    },
+    {
+      "mode": "scaled4k",
+      "before": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": true,
+        "elapsed_seconds": 8.008842,
+        "fps": 64.0542040909285,
+        "frames": 513,
+        "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+        "msaa": 1,
+        "p50_ms": 15.18,
+        "p95_ms": 18.102,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "scale": 0.5,
+        "texture_size": [
+          3840,
+          2160
+        ],
+        "water_seconds": 11.1
+      },
+      "after": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": false,
+        "elapsed_seconds": 8.010152,
+        "fps": 68.6628668220029,
+        "frames": 550,
+        "method": "same current14-triangle grass+2xMSAA+4096shadow;real normal render loop and production editor/water/time;3s warm+8s sample;limiter/vsync off;fixed SubViewport pixels;no screenshot IO;before=angular sky/full AO/low DOF;after=direct sky/half AO/verylow DOF",
+        "msaa": 1,
+        "p50_ms": 14.136,
+        "p95_ms": 16.904,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "scale": 0.5,
+        "texture_size": [
+          3840,
+          2160
+        ],
+        "water_seconds": 11.1
+      },
+      "fps_gain_percent": 7.1949418410260035
+    }
+  ],
+  "review": "No Critical/Important. Added nonzero precondition and signed-zero GPU cases.",
+  "excluded_legacy": "gameplay_m1_m2_test requires removed avatar; excluded, not counted.",
+  "before_sources": {
+    "capture_lookdev_before.gd.txt": "221823d2d97b01b788324ac398eb502b9fceaf62dedd1fb680d3f0eefaade6bf",
+    "distant_mountain_before.gdshader.txt": "3939c797640c6d5823c1151bbde1a0856d75f421356381aca7b1a3e26adf4347",
+    "sky_palette_before.gdshaderinc.txt": "b56b77b22d0eb2fa6f08db7fe65bd541eb004df39e70d3365e8e78a1b65681cc",
+    "cloud_deck_before.gdshader.txt": "56c04970bcd5edb79be43f469e3bfb7622632ad656bf8d7cdebaf6235f15f1ea",
+    "preview_quality_before.gd.txt": "56c81b343a3f88e40ba32a9ac579aa9a9335024cefdc826c2013326cf65738ae",
+    "sky_before.gdshader.txt": "00ebcfab1b939929f559a437821f645feb47d7c0ea8b921cf005d1824f352748"
+  },
+  "art_accepted": false
+}

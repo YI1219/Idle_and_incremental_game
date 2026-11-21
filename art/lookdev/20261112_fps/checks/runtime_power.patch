@@ -1,0 +1,13 @@
+--- runtime_power_before.gd
++++ runtime_power.gd
+@@ -43,7 +43,9 @@
+ 	if not is_instance_valid(_editor):
+ 		return
+ 	var window: Window = _editor.get_window()
+-	var hidden: bool = not window.visible or window.mode == Window.MODE_MINIMIZED
++	# Headless DisplayServer reports a synthetic minimized window. It has no
++	# desktop visibility state and must keep server/tests processing normally.
++	var hidden: bool = DisplayServer.get_name() != "headless" and (not window.visible or window.mode == Window.MODE_MINIMIZED)
+ 	var wallpaper: bool = _editor.gameplay != null and _editor.gameplay.wallpaper_mode
+ 	refresh(wallpaper, hidden)
+ 

@@ -1,0 +1,23 @@
+{
+  "scripts/gameplay/director.gd": "d6dfceed5187003953e6dbca1938296500bb2e54231d57f0a1c4f59be4de71c9",
+  "scripts/terrain_editor/grass_field.gd": "242936ab5fca6e227be15dda962847a00ea3ac678db843076b2277860cb8bde4",
+  "scripts/terrain_editor/grass_lip_soften.gd": "018648893cb1b70202897bb53d8b778ec4b4ada4daa25f03b1be685c7396e71e",
+  "scripts/terrain_editor/procedural_shard.gd": "c488af2c531a6bbc99fc0a306588a5390f5e9c88c61e6088f6df5f93ea37fa45",
+  "scripts/terrain_editor/terrain_decoration.gd": "34118d7d5190d558b3ffafa51363a84e3d1b443e986ca35f2708a7284ef89a57",
+  "shaders/terrain_editor/ground.gdshader": "9ffe76b3afcb9f786dadd6e6288940f84a377deac26db10fbfa1cb07d9cbec3b",
+  "shaders/terrain_editor/water.gdshader": "a92aeefbdaf672975ac5b54d771b4bd0a92f597561acdcf9a67ea411479ac44e",
+  "shaders/terrain_editor/waterfall.gdshader": "6e3f8be0d8adfad0e18e7e5a0faa89ff728ea3033985165f9479524f0a0e7e18",
+  "tools/art/capture_lookdev.gd": "698d3bfb94da02541122b24823d2ef38fc78431192e6e1fdb39d3d6f094dcc98",
+  "shaders/terrain_editor/stone_surface.gdshaderinc": "147562a8d6e2c04051374e25aff6f1f3143ca9ab5149c02b67aa0632ee091f1e",
+  "shaders/terrain_editor/cliff_column.gdshader": "9ff43f18fc93af0705bb66f21236ec6a33fbad6ddba5122f7f02b34730bbc8de",
+  "scripts/terrain_editor/terrain_renderer.gd": "affc26739822c210c2039311c55422088e8114ea4e86922bd5bc9d476d2f8495",
+  "scripts/terrain_editor/stone_normals.gd": "eddb8325793377f40b625206c9145df9abdf91255ba56322d47487c79ba18a15",
+  "shaders/terrain_editor/ground_cover.gdshaderinc": "924c6b2bdc21bbd2a4ce09871cad1e516114836fa984703d8fe46d5bab2fce6f",
+  "shaders/terrain_editor/grass_blades.gdshader": "6190b99850409058f112dfdacc91cee9b3cc6d9537f4fc8ecc3b3e279a3e208f",
+  "shaders/terrain_editor/sky_palette.gdshaderinc": "b56b77b22d0eb2fa6f08db7fe65bd541eb004df39e70d3365e8e78a1b65681cc",
+  "shaders/terrain_editor/distant_mountain.gdshader": "3939c797640c6d5823c1151bbde1a0856d75f421356381aca7b1a3e26adf4347",
+  "shaders/terrain_editor/cloud_deck.gdshader": "9ab0bc69b8b947bfd9bb59d1bb96f269b9cdbdafd97d56a2950864bdd120f79a",
+  "scripts/terrain_editor/distant_landscape.gd": "7fa9121f65d02cc274b1db433716aa3cda8bdad114c480147f014bbf9b474077",
+  "scripts/gameplay/systems/time_solar_system.gd": "07cc6bdf6af803597b0532837f776f50eb8fdcf0a7a5479b1c4ad5cb631cf6df",
+  "scripts/terrain_editor/terrain_environment.gd": "308bd71a55f60bfa1e47c8c820fd2b65fb3d176c16cf6c33c18e9d6b0353e984"
+}

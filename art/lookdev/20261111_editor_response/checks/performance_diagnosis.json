@@ -1,0 +1,294 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"method": "fixed BASE A; static scene; 80 initial warmup + 12 each; 50 explicit draw frames; no image IO",
+	"samples": [
+		{
+			"draw_calls": 285,
+			"frame_ms": {
+				"max": 47.295,
+				"mean": 46.78606,
+				"p50": 46.78,
+				"p95": 47.244
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "native_base",
+			"primitives": 847667,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 285,
+			"frame_ms": {
+				"max": 24.384,
+				"mean": 23.61928,
+				"p50": 23.714,
+				"p95": 24.248
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 1,
+			"name": "preview_base",
+			"primitives": 847667,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 0.666666666666667,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 262,
+			"frame_ms": {
+				"max": 40.984,
+				"mean": 40.26616,
+				"p50": 40.231,
+				"p95": 40.703
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "native_no_landscape",
+			"primitives": 116065,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 285,
+			"frame_ms": {
+				"max": 42.584,
+				"mean": 39.51876,
+				"p50": 39.295,
+				"p95": 40.899
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "native_no_shadows",
+			"primitives": 847667,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 285,
+			"frame_ms": {
+				"max": 50.91,
+				"mean": 46.2713,
+				"p50": 45.977,
+				"p95": 48.226
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "native_shadow_low",
+			"primitives": 847667,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 285,
+			"frame_ms": {
+				"max": 47.585,
+				"mean": 46.81452,
+				"p50": 46.762,
+				"p95": 47.449
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "native_shadow_medium",
+			"primitives": 847667,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 285,
+			"frame_ms": {
+				"max": 53.617,
+				"mean": 48.51618,
+				"p50": 48.167,
+				"p95": 52.543
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "native_half_indirect",
+			"primitives": 847667,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 285,
+			"frame_ms": {
+				"max": 31.594,
+				"mean": 25.11998,
+				"p50": 24.454,
+				"p95": 30.635
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 1,
+			"name": "preview_half_indirect",
+			"primitives": 847667,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 0.666666666666667,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 285,
+			"frame_ms": {
+				"max": 40.473,
+				"mean": 39.59932,
+				"p50": 39.547,
+				"p95": 40.135
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "native_no_indirect",
+			"primitives": 847667,
+			"render_cpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": false,
+			"ssil": false
+		}
+	]
+}

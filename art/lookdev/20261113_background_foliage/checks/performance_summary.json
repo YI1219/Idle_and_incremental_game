@@ -1,0 +1,20 @@
+[
+  {
+    "size": "2k",
+    "before_fps": 53.96813625099195,
+    "after_fps": 58.0149871500159,
+    "gain_percent": 7.498593022006705,
+    "before_p95_ms": 19.5895,
+    "after_p95_ms": 18.4545,
+    "all_frames_drawn": true
+  },
+  {
+    "size": "4k",
+    "before_fps": 27.3940833835886,
+    "after_fps": 29.517852366192898,
+    "gain_percent": 7.752655757325377,
+    "before_p95_ms": 38.167500000000004,
+    "after_p95_ms": 35.5055,
+    "all_frames_drawn": true
+  }
+]

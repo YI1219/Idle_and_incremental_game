@@ -1,0 +1,56 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"cases": [
+		{
+			"feedback_immediate": true,
+			"feedback_mesh_ms": 0.793,
+			"name": "short_raise",
+			"release_callback_ms": 0.101,
+			"release_to_complete_ms": 1255.833,
+			"release_to_first_draw_ms": 14.28,
+			"release_to_publication_ms": 709.973,
+			"started": true
+		},
+		{
+			"feedback_immediate": true,
+			"feedback_mesh_ms": 0.815,
+			"name": "held_raise",
+			"release_callback_ms": 6.994,
+			"release_to_complete_ms": 578.369,
+			"release_to_first_draw_ms": 28.594,
+			"release_to_publication_ms": 6.863,
+			"started": true
+		},
+		{
+			"feedback_immediate": true,
+			"feedback_mesh_ms": 0.739,
+			"name": "short_contract",
+			"release_callback_ms": 0.102,
+			"release_to_complete_ms": 1299.052,
+			"release_to_first_draw_ms": 14.141,
+			"release_to_publication_ms": 753.031,
+			"started": true
+		},
+		{
+			"feedback_immediate": true,
+			"feedback_mesh_ms": 0.833,
+			"name": "wide_short_raise",
+			"release_callback_ms": 0.249,
+			"release_to_complete_ms": 1271.476,
+			"release_to_first_draw_ms": 14.564,
+			"release_to_publication_ms": 726.298,
+			"started": true
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"method": "2K native production release input, normal worker/morph/feedback clocks; explicit draw, no screenshot IO; camera fixed; water pauses only while terrain pending",
+	"resolution": [
+		1920,
+		963
+	],
+	"source_sha256": {
+		"res://scripts/terrain_editor/edit_preview.gd": "7d65cb502430ce28bf2137801ebf6d6d514abe202083486ad5e1e3c5ff33f31b",
+		"res://scripts/terrain_editor/editor.gd": "6b7e71bf84a3f2ef6bcf0717cbec84edd8e117b1ce57bc6129be95a9181ec94b",
+		"res://shaders/terrain_editor/edit_preview.gdshader": "1dfec4d4cc58bdd14ee2357a2a1d588a6c9f0eb48ad7f42ed0eef6094d917150"
+	}
+}

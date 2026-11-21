@@ -1,0 +1,546 @@
+{
+  "source_sha256": {
+    "scripts/terrain_editor/grass_field.gd": "e9b7416e8c8cefbdc0e10287097b82bc7cd05667a2d9b547a162aaf0818cf29d",
+    "scripts/terrain_editor/preview_quality.gd": "56c81b343a3f88e40ba32a9ac579aa9a9335024cefdc826c2013326cf65738ae",
+    "scripts/terrain_editor/runtime_power.gd": "3c09d035d80e0be19683fbb7c64a864468a62281f229b5ae9ad06c8bed3de4ab",
+    "tools/art/capture_lookdev.gd": "221823d2d97b01b788324ac398eb502b9fceaf62dedd1fb680d3f0eefaade6bf",
+    "project.godot": "d4d275e78e2a5105b8ffe0e01f6d19174d92b0de4b4f13b4558e2aec80297acf"
+  },
+  "task_start_grass_sha256": "2d050a47e85bfa0a42f6ae6fd300439b7d042ee4524ed507f2bf5612249188c6",
+  "current_stage_headless_groups": [
+    {
+      "test": "argon_world_lock_test",
+      "exit": 0,
+      "seconds": 1.98,
+      "errors": [],
+      "tail": [
+        "ok: scene retains enabled SSIL with a positive intensity",
+        "ARGON WORLD LOCK: 9/9 passed; 0 failures"
+      ]
+    },
+    {
+      "test": "cliff_form_variety_test",
+      "exit": 0,
+      "seconds": 0.23,
+      "errors": [],
+      "tail": [
+        "",
+        "CLIFF FORM VARIETY: 49 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "cliff_mantle_seam_test",
+      "exit": 0,
+      "seconds": 0.24,
+      "errors": [],
+      "tail": [
+        "",
+        "CLIFF MANTLE SEAM: 28 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "cliff_partial_crown_seal_test",
+      "exit": 0,
+      "seconds": 2.56,
+      "errors": [],
+      "tail": [
+        "",
+        "CLIFF PARTIAL CROWN SEAL: 24 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "grass_lip_soften_test",
+      "exit": 0,
+      "seconds": 4.87,
+      "errors": [],
+      "tail": [
+        "ok: seed 7301 preset 1 chunk meshes keep the lip and the flat crown",
+        "GRASS LIP CHECKS: 24 failures: 0"
+      ]
+    },
+    {
+      "test": "grass_recovery_test",
+      "exit": 0,
+      "seconds": 0.15,
+      "errors": [],
+      "tail": [
+        "",
+        "GRASS RECOVERY 11 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "interior_terrain_edit_test",
+      "exit": 0,
+      "seconds": 39.96,
+      "errors": [],
+      "tail": [
+        "INTERIOR FIXTURE seed 7301 center (-8.0, -5.0) strokes 4 joined true",
+        "INTERIOR TERRAIN EDIT: 60 checks, 0 failures, 460 downward rays, 672 horizontal support rays"
+      ]
+    },
+    {
+      "test": "preview_quality_test",
+      "exit": 0,
+      "seconds": 0.14,
+      "errors": [],
+      "tail": [
+        "",
+        "PREVIEW QUALITY 12 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "runtime_power_test",
+      "exit": 0,
+      "seconds": 0.15,
+      "errors": [],
+      "tail": [
+        "",
+        "RUNTIME POWER 16 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "sol61_grass_contact_test",
+      "exit": 0,
+      "seconds": 0.25,
+      "errors": [],
+      "tail": [
+        "ok: grass continues onto the rounded outer slope",
+        "SOL61 GRASS CONTACT failures: 0"
+      ]
+    },
+    {
+      "test": "sol61_scene_test",
+      "exit": 0,
+      "seconds": 2.95,
+      "errors": [],
+      "tail": [
+        "ok: night water does not retain daytime highlight energy",
+        "SOL61 SCENE: 7 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_blueprint_async_test",
+      "exit": 0,
+      "seconds": 5.99,
+      "errors": [],
+      "tail": [
+        "",
+        "TERRAIN BLUEPRINT ASYNC: 16 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_blueprint_test",
+      "exit": 0,
+      "seconds": 2.56,
+      "errors": [],
+      "tail": [
+        "",
+        "TERRAIN BLUEPRINT: 13 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_controls_test",
+      "exit": 0,
+      "seconds": 1.96,
+      "errors": [],
+      "tail": [
+        "",
+        "terrain_controls_test: 29 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_editor_runtime_test",
+      "exit": 0,
+      "seconds": 6.32,
+      "errors": [],
+      "tail": [
+        "",
+        "TERRAIN EDITOR RUNTIME: 22/22 passed"
+      ]
+    },
+    {
+      "test": "terrain_locality_test",
+      "exit": 0,
+      "seconds": 7.18,
+      "errors": [],
+      "tail": [
+        "",
+        "TERRAIN LOCALITY: 15 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_release_feedback_test",
+      "exit": 0,
+      "seconds": 2.84,
+      "errors": [],
+      "tail": [
+        "",
+        "TERRAIN RELEASE FEEDBACK 19 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_stroke_plane_test",
+      "exit": 0,
+      "seconds": 2.13,
+      "errors": [],
+      "tail": [
+        "",
+        "STROKE PLANE 15 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_surface_anchor_test",
+      "exit": 0,
+      "seconds": 2.28,
+      "errors": [],
+      "tail": [
+        "",
+        "TERRAIN SURFACE ANCHOR: 12 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_transition_test",
+      "exit": 0,
+      "seconds": 3.65,
+      "errors": [],
+      "tail": [
+        "",
+        "TERRAIN TRANSITION: 8 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "terrain_water_integration_test",
+      "exit": 0,
+      "seconds": 4.16,
+      "errors": [],
+      "tail": [
+        "",
+        "TERRAIN WATER INTEGRATION: 11 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "water_flow_test",
+      "exit": 0,
+      "seconds": 0.66,
+      "errors": [],
+      "tail": [
+        "ok: actual preset 2 basin levels and volumes match consumer-facing cell data",
+        "WATER FLOW: 92 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "water_idle_work_test",
+      "exit": 0,
+      "seconds": 0.55,
+      "errors": [],
+      "tail": [
+        "ok: moving or raising terrain rebuilds grass fringe ownership",
+        "WATER IDLE 10 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "water_recession_test",
+      "exit": 0,
+      "seconds": 5.47,
+      "errors": [],
+      "tail": [
+        "RECESSION BASELINE grass=2711592339 columns=2506595779 mass=3039416512",
+        "WATER RECESSION: 16 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "water_renderer_test",
+      "exit": 0,
+      "seconds": 1.05,
+      "errors": [],
+      "tail": [
+        "ok: sub-visible water can omit geometry without deleting mass",
+        "water_renderer_test: 48/48 passed"
+      ]
+    },
+    {
+      "test": "waterfall_flow_shape_test",
+      "exit": 0,
+      "seconds": 0.24,
+      "errors": [],
+      "tail": [
+        "",
+        "WATERFALL FLOW SHAPE: 9 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "waterfall_terrace_seal_test",
+      "exit": 0,
+      "seconds": 3.25,
+      "errors": [],
+      "tail": [
+        "",
+        "WATERFALL TERRACE SEAL: 16 checks, 0 failures"
+      ]
+    }
+  ],
+  "native_groups": [
+    {
+      "test": "flooded_ground",
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "2026-11-12 11:30:04.310 godot[65963:74731899] +[IMKClient subclass]: chose IMKClient_Modern",
+        "2026-11-12 11:30:04.351 godot[65963:74731899] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+        "FLOODED GROUND: 20 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "grass_lod",
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "",
+        "2026-11-12 11:30:05.135 godot[65978:74732034] +[IMKClient subclass]: chose IMKClient_Modern",
+        "GRASS LOD 96 -> 14; 4 checks, 0 failures"
+      ]
+    },
+    {
+      "test": "grass_recovery_render",
+      "exit": 0,
+      "errors": [],
+      "tail": [
+        "blades pixels 2249 -> 1031 -> 0 -> 700",
+        "rim pixels 6628 -> 3045 -> 0 -> 2047",
+        "GRASS RECOVERY PIXELS 8 checks, 0 failures"
+      ]
+    }
+  ],
+  "total_passed_groups": 30,
+  "excluded_legacy_test": "gameplay_m1_m2_test requires the intentionally removed stage2 avatar; prior error/timeout preserved in 20261111_performance. Not restored or counted as passing.",
+  "initial_failures": "First suite exposed headless synthetic Window.MODE_MINIMIZED incorrectly suspending input by prior runtime_power. New failing assertion, headless guard, then full final suite GREEN. first_suite_summary.json preserves initial failures.",
+  "capture_pairs": 14,
+  "pixel_metrics": [
+    {
+      "before": "2104_before_close.png",
+      "after": "2104_after_close.png",
+      "mean_abs_8bit": 1.0901188151041665,
+      "max_abs_8bit": 163
+    },
+    {
+      "before": "2104_before_reverse.png",
+      "after": "2104_after_reverse.png",
+      "mean_abs_8bit": 0.42946515118634254,
+      "max_abs_8bit": 189
+    },
+    {
+      "before": "2104_before_whole.png",
+      "after": "2104_after_whole.png",
+      "mean_abs_8bit": 0.6997010633680555,
+      "max_abs_8bit": 155
+    },
+    {
+      "before": "4242_before_close.png",
+      "after": "4242_after_close.png",
+      "mean_abs_8bit": 1.1671938295717592,
+      "max_abs_8bit": 183
+    },
+    {
+      "before": "4242_before_reverse.png",
+      "after": "4242_after_reverse.png",
+      "mean_abs_8bit": 0.3655441623263889,
+      "max_abs_8bit": 189
+    },
+    {
+      "before": "4242_before_whole.png",
+      "after": "4242_after_whole.png",
+      "mean_abs_8bit": 0.6737830946180555,
+      "max_abs_8bit": 157
+    },
+    {
+      "before": "7301_before_close.png",
+      "after": "7301_after_close.png",
+      "mean_abs_8bit": 1.0905884693287038,
+      "max_abs_8bit": 169
+    },
+    {
+      "before": "7301_before_low_grass.png",
+      "after": "7301_after_low_grass.png",
+      "mean_abs_8bit": 1.224606300636574,
+      "max_abs_8bit": 181
+    },
+    {
+      "before": "7301_before_night.png",
+      "after": "7301_after_night.png",
+      "mean_abs_8bit": 0.4179680266203704,
+      "max_abs_8bit": 132
+    },
+    {
+      "before": "7301_before_reverse.png",
+      "after": "7301_after_reverse.png",
+      "mean_abs_8bit": 0.4289777741608796,
+      "max_abs_8bit": 189
+    },
+    {
+      "before": "7301_before_whole.png",
+      "after": "7301_after_whole.png",
+      "mean_abs_8bit": 0.7166002965856482,
+      "max_abs_8bit": 167
+    },
+    {
+      "before": "913_before_close.png",
+      "after": "913_after_close.png",
+      "mean_abs_8bit": 1.0505846715856482,
+      "max_abs_8bit": 190
+    },
+    {
+      "before": "913_before_reverse.png",
+      "after": "913_after_reverse.png",
+      "mean_abs_8bit": 0.41982855902777777,
+      "max_abs_8bit": 189
+    },
+    {
+      "before": "913_before_whole.png",
+      "after": "913_after_whole.png",
+      "mean_abs_8bit": 0.7138334599247685,
+      "max_abs_8bit": 132
+    }
+  ],
+  "performance": [
+    {
+      "mode": "2k",
+      "before": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": true,
+        "elapsed_seconds": 8.008021,
+        "fps": 41.0838083466564,
+        "frame_ms_p50": 23.722,
+        "frame_ms_p95": 26.996,
+        "frames": 329,
+        "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+        "msaa": 2,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "scale": 1.0,
+        "texture_size": [
+          2560,
+          1440
+        ],
+        "water_seconds": 11.0
+      },
+      "after": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": false,
+        "elapsed_seconds": 8.012007,
+        "fps": 51.6724461174335,
+        "frame_ms_p50": 18.77,
+        "frame_ms_p95": 22.055,
+        "frames": 414,
+        "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+        "msaa": 1,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "scale": 1.0,
+        "texture_size": [
+          2560,
+          1440
+        ],
+        "water_seconds": 11.1
+      },
+      "fps_gain_percent": 25.773262501451775
+    },
+    {
+      "mode": "4k",
+      "before": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": true,
+        "elapsed_seconds": 8.04292,
+        "fps": 21.509600990685,
+        "frame_ms_p50": 46.764,
+        "frame_ms_p95": 48.755,
+        "frames": 173,
+        "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+        "msaa": 2,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "scale": 1.0,
+        "texture_size": [
+          3840,
+          2160
+        ],
+        "water_seconds": 11.1
+      },
+      "after": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": false,
+        "elapsed_seconds": 8.021145,
+        "fps": 25.5574484690153,
+        "frame_ms_p50": 38.492,
+        "frame_ms_p95": 41.769,
+        "frames": 205,
+        "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+        "msaa": 1,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "scale": 1.0,
+        "texture_size": [
+          3840,
+          2160
+        ],
+        "water_seconds": 11.1
+      },
+      "fps_gain_percent": 18.818793896192076
+    },
+    {
+      "mode": "scaled4k",
+      "before": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": true,
+        "elapsed_seconds": 8.008302,
+        "fps": 61.4362445372315,
+        "frame_ms_p50": 15.827,
+        "frame_ms_p95": 18.576,
+        "frames": 492,
+        "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+        "msaa": 1,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "scale": 0.5,
+        "texture_size": [
+          3840,
+          2160
+        ],
+        "water_seconds": 11.1
+      },
+      "after": {
+        "adapter": "Apple M4 Pro (Apple9)",
+        "before": false,
+        "elapsed_seconds": 8.00351,
+        "fps": 63.0973160525819,
+        "frame_ms_p50": 15.451,
+        "frame_ms_p95": 18.235,
+        "frames": 505,
+        "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+        "msaa": 1,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "scale": 0.5,
+        "texture_size": [
+          3840,
+          2160
+        ],
+        "water_seconds": 11.1
+      },
+      "fps_gain_percent": 2.7037321826267613
+    }
+  ],
+  "review": "Independent read-only review found no Critical/Important. Source hashes for quality/power and explicit shadow atlas metadata were added and all native frames recaptured.",
+  "art_accepted": false
+}

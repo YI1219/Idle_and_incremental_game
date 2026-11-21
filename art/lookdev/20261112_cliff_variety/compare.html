@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>岩壁形态变化 · Godot 实拍</title>
+<style>
+body{margin:0;background:#202826;color:#e5ece5;font:16px/1.6 system-ui,sans-serif}main{max-width:1800px;margin:auto;padding:24px}h1{font-size:26px;margin:0}p{color:#bac8bd}select{padding:9px 14px;background:#35433d;color:white;border:1px solid #718675;border-radius:6px;font:inherit}label{margin-right:16px}.pair,.angles{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}figure{margin:0}figcaption{padding:6px 0;color:#bec9c0}img{display:block;width:100%;height:auto;border-radius:5px}a{color:#bdd8c1}summary{cursor:pointer}section{margin-top:30px}@media(max-width:900px){.pair,.angles{grid-template-columns:1fr}}
+</style>
+<main><h1>岩壁形态变化 · Godot 实拍</h1>
+<p>同一种子 7301、原生 2560×1440、日照 .29、镜头与相位一致。五种新主体：宽板、斜肩、双折面、低位岩肩、收腰；保留原顶冠、根岩与材质。点击图片查看原图。</p>
+<label>对照机位 <select id="view"><option value="reverse">背面（用户反馈方向）</option><option value="whole">正面全景</option><option value="game">游戏距离</option><option value="close">近景</option><option value="cliff_close">岩壁近景</option></select></label>
+<div class="pair"><figure><figcaption>修改前</figcaption><a id="oldLink" href="before/reverse.png"><img id="old" src="before/reverse.png" alt="修改前 Godot 实拍"></a></figure><figure><figcaption>当前结果</figcaption><a id="newLink" href="final/reverse.png"><img id="new" src="final/reverse.png" alt="当前 Godot 实拍"></a></figure></div>
+<section><h2>更多种子与侧面检查</h2><label>种子 <select id="seed"><option value="final">7301 · 默认庭院</option><option value="held2104">2104 · 庭院</option><option value="held4242">4242 · 预设 1</option><option value="held913">913 · 无水预设</option></select></label><label>机位 <select id="heldView"><option value="reverse">背面</option><option value="side_106">侧面 106°</option><option value="side_286">侧面 286°</option><option value="whole">正面</option></select></label><figure style="margin-top:16px"><a id="heldLink" href="final/reverse.png"><img id="held" src="final/reverse.png" alt="多种子侧面检查 Godot 实拍"></a></figure></section>
+<p>以上均为实际 Godot 输出，无生成参考图。局部深色岩缝、原有薄尖轮廓仍可见；结果待美术验收。功能通过不代表画面已获认可。本轮未测目标设备帧率。</p>
+<p><a href="checks/audit.json">采集条件与源码核对</a> · <a href="checks/final_tests.json">功能检查</a> · <a href="README.md">范围与证据说明</a></p>
+</main><script>
+const view=document.getElementById('view'),seed=document.getElementById('seed'),heldView=document.getElementById('heldView');
+function setImage(id,path){document.getElementById(id).src=path;document.getElementById(id+'Link').href=path}
+function pair(){setImage('old','before/'+view.value+'.png');setImage('new','final/'+view.value+'.png')}
+function held(){setImage('held',seed.value+'/'+heldView.value+'.png')}
+view.addEventListener('change',pair);seed.addEventListener('change',held);heldView.addEventListener('change',held);
+</script></html>

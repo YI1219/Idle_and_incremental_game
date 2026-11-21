@@ -1,0 +1,181 @@
+{
+  "rows": [
+    {
+      "test": "tests/argon_world_lock_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 2.06
+    },
+    {
+      "test": "tests/cliff_form_variety_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.25
+    },
+    {
+      "test": "tests/cliff_mantle_seam_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.26
+    },
+    {
+      "test": "tests/cliff_partial_crown_seal_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 2.58
+    },
+    {
+      "test": "tests/grass_lip_soften_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 4.87
+    },
+    {
+      "test": "tests/grass_recovery_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.2
+    },
+    {
+      "test": "tests/interior_terrain_edit_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 39.65
+    },
+    {
+      "test": "tests/preview_quality_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.2
+    },
+    {
+      "test": "tests/runtime_power_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.15
+    },
+    {
+      "test": "tests/sol61_grass_contact_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.26
+    },
+    {
+      "test": "tests/sol61_scene_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 2.89
+    },
+    {
+      "test": "tests/terrain_blueprint_async_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 6.49
+    },
+    {
+      "test": "tests/terrain_blueprint_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 2.84
+    },
+    {
+      "test": "tests/terrain_controls_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 2.05
+    },
+    {
+      "test": "tests/terrain_editor_runtime_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 6.23
+    },
+    {
+      "test": "tests/terrain_locality_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 7.2
+    },
+    {
+      "test": "tests/terrain_release_feedback_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 2.93
+    },
+    {
+      "test": "tests/terrain_stroke_plane_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 2.2
+    },
+    {
+      "test": "tests/terrain_surface_anchor_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 2.37
+    },
+    {
+      "test": "tests/terrain_transition_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 3.77
+    },
+    {
+      "test": "tests/terrain_water_integration_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 4.17
+    },
+    {
+      "test": "tests/water_flow_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.67
+    },
+    {
+      "test": "tests/water_idle_work_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.6
+    },
+    {
+      "test": "tests/water_recession_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 5.2
+    },
+    {
+      "test": "tests/water_renderer_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 1.07
+    },
+    {
+      "test": "tests/water_scaling_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.5
+    },
+    {
+      "test": "tests/waterfall_flow_shape_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 0.26
+    },
+    {
+      "test": "tests/waterfall_terrace_seal_test.gd",
+      "ok": true,
+      "exit": 0,
+      "seconds": 3.33
+    }
+  ],
+  "excluded": {
+    "gameplay_m1_m2_test": "known obsolete stage-two actor assumptions; not a pass"
+  },
+  "native_pending": [
+    "flooded_ground_test",
+    "grass_lod_test",
+    "grass_recovery_render_test",
+    "sky_direction_test"
+  ]
+}

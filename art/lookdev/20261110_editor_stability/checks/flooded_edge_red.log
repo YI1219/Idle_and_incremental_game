@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-10 18:34:17.247 Godot[44582:71279505] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-10 18:34:19.763 Godot[44582:71279505] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+ERROR: rim upper roots above adjacent water keep their dry silhouette
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/flooded_ground_test.gd:23)
+       [1] _leaf_case (res://tests/flooded_ground_test.gd:134)
+       [2] _capture (res://tests/flooded_ground_test.gd:87)
+FLOODED GROUND: 20 checks, 1 failures

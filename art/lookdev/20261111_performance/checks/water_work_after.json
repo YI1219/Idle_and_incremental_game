@@ -1,0 +1,47 @@
+[
+	{
+		"discharged": 6.39827959005502,
+		"preset": 0,
+		"publications": 101,
+		"publish_mean_ms": 2.59091,
+		"simulated_seconds": 9.99999999999998,
+		"stages_mean_ms": {
+			"images": 0.78231,
+			"mesh": 8.61934,
+			"solver": 0.00034
+		},
+		"total_ms": 3547.079,
+		"volume": 64.6017204099456,
+		"worker_mean_ms": 9.40199
+	},
+	{
+		"discharged": 6.49147187357186,
+		"preset": 1,
+		"publications": 101,
+		"publish_mean_ms": 2.15985,
+		"simulated_seconds": 9.99999999999998,
+		"stages_mean_ms": {
+			"images": 0.71709,
+			"mesh": 55.5926,
+			"solver": 0.00031
+		},
+		"total_ms": 12760.185,
+		"volume": 59.008528126425,
+		"worker_mean_ms": 56.31
+	},
+	{
+		"discharged": 0.0,
+		"preset": 2,
+		"publications": 1,
+		"publish_mean_ms": 0.0,
+		"simulated_seconds": 9.99999999999998,
+		"stages_mean_ms": {
+			"images": 0.0,
+			"mesh": 0.0,
+			"solver": 0.00009
+		},
+		"total_ms": 311.173,
+		"volume": 0.0,
+		"worker_mean_ms": 0.00009
+	}
+]

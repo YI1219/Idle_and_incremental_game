@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+ROUTE time-night kind=grass_clump shader=res://shaders/terrain_editor/decor_vertex_color.gdshader shadow=(0.7197, 0.82, 0.9201, 1.0) expected_shadow=(0.7197, 0.82, 0.9201, 1.0) lit=(0.8823, 0.9411, 1.0189, 1.0) expected_lit=(0.8823, 0.9411, 1.0189, 1.0)
+PASS: time-night grass_clump actual materials exist
+PASS: time-night grass_clump uses decor shader
+PASS: time-night grass_clump receives decor shadow
+PASS: time-night grass_clump receives decor lit
+ROUTE time-night kind=reeds shader=res://shaders/terrain_editor/decor_vertex_color.gdshader shadow=(0.7197, 0.82, 0.9201, 1.0) expected_shadow=(0.7197, 0.82, 0.9201, 1.0) lit=(0.8823, 0.9411, 1.0189, 1.0) expected_lit=(0.8823, 0.9411, 1.0189, 1.0)
+PASS: time-night reeds actual materials exist
+PASS: time-night reeds uses decor shader
+PASS: time-night reeds receives decor shadow
+PASS: time-night reeds receives decor lit
+PASS: time-night actual foliage material exists
+PASS: time-night foliage retains original dark/light palette
+ROUTE environment-preset0 kind=grass_clump shader=res://shaders/terrain_editor/decor_vertex_color.gdshader shadow=(0.7, 0.82, 0.93, 1.0) expected_shadow=(0.7, 0.82, 0.93, 1.0) lit=(1.05, 1.02, 0.94, 1.0) expected_lit=(1.05, 1.02, 0.94, 1.0)
+PASS: environment-preset0 grass_clump actual materials exist
+PASS: environment-preset0 grass_clump uses decor shader
+PASS: environment-preset0 grass_clump receives decor shadow
+PASS: environment-preset0 grass_clump receives decor lit
+ROUTE environment-preset0 kind=reeds shader=res://shaders/terrain_editor/decor_vertex_color.gdshader shadow=(0.7, 0.82, 0.93, 1.0) expected_shadow=(0.7, 0.82, 0.93, 1.0) lit=(1.05, 1.02, 0.94, 1.0) expected_lit=(1.05, 1.02, 0.94, 1.0)
+PASS: environment-preset0 reeds actual materials exist
+PASS: environment-preset0 reeds uses decor shader
+PASS: environment-preset0 reeds receives decor shadow
+PASS: environment-preset0 reeds receives decor lit
+PASS: environment-preset0 actual foliage material exists
+PASS: environment-preset0 foliage retains original dark/light palette
+FOLIAGE ROUTE 23: checks=20 failures=0

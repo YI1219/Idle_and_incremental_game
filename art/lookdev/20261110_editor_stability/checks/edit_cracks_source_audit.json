@@ -1,0 +1,27 @@
+{
+  "scripts/terrain_editor/contour_terrain.gd": {
+    "current": "a257935087ac56778f3087d4e10e08c9139661ba0dcb7c3aa0042c2c57340b00",
+    "task_start": "a257935087ac56778f3087d4e10e08c9139661ba0dcb7c3aa0042c2c57340b00",
+    "same": true
+  },
+  "scripts/terrain_editor/rim_union.gd": {
+    "current": "4b21b09ae6641f2c86f0d5e6affd377c0922dac892056e66f351e0e75b47182a",
+    "task_start": "4b21b09ae6641f2c86f0d5e6affd377c0922dac892056e66f351e0e75b47182a",
+    "same": true
+  },
+  "scripts/terrain_editor/block_mantle.gd": {
+    "current": "6833e9c3d5a7861f1aba549c200594d01f10c6edf83d940522aacf735a6c1ac1",
+    "task_start": "6833e9c3d5a7861f1aba549c200594d01f10c6edf83d940522aacf735a6c1ac1",
+    "same": true
+  },
+  "scripts/terrain_editor/terrain_decoration.gd": {
+    "current": "76a8cc51ff1245048441b499a8d341747cf7998bccff1ee7b0d094f0a3107d01",
+    "task_start": "76a8cc51ff1245048441b499a8d341747cf7998bccff1ee7b0d094f0a3107d01",
+    "same": true
+  },
+  "scripts/terrain_editor/terrain_renderer.gd": {
+    "current": "406369ec1c618613d4bb0dd0cd10e8804a66caa66fb24641b81badabbffe49c8",
+    "task_start": "406369ec1c618613d4bb0dd0cd10e8804a66caa66fb24641b81badabbffe49c8",
+    "same": true
+  }
+}

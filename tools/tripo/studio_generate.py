@@ -254,6 +254,9 @@ async def try_download(page, run: Run, dest: Path) -> bool:
     try:
         await dismiss_tips(page)
         tool = page.locator('button:has(.i-tripo\\:download)').filter(has_text="导出").first
+        # A finished thumbnail can precede the viewport mesh/toolbar by >30 s.
+        # Waiting for this free UI control must never re-submit generation.
+        await tool.wait_for(state='visible', timeout=120000)
         await tool.click()
         await page.wait_for_timeout(1500)
         panel = page.locator("div").filter(has_text="文件名").filter(has_text="格式").filter(

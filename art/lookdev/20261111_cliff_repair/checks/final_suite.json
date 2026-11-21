@@ -1,0 +1,146 @@
+[
+  {
+    "test": "argon_world_lock_test.gd",
+    "exit": 0,
+    "seconds": 1.94,
+    "errors": false
+  },
+  {
+    "test": "cliff_mantle_seam_test.gd",
+    "exit": 0,
+    "seconds": 0.24,
+    "errors": false
+  },
+  {
+    "test": "cliff_partial_crown_seal_test.gd",
+    "exit": 0,
+    "seconds": 2.66,
+    "errors": false
+  },
+  {
+    "test": "grass_lip_soften_test.gd",
+    "exit": 0,
+    "seconds": 4.95,
+    "errors": false
+  },
+  {
+    "test": "grass_recovery_test.gd",
+    "exit": 0,
+    "seconds": 0.14,
+    "errors": false
+  },
+  {
+    "test": "interior_terrain_edit_test.gd",
+    "exit": 0,
+    "seconds": 39.85,
+    "errors": false
+  },
+  {
+    "test": "preview_quality_test.gd",
+    "exit": 0,
+    "seconds": 0.15,
+    "errors": false
+  },
+  {
+    "test": "sol61_grass_contact_test.gd",
+    "exit": 0,
+    "seconds": 0.24,
+    "errors": false
+  },
+  {
+    "test": "sol61_scene_test.gd",
+    "exit": 0,
+    "seconds": 2.86,
+    "errors": false
+  },
+  {
+    "test": "terrain_blueprint_async_test.gd",
+    "exit": 0,
+    "seconds": 5.77,
+    "errors": false
+  },
+  {
+    "test": "terrain_blueprint_test.gd",
+    "exit": 0,
+    "seconds": 2.46,
+    "errors": false
+  },
+  {
+    "test": "terrain_controls_test.gd",
+    "exit": 0,
+    "seconds": 1.97,
+    "errors": false
+  },
+  {
+    "test": "terrain_editor_runtime_test.gd",
+    "exit": 0,
+    "seconds": 6.18,
+    "errors": false
+  },
+  {
+    "test": "terrain_locality_test.gd",
+    "exit": 0,
+    "seconds": 7.11,
+    "errors": false
+  },
+  {
+    "test": "terrain_release_feedback_test.gd",
+    "exit": 0,
+    "seconds": 2.76,
+    "errors": false
+  },
+  {
+    "test": "terrain_stroke_plane_test.gd",
+    "exit": 0,
+    "seconds": 2.17,
+    "errors": false
+  },
+  {
+    "test": "terrain_surface_anchor_test.gd",
+    "exit": 0,
+    "seconds": 2.23,
+    "errors": false
+  },
+  {
+    "test": "terrain_transition_test.gd",
+    "exit": 0,
+    "seconds": 3.59,
+    "errors": false
+  },
+  {
+    "test": "terrain_water_integration_test.gd",
+    "exit": 0,
+    "seconds": 4.09,
+    "errors": false
+  },
+  {
+    "test": "water_flow_test.gd",
+    "exit": 0,
+    "seconds": 0.76,
+    "errors": false
+  },
+  {
+    "test": "water_recession_test.gd",
+    "exit": 0,
+    "seconds": 5.46,
+    "errors": false
+  },
+  {
+    "test": "water_renderer_test.gd",
+    "exit": 0,
+    "seconds": 1.04,
+    "errors": false
+  },
+  {
+    "test": "waterfall_flow_shape_test.gd",
+    "exit": 0,
+    "seconds": 0.25,
+    "errors": false
+  },
+  {
+    "test": "waterfall_terrace_seal_test.gd",
+    "exit": 0,
+    "seconds": 3.26,
+    "errors": false
+  }
+]

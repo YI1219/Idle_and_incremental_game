@@ -1,0 +1,26 @@
+--- editor_before.gd
++++ editor.gd
+@@ -30,6 +30,7 @@
+ var renderer:=Renderer.new()
+ var water_view:=WaterView.new()
+ var preview_quality:=preload("res://scripts/terrain_editor/preview_quality.gd").new()
++var runtime_power:=preload("res://scripts/terrain_editor/runtime_power.gd").new()
+ var camera:=Camera.new()
+ var landscape:=preload("res://scripts/terrain_editor/distant_landscape.gd").new()
+ var motes:=preload("res://scripts/terrain_editor/ambient_motes.gd").new()
+@@ -95,12 +96,14 @@
+ 	water_view.configure(data,renderer)
+ 	renderer.terrain_published.connect(water_view.sync)
+ 	preview_quality.configure(get_viewport())
++	add_child(runtime_power)
++	runtime_power.configure(self)
+ func _create_decoration()->RefCounted:
+ 	return Decoration.new()
+ func _setup_environment()->void:
+ 	preload("res://scripts/terrain_editor/terrain_environment.gd").setup(self,landscape,sunlight_energy,fill_energy,ambient_energy,background_haze)
+ func _process(delta:float)->void:
+-	preview_quality.advance(delta)
++	preview_quality.advance(delta, Engine.max_fps)
+ 	landscape.position=Vector3(camera._center.x,0,camera._center.y)
+ 	renderer.flush_dirty(6)
+ 	# During a committed terrain build, keep water matched to the visible bed.

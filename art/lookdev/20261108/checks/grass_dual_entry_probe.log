@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+DUAL_PROBE args=["res://scenes/terrain_editor.tscn", "--script", "/private/tmp/grass_dual_entry_probe.gd"]
+DUAL_PROBE current_scene=TerrainEditor:<Node3D#58904806869>
+DUAL_PROBE root_child=TerrainEditor path=res://scenes/terrain_editor.tscn processing=true
+DUAL_PROBE original=(0.238, 0.352, 0.214, 1.0) id=-9223371973722110376 progress=0.29062179583333
+DUAL_PROBE set_night=(0.1512, 0.2613, 0.2199, 1.0)
+DUAL_PROBE after24=(0.238, 0.352, 0.214, 1.0) progress=0.29128813935185

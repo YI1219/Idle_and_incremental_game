@@ -1,0 +1,64 @@
+--- preview_quality_before.gd
++++ preview_quality.gd
+@@ -11,6 +11,8 @@
+ var _scale: float = 1.0
+ var _sample_seconds: float = 0.0
+ var _sample_count: int = 0
++var _last_frame_limit: int = -1
++var _recovery_seconds: float = 0.0
+ 
+ func configure(target: Viewport) -> void:
+ 	viewport = target
+@@ -41,25 +43,48 @@
+ 	_last_native = native
+ 	_sample_seconds = 0.0
+ 	_sample_count = 0
++	_recovery_seconds = 0.0
+ 	_scale = 1.0 if native else _budget_scale(BUDGET)
+ 	_apply()
+ 
+-func advance(delta: float) -> void:
++func advance(delta: float, frame_limit: int = 0) -> void:
+ 	refresh()
++	if frame_limit != _last_frame_limit:
++		_last_frame_limit = frame_limit
++		_sample_seconds = 0.0
++		_sample_count = 0
++		_recovery_seconds = 0.0
++	if frame_limit > 0 and frame_limit <= 5:
++		return
+ 	if native or _budget_scale(BUDGET) >= .999 or delta < .004 or delta > .25:
+ 		return
+ 	_sample_seconds += delta
+ 	_sample_count += 1
+ 	if _sample_seconds < SAMPLE_SECONDS:
+ 		return
+-	var mean: float = _sample_seconds / _sample_count
++	var elapsed: float = _sample_seconds
++	var mean: float = elapsed / _sample_count
+ 	_sample_seconds = 0.0
+ 	_sample_count = 0
+ 	var next: float = _scale
+-	if mean > 1.0/55.0:
++	# Frame pacing sleep is intentional work reduction, not GPU overload.
++	var slow_fps: float = minf(55.0, float(frame_limit) * .9) if frame_limit > 0 else 55.0
++	var fast_fps: float = minf(72.0, float(frame_limit) * 1.2) if frame_limit > 0 else 72.0
++	if mean > 1.0 / slow_fps:
++		_recovery_seconds = 0.0
+ 		next = maxf(_budget_scale(MINIMUM_BUDGET), _scale*.9)
+-	elif mean < 1.0/72.0:
++	elif mean < 1.0 / fast_fps:
++		_recovery_seconds = 0.0
+ 		next = minf(_budget_scale(BUDGET), _scale*1.04)
++	elif frame_limit > 0 and mean <= 1.04 / float(frame_limit):
++		# A limiter masks spare GPU time. Probe upward slowly instead of
++		# requiring an impossible above-cap FPS to regain lost resolution.
++		_recovery_seconds += elapsed
++		if _recovery_seconds >= 5.0:
++			_recovery_seconds = 0.0
++			next = minf(_budget_scale(BUDGET), _scale*1.04)
++	else:
++		_recovery_seconds = 0.0
+ 	if absf(next - _scale) > .001:
+ 		_scale = next
+ 		_apply()

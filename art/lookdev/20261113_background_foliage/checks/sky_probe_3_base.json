@@ -1,0 +1,16 @@
+{
+	"candidate": "base",
+	"fps": 28.8862819296136,
+	"method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+	"p95_ms": 35.414,
+	"p99_ms": 35.78,
+	"resolution": [
+		3840,
+		2160
+	],
+	"scale": 1.0,
+	"texture_size": [
+		3840.0,
+		2160.0
+	]
+}

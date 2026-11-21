@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-12 17:03:44.080 godot[65975:75400531] +[IMKClient subclass]: chose IMKClient_Modern
+ERROR: directional sky preserves full-sphere colour within two 8-bit levels;night=false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/sky_direction_test.gd:7)
+       [1] run (res://tests/sky_direction_test.gd:31)
+ERROR: directional sky has negligible average colour error;night=false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/sky_direction_test.gd:7)
+       [1] run (res://tests/sky_direction_test.gd:32)
+SKY ERROR night=false max=0.27843137830496 mean=0.00133272059611
+2026-11-12 17:03:44.496 godot[65975:75400531] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+ERROR: directional sky preserves full-sphere colour within two 8-bit levels;night=true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/sky_direction_test.gd:7)
+       [1] run (res://tests/sky_direction_test.gd:31)
+ERROR: directional sky has negligible average colour error;night=true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/sky_direction_test.gd:7)
+       [1] run (res://tests/sky_direction_test.gd:32)
+SKY ERROR night=true max=0.16862745210528 mean=0.0007046568644
+SKY DIRECTION 4 checks, 4 failures

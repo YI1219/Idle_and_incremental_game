@@ -1,0 +1,149 @@
+--- art/lookdev/20261119_rock_shapes/checks/source_before/scripts/terrain_editor/terrain_decoration.gd	2026-11-16 13:40:34
++++ scripts/terrain_editor/terrain_decoration.gd	2026-11-19 19:20:27
+@@ -10,6 +10,17 @@
+ const SHORE_STONE_SCALE := .78
+ const BODY_KINDS:Array=["cliff_column","cliff_column_b","cliff_column_c","cliff_column_d","cliff_column_e","cliff_column_f","cliff_column_g","cliff_column_h"]
+ const UNDERSIDE_KINDS:Array=["underside_rock","underside_rock_b","underside_rock_c","underside_rock_d"]
++## An outer pillar on a contour run shorter than this is a corner chamfer. It
++## merges into the broad slabs beside it when both can close over its span.
++const NARROW_OUTER_RUN:=2.65
++## A slab that absorbs a narrow pillar passes the pillar centre by this much.
++const MERGE_OVERLAP:=.45
++## A pillar standing further than this in front of the rim line of a slab is
++## an outward bump the slab cannot cover, so it keeps its own pillar.
++const MERGE_PROUD:=.35
++## Thin fingers of land keep a pillar on every face; merging needs this much
++## land behind the pillar.
++const MERGE_MIN_LAND:=2.8
+ var model_library:=Models.new()
+ var assets:Dictionary={}
+ var contours:RefCounted
+@@ -535,6 +546,7 @@
+ 	for signature in _run_cache:
+ 		if not seen.has(signature):stale.append(signature)
+ 	for signature in stale:_run_cache.erase(signature)
++	_merge_narrow_columns()
+ 	_prune_uncovered_step_sides(field)
+ 	_prune_overlapping_buttresses()
+ 	layout_stages.runs=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+@@ -548,6 +560,101 @@
+ 	field._index_triangles()
+ 	layout_stages.index=(Time.get_ticks_usec()-t_stage)/1000.0
+ 	layout_ms=(Time.get_ticks_usec()-started)/1000.0
++func _merge_shortfall(index:int,centre:Vector2)->Vector2:
++	# x: which end of the slab faces the point; y: how far that end stops short of it.
++	var pose:Transform3D=_columns[index].pose
++	var box:AABB=assets[_columns[index].kind][0].mesh.get_aabb()
++	var s:float=(Vector3(centre.x,pose.origin.y,centre.y)-pose.origin).dot(pose.basis.x.normalized())
++	return Vector2(signf(s),absf(s)-pose.basis.x.length()*(box.end.x if s>0.0 else -box.position.x))
++func _merge_narrow_columns()->void:
++	# A narrow pillar between broad slabs reads as a splinter. It is dropped
++	# when the broad slabs beside it can close over its span:
++	# - a same-level slab on each side: both grow to just past the pillar centre;
++	# - a same-level slab on one side and any other outer pillar on the far side:
++	#   the same-level slab grows across the whole span.
++	# A growing slab keeps its far end, so only the shared corner changes. The
++	# pillar stays when it stands proud of the rim line of that slab (an outward
++	# bump such as a small peninsula), when no broad slab is adjacent, or when
++	# it carries a shoulder, or stands on a thin finger of land. Passes repeat so
++	# two narrow pillars in a row both
++	# fold into the slabs around them. Each decision uses the pillar and its
++	# nearest neighbours only, so a distant edit cannot change it.
++	var hosts:Dictionary={}
++	for body:Dictionary in _mass:
++		if body.has("host_edge"):hosts[body.host_edge]=true
++	var changed:=false
++	for pass_index:int in 4:
++		var merged:Dictionary={}
++		var growth:Array=[]
++		var claimed:Dictionary={}
++		for n:int in _columns.size():
++			var narrow:Dictionary=_columns[n]
++			var run:float=float(narrow.get("narrow_run",0.0))
++			if run<=0.0 or hosts.has(narrow.edge) or float(narrow.get("land_span",0.0))<MERGE_MIN_LAND:continue
++			var centre:Vector2=narrow.edge
++			var along:Vector2=narrow.run_dir
++			var same:Array[int]=[-1,-1]
++			var near:Array[int]=[-1,-1]
++			var same_d:Array[float]=[INF,INF]
++			var near_d:Array[float]=[INF,INF]
++			for i:int in _columns.size():
++				var candidate:Dictionary=_columns[i]
++				if i==n or candidate.is_step:continue
++				var offset:Vector2=(candidate.edge as Vector2)-centre
++				var lean:float=offset.dot(along)
++				if is_zero_approx(lean):continue
++				var side:int=0 if lean<0.0 else 1
++				var d:=offset.length()
++				if d<near_d[side]-.0001 or (near[side]!=-1 and absf(d-near_d[side])<=.0001 and _lex_lt(candidate.edge,_columns[near[side]].edge)):
++					near[side]=i;near_d[side]=d
++				if float(candidate.get("narrow_run",0.0))>0.0 or absf(float(candidate.pose.origin.y)-float(narrow.pose.origin.y))>.01:continue
++				if d<same_d[side]-.0001 or (same[side]!=-1 and absf(d-same_d[side])<=.0001 and _lex_lt(candidate.edge,_columns[same[side]].edge)):
++					same[side]=i;same_d[side]=d
++			var limit:float=run*.5+.4
++			var fits:Array[bool]=[false,false]
++			var borders:Array[bool]=[false,false]
++			var ends:Array[Vector2]=[Vector2.ZERO,Vector2.ZERO]
++			for side:int in 2:
++				if same[side]!=-1 and not claimed.has(same[side]):
++					var slab:Dictionary=_columns[same[side]]
++					var slab_out:Vector3=slab.outward
++					ends[side]=_merge_shortfall(same[side],centre)
++					fits[side]=ends[side].y<=limit and (centre-(slab.edge as Vector2)).dot(Vector2(slab_out.x,slab_out.z))<=MERGE_PROUD
++				if near[side]!=-1 and not merged.has(near[side]):
++					borders[side]=_merge_shortfall(near[side],centre).y<=limit
++			if fits[0] and fits[1]:
++				for side:int in 2:
++					growth.append([same[side],ends[side].x,maxf(ends[side].y+MERGE_OVERLAP,0.0)])
++					claimed[same[side]]=true
++			elif fits[0]!=fits[1]:
++				var side:int=0 if fits[0] else 1
++				if not borders[1-side]:continue
++				growth.append([same[side],ends[side].x,maxf(ends[side].y+run*.5+MERGE_OVERLAP*.5,0.0)])
++				claimed[same[side]]=true
++			else:
++				continue
++			merged[n]=true
++		if merged.is_empty():break
++		changed=true
++		for step:Array in growth:
++			var need:float=step[2]
++			if need<=0.0:continue
++			var column:Dictionary=_columns[int(step[0])]
++			var pose:Transform3D=column.pose
++			var axis:Vector3=pose.basis.x.normalized()
++			var full:float=pose.basis.x.length()*assets[column.kind][0].mesh.get_aabb().size.x
++			var factor:float=(full+need)/full
++			pose.basis.x*=factor
++			pose.origin+=axis*float(step[1])*need*.5
++			column.pose=pose
++			column.width=float(column.width)*factor
++		var kept:Array=[]
++		for i:int in _columns.size():
++			if not merged.has(i):kept.append(_columns[i])
++		_columns=kept
++	if not changed:return
++	_column_cells.clear()
++	for i:int in _columns.size():_bucket_column(i)
+ func _prune_uncovered_step_sides(field)->void:
+ 	# A source wall is usable only while its whole visible side has a crown
+ 	# above it. Lowered holes and open notches otherwise expose its side/back
+@@ -1337,7 +1444,8 @@
+ 		pose.basis.x*=crown_fit
+ 		pose.origin+=tangent*((crown_clear.x+crown_clear.y)*.5-(body_extent.x+body_extent.y)*.5*crown_fit)
+ 	var index:=_columns.size()
+-	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy,"is_step":step})
++	var narrow_run:float=use_len if (not step and bool(profile.base) and not curtain_trimmed and use_len<NARROW_OUTER_RUN) else 0.0
++	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy,"is_step":step,"narrow_run":narrow_run,"run_dir":dir,"land_span":land_span_d})
+ 	_bucket_column(index)
+ 	# Outer Cliff Buttresses (beveled sloped shoulders integrated into adjacent cliff rock):
+ 	var is_extreme_tip:bool=c.x<-15.8 or c.x>16.2
+@@ -1414,7 +1522,7 @@
+ 						var allow_bush:bool=false
+ 						var ledge_pt:Vector3=sh_pose_final.origin+sh_basis*Vector3(0.0,-.032,.22)-Vector3(0.0,.03,0.0)
+ 						var sh_prio:float=sh_w+prom_envelope*2.2
+-						_mass.append({"kind":sh_kind,"pose":sh_pose_final,"mesh":joined,"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
++						_mass.append({"kind":sh_kind,"pose":sh_pose_final,"mesh":joined,"host_edge":c,"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
+ 	elif step and drop>=1.45 and use_len>=1.75 and not curtain_trimmed and random_at(cell,seed_value,3061)<.36:
+ 		# Staggered stepped foot boulders along interior terrace cliffs (clear of paths & ponds):
+ 		var floor_probe:Dictionary=field.surface_at(c+out*1.35)

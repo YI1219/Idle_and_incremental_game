@@ -1,0 +1,12 @@
+--- a/shaders/terrain_editor/waterfall.gdshader
++++ b/shaders/terrain_editor/waterfall.gdshader
+@@ -161,6 +161,9 @@
+ 	float transmission=(is_core || free_fall ? 0.0 : .06)*(1.0-white*.85);
+ 	ALBEDO=color*(1.0-transmission);
+ 	EMISSION=behind*transmission+vec3(.018,.030,.031)*white+color*.028;
++	// The free curtain is a dense water body until its terminal spray fade.
++	// Keep the backing-cliff silhouette from showing through the outer fringe.
++	if(free_fall)opacity=max(opacity,.99);
+ 	ALPHA = opacity*side;
+ 	if(free_fall){
+ 		float tail=free_progress+(chute-.5)*.12+(fine-.5)*.04;

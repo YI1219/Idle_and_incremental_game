@@ -1,0 +1,204 @@
+{
+  "art_accepted": false,
+  "capture_groups": {
+    "00_before_day": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "00_before_night": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "03_planted_contact_day": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "06_planar_soft_edges_day": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "10_painted_surface_day": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "11_water_satin_day": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "12_material_before_locked_day": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "12_material_before_locked_night": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "final_day": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "final_night": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 7301,
+      "preset": 0
+    },
+    "held_seed_2104": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 2104,
+      "preset": 0
+    },
+    "held_seed_4242": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 4242,
+      "preset": 1
+    },
+    "held_seed_913": {
+      "valid": true,
+      "frames": 5,
+      "actor_absent": true,
+      "house_absent": true,
+      "seed": 913,
+      "preset": 2
+    }
+  },
+  "material_conditions_equal": {
+    "material_day": true,
+    "material_night": true
+  },
+  "pngs": {
+    "00_before_day/game.png": "fb20417c86bb228c744dfb0829830c9e51e0ef213a06756a689acf7b58ff6924",
+    "00_before_day/whole.png": "c29343cc02e8ea5aaa2409ec06e6b5bbe44a703e085d3d346d4b91c2cd4fd1b1",
+    "00_before_day/reverse.png": "2763d36dcd05176d2101538a7e5d8994b733e946f11542936306a46dbde629c1",
+    "00_before_day/close.png": "ca8452d66a99856b16728b82224e52d88a0fd58951cf9ca19e0d8c8943bdb5c4",
+    "00_before_day/cliff_close.png": "2194d28830a9f4cef39d66277760774939777ff6d5358b7f0d88a2151bf51f5a",
+    "00_before_night/game.png": "33918eea960021d330bda997ab6b20397541582b23438f79c5e37dfb197097c8",
+    "00_before_night/whole.png": "36ff7b3c0ece283ff00171ec10ac54ee5f3ee756a8799c56ff7c7f95f1d812dd",
+    "00_before_night/reverse.png": "1423a3f3111828af2fdc7f33dea8d39ec963185fd30215264cd071e1d3a64e8c",
+    "00_before_night/close.png": "f501788451580119c8fc9eae88e929f5ef943b7b4662bff58cb81f980a8caddf",
+    "00_before_night/cliff_close.png": "2e24cf6fe99baa7a5219dd7870f125523657ba0159049c9c6766e12842c46403",
+    "03_planted_contact_day/game.png": "19fe2fd65a2c341df040cea52fbd84069c3fb0c085b31545c5a3f1b1f6532215",
+    "03_planted_contact_day/whole.png": "8c3212737bacaa7a3afefba7d5f1e288a5d168ad8f0196ceb1814f34d8109c04",
+    "03_planted_contact_day/reverse.png": "896f65f7632789eb709d1ca6294861bb63fa08ba1d216801cca55d4bdf63cf35",
+    "03_planted_contact_day/close.png": "3c085cc9703d0aa06fdb10a11441aef8fd8a2374356bb492e39eaa502c8eebc7",
+    "03_planted_contact_day/cliff_close.png": "83c1e3014aef64d09373db65c48d4344e5828052361eb8a60a83a7fc5264d9c3",
+    "06_planar_soft_edges_day/game.png": "cbe0ce568a9833b940a74c4fa70e98b0c228ff5d9416e974e40a7adf33cd6bdd",
+    "06_planar_soft_edges_day/whole.png": "e9185e068d4e3f4bcc54e56baa05b6a87700e6efed5d9ed88f7f306121e15a6d",
+    "06_planar_soft_edges_day/reverse.png": "66d2470e9d93855e51aeba9117de3040475dc72aad65ecf57e1f89e2577fc320",
+    "06_planar_soft_edges_day/close.png": "f49410bee52cc7491f49d9ba2625589149d2f0fbeb397318af890e253a09236f",
+    "06_planar_soft_edges_day/cliff_close.png": "f2a7e201b7de2dac062bac375b0698bfe6e9778dfd0241e4a7a8a619e22b4f7b",
+    "10_painted_surface_day/game.png": "aea9cdce671ec31c0245f48f5890b325c63a736c1773472508bc3004a970898f",
+    "10_painted_surface_day/whole.png": "514933a4789cd1550a732dd80bda047fbd2417ba265c00949920a5c098e1a20f",
+    "10_painted_surface_day/reverse.png": "4e8bc493db660b7f434dc663dc7d7a514f96168f52fce3e8c4e9ff4ea59639e1",
+    "10_painted_surface_day/close.png": "324ab41fc9c0bf627a4c9482430d84a4444e7f4f4f8a7aded52309df28e6cde2",
+    "10_painted_surface_day/cliff_close.png": "ea28ea2c08e7e2755adf86c5742dcad3a0eb9704753d466a9c8217a7ca863e34",
+    "11_water_satin_day/game.png": "717074991318b0d9e00ed7abbb58d372f9bd37d8123262f0dcec906dc8a0dd24",
+    "11_water_satin_day/whole.png": "6e028d676c3beb9a3093762add54849d9dc63a6ace43afef714bf8486e0969b9",
+    "11_water_satin_day/reverse.png": "dd73fa2ab200617cad205615ca604ef1d93f8acf42ac8976a45182b1f865bc23",
+    "11_water_satin_day/close.png": "324ab41fc9c0bf627a4c9482430d84a4444e7f4f4f8a7aded52309df28e6cde2",
+    "11_water_satin_day/cliff_close.png": "79b2c8f6865353f0307da36ffca2f208dd5aaf1aafee4ca1484c628f665aa127",
+    "12_material_before_locked_day/game.png": "da33126398370151209a8ff314b3e6e88758769ba4bcb361eb614ee924606ac7",
+    "12_material_before_locked_day/whole.png": "964c4522a23f882814cbcc98d66956ccf119264a1ce4b0844e3d3c1daeaedd9f",
+    "12_material_before_locked_day/reverse.png": "361c1629e102935551d837e4ec06594a94d3288ec705f512c64b5f17b410ecaf",
+    "12_material_before_locked_day/close.png": "4ae76c401aba79e0ad9c549d48ae0a04bffc9bed60a8d6eb46b44eed5068b926",
+    "12_material_before_locked_day/cliff_close.png": "897b3859c6f3f3e56066fc369ef06f343ac286bacbc699c184f60d581192c087",
+    "12_material_before_locked_night/game.png": "48ea174f1aa2761633aa3cd93c838cdc706754858c056f24e967571326e076af",
+    "12_material_before_locked_night/whole.png": "70787b9b8d819cd912fbc844ff507a03819ecd660917f4b03eb75469b77552ef",
+    "12_material_before_locked_night/reverse.png": "619ec18475854c85b9e888923d07f18a4b4b2eea18f07891737c32a74541c8f2",
+    "12_material_before_locked_night/close.png": "7d59587b183aa5548904e077b08eca267c1523f2a1b79fae2883cd83c56b0819",
+    "12_material_before_locked_night/cliff_close.png": "a0248f5a19d38ff3122e25fd8c1238f01e7de5f656e40cb84a4dcc7195c51d43",
+    "final_day/game.png": "b900994faf182d854b707f3fcddafbf5bc1769e89f4a9b55c1b928d28a47de79",
+    "final_day/whole.png": "36e389508f039ee3af0985b558339b76fcaf6a7dbf59a88577cc6b98ec5cf1d1",
+    "final_day/reverse.png": "31f33c65b0e828d6edb4e578197852f1f58967ce9a5cfd9c43bb9c183248ffd5",
+    "final_day/close.png": "dbc369ee13a8efa8cd3189c83b1e00d40ffad56d623939ec8cc3f2fa9f85408b",
+    "final_day/cliff_close.png": "836f5d5e14e0ecd948e5678e7b42e46b7a06db3ca0f032a4ba4e93805dccc0cb",
+    "final_night/game.png": "a4a1c8eb4336985f67997ce6c1558b2ef8bf6b1b6960182b0283a570341c3709",
+    "final_night/whole.png": "5f8e53203704f40d60c1166eecea0f408ba1f17a9fa6f00dca14a7de9d1dd8ae",
+    "final_night/reverse.png": "e35870946a70e4bd965e33c33bcd5cc9329b975e291f0be9b0d3605ec272e1ba",
+    "final_night/close.png": "bf88cf41004b3ea72619e27ddb3b083d98d9c409c4c0f8021aefa99c76f47898",
+    "final_night/cliff_close.png": "5d1b2c5d0ecca07e43bf99bca2d95793f511517e69d348d080c5b3512f53b0ca",
+    "held_seed_2104/game.png": "5b638c2787a7331789bf60da6b22639721638b05812fa4dab779b6c815adfcb7",
+    "held_seed_2104/whole.png": "e4d9b7212a8668d44979763ddfe3ac1a294e7fcc54adbf0f8a38a1b132dbb5c6",
+    "held_seed_2104/reverse.png": "d0c24b75084e0a77ddf29fbc6634f1e0fce9717fdb8561783b701321e24958eb",
+    "held_seed_2104/close.png": "1699e4ce891b6cacb0841eb4eed3d3af8b305e2f15bc2b72a824ca8785b8eca7",
+    "held_seed_2104/cliff_close.png": "b2a1b47d507bcb432970a2a3a27e0bbba468117483e1322301a50967ec476bbc",
+    "held_seed_4242/game.png": "5812cc611223b69a5fd76b83302670ec9055b46f7ffe8d15529eff99685c7eea",
+    "held_seed_4242/whole.png": "6893bfbe535e2cf1908e8bd3cdaeb8f8bb10d382bd17752cdeafcfc7ac6745c4",
+    "held_seed_4242/reverse.png": "24fdcf389fdcfbe9b7fd6f9595cb7faddc0114d09691661684fa5a00b3e79081",
+    "held_seed_4242/close.png": "68076a42659a86737ad568b8282a5c2961692522eec358b9e34919dbd267a704",
+    "held_seed_4242/cliff_close.png": "e6667806f506ae9c4927c33d6c7ebe26ce697f9ba715c39661c1838a69f9f276",
+    "held_seed_913/game.png": "73c3588f9d387ad2e2ebf5769c27075470a6f969ee32e8dc122342bc96cc4fad",
+    "held_seed_913/whole.png": "2f81af63148d370a2ff8887b6bbc638a53f320327eace7fda5a953bac0330147",
+    "held_seed_913/reverse.png": "9ff46d876edb8605a74134f906daf054dca633e7f4882c1dfd35350b5b35afce",
+    "held_seed_913/close.png": "0c1fc3abcbf1adee842ee305db84ab74794cbc2f89759443edef44de6a04a04e",
+    "held_seed_913/cliff_close.png": "073655d7f7e91102142b928e73815f4c3778a11650daf73ef3671bec0ac0ba1d"
+  },
+  "source_diffs": {
+    "material_day": [
+      "res://scripts/terrain_editor/material_detail.gd",
+      "res://shaders/terrain_editor/cliff.gdshader",
+      "res://shaders/terrain_editor/cliff_column.gdshader",
+      "res://shaders/terrain_editor/grass_blades.gdshader",
+      "res://shaders/terrain_editor/ground_cover.gdshaderinc",
+      "res://shaders/terrain_editor/stone_surface.gdshaderinc",
+      "res://tools/art/capture_lookdev.gd"
+    ],
+    "material_night": [
+      "res://scripts/terrain_editor/material_detail.gd",
+      "res://shaders/terrain_editor/cliff.gdshader",
+      "res://shaders/terrain_editor/cliff_column.gdshader",
+      "res://shaders/terrain_editor/grass_blades.gdshader",
+      "res://shaders/terrain_editor/ground_cover.gdshaderinc",
+      "res://shaders/terrain_editor/stone_surface.gdshaderinc",
+      "res://tools/art/capture_lookdev.gd"
+    ]
+  },
+  "current_material_matches_delivery_snapshot": true,
+  "wallpaper_files_are_native_byte_copies": true,
+  "browser_interaction_tested": false,
+  "browser_note": "Chrome CUA was not approved; local script syntax/state and image targets are checked separately."
+}

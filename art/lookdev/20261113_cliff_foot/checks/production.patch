@@ -1,0 +1,95 @@
+--- art/lookdev/20261113_cliff_foot/checks/source_before/terrain_decoration.gd	2026-11-13 14:36:43
++++ scripts/terrain_editor/terrain_decoration.gd	2026-11-13 15:04:10
+@@ -969,6 +969,7 @@
+ 	var sz:=want_d/span_z
+ 	var sy:float
+ 	var foot_y:float=profile.bottom
++	var shoulder_foot_y:float=foot_y
+ 	var room:float=maxf(1.8,drop)
+ 	# 360-degree Monumental Mountain-Root Promontories (十米级巨岩断崖 + 深渊倒锥主山根, Refs 03/04 & Europa):
+ 	var angle_around:=atan2(c.y+1.5,c.x)
+@@ -1016,11 +1017,16 @@
+ 	else:
+ 		var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,outer_prof)
+ 		foot_y=foot.y
++		shoulder_foot_y=foot.y
+ 		for end_t:float in [span.x,span.y]:
+ 			var p_end:=_onto(points,a+dir*clampf(end_t,0.0,length),out)
+ 			var prof_end:Dictionary=field._cliff_profile(p_end,out).duplicate()
+ 			if not field.levels.is_empty():field._outer_profile(p_end,out,prof_end)
+-			foot_y=minf(foot_y,field._profile_point(p_end,Contours.BOTTOM,out,prof_end).y)
++			var end_foot_y:float=field._profile_point(p_end,Contours.BOTTOM,out,prof_end).y
++			foot_y=minf(foot_y,end_foot_y)
++			# A broad shoulder must clear the shallow end too, not hang
++			# down to the deepest point anywhere along its parent span.
++			shoulder_foot_y=maxf(shoulder_foot_y,end_foot_y)
+ 		room=maxf(2.4,h-foot_y-.04)
+ 		var min_ext_veil:=99.0
+ 		for veil_k:Dictionary in field.fall_veils:
+@@ -1070,7 +1076,7 @@
+ 	var index:=_columns.size()
+ 	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy,"is_step":step})
+ 	_bucket_column(index)
+-	# Colossal Full-Height Outer Cliff Buttresses (extending vertically all the way down to the bottom root of the cliff, Refs 01 & 04):
++	# Outer shoulders overlap the main rock, but finish above its solid foot.
+ 	var is_extreme_tip:bool=c.x<-15.8 or c.x>16.2
+ 	if has_shoulder and not is_extreme_tip:
+ 		var sh_idx:=int(random_at(cell,seed_value,3032)*3.0)%3
+@@ -1125,6 +1131,25 @@
+ 						sh_basis=sh_basis.scaled_local(Vector3(sh_fit,1.0,sh_fit))
+ 						sh_origin+=tangent*((sh_clear.x+sh_clear.y)*.5-(sh_ext.x+sh_ext.y)*.5*sh_fit)
+ 				if sh_ok:
++					var tone_origin:Vector3=sh_origin
++					# Nominal body_height is not the bottom of these slanted meshes.
++					# Fit every actual vertex above both the contour foot and the
++					# parent rock. Keep the highest shoulder plane fixed and shorten
++					# along local Y, preserving solid planar faces and their normals.
++					var parent_bottom:float=INF
++					for vertex:Vector3 in part.faces:
++						parent_bottom=minf(parent_bottom,(pose*vertex).y)
++					var shoulder_floor:float=maxf(shoulder_foot_y,parent_bottom)+.35
++					var crest_y:float=sh_box.end.y
++					var height_fit:float=1.0
++					for vertex:Vector3 in sh_part.faces:
++						var crest_point:Vector3=sh_origin+sh_basis*Vector3(vertex.x,crest_y,vertex.z)
++						var below_crest:float=sh_basis.y.y*(crest_y-vertex.y)
++						if below_crest>.00001:
++							height_fit=minf(height_fit,maxf(0.0,(crest_point.y-shoulder_floor)/below_crest))
++					if height_fit<.10:return
++					sh_origin+=sh_basis.y*crest_y*(1.0-height_fit)
++					sh_basis.y*=height_fit
+ 					var near_veil:=curtain_trimmed
+ 					for veil_chk:Dictionary in field.fall_veils:
+ 						var vl:Vector3=veil_chk.lip
+@@ -1132,7 +1157,7 @@
+ 					var allow_bush:bool=false
+ 					var ledge_pt:Vector3=sh_origin+sh_basis*Vector3(0.0,-.032,.22)-Vector3(0.0,.03,0.0)
+ 					var sh_prio:float=sh_w+prom_envelope*2.2
+-					_mass.append({"kind":sh_kind,"pose":Transform3D(sh_basis,sh_origin),"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
++					_mass.append({"kind":sh_kind,"pose":Transform3D(sh_basis,sh_origin),"tone_origin":tone_origin,"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
+ 	elif step and drop>=1.45 and use_len>=1.65 and random_at(cell,seed_value,3061)<.52:
+ 		# Clean wide stepped foot blocks along interior terrace cliffs (clear of paths & ponds):
+ 		var floor_probe:Dictionary=field.surface_at(c+out*1.35)
+@@ -1410,6 +1435,12 @@
+ func populate(parent:Node3D,data:Data,chunk:Vector2i)->void:
+ 	load_assets()
+ 	var groups:=placements(data,chunk)
++	# Resizing an outer shoulder moves its origin about the fixed crest.
++	# Keep its original mineral tint instead of re-rolling the 5cm color hash.
++	var tone_origins:Dictionary={}
++	for stone:Dictionary in _mass:
++		if stone.has("tone_origin") and Data.chunk_of(stone.cell)==chunk:
++			tone_origins[stone.pose]=stone.tone_origin
+ 	for kind in groups:
+ 		var transforms:Array=groups[kind]
+ 		if transforms.is_empty() or not assets.has(kind):continue
+@@ -1432,7 +1463,8 @@
+ 				buffer[o+4]=t.basis.x.y;buffer[o+5]=t.basis.y.y;buffer[o+6]=t.basis.z.y;buffer[o+7]=t.origin.y
+ 				buffer[o+8]=t.basis.x.z;buffer[o+9]=t.basis.y.z;buffer[o+10]=t.basis.z.z;buffer[o+11]=t.origin.z
+ 				if mm.use_colors:
+-					var tone:=_stone_tone(transforms[i].origin)
++					var tone_origin:Vector3=tone_origins.get(transforms[i],transforms[i].origin)
++					var tone:=_stone_tone(tone_origin)
+ 					buffer[o+12]=tone.r;buffer[o+13]=tone.g;buffer[o+14]=tone.b;buffer[o+15]=tone.a
+ 			mm.buffer=buffer
+ 			var instance:=MultiMeshInstance3D.new()

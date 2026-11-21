@@ -1,0 +1,10 @@
+--- preview_quality_before.gd
++++ preview_quality.gd
+@@ -92,4 +92,6 @@
+ func _apply() -> void:
+ 	viewport.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR if _scale < .999 else Viewport.SCALING_3D_MODE_BILINEAR
+ 	viewport.scaling_3d_scale = maxf(.1,_scale)
+-	viewport.msaa_3d = mini(_native_msaa,Viewport.MSAA_2X) if _scale < .999 else _native_msaa
++	viewport.msaa_3d = _native_msaa if native else mini(_native_msaa,Viewport.MSAA_2X)
++	# Preserve the high-quality reference as an explicit reversible option.
++	RenderingServer.directional_shadow_atlas_set_size(8192 if native else 4096, true)

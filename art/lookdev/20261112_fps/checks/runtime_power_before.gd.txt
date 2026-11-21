@@ -1,0 +1,64 @@
+extends Node
+## Pace visible work without changing rendering quality. Focus loss alone is
+## deliberately not treated as hidden: desktop wallpaper must keep animating.
+const INTERACTIVE_FPS: int = 60
+const WALLPAPER_FPS: int = 30
+const HIDDEN_FPS: int = 5
+const INTERACTION_SECONDS: float = 2.0
+var _editor: Node3D
+var _previous_limit: int = 0
+var _interaction_left: float = 0.0
+var _configured: bool = false
+var _suspended: bool = false
+var _previous_process_mode: int = Node.PROCESS_MODE_INHERIT
+
+func configure(editor: Node3D) -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	_editor = editor
+	_previous_limit = Engine.max_fps
+	_configured = true
+	_refresh_window()
+
+func note_interaction() -> void:
+	_interaction_left = INTERACTION_SECONDS
+	_refresh_window()
+
+func refresh(wallpaper: bool, hidden: bool) -> void:
+	if not _configured:
+		return
+	if is_instance_valid(_editor):
+		if hidden and not _suspended:
+			_previous_process_mode = _editor.process_mode
+			_editor.process_mode = Node.PROCESS_MODE_DISABLED
+			_suspended = true
+		elif not hidden and _suspended:
+			_editor.process_mode = _previous_process_mode
+			_suspended = false
+	var limit: int = HIDDEN_FPS if hidden else INTERACTIVE_FPS
+	if not hidden and wallpaper and _interaction_left <= 0.0:
+		limit = WALLPAPER_FPS
+	Engine.max_fps = mini(limit, _previous_limit) if _previous_limit > 0 else limit
+
+func _refresh_window() -> void:
+	if not is_instance_valid(_editor):
+		return
+	var window: Window = _editor.get_window()
+	var hidden: bool = not window.visible or window.mode == Window.MODE_MINIMIZED
+	var wallpaper: bool = _editor.gameplay != null and _editor.gameplay.wallpaper_mode
+	refresh(wallpaper, hidden)
+
+func _process(delta: float) -> void:
+	_interaction_left = maxf(0.0, _interaction_left - maxf(0.0, delta))
+	_refresh_window()
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion or event is InputEventMouseButton or event is InputEventKey or event is InputEventJoypadMotion:
+		note_interaction()
+
+func _exit_tree() -> void:
+	if _suspended and is_instance_valid(_editor):
+		_editor.process_mode = _previous_process_mode
+		_suspended = false
+	if _configured:
+		Engine.max_fps = _previous_limit
+		_configured = false

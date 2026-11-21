@@ -1,0 +1,269 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"godot": "4.7.2-stable (official)",
+	"method": "SubViewport explicit draw; --disable-render-loop --disable-vsync; static normal scene; GPU timings may be unsupported (zero) on device",
+	"samples": [
+		{
+			"draw_calls": 293,
+			"frame_ms": {
+				"max": 41.426,
+				"mean": 38.48396,
+				"p50": 38.648,
+				"p95": 40.179
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "2K_full",
+			"primitives": 2343993,
+			"render_cpu_ms": {
+				"max": 0.578999996185303,
+				"mean": 0.388599998354912,
+				"p50": 0.374000012874603,
+				"p95": 0.522000014781952
+			},
+			"resolution": [
+				2560,
+				1440
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 293,
+			"frame_ms": {
+				"max": 64.966,
+				"mean": 63.10538,
+				"p50": 63.164,
+				"p95": 64.84
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "4K_full",
+			"primitives": 2343993,
+			"render_cpu_ms": {
+				"max": 0.544000029563904,
+				"mean": 0.373439999222755,
+				"p50": 0.361000001430511,
+				"p95": 0.465999990701675
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 293,
+			"frame_ms": {
+				"max": 61.131,
+				"mean": 58.45488,
+				"p50": 58.585,
+				"p95": 60.515
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "4K_no_ssil",
+			"primitives": 2343993,
+			"render_cpu_ms": {
+				"max": 0.490000009536743,
+				"mean": 0.359340000152588,
+				"p50": 0.35699999332428,
+				"p95": 0.437000006437302
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": false
+		},
+		{
+			"draw_calls": 293,
+			"frame_ms": {
+				"max": 53.267,
+				"mean": 50.0632,
+				"p50": 50.052,
+				"p95": 51.783
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "4K_no_ssao_ssil",
+			"primitives": 2343993,
+			"render_cpu_ms": {
+				"max": 0.404000014066696,
+				"mean": 0.311720000505447,
+				"p50": 0.310999989509583,
+				"p95": 0.370000004768372
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": false,
+			"ssil": false
+		},
+		{
+			"draw_calls": 293,
+			"frame_ms": {
+				"max": 51.646,
+				"mean": 49.97118,
+				"p50": 50.015,
+				"p95": 51.31
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 0,
+			"name": "4K_no_msaa",
+			"primitives": 2343993,
+			"render_cpu_ms": {
+				"max": 0.574999988079071,
+				"mean": 0.385400000810623,
+				"p50": 0.374000012874603,
+				"p95": 0.523999989032745
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 293,
+			"frame_ms": {
+				"max": 42.234,
+				"mean": 40.025,
+				"p50": 40.054,
+				"p95": 42.017
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [],
+			"msaa": 2,
+			"name": "4K_scaled_2K",
+			"primitives": 2343993,
+			"render_cpu_ms": {
+				"max": 0.42399999499321,
+				"mean": 0.367720000743866,
+				"p50": 0.374000012874603,
+				"p95": 0.404000014066696
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 0.666666666666667,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 271,
+			"frame_ms": {
+				"max": 46.798,
+				"mean": 45.01738,
+				"p50": 45.079,
+				"p95": 46.541
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [
+				"grass_blades"
+			],
+			"msaa": 2,
+			"name": "4K_no_grass",
+			"primitives": 850425,
+			"render_cpu_ms": {
+				"max": 0.46900001168251,
+				"mean": 0.352059999704361,
+				"p50": 0.349000006914139,
+				"p95": 0.398999989032745
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		},
+		{
+			"draw_calls": 279,
+			"frame_ms": {
+				"max": 61.612,
+				"mean": 59.5611,
+				"p50": 59.455,
+				"p95": 61.412
+			},
+			"gpu_ms": {
+				"max": 0.0,
+				"mean": 0.0,
+				"p50": 0.0,
+				"p95": 0.0
+			},
+			"hide": [
+				"water",
+				"waterfall",
+				"bank"
+			],
+			"msaa": 2,
+			"name": "4K_no_water",
+			"primitives": 2340947,
+			"render_cpu_ms": {
+				"max": 0.541000008583069,
+				"mean": 0.371040002703667,
+				"p50": 0.363000005483627,
+				"p95": 0.490000009536743
+			},
+			"resolution": [
+				3840,
+				2160
+			],
+			"scale": 1.0,
+			"ssao": true,
+			"ssil": true
+		}
+	]
+}

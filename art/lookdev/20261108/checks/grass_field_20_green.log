@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+PASS: flat interior packed transforms are byte-for-byte unchanged
+flat count=144
+PASS: all old mixed-edge transforms are present byte-for-byte
+PASS: mixed edge gains only new samples
+mixed old=15 new=142
+PASS: downward winding: before excludes soft lip
+PASS: downward winding: new soft lip is planted
+downward winding count=146 normal_error=0.000000067 depth_error=0.000000639 root_error=0.000000997
+PASS: downward winding: UP follows upward triangle normal
+PASS: downward winding: clump center is buried exactly 8mm
+PASS: downward winding: every blade root stays 8mm inside plane
+PASS: upward winding: before excludes soft lip
+PASS: upward winding: new soft lip is planted
+upward winding count=147 normal_error=0.000000067 depth_error=0.000000550 root_error=0.000000937
+PASS: upward winding: UP follows upward triangle normal
+PASS: upward winding: clump center is buried exactly 8mm
+PASS: upward winding: every blade root stays 8mm inside plane
+PASS: outer lip below G=.82 remains clear
+GRASS FIELD 20: checks=14 failures=0

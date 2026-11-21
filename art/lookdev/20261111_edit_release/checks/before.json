@@ -1,0 +1,14 @@
+[
+  {
+    "file": "scripts/terrain_editor/editor.gd",
+    "sha256": "3ca111acec2104572b570127351ba1896d1d162fb44a419c6bb9a65f4ea2c486"
+  },
+  {
+    "file": "scripts/terrain_editor/edit_preview.gd",
+    "sha256": "d7f8fc48220d39b27f431530d18ca42ebeb4e683672f2ac2cd20dbfccbdbeb17"
+  },
+  {
+    "file": "shaders/terrain_editor/edit_preview.gdshader",
+    "sha256": "b14ef12e9fc3ea57a0624020da259facf03f2d095863f1e3cfc4eee0518bc1a9"
+  }
+]

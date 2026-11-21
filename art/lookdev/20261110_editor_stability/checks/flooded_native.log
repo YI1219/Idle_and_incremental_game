@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-10 18:30:30.181 Godot[43627:71272479] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-10 18:30:34.775 Godot[43627:71272479] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_7301/00_dry_before_lower.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_7301/01_before_flooded_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_7301/02_after_flooded_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_7301/01_before_flooded_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_7301/02_after_flooded_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_7301/03_dry_brush_restored_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_7301/03_dry_brush_restored_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_2104/00_dry_before_lower.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_2104/01_before_flooded_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_2104/02_after_flooded_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_2104/01_before_flooded_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_2104/02_after_flooded_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_2104/03_dry_brush_restored_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_2104/03_dry_brush_restored_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_4242/00_dry_before_lower.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_4242/01_before_flooded_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_4242/02_after_flooded_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_4242/01_before_flooded_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_4242/02_after_flooded_reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_4242/03_dry_brush_restored_front.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/flooded_surface_native/seed_4242/03_dry_brush_restored_reverse.png
+FLOODED NATIVE: 21 captures, 0 errors

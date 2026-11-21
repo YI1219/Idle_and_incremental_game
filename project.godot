@@ -70,7 +70,9 @@ camera_right={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+lights_and_shadows/directional_shadow/size=8192
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
+environment/ssao/half_size=false
 anti_aliasing/quality/msaa_3d=2
 
 [shader_globals]
@@ -86,4 +88,33 @@ terrain_morph_rect={
 terrain_morph_progress={
 "type": "float",
 "value": 1.0
+}
+stone_fine_relief={
+"type": "float",
+"value": 1.0
+}
+live_water_field={
+"type": "sampler2D",
+"value": ""
+}
+live_water_rect={
+"type": "vec4",
+"value": Vector4(0, 0, 1, 1)
+}
+live_water_active={
+"type": "float",
+"value": 0.0
+}
+
+grass_recovery_field={
+"type": "sampler2D",
+"value": ""
+}
+grass_recovery_rect={
+"type": "vec4",
+"value": Vector4(0, 0, 1, 1)
+}
+grass_recovery_active={
+"type": "float",
+"value": 0.0
 }

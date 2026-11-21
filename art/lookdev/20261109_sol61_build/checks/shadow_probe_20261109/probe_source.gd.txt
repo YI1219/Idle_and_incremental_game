@@ -1,0 +1,9 @@
+extends "res://tools/art/capture_lookdev.gd"
+## Native diagnostic. Production stone shaders, fixed BASE_B camera and light.
+func _capture(label: String, time_progress: float) -> void:
+	if label != "cliff_close":
+		return
+	var sun: DirectionalLight3D = editor.get_node("SunLight")
+	for bias: float in [.035, .10, .20, .35, .60]:
+		sun.shadow_bias = bias
+		await super._capture("bias_%03d" % roundi(bias * 1000.0), time_progress)

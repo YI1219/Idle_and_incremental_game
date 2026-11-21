@@ -1,0 +1,65 @@
+{
+  "source": "art/lookdev/20261112_style_library/colored_final/captures.json",
+  "actual_frames": [
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/architecture/low_mountain_dwelling_v02/lod0_iso.png",
+      "sha256": "0896322bfd4fa36f22c593d90729cdbfe871c1479582a0d2522be388fcde60a1",
+      "model_sha256": "e9edeae9573e0f203ca2f5dea66325145f0b4e4849e9dd4fc2f587138950d3de"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/architecture/pavilion_v02/lod0_iso.png",
+      "sha256": "ce1486437c43bed1bdabbc705a48d4249c3c12bc2fd1b0903955094ff4973c8e",
+      "model_sha256": "24368e8bd287dca32db134731ff12c3a6f71b943a82afe9c082986aaf6cce7cd"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/architecture/short_tiled_courtyard_gate/lod0_iso.png",
+      "sha256": "eb2989c25c25ee65ba2ff53a8775aa3ba52c334a2e31f6f4f5a45fddebcf7d75",
+      "model_sha256": "1a585ac62c76f12555293e7bfc6a9c0236392e9b0864489040f0e8c07a69c2d4"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/architecture/short_roofed_corridor/lod0_iso.png",
+      "sha256": "2bab1cc342e52d70882519a4a7eb4f401cf57f0757e04efe0df335535b28c8f5",
+      "model_sha256": "ec046a862cae2a1eba3b91310b5d8a1db4f0b00f71a3c6f99c3b0adcdae3bf6c"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/nature/curved_pine/lod0_iso.png",
+      "sha256": "377c63bf9e96911fe056c889a077d7e9ba5464db866e1528724af27bedf221cf",
+      "model_sha256": "0dac68465163a470302fded60c9f1bf8577bc5d1e83ad00b2e3f842d6890f38e"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/nature/drooping_willow_v02/lod0_iso.png",
+      "sha256": "1241fb9dd6892db8e8a89df8e37fa830a80ca66c18fdf6251733e05d772e5c94",
+      "model_sha256": "9b3e79168c2d339f15839f364231c0742b500345c97f20c62613c6e4d44fbd7e"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/nature/round_boulder/lod0_iso.png",
+      "sha256": "af3cf8fdd93d02ba1a7ae92882a637ed324297067785a49d1d5e349d7aa1f19d",
+      "model_sha256": "6879af6a923d1e03ce8450b18044b25a7a3a3532a50c519817e5730380bde0c8"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/nature/hosta/lod0_iso.png",
+      "sha256": "53594ccd96215bef76676ef02411d623d92aa17244559a825259163aead14e56",
+      "model_sha256": "e8a391d3d6dcc46c2cdbcc9d286fb9eb1393d404bcc17f321624fd6f66763394"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/props/wood_bench/lod0_iso.png",
+      "sha256": "8a7925f9efe996813ae37433a96e7a3a8295ffacff0b8ecf0015854fe12a363d",
+      "model_sha256": "8ffb0cd76a92c1be7e6e9f995d56278ab605be22e5074842009c9ff792138844"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/props/stone_table/lod0_iso.png",
+      "sha256": "c90913b3f8772333ceb78541554d79e4a1462d8f338657c6e6678bb6cd26a53d",
+      "model_sha256": "293800cd997d7efb21e47d4fe24272a6460db3606ec811bb7b17d9033ebba7ed"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/props/stone_stool_v02/lod0_iso.png",
+      "sha256": "759c90b205aecc706ed6c5ac7d1ab6cacec2f2437f43c314eb2a81704a747ef7",
+      "model_sha256": "db374445d2e86dadbf1224515f86c590343bc67184f88de041c7d2dc131a0736"
+    },
+    {
+      "file": "art/lookdev/20261112_style_library/colored_final/props/clay_planter/lod0_iso.png",
+      "sha256": "2d0cd44dedf304fe44fe229b31fcdfa4576610a009186f1d9477d4d60a760b30",
+      "model_sha256": "c520c1a27653759dc0abfd5c7aadb49a6375320185e5419a53cd914d5f97b262"
+    }
+  ]
+}

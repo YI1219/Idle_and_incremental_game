@@ -1,0 +1,24 @@
+extends "res://tools/art/capture_lookdev.gd"
+## Diagnostic render only. Changes cached shaders/environment in this process.
+func _capture(label: String, time_progress: float) -> void:
+	if label != "cliff_close":
+		return
+	await super._capture("production", time_progress)
+	for shader: Shader in frozen_shaders.values():
+		if shader.resource_path not in ["res://shaders/terrain_editor/cliff.gdshader", "res://shaders/terrain_editor/cliff_column.gdshader"]:
+			continue
+		var source: String = shader.code
+		var neutral: String = "(mix(stone_mid_color,stone_lit_color,.48)*vec3(1.0,1.018,1.15))"
+		source = source.replace("stone_surface(world_position,base_normal)", neutral)
+		source = source.replace("stone_surface(world_position,shade_n)", neutral)
+		source = source.replace("stone_mineral_normal(world_position,base_normal)", "base_normal")
+		source = source.replace("stone_mineral_normal(world_position,material_normal)", "material_normal")
+		shader.code = source
+	await super._capture("flat_color_normal", time_progress)
+	var sun: DirectionalLight3D = editor.get_node("SunLight")
+	sun.shadow_enabled = false
+	await super._capture("flat_no_shadow", time_progress)
+	var environment: Environment = editor.get_node("WorldEnvironment").environment
+	environment.ssao_enabled = false
+	environment.ssil_enabled = false
+	await super._capture("flat_no_screen_gi", time_progress)

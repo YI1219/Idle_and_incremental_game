@@ -1,0 +1,58 @@
+--- art/lookdev/20261119_native4k/checks/source_before/scripts/terrain_editor/grass_field.gd	2026-11-16 14:03:47
++++ scripts/terrain_editor/grass_field.gd	2026-11-19 16:07:30
+@@ -82,13 +82,16 @@
+ 	arrays[Mesh.ARRAY_INDEX]=full
+ 	# Keep the exact authored near mesh. Coarser distant meshes retain all
+ 	# seven roots/tips and pigments, only reducing the leaf's interior bends.
+-	var lods:Dictionary={.008:_clump_lod_indices(blade_ranges,2),.035:_clump_lod_indices(blade_ranges,1)}
++	# The middle level keeps both bends without the cross-section ridge. That
++	# ridge rises under 9mm and normal/UV/colour run linearly across the leaf,
++	# so a flat quad shades alike once the ridge height is subpixel.
++	var lods:Dictionary={.008:_clump_lod_indices(blade_ranges,2),.016:_clump_lod_indices(blade_ranges,2,false),.035:_clump_lod_indices(blade_ranges,1)}
+ 	_clump_mesh=ArrayMesh.new()
+ 	_clump_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,[],lods)
+ 	_clump_mesh.custom_aabb=AABB(Vector3(-.45,-.05,-.45),Vector3(.90,.75,.90))
+ 	return _clump_mesh
+ 
+-static func _clump_lod_indices(ranges:Array[Vector2i],steps:int)->PackedInt32Array:
++static func _clump_lod_indices(ranges:Array[Vector2i],steps:int,ridge:bool=true)->PackedInt32Array:
+ 	var result:=PackedInt32Array()
+ 	for leaf:Vector2i in ranges:
+ 		for part:int in steps:
+@@ -96,7 +99,7 @@
+ 			var last:int=roundi(float(part+1)*leaf.y/steps)
+ 			var a:=PackedInt32Array([leaf.x,leaf.x+1,leaf.x+7]) if first==0 else PackedInt32Array([leaf.x+(first-1)*12+5,leaf.x+(first-1)*12+2,leaf.x+(first-1)*12+8])
+ 			var b:=PackedInt32Array([leaf.x+(last-1)*12+5,leaf.x+(last-1)*12+2,leaf.x+(last-1)*12+8])
+-			if steps == 1:
++			if steps == 1 or not ridge:
+ 				# At subpixel distance keep all seven leaf silhouettes, roots, tips
+ 				# and pigments. Only omit the tiny interior cross-section ridge.
+ 				result.append_array(PackedInt32Array([a[0],a[2],b[2],a[0],b[2],b[0]]))
+--- art/lookdev/20261119_native4k/checks/source_before/scripts/terrain_editor/preview_quality.gd	2026-11-12 16:59:35
++++ scripts/terrain_editor/preview_quality.gd	2026-11-19 16:27:00
+@@ -14,6 +14,7 @@
+ var _last_frame_limit: int = -1
+ var _recovery_seconds: float = 0.0
+ var _ssao_settings: Dictionary = {}
++var _ssil_settings: Dictionary = {}
+ var _native_dof_quality: int = 1
+ var _native_dof_jitter: bool = false
+ 
+@@ -22,6 +23,7 @@
+ 	_native_msaa = target.msaa_3d
+ 	for key: String in ["quality", "half_size", "adaptive_target", "blur_passes", "fadeout_from", "fadeout_to"]:
+ 		_ssao_settings[key] = ProjectSettings.get_setting("rendering/environment/ssao/" + key)
++		_ssil_settings[key] = ProjectSettings.get_setting("rendering/environment/ssil/" + key)
+ 	_native_dof_quality = ProjectSettings.get_setting("rendering/camera/depth_of_field/depth_of_field_bokeh_quality")
+ 	_native_dof_jitter = ProjectSettings.get_setting("rendering/camera/depth_of_field/depth_of_field_use_jitter")
+ 	refresh()
+@@ -105,4 +107,9 @@
+ 
+ 	RenderingServer.environment_set_ssao_quality(int(_ssao_settings.quality), bool(_ssao_settings.half_size) if native else true,
+ 		float(_ssao_settings.adaptive_target), int(_ssao_settings.blur_passes), float(_ssao_settings.fadeout_from), float(_ssao_settings.fadeout_to))
++	# Indirect light is gathered at half size and blurred four times. Its cheapest
++	# gather stays within 6/255 of the project default at 1080p, 2K and 4K, so
++	# only the explicit native reference pays for the denser one.
++	RenderingServer.environment_set_ssil_quality(int(_ssil_settings.quality) if native else RenderingServer.ENV_SSIL_QUALITY_VERY_LOW, bool(_ssil_settings.half_size),
++		float(_ssil_settings.adaptive_target), int(_ssil_settings.blur_passes), float(_ssil_settings.fadeout_from), float(_ssil_settings.fadeout_to))
+ 	RenderingServer.camera_attributes_set_dof_blur_quality(_native_dof_quality if native else RenderingServer.DOF_BLUR_QUALITY_VERY_LOW, _native_dof_jitter)

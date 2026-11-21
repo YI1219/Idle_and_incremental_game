@@ -1,0 +1,128 @@
+[
+  {
+    "before": "000_before.png",
+    "after": "000_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "007_before.png",
+    "after": "007_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "031_before.png",
+    "after": "031_after.png",
+    "mean": 0.02085503472222222,
+    "max": 1,
+    "different_pixels": 13502
+  },
+  {
+    "before": "063_before.png",
+    "after": "063_after.png",
+    "mean": 0.02087818287037037,
+    "max": 1,
+    "different_pixels": 13532
+  },
+  {
+    "before": "095_before.png",
+    "after": "095_after.png",
+    "mean": 0.02121383101851852,
+    "max": 1,
+    "different_pixels": 13770
+  },
+  {
+    "before": "119_before.png",
+    "after": "119_after.png",
+    "mean": 0.03177517361111111,
+    "max": 1,
+    "different_pixels": 19933
+  },
+  {
+    "before": "120_before.png",
+    "after": "120_after.png",
+    "mean": 3.90625e-05,
+    "max": 1,
+    "different_pixels": 27
+  },
+  {
+    "before": "121_before.png",
+    "after": "121_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "127_before.png",
+    "after": "127_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "135_before.png",
+    "after": "135_after.png",
+    "mean": 4.1956018518518515e-05,
+    "max": 1,
+    "different_pixels": 29
+  },
+  {
+    "before": "136_before.png",
+    "after": "136_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "137_before.png",
+    "after": "137_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "143_before.png",
+    "after": "143_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "151_before.png",
+    "after": "151_after.png",
+    "mean": 4.774305555555556e-05,
+    "max": 1,
+    "different_pixels": 33
+  },
+  {
+    "before": "152_before.png",
+    "after": "152_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "153_before.png",
+    "after": "153_after.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "159_before.png",
+    "after": "159_after.png",
+    "mean": 0.00012586805555555555,
+    "max": 1,
+    "different_pixels": 87
+  },
+  {
+    "before": "167_before.png",
+    "after": "167_after.png",
+    "mean": 0.0001490162037037037,
+    "max": 1,
+    "different_pixels": 103
+  }
+]

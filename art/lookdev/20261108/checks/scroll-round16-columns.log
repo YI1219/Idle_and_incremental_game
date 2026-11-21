@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+COLUMN seed=16 part=mesh tris=90 open=0 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.65120232105255 broad_plane_error=0.00000005960464 volume=0.70053058641497 box=[P: (-0.52, -1.0996, -0.44), S: (1.04, 1.0996, 0.96)]
+COLUMN seed=16 part=render_mesh tris=81 open=9 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.65120232105255 broad_plane_error=0.00000005960464 volume=0.70053058641497 box=[P: (-0.52, -1.0996, -0.44), S: (1.04, 1.0996, 0.96)]
+COLUMN seed=25 part=mesh tris=90 open=0 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.88866060972214 broad_plane_error=0.00000005960464 volume=0.65154872458273 box=[P: (-0.52, -1.0094, -0.44), S: (1.04, 1.0094, 0.93)]
+COLUMN seed=25 part=render_mesh tris=81 open=9 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.88866060972214 broad_plane_error=0.00000005960464 volume=0.65154872458273 box=[P: (-0.52, -1.0094, -0.44), S: (1.04, 1.0094, 0.93)]
+COLUMN seed=34 part=mesh tris=90 open=0 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.54945260286331 broad_plane_error=0.00000008940697 volume=0.71582804686235 box=[P: (-0.52, -1.1245, -0.44), S: (1.04, 1.1245, 0.98)]
+COLUMN seed=34 part=render_mesh tris=81 open=9 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.54945260286331 broad_plane_error=0.00000008940697 volume=0.71582804686235 box=[P: (-0.52, -1.1245, -0.44), S: (1.04, 1.1245, 0.98)]
+COLUMN seed=43 part=mesh tris=90 open=0 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.88866060972214 broad_plane_error=0.00000005960464 volume=0.6650303232406 box=[P: (-0.52, -1.0592, -0.44), S: (1.04, 1.0592, 0.92)]
+COLUMN seed=43 part=render_mesh tris=81 open=9 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.88866060972214 broad_plane_error=0.00000005960464 volume=0.6650303232406 box=[P: (-0.52, -1.0592, -0.44), S: (1.04, 1.0592, 0.92)]
+COLUMN seed=52 part=mesh tris=90 open=0 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.54945260286331 broad_plane_error=0.00000005960464 volume=0.72596913611051 box=[P: (-0.52, -1.1347, -0.44), S: (1.04, 1.1347, 0.98)]
+COLUMN seed=52 part=render_mesh tris=81 open=9 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.54945260286331 broad_plane_error=0.00000005960464 volume=0.72596913611051 box=[P: (-0.52, -1.1347, -0.44), S: (1.04, 1.1347, 0.98)]
+COLUMN seed=61 part=mesh tris=90 open=0 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.88866060972214 broad_plane_error=0.00000005960464 volume=0.63328466855455 box=[P: (-0.52, -0.9894, -0.44), S: (1.04, 0.9894, 0.93)]
+COLUMN seed=61 part=render_mesh tris=81 open=9 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.88866060972214 broad_plane_error=0.00000005960464 volume=0.63328466855455 box=[P: (-0.52, -0.9894, -0.44), S: (1.04, 0.9894, 0.93)]
+COLUMN seed=70 part=mesh tris=90 open=0 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.65120232105255 broad_plane_error=0.00000011920929 volume=0.69562266623446 box=[P: (-0.52, -1.0845, -0.44), S: (1.04, 1.0845, 0.96)]
+COLUMN seed=70 part=render_mesh tris=81 open=9 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.65120232105255 broad_plane_error=0.00000011920929 volume=0.69562266623446 box=[P: (-0.52, -1.0845, -0.44), S: (1.04, 1.0845, 0.96)]
+COLUMN seed=79 part=mesh tris=90 open=0 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.88866060972214 broad_plane_error=0.00000005960464 volume=0.67020700138528 box=[P: (-0.52, -1.0296, -0.44), S: (1.04, 1.0296, 0.92)]
+COLUMN seed=79 part=render_mesh tris=81 open=9 bad_edges=0 degenerate=0 normal_bad=0 min_quad_normal_dot=0.88866060972214 broad_plane_error=0.00000005960464 volume=0.67020700138528 box=[P: (-0.52, -1.0296, -0.44), S: (1.04, 1.0296, 0.92)]
+ROUND16_COLUMNS failures=0

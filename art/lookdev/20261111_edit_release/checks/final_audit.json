@@ -1,0 +1,16 @@
+{
+  "valid": true,
+  "native_keyframes": 20,
+  "paired_animations": 2,
+  "same_camera_data_morph_pairs": 10,
+  "final_images_pixel_identical": true,
+  "production_source_hashes": 59,
+  "latency_source_hashes": 3,
+  "test_groups": 9,
+  "release_feedback_checks": 19,
+  "page_states": 10,
+  "page_links": 10,
+  "browser_interaction_verified": false,
+  "comparison_publication_seconds": 0.7,
+  "animation_duration_ms": 2200
+}

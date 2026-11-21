@@ -1,0 +1,31 @@
+{
+  "same_camera_lighting_phase": true,
+  "same_authoritative_data": true,
+  "source_changes": [
+    "res://scripts/terrain_editor/block_mantle.gd",
+    "res://scripts/terrain_editor/contour_terrain.gd"
+  ],
+  "native_2k_frames": 19,
+  "regression": {
+    "seeds": [
+      7301,
+      2104,
+      4242,
+      913
+    ],
+    "checks": 16,
+    "failures": 0
+  },
+  "other_checks": {
+    "scene": "7/7",
+    "runtime": "22/22",
+    "argon": "9/9",
+    "water": "348/348"
+  },
+  "sources_after": {
+    "scripts/terrain_editor/block_mantle.gd": "6833e9c3d5a7861f1aba549c200594d01f10c6edf83d940522aacf735a6c1ac1",
+    "scripts/terrain_editor/contour_terrain.gd": "3e23f73b7c58afe7fa003879203cbf3273b7e314280a20e16edfbcbbfb4f6cec"
+  },
+  "browser_rendering_tested": false,
+  "live_ui_preview": "CUA timed out; native capture and normal scene test completed"
+}

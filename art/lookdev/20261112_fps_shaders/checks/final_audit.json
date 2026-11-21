@@ -1,0 +1,12 @@
+{
+  "source_hashes_match": true,
+  "all_18_pairs_match_except_intended_quality": true,
+  "all_image_sizes_verified": true,
+  "runtime_sizes_and_msaa_match": true,
+  "html_links_and_syntax_valid": true,
+  "normal_entry_clean": true,
+  "godot_runtime_debug_test_process_count": 0,
+  "retained_editor": [
+    "29442   0.4 /Applications/Godot.app/Contents/MacOS/Godot --path /Users/yi/Projects/games/the-scroll-within -e res://scenes/terrain_editor.tscn"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "scripts/terrain_editor/terrain_data.gd": "545d0b07385599548607aeebcf5036ae26822aaef37178bf300aec26cb083d49",
+  "scripts/terrain_editor/terrain_decoration.gd": "5f2020f198458ed1910eb2b22aa5bd86155cc267b8be129d6e4da8ee6d0fbd81",
+  "scripts/terrain_editor/terrain_paths.gd": "5acfef2f2647238358d363f99a6f4eb0e5104ddea79c6bd11d09c7e6dfde914c",
+  "scripts/terrain_editor/grass_field.gd": "e9b7416e8c8cefbdc0e10287097b82bc7cd05667a2d9b547a162aaf0818cf29d",
+  "scripts/terrain_editor/terrain_renderer.gd": "406369ec1c618613d4bb0dd0cd10e8804a66caa66fb24641b81badabbffe49c8",
+  "docs/art_direction.md": "3a7eec538822ad75f04fcc4768221f035b4178167955b538018254759d36777c",
+  "CURRENT_CONTEXT.md": "e197e56430778c67038de359eaf6c68a2a46d5457ee9dade08e80b0148cb4146",
+  "scripts/terrain_editor/grass_lip_soften.gd": "a98f6807510b9d80aa32637916ff8f5da18de6a155c9d978a87ca5ec916a1c0d"
+}

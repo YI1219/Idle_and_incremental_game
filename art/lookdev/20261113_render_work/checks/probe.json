@@ -1,0 +1,173 @@
+{
+	"method": "current balanced settings;fixedphase1.25/current water.1;15warm50explicit;no limiter/imageIO;candidate shader substitutions only in memory",
+	"samples": [
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 35.1469,
+				"p50": 35.161,
+				"p95": 36.488
+			},
+			"name": "base",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846181
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 37.82184,
+				"p50": 37.646,
+				"p95": 41.654
+			},
+			"name": "steady",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846181
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 36.0147,
+				"p50": 35.837,
+				"p95": 38.245
+			},
+			"name": "hash",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846181
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 37.52418,
+				"p50": 37.535,
+				"p95": 38.622
+			},
+			"name": "cloud",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846181
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 39.99126,
+				"p50": 39.936,
+				"p95": 45.841
+			},
+			"name": "combined",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846181
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 39.84402,
+				"p50": 39.43,
+				"p95": 43.499
+			},
+			"name": "base_repeat",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846181
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 78.55266,
+				"p50": 80.566,
+				"p95": 85.272
+			},
+			"name": "base",
+			"size": [
+				3840,
+				2160
+			],
+			"triangles": 847021
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 78.24168,
+				"p50": 79.395,
+				"p95": 82.231
+			},
+			"name": "steady",
+			"size": [
+				3840,
+				2160
+			],
+			"triangles": 847021
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 74.60986,
+				"p50": 72.616,
+				"p95": 82.58
+			},
+			"name": "hash",
+			"size": [
+				3840,
+				2160
+			],
+			"triangles": 847021
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 76.07908,
+				"p50": 74.517,
+				"p95": 81.138
+			},
+			"name": "cloud",
+			"size": [
+				3840,
+				2160
+			],
+			"triangles": 847021
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 52.96546,
+				"p50": 36.397,
+				"p95": 81.747
+			},
+			"name": "combined",
+			"size": [
+				3840,
+				2160
+			],
+			"triangles": 847021
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 36.34082,
+				"p50": 36.235,
+				"p95": 38.074
+			},
+			"name": "base_repeat",
+			"size": [
+				3840,
+				2160
+			],
+			"triangles": 847021
+		}
+	]
+}

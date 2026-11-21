@@ -1,0 +1,146 @@
+--- before/scripts/terrain_editor/editor.gd
++++ after/scripts/terrain_editor/editor.gd
+@@ -134,6 +134,7 @@
+ 	_stroke_plane_offset = Vector2.ZERO
+ 	data.end_stroke()
+ 	camera.cancel_input()
++	preview.refresh(data, renderer)
+ func _input(event:InputEvent)->void:
+ 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT and painting:
+ 		cancel_input()
+@@ -283,7 +284,9 @@
+ 	var before_cells:int=data.cells.size()
+ 	var before_wet:int=gameplay.count_wet_cells() if gameplay!=null and _blueprint_tool=="water" else 0
+ 	var changed:bool=data.commit_blueprint(blueprint_data,_blueprint_tool)
+-	if changed:renderer.commit_prepared_blueprint(blueprint_data)
++	if changed:
++		preview.commit(blueprint_data, renderer)
++		renderer.commit_prepared_blueprint(blueprint_data)
+ 	else:renderer.cancel_blueprint()
+ 	if changed and gameplay!=null:gameplay.after_brush_step(before_cells,before_wet,_blueprint_tool)
+ 	painting=false
+--- before/scripts/terrain_editor/edit_preview.gd
++++ after/scripts/terrain_editor/edit_preview.gd
+@@ -1,11 +1,17 @@
+ extends MeshInstance3D
+ ## Immediate brush feedback while the terrain worker rebuilds the revision: a
+ ## soft jade ghost (灵光) of the land a stroke will produce, and a pale veil over
+-## land it removes. It vanishes once the real terrain publishes and grows in.
++## land it removes. Release animates this cheap mesh until the real terrain
++## publishes, then hands over with a short fade.
+ const Contours=preload("res://scripts/terrain_editor/contour_terrain.gd")
+ const Surface=preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface
+ const SKIRT:=.85
++const OPEN_SECONDS: float = .35
++const HANDOFF_SECONDS: float = .18
+ var _key:=""
++var _commit_revision: int = -1
++var _elapsed: float = 0.0
++var _handoff_time: float = -1.0
+ ## Main-thread cost of the last rebuild of the ghost mesh.
+ var last_refresh_ms:=0.0
+ 
+@@ -15,16 +21,63 @@
+ 	material_override=material
+ 	cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+ 	visible=false
++	set_process(false)
+ 
+ static func _top(record:Dictionary)->float:
+ 	return record.water*.5 if record.water>=0 else float(record.height)
+ 
++func commit(draft, renderer) -> void:
++	# Capture the cheap draft before an already prepared build can publish.
++	refresh(draft, renderer, true)
++	if visible:
++		_start_commit(renderer.data.revision)
++
++func _start_commit(revision: int) -> void:
++	_commit_revision = revision
++	_elapsed = 0.0
++	_handoff_time = -1.0
++	material_override.set_shader_parameter("committed", 1.0)
++	material_override.set_shader_parameter("commit_phase", 0.0)
++	material_override.set_shader_parameter("commit_alpha", 1.0)
++	set_process(true)
++
++func _hide() -> void:
++	visible = false
++	_key = ""
++	_commit_revision = -1
++	_handoff_time = -1.0
++	set_process(false)
++
++func _process(delta: float) -> void:
++	if _commit_revision < 0 or delta <= 0.0 or not is_finite(delta):
++		return
++	_elapsed += delta
++	material_override.set_shader_parameter("commit_phase", minf(1.0, _elapsed / OPEN_SECONDS))
++	if _handoff_time >= 0.0:
++		_handoff_time += delta
++		material_override.set_shader_parameter("commit_alpha", 1.0 - smoothstep(0.0, HANDOFF_SECONDS, _handoff_time))
++		if _handoff_time >= HANDOFF_SECONDS:
++			_hide()
++
+ func refresh(data,renderer,blueprint:bool=false)->void:
+ 	var shown=renderer._published_data
+-	if shown==null or (not blueprint and not renderer.has_pending_updates()):
+-		visible=false
+-		_key=""
++	if shown == null:
++		_hide()
+ 		return
++	if not blueprint and _commit_revision == data.revision:
++		# Keep the captured silhouette through publication. Rebuilding the diff
++		# against the new visible data here would abruptly erase the effect.
++		if not renderer.has_pending_updates() and renderer.morph_progress >= .65 and _handoff_time < 0.0:
++			_handoff_time = 0.0
++		return
++	_commit_revision = -1
++	set_process(false)
++	if not blueprint and not renderer.has_pending_updates():
++		_hide()
++		return
++	material_override.set_shader_parameter("committed", 0.0)
++	material_override.set_shader_parameter("commit_phase", 0.0)
++	material_override.set_shader_parameter("commit_alpha", 1.0)
+ 	var key:="%d|%d|%d"%[data.get_instance_id(),data.revision,shown.get_instance_id()]
+ 	if key==_key:return
+ 	_key=key
+@@ -52,6 +105,8 @@
+ 	for top:float in removed:_ghost(surface,removed[top],top,1.0)
+ 	visible=not surface.vertices.is_empty()
+ 	mesh=surface.mesh() if visible else null
++	if visible and not blueprint:
++		_start_commit(data.revision)
+ 	last_refresh_ms=(Time.get_ticks_usec()-start)/1000.0
+ 
+ static func _ghost(surface,cells:Dictionary,top:float,kind:float)->void:
+--- before/shaders/terrain_editor/edit_preview.gdshader
++++ after/shaders/terrain_editor/edit_preview.gdshader
+@@ -4,10 +4,23 @@
+ // (pale veil); COLOR.g fades the skirt downward; COLOR.b marks the rim.
+ uniform vec3 form_color : source_color = vec3(.60,.93,.82);
+ uniform vec3 remove_color : source_color = vec3(.95,.90,.78);
++uniform float committed = 0.0;
++uniform float commit_phase = 0.0;
++uniform float commit_alpha = 1.0;
++varying vec2 world_xz;
++void vertex(){
++	world_xz=(MODEL_MATRIX*vec4(VERTEX,1.0)).xz;
++	float phase=smoothstep(0.0,1.0,commit_phase);
++	float lift=mix(-.18*(1.0-phase),.12*phase,COLOR.r);
++	VERTEX.y+=committed*lift;
++}
+ void fragment(){
+ 	float pulse=.86+.14*sin(TIME*3.6);
+ 	vec3 color=mix(form_color,remove_color,COLOR.r);
+ 	float rim=COLOR.b*COLOR.g;
+-	ALBEDO=color*(1.0+rim*.25);
+-	ALPHA=clamp((.16+.42*rim)*mix(COLOR.g,1.0,1.0-COLOR.b)*pulse,0.0,.7);
++	float flow=.5+.5*sin(dot(world_xz,vec2(1.2,.8))-TIME*3.2);
++	float draft_alpha=(.16+.42*rim)*pulse;
++	float release_alpha=.28+.17*flow+.2*rim;
++	ALBEDO=color*(1.0+rim*.25+committed*flow*.12);
++	ALPHA=clamp(mix(draft_alpha,release_alpha,committed)*mix(COLOR.g,1.0,1.0-COLOR.b)*commit_alpha,0.0,.7);
+ }

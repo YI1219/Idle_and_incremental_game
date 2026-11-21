@@ -1,0 +1,206 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"census_base_triangles_before_lod_culling": {
+		"AmbientMotes": 176,
+		"BreakthroughWave": 0,
+		"FishingSilkAndRipples": 0,
+		"JadeBobber": 80,
+		"Mesh": 11252,
+		"WaterfallMist": 98,
+		"bank": 686,
+		"bush_0": 6580,
+		"cliff": 5845,
+		"cliff_column_0": 81,
+		"cliff_column_b_0": 198,
+		"cliff_column_c_0": 396,
+		"cliff_column_d_0": 486,
+		"cliff_column_e_0": 675,
+		"cliff_column_f_0": 162,
+		"cliff_column_g_0": 585,
+		"cliff_rock_0": 408,
+		"clouds": 12,
+		"distant_mountains": 1036728,
+		"flower_0": 2070,
+		"grass": 6665,
+		"grass_blades": 1490976,
+		"grass_clump_0": 4875,
+		"lake_bed": 5147,
+		"lily_0": 1365,
+		"path_0": 1050,
+		"reeds_0": 1368,
+		"rim_green": 27227,
+		"shore": 1026,
+		"shore_boulder_0": 1190,
+		"shore_pebble_0": 2816,
+		"shore_rock_0": 594,
+		"stone_mantle": 1686,
+		"surface_rock_0": 536,
+		"tree_0": 5404,
+		"tree_1": 8200,
+		"tree_b_0": 7912,
+		"tree_b_1": 6016,
+		"underside_rock_0": 108,
+		"underside_rock_b_0": 108,
+		"underside_rock_c_0": 108,
+		"water": 256,
+		"waterfall": 2104
+	},
+	"method": "fixed BASE_A,phase1.25,water0.1s;15 warmup+50 explicit draw frames;no limiter,no image IO",
+	"native_msaa": 4,
+	"samples": [
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 24.69832,
+				"p50": 24.695,
+				"p95": 25.616
+			},
+			"name": "base",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846489
+		},
+		{
+			"draws": 257,
+			"ms": {
+				"mean": 24.4419,
+				"p50": 24.435,
+				"p95": 25.256
+			},
+			"name": "no_far_mountains",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 114899
+		},
+		{
+			"draws": 268,
+			"ms": {
+				"mean": 22.66448,
+				"p50": 22.578,
+				"p95": 23.578
+			},
+			"name": "no_clouds",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846477
+		},
+		{
+			"draws": 252,
+			"ms": {
+				"mean": 19.9291,
+				"p50": 19.798,
+				"p95": 20.977
+			},
+			"name": "no_grass",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 845873
+		},
+		{
+			"draws": 143,
+			"ms": {
+				"mean": 22.26378,
+				"p50": 22.162,
+				"p95": 23.062
+			},
+			"name": "no_decoration",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 793100
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 23.36582,
+				"p50": 23.303,
+				"p95": 24.208
+			},
+			"name": "ssao_half",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846489
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 24.17904,
+				"p50": 24.171,
+				"p95": 24.464
+			},
+			"name": "ssil_half",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846489
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 22.52054,
+				"p50": 22.5,
+				"p95": 22.787
+			},
+			"name": "shadow4096",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846489
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 21.62452,
+				"p50": 21.591,
+				"p95": 22.074
+			},
+			"name": "msaa2",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846489
+		},
+		{
+			"draws": 274,
+			"ms": {
+				"mean": 24.24078,
+				"p50": 24.271,
+				"p95": 24.509
+			},
+			"name": "base_repeat",
+			"size": [
+				2560,
+				1440
+			],
+			"triangles": 846489
+		}
+	],
+	"settings": {
+		"ssao/adaptive_target": 0.5,
+		"ssao/blur_passes": 2,
+		"ssao/fadeout_from": 50.0,
+		"ssao/fadeout_to": 300.0,
+		"ssao/half_size": false,
+		"ssao/quality": 2,
+		"ssil/adaptive_target": 0.5,
+		"ssil/blur_passes": 4,
+		"ssil/fadeout_from": 50.0,
+		"ssil/fadeout_to": 300.0,
+		"ssil/half_size": true,
+		"ssil/quality": 2
+	}
+}

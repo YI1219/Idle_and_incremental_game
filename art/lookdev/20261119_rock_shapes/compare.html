@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rock shapes: fewer narrow pillars (2026-11-19)</title>
+<style>
+  body { margin: 0; background: #1d2126; color: #dfe3e6; font: 14px/1.5 -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 14px 20px; border-bottom: 1px solid #333a42; }
+  h1 { font-size: 17px; margin: 0 0 6px; }
+  p { margin: 4px 0; color: #aab2ba; max-width: 1100px; }
+  .bar { padding: 10px 20px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-bottom: 1px solid #333a42; }
+  .bar span { color: #8a939c; margin-right: 4px; }
+  button { background: #2b323a; color: #dfe3e6; border: 1px solid #3d4650; border-radius: 4px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  button.on { background: #4f7f78; border-color: #6aa39a; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 20px; }
+  .pair.single { grid-template-columns: 1fr; }
+  figure { margin: 0; }
+  figcaption { color: #8a939c; margin-bottom: 4px; }
+  img { width: 100%; height: auto; display: block; background: #111; }
+  code { color: #c9d4a8; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Rock shapes: narrow pillars merged into their neighbouring slabs</h1>
+  <p>Actual Godot output only, native 2560×1440 Forward+, same capture script, cameras, layouts and light on both sides.
+  <b>Before</b> is the Plan A set captured 2026-11-16 (<code>../20261114_cliff_optimization/</code>); <b>after</b> is this package.
+  Not art-accepted. Target-laptop performance is unmeasured.</p>
+  <p>Press <b>space</b> or click an image to flip between before and after in place.</p>
+</header>
+<div class="bar" id="sets"><span>Layout</span></div>
+<div class="bar" id="cams"><span>Camera</span></div>
+<div class="bar"><span>View</span><button id="side" class="on">side by side</button><button id="flip">flip in place</button></div>
+<div class="pair" id="pair">
+  <figure id="fb"><figcaption id="cb"></figcaption><img id="before" alt="before"></figure>
+  <figure id="fa"><figcaption id="ca"></figcaption><img id="after" alt="after"></figure>
+</div>
+<script>
+const SETS = [["final", "seed 7301 preset 0, day"], ["final_held2104", "seed 2104 preset 0"], ["final_held4242", "seed 4242 preset 1"], ["final_held913", "seed 913 preset 2"], ["final_night", "seed 7301, night"]];
+const CAMS = ["game", "whole", "reverse", "close", "cliff_close", "foot_front", "foot_reverse", "side_106", "side_286", "overview", "terrace_close", "outer_hull"];
+let set = 0, cam = 4, flip = false, showAfter = true;
+function button(parent, label, onClick) { const b = document.createElement("button"); b.textContent = label; b.onclick = onClick; parent.appendChild(b); return b; }
+const setButtons = SETS.map((s, i) => button(document.getElementById("sets"), s[1], () => { set = i; draw(); }));
+const camButtons = CAMS.map((c, i) => button(document.getElementById("cams"), c, () => { cam = i; draw(); }));
+function draw() {
+  setButtons.forEach((b, i) => b.classList.toggle("on", i === set));
+  camButtons.forEach((b, i) => b.classList.toggle("on", i === cam));
+  const before = "../20261114_cliff_optimization/" + SETS[set][0] + "/" + CAMS[cam] + ".png";
+  const after = SETS[set][0] + "/" + CAMS[cam] + ".png";
+  document.getElementById("before").src = before;
+  document.getElementById("after").src = after;
+  document.getElementById("cb").textContent = "BEFORE · " + before;
+  document.getElementById("ca").textContent = "AFTER · " + after;
+  document.getElementById("pair").classList.toggle("single", flip);
+  document.getElementById("fb").style.display = flip && showAfter ? "none" : "";
+  document.getElementById("fa").style.display = flip && !showAfter ? "none" : "";
+  document.getElementById("side").classList.toggle("on", !flip);
+  document.getElementById("flip").classList.toggle("on", flip);
+}
+document.getElementById("side").onclick = () => { flip = false; draw(); };
+document.getElementById("flip").onclick = () => { flip = true; draw(); };
+function toggle() { if (flip) { showAfter = !showAfter; draw(); } }
+document.getElementById("before").onclick = toggle;
+document.getElementById("after").onclick = toggle;
+document.addEventListener("keydown", e => { if (e.code === "Space") { e.preventDefault(); if (!flip) { flip = true; } else { showAfter = !showAfter; } draw(); } });
+draw();
+</script>
+</body>
+</html>

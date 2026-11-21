@@ -9,7 +9,7 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
  # Source leaves form the edge silhouette; there is no separate molded sod.
  var result:=Surface.new();var blades:=PackedVector3Array()
  for part:Dictionary in assets.get("grass",[]):
-  for p:Vector3 in part.mesh.get_faces():blades.append(part.pose*p)
+  for p:Vector3 in preload("res://scripts/terrain_editor/chunk_geometry.gd").faces_of(part.mesh):blades.append(part.pose*p)
  if blades.is_empty():return result
  var box:=AABB(blades[0],Vector3.ZERO)
  for p:Vector3 in blades:box=box.expand(p)
@@ -26,10 +26,12 @@ static func lip(regions:Dictionary,crowns:Array,assets:Dictionary):
      var choice:=_hash(center*2.1+Vector2(h,7))
      var patch:=_hash((center*.60).floor()+Vector2(h,29))
      if patch<.32 or choice<.18:continue
+     if preload("res://scripts/terrain_editor/cliff_rim_balding.gd").edge_baldness(center)>.06:continue
      # Only final crown-backed contours get cover; fall openings stay clear.
      var on_crown:=false
      for crown:Dictionary in crowns:
       if absf(crown.height-h)>.001:continue
+      if center.distance_squared_to(crown.column.edge)>10.5:continue
       var poly:PackedVector2Array=crown.polygon
       for j in poly.size()-1:
        if center.distance_to(Geometry2D.get_closest_point_to_segment(center,poly[j],poly[j+1]))<.003:on_crown=true;break
@@ -41,7 +43,7 @@ static func sculpt_lip(field,assets:Dictionary):
  # Actual rooted blades, with no cuff disks or a painted green wall band.
  var result:=Surface.new();var blades:=PackedVector3Array()
  for part:Dictionary in assets.get("grass",[]):
-  for p:Vector3 in part.mesh.get_faces():blades.append(part.pose*p)
+  for p:Vector3 in preload("res://scripts/terrain_editor/chunk_geometry.gd").faces_of(part.mesh):blades.append(part.pose*p)
  if blades.is_empty():return result
  var box:=AABB(blades[0],Vector3.ZERO)
  for p:Vector3 in blades:box=box.expand(p)
@@ -102,7 +104,7 @@ static func _blades(result,center:Vector2,tangent:Vector2,out:Vector2,h:float,ch
 
 static func lawn(mesh:ArrayMesh,boundaries:Dictionary,wet:Dictionary={},relief:float=.055)->ArrayMesh:
  if mesh.get_surface_count()==0 or is_zero_approx(relief):return mesh
- var arrays:=mesh.surface_get_arrays(0);var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
+ var arrays:=preload("res://scripts/terrain_editor/chunk_geometry.gd").arrays_of(mesh,0);var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
  var colors:PackedColorArray=arrays[Mesh.ARRAY_COLOR];var uv:PackedVector2Array=arrays[Mesh.ARRAY_TEX_UV]
  var result:=Surface.new();var cache:Dictionary={}
  for i in range(0,vertices.size(),3):

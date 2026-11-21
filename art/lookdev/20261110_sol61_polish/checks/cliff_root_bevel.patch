@@ -1,0 +1,45 @@
+--- a/scripts/terrain_editor/procedural_shard.gd
++++ b/scripts/terrain_editor/procedural_shard.gd
+@@ -315,8 +315,20 @@
+ 			# Adding distance from the fold plane preserves its shared edge exactly.
+ 			foot_z += ROOT_FOLD[arch] * (foot_y - FOLD[arch] - TILT[arch] * foot_x)
+ 		foot.append(Vector3(foot_x, foot_y, foot_z))
+-	var rings: Array = [collar, shoulder, fold, foot]
+-	for band in 3:
++	# Keep the complete old foot as the coverage ring over the terrain hull.
++	# The short unequal bevel is below it, so no formerly hidden core is exposed.
++	var heel: Array[Vector3] = []
++	var root_center: Vector3 = Vector3.ZERO
++	for p: Vector3 in foot:root_center += p
++	root_center /= float(foot.size())
++	var heel_depth: float = [0.080, 0.115, 0.065, 0.095, 0.120, 0.075, 0.105, 0.090][arch]
++	var heel_tuck: float = [0.82, 0.86, 0.78, 0.84, 0.88, 0.80, 0.85, 0.81][arch]
++	for p: Vector3 in foot:
++		var q: Vector3 = root_center + (p-root_center) * Vector3(heel_tuck, 1.0, heel_tuck)
++		q.y -= heel_depth + 0.035 * (q.x-root_center.x)
++		heel.append(q)
++	var rings: Array = [collar, shoulder, fold, foot, heel]
++	for band in range(rings.size()-1):
+ 		var upper: Array = rings[band]
+ 		var lower: Array = rings[band + 1]
+ 		for i in collar.size():
+@@ -333,13 +345,13 @@
+ 			_emit_quad(full, a, b, c, d, outward, cols, uvs)
+ 			_emit_quad(walls, a, b, c, d, outward, cols, uvs)
+ 	var bottom_center := Vector3.ZERO
+-	for p: Vector3 in foot:
++	for p: Vector3 in heel:
+ 		bottom_center += p
+-	bottom_center /= float(foot.size())
+-	for i in foot.size():
+-		var ni: int = (i + 1) % foot.size()
+-		_emit_tri(full, bottom_center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
+-		_emit_tri(walls, bottom_center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
++	bottom_center /= float(heel.size())
++	for i in heel.size():
++		var ni: int = (i + 1) % heel.size()
++		_emit_tri(full, bottom_center, heel[i], heel[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
++		_emit_tri(walls, bottom_center, heel[i], heel[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
+ 
+ static func _build_cliff_crag(seed_value: int) -> Dictionary:
+ 	var full := Surface.new()

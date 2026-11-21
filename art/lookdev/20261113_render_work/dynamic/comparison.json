@@ -1,0 +1,1531 @@
+{
+	"control": {
+		"changed_channels": 0,
+		"max": 0,
+		"mean": 0.0
+	},
+	"dt": 0.0166666666666667,
+	"frames": [
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840069444444444,
+			"sky_mode": 1,
+			"step": 0
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840138888888889,
+			"sky_mode": 1,
+			"step": 1
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840208333333333,
+			"sky_mode": 1,
+			"step": 2
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840277777777778,
+			"sky_mode": 1,
+			"step": 3
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840347222222222,
+			"sky_mode": 2,
+			"step": 4
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840416666666667,
+			"sky_mode": 2,
+			"step": 5
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840486111111111,
+			"sky_mode": 2,
+			"step": 6
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840555555555556,
+			"sky_mode": 2,
+			"step": 7
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.840625,
+			"sky_mode": 2,
+			"step": 8
+		},
+		{
+			"changed_channels": 509,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0117824074074074,
+			"progress": 0.840694444444445,
+			"sky_mode": 2,
+			"step": 9
+		},
+		{
+			"changed_channels": 511,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0118287037037037,
+			"progress": 0.840763888888889,
+			"sky_mode": 2,
+			"step": 10
+		},
+		{
+			"changed_channels": 511,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0118287037037037,
+			"progress": 0.840833333333333,
+			"sky_mode": 2,
+			"step": 11
+		},
+		{
+			"changed_channels": 511,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0118287037037037,
+			"progress": 0.840902777777778,
+			"sky_mode": 2,
+			"step": 12
+		},
+		{
+			"changed_channels": 511,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0118287037037037,
+			"progress": 0.840972222222222,
+			"sky_mode": 2,
+			"step": 13
+		},
+		{
+			"changed_channels": 949,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0219675925925926,
+			"progress": 0.841041666666667,
+			"sky_mode": 2,
+			"step": 14
+		},
+		{
+			"changed_channels": 950,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0219907407407407,
+			"progress": 0.841111111111111,
+			"sky_mode": 2,
+			"step": 15
+		},
+		{
+			"changed_channels": 950,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0219907407407407,
+			"progress": 0.841180555555556,
+			"sky_mode": 2,
+			"step": 16
+		},
+		{
+			"changed_channels": 948,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0219444444444444,
+			"progress": 0.84125,
+			"sky_mode": 2,
+			"step": 17
+		},
+		{
+			"changed_channels": 947,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0219212962962963,
+			"progress": 0.841319444444445,
+			"sky_mode": 2,
+			"step": 18
+		},
+		{
+			"changed_channels": 899,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0208101851851852,
+			"progress": 0.841388888888889,
+			"sky_mode": 2,
+			"step": 19
+		},
+		{
+			"changed_channels": 902,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0208796296296296,
+			"progress": 0.841458333333334,
+			"sky_mode": 2,
+			"step": 20
+		},
+		{
+			"changed_channels": 902,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0208796296296296,
+			"progress": 0.841527777777778,
+			"sky_mode": 2,
+			"step": 21
+		},
+		{
+			"changed_channels": 902,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0208796296296296,
+			"progress": 0.841597222222222,
+			"sky_mode": 2,
+			"step": 22
+		},
+		{
+			"changed_channels": 902,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0208796296296296,
+			"progress": 0.841666666666667,
+			"sky_mode": 2,
+			"step": 23
+		},
+		{
+			"changed_channels": 1365,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0315972222222222,
+			"progress": 0.841736111111111,
+			"sky_mode": 2,
+			"step": 24
+		},
+		{
+			"changed_channels": 1363,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0315509259259259,
+			"progress": 0.841805555555556,
+			"sky_mode": 2,
+			"step": 25
+		},
+		{
+			"changed_channels": 1363,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0315509259259259,
+			"progress": 0.841875,
+			"sky_mode": 2,
+			"step": 26
+		},
+		{
+			"changed_channels": 529,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0122453703703704,
+			"progress": 0.841944444444445,
+			"sky_mode": 2,
+			"step": 27
+		},
+		{
+			"changed_channels": 527,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0121990740740741,
+			"progress": 0.842013888888889,
+			"sky_mode": 2,
+			"step": 28
+		},
+		{
+			"changed_channels": 929,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0215046296296296,
+			"progress": 0.842083333333334,
+			"sky_mode": 2,
+			"step": 29
+		},
+		{
+			"changed_channels": 932,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0215740740740741,
+			"progress": 0.842152777777778,
+			"sky_mode": 2,
+			"step": 30
+		},
+		{
+			"changed_channels": 932,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0215740740740741,
+			"progress": 0.842222222222223,
+			"sky_mode": 2,
+			"step": 31
+		},
+		{
+			"changed_channels": 929,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0215046296296296,
+			"progress": 0.842291666666667,
+			"sky_mode": 2,
+			"step": 32
+		},
+		{
+			"changed_channels": 927,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0214583333333333,
+			"progress": 0.842361111111111,
+			"sky_mode": 2,
+			"step": 33
+		},
+		{
+			"changed_channels": 1388,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0321296296296296,
+			"progress": 0.842430555555556,
+			"sky_mode": 2,
+			"step": 34
+		},
+		{
+			"changed_channels": 943,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0218287037037037,
+			"progress": 0.8425,
+			"sky_mode": 2,
+			"step": 35
+		},
+		{
+			"changed_channels": 943,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0218287037037037,
+			"progress": 0.842569444444445,
+			"sky_mode": 2,
+			"step": 36
+		},
+		{
+			"changed_channels": 943,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0218287037037037,
+			"progress": 0.842638888888889,
+			"sky_mode": 2,
+			"step": 37
+		},
+		{
+			"changed_channels": 943,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0218287037037037,
+			"progress": 0.842708333333334,
+			"sky_mode": 2,
+			"step": 38
+		},
+		{
+			"changed_channels": 1410,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0326388888888889,
+			"progress": 0.842777777777778,
+			"sky_mode": 2,
+			"step": 39
+		},
+		{
+			"changed_channels": 1406,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0325462962962963,
+			"progress": 0.842847222222223,
+			"sky_mode": 2,
+			"step": 40
+		},
+		{
+			"changed_channels": 1405,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0325231481481481,
+			"progress": 0.842916666666667,
+			"sky_mode": 2,
+			"step": 41
+		},
+		{
+			"changed_channels": 1405,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0325231481481481,
+			"progress": 0.842986111111112,
+			"sky_mode": 2,
+			"step": 42
+		},
+		{
+			"changed_channels": 494,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0114351851851852,
+			"progress": 0.843055555555556,
+			"sky_mode": 2,
+			"step": 43
+		},
+		{
+			"changed_channels": 984,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0227777777777778,
+			"progress": 0.843125,
+			"sky_mode": 2,
+			"step": 44
+		},
+		{
+			"changed_channels": 985,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0228009259259259,
+			"progress": 0.843194444444445,
+			"sky_mode": 2,
+			"step": 45
+		},
+		{
+			"changed_channels": 985,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0228009259259259,
+			"progress": 0.843263888888889,
+			"sky_mode": 2,
+			"step": 46
+		},
+		{
+			"changed_channels": 985,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0228009259259259,
+			"progress": 0.843333333333334,
+			"sky_mode": 2,
+			"step": 47
+		},
+		{
+			"changed_channels": 982,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0227314814814815,
+			"progress": 0.843402777777778,
+			"sky_mode": 2,
+			"step": 48
+		},
+		{
+			"changed_channels": 1406,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0325462962962963,
+			"progress": 0.843472222222223,
+			"sky_mode": 2,
+			"step": 49
+		},
+		{
+			"changed_channels": 1416,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0327777777777778,
+			"progress": 0.843541666666667,
+			"sky_mode": 2,
+			"step": 50
+		},
+		{
+			"changed_channels": 554,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0128240740740741,
+			"progress": 0.843611111111112,
+			"sky_mode": 2,
+			"step": 51
+		},
+		{
+			"changed_channels": 553,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0128009259259259,
+			"progress": 0.843680555555556,
+			"sky_mode": 2,
+			"step": 52
+		},
+		{
+			"changed_channels": 553,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0128009259259259,
+			"progress": 0.843750000000001,
+			"sky_mode": 2,
+			"step": 53
+		},
+		{
+			"changed_channels": 962,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0222685185185185,
+			"progress": 0.843819444444445,
+			"sky_mode": 2,
+			"step": 54
+		},
+		{
+			"changed_channels": 961,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0222453703703704,
+			"progress": 0.843888888888889,
+			"sky_mode": 2,
+			"step": 55
+		},
+		{
+			"changed_channels": 957,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0221527777777778,
+			"progress": 0.843958333333334,
+			"sky_mode": 2,
+			"step": 56
+		},
+		{
+			"changed_channels": 956,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0221296296296296,
+			"progress": 0.844027777777778,
+			"sky_mode": 2,
+			"step": 57
+		},
+		{
+			"changed_channels": 956,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0221296296296296,
+			"progress": 0.844097222222223,
+			"sky_mode": 2,
+			"step": 58
+		},
+		{
+			"changed_channels": 992,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022962962962963,
+			"progress": 0.844166666666667,
+			"sky_mode": 2,
+			"step": 59
+		},
+		{
+			"changed_channels": 992,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022962962962963,
+			"progress": 0.844236111111112,
+			"sky_mode": 2,
+			"step": 60
+		},
+		{
+			"changed_channels": 992,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022962962962963,
+			"progress": 0.844305555555556,
+			"sky_mode": 2,
+			"step": 61
+		},
+		{
+			"changed_channels": 992,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022962962962963,
+			"progress": 0.844375000000001,
+			"sky_mode": 2,
+			"step": 62
+		},
+		{
+			"changed_channels": 992,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022962962962963,
+			"progress": 0.844444444444445,
+			"sky_mode": 2,
+			"step": 63
+		},
+		{
+			"changed_channels": 1402,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0324537037037037,
+			"progress": 0.84451388888889,
+			"sky_mode": 2,
+			"step": 64
+		},
+		{
+			"changed_channels": 1402,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0324537037037037,
+			"progress": 0.844583333333334,
+			"sky_mode": 2,
+			"step": 65
+		},
+		{
+			"changed_channels": 1401,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0324305555555556,
+			"progress": 0.844652777777778,
+			"sky_mode": 2,
+			"step": 66
+		},
+		{
+			"changed_channels": 519,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0120138888888889,
+			"progress": 0.844722222222223,
+			"sky_mode": 2,
+			"step": 67
+		},
+		{
+			"changed_channels": 515,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0119212962962963,
+			"progress": 0.844791666666667,
+			"sky_mode": 2,
+			"step": 68
+		},
+		{
+			"changed_channels": 939,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0217361111111111,
+			"progress": 0.844861111111112,
+			"sky_mode": 2,
+			"step": 69
+		},
+		{
+			"changed_channels": 942,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0218055555555556,
+			"progress": 0.844930555555556,
+			"sky_mode": 2,
+			"step": 70
+		},
+		{
+			"changed_channels": 942,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0218055555555556,
+			"progress": 0.845000000000001,
+			"sky_mode": 2,
+			"step": 71
+		},
+		{
+			"changed_channels": 938,
+			"jump": false,
+			"max": 1,
+			"mean": 0.021712962962963,
+			"progress": 0.845069444444445,
+			"sky_mode": 2,
+			"step": 72
+		},
+		{
+			"changed_channels": 937,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0216898148148148,
+			"progress": 0.84513888888889,
+			"sky_mode": 2,
+			"step": 73
+		},
+		{
+			"changed_channels": 1418,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0328240740740741,
+			"progress": 0.845208333333334,
+			"sky_mode": 2,
+			"step": 74
+		},
+		{
+			"changed_channels": 967,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0223842592592593,
+			"progress": 0.845277777777779,
+			"sky_mode": 2,
+			"step": 75
+		},
+		{
+			"changed_channels": 966,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0223611111111111,
+			"progress": 0.845347222222223,
+			"sky_mode": 2,
+			"step": 76
+		},
+		{
+			"changed_channels": 966,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0223611111111111,
+			"progress": 0.845416666666667,
+			"sky_mode": 2,
+			"step": 77
+		},
+		{
+			"changed_channels": 966,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0223611111111111,
+			"progress": 0.845486111111112,
+			"sky_mode": 2,
+			"step": 78
+		},
+		{
+			"changed_channels": 1411,
+			"jump": false,
+			"max": 1,
+			"mean": 0.032662037037037,
+			"progress": 0.845555555555556,
+			"sky_mode": 2,
+			"step": 79
+		},
+		{
+			"changed_channels": 1408,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0325925925925926,
+			"progress": 0.845625000000001,
+			"sky_mode": 2,
+			"step": 80
+		},
+		{
+			"changed_channels": 1409,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0326157407407407,
+			"progress": 0.845694444444445,
+			"sky_mode": 2,
+			"step": 81
+		},
+		{
+			"changed_channels": 1407,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0325694444444444,
+			"progress": 0.84576388888889,
+			"sky_mode": 2,
+			"step": 82
+		},
+		{
+			"changed_channels": 547,
+			"jump": false,
+			"max": 1,
+			"mean": 0.012662037037037,
+			"progress": 0.845833333333334,
+			"sky_mode": 2,
+			"step": 83
+		},
+		{
+			"changed_channels": 989,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0228935185185185,
+			"progress": 0.845902777777779,
+			"sky_mode": 2,
+			"step": 84
+		},
+		{
+			"changed_channels": 988,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0228703703703704,
+			"progress": 0.845972222222223,
+			"sky_mode": 2,
+			"step": 85
+		},
+		{
+			"changed_channels": 988,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0228703703703704,
+			"progress": 0.846041666666668,
+			"sky_mode": 2,
+			"step": 86
+		},
+		{
+			"changed_channels": 988,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0228703703703704,
+			"progress": 0.846111111111112,
+			"sky_mode": 2,
+			"step": 87
+		},
+		{
+			"changed_channels": 980,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0226851851851852,
+			"progress": 0.846180555555556,
+			"sky_mode": 2,
+			"step": 88
+		},
+		{
+			"changed_channels": 1399,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0323842592592593,
+			"progress": 0.846250000000001,
+			"sky_mode": 2,
+			"step": 89
+		},
+		{
+			"changed_channels": 1398,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0323611111111111,
+			"progress": 0.846319444444445,
+			"sky_mode": 2,
+			"step": 90
+		},
+		{
+			"changed_channels": 550,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0127314814814815,
+			"progress": 0.84638888888889,
+			"sky_mode": 2,
+			"step": 91
+		},
+		{
+			"changed_channels": 550,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0127314814814815,
+			"progress": 0.846458333333334,
+			"sky_mode": 2,
+			"step": 92
+		},
+		{
+			"changed_channels": 550,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0127314814814815,
+			"progress": 0.846527777777779,
+			"sky_mode": 2,
+			"step": 93
+		},
+		{
+			"changed_channels": 999,
+			"jump": false,
+			"max": 1,
+			"mean": 0.023125,
+			"progress": 0.846597222222223,
+			"sky_mode": 2,
+			"step": 94
+		},
+		{
+			"changed_channels": 1000,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0231481481481481,
+			"progress": 0.846666666666668,
+			"sky_mode": 2,
+			"step": 95
+		},
+		{
+			"changed_channels": 993,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0229861111111111,
+			"progress": 0.846736111111112,
+			"sky_mode": 2,
+			"step": 96
+		},
+		{
+			"changed_channels": 990,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0229166666666667,
+			"progress": 0.846805555555557,
+			"sky_mode": 2,
+			"step": 97
+		},
+		{
+			"changed_channels": 990,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0229166666666667,
+			"progress": 0.846875000000001,
+			"sky_mode": 2,
+			"step": 98
+		},
+		{
+			"changed_channels": 950,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0219907407407407,
+			"progress": 0.846944444444445,
+			"sky_mode": 2,
+			"step": 99
+		},
+		{
+			"changed_channels": 952,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022037037037037,
+			"progress": 0.84701388888889,
+			"sky_mode": 2,
+			"step": 100
+		},
+		{
+			"changed_channels": 952,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022037037037037,
+			"progress": 0.847083333333334,
+			"sky_mode": 2,
+			"step": 101
+		},
+		{
+			"changed_channels": 952,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022037037037037,
+			"progress": 0.847152777777779,
+			"sky_mode": 2,
+			"step": 102
+		},
+		{
+			"changed_channels": 952,
+			"jump": false,
+			"max": 1,
+			"mean": 0.022037037037037,
+			"progress": 0.847222222222223,
+			"sky_mode": 2,
+			"step": 103
+		},
+		{
+			"changed_channels": 1403,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0324768518518519,
+			"progress": 0.847291666666668,
+			"sky_mode": 2,
+			"step": 104
+		},
+		{
+			"changed_channels": 1399,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0323842592592593,
+			"progress": 0.847361111111112,
+			"sky_mode": 2,
+			"step": 105
+		},
+		{
+			"changed_channels": 1397,
+			"jump": false,
+			"max": 1,
+			"mean": 0.032337962962963,
+			"progress": 0.847430555555557,
+			"sky_mode": 2,
+			"step": 106
+		},
+		{
+			"changed_channels": 545,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0126157407407407,
+			"progress": 0.847500000000001,
+			"sky_mode": 2,
+			"step": 107
+		},
+		{
+			"changed_channels": 543,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0125694444444444,
+			"progress": 0.847569444444446,
+			"sky_mode": 2,
+			"step": 108
+		},
+		{
+			"changed_channels": 978,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0226388888888889,
+			"progress": 0.84763888888889,
+			"sky_mode": 2,
+			"step": 109
+		},
+		{
+			"changed_channels": 974,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0225462962962963,
+			"progress": 0.847708333333335,
+			"sky_mode": 2,
+			"step": 110
+		},
+		{
+			"changed_channels": 974,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0225462962962963,
+			"progress": 0.847777777777779,
+			"sky_mode": 2,
+			"step": 111
+		},
+		{
+			"changed_channels": 972,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0225,
+			"progress": 0.847847222222223,
+			"sky_mode": 2,
+			"step": 112
+		},
+		{
+			"changed_channels": 971,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0224768518518519,
+			"progress": 0.847916666666668,
+			"sky_mode": 2,
+			"step": 113
+		},
+		{
+			"changed_channels": 1466,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0339351851851852,
+			"progress": 0.847986111111112,
+			"sky_mode": 2,
+			"step": 114
+		},
+		{
+			"changed_channels": 977,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0226157407407407,
+			"progress": 0.848055555555557,
+			"sky_mode": 2,
+			"step": 115
+		},
+		{
+			"changed_channels": 977,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0226157407407407,
+			"progress": 0.848125000000001,
+			"sky_mode": 2,
+			"step": 116
+		},
+		{
+			"changed_channels": 977,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0226157407407407,
+			"progress": 0.848194444444446,
+			"sky_mode": 2,
+			"step": 117
+		},
+		{
+			"changed_channels": 977,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0226157407407407,
+			"progress": 0.84826388888889,
+			"sky_mode": 2,
+			"step": 118
+		},
+		{
+			"changed_channels": 1420,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0328703703703704,
+			"progress": 0.848333333333335,
+			"sky_mode": 2,
+			"step": 119
+		},
+		{
+			"changed_channels": 2,
+			"jump": true,
+			"max": 1,
+			"mean": 0.0000462962962962963,
+			"progress": 0.290069444444444,
+			"sky_mode": 1,
+			"step": 120
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290138888888889,
+			"sky_mode": 1,
+			"step": 121
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290208333333333,
+			"sky_mode": 1,
+			"step": 122
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290277777777778,
+			"sky_mode": 1,
+			"step": 123
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290347222222222,
+			"sky_mode": 2,
+			"step": 124
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290416666666667,
+			"sky_mode": 2,
+			"step": 125
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290486111111111,
+			"sky_mode": 2,
+			"step": 126
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290555555555556,
+			"sky_mode": 2,
+			"step": 127
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290625,
+			"sky_mode": 2,
+			"step": 128
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290694444444445,
+			"sky_mode": 2,
+			"step": 129
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290763888888889,
+			"sky_mode": 2,
+			"step": 130
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290833333333333,
+			"sky_mode": 2,
+			"step": 131
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290902777777778,
+			"sky_mode": 2,
+			"step": 132
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.290972222222222,
+			"sky_mode": 2,
+			"step": 133
+		},
+		{
+			"changed_channels": 2,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0000462962962962963,
+			"progress": 0.291041666666667,
+			"sky_mode": 2,
+			"step": 134
+		},
+		{
+			"changed_channels": 2,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0000462962962962963,
+			"progress": 0.291111111111111,
+			"sky_mode": 2,
+			"step": 135
+		},
+		{
+			"changed_channels": 0,
+			"jump": true,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.0000694444444444444,
+			"sky_mode": 1,
+			"step": 136
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000138888888888889,
+			"sky_mode": 1,
+			"step": 137
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000208333333333333,
+			"sky_mode": 1,
+			"step": 138
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000277777777777778,
+			"sky_mode": 2,
+			"step": 139
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000347222222222222,
+			"sky_mode": 2,
+			"step": 140
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000416666666666667,
+			"sky_mode": 2,
+			"step": 141
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000486111111111111,
+			"sky_mode": 2,
+			"step": 142
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000555555555555556,
+			"sky_mode": 2,
+			"step": 143
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000625,
+			"sky_mode": 2,
+			"step": 144
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000694444444444444,
+			"sky_mode": 2,
+			"step": 145
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000763888888888889,
+			"sky_mode": 2,
+			"step": 146
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000833333333333333,
+			"sky_mode": 2,
+			"step": 147
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.000902777777777778,
+			"sky_mode": 2,
+			"step": 148
+		},
+		{
+			"changed_channels": 4,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0000925925925925926,
+			"progress": 0.000972222222222222,
+			"sky_mode": 2,
+			"step": 149
+		},
+		{
+			"changed_channels": 4,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0000925925925925926,
+			"progress": 0.00104166666666667,
+			"sky_mode": 2,
+			"step": 150
+		},
+		{
+			"changed_channels": 4,
+			"jump": false,
+			"max": 1,
+			"mean": 0.0000925925925925926,
+			"progress": 0.00111111111111111,
+			"sky_mode": 2,
+			"step": 151
+		},
+		{
+			"changed_channels": 0,
+			"jump": true,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.760069444444444,
+			"sky_mode": 1,
+			"step": 152
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.760138888888889,
+			"sky_mode": 1,
+			"step": 153
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.760208333333333,
+			"sky_mode": 2,
+			"step": 154
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.760277777777778,
+			"sky_mode": 2,
+			"step": 155
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.760347222222222,
+			"sky_mode": 2,
+			"step": 156
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.760416666666667,
+			"sky_mode": 2,
+			"step": 157
+		},
+		{
+			"changed_channels": 0,
+			"jump": false,
+			"max": 0,
+			"mean": 0.0,
+			"progress": 0.760486111111111,
+			"sky_mode": 2,
+			"step": 158
+		},
+		{
+			"changed_channels": 12,
+			"jump": false,
+			"max": 1,
+			"mean": 0.000277777777777778,
+			"progress": 0.760555555555556,
+			"sky_mode": 2,
+			"step": 159
+		},
+		{
+			"changed_channels": 12,
+			"jump": false,
+			"max": 1,
+			"mean": 0.000277777777777778,
+			"progress": 0.760625,
+			"sky_mode": 2,
+			"step": 160
+		},
+		{
+			"changed_channels": 12,
+			"jump": false,
+			"max": 1,
+			"mean": 0.000277777777777778,
+			"progress": 0.760694444444445,
+			"sky_mode": 2,
+			"step": 161
+		},
+		{
+			"changed_channels": 12,
+			"jump": false,
+			"max": 1,
+			"mean": 0.000277777777777778,
+			"progress": 0.760763888888889,
+			"sky_mode": 2,
+			"step": 162
+		},
+		{
+			"changed_channels": 12,
+			"jump": false,
+			"max": 1,
+			"mean": 0.000277777777777778,
+			"progress": 0.760833333333333,
+			"sky_mode": 2,
+			"step": 163
+		},
+		{
+			"changed_channels": 11,
+			"jump": false,
+			"max": 1,
+			"mean": 0.00025462962962963,
+			"progress": 0.760902777777778,
+			"sky_mode": 2,
+			"step": 164
+		},
+		{
+			"changed_channels": 11,
+			"jump": false,
+			"max": 1,
+			"mean": 0.00025462962962963,
+			"progress": 0.760972222222222,
+			"sky_mode": 2,
+			"step": 165
+		},
+		{
+			"changed_channels": 11,
+			"jump": false,
+			"max": 1,
+			"mean": 0.00025462962962963,
+			"progress": 0.761041666666667,
+			"sky_mode": 2,
+			"step": 166
+		},
+		{
+			"changed_channels": 11,
+			"jump": false,
+			"max": 1,
+			"mean": 0.00025462962962963,
+			"progress": 0.761111111111111,
+			"sky_mode": 2,
+			"step": 167
+		}
+	],
+	"metric_resolution": [
+		160,
+		90
+	],
+	"notes": "two independent worlds,same deterministic frozen phase,normal draw;120 slow daylight frames then three manual preset jumps;QUALITY baseline vs production scheduling",
+	"resolution": [
+		640,
+		360
+	]
+}

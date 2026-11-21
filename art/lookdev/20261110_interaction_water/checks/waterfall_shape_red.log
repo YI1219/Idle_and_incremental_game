@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: connected fall preserves mouth width to receiving water
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/waterfall_flow_shape_test.gd:20)
+       [1] _initialize (res://tests/waterfall_flow_shape_test.gd:42)
+ERROR: spill lip keeps a shallow gravity trajectory
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/waterfall_flow_shape_test.gd:20)
+       [1] _initialize (res://tests/waterfall_flow_shape_test.gd:43)
+ERROR: strong transfer intensity reaches every waterfall vertex
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/waterfall_flow_shape_test.gd:20)
+       [1] _initialize (res://tests/waterfall_flow_shape_test.gd:53)
+ERROR: weak transfer intensity reaches every waterfall vertex
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/waterfall_flow_shape_test.gd:20)
+       [1] _initialize (res://tests/waterfall_flow_shape_test.gd:54)
+ERROR: one water sheet avoids opaque duplicate core
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/waterfall_flow_shape_test.gd:20)
+       [1] _initialize (res://tests/waterfall_flow_shape_test.gd:58)
+WATERFALL FLOW SHAPE: 6 checks, 5 failures

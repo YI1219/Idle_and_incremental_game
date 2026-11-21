@@ -1,0 +1,17 @@
+{
+  "applicable_checks_passed": 27,
+  "obsolete_test": {
+    "name": "gameplay_m1_m2_test.gd",
+    "status": "failed_then_timeout",
+    "reason": "Default-avatar assertion and nil actor.position after explicit character removal"
+  },
+  "production_sources_changed": [
+    "res://scripts/terrain_editor/block_mantle.gd",
+    "res://scripts/terrain_editor/contour_terrain.gd"
+  ],
+  "native_pair_count": 9,
+  "all_pair_camera_light_metadata_matched": true,
+  "final_frames_native_2k": 23,
+  "browser_preview": "Static links and image dimensions checked offline; browser interaction not tested",
+  "art_accepted": false
+}

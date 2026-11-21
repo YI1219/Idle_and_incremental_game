@@ -1,0 +1,5 @@
+{
+  "scripts/terrain_editor/terrain_environment.gd": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+  "shaders/terrain_editor/stone_surface.gdshaderinc": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90",
+  "scripts/terrain_editor/grass_field.gd": "ffe8d4cf6b7db2e7a3db76fd870831f5106bcf090b818f076b0e7b8a1a823bc3"
+}

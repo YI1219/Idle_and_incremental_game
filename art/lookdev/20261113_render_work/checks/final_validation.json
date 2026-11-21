@@ -1,0 +1,25 @@
+{
+  "production_files": [
+    "scripts/gameplay/systems/time_solar_system.gd"
+  ],
+  "tests_passed": 33,
+  "native_static_images": 30,
+  "static_pairs_pixel_equal": 15,
+  "dynamic_keyframes_compared": 18,
+  "dynamic_keyframe_max_8bit_difference": 1,
+  "runtime_abba_runs": 12,
+  "protected_source_changes": [],
+  "engine_error_logs": [],
+  "godot_processes": [
+    "29442 /Applications/Godot.app/Contents/MacOS/Godot --path /Users/yi/Projects/games/the-scroll-within -e res://scenes/terrain_editor.tscn"
+  ],
+  "source_sha256": {
+    "scripts/gameplay/systems/time_solar_system.gd": "bba822c9e530c2c8ddf490e608265434cb72ab49e88585dbb9bd3f98b9cb55c8",
+    "tests/sky_update_test.gd": "36d76428854e215f203a00607a0dd22c8c294791798369e057e86e657324bc5b"
+  },
+  "limits": [
+    "Target Air/Windows laptop and whole-system power/temperature not measured",
+    "Independent hidden viewport rendering not tracked by global frames_drawn",
+    "Rejected shader prototypes have no production changes or claimed gain"
+  ]
+}

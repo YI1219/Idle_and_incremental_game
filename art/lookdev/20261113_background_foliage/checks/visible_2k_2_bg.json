@@ -1,0 +1,25 @@
+{
+	"background_active": true,
+	"background_size": "(1280, 720)",
+	"candidate": "bg",
+	"draw_calls": 254,
+	"fps": 58.0487819493006,
+	"idle_fps": 58.0487819493006,
+	"idle_frames": 465,
+	"method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+	"p95_ms": 18.572,
+	"p99_ms": 19.742,
+	"rendered_frames": 465,
+	"resolution": [
+		2560,
+		1440
+	],
+	"root_mode": 0,
+	"root_visible": true,
+	"scale": 1.0,
+	"size": "2k",
+	"texture_size": [
+		2560.0,
+		1440.0
+	]
+}

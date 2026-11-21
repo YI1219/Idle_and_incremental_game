@@ -1,0 +1,26 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward Mobile - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+WARNING: Screen-space ambient occlusion (SSAO) is only available when using the Forward+ or Compatibility renderers.
+     at: environment_set_ssao (servers/rendering/storage/environment_storage.cpp:700)
+     GDScript backtrace (most recent call first):
+         [0] setup (res://scripts/terrain_editor/terrain_environment.gd:245)
+         [1] _setup_environment (res://scripts/terrain_editor/editor.gd:107)
+         [2] _ready (res://scripts/terrain_editor/editor.gd:81)
+         [3] run (res://art/lookdev/20261121_perf_stack/checks/probe_scale.gd:119)
+WARNING: Screen-space indirect lighting (SSIL) is only available when using the Forward+ renderer.
+     at: environment_set_ssil (servers/rendering/storage/environment_storage.cpp:775)
+     GDScript backtrace (most recent call first):
+         [0] setup (res://scripts/terrain_editor/terrain_environment.gd:253)
+         [1] _setup_environment (res://scripts/terrain_editor/editor.gd:107)
+         [2] _ready (res://scripts/terrain_editor/editor.gd:81)
+         [3] run (res://art/lookdev/20261121_perf_stack/checks/probe_scale.gd:119)
+INFO size=(1920, 1080) mode=balanced msaa=1 scale=1.0 bg_active=false refresh=120.0
+SAMPLE scene=true k=1 11.46 ms  process 17.89  setup_cpu 0.06  vp_cpu 0.40  vp_gpu 0.00
+SAMPLE scene=true k=2 16.67 ms  process 19.15  setup_cpu 0.10  vp_cpu 0.42  vp_gpu 0.00
+SAMPLE scene=true k=3 24.93 ms  process 28.07  setup_cpu 0.33  vp_cpu 0.67  vp_gpu 0.00
+SAMPLE scene=false k=1 11.76 ms  process 19.01  setup_cpu 0.08  vp_cpu 0.22  vp_gpu 0.00
+SAMPLE scene=false k=2 11.89 ms  process 19.36  setup_cpu 0.08  vp_cpu 0.19  vp_gpu 0.00
+SAMPLE scene=false k=3 11.85 ms  process 22.28  setup_cpu 0.07  vp_cpu 0.17  vp_gpu 0.00
+FIT scene  one render 6.74 ms   floor 4.21 ms
+FIT empty  one render 0.05 ms   floor 11.74 ms

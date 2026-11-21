@@ -1,0 +1,24 @@
+{
+  "generated_assets": 3,
+  "successful_tripo_shown_costs": [
+    100,
+    100,
+    30
+  ],
+  "shown_cost_total": 230,
+  "primary_candidates": [
+    "mountain_study_hq",
+    "stone_basin"
+  ],
+  "native_godot_frames": 24,
+  "lod_meshes_imported": 9,
+  "input_hashes_valid": true,
+  "original_models_unchanged": true,
+  "main_candidates_closed": true,
+  "material_count_per_candidate": 1,
+  "texture_count": 0,
+  "auto_distance_lod_configured": false,
+  "default_scene_changed": false,
+  "art_accepted": false,
+  "target_hardware_fps": "not measured"
+}

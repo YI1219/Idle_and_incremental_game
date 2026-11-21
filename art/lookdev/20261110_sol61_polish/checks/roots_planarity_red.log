@@ -1,0 +1,61 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+ok: variant 0 preserves y=0 crown and cap polygon
+ERROR: variant 0 lower broad planes stay coplanar (worst 58.776 degrees)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:8)
+       [1] _initialize (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:34)
+ok: variant 0 is finite, nondegenerate and watertight
+ok: variant 1 preserves y=0 crown and cap polygon
+ERROR: variant 1 lower broad planes stay coplanar (worst 8.257 degrees)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:8)
+       [1] _initialize (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:34)
+ok: variant 1 is finite, nondegenerate and watertight
+ok: variant 2 preserves y=0 crown and cap polygon
+ERROR: variant 2 lower broad planes stay coplanar (worst 25.910 degrees)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:8)
+       [1] _initialize (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:34)
+ok: variant 2 is finite, nondegenerate and watertight
+ok: variant 3 preserves y=0 crown and cap polygon
+ERROR: variant 3 lower broad planes stay coplanar (worst 13.434 degrees)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:8)
+       [1] _initialize (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:34)
+ok: variant 3 is finite, nondegenerate and watertight
+ok: variant 4 preserves y=0 crown and cap polygon
+ERROR: variant 4 lower broad planes stay coplanar (worst 12.525 degrees)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:8)
+       [1] _initialize (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:34)
+ok: variant 4 is finite, nondegenerate and watertight
+ok: variant 5 preserves y=0 crown and cap polygon
+ERROR: variant 5 lower broad planes stay coplanar (worst 6.266 degrees)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:8)
+       [1] _initialize (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:34)
+ok: variant 5 is finite, nondegenerate and watertight
+ok: variant 6 preserves y=0 crown and cap polygon
+ERROR: variant 6 lower broad planes stay coplanar (worst 77.621 degrees)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:8)
+       [1] _initialize (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:34)
+ok: variant 6 is finite, nondegenerate and watertight
+ok: variant 7 preserves y=0 crown and cap polygon
+ERROR: variant 7 lower broad planes stay coplanar (worst 13.867 degrees)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:8)
+       [1] _initialize (res://art/lookdev/20261110_sol61_polish/checks/cliff_geometry_check.gd:34)
+ok: variant 7 is finite, nondegenerate and watertight
+CLIFF GEOMETRY: 24 checks, 8 failures

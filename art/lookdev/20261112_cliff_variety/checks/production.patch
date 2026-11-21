@@ -1,0 +1,111 @@
+--- art/lookdev/20261112_cliff_variety/checks/source_before/procedural_shard.gd	2026-11-12 00:10:56
++++ scripts/terrain_editor/procedural_shard.gd	2026-11-12 00:17:04
+@@ -248,6 +248,78 @@
+ 	# softly worn response without moving the crown or adding rock masses.
+ 	return [Normals.soften(full.mesh(), 55.0, 0.65), Normals.soften(walls.mesh(), 55.0, 0.65)]
+ 
++static func _add_varied_body(
++	full: Surface, walls: Surface, collar: Array[Vector3], arch: int, tone: Color
++) -> void:
++	# Distinct solid silhouettes, with homothetic sections: each side quad is
++	# planar even where a shoulder, waist or ledge changes direction. The
++	# collar stays canonical; root boulders use their unchanged original body.
++	# Section = (height, uniform XZ scale, lateral lean, outward offset).
++	var sections: Array[Vector4]
++	var front: PackedFloat32Array
++	match arch:
++		1: # Broad shield: a quiet wide face, high shoulder and tucked blunt heel.
++			front = PackedFloat32Array([.38,.49,.52,.52,.49,.38])
++			sections = [Vector4(-.145,1,0,0), Vector4(-.29,1.02,0,.06),
++				Vector4(-.78,.97,-.025,.02), Vector4(-1.03,.72,-.04,-.08)]
++		2: # Oblique slab: one pitched shoulder and a long leaning cleavage face.
++			front = PackedFloat32Array([.36,.40,.44,.48,.52,.39])
++			sections = [Vector4(-.145,1,0,0), Vector4(-.39,.94,.025,.12),
++				Vector4(-.88,.78,-.045,.02), Vector4(-1.10,.66,-.055,-.10)]
++		4: # Double shoulder, with a recessed seam between unequal rock shelves.
++			front = PackedFloat32Array([.37,.47,.55,.55,.47,.37])
++			sections = [Vector4(-.145,1,0,0), Vector4(-.28,1.01,0,.10),
++				Vector4(-.43,.96,-.02,.055), Vector4(-.59,.99,-.025,.105),
++				Vector4(-.90,.83,.01,.02), Vector4(-1.06,.67,.02,-.09)]
++		6: # Low ledge: two relief breaks at different heights from the double shoulder.
++			front = PackedFloat32Array([.38,.51,.54,.52,.46,.36])
++			sections = [Vector4(-.145,1,0,0), Vector4(-.37,.99,-.02,.10),
++				Vector4(-.53,.94,-.015,.045), Vector4(-.72,.98,.01,.095),
++				Vector4(-1.07,.66,.035,-.12)]
++		_: # Worn waist: a broad brow above a deep, solid inward bevel.
++			front = PackedFloat32Array([.36,.44,.50,.53,.49,.38])
++			sections = [Vector4(-.145,1,0,0), Vector4(-.35,1.03,.015,.11),
++				Vector4(-.67,.78,.02,-.04), Vector4(-.92,.81,-.01,.005),
++				Vector4(-1.04,.64,-.02,-.13)]
++	var rings: Array = [collar]
++	for section: Vector4 in sections:
++		var ring: Array[Vector3] = []
++		for i: int in collar.size():
++			var p: Vector3 = collar[i]
++			p.x *= .49 / .51
++			p.z = front[i] if i < 6 else (-.42 if i == 7 else -.085)
++			var point := Vector3(p.x*section.y+section.z, section.x, p.z*section.y+section.w)
++			# One affine shear pitches every cleavage plane together. It
++			# preserves coplanarity and makes the ledges visibly oblique.
++			var pitch: float = -.20 if arch in [1,4,7] else .20
++			# Lower the entire body equally so the raised end of the
++			# pitched shoulder stays below the fixed y=-.042 collar.
++			point.y += pitch*point.x + .045*(point.z-.1) - .03
++			ring.append(point)
++		rings.append(ring)
++	for band: int in rings.size()-1:
++		var upper: Array = rings[band]
++		var lower: Array = rings[band+1]
++		var brow: float = clampf(.70 + float(sections[maxi(0,band-1)].x)*.4,.22,.68)
++		for i: int in collar.size():
++			var ni: int = (i+1)%collar.size()
++			var along: Vector3 = upper[ni]-upper[i]
++			var outward := Vector3(-along.z,0,along.x).normalized()
++			var cols: Array = [tone,tone,tone,tone]
++			var uv := Vector2(brow,0)
++			var uvs: Array = [uv,uv,uv,uv]
++			_emit_quad(full,upper[i],upper[ni],lower[ni],lower[i],outward,cols,uvs)
++			_emit_quad(walls,upper[i],upper[ni],lower[ni],lower[i],outward,cols,uvs)
++	var foot: Array = rings.back()
++	var center := Vector3.ZERO
++	for p: Vector3 in foot: center += p
++	center /= float(foot.size())
++	for i: int in foot.size():
++		var ni: int = (i+1)%foot.size()
++		var uv := Vector2(.22,0)
++		_emit_tri(full,center,foot[i],foot[ni],Vector3.DOWN,tone,tone,tone,uv,uv,uv)
++		_emit_tri(walls,center,foot[i],foot[ni],Vector3.DOWN,tone,tone,tone,uv,uv,uv)
++
+ static func _add_continuous_body(
+ 	full: Surface, walls: Surface, collar: Array[Vector3], arch: int, tone: Color
+ ) -> void:
+@@ -341,7 +413,7 @@
+ 		_emit_tri(full, bottom_center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
+ 		_emit_tri(walls, bottom_center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
+ 
+-static func _build_cliff_crag(seed_value: int) -> Dictionary:
++static func _build_cliff_crag(seed_value: int, varied: bool = true) -> Dictionary:
+ 	var full := Surface.new()
+ 	var walls := Surface.new()
+ 	var arch := posmod(seed_value, 8)
+@@ -375,7 +447,10 @@
+ 		_emit_quad(full, a, b, c, d, out_c, col_c, uv_c)
+ 		_emit_quad(walls, a, b, c, d, out_c, col_c, uv_c)
+ 
+-	_add_continuous_body(full, walls, r1, arch, top_col)
++	if varied and arch in [1,2,4,6,7]:
++		_add_varied_body(full, walls, r1, arch, top_col)
++	else:
++		_add_continuous_body(full, walls, r1, arch, top_col)
+ 
+ 	var cap_poly := PackedVector2Array([
+ 		Vector2(-0.52, 0.402),
+@@ -424,7 +499,7 @@
+ 
+ static func _build_root_boulders(seed_value: int) -> Dictionary:
+ 	# A single oblique shoulder joins the full-height front; no grass-crown collar.
+-	var built: Dictionary = _build_cliff_crag(seed_value)
++	var built: Dictionary = _build_cliff_crag(seed_value, false)
+ 	var arrays: Array = built.mesh.surface_get_arrays(0)
+ 	var points: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+ 	var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]

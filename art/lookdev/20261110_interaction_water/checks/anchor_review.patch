@@ -1,0 +1,153 @@
+--- controls_before/editor.gd
++++ scripts/terrain_editor/editor.gd
+@@ -36,18 +36,26 @@
+ var gameplay:Director
+ var tool:="raise":
+ 	set(value):
+ 		tool=value
+ 		if gameplay!=null:gameplay.on_brush_tool_selected(value)
+-var radius:=1.6
++var radius:float=1.6:
++	set(value):
++		var next:float=clampf(value,.1,16.0)
++		if is_equal_approx(radius,next):return
++		if painting:cancel_input()
++		radius=next
++		_brush_shape_key=""
+ var snap:=false
+ var build_height:=1.5
+ var water_level:=3
+ var style_preset:=0
+ var painting:=false
+ var blueprint_data:Data
+ var _blueprint_tool:String=""
++var _stroke_plane_height:float=NAN
++var _hover_plane_height:float=NAN
+ var _brush_shape_key:String=""
+ var last_edit_ms:=0.0
+ var brush:=MeshInstance3D.new()
+ ## Jade ghost of the stroke result shown until the threaded rebuild publishes.
+ var preview:=preload("res://scripts/terrain_editor/edit_preview.gd").new()
+@@ -112,10 +120,11 @@
+ func cancel_input()->void:
+ 	painting=false
+ 	renderer.cancel_blueprint()
+ 	blueprint_data=null
+ 	_blueprint_tool=""
++	_stroke_plane_height=NAN
+ 	data.end_stroke()
+ 	camera.cancel_input()
+ func _input(event:InputEvent)->void:
+ 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT and painting:
+ 		cancel_input()
+@@ -143,29 +152,61 @@
+ 		elif event.keycode==KEY_F10:
+ 			dof_enabled=not dof_enabled
+ 			if gameplay!=null and gameplay.shihai_hud!=null:
+ 				gameplay.shihai_hud.show_toast("光学远景景深：已开启（弱）" if dof_enabled else "光学远景景深：已关闭",2.2)
+ 		elif event.keycode==KEY_ESCAPE:cancel_input()
++func _nearest_brush_plane(origin:Vector3,direction:Vector3)->float:
++	var source:Data=renderer._published_data if renderer._published_data!=null else data
++	var best:float=INF
++	var height:float=build_height
++	var points:Dictionary={}
++	for cell:Vector2i in source.cells:
++		var h:float=Data._record_top(source.cells[cell])
++		if not points.has(h):
++			var t:float=(h-origin.y)/direction.y
++			points[h]=Vector2(origin.x+direction.x*t,origin.z+direction.z*t)
++		var q:Vector2=points[h]
++		var nearest:=q.clamp(Vector2(cell),Vector2(cell)+Vector2.ONE)
++		var distance:float=q.distance_squared_to(nearest)
++		if distance<best-.0001 or (absf(distance-best)<.0001 and h>height):best=distance;height=h
++	return height
++
+ func _pointer(screen:Vector2)->Dictionary:
+-	var origin:=camera.project_ray_origin(screen)
+-	var direction:=camera.project_ray_normal(screen)
+-	var hit:=renderer.pick(origin,direction)
+-	if tool=="expand" or hit.is_empty():
+-		if absf(direction.y)>0.0001:
+-			var t:float=(build_height-origin.y)/direction.y
+-			if t>0:
+-				var p:=origin+direction*t
+-				if hit.is_empty() or tool=="expand":return {"position":p,"cell":Vector2i(floori(p.x),floori(p.z)),"normal":Vector3.UP}
+-	return hit
++	var origin:Vector3=camera.project_ray_origin(screen)
++	var direction:Vector3=camera.project_ray_normal(screen)
++	var hit:Dictionary=renderer.pick(origin,direction)
++	if tool.begins_with("rock_"):return hit
++	if absf(direction.y)<.0001:return {}
++	var source:Data=renderer._published_data if renderer._published_data!=null else data
++	var plane:float=_stroke_plane_height if painting else NAN
++	if not hit.is_empty() and source.cells.has(hit.cell):
++		var owner_height:float=Data._record_top(source.cells[hit.cell])
++		if not is_finite(plane):plane=owner_height
++		# A side face selects its owning terrace's crown. A narrow brush should
++		# never create a second shelf below the visible top of that cliff.
++		if absf(hit.normal.y)<.45 and absf(owner_height-plane)<.01:
++			var at:Vector2=Vector2(hit.cell)+Vector2.ONE*.5
++			if tool=="expand":at+=Vector2(hit.normal.x,hit.normal.z).normalized()*minf(.8,radius*.65)
++			_hover_plane_height=plane
++			return {"position":Vector3(at.x,plane,at.y),"cell":hit.cell,"normal":Vector3.UP,"surface_height":plane}
++	if not is_finite(plane):
++		plane=_nearest_brush_plane(origin,direction) if not source.cells.is_empty() else build_height
++	_hover_plane_height=plane
++	var t:float=(plane-origin.y)/direction.y
++	if t<=0:return {}
++	var p:Vector3=origin+direction*t
++	return {"position":p,"cell":Vector2i(floori(p.x),floori(p.z)),"normal":Vector3.UP,"surface_height":plane}
+ func begin_paint(screen:Vector2,from_ui:bool=false)->bool:
+ 	if from_ui or hud.is_over_panel(screen):return false
+ 	var hit:Dictionary=_pointer(screen)
+ 	if hit.is_empty():return false
+-	if not tool.begins_with("rock_") and not data.can_apply_brush(_brush_center(hit),radius,tool,snap,build_height,water_level):return false
++	if not tool.begins_with("rock_") and not data.can_apply_brush(_brush_center(hit),radius,tool,snap,float(hit.get("surface_height",build_height)),water_level,float(hit.get("surface_height",NAN))):return false
+ 	if gameplay!=null and not gameplay.prepare_brush_step(tool):return false
+ 	var focus:=get_viewport().gui_get_focus_owner()
+ 	if focus:focus.release_focus()
++	_stroke_plane_height=float(hit.get("surface_height",NAN))
++	if tool=="expand" and is_finite(_stroke_plane_height):build_height=_stroke_plane_height
+ 	painting=true
+ 	blueprint_data=data.copy()
+ 	_blueprint_tool=tool
+ 	_last_paint=Vector2(INF,INF)
+ 	_last_sculpt=Vector3(INF,INF,INF)
+@@ -183,10 +224,11 @@
+ 	else:renderer.cancel_blueprint()
+ 	if changed and gameplay!=null:gameplay.after_brush_step(before_cells,before_wet,_blueprint_tool)
+ 	painting=false
+ 	blueprint_data=null
+ 	_blueprint_tool=""
++	_stroke_plane_height=NAN
+ 	return changed
+ 
+ func _brush_center(hit:Dictionary)->Vector2:
+ 	var point:=Vector2(hit.position.x,hit.position.z)
+ 	if snap or (tool!="expand" and not data.cells.has(Vector2i(point.floor()))):
+@@ -207,11 +249,11 @@
+ 	var start:Vector2=center if not _last_paint.is_finite() else _last_paint
+ 	var steps:=maxi(1,ceili(start.distance_to(center)/maxf(0.25,radius*0.45)))
+ 	steps=mini(steps,256)
+ 	var begin:=Time.get_ticks_usec()
+ 	for i in steps:
+-		blueprint_data.apply_brush(start.lerp(center,float(i+1)/steps),radius,tool,snap,build_height,water_level)
++		blueprint_data.apply_brush(start.lerp(center,float(i+1)/steps),radius,tool,snap,build_height,water_level,_stroke_plane_height)
+ 	_last_paint=center
+ 	renderer.prepare_blueprint(blueprint_data)
+ 	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
+ func _sculpt_center(hit:Dictionary)->Vector3:
+ 	var center:Vector3=hit.position
+@@ -235,11 +277,11 @@
+ 	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
+ func _brush_valid(hit:Dictionary)->bool:
+ 	if tool.begins_with("rock_"):return true
+ 	var center:Vector2=_brush_center(hit)
+ 	var source:Data=blueprint_data if blueprint_data!=null else data
+-	if source.can_apply_brush(center,radius,tool,snap,build_height,water_level):return true
++	if source.can_apply_brush(center,radius,tool,snap,float(hit.get("surface_height",build_height)),water_level,float(hit.get("surface_height",NAN))):return true
+ 	# An already selected part of the draft stays valid. Quota exhausted at a
+ 	# new location is invalid even though the published island is still smaller.
+ 	if blueprint_data!=null:
+ 		for cell:Vector2i in blueprint_data._before:
+ 			if (Vector2(cell)+Vector2.ONE*.5).distance_squared_to(center)<=radius*radius:return true

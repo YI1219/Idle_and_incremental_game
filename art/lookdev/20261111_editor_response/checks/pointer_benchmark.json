@@ -1,0 +1,14 @@
+[
+	{
+		"max_ms": 0.159,
+		"p50_ms": 0.103,
+		"p95_ms": 0.151,
+		"version": "before"
+	},
+	{
+		"max_ms": 0.254,
+		"p50_ms": 0.17,
+		"p95_ms": 0.177,
+		"version": "current"
+	}
+]

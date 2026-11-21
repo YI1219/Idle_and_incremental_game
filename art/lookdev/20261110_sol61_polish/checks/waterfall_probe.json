@@ -1,0 +1,124 @@
+{
+  "scope": "Only waterfall/mist shaders, waterfall_mist.gd and four authorized contour waterfall functions. Patch only, production files not written by this agent.",
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "roots": [
+    "External mesh ends at about 7.68 metres while old shader fade spans fixed 5.6–9.2 metres, leaving about 38 percent of tail opacity at mesh boundary before noise.",
+    "External terminal mist placement used a 4.4 metre clamped span instead of the same 7.68 metre mesh span, so it sat about 3 metres above the actual foot.",
+    "Static periodic geometry folds, periodic cosine normal tilts and full-strength high-frequency flow fields reinforced the comb effect.",
+    "Exponential lip offset had an initial diagonal slope. A quarter-ellipse turn gives the existing pond-to-curtain mesh a rounder roll without moving its lip anchors."
+  ],
+  "design_calls": [
+    "Retain existing two-layer curtain and material palette, reweight flow toward broad uneven streams and reduce geometric flute depth.",
+    "Use otherwise unused external vertex alpha range 0.5–0.99 for normalized lip-to-foot progress. Connected receiving curtains retain 0–0.4 landing metadata.",
+    "Terminate external alpha by normalized progress 0.98, allowing Godot vertex color quantization. The original mesh span and water authority remain intact.",
+    "Move existing external spray puffs onto the actual tail span and reduce terminal puff diameter. Keep all island-waist cloud puffs byte-for-byte equivalent in source puff data.",
+    "Use existing four receiving-water apron puffs as low flattened spray, with modestly stronger local splash opacity."
+  ],
+  "source_support": "https://docs.godotengine.org/en/stable/tutorials/shaders/screen-reading_shaders.html",
+  "before": {
+    "external_max_drop": 7.697,
+    "external_row_drops": [
+      0.0,
+      0.04,
+      0.045,
+      0.11,
+      0.22,
+      0.38,
+      0.545,
+      1.045,
+      1.545,
+      2.045,
+      2.545,
+      3.045,
+      3.545,
+      4.045,
+      4.545,
+      5.045,
+      5.545,
+      6.045,
+      6.545,
+      7.045,
+      7.545,
+      7.674,
+      7.683,
+      7.697
+    ],
+    "veils": [
+      {
+        "drop": 7.6828545331955,
+        "external": true,
+        "foot": "(9.980936, -6.137855, 11.3803)",
+        "half_width": 0.929186284542084,
+        "lip": "(9.994392, 1.545, 10.93195)"
+      },
+      {
+        "drop": 1.97499978542328,
+        "external": false,
+        "foot": "(2.559213, 1.57, 1.818457)",
+        "half_width": 0.933116734027863,
+        "lip": "(2.28572, 3.545, 1.445503)"
+      }
+    ],
+    "vertices": 4212
+  },
+  "candidate_headless_validation": {
+    "checks": 344,
+    "failures": 0,
+    "results": [
+      {
+        "apron_puffs": 4,
+        "curtains": 2,
+        "external_vertices": 3168,
+        "puffs": 46,
+        "seed": 7301,
+        "vertices_after": 4488,
+        "vertices_before": 4212,
+        "zero_alpha_end_vertices": 72
+      },
+      {
+        "apron_puffs": 4,
+        "curtains": 2,
+        "external_vertices": 3168,
+        "puffs": 46,
+        "seed": 2104,
+        "vertices_after": 4488,
+        "vertices_before": 4212,
+        "zero_alpha_end_vertices": 72
+      },
+      {
+        "apron_puffs": 4,
+        "curtains": 2,
+        "external_vertices": 3168,
+        "puffs": 46,
+        "seed": 4242,
+        "vertices_after": 4488,
+        "vertices_before": 4212,
+        "zero_alpha_end_vertices": 72
+      },
+      {
+        "apron_puffs": 4,
+        "curtains": 2,
+        "external_vertices": 3168,
+        "puffs": 46,
+        "seed": 913,
+        "vertices_after": 4488,
+        "vertices_before": 4212,
+        "zero_alpha_end_vertices": 72
+      }
+    ]
+  },
+  "shader_probe": "Both shaders parsed their expected non-sampler uniforms in the headless Godot shader probe. A native Forward+ render remains required.",
+  "candidate_source_sha256": {
+    "shaders/terrain_editor/waterfall.gdshader": "2c834e13c350204a8288d1006513994ff98af0ed593f120ce83178bc864aea46",
+    "shaders/terrain_editor/waterfall_mist.gdshader": "b0595dfdef6bc8db56954a3e5ff13e59ba469360d0cd75d611b00d32301dbd91",
+    "scripts/terrain_editor/waterfall_mist.gd": "244a94e80c64bf70ec8663a960bddc6d578f8469b7191f2f542e22bf74fb9a44",
+    "scripts/terrain_editor/contour_terrain.gd": "f71724980a64e7cd3e38d29bbc937a50140898d1b7ca1c00a28734516a625b6d"
+  },
+  "patch_sha256": "8b2a439fd0a47909e80e5d8e418938a5feaab18c7109d2ff4c5f5808e585b7de",
+  "remaining_visual_checks": [
+    "Native BASE camera day whole/cliff_close/reverse and night whole. Verify lip roll shape and two-layer transparency at oblique/reverse angles.",
+    "Inspect external tail fade against cloud sea, not only isolated geometry. Numeric zero alpha does not establish visual acceptance.",
+    "Inspect receiving-water apron in day/night so increased local spray stays compact and does not become a white rug."
+  ],
+  "headless_environment_note": "macOS system certificate collection logs a pre-existing noErr error. Probe process exits 0. Earlier first validation probe counted dummy-renderer MultiMesh readback rather than stored puff data, and was corrected to inspect emitted puff arrays."
+}

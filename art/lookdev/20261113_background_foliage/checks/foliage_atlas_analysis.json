@@ -1,0 +1,113 @@
+{
+  "atlas_dimensions": [
+    1024,
+    1024
+  ],
+  "original_sha256": {
+    "assets/nature/trees/botanical_foliage_atlas.png": "a09df2c781032fb5a4600f9877d684086371d23d408183b00b0d3b49f5b62bf1",
+    "scripts/terrain_editor/terrain_models.gd": "c4e84e4d01b8658f1ba9a08c490e444a9c9182897397140b1995af1fb862bcc4",
+    "shaders/terrain_editor/foliage_cards.gdshader": "45aa35dd5d206e862ae817f6fb9454bef5e53d0b25328e19da326aa145cccbd0"
+  },
+  "cells": [
+    {
+      "cell": [
+        0,
+        0
+      ],
+      "kind": "huai/shrub",
+      "base_texels": 262144,
+      "zero_alpha_texels": 199691,
+      "zero_alpha_fraction": 0.7617607116699219,
+      "below_point23_texels": 204817,
+      "below_point23_fraction": 0.7813148498535156,
+      "nonzero_bbox_xyxy_inclusive": [
+        62,
+        79,
+        453,
+        351
+      ],
+      "mean_alpha": 0.2093715742522595
+    },
+    {
+      "cell": [
+        1,
+        0
+      ],
+      "kind": "huai/shrub",
+      "base_texels": 262144,
+      "zero_alpha_texels": 200395,
+      "zero_alpha_fraction": 0.7644462585449219,
+      "below_point23_texels": 205495,
+      "below_point23_fraction": 0.7839012145996094,
+      "nonzero_bbox_xyxy_inclusive": [
+        60,
+        80,
+        452,
+        348
+      ],
+      "mean_alpha": 0.20696122412588083
+    },
+    {
+      "cell": [
+        0,
+        1
+      ],
+      "kind": "pine",
+      "base_texels": 262144,
+      "zero_alpha_texels": 196312,
+      "zero_alpha_fraction": 0.748870849609375,
+      "below_point23_texels": 200737,
+      "below_point23_fraction": 0.7657508850097656,
+      "nonzero_bbox_xyxy_inclusive": [
+        37,
+        106,
+        466,
+        369
+      ],
+      "mean_alpha": 0.225636261584712
+    },
+    {
+      "cell": [
+        1,
+        1
+      ],
+      "kind": "pine",
+      "base_texels": 262144,
+      "zero_alpha_texels": 196579,
+      "zero_alpha_fraction": 0.7498893737792969,
+      "below_point23_texels": 200948,
+      "below_point23_fraction": 0.7665557861328125,
+      "nonzero_bbox_xyxy_inclusive": [
+        40,
+        109,
+        463,
+        365
+      ],
+      "mean_alpha": 0.22495764938055302
+    }
+  ],
+  "each_curved_card": {
+    "triangles_before": 4,
+    "triangles_after_index": 4,
+    "vertices_before": 12,
+    "vertices_after_index": 5,
+    "vertex_reduction_fraction": 0.5833333333333334,
+    "geometry_area_ratio": 1.0,
+    "index_count_after": 12,
+    "indexing_changes_raster_area": false
+  },
+  "shrub_from_source": {
+    "card_count": 45,
+    "collar_triangles": 8,
+    "vertices_before": 564,
+    "expected_exact_index_vertices": 234,
+    "triangles_unchanged": 188,
+    "note": "Source-derived expected count; native helper reports actual unique vertices."
+  },
+  "limits": [
+    "Fractions count nearest samples of base-level texels, not bilinear/mipmap samples or screen-space overdraw.",
+    "Runtime uses Image.generate_mipmaps on the full atlas; import-file mipmaps=false does not disable those runtime mipmaps.",
+    "No shape clipping: inserted/moved vertices would change nonlinear flutter and normalized vertex normals before interpolation.",
+    "No GPU timing, frame capture, or target hardware performance was measured by this analysis."
+  ]
+}

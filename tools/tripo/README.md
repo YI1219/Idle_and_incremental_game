@@ -90,3 +90,27 @@ If bundled Chromium is absent, `--channel chrome` uses installed Google Chrome
 with the same dedicated persistent Tripo profile. Never use a personal browser
 profile or expose stored credentials. Manual login/security challenges remain
 user-operated.
+
+## Budgeted HQ batches
+
+`studio_batch.py JOBS.json --ledger budget.json --limit 15000` is a dry-run by
+default. `JOBS.json` contains `{"jobs":["asset/manifest.json", ...]}` relative to
+the list. Explicit `--yes` runs already-authorized geometry jobs sequentially.
+It waits for completed image uploads, verifies texture OFF and the requested
+face count after reopening the panel, then reserves the exact UI quote in a
+flock-protected ledger before one paid click. Reservations, confirmed results
+and ambiguous failures all consume their full quote. Existing originals skip;
+unfinished attempts stop for recovery. The current cap records this project's
+2026-11-12 authorization, rather than granting any new authorization.
+
+`studio_texture_batch.py JOBS.json --ledger budget.json --inspect` inspects an
+existing source without payment: select the source card, export it for free,
+and compare exact geometry with the local original before opening the texture
+panel. Default dry-run verifies 2K/de-light and the quote; `--yes` uses the same
+ledger and single-click rule. It writes `original_textured.glb`, preserving the
+geometry original. UI adapter state must be verified when Studio changes.
+
+Only one batch may own the dedicated profile. Do not run a download recovery,
+texture batch or another browser with the same profile concurrently. A finished
+thumbnail may precede the viewport/export toolbar: the exporter waits for the
+toolbar, without re-submitting the task.

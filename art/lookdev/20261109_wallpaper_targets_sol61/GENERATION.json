@@ -1,0 +1,206 @@
+{
+  "created_at": "2026-11-09T00:02:30.818922+00:00",
+  "package": "20261109_wallpaper_targets_sol61",
+  "requested_workflow_label": "sol 6.1 / v2 / 实机可达",
+  "backend": "Codex built-in image_gen",
+  "image_model": null,
+  "image_model_note": "内置工具未暴露底层图像模型选择或返回字段。",
+  "prompt_pack_source": "/tmp/scroll_wallpaper_targets_sol61_PROMPTS.md",
+  "prompt_pack_sha256": "8ae0b6bf06d584b216654b5d1e66e93f03895eb3bbf6893925d68bf96c1e5af0",
+  "reference_policy": "Each call uses only its matching unmodified Godot BASE; no auxiliary style image.",
+  "generation_order": [
+    "B",
+    "A",
+    "C",
+    "D"
+  ],
+  "calls": [
+    {
+      "variant": "A",
+      "status": "generated",
+      "prompt_summary": "日景全身，草唇、接缝与瀑口的局部可达 polish",
+      "prompt": "Use case: precise-object-edit\nInput image 1: the corresponding REAL Godot BASE screenshot, the edit target and sole composition authority.\nPreserve the camera, crop, island silhouette, objects, background, and day/night lighting scale. Apply only the localized reachable polish specified below.\nOutput one composition-faithful 16:9 image at the BASE framing, without labels or borders.\n\n与 v1 的关键差异（原文）\n1. **In-engine achievable**：TARGET 必须像「从当前 BASE 再 polish 一点」的可达态，而不是新概念美术。禁止发明新轮廓、新道具、新建筑、新岛屿、不同机位布局或完全不同的光雾。\n2. **风格贴回实机色温**：仍锁 argon「天青烟岚 · 宋韵青绿」，但避免 v1 的过绘 / 过 stylized / 概念海报感。色温与体量应贴近 REAL lookdev：暖金主光 + 青空补光、柔哑光、宋韵青绿；岛体外形、台地、瀑池、树丛位置与 BASE 一致可读。\n3. **构图锁死 BASE**：imagegen 时每张必须带对应 BASE 作 reference；输出构图、镜头、岛轮廓、水面位置、树石摆放尽量与 BASE 同框；只允许改善草石交接、斜脊竖根、瀑口层次、水面高光收敛等 lookdev 缺口。\n4. **参考游戏只借气质不借造型**：The Regreening / Journey / Tiny Glade 只借软形体、哑光色块、留白氛围；禁止抄它们的建筑、沙漠橙、废墟柱、UI、羊群等。\n\n风格锁 Style Lock（原文）\n**中文主锚：** argon 预设0「天青烟岚 · 宋韵青绿」\n- 冷银灰雾、低饱和苔草绿、米灰石、玉色水面（与当前 Godot 截图同色系）\n- 暖金主光 + 青空补光 + 云反射（SSIL 氛围），强度与 BASE 日/夜一致量级\n- 唯美、低面数、大色块、古风配色；乡野与仙山意境\n- 柔和的大形体与圆钝转角；哑光／手绘感表面；压低表面碎噪声\n- **本版额外：** 保持 Godot 低面数可读性；不要油画厚涂、不要超现实体积光、不要海报级景深虚化\n\n**明确靠近的风格参考（项目文档 + `art/reference/` 已有锚）：**\n1. 《绿意新生／The Regreening》— 软形体、协调哑光色块（只借材质关系）\n2. Journey — 远山云海与简化形体（只借空间层次，不借沙漠橙）\n3. Tiny Glade — 圆钝转角与种植接合（只借草石接触，不借建筑）\n4. 宋韵青绿山水气质（非写实照片；非赛博；非欧美硬边 fantasy）\n\n**English style block (paste as-is):**\n`style lock: argon preset \"天青烟岚·宋韵青绿\"; Godot lookdev-reachable polish of THIS floating island screenshot; soft low-poly large color blocks; matte painted surfaces; cool silver-gray mist; desaturated moss green grass; rice-gray stone; jade water; warm gold key + cool sky fill matching the BASE plate; Song blue-green; subtle next-step polish NOT fantasy concept art; NO new architecture; NO new islands; NO invented props; NO peach-pink fog; NO desert orange; NO over-painted poster look; NO photoreal DSLR; NO hard fantasy`\n\n【风格】天青烟岚·宋韵青绿｜贴合当前 Godot 实机色温｜唯美低面数大色块｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【可达】这是现有浮空岛 lookdev 的「下一小步 polish」目标，不是新概念场景；构图/岛形/机位必须贴近给定 BASE 实机图\n【靠近气质】The Regreening + Journey + Tiny Glade 的软形体与哑光色块（禁止抄建筑/沙漠橙/UI）\n【主体】识海浮空岛 hangout：无房屋；现有草甸台地；外圈斜脊岩壁与竖向山根；软草唇与草石窄土缘；现有入瀑与玉色水池；现有少量树/灌木/石凳位置\n【品质】可作为桌面壁纸的游戏环境目标板；大形体可读；F11 净屏无 UI\n\nGodot lookdev-reachable wallpaper target, subtle polish of the attached BASE screenshot of this floating island, Song blue-green xianxia pastoral, soft large masses, rounded bevels, matte painted rock and grass, keep the same island silhouette camera props and basins as BASE, improve grass-rock lip and cliff bevel continuity, jade basin waterfall, warm gold sunlight and cool azure skylight matching BASE, silver mist, no new architecture, no invented layout, ultra-clean, no UI\n\nSUBJECT: 同一张识海浮空岛日景全身；严格保持 BASE 的岛轮廓、台地、双水池、瀑布位置、树木与小径布局、镜头俯角；只 polish：连贯斜脊大面岩壁、草甸软唇、草石窄根土过渡、宽瀑口轻微错落跌水、玉色水面；远山云海可略柔但勿改构图\nCAMERA: match BASE establishing framing exactly (whole · high angle · 16:9)\nLIGHTING: match BASE daytime warm gold key + cool sky fill; do not invent stronger volumetric beams\nSTYLE: 【风格】天青烟岚·宋韵青绿｜贴合当前 Godot 实机色温｜唯美低面数大色块｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【可达】这是现有浮空岛 lookdev 的「下一小步 polish」目标，不是新概念场景；构图/岛形/机位必须贴近给定 BASE 实机图\n【靠近气质】The Regreening + Journey + Tiny Glade 的软形体与哑光色块（禁止抄建筑/沙漠橙/UI）\n【主体】识海浮空岛 hangout：无房屋；现有草甸台地；外圈斜脊岩壁与竖向山根；软草唇与草石窄土缘；现有入瀑与玉色水池；现有少量树/灌木/石凳位置\n【品质】可作为桌面壁纸的游戏环境目标板；大形体可读；F11 净屏无 UI\nQUALITY: reachable Godot lookdev next step, wallpaper crop of THIS scene\nNEGATIVE: 中文：发明新建筑/新岛屿/新道具、概念海报过绘、油画厚涂、超现实体积光、管风琴柱、足球网格岩、沙漏腰、二十面体球、桃粉雾、沙漠橙、规整重复模块缝、硬边卡通描边、过曝白水高光块、塑料感草皮、写实照片噪点、现代建筑、科幻机械、文字水印、UI、logo\nEnglish: `invented architecture, new islands, new prop sets, overpainted concept-poster look, thick oil-paint look, surreal godrays, pipe-organ cliff columns, soccer-ball rock grids, hourglass waists, icosahedral blobs, peach-pink fog, desert orange, repeating modular seams, hard cartoon outlines, blown-out white water specular slabs, plastic turf, photo noise, modern buildings, sci-fi machines, watermark, UI, logo, text`\nASPECT: 16:9\nCONSTRAINT: composition-faithful to reference image 1 (BASE); improve materials/junctions only",
+      "prompt_sha256": "e786d38286f53756513a0b2946d63153691495ed62101e69c798a813a5a868d8",
+      "reference": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/BASE_A_day_whole.png",
+      "reference_source": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261108_wallpaper_targets/BASE_A_day_whole.png",
+      "reference_sha256": "dbcaff8b992b867ac24c66aca53eb3ea8aeed03fcff62fe0642f04ce927d8bf2",
+      "target": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/TARGET_A_day_whole.png",
+      "requested_aspect": "16:9",
+      "requested_dimensions": "match BASE framing; preserve native generated size",
+      "generated_source": "/Users/yi/.codex/generated_images/01a1bd9b-7b0c-7d73-b2ef-c29a300754d8/exec-14db107c-3aca-4a03-85c1-b135966b8d63.png",
+      "output_dimensions": [
+        1672,
+        941
+      ],
+      "started_at": "2026-11-09T00:03:38.543Z",
+      "finished_at": "2026-11-09T00:04:04.610Z",
+      "output_sha256": "ad545e2a7d152e648b960e1a5694557228106f9208cc6e0a4fde6f203034c449",
+      "tool_arguments": {
+        "referenced_image_paths": [
+          "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/BASE_A_day_whole.png"
+        ],
+        "transparent_background": false
+      },
+      "visual_review": {
+        "title": "A · 日景全身",
+        "polish": "草唇柔化与瀑口小幅层次",
+        "limitations": "下沿雾增厚，部分山根变淡，树石细节重绘，局部草色偏黄。"
+      },
+      "reference_dimensions": [
+        2560,
+        1440
+      ],
+      "downloads_target": "/Users/yi/Downloads/scroll_wallpaper_targets_sol61_20261109/TARGET_A_day_whole.png"
+    },
+    {
+      "variant": "B",
+      "status": "generated",
+      "prompt_summary": "草石交接优先，断续窄根土与软草唇，保留原崖体",
+      "prompt": "Use case: precise-object-edit\nInput image 1: the corresponding REAL Godot BASE screenshot, the edit target and sole composition authority.\nPreserve the camera, crop, island silhouette, objects, background, and day/night lighting scale. Apply only the localized reachable polish specified below.\nOutput one composition-faithful 16:9 image at the BASE framing, without labels or borders.\n\n与 v1 的关键差异（原文）\n1. **In-engine achievable**：TARGET 必须像「从当前 BASE 再 polish 一点」的可达态，而不是新概念美术。禁止发明新轮廓、新道具、新建筑、新岛屿、不同机位布局或完全不同的光雾。\n2. **风格贴回实机色温**：仍锁 argon「天青烟岚 · 宋韵青绿」，但避免 v1 的过绘 / 过 stylized / 概念海报感。色温与体量应贴近 REAL lookdev：暖金主光 + 青空补光、柔哑光、宋韵青绿；岛体外形、台地、瀑池、树丛位置与 BASE 一致可读。\n3. **构图锁死 BASE**：imagegen 时每张必须带对应 BASE 作 reference；输出构图、镜头、岛轮廓、水面位置、树石摆放尽量与 BASE 同框；只允许改善草石交接、斜脊竖根、瀑口层次、水面高光收敛等 lookdev 缺口。\n4. **参考游戏只借气质不借造型**：The Regreening / Journey / Tiny Glade 只借软形体、哑光色块、留白氛围；禁止抄它们的建筑、沙漠橙、废墟柱、UI、羊群等。\n\n风格锁 Style Lock（原文）\n**中文主锚：** argon 预设0「天青烟岚 · 宋韵青绿」\n- 冷银灰雾、低饱和苔草绿、米灰石、玉色水面（与当前 Godot 截图同色系）\n- 暖金主光 + 青空补光 + 云反射（SSIL 氛围），强度与 BASE 日/夜一致量级\n- 唯美、低面数、大色块、古风配色；乡野与仙山意境\n- 柔和的大形体与圆钝转角；哑光／手绘感表面；压低表面碎噪声\n- **本版额外：** 保持 Godot 低面数可读性；不要油画厚涂、不要超现实体积光、不要海报级景深虚化\n\n**明确靠近的风格参考（项目文档 + `art/reference/` 已有锚）：**\n1. 《绿意新生／The Regreening》— 软形体、协调哑光色块（只借材质关系）\n2. Journey — 远山云海与简化形体（只借空间层次，不借沙漠橙）\n3. Tiny Glade — 圆钝转角与种植接合（只借草石接触，不借建筑）\n4. 宋韵青绿山水气质（非写实照片；非赛博；非欧美硬边 fantasy）\n\n**English style block (paste as-is):**\n`style lock: argon preset \"天青烟岚·宋韵青绿\"; Godot lookdev-reachable polish of THIS floating island screenshot; soft low-poly large color blocks; matte painted surfaces; cool silver-gray mist; desaturated moss green grass; rice-gray stone; jade water; warm gold key + cool sky fill matching the BASE plate; Song blue-green; subtle next-step polish NOT fantasy concept art; NO new architecture; NO new islands; NO invented props; NO peach-pink fog; NO desert orange; NO over-painted poster look; NO photoreal DSLR; NO hard fantasy`\n\n【风格】天青烟岚·宋韵青绿｜贴合当前 Godot 实机色温｜唯美低面数大色块｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【可达】这是现有浮空岛 lookdev 的「下一小步 polish」目标，不是新概念场景；构图/岛形/机位必须贴近给定 BASE 实机图\n【靠近气质】The Regreening + Journey + Tiny Glade 的软形体与哑光色块（禁止抄建筑/沙漠橙/UI）\n【主体】识海浮空岛 hangout：无房屋；现有草甸台地；外圈斜脊岩壁与竖向山根；软草唇与草石窄土缘；现有入瀑与玉色水池；现有少量树/灌木/石凳位置\n【品质】可作为桌面壁纸的游戏环境目标板；大形体可读；F11 净屏无 UI\n\nGodot lookdev-reachable wallpaper target, subtle polish of the attached BASE screenshot of this floating island, Song blue-green xianxia pastoral, soft large masses, rounded bevels, matte painted rock and grass, keep the same island silhouette camera props and basins as BASE, improve grass-rock lip and cliff bevel continuity, jade basin waterfall, warm gold sunlight and cool azure skylight matching BASE, silver mist, no new architecture, no invented layout, ultra-clean, no UI\n\nSUBJECT: 同一岩壁与草甸交接特写；保持 BASE 岩体朝向与草甸位置；米灰哑光斜面；草簇沿真实坡面微微内埋；最外缘断续窄根土（高低不等，禁止一条水平脏边）；接缝被大面斜脊与竖根弱化；无悬浮小石、无双层薄沿；不要换成别的悬崖造型\nCAMERA: match BASE cliff_close hero framing\nLIGHTING: warm gold grazing like BASE; cool fill in recesses; no harsh stone specular\nSTYLE: 【风格】天青烟岚·宋韵青绿｜贴合当前 Godot 实机色温｜唯美低面数大色块｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【可达】这是现有浮空岛 lookdev 的「下一小步 polish」目标，不是新概念场景；构图/岛形/机位必须贴近给定 BASE 实机图\n【靠近气质】The Regreening + Journey + Tiny Glade 的软形体与哑光色块（禁止抄建筑/沙漠橙/UI）\n【主体】识海浮空岛 hangout：无房屋；现有草甸台地；外圈斜脊岩壁与竖向山根；软草唇与草石窄土缘；现有入瀑与玉色水池；现有少量树/灌木/石凳位置\n【品质】可作为桌面壁纸的游戏环境目标板；大形体可读；F11 净屏无 UI\nQUALITY: material-readability hero still that a Godot pass could approach\nNEGATIVE: 中文：发明新建筑/新岛屿/新道具、概念海报过绘、油画厚涂、超现实体积光、管风琴柱、足球网格岩、沙漏腰、二十面体球、桃粉雾、沙漠橙、规整重复模块缝、硬边卡通描边、过曝白水高光块、塑料感草皮、写实照片噪点、现代建筑、科幻机械、文字水印、UI、logo\nEnglish: `invented architecture, new islands, new prop sets, overpainted concept-poster look, thick oil-paint look, surreal godrays, pipe-organ cliff columns, soccer-ball rock grids, hourglass waists, icosahedral blobs, peach-pink fog, desert orange, repeating modular seams, hard cartoon outlines, blown-out white water specular slabs, plastic turf, photo noise, modern buildings, sci-fi machines, watermark, UI, logo, text`, floating pebbles, double thin lips, hard UV seams, turf clipping, redesigned cliff silhouette\nASPECT: 16:9\nCONSTRAINT: composition-faithful to reference image 1 (BASE_B); grass-rock junction is the only hero change",
+      "prompt_sha256": "132f4dc32a3c1daf418ea00bbe66c5262935858ddc7b51d24564bffbd2857e42",
+      "reference": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/BASE_B_cliff_close.png",
+      "reference_source": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261108_wallpaper_targets/BASE_B_cliff_close.png",
+      "reference_sha256": "869a32ededab481064bae1d98a74b09c9959d1e82e39b23a6eec9b4881fa62b9",
+      "target": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/TARGET_B_grass_rock_hero.png",
+      "requested_aspect": "16:9",
+      "requested_dimensions": "match BASE framing; preserve native generated size",
+      "generated_source": "/Users/yi/.codex/generated_images/01a1bd9b-7b0c-7d73-b2ef-c29a300754d8/exec-49a7e097-5d97-4bff-bced-be7483e77e76.png",
+      "output_dimensions": [
+        1672,
+        941
+      ],
+      "started_at": "2026-11-09T00:02:44.806Z",
+      "finished_at": "2026-11-09T00:03:08.068Z",
+      "output_sha256": "408b8422673b258b765bc9cbbcbb64f2bd3b1d8aa553c1ac133019a20e41b97c",
+      "tool_arguments": {
+        "referenced_image_paths": [
+          "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/BASE_B_cliff_close.png"
+        ],
+        "transparent_background": false
+      },
+      "visual_review": {
+        "title": "B · 草石交接优先",
+        "polish": "宽斜面保留，检查草簇贴合与窄根土",
+        "limitations": "草簇偏大且略密，根土局部仍连成浅黄细边，直立分块感与右侧短护面仍可见。"
+      },
+      "reference_dimensions": [
+        2560,
+        1440
+      ],
+      "downloads_target": "/Users/yi/Downloads/scroll_wallpaper_targets_sol61_20261109/TARGET_B_grass_rock_hero.png"
+    },
+    {
+      "variant": "C",
+      "status": "generated",
+      "prompt_summary": "夜景全身，保留夜色量级，收敛水面高光",
+      "prompt": "Use case: precise-object-edit\nInput image 1: the corresponding REAL Godot BASE screenshot, the edit target and sole composition authority.\nPreserve the camera, crop, island silhouette, objects, background, and day/night lighting scale. Apply only the localized reachable polish specified below.\nOutput one composition-faithful 16:9 image at the BASE framing, without labels or borders.\n\n与 v1 的关键差异（原文）\n1. **In-engine achievable**：TARGET 必须像「从当前 BASE 再 polish 一点」的可达态，而不是新概念美术。禁止发明新轮廓、新道具、新建筑、新岛屿、不同机位布局或完全不同的光雾。\n2. **风格贴回实机色温**：仍锁 argon「天青烟岚 · 宋韵青绿」，但避免 v1 的过绘 / 过 stylized / 概念海报感。色温与体量应贴近 REAL lookdev：暖金主光 + 青空补光、柔哑光、宋韵青绿；岛体外形、台地、瀑池、树丛位置与 BASE 一致可读。\n3. **构图锁死 BASE**：imagegen 时每张必须带对应 BASE 作 reference；输出构图、镜头、岛轮廓、水面位置、树石摆放尽量与 BASE 同框；只允许改善草石交接、斜脊竖根、瀑口层次、水面高光收敛等 lookdev 缺口。\n4. **参考游戏只借气质不借造型**：The Regreening / Journey / Tiny Glade 只借软形体、哑光色块、留白氛围；禁止抄它们的建筑、沙漠橙、废墟柱、UI、羊群等。\n\n风格锁 Style Lock（原文）\n**中文主锚：** argon 预设0「天青烟岚 · 宋韵青绿」\n- 冷银灰雾、低饱和苔草绿、米灰石、玉色水面（与当前 Godot 截图同色系）\n- 暖金主光 + 青空补光 + 云反射（SSIL 氛围），强度与 BASE 日/夜一致量级\n- 唯美、低面数、大色块、古风配色；乡野与仙山意境\n- 柔和的大形体与圆钝转角；哑光／手绘感表面；压低表面碎噪声\n- **本版额外：** 保持 Godot 低面数可读性；不要油画厚涂、不要超现实体积光、不要海报级景深虚化\n\n**明确靠近的风格参考（项目文档 + `art/reference/` 已有锚）：**\n1. 《绿意新生／The Regreening》— 软形体、协调哑光色块（只借材质关系）\n2. Journey — 远山云海与简化形体（只借空间层次，不借沙漠橙）\n3. Tiny Glade — 圆钝转角与种植接合（只借草石接触，不借建筑）\n4. 宋韵青绿山水气质（非写实照片；非赛博；非欧美硬边 fantasy）\n\n**English style block (paste as-is):**\n`style lock: argon preset \"天青烟岚·宋韵青绿\"; Godot lookdev-reachable polish of THIS floating island screenshot; soft low-poly large color blocks; matte painted surfaces; cool silver-gray mist; desaturated moss green grass; rice-gray stone; jade water; warm gold key + cool sky fill matching the BASE plate; Song blue-green; subtle next-step polish NOT fantasy concept art; NO new architecture; NO new islands; NO invented props; NO peach-pink fog; NO desert orange; NO over-painted poster look; NO photoreal DSLR; NO hard fantasy`\n\n【风格】天青烟岚·宋韵青绿｜贴合当前 Godot 实机色温｜唯美低面数大色块｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【可达】这是现有浮空岛 lookdev 的「下一小步 polish」目标，不是新概念场景；构图/岛形/机位必须贴近给定 BASE 实机图\n【靠近气质】The Regreening + Journey + Tiny Glade 的软形体与哑光色块（禁止抄建筑/沙漠橙/UI）\n【主体】识海浮空岛 hangout：无房屋；现有草甸台地；外圈斜脊岩壁与竖向山根；软草唇与草石窄土缘；现有入瀑与玉色水池；现有少量树/灌木/石凳位置\n【品质】可作为桌面壁纸的游戏环境目标板；大形体可读；F11 净屏无 UI\n\nGodot lookdev-reachable wallpaper target, subtle polish of the attached BASE screenshot of this floating island, Song blue-green xianxia pastoral, soft large masses, rounded bevels, matte painted rock and grass, keep the same island silhouette camera props and basins as BASE, improve grass-rock lip and cliff bevel continuity, jade basin waterfall, warm gold sunlight and cool azure skylight matching BASE, silver mist, no new architecture, no invented layout, ultra-clean, no UI\n\nSUBJECT: 同一识海浮空岛夜景全身；保持 BASE 布局与机位；冷银灰雾；深青草；岩壁大面可读；瀑布泡沫断续；水面玉色缎面、高光收敛无大片纯白；勿改成月夜幻想海报\nCAMERA: match BASE night whole framing (same as day whole angle)\nLIGHTING: match BASE night/moon-cool key; restrained water specular\nSTYLE: 【风格】天青烟岚·宋韵青绿｜贴合当前 Godot 实机色温｜唯美低面数大色块｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【可达】这是现有浮空岛 lookdev 的「下一小步 polish」目标，不是新概念场景；构图/岛形/机位必须贴近给定 BASE 实机图\n【靠近气质】The Regreening + Journey + Tiny Glade 的软形体与哑光色块（禁止抄建筑/沙漠橙/UI）\n【主体】识海浮空岛 hangout：无房屋；现有草甸台地；外圈斜脊岩壁与竖向山根；软草唇与草石窄土缘；现有入瀑与玉色水池；现有少量树/灌木/石凳位置\n【品质】可作为桌面壁纸的游戏环境目标板；大形体可读；F11 净屏无 UI\nQUALITY: reachable night lookdev wallpaper target\nNEGATIVE: 中文：发明新建筑/新岛屿/新道具、概念海报过绘、油画厚涂、超现实体积光、管风琴柱、足球网格岩、沙漏腰、二十面体球、桃粉雾、沙漠橙、规整重复模块缝、硬边卡通描边、过曝白水高光块、塑料感草皮、写实照片噪点、现代建筑、科幻机械、文字水印、UI、logo\nEnglish: `invented architecture, new islands, new prop sets, overpainted concept-poster look, thick oil-paint look, surreal godrays, pipe-organ cliff columns, soccer-ball rock grids, hourglass waists, icosahedral blobs, peach-pink fog, desert orange, repeating modular seams, hard cartoon outlines, blown-out white water specular slabs, plastic turf, photo noise, modern buildings, sci-fi machines, watermark, UI, logo, text`, blown white water slabs, neon, peach fog, fantasy night poster\nASPECT: 16:9\nCONSTRAINT: composition-faithful to BASE_C",
+      "prompt_sha256": "a7da68793e7e032a3dbd0dcf418440aa0be0e75511ac4b75a3f52e1f54be9255",
+      "reference": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/BASE_C_night_whole.png",
+      "reference_source": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261108_wallpaper_targets/BASE_C_night_whole.png",
+      "reference_sha256": "830bfe59b8d4bb31f1a49aeced9fc332154b7d40fbbb2471ea5b3e2076903d41",
+      "target": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/TARGET_C_night_whole.png",
+      "requested_aspect": "16:9",
+      "requested_dimensions": "match BASE framing; preserve native generated size",
+      "generated_source": "/Users/yi/.codex/generated_images/01a1bd9b-7b0c-7d73-b2ef-c29a300754d8/exec-0a02b5b2-2002-45f1-83c0-aaec4fb91917.png",
+      "output_dimensions": [
+        1672,
+        941
+      ],
+      "started_at": "2026-11-09T00:04:28.036Z",
+      "finished_at": "2026-11-09T00:04:54.766Z",
+      "output_sha256": "266961def5e323dfc0e8210a32a02c11bebdaac0421407084c03324bb44620c4",
+      "tool_arguments": {
+        "referenced_image_paths": [
+          "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/BASE_C_night_whole.png"
+        ],
+        "transparent_background": false
+      },
+      "visual_review": {
+        "title": "C · 夜景全身",
+        "polish": "原布局与细碎水面反光",
+        "limitations": "云海与整体曝光明显偏暗，池中亮波纹及下瀑尾泡沫增加。"
+      },
+      "reference_dimensions": [
+        2560,
+        1440
+      ],
+      "downloads_target": "/Users/yi/Downloads/scroll_wallpaper_targets_sol61_20261109/TARGET_C_night_whole.png"
+    },
+    {
+      "variant": "D",
+      "status": "generated",
+      "prompt_summary": "日景反向，背侧块面连续与草缘贴合",
+      "prompt": "Use case: precise-object-edit\nInput image 1: the corresponding REAL Godot BASE screenshot, the edit target and sole composition authority.\nPreserve the camera, crop, island silhouette, objects, background, and day/night lighting scale. Apply only the localized reachable polish specified below.\nOutput one composition-faithful 16:9 image at the BASE framing, without labels or borders.\n\n与 v1 的关键差异（原文）\n1. **In-engine achievable**：TARGET 必须像「从当前 BASE 再 polish 一点」的可达态，而不是新概念美术。禁止发明新轮廓、新道具、新建筑、新岛屿、不同机位布局或完全不同的光雾。\n2. **风格贴回实机色温**：仍锁 argon「天青烟岚 · 宋韵青绿」，但避免 v1 的过绘 / 过 stylized / 概念海报感。色温与体量应贴近 REAL lookdev：暖金主光 + 青空补光、柔哑光、宋韵青绿；岛体外形、台地、瀑池、树丛位置与 BASE 一致可读。\n3. **构图锁死 BASE**：imagegen 时每张必须带对应 BASE 作 reference；输出构图、镜头、岛轮廓、水面位置、树石摆放尽量与 BASE 同框；只允许改善草石交接、斜脊竖根、瀑口层次、水面高光收敛等 lookdev 缺口。\n4. **参考游戏只借气质不借造型**：The Regreening / Journey / Tiny Glade 只借软形体、哑光色块、留白氛围；禁止抄它们的建筑、沙漠橙、废墟柱、UI、羊群等。\n\n风格锁 Style Lock（原文）\n**中文主锚：** argon 预设0「天青烟岚 · 宋韵青绿」\n- 冷银灰雾、低饱和苔草绿、米灰石、玉色水面（与当前 Godot 截图同色系）\n- 暖金主光 + 青空补光 + 云反射（SSIL 氛围），强度与 BASE 日/夜一致量级\n- 唯美、低面数、大色块、古风配色；乡野与仙山意境\n- 柔和的大形体与圆钝转角；哑光／手绘感表面；压低表面碎噪声\n- **本版额外：** 保持 Godot 低面数可读性；不要油画厚涂、不要超现实体积光、不要海报级景深虚化\n\n**明确靠近的风格参考（项目文档 + `art/reference/` 已有锚）：**\n1. 《绿意新生／The Regreening》— 软形体、协调哑光色块（只借材质关系）\n2. Journey — 远山云海与简化形体（只借空间层次，不借沙漠橙）\n3. Tiny Glade — 圆钝转角与种植接合（只借草石接触，不借建筑）\n4. 宋韵青绿山水气质（非写实照片；非赛博；非欧美硬边 fantasy）\n\n**English style block (paste as-is):**\n`style lock: argon preset \"天青烟岚·宋韵青绿\"; Godot lookdev-reachable polish of THIS floating island screenshot; soft low-poly large color blocks; matte painted surfaces; cool silver-gray mist; desaturated moss green grass; rice-gray stone; jade water; warm gold key + cool sky fill matching the BASE plate; Song blue-green; subtle next-step polish NOT fantasy concept art; NO new architecture; NO new islands; NO invented props; NO peach-pink fog; NO desert orange; NO over-painted poster look; NO photoreal DSLR; NO hard fantasy`\n\n【风格】天青烟岚·宋韵青绿｜贴合当前 Godot 实机色温｜唯美低面数大色块｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【可达】这是现有浮空岛 lookdev 的「下一小步 polish」目标，不是新概念场景；构图/岛形/机位必须贴近给定 BASE 实机图\n【靠近气质】The Regreening + Journey + Tiny Glade 的软形体与哑光色块（禁止抄建筑/沙漠橙/UI）\n【主体】识海浮空岛 hangout：无房屋；现有草甸台地；外圈斜脊岩壁与竖向山根；软草唇与草石窄土缘；现有入瀑与玉色水池；现有少量树/灌木/石凳位置\n【品质】可作为桌面壁纸的游戏环境目标板；大形体可读；F11 净屏无 UI\n\nGodot lookdev-reachable wallpaper target, subtle polish of the attached BASE screenshot of this floating island, Song blue-green xianxia pastoral, soft large masses, rounded bevels, matte painted rock and grass, keep the same island silhouette camera props and basins as BASE, improve grass-rock lip and cliff bevel continuity, jade basin waterfall, warm gold sunlight and cool azure skylight matching BASE, silver mist, no new architecture, no invented layout, ultra-clean, no UI\n\nSUBJECT: 同一日景反向机位；保持 BASE 背侧外立面轮廓与道具；斜脊与竖根连续；草唇不断裂；瀑池与对岸层次清楚；只做可达 polish\nCAMERA: match BASE reverse establishing\nLIGHTING: same day argon lock as Variant A / BASE\nSTYLE: 【风格】天青烟岚·宋韵青绿｜贴合当前 Godot 实机色温｜唯美低面数大色块｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【可达】这是现有浮空岛 lookdev 的「下一小步 polish」目标，不是新概念场景；构图/岛形/机位必须贴近给定 BASE 实机图\n【靠近气质】The Regreening + Journey + Tiny Glade 的软形体与哑光色块（禁止抄建筑/沙漠橙/UI）\n【主体】识海浮空岛 hangout：无房屋；现有草甸台地；外圈斜脊岩壁与竖向山根；软草唇与草石窄土缘；现有入瀑与玉色水池；现有少量树/灌木/石凳位置\n【品质】可作为桌面壁纸的游戏环境目标板；大形体可读；F11 净屏无 UI\nQUALITY: reachable reverse establishing target\nNEGATIVE: 中文：发明新建筑/新岛屿/新道具、概念海报过绘、油画厚涂、超现实体积光、管风琴柱、足球网格岩、沙漏腰、二十面体球、桃粉雾、沙漠橙、规整重复模块缝、硬边卡通描边、过曝白水高光块、塑料感草皮、写实照片噪点、现代建筑、科幻机械、文字水印、UI、logo\nEnglish: `invented architecture, new islands, new prop sets, overpainted concept-poster look, thick oil-paint look, surreal godrays, pipe-organ cliff columns, soccer-ball rock grids, hourglass waists, icosahedral blobs, peach-pink fog, desert orange, repeating modular seams, hard cartoon outlines, blown-out white water specular slabs, plastic turf, photo noise, modern buildings, sci-fi machines, watermark, UI, logo, text`\nASPECT: 16:9\nCONSTRAINT: composition-faithful to BASE_D",
+      "prompt_sha256": "b780e8159d57b40e7f04c5fb9b0aaa139da4ebbc2640b3151da4262ebaf05ae7",
+      "reference": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/BASE_D_day_reverse.png",
+      "reference_source": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261108_wallpaper_targets/BASE_D_day_reverse.png",
+      "reference_sha256": "6ff4c6f77c770e6dec118a156b42cba3d3cf01f652b98fbd6a3577be6b7fa93e",
+      "target": "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/TARGET_D_day_reverse.png",
+      "requested_aspect": "16:9",
+      "requested_dimensions": "match BASE framing; preserve native generated size",
+      "generated_source": "/Users/yi/.codex/generated_images/01a1bd9b-7b0c-7d73-b2ef-c29a300754d8/exec-32e4126d-078f-484f-a6b5-9ef6070ab0f1.png",
+      "output_dimensions": [
+        1672,
+        941
+      ],
+      "started_at": "2026-11-09T00:05:25.746Z",
+      "finished_at": "2026-11-09T00:05:50.349Z",
+      "output_sha256": "2842df96704ef8376913afc23dc54372d2d8c2c024b296cdd9b57ef194dd62fe",
+      "tool_arguments": {
+        "referenced_image_paths": [
+          "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261109_wallpaper_targets_sol61/BASE_D_day_reverse.png"
+        ],
+        "transparent_background": false
+      },
+      "visual_review": {
+        "title": "D · 日景反向",
+        "polish": "检查背侧大块面与草缘",
+        "limitations": "横向台阶与竖向重复感仍可见，草色略偏黄，局部出水成为小跌级。"
+      },
+      "reference_dimensions": [
+        2560,
+        1440
+      ],
+      "downloads_target": "/Users/yi/Downloads/scroll_wallpaper_targets_sol61_20261109/TARGET_D_day_reverse.png"
+    }
+  ],
+  "downloads_package": "/Users/yi/Downloads/scroll_wallpaper_targets_sol61_20261109",
+  "generation_completed_at": "2026-11-09T00:08:21.163093+00:00",
+  "visual_review_summary": "主要布局基本跟随对应BASE。A增雾、B草簇偏大与土边局部连续、C曝光偏暗、D背侧重复分块及跨图细节漂移，详见README。",
+  "acceptance": "生成参考已人工目视检查，Godot可达性与用户美术验收仍待后续实机验证。",
+  "verification": {
+    "checked_at": "2026-11-09T00:10:02.269109+00:00",
+    "prompt_pack_byte_identical": true,
+    "full_style_negative_and_variant_constraints_present_in_all_calls": true,
+    "base_copies_byte_identical_to_v1_and_original_godot_captures": 4,
+    "generated_copies_byte_identical_to_tool_sources": 4,
+    "png_decode_verified": [
+      "BASE_A_day_whole.png",
+      "TARGET_A_day_whole.png",
+      "BASE_B_cliff_close.png",
+      "TARGET_B_grass_rock_hero.png",
+      "BASE_C_night_whole.png",
+      "TARGET_C_night_whole.png",
+      "BASE_D_day_reverse.png",
+      "TARGET_D_day_reverse.png"
+    ],
+    "v1_files_hash_verified": 12,
+    "godot_source_scene_and_model_files_hash_verified": 151,
+    "comparison_page_local_links_verified": 23,
+    "payload_sha256_excluding_self": {
+      "BASE_A_day_whole.png": "dbcaff8b992b867ac24c66aca53eb3ea8aeed03fcff62fe0642f04ce927d8bf2",
+      "BASE_B_cliff_close.png": "869a32ededab481064bae1d98a74b09c9959d1e82e39b23a6eec9b4881fa62b9",
+      "BASE_C_night_whole.png": "830bfe59b8d4bb31f1a49aeced9fc332154b7d40fbbb2471ea5b3e2076903d41",
+      "BASE_D_day_reverse.png": "6ff4c6f77c770e6dec118a156b42cba3d3cf01f652b98fbd6a3577be6b7fa93e",
+      "PROMPTS.md": "8ae0b6bf06d584b216654b5d1e66e93f03895eb3bbf6893925d68bf96c1e5af0",
+      "README.md": "541631dbfcad0415ed15568dee3f3d304bd57427fdfb37a189665731710a16e0",
+      "TARGET_A_day_whole.png": "ad545e2a7d152e648b960e1a5694557228106f9208cc6e0a4fde6f203034c449",
+      "TARGET_B_grass_rock_hero.png": "408b8422673b258b765bc9cbbcbb64f2bd3b1d8aa553c1ac133019a20e41b97c",
+      "TARGET_C_night_whole.png": "266961def5e323dfc0e8210a32a02c11bebdaac0421407084c03324bb44620c4",
+      "TARGET_D_day_reverse.png": "2842df96704ef8376913afc23dc54372d2d8c2c024b296cdd9b57ef194dd62fe",
+      "compare.html": "7550b88e85e39e774e101b559bd685ccc4f5cc0356e26b1aa69d944e33284dd3"
+    },
+    "package_copy_files_hash_verified": 12,
+    "downloads_package": "/Users/yi/Downloads/scroll_wallpaper_targets_sol61_20261109"
+  }
+}

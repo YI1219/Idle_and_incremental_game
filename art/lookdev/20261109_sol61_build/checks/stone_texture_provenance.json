@@ -1,0 +1,7 @@
+{
+  "tool": "built-in image_gen",
+  "source": "/Users/yi/.codex/generated_images/01a1be15-2736-7d50-817f-fe25c6607c8a/exec-4a52f9f4-7406-40a7-a6d2-b57ae9d1b522.png",
+  "project_asset": "assets/terrain_editor/gouache_stone_sol61.png",
+  "role": "Unlit albedo pigment only; no generated scene pixels in actual captures.",
+  "prompt": "stone_texture_prompt.txt"
+}

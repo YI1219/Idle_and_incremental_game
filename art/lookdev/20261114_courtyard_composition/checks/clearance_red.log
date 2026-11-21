@@ -1,0 +1,33 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: planting pockets keep their full base outside the clear path corridor
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/courtyard_composition_test.gd:15)
+       [1] run (res://tests/courtyard_composition_test.gd:99)
+ERROR: at least one planted tree group has a main tree and two companions
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/courtyard_composition_test.gd:15)
+       [1] run (res://tests/courtyard_composition_test.gd:110)
+ERROR: planting pockets keep their full base outside the clear path corridor
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/courtyard_composition_test.gd:15)
+       [1] run (res://tests/courtyard_composition_test.gd:99)
+ERROR: at least one planted tree group has a main tree and two companions
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/courtyard_composition_test.gd:15)
+       [1] run (res://tests/courtyard_composition_test.gd:110)
+ERROR: planting pockets keep their full base outside the clear path corridor
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/courtyard_composition_test.gd:15)
+       [1] run (res://tests/courtyard_composition_test.gd:99)
+ERROR: at least one planted tree group has a main tree and two companions
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/courtyard_composition_test.gd:15)
+       [1] run (res://tests/courtyard_composition_test.gd:110)
+courtyard_composition: 25 checks, 6 failures

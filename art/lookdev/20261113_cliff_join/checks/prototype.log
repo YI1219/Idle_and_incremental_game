@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-13 15:13:02.133 godot[16058:78061249] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-13 15:13:05.296 godot[16058:78061249] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/original_whole.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/original_foot.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/original_reverse.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/rejected_whole.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/rejected_foot.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/rejected_reverse.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/long_tucked_whole.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/long_tucked_foot.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/long_tucked_reverse.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/nested_whole.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/nested_foot.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/nested_reverse.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/plain_whole.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/plain_foot.png
+LOOKDEV saved: res://art/lookdev/20261113_cliff_join/prototype/plain_reverse.png
+LOOKDEV: 15 frames; valid=true; errors=[]

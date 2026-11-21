@@ -1,0 +1,1213 @@
+{
+  "art_accepted": false,
+  "goal_status": "cleared_by_user",
+  "native_acceptance_frames": 130,
+  "native_diagnostic_frames": 14,
+  "wallpapers": 4,
+  "latest_day": "rock_readability_day",
+  "latest_night": "rock_readability_night",
+  "rock_response_reference": "final_day left, user preferred",
+  "held_seed_capture_stage": "meadow_fans before rock/shadow restoration",
+  "files": {
+    "00_before_day/captures.json": {
+      "bytes": 11701,
+      "sha256": "03fc026f24f36c28ad0706291be831b8767cdf2e417d870a10e9992807001ebc"
+    },
+    "00_before_day/cliff_close.png": {
+      "bytes": 2913193,
+      "sha256": "2194d28830a9f4cef39d66277760774939777ff6d5358b7f0d88a2151bf51f5a"
+    },
+    "00_before_day/close.png": {
+      "bytes": 3453420,
+      "sha256": "ca8452d66a99856b16728b82224e52d88a0fd58951cf9ca19e0d8c8943bdb5c4"
+    },
+    "00_before_day/game.png": {
+      "bytes": 3134854,
+      "sha256": "fb20417c86bb228c744dfb0829830c9e51e0ef213a06756a689acf7b58ff6924"
+    },
+    "00_before_day/reverse.png": {
+      "bytes": 2294672,
+      "sha256": "2763d36dcd05176d2101538a7e5d8994b733e946f11542936306a46dbde629c1"
+    },
+    "00_before_day/whole.png": {
+      "bytes": 2367491,
+      "sha256": "c29343cc02e8ea5aaa2409ec06e6b5bbe44a703e085d3d346d4b91c2cd4fd1b1"
+    },
+    "00_before_night/captures.json": {
+      "bytes": 11706,
+      "sha256": "f692a2a2d994c515fee7f5811e68dbe4ca3456d16c2262628d8c9d9111c4de3a"
+    },
+    "00_before_night/cliff_close.png": {
+      "bytes": 2913446,
+      "sha256": "2e24cf6fe99baa7a5219dd7870f125523657ba0159049c9c6766e12842c46403"
+    },
+    "00_before_night/close.png": {
+      "bytes": 4070575,
+      "sha256": "f501788451580119c8fc9eae88e929f5ef943b7b4662bff58cb81f980a8caddf"
+    },
+    "00_before_night/game.png": {
+      "bytes": 3067019,
+      "sha256": "33918eea960021d330bda997ab6b20397541582b23438f79c5e37dfb197097c8"
+    },
+    "00_before_night/reverse.png": {
+      "bytes": 2129813,
+      "sha256": "1423a3f3111828af2fdc7f33dea8d39ec963185fd30215264cd071e1d3a64e8c"
+    },
+    "00_before_night/whole.png": {
+      "bytes": 2415516,
+      "sha256": "36ff7b3c0ece283ff00171ec10ac54ee5f3ee756a8799c56ff7c7f95f1d812dd"
+    },
+    "03_planted_contact_day/captures.json": {
+      "bytes": 11701,
+      "sha256": "1e7eabc0dd7633755cade27468527940be2a929cd23489fe29fcf1bf61245cba"
+    },
+    "03_planted_contact_day/cliff_close.png": {
+      "bytes": 2900586,
+      "sha256": "83c1e3014aef64d09373db65c48d4344e5828052361eb8a60a83a7fc5264d9c3"
+    },
+    "03_planted_contact_day/close.png": {
+      "bytes": 3410542,
+      "sha256": "3c085cc9703d0aa06fdb10a11441aef8fd8a2374356bb492e39eaa502c8eebc7"
+    },
+    "03_planted_contact_day/game.png": {
+      "bytes": 3125398,
+      "sha256": "19fe2fd65a2c341df040cea52fbd84069c3fb0c085b31545c5a3f1b1f6532215"
+    },
+    "03_planted_contact_day/reverse.png": {
+      "bytes": 2286291,
+      "sha256": "896f65f7632789eb709d1ca6294861bb63fa08ba1d216801cca55d4bdf63cf35"
+    },
+    "03_planted_contact_day/whole.png": {
+      "bytes": 2360249,
+      "sha256": "8c3212737bacaa7a3afefba7d5f1e288a5d168ad8f0196ceb1814f34d8109c04"
+    },
+    "06_planar_soft_edges_day/captures.json": {
+      "bytes": 11820,
+      "sha256": "d58f36f2718776b953e6b88da09a5f6b6b8b5c6f17f0a56c1bc01750bad54f0a"
+    },
+    "06_planar_soft_edges_day/cliff_close.png": {
+      "bytes": 2951177,
+      "sha256": "f2a7e201b7de2dac062bac375b0698bfe6e9778dfd0241e4a7a8a619e22b4f7b"
+    },
+    "06_planar_soft_edges_day/close.png": {
+      "bytes": 3471849,
+      "sha256": "f49410bee52cc7491f49d9ba2625589149d2f0fbeb397318af890e253a09236f"
+    },
+    "06_planar_soft_edges_day/game.png": {
+      "bytes": 3181171,
+      "sha256": "cbe0ce568a9833b940a74c4fa70e98b0c228ff5d9416e974e40a7adf33cd6bdd"
+    },
+    "06_planar_soft_edges_day/reverse.png": {
+      "bytes": 2311139,
+      "sha256": "66d2470e9d93855e51aeba9117de3040475dc72aad65ecf57e1f89e2577fc320"
+    },
+    "06_planar_soft_edges_day/whole.png": {
+      "bytes": 2399623,
+      "sha256": "e9185e068d4e3f4bcc54e56baa05b6a87700e6efed5d9ed88f7f306121e15a6d"
+    },
+    "10_painted_surface_day/captures.json": {
+      "bytes": 14359,
+      "sha256": "a930689fa337de41a77d9441b8c43b8263d5d284ca116c80c08117a439fb1ade"
+    },
+    "10_painted_surface_day/cliff_close.png": {
+      "bytes": 3886719,
+      "sha256": "ea28ea2c08e7e2755adf86c5742dcad3a0eb9704753d466a9c8217a7ca863e34"
+    },
+    "10_painted_surface_day/close.png": {
+      "bytes": 4434216,
+      "sha256": "324ab41fc9c0bf627a4c9482430d84a4444e7f4f4f8a7aded52309df28e6cde2"
+    },
+    "10_painted_surface_day/game.png": {
+      "bytes": 3688817,
+      "sha256": "aea9cdce671ec31c0245f48f5890b325c63a736c1773472508bc3004a970898f"
+    },
+    "10_painted_surface_day/reverse.png": {
+      "bytes": 2354203,
+      "sha256": "4e8bc493db660b7f434dc663dc7d7a514f96168f52fce3e8c4e9ff4ea59639e1"
+    },
+    "10_painted_surface_day/whole.png": {
+      "bytes": 2683977,
+      "sha256": "514933a4789cd1550a732dd80bda047fbd2417ba265c00949920a5c098e1a20f"
+    },
+    "11_water_satin_day/captures.json": {
+      "bytes": 14359,
+      "sha256": "21f8c87712fa47f0ce1414967f99c7363841ef5624030fc2269a3275838209eb"
+    },
+    "11_water_satin_day/cliff_close.png": {
+      "bytes": 3886683,
+      "sha256": "79b2c8f6865353f0307da36ffca2f208dd5aaf1aafee4ca1484c628f665aa127"
+    },
+    "11_water_satin_day/close.png": {
+      "bytes": 4434216,
+      "sha256": "324ab41fc9c0bf627a4c9482430d84a4444e7f4f4f8a7aded52309df28e6cde2"
+    },
+    "11_water_satin_day/game.png": {
+      "bytes": 3689833,
+      "sha256": "717074991318b0d9e00ed7abbb58d372f9bd37d8123262f0dcec906dc8a0dd24"
+    },
+    "11_water_satin_day/reverse.png": {
+      "bytes": 2354197,
+      "sha256": "dd73fa2ab200617cad205615ca604ef1d93f8acf42ac8976a45182b1f865bc23"
+    },
+    "11_water_satin_day/whole.png": {
+      "bytes": 2689430,
+      "sha256": "6e028d676c3beb9a3093762add54849d9dc63a6ace43afef714bf8486e0969b9"
+    },
+    "12_material_before_locked_day/captures.json": {
+      "bytes": 14483,
+      "sha256": "e8303639af06110d7224d2ef766c1b7ec997b3cd822ff05418811225992c1973"
+    },
+    "12_material_before_locked_day/cliff_close.png": {
+      "bytes": 3850035,
+      "sha256": "897b3859c6f3f3e56066fc369ef06f343ac286bacbc699c184f60d581192c087"
+    },
+    "12_material_before_locked_day/close.png": {
+      "bytes": 5004855,
+      "sha256": "4ae76c401aba79e0ad9c549d48ae0a04bffc9bed60a8d6eb46b44eed5068b926"
+    },
+    "12_material_before_locked_day/game.png": {
+      "bytes": 3947732,
+      "sha256": "da33126398370151209a8ff314b3e6e88758769ba4bcb361eb614ee924606ac7"
+    },
+    "12_material_before_locked_day/reverse.png": {
+      "bytes": 2195957,
+      "sha256": "361c1629e102935551d837e4ec06594a94d3288ec705f512c64b5f17b410ecaf"
+    },
+    "12_material_before_locked_day/whole.png": {
+      "bytes": 2855012,
+      "sha256": "964c4522a23f882814cbcc98d66956ccf119264a1ce4b0844e3d3c1daeaedd9f"
+    },
+    "12_material_before_locked_night/captures.json": {
+      "bytes": 14548,
+      "sha256": "08b425f2d7d438f590fd1a92e973bb1f58b187ee94aad48b07f2bf0f713f15b0"
+    },
+    "12_material_before_locked_night/cliff_close.png": {
+      "bytes": 3026719,
+      "sha256": "a0248f5a19d38ff3122e25fd8c1238f01e7de5f656e40cb84a4dcc7195c51d43"
+    },
+    "12_material_before_locked_night/close.png": {
+      "bytes": 4057101,
+      "sha256": "7d59587b183aa5548904e077b08eca267c1523f2a1b79fae2883cd83c56b0819"
+    },
+    "12_material_before_locked_night/game.png": {
+      "bytes": 3213655,
+      "sha256": "48ea174f1aa2761633aa3cd93c838cdc706754858c056f24e967571326e076af"
+    },
+    "12_material_before_locked_night/reverse.png": {
+      "bytes": 1966166,
+      "sha256": "619ec18475854c85b9e888923d07f18a4b4b2eea18f07891737c32a74541c8f2"
+    },
+    "12_material_before_locked_night/whole.png": {
+      "bytes": 2527812,
+      "sha256": "70787b9b8d819cd912fbc844ff507a03819ecd660917f4b03eb75469b77552ef"
+    },
+    "README.md": {
+      "bytes": 7576,
+      "sha256": "fe78ad1ce3de74697b506c4161bcda8f4b413258518ca8ddf9bf0f8c775fa236"
+    },
+    "assets/gouache_stone_sol61.png": {
+      "bytes": 2521130,
+      "sha256": "7b1e66a1c597dcaed2d09bd5d3185982664a772bd87001bba965dee9e1de0059"
+    },
+    "checks/analyze_materials.py": {
+      "bytes": 3541,
+      "sha256": "9a80715834bb584e8e9ec124b85e788f1e8677d1d2f20c359c7cda81f6707e32"
+    },
+    "checks/capture_audit.json": {
+      "bytes": 10359,
+      "sha256": "46af5ba06bfc30df2b02323d0981d27c53dbacd83481dad197dc7dd95b2c36af"
+    },
+    "checks/compare_link_audit.json": {
+      "bytes": 1638,
+      "sha256": "16c3218078f9d977d7a39530aaeb3a4f984c774d07f77525493b54b03105a9b5"
+    },
+    "checks/continuation_before/scripts__terrain_editor__grass_field.gd": {
+      "bytes": 8262,
+      "sha256": "ffe8d4cf6b7db2e7a3db76fd870831f5106bcf090b818f076b0e7b8a1a823bc3"
+    },
+    "checks/continuation_before/scripts__terrain_editor__terrain_environment.gd": {
+      "bytes": 16766,
+      "sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4"
+    },
+    "checks/continuation_before/shaders__terrain_editor__stone_surface.gdshaderinc": {
+      "bytes": 9565,
+      "sha256": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90"
+    },
+    "checks/continuation_before/sources.json": {
+      "bytes": 355,
+      "sha256": "d8141d79d55f27c0353f2b170ca832181047bbbdbc2a424dd1f2b22715d4775d"
+    },
+    "checks/continuation_capture_audit.json": {
+      "bytes": 4239,
+      "sha256": "a4a352e3bb222d2773fa2ad56a87d95b2ed20c8df318b9b589313e5a4b173a59"
+    },
+    "checks/continuation_production/scripts__terrain_editor__grass_field.gd": {
+      "bytes": 8477,
+      "sha256": "17b9a597aa7ba00a3d0318d285f77d770ecd4d4c14ae4caf41c8680e26c582bd"
+    },
+    "checks/continuation_production/scripts__terrain_editor__terrain_environment.gd": {
+      "bytes": 16913,
+      "sha256": "1ccbb8b29b6c7bfd8fdf88ec57512a4f25a26e7ed879be7bde6d826920a12541"
+    },
+    "checks/continuation_production/shaders__terrain_editor__stone_surface.gdshaderinc": {
+      "bytes": 9645,
+      "sha256": "a5a75cf43706fff55a0f769756b0930207ba5002619c46f08142e47db273b49c"
+    },
+    "checks/continuation_production/sources.json": {
+      "bytes": 457,
+      "sha256": "4b7be83b874d4a85c4498257d735bcabfd6197fdc3742d69260c7e2eddd28f5e"
+    },
+    "checks/continuation_production/tools__art__capture_lookdev.gd": {
+      "bytes": 18318,
+      "sha256": "d835fa9e6c5d97cef6916ece9e85fc06c0eaed8af30055d0ccf2195957194e04"
+    },
+    "checks/continued_argon.log": {
+      "bytes": 793,
+      "sha256": "924917cb9bea06d36d0c12807467ce8775d3d2d095ce06c3866a323443d4c13d"
+    },
+    "checks/continued_compare_audit.json": {
+      "bytes": 165,
+      "sha256": "c7073463dd8f95c8fbedc2628a47d3781ca80e09f00409720b0f24272d7ce703"
+    },
+    "checks/continued_grass.log": {
+      "bytes": 462,
+      "sha256": "8334a2fdcd237e0022d355b283c5ab84cf9e40526ff2d8bb88a9d83799b029a5"
+    },
+    "checks/continued_lip.log": {
+      "bytes": 2142,
+      "sha256": "23f0c960aae0d372983c3895d15f0e14f7aa21793e174a4dea2f1039afe5bf6c"
+    },
+    "checks/continued_post_capture_sources.json": {
+      "bytes": 6107,
+      "sha256": "bf84d1158846409a681f25cdf49a8f1e40657a3bd7204fae3b3b8c57ea14c5a5"
+    },
+    "checks/continued_runtime.log": {
+      "bytes": 233,
+      "sha256": "d996a00d4afdf244459b4857ea34bcc0c548a54b0d53c54fae372d43c15c11e0"
+    },
+    "checks/continued_scene.log": {
+      "bytes": 586,
+      "sha256": "f2a192dca8c08ac0e077c428dc942bc8e8f5c210bc75c08dbe8e0ffcf6acf96b"
+    },
+    "checks/material_probe_20261109/captures.json": {
+      "bytes": 13041,
+      "sha256": "afea503dbffbc07156526011120799a7f85503699399b37f4427f08dbb6e8b7a"
+    },
+    "checks/material_probe_20261109/flat_color_normal.png": {
+      "bytes": 3655977,
+      "sha256": "3ef31186f183b6b2ebead7e818c894dac31ef5005daf2058388f8604fd096e90"
+    },
+    "checks/material_probe_20261109/flat_no_screen_gi.png": {
+      "bytes": 1893654,
+      "sha256": "0c7b953607cbd3371c19d3645dcaf43ac5a7f173b705a4b61b460c4ea0b95865"
+    },
+    "checks/material_probe_20261109/flat_no_shadow.png": {
+      "bytes": 1918923,
+      "sha256": "763f4514690a36fdec107c4595617767da44bbb4fcaaa0f23a3fefabc18866e2"
+    },
+    "checks/material_probe_20261109/isolation_crop.png": {
+      "bytes": 130494,
+      "sha256": "8ddd239a53864909dadcd89224c83b49d1740ff708e222451645c449d209f92d"
+    },
+    "checks/material_probe_20261109/metrics.json": {
+      "bytes": 383,
+      "sha256": "446ab16a31e33924b21956f1f02dac77510b15e1d110ac452ab045646bd5a7c0"
+    },
+    "checks/material_probe_20261109/probe_source.gd.txt": {
+      "bytes": 1372,
+      "sha256": "4b1ff618d9c6832e5f79603786bc68a7eeccb7b452d6cddfbf8317442d852c9e"
+    },
+    "checks/material_probe_20261109/production.png": {
+      "bytes": 3775400,
+      "sha256": "836f5d5e14e0ecd948e5678e7b42e46b7a06db3ca0f032a4ba4e93805dccc0cb"
+    },
+    "checks/material_replay.json": {
+      "bytes": 1572,
+      "sha256": "235524a52d964b327862b930a911d944ab53abd2679fba0dc233301990769cf0"
+    },
+    "checks/meadow_capture_audit.json": {
+      "bytes": 2549,
+      "sha256": "5d1026862eae1fe00ea45bc88aca749554cd6907e736ed2a4a130ae4f00cff4d"
+    },
+    "checks/meadow_cluster_before/intent.json": {
+      "bytes": 537,
+      "sha256": "c1bb5fae60dce801bd2366028cd513aff64a54edf8c8edf8b0698ce2c29e2980"
+    },
+    "checks/meadow_cluster_before/scripts__terrain_editor__grass_field.gd": {
+      "bytes": 8477,
+      "sha256": "17b9a597aa7ba00a3d0318d285f77d770ecd4d4c14ae4caf41c8680e26c582bd"
+    },
+    "checks/meadow_cluster_before/shaders__terrain_editor__grass_blades.gdshader": {
+      "bytes": 4424,
+      "sha256": "116742b3a8c2b7b8cf648ef5c622f1382c071cb9f41d99d3f93b9ec7f1a40289"
+    },
+    "checks/meadow_cluster_before/sources.json": {
+      "bytes": 232,
+      "sha256": "add32f68db1da0445126fda3b0abd2738583e67d5e9ee1a08d21d6e625231008"
+    },
+    "checks/meadow_compare_audit.json": {
+      "bytes": 165,
+      "sha256": "517bc2e63ffcbd89000bb2cfec513f20982623b319383c6201a530d90910d775"
+    },
+    "checks/meadow_grass.log": {
+      "bytes": 462,
+      "sha256": "8334a2fdcd237e0022d355b283c5ab84cf9e40526ff2d8bb88a9d83799b029a5"
+    },
+    "checks/meadow_post_capture_sources.json": {
+      "bytes": 340,
+      "sha256": "7f2e70f1f66722f8d7a01c83d20b896c5ad4214e2d4af556dcc44cf214adb225"
+    },
+    "checks/meadow_production/scripts__terrain_editor__grass_field.gd": {
+      "bytes": 8600,
+      "sha256": "1e92723530c3c05b5fa19664de714a70c2c0bdf66f2316132f877fcde522e116"
+    },
+    "checks/meadow_production/shaders__terrain_editor__grass_blades.gdshader": {
+      "bytes": 5071,
+      "sha256": "524a3471d42ab63612963adc6b54457201830a8a47c2cea043e86767d4c4e670"
+    },
+    "checks/meadow_production/sources.json": {
+      "bytes": 232,
+      "sha256": "94ba5aa53c63465ff0a0c8ef1006203d7184b7488b8bc4923a0f9b486a6e002a"
+    },
+    "checks/meadow_review.json": {
+      "bytes": 1036,
+      "sha256": "7686176c00ff4fa1aafbfeb0b7f3155de606135c043c658afc18f866b83d85c7"
+    },
+    "checks/meadow_scene.log": {
+      "bytes": 586,
+      "sha256": "f2a192dca8c08ac0e077c428dc942bc8e8f5c210bc75c08dbe8e0ffcf6acf96b"
+    },
+    "checks/normal_bias_probe_20261109/captures.json": {
+      "bytes": 14662,
+      "sha256": "4c8fbc2e4f4c3df04cbb9031128fbf1127651f6701fd13d1cf92a182c537a87c"
+    },
+    "checks/normal_bias_probe_20261109/metrics.json": {
+      "bytes": 450,
+      "sha256": "e51a6455c43f169390251b6a7840213a3e010422db4ecaf72f717a76411abc9c"
+    },
+    "checks/normal_bias_probe_20261109/normal_070.png": {
+      "bytes": 3552654,
+      "sha256": "198b0df35d6efa22e5d4155d464533aa7b05d71d739ef3bf78244a9118ecf736"
+    },
+    "checks/normal_bias_probe_20261109/normal_100.png": {
+      "bytes": 3531645,
+      "sha256": "7cfa7f32484d3ccdab3202fa89fba1e397f0d19b17a768f7fe3902ab5ebe4dbc"
+    },
+    "checks/normal_bias_probe_20261109/normal_150.png": {
+      "bytes": 3496628,
+      "sha256": "b938085d961fb1a0247a3f98b88c28197f04ab9c3fba30091fba59f0c609cb56"
+    },
+    "checks/normal_bias_probe_20261109/normal_200.png": {
+      "bytes": 3460426,
+      "sha256": "41096174fd27179285ba889d8f19dd3ad350b3abcd54a990e542645cab033904"
+    },
+    "checks/normal_bias_probe_20261109/normal_300.png": {
+      "bytes": 3389321,
+      "sha256": "19ac8ab1f48c92ed37c3db6fbd2edce1536b8c491b3ad6ea26b68430f5c3bb58"
+    },
+    "checks/normal_bias_probe_20261109/normal_crop.png": {
+      "bytes": 259944,
+      "sha256": "f036c76251580898118ac878b1369d5024af93c054736586983b02722bcc033b"
+    },
+    "checks/normal_bias_probe_20261109/probe_source.gd.txt": {
+      "bytes": 400,
+      "sha256": "9a67575762ff2c4dc1093ab99bc2828601010911a4edf8a5552b75596dc09ad0"
+    },
+    "checks/normal_bias_probe_20261109/root_contact.png": {
+      "bytes": 190876,
+      "sha256": "d6cbce1a05d35de3dca7415d169bf6874806cec90d2c74a43db1ed28d8328bda"
+    },
+    "checks/post_capture_source.json": {
+      "bytes": 6184,
+      "sha256": "06e7d45d5df9a69b4d86251cc6dfdbb849fe58ec58c311b60ff77bda82de337f"
+    },
+    "checks/primary_material_before_08/scripts__terrain_editor__material_detail.gd": {
+      "bytes": 1395,
+      "sha256": "6246674c4cac215700a5823731593a6e39eb1b6dbf26d9b525c3d915282e68c2"
+    },
+    "checks/primary_material_before_08/shaders__terrain_editor__cliff.gdshader": {
+      "bytes": 1347,
+      "sha256": "a1c60dc13e9b99b3b5867f8e2f12ca0a820a944e877d087d353d35bc4c52fe58"
+    },
+    "checks/primary_material_before_08/shaders__terrain_editor__cliff_column.gdshader": {
+      "bytes": 1555,
+      "sha256": "6fbfe201be99f7cfc742315d1674accea2018989f29ca25c787485fbaf1ee120"
+    },
+    "checks/primary_material_before_08/shaders__terrain_editor__grass_blades.gdshader": {
+      "bytes": 3488,
+      "sha256": "4773a2f854fc413d3a09b5e86d1a7d6eea9b6a389dc4c30c654d873d9b49a4df"
+    },
+    "checks/primary_material_before_08/shaders__terrain_editor__ground.gdshader": {
+      "bytes": 2282,
+      "sha256": "39029cbb0fb0f0e8c2eb9b8358bc90ae80dc71a6cac76c61b471a2ca7e6616d2"
+    },
+    "checks/primary_material_before_08/shaders__terrain_editor__ground_cover.gdshaderinc": {
+      "bytes": 4563,
+      "sha256": "c51bab7b951c0650a4be2227f371d5282096ef477a122121a71997f3d1d9ef6d"
+    },
+    "checks/primary_material_before_08/shaders__terrain_editor__stone_surface.gdshaderinc": {
+      "bytes": 8012,
+      "sha256": "5499933c6a116cc66e31a4d7f913c6d0f03290ad4905d9c911acb082b94f0e2c"
+    },
+    "checks/primary_material_delivery.json": {
+      "bytes": 820,
+      "sha256": "463ba9bddbe439f04e01596c250519230f026f380c001fb91b62b10581afde49"
+    },
+    "checks/primary_material_delivery/scripts__terrain_editor__material_detail.gd": {
+      "bytes": 895,
+      "sha256": "0205f830419ea87798c4b4def885cb84174a8cb3bc0614b2ccea798c236c5d32"
+    },
+    "checks/primary_material_delivery/shaders__terrain_editor__cliff.gdshader": {
+      "bytes": 1208,
+      "sha256": "eefc39e9938d7b6a2e30330dcb757e9ca08b00d6a5e92e6ecb0d1165e42598d9"
+    },
+    "checks/primary_material_delivery/shaders__terrain_editor__cliff_column.gdshader": {
+      "bytes": 1482,
+      "sha256": "e5796f58a9b7f5104a50468ca947b9fe43b39157180153206d40f5f6685be2fc"
+    },
+    "checks/primary_material_delivery/shaders__terrain_editor__grass_blades.gdshader": {
+      "bytes": 4424,
+      "sha256": "116742b3a8c2b7b8cf648ef5c622f1382c071cb9f41d99d3f93b9ec7f1a40289"
+    },
+    "checks/primary_material_delivery/shaders__terrain_editor__ground.gdshader": {
+      "bytes": 2282,
+      "sha256": "39029cbb0fb0f0e8c2eb9b8358bc90ae80dc71a6cac76c61b471a2ca7e6616d2"
+    },
+    "checks/primary_material_delivery/shaders__terrain_editor__ground_cover.gdshaderinc": {
+      "bytes": 5082,
+      "sha256": "7f8156fee6e04896015b3a81db5e037014299ba3bfaeb9dd0583dd056c1c3703"
+    },
+    "checks/primary_material_delivery/shaders__terrain_editor__stone_surface.gdshaderinc": {
+      "bytes": 9565,
+      "sha256": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90"
+    },
+    "checks/readability_argon.log": {
+      "bytes": 793,
+      "sha256": "924917cb9bea06d36d0c12807467ce8775d3d2d095ce06c3866a323443d4c13d"
+    },
+    "checks/readability_compare_audit.json": {
+      "bytes": 165,
+      "sha256": "be148c02b97ee54738690dcb17d9db003f09fa75956e28ecb69e06923bc60833"
+    },
+    "checks/readability_scene.log": {
+      "bytes": 586,
+      "sha256": "f2a192dca8c08ac0e077c428dc942bc8e8f5c210bc75c08dbe8e0ffcf6acf96b"
+    },
+    "checks/rock_readability_audit.json": {
+      "bytes": 1936,
+      "sha256": "d8cedb083527c30a2e8d65cfc2f4d66d2ebf2162d48aa51205e054a0b6466ed2"
+    },
+    "checks/rock_readability_before/intent.json": {
+      "bytes": 314,
+      "sha256": "4fb57578888b62c5f3204beb6cc76c71924ab2d4675304f02b06c370226ff4db"
+    },
+    "checks/rock_readability_before/scripts__terrain_editor__terrain_environment.gd": {
+      "bytes": 16913,
+      "sha256": "1ccbb8b29b6c7bfd8fdf88ec57512a4f25a26e7ed879be7bde6d826920a12541"
+    },
+    "checks/rock_readability_before/shaders__terrain_editor__stone_surface.gdshaderinc": {
+      "bytes": 9645,
+      "sha256": "a5a75cf43706fff55a0f769756b0930207ba5002619c46f08142e47db273b49c"
+    },
+    "checks/rock_readability_before/sources.json": {
+      "bytes": 244,
+      "sha256": "249f5adb0364d20c6f3b4c4942b71219c537f4712ce7b06e33705884f282dd39"
+    },
+    "checks/rock_readability_post_sources.json": {
+      "bytes": 352,
+      "sha256": "684fbd9063a34a6a9792b45f4e34a7afbeed6a7f7b3417f4df61a58c83cd90c8"
+    },
+    "checks/rock_readability_production/scripts__terrain_editor__terrain_environment.gd": {
+      "bytes": 16766,
+      "sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4"
+    },
+    "checks/rock_readability_production/shaders__terrain_editor__stone_surface.gdshaderinc": {
+      "bytes": 9565,
+      "sha256": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90"
+    },
+    "checks/rock_readability_production/sources.json": {
+      "bytes": 244,
+      "sha256": "89db4813b7c9d8cef56fbbce7e171cfb490110ceaac3f291bc19be34594e04d8"
+    },
+    "checks/shadow_probe_20261109/bias_035.png": {
+      "bytes": 3775400,
+      "sha256": "836f5d5e14e0ecd948e5678e7b42e46b7a06db3ca0f032a4ba4e93805dccc0cb"
+    },
+    "checks/shadow_probe_20261109/bias_100.png": {
+      "bytes": 3552661,
+      "sha256": "b61605b76e81bb9ded3d40e55c0ec6128dcb1f3be2ce94f39d9edfe09ab44c2d"
+    },
+    "checks/shadow_probe_20261109/bias_200.png": {
+      "bytes": 3210365,
+      "sha256": "25868503b8c9f540c28d3ce053d1ee95bbd72c61a08cca6beb02aac055b2adc6"
+    },
+    "checks/shadow_probe_20261109/bias_350.png": {
+      "bytes": 2984806,
+      "sha256": "fa8ddc310c43be253d26823b4797f71fc59090a021b67a1674ee63d5f7fd0335"
+    },
+    "checks/shadow_probe_20261109/bias_600.png": {
+      "bytes": 2886477,
+      "sha256": "323ef8f6c1a6861e70edc0059d0e3fbc99dd87e64765a7a5a7b4de72e9302f61"
+    },
+    "checks/shadow_probe_20261109/bias_crop.png": {
+      "bytes": 206811,
+      "sha256": "ab911924a74423da52620d7ad595b1023e9d719be1eec3510f4f96c5c4ec289e"
+    },
+    "checks/shadow_probe_20261109/captures.json": {
+      "bytes": 14652,
+      "sha256": "8461c3f7c7651cea1b2f0772d219b4141001e68d5d4cbd6c1fe34bda68f56a3b"
+    },
+    "checks/shadow_probe_20261109/metrics.json": {
+      "bytes": 443,
+      "sha256": "797094d646a48002933c95fda307b4a6cb0db6fd280c2cf2ce623870ec69b0a7"
+    },
+    "checks/shadow_probe_20261109/probe_source.gd.txt": {
+      "bytes": 428,
+      "sha256": "cc4d8442089f6094e72f652041054da5939e5c66e76819ff7c90a3d16f119285"
+    },
+    "checks/shadow_probe_20261109/root_contact.png": {
+      "bytes": 225439,
+      "sha256": "2671213114db585f06b5a1e20f530ba61270fda717de45945ebd124127b5705a"
+    },
+    "checks/stone_texture_prompt.txt": {
+      "bytes": 1583,
+      "sha256": "54d1fd8469a594e769cc8f14c6b0d27c8699806a4dcff183b735d11c350ea9af"
+    },
+    "checks/stone_texture_provenance.json": {
+      "bytes": 361,
+      "sha256": "a6176b69541280b4bdde2369808f82dbd39fa3eeb358821255891905e43b4e54"
+    },
+    "checks/verified_argon.log": {
+      "bytes": 793,
+      "sha256": "924917cb9bea06d36d0c12807467ce8775d3d2d095ce06c3866a323443d4c13d"
+    },
+    "checks/verified_grass.log": {
+      "bytes": 462,
+      "sha256": "8334a2fdcd237e0022d355b283c5ab84cf9e40526ff2d8bb88a9d83799b029a5"
+    },
+    "checks/verified_lip.log": {
+      "bytes": 2142,
+      "sha256": "23f0c960aae0d372983c3895d15f0e14f7aa21793e174a4dea2f1039afe5bf6c"
+    },
+    "checks/verified_runtime.log": {
+      "bytes": 233,
+      "sha256": "d996a00d4afdf244459b4857ea34bcc0c548a54b0d53c54fae372d43c15c11e0"
+    },
+    "checks/verified_scene.log": {
+      "bytes": 586,
+      "sha256": "f2a192dca8c08ac0e077c428dc942bc8e8f5c210bc75c08dbe8e0ffcf6acf96b"
+    },
+    "clean_stone_day/captures.json": {
+      "bytes": 15025,
+      "sha256": "d99c98d0ebdfcaa0b5bbbd69de419df00ee6bec59f09083c1f6c64d513977038"
+    },
+    "clean_stone_day/cliff_close.png": {
+      "bytes": 2995020,
+      "sha256": "e3dea2126aa9d78ccf67dfca54880a45f9d060b3a520f42660d44b461fd132ad"
+    },
+    "clean_stone_day/close.png": {
+      "bytes": 4163232,
+      "sha256": "fbd9ae8cc800b8dbd511e8f282788718091cc8c28df97e572aafb7ccd0314dd6"
+    },
+    "clean_stone_day/game.png": {
+      "bytes": 3157706,
+      "sha256": "b083c4283e1273465080c8b66d4e8b0186e61d87a7676bbc14f6f4f5d2350889"
+    },
+    "clean_stone_day/reverse.png": {
+      "bytes": 2203898,
+      "sha256": "f6ecc4a5e4ac22b6eba731cd9c742c35622b40a0e24a4f2daca63435e8ac4e67"
+    },
+    "clean_stone_day/whole.png": {
+      "bytes": 2363868,
+      "sha256": "2b787f876400ed3c122cef579dc98e4477485e780b3d5a0ea1eec1c9a03b2462"
+    },
+    "compare.html": {
+      "bytes": 8769,
+      "sha256": "fd65c13be6b487d563ae662351a6cee69cd26447d0e6e76f89670c57b6e5c91b"
+    },
+    "continued_seed_2104/captures.json": {
+      "bytes": 15025,
+      "sha256": "4730cada9884d676849aa875cd565a1a8bfa030c16b4c3ea3efff4265e232f9f"
+    },
+    "continued_seed_2104/cliff_close.png": {
+      "bytes": 3029928,
+      "sha256": "414767815cb84ca3e3d889d8008d420250b6978f15d341a7d1b51f66021d0634"
+    },
+    "continued_seed_2104/close.png": {
+      "bytes": 4174566,
+      "sha256": "b7ae549f8c7f7ca089966c134febe5b1a51d6bda58e1eda2d3dfd5dcf766c76f"
+    },
+    "continued_seed_2104/game.png": {
+      "bytes": 3151916,
+      "sha256": "fa6a47d5bf6b77105efff19619bf979ba556daa38d838f261ac4431c43c2673a"
+    },
+    "continued_seed_2104/reverse.png": {
+      "bytes": 2221364,
+      "sha256": "ae9c12d6effa5586a9fab999686775d65e41d0680c92545729265321aeadcd37"
+    },
+    "continued_seed_2104/whole.png": {
+      "bytes": 2351579,
+      "sha256": "f561f26f3cd0e236d06be87cd3981a6e58d1a3b4c2326448e875534beb0adf2e"
+    },
+    "continued_seed_4242/captures.json": {
+      "bytes": 15025,
+      "sha256": "4aba7110274a265e4b3d0d6229fdc01ede479ea3172bf67b29069c37c6d7de27"
+    },
+    "continued_seed_4242/cliff_close.png": {
+      "bytes": 2813295,
+      "sha256": "60ae31a0264191048611534982c16ec379dd53c89086606decfdad8ae957305b"
+    },
+    "continued_seed_4242/close.png": {
+      "bytes": 3882918,
+      "sha256": "175a3e4b3c4b32b4cd1aebfe5361fa61260de63236a2d8fb6373deed50585ade"
+    },
+    "continued_seed_4242/game.png": {
+      "bytes": 2988817,
+      "sha256": "890b3079cecfd405bc5b38099c97f80c866d9735979bdfefbf9cb242b3136699"
+    },
+    "continued_seed_4242/reverse.png": {
+      "bytes": 2091684,
+      "sha256": "f958821d770e57854eb0aac71e1460276e1668e0a0ae65d0fd280ba06bdca101"
+    },
+    "continued_seed_4242/whole.png": {
+      "bytes": 2283250,
+      "sha256": "d427e0e14f266072bec818be04caadcd2095bc8565e574ba5b28340c3e5b2adb"
+    },
+    "continued_seed_913/captures.json": {
+      "bytes": 15024,
+      "sha256": "9c4b784003b169b23d4a06b61662a3170e37771b3cfb46a1234ef040c7b79374"
+    },
+    "continued_seed_913/cliff_close.png": {
+      "bytes": 2977698,
+      "sha256": "f70343e7c9d69619a58f6285003002e0b85c48bc4499c95046dc3e1c32839418"
+    },
+    "continued_seed_913/close.png": {
+      "bytes": 4270027,
+      "sha256": "d62e8b73d9e9e4f2cdbdb1cfa0496cc3c6b6cb9ae3f4780cabb18e2ada33f525"
+    },
+    "continued_seed_913/game.png": {
+      "bytes": 3135797,
+      "sha256": "c290ce3505d9b7e2be1aeed421f585fdc0c12b8c3ac4d96c14a754740dddd104"
+    },
+    "continued_seed_913/reverse.png": {
+      "bytes": 2195501,
+      "sha256": "792f52f3872275a332f908663b126789b03d196587588c034aef63a81b80fc83"
+    },
+    "continued_seed_913/whole.png": {
+      "bytes": 2348998,
+      "sha256": "4d88280b7ada07743358c902a2b8beb75c879837ca6fac2cc03c006fd9a16d9a"
+    },
+    "final_day/captures.json": {
+      "bytes": 14615,
+      "sha256": "bd3a0884a062d7865b65571018369908aea9a5d41f07f0e5c384bf8568b928ea"
+    },
+    "final_day/cliff_close.png": {
+      "bytes": 3775400,
+      "sha256": "836f5d5e14e0ecd948e5678e7b42e46b7a06db3ca0f032a4ba4e93805dccc0cb"
+    },
+    "final_day/close.png": {
+      "bytes": 4436946,
+      "sha256": "dbc369ee13a8efa8cd3189c83b1e00d40ffad56d623939ec8cc3f2fa9f85408b"
+    },
+    "final_day/game.png": {
+      "bytes": 3642441,
+      "sha256": "b900994faf182d854b707f3fcddafbf5bc1769e89f4a9b55c1b928d28a47de79"
+    },
+    "final_day/reverse.png": {
+      "bytes": 2224605,
+      "sha256": "31f33c65b0e828d6edb4e578197852f1f58967ce9a5cfd9c43bb9c183248ffd5"
+    },
+    "final_day/whole.png": {
+      "bytes": 2668303,
+      "sha256": "36e389508f039ee3af0985b558339b76fcaf6a7dbf59a88577cc6b98ec5cf1d1"
+    },
+    "final_night/captures.json": {
+      "bytes": 14680,
+      "sha256": "846f1f88924c2e799b4d662f14a4aea48c3b3065db493afcf1b845ef52562332"
+    },
+    "final_night/cliff_close.png": {
+      "bytes": 3015744,
+      "sha256": "5d1b2c5d0ecca07e43bf99bca2d95793f511517e69d348d080c5b3512f53b0ca"
+    },
+    "final_night/close.png": {
+      "bytes": 3588384,
+      "sha256": "bf88cf41004b3ea72619e27ddb3b083d98d9c409c4c0f8021aefa99c76f47898"
+    },
+    "final_night/game.png": {
+      "bytes": 3024275,
+      "sha256": "a4a1c8eb4336985f67997ce6c1558b2ef8bf6b1b6960182b0283a570341c3709"
+    },
+    "final_night/reverse.png": {
+      "bytes": 1933705,
+      "sha256": "e35870946a70e4bd965e33c33bcd5cc9329b975e291f0be9b0d3605ec272e1ba"
+    },
+    "final_night/whole.png": {
+      "bytes": 2401320,
+      "sha256": "5f8e53203704f40d60c1166eecea0f408ba1f17a9fa6f00dca14a7de9d1dd8ae"
+    },
+    "held_seed_2104/captures.json": {
+      "bytes": 14615,
+      "sha256": "a2f46337e7749e92d730c44ed76825a09916ed8c17ac10ecfb12425538c20989"
+    },
+    "held_seed_2104/cliff_close.png": {
+      "bytes": 3768413,
+      "sha256": "b2a1b47d507bcb432970a2a3a27e0bbba468117483e1322301a50967ec476bbc"
+    },
+    "held_seed_2104/close.png": {
+      "bytes": 4460190,
+      "sha256": "1699e4ce891b6cacb0841eb4eed3d3af8b305e2f15bc2b72a824ca8785b8eca7"
+    },
+    "held_seed_2104/game.png": {
+      "bytes": 3630797,
+      "sha256": "5b638c2787a7331789bf60da6b22639721638b05812fa4dab779b6c815adfcb7"
+    },
+    "held_seed_2104/reverse.png": {
+      "bytes": 2241428,
+      "sha256": "d0c24b75084e0a77ddf29fbc6634f1e0fce9717fdb8561783b701321e24958eb"
+    },
+    "held_seed_2104/whole.png": {
+      "bytes": 2635342,
+      "sha256": "e4d9b7212a8668d44979763ddfe3ac1a294e7fcc54adbf0f8a38a1b132dbb5c6"
+    },
+    "held_seed_4242/captures.json": {
+      "bytes": 14615,
+      "sha256": "34d3dbfbfb2fd1ebb7efa7b0728157b92d4f6e4c6cfda0a46c02ab9e1bff7550"
+    },
+    "held_seed_4242/cliff_close.png": {
+      "bytes": 3552147,
+      "sha256": "e6667806f506ae9c4927c33d6c7ebe26ce697f9ba715c39661c1838a69f9f276"
+    },
+    "held_seed_4242/close.png": {
+      "bytes": 4344728,
+      "sha256": "68076a42659a86737ad568b8282a5c2961692522eec358b9e34919dbd267a704"
+    },
+    "held_seed_4242/game.png": {
+      "bytes": 3507616,
+      "sha256": "5812cc611223b69a5fd76b83302670ec9055b46f7ffe8d15529eff99685c7eea"
+    },
+    "held_seed_4242/reverse.png": {
+      "bytes": 2109259,
+      "sha256": "24fdcf389fdcfbe9b7fd6f9595cb7faddc0114d09691661684fa5a00b3e79081"
+    },
+    "held_seed_4242/whole.png": {
+      "bytes": 2592677,
+      "sha256": "6893bfbe535e2cf1908e8bd3cdaeb8f8bb10d382bd17752cdeafcfc7ac6745c4"
+    },
+    "held_seed_913/captures.json": {
+      "bytes": 14614,
+      "sha256": "f3ddf91ec7a6e5477c80f218ba8f8042e2fbba00229e753141fb03e11cf4b9d1"
+    },
+    "held_seed_913/cliff_close.png": {
+      "bytes": 3710104,
+      "sha256": "073655d7f7e91102142b928e73815f4c3778a11650daf73ef3671bec0ac0ba1d"
+    },
+    "held_seed_913/close.png": {
+      "bytes": 4542380,
+      "sha256": "0c1fc3abcbf1adee842ee305db84ab74794cbc2f89759443edef44de6a04a04e"
+    },
+    "held_seed_913/game.png": {
+      "bytes": 3592311,
+      "sha256": "73c3588f9d387ad2e2ebf5769c27075470a6f969ee32e8dc122342bc96cc4fad"
+    },
+    "held_seed_913/reverse.png": {
+      "bytes": 2214984,
+      "sha256": "9ff46d876edb8605a74134f906daf054dca633e7f4882c1dfd35350b5b35afce"
+    },
+    "held_seed_913/whole.png": {
+      "bytes": 2667374,
+      "sha256": "2f81af63148d370a2ff8887b6bbc638a53f320327eace7fda5a953bac0330147"
+    },
+    "material_compare/06_front_stone.png": {
+      "bytes": 14564,
+      "sha256": "a3caa0f6bf0f72bd493a948ae2754e5329954250457f86cc2e9407f5c13b1f2b"
+    },
+    "material_compare/06_junction.png": {
+      "bytes": 224163,
+      "sha256": "42c4b212ea8e40a0dd50348cb6f9ced244d33df1386c462669c9d63509d96106"
+    },
+    "material_compare/06_lit_stone.png": {
+      "bytes": 17437,
+      "sha256": "7d8b2d1ea8ede261b75be5d538f3f6db6e884f13f038a30d316cfb6e9824baa4"
+    },
+    "material_compare/06_meadow.png": {
+      "bytes": 12117,
+      "sha256": "e04ee1039189bf63ba6ab9bb9eab566edd2e10cbfecad5fcd24ad9a5fcc0d7c3"
+    },
+    "material_compare/07_front_stone.png": {
+      "bytes": 15576,
+      "sha256": "2c6e97b6cd460b199e6f7c92ade5525bec3a447500ee62d8568264b5ced85e77"
+    },
+    "material_compare/07_junction.png": {
+      "bytes": 239704,
+      "sha256": "168a5333c7f8468c5685cbf0ea44353d6df33553c7e277591568b7e0326037d1"
+    },
+    "material_compare/07_lit_stone.png": {
+      "bytes": 19226,
+      "sha256": "80e3527d11fcf058770c18e5cd9273e25b0af62162d158a87b1278f26a43cf11"
+    },
+    "material_compare/07_meadow.png": {
+      "bytes": 13298,
+      "sha256": "6f00da1f5c3b257c807d9bec0a145893a40a9fd0ae9b9308ae20da624626ae3a"
+    },
+    "material_compare/08_front_stone.png": {
+      "bytes": 3170,
+      "sha256": "da107e33e8472c767cd9428aa5123c685772d7addd6fecd6c8cb14902ded5ed6"
+    },
+    "material_compare/08_junction.png": {
+      "bytes": 171565,
+      "sha256": "7f1aa7f0494c8a3b7d299410f90c9d348060d1c6644c213054dfc68dbf2e3ef1"
+    },
+    "material_compare/08_lit_stone.png": {
+      "bytes": 3981,
+      "sha256": "b17a518c436dcffe6239ba33ebd1c8c686db34b96546b574b5f15a0d047f2288"
+    },
+    "material_compare/08_meadow.png": {
+      "bytes": 14480,
+      "sha256": "aaec9554e888ea9b181456afcd83fb67f96820988a497e79005398dafee3503b"
+    },
+    "material_compare/TARGET_B_front_stone.png": {
+      "bytes": 15175,
+      "sha256": "315d558d215b04958659e4cf164ecf48ca33c4542e00832f1f3db0a0c31b1096"
+    },
+    "material_compare/TARGET_B_junction.png": {
+      "bytes": 239463,
+      "sha256": "d2ef6b4716774bdca571aef111bf7a034010b1bb2bd25bbf38f7645612aefe60"
+    },
+    "material_compare/TARGET_B_lit_stone.png": {
+      "bytes": 18261,
+      "sha256": "5017b0f6ec4f131d69de3bc418196d6c57ca17597b5593154ea5f006bdeb9c90"
+    },
+    "material_compare/TARGET_B_meadow.png": {
+      "bytes": 12500,
+      "sha256": "b8d2a49907c6af1466a55d30fceb358dee0aa5c4be40f3ff0abc0c4e2cb76111"
+    },
+    "material_compare/clean_stone_front_stone.png": {
+      "bytes": 12742,
+      "sha256": "6e96e8859ebb39f52982d8e7bc05336c0ff69598b6d1ad51a39225cf3ee891be"
+    },
+    "material_compare/clean_stone_junction.png": {
+      "bytes": 223542,
+      "sha256": "8509e10ad7ff48417dce77866a05ae6a42f2a6a5fabd463fb57cdd883d24f186"
+    },
+    "material_compare/clean_stone_lit_stone.png": {
+      "bytes": 15847,
+      "sha256": "47035cd56894cc9bf41279428ed1175a6fd1b1731cd8701b0a00493d0de7952b"
+    },
+    "material_compare/clean_stone_meadow.png": {
+      "bytes": 12121,
+      "sha256": "95087993d89f42eda542c3a4260ff5eceb50915884351d60d244cdff9e37ab7e"
+    },
+    "material_compare/current_front_stone.png": {
+      "bytes": 12740,
+      "sha256": "3d483b421f10741cb56019b94aa9a78dbdb0adb75b17f75b570f920d8e7ab556"
+    },
+    "material_compare/current_junction.png": {
+      "bytes": 223227,
+      "sha256": "940b5fa284808d1f4d05c138321bc243e735a24046f7d81a5271607c5d1b854d"
+    },
+    "material_compare/current_lit_stone.png": {
+      "bytes": 15847,
+      "sha256": "47035cd56894cc9bf41279428ed1175a6fd1b1731cd8701b0a00493d0de7952b"
+    },
+    "material_compare/current_meadow.png": {
+      "bytes": 12188,
+      "sha256": "cd1c4b204ffc58b8e50c1be68f819b74e323e159c478cdccdfe308e318a70a84"
+    },
+    "material_compare/current_vs_TARGET_B_absolute_difference_x3.png": {
+      "bytes": 281080,
+      "sha256": "2ae94fa11efb96059bdb224bd282a0460cf5839d9f5fe0075ebc45ccf828aa0e"
+    },
+    "material_compare/current_vs_material_before_locked_absolute_difference_x3.png": {
+      "bytes": 273379,
+      "sha256": "3c3d4c62e6320cafb59a9366e144a69589d1b29e26d5683a28758108719f0794"
+    },
+    "material_compare/junction_contact_sheet.png": {
+      "bytes": 780348,
+      "sha256": "122009d28b07bdf6147f59b6df5f93876fc923d442a83a301d0693f726ad5d06"
+    },
+    "material_compare/material_before_locked_front_stone.png": {
+      "bytes": 14142,
+      "sha256": "2343dd7e0e608cad8a7409840f5c81fb86db715902d2766f7962f68a14176914"
+    },
+    "material_compare/material_before_locked_junction.png": {
+      "bytes": 252503,
+      "sha256": "31964d3d0e1d4b4a6baa11482e58a170ed60f4b44d123aab056b2d35f0da92ab"
+    },
+    "material_compare/material_before_locked_lit_stone.png": {
+      "bytes": 19045,
+      "sha256": "e60ddcf413bf89f125732e2ef47dbd5ac924e1864d71830d322b281d486d45e0"
+    },
+    "material_compare/material_before_locked_meadow.png": {
+      "bytes": 15557,
+      "sha256": "373efd6f11dc2903e658b07834b7edc16218a3432fa55ed6621efd7ae931dcd5"
+    },
+    "material_compare/metrics.json": {
+      "bytes": 11387,
+      "sha256": "dfcafc95ffe7a80a686c9d26d1d9ee5780a9bc3512d265fba2bd126296598203"
+    },
+    "material_compare/previous_front_stone.png": {
+      "bytes": 15761,
+      "sha256": "2b3cc1058ab993e5defcf098087e21f6c0ef131bce30a70e662c50f1b4cd83ec"
+    },
+    "material_compare/previous_junction.png": {
+      "bytes": 239253,
+      "sha256": "89ca6ab74b904948ab041d9133c0bd222f1530708b4d894762fd1222f6c738b4"
+    },
+    "material_compare/previous_lit_stone.png": {
+      "bytes": 20653,
+      "sha256": "a97634aad362fbc961b958cec62be3508e64498a7b6e093ad54c226544092a4e"
+    },
+    "material_compare/previous_meadow.png": {
+      "bytes": 12129,
+      "sha256": "d364f11923e0bbeb91656b8a8c332542d34675894cd4ab2c986e8708638f04bc"
+    },
+    "meadow_compare/after_junction.png": {
+      "bytes": 361190,
+      "sha256": "805e6979951a9ed2d49da9f4646db7bcb4b01f3ba88745328741d86856e46048"
+    },
+    "meadow_compare/before_junction.png": {
+      "bytes": 336607,
+      "sha256": "ef01a869cfa1356c8ff3cc32310b7a3f17fc467d5ad1d7dc390c44c5adb656dc"
+    },
+    "meadow_compare/grass_before_after_target.png": {
+      "bytes": 1063602,
+      "sha256": "f7e912db473df842c39fcf0db40c4b3c17cab9a615b60cd2f5c96d593c76c25c"
+    },
+    "meadow_compare/target_junction.png": {
+      "bytes": 356950,
+      "sha256": "44acc43f1619a1312e462dafe6781a5aa22fc6e3ee6f762bc5733f3a200f9be8"
+    },
+    "meadow_fans_day/captures.json": {
+      "bytes": 15025,
+      "sha256": "aaab0ec9e2a0346f6c8d1a8e3fe2100fafa444b77688f46c0fdc2d2f497c7b5e"
+    },
+    "meadow_fans_day/cliff_close.png": {
+      "bytes": 3089902,
+      "sha256": "b65d2af58b20eb7db62c1ec2b82a2ae143b54bca838540716983c98cb0b39ee9"
+    },
+    "meadow_fans_day/close.png": {
+      "bytes": 4347828,
+      "sha256": "2629843c5c72225a9119cb538f1c07e22a6b982562ca75b91898c752288a8174"
+    },
+    "meadow_fans_day/game.png": {
+      "bytes": 3302855,
+      "sha256": "d46ceca8c848f9c0a4262f8a201b963d65425c77f5f7879c17560115c41aec77"
+    },
+    "meadow_fans_day/reverse.png": {
+      "bytes": 2278236,
+      "sha256": "f5c2e2c98091486d1b90e1f7f6c3df562130710671665b8726d00db840555a1b"
+    },
+    "meadow_fans_day/whole.png": {
+      "bytes": 2450579,
+      "sha256": "8e7ab8deac042b6051fe5db5cff3b5051faacd4c5832a6f86182acec474694bf"
+    },
+    "meadow_fans_night/captures.json": {
+      "bytes": 15090,
+      "sha256": "49582df0e1f2ccc8338b830723a7f19ac4a0695ed5895b944607c58c0b035aa8"
+    },
+    "meadow_fans_night/cliff_close.png": {
+      "bytes": 2571214,
+      "sha256": "190630827cdcb12efc505649ee6e0047e06614f0dd0ba876dc574e0a4d4e0243"
+    },
+    "meadow_fans_night/close.png": {
+      "bytes": 3483864,
+      "sha256": "ed2ccf70b419564193570a6761441934a8857cd23d7295bafaa1437bf2bdff31"
+    },
+    "meadow_fans_night/game.png": {
+      "bytes": 2837548,
+      "sha256": "59145df3946f4419cac02890bdee7017ebc5d0ac1d9c3cf8a155238391b21127"
+    },
+    "meadow_fans_night/reverse.png": {
+      "bytes": 1967517,
+      "sha256": "9e52cc07c04b6af52870bc5255260373bee7de2c6c5a4e75ee16958b72becdef"
+    },
+    "meadow_fans_night/whole.png": {
+      "bytes": 2270053,
+      "sha256": "91ebb30a05b31f863b8bd9e9ccbf2406dccd5ee8eac1840f765355718004dffc"
+    },
+    "meadow_seed_2104/captures.json": {
+      "bytes": 15025,
+      "sha256": "8167be3135b9232c4a2eb0ef1ad9cb6553db99315710e0cf87d0862d7015488b"
+    },
+    "meadow_seed_2104/cliff_close.png": {
+      "bytes": 3119214,
+      "sha256": "643d438e25bb342d5b13bfd2eba086a4978636df9e7c873860f65fd25829e017"
+    },
+    "meadow_seed_2104/close.png": {
+      "bytes": 4344586,
+      "sha256": "eb87532e540f583cf2f7b5d7e3f424c24559d4c29104e45e71e91a8ae39a946f"
+    },
+    "meadow_seed_2104/game.png": {
+      "bytes": 3292924,
+      "sha256": "8e93f64eae46df43d5d634d011860f3b121def56f1265d5a9b4e85df8f6f7f0b"
+    },
+    "meadow_seed_2104/reverse.png": {
+      "bytes": 2293545,
+      "sha256": "41cca94617f6c4d9020eeeb5582426bfd47016717c1fb9f1917a2687a36fe143"
+    },
+    "meadow_seed_2104/whole.png": {
+      "bytes": 2436811,
+      "sha256": "035612aecb5340db7fc85c60d5fa168ffbe464b099f93eb281f0d77249da6c25"
+    },
+    "meadow_seed_4242/captures.json": {
+      "bytes": 15025,
+      "sha256": "c2f07b3df4b37b763ec900271a3b3c4de91d427eec8d6e3a6ee93c0141187dff"
+    },
+    "meadow_seed_4242/cliff_close.png": {
+      "bytes": 2882763,
+      "sha256": "1282b14c315ab8bd77b6854c9c1f0b41ccf0460635ede276711c313cb69cecc4"
+    },
+    "meadow_seed_4242/close.png": {
+      "bytes": 4031932,
+      "sha256": "339db0ed1bbeb6e8c343b4948693f4f14df4b3c3b3aab88e13ad7ec358bdbf3a"
+    },
+    "meadow_seed_4242/game.png": {
+      "bytes": 3106053,
+      "sha256": "8251a17248c21b19b69712e9d26674d3516431d13fed7fc492ed6abdbdfb0692"
+    },
+    "meadow_seed_4242/reverse.png": {
+      "bytes": 2144017,
+      "sha256": "684e1fec76703a2aff8ae630ef0138df973b0ad1f62d523c55d7c6c81675c6fc"
+    },
+    "meadow_seed_4242/whole.png": {
+      "bytes": 2353469,
+      "sha256": "43782048e13a005d9bde1220d3d0ca80cabf5f05c2f307ea3460cbfc36148ce9"
+    },
+    "meadow_seed_913/captures.json": {
+      "bytes": 15024,
+      "sha256": "19531b05b0b7db51b7c01f63acb73cf386f5c662088012b1910749f615ca52fd"
+    },
+    "meadow_seed_913/cliff_close.png": {
+      "bytes": 3086334,
+      "sha256": "a22daec5a4c326c8a0c6b2e3a177491c826dbfe228942b0b76369c3202fa720e"
+    },
+    "meadow_seed_913/close.png": {
+      "bytes": 4462546,
+      "sha256": "8bb2b9ba144ca72b8f918fd2f5b8bddb208b4345245ecde54f9780f644ff2418"
+    },
+    "meadow_seed_913/game.png": {
+      "bytes": 3328642,
+      "sha256": "949e6d35869b030032e890e51922f16cdcb242314f53b9260bb982f62d400162"
+    },
+    "meadow_seed_913/reverse.png": {
+      "bytes": 2272434,
+      "sha256": "0408827ad18867c7999f48fdfc62ac3600347bc9a0319e31db3b80959fdea8a9"
+    },
+    "meadow_seed_913/whole.png": {
+      "bytes": 2462048,
+      "sha256": "7c20ba696939340b860ed343b79ddc51c6820b72a6aff4e2315305e86a80714a"
+    },
+    "planted_meadow_day/captures.json": {
+      "bytes": 15025,
+      "sha256": "802df0d1a92dcf26d09d8bfd21f0de2b720deb631dab3ac70a98979725b12adf"
+    },
+    "planted_meadow_day/cliff_close.png": {
+      "bytes": 2995786,
+      "sha256": "67345ce004ec71762041c99aa4b3c72df5f2e3fbd923135af58c34ac7e82e477"
+    },
+    "planted_meadow_day/close.png": {
+      "bytes": 4165427,
+      "sha256": "db6161d18653db9e9184e997a833f2aae0e734c583401c064326f03c947be3cb"
+    },
+    "planted_meadow_day/game.png": {
+      "bytes": 3158397,
+      "sha256": "5c1080a05d5530adc67406841f22f8fac7ee09277a539706dff2cccecae337ea"
+    },
+    "planted_meadow_day/reverse.png": {
+      "bytes": 2203952,
+      "sha256": "4942861c9adf9281c9edd81bc9e73c8f286f8140c251cda0a65f75a7337e322a"
+    },
+    "planted_meadow_day/whole.png": {
+      "bytes": 2364485,
+      "sha256": "fa33e11545c90eb04ff424ee8b56bcf670ef4e0f3e73820c8fd8d34d38fc6722"
+    },
+    "planted_meadow_night/captures.json": {
+      "bytes": 15090,
+      "sha256": "1eb8411159fc7c9de3f3beab2ba515594753943ad7861646e025bd65d4c26c36"
+    },
+    "planted_meadow_night/cliff_close.png": {
+      "bytes": 2483799,
+      "sha256": "9f7d1dd90e6c3473ed81ca0a252b727ee2f55394bdb611347022bd8e08490785"
+    },
+    "planted_meadow_night/close.png": {
+      "bytes": 3330174,
+      "sha256": "c1da668c3625d0f65a215f505111df17d35798b35dbd70157e166ccaeb819406"
+    },
+    "planted_meadow_night/game.png": {
+      "bytes": 2719032,
+      "sha256": "81c10f5caa5230c7dcf2f9fc376afbf28cf977bd1d9b003d203be0e9f14a1586"
+    },
+    "planted_meadow_night/reverse.png": {
+      "bytes": 1909478,
+      "sha256": "300c68006ce4a5ebffbee83f9ecba1c2fbef2db48af34d5b6de348ab1d34ded4"
+    },
+    "planted_meadow_night/whole.png": {
+      "bytes": 2199318,
+      "sha256": "8ed15c39884cb62d7b88063509d8b11809efc51a7e518631160e6203f545778f"
+    },
+    "rock_readability_day/captures.json": {
+      "bytes": 15030,
+      "sha256": "46ade700219d6c2c9a392567de02b61cde3ca9f99b933968a97098834803de8d"
+    },
+    "rock_readability_day/cliff_close.png": {
+      "bytes": 3869025,
+      "sha256": "93f245b53d52380c38ac4d1c89ddfb6769ca355d728204ded5618c7146aa04b6"
+    },
+    "rock_readability_day/close.png": {
+      "bytes": 4609441,
+      "sha256": "c4269503523fb2cdd09ee51a25ab243265833708a10afb8e98ecd40e84949c0e"
+    },
+    "rock_readability_day/game.png": {
+      "bytes": 3781513,
+      "sha256": "74cc7a7b7d233d1e7cc571ab5f9e0bec12ad2f4d73ee4c0abb372f4082b0b662"
+    },
+    "rock_readability_day/reverse.png": {
+      "bytes": 2295603,
+      "sha256": "623df6f9998da6b00d56ba62d3390e5033efeffd04bf07d46c270367951d6cad"
+    },
+    "rock_readability_day/whole.png": {
+      "bytes": 2749305,
+      "sha256": "00b7c0101e50c37690b85d32fd5822ef1d9f6d2213e3b1d2d486ce74692dd718"
+    },
+    "rock_readability_night/captures.json": {
+      "bytes": 15095,
+      "sha256": "b54f248e473ddd7eb37c20bb3dffa22cb587002954911146b00162cdd5474af3"
+    },
+    "rock_readability_night/cliff_close.png": {
+      "bytes": 3090924,
+      "sha256": "da5951173ffa297b6b1765346add6f9a90d1ed0ae55e0c190a7b5219fed00aef"
+    },
+    "rock_readability_night/close.png": {
+      "bytes": 3738401,
+      "sha256": "97e278a89616f2ea9affd0b3123ac5e14765acf13714c8ad898ac6b965963d51"
+    },
+    "rock_readability_night/game.png": {
+      "bytes": 3141836,
+      "sha256": "347f00bb09178cb20e245cf8d7d65d8b4cec474710573a8799931e1b3570e180"
+    },
+    "rock_readability_night/reverse.png": {
+      "bytes": 1990894,
+      "sha256": "b3cccde67a6002df01f312edda93e5fe49f81cd174f0727fd4f34f4847014276"
+    },
+    "rock_readability_night/whole.png": {
+      "bytes": 2469259,
+      "sha256": "4a927e084e8779f31d170bd7aee63d984d465df9e9feed83578340ff1ac9857f"
+    },
+    "wallpapers/A_day_whole.png": {
+      "bytes": 2749305,
+      "sha256": "00b7c0101e50c37690b85d32fd5822ef1d9f6d2213e3b1d2d486ce74692dd718"
+    },
+    "wallpapers/B_grass_rock_hero.png": {
+      "bytes": 3869025,
+      "sha256": "93f245b53d52380c38ac4d1c89ddfb6769ca355d728204ded5618c7146aa04b6"
+    },
+    "wallpapers/C_night_whole.png": {
+      "bytes": 2469259,
+      "sha256": "4a927e084e8779f31d170bd7aee63d984d465df9e9feed83578340ff1ac9857f"
+    },
+    "wallpapers/D_day_reverse.png": {
+      "bytes": 2295603,
+      "sha256": "623df6f9998da6b00d56ba62d3390e5033efeffd04bf07d46c270367951d6cad"
+    }
+  }
+}

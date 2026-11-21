@@ -1,0 +1,176 @@
+{
+  "valid": true,
+  "native_frames": [
+    {
+      "file": "whole_current.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "4K_native.png",
+      "size": [
+        3840,
+        2160
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "4K_adaptive.png",
+      "size": [
+        3840,
+        2160
+      ],
+      "scale": 0.5
+    },
+    {
+      "file": "flood_00.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "flood_04.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "flood_08.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "flood_14.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "flood_18.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "regrow_00.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "regrow_010.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "regrow_020.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "regrow_040.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "regrow_080.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "regrow_120.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "upper_plane_expansion.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    },
+    {
+      "file": "upper_plane_committed.png",
+      "size": [
+        2560,
+        1440
+      ],
+      "scale": 1.0
+    }
+  ],
+  "animations": [
+    {
+      "file": "flood.webp",
+      "source_frames": 19,
+      "encoded_frames": 14,
+      "duration_ms": 950,
+      "size": [
+        1280,
+        720
+      ],
+      "identical_frames_coalesced": true
+    },
+    {
+      "file": "regrow.webp",
+      "source_frames": 121,
+      "encoded_frames": 39,
+      "duration_ms": 6050,
+      "size": [
+        1280,
+        720
+      ],
+      "identical_frames_coalesced": true
+    }
+  ],
+  "capture_sources_verified": 59,
+  "page_links": 26,
+  "page_states": 11,
+  "height_input": {
+    "added_cells": 3,
+    "brush_y": 3.55999994277954,
+    "build_height": 3.5,
+    "sampled_height": 3.5,
+    "tools": 6
+  },
+  "same_camera_same_data_groups": 3,
+  "test_groups": 24,
+  "browser_interaction_verified": false,
+  "performance_limitations": [
+    "Native 4K live editor mean 92.90ms",
+    "Adaptive live editor p95 35.33ms",
+    "Adaptive live measurement uses 1080p internal 3D,4K UI/output",
+    "Water amount differs between live samples due to elapsed real time"
+  ]
+}

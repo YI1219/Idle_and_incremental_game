@@ -1,0 +1,177 @@
+{
+  "files": {
+    "compare.html": {
+      "sha256": "557ea767af10d0c38e101549897223be133615aa68f714dad3898c9c622d7a5a",
+      "bytes": 2644
+    },
+    "README.md": {
+      "sha256": "0ec04cf547691ae43e92e4a6f92a8ef7b2ba0b1a68ee74caba4f4f67c1face6d",
+      "bytes": 1595
+    },
+    "held_seed_2104/captures.json": {
+      "sha256": "df24ea7fd2c72419afd34cbc930f4869fce53cc4ba64ae47f046d24bbc5e81bf",
+      "bytes": 10129
+    },
+    "held_seed_2104/game.png": {
+      "sha256": "16fcff95d0c3d77729ffc0261cd8453f0a1af21512f76ec8a1af2b140981763a",
+      "bytes": 4074067
+    },
+    "held_seed_2104/reverse.png": {
+      "sha256": "2efa5bcd559e988e14843191d44819999f677b4a87b3baa0f37a26a1204f622b",
+      "bytes": 4258276
+    },
+    "04_fixed_night/captures.json": {
+      "sha256": "9f48c7d6a286eca565bfde6335e1b3d958ef997bde4380c6418346147144b4f7",
+      "bytes": 15323
+    },
+    "04_fixed_night/game.png": {
+      "sha256": "e3c6bb215119b53f75e0c242ca58bd3dd28ac35c5d76fd82444c742b1ee6497d",
+      "bytes": 3068684
+    },
+    "04_fixed_night/cliff_close.png": {
+      "sha256": "579b223a50a77a9983a064a57825623f9217e6f8d17e170b6821c7cad6635418",
+      "bytes": 3004887
+    },
+    "04_fixed_night/reverse.png": {
+      "sha256": "b8097e74cc764f81ea90d5f15a1e0d7fa7f153e8cf8a0a560cb8c860910bf6f9",
+      "bytes": 3149006
+    },
+    "04_fixed_night/whole.png": {
+      "sha256": "9bb3ea7b3e19d4209ee1a65bfdf523d36be6d79808cc3840799df87b10d1ae4b",
+      "bytes": 2472579
+    },
+    "04_fixed_night/close.png": {
+      "sha256": "bb988afda838c767d6e13e64300fc974e9412fd3d16fb33d13cd201aebc4e2ac",
+      "bytes": 3151293
+    },
+    "03_fixed_day/captures.json": {
+      "sha256": "713ef3677b83f1cd199bc2ce66ec34d150dd253b5772980d2fd821bb1ddeae88",
+      "bytes": 15258
+    },
+    "03_fixed_day/game.png": {
+      "sha256": "a408dde78661b8e8ea4111582f32728518705d292fae6e25f7ec5e44dc2578aa",
+      "bytes": 3861310
+    },
+    "03_fixed_day/cliff_close.png": {
+      "sha256": "d55e099511b9f67f190d7db8cad260220754a043beeec3a693f8805524ef56b4",
+      "bytes": 3979565
+    },
+    "03_fixed_day/reverse.png": {
+      "sha256": "23f6fb15aed70de8b6ba5bc61f12ee6a4f191bf8873dcea28e6d34a6fef043a7",
+      "bytes": 4138940
+    },
+    "03_fixed_day/whole.png": {
+      "sha256": "42e718a7fd664957241b75797b9048a90b9e25ce33d6333e4299284418ca5717",
+      "bytes": 2740870
+    },
+    "03_fixed_day/close.png": {
+      "sha256": "5c0e43c1acf47d631d0f60d0af75c1b482164cbdc0de3bc0470f7d43e305c30d",
+      "bytes": 3845710
+    },
+    "checks/capture_cavity.gd": {
+      "sha256": "e91972336b47b812b07a5cccb93276fbf68a367dcf7ef7e187a592637fe3febb",
+      "bytes": 458
+    },
+    "checks/contour_terrain_before.gd.txt": {
+      "sha256": "f71724980a64e7cd3e38d29bbc937a50140898d1b7ca1c00a28734516a625b6d",
+      "bytes": 66723
+    },
+    "checks/scene.log": {
+      "sha256": "cfb8b0868845c0233a97f0aaae60bf03868af06a5f3643b7cceee43f69f9d544",
+      "bytes": 803
+    },
+    "checks/contour_terrain_after.gd.txt": {
+      "sha256": "3e23f73b7c58afe7fa003879203cbf3273b7e314280a20e16edfbcbbfb4f6cec",
+      "bytes": 67021
+    },
+    "checks/block_mantle_after.gd.txt": {
+      "sha256": "6833e9c3d5a7861f1aba549c200594d01f10c6edf83d940522aacf735a6c1ac1",
+      "bytes": 20399
+    },
+    "checks/foot_red.log": {
+      "sha256": "419eb02a095fe5aa7e003083ec3b2e1e1938af615956c5ff66004cd843d08dee",
+      "bytes": 1618
+    },
+    "checks/waterfall_terrace_seal_test.gd.txt": {
+      "sha256": "c85318358dec77c5304d7800def893b1dae5dc7b5e24a611eabd35208a4e70df",
+      "bytes": 2089
+    },
+    "checks/water.log": {
+      "sha256": "25e4ac53cc7e13513d20a79c835db2b0d516416123481e48f3d2d4c481df2714",
+      "bytes": 1376
+    },
+    "checks/seal_green.log": {
+      "sha256": "71e982f843a2a9bb4b25506b16e9647bd252aed80ce5ff8085434ebffa63243a",
+      "bytes": 459
+    },
+    "checks/block_mantle_before.gd.txt": {
+      "sha256": "4b396314a681928e795d0df83ca2145513ae367dc33c1f05b24a1b59b3a5f5ac",
+      "bytes": 19934
+    },
+    "checks/block_mantle.patch": {
+      "sha256": "525d9656bb17550558ec6d8bc112a49b963177f5423fba697eb5efdb3e107e2f",
+      "bytes": 990
+    },
+    "checks/argon.log": {
+      "sha256": "24a3c5587e7fd9ab808a36a0212edbf30c0066ceadb49d1da4624182f25918f5",
+      "bytes": 1010
+    },
+    "checks/validation.json": {
+      "sha256": "3e595907da3178247534705e626cc553d8791b44c236b6724db264e85d440bc5",
+      "bytes": 853
+    },
+    "checks/capture_cavity_held.gd": {
+      "sha256": "8525e0a45c0ac8b04268367dfab5709421d6b4db1d6ee71f96573d1efad14ad7",
+      "bytes": 208
+    },
+    "checks/runtime.log": {
+      "sha256": "ca22673be731daf4baa19b9cf353360191ebca94d03e5718b53a11f4f0a9bc5c",
+      "bytes": 110
+    },
+    "checks/contour_terrain.patch": {
+      "sha256": "c9d9c2d054cede9c8f6a8e2ab09370ea20460cf61c5dddc83781771217667ff0",
+      "bytes": 769
+    },
+    "checks/seal_red.log": {
+      "sha256": "f6d00aae17fbbefffcb9841c31db87362dd3845e6bdb203e96b57a558f887670",
+      "bytes": 3925
+    },
+    "held_seed_4242/captures.json": {
+      "sha256": "39ec88e1261fcb4f984157b3a4c7bf1b7f9589728ff515ecc5111f071b17f888",
+      "bytes": 10129
+    },
+    "held_seed_4242/game.png": {
+      "sha256": "4503a09b51d819daa684928dd8d55b0641be2cf4e665d937ddcd4da9f5cc4bde",
+      "bytes": 4038492
+    },
+    "held_seed_4242/reverse.png": {
+      "sha256": "fbdc5e0597da0222872b97dc2af59e71353372b49fde9725d42409d02e142df8",
+      "bytes": 4231600
+    },
+    "01_before_detail/captures.json": {
+      "sha256": "3065c24d7289c3f0294f5bde331298830cfaa1a2fe3cc6b98ecf0f14c2215774",
+      "bytes": 15258
+    },
+    "01_before_detail/game.png": {
+      "sha256": "67f03a9d6fde5c0aafd0beed2adc49d6680a4a62f52e9cc586a1890baa35e5d4",
+      "bytes": 3856785
+    },
+    "01_before_detail/cliff_close.png": {
+      "sha256": "cdc37c23100f04589dc8654bc1b09390573bccee28a299f39b091486a78b2609",
+      "bytes": 3981266
+    },
+    "01_before_detail/reverse.png": {
+      "sha256": "a431cb50a32e16c17ed08c1a630cdfab40936c7e852673b91638abb75d27659d",
+      "bytes": 4119802
+    },
+    "01_before_detail/whole.png": {
+      "sha256": "5d391798f9a88bf760364b5a3bf10cff3e63daa5e131e819b84e1ddb3aad4037",
+      "bytes": 2741355
+    },
+    "01_before_detail/close.png": {
+      "sha256": "9e21de128418b2844439af64c4e4a5aa2464170c97ce2b18585b307a0b24209a",
+      "bytes": 3837506
+    }
+  },
+  "native_2k_frames": 19
+}

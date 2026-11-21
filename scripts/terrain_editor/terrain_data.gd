@@ -5,6 +5,7 @@ const Blob := preload("res://scripts/world/blob47.gd")
 const CHUNK_SIZE := 8
 const MAX_CELLS := 65536
 const HISTORY_LIMIT := 64
+var cell_quota: int = MAX_CELLS
 var cells: Dictionary[Vector2i, Dictionary] = {}
 var seed: int = 7301
 const RockSculpt=preload("res://scripts/terrain_editor/rock_sculpt.gd")
@@ -17,6 +18,7 @@ var revision := 0
 var _visited: Dictionary = {}
 var _before: Dictionary = {}
 var _active := false
+var _stroke_tool: String = ""
 var _undo: Array[Dictionary] = []
 var _redo: Array[Dictionary] = []
 
@@ -33,15 +35,139 @@ func invalidate(cell: Vector2i,land_change:bool=true) -> void:
 func begin_stroke() -> void:
 	if _active: end_stroke()
 	_active = true
+	_stroke_tool = ""
 	_visited.clear()
 	_before.clear()
 	_rock_before.clear()
 
-func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int) -> int:
+func copy() -> TerrainData:
+	var result := TerrainData.new()
+	result.seed = seed
+	result.revision = revision
+	result.cell_quota = cell_quota
+	result.sculpt_base_enabled = sculpt_base_enabled
+	result.sculpt_base_profile = sculpt_base_profile
+	result.rocks.samples = rocks.samples.duplicate()
+	result.rocks.base = rocks.base
+	for cell: Vector2i in cells:
+		result.cells[cell] = cells[cell].duplicate()
+	return result
+
+func _brush_record(old: Variant, tool: String, height: float, water: int) -> Variant:
+	var next: Variant = old.duplicate() if old != null else null
+	match tool:
+		"expand":
+			if old == null and cells.size() < mini(MAX_CELLS, cell_quota):
+				next = {"height": height, "water": -1}
+		"contract": next = null
+		"raise", "lower":
+			if next != null:
+				if next.water >= 0 and not next.has("water_volume"):
+					next.water_volume = maxf(0.0, float(next.water) * .5 - float(next.height))
+				next.height = clampf(next.height + (.5 if tool == "raise" else -.5), -4.0, 12.0)
+				if next.water >= 0 and next.height >= next.water * .5: next.water = -1
+		"water":
+			if next != null and next.height < water * .5:
+				var volume: float = water * .5 - float(next.height)
+				if next.water != water or not is_equal_approx(float(next.get("water_volume", volume)), volume):
+					next.water = water
+					next.water_volume = volume
+		"dry":
+			if next != null and (next.water >= 0 or float(next.get("water_volume", 0.0)) > 0.0):
+				next.water = -1
+				next.water_volume = 0.0
+	return next
+
+static func _record_top(record:Dictionary)->float:
+	return float(record.height)
+
+func _surface_brush_cells(center:Vector2,radius:float,tool:String,surface_height:float)->Dictionary:
+	var result:Dictionary={}
+	if not is_finite(surface_height) or tool not in ["expand","contract","raise","lower","water","dry"]:return result
+	var candidates:Dictionary={}
+	for z:int in range(floori(center.y-radius),ceili(center.y+radius)):
+		for x:int in range(floori(center.x-radius),ceili(center.x+radius)):
+			var cell:=Vector2i(x,z)
+			if (Vector2(cell)+Vector2.ONE*.5).distance_squared_to(center)>radius*radius:continue
+			if tool!="expand":
+				if cells.has(cell) and absf(_record_top(cells[cell])-surface_height)<.01:result[cell]=true
+			elif not cells.has(cell):candidates[cell]=true
+	if tool!="expand":return result
+	if cells.is_empty():return candidates
+	# Only empty cells connected to this terrace can become its extension.
+	# The flood is independent of row iteration order and may grow through the
+	# current stroke's already-created cells without crossing another terrace.
+	var queue:Array[Vector2i]=[]
+	const SIDES:Array[Vector2i]=[Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]
+	for cell:Vector2i in candidates:
+		for direction:Vector2i in SIDES:
+			var neighbour:=cell+direction
+			if cells.has(neighbour) and absf(_record_top(cells[neighbour])-surface_height)<.01:
+				result[cell]=true;queue.append(cell);break
+	var index:int=0
+	while index<queue.size():
+		var cell:Vector2i=queue[index];index+=1
+		for direction:Vector2i in SIDES:
+			var neighbour:=cell+direction
+			if candidates.has(neighbour) and not result.has(neighbour):
+				result[neighbour]=true;queue.append(neighbour)
+	return result
+
+func can_apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int, surface_height: float = NAN) -> bool:
+	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return false
+	if tool not in ["raise", "lower", "expand", "contract", "water", "dry"]: return false
+	if tool == "water" and (water < 0 or water > 7): return false
+	if snap: center = center.floor() + Vector2.ONE * .5
+	radius = clampf(radius, .1, 16.0)
+	height = clampf(roundf(height * 2.0) * .5, -4.0, 12.0)
+	if sculpt_base_enabled and tool in ["expand","raise","lower"]:
+		var lo:=center-Vector2.ONE*(radius+1.0) if tool=="expand" else Vector2(INF,INF)
+		var hi:=center+Vector2.ONE*(radius+1.0) if tool=="expand" else Vector2(-INF,-INF)
+		if not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(cells,lo,hi,-.5 if tool=="lower" else 0.0,.5 if tool=="raise" else 0.0,height if tool=="expand" else NAN):return false
+	var allowed:Dictionary=_surface_brush_cells(center,radius,tool,surface_height)
+	for z: int in range(floori(center.y - radius), ceili(center.y + radius)):
+		for x: int in range(floori(center.x - radius), ceili(center.x + radius)):
+			var cell := Vector2i(x, z)
+			if absi(x) > 1024 or absi(z) > 1024: continue
+			if is_finite(surface_height) and tool in ["expand","contract","raise","lower","water","dry"] and not allowed.has(cell):continue
+			if (Vector2(cell) + Vector2.ONE * .5).distance_squared_to(center) > radius * radius: continue
+			var old: Variant = cells.get(cell)
+			if _brush_record(old, tool, height, water) != old: return true
+	return false
+
+func commit_blueprint(draft: TerrainData, tool: String) -> bool:
+	if draft == null or (draft._before.is_empty() and draft._rock_before.is_empty()): return false
+	begin_stroke()
+	_stroke_tool = tool
+	for cell: Vector2i in draft._before:
+		var old: Variant = cells.get(cell)
+		var next: Variant = draft.cells.get(cell)
+		if next != null:
+			next = next.duplicate()
+			# Water keeps moving while a blueprint is held. Bed edits retain the
+			# current amount instead of restoring the draft's older water volume.
+			if tool in ["raise", "lower"] and old != null and old.has("water_volume"):
+				next.water_volume = old.water_volume
+		if old == next: continue
+		_before[cell] = old.duplicate() if old != null else null
+		if next == null: cells.erase(cell)
+		else: cells[cell] = next
+		invalidate(cell)
+	for key: Vector3i in draft._rock_before:
+		_rock_before[key] = rocks.samples.get(key)
+		if draft.rocks.samples.has(key): rocks.samples[key] = draft.rocks.samples[key]
+		else: rocks.samples.erase(key)
+	_invalidate_rocks(draft._rock_before.keys())
+	var changed: bool = not _before.is_empty() or not _rock_before.is_empty()
+	end_stroke()
+	return changed
+
+func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int, surface_height: float = NAN) -> int:
 	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return 0
 	if tool not in ["raise","lower","expand","contract","water","dry"]: return 0
 	if tool == "water" and (water < 0 or water > 7): return 0
 	if not _active: begin_stroke()
+	_stroke_tool = tool if _stroke_tool.is_empty() or _stroke_tool == tool else "mixed"
 	if snap: center = center.floor() + Vector2(0.5,0.5)
 	radius = clampf(radius, 0.1, 16.0)
 	height = clampf(roundf(height*2.0)*0.5,-4.0,12.0)
@@ -50,26 +176,16 @@ func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, heigh
 		var hi:=center+Vector2.ONE*(radius+1.0) if tool=="expand" else Vector2(-INF,-INF)
 		if not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(cells,lo,hi,-.5 if tool=="lower" else 0.0,.5 if tool=="raise" else 0.0,height if tool=="expand" else NAN):return 0
 	var changed := 0
+	var allowed:Dictionary=_surface_brush_cells(center,radius,tool,surface_height)
 	for z in range(floori(center.y-radius), ceili(center.y+radius)):
 		for x in range(floori(center.x-radius), ceili(center.x+radius)):
 			var cell := Vector2i(x,z)
 			if absi(x)>1024 or absi(z)>1024 or _visited.has(cell): continue
+			if is_finite(surface_height) and tool in ["expand","contract","raise","lower","water","dry"] and not allowed.has(cell):continue
 			if (Vector2(cell)+Vector2(0.5,0.5)).distance_squared_to(center)>radius*radius: continue
 			_visited[cell] = true
 			var old: Variant = cells.get(cell)
-			var next: Variant = old.duplicate() if old != null else null
-			match tool:
-				"expand":
-					if old == null and cells.size()<MAX_CELLS: next = {"height":height,"water":-1}
-				"contract": next = null
-				"raise", "lower":
-					if next != null:
-						next.height = clampf(next.height + (0.5 if tool=="raise" else -0.5),-4.0,12.0)
-						if next.water>=0 and next.height>=next.water*0.5: next.water = -1
-				"water":
-					if next != null and next.height<water*0.5: next.water = water
-				"dry":
-					if next != null: next.water = -1
+			var next: Variant = _brush_record(old, tool, height, water)
 			if old == next: continue
 			_before[cell] = old.duplicate() if old != null else null
 			if next == null: cells.erase(cell)
@@ -123,12 +239,12 @@ func end_stroke() -> void:
 			var value:Variant=cells.get(cell)
 			after[cell]=value.duplicate() if value!=null else null
 		for key:Vector3i in _rock_before:rock_after[key]=rocks.samples.get(key)
-		_undo.append({"before":_before.duplicate(true),"after":after,"rock_before":_rock_before.duplicate(),"rock_after":rock_after,"sculpt_base":sculpt_base_enabled})
+		_undo.append({"before":_before.duplicate(true),"after":after,"rock_before":_rock_before.duplicate(),"rock_after":rock_after,"sculpt_base":sculpt_base_enabled,"tool":_stroke_tool})
 		if _undo.size()>HISTORY_LIMIT:_undo.pop_front()
 		_redo.clear()
 	_active=false;_before.clear();_visited.clear();_rock_before.clear()
 
-func _restore(values:Dictionary,rock_values:Dictionary={},rock_mode:bool=false) -> bool:
+func _restore(values:Dictionary,rock_values:Dictionary={},rock_mode:bool=false,preserve_water:bool=false) -> bool:
 	# Sparse rock overrides belong to the base against which they were made.
 	# Preserve an incompatible entry for replay after switching back.
 	if not rock_values.is_empty() and rock_mode!=sculpt_base_enabled:return false
@@ -140,7 +256,12 @@ func _restore(values:Dictionary,rock_values:Dictionary={},rock_mode:bool=false) 
 		if not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(candidate):return false
 	for cell:Vector2i in values:
 		if values[cell]==null:cells.erase(cell)
-		else:cells[cell]=values[cell].duplicate()
+		else:
+			var record:Dictionary=values[cell].duplicate()
+			var current:Dictionary=cells.get(cell,{})
+			if preserve_water and record.has("water_volume") and current.has("water_volume"):
+				record.water_volume=current.water_volume
+			cells[cell]=record
 		invalidate(cell)
 	rocks.restore(rock_values)
 	_invalidate_rocks(rock_values.keys())
@@ -150,7 +271,7 @@ func undo() -> bool:
 	end_stroke()
 	if _undo.is_empty():return false
 	var entry:Dictionary=_undo.back()
-	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false)):return false
+	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower"]):return false
 	_undo.pop_back();_redo.append(entry)
 	return true
 
@@ -158,7 +279,7 @@ func redo() -> bool:
 	end_stroke()
 	if _redo.is_empty():return false
 	var entry:Dictionary=_redo.back()
-	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false)):return false
+	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower"]):return false
 	_redo.pop_back();_undo.append(entry)
 	return true
 
@@ -176,7 +297,9 @@ func serialize() -> Dictionary:
 	var keys := cells.keys()
 	keys.sort_custom(func(a: Vector2i,b: Vector2i): return a.y<b.y or (a.y==b.y and a.x<b.x))
 	for cell: Vector2i in keys:
-		records.append({"x":cell.x,"z":cell.y,"height":cells[cell].height,"water":cells[cell].water})
+		var record:Dictionary={"x":cell.x,"z":cell.y,"height":cells[cell].height,"water":cells[cell].water}
+		if cells[cell].has("water_volume"):record.water_volume=cells[cell].water_volume
+		records.append(record)
 	var payload:Dictionary={"version":1,"seed":seed,"cells":records}
 	if not rocks.samples.is_empty() or sculpt_base_enabled:
 		payload.version=(4 if sculpt_base_profile=='local' else 3) if sculpt_base_enabled else 2;payload.rocks=rocks.records()
@@ -210,9 +333,11 @@ func deserialize(payload: Dictionary) -> bool:
 		if record.height < -4 or record.height > 12 or not is_equal_approx(record.height*2.0,roundf(record.height*2.0)): return false
 		if record.water < -1 or record.water>7 or float(record.water)!=floorf(record.water): return false
 		if record.water>=0 and record.height>=record.water*0.5: return false
+		if record.has("water_volume") and (not _number(record.water_volume) or record.water_volume<0.0 or record.water_volume>MAX_CELLS*16.0):return false
 		var cell := Vector2i(int(record.x),int(record.z))
 		if candidate.has(cell): return false
 		candidate[cell]={"height":float(record.height),"water":int(record.water)}
+		if record.has("water_volume"):candidate[cell].water_volume=float(record.water_volume)
 	if payload.version>=3 and not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(candidate):return false
 	end_stroke()
 	for cell: Vector2i in cells: invalidate(cell)
@@ -274,6 +399,15 @@ func make_preset(kind: int) -> void:
 			if kind!=2 and absf(at.x-10.5)<1.6 and at.y>3:
 				height=1.0
 				water=3
+			if kind==0 and upper and water<0:
+				# Broad dry shelves break the long outer wall into a rising rear
+				# shoulder and a lower foreground. These remain editable cells;
+				# the pond beds, outlets and common outer footprint stay intact.
+				var rear_front:float=-6.0-1.6*pow((at.x+16.5)/5.5,2.0)+sin(at.x*.6)*.22
+				if at.y<rear_front:
+					height=5.0
+				if at.y>5.65-cos(at.x*.4)*.30 and ((at-Vector2(-6.5,7.5))/Vector2(8.5,4)).length()<1.0+ripple:
+					height=2.5
 			var cell:=Vector2i(x,z)
 			cells[cell]={"height":height,"water":water}
 			invalidate(cell)

@@ -1,0 +1,19 @@
+{
+	"fps": 28.4633913348448,
+	"frames": 171,
+	"method": "4s warm6s sample;normal editor/water/time;live shaders;fixed currentbalanced pixels;no cap/vsync/screenshotIO",
+	"p95_ms": 37.499,
+	"p99_ms": 38.246,
+	"resolution": [
+		3840,
+		2160
+	],
+	"scale": 1.0,
+	"size": "4k",
+	"sky_mode": 1,
+	"texture_size": [
+		3840.0,
+		2160.0
+	],
+	"variant": "base"
+}

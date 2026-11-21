@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reverse wall stagger (2026-11-21)</title>
+<style>
+  body { margin: 0; background: #1d2126; color: #dfe3e6; font: 14px/1.5 -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 14px 20px; border-bottom: 1px solid #333a42; }
+  h1 { font-size: 17px; margin: 0 0 6px; }
+  h2 { font-size: 15px; margin: 18px 20px 4px; }
+  p { margin: 4px 0; color: #aab2ba; max-width: 1100px; }
+  .bar { padding: 10px 20px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-bottom: 1px solid #333a42; }
+  .bar span { color: #8a939c; margin-right: 4px; }
+  button { background: #2b323a; color: #dfe3e6; border: 1px solid #3d4650; border-radius: 4px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  button.on { background: #4f7f78; border-color: #6aa39a; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 20px; }
+  .pair.single { grid-template-columns: 1fr; }
+  figure { margin: 0; }
+  figcaption { color: #8a939c; margin-bottom: 4px; }
+  img { width: 100%; height: auto; display: block; background: #111; cursor: pointer; }
+  .note { padding: 0 20px 10px; }
+  table { border-collapse: collapse; margin: 6px 20px 14px; }
+  td, th { border: 1px solid #333a42; padding: 4px 10px; text-align: left; }
+  th { color: #8a939c; font-weight: normal; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Reverse wall: from a regimented row to a staggered cliff</h1>
+  <p>Actual Godot output only, native 2560×1440 Forward+, same capture script, cameras, layouts and light on both sides.
+  <b>Before</b> is the 2026-11-21 cliff-water set; <b>after</b> is this package. The only production file that differs is
+  <code>scripts/terrain_editor/terrain_decoration.gd</code> (placement). No shader, material, light or palette change.
+  Not art-accepted. Target-laptop performance is unmeasured.</p>
+  <p>Press <b>space</b> or click an image to flip between before and after in place.</p>
+</header>
+<div class="bar" id="sets"><span>Layout</span></div>
+<div class="bar" id="cams"><span>Camera</span></div>
+<div class="bar"><span>View</span><button id="side" class="on">side by side</button><button id="flip">flip in place</button></div>
+<div class="pair" id="pair">
+  <figure id="fb"><figcaption id="cb"></figcaption><img id="before" alt="before"></figure>
+  <figure id="fa"><figcaption id="ca"></figcaption><img id="after" alt="after"></figure>
+</div>
+<h2>Plan of the cliff layout (diagnostic drawing, not a render)</h2>
+<p class="note">Thick line: a slab face. Tinted polygon: its crown. Orange: a lowered rock group. Blue: the heightmap contour.
+Green: the drawn lawn. The number at each joint is the front-back step between two neighbouring faces in metres.</p>
+<div class="bar" id="plans"><span>Layout</span></div>
+<div class="pair">
+  <figure><figcaption id="pcb"></figcaption><img id="pbefore" alt="plan before"></figure>
+  <figure><figcaption id="pca"></figcaption><img id="pafter" alt="plan after"></figure>
+</div>
+<h2>Longest plain row</h2>
+<p class="note">The longest chain of neighbouring outer slabs in which no slab carries a rock group and every joint is flush
+(under 0.30 m of front-back step). Counted from the layout data by <code>checks/plan_metric.py</code>.</p>
+<table id="metric"><tr><th>Layout</th><th>Before</th><th>After</th><th>Rock groups before → after</th></tr></table>
+<script>
+const BEFORE = "../20261121_cliff_water/";
+const SETS = [["final", "seed 7301 preset 0, day"], ["final_night", "seed 7301, dusk (0.83)"], ["final_held2104", "seed 2104 preset 0"], ["final_held4242", "seed 4242 preset 1"], ["final_held913", "seed 913 preset 2"]];
+const CAMS = ["foot_reverse", "reverse", "side_286", "side_106", "whole", "game", "close", "cliff_close", "foot_front", "overview", "terrace_close", "outer_hull"];
+const PLANS = [["7301", "seed 7301 preset 0"], ["2104", "seed 2104 preset 0"], ["4242", "seed 4242 preset 1"], ["913", "seed 913 preset 2"]];
+const METRIC = /*METRIC*/[["seed 7301 preset 0", "9 slabs, 38.1 m", "4 slabs, 21.8 m", "5 → 6"], ["seed 2104 preset 0", "8 slabs, 34.8 m", "4 slabs, 21.7 m", "5 → 6"], ["seed 4242 preset 1", "4 slabs, 22.4 m", "2 slabs, 13.1 m", "4 → 5"], ["seed 913 preset 2", "12 slabs, 47.2 m", "5 slabs, 22.7 m", "6 → 7"]]/*END*/;
+let set = 0, cam = 0, flip = false, showAfter = true, plan = 0;
+function button(parent, label, onClick) { const b = document.createElement("button"); b.textContent = label; b.onclick = onClick; parent.appendChild(b); return b; }
+const setButtons = SETS.map((s, i) => button(document.getElementById("sets"), s[1], () => { set = i; draw(); }));
+const camButtons = CAMS.map((c, i) => button(document.getElementById("cams"), c, () => { cam = i; draw(); }));
+const planButtons = PLANS.map((s, i) => button(document.getElementById("plans"), s[1], () => { plan = i; drawPlan(); }));
+function draw() {
+  setButtons.forEach((b, i) => b.classList.toggle("on", i === set));
+  camButtons.forEach((b, i) => b.classList.toggle("on", i === cam));
+  const before = BEFORE + SETS[set][0] + "/" + CAMS[cam] + ".png";
+  const after = SETS[set][0] + "/" + CAMS[cam] + ".png";
+  document.getElementById("before").src = before;
+  document.getElementById("after").src = after;
+  document.getElementById("cb").textContent = "BEFORE · " + before;
+  document.getElementById("ca").textContent = "AFTER · " + after;
+  document.getElementById("pair").classList.toggle("single", flip);
+  document.getElementById("fb").style.display = flip && showAfter ? "none" : "";
+  document.getElementById("fa").style.display = flip && !showAfter ? "none" : "";
+  document.getElementById("side").classList.toggle("on", !flip);
+  document.getElementById("flip").classList.toggle("on", flip);
+}
+function drawPlan() {
+  planButtons.forEach((b, i) => b.classList.toggle("on", i === plan));
+  document.getElementById("pbefore").src = "diag/before/plan_" + PLANS[plan][0] + ".png";
+  document.getElementById("pafter").src = "diag/after/plan_" + PLANS[plan][0] + ".png";
+  document.getElementById("pcb").textContent = "BEFORE · diag/before/plan_" + PLANS[plan][0] + ".png";
+  document.getElementById("pca").textContent = "AFTER · diag/after/plan_" + PLANS[plan][0] + ".png";
+}
+function toggle() { if (!flip) { flip = true; showAfter = false; } else { showAfter = !showAfter; } draw(); }
+document.getElementById("side").onclick = () => { flip = false; draw(); };
+document.getElementById("flip").onclick = () => { flip = true; showAfter = true; draw(); };
+document.getElementById("before").onclick = toggle;
+document.getElementById("after").onclick = toggle;
+document.addEventListener("keydown", (e) => { if (e.code === "Space") { e.preventDefault(); toggle(); } });
+const table = document.getElementById("metric");
+METRIC.forEach((row) => { const tr = document.createElement("tr"); row.forEach((cell) => { const td = document.createElement("td"); td.textContent = cell; tr.appendChild(td); }); table.appendChild(tr); });
+draw();
+drawPlan();
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+[
+  {
+    "fps": 28.4633913348448,
+    "frames": 171,
+    "method": "4s warm6s sample;normal editor/water/time;live shaders;fixed currentbalanced pixels;no cap/vsync/screenshotIO",
+    "p95_ms": 37.499,
+    "p99_ms": 38.246,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "size": "4k",
+    "sky_mode": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "base"
+  },
+  {
+    "fps": 28.4663195995272,
+    "frames": 171,
+    "method": "4s warm6s sample;normal editor/water/time;live shaders;fixed currentbalanced pixels;no cap/vsync/screenshotIO",
+    "p95_ms": 37.521,
+    "p99_ms": 38.333,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "size": "4k",
+    "sky_mode": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "hash"
+  },
+  {
+    "fps": 28.2529959393797,
+    "frames": 170,
+    "method": "4s warm6s sample;normal editor/water/time;live shaders;fixed currentbalanced pixels;no cap/vsync/screenshotIO",
+    "p95_ms": 38.068,
+    "p99_ms": 38.418,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "size": "4k",
+    "sky_mode": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "cloud"
+  },
+  {
+    "fps": 28.8543863393385,
+    "frames": 174,
+    "method": "4s warm6s sample;normal editor/water/time;live shaders;fixed currentbalanced pixels;no cap/vsync/screenshotIO",
+    "p95_ms": 35.492,
+    "p99_ms": 36.385,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "size": "4k",
+    "sky_mode": 2,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "sky_incremental"
+  },
+  {
+    "fps": 28.7193128746688,
+    "frames": 173,
+    "method": "4s warm6s sample;normal editor/water/time;live shaders;fixed currentbalanced pixels;no cap/vsync/screenshotIO",
+    "p95_ms": 37.452,
+    "p99_ms": 37.943,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "size": "4k",
+    "sky_mode": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "steady"
+  },
+  {
+    "fps": 28.8998331782043,
+    "frames": 174,
+    "method": "4s warm6s sample;normal editor/water/time;live shaders;fixed currentbalanced pixels;no cap/vsync/screenshotIO",
+    "p95_ms": 37.229,
+    "p99_ms": 37.841,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "size": "4k",
+    "sky_mode": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "base"
+  }
+]

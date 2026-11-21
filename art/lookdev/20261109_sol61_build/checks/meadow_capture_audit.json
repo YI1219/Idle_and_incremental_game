@@ -1,0 +1,83 @@
+{
+  "art_accepted": false,
+  "native_frames": 25,
+  "pairs": [
+    {
+      "before": "planted_meadow_day",
+      "after": "meadow_fans_day",
+      "frames": 5,
+      "all_capture_conditions_identical": true,
+      "terrain_hash_identical": true,
+      "source_changes": [
+        "res://project.godot",
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://shaders/terrain_editor/grass_blades.gdshader"
+      ],
+      "current_visual_sources_match": true,
+      "actor_absent": true
+    },
+    {
+      "before": "planted_meadow_night",
+      "after": "meadow_fans_night",
+      "frames": 5,
+      "all_capture_conditions_identical": true,
+      "terrain_hash_identical": true,
+      "source_changes": [
+        "res://project.godot",
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://shaders/terrain_editor/grass_blades.gdshader"
+      ],
+      "current_visual_sources_match": true,
+      "actor_absent": true
+    },
+    {
+      "before": "continued_seed_2104",
+      "after": "meadow_seed_2104",
+      "frames": 5,
+      "all_capture_conditions_identical": true,
+      "terrain_hash_identical": true,
+      "source_changes": [
+        "res://project.godot",
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://shaders/terrain_editor/grass_blades.gdshader"
+      ],
+      "current_visual_sources_match": true,
+      "actor_absent": true
+    },
+    {
+      "before": "continued_seed_4242",
+      "after": "meadow_seed_4242",
+      "frames": 5,
+      "all_capture_conditions_identical": true,
+      "terrain_hash_identical": true,
+      "source_changes": [
+        "res://project.godot",
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://shaders/terrain_editor/grass_blades.gdshader"
+      ],
+      "current_visual_sources_match": true,
+      "actor_absent": true
+    },
+    {
+      "before": "continued_seed_913",
+      "after": "meadow_seed_913",
+      "frames": 5,
+      "all_capture_conditions_identical": true,
+      "terrain_hash_identical": true,
+      "source_changes": [
+        "res://project.godot",
+        "res://scripts/terrain_editor/grass_field.gd",
+        "res://shaders/terrain_editor/grass_blades.gdshader"
+      ],
+      "current_visual_sources_match": true,
+      "actor_absent": true
+    }
+  ],
+  "project_difference": "Temporary editor capture run arguments; no visual setting changed",
+  "review": "checks/meadow_review.json",
+  "rejected_trials_not_for_delivery": [
+    "clustered_meadow_day",
+    "tufted_meadow_day",
+    "tufted_meadow_night"
+  ]
+}

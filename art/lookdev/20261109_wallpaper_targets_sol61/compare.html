@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>识海浮空岛 · TARGET v2（sol61）</title>
+<style>
+:root { color-scheme: light; font-family: system-ui, -apple-system, "PingFang SC", sans-serif; color: #263e42; background: #eaf0ed; }
+body { margin: 0 auto; max-width: 1860px; padding: 30px 24px 64px; }
+header { max-width: 960px; margin-bottom: 28px; }
+h1 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 12px; }
+h2 { font-size: 1.3rem; margin: 0; }
+p { line-height: 1.75; margin: 10px 0; }
+a { color: #255d66; text-underline-offset: 3px; }
+nav { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0; }
+nav a { padding: 7px 12px; background: #fff9; border-radius: 5px; }
+section { margin-top: 28px; padding: 20px; background: #f9fbf8; border: 1px solid #ccd8d3; border-radius: 8px; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+figure { margin: 0; min-width: 0; }
+figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-weight: 600; padding: 8px 0; }
+small { font-weight: 400; color: #587075; }
+img { display: block; width: 100%; height: auto; border-radius: 4px; }
+.note { color: #5a6b64; font-size: .94rem; }
+@media (max-width: 900px) { body { padding: 20px 12px 40px; } section { padding: 12px; } .pair { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+<h1>识海浮空岛 · TARGET v2（sol61）</h1>
+<p>以 29/28 实机底板讨论下一小步 polish。先看 B 的草石接合，再看 A / C / D 的整体关系。</p>
+<p>BASE 为实机原图副本。TARGET 为独立生成参考，实际可达效果仍需后续 Godot 复拍建立。点击图片可打开原始 PNG。</p>
+<nav><a href="#B">B 草石交接</a><a href="#A">A 日景全身</a><a href="#C">C 夜景全身</a><a href="#D">D 日景反向</a></nav>
+<p><a href="README.md">说明与偏差记录</a> · <a href="PROMPTS.md">v2 原始提示词</a> · <a href="GENERATION.json">调用参数及溯源</a></p>
+</header>
+<section id="B"><h2>B · 草石交接优先</h2><p>宽斜面保留，检查草簇贴合与窄根土</p><div class="pair"><figure><figcaption>BASE · Godot 实机原图<small>2560 × 1440</small></figcaption><a href="BASE_B_cliff_close.png"><img src="BASE_B_cliff_close.png" alt="B · 草石交接优先 · BASE · Godot 实机原图" loading="lazy"></a></figure><figure><figcaption>TARGET · image_gen 参考图<small>1672 × 941</small></figcaption><a href="TARGET_B_grass_rock_hero.png"><img src="TARGET_B_grass_rock_hero.png" alt="B · 草石交接优先 · TARGET · image_gen 参考图" loading="lazy"></a></figure></div><p class="note">检查记录 · 草簇偏大且略密，根土局部仍连成浅黄细边，直立分块感与右侧短护面仍可见。</p></section>
+<section id="A"><h2>A · 日景全身</h2><p>草唇柔化与瀑口小幅层次</p><div class="pair"><figure><figcaption>BASE · Godot 实机原图<small>2560 × 1440</small></figcaption><a href="BASE_A_day_whole.png"><img src="BASE_A_day_whole.png" alt="A · 日景全身 · BASE · Godot 实机原图" loading="lazy"></a></figure><figure><figcaption>TARGET · image_gen 参考图<small>1672 × 941</small></figcaption><a href="TARGET_A_day_whole.png"><img src="TARGET_A_day_whole.png" alt="A · 日景全身 · TARGET · image_gen 参考图" loading="lazy"></a></figure></div><p class="note">检查记录 · 下沿雾增厚，部分山根变淡，树石细节重绘，局部草色偏黄。</p></section>
+<section id="C"><h2>C · 夜景全身</h2><p>原布局与细碎水面反光</p><div class="pair"><figure><figcaption>BASE · Godot 实机原图<small>2560 × 1440</small></figcaption><a href="BASE_C_night_whole.png"><img src="BASE_C_night_whole.png" alt="C · 夜景全身 · BASE · Godot 实机原图" loading="lazy"></a></figure><figure><figcaption>TARGET · image_gen 参考图<small>1672 × 941</small></figcaption><a href="TARGET_C_night_whole.png"><img src="TARGET_C_night_whole.png" alt="C · 夜景全身 · TARGET · image_gen 参考图" loading="lazy"></a></figure></div><p class="note">检查记录 · 云海与整体曝光明显偏暗，池中亮波纹及下瀑尾泡沫增加。</p></section>
+<section id="D"><h2>D · 日景反向</h2><p>检查背侧大块面与草缘</p><div class="pair"><figure><figcaption>BASE · Godot 实机原图<small>2560 × 1440</small></figcaption><a href="BASE_D_day_reverse.png"><img src="BASE_D_day_reverse.png" alt="D · 日景反向 · BASE · Godot 实机原图" loading="lazy"></a></figure><figure><figcaption>TARGET · image_gen 参考图<small>1672 × 941</small></figcaption><a href="TARGET_D_day_reverse.png"><img src="TARGET_D_day_reverse.png" alt="D · 日景反向 · TARGET · image_gen 参考图" loading="lazy"></a></figure></div><p class="note">检查记录 · 横向台阶与竖向重复感仍可见，草色略偏黄，局部出水成为小跌级。</p></section>
+</body>
+</html>

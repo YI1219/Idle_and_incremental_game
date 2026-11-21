@@ -1,0 +1,84 @@
+{
+  "baseline_accepted_by_user": true,
+  "new_polish_art_accepted": false,
+  "retained_native_2k_frames": 55,
+  "pairs": [
+    {
+      "before": "00_approved_day",
+      "after": "01_planted_junction_day",
+      "visual_source_changes": [
+        "res://scripts/terrain_editor/grass_lip_soften.gd",
+        "res://shaders/terrain_editor/ground.gdshader"
+      ],
+      "operational_source_changes": [
+        "res://project.godot",
+        "res://tools/art/capture_lookdev.gd"
+      ],
+      "capture_conditions_identical": true,
+      "authoritative_data_identical": true
+    },
+    {
+      "before": "01_planted_junction_day",
+      "after": "02_path_contact_day",
+      "visual_source_changes": [
+        "res://shaders/terrain_editor/cliff_rock.gdshader"
+      ],
+      "operational_source_changes": [],
+      "capture_conditions_identical": true,
+      "authoritative_data_identical": true
+    },
+    {
+      "before": "02_path_contact_day",
+      "after": "03_cliff_rhythm_day",
+      "visual_source_changes": [
+        "res://scripts/terrain_editor/procedural_shard.gd"
+      ],
+      "operational_source_changes": [],
+      "capture_conditions_identical": true,
+      "authoritative_data_identical": true
+    },
+    {
+      "before": "03_cliff_rhythm_day",
+      "after": "04_planar_roots_day",
+      "visual_source_changes": [
+        "res://scripts/terrain_editor/procedural_shard.gd"
+      ],
+      "operational_source_changes": [],
+      "capture_conditions_identical": true,
+      "authoritative_data_identical": true
+    },
+    {
+      "before": "04_planar_roots_day",
+      "after": "06_final_day",
+      "visual_source_changes": [
+        "res://scripts/terrain_editor/contour_terrain.gd",
+        "res://scripts/terrain_editor/waterfall_mist.gd",
+        "res://shaders/terrain_editor/waterfall.gdshader",
+        "res://shaders/terrain_editor/waterfall_mist.gdshader"
+      ],
+      "operational_source_changes": [],
+      "capture_conditions_identical": true,
+      "authoritative_data_identical": true
+    }
+  ],
+  "protected_sources_unchanged": [
+    "scripts/terrain_editor/terrain_environment.gd",
+    "shaders/terrain_editor/stone_surface.gdshaderinc",
+    "scripts/terrain_editor/stone_normals.gd",
+    "scripts/gameplay/systems/time_solar_system.gd"
+  ],
+  "final_capture_sources_match_production_except_temporary_run_args": true,
+  "groups": [
+    "00_approved_day",
+    "00_approved_night",
+    "01_planted_junction_day",
+    "02_path_contact_day",
+    "03_cliff_rhythm_day",
+    "04_planar_roots_day",
+    "06_final_day",
+    "06_final_night",
+    "held_seed_2104",
+    "held_seed_4242",
+    "held_seed_913"
+  ]
+}

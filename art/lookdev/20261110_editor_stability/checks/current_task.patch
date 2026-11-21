@@ -1,0 +1,581 @@
+--- before/scripts/terrain_editor/terrain_decoration.gd
++++ after/scripts/terrain_editor/terrain_decoration.gd
+@@ -517,9 +517,11 @@
+ 	for signature in _run_cache:
+ 		if not seen.has(signature):stale.append(signature)
+ 	for signature in stale:_run_cache.erase(signature)
++	_prune_uncovered_step_sides(field)
+ 	_prune_overlapping_buttresses()
+ 	layout_stages.runs=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+ 	preload("res://scripts/terrain_editor/rim_union.gd").apply(field,_columns,assets,fit_core_to_feet,blend_core_joints)
++	field.close_unclad_dry_steps(_columns,assets)
+ 	layout_stages.union=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+ 	_outcrops=preload("res://scripts/terrain_editor/rim_outcrops.gd").build(self,field,seed_value)
+ 	layout_stages.outcrops=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+@@ -528,6 +530,60 @@
+ 	field._index_triangles()
+ 	layout_stages.index=(Time.get_ticks_usec()-t_stage)/1000.0
+ 	layout_ms=(Time.get_ticks_usec()-started)/1000.0
++func _prune_uncovered_step_sides(field)->void:
++	# A source wall is usable only while its whole visible side has a crown
++	# above it. Lowered holes and open notches otherwise expose its side/back
++	# as a sheet. The authoritative generated wall already closes those runs.
++	var removed:Dictionary={}
++	var changed:=true
++	while changed:
++		changed=false
++		var crowns:Dictionary={}
++		for column:Dictionary in _columns:
++			var height:float=column.pose.origin.y
++			var polygon:=PackedVector2Array()
++			for p:Vector2 in assets[column.kind][0].cap_polygon:
++				var point:Vector3=column.pose*Vector3(p.x,0.0,p.y)
++				polygon.append(Vector2(point.x,point.z))
++			if not crowns.has(height):crowns[height]=[]
++			crowns[height].append(polygon)
++		var kept:Array=[]
++		for column:Dictionary in _columns:
++			if column.is_step and _has_uncovered_step_side(field,column,crowns[column.pose.origin.y]):
++				removed[column.edge]=true
++				changed=true
++			else:kept.append(column)
++		_columns=kept
++	if removed.is_empty():return
++	_column_cells.clear()
++	for i:int in _columns.size():_bucket_column(i)
++	var kept_mass:Array=[]
++	for body:Dictionary in _mass:
++		if body.get("is_interior",false) and removed.has(body.get("crown_edge",Vector2(INF,INF))):continue
++		kept_mass.append(body)
++	_mass=kept_mass
++func _has_uncovered_step_side(field,column:Dictionary,crowns:Array)->bool:
++	var height:float=column.pose.origin.y
++	var faces:PackedVector3Array=assets[column.kind][0].faces
++	for i:int in range(0,faces.size(),3):
++		var a:Vector3=column.pose*faces[i]
++		var b:Vector3=column.pose*faces[i+1]
++		var c:Vector3=column.pose*faces[i+2]
++		for point:Vector3 in [a,b,c,(a+b)*.5,(b+c)*.5,(c+a)*.5,(a+b+c)/3.0]:
++			var p:=Vector2(point.x,point.z)
++			if Contours.contains(field.land_regions[height],p):continue
++			var receiver:Dictionary=field.surface_at(p)
++			# Through-holes and the exterior retain their existing source shell.
++			if receiver.is_empty() or int(receiver.water)>=0 or point.y<=float(receiver.height)+.15:continue
++			var covered:=false
++			for polygon:PackedVector2Array in crowns:
++				if Geometry2D.is_point_in_polygon(p,polygon):covered=true;break
++			# The original hole remains cut out of the joined lawn even where
++			# a crown projects across it. It cannot cover this source wall.
++			for hole:PackedVector2Array in field.land_regions[height]:
++				if Contours._area(hole)<0.0 and Geometry2D.is_point_in_polygon(p,hole):covered=false;break
++			if not covered:return true
++	return false
+ func _run_signature(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->String:
+ 	# Everything _rim_run reads: the chord, the land height, nearby cells and
+ 	# any fall veil that can shorten this run. Same signature, same poses.
+@@ -1100,7 +1156,7 @@
+ 			var st_ext:=Vector2(-st_reach,st_reach)
+ 			var st_clear:=_curtain_span(field,Vector2(st_origin.x,st_origin.z),dir,st_ext,h,false)
+ 			if not is_nan(st_clear.x) and st_clear==st_ext:
+-				_mass.append({"kind":st_kind,"pose":Transform3D(st_basis,st_origin),"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":true,"has_ledge_bush":false})
++				_mass.append({"kind":st_kind,"pose":Transform3D(st_basis,st_origin),"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":true,"has_ledge_bush":false,"crown_edge":c})
+ static func crown_remap(vertex:Vector3,_stretch:float)->Vector3:
+ 	# The crown is authored on the mesh. Scaling must not squash it.
+ 	return vertex
+--- before/scripts/terrain_editor/contour_terrain.gd
++++ after/scripts/terrain_editor/contour_terrain.gd
+@@ -372,6 +372,48 @@
+ 			elif winding>0 and next<=0:
+ 				surface.polygon(PackedVector2Array([Vector2(left.y,lo),Vector2(right.y,lo),Vector2(right.z,hi),Vector2(left.z,hi)]),height,tint)
+ 			winding=next
++
++func close_unclad_dry_steps(columns:Array,assets:Dictionary)->void:
++	# A dry interior wall owns both authoritative cap endpoints. A neighboring
++	# wet endpoint may clamp the sculpted backing to its bed, and its normal
++	# recession can fold a short span away once source cladding is removed.
++	# Generate the whole uncovered span continuously after that backing pass.
++	var crowns:Dictionary={}
++	for column:Dictionary in columns:
++		var height:float=column.pose.origin.y
++		var polygon:=PackedVector2Array()
++		for p:Vector2 in assets[column.kind][0].cap_polygon:
++			var point:Vector3=column.pose*Vector3(p.x,0.0,p.y)
++			polygon.append(Vector2(point.x,point.z))
++		if not crowns.has(height):crowns[height]=[]
++		crowns[height].append(polygon)
++	var seal:=Legacy.Surface.new()
++	for height:float in land_regions:
++		for loop:PackedVector2Array in land_regions[height]:
++			for i:int in loop.size():
++				var a:Vector2=loop[i]
++				var b:Vector2=loop[(i+1)%loop.size()]
++				var mid:Vector2=(a+b)*.5
++				var direction:Vector2=(b-a).normalized()
++				var outward:=Vector2(direction.y,-direction.x)
++				var upper:Dictionary=surface_at(mid-outward*.25)
++				var receiver:Dictionary=surface_at(mid+outward*.30)
++				if upper.is_empty() or receiver.is_empty() or int(upper.water)>=0 or int(receiver.water)>=0:continue
++				var bottom:float=receiver.height
++				if absf(float(upper.height)-height)>.01 or height-bottom<.4:continue
++				var covered:=false
++				for crown:PackedVector2Array in crowns.get(height,[]):
++					if Geometry2D.is_point_in_polygon(mid,crown):covered=true;break
++				if covered:continue
++				var start:int=seal.vertices.size()
++				seal.quad(Vector3(a.x,height,a.y),Vector3(a.x,bottom,a.y),Vector3(b.x,bottom,b.y),Vector3(b.x,height,b.y),Color(.78,.78,.78))
++				for j:int in range(start,seal.vertices.size()):seal.uv[j]=Vector2(height,1.0)
++	if seal.vertices.is_empty():return
++	_smooth_normals(seal)
++	surfaces.cliff.vertices.append_array(seal.vertices)
++	surfaces.cliff.normals.append_array(seal.normals)
++	surfaces.cliff.colors.append_array(seal.colors)
++	surfaces.cliff.uv.append_array(seal.uv)
+ 
+ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
+ 	var key:=Vector4(p.x,p.y,normal.x,normal.y)
+--- before/scripts/terrain_editor/grass_field.gd
++++ after/scripts/terrain_editor/grass_field.gd
+@@ -28,6 +28,7 @@
+ static func clump_mesh()->ArrayMesh:
+ 	if _clump_mesh!=null:return _clump_mesh
+ 	var surface:=Geometry.Surface.new()
++	var blade_ranges:Array[Vector2i]=[]
+ 	for blade:int in BLADES:
+ 		var plume:bool=blade<3
+ 		var angle:float=TAU*float(blade)/float(BLADES)+(_hash(blade,1.0,3.0)-.5)*.42
+@@ -41,6 +42,7 @@
+ 		var tone:float=clampf(_hash(blade,7,17)+(.12 if plume else -.04),0,1)
+ 		var phase:float=_hash(blade,8,23)
+ 		var segments:int=4 if plume else 3
++		blade_ranges.append(Vector2i(surface.vertices.size(),segments))
+ 		var previous:Array[Vector3]=[root-side*width,root+Vector3.UP*width*.18,root+side*width]
+ 		var prev_t:float=0.0
+ 		for segment:int in range(1,segments+1):
+@@ -67,9 +69,34 @@
+ 						surface.colors.append(tri[3+vertex]);surface.uv.append(tri[9+vertex])
+ 			previous=row
+ 			prev_t=t
+-	_clump_mesh=surface.mesh()
++	var arrays:Array=[]
++	arrays.resize(Mesh.ARRAY_MAX)
++	arrays[Mesh.ARRAY_VERTEX]=surface.vertices
++	arrays[Mesh.ARRAY_NORMAL]=surface.normals
++	arrays[Mesh.ARRAY_COLOR]=surface.colors
++	arrays[Mesh.ARRAY_TEX_UV]=surface.uv
++	var full:=PackedInt32Array()
++	full.resize(surface.vertices.size())
++	for i:int in full.size():full[i]=i
++	arrays[Mesh.ARRAY_INDEX]=full
++	# Keep the exact authored near mesh. Coarser distant meshes retain all
++	# seven roots/tips and pigments, only reducing the leaf's interior bends.
++	var lods:Dictionary={.008:_clump_lod_indices(blade_ranges,2),.035:_clump_lod_indices(blade_ranges,1)}
++	_clump_mesh=ArrayMesh.new()
++	_clump_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,[],lods)
+ 	_clump_mesh.custom_aabb=AABB(Vector3(-.45,-.05,-.45),Vector3(.90,.75,.90))
+ 	return _clump_mesh
++
++static func _clump_lod_indices(ranges:Array[Vector2i],steps:int)->PackedInt32Array:
++	var result:=PackedInt32Array()
++	for leaf:Vector2i in ranges:
++		for part:int in steps:
++			var first:int=roundi(float(part)*leaf.y/steps)
++			var last:int=roundi(float(part+1)*leaf.y/steps)
++			var a:=PackedInt32Array([leaf.x,leaf.x+1,leaf.x+7]) if first==0 else PackedInt32Array([leaf.x+(first-1)*12+5,leaf.x+(first-1)*12+2,leaf.x+(first-1)*12+8])
++			var b:=PackedInt32Array([leaf.x+(last-1)*12+5,leaf.x+(last-1)*12+2,leaf.x+(last-1)*12+8])
++			for half:int in 2:result.append_array(PackedInt32Array([a[half],a[half+1],b[half+1],a[half],b[half+1],b[half]]))
++	return result
+ 
+ static func material()->ShaderMaterial:
+ 	if _material==null:
+@@ -171,4 +198,5 @@
+ 	instance.material_override=material()
+ 	instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+ 	instance.visibility_range_end=110.0
++	instance.lod_bias=.5
+ 	return instance
+--- before/scripts/terrain_editor/preview_quality.gd
++++ after/scripts/terrain_editor/preview_quality.gd
+@@ -0,0 +1,31 @@
++extends RefCounted
++## Limit interactive 3D pixel work independently of the native UI resolution.
++## Capture tools can explicitly request native rendering for exported stills.
++const BUDGET:=Vector2(2560,1440)
++var native:bool=false
++var viewport:Viewport
++var _native_msaa:int=Viewport.MSAA_DISABLED
++var _last_size:=Vector2i.ZERO
++var _last_native:bool=true
++func configure(target:Viewport)->void:
++	viewport=target
++	_native_msaa=target.msaa_3d
++	refresh()
++func set_native(value:bool)->void:
++	native=value
++	refresh()
++func refresh()->void:
++	if not is_instance_valid(viewport):return
++	var size:Vector2i
++	if viewport is SubViewport:size=(viewport as SubViewport).size
++	else:
++		size=Vector2i(viewport.get_texture().get_size())
++		if viewport is Window:
++			var window_size:Vector2i=(viewport as Window).size
++			size.x=maxi(size.x,window_size.x);size.y=maxi(size.y,window_size.y)
++	if size==_last_size and native==_last_native:return
++	_last_size=size;_last_native=native
++	var scale:float=1.0 if native else minf(1.0,minf(BUDGET.x/maxf(size.x,1),BUDGET.y/maxf(size.y,1)))
++	viewport.scaling_3d_mode=Viewport.SCALING_3D_MODE_FSR if scale<.999 else Viewport.SCALING_3D_MODE_BILINEAR
++	viewport.scaling_3d_scale=maxf(.1,scale)
++	viewport.msaa_3d=mini(_native_msaa,Viewport.MSAA_2X) if scale<.999 else _native_msaa
+--- before/scripts/terrain_editor/editor.gd
++++ after/scripts/terrain_editor/editor.gd
+@@ -29,6 +29,7 @@
+ var data:=Data.new()
+ var renderer:=Renderer.new()
+ var water_view:=WaterView.new()
++var preview_quality:=preload("res://scripts/terrain_editor/preview_quality.gd").new()
+ var camera:=Camera.new()
+ var landscape:=preload("res://scripts/terrain_editor/distant_landscape.gd").new()
+ var motes:=preload("res://scripts/terrain_editor/ambient_motes.gd").new()
+@@ -45,7 +46,7 @@
+ 		if painting:cancel_input()
+ 		radius=next
+ 		_brush_shape_key=""
+-var snap:=false
++var snap:=true
+ var build_height:=1.5
+ var water_level:=3
+ var style_preset:=0
+@@ -92,11 +93,13 @@
+ 	add_child(water_view)
+ 	water_view.configure(data,renderer)
+ 	renderer.terrain_published.connect(water_view.sync)
++	preview_quality.configure(get_viewport())
+ func _create_decoration()->RefCounted:
+ 	return Decoration.new()
+ func _setup_environment()->void:
+ 	preload("res://scripts/terrain_editor/terrain_environment.gd").setup(self,landscape,sunlight_energy,fill_energy,ambient_energy,background_haze)
+ func _process(delta:float)->void:
++	preview_quality.refresh()
+ 	landscape.position=Vector3(camera._center.x,0,camera._center.y)
+ 	renderer.flush_dirty(6)
+ 	# During a committed terrain build, keep water matched to the visible bed.
+@@ -110,6 +113,11 @@
+ 	else:
+ 		_update_brush(mouse)
+ 		if painting:continue_paint(mouse)
++	var ground:ShaderMaterial=renderer.materials.grass
++	ground.set_shader_parameter("show_grid",brush.visible and snap)
++	if brush.visible:
++		ground.set_shader_parameter("grid_center",Vector2(brush.position.x,brush.position.z))
++		ground.set_shader_parameter("grid_radius",radius)
+ 	_clock+=delta
+ 	if _clock>0.25:
+ 		_clock=0
+@@ -216,12 +224,15 @@
+ 	if from_ui or hud.is_over_panel(screen):return false
+ 	var hit:Dictionary=_pointer(screen)
+ 	if hit.is_empty():return false
+-	if not tool.begins_with("rock_") and not data.can_apply_brush(_brush_center(hit),radius,tool,snap,float(hit.get("surface_height",build_height)),water_level,float(hit.get("surface_height",NAN))):return false
++	if tool=="level":
++		if not data.cells.has(Vector2i(_brush_center(hit).floor())):return false
++	elif not tool.begins_with("rock_") and not data.can_apply_brush(_brush_center(hit),radius,tool,snap,float(hit.get("surface_height",build_height)),water_level,float(hit.get("surface_height",NAN))):return false
+ 	if gameplay!=null and not gameplay.prepare_brush_step(tool):return false
+ 	var focus:=get_viewport().gui_get_focus_owner()
+ 	if focus:focus.release_focus()
+ 	_stroke_plane_height=float(hit.get("surface_height",NAN))
+-	if tool=="expand" and is_finite(_stroke_plane_height):build_height=_stroke_plane_height
++	if tool in ["expand","level"] and is_finite(_stroke_plane_height):build_height=_stroke_plane_height
++	if tool=="level" and gameplay!=null:gameplay.shihai_hud.show_toast("齐平高度 · %.1f 米"%build_height,1.8)
+ 	painting=true
+ 	blueprint_data=data.copy()
+ 	_blueprint_tool=tool
+@@ -294,6 +305,7 @@
+ 	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
+ func _brush_valid(hit:Dictionary)->bool:
+ 	if tool.begins_with("rock_"):return true
++	if tool=="level":return data.cells.has(Vector2i(_brush_center(hit).floor()))
+ 	var center:Vector2=_brush_center(hit)
+ 	var source:Data=blueprint_data if blueprint_data!=null else data
+ 	if source.can_apply_brush(center,radius,tool,snap,float(hit.get("surface_height",build_height)),water_level,float(hit.get("surface_height",NAN))):return true
+@@ -334,6 +346,13 @@
+ 				mesh.surface_add_vertex(point)
+ 	mesh.surface_end()
+ 	brush.mesh=mesh
++func set_native_preview(value:bool)->void:
++	preview_quality.set_native(value)
++
++func toggle_grid_snap()->void:
++	cancel_input()
++	snap=not snap
++
+ func select_style_preset(index:int)->void:
+ 	style_preset=index
+ 	preload("res://scripts/terrain_editor/terrain_environment.gd").apply_style_preset(self,index)
+--- before/scripts/terrain_editor/terrain_data.gd
++++ after/scripts/terrain_editor/terrain_data.gd
+@@ -60,11 +60,11 @@
+ 			if old == null and cells.size() < mini(MAX_CELLS, cell_quota):
+ 				next = {"height": height, "water": -1}
+ 		"contract": next = null
+-		"raise", "lower":
++		"raise", "lower", "level":
+ 			if next != null:
+ 				if next.water >= 0 and not next.has("water_volume"):
+ 					next.water_volume = maxf(0.0, float(next.water) * .5 - float(next.height))
+-				next.height = clampf(next.height + (.5 if tool == "raise" else -.5), -4.0, 12.0)
++				next.height = height if tool == "level" else clampf(next.height + (.5 if tool == "raise" else -.5), -4.0, 12.0)
+ 				if next.water >= 0 and next.height >= next.water * .5: next.water = -1
+ 		"water":
+ 			if next != null and next.height < water * .5:
+@@ -115,7 +115,7 @@
+ 
+ func can_apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int, surface_height: float = NAN) -> bool:
+ 	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return false
+-	if tool not in ["raise", "lower", "expand", "contract", "water", "dry"]: return false
++	if tool not in ["raise", "lower", "expand", "contract", "water", "dry", "level"]: return false
+ 	if tool == "water" and (water < 0 or water > 7): return false
+ 	if snap: center = center.floor() + Vector2.ONE * .5
+ 	radius = clampf(radius, .1, 16.0)
+@@ -146,7 +146,7 @@
+ 			next = next.duplicate()
+ 			# Water keeps moving while a blueprint is held. Bed edits retain the
+ 			# current amount instead of restoring the draft's older water volume.
+-			if tool in ["raise", "lower"] and old != null and old.has("water_volume"):
++			if tool in ["raise", "lower", "level"] and old != null and old.has("water_volume"):
+ 				next.water_volume = old.water_volume
+ 		if old == next: continue
+ 		_before[cell] = old.duplicate() if old != null else null
+@@ -164,7 +164,7 @@
+ 
+ func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int, surface_height: float = NAN) -> int:
+ 	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return 0
+-	if tool not in ["raise","lower","expand","contract","water","dry"]: return 0
++	if tool not in ["raise","lower","expand","contract","water","dry","level"]: return 0
+ 	if tool == "water" and (water < 0 or water > 7): return 0
+ 	if not _active: begin_stroke()
+ 	_stroke_tool = tool if _stroke_tool.is_empty() or _stroke_tool == tool else "mixed"
+@@ -271,7 +271,7 @@
+ 	end_stroke()
+ 	if _undo.is_empty():return false
+ 	var entry:Dictionary=_undo.back()
+-	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower"]):return false
++	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower","level"]):return false
+ 	_undo.pop_back();_redo.append(entry)
+ 	return true
+ 
+@@ -279,7 +279,7 @@
+ 	end_stroke()
+ 	if _redo.is_empty():return false
+ 	var entry:Dictionary=_redo.back()
+-	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower"]):return false
++	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower","level"]):return false
+ 	_redo.pop_back();_undo.append(entry)
+ 	return true
+ 
+--- before/scripts/gameplay/ui/shihai_hud.gd
++++ after/scripts/gameplay/ui/shihai_hud.gd
+@@ -19,6 +19,7 @@
+ 	{"id": "lower",    "name": "夷谷", "hint": "削平低谷"},
+ 	{"id": "water",    "name": "引泉", "hint": "引注灵泉"},
+ 	{"id": "dry",      "name": "涸泽", "hint": "退水成陆"},
++	{"id": "level",    "name": "齐平", "hint": "取落笔处高度，拖动对齐邻地"},
+ ]
+ const BRUSH_RADII: Array[float] = [1.0, 2.2, 3.8]
+ const WATER_PRESETS: Array[Dictionary] = [
+@@ -325,6 +326,9 @@
+ 		"load":
+ 			if int(ed.call("load_layout", "user://terrain_editor/layout.json")) == OK:
+ 				show_toast("已展阅旧藏画卷", 2.2)
++		"preview_auto": ed.call("set_native_preview",false); show_toast("流畅预览 · 界面保持清晰",1.8)
++		"preview_native": ed.call("set_native_preview",true); show_toast("原生画质 · 更清晰，绘制更耗时",1.8)
++		"grid_snap": ed.call("toggle_grid_snap"); show_toast("贴格已开启" if bool(ed.get("snap")) else "贴格已关闭",1.8)
+ 		"log":
+ 			_scroll_leaf_open = false
+ 			toggle_log_leaf()
+@@ -666,6 +670,10 @@
+ 			var pv := PackedVector2Array([c + Vector2(-9.5, -4.0), c + Vector2(-4.0, 5.2), c + Vector2(4.0, 5.2), c + Vector2(9.5, -4.0)])
+ 			draw_polyline(pv, col, width, true)
+ 			draw_line(c + Vector2(-5.5, -1.5), c + Vector2(5.5, -1.5), Color(col.r, col.g, col.b, col.a * 0.55), 1.1, true)
++		"level":
++			draw_line(c+Vector2(-9.0,1.0),c+Vector2(9.0,1.0),col,width,true)
++			draw_line(c+Vector2(-5,-6),c+Vector2(-5,-2),col,width,true)
++			draw_line(c+Vector2(5,7),c+Vector2(5,3),col,width,true)
+ 		"water":
+ 			for row_i: int in [-1, 0, 1]:
+ 				var wy: float = c.y + float(row_i) * 4.4
+@@ -682,7 +690,7 @@
+ func _draw_scroll_leaf(vp: Vector2, a: float) -> void:
+ 	# Compact warm Xuan-paper leaf (素笺小页) hovering delicately above the right side of the dock
+ 	var w: float = 236.0
+-	var h: float = 166.0
++	var h: float = 202.0
+ 	var lx: float = clampf(_scroll_btn_rect.position.x - w + 42.0, 24.0, vp.x - w - 24.0)
+ 	var ly: float = vp.y - 88.0 - h
+ 	_scroll_leaf_rect = Rect2(lx, ly, w, h)
+@@ -723,6 +731,15 @@
+ 		_leaf_actions.append({"id": ops[i][0], "rect": r})
+ 		var hov: bool = r.has_point(_hover_pos)
+ 		draw_string(_kaiti_font, Vector2(r.position.x, r.position.y + 18.0), String(ops[i][1]), HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 12, _cinnabar(a) if hov else ink)
++
++	var ed:Node3D=director.get("editor") as Node3D
++	var native:bool=bool(ed.preview_quality.native) if ed!=null else false
++	var quality_actions:Array=[ ["preview_auto","流畅预览"],["preview_native","原生画质"],["grid_snap","贴格开" if ed!=null and ed.snap else "贴格关"] ]
++	for i:int in quality_actions.size():
++		var r:=Rect2(lx+12.0+float(i)*72.0,ly+164.0,68.0,26.0)
++		_leaf_actions.append({"id":quality_actions[i][0],"rect":r})
++		var selected:bool=(i==0 and not native) or (i==1 and native) or (i==2 and ed!=null and ed.snap)
++		draw_string(_kaiti_font,Vector2(r.position.x,r.position.y+18.0),String(quality_actions[i][1]),HORIZONTAL_ALIGNMENT_CENTER,r.size.x,12,_cinnabar(a) if selected or r.has_point(_hover_pos) else ink)
+ 
+ func _draw_log_leaf(vp: Vector2) -> void:
+ 	if director == null:
+--- before/shaders/terrain_editor/ground.gdshader
++++ after/shaders/terrain_editor/ground.gdshader
+@@ -1,14 +1,23 @@
+ shader_type spatial;
+ #include "terrain_morph.gdshaderinc"
++#include "live_water.gdshaderinc"
+ #include "land_palette.gdshaderinc"
+ #include "ground_cover.gdshaderinc"
+ #include "cliff_palette.gdshaderinc"
+ #include "stone_surface.gdshaderinc"
++#include "wet_bank.gdshaderinc"
+ render_mode cull_disabled;
+ uniform bool show_grid = false;
++uniform vec2 grid_center=vec2(0.0);
++uniform float grid_radius=0.0;
+ uniform float cover_relief = 0.0;
+ varying vec3 world_position;
+-void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;VERTEX.y+=terrain_morph_offset(world_position);}
++void vertex(){
++	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
++	float morph=terrain_morph_offset(world_position);
++	VERTEX.y+=morph;
++	world_position.y+=morph;
++}
+ void fragment(){
+  if(!terrain_transition_visible(FRAGCOORD.xy))discard;
+ 	vec2 p=world_position.xz;
+@@ -20,7 +29,7 @@
+ 	float exposed=(1.0-COLOR.a)*smoothstep(.82,.94,patch)*(1.0-smoothstep(.04,.20,UV.x));
+ 	vec3 warm_moss_earth=mix(vec3(.135,.205,.095),vec3(.225,.265,.140),gc_noise(p*1.8));
+ 	color=mix(color,warm_moss_earth,exposed*.28);
+-	if(show_grid){vec2 grid=abs(fract(p)-0.5);float edge=step(0.486,max(grid.x,grid.y));color=mix(color,vec3(0.91,0.95,0.66),edge*0.35);}
++	if(show_grid && distance(p,grid_center)<grid_radius){vec2 grid=abs(fract(p)-0.5);float edge=step(0.486,max(grid.x,grid.y));color=mix(color,vec3(0.91,0.95,0.66),edge*0.35);}
+ 	float lip_warm=clamp((0.985-COLOR.g)*3.2,0.0,1.0);
+ 	vec3 lip_tint=mix(vec3(1.0),vec3(1.08,1.07,0.88),lip_warm*0.44);
+ 	vec3 safe_vcol=max(COLOR.rgb,vec3(.88,.93,.82));
+@@ -33,16 +42,19 @@
+ 	vec3 rooted_sod=mix(color*vec3(.92,.86,.65),stone_mid_color*vec3(.96,.88,.72),.50);
+ 	float root_exposure=.28+.56*smoothstep(.30,.72,root_patch);
+ 	ALBEDO=mix(lawn,rooted_sod,lip_soil*root_exposure);
++	float submerged=smoothstep(.0005,.004,live_water_depth(world_position));
++	if(submerged>0.0)ALBEDO=mix(ALBEDO,wet_bank_material(world_position),submerged);
+ 	vec3 base_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ 	if(base_normal.y<0.0)base_normal=-base_normal;
+ 	// Smooth 0.6m–2.2m plush moss-meadow cushion swells on turf:
+ 	float path_clear=smoothstep(.42,.82,gc_path_dist(p));
+ 	float cushion_mask=smoothstep(.84,.98,base_normal.y)*COLOR.a*path_clear*gc_standing(p);
+-	vec2 pillow_g=gc_pillow_grad(p)*(.14*cushion_mask);
++	vec2 pillow_g=gc_pillow_grad(p)*(.14*cushion_mask*(1.0-submerged));
++	slope*=1.0-submerged;
+ 	vec3 normal_world=normalize(base_normal+vec3(-pillow_g.x-slope.x*cover_relief*detail,0.0,-pillow_g.y-slope.y*cover_relief*detail));
+ 	NORMAL=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
+-	ROUGHNESS=0.94;
+-	SPECULAR=.02;
++	ROUGHNESS=mix(.94,.90,submerged);
++	SPECULAR=mix(.02,.06,submerged);
+ }
+ void light(){
+ 	meadow_diffuse(NORMAL,LIGHT,LIGHT_COLOR,ATTENUATION,DIFFUSE_LIGHT);
+--- before/shaders/terrain_editor/rim_green.gdshader
++++ after/shaders/terrain_editor/rim_green.gdshader
+@@ -1,20 +1,29 @@
+ shader_type spatial;
+ render_mode cull_disabled;
+ #include "terrain_morph.gdshaderinc"
++#include "live_water.gdshaderinc"
+ #include "land_palette.gdshaderinc"
+ #include "ground_cover.gdshaderinc"
+ #include "cliff_palette.gdshaderinc"
+ #include "stone_surface.gdshaderinc"
+ varying vec3 world_position;
++varying float root_water_depth;
+ void vertex(){
+ 	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+ 	float standing=gc_standing(UV2);
+ 	vec3 anchor=vec3(UV2.x,UV.x-.006,UV2.y);
+-	VERTEX=mix(anchor,VERTEX,standing);
++	// UV.x is the supporting crown height. The lowered compression anchor
++	// buries the leaf foot and must not turn a dry crown into a wet root.
++	vec3 root_world=(MODEL_MATRIX*vec4(UV2.x,UV.x,UV2.y,1.0)).xyz;
++	root_world.y+=terrain_morph_offset(root_world);
++	root_water_depth=live_water_depth(root_world);
++	float water_keep=1.0-smoothstep(.0005,.004,root_water_depth);
++	VERTEX=mix(anchor,VERTEX,standing*water_keep);
+ 	VERTEX.y+=terrain_morph_offset(world_position);
+ }
+ void fragment(){
+  if(!terrain_transition_visible(FRAGCOORD.xy))discard;
++	if(root_water_depth>=.004)discard;
+ 	vec2 slope;
+ 	vec3 green=ground_cover(world_position,.65,slope);
+ 	vec3 n_world=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+--- before/shaders/terrain_editor/grass_blades.gdshader
++++ after/shaders/terrain_editor/grass_blades.gdshader
+@@ -19,6 +19,7 @@
+ varying vec3 v_canopy_n;
+ varying float blade_t;
+ varying float v_gust;
++varying float root_water_depth;
+ void vertex(){
+ 	float t_wind=grass_time<0.0?TIME:grass_time;
+ 	vec3 root_world=(MODEL_MATRIX*vec4(0.0,0.0,0.0,1.0)).xyz;
+@@ -28,7 +29,10 @@
+ 	vec3 world=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+ 	float dist=length(world-CAMERA_POSITION_WORLD);
+ 	float keep=1.0-smoothstep(74.0,108.0,dist);
+-	keep*=1.0-smoothstep(.015,.055,live_water_depth(root_world.xz));
++	vec3 shown_root=root_world;
++	shown_root.y+=terrain_morph_offset(root_world);
++	root_water_depth=live_water_depth(shown_root);
++	float water_keep=1.0-smoothstep(.0005,.004,root_water_depth);
+ 	float standing=gc_standing(root_world.xz);
+ 	float press=1.0-standing;
+ 	keep*=mix(1.0,0.24,press);
+@@ -51,7 +55,7 @@
+ 	vec3 offset=vec3(disp_xz.x,-length(disp_xz)*.36-press*.08*bend,disp_xz.y);
+ 	vec2 sway_xz=disp_xz*1.65;
+ 	vec3 local_offset=(inverse(MODEL_MATRIX)*vec4(offset,0.0)).xyz;
+-	VERTEX=VERTEX*vec3(1.0,keep,1.0)+local_offset*keep;
++	VERTEX=(VERTEX*vec3(1.0,keep,1.0)+local_offset*keep)*water_keep;
+ 	if(terrain_morph_progress<1.0){VERTEX+=(inverse(MODEL_MATRIX)*vec4(0.0,terrain_morph_offset(root_world),0.0,0.0)).xyz;}
+ 
+ 	vec2 slope;
+@@ -78,6 +82,7 @@
+ }
+ void fragment(){
+  if(!terrain_transition_visible(FRAGCOORD.xy))discard;
++	if(root_water_depth>=.004)discard;
+ 	// Preserve the visible leaf at the lip; aggregate narrow leaves into the
+ 	// same painted canopy as the ground instead of shimmering dark/light pixels.
+ 	float width_pixels=1.0/max(fwidth(UV.x),.0001);
+--- before/shaders/terrain_editor/live_water.gdshaderinc
++++ after/shaders/terrain_editor/live_water.gdshaderinc
+@@ -2,9 +2,13 @@
+ global uniform sampler2D live_water_field : filter_nearest, repeat_disable;
+ global uniform vec4 live_water_rect;
+ global uniform float live_water_active;
+-float live_water_depth(vec2 p){
++float live_water_depth(vec3 root){
+  if(live_water_active<.5)return 0.0;
+- vec2 uv=(p-live_water_rect.xy)/live_water_rect.zw;
++ vec2 uv=(root.xz-live_water_rect.xy)/live_water_rect.zw;
+  if(uv.x<0.0 || uv.y<0.0 || uv.x>1.0 || uv.y>1.0)return 0.0;
+- return max(0.0,texture(live_water_field,uv).g);
++ vec4 water=texture(live_water_field,uv);
++ // Cell depth marks water presence. A neighbouring upper lip can project
++ // into this texel while its root remains above the actual water surface.
++ if(water.a<.5 || water.g<=.0001)return 0.0;
++ return max(0.0,water.r-root.y);
+ }

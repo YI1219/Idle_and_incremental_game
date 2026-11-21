@@ -1,0 +1,19 @@
+{
+	"background_active": true,
+	"background_size": "(1280, 720)",
+	"candidate": "bg",
+	"fps": 136.128879329616,
+	"method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+	"p95_ms": 14.553,
+	"p99_ms": 16.97,
+	"resolution": [
+		2560,
+		1440
+	],
+	"scale": 1.0,
+	"size": "2k",
+	"texture_size": [
+		2560.0,
+		1440.0
+	]
+}

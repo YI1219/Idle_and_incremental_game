@@ -1,26 +1,45 @@
 shader_type spatial;
 render_mode cull_disabled;
 #include "terrain_morph.gdshaderinc"
+#include "live_water.gdshaderinc"
 #include "land_palette.gdshaderinc"
 #include "ground_cover.gdshaderinc"
+#include "cliff_palette.gdshaderinc"
+#include "stone_surface.gdshaderinc"
 varying vec3 world_position;
+varying float grass_coverage;
 void vertex(){
- world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
- float standing=gc_standing(UV2);
- vec3 anchor=vec3(UV2.x,UV.x-.006,UV2.y);
- VERTEX=mix(anchor,VERTEX,standing);
- VERTEX.y+=terrain_morph_offset(world_position);
+	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+	float standing=gc_standing(UV2);
+	vec3 anchor=vec3(UV2.x,UV.x-.006,UV2.y);
+	// UV.x is the supporting crown height. The lowered compression anchor
+	// buries the leaf foot and must not turn a dry crown into a wet root.
+	vec3 root_world=(MODEL_MATRIX*vec4(UV2.x,UV.x,UV2.y,1.0)).xyz;
+	root_world.y+=terrain_morph_offset(root_world);
+	grass_coverage=live_grass_coverage(root_world);
+	float water_keep=smoothstep(0.0,.65,grass_coverage);
+	VERTEX=mix(anchor,VERTEX,standing*water_keep);
+	VERTEX.y+=terrain_morph_offset(world_position);
 }
 void fragment(){
- vec2 slope;
- vec3 green=ground_cover(world_position,.65,slope);
- float fleck=gc_noise(world_position.xz*19.0+world_position.y*7.0);
- ALBEDO=green*(.97+.06*fleck);
- vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
- NORMAL=normalize(mix(NORMAL,up,.35));
- // Leaf roots share lawn relief; upper leaves keep their curved lighting.
- float root_zone=1.0-smoothstep(.025,.07,abs(world_position.y-UV.x));
- vec3 relief=(VIEW_MATRIX*vec4(-slope.x,0.0,-slope.y,0.0)).xyz;
- NORMAL=normalize(NORMAL+(relief-NORMAL*dot(NORMAL,relief))*.55*root_zone);
- ROUGHNESS=.96;SPECULAR=.12;
+ if(!terrain_transition_visible(FRAGCOORD.xy))discard;
+	if(!grass_coverage_visible(grass_coverage,FRAGCOORD.xy))discard;
+	vec2 slope;
+	vec3 green=ground_cover(world_position,.65,slope);
+	vec3 n_world=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+	float fleck=gc_noise(world_position.xz*4.2+world_position.y*3.1);
+	// Luminous sunlit sod rim crest on top bevel + clean dark underside tuck at the very bottom skirt:
+	float top_rim=smoothstep(.25,.82,n_world.y);
+	float under_skirt=smoothstep(.18,-.35,n_world.y);
+	vec3 sunlit_rim=green*vec3(1.08,1.07,.88);
+	vec3 sod_edge=mix(green*vec3(.82,.88,.74),vec3(.11,.17,.08),fleck*.42);
+	vec3 col=mix(sod_edge,sunlit_rim,top_rim);
+	ALBEDO=col*mix(1.0,.68,under_skirt);
+	vec3 up=(VIEW_MATRIX*vec4(0.0,1.0,0.0,0.0)).xyz;
+	NORMAL=normalize(mix(NORMAL,up,.52));
+	ROUGHNESS=.94;
+	SPECULAR=.02;
+}
+void light(){
+	stone_gouache_light(NORMAL,LIGHT,LIGHT_COLOR,ATTENUATION,DIFFUSE_LIGHT);
 }

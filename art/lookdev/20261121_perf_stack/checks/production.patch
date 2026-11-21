@@ -1,0 +1,203 @@
+--- art/lookdev/20261121_perf_stack/checks/source_before/preview_quality.gd	2026-11-21 00:29:47
++++ scripts/terrain_editor/preview_quality.gd	2026-11-21 14:51:19
+@@ -4,10 +4,20 @@
+ const MINIMUM_BUDGET := Vector2(1920,1080)
+ const SAMPLE_SECONDS: float = .75
+ var native: bool = false
++## Light tier, for integrated GPUs and wallpaper use. Edges are smoothed after
++## the frame (SMAA) instead of by 2x multisampling, and screen-space ambient
++## occlusion and indirect light are off; the editor also drops the far blur.
++## Stills stay within about 2/255 of the default on the review cameras and a
++## 1080p frame costs about 42% less on the development machine
++## (art/lookdev/20261121_perf_stack). Native and light exclude each other.
++var light: bool = false
+ var viewport: Viewport
+ var _native_msaa: int = Viewport.MSAA_DISABLED
+ var _last_size := Vector2i.ZERO
+ var _last_native: bool = true
++var _last_light: bool = false
++var _native_screen_aa: int = Viewport.SCREEN_SPACE_AA_DISABLED
++var _light_saved: Dictionary = {}
+ var _scale: float = 1.0
+ var _sample_seconds: float = 0.0
+ var _sample_count: int = 0
+@@ -21,6 +31,7 @@
+ func configure(target: Viewport) -> void:
+ 	viewport = target
+ 	_native_msaa = target.msaa_3d
++	_native_screen_aa = target.screen_space_aa
+ 	for key: String in ["quality", "half_size", "adaptive_target", "blur_passes", "fadeout_from", "fadeout_to"]:
+ 		_ssao_settings[key] = ProjectSettings.get_setting("rendering/environment/ssao/" + key)
+ 		_ssil_settings[key] = ProjectSettings.get_setting("rendering/environment/ssil/" + key)
+@@ -30,8 +41,16 @@
+ 
+ func set_native(value: bool) -> void:
+ 	native = value
++	if value:
++		light = false
+ 	refresh()
+ 
++func set_light(value: bool) -> void:
++	light = value
++	if value:
++		native = false
++	refresh()
++
+ func _budget_scale(budget: Vector2) -> float:
+ 	return minf(1.0, minf(budget.x / maxf(_last_size.x,1), budget.y / maxf(_last_size.y,1)))
+ 
+@@ -46,10 +65,11 @@
+ 		if viewport is Window:
+ 			var window_size: Vector2i = (viewport as Window).size
+ 			size = size.max(window_size)
+-	if size == _last_size and native == _last_native:
++	if size == _last_size and native == _last_native and light == _last_light:
+ 		return
+ 	_last_size = size
+ 	_last_native = native
++	_last_light = light
+ 	_sample_seconds = 0.0
+ 	_sample_count = 0
+ 	_recovery_seconds = 0.0
+@@ -58,6 +78,9 @@
+ 
+ func advance(delta: float, frame_limit: int = 0) -> void:
+ 	refresh()
++	if light and _light_saved.is_empty():
++		# The world environment registers a frame after the scene enters the tree.
++		_apply_light_effects()
+ 	if frame_limit != _last_frame_limit:
+ 		_last_frame_limit = frame_limit
+ 		_sample_seconds = 0.0
+@@ -101,7 +124,9 @@
+ func _apply() -> void:
+ 	viewport.scaling_3d_mode = Viewport.SCALING_3D_MODE_FSR if _scale < .999 else Viewport.SCALING_3D_MODE_BILINEAR
+ 	viewport.scaling_3d_scale = maxf(.1,_scale)
+-	viewport.msaa_3d = _native_msaa if native else mini(_native_msaa,Viewport.MSAA_2X)
++	viewport.msaa_3d = Viewport.MSAA_DISABLED if light else (_native_msaa if native else mini(_native_msaa,Viewport.MSAA_2X))
++	viewport.screen_space_aa = Viewport.SCREEN_SPACE_AA_SMAA if light else _native_screen_aa
++	_apply_light_effects()
+ 	# Preserve the high-quality reference as an explicit reversible option.
+ 	RenderingServer.directional_shadow_atlas_set_size(8192 if native else 4096, true)
+ 
+@@ -116,3 +141,21 @@
+ 	# Cliff micro-relief: mean change under 0.13/255 in stills, so only the native
+ 	# reference pays its four noises and six taps per stone fragment.
+ 	RenderingServer.global_shader_parameter_set("stone_fine_relief", 1.0 if native else 0.0)
++
++func _apply_light_effects() -> void:
++	# The two screen-space passes share a normal pre-pass; with both off it is
++	# not drawn at all. Their own settings are put back when the tier is left.
++	if light and _light_saved.is_empty():
++		var world: World3D = viewport.find_world_3d()
++		var environment: Environment = world.environment if world != null else null
++		if environment == null:
++			return
++		_light_saved = {"environment": environment, "ssao": environment.ssao_enabled, "ssil": environment.ssil_enabled}
++		environment.ssao_enabled = false
++		environment.ssil_enabled = false
++	elif not light and not _light_saved.is_empty():
++		var saved: Environment = _light_saved.environment
++		if is_instance_valid(saved):
++			saved.ssao_enabled = bool(_light_saved.ssao)
++			saved.ssil_enabled = bool(_light_saved.ssil)
++		_light_saved = {}
+--- art/lookdev/20261121_perf_stack/checks/source_before/editor.gd	2026-11-13 13:46:26
++++ scripts/terrain_editor/editor.gd	2026-11-21 14:50:30
+@@ -30,6 +30,8 @@
+ var renderer:=Renderer.new()
+ var water_view:=WaterView.new()
+ var preview_quality:=preload("res://scripts/terrain_editor/preview_quality.gd").new()
++var _light_blur_saved:=false
++var _light_blur_enabled:=true
+ var background_view:=preload("res://scripts/terrain_editor/background_renderer.gd").new()
+ var runtime_power:=preload("res://scripts/terrain_editor/runtime_power.gd").new()
+ var camera:=Camera.new()
+@@ -392,7 +394,21 @@
+ 	brush.mesh=mesh
+ func set_native_preview(value:bool)->void:
+ 	preview_quality.set_native(value)
++	_sync_light_blur()
++	if is_instance_valid(background_view):background_view.sync()
++func set_light_preview(value:bool)->void:
++	preview_quality.set_light(value)
++	_sync_light_blur()
+ 	if is_instance_valid(background_view):background_view.sync()
++func _sync_light_blur()->void:
++	# The light tier drops the far blur; leaving it restores what was set before.
++	if preview_quality.light and not _light_blur_saved:
++		_light_blur_saved=true
++		_light_blur_enabled=camera.dof_enabled
++		camera.set_dof(false,camera.dof_strength)
++	elif not preview_quality.light and _light_blur_saved:
++		_light_blur_saved=false
++		camera.set_dof(_light_blur_enabled,camera.dof_strength)
+ 
+ func toggle_grid_snap()->void:
+ 	cancel_input()
+--- art/lookdev/20261121_perf_stack/checks/source_before/shihai_hud.gd	2026-11-11 00:57:08
++++ scripts/gameplay/ui/shihai_hud.gd	2026-11-21 14:50:30
+@@ -326,7 +326,8 @@
+ 		"load":
+ 			if int(ed.call("load_layout", "user://terrain_editor/layout.json")) == OK:
+ 				show_toast("已展阅旧藏画卷", 2.2)
+-		"preview_auto": ed.call("set_native_preview",false); show_toast("流畅预览 · 自动调节场景清晰度",1.8)
++		"preview_auto": ed.call("set_native_preview",false); ed.call("set_light_preview",false); show_toast("流畅预览 · 自动调节场景清晰度",1.8)
++		"preview_light": ed.call("set_light_preview",true); show_toast("轻量画质 · 省电，适合轻薄本与壁纸",1.8)
+ 		"preview_native": ed.call("set_native_preview",true); show_toast("原生画质 · 更清晰，绘制更耗时",1.8)
+ 		"grid_snap": ed.call("toggle_grid_snap"); show_toast("贴格已开启" if bool(ed.get("snap")) else "贴格已关闭",1.8)
+ 		"log":
+@@ -418,7 +419,7 @@
+ 	if _can_break:
+ 		key.append(snappedf(_pulse_time,1.0/60.0))
+ 	if ed != null:
+-		key.append_array([ed.tool,ed.radius,ed.water_level,ed.snap,ed.preview_quality.native])
++		key.append_array([ed.tool,ed.radius,ed.water_level,ed.snap,ed.preview_quality.native,ed.preview_quality.light])
+ 	if _log_open and director != null:
+ 		var state: State = director.get("state") as State
+ 		key.append_array([state.total_fish_caught,roundf(state.meditation_seconds),hash(state.discoveries)])
+@@ -753,11 +754,12 @@
+ 
+ 	var ed:Node3D=director.get("editor") as Node3D
+ 	var native:bool=bool(ed.preview_quality.native) if ed!=null else false
+-	var quality_actions:Array=[ ["preview_auto","流畅预览"],["preview_native","原生画质"],["grid_snap","贴格开" if ed!=null and ed.snap else "贴格关"] ]
++	var light:bool=bool(ed.preview_quality.light) if ed!=null else false
++	var quality_actions:Array=[ ["preview_auto","流畅预览"],["preview_light","轻量画质"],["preview_native","原生画质"],["grid_snap","贴格开" if ed!=null and ed.snap else "贴格关"] ]
+ 	for i:int in quality_actions.size():
+-		var r:=Rect2(lx+12.0+float(i)*72.0,ly+164.0,68.0,26.0)
++		var r:=Rect2(lx+12.0+float(i)*54.0,ly+164.0,52.0,26.0)
+ 		_leaf_actions.append({"id":quality_actions[i][0],"rect":r})
+-		var selected:bool=(i==0 and not native) or (i==1 and native) or (i==2 and ed!=null and ed.snap)
++		var selected:bool=(i==0 and not native and not light) or (i==1 and light) or (i==2 and native) or (i==3 and ed!=null and ed.snap)
+ 		draw_string(_kaiti_font,Vector2(r.position.x,r.position.y+18.0),String(quality_actions[i][1]),HORIZONTAL_ALIGNMENT_CENTER,r.size.x,12,_cinnabar(a) if selected or r.has_point(_hover_pos) else ink)
+ 
+ func _draw_log_leaf(vp: Vector2) -> void:
+--- art/lookdev/20261121_perf_stack/checks/source_before/preview_quality_test.gd	2026-11-12 11:14:47
++++ tests/preview_quality_test.gd	2026-11-21 14:51:19
+@@ -32,6 +32,26 @@
+ 	policy.set_native(true)
+ 	check(view.msaa_3d==Viewport.MSAA_4X and view.scaling_3d_scale==1.0,"native override restores full multisampling at 2K")
+ 	policy.set_native(false)
++	policy.set_light(true)
++	check(view.msaa_3d==Viewport.MSAA_DISABLED and view.screen_space_aa==Viewport.SCREEN_SPACE_AA_SMAA,"light tier smooths edges after the frame instead of multisampling")
++	check(view.scaling_3d_scale==1.0,"light tier keeps full pixels at 2K")
++	policy.set_native(true)
++	check(not policy.light and view.msaa_3d==Viewport.MSAA_4X and view.screen_space_aa==Viewport.SCREEN_SPACE_AA_DISABLED,"native tier replaces the light tier and restores multisampling")
++	policy.set_light(true)
++	check(not policy.native and view.msaa_3d==Viewport.MSAA_DISABLED,"light tier replaces the native tier")
++	policy.set_light(false)
++	check(view.msaa_3d==Viewport.MSAA_2X and view.screen_space_aa==Viewport.SCREEN_SPACE_AA_DISABLED,"leaving the light tier restores the balanced settings")
++	var world_view:=SubViewport.new();world_view.own_world_3d=true;root.add_child(world_view);world_view.size=Vector2i(1280,720)
++	var sky:=WorldEnvironment.new();sky.environment=Environment.new();sky.environment.ssao_enabled=true;sky.environment.ssil_enabled=true;world_view.add_child(sky)
++	var world_policy:RefCounted=load("res://scripts/terrain_editor/preview_quality.gd").new()
++	world_policy.configure(world_view)
++	world_policy.set_light(true)
++	await process_frame
++	world_policy.advance(.016)
++	check(not sky.environment.ssao_enabled and not sky.environment.ssil_enabled,"light tier turns the screen-space occlusion and indirect light off")
++	world_policy.set_light(false)
++	check(sky.environment.ssao_enabled and sky.environment.ssil_enabled,"leaving the light tier restores both screen-space passes")
++	world_view.free()
+ 	view.size=Vector2i(7680,4320);policy.refresh()
+ 	check(view.scaling_3d_scale<.35,"larger high-DPI windows do not multiply the 3D budget without bound")
+ 	view.free();print("PREVIEW QUALITY ",checks," checks, ",failures," failures");quit(1 if failures else 0)

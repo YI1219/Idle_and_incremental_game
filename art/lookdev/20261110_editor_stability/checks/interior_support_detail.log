@@ -1,0 +1,61 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SUPPORT GAP (-8.5, -1.55) top 3.5 bottom 1.5 ray_y 3.475 hit (-8.5, 3.475, 7.860878)
+SUPPORT GAP (-4.9, -3.54375) top 3.5 bottom 1.5 ray_y 3.475 hit (inf, inf, inf)
+ERROR: continuous wall loses 2 of 51 support rays near (-8.0, -5.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:117)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:138)
+       [3] run (res://tests/interior_terrain_edit_test.gd:171)
+SUPPORT GAP (11.35, -3.05) top 1.5 bottom -0.5 ray_y 0.5 hit (inf, inf, inf)
+SUPPORT GAP (9.3, -0.5) top 1.5 bottom -0.5 ray_y 1.475 hit (-17.91227, 1.475, -0.5)
+SUPPORT GAP (13.475, 3.435417) top 1.5 bottom -0.5 ray_y 1.475 hit (8.121748, 1.475, 11.01642)
+ERROR: continuous wall loses 3 of 30 support rays near (13.0, 0.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:117)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:138)
+       [3] run (res://tests/interior_terrain_edit_test.gd:172)
+ERROR: warm and fresh columns agree after lowering near (13.0, 0.0) seed 7301
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_fixture (res://tests/interior_terrain_edit_test.gd:144)
+       [2] run (res://tests/interior_terrain_edit_test.gd:172)
+ERROR: warm and fresh continuous wall agree after lowering near (13.0, 0.0) seed 7301
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_fixture (res://tests/interior_terrain_edit_test.gd:145)
+       [2] run (res://tests/interior_terrain_edit_test.gd:172)
+SUPPORT GAP (-8.5, -1.55) top 3.5 bottom -0.5 ray_y 3.475 hit (-8.5, 3.475, 7.860878)
+SUPPORT GAP (-4.9, -3.54375) top 3.5 bottom -0.5 ray_y 3.475 hit (inf, inf, inf)
+SUPPORT GAP (-4.79125, -6.10625) top 3.5 bottom -0.5 ray_y 1.5 hit (-3.898064, 1.5, -7.451982)
+ERROR: continuous wall loses 3 of 51 support rays near (-8.0, -5.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:117)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:138)
+       [3] run (res://tests/interior_terrain_edit_test.gd:173)
+RAISED (-8.5, -5.5) want -0.5 hit (-8.5, 1.499999, -5.5)
+ERROR: lowered ground ray grid retains 1 raised source/cap fragments near (-8.0, -5.0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_lawn_grid (res://tests/interior_terrain_edit_test.gd:87)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:137)
+       [3] run (res://tests/interior_terrain_edit_test.gd:174)
+SUPPORT GAP (-8.5, -1.55) top 3.5 bottom 1.5 ray_y 3.475 hit (-8.5, 3.475, 7.860878)
+SUPPORT GAP (-4.9, -3.54375) top 3.5 bottom 1.5 ray_y 3.475 hit (inf, inf, inf)
+ERROR: continuous wall loses 2 of 72 support rays near (-8.0, -5.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:117)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:138)
+       [3] run (res://tests/interior_terrain_edit_test.gd:174)
+INTERIOR TERRAIN EDIT: 27 checks, 7 failures

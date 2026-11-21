@@ -1,0 +1,151 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"method": "one live scene; normal render loop; real fixed-pixel SubViewport shown in a visible 1280x720 window; balanced quality scale 1 unless a variant says otherwise; no cap/vsync/image IO; forward then reverse order",
+	"resolution": [
+		2560,
+		1440
+	],
+	"rounds": 6,
+	"sample_seconds": 6.0,
+	"summary": [
+		{
+			"delta_ms_vs_base": 0.0,
+			"fps": 5.32059670218162,
+			"ms": 187.948844081711,
+			"rounds": [
+				{
+					"draw_calls": 261,
+					"fps": 11.4551036305042,
+					"idle": 69,
+					"ms": 87.2973333333333,
+					"p50": 82.879,
+					"p95": 122.822,
+					"primitives": 127891,
+					"rendered": 69
+				},
+				{
+					"draw_calls": 261,
+					"fps": 8.73450531717131,
+					"idle": 53,
+					"ms": 114.488452830189,
+					"p50": 111.273,
+					"p95": 141.723,
+					"primitives": 127843,
+					"rendered": 53
+				},
+				{
+					"draw_calls": 261,
+					"fps": 7.14497163689839,
+					"idle": 44,
+					"ms": 139.958568181818,
+					"p50": 142.204,
+					"p95": 174.314,
+					"primitives": 127873,
+					"rendered": 44
+				},
+				{
+					"draw_calls": 261,
+					"fps": 3.82415472463509,
+					"idle": 23,
+					"ms": 261.495695652174,
+					"p50": 258.274,
+					"p95": 291.324,
+					"primitives": 127873,
+					"rendered": 23
+				},
+				{
+					"draw_calls": 261,
+					"fps": 3.7924707254238,
+					"idle": 23,
+					"ms": 263.680347826087,
+					"p50": 259.797,
+					"p95": 293.356,
+					"primitives": 127873,
+					"rendered": 23
+				},
+				{
+					"draw_calls": 261,
+					"fps": 3.83475773278897,
+					"idle": 24,
+					"ms": 260.772666666667,
+					"p50": 250.745,
+					"p95": 316.227,
+					"primitives": 127873,
+					"rendered": 24
+				}
+			],
+			"variant": "base",
+			"worst_p95": 316.227
+		},
+		{
+			"delta_ms_vs_base": 19.3735489504792,
+			"fps": 4.82340564072465,
+			"ms": 207.32239303219,
+			"rounds": [
+				{
+					"draw_calls": 261,
+					"fps": 9.37110359376891,
+					"idle": 57,
+					"ms": 106.71101754386,
+					"p50": 109.606,
+					"p95": 135.51,
+					"primitives": 127891,
+					"rendered": 57
+				},
+				{
+					"draw_calls": 261,
+					"fps": 8.75136368537427,
+					"idle": 53,
+					"ms": 114.267905660377,
+					"p50": 109.846,
+					"p95": 141.07,
+					"primitives": 127889,
+					"rendered": 53
+				},
+				{
+					"draw_calls": 261,
+					"fps": 5.15267714820928,
+					"idle": 31,
+					"ms": 194.073870967742,
+					"p50": 192.513,
+					"p95": 233.917,
+					"primitives": 127873,
+					"rendered": 31
+				},
+				{
+					"draw_calls": 261,
+					"fps": 4.41648139254603,
+					"idle": 27,
+					"ms": 226.424592592593,
+					"p50": 217.473,
+					"p95": 283.441,
+					"primitives": 127873,
+					"rendered": 27
+				},
+				{
+					"draw_calls": 261,
+					"fps": 3.22232010914643,
+					"idle": 20,
+					"ms": 310.3354,
+					"p50": 314.428,
+					"p95": 335.225,
+					"primitives": 127873,
+					"rendered": 20
+				},
+				{
+					"draw_calls": 261,
+					"fps": 3.42323230396738,
+					"idle": 21,
+					"ms": 292.121571428571,
+					"p50": 300.084,
+					"p95": 334.622,
+					"primitives": 127873,
+					"rendered": 21
+				}
+			],
+			"variant": "grass_before&ssilq2",
+			"worst_p95": 335.225
+		}
+	],
+	"warm_seconds": 1.5
+}

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cliff root veil, pond sheen and waterfall (2026-11-21)</title>
+<style>
+  body { margin: 0; background: #1d2126; color: #dfe3e6; font: 14px/1.5 -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 14px 20px; border-bottom: 1px solid #333a42; }
+  h1 { font-size: 17px; margin: 0 0 6px; }
+  h2 { font-size: 15px; margin: 18px 20px 4px; }
+  p { margin: 4px 0; color: #aab2ba; max-width: 1100px; }
+  .bar { padding: 10px 20px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-bottom: 1px solid #333a42; }
+  .bar span { color: #8a939c; margin-right: 4px; }
+  button { background: #2b323a; color: #dfe3e6; border: 1px solid #3d4650; border-radius: 4px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  button.on { background: #4f7f78; border-color: #6aa39a; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 20px; }
+  .pair.single { grid-template-columns: 1fr; }
+  figure { margin: 0; }
+  figcaption { color: #8a939c; margin-bottom: 4px; }
+  img { width: 100%; height: auto; display: block; background: #111; }
+  code { color: #c9d4a8; }
+  .note { padding: 0 20px 10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Cliff root veil, pond sheen and waterfall</h1>
+  <p>Actual Godot output only, native 2560×1440 Forward+, same capture script, cameras, layouts and light on both sides.
+  <b>Before</b> can be the 2026-11-19 rock-shapes set or the 2026-11-20 cliff-presence set; <b>after</b> is this package.
+  Not art-accepted. Target-laptop performance is unmeasured.</p>
+  <p>Press <b>space</b> or click an image to flip between before and after in place.</p>
+</header>
+<div class="bar" id="befores"><span>Before</span></div>
+<div class="bar" id="sets"><span>Layout</span></div>
+<div class="bar" id="cams"><span>Camera</span></div>
+<div class="bar"><span>View</span><button id="side" class="on">side by side</button><button id="flip">flip in place</button></div>
+<div class="pair" id="pair">
+  <figure id="fb"><figcaption id="cb"></figcaption><img id="before" alt="before"></figure>
+  <figure id="fa"><figcaption id="ca"></figcaption><img id="after" alt="after"></figure>
+</div>
+<h2>Motion: eight stills 0.15 s apart, played in a loop</h2>
+<p class="note">Left: shaders at the start of this task. Right: current shaders. Same scene, camera and clock values.
+Stills played at about 6.7 frames a second, so real motion is smoother than this loop.</p>
+<div class="bar" id="motions"><span>View</span></div>
+<div class="bar"><span>Playback</span><button id="play" class="on">play</button><button id="pause">pause</button></div>
+<div class="pair">
+  <figure><figcaption id="mcb"></figcaption><img id="mbefore" alt="motion before"></figure>
+  <figure><figcaption id="mca"></figcaption><img id="mafter" alt="motion after"></figure>
+</div>
+<script>
+const BEFORES = [["../20261120_cliff_presence/", "2026-11-20 cliff presence"], ["../20261119_rock_shapes/", "2026-11-19 rock shapes"]];
+const SETS = [["final", "seed 7301 preset 0, day"], ["final_held2104", "seed 2104 preset 0"], ["final_held4242", "seed 4242 preset 1"], ["final_held913", "seed 913 preset 2"], ["final_night", "seed 7301, dusk (0.83)"]];
+const CAMS = ["game", "whole", "reverse", "close", "cliff_close", "foot_front", "foot_reverse", "side_106", "side_286", "overview", "terrace_close", "outer_hull"];
+const MOTIONS = ["fall_close", "terrace_close", "pond_low"];
+const FRAMES = 8;
+let from = 0, set = 0, cam = 2, flip = false, showAfter = true, motion = 0, frame = 0, playing = true;
+function button(parent, label, onClick) { const b = document.createElement("button"); b.textContent = label; b.onclick = onClick; parent.appendChild(b); return b; }
+const beforeButtons = BEFORES.map((s, i) => button(document.getElementById("befores"), s[1], () => { from = i; draw(); }));
+const setButtons = SETS.map((s, i) => button(document.getElementById("sets"), s[1], () => { set = i; draw(); }));
+const camButtons = CAMS.map((c, i) => button(document.getElementById("cams"), c, () => { cam = i; draw(); }));
+const motionButtons = MOTIONS.map((c, i) => button(document.getElementById("motions"), c, () => { motion = i; drawMotion(); }));
+function draw() {
+  beforeButtons.forEach((b, i) => b.classList.toggle("on", i === from));
+  setButtons.forEach((b, i) => b.classList.toggle("on", i === set));
+  camButtons.forEach((b, i) => b.classList.toggle("on", i === cam));
+  const before = BEFORES[from][0] + SETS[set][0] + "/" + CAMS[cam] + ".png";
+  const after = SETS[set][0] + "/" + CAMS[cam] + ".png";
+  document.getElementById("before").src = before;
+  document.getElementById("after").src = after;
+  document.getElementById("cb").textContent = "BEFORE · " + before;
+  document.getElementById("ca").textContent = "AFTER · " + after;
+  document.getElementById("pair").classList.toggle("single", flip);
+  document.getElementById("fb").style.display = flip && showAfter ? "none" : "";
+  document.getElementById("fa").style.display = flip && !showAfter ? "none" : "";
+  document.getElementById("side").classList.toggle("on", !flip);
+  document.getElementById("flip").classList.toggle("on", flip);
+}
+function drawMotion() {
+  motionButtons.forEach((b, i) => b.classList.toggle("on", i === motion));
+  const name = MOTIONS[motion] + "_p0" + frame + ".jpg";
+  document.getElementById("mbefore").src = "motion_before/" + name;
+  document.getElementById("mafter").src = "motion_after/" + name;
+  document.getElementById("mcb").textContent = "BEFORE · motion_before/" + name;
+  document.getElementById("mca").textContent = "AFTER · motion_after/" + name;
+  document.getElementById("play").classList.toggle("on", playing);
+  document.getElementById("pause").classList.toggle("on", !playing);
+}
+document.getElementById("side").onclick = () => { flip = false; draw(); };
+document.getElementById("flip").onclick = () => { flip = true; draw(); };
+document.getElementById("play").onclick = () => { playing = true; drawMotion(); };
+document.getElementById("pause").onclick = () => { playing = false; drawMotion(); };
+function toggle() { if (flip) { showAfter = !showAfter; draw(); } }
+document.getElementById("before").onclick = toggle;
+document.getElementById("after").onclick = toggle;
+document.addEventListener("keydown", e => { if (e.code === "Space") { e.preventDefault(); if (!flip) { flip = true; } else { showAfter = !showAfter; } draw(); } });
+// Preload the loop so playback does not flicker on first pass.
+for (const side of ["motion_before/", "motion_after/"]) for (const m of MOTIONS) for (let i = 0; i < FRAMES; i++) { const im = new Image(); im.src = side + m + "_p0" + i + ".jpg"; }
+setInterval(() => { if (playing) { frame = (frame + 1) % FRAMES; drawMotion(); } }, 150);
+draw();
+drawMotion();
+</script>
+</body>
+</html>

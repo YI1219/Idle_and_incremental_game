@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+blades pixels 2249 -> 1031 -> 0 -> 700
+rim pixels 6628 -> 3045 -> 0 -> 2047
+GRASS RECOVERY PIXELS 8 checks, 0 failures
+2026-11-11 23:51:04.590 godot[65109:73591670] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-11 23:51:04.790 godot[65109:73591670] +[IMKInputSession subclass]: chose IMKInputSession_Modern

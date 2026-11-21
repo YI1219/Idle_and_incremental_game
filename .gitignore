@@ -14,3 +14,21 @@ __pycache__/
 # Credentials must remain outside the repository
 .env
 .env.*
+# Third-party reference screenshots stay local (sources listed in art/reference/SOURCES*.tsv)
+art/reference/**/*.jpg
+art/reference/**/*.png
+# Lookdev pictures stay local (several GB); scripts, notes and data evidence are tracked
+art/lookdev/**/*.png
+art/lookdev/**/*.jpg
+art/lookdev/**/*.jpeg
+art/lookdev/**/*.webp
+art/lookdev/**/*.gif
+art/lookdev/**/*.mp4
+art/lookdev/**/*.exr
+art/lookdev/**/*.zip
+# Build output of the purpose-built runtime
+runtime/target/
+# Raw model sources and unadopted candidate assets are not on the published branch
+# (origin is public). They are committed under the local tag godot-freeze-20261122-full.
+art/source/
+assets/candidates/

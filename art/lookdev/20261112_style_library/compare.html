@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-Hans">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>新资产 · Godot庭院实拍</title>
+<style>body{background:#e9ebe4;color:#27372d;font:16px/1.7 system-ui;margin:0}main{max-width:1500px;margin:auto;padding:24px}button{padding:8px 18px;margin:4px;border:1px solid #91a08c;background:#f8f6ed;border-radius:7px;cursor:pointer}.stage{position:relative;aspect-ratio:16/9;background:#34433c}.stage img{position:absolute;width:100%;height:100%;object-fit:contain}#after{clip-path:inset(0 0 0 50%)}input{width:100%}.labels{display:flex;justify-content:space-between}a{color:#346c5d}.note{color:#637268;font-size:14px}</style>
+<main>
+<h1>新资产 · Godot庭院实拍</h1>
+<p>右侧加入新山居、院门、木凳、石灯、玉簪和陶盆，共6个独立候选组件。默认场景未替换，地形与水数据未改；这不是概念图，也不是美术验收。</p>
+<p>同 seed7301、相机、原生2560×1440、光照与渲染相位；5个机位条件逐项匹配，地形数据哈希一致。</p>
+<nav><button onclick="setView('whole')">全景</button><button onclick="setView('game')">游戏距离</button><button onclick="setView('reverse')">反向</button><button onclick="setView('close')">建筑近景</button><button onclick="setView('cliff_close')">岩壁近景</button></nav>
+<div class="labels">
+<span>原庭院</span>
+<span>临时加入候选</span>
+</div>
+<div class="stage">
+<img id="before" src="courtyard_house_baseline/whole.png">
+<img id="after" src="courtyard_house_trial/whole.png">
+</div>
+<input id="slider" type="range" min="0" max="100" value="50" aria-label="前后对照分界">
+<p>
+<a id="rawBefore" href="courtyard_house_baseline/whole.png">原图：原庭院</a> · <a id="rawAfter" href="courtyard_house_trial/whole.png">原图：候选组合</a> · <a href="review.html">13套配色候选／三档LOD／原始文件</a> · <a href="courtyard_comparison_validation.json">匹配条件验证</a>
+</p>
+<p class="note">当前主要边界：建筑梁柱及门窗仍偏软；新的植物块面需要与既有细叶风格继续取舍。共享LOD资源已回导核对，目标Windows轻薄本／MacBook Air帧率尚未实测。原生visibility range恰好等距时存在零厚度双绘，技术记录保留于共享资源验证报告。</p>
+<script>function setView(k){for(const p of ['before','after'])document.getElementById(p).src=(p==='before'?'courtyard_house_baseline/':'courtyard_house_trial/')+k+'.png';document.getElementById('rawBefore').href=document.getElementById('before').src;document.getElementById('rawAfter').href=document.getElementById('after').src}document.getElementById('slider').oninput=e=>document.getElementById('after').style.clipPath='inset(0 0 0 '+e.target.value+'%)';</script>
+</main>
+</html>

@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: held stroke leaves authoritative terrain unchanged
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_blueprint_test.gd:9)
+       [1] run (res://tests/terrain_blueprint_test.gd:28)
+ERROR: held stroke does not rebuild actual terrain
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_blueprint_test.gd:9)
+       [1] run (res://tests/terrain_blueprint_test.gd:29)
+ERROR: held stroke has independent draft data
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_blueprint_test.gd:9)
+       [1] run (res://tests/terrain_blueprint_test.gd:30)
+ERROR: release has a blueprint commit entry point
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_blueprint_test.gd:9)
+       [1] run (res://tests/terrain_blueprint_test.gd:45)
+ERROR: cursor can query a brush operation before committing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_blueprint_test.gd:9)
+       [1] run (res://tests/terrain_blueprint_test.gd:50)
+TERRAIN BLUEPRINT: 6 checks, 5 failures

@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+IDLE WINDOW 12.27 ms (81 fps): the ceiling of this display path
+RESULT 3024x1964 whole    native     30.62 ms    32.7 fps  (K=1)
+RESULT 3024x1964 whole    balanced   23.68 ms    42.2 fps  (K=1)
+RESULT 3024x1964 whole    light      14.64 ms    68.3 fps  (K=1)
+RESULT 3024x1964 game     native     38.36 ms    26.1 fps  (K=1)
+RESULT 3024x1964 game     balanced   29.42 ms    34.0 fps  (K=1)
+RESULT 3024x1964 game     light      18.91 ms    52.9 fps  (K=1)
+RESULT 3024x1964 reverse  native     29.28 ms    34.2 fps  (K=1)
+RESULT 3024x1964 reverse  balanced   22.39 ms    44.7 fps  (K=1)
+RESULT 3024x1964 reverse  light      13.70 ms    73.0 fps  (K=1)
+bench_rc=0

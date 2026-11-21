@@ -1,0 +1,298 @@
+diff --git a/art/lookdev/20261113_water_scaling/checks/source_before/water_flow.gd b/scripts/terrain_editor/water_flow.gd
+index 4aa7b15..491d0f9 100644
+--- a/art/lookdev/20261113_water_scaling/checks/source_before/water_flow.gd
++++ b/scripts/terrain_editor/water_flow.gd
+@@ -15,9 +15,31 @@ var _data: Data
+ var _beds: Dictionary[Vector2i, float] = {}
+ var _authored: Dictionary[Vector2i, Dictionary] = {}
+ var _ordered_cells: Array[Vector2i] = []
++# Stable geometry version is independent of solver volume persistence.
++var terrain_version: int = 0
++var last_step_cells: int = 0
++var _sleeping: bool = false
++var _hydraulically_still: bool = false
++var _persist_dirty: Dictionary[Vector2i, bool] = {}
++var _cell_index: Dictionary[Vector2i, int] = {}
++var _bed_values: PackedFloat64Array = PackedFloat64Array()
++var _height_values: PackedFloat64Array = PackedFloat64Array()
++var _neighbors: PackedInt32Array = PackedInt32Array()
++var _incoming: PackedFloat64Array = PackedFloat64Array()
++var _remaining: PackedFloat64Array = PackedFloat64Array()
++var _marked: PackedByteArray = PackedByteArray()
++var _affected: PackedInt32Array = PackedInt32Array()
++var _previous_wet: PackedInt32Array = PackedInt32Array()
++var _fractions: PackedFloat64Array = PackedFloat64Array([0.0, 0.0, 0.0, 0.0])
++var _targets: PackedInt32Array = PackedInt32Array([0, 0, 0, 0])
++var _target_heights: PackedFloat64Array = PackedFloat64Array([0.0, 0.0, 0.0, 0.0])
++var _directions: PackedInt32Array = PackedInt32Array([0, 0, 0, 0])
+ 
+ func configure(data: Data) -> void:
+ 	_data = data
++	terrain_version += 1
++	_sleeping = false
++	_persist_dirty.clear()
+ 	depths.clear()
+ 	heights.clear()
+ 	_beds.clear()
+@@ -32,6 +54,8 @@ func configure(data: Data) -> void:
+ 		_beds[cell] = float(record.height)
+ 		_authored[cell] = _authoring_state(record)
+ 		_set_depth(cell, _initial_volume(record, _beds[cell]))
++		_persist_dirty[cell] = true
++	_prepare_topology()
+ 	_rebuild_basins()
+ 
+ func sync(data: Data) -> void:
+@@ -47,17 +71,22 @@ func sync(data: Data) -> void:
+ 			depths.erase(cell)
+ 			_beds.erase(cell)
+ 			_authored.erase(cell)
++			_persist_dirty.erase(cell)
+ 	_ordered_cells.assign(data.cells.keys())
+ 	_ordered_cells.sort_custom(_cell_before)
+ 	for cell: Vector2i in _ordered_cells:
+ 		var record: Dictionary = data.cells[cell]
+ 		var next_bed: float = float(record.height)
+ 		var authored: Dictionary = _authoring_state(record)
++		if record.has("water_volume") and (not (record.water_volume is float or record.water_volume is int) or not is_finite(float(record.water_volume)) or float(record.water_volume) < 0.0):
++			_persist_dirty[cell] = true
+ 		var is_new: bool = not _beds.has(cell)
+ 		var reset_water: bool = is_new
+ 		edited = edited or is_new
+ 		if not is_new:
+ 			var previous: Dictionary = _authored[cell]
++			if next_bed != _beds[cell] or authored != previous:
++				_persist_dirty[cell] = true
+ 			edited = edited or next_bed != _beds[cell] or authored != previous
+ 			# The legacy land brush clears its nominal flag when a raised bed
+ 			# crosses that plane. An unchanged explicit volume preserves live water.
+@@ -66,33 +95,44 @@ func sync(data: Data) -> void:
+ 			reset_water = authored != previous and not bed_cleared_flag
+ 		_beds[cell] = next_bed
+ 		_authored[cell] = authored
++		if is_new:
++			_persist_dirty[cell] = true
+ 		if reset_water:
+ 			_set_depth(cell, _initial_volume(record, next_bed))
+ 			changed_water[cell] = true
+ 	if not edited:
+ 		return
++	terrain_version += 1
++	_sleeping = false
++	_prepare_topology()
+ 	_level_existing_basins(changed_water)
+ 	_rebuild_basins()
+ 	last_transfers.clear()
+ 
+-func write_to_data(data: Data) -> void:
++func write_to_data(data: Data, reconcile: bool = true) -> void:
+ 	if data != _data:
+ 		return
+-	# Reconcile pending edits before saving so a new authoring command wins.
+-	sync(data)
+-	for cell: Vector2i in _ordered_cells:
+-		data.cells[cell].water_volume = depths.get(cell, 0.0)
+-		_authored[cell] = _authoring_state(data.cells[cell])
++	# Explicit callers reconcile arbitrary edits. The renderer can skip this
++	# only after checking its pending-sync flag and authoring revision.
++	if reconcile:
++		sync(data)
++	for cell: Vector2i in _persist_dirty:
++		if data.cells.has(cell):
++			data.cells[cell].water_volume = depths.get(cell, 0.0)
++			_authored[cell] = _authoring_state(data.cells[cell])
++	_persist_dirty.clear()
+ 
+ func step(delta: float) -> void:
+ 	last_transfers.clear()
+-	if not is_finite(delta) or delta <= 0.0 or depths.is_empty():
++	last_step_cells = 0
++	if _sleeping or not is_finite(delta) or delta <= 0.0 or depths.is_empty():
+ 		return
+ 	var transfer_totals: Dictionary = {}
+ 	var substeps: int = maxi(1, ceili(delta / MAX_SUBSTEP))
+ 	var duration: float = delta / float(substeps)
+ 	for substep: int in range(substeps):
+ 		if not _advance(duration, transfer_totals):
++			_sleeping = _hydraulically_still
+ 			break
+ 	for edge: Vector3i in transfer_totals:
+ 		var transfer: Dictionary = transfer_totals[edge]
+@@ -105,66 +145,125 @@ func step(delta: float) -> void:
+ 
+ func total_volume() -> float:
+ 	var volume: float = 0.0
+-	for cell: Vector2i in _ordered_cells:
+-		volume += depths.get(cell, 0.0)
++	for cell: Vector2i in _wet_cells():
++		volume += depths[cell]
+ 	return volume
+ 
++func _wet_cells() -> Array[Vector2i]:
++	# Indices already encode row-major order. Native integer sorting avoids a
++	# GDScript comparator call for every comparison on every water substep.
++	var indices: PackedInt32Array = PackedInt32Array()
++	indices.resize(depths.size())
++	var cursor: int = 0
++	for cell: Vector2i in depths:
++		indices[cursor] = _cell_index[cell]
++		cursor += 1
++	indices.sort()
++	var wet: Array[Vector2i] = []
++	wet.resize(indices.size())
++	for index: int in indices.size():
++		wet[index] = _ordered_cells[indices[index]]
++	return wet
++
++func _prepare_topology() -> void:
++	_cell_index.clear()
++	var count: int = _ordered_cells.size()
++	_bed_values.resize(count)
++	_neighbors.resize(count * 4)
++	for index: int in count:
++		var cell: Vector2i = _ordered_cells[index]
++		_cell_index[cell] = index
++		_bed_values[index] = _beds[cell]
++	for index: int in count:
++		for direction: int in 4:
++			_neighbors[index * 4 + direction] = _cell_index.get(_ordered_cells[index] + DIRECTIONS[direction], -1)
++	_height_values = _bed_values.duplicate()
++	_incoming.resize(count); _incoming.fill(0.0)
++	_remaining.resize(count); _remaining.fill(0.0)
++	_marked.resize(count); _marked.fill(0)
++	_previous_wet.clear()
++	_affected.clear()
++
++func _mark_affected(index: int) -> void:
++	if _marked[index] == 0:
++		_marked[index] = 1
++		_affected.append(index)
++
+ func _advance(duration: float, transfer_totals: Dictionary) -> bool:
+-	var remaining_volumes: Dictionary[Vector2i, float] = {}
+-	var incoming: Dictionary[Vector2i, float] = {}
++	_hydraulically_still = true
++	# Float64 and sorted cell/direction order preserve the old integration.
++	# Only wet donors and receiving neighbours touch per-step scratch storage.
++	for index: int in _previous_wet:
++		_height_values[index] = _bed_values[index]
++	_previous_wet.clear()
++	var wet: Array[Vector2i] = _wet_cells()
++	last_step_cells += wet.size()
++	for cell: Vector2i in wet:
++		var index: int = _cell_index[cell]
++		_height_values[index] = heights[cell]
++		_previous_wet.append(index)
+ 	var moved: bool = false
+-	for cell: Vector2i in _ordered_cells:
+-		var available: float = depths.get(cell, 0.0)
+-		if available <= 0.0:
+-			continue
+-		var source_height: float = heights[cell]
+-		var source_bed: float = _beds[cell]
+-		var requests: Array[Dictionary] = []
++	for cell: Vector2i in wet:
++		var index: int = _cell_index[cell]
++		_mark_affected(index)
++		var available: float = depths[cell]
++		var source_height: float = _height_values[index]
++		var source_bed: float = _bed_values[index]
++		var requests: int = 0
+ 		var requested_fraction: float = 0.0
+-		for direction: int in range(DIRECTIONS.size()):
+-			var neighbor: Vector2i = cell + DIRECTIONS[direction]
+-			var target_bed: float = _beds.get(neighbor, source_bed)
+-			var target_height: float = heights.get(neighbor, target_bed)
++		for direction: int in 4:
++			var target: int = _neighbors[index * 4 + direction]
++			var target_bed: float = _bed_values[target] if target >= 0 else source_bed
++			var target_height: float = _height_values[target] if target >= 0 else target_bed
+ 			var head: float = source_height - maxf(source_bed, maxf(target_bed, target_height))
+ 			if head <= 0.0:
+ 				continue
++			# Positive head can underflow to zero flux for tiny deltas. It is
++			# not equilibrium and must still run when a normal delta arrives.
++			_hydraulically_still = false
+ 			var requested: float = minf(available, FLOW_COEFFICIENT * pow(head, 1.5) * duration)
+ 			if requested <= 0.0:
+ 				continue
+ 			var fraction: float = requested / available
+ 			requested_fraction += fraction
+-			requests.append({
+-				"to": neighbor if _beds.has(neighbor) else null,
+-				"fraction": fraction,
+-				"target_height": target_height,
+-				"direction": direction,
+-			})
++			_fractions[requests] = fraction
++			_targets[requests] = target
++			_target_heights[requests] = target_height
++			_directions[requests] = direction
++			requests += 1
+ 		var scale: float = 1.0 / maxf(1.0, requested_fraction)
+ 		var donor_remaining: float = available
+-		for request: Dictionary in requests:
+-			var amount: float = minf(donor_remaining, available * float(request.fraction) * scale)
++		for request: int in requests:
++			var amount: float = minf(donor_remaining, available * _fractions[request] * scale)
+ 			if amount <= 0.0:
+ 				continue
+ 			donor_remaining -= amount
+-			if request.to == null:
++			var target: int = _targets[request]
++			if target < 0:
+ 				discharged_volume += amount
+ 			else:
+-				var target: Vector2i = request.to
+-				incoming[target] = incoming.get(target, 0.0) + amount
+-			var edge: Vector3i = Vector3i(cell.x, cell.y, int(request.direction))
++				_incoming[target] += amount
++				_mark_affected(target)
++			var edge: Vector3i = Vector3i(cell.x, cell.y, _directions[request])
+ 			var accumulated: float = float(transfer_totals[edge].amount) if transfer_totals.has(edge) else 0.0
+ 			transfer_totals[edge] = {
+-				"from": cell, "to": request.to,
+-				"amount": accumulated + amount,
+-				"source_height": source_height,
+-				"target_height": request.target_height,
++				"from": cell, "to": _ordered_cells[target] if target >= 0 else null,
++				"amount": accumulated + amount, "source_height": source_height,
++				"target_height": _target_heights[request],
+ 			}
+ 			moved = true
+-		remaining_volumes[cell] = donor_remaining
++		_remaining[index] = donor_remaining
++	if moved:
++		_affected.sort()
++		for index: int in _affected:
++			_set_depth(_ordered_cells[index], _remaining[index] + _incoming[index])
++	for index: int in _affected:
++		_remaining[index] = 0.0
++		_incoming[index] = 0.0
++		_marked[index] = 0
++	_affected.clear()
+ 	if not moved:
+ 		return false
+-	for cell: Vector2i in _ordered_cells:
+-		_set_depth(cell, remaining_volumes.get(cell, 0.0) + incoming.get(cell, 0.0))
+ 	_level_existing_basins()
+ 	_rebuild_basins()
+ 	return true
+@@ -221,7 +320,7 @@ func _rebuild_basins() -> void:
+ 		heights[cell] = _beds[cell] + depths[cell]
+ 	basins.clear()
+ 	var visited: Dictionary = {}
+-	for start: Vector2i in _ordered_cells:
++	for start: Vector2i in _wet_cells():
+ 		if not depths.has(start) or visited.has(start):
+ 			continue
+ 		var members: Dictionary = {start: true}
+@@ -330,6 +429,8 @@ func _level_pool(members: Dictionary) -> Dictionary:
+ 	return {"cells": wet, "height": level, "volume": volume}
+ 
+ func _set_depth(cell: Vector2i, volume: float) -> void:
++	if depths.get(cell, 0.0) != volume:
++		_persist_dirty[cell] = true
+ 	if volume > 0.0:
+ 		depths[cell] = volume
+ 	else:

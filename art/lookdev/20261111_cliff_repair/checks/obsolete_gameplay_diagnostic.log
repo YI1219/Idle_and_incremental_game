@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ok: terrain_editor.tscn loads
+ok: GameplayDirector initialized on TerrainEditor
+ERROR: FAIL: default startup stance is avatar
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/gameplay_m1_m2_test.gd:13)
+       [1] run (res://tests/gameplay_m1_m2_test.gd:32)
+ok: sculpt workshop panel hidden in default avatar stance
+ok: top jade bar covers (30,30) UI guard
+SCRIPT ERROR: Invalid access to property or key 'position' on a base object of type 'Nil'.
+          at: run (res://tests/gameplay_m1_m2_test.gd:36)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/gameplay_m1_m2_test.gd:36)

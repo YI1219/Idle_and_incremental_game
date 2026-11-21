@@ -1,0 +1,53 @@
+{
+  "tool": "Codex built-in image_gen",
+  "intent": "aspirational TARGET generation with composition/layout references",
+  "date": "2026-11-08",
+  "prompt_pack": "PROMPTS.md",
+  "outputs": {
+    "A": "TARGET_A_day_whole.png",
+    "B": "TARGET_B_grass_rock_hero.png",
+    "C": "TARGET_C_night_whole.png",
+    "D": "TARGET_D_day_reverse.png"
+  },
+  "requests": {
+    "A": {
+      "prompt": "【风格】天青烟岚·宋韵青绿｜唯美低面数大色块古风｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【靠近】The Regreening 绿意新生 + Journey 风之旅人 + Tiny Glade 的壁纸级环境气质；宋韵青绿山水，不是写实照片\n【主体】识海浮空岛 hangout：无房屋；可编辑草甸台地；外圈连贯斜脊岩壁与竖向山根；软草唇与草石窄土缘；一处入瀑与玉色水池；少量树/灌木/石凳\n【品质】可直接当桌面壁纸的游戏环境概念图；大形体错落有致；留白与远山云海；F11 净屏无 UI\n\n## 风格锁 Style Lock（必须原样保留，不可改写成别的风格）\n\n**中文主锚：** argon 预设0「天青烟岚 · 宋韵青绿」\n- 冷银灰雾、低饱和苔草绿、米灰石、玉色水面\n- 暖金主光 + 青空补光 + 云反射（SSIL 氛围）\n- 唯美、低面数、大色块、古风配色；乡野与仙山意境\n- 柔和的大形体与圆钝转角；哑光／手绘感表面；压低表面碎噪声\n\n**明确靠近的风格参考（项目文档 + `art/reference/` 已有锚，勿发明未收录工作室名）：**\n1. 《绿意新生／The Regreening》— `docs/art_direction.md` 主比较基准：软形体、协调哑光色块、成片植被与可读路径\n2. Journey（风之旅人）— `art/reference/journey/`：远山云海、简化形体、史诗留白\n3. Tiny Glade — `art/reference/tiny_glade/`：温润乡野、圆钝转角、壁纸级小品场景\n4. 宋韵青绿山水气质（非写实照片；非赛博；非欧美硬边 fantasy）\n\n**English style block (paste as-is):**\n`style lock: argon preset \"天青烟岚·宋韵青绿\" (Celestial Azure Mist · Song-dynasty blue-green); soft low-poly large color blocks; matte painted surfaces; cool silver-gray mist; desaturated moss green grass; rice-gray stone; jade water; warm gold key light + cool sky fill + cloud bounce; aesthetic of The Regreening + Journey + Tiny Glade; Song-dynasty blue-green landscape feel; floating-island hangout wallpaper quality; NO cartoon pipe-organ pillars; NO soccer-ball rock grids; NO peach-pink fog; NO desert orange; NO industrial props`\n\n\n\ngame environment concept art, wallpaper-ready floating island, Song blue-green xianxia pastoral, soft large masses, rounded bevels, matte painted rock and grass, coherent cliff buttresses with continuous vertical roots to the island underside, soft planted grass lip with narrow soil transition at rock junction, jade basin waterfall, warm gold sunlight and cool azure skylight, silver mist, The Regreening + Journey + Tiny Glade mood, ultra-clean composition, no UI\n\nSUBJECT: 识海浮空岛日景全身壁纸；从斜上方俯瞰整岛；连贯斜脊大面岩壁代替密柱；草甸软唇沿崖缘自然种植；草石交接有窄根土过渡、无脏边；宽瀑口有错落跌水而非平板；玉色水面；远山云海留白\nCAMERA: wide establishing, slight high angle, 16:9 wallpaper framing, FOV~31 feel, generous sky negative space\nLIGHTING: daytime progress~0.29, warm gold key ~28–42° azimuth feel, cool sky fill, soft cloud bounce, gentle SSIL ambience\nSTYLE: 【风格】天青烟岚·宋韵青绿｜唯美低面数大色块古风｜哑光手绘感｜冷银灰雾｜低饱和苔草绿｜米灰石｜玉水｜暖金主光+青空补光\n【靠近】The Regreening 绿意新生 + Journey 风之旅人 + Tiny Glade 的壁纸级环境气质；宋韵青绿山水，不是写实照片\n【主体】识海浮空岛 hangout：无房屋；可编辑草甸台地；外圈连贯斜脊岩壁与竖向山根；软草唇与草石窄土缘；一处入瀑与玉色水池；少量树/灌木/石凳\n【品质】可直接当桌面壁纸的游戏环境概念图；大形体错落有致；留白与远山云海；F11 净屏无 UI\ngame environment concept art, wallpaper-ready floating island, Song blue-green xianxia pastoral, soft large masses, rounded bevels, matte painted rock and grass, coherent cliff buttresses with continuous vertical roots to the island underside, soft planted grass lip with narrow soil transition at rock junction, jade basin waterfall, warm gold sunlight and cool azure skylight, silver mist, The Regreening + Journey + Tiny Glade mood, ultra-clean composition, no UI\nQUALITY: masterpiece game art wallpaper, cohesive silhouette, readable large shapes, soft atmosphere\nNEGATIVE: 中文：管风琴柱、足球网格岩、沙漏腰、二十面体球、桃粉雾、规整重复模块缝、硬边卡通描边、过曝白水高光块、塑料感草皮、写实照片噪点、现代建筑、科幻机械、文字水印、UI、logo\nEnglish: pipe-organ cliff columns, soccer-ball rock grids, hourglass waists, icosahedral blobs, peach-pink fog, repeating modular seams, hard cartoon outlines, blown-out white water specular slabs, plastic turf, photo noise, modern buildings, sci-fi machines, watermark, UI, logo, text\nASPECT: 16:9\n\n执行说明（不替代上述原文）：Use case: stylized-concept. Generate a new aspirational TARGET concept wallpaper based on reference image 1, not a new Godot screenshot. Image 1 is the authoritative composition/layout reference from the current final game: preserve the connected two-tier island footprint, two linked jade basins, waterfall locations, trees, bamboo, stepping-stone path, scholar rock, bench, small white-robed figure and overall camera framing. Improve the cliffs and grass-rock transition into the ideal state requested above, not simply copy the base defects. Grass-rock junction is highest priority: organic interlocking broad rock shoulders and softly planted turf edge, occasional narrow root-soil exposure of varying height, no continuous horizontal strip, no uniform dark outline, no plastic carpet, no repeated vertical panel seams. Keep coherent broad inclined matte stone masses extending to the underside. Reference 2 (Journey) informs only large-form simplification and atmospheric depth; do not copy its orange/desert palette, columns, ruins or architecture. Reference 3 (Tiny Glade) informs rounded soft forms and natural planting contact only; do not copy its structures, sheep, flowers or UI. Preserve the locked Song blue-green palette. Clean single image, no labels, no text, no border, no montage. Landscape 16:9, request 2560x1440 or nearest native 2K wide output.",
+      "referenced_image_paths": [
+        "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261108/29_final_cycle/whole.png",
+        "/Users/yi/Projects/games/the-scroll-within/art/reference/journey/00.jpg",
+        "/Users/yi/Projects/games/the-scroll-within/art/reference/tiny_glade/00.jpg"
+      ],
+      "transparent_background": false
+    }
+  },
+  "results": {
+    "A": {
+      "source_png": "/Users/yi/.codex/generated_images/01a1bbde-b5d0-7612-9adc-01324d4607ae/exec-44cf3219-a5bd-40f7-920d-8a4ca65985df.png",
+      "target_png": "TARGET_A_day_whole.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "8f4acdcd08b7388a8e371aecb2ef0c9b069fc92e65c14e08f41c3d4948dfd1ad"
+    },
+    "B": {
+      "source_png": "/Users/yi/.codex/generated_images/01a1bbde-b5d0-7612-9adc-01324d4607ae/exec-c1336c72-d19f-43ed-8f01-d470c9b9b423.png",
+      "target_png": "TARGET_B_grass_rock_hero.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "e3f73d118a65fc0738135f319d437d1d3c5906f4c87f688e9fb9cd0d2deb8060"
+    },
+    "C": {
+      "source_png": "/Users/yi/.codex/generated_images/01a1bbde-b5d0-7612-9adc-01324d4607ae/exec-4c13e69d-a1ef-4dcc-887b-bdd300cdc8bb.png",
+      "target_png": "TARGET_C_night_whole.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "c7c4ce9acb2fb0b787f2b94b0568842bde04cdd8a09b4fc4b094082873c011e2"
+    },
+    "D": {
+      "source_png": "/Users/yi/.codex/generated_images/01a1bbde-b5d0-7612-9adc-01324d4607ae/exec-83c99dbc-7526-4073-87cc-2c50c81fbe22.png",
+      "target_png": "TARGET_D_day_reverse.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "65d6dbc779aaad2b2818606483446b00ecb2475a4f829cf7962047df813661c7"
+    }
+  }
+}

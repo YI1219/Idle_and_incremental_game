@@ -1,0 +1,116 @@
+--- before/scripts/terrain_editor/grass_field.gd
++++ after/scripts/terrain_editor/grass_field.gd
+@@ -8,7 +8,7 @@
+ ## rosettes; the density stays even so low patches do not reveal a dotted floor.
+ const DENSITY:=28.0
+ const BLADES:=7
+-const PATH_CLEAR:=.54
++const PATH_CLEAR:=.64
+ static var _clump_mesh:ArrayMesh
+ static var _material:ShaderMaterial
+ 
+--- before/scripts/terrain_editor/grass_lip_soften.gd
++++ after/scripts/terrain_editor/grass_lip_soften.gd
+@@ -213,6 +213,14 @@
+ 		var at:Vector2 = samples[i].p
+ 		samples[i].weight = fade*_mouth_weight(field,at,h)
+ 	var segments:int = samples.size() if closed else samples.size()-1
++	# Opposing offsets at a tight crown turn make the rolled strip cross
++	# itself, producing folded soil triangles. Let the lip die into the
++	# unchanged flat cap at that pinch instead of bridging the two sides.
++	for i in segments:
++		var next:int = (i+1)%samples.size()
++		if (samples[i].out as Vector2).dot(samples[next].out)<.2:
++			samples[i].weight = 0.0
++			samples[next].weight = 0.0
+ 	for i in segments:
+ 		var left:Dictionary = samples[i]
+ 		var right:Dictionary = samples[(i+1)%samples.size()]
+@@ -280,6 +288,14 @@
+ 	return Vector3(p.x+out.x*reach,float(sample.h)-down,p.y+out.y*reach)
+ 
+ static func _band(loops:Array,surface,a:Vector3,b:Vector3,c:Vector3,d:Vector3,upper:Color,lower:Color,desired:Vector3)->void:
++	# On a concave quad the fixed a-c diagonal can run outside the strip.
++	# Use b-d when it is the diagonal with consistent projected winding.
++	var ac:float=(b-a).cross(c-a).y*(c-a).cross(d-a).y
++	var bd:float=(b-a).cross(d-a).y*(c-b).cross(d-b).y
++	if ac<0.0 and bd>=0.0:
++		_triangle(loops,surface,a,b,d,upper,upper,lower,desired)
++		_triangle(loops,surface,b,c,d,upper,lower,lower,desired)
++		return
+ 	_triangle(loops,surface,a,b,c,upper,upper,lower,desired)
+ 	_triangle(loops,surface,a,c,d,upper,lower,lower,desired)
+ 
+--- before/scripts/terrain_editor/terrain_data.gd
++++ after/scripts/terrain_editor/terrain_data.gd
+@@ -399,6 +399,15 @@
+ 			if kind!=2 and absf(at.x-10.5)<1.6 and at.y>3:
+ 				height=1.0
+ 				water=3
++			if kind==0 and upper and water<0:
++				# Broad dry shelves break the long outer wall into a rising rear
++				# shoulder and a lower foreground. These remain editable cells;
++				# the pond beds, outlets and common outer footprint stay intact.
++				var rear_front:float=-6.0-1.6*pow((at.x+16.5)/5.5,2.0)+sin(at.x*.6)*.22
++				if at.y<rear_front:
++					height=5.0
++				if at.y>5.65-cos(at.x*.4)*.30 and ((at-Vector2(-6.5,7.5))/Vector2(8.5,4)).length()<1.0+ripple:
++					height=2.5
+ 			var cell:=Vector2i(x,z)
+ 			cells[cell]={"height":height,"water":water}
+ 			invalidate(cell)
+--- before/scripts/terrain_editor/terrain_decoration.gd
++++ after/scripts/terrain_editor/terrain_decoration.gd
+@@ -283,12 +283,20 @@
+ 					if not seated.is_empty():result.surface_rock.append(seated.pose)
+ 				else:result.surface_rock.append(pose)
+ 	# Composed trees are terrain-anchored modules, and disappear when their support is edited away.
+-	# Hero huai (槐) on the upper & right terraces; mountain cloud-pines in the center & upper-right headland!
+-	for spec in [[Vector2(-15.6,-3.2),Vector3(.90,1.00,.90),"tree",6.00],[Vector2(-3.8,-7.8),Vector3(.96,.94,.96),"tree_b",4.40],[Vector2(5.5,-2.2),Vector3(.94,.92,.94),"tree_b",3.85],[Vector2(15.4,1.8),Vector3(.96,.94,.96),"tree",5.05]]:
++	# A main grove climbs the rear shelves; a smaller waterside pair balances
++	# it. The single rear pine is a quiet accent, leaving the pond and route open.
++	for spec in [
++		[Vector2(-15.6,-3.2),Vector3(.90,1.00,.90),"tree",6.00],
++		[Vector2(-17.4,-7.1),Vector3(.96,.94,.96),"tree_b",4.20],
++		[Vector2(-13.8,-8.6),Vector3(.94,.92,.94),"tree_b",3.40],
++		[Vector2(-3.8,-7.8),Vector3(.96,.94,.96),"tree_b",4.40],
++		[Vector2(15.4,1.8),Vector3(.96,.94,.96),"tree",5.05],
++		[Vector2(14.8,-.9),Vector3(.94,.92,.94),"tree_b",3.20],
++	]:
+ 		var p:Vector2=spec[0]
+ 		if Data.chunk_of(Vector2i(p.floor()))!=chunk:continue
+ 		var sample:Dictionary=field.surface_at(p)
+-		if sample.is_empty() or sample.water>=0:continue
++		if sample.is_empty() or sample.water>=0 or _near_path(p):continue
+ 		if not _stable(field,p,float(sample.height),.6):continue
+ 		var tree_kind:String=spec[2]
+ 		var box:AABB=assets[tree_kind][0].mesh.get_aabb()
+@@ -433,6 +441,15 @@
+ 			if _water_distance(field,at,pose.origin.y)<=.85 and _stable(field,at,pose.origin.y,.18):kept.append(pose)
+ 		result[kind]=kept
+ 	result.grass_clump.append_array(crown_tufts)
++	# Apply corridor clearance after every planting source, including the
++	# terrace-foot and tree-collar pockets. Each instance remains independent.
++	for kind:String in ["bush","flower","grass_clump"]:
++		var kept:Array=[]
++		var root_radius:float={"bush":.5,"flower":.18,"grass_clump":.22}[kind]
++		for pose:Transform3D in result[kind]:
++			var radius:float=root_radius*maxf(pose.basis.x.length(),pose.basis.z.length())
++			if not _near_path(Vector2(pose.origin.x,pose.origin.z),.72+radius):kept.append(pose)
++		result[kind]=kept
+ 	var lilies:Array=[]
+ 	for pose:Transform3D in result.lily:
+ 		var supported:=true
+@@ -1380,10 +1397,10 @@
+ 		var poly:PackedVector2Array=oc.get("turf_hull",PackedVector2Array())
+ 		if poly.size()>=3 and Geometry2D.is_point_in_polygon(p,poly):return true
+ 	return false
+-func _near_path(p:Vector2)->bool:
++func _near_path(p:Vector2,clearance:float=1.08)->bool:
+ 	var points:=_path_points()
+ 	for i in points.size()-1:
+-		if p.distance_to(Geometry2D.get_closest_point_to_segment(p,points[i],points[i+1]))<.75:return true
++		if p.distance_to(Geometry2D.get_closest_point_to_segment(p,points[i],points[i+1]))<clearance:return true
+ 	return false
+ func _path(result:Dictionary,field,chunk:Vector2i)->void:
+ 	var points:=_path_points()

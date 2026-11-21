@@ -1,0 +1,62 @@
+[
+  {
+    "view": "front",
+    "silhouette_iou": 1.0,
+    "silhouette_changed_pixels": 0,
+    "rgba_changed_pixels": 907,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "view": "right",
+    "silhouette_iou": 1.0,
+    "silhouette_changed_pixels": 0,
+    "rgba_changed_pixels": 1291,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "view": "back",
+    "silhouette_iou": 1.0,
+    "silhouette_changed_pixels": 0,
+    "rgba_changed_pixels": 1296,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "view": "left",
+    "silhouette_iou": 1.0,
+    "silhouette_changed_pixels": 0,
+    "rgba_changed_pixels": 1318,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "view": "top",
+    "silhouette_iou": 1.0,
+    "silhouette_changed_pixels": 0,
+    "rgba_changed_pixels": 972,
+    "resolution": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "view": "bottom",
+    "silhouette_iou": 1.0,
+    "silhouette_changed_pixels": 0,
+    "rgba_changed_pixels": 1706,
+    "resolution": [
+      1024,
+      1024
+    ]
+  }
+]

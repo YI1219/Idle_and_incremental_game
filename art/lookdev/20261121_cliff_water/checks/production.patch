@@ -1,0 +1,456 @@
+--- art/lookdev/20261121_cliff_water/checks/source_before/scripts/terrain_editor/preview_quality.gd	2026-11-19 16:27:00
++++ scripts/terrain_editor/preview_quality.gd	2026-11-21 00:29:47
+@@ -113,3 +113,6 @@
+ 	RenderingServer.environment_set_ssil_quality(int(_ssil_settings.quality) if native else RenderingServer.ENV_SSIL_QUALITY_VERY_LOW, bool(_ssil_settings.half_size),
+ 		float(_ssil_settings.adaptive_target), int(_ssil_settings.blur_passes), float(_ssil_settings.fadeout_from), float(_ssil_settings.fadeout_to))
+ 	RenderingServer.camera_attributes_set_dof_blur_quality(_native_dof_quality if native else RenderingServer.DOF_BLUR_QUALITY_VERY_LOW, _native_dof_jitter)
++	# Cliff micro-relief: mean change under 0.13/255 in stills, so only the native
++	# reference pays its four noises and six taps per stone fragment.
++	RenderingServer.global_shader_parameter_set("stone_fine_relief", 1.0 if native else 0.0)
+--- art/lookdev/20261121_cliff_water/checks/source_before/scripts/terrain_editor/procedural_shard.gd	2026-11-20 14:58:32
++++ scripts/terrain_editor/procedural_shard.gd	2026-11-21 00:22:48
+@@ -45,16 +45,7 @@
+ 	s.vertices.append(v1); s.normals.append(fn); s.colors.append(c1); s.uv.append(u1)
+ 	s.vertices.append(v2); s.normals.append(fn); s.colors.append(c2); s.uv.append(u2)
+ 
+-static func _emit_quad(
+-	s: Surface,
+-	a: Vector3,
+-	b: Vector3,
+-	c: Vector3,
+-	d: Vector3,
+-	outward: Vector3,
+-	cols: Array,
+-	uvs: Array
+-) -> void:
++static func _face_normal(a: Vector3, b: Vector3, c: Vector3, d: Vector3, outward: Vector3) -> Vector3:
+ 	var n1 := -(b - a).cross(c - a)
+ 	if n1.dot(outward) < 0.0:
+ 		n1 = -n1
+@@ -64,6 +55,20 @@
+ 	var nq := (n1.normalized() + n2.normalized()).normalized()
+ 	if nq.length_squared() < 1e-6:
+ 		nq = outward.normalized()
++	return nq
++
++static func _emit_quad(
++	s: Surface,
++	a: Vector3,
++	b: Vector3,
++	c: Vector3,
++	d: Vector3,
++	outward: Vector3,
++	cols: Array,
++	uvs: Array,
++	shade_normal: Vector3 = Vector3.ZERO
++) -> void:
++	var nq := shade_normal if shade_normal.length_squared() > 1e-6 else _face_normal(a, b, c, d, outward)
+ 	_emit_tri(s, a, b, c, outward, cols[0], cols[1], cols[2], uvs[0], uvs[1], uvs[2], nq)
+ 	_emit_tri(s, a, c, d, outward, cols[0], cols[2], cols[3], uvs[0], uvs[2], uvs[3], nq)
+ 
+@@ -319,8 +324,15 @@
+ 			var cols: Array = [tone, tone, tone, tone]
+ 			var uv := Vector2(brow, flank_crev)
+ 			var uvs: Array = [uv, uv, uv, uv]
+-			_emit_quad(full, upper[i], upper[ni], lower[ni], lower[i], outward, cols, uvs)
+-			_emit_quad(walls, upper[i], upper[ni], lower[ni], lower[i], outward, cols, uvs)
++			# The short band under the collar turns a few degrees against the face
++			# below it. Under grazing light that showed as a row of square tone
++			# patches below the grass lip, so it takes the normal of that face.
++			var shade := Vector3.ZERO
++			if band == 0:
++				var below: Array = rings[2]
++				shade = _face_normal(lower[i], lower[ni], below[ni], below[i], outward)
++			_emit_quad(full, upper[i], upper[ni], lower[ni], lower[i], outward, cols, uvs, shade)
++			_emit_quad(walls, upper[i], upper[ni], lower[ni], lower[i], outward, cols, uvs, shade)
+ 	var foot: Array = rings.back()
+ 	var center := Vector3.ZERO
+ 	for p: Vector3 in foot: center += p
+@@ -413,8 +425,15 @@
+ 			var cols: Array = [tone, tone, tone, tone]
+ 			var brow: float = 0.68 if band == 0 else (0.52 if band == 1 else 0.28)
+ 			var uvs: Array = [Vector2(brow, 0.0), Vector2(brow, 0.0), Vector2(brow, 0.0), Vector2(brow, 0.0)]
+-			_emit_quad(full, a, b, c, d, outward, cols, uvs)
+-			_emit_quad(walls, a, b, c, d, outward, cols, uvs)
++			# Same as the varied bodies: the collar band is shaded as the face below.
++			var shade := Vector3.ZERO
++			if band == 0:
++				var below: Array = rings[2]
++				shade = _face_normal(d, c, below[ni], below[i], outward)
++				if shade.dot(outward) < 0.0:
++					shade = -shade
++			_emit_quad(full, a, b, c, d, outward, cols, uvs, shade)
++			_emit_quad(walls, a, b, c, d, outward, cols, uvs, shade)
+ 	var bottom_center := Vector3.ZERO
+ 	for p: Vector3 in foot:
+ 		bottom_center += p
+--- art/lookdev/20261121_cliff_water/checks/source_before/shaders/terrain_editor/cliff.gdshader	2026-11-20 14:50:12
++++ shaders/terrain_editor/cliff.gdshader	2026-11-20 23:05:46
+@@ -12,11 +12,16 @@
+ }
+ void fragment(){
+  if(!terrain_transition_visible(FRAGCOORD.xy))discard;
++	float root_veil=stone_root_veil(world_position);
++	if(stone_root_frayed(world_position,root_veil))discard;
+ 	vec3 material_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ 	if(UV.y<-.5)material_normal=normalize(mix(material_normal,vec3(0.0,-1.0,0.0),.55));
+ 	vec3 shade_n=stone_mineral_normal(world_position,material_normal);
+ 	vec3 stone=stone_root_contact(stone_cliff_character(stone_surface(world_position,shade_n),world_position,material_normal,UV.x,UV.y*.6),world_position,material_normal,UV.x,UV.y)*mix(vec3(1.0),COLOR.rgb,.16);
+-	ALBEDO=stone_mist_dissolve(stone,world_position,material_normal);
++	vec3 veil_glow=vec3(0.0);
++	stone_root_veil_apply(root_veil,stone,veil_glow);
++	ALBEDO=stone;
++	EMISSION=veil_glow;
+ 	ROUGHNESS=stone_roughness;SPECULAR=0.0;
+ 	// Occlusion follows downward shelter, independently of the moving key light.
+ 	AO=mix(1.0,.88,1.0-smoothstep(-.65,.15,material_normal.y));
+--- art/lookdev/20261121_cliff_water/checks/source_before/shaders/terrain_editor/cliff_column.gdshader	2026-11-20 14:50:12
++++ shaders/terrain_editor/cliff_column.gdshader	2026-11-20 23:05:46
+@@ -22,6 +22,8 @@
+ 
+ void fragment(){
+  if(!terrain_transition_visible(FRAGCOORD.xy))discard;
++ float root_veil=stone_root_veil(world_position);
++ if(stone_root_frayed(world_position,root_veil))discard;
+  vec3 base_normal=normalize(world_facet_n);
+  vec3 shade_normal=stone_mineral_normal(world_position,base_normal);
+  NORMAL=normalize((VIEW_MATRIX*vec4(shade_normal,0.0)).xyz);
+@@ -29,7 +31,10 @@
+  pigment=stone_cliff_character(pigment,world_position,base_normal,column_origin.y,crown_cover);
+  pigment*=mix(vec3(1.0),COLOR.rgb/.708,.28);
+  pigment=stone_root_contact(pigment,world_position,base_normal,column_origin.y,crown_cover);
+- ALBEDO=stone_mist_dissolve(pigment,world_position,base_normal);
++ vec3 veil_glow=vec3(0.0);
++ stone_root_veil_apply(root_veil,pigment,veil_glow);
++ ALBEDO=pigment;
++ EMISSION=veil_glow;
+  ROUGHNESS=stone_roughness;
+  SPECULAR=0.0;
+  AO=mix(.94,1.0,smoothstep(-.50,.30,base_normal.y));
+--- art/lookdev/20261121_cliff_water/checks/source_before/shaders/terrain_editor/stone_surface.gdshaderinc	2026-11-20 15:00:56
++++ shaders/terrain_editor/stone_surface.gdshaderinc	2026-11-21 00:29:47
+@@ -6,6 +6,7 @@
+ uniform sampler2D stone_mineral_map : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+ uniform sampler2D stone_gouache_map : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+ uniform float stone_relief_strength : hint_range(0.0, 1.0) = .009;
++global uniform float stone_fine_relief;
+ uniform float stone_roughness : hint_range(0.0, 1.0) = .92;
+ uniform vec3 stone_shadow_color : source_color = vec3(.24,.31,.43);
+ uniform vec3 stone_mid_color : source_color = vec3(.50,.48,.46);
+@@ -55,45 +56,48 @@
+  // Pigment has three real scales: broad brushed wash, warm/cool mineral
+  // islands, then restrained stone tooth. None is a painted directional light.
+  pigment*=.935+.105*cloud+.020*chalk;
+- float tooth=stone_map(p*1.4,n).r;
+- return pigment*(.998+.004*tooth);
++ // A former stone-tooth term cost three taps to move the result by at most
++ // 0.2%, under one 8-bit step. The .998 keeps the mean where it was.
++ return pigment*.998;
+ }
+ 
+ // Presence for tall faces. A calm wash alone leaves a wide wall paper-flat, most
+ // of all in shade where only albedo can speak. Painted layers, all world
+ // anchored so neighbouring slabs share them:
+-//  - long mineral plates: the mineral map stretched about 3:1 along gravity,
+-//    with its darkest flakes deepened into seams;
+-//  - fissures: the same map stretched about 7:1, keeping only its dark tail, so
+-//    a few long uneven strokes run down the face;
++//  - brush planes: the hand-painted wash pulled about 3:1 along gravity and
++//    gathered into a few flat values, like broad strokes laid down a rock face;
++//  - dry strokes: the same wash pulled about 6:1, keeping only its dark tail, so
++//    a few long soft marks run down the face;
+ //  - a mossy weathered brow that runs down from the grass lip in uneven drips.
+ // A broad "voice" field lets parts of every face rest. Tops stay untouched.
+ // Costs four taps of an already bound map and two value noises; a low quality
+ // tier can set cliff_character to 0 and skip all of it.
+-// Linear statistics of stone_mineral_v1: mean .338, spread about .10.
++// (2026-11-20 read the mineral photo here; in shade its grain looked like
++// streaked concrete.)
++// Linear statistics of gouache_stone_sol61: luminance mean .446, spread .034.
+ uniform float cliff_character : hint_range(0.0, 1.5) = 1.0;
+-const float CLIFF_PLATE_MEAN = .338;
+-const float CLIFF_PLATE_SPREAD = .10;
+-const vec3 CLIFF_PLATE_CHROMA = vec3(1.077, 1.019, .905);
++const float CLIFF_BRUSH_MEAN = .446;
++const float CLIFF_BRUSH_SPREAD = .046;
++const vec3 CLIFF_BRUSH_CHROMA = vec3(1.119, 1.016, .865);
+ vec3 stone_cliff_character(vec3 pigment, vec3 p, vec3 n, float cap_height, float brow){
+ 	float steep = 1.0 - smoothstep(.50, .82, abs(n.y));
+ 	if(cliff_character <= .001 || steep <= .001) return pigment;
+ 	vec2 w = abs(n.xz);
+ 	w /= max(w.x + w.y, .001);
+-	vec3 plate = texture(stone_mineral_map, vec2(p.z * .135 + .21, p.y * .046)).rgb * w.x
+-		+ texture(stone_mineral_map, vec2(p.x * .135 + .63, p.y * .046 + .37)).rgb * w.y;
+-	float lum = dot(plate, vec3(.3333));
+-	float tone = clamp((lum - CLIFF_PLATE_MEAN) / CLIFF_PLATE_SPREAD, -1.0, 1.0);
++	vec3 plane = texture(stone_gouache_map, vec2(p.z * .085 + .21, p.y * .030)).rgb * w.x
++		+ texture(stone_gouache_map, vec2(p.x * .085 + .63, p.y * .030 + .37)).rgb * w.y;
++	float lum = dot(plane, vec3(.3333));
++	float tone = clamp((lum - CLIFF_BRUSH_MEAN) / CLIFF_BRUSH_SPREAD, -1.0, 1.0);
++	// Gather the soft wash into flat values with a short edge between them.
++	float value = smoothstep(-.55, .55, tone) * 2.0 - 1.0;
+ 	float voice = smoothstep(.28, .64, stone_noise(p * vec3(.10, .065, .10) + vec3(4.7, 1.3, 9.2)));
+ 	float amount = cliff_character * steep * mix(.45, 1.0, voice);
+-	pigment *= 1.0 + tone * .21 * amount;
+-	pigment *= mix(vec3(1.0), clamp(plate / max(lum, .02) / CLIFF_PLATE_CHROMA, vec3(.89), vec3(1.11)), .85 * amount);
+-	float seam = smoothstep(CLIFF_PLATE_MEAN - CLIFF_PLATE_SPREAD * .75, CLIFF_PLATE_MEAN - CLIFF_PLATE_SPREAD * 1.35, lum);
+-	pigment *= 1.0 - seam * .20 * amount;
+-	float streak = texture(stone_mineral_map, vec2(p.z * .074 + .52, p.y * .0105 + .11)).g * w.x
+-		+ texture(stone_mineral_map, vec2(p.x * .074 + .08, p.y * .0105 + .71)).g * w.y;
+-	float fissure = smoothstep(CLIFF_PLATE_MEAN - CLIFF_PLATE_SPREAD * .55, CLIFF_PLATE_MEAN - CLIFF_PLATE_SPREAD * 1.15, streak);
+-	pigment *= 1.0 - fissure * .30 * cliff_character * steep * mix(.25, 1.0, voice);
++	pigment *= 1.0 + value * .15 * amount;
++	pigment *= mix(vec3(1.0), clamp(plane / max(lum, .02) / CLIFF_BRUSH_CHROMA, vec3(.90), vec3(1.10)), .85 * amount);
++	float stroke = texture(stone_gouache_map, vec2(p.z * .048 + .52, p.y * .0085 + .11)).g * w.x
++		+ texture(stone_gouache_map, vec2(p.x * .048 + .08, p.y * .0085 + .71)).g * w.y;
++	float dry = smoothstep(CLIFF_BRUSH_MEAN - CLIFF_BRUSH_SPREAD * .45, CLIFF_BRUSH_MEAN - CLIFF_BRUSH_SPREAD * 1.25, stroke);
++	pigment *= 1.0 - dry * .24 * cliff_character * steep * mix(.25, 1.0, voice);
+ 	float depth = cap_height - p.y;
+ 	float reach = mix(.25, 2.4, smoothstep(.34, .70, stone_noise(vec3(p.x * .38, 5.3, p.z * .38))));
+ 	float moss = brow * (1.0 - smoothstep(reach * .30, reach, depth + tone * .22)) * step(-.08, depth);
+@@ -122,6 +126,10 @@
+ // Broad mineral relief affects illumination, rather than adding photographic
+ // grain to albedo. It stays world-anchored across adjacent geological planes.
+ vec3 stone_mineral_normal(vec3 p,vec3 n){
++ // The relief turns a cliff normal by about two degrees: four noises and six
++ // taps for a mean change under 0.13/255 in stills (2026-11-21). Balanced
++ // preview quality sets stone_fine_relief to 0 and skips it; native keeps it.
++ if(stone_relief_strength*stone_fine_relief<=0.0)return n;
+  float e=.10;
+  float h=stone_noise(p*.95);
+  vec3 g=vec3(stone_noise((p+vec3(e,0,0))*.95)-h,
+@@ -139,6 +147,37 @@
+ 	return mix(stone,stone_mist_color,haze);
+ }
+ 
++// Root veil. The island stands in a sunlit cloud sea, so its lower walls are seen
++// through drifting mist: stone and its facet shading ease to the mist tone, and
++// below the floor the rock frays away like a dry brush running
++// out of pigment. Slab feet that end at different depths then stop reading as a
++// stepped dark skirting, and tall faces gain a value gradient from crisp top to
++// soft root. World anchored, a few ALU per fragment, no texture tap; the fray
++// noise only runs inside the last band. Set root_veil_strength to 0 to disable.
++uniform float root_veil_strength : hint_range(0.0, 1.0) = 1.0;
++const float ROOT_VEIL_TOP = -2.5;
++const float ROOT_VEIL_FLOOR = -5.7;
++float stone_root_veil(vec3 p){
++	float wave=sin(p.x*.14+p.z*.12)*.42+cos(p.x*.25-p.z*.19)*.18;
++	float t=clamp((ROOT_VEIL_TOP+wave-p.y)/(ROOT_VEIL_TOP-ROOT_VEIL_FLOOR),0.0,1.0);
++	// Stone holds its weight through the upper half, then gives way quickly.
++	float v=t*t*(3.0-2.0*t);
++	return root_veil_strength*v*(.38+.62*v);
++}
++bool stone_root_frayed(vec3 p,float veil){
++	if(veil<.80)return false;
++	// Tall narrow wisps, so the lower edge breaks into strokes, not into dots.
++	float wisp=stone_noise(vec3(p.x*1.15,p.y*.42,p.z*1.15)+vec3(1.7,4.2,8.3));
++	return (veil-.80)*5.0>wisp;
++}
++// Inside the veil a face shows the palette mist tone itself, unlit, the way the
++// cloud deck and the waterfall spray do, so it follows every hour of the day.
++void stone_root_veil_apply(float veil,inout vec3 albedo,inout vec3 emission){
++	float m=veil*.90;
++	albedo*=1.0-m;
++	emission+=stone_mist_color*m;
++}
++
+ float stone_lip_ao(vec3 p,vec3 n,float cap_height,float dry){
+ 	if(dry<.5)return 0.0;
+ 	float depth=cap_height-p.y;
+--- art/lookdev/20261121_cliff_water/checks/source_before/shaders/terrain_editor/water.gdshader	2026-11-10 15:28:37
++++ shaders/terrain_editor/water.gdshader	2026-11-20 23:21:03
+@@ -12,6 +12,11 @@
+ uniform vec3 sun_direction = vec3(.56,.43,.71);
+ uniform vec3 glint_color : source_color = vec3(1.0,.94,.80);
+ uniform float glint_energy = .45;
++// Below about .35 this also caps the grazing reflection (the engine derives
++// f90 from f0), which keeps the far side of a pond jade instead of sky blue.
++uniform float sky_sheen : hint_range(0.0,1.0) = .28;
++uniform float sheen_ripple : hint_range(1.0,6.0) = 2.6;
++uniform float water_line_strength : hint_range(0.0,.5) = .11;
+ varying vec3 world_position;
+ 
+ float hash_water(vec2 p) {
+@@ -125,7 +130,10 @@
+  slope+=impact.yz*.055*basin.b;
+  vec3 normal_world=normalize(vec3(-slope.x,1.0,-slope.y));
+  vec3 normal_view=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
+- NORMAL=normal_view;
++ // The sheen reads a steeper copy of the same ripples: sky reflection and
++ // fresnel then vary across the pond, while refraction keeps the calm slope.
++ vec3 sheen_normal=normalize(vec3(-slope.x*sheen_ripple,1.0,-slope.y*sheen_ripple));
++ NORMAL=normalize((VIEW_MATRIX*vec4(sheen_normal,0.0)).xyz);
+  vec3 view_world=normalize(CAMERA_POSITION_WORLD-world_position);
+  vec3 behind=scene_position(SCREEN_UV,INV_PROJECTION_MATRIX,INV_VIEW_MATRIX);
+  float vertical_depth=clamp(world_position.y-behind.y,.01,4.0);
+@@ -153,6 +161,16 @@
+  float ripple_hl=smoothstep(.66,.86,ripple_wave)*smoothstep(.03,.24,basin.r)*(1.0-basin.b*.5);
+  float shore_caustic=smoothstep(.62,.88,sin(basin.r*42.0-time*1.35+small.x*3.2))*(1.0-smoothstep(.02,.18,basin.r))*(1.0-basin.b*.6);
+  color=mix(color,vec3(.44,.60,.54),ripple_hl*.042+shore_caustic*.055);
++ // Drifting light lines: the level line of two ripple fields that move in
++ // different directions. Lines bend, join and part instead of sliding past
++ // as one fixed pattern, and a finer field breaks them into brush dashes.
++ // No extra noise is evaluated. Lines too thin for the pixel grid fade out.
++ float line_field=abs(broad.x*.58+small.x*.42-.5);
++ float line_width=max(.040,fwidth(line_field)*1.4);
++ float water_line=(1.0-smoothstep(0.0,line_width,line_field))*min(1.0,.085/line_width);
++ // They gather where the broad swell is high, so calm water is left between.
++ water_line*=smoothstep(.40,.66,fine.x)*smoothstep(.50,.68,broad.x)*smoothstep(.05,.30,basin.r)*(1.0-basin.b*.6);
++ color=mix(color,mix(vec3(.50,.68,.62),glint_color,.25),water_line*water_line_strength*(.45+.55*clamp(glint_energy/.45,0.0,1.0)));
+  float fresnel=.03+.52*pow(1.0-max(dot(view_world,normal_world),0.0),4.5);
+  // Mirror-calm broad swell drives SSR so bamboo & tree reflections stay serene and unbroken!
+  vec3 refl_normal=normalize(vec3(-broad.y*.008,1.0,-broad.z*.008));
+@@ -180,5 +198,11 @@
+  ALBEDO=vec3(0.0);
+  EMISSION=color*(1.0-fresnel);
+  ALPHA=1.0;
+- METALLIC=0.0;ROUGHNESS=.36+basin.b*.10;SPECULAR=.08;
++ // The sheen is the engine's own sky radiance through a dielectric fresnel:
++ // it follows the hour of the day and costs no tap in this shader.
++ METALLIC=0.0;ROUGHNESS=.20+basin.b*.16;SPECULAR=sky_sheen;
+ }
++// Lamps add nothing to a black-albedo surface, and the sun's highlight is the
++// painted glint above, so per-light shading is skipped outright.
++void light(){
++}
+--- art/lookdev/20261121_cliff_water/checks/source_before/shaders/terrain_editor/waterfall.gdshader	2026-11-10 16:50:30
++++ shaders/terrain_editor/waterfall.gdshader	2026-11-20 23:04:50
+@@ -7,6 +7,9 @@
+ uniform float refraction_strength : hint_range(0.0,.15) = .045;
+ uniform float flow_time = -1.0;
+ uniform vec3 sun_direction = vec3(.56,.43,.71);
++// Same field as stone_root_veil in stone_surface.gdshaderinc: an outer fall
++// thins into the cloud-sea mist together with the rock behind it.
++uniform float root_veil_strength : hint_range(0.0,1.0) = 1.0;
+ varying vec3 world_position;
+ 
+ float hash_flow(vec2 p) {
+@@ -26,13 +29,30 @@
+ 	return mix(mix(a,b,blend.x),mix(c,d,blend.x),blend.y);
+ }
+ 
+-// Stretched along the fall: strands are long and narrow, never a regular comb.
+-float strands(vec2 p) {
+-	return flow_noise(p)*.55+flow_noise(p*vec2(2.03,1.97)+vec2(7.1,3.3))*.30+flow_noise(p*vec2(4.1,3.9)+vec2(1.7,9.2))*.15;
++float fall_veil(vec3 p){
++	float wave=sin(p.x*.14+p.z*.12)*.42+cos(p.x*.25-p.z*.19)*.18;
++	float t=clamp((-2.5+wave-p.y)/3.2,0.0,1.0);
++	float v=t*t*(3.0-2.0*t);
++	return root_veil_strength*v*(.38+.62*v);
+ }
+ 
++// Water leaves the lip as one glassy sheet and gravity pulls it apart on the
++// way down. 0 at the lip, 1 where the sheet has become separate ropes; a
++// stronger flow holds together longer.
++float fall_loosen(float drop,float intensity){
++	return smoothstep(.10,mix(1.1,2.3,intensity),drop);
++}
++
+ void vertex() {
++	float time=flow_time<0.0?TIME:flow_time;
+ 	world_position = (MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
++	// A slow billow travels down the loosened sheet, so neither its face nor
++	// its outline stands still. The lip rows stay put and keep their joins.
++	float drop=max(UV.y,0.0);
++	float loosen=fall_loosen(drop,clamp(UV.x,0.0,1.0));
++	float billow=sin(world_position.x*2.3+world_position.z*1.9+drop*2.6-time*2.2)
++		+sin(world_position.x*5.1-world_position.z*4.3+drop*4.3-time*3.1)*.6;
++	VERTEX+=NORMAL*(billow*.022*loosen);
+ 	VERTEX.y += terrain_morph_offset(world_position);
+ }
+ 
+@@ -46,16 +66,27 @@
+ 	bool free_fall=COLOR.a>=.495 && COLOR.a<.995;
+ 	float progress=free_fall?clamp((COLOR.a-.5)/.49,0.0,1.0):0.0;
+ 	float across=connected?COLOR.r/max(inverse_width,.0001):dot(world_position.xz,vec2(.80,.60));
++	float loosen=fall_loosen(drop,intensity);
++	// The pattern is laid along sqrt(drop): it creeps over the lip, then
++	// stretches and speeds up as it falls, as falling water does.
+ 	float speed=mix(.95,2.4,intensity);
+-	vec2 flow_uv=vec2(across*5.3,(world_position.y+time*speed)*.28);
+-	float groups=strands(flow_uv);
+-	float fine=strands(vec2(across*24.0,(world_position.y+time*speed*1.2)*1.8)+vec2(8.1,3.7));
+-	float packets=flow_noise(vec2(across*8.0,(world_position.y+time*speed)*2.3));
+-	float reflection=smoothstep(.42,.65,fine*.72+groups*.28)*smoothstep(.25,.58,packets);
+-	float threads=smoothstep(.45,.68,fine)*( .35+.65*smoothstep(.28,.60,groups));
++	float run=sqrt(drop+.05)*3.1-time*speed*.75;
++	// Ropes lean a little from side to side on the way down.
++	float lane=across+(sin(run*.9+across*2.1)*.040+sin(run*2.3-across*5.7)*.014)*loosen;
++	vec2 group_uv=vec2(lane*5.3,run*.42);
++	float groups=flow_noise(group_uv)*.62+flow_noise(group_uv*vec2(2.03,1.31)+vec2(7.1,3.3))*.38;
++	vec2 fine_uv=vec2(lane*15.0,run*1.4)+vec2(8.1,3.7);
++	float fine=flow_noise(fine_uv)*.60+flow_noise(fine_uv*vec2(2.1,1.6)+vec2(1.7,9.2))*.40;
++	float packets=flow_noise(vec2(across*7.0,run*2.0+11.0));
++	// White water: fine threads on the glassy sheet, gathering into ropes below.
++	float thread=smoothstep(.50,.72,fine)*(.30+.70*smoothstep(.30,.62,groups));
++	float rope=smoothstep(mix(.64,.42,loosen),mix(.82,.66,loosen),groups*.62+fine*.38)*smoothstep(.30,.62,packets);
++	float white=clamp(thread*mix(.28,.50,loosen)+rope*mix(.20,.78,loosen),0.0,1.0);
+ 	float impact=free_fall?0.0:smoothstep(.84,1.0,COLOR.a/.4);
+-	float lip=(1.0-smoothstep(.015,.12,drop))*.12;
+-	float foam=clamp(impact*(.32+.42*fine)+lip+reflection*.035,0.0,.76);
++	// A bright roll where the sheet bends over the lip.
++	float lip=(1.0-smoothstep(.02,.16,drop))*.16;
++	float veil=free_fall?fall_veil(world_position):0.0;
++	float foam=clamp(white+impact*(.35+.45*fine)+lip+veil*.6,0.0,.92);
+ 	float relief=groups*.65+fine*.35;
+ 	vec3 dx=dFdx(VERTEX);
+ 	vec3 dy=dFdy(VERTEX);
+@@ -68,9 +99,10 @@
+ 	}
+ 	vec3 world_n=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ 	float sun_bevel=clamp(dot(world_n,normalize(sun_direction))*.5+.5,0.0,1.0);
++	// Pond jade at the lip, lightening to a misty celadon as air gets in.
+ 	vec3 jade=mix(vec3(.045,.175,.164),vec3(.14,.32,.285),groups*.42+sun_bevel*.08);
+-	jade=mix(jade,vec3(.42,.60,.53),reflection*.43+threads*.12*smoothstep(.32,.65,packets));
+-	vec3 water_color=mix(jade,vec3(.78,.86,.81),foam);
++	jade=mix(jade,vec3(.27,.47,.43),loosen*.50);
++	vec3 water_color=mix(jade,vec3(.78,.88,.84),foam);
+ 	vec2 sample_uv=SCREEN_UV;
+ 	if(refraction_strength>0.0){
+ 		float divisor=max(abs((PROJECTION_MATRIX*vec4(VERTEX,1.0)).w),.5);
+@@ -81,19 +113,27 @@
+ 		if(depth<.00001 || behind_view.z/behind_view.w<VERTEX.z-.01)sample_uv=bent_uv;
+ 	}
+ 	vec3 behind=texture(screen_texture,sample_uv).rgb*vec3(.70,.90,.86);
+-	float transmission=mix(.12,.065,intensity)*(1.0-foam);
++	// The unbroken sheet near the lip is the clearest part of the fall.
++	float transmission=mix(mix(.24,.12,intensity),mix(.12,.065,intensity),loosen)*(1.0-foam);
+ 	ALBEDO=water_color*(1.0-transmission);
+ 	EMISSION=behind*transmission+water_color*.025;
++	float run_width=1.0/max(inverse_width,.0001);
+ 	float side=1.0;
+ 	if(connected){
+-		float edge=min(COLOR.r,1.0-COLOR.r);
+-		float softness=max(fwidth(edge)*1.25,min(.023*inverse_width,.055));
+-		side=smoothstep(0.0,max(.0001,softness),edge);
++		// Metres from the nearer edge. Ropes peel away from the outline as the
++		// sheet loosens, so the fall is never a ruled rectangle.
++		float edge=min(COLOR.r,1.0-COLOR.r)*run_width;
++		float fray=((groups-.5)*mix(.03,.36,loosen)+(fine-.5)*.06*loosen)*clamp(run_width*.6,.3,1.0);
++		float softness=max(fwidth(edge)*1.25,mix(.022,.085,loosen));
++		side=smoothstep(0.0,softness,edge+min(fray,0.0)-.012*loosen);
+ 	}
+-	ALPHA=mix(.82,.95,sqrt(intensity))*side*smoothstep(0.0,.12,intensity);
++	// Between the ropes the loosened sheet thins, and wet rock shows through.
++	float body=mix(1.0,mix(.34,1.0,smoothstep(.26,.60,groups*.50+fine*.30+white*.55)),loosen*.85);
++	ALPHA=mix(.82,.95,sqrt(intensity))*side*body*smoothstep(0.0,.12,intensity);
+ 	if(free_fall){
+ 		float tail=progress+(groups-.5)*.07;
+ 		ALPHA*=(1.0-smoothstep(.76,.985,tail))*(1.0-smoothstep(.93,.99,progress));
++		ALPHA*=1.0-smoothstep(.30,.94,veil+(groups-.5)*.18);
+ 	}
+ 	ROUGHNESS=mix(.30,.58,foam);
+ 	SPECULAR=.14;
+--- art/lookdev/20261121_cliff_water/checks/source_before/root/project.godot	2026-11-11 00:17:59
++++ project.godot	2026-11-21 00:29:47
+@@ -89,6 +89,10 @@
+ "type": "float",
+ "value": 1.0
+ }
++stone_fine_relief={
++"type": "float",
++"value": 1.0
++}
+ live_water_field={
+ "type": "sampler2D",
+ "value": ""

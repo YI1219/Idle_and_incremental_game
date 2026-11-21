@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-14 11:42:40.641 godot[58930:80965411] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-14 11:42:40.726 godot[58930:80965411] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+SKY ERROR night=false max=0.0 mean=0.0
+SKY ERROR night=true max=0.0 mean=0.0
+SKY DIRECTION 4 checks, 0 failures

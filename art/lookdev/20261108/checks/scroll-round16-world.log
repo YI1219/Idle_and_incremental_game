@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+WORLD_COLUMN seed=7301 outer=25 step=5 above_own_grass=0 crown_height_error=0.0 bad_pose_determinants=0
+WORLD_ROOT seed=7301 tested=7 unmatched=0 minimum_grass_gap=0.60081648826599 kind=underside_rock
+WORLD_COLUMN seed=2104 outer=25 step=5 above_own_grass=0 crown_height_error=0.0 bad_pose_determinants=0
+WORLD_ROOT seed=2104 tested=10 unmatched=0 minimum_grass_gap=0.57189393043518 kind=underside_rock
+WORLD_ROUND16 failures=0

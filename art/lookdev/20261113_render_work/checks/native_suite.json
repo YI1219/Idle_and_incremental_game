@@ -1,0 +1,27 @@
+[
+  {
+    "test": "sky_update_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "sky_direction_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "flooded_ground_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "grass_lod_test",
+    "ok": true,
+    "exit": 0
+  },
+  {
+    "test": "grass_recovery_render_test",
+    "ok": true,
+    "exit": 0
+  }
+]

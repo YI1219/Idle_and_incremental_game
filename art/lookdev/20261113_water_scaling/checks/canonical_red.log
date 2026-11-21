@@ -1,0 +1,92 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ok: an exactly stable pool stops repeating the flux solve
+ok: sleep preserves exact retained mass and empty transfers
+ok: a bed edit wakes the pool and redistributes conserved water
+ok: waking never discards water
+ok: unrelated dry expansion does not enter the wet-cell flux worklist
+ok: sparse stepping still wets a receiving cell and conserves mass
+ERROR: underflow in a tiny positive timestep must not put a flowing pool to sleep
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_underflow_is_not_equilibrium (res://tests/water_scaling_test.gd:44)
+       [2] run (res://tests/water_scaling_test.gd:94)
+ok: underflow followed by normal time retains all water
+ERROR: explicit persistence canonicalizes invalid raw zero-volume input
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_canonical_persistence (res://tests/water_scaling_test.gd:56)
+       [2] run (res://tests/water_scaling_test.gd:95)
+ERROR: explicit persistence canonicalizes invalid raw zero-volume input
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_canonical_persistence (res://tests/water_scaling_test.gd:56)
+       [2] run (res://tests/water_scaling_test.gd:95)
+ERROR: explicit persistence canonicalizes invalid raw zero-volume input
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_canonical_persistence (res://tests/water_scaling_test.gd:56)
+       [2] run (res://tests/water_scaling_test.gd:95)
+ok: configuration builds one immutable terrain snapshot
+ERROR: Attempted to merge a variable of type 'Array' into a TypedDictionary.Value of type 'float'.
+   at: _internal_validate (./core/variant/container_type_validate.h:73)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ERROR: Condition "!_p->typed_value.validate(value, "merge")" is true.
+   at: merge (core/variant/dictionary.cpp:338)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ERROR: Attempted to merge a variable of type 'Array' into a TypedDictionary.Value of type 'float'.
+   at: _internal_validate (./core/variant/container_type_validate.h:73)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ERROR: Condition "!_p->typed_value.validate(value, "merge")" is true.
+   at: merge (core/variant/dictionary.cpp:338)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ERROR: Attempted to merge a variable of type 'Array' into a TypedDictionary.Value of type 'float'.
+   at: _internal_validate (./core/variant/container_type_validate.h:73)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ERROR: Condition "!_p->typed_value.validate(value, "merge")" is true.
+   at: merge (core/variant/dictionary.cpp:338)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ERROR: Attempted to merge a variable of type 'Array' into a TypedDictionary.Value of type 'float'.
+   at: _internal_validate (./core/variant/container_type_validate.h:73)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ERROR: Condition "!_p->typed_value.validate(value, "merge")" is true.
+   at: merge (core/variant/dictionary.cpp:338)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ok: ordinary flowing updates reuse the terrain snapshot
+ERROR: Attempted to merge a variable of type 'Array' into a TypedDictionary.Value of type 'float'.
+   at: _internal_validate (./core/variant/container_type_validate.h:73)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ERROR: Condition "!_p->typed_value.validate(value, "merge")" is true.
+   at: merge (core/variant/dictionary.cpp:338)
+   GDScript backtrace (most recent call first):
+       [0] _build_images (res://scripts/terrain_editor/water_renderer.gd:565)
+       [1] _build_worker (res://scripts/terrain_editor/water_renderer.gd:399)
+ok: an explicit mid-worker edit replaces the snapshot before publication
+ok: a stale worker cannot republish removed terrain
+ok: snapshot invalidation retains plus discharges exactly the authored mass
+ok: an unchanged explicit flush does not recopy the terrain
+ok: a seed-only edit invalidates worker visual inputs
+ok: reset replaces cached terrain images and finite water state
+WATER SCALING 19 checks, 4 failures

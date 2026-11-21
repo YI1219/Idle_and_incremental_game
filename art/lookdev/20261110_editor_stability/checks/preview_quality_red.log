@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: high-resolution preview has an explicit render budget and native override
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/preview_quality_test.gd:6)
+       [1] _initialize (res://tests/preview_quality_test.gd:9)
+PREVIEW QUALITY 1 checks, 1 failures

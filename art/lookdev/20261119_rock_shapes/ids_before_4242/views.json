@@ -1,0 +1,108 @@
+{
+	"classes": {
+		"column": 22,
+		"hull": 16,
+		"mantle": 13,
+		"other": 203,
+		"underside": 4
+	},
+	"diagnostic": true,
+	"hull_rgb": [
+		255,
+		0,
+		0
+	],
+	"mantle_rgb": [
+		0,
+		0,
+		255
+	],
+	"preset": 1,
+	"seed": 4242,
+	"views": [
+		{
+			"file": "orbit_016.png",
+			"height": 32.0,
+			"pitch": 30.0,
+			"px_per_m": 40.5661894735598,
+			"yaw": 16.0
+		},
+		{
+			"file": "orbit_061.png",
+			"height": 32.0,
+			"pitch": 30.0,
+			"px_per_m": 40.5661894735598,
+			"yaw": 61.0
+		},
+		{
+			"file": "orbit_106.png",
+			"height": 32.0,
+			"pitch": 30.0,
+			"px_per_m": 40.5661894735598,
+			"yaw": 106.0
+		},
+		{
+			"file": "orbit_151.png",
+			"height": 32.0,
+			"pitch": 30.0,
+			"px_per_m": 40.5661894735598,
+			"yaw": 151.0
+		},
+		{
+			"file": "orbit_196.png",
+			"height": 32.0,
+			"pitch": 30.0,
+			"px_per_m": 40.5661894735598,
+			"yaw": 196.0
+		},
+		{
+			"file": "orbit_241.png",
+			"height": 32.0,
+			"pitch": 30.0,
+			"px_per_m": 40.5661894735598,
+			"yaw": 241.0
+		},
+		{
+			"file": "orbit_286.png",
+			"height": 32.0,
+			"pitch": 30.0,
+			"px_per_m": 40.5661894735598,
+			"yaw": 286.0
+		},
+		{
+			"file": "orbit_331.png",
+			"height": 32.0,
+			"pitch": 30.0,
+			"px_per_m": 40.5661894735598,
+			"yaw": 331.0
+		},
+		{
+			"file": "low_016.png",
+			"height": 17.0,
+			"pitch": 18.0,
+			"px_per_m": 47.1930038746557,
+			"yaw": 16.0
+		},
+		{
+			"file": "low_106.png",
+			"height": 17.0,
+			"pitch": 18.0,
+			"px_per_m": 47.1930038746557,
+			"yaw": 106.0
+		},
+		{
+			"file": "low_196.png",
+			"height": 17.0,
+			"pitch": 18.0,
+			"px_per_m": 47.1930038746557,
+			"yaw": 196.0
+		},
+		{
+			"file": "low_286.png",
+			"height": 17.0,
+			"pitch": 18.0,
+			"px_per_m": 47.1930038746557,
+			"yaw": 286.0
+		}
+	]
+}

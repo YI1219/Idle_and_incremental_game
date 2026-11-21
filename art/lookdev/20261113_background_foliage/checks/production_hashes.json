@@ -1,0 +1,15 @@
+{
+  "scripts/terrain_editor/editor.gd": "6c548374f5b800fef5046d3f033805ed9bc51de950b5801eb75e959168f725d4",
+  "scripts/terrain_editor/runtime_power.gd": "26204c0ceb90d4b3abe81718f3b834a81c3f3c4514c357b2d97cd8945a4d3974",
+  "scripts/terrain_editor/background_renderer.gd": "01ec7864418188a5e7e7bcbf5b5077eabf0b4621d21005a0e35f9ecefbe603dc",
+  "shaders/terrain_editor/sky.gdshader": "8b2c62cf95cd7c46dc0c63649595cf1477c2211b546e92c40aa4945f9b3d08d7",
+  "shaders/terrain_editor/sky_surface.gdshaderinc": "194e360c28a30439fdff8cdc448a2d3ed0bb27aabcc171cf16d705aecde175a4",
+  "shaders/terrain_editor/background_sky.gdshader": "1b6d1d665561df186acec9a7660c0ecdf5c6d80384b3c9ad55f895ee50316252",
+  "tests/background_renderer_test.gd": "1cf3a72c87e773d6016164c8f1d5999d2970c42616364aecd5d0640c03ca260c",
+  "scripts/terrain_editor/distant_landscape.gd": "b87ebc7e2b3e39f527f55eefefdedebaabcb15a9669faf4e6ef14010f41c4369",
+  "shaders/terrain_editor/foliage_cards.gdshader": "45aa35dd5d206e862ae817f6fb9454bef5e53d0b25328e19da326aa145cccbd0",
+  "scripts/terrain_editor/terrain_environment.gd": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+  "scripts/gameplay/systems/time_solar_system.gd": "bba822c9e530c2c8ddf490e608265434cb72ab49e88585dbb9bd3f98b9cb55c8",
+  "scripts/terrain_editor/procedural_shard.gd": "450421c2de3bac73552d333bf7a1e054759d55381f5a976a5793ed386878598b",
+  "shaders/terrain_editor/stone_surface.gdshaderinc": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90"
+}

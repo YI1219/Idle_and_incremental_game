@@ -1,0 +1,140 @@
+[
+  {
+    "mode": "2k",
+    "before": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": true,
+      "elapsed_seconds": 8.008021,
+      "fps": 41.0838083466564,
+      "frame_ms_p50": 23.722,
+      "frame_ms_p95": 26.996,
+      "frames": 329,
+      "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+      "msaa": 2,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "scale": 1.0,
+      "texture_size": [
+        2560,
+        1440
+      ],
+      "water_seconds": 11.0
+    },
+    "after": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": false,
+      "elapsed_seconds": 8.012007,
+      "fps": 51.6724461174335,
+      "frame_ms_p50": 18.77,
+      "frame_ms_p95": 22.055,
+      "frames": 414,
+      "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+      "msaa": 1,
+      "resolution": [
+        2560,
+        1440
+      ],
+      "scale": 1.0,
+      "texture_size": [
+        2560,
+        1440
+      ],
+      "water_seconds": 11.1
+    },
+    "fps_gain_percent": 25.773262501451775
+  },
+  {
+    "mode": "4k",
+    "before": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": true,
+      "elapsed_seconds": 8.04292,
+      "fps": 21.509600990685,
+      "frame_ms_p50": 46.764,
+      "frame_ms_p95": 48.755,
+      "frames": 173,
+      "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+      "msaa": 2,
+      "resolution": [
+        3840,
+        2160
+      ],
+      "scale": 1.0,
+      "texture_size": [
+        3840,
+        2160
+      ],
+      "water_seconds": 11.1
+    },
+    "after": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": false,
+      "elapsed_seconds": 8.021145,
+      "fps": 25.5574484690153,
+      "frame_ms_p50": 38.492,
+      "frame_ms_p95": 41.769,
+      "frames": 205,
+      "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+      "msaa": 1,
+      "resolution": [
+        3840,
+        2160
+      ],
+      "scale": 1.0,
+      "texture_size": [
+        3840,
+        2160
+      ],
+      "water_seconds": 11.1
+    },
+    "fps_gain_percent": 18.818793896192076
+  },
+  {
+    "mode": "scaled4k",
+    "before": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": true,
+      "elapsed_seconds": 8.008302,
+      "fps": 61.4362445372315,
+      "frame_ms_p50": 15.827,
+      "frame_ms_p95": 18.576,
+      "frames": 492,
+      "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+      "msaa": 1,
+      "resolution": [
+        3840,
+        2160
+      ],
+      "scale": 0.5,
+      "texture_size": [
+        3840,
+        2160
+      ],
+      "water_seconds": 11.1
+    },
+    "after": {
+      "adapter": "Apple M4 Pro (Apple9)",
+      "before": false,
+      "elapsed_seconds": 8.00351,
+      "fps": 63.0973160525819,
+      "frame_ms_p50": 15.451,
+      "frame_ms_p95": 18.235,
+      "frames": 505,
+      "method": "UPDATE_ALWAYS SubViewport bypasses OS window clamping;production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+      "msaa": 1,
+      "resolution": [
+        3840,
+        2160
+      ],
+      "scale": 0.5,
+      "texture_size": [
+        3840,
+        2160
+      ],
+      "water_seconds": 11.1
+    },
+    "fps_gain_percent": 2.7037321826267613
+  }
+]

@@ -1,0 +1,87 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: seed 7301 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:95)
+ERROR: fresh 7301 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:98)
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:95)
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:95)
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:95)
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:98)
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:98)
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:98)
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:95)
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:95)
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:95)
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:98)
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:98)
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:80)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:98)
+CLIFF OUTER FOOT: 516 checks, 14 failures

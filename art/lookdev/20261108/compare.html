@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>识海浮岛 · 实机视觉对比</title>
+<style>
+  :root { color-scheme: dark; --paper:#dce4dd; --muted:#9eaaa3; --ink:#151d1d; --line:#354342; --accent:#b2c8b6; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--ink); color:var(--paper); font:15px/1.6 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; }
+  main { max-width:1800px; margin:auto; padding:30px clamp(16px,3vw,44px) 40px; }
+  h1 { margin:0; font-family:"Songti SC","SimSun",serif; font-size:clamp(24px,3vw,36px); font-weight:500; letter-spacing:.1em; }
+  h2 { font-size:17px; font-weight:500; margin:0 0 12px; }
+  p { margin:7px 0; }
+  .subtitle,.note { color:var(--muted); font-size:13px; }
+  a { color:var(--accent); text-underline-offset:4px; }
+  a:hover { color:white; }
+  .toolbar { display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end; margin:24px 0 16px; padding:18px 0; border-block:1px solid var(--line); }
+  label.field { display:grid; gap:5px; min-width:180px; flex:1 1 220px; font-size:12px; color:var(--muted); }
+  label.camera { min-width:130px; flex:0 1 150px; }
+  select,button { min-height:42px; border:1px solid #4c605a; border-radius:5px; background:#212d2b; color:var(--paper); padding:8px 12px; font:inherit; }
+  select { width:100%; }
+  button { cursor:pointer; }
+  button[aria-pressed="true"] { background:var(--accent); color:#17221e; border-color:var(--accent); }
+  button:hover { border-color:var(--paper); }
+  :focus-visible { outline:2px solid #e7ddad; outline-offset:4px; }
+  .mode-buttons { display:flex; gap:6px; }
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  figure { margin:0; min-width:0; }
+  figcaption { display:flex; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:13px; }
+  .frame { position:relative; aspect-ratio:16/9; background:#0d1415; overflow:hidden; border:1px solid var(--line); }
+  .frame img { display:block; width:100%; height:100%; object-fit:contain; }
+  .missing { position:absolute; inset:0; display:grid; place-content:center; padding:24px; text-align:center; color:var(--muted); pointer-events:none; }
+  .missing[hidden] { display:none; }
+  .split-frame { --cut:50%; }
+  .split-frame img { position:absolute; inset:0; }
+  #split-a { clip-path:inset(0 calc(100% - var(--cut)) 0 0); }
+  .divider { position:absolute; top:0; bottom:0; left:var(--cut); width:2px; background:#f1eee0; pointer-events:none; box-shadow:0 0 8px #0009; }
+  .divider::after { content:"↔"; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:36px; height:36px; display:grid; place-content:center; border-radius:50%; background:#17221ed9; border:1px solid #f1eee0; }
+  .tag { position:absolute; top:12px; padding:4px 10px; background:#12201bca; border-radius:3px; font-size:12px; pointer-events:none; }
+  .tag.a { left:12px; } .tag.b { right:12px; }
+  .range-line { display:flex; gap:14px; align-items:center; margin:12px 0; color:var(--muted); font-size:13px; }
+  input[type="range"] { width:100%; accent-color:var(--accent); }
+  .details { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:16px 0 26px; }
+  .detail { padding:13px 16px; border-left:2px solid #708f7d; background:#1b2725; }
+  .detail strong { font-size:14px; font-weight:500; }
+  .detail p { font-size:13px; }
+  .links { display:flex; flex-wrap:wrap; gap:14px; }
+  #comparison-note { padding:10px 14px; border:1px solid var(--line); margin:0 0 16px; }
+  section.cycle { border-top:1px solid var(--line); padding-top:20px; }
+  .hours { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+  .hours a { padding:5px 12px; border:1px solid var(--line); border-radius:3px; }
+  footer { margin-top:28px; padding-top:14px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+  [hidden] { display:none!important; }
+  @media(max-width:760px) { .pair,.details { grid-template-columns:1fr; } main { padding-top:20px; } .toolbar { gap:10px; } }
+</style>
+<main>
+  <header>
+    <h1>识海浮岛 · 实机视觉对比</h1>
+    <p class="subtitle">2026-11-08 · Godot Forward+ · 唯一场景 terrain_editor.tscn</p>
+    <p class="note">这里展示原生 2560 × 1440 游戏截图；未修图、非概念参考。页面仅缩放或遮罩原图，点击“原图”可查看完整像素。</p>
+    <p class="note">默认31→29仅隔离岩壁变化：31保留最终草、物件与世界光，并非整场初态。<a href="checks/matched_cliff_comparison.json">查看五机位条件与四份源码差异核验</a>。</p>
+    <p class="note"><strong>证据更正：</strong>15十二时辰、16／17旧夜景的草色被重复入口场景写回白天，不能用于夜景美术结论。19起修复单场景采图并核查帧末草色；17草材试改已撤回，18系列诊断图不作为作品展示。</p>
+  </header>
+  <div class="toolbar">
+    <label class="field camera">对比时段<select id="capture-period"><option value="day">白天 · 0.29</option><option value="night">夜间 · 0.00</option></select></label>
+    <label class="field">A · 对照版本<select id="version-a"></select></label>
+    <label class="field">B · 查看版本<select id="version-b"></select></label>
+    <label class="field camera">同一机位<select id="camera">
+      <option value="game">游戏距离</option><option value="whole" selected>整体</option>
+      <option value="reverse">反向</option><option value="close">近景</option><option value="cliff_close">低角度崖壁特写</option>
+    </select></label>
+    <div class="mode-buttons" role="group" aria-label="对比方式">
+      <button id="mode-pair" type="button" aria-pressed="true">左右对照</button>
+      <button id="mode-slider" type="button" aria-pressed="false">滑杆对照</button>
+    </div>
+    <button id="swap" type="button" aria-label="交换 A 与 B 版本">交换 A / B</button>
+  </div>
+  <p id="comparison-note" class="note" aria-live="polite"></p>
+  <div id="pair" class="pair">
+    <figure><figcaption><span id="caption-a"></span><a id="original-a" target="_blank" rel="noopener">原图 A ↗</a></figcaption>
+      <div class="frame"><img id="image-a" alt="A 版本的 Godot 实机截图"><div id="missing-a" class="missing" hidden></div></div>
+    </figure>
+    <figure><figcaption><span id="caption-b"></span><a id="original-b" target="_blank" rel="noopener">原图 B ↗</a></figcaption>
+      <div class="frame"><img id="image-b" alt="B 版本的 Godot 实机截图"><div id="missing-b" class="missing" hidden></div></div>
+    </figure>
+  </div>
+  <div id="slider" hidden>
+    <div id="split-frame" class="frame split-frame">
+      <img id="split-b" alt="右侧 B 版本实机截图"><img id="split-a" alt="左侧 A 版本实机截图">
+      <div class="divider"></div><span class="tag a" id="tag-a">A</span><span class="tag b" id="tag-b">B</span>
+      <div id="split-missing" class="missing" hidden></div>
+    </div>
+    <label class="range-line">A <input id="split" type="range" min="0" max="100" value="50" aria-label="A 图所占比例"> B</label>
+    <p class="note">拖动滑杆，或聚焦滑杆后使用方向键。原图与采集记录见下方链接。</p>
+  </div>
+  <div class="details">
+    <div class="detail"><strong id="title-a"></strong><p id="description-a"></p><p id="metadata-a" class="note"></p><div class="links"><a id="file-a" target="_blank" rel="noopener">打开原图</a><a id="record-a" target="_blank" rel="noopener">采集记录 JSON</a></div></div>
+    <div class="detail"><strong id="title-b"></strong><p id="description-b"></p><p id="metadata-b" class="note"></p><div class="links"><a id="file-b" target="_blank" rel="noopener">打开原图</a><a id="record-b" target="_blank" rel="noopener">采集记录 JSON</a></div></div>
+  </div>
+  <section class="cycle" aria-labelledby="cycle-title">
+    <h2 id="cycle-title">十二时辰与夜景证据</h2>
+    <p id="cycle-note" class="note"></p>
+    <div id="hours" class="hours"></div>
+    <p id="night-note" class="note"></p>
+    <div id="night-views" class="hours"></div>
+    <p class="note">最终保留种子 · 每组5机位，均可在上方白天版本菜单查看。913／地形预设2源数据本来无水，仅检查形体、草缘与物件。</p>
+    <div class="hours"><a href="30_seed_2104/whole.png" target="_blank" rel="noopener">2104 · 地形预设0</a><a href="30_seed_4242/whole.png" target="_blank" rel="noopener">4242 · 地形预设1</a><a href="30_seed_913/whole.png" target="_blank" rel="noopener">913 · 地形预设2</a></div>
+    <p class="note">25／26是阶段候选；28夜景、29白天／十二时辰、30保留种子为最终证据。water／foam／mist源码hash从28起补入，旧manifest不能独立追溯水shader版本。</p>
+  </section>
+  <footer>功能检查通过不代表美术验收。00 与 01 之间包含色光恢复，不能只归因为形体变化。<br><a href="README.md">视觉 delta 与复现记录</a> · 所有图片路径均相对本页，可直接从本地打开。</footer>
+</main>
+<script>
+  // 更新默认版本、最终十二时辰和夜景目录只需修改以下配置。
+  const DEFAULT_A = '31_cliff_before_matched';
+  const DEFAULT_B = '29_final_cycle';
+  const DAY_CYCLE_DIR = '29_final_cycle';
+  const NIGHT_DIR = '28_water_satin_night';
+  const revisions = [
+    {dir:'00_raw_before',label:'00 · 接手原状',note:'原始暖米雾、太阳方位约 83.8°；仅用于记录本轮起点。',yaw:'83.8°'},
+    {dir:'01_locked_before',label:'01 · argon 色光锁定',note:'恢复天青烟岚、冷银灰雾与太阳 38°。旧阶段基准；严格岩壁对比请看31→29。',yaw:'38°'},
+    {dir:'02_diagonal_faces',label:'02 · 斜向主面',note:'加强主柱左右劈面的倾斜差；反面竖槽与下裙仍明显。',yaw:'38°'},
+    {dir:'03_rock_shadows',label:'03 · 真实岩影',note:'主光接入真实遮挡；几何保持上一轮。',yaw:'38°'},
+    {dir:'04_full_height_faces',label:'04 · 全高面试验（未沿用）',note:'取消早介入的下部切面后出现板片与薄楔，已判失败。',yaw:'38°'},
+    {dir:'05_continuous_massif',label:'05 · 连续闭合岩体',note:'共享顶冠、肩、折、脚四圈；主面连到底部，仍有竖板节奏。',yaw:'38°'},
+    {dir:'06_matte_massif',label:'06 · 哑光明暗连续',note:'只调整石材明暗响应，减轻暗腹断档；形体问题继续迭代。',yaw:'38°'},
+    {dir:'07_diagonal_massif',label:'07 · 斜脊试验（未通过）',note:'出现垂挂板片与间隙，未通过视觉检查；保留为迭代证据。',yaw:'38°'},
+    {dir:'08_continuity_fix',label:'08 · 连续性修正',note:'修正岩体连续性；此轮几何仍用于当前保留版本。',yaw:'38°'},
+    {dir:'09_core_light',label:'09 · 内核光照',note:'在 08 几何基础上调整内核光照；此轮光照修正仍保留。',yaw:'38°'},
+    {dir:'10_bevel_joins',label:'10 · 接缝倒角（失败／已回退）',note:'接缝倒角试验未通过视觉检查，已回退；不属于当前画面。',yaw:'38°'},
+    {dir:'11_mineral_wash',label:'11 · 矿物晕染',note:'08 连续几何 + 09 内核光照 + 11 矿物晕染；洗染采用，不代表形体排布已解决。',yaw:'38°'},
+    {dir:'12_large_spans',label:'12 · 大跨度岩面',note:'外柱36→25，正反面大块面更连贯；采用。世界草地派生边界随重新分段变化。',yaw:'38°'},
+    {dir:'13_full_buttress',label:'13 · 完整护石前脸',note:'前脸延续到底，悬挂小石观感减轻；顶冠双沿继续修正，未作为终版。',yaw:'38°'},
+    {dir:'14_oblique_buttress',label:'14 · 单层斜顶',note:'护石去除双层顶冠，单层斜平面封顶；保留完整前脸。采用。',yaw:'38°'},
+    {dir:'15_root_taper',label:'15 · 护石根脚收分',note:'护石保平面收分与轻微偏斜，顶位置不变；采用。',yaw:'38°'},
+    {dir:'15_cliff_cycle',label:'15 · 旧十二时辰组（草色无效）',note:'17张旧记录的草色被默认主场景写回白天，不能作昼夜美术结论；仅保留审计入口。',yaw:'38°',cycle:true,invalidGrass:true},
+    {dir:'16_downward_shoulders',label:'16 · 护肩向外下落',note:'护石顶面改为向外下落，完整前脸和根脚连续。采用；最终匹配岩壁证据见31→29。',yaw:'38°'},
+    {dir:'17_day_grass',label:'17 · 草尖高光试验（已撤回）',note:'试验影响很小，草材修改已全部撤回；不是当前生产版本。',yaw:'38°'},
+    {dir:'19_single_scene_day',label:'19 · 单场景白天重拍',note:'使用修复后的采集工具，5张valid且单场景检查通过；后续最终匹配岩壁证据见31→29。',yaw:'38°',singleScene:true},
+    {dir:'20_planted_lip',label:'20 · 软唇坡面补种（保留）',note:'G阈值0.982→0.82；仅新增样本沿真实坡面旋转并内埋8mm。7301草簇+6.69%，22个MultiMesh不变；多机位观察后保留。',yaw:'38°',singleScene:true},
+    {dir:'21_rooted_lip',label:'21 · 窄土缘过渡（保留）',note:'仅ground shader外两环使用已有草色和stone_mid形成窄土缘，内草颜色与R0保留。whole／reverse／cliff_close观察后保留。',yaw:'38°',singleScene:true},
+    {dir:'22_broken_plunge',label:'22 · 入瀑白带（采用）',note:'仅water.gdshader两行去掉等距距离白带；日夜game近景白板消失、断续泡沫保留。采用。',yaw:'38°',singleScene:true},
+    {dir:'23_foliage_cycle',label:'23 · 草簇芦苇调色路由',note:'time／environment各一行按实际shader路由，decor材质草簇／芦苇接decor_sky参数。palette不变，真实uniform20/20；单场景17张valid。',yaw:'38°',singleScene:true,cycle:true},
+    {dir:'24_actual_light_cycle',label:'24 · 实际光源响应（采用）',note:'移除column旧83.8°固定sun_ref提亮，core定向AO朝下遮蔽；由实际太阳决定受光。17张valid，采用。',yaw:'38°',singleScene:true,cycle:true},
+    {dir:'25_final_cycle',label:'25 · 云影修正（阶段候选）',note:'云影偏紫修正保留；此组仍含后来修正的夜间水面强高光，最终时段证据见29。',yaw:'38°',singleScene:true,cycle:true},
+    {dir:'26_seed_2104',label:'26 · 种子2104（阶段候选）',note:'阶段种子检查；已被30_seed_2104最终组替代。',yaw:'38°',singleScene:true,seed:2104,preset:0},
+    {dir:'26_seed_4242',label:'26 · 种子4242（阶段候选）',note:'阶段种子检查；已被30_seed_4242最终组替代。',yaw:'38°',singleScene:true,seed:4242,preset:1},
+    {dir:'29_final_cycle',label:'29 · 最终白天／十二时辰',note:'连续大块岩体、草缘、入瀑及材质响应的最终状态；5机位＋12时辰。与31仅4份岩壁源码不同，其余记录条件匹配。',yaw:'38°',singleScene:true,cycle:true},
+    {dir:'30_seed_2104',label:'30 · 最终种子2104／地形0',note:'最终状态5机位检查，地形预设0。不同种子之间不作为同一岛屿A/B。',yaw:'38°',singleScene:true,seed:2104,preset:0},
+    {dir:'30_seed_4242',label:'30 · 最终种子4242／地形1',note:'最终状态5机位检查，地形预设1。不同地形之间不作为同一岛屿A/B。',yaw:'38°',singleScene:true,seed:4242,preset:1},
+    {dir:'30_seed_913',label:'30 · 最终种子913／地形2',note:'源数据本来无水；检查形体、草缘与物件，不作为水面证据。',yaw:'38°',singleScene:true,seed:913,preset:2},
+    {dir:'31_cliff_before_matched',label:'31 · 岩壁专项前态（同条件）',note:'仅恢复4份本轮前岩壁源码，其余保留最终状态；不是整场初态。拍摄后4份文件已恢复final。',yaw:'38°',singleScene:true},
+    {dir:'16_night_before_grass',label:'16 · 旧夜景（草色无效）',note:'草色被重复主场景写回白天；不能作夜景美术结论，仅保留审计。',yaw:'28°',period:'night',progress:'0.00',invalidGrass:true},
+    {dir:'17_night_grass',label:'17 · 旧夜景（草色无效／试改撤回）',note:'草色被重复主场景写回白天；草高光试改也已撤回，不能用来判断当前夜景质量。',yaw:'28°',period:'night',progress:'0.00',invalidGrass:true},
+    {dir:'19_single_scene_night',label:'19 · 单场景夜景重拍',note:'已移除额外入口，帧末草色符合夜间值，实拍草恢复深青；解决的是采图污染，非全场美术验收。',yaw:'28°',period:'night',progress:'0.00',singleScene:true},
+    {dir:'22_plunge_night',label:'22 · 入瀑白带夜景（采用）',note:'夜景game近景白板消失，断续泡沫保留；与19相比同时包含20／21草缘变化，整体delta不能全归给水面。',yaw:'28°',period:'night',progress:'0.00',singleScene:true},
+    {dir:'25_final_night',label:'25 · 水面强高光前态（阶段候选）',note:'夜间reverse仍有大片纯白GGX高光；作为28的直接水面A/B。此版manifest尚未记录水shader hash。',yaw:'28°',period:'night',progress:'0.00',singleScene:true},
+    {dir:'27_water_highlight_night',label:'27 · 水高光试调（仍偏亮）',note:'同一水面问题：粗糙0.18、specular0.12，亮片仍抢眼；继续修正为28。',yaw:'28°',period:'night',progress:'0.00',singleScene:true},
+    {dir:'28_water_satin_night',label:'28 · 最终夜景／绢光水面',note:'水面粗糙0.26、specular0.12，白色高光收敛；5机位valid。与29使用相同最终源码。',yaw:'28°',period:'night',progress:'0.00',singleScene:true}
+  ];
+  const $ = id => document.getElementById(id);
+  const cameraNames = {game:'游戏距离',whole:'整体',reverse:'反向',close:'近景',cliff_close:'低角度崖壁特写'};
+  const imageReady = {a:false,b:false};
+  const imageMessage = {a:'',b:''};
+  let activePeriod = 'day';
+  const selectedPairs = {
+    day:{a:DEFAULT_A,b:DEFAULT_B},
+    night:{a:'25_final_night',b:'28_water_satin_night'}
+  };
+  function populateVersions() {
+    for (const side of ['a','b']) {
+      $('version-'+side).replaceChildren();
+      for (const item of revisions.filter(item=>(item.period || 'day')===activePeriod)) {
+        const option = document.createElement('option');
+        option.value = item.dir; option.textContent = item.label;
+        $('version-'+side).append(option);
+      }
+      $('version-'+side).value=selectedPairs[activePeriod][side];
+    }
+  }
+  populateVersions();
+  function revision(side) { return revisions.find(item => item.dir === $('version-'+side).value); }
+  function syncSplitAvailability() {
+    const ready=imageReady.a && imageReady.b;
+    $('split-missing').hidden=ready;
+    $('split-missing').textContent=ready ? '' : [imageMessage.a,imageMessage.b].filter(Boolean).join('　');
+    $('split-a').style.visibility=ready ? 'visible' : 'hidden';
+    $('split-b').style.visibility=ready ? 'visible' : 'hidden';
+    document.querySelector('.divider').hidden=!ready;
+  }
+  function updateSide(side) {
+    const item = revision(side), camera = $('camera').value;
+    const path = item.dir+'/'+camera+'.png';
+    const title = side.toUpperCase()+' · '+item.label;
+    $('caption-'+side).textContent = title+' / '+cameraNames[camera];
+    $('title-'+side).textContent = title;
+    $('description-'+side).textContent = item.note;
+    $('metadata-'+side).textContent = item.invalidGrass
+      ? '草色证据无效。旧 valid=true 未检查重复场景写回共享草材，不能作昼夜美术验收。'
+      : item.pending ? '待核查本轮 captures.json；不预先宣称采集或美术通过。'
+      : '原生 2K · '+(Number(item.dir.slice(0,2))<7 ? '4 机位（未采崖壁特写）' : '5 机位（含崖壁特写）')+
+        (item.cycle ? ' + 12 时辰，共 17 张' : '')+
+        ' · seed '+(item.seed ?? 7301)+' · 地形预设 '+(item.preset ?? 0)+' · 时段 '+(item.progress || '0.29')+' · 相位 1.25 · F11 已验证 · 太阳 '+item.yaw+
+        (item.singleScene ? ' · 单场景／帧末草色检查通过 · valid=true' : ' · 旧链路记录，仅作阶段回顾');
+    for (const prefix of ['original-','file-']) $(prefix+side).href = path;
+    $('record-'+side).href = item.dir+'/captures.json';
+    $('tag-'+side).textContent = side.toUpperCase()+' · '+item.label;
+    const image = $('image-'+side), missing = $('missing-'+side);
+    imageReady[side]=false; imageMessage[side]=side.toUpperCase()+' 图载入中';
+    missing.hidden = true; image.style.visibility = 'visible';
+    if (camera==='cliff_close' && Number(item.dir.slice(0,2))<7) {
+      image.onload=null; image.onerror=null;
+      image.removeAttribute('src'); image.style.visibility='hidden'; missing.hidden=false;
+      imageMessage[side]=side.toUpperCase()+'：此前未采集此机位（07 起新增）';
+      missing.textContent=imageMessage[side];
+      for (const prefix of ['original-','file-']) {
+        $(prefix+side).removeAttribute('href'); $(prefix+side).textContent='此前未采集';
+      }
+      syncSplitAvailability(); return;
+    }
+    $('original-'+side).textContent='原图 '+side.toUpperCase()+' ↗';
+    $('file-'+side).textContent='打开原图';
+    image.onload = () => {
+      missing.hidden = true; image.style.visibility = 'visible';
+      imageReady[side]=true; imageMessage[side]=''; $('split-'+side).src=path;
+      syncSplitAvailability();
+    };
+    image.onerror = () => {
+      image.style.visibility = 'hidden'; missing.hidden = false;
+      missing.textContent = '此机位截图尚未就绪：'+path+'。采集完成后刷新页面。';
+      imageReady[side]=false; imageMessage[side]=side.toUpperCase()+'：截图尚未就绪';
+      syncSplitAvailability();
+    };
+    image.alt = title+' · '+cameraNames[camera]+' · 原生 Godot 实机截图';
+    image.src = path;
+    syncSplitAvailability();
+  }
+  function update() {
+    updateSide('a'); updateSide('b');
+    const a=revision('a'), b=revision('b');
+    const dirs=[a.dir,b.dir];
+    $('comparison-note').textContent = a.invalidGrass || b.invalidGrass
+      ? '当前选择包含草色失效的旧组。只能用于诊断审计，不能作为同条件昼夜美术 A/B。'
+      : a.dir===b.dir
+      ? '当前 A / B 是同一轮截图，可切换版本查看差异。'
+      : dirs.includes('31_cliff_before_matched') && dirs.includes('29_final_cycle')
+      ? '岩壁专项同条件 A/B：5机位相机、景深、时段、灯光、草色等记录完全匹配；源码差异恰好4份岩壁文件。31不是整场初态，最终草、物件和世界光均保留。'
+      : dirs.includes('25_final_night') && dirs.includes('28_water_satin_night')
+      ? '水面高光直接 A/B：5机位拍摄条件匹配，25纯白GGX高光→28绢光水面。旧25未记录水shader hash，不能只靠旧manifest追溯水材源码；28起已补。'
+      : (a.seed ?? 7301)!==(b.seed ?? 7301) || (a.preset ?? 0)!==(b.preset ?? 0)
+      ? '当前种子或地形预设不同，用于检查生成稳健性，不是同一岛屿的视觉改动 A/B。913／地形2本来无水。'
+      : dirs.includes('00_raw_before')
+      ? '00记录接手原状，包含色光与采集机制差异，不能严格归因于形体。岩壁专项对比请选31→29。'
+      : activePeriod==='night'
+      ? '当前夜景组均为时段0.00；不同阶段可能包含多类累积改动。默认25→28专看水高光，旧16／17夜景草色无效。'
+      : a.singleScene && b.singleScene
+      ? '同种子、地形与白天时段的单场景采图；不同阶段可能包含多类累积改动。严格岩壁专项对比请选31→29。'
+      : '当前包含旧链路白天组，仅供阶段回顾。00–06四机位，07起五机位；最终同条件岩壁对比为31→29。';
+  }
+  function setMode(slider) {
+    $('pair').hidden = slider; $('slider').hidden = !slider;
+    $('mode-pair').setAttribute('aria-pressed', String(!slider));
+    $('mode-slider').setAttribute('aria-pressed', String(slider));
+  }
+  $('version-a').addEventListener('change',update);
+  $('version-b').addEventListener('change',update);
+  $('camera').addEventListener('change',update);
+  $('capture-period').addEventListener('change',()=>{
+    selectedPairs[activePeriod]={a:$('version-a').value,b:$('version-b').value};
+    activePeriod=$('capture-period').value;
+    populateVersions(); update();
+  });
+  $('swap').addEventListener('click',()=>{
+    const value=$('version-a').value;
+    $('version-a').value=$('version-b').value; $('version-b').value=value; update();
+  });
+  $('mode-pair').addEventListener('click',()=>setMode(false));
+  $('mode-slider').addEventListener('click',()=>setMode(true));
+  $('split').addEventListener('input',()=>{
+    $('split-frame').style.setProperty('--cut',$('split').value+'%');
+    $('split').setAttribute('aria-valuetext','A '+$('split').value+'%，B '+(100-Number($('split').value))+'%');
+  });
+  if (DAY_CYCLE_DIR) {
+    $('cycle-note').textContent='最终版本 · 同一整体机位 · '+DAY_CYCLE_DIR+' · 5机位＋12时辰，共17张；单场景、帧末草色及F11净屏检查通过。';
+    ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'].forEach((name,index)=>{
+      const link=document.createElement('a');
+      link.href=DAY_CYCLE_DIR+'/shichen_'+String(index).padStart(2,'0')+'.png';
+      link.textContent=name+'时'; link.target='_blank'; link.rel='noopener'; $('hours').append(link);
+    });
+  }
+  if (NIGHT_DIR) {
+    $('night-note').textContent='夜景原图 · '+NIGHT_DIR+' · 可在上方“对比时段”切换独立夜间 A/B。';
+    Object.entries(cameraNames).forEach(([camera,name])=>{
+      const link=document.createElement('a');
+      link.href=NIGHT_DIR+'/'+camera+'.png'; link.textContent=name;
+      link.target='_blank'; link.rel='noopener'; $('night-views').append(link);
+    });
+  }
+  update();
+</script>
+</html>

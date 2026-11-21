@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+INFO size=(1920, 1080) mode=balanced msaa=1 scale=1.0 bg_active=false refresh=120.0
+SAMPLE scene=true k=1 12.36 ms  process 13.41  setup_cpu 0.06  vp_cpu 0.55  vp_gpu 0.00
+SAMPLE scene=true k=2 24.45 ms  process 26.00  setup_cpu 0.31  vp_cpu 0.76  vp_gpu 0.00
+SAMPLE scene=true k=3 37.18 ms  process 39.60  setup_cpu 0.21  vp_cpu 0.95  vp_gpu 0.00
+SAMPLE scene=true k=4 49.09 ms  process 51.36  setup_cpu 0.33  vp_cpu 1.13  vp_gpu 0.00
+SAMPLE scene=false k=1 11.86 ms  process 18.38  setup_cpu 0.10  vp_cpu 0.29  vp_gpu 0.00
+SAMPLE scene=false k=2 11.22 ms  process 20.49  setup_cpu 0.08  vp_cpu 0.30  vp_gpu 0.00
+SAMPLE scene=false k=3 11.16 ms  process 17.30  setup_cpu 0.06  vp_cpu 0.23  vp_gpu 0.00
+SAMPLE scene=false k=4 11.68 ms  process 14.87  setup_cpu 0.07  vp_cpu 0.24  vp_gpu 0.00
+SAMPLE scene=true k=4 48.90 ms  process 50.81  setup_cpu 0.34  vp_cpu 1.07  vp_gpu 0.00
+SAMPLE scene=true k=3 36.79 ms  process 40.12  setup_cpu 0.17  vp_cpu 0.95  vp_gpu 0.00
+SAMPLE scene=true k=2 24.88 ms  process 26.47  setup_cpu 0.09  vp_cpu 0.78  vp_gpu 0.00
+SAMPLE scene=true k=1 12.45 ms  process 14.87  setup_cpu 0.07  vp_cpu 0.71  vp_gpu 0.00
+SAMPLE scene=false k=4 11.80 ms  process 15.20  setup_cpu 0.07  vp_cpu 0.23  vp_gpu 0.00
+SAMPLE scene=false k=3 11.10 ms  process 17.92  setup_cpu 0.06  vp_cpu 0.23  vp_gpu 0.00
+SAMPLE scene=false k=2 11.36 ms  process 18.11  setup_cpu 0.07  vp_cpu 0.29  vp_gpu 0.00
+SAMPLE scene=false k=1 11.93 ms  process 19.49  setup_cpu 0.07  vp_cpu 0.34  vp_gpu 0.00
+FIT scene  one render 12.21 ms   floor 0.24 ms
+FIT empty  one render -0.06 ms   floor 11.67 ms

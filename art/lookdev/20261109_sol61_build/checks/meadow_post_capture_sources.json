@@ -1,0 +1,18 @@
+{
+  "changed_from_capture": [
+    "res://project.godot"
+  ],
+  "reason": "Capture args removed and project reloaded",
+  "normal_boot_observed": true,
+  "native_f11_observed": true,
+  "hud_brush_actor_absent": true,
+  "hint_faded": true,
+  "normal_preview_size": [
+    1278,
+    719
+  ],
+  "evidence_native_size": [
+    2560,
+    1440
+  ]
+}

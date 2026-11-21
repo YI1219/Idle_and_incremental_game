@@ -1,0 +1,29 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+ok: variant 0 preserves y=0 crown and cap polygon
+ok: variant 0 lower broad planes stay coplanar (worst 0.075 degrees)
+ok: variant 0 is finite, nondegenerate and watertight
+ok: variant 1 preserves y=0 crown and cap polygon
+ok: variant 1 lower broad planes stay coplanar (worst 0.025 degrees)
+ok: variant 1 is finite, nondegenerate and watertight
+ok: variant 2 preserves y=0 crown and cap polygon
+ok: variant 2 lower broad planes stay coplanar (worst 0.014 degrees)
+ok: variant 2 is finite, nondegenerate and watertight
+ok: variant 3 preserves y=0 crown and cap polygon
+ok: variant 3 lower broad planes stay coplanar (worst 0.027 degrees)
+ok: variant 3 is finite, nondegenerate and watertight
+ok: variant 4 preserves y=0 crown and cap polygon
+ok: variant 4 lower broad planes stay coplanar (worst 0.013 degrees)
+ok: variant 4 is finite, nondegenerate and watertight
+ok: variant 5 preserves y=0 crown and cap polygon
+ok: variant 5 lower broad planes stay coplanar (worst 0.016 degrees)
+ok: variant 5 is finite, nondegenerate and watertight
+ok: variant 6 preserves y=0 crown and cap polygon
+ok: variant 6 lower broad planes stay coplanar (worst 0.314 degrees)
+ok: variant 6 is finite, nondegenerate and watertight
+ok: variant 7 preserves y=0 crown and cap polygon
+ok: variant 7 lower broad planes stay coplanar (worst 0.018 degrees)
+ok: variant 7 is finite, nondegenerate and watertight
+CLIFF GEOMETRY: 24 checks, 0 failures

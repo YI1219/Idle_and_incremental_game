@@ -1,0 +1,13 @@
+{
+	"art_accepted": false,
+	"data_sha256_before_placement": "dd496c63342cc53ad9b8c858919c0fd72a55796cbb2fd65ba20658d66740ed18",
+	"data_sha256_now": "dd496c63342cc53ad9b8c858919c0fd72a55796cbb2fd65ba20658d66740ed18",
+	"data_unchanged": true,
+	"mode": "none",
+	"placed_count": 0,
+	"placements": [],
+	"scope": "Transient native courtyard composition trial; existing terrain/props retained; no user layout read/write, no saved scene, no gameplay acceptance or target-hardware performance claim",
+	"script_sha256": "d67abb57862b5fb2f29ad833748fb21cba2ee0823acab9337b20c713d341d1fc",
+	"trial_file": "res://art/source/style_library_20261112/placement_trial.json",
+	"trial_sha256": "a055d98a0a34455a65b0dd6adbda8f7ba93922ba5fb6935e54cb9240cfb22599"
+}

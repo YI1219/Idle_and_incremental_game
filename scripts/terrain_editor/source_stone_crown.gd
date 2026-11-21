@@ -2,13 +2,13 @@ extends RefCounted
 ## Clip a retained closed stone source into a terrain crown, then close its
 ## cut with a shared cap. Source faces determine the geological shoulder.
 const Surface=preload('res://scripts/terrain_editor/chunk_geometry.gd').Surface
-static func build(source:ArrayMesh,height:float=.68,cut_fraction:float=.72,reference_bounds:AABB=AABB())->Dictionary:
+static func build(source:ArrayMesh,height:float=.68,cut_fraction:float=.72,reference_bounds:AABB=AABB(),hull_cap:bool=false)->Dictionary:
  # A refined lower foot may extend below the retained source. Cap cutting
  # and placement stay anchored to its original shoulder bounds.
  var box:=source.get_aabb() if reference_bounds.size==Vector3.ZERO else reference_bounds
  var cut:float=box.position.y+box.size.y*cut_fraction
  var cap:Dictionary={};var polygons:Array=[]
- var faces:=source.get_faces()
+ var faces:=preload("res://scripts/terrain_editor/chunk_geometry.gd").faces_of(source)
  for i in range(0,faces.size(),3):
   var input:Array=[faces[i],faces[i+1],faces[i+2]];var polygon:Array=[]
   for j in 3:
@@ -56,6 +56,15 @@ static func build(source:ArrayMesh,height:float=.68,cut_fraction:float=.72,refer
   crown_z=maxf(crown_z,a.z)
   cap_polygon.append(Vector2(a.x,a.z))
 
+ # Sculpted sources (Tripo kit) cut into ragged rings with tiny notches;
+ # the convex ring keeps the shared turf boundary and lip chamfer clean.
+ if hull_cap and cap_polygon.size()>3:
+  var hull:=Geometry2D.convex_hull(cap_polygon)
+  if hull.size()>3:
+   hull.remove_at(hull.size()-1)
+   cap_polygon=hull
+   crown_z=0.0
+   for p2:Vector2 in cap_polygon:crown_z=maxf(crown_z,p2.y)
  var cap_indices:=Geometry2D.triangulate_polygon(cap_polygon)
  for j in range(0,cap_indices.size(),3):
   var a:=cap_polygon[cap_indices[j]];var b:=cap_polygon[cap_indices[j+1]];var c:=cap_polygon[cap_indices[j+2]]

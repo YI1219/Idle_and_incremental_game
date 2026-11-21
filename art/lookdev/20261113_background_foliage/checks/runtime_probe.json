@@ -1,0 +1,114 @@
+[
+  {
+    "candidate": "base",
+    "fps": 28.7944128852501,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 35.762,
+    "p99_ms": 36.218,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "bg",
+    "fps": 29.6424635951412,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 34.867,
+    "p99_ms": 35.106,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "early_alpha",
+    "fps": 27.3473833692109,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 38.156,
+    "p99_ms": 38.504,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "exact_index",
+    "fps": 27.5100291457158,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 37.444,
+    "p99_ms": 38.506,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "combined",
+    "fps": 28.6412094050405,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 36.039,
+    "p99_ms": 36.377,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "bg",
+    "fps": 28.564396605354,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 36.09,
+    "p99_ms": 36.325,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  },
+  {
+    "candidate": "base",
+    "fps": 27.254295875295,
+    "method": "normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 37.848,
+    "p99_ms": 38.918,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ]
+  }
+]

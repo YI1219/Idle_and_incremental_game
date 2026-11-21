@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-10 17:42:41.431 Godot[26238:71137938] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-10 17:42:43.739 Godot[26238:71137938] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+TOKEN 0 radius=1.0 painting=false
+TOKEN 2 radius=3.8 painting=false
+DATA_UNCHANGED false
+ZOOM 6.0 pitch=19.0
+ZOOM 100.0 pitch=68.0

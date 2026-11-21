@@ -1,0 +1,395 @@
+{
+  "analysis_size": [
+    1672,
+    941
+  ],
+  "note": "Native Godot captures remain untouched at 2560x1440. Only these analysis copies are resized to TARGET size. TARGET has local generated composition drift; color/texture samples and absolute pixel differences are diagnostics, never an art acceptance score. All crops exclude the reference character.",
+  "regions": {
+    "meadow": [
+      650,
+      270,
+      860,
+      310
+    ],
+    "lit_stone": [
+      425,
+      480,
+      550,
+      640
+    ],
+    "front_stone": [
+      920,
+      520,
+      1040,
+      650
+    ],
+    "junction": [
+      500,
+      240,
+      1150,
+      550
+    ]
+  },
+  "samples": {
+    "TARGET_B": {
+      "source": "20261109_wallpaper_targets_sol61/TARGET_B_grass_rock_hero.png",
+      "regions": {
+        "meadow": {
+          "mean_rgb": [
+            149.42,
+            169.1354761904762,
+            86.51988095238096
+          ],
+          "mean_luma": 158.9791199761905,
+          "mean_neighbor_gradient": 3.071642815459394,
+          "fine_texture_rms": 5.324345104672573
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            189.9088,
+            178.31415,
+            161.53615
+          ],
+          "mean_luma": 179.56780099,
+          "mean_neighbor_gradient": 0.721714096836325,
+          "fine_texture_rms": 1.0907566181325694
+        },
+        "front_stone": {
+          "mean_rgb": [
+            191.56589743589743,
+            177.93269230769232,
+            157.47115384615384
+          ],
+          "mean_luma": 179.35378864102563,
+          "mean_neighbor_gradient": 0.8915737279622628,
+          "fine_texture_rms": 1.201957093535728
+        },
+        "junction": {
+          "mean_rgb": [
+            168.20131513647644,
+            167.47884367245658,
+            127.56214392059553
+          ],
+          "mean_luma": 164.7504553836228,
+          "mean_neighbor_gradient": 1.9927791683892093,
+          "fine_texture_rms": 4.886464483961694
+        }
+      }
+    },
+    "previous": {
+      "source": "20261109_sol61_build/final_day/cliff_close.png",
+      "regions": {
+        "meadow": {
+          "mean_rgb": [
+            146.46797619047618,
+            166.75488095238094,
+            85.7172619047619
+          ],
+          "mean_luma": 156.5909689047619,
+          "mean_neighbor_gradient": 2.807236681534839,
+          "fine_texture_rms": 3.8755644750152203
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            187.50975,
+            177.00045,
+            157.71425
+          ],
+          "mean_luma": 177.84226353999998,
+          "mean_neighbor_gradient": 1.3256507477771846,
+          "fine_texture_rms": 1.4368426033030433
+        },
+        "front_stone": {
+          "mean_rgb": [
+            189.51833333333335,
+            178.4248076923077,
+            158.07070512820513
+          ],
+          "mean_luma": 179.31372503846154,
+          "mean_neighbor_gradient": 1.1976877225445928,
+          "fine_texture_rms": 1.8886129763291828
+        },
+        "junction": {
+          "mean_rgb": [
+            163.96458064516128,
+            165.66329032258065,
+            128.8232406947891
+          ],
+          "mean_luma": 162.64229306203475,
+          "mean_neighbor_gradient": 2.0546496359092075,
+          "fine_texture_rms": 5.163900430800588
+        }
+      }
+    },
+    "clean_stone": {
+      "source": "20261109_sol61_build/clean_stone_day/cliff_close.png",
+      "regions": {
+        "meadow": {
+          "mean_rgb": [
+            146.67607142857142,
+            166.88190476190476,
+            85.75178571428572
+          ],
+          "mean_luma": 156.72855,
+          "mean_neighbor_gradient": 2.7917704085680395,
+          "fine_texture_rms": 3.8707798320153146
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            191.99155,
+            179.9019,
+            158.30235
+          ],
+          "mean_luma": 180.91267207999996,
+          "mean_neighbor_gradient": 0.5701421272849468,
+          "fine_texture_rms": 0.8901591617982333
+        },
+        "front_stone": {
+          "mean_rgb": [
+            188.56070512820511,
+            176.27948717948718,
+            154.28314102564102
+          ],
+          "mean_luma": 177.30233792307692,
+          "mean_neighbor_gradient": 0.6719928704845077,
+          "fine_texture_rms": 1.3907892981306953
+        },
+        "junction": {
+          "mean_rgb": [
+            164.07224317617866,
+            164.65203473945408,
+            126.39083374689827
+          ],
+          "mean_luma": 161.76631234143923,
+          "mean_neighbor_gradient": 1.7155000906254285,
+          "fine_texture_rms": 5.117446763087582
+        }
+      }
+    },
+    "06": {
+      "source": "20261109_sol61_build/06_planar_soft_edges_day/cliff_close.png",
+      "regions": {
+        "meadow": {
+          "mean_rgb": [
+            123.18309523809523,
+            153.0925,
+            71.64511904761905
+          ],
+          "mean_luma": 140.85325964285715,
+          "mean_neighbor_gradient": 3.099876539235619,
+          "fine_texture_rms": 4.407155077032788
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            197.2258,
+            186.0151,
+            165.73975
+          ],
+          "mean_luma": 186.93461455000002,
+          "mean_neighbor_gradient": 0.7302909480295197,
+          "fine_texture_rms": 0.9860020283954795
+        },
+        "front_stone": {
+          "mean_rgb": [
+            194.0698717948718,
+            182.96192307692309,
+            161.87698717948717
+          ],
+          "mean_luma": 183.8011406025641,
+          "mean_neighbor_gradient": 0.8885051991559894,
+          "fine_texture_rms": 1.2261833635413755
+        },
+        "junction": {
+          "mean_rgb": [
+            166.3776923076923,
+            169.06512655086848,
+            129.88183622828785
+          ],
+          "mean_luma": 165.6647444694789,
+          "mean_neighbor_gradient": 1.9547562313212241,
+          "fine_texture_rms": 5.5737224665384115
+        }
+      }
+    },
+    "07": {
+      "source": "20261109_sol61_build/07_feel_rebuild_day/cliff_close.png",
+      "regions": {
+        "meadow": {
+          "mean_rgb": [
+            94.66059523809524,
+            114.76523809523809,
+            69.81404761904761
+          ],
+          "mean_luma": 107.24551507142856,
+          "mean_neighbor_gradient": 5.092009046523652,
+          "fine_texture_rms": 6.439224418445991
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            161.956,
+            155.16075,
+            146.01025
+          ],
+          "mean_luma": 155.94475405,
+          "mean_neighbor_gradient": 0.9435431234555682,
+          "fine_texture_rms": 1.072590322536988
+        },
+        "front_stone": {
+          "mean_rgb": [
+            164.65096153846153,
+            156.61705128205128,
+            145.44621794871796
+          ],
+          "mean_luma": 157.51852643589743,
+          "mean_neighbor_gradient": 1.0632869342763938,
+          "fine_texture_rms": 1.3871202414003496
+        },
+        "junction": {
+          "mean_rgb": [
+            137.9481141439206,
+            140.1119007444169,
+            119.06491315136476
+          ],
+          "mean_luma": 138.132287208933,
+          "mean_neighbor_gradient": 2.6013194773005273,
+          "fine_texture_rms": 5.4981315722501005
+        }
+      }
+    },
+    "08": {
+      "source": "20261109_sol61_build/08_primary_material_day/cliff_close.png",
+      "regions": {
+        "meadow": {
+          "mean_rgb": [
+            131.00190476190477,
+            157.06642857142856,
+            80.02738095238095
+          ],
+          "mean_luma": 145.96289157142854,
+          "mean_neighbor_gradient": 5.175927037626117,
+          "fine_texture_rms": 6.18387881049242
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            195.7948,
+            186.277,
+            166.7918
+          ],
+          "mean_luma": 186.89365284,
+          "mean_neighbor_gradient": 0.05107152043898368,
+          "fine_texture_rms": 0.184074260376983
+        },
+        "front_stone": {
+          "mean_rgb": [
+            193.93942307692308,
+            184.60820512820513,
+            165.2253205128205
+          ],
+          "mean_luma": 185.19257779487177,
+          "mean_neighbor_gradient": 0.12074489070285253,
+          "fine_texture_rms": 0.766624859506705
+        },
+        "junction": {
+          "mean_rgb": [
+            165.5620794044665,
+            169.49483374689825,
+            134.0755334987593
+          ],
+          "mean_luma": 166.10145669578165,
+          "mean_neighbor_gradient": 2.120402594582894,
+          "fine_texture_rms": 6.079449716075419
+        }
+      }
+    },
+    "current": {
+      "source": "20261109_sol61_build/planted_meadow_day/cliff_close.png",
+      "regions": {
+        "meadow": {
+          "mean_rgb": [
+            146.74785714285716,
+            166.92166666666665,
+            85.78928571428571
+          ],
+          "mean_luma": 156.77495685714283,
+          "mean_neighbor_gradient": 2.8077837525924365,
+          "fine_texture_rms": 3.8464320717438496
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            191.99155,
+            179.9019,
+            158.30235
+          ],
+          "mean_luma": 180.91267207999996,
+          "mean_neighbor_gradient": 0.5701421272849468,
+          "fine_texture_rms": 0.8901591617982333
+        },
+        "front_stone": {
+          "mean_rgb": [
+            188.56064102564102,
+            176.27948717948718,
+            154.28307692307692
+          ],
+          "mean_luma": 177.30231966666668,
+          "mean_neighbor_gradient": 0.6719653939065182,
+          "fine_texture_rms": 1.3908200249781932
+        },
+        "junction": {
+          "mean_rgb": [
+            164.09439205955334,
+            164.6644665012407,
+            126.40345905707196
+          ],
+          "mean_luma": 161.78082393746894,
+          "mean_neighbor_gradient": 1.711501297074144,
+          "fine_texture_rms": 5.103092041801399
+        }
+      }
+    },
+    "material_before_locked": {
+      "source": "20261109_sol61_build/12_material_before_locked_day/cliff_close.png",
+      "regions": {
+        "meadow": {
+          "mean_rgb": [
+            131.14559523809524,
+            158.2836904761905,
+            83.31666666666666
+          ],
+          "mean_luma": 147.1015123095238,
+          "mean_neighbor_gradient": 6.826053313002785,
+          "fine_texture_rms": 8.63740251593164
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            176.7583,
+            168.1017,
+            147.95925
+          ],
+          "mean_luma": 168.48780827,
+          "mean_neighbor_gradient": 1.0689877900030418,
+          "fine_texture_rms": 1.0880946649993282
+        },
+        "front_stone": {
+          "mean_rgb": [
+            179.34365384615384,
+            170.15051282051283,
+            148.98641025641027
+          ],
+          "mean_luma": 170.57692639743587,
+          "mean_neighbor_gradient": 0.9514697439321583,
+          "fine_texture_rms": 1.4870954883439702
+        },
+        "junction": {
+          "mean_rgb": [
+            155.69140446650124,
+            160.75549379652605,
+            125.6470223325062
+          ],
+          "mean_luma": 157.14403676526058,
+          "mean_neighbor_gradient": 3.060384811565262,
+          "fine_texture_rms": 6.480324742447443
+        }
+      }
+    }
+  }
+}

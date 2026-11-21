@@ -1,0 +1,1572 @@
+{
+	"godot": "4.7.2-stable (official)",
+	"issues": [],
+	"list": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/capture_texture_pilot.json",
+	"records": [
+		{
+			"angle": "front",
+			"asset": "round_stone_lantern",
+			"bounds_min_m": [
+				-0.34197998046875,
+				0.0,
+				-0.363671749830246
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"far": 28.2618446350098,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.5,
+					4.23927688598633
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.34197998046875,
+					0.0,
+					-0.363671749830246
+				],
+				"reference_dimensions_m": [
+					0.6839599609375,
+					1.0,
+					0.727343499660492
+				],
+				"size": 1.20000004768372,
+				"target": [
+					0.0,
+					0.5,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.6839599609375,
+				1.0,
+				0.727343499660492
+			],
+			"family": "props",
+			"file": "props/round_stone_lantern/lod0_front.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "round_stone_lantern_LOD0_0",
+						"name": "tripo_node_8c0987f3-6ca8-472a-9539-38b1904ca149_material",
+						"parameters": {
+							"albedo_color": [
+								1.0,
+								1.0,
+								1.0,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 0,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {
+							"albedo_texture": {
+								"class": "ImageTexture",
+								"file_sha256": "embedded_or_runtime",
+								"height": 512,
+								"path": "",
+								"width": 512
+							}
+						}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.34197998046875,
+							0.0,
+							-0.363671749830246
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.6839599609375,
+							1.0,
+							0.727343499660492
+						],
+						"material_overlay": null,
+						"node": "round_stone_lantern_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1772
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/round_stone_lantern/material_source/manifest_runtime.json",
+			"manifest_sha256": "b57f8736f899047fad602a6217c8f88085b01551efe4702062c58958091dd9e5",
+			"material_override_added": false,
+			"material_policy": "preserved source materials and texture/UV assignments; no consolidation",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern_textured/lod0.glb",
+			"model_sha256": "e99e3284e27e10b08896080355dd425a14c7af0484b48b961211e0157221f43d",
+			"msaa": 4,
+			"original_source_sha256": "8085ef083446dc2271b170d53841ce27968c1b8ed6be91113505c0e4b4aedc0b",
+			"process_report_not_game_ready": true,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "back",
+			"asset": "round_stone_lantern",
+			"bounds_min_m": [
+				-0.34197998046875,
+				0.0,
+				-0.363671749830246
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					-1.0
+				],
+				"far": 28.2618446350098,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.5,
+					-4.23927688598633
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.34197998046875,
+					0.0,
+					-0.363671749830246
+				],
+				"reference_dimensions_m": [
+					0.6839599609375,
+					1.0,
+					0.727343499660492
+				],
+				"size": 1.20000004768372,
+				"target": [
+					0.0,
+					0.5,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.6839599609375,
+				1.0,
+				0.727343499660492
+			],
+			"family": "props",
+			"file": "props/round_stone_lantern/lod0_back.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "round_stone_lantern_LOD0_0",
+						"name": "tripo_node_8c0987f3-6ca8-472a-9539-38b1904ca149_material",
+						"parameters": {
+							"albedo_color": [
+								1.0,
+								1.0,
+								1.0,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 0,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {
+							"albedo_texture": {
+								"class": "ImageTexture",
+								"file_sha256": "embedded_or_runtime",
+								"height": 512,
+								"path": "",
+								"width": 512
+							}
+						}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.34197998046875,
+							0.0,
+							-0.363671749830246
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.6839599609375,
+							1.0,
+							0.727343499660492
+						],
+						"material_overlay": null,
+						"node": "round_stone_lantern_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1772
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/round_stone_lantern/material_source/manifest_runtime.json",
+			"manifest_sha256": "b57f8736f899047fad602a6217c8f88085b01551efe4702062c58958091dd9e5",
+			"material_override_added": false,
+			"material_policy": "preserved source materials and texture/UV assignments; no consolidation",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern_textured/lod0.glb",
+			"model_sha256": "e99e3284e27e10b08896080355dd425a14c7af0484b48b961211e0157221f43d",
+			"msaa": 4,
+			"original_source_sha256": "8085ef083446dc2271b170d53841ce27968c1b8ed6be91113505c0e4b4aedc0b",
+			"process_report_not_game_ready": true,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "left",
+			"asset": "round_stone_lantern",
+			"bounds_min_m": [
+				-0.34197998046875,
+				0.0,
+				-0.363671749830246
+			],
+			"camera": {
+				"direction": [
+					-1.0,
+					0.0,
+					0.0
+				],
+				"far": 28.2618446350098,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					-4.23927688598633,
+					0.5,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.34197998046875,
+					0.0,
+					-0.363671749830246
+				],
+				"reference_dimensions_m": [
+					0.6839599609375,
+					1.0,
+					0.727343499660492
+				],
+				"size": 1.20000004768372,
+				"target": [
+					0.0,
+					0.5,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.6839599609375,
+				1.0,
+				0.727343499660492
+			],
+			"family": "props",
+			"file": "props/round_stone_lantern/lod0_left.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "round_stone_lantern_LOD0_0",
+						"name": "tripo_node_8c0987f3-6ca8-472a-9539-38b1904ca149_material",
+						"parameters": {
+							"albedo_color": [
+								1.0,
+								1.0,
+								1.0,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 0,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {
+							"albedo_texture": {
+								"class": "ImageTexture",
+								"file_sha256": "embedded_or_runtime",
+								"height": 512,
+								"path": "",
+								"width": 512
+							}
+						}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.34197998046875,
+							0.0,
+							-0.363671749830246
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.6839599609375,
+							1.0,
+							0.727343499660492
+						],
+						"material_overlay": null,
+						"node": "round_stone_lantern_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1772
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/round_stone_lantern/material_source/manifest_runtime.json",
+			"manifest_sha256": "b57f8736f899047fad602a6217c8f88085b01551efe4702062c58958091dd9e5",
+			"material_override_added": false,
+			"material_policy": "preserved source materials and texture/UV assignments; no consolidation",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern_textured/lod0.glb",
+			"model_sha256": "e99e3284e27e10b08896080355dd425a14c7af0484b48b961211e0157221f43d",
+			"msaa": 4,
+			"original_source_sha256": "8085ef083446dc2271b170d53841ce27968c1b8ed6be91113505c0e4b4aedc0b",
+			"process_report_not_game_ready": true,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "right",
+			"asset": "round_stone_lantern",
+			"bounds_min_m": [
+				-0.34197998046875,
+				0.0,
+				-0.363671749830246
+			],
+			"camera": {
+				"direction": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"far": 28.2618446350098,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					4.23927688598633,
+					0.5,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.34197998046875,
+					0.0,
+					-0.363671749830246
+				],
+				"reference_dimensions_m": [
+					0.6839599609375,
+					1.0,
+					0.727343499660492
+				],
+				"size": 1.20000004768372,
+				"target": [
+					0.0,
+					0.5,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.6839599609375,
+				1.0,
+				0.727343499660492
+			],
+			"family": "props",
+			"file": "props/round_stone_lantern/lod0_right.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "round_stone_lantern_LOD0_0",
+						"name": "tripo_node_8c0987f3-6ca8-472a-9539-38b1904ca149_material",
+						"parameters": {
+							"albedo_color": [
+								1.0,
+								1.0,
+								1.0,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 0,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {
+							"albedo_texture": {
+								"class": "ImageTexture",
+								"file_sha256": "embedded_or_runtime",
+								"height": 512,
+								"path": "",
+								"width": 512
+							}
+						}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.34197998046875,
+							0.0,
+							-0.363671749830246
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.6839599609375,
+							1.0,
+							0.727343499660492
+						],
+						"material_overlay": null,
+						"node": "round_stone_lantern_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1772
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/round_stone_lantern/material_source/manifest_runtime.json",
+			"manifest_sha256": "b57f8736f899047fad602a6217c8f88085b01551efe4702062c58958091dd9e5",
+			"material_override_added": false,
+			"material_policy": "preserved source materials and texture/UV assignments; no consolidation",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern_textured/lod0.glb",
+			"model_sha256": "e99e3284e27e10b08896080355dd425a14c7af0484b48b961211e0157221f43d",
+			"msaa": 4,
+			"original_source_sha256": "8085ef083446dc2271b170d53841ce27968c1b8ed6be91113505c0e4b4aedc0b",
+			"process_report_not_game_ready": true,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "round_stone_lantern",
+			"bounds_min_m": [
+				-0.34197998046875,
+				0.0,
+				-0.363671749830246
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 28.2618446350098,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.19207787513733,
+					2.03445434570312,
+					3.28811693191528
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.34197998046875,
+					0.0,
+					-0.363671749830246
+				],
+				"reference_dimensions_m": [
+					0.6839599609375,
+					1.0,
+					0.727343499660492
+				],
+				"size": 1.54628717899323,
+				"target": [
+					0.0,
+					0.5,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.6839599609375,
+				1.0,
+				0.727343499660492
+			],
+			"family": "props",
+			"file": "props/round_stone_lantern/lod0_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "round_stone_lantern_LOD0_0",
+						"name": "tripo_node_8c0987f3-6ca8-472a-9539-38b1904ca149_material",
+						"parameters": {
+							"albedo_color": [
+								1.0,
+								1.0,
+								1.0,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 0,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {
+							"albedo_texture": {
+								"class": "ImageTexture",
+								"file_sha256": "embedded_or_runtime",
+								"height": 512,
+								"path": "",
+								"width": 512
+							}
+						}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.34197998046875,
+							0.0,
+							-0.363671749830246
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.6839599609375,
+							1.0,
+							0.727343499660492
+						],
+						"material_overlay": null,
+						"node": "round_stone_lantern_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1772
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/round_stone_lantern/material_source/manifest_runtime.json",
+			"manifest_sha256": "b57f8736f899047fad602a6217c8f88085b01551efe4702062c58958091dd9e5",
+			"material_override_added": false,
+			"material_policy": "preserved source materials and texture/UV assignments; no consolidation",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern_textured/lod0.glb",
+			"model_sha256": "e99e3284e27e10b08896080355dd425a14c7af0484b48b961211e0157221f43d",
+			"msaa": 4,
+			"original_source_sha256": "8085ef083446dc2271b170d53841ce27968c1b8ed6be91113505c0e4b4aedc0b",
+			"process_report_not_game_ready": true,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "round_stone_lantern",
+			"bounds_min_m": [
+				-0.342375725507736,
+				-0.00468996958807111,
+				-0.364373087882996
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 28.2618446350098,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.19207787513733,
+					2.03445434570312,
+					3.28811693191528
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.34197998046875,
+					0.0,
+					-0.363671749830246
+				],
+				"reference_dimensions_m": [
+					0.6839599609375,
+					1.0,
+					0.727343499660492
+				],
+				"size": 1.54628717899323,
+				"target": [
+					0.0,
+					0.5,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.684355735778809,
+				1.00468993186951,
+				0.728044867515564
+			],
+			"family": "props",
+			"file": "props/round_stone_lantern/lod1_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "round_stone_lantern_LOD1_0",
+						"name": "tripo_node_8c0987f3-6ca8-472a-9539-38b1904ca149_material",
+						"parameters": {
+							"albedo_color": [
+								1.0,
+								1.0,
+								1.0,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 0,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {
+							"albedo_texture": {
+								"class": "ImageTexture",
+								"file_sha256": "embedded_or_runtime",
+								"height": 512,
+								"path": "",
+								"width": 512
+							}
+						}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.342375725507736,
+							-0.00468996958807111,
+							-0.364373087882996
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.684355735778809,
+							1.00468993186951,
+							0.728044867515564
+						],
+						"material_overlay": null,
+						"node": "round_stone_lantern_LOD1_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 714
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 1,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/round_stone_lantern/material_source/manifest_runtime.json",
+			"manifest_sha256": "b57f8736f899047fad602a6217c8f88085b01551efe4702062c58958091dd9e5",
+			"material_override_added": false,
+			"material_policy": "preserved source materials and texture/UV assignments; no consolidation",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern_textured/lod1.glb",
+			"model_sha256": "335c512062f9570136615ed2240a873956dadee6ed18771fadf8165f9d8ed142",
+			"msaa": 4,
+			"original_source_sha256": "8085ef083446dc2271b170d53841ce27968c1b8ed6be91113505c0e4b4aedc0b",
+			"process_report_not_game_ready": true,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "round_stone_lantern",
+			"bounds_min_m": [
+				-0.342375725507736,
+				-0.0012005022726953,
+				-0.354901850223541
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 28.2618446350098,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.19207787513733,
+					2.03445434570312,
+					3.28811693191528
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.34197998046875,
+					0.0,
+					-0.363671749830246
+				],
+				"reference_dimensions_m": [
+					0.6839599609375,
+					1.0,
+					0.727343499660492
+				],
+				"size": 1.54628717899323,
+				"target": [
+					0.0,
+					0.5,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.757513582706451,
+				1.00120055675507,
+				0.720174133777618
+			],
+			"family": "props",
+			"file": "props/round_stone_lantern/lod2_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "round_stone_lantern_LOD2_0",
+						"name": "tripo_node_8c0987f3-6ca8-472a-9539-38b1904ca149_material",
+						"parameters": {
+							"albedo_color": [
+								1.0,
+								1.0,
+								1.0,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 0,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {
+							"albedo_texture": {
+								"class": "ImageTexture",
+								"file_sha256": "embedded_or_runtime",
+								"height": 512,
+								"path": "",
+								"width": 512
+							}
+						}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.342375725507736,
+							-0.0012005022726953,
+							-0.354901850223541
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.757513582706451,
+							1.00120055675507,
+							0.720174133777618
+						],
+						"material_overlay": null,
+						"node": "round_stone_lantern_LOD2_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 267
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 2,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/round_stone_lantern/material_source/manifest_runtime.json",
+			"manifest_sha256": "b57f8736f899047fad602a6217c8f88085b01551efe4702062c58958091dd9e5",
+			"material_override_added": false,
+			"material_policy": "preserved source materials and texture/UV assignments; no consolidation",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern_textured/lod2.glb",
+			"model_sha256": "012944370d4a9291d19fad5152c78b6273710a6d09de73c76cabdfa53076fc3a",
+			"msaa": 4,
+			"original_source_sha256": "8085ef083446dc2271b170d53841ce27968c1b8ed6be91113505c0e4b4aedc0b",
+			"process_report_not_game_ready": true,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		}
+	],
+	"renderer": "forward_plus",
+	"scope": "Isolated imported-material asset review only; art acceptance and hardware FPS unmeasured",
+	"script_sha256": "361718fb3d829f904f4232392aca5c298c6218748f745f0103ed7feefebc1a59",
+	"valid": true
+}

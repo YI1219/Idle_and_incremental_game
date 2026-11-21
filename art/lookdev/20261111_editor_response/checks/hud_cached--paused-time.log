@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+{ "hud_redraws": 13, "editor_process_ms": { "p50": 0.481, "p95": 4.373, "max": 5.183, "mean": 1.26693 }, "water_surface_vertices": 384, "falls": 2, "grass_changing": 0, "variant": "paused_time", "method": "production editor process, hover and water workers active; fixed BASE A; 240 warmup,120 frames; no screenshot IO", "frame_ms": { "p50": 17.107, "p95": 34.044, "max": 34.616, "mean": 21.8188833333333 }, "scale": 0.5, "resolution": [3840, 2160], "adapter": "Apple M4 Pro (Apple9)", "water_volume": 65.4959175929018, "discharged": 5.50408240709829 }
+2026-11-11 00:58:55.915 godot[58003:71836259] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-11 00:58:58.690 godot[58003:71836259] +[IMKInputSession subclass]: chose IMKInputSession_Modern

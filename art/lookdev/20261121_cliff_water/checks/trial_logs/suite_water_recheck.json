@@ -1,0 +1,78 @@
+{
+ "ran": 8,
+ "failed": 0,
+ "results": [
+  {
+   "test": "tests/terrain_water_integration_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 4.38,
+   "tail": "TERRAIN WATER INTEGRATION: 11 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_flow_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.65,
+   "tail": "WATER FLOW: 92 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_idle_work_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.55,
+   "tail": "WATER IDLE 10 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_recession_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 5.15,
+   "tail": "WATER RECESSION: 16 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_renderer_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 1.06,
+   "tail": "water_renderer_test: 48/48 passed",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_scaling_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.56,
+   "tail": "WATER SCALING 19 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/waterfall_flow_shape_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.25,
+   "tail": "WATERFALL FLOW SHAPE: 9 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/waterfall_terrace_seal_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 3.09,
+   "tail": "WATERFALL TERRACE SEAL: 16 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-12 11:14:47.761 godot[49008:74685746] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-12 11:14:47.804 godot[49008:74685746] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+ERROR: distant grass uses fewer real triangles instead of drawing invisible detail
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/grass_lod_test.gd:10)
+       [1] run (res://tests/grass_lod_test.gd:32)
+       [2] primitive_count (res://tests/grass_lod_test.gd:15)
+GRASS LOD 96 -> 28; 4 checks, 1 failures

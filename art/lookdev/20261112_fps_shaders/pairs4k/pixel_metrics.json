@@ -1,0 +1,26 @@
+[
+  {
+    "before": "full_before_close.png",
+    "after": "full_after_close.png",
+    "mean_abs_8bit": 0.01846748006687243,
+    "max_abs_8bit": 4
+  },
+  {
+    "before": "full_before_whole.png",
+    "after": "full_after_whole.png",
+    "mean_abs_8bit": 0.0051640866126543205,
+    "max_abs_8bit": 2
+  },
+  {
+    "before": "scaled_before_close.png",
+    "after": "scaled_after_close.png",
+    "mean_abs_8bit": 0.21455910011574073,
+    "max_abs_8bit": 103
+  },
+  {
+    "before": "scaled_before_whole.png",
+    "after": "scaled_after_whole.png",
+    "mean_abs_8bit": 0.07861275880915637,
+    "max_abs_8bit": 90
+  }
+]

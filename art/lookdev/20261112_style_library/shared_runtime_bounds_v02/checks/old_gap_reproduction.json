@@ -1,0 +1,37 @@
+{
+  "original_package": "assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime",
+  "source_centres_m": [
+    [
+      0.0,
+      0.5,
+      0.0
+    ],
+    [
+      0.0006450414657589998,
+      0.5000841930013851,
+      9.870529174749176e-05
+    ],
+    [
+      -0.00019428133964549676,
+      0.5005912946071474,
+      -0.00039514899253900726
+    ]
+  ],
+  "camera_m": [
+    4.00032,
+    0.5,
+    0.0
+  ],
+  "distances_m": [
+    4.00032,
+    3.9996749606383117,
+    4.0005143445530225
+  ],
+  "visible_lods": [],
+  "expected_visible_lods": 1,
+  "result": "RED: existing old package has finite empty interval near 4m",
+  "official_rules": [
+    "https://docs.godotengine.org/en/stable/tutorials/3d/visibility_ranges.html",
+    "https://github.com/godotengine/godot/blob/4.7-stable/servers/rendering/renderer_scene_cull.cpp"
+  ]
+}

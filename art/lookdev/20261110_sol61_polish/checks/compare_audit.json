@@ -1,0 +1,7 @@
+{
+  "states_checked": 30,
+  "all_images_manifests_targets_exist": true,
+  "slider_and_mode_state_passed": true,
+  "validation_mode": "JavaScript state and filesystem paths",
+  "browser_rendering_tested_by_this_script": false
+}

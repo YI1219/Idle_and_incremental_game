@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-10 17:56:10.155 godot[30295:71167346] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-10 17:56:12.456 godot[30295:71167346] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/final_night/game.png
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/final_night/whole.png
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/final_night/reverse.png
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/final_night/close.png
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/final_night/cliff_close.png
+LOOKDEV: 5 frames; valid=true; errors=[]

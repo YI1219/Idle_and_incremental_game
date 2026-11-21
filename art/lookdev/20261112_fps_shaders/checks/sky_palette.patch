@@ -1,0 +1,67 @@
+--- sky_palette_before.gdshaderinc.txt
++++ shaders/terrain_editor/sky_palette.gdshaderinc
+@@ -34,25 +34,54 @@
+ 	return smoothstep(-.26, .42, dot(dir_xz, sun_xz));
+ }
+ 
+-vec3 sky_gradient(vec2 p){
+-	float sun = sky_sun_distance(p);
+-	float h_sun = sky_horiz_sun(p);
++// Elevation, sun distance and warm-side weight directly from the view ray.
++// Avoid atan -> sin/cos round trips in every sky/cloud/mountain fragment.
++// Callers supply EYEDIR or a nonzero, near-clipped fragment-to-camera ray.
++vec3 sky_view_factors(vec3 direction){
++	vec3 d = normalize(direction);
++	float el = asin(clamp(d.y, -1.0, 1.0));
++	float elevation = .5 - (el + .471239) / .54;
++	// atan(0, -0) has backend-specific signed-zero behaviour at a pole.
++	// Keep the original path only there; normal view rays avoid the round trip.
++	if(dot(d.xz, d.xz) == 0.0){
++		vec2 pole_coord = sky_coord(d);
++		return vec3(pole_coord.y, sky_sun_distance(pole_coord), sky_horiz_sun(pole_coord));
++	}
++	vec2 horizontal = normalize(d.xz);
++	float h_sun = smoothstep(-.26, .42, dot(horizontal, normalize(SKY_SUN_DIR.xz)));
++	// Preserve the angular implementation's tiny clamp at the exact poles.
++	if(abs(el) > 1.57){
++		float pole = clamp(el, -1.57, 1.57);
++		d = normalize(vec3(horizontal.x * cos(pole), sin(pole), horizontal.y * cos(pole)));
++	}
++	float sun = acos(clamp(dot(d, normalize(SKY_SUN_DIR)), -1.0, 1.0)) * 1.35;
++	return vec3(elevation, sun, h_sun);
++}
++
++vec3 sky_gradient_factors(vec3 factors){
++	float sun = factors.y;
++	float h_sun = factors.z;
+ 	// Cool cerulean-slate mist on left -> warm creamy golden-ivory morning glow on right (Ref 1):
+-	vec3 cool_sky = mix(sky_zenith * vec3(1.12, 1.09, 1.05), sky_mid * vec3(.98, 1.02, 1.04), smoothstep(-.16, .34, p.y));
+-	cool_sky = mix(cool_sky, sky_zenith * vec3(.66, .79, .86), smoothstep(.38, .92, p.y) * .95);
+-	vec3 warm_sky = mix(sky_zenith * vec3(1.28, 1.13, .89), sky_horizon * vec3(1.08, 1.01, .91), smoothstep(-.18, .38, p.y));
+-	warm_sky = mix(warm_sky, sky_sun_glow * vec3(1.04, .97, .85), smoothstep(.24, .92, p.y) * .88);
++	vec3 cool_sky = mix(sky_zenith * vec3(1.12, 1.09, 1.05), sky_mid * vec3(.98, 1.02, 1.04), smoothstep(-.16, .34, factors.x));
++	cool_sky = mix(cool_sky, sky_zenith * vec3(.66, .79, .86), smoothstep(.38, .92, factors.x) * .95);
++	vec3 warm_sky = mix(sky_zenith * vec3(1.28, 1.13, .89), sky_horizon * vec3(1.08, 1.01, .91), smoothstep(-.18, .38, factors.x));
++	warm_sky = mix(warm_sky, sky_sun_glow * vec3(1.04, .97, .85), smoothstep(.24, .92, factors.x) * .88);
+ 	vec3 color = mix(cool_sky, warm_sky, h_sun);
+ 	float sun_bloom = exp(-sun * 1.45);
+ 	color = mix(color, sky_sun_glow, sun_bloom * .68);
+ 	float day_t = smoothstep(.35, .80, sky_horizon.r);
+-	float sub_cool_damp = mix(1.0, .82, smoothstep(.42, .88, p.y) * (1.0 - h_sun));
++	float sub_cool_damp = mix(1.0, .82, smoothstep(.42, .88, factors.x) * (1.0 - h_sun));
+ 	float day_hdr = mix(1.0, (mix(1.54, 1.84, h_sun) + .28 * sun_bloom) * sub_cool_damp, day_t);
+ 	return color * day_hdr + vec3(.18, .13, .05) * exp(-sun * 3.8) * day_t;
+ }
+ 
++vec3 sky_gradient(vec2 p){
++	return sky_gradient_factors(vec3(p.y, sky_sun_distance(p), sky_horiz_sun(p)));
++}
++
+ #define SKY_SUN_CORE sky_sun_core
+-float sky_sun_disc(vec2 p){
+-	float d = sky_sun_distance(p);
++float sky_disc_from_distance(float d){
+ 	return clamp(exp(-d * 9.0) * .58 + exp(-d * 28.0) * .32, 0.0, 1.0);
+ }
++
++float sky_sun_disc(vec2 p){return sky_disc_from_distance(sky_sun_distance(p));}

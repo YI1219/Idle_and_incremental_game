@@ -2,7 +2,7 @@ extends RefCounted
 ## Seat dry props after sculpting changes a cap's real support footprint.
 ## Separate from shore rocks, whose wet side may deliberately overhang.
 static func seat(field,mesh:Mesh,pose:Transform3D)->Dictionary:
- var faces:=mesh.get_faces();var lo:=INF;var hi:=-INF
+ var faces:=preload("res://scripts/terrain_editor/chunk_geometry.gd").faces_of(mesh);var lo:=INF;var hi:=-INF
  for i in faces.size():
   faces[i]=pose*faces[i];lo=minf(lo,faces[i].y);hi=maxf(hi,faces[i].y)
  if not is_finite(lo) or hi<=lo:return {}

@@ -1,0 +1,211 @@
+{
+	"actor_static": true,
+	"adapter": "Apple M4 Pro (Apple9)",
+	"art_accepted": false,
+	"captures": [
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"file": "game.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.9200000166893005,
+				0.8999999761581421,
+				0.8500000238418579,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				11.360343933105469,
+				21.0,
+				38.618228912353516
+			],
+			"rotation_degrees": [
+				-26.999998092651367,
+				15.999999046325684,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				83.79999542236328,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"file": "whole.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.9200000166893005,
+				0.8999999761581421,
+				0.8500000238418579,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				13.277373313903809,
+				32.0,
+				52.27853012084961
+			],
+			"rotation_degrees": [
+				-30.0,
+				15.999999046325684,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				83.79999542236328,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"file": "reverse.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.9200000166893005,
+				0.8999999761581421,
+				0.8500000238418579,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				-17.277372360229492,
+				32.0,
+				-54.27853012084961
+			],
+			"rotation_degrees": [
+				-30.0,
+				195.99998474121094,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				83.79999542236328,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"file": "close.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.9200000166893005,
+				0.8999999761581421,
+				0.8500000238418579,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				-3.793567180633545,
+				13.0,
+				16.6444034576416
+			],
+			"rotation_degrees": [
+				-30.0,
+				15.999999046325684,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				83.79999542236328,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		}
+	],
+	"data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+	"data_unchanged": true,
+	"errors": [],
+	"f11_handled": true,
+	"frozen_shader_count": 20,
+	"godot": "4.7.2-stable (official)",
+	"house_absent": true,
+	"msaa": "4x",
+	"phase": 1.25,
+	"preset": 0,
+	"renderer": "forward_plus",
+	"resolution": [
+		2560,
+		1440
+	],
+	"scene": "res://scenes/terrain_editor.tscn",
+	"seed": 7301,
+	"suite": "quick",
+	"user_layouts_accessed": false,
+	"valid": true
+}

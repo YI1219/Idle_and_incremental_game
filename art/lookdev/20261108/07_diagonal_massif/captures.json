@@ -1,0 +1,334 @@
+{
+	"actor_static": true,
+	"adapter": "Apple M4 Pro (Apple9)",
+	"art_accepted": false,
+	"captures": [
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.007280000019818544,
+				"far_distance": 86.25647735595703,
+				"far_enabled": true,
+				"far_transition": 135.0,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "game.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.7799999713897705,
+				0.8399999737739563,
+				0.8799999952316284,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				11.360343933105469,
+				21.0,
+				38.618228912353516
+			],
+			"rotation_degrees": [
+				-26.999998092651367,
+				15.999999046325684,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				37.999996185302734,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.007280000019818544,
+				"far_distance": 119.04000091552734,
+				"far_enabled": true,
+				"far_transition": 166.39999389648438,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "whole.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.7799999713897705,
+				0.8399999737739563,
+				0.8799999952316284,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				13.277373313903809,
+				32.0,
+				52.27853012084961
+			],
+			"rotation_degrees": [
+				-30.0,
+				15.999999046325684,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				37.999996185302734,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.007280000019818544,
+				"far_distance": 119.04000091552734,
+				"far_enabled": true,
+				"far_transition": 166.39999389648438,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "reverse.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.7799999713897705,
+				0.8399999737739563,
+				0.8799999952316284,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				-17.277372360229492,
+				32.0,
+				-54.27853012084961
+			],
+			"rotation_degrees": [
+				-30.0,
+				195.99998474121094,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				37.999996185302734,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.007280000019818544,
+				"far_distance": 66.0,
+				"far_enabled": true,
+				"far_transition": 135.0,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "close.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.7799999713897705,
+				0.8399999737739563,
+				0.8799999952316284,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				-3.793567180633545,
+				13.0,
+				16.6444034576416
+			],
+			"rotation_degrees": [
+				-30.0,
+				15.999999046325684,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				37.999996185302734,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.07000000029802322,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.007280000019818544,
+				"far_distance": 69.23804473876953,
+				"far_enabled": true,
+				"far_transition": 135.0,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "cliff_close.png",
+			"fill_energy": 0.2199999988079071,
+			"fill_rotation": [
+				-24.0,
+				15.999999046325684,
+				0.0
+			],
+			"fog_color": [
+				0.7799999713897705,
+				0.8399999737739563,
+				0.8799999952316284,
+				1.0
+			],
+			"fog_density": 0.00015999999595806003,
+			"fov": 31.0,
+			"position": [
+				-0.4269258975982666,
+				10.0,
+				32.41044616699219
+			],
+			"rotation_degrees": [
+				-19.999998092651367,
+				15.999999046325684,
+				0.0
+			],
+			"save_error": 0,
+			"shichen": "卯时 · 日出",
+			"ssil_enabled": true,
+			"ssil_intensity": 0.4000000059604645,
+			"sun_color": [
+				1.0,
+				0.9399999976158142,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 2.0199999809265137,
+			"sun_rotation": [
+				-25.499998092651367,
+				37.999996185302734,
+				0.0
+			],
+			"wallpaper_hud_clear": true
+		}
+	],
+	"data_sha256": "687246315c3149d8c375d4d0dbe0c0cec19b3483b3132c935a9834ac00c0294f",
+	"data_unchanged": true,
+	"errors": [],
+	"f11_handled": true,
+	"frozen_shader_count": 20,
+	"godot": "4.7.2-stable (official)",
+	"house_absent": true,
+	"job": "res://art/lookdev/capture_job.json",
+	"msaa": "4x",
+	"phase": 1.25,
+	"preset": 0,
+	"renderer": "forward_plus",
+	"resolution": [
+		2560,
+		1440
+	],
+	"scene": "res://scenes/terrain_editor.tscn",
+	"seed": 7301,
+	"source_sha256": {
+		"res://project.godot": "8179389abbeee51d672a2f5a5d0b5908cdf938a5313c919d04f082d506a862f4",
+		"res://scenes/terrain_editor.tscn": "a52cec5ee0b0d816a4bac5ee4748e008820aa4a96db58d41ece7e7adf5c2752d",
+		"res://scripts/gameplay/systems/time_solar_system.gd": "9cd08dc716eead1527bbb61fed03261c7d77c30689c895282a3f45429c9d43df",
+		"res://scripts/terrain_editor/block_mantle.gd": "4b396314a681928e795d0df83ca2145513ae367dc33c1f05b24a1b59b3a5f5ac",
+		"res://scripts/terrain_editor/contour_terrain.gd": "81059fb27b29e8a9ffb0e1a73797e97cded060d5312f3e2cd611ea8d7df4019c",
+		"res://scripts/terrain_editor/editor.gd": "caf27cc34296eb51e088ade5a04d75cece0818b9ec494acb486d3298405a0053",
+		"res://scripts/terrain_editor/editor_camera.gd": "d54ad4f114b801d6ac0affa27f7b43a59a14165bf4904dd0af199cd1792403fa",
+		"res://scripts/terrain_editor/grass_field.gd": "98277229ae4d7b04ab38b9172a6e9f7cc5db5b48dcfc6aec6f6fac698ee824d2",
+		"res://scripts/terrain_editor/procedural_shard.gd": "9bbeaf77399320bb1b6bae32a6972659144d6041f4e1f02acf47a4efe69dc949",
+		"res://scripts/terrain_editor/procedural_stone.gd": "c3ff14b218875f463086bd76c488843b90f93da7af2c8e8bda32434d29011707",
+		"res://scripts/terrain_editor/rim_outcrops.gd": "1ad8a36312ee953b9ffe7bbcb1a8f11a0a5315d4b0c8d8e6a34e5cea1241fe2b",
+		"res://scripts/terrain_editor/rim_union.gd": "a9183a802e00b97e75690a267681e9a6227521106436e09b9bf04fad0197dc92",
+		"res://scripts/terrain_editor/terrain_data.gd": "0759674f0286456f64040940c2d99047b9e549ab0c14d11a7e0dd28cbef49151",
+		"res://scripts/terrain_editor/terrain_decoration.gd": "326e6c67b9827841bfc3c58fb4906a8bff10003dd8929ae4af01cade4159f35b",
+		"res://scripts/terrain_editor/terrain_environment.gd": "7e3551aca1c70f01546c57825bb667df50f275350b292dd2bf1b0f133902bb5c",
+		"res://scripts/terrain_editor/terrain_models.gd": "c4e84e4d01b8658f1ba9a08c490e444a9c9182897397140b1995af1fb862bcc4",
+		"res://scripts/terrain_editor/terrain_props.gd": "0ffb8a3e5e7578c25d9d49dcdd5371cf102f9bd7cc2083bf7997de38d6055799",
+		"res://scripts/terrain_editor/terrain_renderer.gd": "affc26739822c210c2039311c55422088e8114ea4e86922bd5bc9d476d2f8495",
+		"res://shaders/terrain_editor/cliff_column.gdshader": "4ffc0567231831055b5926fa93aed2e2564cd029b71de2cf2cd89fb2ed194241",
+		"res://shaders/terrain_editor/cliff_rock.gdshader": "e8195da4d303e95e8b50d4170399fea74cd536c00ba31fbcf4641c9791f7a717",
+		"res://shaders/terrain_editor/decor_vertex_color.gdshader": "369212a2ae6a052967938cc8d1653052c32bd24d5b072119c16b42d671f28216",
+		"res://shaders/terrain_editor/foliage_cards.gdshader": "c434bac12ecfff34a53ec0ec1a6e2fb1b79d9ad77634ae255672b96dd46bfdb2",
+		"res://shaders/terrain_editor/ground.gdshader": "17b34cacae13de6ac6eb091fa1cf865c12de4af05e1f92b2f64a8434774653f6",
+		"res://shaders/terrain_editor/ground_cover.gdshaderinc": "924c6b2bdc21bbd2a4ce09871cad1e516114836fa984703d8fe46d5bab2fce6f",
+		"res://shaders/terrain_editor/rim_green.gdshader": "e9ebbbfde4302ab7f556b78caee43cbe0295fac0748e8890d8d2af66b6188d81",
+		"res://shaders/terrain_editor/stone_surface.gdshaderinc": "147562a8d6e2c04051374e25aff6f1f3143ca9ab5149c02b67aa0632ee091f1e",
+		"res://shaders/terrain_editor/waterfall.gdshader": "6e3f8be0d8adfad0e18e7e5a0faa89ff728ea3033985165f9479524f0a0e7e18",
+		"res://tools/art/capture_lookdev.gd": "9d902cdc0638c2f775ae2a0184ae1d53965c1b85f9d1504702d454ecb6b3d1df"
+	},
+	"sources_unchanged": true,
+	"suite": "quick",
+	"user_layouts_accessed": false,
+	"valid": true
+}

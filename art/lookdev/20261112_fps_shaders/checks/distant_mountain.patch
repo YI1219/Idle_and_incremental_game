@@ -1,0 +1,29 @@
+--- distant_mountain_before.gdshader.txt
++++ shaders/terrain_editor/distant_mountain.gdshader
+@@ -52,15 +52,15 @@
+ 
+ 	vec3 view=world_position-CAMERA_POSITION_WORLD;
+ 	float distance=max(length(view),.001);
+-	vec2 p=sky_coord(view/distance);
+-	float h_sun=sky_horiz_sun(p);
++	vec3 factors=sky_view_factors(view/distance);
++	float h_sun=factors.z;
+ 
+ 	float day_t=smoothstep(.35,.80,sky_horizon.r);
+ 	float day_hdr=mix(1.0,mix(1.14,1.44,h_sun),day_t);
+ 	stone=mix(stone*vec3(.92,1.00,1.04),mix(stone,sky_sun_glow,.42),h_sun*.72)*day_hdr;
+ 
+ 	// Layered atmospheric depth keeping 3D ridge facets clearly legible across all 3 mountain rings:
+-	vec3 bg_sky=sky_gradient(p);
++	vec3 bg_sky=sky_gradient_factors(factors);
+ 	float aerial=.12+.26*(1.0-exp(-max(distance-310.0,0.0)*aerial_density*1.05));
+ 	aerial=mix(aerial,.44,h_sun*.24);
+ 
+@@ -69,6 +69,6 @@
+ 
+ 	vec3 col=mix(stone,bg_sky,clamp(aerial,0.0,.50));
+ 	col=mix(col,bg_sky,clamp(base_mist*.97,0.0,.99));
+-	col=mix(col,SKY_SUN_CORE,sky_sun_disc(p)*.35);
++	col=mix(col,SKY_SUN_CORE,sky_disc_from_distance(factors.y)*.35);
+ 	ALBEDO=col;
+ }

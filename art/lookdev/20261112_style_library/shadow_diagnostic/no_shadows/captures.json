@@ -1,0 +1,1516 @@
+{
+	"godot": "4.7.2-stable (official)",
+	"issues": [],
+	"list": "/tmp/scroll_capture_bench.json",
+	"records": [
+		{
+			"angle": "front",
+			"asset": "wood_bench",
+			"bounds_min_m": [
+				-0.299795240163803,
+				0.0,
+				-0.735675454139709
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"far": 34.3329696655273,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.324999988079071,
+					5.1499457359314
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.299795240163803,
+					0.0,
+					-0.735675454139709
+				],
+				"reference_dimensions_m": [
+					0.599590480327606,
+					0.649999976158142,
+					1.47135090827942
+				],
+				"size": 0.779999971389771,
+				"target": [
+					0.0,
+					0.324999988079071,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.599590480327606,
+				0.649999976158142,
+				1.47135090827942
+			],
+			"family": "props",
+			"file": "props/wood_bench/lod0_front.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "wood_bench_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.299795240163803,
+							0.0,
+							-0.735675454139709
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.599590480327606,
+							0.649999976158142,
+							1.47135090827942
+						],
+						"material_overlay": null,
+						"node": "wood_bench_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1398
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": true,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": false,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/wood_bench/manifest.json",
+			"manifest_sha256": "d175c0009a681c16bc27a2e55a96b0f09780001ad29eab56e529fbaad27266b8",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod0.glb",
+			"model_sha256": "6c3e387223c0b08b21543ac054f0002a444f9196efa740562d608d02fac90549",
+			"msaa": 4,
+			"original_source_sha256": "342e99f4dc67eecf0b6cb062f97594b123911a413183658f8791aa8e5f8a1271",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "back",
+			"asset": "wood_bench",
+			"bounds_min_m": [
+				-0.299795240163803,
+				0.0,
+				-0.735675454139709
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					-1.0
+				],
+				"far": 34.3329696655273,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					0.324999988079071,
+					-5.1499457359314
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.299795240163803,
+					0.0,
+					-0.735675454139709
+				],
+				"reference_dimensions_m": [
+					0.599590480327606,
+					0.649999976158142,
+					1.47135090827942
+				],
+				"size": 0.779999971389771,
+				"target": [
+					0.0,
+					0.324999988079071,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.599590480327606,
+				0.649999976158142,
+				1.47135090827942
+			],
+			"family": "props",
+			"file": "props/wood_bench/lod0_back.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "wood_bench_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.299795240163803,
+							0.0,
+							-0.735675454139709
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.599590480327606,
+							0.649999976158142,
+							1.47135090827942
+						],
+						"material_overlay": null,
+						"node": "wood_bench_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1398
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": true,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": false,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/wood_bench/manifest.json",
+			"manifest_sha256": "d175c0009a681c16bc27a2e55a96b0f09780001ad29eab56e529fbaad27266b8",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod0.glb",
+			"model_sha256": "6c3e387223c0b08b21543ac054f0002a444f9196efa740562d608d02fac90549",
+			"msaa": 4,
+			"original_source_sha256": "342e99f4dc67eecf0b6cb062f97594b123911a413183658f8791aa8e5f8a1271",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "left",
+			"asset": "wood_bench",
+			"bounds_min_m": [
+				-0.299795240163803,
+				0.0,
+				-0.735675454139709
+			],
+			"camera": {
+				"direction": [
+					-1.0,
+					0.0,
+					0.0
+				],
+				"far": 34.3329696655273,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					-5.1499457359314,
+					0.324999988079071,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.299795240163803,
+					0.0,
+					-0.735675454139709
+				],
+				"reference_dimensions_m": [
+					0.599590480327606,
+					0.649999976158142,
+					1.47135090827942
+				],
+				"size": 1.32421576976776,
+				"target": [
+					0.0,
+					0.324999988079071,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.599590480327606,
+				0.649999976158142,
+				1.47135090827942
+			],
+			"family": "props",
+			"file": "props/wood_bench/lod0_left.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "wood_bench_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.299795240163803,
+							0.0,
+							-0.735675454139709
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.599590480327606,
+							0.649999976158142,
+							1.47135090827942
+						],
+						"material_overlay": null,
+						"node": "wood_bench_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1398
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": true,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": false,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/wood_bench/manifest.json",
+			"manifest_sha256": "d175c0009a681c16bc27a2e55a96b0f09780001ad29eab56e529fbaad27266b8",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod0.glb",
+			"model_sha256": "6c3e387223c0b08b21543ac054f0002a444f9196efa740562d608d02fac90549",
+			"msaa": 4,
+			"original_source_sha256": "342e99f4dc67eecf0b6cb062f97594b123911a413183658f8791aa8e5f8a1271",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "right",
+			"asset": "wood_bench",
+			"bounds_min_m": [
+				-0.299795240163803,
+				0.0,
+				-0.735675454139709
+			],
+			"camera": {
+				"direction": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"far": 34.3329696655273,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					5.1499457359314,
+					0.324999988079071,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.299795240163803,
+					0.0,
+					-0.735675454139709
+				],
+				"reference_dimensions_m": [
+					0.599590480327606,
+					0.649999976158142,
+					1.47135090827942
+				],
+				"size": 1.32421576976776,
+				"target": [
+					0.0,
+					0.324999988079071,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.599590480327606,
+				0.649999976158142,
+				1.47135090827942
+			],
+			"family": "props",
+			"file": "props/wood_bench/lod0_right.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "wood_bench_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.299795240163803,
+							0.0,
+							-0.735675454139709
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.599590480327606,
+							0.649999976158142,
+							1.47135090827942
+						],
+						"material_overlay": null,
+						"node": "wood_bench_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1398
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": true,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": false,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/wood_bench/manifest.json",
+			"manifest_sha256": "d175c0009a681c16bc27a2e55a96b0f09780001ad29eab56e529fbaad27266b8",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod0.glb",
+			"model_sha256": "6c3e387223c0b08b21543ac054f0002a444f9196efa740562d608d02fac90549",
+			"msaa": 4,
+			"original_source_sha256": "342e99f4dc67eecf0b6cb062f97594b123911a413183658f8791aa8e5f8a1271",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "wood_bench",
+			"bounds_min_m": [
+				-0.299795240163803,
+				0.0,
+				-0.735675454139709
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 34.3329696655273,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.66297364234924,
+					2.18908143043518,
+					3.99446058273315
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.299795240163803,
+					0.0,
+					-0.735675454139709
+				],
+				"reference_dimensions_m": [
+					0.599590480327606,
+					0.649999976158142,
+					1.47135090827942
+				],
+				"size": 1.40332579612732,
+				"target": [
+					0.0,
+					0.324999988079071,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.599590480327606,
+				0.649999976158142,
+				1.47135090827942
+			],
+			"family": "props",
+			"file": "props/wood_bench/lod0_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "wood_bench_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.299795240163803,
+							0.0,
+							-0.735675454139709
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.599590480327606,
+							0.649999976158142,
+							1.47135090827942
+						],
+						"material_overlay": null,
+						"node": "wood_bench_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1398
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": true,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": false,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/wood_bench/manifest.json",
+			"manifest_sha256": "d175c0009a681c16bc27a2e55a96b0f09780001ad29eab56e529fbaad27266b8",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod0.glb",
+			"model_sha256": "6c3e387223c0b08b21543ac054f0002a444f9196efa740562d608d02fac90549",
+			"msaa": 4,
+			"original_source_sha256": "342e99f4dc67eecf0b6cb062f97594b123911a413183658f8791aa8e5f8a1271",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "wood_bench",
+			"bounds_min_m": [
+				-0.299761146306992,
+				0.0000229446850426029,
+				-0.735675454139709
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 34.3329696655273,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.66297364234924,
+					2.18908143043518,
+					3.99446058273315
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.299795240163803,
+					0.0,
+					-0.735675454139709
+				],
+				"reference_dimensions_m": [
+					0.599590480327606,
+					0.649999976158142,
+					1.47135090827942
+				],
+				"size": 1.40332579612732,
+				"target": [
+					0.0,
+					0.324999988079071,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.6004638671875,
+				0.649273097515106,
+				1.46952986717224
+			],
+			"family": "props",
+			"file": "props/wood_bench/lod1_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "wood_bench_LOD1_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.299761146306992,
+							0.0000229446850426029,
+							-0.735675454139709
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.6004638671875,
+							0.649273097515106,
+							1.46952986717224
+						],
+						"material_overlay": null,
+						"node": "wood_bench_LOD1_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 634
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": true,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": false,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 1,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/wood_bench/manifest.json",
+			"manifest_sha256": "d175c0009a681c16bc27a2e55a96b0f09780001ad29eab56e529fbaad27266b8",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod1.glb",
+			"model_sha256": "191d71a1ccbb1ef6297dde80879743008b0780d49f8e096000e5c11b43c85807",
+			"msaa": 4,
+			"original_source_sha256": "342e99f4dc67eecf0b6cb062f97594b123911a413183658f8791aa8e5f8a1271",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "wood_bench",
+			"bounds_min_m": [
+				-0.299961537122726,
+				0.00332734850235283,
+				-0.735395073890686
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 34.3329696655273,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					2.66297364234924,
+					2.18908143043518,
+					3.99446058273315
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-0.299795240163803,
+					0.0,
+					-0.735675454139709
+				],
+				"reference_dimensions_m": [
+					0.599590480327606,
+					0.649999976158142,
+					1.47135090827942
+				],
+				"size": 1.40332579612732,
+				"target": [
+					0.0,
+					0.324999988079071,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				0.598289012908936,
+				0.645242929458618,
+				1.46601438522339
+			],
+			"family": "props",
+			"file": "props/wood_bench/lod2_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "wood_bench_LOD2_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-0.299961537122726,
+							0.00332734850235283,
+							-0.735395073890686
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							0.598289012908936,
+							0.645242929458618,
+							1.46601438522339
+						],
+						"material_overlay": null,
+						"node": "wood_bench_LOD2_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 238
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": true,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": false,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 2,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/props/wood_bench/manifest.json",
+			"manifest_sha256": "d175c0009a681c16bc27a2e55a96b0f09780001ad29eab56e529fbaad27266b8",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod2.glb",
+			"model_sha256": "ad661d9c4cc51afb4f098e07d6b5cf15305b8249a6ad65e381e21e4220c4799d",
+			"msaa": 4,
+			"original_source_sha256": "342e99f4dc67eecf0b6cb062f97594b123911a413183658f8791aa8e5f8a1271",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		}
+	],
+	"renderer": "forward_plus",
+	"scope": "Isolated imported-material asset review only; art acceptance and hardware FPS unmeasured",
+	"script_sha256": "361718fb3d829f904f4232392aca5c298c6218748f745f0103ed7feefebc1a59",
+	"valid": true
+}

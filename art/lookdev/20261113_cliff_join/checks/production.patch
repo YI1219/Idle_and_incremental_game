@@ -1,0 +1,226 @@
+--- a/scripts/terrain_editor/terrain_decoration.gd
++++ b/scripts/terrain_editor/terrain_decoration.gd
+@@ -78,6 +78,7 @@
+ 	for st:Dictionary in _mass:
+ 		if Data.chunk_of(st.cell)==chunk:
+ 			parts.append("m%.2f,%.2f,%.2f"%[st.pose.origin.x,st.pose.origin.y,st.pose.origin.z])
++			if st.has("mesh"):parts.append("heel%d"%st.mesh.get_meta("join_signature"))
+ 	for oc:Dictionary in _outcrops:
+ 		var oc_cell:=Vector2i(Vector2(oc.pose.origin.x,oc.pose.origin.z).floor())
+ 		if Data.chunk_of(oc_cell)==chunk:
+@@ -359,7 +360,7 @@
+ 
+ 	for stone:Dictionary in _mass:
+ 		if Data.chunk_of(stone.cell)!=chunk:continue
+-		result[stone.kind].append(stone.pose)
++		if not stone.has("mesh"):result[stone.kind].append(stone.pose)
+ 		# Seat clustered cliff-ledge shrubs & companion rocks on protruding terrace shelves.
+ 		if stone.get("is_shoulder",false) and stone.get("has_ledge_bush",false):
+ 			var sh_cell:Vector2i=stone.cell
+@@ -1125,6 +1126,10 @@
+ 						sh_basis=sh_basis.scaled_local(Vector3(sh_fit,1.0,sh_fit))
+ 						sh_origin+=tangent*((sh_clear.x+sh_clear.y)*.5-(sh_ext.x+sh_ext.y)*.5*sh_fit)
+ 				if sh_ok:
++					# Keep the full upper and middle slab: only its final bevel
++					# seats inside the supporting rock. Never compress the whole tier.
++					var joined:ArrayMesh=preload("res://scripts/terrain_editor/cliff_shoulder_join.gd").build(sh_part.mesh,Transform3D(sh_basis,sh_origin),part.mesh,pose)
++					if joined==null:return
+ 					var near_veil:=curtain_trimmed
+ 					for veil_chk:Dictionary in field.fall_veils:
+ 						var vl:Vector3=veil_chk.lip
+@@ -1132,7 +1137,7 @@
+ 					var allow_bush:bool=false
+ 					var ledge_pt:Vector3=sh_origin+sh_basis*Vector3(0.0,-.032,.22)-Vector3(0.0,.03,0.0)
+ 					var sh_prio:float=sh_w+prom_envelope*2.2
+-					_mass.append({"kind":sh_kind,"pose":Transform3D(sh_basis,sh_origin),"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
++					_mass.append({"kind":sh_kind,"pose":Transform3D(sh_basis,sh_origin),"mesh":joined,"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
+ 	elif step and drop>=1.45 and use_len>=1.65 and random_at(cell,seed_value,3061)<.52:
+ 		# Clean wide stepped foot blocks along interior terrace cliffs (clear of paths & ponds):
+ 		var floor_probe:Dictionary=field.surface_at(c+out*1.35)
+@@ -1440,6 +1445,22 @@
+ 			instance.multimesh=mm
+ 			instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+ 			parent.add_child(instance)
++	# Each seated heel has its own cut, while unchanged contour runs reuse
++	# the cached mesh. Keep the original pose and per-instance mineral color.
++	for stone:Dictionary in _mass:
++		if not stone.has("mesh") or Data.chunk_of(stone.cell)!=chunk:continue
++		var mm:=MultiMesh.new()
++		mm.transform_format=MultiMesh.TRANSFORM_3D
++		mm.use_colors=true
++		mm.mesh=stone.mesh
++		mm.instance_count=1
++		mm.set_instance_transform(0,stone.pose)
++		mm.set_instance_color(0,_stone_tone(stone.pose.origin))
++		var instance:=MultiMeshInstance3D.new()
++		instance.name=stone.kind+"_joined_%d"%parent.get_child_count()
++		instance.multimesh=mm
++		instance.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_ON
++		parent.add_child(instance)
+ static func _stone_tone(origin:Vector3)->Color:
+ 	# Subtle per-boulder mineral value & warm/cool shift (4A) so overlapping & stacked boulders separate cleanly at a glance!
+ 	var q:=Vector3(roundf(origin.x*20.0),roundf(origin.y*20.0),roundf(origin.z*20.0))
+--- /dev/null
++++ b/scripts/terrain_editor/cliff_shoulder_join.gd
+@@ -0,0 +1,161 @@
++extends RefCounted
++## Keep the authored layered slab above the heel. Clip its overhanging tip,
++## then project the last bevel into the parent rock without squashing the slab.
++## A projective map keeps each existing cleavage face planar.
++const Geometry = preload("res://scripts/terrain_editor/chunk_geometry.gd")
++
++static func section_points(faces: PackedVector3Array, pose: Transform3D, y: float) -> PackedVector2Array:
++	var points := PackedVector2Array()
++	var seen: Dictionary = {}
++	for i: int in range(0,faces.size(),3):
++		for k: int in 3:
++			var a: Vector3 = pose*faces[i+k]
++			var b: Vector3 = pose*faces[i+(k+1)%3]
++			if (a.y-y)*(b.y-y) < 0:
++				var p: Vector3 = a.lerp(b,(y-a.y)/(b.y-a.y))
++				var key := Vector2i((Vector2(p.x,p.z)*100000).round())
++				if not seen.has(key): points.append(Vector2(key)/100000.0);seen[key]=true
++	return points
++
++static func section(faces: PackedVector3Array, pose: Transform3D, y: float) -> PackedVector2Array:
++	var points: PackedVector2Array = section_points(faces,pose,y)
++	var hull: PackedVector2Array = Geometry2D.convex_hull(points)
++	if hull.size()>1: hull.remove_at(hull.size()-1)
++	return hull
++
++static func clip(poly: Array, y: float, below: bool) -> Array:
++	var out: Array = []
++	for i: int in poly.size():
++		var a: Dictionary = poly[i]
++		var b: Dictionary = poly[(i+1)%poly.size()]
++		var da: float = (a.p.y-y)*(1 if below else -1)
++		var db: float = (b.p.y-y)*(1 if below else -1)
++		if da <= .000001: out.append(a)
++		if (da < -.000001 and db > .000001) or (db < -.000001 and da > .000001):
++			var t: float = da/(da-db)
++			var p: Vector3 = a.p.lerp(b.p,t)
++			p=Vector3(roundf(p.x*100000)/100000.0,y,roundf(p.z*100000)/100000.0)
++			out.append({"p":p,"n":a.n.lerp(b.n,t).normalized(),"c":a.c.lerp(b.c,t),"uv":a.uv.lerp(b.uv,t)})
++	return out
++
++static func emit(s: RefCounted, items: Array, pose_inverse: Transform3D, normal_inverse: Basis) -> void:
++	var local: Array[Vector3] = []
++	for item: Dictionary in items: local.append(pose_inverse*item.p)
++	if (local[1]-local[0]).cross(local[2]-local[0]).length_squared()<1e-20: return
++	for k: int in 3:
++		s.vertices.append(local[k])
++		s.normals.append((normal_inverse*items[k].n).normalized())
++		s.colors.append(items[k].c)
++		s.uv.append(items[k].uv)
++
++static func weld_side(source: RefCounted, original: PackedVector3Array, pose: Transform3D, join_y: float) -> RefCounted:
++	# Canonicalize cut positions before sealing. Keep authored upper points
++	# exact, retain per-face attributes, and remove collapsed clipping slivers.
++	var points: Dictionary = {}
++	for p: Vector3 in original:
++		if (pose*p).y>=join_y:
++			points[Vector3i((p*10000).round())]=p
++	var result := Geometry.Surface.new()
++	for i: int in range(0,source.vertices.size(),3):
++		var tri: Array[Vector3] = []
++		for k: int in 3:
++			var p: Vector3 = source.vertices[i+k]
++			var key := Vector3i((p*10000).round())
++			if not points.has(key):points[key]=p
++			tri.append(points[key])
++		if (tri[1]-tri[0]).cross(tri[2]-tri[0]).length_squared()<1e-20:continue
++		for k: int in 3:
++			result.vertices.append(tri[k]);result.normals.append(source.normals[i+k])
++			result.colors.append(source.colors[i+k]);result.uv.append(source.uv[i+k])
++	return result
++
++static func build(source: Mesh, pose: Transform3D, parent: Mesh, parent_pose: Transform3D) -> ArrayMesh:
++	var parent_faces: PackedVector3Array = Geometry.faces_of(parent)
++	var parent_bottom: float = INF
++	var parent_top: float = -INF
++	for p: Vector3 in parent_faces:
++		var y: float = (parent_pose*p).y
++		parent_bottom=minf(parent_bottom,y);parent_top=maxf(parent_top,y)
++	var arrays: Array = Geometry.arrays_of(source)
++	var points: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
++	var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
++	var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
++	var uvs: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV]
++	var source_bottom: float = INF
++	var source_top: float = -INF
++	for p: Vector3 in points:
++		var y: float = (pose*p).y
++		source_bottom=minf(source_bottom,y);source_top=maxf(source_top,y)
++	var floor_y: float = maxf(source_bottom+.01,parent_bottom+maxf(.18,(parent_top-parent_bottom)*.055))
++	var join_y: float = minf(source_top-.20,floor_y+maxf(1.0,(parent_top-parent_bottom)*.12))
++	var support: PackedVector2Array = section(parent_faces,parent_pose,floor_y)
++	var foot: PackedVector2Array = section(points,pose,floor_y)
++	if support.size()<3 or foot.size()<3 or join_y<=floor_y: return null
++	var target := Vector2.ZERO
++	var center := Vector2.ZERO
++	for p: Vector2 in support: target+=p
++	target/=support.size()
++	for p: Vector2 in foot: center+=p
++	center/=foot.size()
++	var scale: float = 1.0
++	for i: int in support.size():
++		var a: Vector2 = support[i]
++		var b: Vector2 = support[(i+1)%support.size()]
++		var edge: Vector2 = b-a
++		var n := Vector2(edge.y,-edge.x).normalized()
++		var space: float = n.dot(a-target)-.08
++		for p: Vector2 in foot:
++			var reach: float = n.dot(p-center)
++			if reach>.00001: scale=minf(scale,space/reach)
++	if scale<=.0001: return null
++	scale=minf(scale,1.0)
++	var span: float = floor_y-join_y
++	var k: float = (1.0/scale-1.0)/span
++	var lean: Vector2 = (target/scale-center)/span
++	var depth_scale: float = 1.0/scale
++	var normal_matrix: Basis = pose.basis.inverse().transposed()
++	var normal_inverse: Basis = pose.basis.transposed()
++	var pose_inverse: Transform3D = pose.affine_inverse()
++	var s := Geometry.Surface.new()
++	for i: int in range(0,points.size(),3):
++		var tri: Array = []
++		for j: int in 3: tri.append({"p":pose*points[i+j],"n":(normal_matrix*normals[i+j]).normalized(),"c":colors[i+j],"uv":uvs[i+j]})
++		tri=clip(tri,floor_y,false)
++		for lower: bool in [false,true]:
++			var poly: Array = clip(tri.duplicate(true),join_y,lower)
++			if lower:
++				for item: Dictionary in poly:
++					var p: Vector3 = item.p
++					var d: float = p.y-join_y
++					var w: float = 1.0+k*d
++					var jacobian := Basis(Vector3(1.0/w,0,0),Vector3((lean.x-k*p.x)/(w*w),depth_scale/(w*w),(lean.y-k*p.z)/(w*w)),Vector3(0,0,1.0/w))
++					item.p=Vector3((p.x+lean.x*d)/w,join_y+depth_scale*d/w,(p.z+lean.y*d)/w)
++					item.n=(jacobian.inverse().transposed()*item.n).normalized()
++			for j: int in range(1,poly.size()-1): emit(s,[poly[0],poly[j],poly[j+1]],pose_inverse,normal_inverse)
++	s=weld_side(s,points,pose,join_y)
++	# Seal the actual emitted side edges, reusing their exact local positions.
++	# Recomputing an equivalent cross-section opens sub-millimetre cap seams.
++	var edges: Dictionary = {}
++	for i: int in range(0,s.vertices.size(),3):
++		for j: int in 3:
++			var a: Vector3 = s.vertices[i+j]
++			var b: Vector3 = s.vertices[i+(j+1)%3]
++			if absf((pose*a).y-floor_y)>.001 or absf((pose*b).y-floor_y)>.001:continue
++			var ka := Vector3i((a*10000).round());var kb := Vector3i((b*10000).round())
++			var key: Array = [ka,kb] if ka<kb else [kb,ka]
++			if not edges.has(key):edges[key]={"a":a,"b":b,"count":0}
++			edges[key].count+=1
++	var cap_center: Vector3 = pose_inverse*Vector3(target.x,floor_y,target.y)
++	var cap_normal: Vector3 = (normal_inverse*Vector3.DOWN).normalized()
++	for edge: Dictionary in edges.values():
++		if edge.count!=1:continue
++		var a: Vector3 = edge.b;var b: Vector3 = edge.a
++		for p: Vector3 in [cap_center,a,b]:
++			s.vertices.append(p);s.normals.append(cap_normal)
++			s.colors.append(colors[0]);s.uv.append(Vector2(.22,0))
++	var mesh: ArrayMesh = s.mesh()
++	mesh.surface_set_material(0,source.surface_get_material(0))
++	mesh.set_meta("join_y",join_y)
++	mesh.set_meta("floor_y",floor_y)
++	mesh.set_meta("join_signature",hash(s.vertices))
++	return mesh

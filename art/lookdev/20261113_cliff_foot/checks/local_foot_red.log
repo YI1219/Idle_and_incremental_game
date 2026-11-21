@@ -1,0 +1,69 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: seed 7301 shoulder (11, -5) hangs below its local contour foot: -5.119 < -4.941
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+ERROR: edited outer edge shoulder (11, -5) hangs below its local contour foot: -5.119 < -4.941
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:68)
+ERROR: undo shoulder (11, -5) hangs below its local contour foot: -5.119 < -4.941
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:72)
+ERROR: seed 2104 shoulder (11, -5) hangs below its local contour foot: -5.119 < -4.941
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+ERROR: seed 4242 shoulder (0, -7) hangs below its local contour foot: -5.342 < -5.236
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+ERROR: seed 4242 shoulder (-16, 3) hangs below its local contour foot: -5.113 < -4.937
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+ERROR: seed 4242 shoulder (-7, -9) hangs below its local contour foot: -5.051 < -4.439
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+ERROR: seed 913 shoulder (-8, 5) hangs below its local contour foot: -5.089 < -4.749
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+ERROR: seed 913 shoulder (-6, 1) hangs below its local contour foot: -5.807 < -5.547
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+ERROR: seed 913 shoulder (7, 10) hangs below its local contour foot: -4.641 < -4.496
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+ERROR: seed 913 shoulder (5, -7) hangs below its local contour foot: -5.260 < -4.816
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:44)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:61)
+CLIFF OUTER FOOT: 207 checks, 11 failures

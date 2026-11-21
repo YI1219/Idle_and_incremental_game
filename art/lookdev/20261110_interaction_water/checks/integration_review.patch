@@ -1,0 +1,1955 @@
+--- task_before/scripts/terrain_editor/editor.gd
++++ scripts/terrain_editor/editor.gd
+@@ -3,10 +3,11 @@
+ const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
+ const Renderer=preload("res://scripts/terrain_editor/terrain_renderer.gd")
+ const Decoration=preload("res://scripts/terrain_editor/terrain_decoration.gd")
+ const Camera=preload("res://scripts/terrain_editor/editor_camera.gd")
+ const HUD=preload("res://scripts/terrain_editor/editor_hud.gd")
++const WaterView=preload("res://scripts/terrain_editor/water_renderer.gd")
+ const Director=preload("res://scripts/gameplay/director.gd")
+ @export var sunlight_energy := 1.24
+ @export var fill_energy := 0.23
+ @export var ambient_energy := 0.46
+ @export_range(0.0,1.0) var background_haze := 0.68
+@@ -25,10 +26,11 @@
+ 		ambient_motes_enabled = value
+ 		if motes != null:
+ 			motes.visible = ambient_motes_enabled
+ var data:=Data.new()
+ var renderer:=Renderer.new()
++var water_view:=WaterView.new()
+ var camera:=Camera.new()
+ var landscape:=preload("res://scripts/terrain_editor/distant_landscape.gd").new()
+ var motes:=preload("res://scripts/terrain_editor/ambient_motes.gd").new()
+ var hud:CanvasLayer
+ var gameplay:Director
+@@ -40,10 +42,13 @@
+ var snap:=false
+ var build_height:=1.5
+ var water_level:=3
+ var style_preset:=0
+ var painting:=false
++var blueprint_data:Data
++var _blueprint_tool:String=""
++var _brush_shape_key:String=""
+ var last_edit_ms:=0.0
+ var brush:=MeshInstance3D.new()
+ ## Jade ghost of the stroke result shown until the threaded rebuild publishes.
+ var preview:=preload("res://scripts/terrain_editor/edit_preview.gd").new()
+ var _last_paint:=Vector2(INF,INF)
+@@ -75,18 +80,24 @@
+ 	hud.editor=self
+ 	add_child(hud)
+ 	gameplay=Director.new()
+ 	add_child(gameplay)
+ 	gameplay.setup(self)
++	add_child(water_view)
++	water_view.configure(data,renderer)
++	renderer.terrain_published.connect(water_view.sync)
+ func _create_decoration()->RefCounted:
+ 	return Decoration.new()
+ func _setup_environment()->void:
+ 	preload("res://scripts/terrain_editor/terrain_environment.gd").setup(self,landscape,sunlight_energy,fill_energy,ambient_energy,background_haze)
+ func _process(delta:float)->void:
+ 	landscape.position=Vector3(camera._center.x,0,camera._center.y)
+ 	renderer.flush_dirty(6)
+-	preview.refresh(data,renderer)
++	# During a committed terrain build, keep water matched to the visible bed.
++	# Uncommitted blueprints do not pause the published world.
++	if not renderer.has_pending_updates():water_view.tick(delta)
++	preview.refresh(blueprint_data if blueprint_data!=null else data,renderer,blueprint_data!=null)
+ 	if gameplay!=null:gameplay.tick(delta)
+ 	var mouse:=get_viewport().get_mouse_position()
+ 	var sculpt_active:bool=(gameplay==null) or (gameplay.stance=="sculpt" and not gameplay.wallpaper_mode)
+ 	if not sculpt_active or hud.is_over_panel(mouse):brush.visible=false
+ 	else:
+@@ -98,17 +109,23 @@
+ 		hud.update_diagnostics()
+ func _notification(what:int)->void:
+ 	if what==NOTIFICATION_WM_WINDOW_FOCUS_OUT:cancel_input()
+ func cancel_input()->void:
+ 	painting=false
++	renderer.cancel_blueprint()
++	blueprint_data=null
++	_blueprint_tool=""
+ 	data.end_stroke()
+ 	camera.cancel_input()
+ func _input(event:InputEvent)->void:
++	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT and painting:
++		cancel_input()
++		get_viewport().set_input_as_handled()
++		return
+ 	# Release is global: a stroke ends even if the cursor finishes over a panel.
+ 	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed:
+-		painting=false
+-		data.end_stroke()
++		commit_blueprint()
+ func _unhandled_input(event:InputEvent)->void:
+ 	if gameplay!=null and gameplay.handle_unhandled_input(event):
+ 		get_viewport().set_input_as_handled()
+ 		return
+ 	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and event.pressed:
+@@ -139,39 +156,65 @@
+ 				var p:=origin+direction*t
+ 				if hit.is_empty() or tool=="expand":return {"position":p,"cell":Vector2i(floori(p.x),floori(p.z)),"normal":Vector3.UP}
+ 	return hit
+ func begin_paint(screen:Vector2,from_ui:bool=false)->bool:
+ 	if from_ui or hud.is_over_panel(screen):return false
++	var hit:Dictionary=_pointer(screen)
++	if hit.is_empty():return false
++	if not tool.begins_with("rock_") and not data.can_apply_brush(_brush_center(hit),radius,tool,snap,build_height,water_level):return false
++	if gameplay!=null and not gameplay.prepare_brush_step(tool):return false
+ 	var focus:=get_viewport().gui_get_focus_owner()
+ 	if focus:focus.release_focus()
+ 	painting=true
++	blueprint_data=data.copy()
++	_blueprint_tool=tool
+ 	_last_paint=Vector2(INF,INF)
+ 	_last_sculpt=Vector3(INF,INF,INF)
+ 	_last_sculpt_screen=Vector2(INF,INF)
+-	data.begin_stroke()
++	blueprint_data.begin_stroke()
+ 	continue_paint(screen)
+ 	return true
++
++func commit_blueprint()->bool:
++	if blueprint_data==null:return false
++	var before_cells:int=data.cells.size()
++	var before_wet:int=gameplay.count_wet_cells() if gameplay!=null and _blueprint_tool=="water" else 0
++	var changed:bool=data.commit_blueprint(blueprint_data,_blueprint_tool)
++	if changed:renderer.commit_prepared_blueprint(blueprint_data)
++	else:renderer.cancel_blueprint()
++	if changed and gameplay!=null:gameplay.after_brush_step(before_cells,before_wet,_blueprint_tool)
++	painting=false
++	blueprint_data=null
++	_blueprint_tool=""
++	return changed
++
++func _brush_center(hit:Dictionary)->Vector2:
++	var point:=Vector2(hit.position.x,hit.position.z)
++	if snap or (tool!="expand" and not data.cells.has(Vector2i(point.floor()))):
++		return Vector2(hit.cell)+Vector2.ONE*.5
++	return point
++
+ func continue_paint(screen:Vector2)->void:
+ 	if not painting or hud.is_over_panel(screen):return
++	if blueprint_data==null or _blueprint_tool!=tool:
++		cancel_input()
++		return
+ 	var hit:=_pointer(screen)
+ 	if hit.is_empty():return
+ 	if tool.begins_with("rock_"):
+ 		_sculpt_at(screen,hit);return
+-	var center:=Vector2(hit.cell)+Vector2(0.5,0.5) if snap else Vector2(hit.position.x,hit.position.z)
++	var center:=_brush_center(hit)
+ 	# Interpolate fast drags so there are no holes between input samples.
+ 	var start:Vector2=center if not _last_paint.is_finite() else _last_paint
+ 	var steps:=maxi(1,ceili(start.distance_to(center)/maxf(0.25,radius*0.45)))
+ 	steps=mini(steps,256)
+-	if gameplay!=null and not gameplay.prepare_brush_step(tool):return
+-	var before_cells:int=data.cells.size()
+-	var before_wet:int=gameplay.count_wet_cells() if (gameplay!=null and tool=="water") else 0
+ 	var begin:=Time.get_ticks_usec()
+ 	for i in steps:
+-		data.apply_brush(start.lerp(center,float(i+1)/steps),radius,tool,snap,build_height,water_level)
++		blueprint_data.apply_brush(start.lerp(center,float(i+1)/steps),radius,tool,snap,build_height,water_level)
+ 	_last_paint=center
++	renderer.prepare_blueprint(blueprint_data)
+ 	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
+-	if gameplay!=null:gameplay.after_brush_step(before_cells,before_wet,tool)
+ func _sculpt_center(hit:Dictionary)->Vector3:
+ 	var center:Vector3=hit.position
+ 	var normal:Vector3=hit.get("normal",Vector3.UP)
+ 	var size:=minf(radius,4.0)
+ 	if tool in ["rock_add","rock_shoulder"]:center+=normal*size*.25
+@@ -184,22 +227,41 @@
+ 	var size:=minf(radius,4.0)
+ 	var center:=_sculpt_center(hit)
+ 	var start:=center if not _last_sculpt.is_finite() else _last_sculpt
+ 	var steps:=mini(64,maxi(1,ceili(start.distance_to(center)/maxf(.125,size*.3))))
+ 	var begin:=Time.get_ticks_usec()
+-	for i in steps:data.apply_rock_brush(start.lerp(center,float(i+1)/steps),size,tool,normal)
++	for i in steps:blueprint_data.apply_rock_brush(start.lerp(center,float(i+1)/steps),size,tool,normal)
+ 	_last_sculpt=center;_last_sculpt_screen=screen
++	renderer.prepare_blueprint(blueprint_data)
+ 	last_edit_ms=(Time.get_ticks_usec()-begin)/1000.0
++func _brush_valid(hit:Dictionary)->bool:
++	if tool.begins_with("rock_"):return true
++	var center:Vector2=_brush_center(hit)
++	var source:Data=blueprint_data if blueprint_data!=null else data
++	if source.can_apply_brush(center,radius,tool,snap,build_height,water_level):return true
++	# An already selected part of the draft stays valid. Quota exhausted at a
++	# new location is invalid even though the published island is still smaller.
++	if blueprint_data!=null:
++		for cell:Vector2i in blueprint_data._before:
++			if (Vector2(cell)+Vector2.ONE*.5).distance_squared_to(center)<=radius*radius:return true
++	return false
++
+ func _update_brush(screen:Vector2)->void:
+ 	var hit:=_pointer(screen)
+ 	brush.visible=not hit.is_empty()
+ 	if not brush.visible:return
+ 	var position3:Vector3=_sculpt_center(hit) if tool.begins_with("rock_") else hit.position
+-	if snap and not tool.begins_with("rock_"):
+-		position3.x=hit.cell.x+0.5
+-		position3.z=hit.cell.y+0.5
++	if not tool.begins_with("rock_"):
++		var center:=_brush_center(hit)
++		position3.x=center.x
++		position3.z=center.y
+ 	brush.position=position3 if tool.begins_with("rock_") else position3+Vector3(0,0.06,0)
++	var valid:bool=_brush_valid(hit)
++	(brush.material_override as StandardMaterial3D).albedo_color=Color(.45,.95,.77,.95) if valid else Color(1.0,.22,.16,.98)
++	var shape_key:String="%s|%.3f|%s"%[tool,radius,str(snap)]
++	if shape_key==_brush_shape_key:return
++	_brush_shape_key=shape_key
+ 	var mesh:=ImmediateMesh.new()
+ 	mesh.surface_begin(Mesh.PRIMITIVE_LINES)
+ 	var sculpt:=tool.begins_with("rock_")
+ 	var size:=minf(radius,4.0) if sculpt else radius
+ 	var rings:=3 if sculpt else 1
+@@ -219,16 +281,18 @@
+ 	if gameplay!=null:gameplay.on_style_preset_selected(index)
+ func select_preset(kind:int)->void:
+ 	cancel_input()
+ 	data.make_preset(kind)
+ 	renderer.rebuild_all()
++	water_view.reset(data)
+ 	if motes!=null:motes.rebuild_from_data(data)
+ 	select_style_preset(style_preset)
+ 	if gameplay!=null:gameplay.on_preset_changed()
+ 	camera.recenter(Vector2(0,-1))
+ func save_layout(path:String)->Error:
+ 	data.end_stroke()
++	water_view.flush()
+ 	var error:=DirAccess.make_dir_recursive_absolute(path.get_base_dir())
+ 	if error!=OK:return error
+ 	var file:=FileAccess.open(path,FileAccess.WRITE)
+ 	if file==null:return FileAccess.get_open_error()
+ 	var payload:Dictionary=data.serialize()
+@@ -245,10 +309,11 @@
+ 	var candidate:Variant=parser.data
+ 	if not candidate is Dictionary:return ERR_INVALID_DATA
+ 	if not data.deserialize(candidate):return ERR_INVALID_DATA
+ 	cancel_input()
+ 	renderer.rebuild_all()
++	water_view.reset(data)
+ 	if motes!=null:motes.rebuild_from_data(data)
+ 	if gameplay!=null:
+ 		if (candidate as Dictionary).has("gameplay") and (candidate as Dictionary)["gameplay"] is Dictionary:
+ 			gameplay.deserialize((candidate as Dictionary)["gameplay"] as Dictionary)
+ 		else:
+--- task_before/scripts/terrain_editor/terrain_data.gd
++++ scripts/terrain_editor/terrain_data.gd
+@@ -16,10 +16,11 @@
+ var dirty_chunks: Dictionary = {}
+ var revision := 0
+ var _visited: Dictionary = {}
+ var _before: Dictionary = {}
+ var _active := false
++var _stroke_tool: String = ""
+ var _undo: Array[Dictionary] = []
+ var _redo: Array[Dictionary] = []
+ 
+ static func chunk_of(cell: Vector2i) -> Vector2i:
+ 	return Vector2i(floori(float(cell.x)/CHUNK_SIZE), floori(float(cell.y)/CHUNK_SIZE))
+@@ -32,19 +33,106 @@
+ 	revision += 1
+ 
+ func begin_stroke() -> void:
+ 	if _active: end_stroke()
+ 	_active = true
++	_stroke_tool = ""
+ 	_visited.clear()
+ 	_before.clear()
+ 	_rock_before.clear()
++
++func copy() -> TerrainData:
++	var result := TerrainData.new()
++	result.seed = seed
++	result.revision = revision
++	result.cell_quota = cell_quota
++	result.sculpt_base_enabled = sculpt_base_enabled
++	result.sculpt_base_profile = sculpt_base_profile
++	result.rocks.samples = rocks.samples.duplicate()
++	result.rocks.base = rocks.base
++	for cell: Vector2i in cells:
++		result.cells[cell] = cells[cell].duplicate()
++	return result
++
++func _brush_record(old: Variant, tool: String, height: float, water: int) -> Variant:
++	var next: Variant = old.duplicate() if old != null else null
++	match tool:
++		"expand":
++			if old == null and cells.size() < mini(MAX_CELLS, cell_quota):
++				next = {"height": height, "water": -1}
++		"contract": next = null
++		"raise", "lower":
++			if next != null:
++				if next.water >= 0 and not next.has("water_volume"):
++					next.water_volume = maxf(0.0, float(next.water) * .5 - float(next.height))
++				next.height = clampf(next.height + (.5 if tool == "raise" else -.5), -4.0, 12.0)
++				if next.water >= 0 and next.height >= next.water * .5: next.water = -1
++		"water":
++			if next != null and next.height < water * .5:
++				var volume: float = water * .5 - float(next.height)
++				if next.water != water or not is_equal_approx(float(next.get("water_volume", volume)), volume):
++					next.water = water
++					next.water_volume = volume
++		"dry":
++			if next != null and (next.water >= 0 or float(next.get("water_volume", 0.0)) > 0.0):
++				next.water = -1
++				next.water_volume = 0.0
++	return next
++
++func can_apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int) -> bool:
++	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return false
++	if tool not in ["raise", "lower", "expand", "contract", "water", "dry"]: return false
++	if tool == "water" and (water < 0 or water > 7): return false
++	if snap: center = center.floor() + Vector2.ONE * .5
++	radius = clampf(radius, .1, 16.0)
++	height = clampf(roundf(height * 2.0) * .5, -4.0, 12.0)
++	if sculpt_base_enabled and tool in ["expand","raise","lower"]:
++		var lo:=center-Vector2.ONE*(radius+1.0) if tool=="expand" else Vector2(INF,INF)
++		var hi:=center+Vector2.ONE*(radius+1.0) if tool=="expand" else Vector2(-INF,-INF)
++		if not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(cells,lo,hi,-.5 if tool=="lower" else 0.0,.5 if tool=="raise" else 0.0,height if tool=="expand" else NAN):return false
++	for z: int in range(floori(center.y - radius), ceili(center.y + radius)):
++		for x: int in range(floori(center.x - radius), ceili(center.x + radius)):
++			var cell := Vector2i(x, z)
++			if absi(x) > 1024 or absi(z) > 1024: continue
++			if (Vector2(cell) + Vector2.ONE * .5).distance_squared_to(center) > radius * radius: continue
++			var old: Variant = cells.get(cell)
++			if _brush_record(old, tool, height, water) != old: return true
++	return false
++
++func commit_blueprint(draft: TerrainData, tool: String) -> bool:
++	if draft == null or (draft._before.is_empty() and draft._rock_before.is_empty()): return false
++	begin_stroke()
++	_stroke_tool = tool
++	for cell: Vector2i in draft._before:
++		var old: Variant = cells.get(cell)
++		var next: Variant = draft.cells.get(cell)
++		if next != null:
++			next = next.duplicate()
++			# Water keeps moving while a blueprint is held. Bed edits retain the
++			# current amount instead of restoring the draft's older water volume.
++			if tool in ["raise", "lower"] and old != null and old.has("water_volume"):
++				next.water_volume = old.water_volume
++		if old == next: continue
++		_before[cell] = old.duplicate() if old != null else null
++		if next == null: cells.erase(cell)
++		else: cells[cell] = next
++		invalidate(cell)
++	for key: Vector3i in draft._rock_before:
++		_rock_before[key] = rocks.samples.get(key)
++		if draft.rocks.samples.has(key): rocks.samples[key] = draft.rocks.samples[key]
++		else: rocks.samples.erase(key)
++	_invalidate_rocks(draft._rock_before.keys())
++	var changed: bool = not _before.is_empty() or not _rock_before.is_empty()
++	end_stroke()
++	return changed
+ 
+ func apply_brush(center: Vector2, radius: float, tool: String, snap: bool, height: float, water: int) -> int:
+ 	if not center.is_finite() or not is_finite(radius) or not is_finite(height): return 0
+ 	if tool not in ["raise","lower","expand","contract","water","dry"]: return 0
+ 	if tool == "water" and (water < 0 or water > 7): return 0
+ 	if not _active: begin_stroke()
++	_stroke_tool = tool if _stroke_tool.is_empty() or _stroke_tool == tool else "mixed"
+ 	if snap: center = center.floor() + Vector2(0.5,0.5)
+ 	radius = clampf(radius, 0.1, 16.0)
+ 	height = clampf(roundf(height*2.0)*0.5,-4.0,12.0)
+ 	if sculpt_base_enabled and tool in ["expand","raise","lower"]:
+ 		var lo:=center-Vector2.ONE*(radius+1.0) if tool=="expand" else Vector2(INF,INF)
+@@ -56,23 +144,11 @@
+ 			var cell := Vector2i(x,z)
+ 			if absi(x)>1024 or absi(z)>1024 or _visited.has(cell): continue
+ 			if (Vector2(cell)+Vector2(0.5,0.5)).distance_squared_to(center)>radius*radius: continue
+ 			_visited[cell] = true
+ 			var old: Variant = cells.get(cell)
+-			var next: Variant = old.duplicate() if old != null else null
+-			match tool:
+-				"expand":
+-					if old == null and cells.size()<mini(MAX_CELLS, cell_quota): next = {"height":height,"water":-1}
+-				"contract": next = null
+-				"raise", "lower":
+-					if next != null:
+-						next.height = clampf(next.height + (0.5 if tool=="raise" else -0.5),-4.0,12.0)
+-						if next.water>=0 and next.height>=next.water*0.5: next.water = -1
+-				"water":
+-					if next != null and next.height<water*0.5: next.water = water
+-				"dry":
+-					if next != null: next.water = -1
++			var next: Variant = _brush_record(old, tool, height, water)
+ 			if old == next: continue
+ 			_before[cell] = old.duplicate() if old != null else null
+ 			if next == null: cells.erase(cell)
+ 			else: cells[cell] = next
+ 			invalidate(cell)
+@@ -122,16 +198,16 @@
+ 		var after:Dictionary={};var rock_after:Dictionary={}
+ 		for cell in _before:
+ 			var value:Variant=cells.get(cell)
+ 			after[cell]=value.duplicate() if value!=null else null
+ 		for key:Vector3i in _rock_before:rock_after[key]=rocks.samples.get(key)
+-		_undo.append({"before":_before.duplicate(true),"after":after,"rock_before":_rock_before.duplicate(),"rock_after":rock_after,"sculpt_base":sculpt_base_enabled})
++		_undo.append({"before":_before.duplicate(true),"after":after,"rock_before":_rock_before.duplicate(),"rock_after":rock_after,"sculpt_base":sculpt_base_enabled,"tool":_stroke_tool})
+ 		if _undo.size()>HISTORY_LIMIT:_undo.pop_front()
+ 		_redo.clear()
+ 	_active=false;_before.clear();_visited.clear();_rock_before.clear()
+ 
+-func _restore(values:Dictionary,rock_values:Dictionary={},rock_mode:bool=false) -> bool:
++func _restore(values:Dictionary,rock_values:Dictionary={},rock_mode:bool=false,preserve_water:bool=false) -> bool:
+ 	# Sparse rock overrides belong to the base against which they were made.
+ 	# Preserve an incompatible entry for replay after switching back.
+ 	if not rock_values.is_empty() and rock_mode!=sculpt_base_enabled:return false
+ 	if sculpt_base_enabled and not values.is_empty():
+ 		var candidate:=cells.duplicate()
+@@ -139,29 +215,34 @@
+ 			if values[cell]==null:candidate.erase(cell)
+ 			else:candidate[cell]=values[cell]
+ 		if not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(candidate):return false
+ 	for cell:Vector2i in values:
+ 		if values[cell]==null:cells.erase(cell)
+-		else:cells[cell]=values[cell].duplicate()
++		else:
++			var record:Dictionary=values[cell].duplicate()
++			var current:Dictionary=cells.get(cell,{})
++			if preserve_water and record.has("water_volume") and current.has("water_volume"):
++				record.water_volume=current.water_volume
++			cells[cell]=record
+ 		invalidate(cell)
+ 	rocks.restore(rock_values)
+ 	_invalidate_rocks(rock_values.keys())
+ 	return true
+ 
+ func undo() -> bool:
+ 	end_stroke()
+ 	if _undo.is_empty():return false
+ 	var entry:Dictionary=_undo.back()
+-	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false)):return false
++	if not _restore(entry.before,entry.get("rock_before",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower"]):return false
+ 	_undo.pop_back();_redo.append(entry)
+ 	return true
+ 
+ func redo() -> bool:
+ 	end_stroke()
+ 	if _redo.is_empty():return false
+ 	var entry:Dictionary=_redo.back()
+-	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false)):return false
++	if not _restore(entry.after,entry.get("rock_after",{}),entry.get("sculpt_base",false),entry.get("tool","") in ["raise","lower"]):return false
+ 	_redo.pop_back();_undo.append(entry)
+ 	return true
+ 
+ func water_mask(cell: Vector2i) -> int:
+ 	if not cells.has(cell) or cells[cell].water<0: return 0
+@@ -175,11 +256,13 @@
+ 	var records: Array=[]
+ 	# Stable ordering makes evidence and save comparisons useful.
+ 	var keys := cells.keys()
+ 	keys.sort_custom(func(a: Vector2i,b: Vector2i): return a.y<b.y or (a.y==b.y and a.x<b.x))
+ 	for cell: Vector2i in keys:
+-		records.append({"x":cell.x,"z":cell.y,"height":cells[cell].height,"water":cells[cell].water})
++		var record:Dictionary={"x":cell.x,"z":cell.y,"height":cells[cell].height,"water":cells[cell].water}
++		if cells[cell].has("water_volume"):record.water_volume=cells[cell].water_volume
++		records.append(record)
+ 	var payload:Dictionary={"version":1,"seed":seed,"cells":records}
+ 	if not rocks.samples.is_empty() or sculpt_base_enabled:
+ 		payload.version=(4 if sculpt_base_profile=='local' else 3) if sculpt_base_enabled else 2;payload.rocks=rocks.records()
+ 		if sculpt_base_enabled:
+ 			payload.sculpt_base=true
+@@ -209,13 +292,15 @@
+ 		if absf(record.x)>1024 or absf(record.z)>1024: return false
+ 		if float(record.x)!=floorf(record.x) or float(record.z)!=floorf(record.z): return false
+ 		if record.height < -4 or record.height > 12 or not is_equal_approx(record.height*2.0,roundf(record.height*2.0)): return false
+ 		if record.water < -1 or record.water>7 or float(record.water)!=floorf(record.water): return false
+ 		if record.water>=0 and record.height>=record.water*0.5: return false
++		if record.has("water_volume") and (not _number(record.water_volume) or record.water_volume<0.0 or record.water_volume>MAX_CELLS*16.0):return false
+ 		var cell := Vector2i(int(record.x),int(record.z))
+ 		if candidate.has(cell): return false
+ 		candidate[cell]={"height":float(record.height),"water":int(record.water)}
++		if record.has("water_volume"):candidate[cell].water_volume=float(record.water_volume)
+ 	if payload.version>=3 and not preload("res://scripts/terrain_editor/rock_terrain_base.gd").fits(candidate):return false
+ 	end_stroke()
+ 	for cell: Vector2i in cells: invalidate(cell)
+ 	_invalidate_rocks(rocks.samples.keys())
+ 	rocks=candidate_rocks
+--- task_before/scripts/terrain_editor/terrain_renderer.gd
++++ scripts/terrain_editor/terrain_renderer.gd
+@@ -1,7 +1,20 @@
+ class_name TerrainRenderer
+ extends Node3D
++signal terrain_published
++class BuildCancellation extends RefCounted:
++	var mutex:=Mutex.new()
++	var cancelled:bool=false
++	func cancel()->void:
++		mutex.lock()
++		cancelled=true
++		mutex.unlock()
++	func is_cancelled()->bool:
++		mutex.lock()
++		var result:bool=cancelled
++		mutex.unlock()
++		return result
+ const Data=preload("res://scripts/terrain_editor/terrain_data.gd")
+ const Geometry=preload("res://scripts/terrain_editor/chunk_geometry.gd")
+ const Contours=preload("res://scripts/terrain_editor/contour_terrain.gd")
+ var contours:=Contours.new()
+ var _contour_revision:=-1
+@@ -11,10 +24,12 @@
+ var _pending_faces:Dictionary={}
+ var _pending_bounds:Dictionary={}
+ var _build_queue:Array=[]
+ var _pending_shore:Dictionary={}
+ var _build_data:Data
++var _build_revision:int=-1
++var _pending_contours:RefCounted
+ var _published_data:Data
+ var props:Node3D
+ var mist:MultiMeshInstance3D
+ var data:Data
+ var chunks:Dictionary={}
+@@ -28,11 +43,20 @@
+ var threaded_builds:=true
+ ## Swaying 3D grass blades over the lawn (grass_field.gd).
+ var grass_blades_enabled:=true
+ var _back_contours:=Contours.new()
+ var _worker_task:=-1
++var _worker_cancel:BuildCancellation
+ var _worker_result:Dictionary={}
++var _blueprint_source:Data
++var _committed_blueprint_source:Data
++var _worker_blueprint_stamp:String=""
++var _prepared_blueprint_stamp:String=""
++var _prepared_blueprint:Dictionary={}
++var _committed_blueprint_stamp:String=""
++var _committed_blueprint_revision:int=-1
++var _published_runs:Dictionary={}
+ ## Worker wall time of the last threaded revision and main-thread publish cost.
+ var last_worker_ms:=0.0
+ var last_publish_ms:=0.0
+ var last_worker_stages:Dictionary={}
+ ## Threaded results publish in steps: new chunk nodes enter the tree hidden a
+@@ -41,10 +65,11 @@
+ const STAGE_BUDGET_USEC:=2500
+ var _staging:Array=[]
+ var _staging_ready:=false
+ var _staging_active:=false
+ var _graveyard:Array=[]
++var _retiring_chunks:Array[Node3D]=[]
+ ## Edits grow into place over MORPH_SECONDS. A full rebuild snaps.
+ const MORPH_SECONDS:=.55
+ const MORPH_RISE:=2.4
+ var animate_edits:=true
+ var morph_progress:=1.0
+@@ -144,22 +169,33 @@
+ 		return 0
+ 	if _worker_task!=-1:
+ 		if not WorkerThreadPool.is_task_completed(_worker_task):return 0
+ 		WorkerThreadPool.wait_for_task_completion(_worker_task)
+ 		_worker_task=-1
+-		_adopt_worker_result()
++		if not _worker_blueprint_stamp.is_empty():_finish_blueprint_build()
++		else:_adopt_worker_result()
+ 		return 1
+ 	var wants:=_contour_revision!=data.revision or not data.dirty_chunks.is_empty()
++	if _committed_blueprint_source!=null and data.revision!=_committed_blueprint_revision:
++		_committed_blueprint_source=null
++		_committed_blueprint_stamp=""
+ 	if threaded_builds and wants and max_chunks<(1<<20) and _build_queue.is_empty():
++		if _committed_blueprint_source!=null:
++			_start_blueprint_build()
++			return 0
+ 		_start_worker()
++		return 0
++	if not wants and _blueprint_source!=null and threaded_builds and _prepared_blueprint_stamp!=_blueprint_stamp(_blueprint_source):
++		_start_blueprint_build()
+ 		return 0
+ 	var start:=Time.get_ticks_usec()
+ 	var count:=0
+ 	var refreshed:=false
+ 	if _build_queue.is_empty() and (_contour_revision!=data.revision or not data.dirty_chunks.is_empty()):
+ 		refreshed=true
+ 		_build_data=_snapshot()
++		_build_revision=data.revision
+ 		contours.refresh(_build_data)
+ 		if decoration!=null:
+ 			decoration.load_assets()
+ 			decoration._column_layout(contours,_build_data.seed)
+ 		_contour_revision=data.revision
+@@ -212,65 +248,181 @@
+ 				blockers.append(Rect2(at-fp,fp*2.0))
+ 			else:blockers.append(Vector3(at.x,float(entry.radius),at.y))
+ 	return blockers
+ 
+ func _snapshot()->Data:
+-	var copy:=Data.new()
+-	copy.seed=data.seed
+-	copy.rocks.samples=data.rocks.samples.duplicate()
+-	copy.sculpt_base_profile=data.sculpt_base_profile
+-	copy.sculpt_base_enabled=data.sculpt_base_enabled and data.ensure_sculpt_base()
+-	if copy.sculpt_base_enabled:copy.rocks.base=data.rocks.base
+-	for cell in data.cells:copy.cells[cell]=data.cells[cell].duplicate()
+-	return copy
++	data.ensure_sculpt_base()
++	return data.copy()
+ 
+ func _start_worker()->void:
++	_worker_cancel=null
++	_worker_blueprint_stamp=""
+ 	if decoration!=null:decoration.load_assets()
+ 	var snapshot:=_snapshot()
+ 	_contour_revision=data.revision
+-	var wanted:Dictionary={}
+-	for chunk in chunks:wanted[chunk]=true
+-	for chunk in data.dirty_chunks:wanted[chunk]=true
++	var wanted:Dictionary=_affected_chunks(snapshot)
+ 	data.dirty_chunks.clear()
+ 	_discard_pending()
+ 	_worker_result={}
++	_back_contours.inherit_generation_cache(contours)
+ 	_worker_task=WorkerThreadPool.add_task(_worker_build.bind(snapshot,_back_contours,wanted,Time.get_ticks_usec()),false,"terrain revision")
+ 
+-func _worker_build(snapshot:Data,field,wanted:Dictionary,started:int)->void:
++func _blueprint_stamp(draft:Data)->String:
++	return "%d|%d"%[draft.get_instance_id(),draft.revision]
++
++func prepare_blueprint(draft:Data)->void:
++	_blueprint_source=draft
++	# A superseded preview should not finish expensive chunks after release.
++	if _worker_cancel!=null and not _worker_blueprint_stamp.is_empty() and _worker_blueprint_stamp!=_blueprint_stamp(draft):
++		_worker_cancel.cancel()
++
++func cancel_blueprint()->void:
++	if _worker_cancel!=null and _worker_blueprint_stamp!=_committed_blueprint_stamp:_worker_cancel.cancel()
++	_blueprint_source=null
++	_discard_blueprint_result()
++
++func commit_prepared_blueprint(draft:Data)->void:
++	_committed_blueprint_stamp=_blueprint_stamp(draft)
++	_committed_blueprint_revision=data.revision
++	_committed_blueprint_source=draft
++	_blueprint_source=null
++	if _prepared_blueprint_stamp==_committed_blueprint_stamp:
++		_worker_result=_prepared_blueprint
++		_worker_result.authoritative_revision=data.revision
++		_prepared_blueprint={}
++		_prepared_blueprint_stamp=""
++		_committed_blueprint_stamp=""
++		_committed_blueprint_source=null
++		_contour_revision=data.revision
++		data.dirty_chunks.clear()
++		_adopt_worker_result()
++
++func _discard_blueprint_result()->void:
++	for node:Node3D in _prepared_blueprint.get("chunks",{}).values():
++		if node!=null:node.free()
++	_prepared_blueprint={}
++	_prepared_blueprint_stamp=""
++
++func _start_blueprint_build()->void:
++	if decoration!=null:decoration.load_assets()
++	_discard_blueprint_result()
++	var source:Data=_committed_blueprint_source if _committed_blueprint_source!=null else _blueprint_source
++	var snapshot:Data=source.copy()
++	_worker_blueprint_stamp=_blueprint_stamp(source)
++	var wanted:Dictionary=_affected_chunks(snapshot)
++	_worker_result={}
++	_back_contours.inherit_generation_cache(contours)
++	_worker_cancel=BuildCancellation.new()
++	_worker_task=WorkerThreadPool.add_task(_worker_build.bind(snapshot,_back_contours,wanted,Time.get_ticks_usec(),_worker_cancel),false,"terrain blueprint")
++
++func _affected_chunks(snapshot:Data)->Dictionary:
++	var affected:Dictionary={}
++	var previous:Data=_published_data
++	if previous==null or previous.seed!=snapshot.seed or previous.sculpt_base_enabled!=snapshot.sculpt_base_enabled:
++		for chunk:Vector2i in chunks:affected[chunk]=true
++		for cell:Vector2i in snapshot.cells:affected[Data.chunk_of(cell)]=true
++		return affected
++	var candidates:Dictionary=previous.cells.duplicate()
++	candidates.merge(snapshot.cells,true)
++	for cell:Vector2i in candidates:
++		var old:Dictionary=previous.cells.get(cell,{})
++		var next:Dictionary=snapshot.cells.get(cell,{})
++		if old.get("height")==next.get("height") and old.get("water")==next.get("water"):continue
++		var center:Vector2i=Data.chunk_of(cell)
++		# Broad source crowns and their roots can extend beyond their owning
++		# eight-metre chunk. Include a full neighboring chunk on each side.
++		for z:int in range(-1,2):
++			for x:int in range(-1,2):affected[center+Vector2i(x,z)]=true
++	var rock_keys:Dictionary=previous.rocks.samples.duplicate()
++	rock_keys.merge(snapshot.rocks.samples,true)
++	for key:Vector3i in rock_keys:
++		if previous.rocks.samples.get(key)==snapshot.rocks.samples.get(key):continue
++		var point:Vector3=Vector3(key)*Data.RockSculpt.STEP
++		var center:Vector2i=Data.chunk_of(Vector2i(floori(point.x),floori(point.z)))
++		for z:int in range(-1,2):
++			for x:int in range(-1,2):affected[center+Vector2i(x,z)]=true
++	return affected
++
++func _finish_blueprint_build()->void:
++	var result:Dictionary=_worker_result
++	_worker_result={}
++	var stamp:String=_worker_blueprint_stamp
++	_worker_blueprint_stamp=""
++	if result.is_empty():return
++	_back_contours=result.field
++	if result.get("cancelled",false):
++		for node:Node3D in result.get("chunks",{}).values():
++			if node!=null:node.free()
++		return
++	if stamp==_committed_blueprint_stamp and data.revision==_committed_blueprint_revision:
++		_worker_result=result
++		_worker_result.authoritative_revision=data.revision
++		_committed_blueprint_stamp=""
++		_committed_blueprint_source=null
++		_contour_revision=data.revision
++		data.dirty_chunks.clear()
++		_adopt_worker_result()
++	elif _blueprint_source!=null and stamp==_blueprint_stamp(_blueprint_source):
++		_prepared_blueprint=result
++		_prepared_blueprint_stamp=stamp
++	else:
++		for node:Node3D in result.chunks.values():
++			if node!=null:node.free()
++
++func _worker_build(snapshot:Data,field,wanted:Dictionary,started:int,cancellation:BuildCancellation=null)->void:
+ 	# Runs off the scene tree: only new resources and detached nodes are made.
+ 	var stages:={}
+ 	var t:=Time.get_ticks_usec()
+ 	field.refresh(snapshot)
+ 	stages.contours=(Time.get_ticks_usec()-t)/1000.0;t=Time.get_ticks_usec()
+-	if decoration!=null:decoration._column_layout(field,snapshot.seed)
++	if cancellation!=null and cancellation.is_cancelled():
++		_worker_result={"field":field,"cancelled":true}
++		return
++	if decoration!=null:
++		decoration._previous_runs=_published_runs.duplicate(true)
++		decoration._column_layout(field,snapshot.seed)
+ 	stages.layout=(Time.get_ticks_usec()-t)/1000.0;t=Time.get_ticks_usec()
++	if decoration!=null:stages.layout_detail=decoration.layout_stages.duplicate()
++	if cancellation!=null and cancellation.is_cancelled():
++		_worker_result={"field":field,"cancelled":true}
++		return
+ 	var shore:Dictionary=preload("res://scripts/terrain_editor/water_shore_field.gd").build(snapshot,field)
+ 	stages.shore=(Time.get_ticks_usec()-t)/1000.0;t=Time.get_ticks_usec()
+-	for chunk in field.triangle_chunks:wanted[chunk]=true
+ 	var out:={"chunks":{},"faces":{},"bounds":{},"stages":stages}
+-	for chunk in wanted:_rebuild(chunk,field,snapshot,out)
++	for chunk in wanted:
++		if cancellation!=null and cancellation.is_cancelled():
++			out.field=field
++			out.cancelled=true
++			_worker_result=out
++			return
++		_rebuild(chunk,field,snapshot,out)
+ 	stages.chunks=(Time.get_ticks_usec()-t)/1000.0
+ 	out.shore=shore
+ 	out.data=snapshot
++	out.authoritative_revision=snapshot.revision
+ 	out.field=field
+ 	out.ms=(Time.get_ticks_usec()-started)/1000.0
+ 	_worker_result=out
+ 
+ func _adopt_worker_result()->void:
+ 	var result:=_worker_result
+ 	_worker_result={}
+ 	if result.is_empty():return
++	if int(result.authoritative_revision)!=data.revision:
++		_back_contours=result.field
++		for node:Node3D in result.chunks.values():
++			if node!=null:node.free()
++		return
+ 	var start:=Time.get_ticks_usec()
+ 	_discard_pending()
+ 	_pending_chunks=result.chunks
+ 	_pending_faces=result.faces
+ 	_pending_bounds=result.bounds
+ 	_pending_shore=result.shore
+ 	_build_data=result.data
+-	_back_contours=contours
+-	contours=result.field
+-	if decoration!=null:decoration.contours=contours
++	_build_revision=int(result.authoritative_revision)
++	_pending_contours=result.field
+ 	for chunk in _pending_chunks:_staging.append(chunk)
+ 	_staging_ready=false
+ 	_staging_active=true
+ 	_advance_staging()
+ 	last_worker_ms=result.ms
+@@ -288,10 +440,16 @@
+ 		if Time.get_ticks_usec()-start>STAGE_BUDGET_USEC:return
+ 	if not _staging_ready:
+ 		# Leave the commit to the next frame unless budget remains.
+ 		_staging_ready=true
+ 		if Time.get_ticks_usec()-start>STAGE_BUDGET_USEC/2:return
++	if morph_progress<1.0:return
++	if _build_revision!=data.revision:
++		_staging_ready=false
++		_staging_active=false
++		_discard_pending()
++		return
+ 	_staging_ready=false
+ 	_staging_active=false
+ 	_publish(true)
+ 
+ func _reap_graveyard()->void:
+@@ -302,10 +460,13 @@
+ 			if old.get_parent()==self:remove_child(old)
+ 			old.free()
+ 
+ func _flush_staging()->void:
+ 	if not _staging_active:return
++	if _build_revision!=data.revision:
++		_discard_pending()
++		return
+ 	while not _staging.is_empty():
+ 		var node:Node3D=_pending_chunks.get(_staging.pop_back())
+ 		if node!=null:
+ 			node.visible=false
+ 			add_child(node)
+@@ -313,19 +474,24 @@
+ 	_staging_active=false
+ 	_publish(true)
+ 
+ func _finish_worker()->void:
+ 	# Block until an in-flight revision ends, then drop its detached result.
+-	if _worker_task==-1:return
+-	WorkerThreadPool.wait_for_task_completion(_worker_task)
+-	_worker_task=-1
+-	var result:=_worker_result
+-	_worker_result={}
+-	if not result.is_empty():
+-		_back_contours=result.field
+-		for node in result.chunks.values():
+-			if node!=null:node.free()
++	if _worker_task!=-1:
++		WorkerThreadPool.wait_for_task_completion(_worker_task)
++		_worker_task=-1
++		_worker_blueprint_stamp=""
++		var result:=_worker_result
++		_worker_result={}
++		if not result.is_empty():
++			_back_contours=result.field
++			for node in result.chunks.values():
++				if node!=null:node.free()
++	_discard_blueprint_result()
++	_blueprint_source=null
++	_committed_blueprint_source=null
++	_committed_blueprint_stamp=""
+ 
+ func _rebuild(chunk:Vector2i,field=null,build:Data=null,out:Dictionary={})->void:
+ 	if field==null:field=contours
+ 	if build==null:build=_build_data
+ 	var target_chunks:Dictionary=out.get("chunks",_pending_chunks)
+@@ -386,57 +552,79 @@
+ 		if blades!=null:node.add_child(blades)
+ 		if out.has("stages"):out.stages.grass=out.stages.get("grass",0.0)+(Time.get_ticks_usec()-t_grass)/1000.0
+ 	rebuild_count+=1
+ 
+ func _discard_pending()->void:
++	_staging.clear()
++	_staging_active=false
++	_staging_ready=false
++	if _pending_contours!=null:
++		_back_contours=_pending_contours
++		_pending_contours=null
++		if decoration!=null:decoration.contours=contours
+ 	_pending_shore={}
+ 	for node in _pending_chunks.values():
+ 		if node!=null:node.free()
+ 	_pending_chunks.clear()
+ 	_pending_faces.clear()
+ 	_pending_bounds.clear()
+ 
+ func _publish(staged:bool=false)->void:
+ 	# Keep the previous complete revision visible until the next one is ready.
+ 	# Meshes, decoration, picking and supported props switch in the same frame.
++	if _pending_contours!=null:
++		_back_contours=contours
++		contours=_pending_contours
++		_pending_contours=null
++		if decoration!=null:decoration.contours=contours
++	_start_morph(_published_data,_build_data)
++	var transitioning:bool=morph_progress<1.0
+ 	for chunk in _pending_chunks:
+ 		if chunks.has(chunk):
+ 			var old:Node3D=chunks[chunk]
+-			if staged:
++			if transitioning:
++				_transition_role(old,1.0)
++				_retiring_chunks.append(old)
++			elif staged:
+ 				old.visible=false
+ 				_graveyard.append(old)
+ 			else:
+ 				remove_child(old)
+ 				old.queue_free()
+ 			chunks.erase(chunk)
+ 		_pick_faces.erase(chunk)
+ 		_pick_bounds.erase(chunk)
+ 		var node:Node3D=_pending_chunks[chunk]
+ 		if node!=null:
++			_transition_role(node,0.0 if transitioning else 2.0)
+ 			if staged:node.visible=true
+ 			else:add_child(node)
+ 			chunks[chunk]=node
+ 		if _pending_faces.has(chunk):
+ 			_pick_faces[chunk]=_pending_faces[chunk]
+ 			_pick_bounds[chunk]=_pending_bounds[chunk]
+ 	_pending_chunks.clear()
+ 	_pending_faces.clear()
+ 	_pending_bounds.clear()
+-	_start_morph(_published_data,_build_data)
+ 	_published_data=_build_data
++	if decoration!=null:_published_runs=decoration._previous_runs.duplicate(true)
+ 	if not _pending_shore.is_empty():
+ 		materials.water.set_shader_parameter("shore_field",preload("res://scripts/terrain_editor/water_shore_field.gd").texture_of(_pending_shore))
+ 		materials.water.set_shader_parameter("shore_origin",_pending_shore.origin)
+ 		materials.water.set_shader_parameter("shore_extent",_pending_shore.extent)
+ 		_pending_shore={}
+ 	props.sync(contours)
+ 	mist.sync(contours.splash_points,contours.fall_veils,contours.land_regions)
++	terrain_published.emit()
+ 
+ func _exit_tree()->void:
+ 	_finish_worker()
+ 	_flush_staging()
+ 	_discard_pending()
++	for old:Node3D in _retiring_chunks:
++		if is_instance_valid(old):old.free()
++	_retiring_chunks.clear()
+ 	for old in _graveyard:
+ 		if is_instance_valid(old):old.free()
+ 	_graveyard.clear()
+ 
+ static func _tops(source:Data)->Dictionary:
+@@ -446,49 +634,70 @@
+ 		var record:Dictionary=source.cells[cell]
+ 		result[cell]=record.water*.5 if record.water>=0 else float(record.height)
+ 	return result
+ 
+ static func morph_ease(t:float)->float:
+-	var u:=clampf(t,0.0,1.0)-1.0
+-	return 1.0+2.2*u*u*u+1.2*u*u
++	var u:=clampf(t,0.0,1.0)
++	return u*u*(3.0-2.0*u)
++
++func _transition_role(node:Node,role:float)->void:
++	if node is GeometryInstance3D:node.set_instance_shader_parameter("terrain_transition_role",role)
++	for child:Node in node.get_children():_transition_role(child,role)
++
++func _finish_retiring()->void:
++	for old:Node3D in _retiring_chunks:
++		if is_instance_valid(old):
++			old.visible=false
++			_graveyard.append(old)
++	_retiring_chunks.clear()
++	for node:Node3D in chunks.values():_transition_role(node,2.0)
+ 
+ func shown_top(cell:Vector2i)->float:
+ 	if not _morph_to.has(cell):return NAN
+ 	return lerpf(_morph_from.get(cell,float(_morph_to[cell])-MORPH_RISE),float(_morph_to[cell]),morph_ease(morph_progress))
+ 
+ func _start_morph(previous:Data,next:Data)->void:
++	_finish_retiring()
+ 	var to:=_tops(next)
++	var old_tops:=_tops(previous)
+ 	var snap:=_snap_next or previous==null or not animate_edits
+ 	_snap_next=false
+ 	var from:Dictionary={}
+-	var changed:=false
++	var changed:bool=previous!=null and previous.rocks.samples!=next.rocks.samples
+ 	if not snap:
+ 		for cell:Vector2i in to:
+ 			var shown:=shown_top(cell)
+ 			if is_nan(shown):changed=true
+ 			else:
+ 				from[cell]=shown
+ 				if absf(shown-float(to[cell]))>.001:changed=true
++		for cell:Vector2i in old_tops:
++			if not to.has(cell):changed=true
+ 	_morph_to=to
+ 	if snap or not changed:
+ 		morph_progress=1.0
+ 		_morph_from=to.duplicate()
+ 		RenderingServer.global_shader_parameter_set("terrain_morph_progress",1.0)
+ 		return
+ 	_morph_from=from
+ 	var lo:=Vector2i(1<<20,1<<20)
+ 	var hi:=-lo
+-	for cell:Vector2i in to:
++	var occupied:Dictionary=old_tops.duplicate()
++	occupied.merge(to,true)
++	for cell:Vector2i in occupied:
+ 		lo=Vector2i(mini(lo.x,cell.x),mini(lo.y,cell.y))
+ 		hi=Vector2i(maxi(hi.x,cell.x),maxi(hi.y,cell.y))
+ 	lo-=Vector2i(4,4)
+ 	hi+=Vector2i(4,4)
+ 	var size:=hi-lo+Vector2i.ONE
+-	var image:=Image.create(size.x,size.y,false,Image.FORMAT_RGF)
++	var image:=Image.create(size.x,size.y,false,Image.FORMAT_RGBAF)
+ 	var known:Dictionary={}
+-	for cell:Vector2i in to:
+-		var pair:=Color(float(from.get(cell,float(to[cell])-MORPH_RISE)),float(to[cell]),0,0)
++	for cell:Vector2i in occupied:
++		var old_top:float=float(old_tops.get(cell,float(to.get(cell,0.0))-MORPH_RISE))
++		var new_top:float=float(to.get(cell,old_top-MORPH_RISE))
++		var shown:float=float(from.get(cell,old_top))
++		var pair:=Color(old_top,new_top,shown,1.0)
+ 		image.set_pixelv(cell-lo,pair)
+ 		known[cell]=pair
+ 	for ring in 4:
+ 		var grown:Dictionary={}
+ 		for cell:Vector2i in known:
+@@ -508,16 +717,17 @@
+ 
+ func _process(delta:float)->void:
+ 	if morph_progress>=1.0:return
+ 	morph_progress=minf(1.0,morph_progress+delta/MORPH_SECONDS)
+ 	RenderingServer.global_shader_parameter_set("terrain_morph_progress",morph_progress)
++	if morph_progress>=1.0:_finish_retiring()
+ 
+ func pending_chunk_count()->int:
+ 	return _build_queue.size()+(data.dirty_chunks.size() if data!=null else 0)
+ 
+ func has_pending_updates()->bool:
+-	return data!=null and (_worker_task!=-1 or _staging_active or not _build_queue.is_empty() or not data.dirty_chunks.is_empty() or _contour_revision!=data.revision)
++	return data!=null and ((_worker_task!=-1 and _worker_blueprint_stamp.is_empty()) or _staging_active or not _build_queue.is_empty() or not data.dirty_chunks.is_empty() or _contour_revision!=data.revision)
+ 
+ func rebuild_all()->void:
+ 	_finish_worker()
+ 	_flush_staging()
+ 	_snap_next=true
+--- task_before/scripts/terrain_editor/edit_preview.gd
++++ scripts/terrain_editor/edit_preview.gd
+@@ -17,26 +17,31 @@
+ 	visible=false
+ 
+ static func _top(record:Dictionary)->float:
+ 	return record.water*.5 if record.water>=0 else float(record.height)
+ 
+-func refresh(data,renderer)->void:
++func refresh(data,renderer,blueprint:bool=false)->void:
+ 	var shown=renderer._published_data
+-	if shown==null or not renderer.has_pending_updates():
++	if shown==null or (not blueprint and not renderer.has_pending_updates()):
+ 		visible=false
+ 		_key=""
+ 		return
+-	var key:="%d|%d"%[data.revision,shown.get_instance_id()]
++	var key:="%d|%d|%d"%[data.get_instance_id(),data.revision,shown.get_instance_id()]
+ 	if key==_key:return
+ 	_key=key
+ 	var start:=Time.get_ticks_usec()
+ 	var grown:Dictionary={}
+ 	var removed:Dictionary={}
+ 	for cell:Vector2i in data.cells:
+ 		var top:=_top(data.cells[cell])
+ 		var old:Variant=shown.cells.get(cell)
+ 		if old!=null and absf(_top(old)-top)<.001:continue
++		if old!=null and top<_top(old):
++			var old_top:float=_top(old)
++			if not removed.has(old_top):removed[old_top]={}
++			removed[old_top][cell]=true
++			continue
+ 		if not grown.has(top):grown[top]={}
+ 		grown[top][cell]=true
+ 	for cell:Vector2i in shown.cells:
+ 		if data.cells.has(cell):continue
+ 		var top:=_top(shown.cells[cell])
+--- task_before/scripts/terrain_editor/water_renderer.gd
++++ scripts/terrain_editor/water_renderer.gd
+@@ -0,0 +1,469 @@
++extends Node3D
++## One worker owns the solver while running. Public flow is readable only idle.
++## The editor calls tick explicitly, so frozen captures cannot advance themselves.
++const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
++const Flow = preload("res://scripts/terrain_editor/water_flow.gd")
++const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
++const Geometry = preload("res://scripts/terrain_editor/chunk_geometry.gd")
++const MAX_ADVANCE: float = 0.1
++const MAX_QUEUED_SECONDS: float = 0.3
++const MIN_VISIBLE_DEPTH: float = 0.002
++const SURFACE_LIFT: float = 0.045
++const WATER_LAYERS: Array[String] = ["water", "waterfall", "bank"]
++
++var flow: RefCounted = Flow.new()
++var published_surfaces: Dictionary = {}
++var published_depths: Dictionary = {}
++var published_heights: Dictionary = {}
++var published_basins: Array[Dictionary] = []
++var published_volume: float = 0.0
++var published_discharged_volume: float = 0.0
++var splash_points: Array = []
++var fall_veils: Array = []
++var live_field_image: Image
++var live_field_texture: ImageTexture
++var live_field_rect: Rect2 = Rect2(Vector2.ZERO, Vector2.ONE)
++var shore_texture: ImageTexture
++var simulated_seconds: float = 0.0
++var queued_seconds: float = 0.0
++var last_step_seconds: float = 0.0
++var last_worker_ms: float = 0.0
++var last_publish_ms: float = 0.0
++var last_advance_worker_ms: float = 0.0
++var last_worker_stages: Dictionary = {}
++var last_advance_stages: Dictionary = {}
++var last_snapshot_ms: float = 0.0
++var last_sync_ms: float = 0.0
++var publication_revision: int = 0
++var _data: Data
++var _terrain: Node3D
++var _worker_task: int = -1
++var _worker_result: Dictionary = {}
++var _sync_pending: bool = false
++var _nodes: Dictionary[String, MeshInstance3D] = {}
++var _shore_rect: Rect2 = Rect2(Vector2.ZERO, Vector2.ONE)
++
++class FlowField:
++	extends "res://scripts/terrain_editor/contour_terrain.gd"
++	var live_depths: Dictionary = {}
++	var live_heights: Dictionary = {}
++	var basin_ids: Dictionary = {}
++	var outgoing: Dictionary = {}
++	var _basin: int = -1
++
++	func build_live(snapshot: Data, solver: RefCounted) -> void:
++		source = snapshot
++		live_depths = solver.depths.duplicate()
++		live_heights = solver.heights.duplicate()
++		for kind: String in ["water", "waterfall", "bank"]:
++			surfaces[kind] = Legacy.Surface.new()
++		for basin: Dictionary in solver.basins:
++			for cell: Vector2i in basin.cells:
++				basin_ids[cell] = int(basin.id)
++		_build_outgoing(solver.last_transfers)
++		for basin: Dictionary in solver.basins:
++			var visible: Dictionary = {}
++			for cell: Vector2i in basin.cells:
++				if live_depths.get(cell, 0.0) >= MIN_VISIBLE_DEPTH:
++					visible[cell] = true
++			if visible.is_empty():
++				continue
++			_basin = int(basin.id)
++			var loops: Array = _outlines(visible)
++			water_regions[_basin] = loops
++			var water_y: float = float(basin.height) + SURFACE_LIFT
++			_cap(surfaces.water, loops, water_y, Color.WHITE)
++			for loop: PackedVector2Array in loops:
++				_falls(_subdivide_outline(loop), water_y)
++		for kind: String in ["waterfall", "bank"]:
++			_smooth_normals(surfaces[kind])
++		for veil: Dictionary in fall_veils:
++			var measured: Dictionary = _nearest_outflow(Vector2(veil.lip.x, veil.lip.z), veil.out)
++			veil.rate = measured.get("rate", 0.0)
++			veil.intensity = clampf(float(veil.rate) / 0.45, 0.0, 1.0)
++		for splash: Dictionary in splash_points:
++			var measured: Dictionary = _nearest_outflow(Vector2(splash.center.x, splash.center.z), splash.out)
++			splash.rate = measured.get("rate", 0.0)
++			splash.intensity = clampf(float(splash.rate) / 0.45, 0.0, 1.0)
++
++	func surface_at(point: Vector2) -> Dictionary:
++		var cell: Vector2i = Vector2i(point.floor())
++		if not source.cells.has(cell):
++			return {}
++		var bed: float = float(source.cells[cell].height)
++		if live_depths.get(cell, 0.0) > 0.0:
++			return {"height": live_heights[cell] + SURFACE_LIFT, "water": basin_ids.get(cell, -1)}
++		return {"height": bed, "water": -1}
++
++	func _build_outgoing(transfers: Array) -> void:
++		var void_rates: Dictionary = {}
++		for transfer: Dictionary in transfers:
++			var rate: float = float(transfer.rate)
++			if rate <= 0.0 or not is_finite(rate):
++				continue
++			var cell: Vector2i = transfer.from
++			if transfer.to == null:
++				void_rates[cell] = void_rates.get(cell, 0.0) + rate
++			else:
++				_add_outflow(cell, transfer.to, rate)
++		# Missing-neighbour requests have equal heads in WaterFlow. Its public
++		# null destination omits direction, so distribute their sum equally.
++		for cell: Vector2i in void_rates:
++			var missing: Array[Vector2i] = []
++			for direction: Vector2i in Flow.DIRECTIONS:
++				if not source.cells.has(cell + direction):
++					missing.append(cell + direction)
++			for target: Vector2i in missing:
++				_add_outflow(cell, target, float(void_rates[cell]) / float(missing.size()))
++
++	func _add_outflow(cell: Vector2i, target: Vector2i, rate: float) -> void:
++		var direction: Vector2 = Vector2(target - cell)
++		var entry: Dictionary = {
++			"from": cell, "to": target, "out": direction,
++			"center": Vector2(cell) + Vector2.ONE * 0.5 + direction * 0.5,
++			"rate": rate,
++		}
++		if not outgoing.has(cell):
++			outgoing[cell] = []
++		outgoing[cell].append(entry)
++
++	func _nearest_outflow(point: Vector2, out: Vector2, basin: int = -1) -> Dictionary:
++		var best: Dictionary = {}
++		var distance: float = 4.0
++		var center: Vector2i = Vector2i(point.floor())
++		for z: int in range(-2, 3):
++			for x: int in range(-2, 3):
++				var cell: Vector2i = center + Vector2i(x, z)
++				if basin >= 0 and basin_ids.get(cell, -1) != basin:
++					continue
++				for entry: Dictionary in outgoing.get(cell, []):
++					if out.dot(entry.out) < 0.35:
++						continue
++					var tangent: Vector2 = Vector2(-entry.out.y, entry.out.x)
++					if basin >= 0 and absf((point - Vector2(entry.center)).dot(tangent)) > 0.50001:
++						continue
++					var next_distance: float = point.distance_squared_to(entry.center)
++					if next_distance < distance:
++						distance = next_distance
++						best = entry
++		return best
++
++	func _subdivide_outline(loop: PackedVector2Array) -> PackedVector2Array:
++		# Sample flux within each original cell edge, including beside an outlet
++		# blocked by the next cell. The cap keeps the same collinear boundary.
++		var result: PackedVector2Array = PackedVector2Array()
++		for index: int in range(loop.size()):
++			var a: Vector2 = loop[index]
++			var b: Vector2 = loop[(index + 1) % loop.size()]
++			var count: int = maxi(1, ceili(a.distance_to(b) / 0.4))
++			for part: int in range(count):
++				result.append(a.lerp(b, float(part) / float(count)))
++		return result
++
++	func _flow_edges(loop: PackedVector2Array, water_y: float) -> Array:
++		var result: Array = []
++		var stop: int = -1
++		for index: int in range(loop.size()):
++			var a: Vector2 = loop[index]
++			var b: Vector2 = loop[(index + 1) % loop.size()]
++			var out: Vector2 = Vector2(b.y - a.y, a.x - b.x).normalized()
++			var transfer: Dictionary = _nearest_outflow((a + b) * 0.5, out, _basin)
++			var sample: Dictionary = {"height": water_y, "water": -1}
++			var rate: float = 0.0
++			if not transfer.is_empty() and ((a + b) * 0.5).distance_squared_to(transfer.center) < 0.85:
++				var target: Vector2i = transfer.to
++				sample = surface_at(Vector2(target) + Vector2.ONE * 0.5)
++				rate = float(transfer.rate)
++			var spill: bool = rate > 0.0 and float(sample.get("height", -12.0)) < water_y - 0.1
++			if not spill:
++				sample = {"height": water_y, "water": -1}
++			result.append({"sample": sample, "spill": spill, "rate": rate, "intensity": clampf(rate / 0.45, 0.0, 1.0), "start": 0.0, "width": 0.0, "run": 0, "length": a.distance_to(b)})
++			if not spill:
++				stop = index
++		if stop < 0:
++			return result
++		var run: Array[int] = []
++		var width: float = 0.0
++		for step: int in range(1, loop.size() + 1):
++			var index: int = (stop + step) % loop.size()
++			if result[index].spill:
++				result[index].start = width
++				width += float(result[index].length)
++				run.append(index)
++			else:
++				for member: int in run:
++					result[member].width = width
++					result[member].run = index
++				run.clear()
++				width = 0.0
++		return result
++
++func configure(data: Data, terrain_renderer: Node3D) -> void:
++	_disconnect_terrain()
++	_terrain = terrain_renderer
++	_terrain.child_entered_tree.connect(_on_terrain_child_entered)
++	for kind: String in WATER_LAYERS:
++		if _nodes.has(kind):
++			continue
++		var instance: MeshInstance3D = MeshInstance3D.new()
++		instance.name = kind
++		instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
++		add_child(instance)
++		_nodes[kind] = instance
++	reset(data)
++
++func reset(data: Data) -> void:
++	_wait_discard()
++	_data = data
++	queued_seconds = 0.0
++	simulated_seconds = 0.0
++	_sync_pending = false
++	flow.configure(data)
++	_hide_legacy(_terrain)
++	_start_worker(0.0)
++	_collect_worker(true)
++
++func tick(delta: float) -> void:
++	if _data == null:
++		return
++	if is_finite(delta) and delta > 0.0:
++		queued_seconds = minf(MAX_QUEUED_SECONDS, queued_seconds + delta)
++	_collect_worker(false)
++	if _worker_task < 0 and queued_seconds >= MAX_ADVANCE - 0.000000001:
++		_schedule_advance()
++
++func sync() -> void:
++	if _data == null:
++		return
++	_hide_legacy(_terrain)
++	_bind_fields_and_mist()
++	_sync_pending = true
++	if _worker_task < 0:
++		_reconcile()
++		_start_worker(0.0)
++
++func flush() -> void:
++	if _data == null:
++		return
++	# Include direct authoring changes even when the caller has not ticked yet.
++	_sync_pending = true
++	while _worker_task >= 0 or _sync_pending or queued_seconds > 0.000000001:
++		_collect_worker(true)
++		if _worker_task >= 0:
++			continue
++		if _sync_pending:
++			_reconcile()
++			_start_worker(0.0)
++		elif queued_seconds > 0.000000001:
++			_schedule_advance()
++	flow.write_to_data(_data)
++	_hide_legacy(_terrain)
++	_bind_fields_and_mist()
++
++func has_pending_updates() -> bool:
++	return _worker_task >= 0 or _sync_pending or queued_seconds > 0.000000001
++
++func _reconcile() -> void:
++	var started: int = Time.get_ticks_usec()
++	flow.sync(_data)
++	_sync_pending = false
++	last_sync_ms = float(Time.get_ticks_usec() - started) / 1000.0
++
++func _schedule_advance() -> void:
++	var duration: float = minf(MAX_ADVANCE, queued_seconds)
++	queued_seconds = maxf(0.0, queued_seconds - duration)
++	_start_worker(duration)
++
++func _start_worker(duration: float) -> void:
++	assert(_worker_task < 0, "A water solver can have only one worker owner")
++	var started: int = Time.get_ticks_usec()
++	var snapshot: Data = Data.new()
++	snapshot.seed = _data.seed
++	snapshot.cells = _data.cells.duplicate(true)
++	last_snapshot_ms = float(Time.get_ticks_usec() - started) / 1000.0
++	_worker_task = WorkerThreadPool.add_task(_build_worker.bind(snapshot, duration), false, "Live water")
++
++func _build_worker(snapshot: Data, duration: float) -> void:
++	var started: int = Time.get_ticks_usec()
++	if duration > 0.0:
++		flow.step(duration)
++	var solved: int = Time.get_ticks_usec()
++	var field: FlowField = FlowField.new()
++	field.build_live(snapshot, flow)
++	var meshes: Dictionary = {}
++	for kind: String in WATER_LAYERS:
++		meshes[kind] = field.surfaces[kind].mesh()
++	var meshed: int = Time.get_ticks_usec()
++	var fields: Dictionary = _build_images(snapshot, field)
++	var finished: int = Time.get_ticks_usec()
++	_worker_result = {
++		"meshes": meshes, "surfaces": field.surfaces,
++		"depths": field.live_depths, "heights": field.live_heights,
++		"basins": flow.basins.duplicate(true), "splashes": field.splash_points,
++		"volume": flow.total_volume(), "discharged": flow.discharged_volume,
++		"veils": field.fall_veils, "fields": fields, "duration": duration,
++		"worker_ms": float(finished - started) / 1000.0,
++		"stages": {"solver": float(solved - started) / 1000.0, "mesh": float(meshed - solved) / 1000.0, "images": float(finished - meshed) / 1000.0},
++	}
++
++func _collect_worker(wait: bool) -> void:
++	if _worker_task < 0:
++		return
++	if not wait and not WorkerThreadPool.is_task_completed(_worker_task):
++		return
++	WorkerThreadPool.wait_for_task_completion(_worker_task)
++	_worker_task = -1
++	var result: Dictionary = _worker_result
++	_worker_result = {}
++	simulated_seconds += float(result.duration)
++	last_step_seconds = float(result.duration)
++	last_worker_ms = float(result.worker_ms)
++	last_worker_stages = result.stages
++	if last_step_seconds > 0.0:
++		last_advance_worker_ms = last_worker_ms
++		last_advance_stages = last_worker_stages
++	if _sync_pending:
++		_reconcile()
++		_start_worker(0.0)
++		return
++	var started: int = Time.get_ticks_usec()
++	flow.write_to_data(_data)
++	_publish(result)
++	last_publish_ms = float(Time.get_ticks_usec() - started) / 1000.0
++
++func _publish(result: Dictionary) -> void:
++	var started: int = Time.get_ticks_usec()
++	published_surfaces = result.surfaces
++	published_depths = result.depths
++	published_heights = result.heights
++	published_basins.assign(result.basins)
++	published_volume = float(result.volume)
++	published_discharged_volume = float(result.discharged)
++	splash_points = result.splashes
++	fall_veils = result.veils
++	live_field_image = result.fields.live
++	live_field_rect = result.fields.rect
++	_shore_rect = result.fields.rect
++	live_field_texture = _update_texture(live_field_texture, live_field_image)
++	shore_texture = _update_texture(shore_texture, result.fields.shore)
++	for kind: String in WATER_LAYERS:
++		_nodes[kind].mesh = result.meshes[kind]
++		_nodes[kind].material_override = _terrain.materials[kind]
++		_nodes[kind].visible = not published_surfaces[kind].vertices.is_empty()
++	_bind_fields_and_mist()
++	publication_revision += 1
++	last_publish_ms = float(Time.get_ticks_usec() - started) / 1000.0
++
++func _update_texture(texture: ImageTexture, image: Image) -> ImageTexture:
++	if texture != null and texture.get_width() == image.get_width() and texture.get_height() == image.get_height():
++		texture.update(image)
++		return texture
++	return ImageTexture.create_from_image(image)
++
++func _bind_fields_and_mist() -> void:
++	if not is_instance_valid(_terrain) or shore_texture == null:
++		return
++	var material: ShaderMaterial = _terrain.materials.water
++	material.set_shader_parameter("shore_field", shore_texture)
++	material.set_shader_parameter("shore_origin", _shore_rect.position)
++	material.set_shader_parameter("shore_extent", _shore_rect.size)
++	RenderingServer.global_shader_parameter_set("live_water_field", live_field_texture)
++	RenderingServer.global_shader_parameter_set("live_water_rect", Vector4(live_field_rect.position.x, live_field_rect.position.y, live_field_rect.size.x, live_field_rect.size.y))
++	RenderingServer.global_shader_parameter_set("live_water_active", 1.0)
++	if _terrain.mist != null:
++		_terrain.mist.sync(splash_points, fall_veils, _terrain.contours.land_regions)
++
++func _on_terrain_child_entered(child: Node) -> void:
++	_hide_legacy(child)
++
++func _hide_legacy(node: Node) -> void:
++	if not is_instance_valid(node) or node == self:
++		return
++	if node is GeometryInstance3D and String(node.name) in WATER_LAYERS:
++		(node as GeometryInstance3D).visible = false
++	for child: Node in node.get_children():
++		_hide_legacy(child)
++
++func _disconnect_terrain() -> void:
++	if is_instance_valid(_terrain) and _terrain.child_entered_tree.is_connected(_on_terrain_child_entered):
++		_terrain.child_entered_tree.disconnect(_on_terrain_child_entered)
++
++func _wait_discard() -> void:
++	if _worker_task >= 0:
++		WorkerThreadPool.wait_for_task_completion(_worker_task)
++		_worker_task = -1
++	_worker_result = {}
++
++func _exit_tree() -> void:
++	_wait_discard()
++	_disconnect_terrain()
++	RenderingServer.global_shader_parameter_set("live_water_active", 0.0)
++
++func _notification(what: int) -> void:
++	# Detached nodes do not receive _exit_tree, but can still own a task.
++	if what == NOTIFICATION_PREDELETE:
++		_wait_discard()
++		_disconnect_terrain()
++		if _data != null:
++			RenderingServer.global_shader_parameter_set("live_water_active", 0.0)
++
++static func _build_images(snapshot: Data, field: FlowField) -> Dictionary:
++	var low: Vector2i = Vector2i.ZERO
++	var high: Vector2i = Vector2i.ZERO
++	if not snapshot.cells.is_empty():
++		low = snapshot.cells.keys()[0]
++		high = low
++		for cell: Vector2i in snapshot.cells:
++			low = low.min(cell)
++			high = high.max(cell)
++	var size: Vector2i = high - low + Vector2i.ONE
++	var live: Image = Image.create(size.x, size.y, false, Image.FORMAT_RGBAF)
++	var shore: Image = Image.create(size.x, size.y, false, Image.FORMAT_RGBA8)
++	live.fill(Color(0.0, 0.0, 0.0, 0.0))
++	shore.fill(Color(0.0, 0.0, 0.0, 0.0))
++	var distances: Dictionary = {}
++	var impacts: Dictionary = {}
++	var queue: Array[Vector2i] = []
++	var impact_queue: Array[Vector2i] = []
++	for cell: Vector2i in field.live_depths:
++		distances[cell] = 3.0
++		impacts[cell] = 4.0
++		for direction: Vector2i in Flow.DIRECTIONS:
++			if field.basin_ids.get(cell + direction, -1) != field.basin_ids[cell]:
++				distances[cell] = 0.5
++		if distances[cell] == 0.5:
++			queue.append(cell)
++	for source_cell: Vector2i in field.outgoing:
++		for transfer: Dictionary in field.outgoing[source_cell]:
++			var target: Vector2i = transfer.to
++			if field.live_depths.has(target) and float(field.live_heights.get(source_cell, 0.0)) - float(field.live_heights[target]) > 0.1 and impacts[target] > 0.0:
++				impacts[target] = 0.0
++				impact_queue.append(target)
++	_spread_distance(distances, queue, field.basin_ids, 3.0)
++	_spread_distance(impacts, impact_queue, field.basin_ids, 4.0)
++	for cell: Vector2i in snapshot.cells:
++		var pixel: Vector2i = cell - low
++		var depth: float = float(field.live_depths.get(cell, 0.0))
++		var height: float = float(field.live_heights.get(cell, snapshot.cells[cell].height))
++		var rate: float = 0.0
++		for transfer: Dictionary in field.outgoing.get(cell, []):
++			rate += float(transfer.rate)
++		live.set_pixelv(pixel, Color(height, depth, clampf(rate / 0.45, 0.0, 1.0), 1.0))
++		if depth > 0.0:
++			shore.set_pixelv(pixel, Color(float(distances[cell]) / 3.0, clampf(depth / 4.0, 0.0, 1.0), 1.0 - float(impacts[cell]) / 4.0, 1.0))
++	return {"live": live, "shore": shore, "rect": Rect2(Vector2(low), Vector2(size))}
++
++static func _spread_distance(distances: Dictionary, queue: Array[Vector2i], basin_ids: Dictionary, limit: float) -> void:
++	var cursor: int = 0
++	while cursor < queue.size():
++		var cell: Vector2i = queue[cursor]
++		cursor += 1
++		var next: float = float(distances[cell]) + 1.0
++		if next >= limit:
++			continue
++		for direction: Vector2i in Flow.DIRECTIONS:
++			var neighbor: Vector2i = cell + direction
++			if basin_ids.get(neighbor, -1) != basin_ids[cell] or float(distances.get(neighbor, 0.0)) <= next:
++				continue
++			distances[neighbor] = next
++			queue.append(neighbor)
+--- task_before/scripts/terrain_editor/water_flow.gd
++++ scripts/terrain_editor/water_flow.gd
+@@ -0,0 +1,357 @@
++extends RefCounted
++## Unit-area finite-volume water. Terrain records are read until explicitly persisted.
++const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
++const DIRECTIONS: Array[Vector2i] = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
++const MAX_SUBSTEP: float = 0.025
++const FLOW_COEFFICIENT: float = 0.45
++const POOL_SURFACE_TOLERANCE: float = 0.025
++
++var depths: Dictionary[Vector2i, float] = {}
++var heights: Dictionary[Vector2i, float] = {}
++var discharged_volume: float = 0.0
++var basins: Array[Dictionary] = []
++var last_transfers: Array[Dictionary] = []
++var _data: Data
++var _beds: Dictionary[Vector2i, float] = {}
++var _authored: Dictionary[Vector2i, Dictionary] = {}
++var _ordered_cells: Array[Vector2i] = []
++
++func configure(data: Data) -> void:
++	_data = data
++	depths.clear()
++	heights.clear()
++	_beds.clear()
++	_authored.clear()
++	basins.clear()
++	last_transfers.clear()
++	discharged_volume = 0.0
++	_ordered_cells.assign(data.cells.keys())
++	_ordered_cells.sort_custom(_cell_before)
++	for cell: Vector2i in _ordered_cells:
++		var record: Dictionary = data.cells[cell]
++		_beds[cell] = float(record.height)
++		_authored[cell] = _authoring_state(record)
++		_set_depth(cell, _initial_volume(record, _beds[cell]))
++	_rebuild_basins()
++
++func sync(data: Data) -> void:
++	if data != _data:
++		configure(data)
++		return
++	var changed_water: Dictionary = {}
++	var edited: bool = false
++	for cell: Vector2i in _ordered_cells:
++		if not data.cells.has(cell):
++			edited = true
++			discharged_volume += depths.get(cell, 0.0)
++			depths.erase(cell)
++			_beds.erase(cell)
++			_authored.erase(cell)
++	_ordered_cells.assign(data.cells.keys())
++	_ordered_cells.sort_custom(_cell_before)
++	for cell: Vector2i in _ordered_cells:
++		var record: Dictionary = data.cells[cell]
++		var next_bed: float = float(record.height)
++		var authored: Dictionary = _authoring_state(record)
++		var is_new: bool = not _beds.has(cell)
++		var reset_water: bool = is_new
++		edited = edited or is_new
++		if not is_new:
++			var previous: Dictionary = _authored[cell]
++			edited = edited or next_bed != _beds[cell] or authored != previous
++			# The legacy land brush clears its nominal flag when a raised bed
++			# crosses that plane. An unchanged explicit volume preserves live water.
++			var same_volume: bool = authored.has_volume == previous.has_volume and authored.volume == previous.volume
++			var bed_cleared_flag: bool = next_bed != _beds[cell] and same_volume and previous.water >= 0 and authored.water < 0
++			reset_water = authored != previous and not bed_cleared_flag
++		_beds[cell] = next_bed
++		_authored[cell] = authored
++		if reset_water:
++			_set_depth(cell, _initial_volume(record, next_bed))
++			changed_water[cell] = true
++	if not edited:
++		return
++	_level_existing_basins(changed_water)
++	_rebuild_basins()
++	last_transfers.clear()
++
++func write_to_data(data: Data) -> void:
++	if data != _data:
++		return
++	# Reconcile pending edits before saving so a new authoring command wins.
++	sync(data)
++	for cell: Vector2i in _ordered_cells:
++		data.cells[cell].water_volume = depths.get(cell, 0.0)
++		_authored[cell] = _authoring_state(data.cells[cell])
++
++func step(delta: float) -> void:
++	last_transfers.clear()
++	if not is_finite(delta) or delta <= 0.0 or depths.is_empty():
++		return
++	var transfer_totals: Dictionary = {}
++	var substeps: int = maxi(1, ceili(delta / MAX_SUBSTEP))
++	var duration: float = delta / float(substeps)
++	for substep: int in range(substeps):
++		if not _advance(duration, transfer_totals):
++			break
++	for edge: Vector3i in transfer_totals:
++		var transfer: Dictionary = transfer_totals[edge]
++		last_transfers.append({
++			"from": transfer.from, "to": transfer.to,
++			"rate": float(transfer.amount) / delta,
++			"source_height": transfer.source_height,
++			"target_height": transfer.target_height,
++		})
++
++func total_volume() -> float:
++	var volume: float = 0.0
++	for cell: Vector2i in _ordered_cells:
++		volume += depths.get(cell, 0.0)
++	return volume
++
++func _advance(duration: float, transfer_totals: Dictionary) -> bool:
++	var remaining_volumes: Dictionary[Vector2i, float] = {}
++	var incoming: Dictionary[Vector2i, float] = {}
++	var moved: bool = false
++	for cell: Vector2i in _ordered_cells:
++		var available: float = depths.get(cell, 0.0)
++		if available <= 0.0:
++			continue
++		var source_height: float = heights[cell]
++		var source_bed: float = _beds[cell]
++		var requests: Array[Dictionary] = []
++		var requested_fraction: float = 0.0
++		for direction: int in range(DIRECTIONS.size()):
++			var neighbor: Vector2i = cell + DIRECTIONS[direction]
++			var target_bed: float = _beds.get(neighbor, source_bed)
++			var target_height: float = heights.get(neighbor, target_bed)
++			var head: float = source_height - maxf(source_bed, maxf(target_bed, target_height))
++			if head <= 0.0:
++				continue
++			var requested: float = minf(available, FLOW_COEFFICIENT * pow(head, 1.5) * duration)
++			if requested <= 0.0:
++				continue
++			var fraction: float = requested / available
++			requested_fraction += fraction
++			requests.append({
++				"to": neighbor if _beds.has(neighbor) else null,
++				"fraction": fraction,
++				"target_height": target_height,
++				"direction": direction,
++			})
++		var scale: float = 1.0 / maxf(1.0, requested_fraction)
++		var donor_remaining: float = available
++		for request: Dictionary in requests:
++			var amount: float = minf(donor_remaining, available * float(request.fraction) * scale)
++			if amount <= 0.0:
++				continue
++			donor_remaining -= amount
++			if request.to == null:
++				discharged_volume += amount
++			else:
++				var target: Vector2i = request.to
++				incoming[target] = incoming.get(target, 0.0) + amount
++			var edge: Vector3i = Vector3i(cell.x, cell.y, int(request.direction))
++			var accumulated: float = float(transfer_totals[edge].amount) if transfer_totals.has(edge) else 0.0
++			transfer_totals[edge] = {
++				"from": cell, "to": request.to,
++				"amount": accumulated + amount,
++				"source_height": source_height,
++				"target_height": request.target_height,
++			}
++			moved = true
++		remaining_volumes[cell] = donor_remaining
++	if not moved:
++		return false
++	for cell: Vector2i in _ordered_cells:
++		_set_depth(cell, remaining_volumes.get(cell, 0.0) + incoming.get(cell, 0.0))
++	_level_existing_basins()
++	_rebuild_basins()
++	return true
++
++func _level_existing_basins(excluded: Dictionary = {}) -> void:
++	for basin: Dictionary in basins:
++		var eligible: Dictionary = {}
++		var raised: Dictionary = {}
++		for cell: Vector2i in basin.cells:
++			if not _beds.has(cell) or excluded.has(cell):
++				continue
++			if _beds[cell] >= float(basin.height):
++				raised[cell] = true
++			else:
++				eligible[cell] = true
++		# New high beds split a pool before any water is redistributed. Each
++		# side retains its own volume, then receives displaced barrier water.
++		var components: Array[Dictionary] = _connected_components(eligible)
++		var component_of: Dictionary[Vector2i, int] = {}
++		for index: int in range(components.size()):
++			for cell: Vector2i in components[index]:
++				component_of[cell] = index
++		for barrier: Dictionary in _connected_components(raised):
++			var neighbors: Dictionary = {}
++			var displaced: float = 0.0
++			for cell: Vector2i in barrier:
++				displaced += depths.get(cell, 0.0)
++				for offset: Vector2i in DIRECTIONS:
++					var neighbor: Vector2i = cell + offset
++					if component_of.has(neighbor):
++						neighbors[component_of[neighbor]] = true
++			if neighbors.is_empty():
++				# An isolated raised water cell keeps its water and can spill
++				# through actual flux on the next simulation tick.
++				continue
++			var share: float = displaced / float(neighbors.size())
++			var remainder: float = displaced
++			var pending: int = neighbors.size()
++			for index: int in neighbors:
++				var target: Vector2i = components[index].keys()[0]
++				var amount: float = remainder if pending == 1 else share
++				_set_depth(target, depths.get(target, 0.0) + amount)
++				remainder -= amount
++				pending -= 1
++			for cell: Vector2i in barrier:
++				depths.erase(cell)
++				heights.erase(cell)
++		for component: Dictionary in components:
++			_level_pool(component)
++
++func _rebuild_basins() -> void:
++	heights.clear()
++	for cell: Vector2i in depths:
++		heights[cell] = _beds[cell] + depths[cell]
++	basins.clear()
++	var visited: Dictionary = {}
++	for start: Vector2i in _ordered_cells:
++		if not depths.has(start) or visited.has(start):
++			continue
++		var members: Dictionary = {start: true}
++		var queue: Array[Vector2i] = [start]
++		var low: float = heights[start]
++		var high: float = low
++		var cursor: int = 0
++		visited[start] = true
++		while cursor < queue.size():
++			var cell: Vector2i = queue[cursor]
++			cursor += 1
++			for offset: Vector2i in DIRECTIONS:
++				var neighbor: Vector2i = cell + offset
++				if not heights.has(neighbor) or visited.has(neighbor):
++					continue
++				var next_low: float = minf(low, heights[neighbor])
++				var next_high: float = maxf(high, heights[neighbor])
++				if next_high - next_low > POOL_SURFACE_TOLERANCE:
++					continue
++				low = next_low
++				high = next_high
++				visited[neighbor] = true
++				members[neighbor] = true
++				queue.append(neighbor)
++		var basin: Dictionary = _level_pool(members)
++		if basin.is_empty():
++			continue
++		# Leveling can dry a shallow bridge. Public basins must reflect the
++		# remaining wet connectivity, including when no later flux occurs.
++		var components: Array[Dictionary] = [basin.cells]
++		if basin.cells.size() < members.size():
++			components = _connected_components(basin.cells)
++		for component: Dictionary in components:
++			var volume: float = 0.0
++			for cell: Vector2i in component:
++				volume += depths[cell]
++			basins.append({"id": basins.size(), "cells": component, "height": basin.height, "volume": volume})
++
++func _connected_components(members: Dictionary) -> Array[Dictionary]:
++	var pending: Dictionary = members.duplicate()
++	var components: Array[Dictionary] = []
++	while not pending.is_empty():
++		var start: Vector2i = pending.keys()[0]
++		var component: Dictionary = {start: true}
++		var queue: Array[Vector2i] = [start]
++		var cursor: int = 0
++		pending.erase(start)
++		while cursor < queue.size():
++			var cell: Vector2i = queue[cursor]
++			cursor += 1
++			for offset: Vector2i in DIRECTIONS:
++				var neighbor: Vector2i = cell + offset
++				if pending.has(neighbor):
++					pending.erase(neighbor)
++					component[neighbor] = true
++					queue.append(neighbor)
++		components.append(component)
++	return components
++
++func _level_pool(members: Dictionary) -> Dictionary:
++	var ordered: Array[Vector2i] = []
++	ordered.assign(members.keys())
++	ordered.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
++		return _beds[a] < _beds[b] if _beds[a] != _beds[b] else _cell_before(a, b))
++	var volume: float = 0.0
++	for cell: Vector2i in ordered:
++		volume += depths.get(cell, 0.0)
++	if volume <= 0.0:
++		for cell: Vector2i in ordered:
++			depths.erase(cell)
++			heights.erase(cell)
++		return {}
++	# Solve in offsets from the lowest bed. Tiny positive volumes survive even
++	# when adding their depth to an absolute bed would round back to that bed.
++	var bottom: float = _beds[ordered[0]]
++	var relative_bed_sum: float = 0.0
++	var active: int = 0
++	var level_offset: float = 0.0
++	for cell: Vector2i in ordered:
++		var relative_bed: float = _beds[cell] - bottom
++		if active > 0 and level_offset <= relative_bed:
++			break
++		relative_bed_sum += relative_bed
++		active += 1
++		level_offset = (volume + relative_bed_sum) / float(active)
++	var level: float = bottom + level_offset
++	var wet: Dictionary = {}
++	var assigned: float = 0.0
++	for cell: Vector2i in ordered:
++		var depth: float = maxf(0.0, level_offset - (_beds[cell] - bottom))
++		_set_depth(cell, depth)
++		if depth > 0.0:
++			wet[cell] = true
++			heights[cell] = level
++			assigned += depth
++		else:
++			heights.erase(cell)
++	# Keep arithmetic roundoff in the deepest member rather than deleting water.
++	var deepest: Vector2i = ordered[0]
++	var remainder: float = volume - assigned
++	if remainder != 0.0:
++		_set_depth(deepest, depths.get(deepest, 0.0) + remainder)
++		if depths.has(deepest):
++			wet[deepest] = true
++			heights[deepest] = level
++	return {"cells": wet, "height": level, "volume": volume}
++
++func _set_depth(cell: Vector2i, volume: float) -> void:
++	if volume > 0.0:
++		depths[cell] = volume
++	else:
++		depths.erase(cell)
++
++func _initial_volume(record: Dictionary, bed: float) -> float:
++	if record.has("water_volume"):
++		return _valid_volume(record.water_volume)
++	var water: int = int(record.get("water", -1))
++	return maxf(0.0, float(water) * 0.5 - bed) if water >= 0 else 0.0
++
++func _authoring_state(record: Dictionary) -> Dictionary:
++	return {
++		"water": int(record.get("water", -1)),
++		"has_volume": record.has("water_volume"),
++		"volume": _valid_volume(record.get("water_volume", 0.0)),
++	}
++
++func _valid_volume(value: Variant) -> float:
++	if (value is float or value is int) and is_finite(float(value)):
++		return maxf(0.0, float(value))
++	return 0.0
++
++func _cell_before(a: Vector2i, b: Vector2i) -> bool:
++	return a.y < b.y or (a.y == b.y and a.x < b.x)
+--- task_before/shaders/terrain_editor/terrain_morph.gdshaderinc
++++ shaders/terrain_editor/terrain_morph.gdshaderinc
+@@ -1,23 +1,32 @@
+-// Edit growth. A published terrain revision eases up from the heights on
+-// screen before the edit. Per cell, r is the previous top and g the new one.
+-// A column maps linearly between them above a shared floor, so expanded land
+-// rises and a raise lifts the wall with it. Instanced decoration moves with
+-// the column at its origin. TerrainRenderer drives the uniforms.
++// One publication transitions old and new geometry with complementary coverage.
++// Field channels carry old nominal top, new nominal top and previously shown top.
+ global uniform sampler2D terrain_morph_field : filter_linear, repeat_disable;
+ global uniform vec4 terrain_morph_rect;
+ global uniform float terrain_morph_progress;
++// Stable geometry has role 2, incoming geometry 0 and retiring geometry 1.
++instance uniform float terrain_transition_role : instance_index(15) = 2.0;
+ const float TERRAIN_MORPH_FLOOR = -7.0;
+ 
+ float terrain_morph_ease(float t){
+-	float u = clamp(t, 0.0, 1.0) - 1.0;
+-	return 1.0 + 2.2 * u * u * u + 1.2 * u * u;
++ float u=clamp(t,0.0,1.0);
++ return u*u*(3.0-2.0*u);
+ }
+ float terrain_morph_offset(vec3 p){
+-	if(terrain_morph_progress >= 1.0) return 0.0;
+-	vec2 uv = (p.xz - terrain_morph_rect.xy) / terrain_morph_rect.zw;
+-	if(uv.x < 0.0 || uv.y < 0.0 || uv.x > 1.0 || uv.y > 1.0) return 0.0;
+-	vec2 tops = texture(terrain_morph_field, uv).rg;
+-	float scale = (tops.x - TERRAIN_MORPH_FLOOR) / max(tops.y - TERRAIN_MORPH_FLOOR, .001);
+-	float old_y = TERRAIN_MORPH_FLOOR + (p.y - TERRAIN_MORPH_FLOOR) * scale;
+-	return (old_y - p.y) * (1.0 - terrain_morph_ease(terrain_morph_progress));
++ if(terrain_morph_progress>=1.0 || terrain_transition_role>1.5)return 0.0;
++ vec2 uv=(p.xz-terrain_morph_rect.xy)/terrain_morph_rect.zw;
++ if(uv.x<0.0 || uv.y<0.0 || uv.x>1.0 || uv.y>1.0)return 0.0;
++ vec4 tops=texture(terrain_morph_field,uv);
++ if(tops.a<.01)return 0.0;
++ bool retiring=terrain_transition_role>.5;
++ float nominal=retiring?tops.r:tops.g;
++ float denominator=max(nominal-TERRAIN_MORPH_FLOOR,.001);
++ float initial_y=TERRAIN_MORPH_FLOOR+(p.y-TERRAIN_MORPH_FLOOR)*(tops.b-TERRAIN_MORPH_FLOOR)/denominator;
++ float final_y=retiring?TERRAIN_MORPH_FLOOR+(p.y-TERRAIN_MORPH_FLOOR)*(tops.g-TERRAIN_MORPH_FLOOR)/denominator:p.y;
++ return mix(initial_y,final_y,terrain_morph_ease(terrain_morph_progress))-p.y;
+ }
++bool terrain_transition_visible(vec2 pixel){
++ if(terrain_transition_role>1.5)return true;
++ float progress=terrain_morph_ease(terrain_morph_progress);
++ float noise=fract(52.9829189*fract(dot(floor(pixel),vec2(.06711056,.00583715))));
++ return terrain_transition_role>.5?noise>=progress:noise<progress;
++}
+--- task_before/shaders/terrain_editor/live_water.gdshaderinc
++++ shaders/terrain_editor/live_water.gdshaderinc
+@@ -0,0 +1,10 @@
++// The physics view supplies absolute height and depth per authoritative cell.
++global uniform sampler2D live_water_field : filter_nearest, repeat_disable;
++global uniform vec4 live_water_rect;
++global uniform float live_water_active;
++float live_water_depth(vec2 p){
++ if(live_water_active<.5)return 0.0;
++ vec2 uv=(p-live_water_rect.xy)/live_water_rect.zw;
++ if(uv.x<0.0 || uv.y<0.0 || uv.x>1.0 || uv.y>1.0)return 0.0;
++ return max(0.0,texture(live_water_field,uv).g);
++}

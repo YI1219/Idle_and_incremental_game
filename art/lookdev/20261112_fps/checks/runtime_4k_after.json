@@ -1,0 +1,21 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"before": false,
+	"elapsed_seconds": 8.010455,
+	"fps": 85.0138974627534,
+	"frame_ms_p50": 11.345,
+	"frame_ms_p95": 14.469,
+	"frames": 681,
+	"method": "production editor process with live light+water;fixed camera;3s warmup+8s sample;real normal render loop;--disable-vsync;native pixels or fixed .5 FSR;limiter disabled in both variants;serial processes;no capture I/O",
+	"msaa": 1,
+	"resolution": [
+		3840,
+		963
+	],
+	"scale": 1.0,
+	"texture_size": [
+		2289,
+		1288
+	],
+	"water_seconds": 11.1
+}

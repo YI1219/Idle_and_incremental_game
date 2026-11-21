@@ -1,0 +1,12 @@
+[
+  {
+    "file": "scripts/terrain_editor/terrain_decoration.gd",
+    "before_sha256": "76a8cc51ff1245048441b499a8d341747cf7998bccff1ee7b0d094f0a3107d01",
+    "after_sha256": "98fc44646af71a02a674e3102108e487f343cb09beba1a5fff06882df4edf5fa"
+  },
+  {
+    "file": "scripts/terrain_editor/contour_terrain.gd",
+    "before_sha256": "a257935087ac56778f3087d4e10e08c9139661ba0dcb7c3aa0042c2c57340b00",
+    "after_sha256": "94610aa69d37b7f05884d7d9acb9edbcc40ade4f1084f1167cc59e67e2bd8848"
+  }
+]

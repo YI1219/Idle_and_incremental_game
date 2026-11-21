@@ -1,0 +1,446 @@
+{
+	"before_note": "Only two task-start geometry generators reconstructed in memory; current grass/materials/water shared",
+	"captures": [
+		{
+			"actor_absent": true,
+			"data_sha256": "bfd70c58f9812524028f8d71b554df5aac7c2a1a4fd8cfed28715bd2a4ec8483",
+			"discharged": 0.0,
+			"file": "00_original_whole.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "old_geometry_current_grass",
+			"volume": 71.0
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "bfd70c58f9812524028f8d71b554df5aac7c2a1a4fd8cfed28715bd2a4ec8483",
+			"discharged": 0.0,
+			"file": "01_current_whole.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "current",
+			"volume": 71.0
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "7ec8eb5c1f3a93ab5b49474a552a2dd82ede6692e45b7049da5fe9d5788eed9f",
+			"discharged": 1.90762267785246,
+			"file": "upper_before_16.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				-6.38602495193481,
+				9.5,
+				0.384892880916595
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				15.9999990463257,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "old_geometry_current_grass",
+			"volume": 69.0923773221474
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "7ec8eb5c1f3a93ab5b49474a552a2dd82ede6692e45b7049da5fe9d5788eed9f",
+			"discharged": 1.90762267785246,
+			"file": "upper_after_16.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				-6.38602495193481,
+				9.5,
+				0.384892880916595
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				15.9999990463257,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "current",
+			"volume": 69.0923773221474
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "7ec8eb5c1f3a93ab5b49474a552a2dd82ede6692e45b7049da5fe9d5788eed9f",
+			"discharged": 1.90762267785246,
+			"file": "upper_before_196.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				-8.61397552490234,
+				9.5,
+				-7.38489294052124
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				195.999984741211,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "old_geometry_current_grass",
+			"volume": 69.0923773221474
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "7ec8eb5c1f3a93ab5b49474a552a2dd82ede6692e45b7049da5fe9d5788eed9f",
+			"discharged": 1.90762267785246,
+			"file": "upper_after_196.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				-8.61397552490234,
+				9.5,
+				-7.38489294052124
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				195.999984741211,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "current",
+			"volume": 69.0923773221474
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "7ec8eb5c1f3a93ab5b49474a552a2dd82ede6692e45b7049da5fe9d5788eed9f",
+			"discharged": 1.90762267785246,
+			"file": "level_blueprint.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				-8.61397552490234,
+				9.5,
+				-7.38489294052124
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				195.999984741211,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "level_draft",
+			"volume": 69.0923773221474
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "6b46b37cfd63f857e6efb66e4a4886596b10d4696a37c29eb21250dd5b7bd759",
+			"discharged": 1.91773388574734,
+			"file": "lower_before.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				16.8848934173584,
+				9.5,
+				-1.11397516727448
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				105.999992370605,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "old_geometry_current_grass",
+			"volume": 69.0822661142529
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "6b46b37cfd63f857e6efb66e4a4886596b10d4696a37c29eb21250dd5b7bd759",
+			"discharged": 1.91773388574734,
+			"file": "lower_after.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				16.8848934173584,
+				9.5,
+				-1.11397516727448
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				105.999992370605,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "current",
+			"volume": 69.0822661142529
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "93afc5b88ceb48c27e3379d2bc4a14a2ceffaebddcd0d35e269fc778f3ccd04d",
+			"discharged": 1.90762267785246,
+			"file": "held_2104.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				-3.61510705947876,
+				9.5,
+				-4.61397504806519
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				105.999992370605,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 2104,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "current",
+			"volume": 69.0923773221474
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "6548da244ea79b1b83f28954e0f42c28ff958aac1c1c2a6f5409202950c540d8",
+			"discharged": 1.90762267785246,
+			"file": "held_4242.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				-3.61510705947876,
+				9.5,
+				-4.61397504806519
+			],
+			"resolution": [
+				2560,
+				1440
+			],
+			"rotation": [
+				-60.0,
+				105.999992370605,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 4242,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "current",
+			"volume": 69.0923773221474
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "dd496c63342cc53ad9b8c858919c0fd72a55796cbb2fd65ba20658d66740ed18",
+			"discharged": 0.0636492177719172,
+			"file": "4K_native.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 2,
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"resolution": [
+				3840,
+				2160
+			],
+			"rotation": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"scale_3d": 1.0,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "native_4K",
+			"volume": 70.9363507822274
+		},
+		{
+			"actor_absent": true,
+			"data_sha256": "dd496c63342cc53ad9b8c858919c0fd72a55796cbb2fd65ba20658d66740ed18",
+			"discharged": 0.0636492177719172,
+			"file": "4K_preview.png",
+			"fov": 31.0,
+			"morph": 1.0,
+			"msaa": 1,
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"resolution": [
+				3840,
+				2160
+			],
+			"rotation": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"scale_3d": 0.666666686534882,
+			"seed": 7301,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"variant": "4K_output_2K_3D",
+			"volume": 70.9363507822274
+		}
+	],
+	"day_progress": 0.29,
+	"errors": [
+		"Cannot load baseline scripts/terrain_editor/terrain_decoration.gd",
+		"Cannot load baseline scripts/terrain_editor/terrain_decoration.gd",
+		"Cannot load baseline scripts/terrain_editor/terrain_decoration.gd",
+		"Cannot load baseline scripts/terrain_editor/terrain_decoration.gd",
+		"Cannot load baseline scripts/terrain_editor/terrain_decoration.gd"
+	],
+	"phase": 1.25,
+	"scene": "scenes/terrain_editor.tscn",
+	"source_sha256": {
+		"scripts/gameplay/ui/shihai_hud.gd": "7e42fe23c2713c97f32c7a870b947346d86637192dc12f6ffdf903452de9f950",
+		"scripts/terrain_editor/contour_terrain.gd": "94610aa69d37b7f05884d7d9acb9edbcc40ade4f1084f1167cc59e67e2bd8848",
+		"scripts/terrain_editor/editor.gd": "aa87cf7069e247e7940ffe94a764bedb263b4d87e8900d03d99bbf67f4ec1e0d",
+		"scripts/terrain_editor/grass_field.gd": "2d050a47e85bfa0a42f6ae6fd300439b7d042ee4524ed507f2bf5612249188c6",
+		"scripts/terrain_editor/preview_quality.gd": "fe93ec1b5512c21b57af7a2c335e1c53a98c71bd045432899f0354d5d59ec62e",
+		"scripts/terrain_editor/terrain_data.gd": "3027f770b347064501f518727cb91d9d7cc2108c0f8865cb4022a2cde1968eec",
+		"scripts/terrain_editor/terrain_decoration.gd": "98fc44646af71a02a674e3102108e487f343cb09beba1a5fff06882df4edf5fa",
+		"shaders/terrain_editor/grass_blades.gdshader": "d807c75654afec9a0d0cd04cbb5c9953ccfffd8abe2afe38d60bcc47b00e329b",
+		"shaders/terrain_editor/ground.gdshader": "2b3be899c00f0a213b56220b842dc2a4b388090feeb39b06b12cfa641950571a",
+		"shaders/terrain_editor/live_water.gdshaderinc": "7a5e5663f63074eb0b394d22ec9f6510cb46275231d71a29b7b3c91b69523fad",
+		"shaders/terrain_editor/rim_green.gdshader": "edd5f2811c1cd0a8ae0aa14cddcb6958ac551f765225196a953fbf1b78e1caec"
+	},
+	"source_stable": true,
+	"valid": false
+}

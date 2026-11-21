@@ -1,0 +1,281 @@
+[
+  {
+    "test": "argon_world_lock_test",
+    "exit": 0,
+    "seconds": 2.03,
+    "errors": [],
+    "tail": [
+      "ok: scene retains enabled SSIL with a positive intensity",
+      "ARGON WORLD LOCK: 9/9 passed; 0 failures"
+    ]
+  },
+  {
+    "test": "cliff_form_variety_test",
+    "exit": 0,
+    "seconds": 0.25,
+    "errors": [],
+    "tail": [
+      "",
+      "CLIFF FORM VARIETY: 49 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "cliff_mantle_seam_test",
+    "exit": 0,
+    "seconds": 0.24,
+    "errors": [],
+    "tail": [
+      "",
+      "CLIFF MANTLE SEAM: 28 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "cliff_partial_crown_seal_test",
+    "exit": 0,
+    "seconds": 2.62,
+    "errors": [],
+    "tail": [
+      "",
+      "CLIFF PARTIAL CROWN SEAL: 24 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "grass_lip_soften_test",
+    "exit": 0,
+    "seconds": 4.8,
+    "errors": [],
+    "tail": [
+      "ok: seed 7301 preset 1 chunk meshes keep the lip and the flat crown",
+      "GRASS LIP CHECKS: 24 failures: 0"
+    ]
+  },
+  {
+    "test": "grass_recovery_test",
+    "exit": 0,
+    "seconds": 0.15,
+    "errors": [],
+    "tail": [
+      "",
+      "GRASS RECOVERY 11 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "interior_terrain_edit_test",
+    "exit": 0,
+    "seconds": 40.19,
+    "errors": [],
+    "tail": [
+      "INTERIOR FIXTURE seed 7301 center (-8.0, -5.0) strokes 4 joined true",
+      "INTERIOR TERRAIN EDIT: 60 checks, 0 failures, 460 downward rays, 672 horizontal support rays"
+    ]
+  },
+  {
+    "test": "preview_quality_test",
+    "exit": 0,
+    "seconds": 0.14,
+    "errors": [],
+    "tail": [
+      "",
+      "PREVIEW QUALITY 12 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "runtime_power_test",
+    "exit": 0,
+    "seconds": 0.14,
+    "errors": [],
+    "tail": [
+      "",
+      "RUNTIME POWER 15 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "sol61_grass_contact_test",
+    "exit": 0,
+    "seconds": 0.24,
+    "errors": [],
+    "tail": [
+      "ok: grass continues onto the rounded outer slope",
+      "SOL61 GRASS CONTACT failures: 0"
+    ]
+  },
+  {
+    "test": "sol61_scene_test",
+    "exit": 0,
+    "seconds": 2.95,
+    "errors": [],
+    "tail": [
+      "ok: night water does not retain daytime highlight energy",
+      "SOL61 SCENE: 7 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_blueprint_async_test",
+    "exit": 0,
+    "seconds": 6.97,
+    "errors": [],
+    "tail": [
+      "",
+      "TERRAIN BLUEPRINT ASYNC: 16 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_blueprint_test",
+    "exit": 0,
+    "seconds": 2.63,
+    "errors": [],
+    "tail": [
+      "",
+      "TERRAIN BLUEPRINT: 13 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_controls_test",
+    "exit": 1,
+    "seconds": 2.06,
+    "errors": [
+      "ERROR: viewport size token 0 selects radius",
+      "ERROR: viewport size token 2 selects radius",
+      "ERROR: viewport right drag rotates yaw and pitch",
+      "ERROR: viewport middle drag pans"
+    ],
+    "tail": [
+      "       [1] run (res://tests/terrain_controls_test.gd:84)",
+      "terrain_controls_test: 29 checks, 4 failures"
+    ]
+  },
+  {
+    "test": "terrain_editor_runtime_test",
+    "exit": 1,
+    "seconds": 6.27,
+    "errors": [
+      "ERROR: viewport world click edits the pointed cell",
+      "ERROR: snapped viewport brush edits east/south cliff owner",
+      "ERROR: snapped viewport brush edits east/south cliff owner"
+    ],
+    "tail": [
+      "       [1] run (res://tests/terrain_editor_runtime_test.gd:113)",
+      "TERRAIN EDITOR RUNTIME: 19/22 passed"
+    ]
+  },
+  {
+    "test": "terrain_locality_test",
+    "exit": 0,
+    "seconds": 7.26,
+    "errors": [],
+    "tail": [
+      "",
+      "TERRAIN LOCALITY: 15 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_release_feedback_test",
+    "exit": 0,
+    "seconds": 2.85,
+    "errors": [],
+    "tail": [
+      "",
+      "TERRAIN RELEASE FEEDBACK 19 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_stroke_plane_test",
+    "exit": 0,
+    "seconds": 2.16,
+    "errors": [],
+    "tail": [
+      "",
+      "STROKE PLANE 15 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_surface_anchor_test",
+    "exit": 0,
+    "seconds": 2.36,
+    "errors": [],
+    "tail": [
+      "",
+      "TERRAIN SURFACE ANCHOR: 12 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_transition_test",
+    "exit": 0,
+    "seconds": 3.75,
+    "errors": [],
+    "tail": [
+      "",
+      "TERRAIN TRANSITION: 8 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "terrain_water_integration_test",
+    "exit": 0,
+    "seconds": 4.26,
+    "errors": [],
+    "tail": [
+      "",
+      "TERRAIN WATER INTEGRATION: 11 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "water_flow_test",
+    "exit": 0,
+    "seconds": 0.66,
+    "errors": [],
+    "tail": [
+      "ok: actual preset 2 basin levels and volumes match consumer-facing cell data",
+      "WATER FLOW: 92 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "water_idle_work_test",
+    "exit": 0,
+    "seconds": 0.56,
+    "errors": [],
+    "tail": [
+      "ok: moving or raising terrain rebuilds grass fringe ownership",
+      "WATER IDLE 10 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "water_recession_test",
+    "exit": 0,
+    "seconds": 5.57,
+    "errors": [],
+    "tail": [
+      "RECESSION BASELINE grass=2711592339 columns=2506595779 mass=3039416512",
+      "WATER RECESSION: 16 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "water_renderer_test",
+    "exit": 0,
+    "seconds": 1.06,
+    "errors": [],
+    "tail": [
+      "ok: sub-visible water can omit geometry without deleting mass",
+      "water_renderer_test: 48/48 passed"
+    ]
+  },
+  {
+    "test": "waterfall_flow_shape_test",
+    "exit": 0,
+    "seconds": 0.25,
+    "errors": [],
+    "tail": [
+      "",
+      "WATERFALL FLOW SHAPE: 9 checks, 0 failures"
+    ]
+  },
+  {
+    "test": "waterfall_terrace_seal_test",
+    "exit": 0,
+    "seconds": 3.24,
+    "errors": [],
+    "tail": [
+      "",
+      "WATERFALL TERRACE SEAL: 16 checks, 0 failures"
+    ]
+  }
+]

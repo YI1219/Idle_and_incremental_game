@@ -1,0 +1,126 @@
+[
+  {
+    "test": "argon_world_lock_test.gd",
+    "exit": 0,
+    "seconds": 1.97,
+    "errors": false
+  },
+  {
+    "test": "gameplay_m1_m2_test.gd",
+    "exit": "timeout"
+  },
+  {
+    "test": "grass_lip_soften_test.gd",
+    "exit": 0,
+    "seconds": 4.84,
+    "errors": false
+  },
+  {
+    "test": "grass_recovery_test.gd",
+    "exit": 0,
+    "seconds": 0.14,
+    "errors": false
+  },
+  {
+    "test": "preview_quality_test.gd",
+    "exit": 0,
+    "seconds": 0.14,
+    "errors": false
+  },
+  {
+    "test": "sol61_grass_contact_test.gd",
+    "exit": 0,
+    "seconds": 0.24,
+    "errors": false
+  },
+  {
+    "test": "sol61_scene_test.gd",
+    "exit": 0,
+    "seconds": 2.83,
+    "errors": false
+  },
+  {
+    "test": "terrain_blueprint_async_test.gd",
+    "exit": 0,
+    "seconds": 5.75,
+    "errors": false
+  },
+  {
+    "test": "terrain_blueprint_test.gd",
+    "exit": 0,
+    "seconds": 2.54,
+    "errors": false
+  },
+  {
+    "test": "terrain_controls_test.gd",
+    "exit": 0,
+    "seconds": 1.98,
+    "errors": false
+  },
+  {
+    "test": "terrain_editor_runtime_test.gd",
+    "exit": 0,
+    "seconds": 6.18,
+    "errors": false
+  },
+  {
+    "test": "terrain_locality_test.gd",
+    "exit": 0,
+    "seconds": 7.3,
+    "errors": false
+  },
+  {
+    "test": "terrain_release_feedback_test.gd",
+    "exit": 0,
+    "seconds": 2.84,
+    "errors": false
+  },
+  {
+    "test": "terrain_stroke_plane_test.gd",
+    "exit": 0,
+    "seconds": 2.07,
+    "errors": false
+  },
+  {
+    "test": "terrain_surface_anchor_test.gd",
+    "exit": 0,
+    "seconds": 2.27,
+    "errors": false
+  },
+  {
+    "test": "terrain_transition_test.gd",
+    "exit": 0,
+    "seconds": 3.68,
+    "errors": false
+  },
+  {
+    "test": "terrain_water_integration_test.gd",
+    "exit": 0,
+    "seconds": 4.2,
+    "errors": false
+  },
+  {
+    "test": "water_flow_test.gd",
+    "exit": 0,
+    "seconds": 0.65,
+    "errors": false
+  },
+  {
+    "test": "water_recession_test.gd",
+    "exit": 0,
+    "seconds": 5.44,
+    "errors": false
+  },
+  {
+    "test": "water_renderer_test.gd",
+    "exit": 0,
+    "seconds": 1.06,
+    "errors": false
+  },
+  {
+    "test": "waterfall_flow_shape_test.gd",
+    "exit": 0,
+    "seconds": 0.23,
+    "errors": false
+  }
+]

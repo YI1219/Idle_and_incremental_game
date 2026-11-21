@@ -1,0 +1,230 @@
+{
+  "destination": "/Users/yi/Downloads/scroll_edit_release_20261111",
+  "files_including_manifest": 57,
+  "files": [
+    {
+      "file": ".gdignore",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "README.md",
+      "sha256": "103347c46b7c92d8ea253c636565798c4f31241a3f2835c3ef20d1a1ecba246d"
+    },
+    {
+      "file": "checks/argon_world_lock.log",
+      "sha256": "66b69574752d78850b960ce8bc4461db3e3a6dd60ad58ab022b7b8221f7e7180"
+    },
+    {
+      "file": "checks/before.json",
+      "sha256": "5c43e3bd9f88336adcc5dc14813a8777d95be96f61eb90e87d12027e3482340c"
+    },
+    {
+      "file": "checks/capture.log",
+      "sha256": "a4d1f89fc46e175cbd91462d73bdffa1034a37ff5c9c5637d80b582143de2dec"
+    },
+    {
+      "file": "checks/capture_feedback.gd",
+      "sha256": "3847971b61ae41a078304e75c222d6649b59b489c5b061e27a63a7e449b41847"
+    },
+    {
+      "file": "checks/capture_final.log",
+      "sha256": "ec6a952fe430567b91b9286495fb234be9408e35f4b57a621262e1936b16ae45"
+    },
+    {
+      "file": "checks/changes.patch",
+      "sha256": "724c6fb0b10f114e809ab6323d6aeb4269dc4fd4a42cc0bab281f286ba708d82"
+    },
+    {
+      "file": "checks/early_capture.json",
+      "sha256": "1c9b08f50c5400f453213c632af9aff14d9aeafb09ed94b1b844339b2e54a171"
+    },
+    {
+      "file": "checks/feedback_benchmark.gd",
+      "sha256": "8536e5fd61ab1b81a2a6166f729370bcbd3c2d8fb8f8913443cfea08ed2f31d7"
+    },
+    {
+      "file": "checks/feedback_green.log",
+      "sha256": "4dca417dff5d59a2b64e3a9f15b5d7367262b2f0d0e239031ccba0dad2f73ffc"
+    },
+    {
+      "file": "checks/feedback_red.log",
+      "sha256": "7a59df37d05aaab9c94ef57d092a32762bf538beb46ff201a8f09f663f619b8e"
+    },
+    {
+      "file": "checks/final_audit.json",
+      "sha256": "6ca554cf693675fbde6e6c485ce78b52e4dea6a90800be11b46d8090881c543e"
+    },
+    {
+      "file": "checks/handoff_red.log",
+      "sha256": "2264d66ca7578f35f8e202e4081924eb5b63c4104eb8f39069d86a9d77e85a81"
+    },
+    {
+      "file": "checks/latency.json",
+      "sha256": "3c304bbe16d50b05f30620a8c725b22c2e046a9389fb01b314b91234d75c6942"
+    },
+    {
+      "file": "checks/latency.log",
+      "sha256": "ce13aef609563cb98216b4b31c75fc01fc423f2ed7517d6485a74561a6a3f3a9"
+    },
+    {
+      "file": "checks/sol61_scene.log",
+      "sha256": "91db10d580c9e09850c11cd8e88854a00b66c4581d7179306fb96df66964e2e9"
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/edit_preview.gd",
+      "sha256": "7d65cb502430ce28bf2137801ebf6d6d514abe202083486ad5e1e3c5ff33f31b"
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/editor.gd",
+      "sha256": "6b7e71bf84a3f2ef6bcf0717cbec84edd8e117b1ce57bc6129be95a9181ec94b"
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/edit_preview.gdshader",
+      "sha256": "1dfec4d4cc58bdd14ee2357a2a1d588a6c9f0eb48ad7f42ed0eef6094d917150"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/edit_preview.gd",
+      "sha256": "d7f8fc48220d39b27f431530d18ca42ebeb4e683672f2ac2cd20dbfccbdbeb17"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/editor.gd",
+      "sha256": "3ca111acec2104572b570127351ba1896d1d162fb44a419c6bb9a65f4ea2c486"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/edit_preview.gdshader",
+      "sha256": "b14ef12e9fc3ea57a0624020da259facf03f2d095863f1e3cfc4eee0518bc1a9"
+    },
+    {
+      "file": "checks/source_final.json",
+      "sha256": "fbbf48ec82e987282d2d85632718a23418265062b8333a1ccab16577cc020290"
+    },
+    {
+      "file": "checks/terrain_blueprint.log",
+      "sha256": "db929e79fe4c8f8d1ab8b024b77c8489b0014f60f706d3fcd8ed323fba0b1909"
+    },
+    {
+      "file": "checks/terrain_blueprint_async.log",
+      "sha256": "de72a98844f7caa07583e30103b64f73659ae5fac77c38a04b344041fb6b1acd"
+    },
+    {
+      "file": "checks/terrain_controls.log",
+      "sha256": "78f2c2be87f67d608ea383792e196c2913071d46ff1f6d129e19711fd00a0fb6"
+    },
+    {
+      "file": "checks/terrain_editor_runtime.log",
+      "sha256": "ca22673be731daf4baa19b9cf353360191ebca94d03e5718b53a11f4f0a9bc5c"
+    },
+    {
+      "file": "checks/terrain_release_feedback.log",
+      "sha256": "e7a012db9b96c95244a0a359108fa3be5106f1ba59047546efadfeac7f76e44d"
+    },
+    {
+      "file": "checks/terrain_stroke_plane.log",
+      "sha256": "33155585ec4e2ec1ccaa0dc182ff4f8f6e94f53ff1413a9f7bda84d935b4530e"
+    },
+    {
+      "file": "checks/terrain_transition.log",
+      "sha256": "f817ff913e7fef6ba74f46d47624849d8504d8b6c19d58d0e3e0faf09b5421a4"
+    },
+    {
+      "file": "checks/tests.json",
+      "sha256": "f52f1798967d92a2888b1d0beca73c85381642c81767bb136c7af158ae6fdc70"
+    },
+    {
+      "file": "compare.html",
+      "sha256": "38d7fa9bc6497eb102ffa6b277be18143e67e280c620438a03f8aa78690ad081"
+    },
+    {
+      "file": "review/captures.json",
+      "sha256": "dca8ed77a39296263647dceedb54b7efa085157fb9cf3636e39129e574a220ed"
+    },
+    {
+      "file": "review/contract_after_000.png",
+      "sha256": "3c928ac95eda04bb4222faa8ed0edecbbe91ba48b450770db1628984797d9f6e"
+    },
+    {
+      "file": "review/contract_after_005.png",
+      "sha256": "927af765b74b52d0e7d5ed183e49c092668120c046addac0fe53efe607fe41c5"
+    },
+    {
+      "file": "review/contract_after_014.png",
+      "sha256": "c87e146490ae053bdbbea78f8a7706838ee3461603598582c9b980dfd17fe24c"
+    },
+    {
+      "file": "review/contract_after_017.png",
+      "sha256": "6a9c0a807ea3eeae6e7891e1adf705b59e1ad768d7b5efef41bff782b78ffe5f"
+    },
+    {
+      "file": "review/contract_after_031.png",
+      "sha256": "def9f9b8cc183209e7b810dbb5c3de5ed3279eafe6e2dd109c7c42eab68a4b5f"
+    },
+    {
+      "file": "review/contract_before_000.png",
+      "sha256": "c3d2ca3e3f182a60a1e1fa2f1bc8fb9d66b3f6b01573020d24d54cbddd33ec7b"
+    },
+    {
+      "file": "review/contract_before_005.png",
+      "sha256": "4c4c496a6041cdd1e7c4bcfc26d16a2986a43e632454f578394f1ecac65fafb6"
+    },
+    {
+      "file": "review/contract_before_014.png",
+      "sha256": "a4b2c64e2c60f25fff09a99580fc1e40c8a7c8a23fee3788a2b0bb304977f96f"
+    },
+    {
+      "file": "review/contract_before_017.png",
+      "sha256": "db4d1c0ea96b6e2f25b243804d17ce3d6e0d4cac5a90cf416a9935038e8c3f70"
+    },
+    {
+      "file": "review/contract_before_031.png",
+      "sha256": "def9f9b8cc183209e7b810dbb5c3de5ed3279eafe6e2dd109c7c42eab68a4b5f"
+    },
+    {
+      "file": "review/contract_compare.webp",
+      "sha256": "53bb1baa203e71db5e9a9202c6b4063cf65c2e5520062e0ab4b394e5198cb05b"
+    },
+    {
+      "file": "review/raise_after_000.png",
+      "sha256": "7f3294713134b8fdc4e6c46e2c7076d37b1bb82a7c0ab209fba9f28393550667"
+    },
+    {
+      "file": "review/raise_after_005.png",
+      "sha256": "44389114a0166bffc1dbef22cd5908ec95cbd6cd868832663d871b346d246a78"
+    },
+    {
+      "file": "review/raise_after_014.png",
+      "sha256": "c01657aca3254b7cdad913be4291682be88aecae83f98a77d18cc342090397be"
+    },
+    {
+      "file": "review/raise_after_017.png",
+      "sha256": "0ff62e9825a2b25b99099d687c0d702b58e2a37707092337fab84092aeeb4773"
+    },
+    {
+      "file": "review/raise_after_031.png",
+      "sha256": "1f719f5ca988efb1f0d405bda0c1328c45210d95369f0832bc56185de091686d"
+    },
+    {
+      "file": "review/raise_before_000.png",
+      "sha256": "09dc01d3f84c4871f55a8e3782704d20df2d84544c499c28311328ed776eca65"
+    },
+    {
+      "file": "review/raise_before_005.png",
+      "sha256": "4bcdf8c340b76c5f7947a6503299d8f2c856baf9bae028bbd5e2613e062439ac"
+    },
+    {
+      "file": "review/raise_before_014.png",
+      "sha256": "d2a1cd19d77db5e50eae271fa07689455573f59c469de47ffa061e5785efeb13"
+    },
+    {
+      "file": "review/raise_before_017.png",
+      "sha256": "79ca29a29eaf9b2c6827df66dde28ad68920846b706d5cd86a54833b3135faa8"
+    },
+    {
+      "file": "review/raise_before_031.png",
+      "sha256": "1f719f5ca988efb1f0d405bda0c1328c45210d95369f0832bc56185de091686d"
+    },
+    {
+      "file": "review/raise_compare.webp",
+      "sha256": "cf78f5458fc5fe6857e60db3107de594d391f637ac98f4756b1888e49e8799e6"
+    }
+  ]
+}

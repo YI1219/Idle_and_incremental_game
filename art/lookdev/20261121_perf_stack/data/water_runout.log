@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+RUNOUT t=   10 s volume 64.54 of 71.00 discharged 6.46 transfers 54 strongest 0.1594/s
+RUNOUT t=   30 s volume 52.63 of 71.00 discharged 18.37 transfers 9 strongest 0.1368/s
+RUNOUT t=   60 s volume 38.77 of 71.00 discharged 32.23 transfers 9 strongest 0.0956/s
+RUNOUT t=  120 s volume 22.59 of 71.00 discharged 48.41 transfers 9 strongest 0.0459/s
+RUNOUT t=  300 s volume 7.31 of 71.00 discharged 63.69 transfers 9 strongest 0.0089/s
+RUNOUT t=  600 s volume 2.41 of 71.00 discharged 68.59 transfers 9 strongest 0.0017/s
+RUNOUT t=  900 s volume 1.18 of 71.00 discharged 69.82 transfers 9 strongest 0.0006/s
+RUNOUT end t=900.0 s sleeping=false last transfer at 900.0 s volume 1.18; solver wall time 35.3 s (3.92 ms per simulated 0.1 s)

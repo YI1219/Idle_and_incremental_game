@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+ok: normal scene contains no humanoid instance
+ok: stage-one scene starts with terrain camera control
+ok: production F11 wallpaper mode works without actor
+ok: preset rebuild and tick do not recreate humanoid
+ok: scene keeps deleted cottage absent
+ok: water highlights follow the actual scene light
+ok: night water does not retain daytime highlight energy
+SOL61 SCENE: 7 checks, 0 failures

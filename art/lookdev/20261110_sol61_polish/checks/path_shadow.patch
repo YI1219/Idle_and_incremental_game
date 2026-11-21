@@ -1,0 +1,15 @@
+diff --git a/shaders/terrain_editor/cliff_rock.gdshader b/shaders/terrain_editor/cliff_rock.gdshader
+--- a/shaders/terrain_editor/cliff_rock.gdshader
++++ b/shaders/terrain_editor/cliff_rock.gdshader
+@@ -65,9 +65,9 @@
+ 		base_col*=mix(vec3(1.0),vec3(.74,.80,.86),cav*.52);
+ 		base_ao=mix(.78,1.0,smoothstep(-.04,.20,h_rel))*(1.0-cav*.38)*mix(1.0,.84,away_sun);
+ 	}else if(abs(prop_kind-2.0)<.4){
+-		// Stepping-stone path: soft warm-buff sunlit top table + distinct dark chiseled rim bevel
++		// Shared limestone pigment across the table and bevel. Scene light supplies the side shadow.
+ 		float top_face=smoothstep(.38,.86,shade_n.y);
+-		vec3 rim_tone=stone_shadow_color*vec3(.78,.82,.82);
++		vec3 rim_tone=mix(stone_mid_color,stone_lit_color,.18)*vec3(.90,.94,.98);
+ 		vec3 top_tone=mix(stone_mid_color,stone_lit_color,.64)*vec3(.86,.84,.77);
+ 		vec3 warm_jit=mix(vec3(.96,.98,1.02),vec3(1.04,1.01,.95),variation.x);
+ 		base_col=mix(rim_tone,top_tone,top_face)*warm_jit*mix(vec3(1.0),brush_tint,.22);

@@ -1,0 +1,62 @@
+[
+  {
+    "item": "junction",
+    "before": "00_approved_day/cliff_close.png",
+    "after": "01_planted_junction_day/cliff_close.png",
+    "native_roi": [
+      450,
+      300,
+      1840,
+      720
+    ],
+    "analysis_resize_only": true
+  },
+  {
+    "item": "path",
+    "before": "01_planted_junction_day/close.png",
+    "after": "02_path_contact_day/close.png",
+    "native_roi": [
+      550,
+      220,
+      1250,
+      1120
+    ],
+    "analysis_resize_only": true
+  },
+  {
+    "item": "rhythm",
+    "before": "02_path_contact_day/whole.png",
+    "after": "03_cliff_rhythm_day/whole.png",
+    "native_roi": [
+      400,
+      500,
+      2250,
+      1400
+    ],
+    "analysis_resize_only": true
+  },
+  {
+    "item": "roots",
+    "before": "03_cliff_rhythm_day/whole.png",
+    "after": "04_planar_roots_day/whole.png",
+    "native_roi": [
+      450,
+      780,
+      2140,
+      1400
+    ],
+    "analysis_resize_only": true
+  },
+  {
+    "item": "waterfall",
+    "before": "04_planar_roots_day/whole.png",
+    "after": "06_final_day/whole.png",
+    "native_roi": [
+      1530,
+      930,
+      1840,
+      1400
+    ],
+    "analysis_resize_only": true
+  }
+]

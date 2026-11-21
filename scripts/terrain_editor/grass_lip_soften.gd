@@ -3,8 +3,9 @@ extends RefCounted
 ## The flat cap stays where it is. The lip is one shallow roll, wide enough
 ## to read from the game camera, not a second curb.
 const ContourTerrain = preload("res://scripts/terrain_editor/contour_terrain.gd")
+const RimBalding = preload("res://scripts/terrain_editor/cliff_rim_balding.gd")
 const SAMPLE_SPACING := 0.36
-const MAX_REACH := 0.92
+const MAX_REACH := 0.66
 const RING_COUNT := 5
 
 static func _ring_out(ring:int)->float:
@@ -19,10 +20,10 @@ static func _ring_out(ring:int)->float:
 
 static func _ring_drop(ring:int)->float:
 	match ring:
-		1:return 0.010
-		2:return 0.032
-		3:return 0.070
-		4:return 0.145
+		1:return 0.012
+		2:return 0.045
+		3:return 0.110
+		4:return 0.225
 	return 0.0
 
 static func apply(field)->void:
@@ -47,7 +48,10 @@ static func _open_loop(loop:PackedVector2Array)->PackedVector2Array:
 
 static func _width(p:Vector2)->float:
 	# World-anchored, so a closed rim does not kink where the loop index starts.
-	return 0.62+0.11*sin(p.x*0.83+p.y*0.57)+0.045*sin(p.x*1.67-p.y*1.21+1.2)
+	# Retracts where the cliff rock bites back into balding turf stretches.
+	var base_w:float = 0.38+0.10*sin(p.x*0.83+p.y*0.57)+0.045*sin(p.x*1.67-p.y*1.21+1.2)
+	var bald:float = RimBalding.edge_baldness(p)
+	return base_w*lerpf(1.0,0.18,smoothstep(0.12,0.64,bald))
 
 static func _drop(p:Vector2,base:float)->float:
 	# Scale the scallop with the drop so the lawn edge itself stays on the cap.
@@ -61,10 +65,10 @@ static func _ring_color(ring:int)->Color:
 		1:return Color(0.99,0.98,0.96,1.0)
 		2:return Color(0.97,0.93,0.86,1.0)
 		3:return Color(0.92,0.82,0.70,1.0)
-		4:return Color(0.84,0.74,0.62,1.0)
+		4:return Color(0.84,0.72,0.60,1.0)
 	return Color(1,1,1,1)
 
-static func _is_outer(field,loops:Array,a:Vector2,b:Vector2)->bool:
+static func _is_outer(field,loops:Array,a:Vector2,b:Vector2,h:float=0.0)->bool:
 	var length:float = a.distance_to(b)
 	if length<0.02:return false
 	var tangent:Vector2 = (b-a)/length
@@ -74,7 +78,8 @@ static func _is_outer(field,loops:Array,a:Vector2,b:Vector2)->bool:
 	if not ContourTerrain.contains(loops,mid-out*0.16):return false
 	var probe:Vector2 = mid+out*0.40
 	if ContourTerrain.contains(loops,probe):return false
-	return field.surface_at(probe).is_empty()
+	var surf:Dictionary = field.surface_at(probe)
+	return surf.is_empty() or float(surf.height)<h-0.35
 
 static func _mouth_weight(field,p:Vector2,h:float)->float:
 	var weight:float = 1.0
@@ -101,7 +106,7 @@ static func _skirt_loop(field,surface,loop:PackedVector2Array,loops:Array,h:floa
 			var tangent:Vector2 = (b-a)/length
 			out = Vector2(tangent.y,-tangent.x)
 		edge_out[i] = out
-		var outer:bool = _is_outer(field,loops,a,b)
+		var outer:bool = _is_outer(field,loops,a,b,h)
 		edge_outer[i] = outer
 		if outer:outer_count += 1
 	if outer_count==0:return
@@ -193,7 +198,12 @@ static func _emit_run(field,surface,loop:PackedVector2Array,loops:Array,edges:Ar
 			var arc:float = 0.0 if samples.is_empty() else float(samples[-1].arc)+(samples[-1].p as Vector2).distance_to(p)
 			# A corner bisector can aim back across a concave crown. Keep only
 			# the part of the spill that stays outside the lawn.
-			var reach:float = _safe_reach(loops,p,out,_width(p)*scale)
+			var w_want:float = _width(p)*scale
+			if h>0.5:
+				var step_probe:Dictionary = field.surface_at(p+out*0.45)
+				if not step_probe.is_empty():
+					w_want *= 0.70
+			var reach:float = _safe_reach(loops,p,out,w_want)
 			samples.append({"p":p,"out":out,"reach":reach,"arc":arc,"weight":1.0,"h":h})
 	if samples.size()<2:return
 	var total:float = float(samples[-1].arc)
@@ -207,6 +217,36 @@ static func _emit_run(field,surface,loop:PackedVector2Array,loops:Array,edges:Ar
 		var at:Vector2 = samples[i].p
 		samples[i].weight = fade*_mouth_weight(field,at,h)
 	var segments:int = samples.size() if closed else samples.size()-1
+	# Opposing offsets or converging rays at a tight crown turn make the rolled
+	# strip cross or pinch itself, producing folded soil triangles. Let the lip
+	# die into the unchanged flat cap at that pinch instead of bridging across.
+	var zero_pinch:PackedByteArray = PackedByteArray()
+	zero_pinch.resize(samples.size())
+	for i in segments:
+		var next:int = (i+1)%samples.size()
+		var o_l:Vector2 = samples[i].out
+		var o_r:Vector2 = samples[next].out
+		var p_l:Vector2 = samples[i].p
+		var p_r:Vector2 = samples[next].p
+		var r_l:float = float(samples[i].reach)*float(samples[i].weight)
+		var r_r:float = float(samples[next].reach)*float(samples[next].weight)
+		var tip_l:Vector2 = p_l+o_l*r_l
+		var tip_r:Vector2 = p_r+o_r*r_r
+		var ring3_l:Vector2 = p_l+o_l*(r_l*0.76)
+		var ring3_r:Vector2 = p_r+o_r*(r_r*0.76)
+		var base_d:float = p_l.distance_to(p_r)
+		var pinched:bool = o_l.dot(o_r)<.2
+		if not pinched and base_d>0.01 and (r_l>0.05 or r_r>0.05):
+			if tip_l.distance_to(tip_r)<base_d*0.45 or (tip_r-tip_l).dot(p_r-p_l)<=0.0:
+				pinched = true
+			elif tip_l.distance_to(ring3_r)<0.05 or tip_r.distance_to(ring3_l)<0.05:
+				pinched = true
+		if pinched:
+			zero_pinch[i] = 1
+			zero_pinch[next] = 1
+	for i in samples.size():
+		if zero_pinch[i]!=0:
+			samples[i].weight = 0.0
 	for i in segments:
 		var left:Dictionary = samples[i]
 		var right:Dictionary = samples[(i+1)%samples.size()]
@@ -220,7 +260,7 @@ static func _emit_run(field,surface,loop:PackedVector2Array,loops:Array,edges:Ar
 		for ring in range(1,RING_COUNT):
 			var lower_left:Vector3 = _escape(loops,_ring_point(left,ring))
 			var lower_right:Vector3 = _escape(loops,_ring_point(right,ring))
-			_band(surface,upper_left,upper_right,lower_right,lower_left,_ring_color(ring-1),_ring_color(ring),desired)
+			_band(loops,surface,upper_left,upper_right,lower_right,lower_left,_ring_color(ring-1),_ring_color(ring),desired)
 			upper_left = lower_left
 			upper_right = lower_right
 
@@ -249,8 +289,8 @@ static func _escape(loops:Array,point:Vector3)->Vector3:
 
 static func _reenters(loops:Array,origin:Vector2,out:Vector2,reach:float)->bool:
 	# The tip can sit back outside a concave crown while the span crosses it.
-	for step in 6:
-		var distance:float = reach*float(step+1)/6.0
+	for step in 12:
+		var distance:float = reach*float(step+1)/12.0
 		if ContourTerrain.contains(loops,origin+out*distance):return true
 	return false
 
@@ -259,7 +299,7 @@ static func _safe_reach(loops:Array,origin:Vector2,out:Vector2,wanted:float)->fl
 	if limit<=0.0 or not _reenters(loops,origin,out,limit):return limit
 	var lo:float = 0.0
 	var hi:float = limit
-	for _step in 6:
+	for _step in 7:
 		var mid:float = (lo+hi)*0.5
 		if _reenters(loops,origin,out,mid):hi = mid
 		else:lo = mid
@@ -269,16 +309,27 @@ static func _ring_point(sample:Dictionary,ring:int)->Vector3:
 	var p:Vector2 = sample.p
 	var out:Vector2 = sample.out
 	var reach:float = float(sample.reach)*float(sample.weight)*_ring_out(ring)
-	var down:float = _drop(p,_ring_drop(ring))*float(sample.weight)
+	var reach_scale:float = clampf(float(sample.reach)/0.45,0.0,1.0)
+	var down:float = _drop(p,_ring_drop(ring))*float(sample.weight)*reach_scale
 	return Vector3(p.x+out.x*reach,float(sample.h)-down,p.y+out.y*reach)
 
-static func _band(surface,a:Vector3,b:Vector3,c:Vector3,d:Vector3,upper:Color,lower:Color,desired:Vector3)->void:
-	_triangle(surface,a,b,c,upper,upper,lower,desired)
-	_triangle(surface,a,c,d,upper,lower,lower,desired)
+static func _band(loops:Array,surface,a:Vector3,b:Vector3,c:Vector3,d:Vector3,upper:Color,lower:Color,desired:Vector3)->void:
+	# On a concave quad the fixed a-c diagonal can run outside the strip.
+	# Use b-d when it is the diagonal with consistent projected winding.
+	var ac:float=(b-a).cross(c-a).y*(c-a).cross(d-a).y
+	var bd:float=(b-a).cross(d-a).y*(c-b).cross(d-b).y
+	if ac<0.0 and bd>=0.0:
+		_triangle(loops,surface,a,b,d,upper,upper,lower,desired)
+		_triangle(loops,surface,b,c,d,upper,lower,lower,desired)
+		return
+	_triangle(loops,surface,a,b,c,upper,upper,lower,desired)
+	_triangle(loops,surface,a,c,d,upper,lower,lower,desired)
 
-static func _triangle(surface,a:Vector3,b:Vector3,c:Vector3,ca:Color,cb:Color,cc:Color,desired:Vector3)->void:
+static func _triangle(loops:Array,surface,a:Vector3,b:Vector3,c:Vector3,ca:Color,cb:Color,cc:Color,desired:Vector3)->void:
 	var normal:Vector3 = -(b-a).cross(c-a)
 	if normal.length_squared()<0.00000001:return
+	var cent_xz:Vector2 = Vector2((a.x+b.x+c.x)/3.0,(a.z+b.z+c.z)/3.0)
+	if ContourTerrain.contains(loops,cent_xz) and cent_xz.distance_to(_closest_boundary(loops,cent_xz))>0.02:return
 	var start:int = surface.vertices.size()
 	if normal.dot(desired)<0.0:
 		surface.triangle(a,c,b,Color.WHITE)

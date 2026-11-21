@@ -1,0 +1,266 @@
+[
+  {
+    "draw_calls": 460.0,
+    "fps": 56.6577894476739,
+    "frames": 454,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 20.364,
+    "p99_ms": 21.071,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.0,
+    "size": "2k",
+    "sky_mode": 1,
+    "snapshots": 1,
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "variant": "before"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 57.4948973278622,
+    "frames": 460,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 18.25,
+    "p99_ms": 18.905,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.1,
+    "size": "2k",
+    "sky_mode": 2,
+    "snapshots": 1,
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "variant": "after"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 57.5976411204678,
+    "frames": 461,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 18.285,
+    "p99_ms": 18.66,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.1,
+    "size": "2k",
+    "sky_mode": 2,
+    "snapshots": 1,
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "variant": "after"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 56.7690335028378,
+    "frames": 455,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 20.323,
+    "p99_ms": 20.981,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.0,
+    "size": "2k",
+    "sky_mode": 1,
+    "snapshots": 1,
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "variant": "before"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 28.2206892865897,
+    "frames": 226,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 38.106,
+    "p99_ms": 38.779,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.0,
+    "size": "4k",
+    "sky_mode": 1,
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "before"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 28.7450235178035,
+    "frames": 230,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 35.939,
+    "p99_ms": 36.315,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.0,
+    "size": "4k",
+    "sky_mode": 2,
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "after"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 28.5217761269745,
+    "frames": 229,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 36.266,
+    "p99_ms": 36.89,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.1,
+    "size": "4k",
+    "sky_mode": 2,
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "after"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 28.2684456277619,
+    "frames": 227,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 37.87,
+    "p99_ms": 38.702,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 1.0,
+    "simulated_seconds": 11.1,
+    "size": "4k",
+    "sky_mode": 1,
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "before"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 67.7740336333947,
+    "frames": 543,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 17.356,
+    "p99_ms": 17.879,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 0.5,
+    "simulated_seconds": 11.1,
+    "size": "scaled4k",
+    "sky_mode": 1,
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "before"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 68.4859261421778,
+    "frames": 548,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 15.712,
+    "p99_ms": 16.344,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 0.5,
+    "simulated_seconds": 11.1,
+    "size": "scaled4k",
+    "sky_mode": 2,
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "after"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 68.2410689501012,
+    "frames": 546,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 15.849,
+    "p99_ms": 16.937,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 0.5,
+    "simulated_seconds": 11.1,
+    "size": "scaled4k",
+    "sky_mode": 2,
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "after"
+  },
+  {
+    "draw_calls": 460.0,
+    "fps": 67.5082107953241,
+    "frames": 541,
+    "method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+    "p95_ms": 17.334,
+    "p99_ms": 18.11,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "scale": 0.5,
+    "simulated_seconds": 11.1,
+    "size": "scaled4k",
+    "sky_mode": 1,
+    "snapshots": 1,
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "variant": "before"
+  }
+]

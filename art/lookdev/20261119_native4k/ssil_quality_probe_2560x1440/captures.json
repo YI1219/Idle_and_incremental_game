@@ -1,0 +1,324 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"art_accepted": false,
+	"captures": [
+		{
+			"background_active": true,
+			"camera": "game",
+			"day_progress": 0.29,
+			"file": "game_before.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"primitives": 127873,
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "before"
+		},
+		{
+			"background_active": true,
+			"camera": "game",
+			"day_progress": 0.29,
+			"file": "game_after.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"primitives": 127873,
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "after"
+		},
+		{
+			"background_active": true,
+			"camera": "game",
+			"day_progress": 0.29,
+			"file": "game_before_repeat.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"primitives": 127873,
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "before_repeat"
+		},
+		{
+			"background_active": true,
+			"camera": "terrace_close",
+			"day_progress": 0.29,
+			"file": "terrace_close_before.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				9.03199195861816,
+				12.5,
+				20.628885269165
+			],
+			"primitives": 100707,
+			"rotation_degrees": [
+				-25.9999980926514,
+				27.9999980926514,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "before"
+		},
+		{
+			"background_active": true,
+			"camera": "terrace_close",
+			"day_progress": 0.29,
+			"file": "terrace_close_after.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				9.03199195861816,
+				12.5,
+				20.628885269165
+			],
+			"primitives": 100707,
+			"rotation_degrees": [
+				-25.9999980926514,
+				27.9999980926514,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "after"
+		},
+		{
+			"background_active": true,
+			"camera": "terrace_close",
+			"day_progress": 0.29,
+			"file": "terrace_close_before_repeat.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				9.03199195861816,
+				12.5,
+				20.628885269165
+			],
+			"primitives": 100707,
+			"rotation_degrees": [
+				-25.9999980926514,
+				27.9999980926514,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "before_repeat"
+		},
+		{
+			"background_active": true,
+			"camera": "outer_hull",
+			"day_progress": 0.29,
+			"file": "outer_hull_before.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				-8.4523811340332,
+				13.5,
+				43.9392013549805
+			],
+			"primitives": 119164,
+			"rotation_degrees": [
+				-18.0,
+				343.999969482422,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "before"
+		},
+		{
+			"background_active": true,
+			"camera": "outer_hull",
+			"day_progress": 0.29,
+			"file": "outer_hull_after.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				-8.4523811340332,
+				13.5,
+				43.9392013549805
+			],
+			"primitives": 119164,
+			"rotation_degrees": [
+				-18.0,
+				343.999969482422,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "after"
+		},
+		{
+			"background_active": true,
+			"camera": "outer_hull",
+			"day_progress": 0.29,
+			"file": "outer_hull_before_repeat.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				-8.4523811340332,
+				13.5,
+				43.9392013549805
+			],
+			"primitives": 119164,
+			"rotation_degrees": [
+				-18.0,
+				343.999969482422,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "before_repeat"
+		},
+		{
+			"background_active": true,
+			"camera": "whole",
+			"day_progress": 0.29,
+			"file": "whole_before.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				22.8257312774658,
+				52.0,
+				85.5776138305664
+			],
+			"primitives": 127655,
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "before"
+		},
+		{
+			"background_active": true,
+			"camera": "whole",
+			"day_progress": 0.29,
+			"file": "whole_after.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				22.8257312774658,
+				52.0,
+				85.5776138305664
+			],
+			"primitives": 127655,
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "after"
+		},
+		{
+			"background_active": true,
+			"camera": "whole",
+			"day_progress": 0.29,
+			"file": "whole_before_repeat.png",
+			"msaa": 1,
+			"native_quality": false,
+			"position": [
+				22.8257312774658,
+				52.0,
+				85.5776138305664
+			],
+			"primitives": 127655,
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"scale": 1.0,
+			"size": [
+				2560,
+				1440
+			],
+			"variant": "before_repeat"
+		}
+	],
+	"method": "one live scene, frozen time/wind/water, real fixed-pixel target; before_repeat re-draws variant A after B to show the frame-to-frame noise floor",
+	"pair": "ssil_quality",
+	"phase": 1.25,
+	"preset": 0,
+	"seed": 7301,
+	"target_hardware_performance_measured": false
+}

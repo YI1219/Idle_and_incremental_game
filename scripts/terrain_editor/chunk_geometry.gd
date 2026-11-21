@@ -5,6 +5,29 @@ const Blob = preload("res://scripts/world/blob47.gd")
 const BOTTOM := -6.0
 const SIDES := [Vector2i(0,-1),Vector2i(1,0),Vector2i(0,1),Vector2i(-1,0)]
 
+## Geometry readback without RenderingServer sync; falls back for foreign meshes.
+## Returns copies: packed arrays are references and callers may mutate them.
+static func faces_of(mesh:Mesh)->PackedVector3Array:
+	if mesh.has_meta("cpu_faces"):return (mesh.get_meta("cpu_faces") as PackedVector3Array).duplicate()
+	return mesh.get_faces()
+
+static func arrays_of(mesh:Mesh,surface:int=0)->Array:
+	if mesh.has_meta("cpu_arrays"):
+		var all:Array=mesh.get_meta("cpu_arrays")
+		if surface<all.size():
+			var copy:Array=[]
+			for item in all[surface]:copy.append(item.duplicate() if item!=null else null)
+			return copy
+	return mesh.surface_get_arrays(surface)
+
+## Record CPU copies for meshes not made by Surface (main thread, at load).
+static func remember_cpu(mesh:Mesh)->void:
+	if mesh==null or mesh.has_meta("cpu_arrays"):return
+	var all:Array=[]
+	for i in mesh.get_surface_count():all.append(mesh.surface_get_arrays(i))
+	mesh.set_meta("cpu_arrays",all)
+	mesh.set_meta("cpu_faces",mesh.get_faces())
+
 class Surface:
 	var vertices := PackedVector3Array()
 	var normals := PackedVector3Array()
@@ -46,6 +69,10 @@ class Surface:
 		arrays[Mesh.ARRAY_TEX_UV]=uv
 		if uv2.size()==vertices.size():arrays[Mesh.ARRAY_TEX_UV2]=uv2
 		result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+		# CPU copy: worker-thread builds read geometry back without a
+		# RenderingServer round trip (which would wait on the main thread).
+		result.set_meta("cpu_arrays",[arrays])
+		result.set_meta("cpu_faces",vertices)
 		return result
 
 static func water_polygon(mask:int)->PackedVector2Array:

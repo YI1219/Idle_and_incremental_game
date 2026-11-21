@@ -1,0 +1,101 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+OPEN HEEL seed 7301 (1, 9) bad_edges=1 first=[[[(2003, -10979, 337), (2314, -10991, -290)], 4]]
+ERROR: seed 7301 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:100)
+OPEN HEEL fresh 7301 (1, 9) bad_edges=1 first=[[[(2003, -10979, 337), (2314, -10991, -290)], 4]]
+ERROR: fresh 7301 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:103)
+OPEN HEEL seed 4242 (9, -5) bad_edges=1 first=[[[(2526, -10392, -1804), (2776, -10382, -950)], 4]]
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:100)
+OPEN HEEL seed 4242 (-7, -9) bad_edges=1 first=[[[(1782, -10915, -478), (2032, -10906, 33)], 4]]
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:100)
+OPEN HEEL seed 4242 (-12, -9) bad_edges=5 first=[[[(1455, -9236, -230), (1883, -9237, -340)], 1], [[(1272, -9235, -183), (1455, -9236, -230)], 1], [[(1456, -9236, -230), (1883, -9237, -340)], 1], [[(1272, -9235, -183), (1456, -9236, -230)], 1], [[(-1690, -9263, -2272), (558, -9249, -1242)], 4]]
+ERROR: seed 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:100)
+OPEN HEEL fresh 4242 (9, -5) bad_edges=1 first=[[[(2526, -10392, -1804), (2776, -10382, -950)], 4]]
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:103)
+OPEN HEEL fresh 4242 (-7, -9) bad_edges=1 first=[[[(1782, -10915, -478), (2032, -10906, 33)], 4]]
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:103)
+OPEN HEEL fresh 4242 (-12, -9) bad_edges=5 first=[[[(1455, -9236, -230), (1883, -9237, -340)], 1], [[(1272, -9235, -183), (1455, -9236, -230)], 1], [[(1456, -9236, -230), (1883, -9237, -340)], 1], [[(1272, -9235, -183), (1456, -9236, -230)], 1], [[(-1690, -9263, -2272), (558, -9249, -1242)], 4]]
+ERROR: fresh 4242 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:103)
+OPEN HEEL seed 913 (-6, 1) bad_edges=2 first=[[[(482, -7814, 6355), (919, -9297, 597)], 4], [[(630, -9311, -368), (919, -9297, 597)], 4]]
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:100)
+OPEN HEEL seed 913 (-2, 1) bad_edges=4 first=[[[(-2916, -11256, -1945), (-2438, -11256, -2068)], 1], [[(-3503, -11254, -1796), (-2916, -11256, -1945)], 1], [[(-3503, -11254, -1796), (-2916, -11256, -1946)], 1], [[(-2916, -11256, -1946), (-2438, -11256, -2068)], 1]]
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:100)
+OPEN HEEL seed 913 (13, 9) bad_edges=1 first=[[[(1512, -10480, -1267), (1553, -10492, -2312)], 4]]
+ERROR: seed 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:100)
+OPEN HEEL fresh 913 (-6, 1) bad_edges=2 first=[[[(482, -7814, 6355), (919, -9297, 597)], 4], [[(630, -9311, -368), (919, -9297, 597)], 4]]
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:103)
+OPEN HEEL fresh 913 (-2, 1) bad_edges=4 first=[[[(-2916, -11256, -1945), (-2438, -11256, -2068)], 1], [[(-3503, -11254, -1796), (-2916, -11256, -1945)], 1], [[(-3503, -11254, -1796), (-2916, -11256, -1946)], 1], [[(-2916, -11256, -1946), (-2438, -11256, -2068)], 1]]
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:103)
+OPEN HEEL fresh 913 (13, 9) bad_edges=1 first=[[[(1512, -10480, -1267), (1553, -10492, -2312)], 4]]
+ERROR: fresh 913 clipped source and buried cap form a closed solid
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:85)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:103)
+CLIFF OUTER FOOT: 516 checks, 14 failures

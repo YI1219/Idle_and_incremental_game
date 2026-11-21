@@ -1,0 +1,30 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+seed 7301 preset 0 lowered=4423 outside=0.145..0.569 lip_normal=0.497 crossings=0 deepest=-0.000 at (13.0, 1.5, 1.54999)
+ok: seed 7301 preset 0 has an exterior lip skirt
+ok: seed 7301 preset 0 lip carries a soil tint
+ok: seed 7301 preset 0 spill rolls down near the rock instead of forming a wide ledge
+ok: seed 7301 preset 0 lip normals stay above the stone, not folded under
+ok: seed 7301 preset 0 chamfer triangles stay outside the crown
+ok: seed 7301 preset 0 chamfer does not cut a trench into the crown
+ok: seed 7301 preset 0 no grass vertex leaves the lip band
+ok: seed 7301 preset 0 chunk meshes keep the lip and the flat crown
+seed 2104 preset 0 lowered=4368 outside=0.104..0.574 lip_normal=0.404 crossings=0 deepest=-0.000 at (13.0, 1.5, 1.54999)
+ok: seed 2104 preset 0 has an exterior lip skirt
+ok: seed 2104 preset 0 lip carries a soil tint
+ok: seed 2104 preset 0 spill rolls down near the rock instead of forming a wide ledge
+ok: seed 2104 preset 0 lip normals stay above the stone, not folded under
+ok: seed 2104 preset 0 chamfer triangles stay outside the crown
+ok: seed 2104 preset 0 chamfer does not cut a trench into the crown
+ok: seed 2104 preset 0 no grass vertex leaves the lip band
+ok: seed 2104 preset 0 chunk meshes keep the lip and the flat crown
+seed 7301 preset 1 lowered=3534 outside=0.058..0.554 lip_normal=0.363 crossings=0 deepest=-0.000 at (3.100015, 1.5, -0.00001)
+ok: seed 7301 preset 1 has an exterior lip skirt
+ok: seed 7301 preset 1 lip carries a soil tint
+ok: seed 7301 preset 1 spill rolls down near the rock instead of forming a wide ledge
+ok: seed 7301 preset 1 lip normals stay above the stone, not folded under
+ok: seed 7301 preset 1 chamfer triangles stay outside the crown
+ok: seed 7301 preset 1 chamfer does not cut a trench into the crown
+ok: seed 7301 preset 1 no grass vertex leaves the lip band
+ok: seed 7301 preset 1 chunk meshes keep the lip and the flat crown
+GRASS LIP CHECKS: 24 failures: 0

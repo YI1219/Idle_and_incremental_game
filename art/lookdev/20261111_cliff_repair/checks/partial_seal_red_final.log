@@ -1,0 +1,83 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: partial crown skips exposed wall seed 7301 t 0.1 height 2.0 hit (-3.818917, 2.0, 6.371153)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 7301 t 0.1 height 2.5 hit (-3.995386, 2.5, 6.215861)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 7301 t 0.2 height 2.0 hit (-3.809338, 2.0, 6.601383)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 7301 t 0.2 height 2.5 hit (-3.916705, 2.5, 6.5069)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 7301 t 0.3 height 2.0 hit (-3.070629, 2.0, 7.473247)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 7301 t 0.3 height 2.5 hit (-3.454087, 2.5, 7.135804)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 2104 t 0.1 height 2.0 hit (-3.818917, 2.0, 6.371153)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 2104 t 0.1 height 2.5 hit (-3.995386, 2.5, 6.215861)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 2104 t 0.2 height 2.0 hit (-3.809338, 2.0, 6.601383)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 2104 t 0.2 height 2.5 hit (-3.916705, 2.5, 6.5069)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 4242 t 0.1 height 2.0 hit (-3.818917, 2.0, 6.371153)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 4242 t 0.1 height 2.5 hit (-3.995386, 2.5, 6.215861)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 4242 t 0.2 height 2.0 hit (-3.809338, 2.0, 6.601383)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 4242 t 0.2 height 2.5 hit (-3.916705, 2.5, 6.5069)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 4242 t 0.3 height 2.0 hit (-3.070629, 2.0, 7.473247)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+ERROR: partial crown skips exposed wall seed 4242 t 0.3 height 2.5 hit (-3.454087, 2.5, 7.135804)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:17)
+       [1] run (res://art/lookdev/20261111_cliff_repair/checks/partial_baseline_test.gd:23)
+CLIFF PARTIAL CROWN SEAL: 24 checks, 16 failures

@@ -1,0 +1,60 @@
+{
+  "roi_xyxy_exclusive": [
+    760,
+    450,
+    980,
+    600
+  ],
+  "roi_pixels": 33000,
+  "measurement": "8-bit displayed PNG RGB; not HDR energy or art acceptance",
+  "rows": [
+    {
+      "version": "25_final_night",
+      "size": [
+        2560,
+        1440
+      ],
+      "white_255_rgb": 6583,
+      "near_white_rgb_ge250": 6617,
+      "near_white_pct_of_roi": 20.052,
+      "roi_channel_peak": 255,
+      "rgb_mean_at_25_clipped_pixels": [
+        254.98,
+        255.0,
+        255.0
+      ]
+    },
+    {
+      "version": "27_water_highlight_night",
+      "size": [
+        2560,
+        1440
+      ],
+      "white_255_rgb": 0,
+      "near_white_rgb_ge250": 0,
+      "near_white_pct_of_roi": 0.0,
+      "roi_channel_peak": 215,
+      "rgb_mean_at_25_clipped_pixels": [
+        159.5,
+        187.92,
+        206.36
+      ]
+    },
+    {
+      "version": "28_water_satin_night",
+      "size": [
+        2560,
+        1440
+      ],
+      "white_255_rgb": 0,
+      "near_white_rgb_ge250": 0,
+      "near_white_pct_of_roi": 0.0,
+      "roi_channel_peak": 191,
+      "rgb_mean_at_25_clipped_pixels": [
+        91.51,
+        127.74,
+        144.71
+      ]
+    }
+  ]
+}

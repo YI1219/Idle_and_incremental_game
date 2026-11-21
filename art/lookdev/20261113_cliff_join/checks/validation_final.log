@@ -1,0 +1,30 @@
+cliff_outer_foot_test PASS
+protection PASS
+argon_world_lock_test PASS
+cliff_form_variety_test PASS
+cliff_mantle_seam_test PASS
+cliff_partial_crown_seal_test PASS
+grass_lip_soften_test PASS
+grass_recovery_test PASS
+interior_terrain_edit_test PASS
+preview_quality_test PASS
+runtime_power_test PASS
+sol61_grass_contact_test PASS
+sol61_scene_test PASS
+terrain_blueprint_async_test PASS
+terrain_blueprint_test PASS
+terrain_controls_test PASS
+terrain_editor_runtime_test PASS
+terrain_locality_test PASS
+terrain_release_feedback_test PASS
+terrain_stroke_plane_test PASS
+terrain_surface_anchor_test PASS
+terrain_transition_test PASS
+terrain_water_integration_test PASS
+water_flow_test PASS
+water_idle_work_test PASS
+water_recession_test FAIL
+Traceback (most recent call last):
+  File "/Users/yi/Projects/games/the-scroll-within/art/lookdev/20261113_cliff_join/checks/validate.py", line 31, in <module>
+    if not ok:
+RuntimeError: water_recession_test: see /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261113_cliff_join/checks/test_water_recession_test.log

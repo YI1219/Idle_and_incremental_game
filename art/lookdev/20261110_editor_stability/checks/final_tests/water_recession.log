@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: the existing dry grass crown retains every original vertex
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_recession_test.gd:14)
+       [1] _initialize (res://tests/water_recession_test.gd:53)
+ERROR: the existing independent rock masses keep their original placement
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_recession_test.gd:14)
+       [1] _initialize (res://tests/water_recession_test.gd:54)
+RECESSION BASELINE grass=2711592339 columns=2506595779 mass=3039416512
+WATER RECESSION: 16 checks, 2 failures

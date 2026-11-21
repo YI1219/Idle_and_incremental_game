@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-13 13:05:19.780 Godot[37803:77669119] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-13 13:05:19.893 Godot[37803:77669119] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+GRASS LOD 96 -> 14; 4 checks, 0 failures

@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-13 13:24:54.675 Godot[49965:77725416] +[IMKClient subclass]: chose IMKClient_Modern
+FOLIAGE { "mode": "early_alpha", "mesh_count": 0, "shader_count": 1, "vertices_before": 0, "vertices_after": 0, "triangles": 0, "geometry_area_ratio": 1.0, "skipped": [] }
+2026-11-13 13:24:57.955 Godot[49965:77725416] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+{"candidate":"early_alpha","fps":27.3473833692109,"method":"normal live editor/water/daylight;3warm6sample;native4K balanced current settings,no cap/vsync/imageIO","p95_ms":38.156,"p99_ms":38.504,"resolution":[3840,2160],"scale":1.0,"texture_size":[3840.0,2160.0]}

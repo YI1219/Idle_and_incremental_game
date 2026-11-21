@@ -1,0 +1,17 @@
+--- a/scripts/terrain_editor/block_mantle.gd
++++ b/scripts/terrain_editor/block_mantle.gd
+@@ -66,6 +66,14 @@
+    var point_key:=Vector3i((p*10000).round())
+    var shared:Vector3=shared_normals[point_key].normalized()
+    var recess:=0.0 if base_vertices.has(point_key) else .68*smoothstep(.45,1.25,h-p.y)*smoothstep(-3.8,-1.4,p.y)
++   # A terrace wall must stay seated on its receiving land or pond. Full
++   # normal recession lifts its exposed foot away from that cap and can
++   # pull it below the water, opening a view into the island's underside.
++   if recess>0.0:
++    var outward:=Vector2(shared.x,shared.z).normalized()
++    var support:float=_top_at(Vector2(p.x,p.z)+outward*.95,regions,cells)
++    if is_finite(support) and support<h-.1:
++     recess*=smoothstep(support+.08,support+.80,p.y)
+    inset.append(p-shared*recess)
+   backing.triangle(inset[0],inset[1],inset[2],Color(.78,.78,.78))
+   for j in range(start,backing.vertices.size()):backing.uv[j]=source.uv[i+j-start]

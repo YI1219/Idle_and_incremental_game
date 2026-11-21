@@ -1,0 +1,118 @@
+{
+  "renderer": "actual Blender Workbench, not Godot",
+  "coordinate_system": "Blender Z-up, same original height anchor",
+  "sources": {
+    "original": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow/tripo/original_white.glb",
+    "repaired": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow/repair_20261112/repaired_white.glb"
+  },
+  "source_hashes": {
+    "original": "cb3938567aef7fe1d2cef4fbccf13b734d7c50acd594cbce1a9c6a11f7e926e0",
+    "repaired": "8053b609e93f3785993031b997eabc0344a8e2c259a0c410405b9e7d44ae3452"
+  },
+  "cameras": {
+    "front": {
+      "position": [
+        0.0,
+        -14.40000057220459,
+        1.8000000715255737
+      ],
+      "rotation": [
+        1.5707964897155762,
+        -0.0,
+        0.0
+      ],
+      "orthographic_scale": 4.427999973297119,
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    "right": {
+      "position": [
+        14.40000057220459,
+        0.0,
+        1.8000000715255737
+      ],
+      "rotation": [
+        1.5707963705062866,
+        -0.0,
+        1.5707963705062866
+      ],
+      "orthographic_scale": 4.427999973297119,
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    "back": {
+      "position": [
+        0.0,
+        14.40000057220459,
+        1.8000000715255737
+      ],
+      "rotation": [
+        1.5707964897155762,
+        -1.5099578831723193e-07,
+        3.141592502593994
+      ],
+      "orthographic_scale": 4.427999973297119,
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    "left": {
+      "position": [
+        -14.40000057220459,
+        0.0,
+        1.8000000715255737
+      ],
+      "rotation": [
+        1.5707963705062866,
+        -0.0,
+        -1.5707963705062866
+      ],
+      "orthographic_scale": 4.427999973297119,
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    "top": {
+      "position": [
+        0.0,
+        0.0,
+        16.200000762939453
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "orthographic_scale": 4.427999973297119,
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    "bottom": {
+      "position": [
+        0.0,
+        0.0,
+        -12.600000381469727
+      ],
+      "rotation": [
+        3.141592502593994,
+        -0.0,
+        0.0
+      ],
+      "orthographic_scale": 4.427999973297119,
+      "resolution": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "materials": "uniform neutral white review shade",
+  "orientation": "source retained; names are world-axis directions"
+}

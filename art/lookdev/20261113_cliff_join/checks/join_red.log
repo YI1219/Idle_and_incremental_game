@@ -1,0 +1,723 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: seed 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 7301 exercises several staggered layers
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:53)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: fresh 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 7301 exercises several staggered layers
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:53)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: seed 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 2104 exercises several staggered layers
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:53)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: fresh 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 2104 exercises several staggered layers
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:53)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: seed 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 4242 exercises several staggered layers
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:53)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: fresh 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 4242 exercises several staggered layers
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:53)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: seed 913 exercises several staggered layers
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:53)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:66)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 keeps the upper slab pose without compressing its height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:25)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 reshapes the heel instead of scaling the complete source
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:26)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+ERROR: fresh 913 exercises several staggered layers
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:11)
+       [1] verify (res://tests/cliff_outer_foot_test.gd:53)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:69)
+CLIFF OUTER FOOT: 180 checks, 120 failures

@@ -1,0 +1,272 @@
+[
+	{
+		"fixture": "baseline",
+		"hits": 0,
+		"implementation": "before",
+		"layout_ms": 325.579,
+		"misses": 44,
+		"pass": 0,
+		"stages": {
+			"index": 22.566,
+			"outcrops": 13.525,
+			"runs": 29.748,
+			"trim": 50.483,
+			"union": 209.253
+		}
+	},
+	{
+		"fixture": "baseline",
+		"hits": 44,
+		"implementation": "before",
+		"layout_ms": 296.108,
+		"misses": 0,
+		"pass": 1,
+		"stages": {
+			"index": 22.561,
+			"outcrops": 14.786,
+			"runs": 2.419,
+			"trim": 49.33,
+			"union": 206.939
+		}
+	},
+	{
+		"fixture": "baseline",
+		"hits": 44,
+		"implementation": "before",
+		"layout_ms": 298.415,
+		"misses": 0,
+		"pass": 2,
+		"stages": {
+			"index": 22.505,
+			"outcrops": 15.48,
+			"runs": 2.259,
+			"trim": 50.733,
+			"union": 207.4
+		}
+	},
+	{
+		"fixture": "baseline",
+		"hits": 0,
+		"implementation": "after",
+		"layout_ms": 311.897,
+		"misses": 44,
+		"pass": 0,
+		"stages": {
+			"index": 21.153,
+			"outcrops": 12.901,
+			"runs": 30.921,
+			"trim": 47.023,
+			"union": 199.898
+		}
+	},
+	{
+		"fixture": "baseline",
+		"hits": 44,
+		"implementation": "after",
+		"layout_ms": 284.421,
+		"misses": 0,
+		"pass": 1,
+		"stages": {
+			"index": 21.406,
+			"outcrops": 14.066,
+			"runs": 3.604,
+			"trim": 45.834,
+			"union": 199.474
+		}
+	},
+	{
+		"fixture": "baseline",
+		"hits": 44,
+		"implementation": "after",
+		"layout_ms": 284.193,
+		"misses": 0,
+		"pass": 2,
+		"stages": {
+			"index": 21.241,
+			"outcrops": 14.589,
+			"runs": 3.548,
+			"trim": 45.952,
+			"union": 198.833
+		}
+	},
+	{
+		"fixture": "upper_four",
+		"hits": 0,
+		"implementation": "before",
+		"layout_ms": 350.507,
+		"misses": 51,
+		"pass": 0,
+		"stages": {
+			"index": 23.714,
+			"outcrops": 14.39,
+			"runs": 36.009,
+			"trim": 51.116,
+			"union": 225.274
+		}
+	},
+	{
+		"fixture": "upper_four",
+		"hits": 51,
+		"implementation": "before",
+		"layout_ms": 313.272,
+		"misses": 0,
+		"pass": 1,
+		"stages": {
+			"index": 22.922,
+			"outcrops": 15.228,
+			"runs": 2.805,
+			"trim": 50.039,
+			"union": 222.231
+		}
+	},
+	{
+		"fixture": "upper_four",
+		"hits": 51,
+		"implementation": "before",
+		"layout_ms": 313.168,
+		"misses": 0,
+		"pass": 2,
+		"stages": {
+			"index": 23.402,
+			"outcrops": 15.551,
+			"runs": 2.771,
+			"trim": 50.148,
+			"union": 221.255
+		}
+	},
+	{
+		"fixture": "upper_four",
+		"hits": 0,
+		"implementation": "after",
+		"layout_ms": 330.734,
+		"misses": 51,
+		"pass": 0,
+		"stages": {
+			"index": 21.703,
+			"outcrops": 13.695,
+			"runs": 38.136,
+			"trim": 46.666,
+			"union": 210.53
+		}
+	},
+	{
+		"fixture": "upper_four",
+		"hits": 51,
+		"implementation": "after",
+		"layout_ms": 296.727,
+		"misses": 0,
+		"pass": 1,
+		"stages": {
+			"index": 21.741,
+			"outcrops": 14.696,
+			"runs": 4.262,
+			"trim": 45.549,
+			"union": 210.446
+		}
+	},
+	{
+		"fixture": "upper_four",
+		"hits": 51,
+		"implementation": "after",
+		"layout_ms": 296.711,
+		"misses": 0,
+		"pass": 2,
+		"stages": {
+			"index": 21.758,
+			"outcrops": 14.59,
+			"runs": 4.391,
+			"trim": 46.925,
+			"union": 209.007
+		}
+	},
+	{
+		"fixture": "lower_four",
+		"hits": 0,
+		"implementation": "before",
+		"layout_ms": 369.075,
+		"misses": 73,
+		"pass": 0,
+		"stages": {
+			"index": 24.863,
+			"outcrops": 13.638,
+			"runs": 36.072,
+			"trim": 56.566,
+			"union": 237.934
+		}
+	},
+	{
+		"fixture": "lower_four",
+		"hits": 73,
+		"implementation": "before",
+		"layout_ms": 339.334,
+		"misses": 0,
+		"pass": 1,
+		"stages": {
+			"index": 25.089,
+			"outcrops": 15.446,
+			"runs": 3.671,
+			"trim": 57.866,
+			"union": 237.222
+		}
+	},
+	{
+		"fixture": "lower_four",
+		"hits": 73,
+		"implementation": "before",
+		"layout_ms": 342.51,
+		"misses": 0,
+		"pass": 2,
+		"stages": {
+			"index": 25.453,
+			"outcrops": 15.423,
+			"runs": 3.616,
+			"trim": 57.122,
+			"union": 240.859
+		}
+	},
+	{
+		"fixture": "lower_four",
+		"hits": 0,
+		"implementation": "after",
+		"layout_ms": 349.176,
+		"misses": 73,
+		"pass": 0,
+		"stages": {
+			"index": 23.155,
+			"outcrops": 12.601,
+			"runs": 37.796,
+			"trim": 50.512,
+			"union": 225.111
+		}
+	},
+	{
+		"fixture": "lower_four",
+		"hits": 73,
+		"implementation": "after",
+		"layout_ms": 318.307,
+		"misses": 0,
+		"pass": 1,
+		"stages": {
+			"index": 23.579,
+			"outcrops": 14.377,
+			"runs": 5.159,
+			"trim": 51.254,
+			"union": 223.898
+		}
+	},
+	{
+		"fixture": "lower_four",
+		"hits": 73,
+		"implementation": "after",
+		"layout_ms": 318.121,
+		"misses": 0,
+		"pass": 2,
+		"stages": {
+			"index": 23.227,
+			"outcrops": 14.385,
+			"runs": 5.088,
+			"trim": 50.369,
+			"union": 225.024
+		}
+	}
+]

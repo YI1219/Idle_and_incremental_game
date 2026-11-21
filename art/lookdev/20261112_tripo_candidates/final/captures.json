@@ -1,0 +1,465 @@
+{
+	"godot": "4.7.2-stable (official)",
+	"issues": [],
+	"records": [
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_v02_lod0_front_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				2.0,
+				18.5999984741211
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "78a0b260a740e07e680a99d1fd2864d5505a28d3c183d7d48e2e35b50216bdbe",
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_v02_lod0_right_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				18.5999984741211,
+				2.0,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "78a0b260a740e07e680a99d1fd2864d5505a28d3c183d7d48e2e35b50216bdbe",
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_v02_lod0_back_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				2.0,
+				-18.5999984741211
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "78a0b260a740e07e680a99d1fd2864d5505a28d3c183d7d48e2e35b50216bdbe",
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_v02_lod0_left_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				-18.5999984741211,
+				2.0,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "78a0b260a740e07e680a99d1fd2864d5505a28d3c183d7d48e2e35b50216bdbe",
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_v02_lod0_iso_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73248100280762,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "78a0b260a740e07e680a99d1fd2864d5505a28d3c183d7d48e2e35b50216bdbe",
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_v02_lod0_iso_palette.png",
+			"lod": 0,
+			"material": "coarse palette only",
+			"position": [
+				9.61783027648926,
+				8.73248100280762,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "78a0b260a740e07e680a99d1fd2864d5505a28d3c183d7d48e2e35b50216bdbe",
+			"surfaces": 1,
+			"triangles": 8299
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_v02_lod1_iso_clay.png",
+			"lod": 1,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73248100280762,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "3d9eee087bf546195dcb1ad82c38a88d98ec828921ada39d913dfb4188446685",
+			"surfaces": 1,
+			"triangles": 3988
+		},
+		{
+			"asset": "mountain_study_v02",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_v02_lod2_iso_clay.png",
+			"lod": 2,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73248100280762,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "e44108d0df601d279373301afdc9912cbbed983e99493c6bff14dbb759bf86af",
+			"surfaces": 1,
+			"triangles": 1194
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_front_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				0.244772851467133,
+				3.30000019073486
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "5aee3fe9104e5fb25c32cfb5d44e8a3882ea8cb5b76e917940012295eddc1434",
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_right_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				3.30000019073486,
+				0.244772851467133,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "5aee3fe9104e5fb25c32cfb5d44e8a3882ea8cb5b76e917940012295eddc1434",
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_back_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				0.244772851467133,
+				-3.30000019073486
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "5aee3fe9104e5fb25c32cfb5d44e8a3882ea8cb5b76e917940012295eddc1434",
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_left_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				-3.30000019073486,
+				0.244772851467133,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "5aee3fe9104e5fb25c32cfb5d44e8a3882ea8cb5b76e917940012295eddc1434",
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_iso_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				1.70638942718506,
+				1.4392454624176,
+				2.55958414077759
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "5aee3fe9104e5fb25c32cfb5d44e8a3882ea8cb5b76e917940012295eddc1434",
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod0_iso_palette.png",
+			"lod": 0,
+			"material": "coarse palette only",
+			"position": [
+				1.70638942718506,
+				1.4392454624176,
+				2.55958414077759
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "5aee3fe9104e5fb25c32cfb5d44e8a3882ea8cb5b76e917940012295eddc1434",
+			"surfaces": 1,
+			"triangles": 1494
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod1_iso_clay.png",
+			"lod": 1,
+			"material": "neutral clay override",
+			"position": [
+				1.70638942718506,
+				1.4392454624176,
+				2.55958414077759
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "a01725eddea6b39923a4e74695bef3d79cc1cc32e7bd8a95ac21f181fb6d916c",
+			"surfaces": 1,
+			"triangles": 598
+		},
+		{
+			"asset": "stone_basin",
+			"camera_size": 1.54000008106232,
+			"file": "stone_basin_lod2_iso_clay.png",
+			"lod": 2,
+			"material": "neutral clay override",
+			"position": [
+				1.70638942718506,
+				1.4392454624176,
+				2.55958414077759
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "0fa4b3a086bab7fb993c00181ea003127d714b7f91c9776809a8121a70d66f88",
+			"surfaces": 1,
+			"triangles": 238
+		},
+		{
+			"asset": "mountain_study_hq",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_hq_lod0_front_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				2.0,
+				18.5999984741211
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "71810a93155193b33395f0490f32ed2a112b0f555221ff4e01573f3a6b44f82f",
+			"surfaces": 1,
+			"triangles": 8508
+		},
+		{
+			"asset": "mountain_study_hq",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_hq_lod0_right_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				18.5999984741211,
+				2.0,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "71810a93155193b33395f0490f32ed2a112b0f555221ff4e01573f3a6b44f82f",
+			"surfaces": 1,
+			"triangles": 8508
+		},
+		{
+			"asset": "mountain_study_hq",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_hq_lod0_back_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				0.0,
+				2.0,
+				-18.5999984741211
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "71810a93155193b33395f0490f32ed2a112b0f555221ff4e01573f3a6b44f82f",
+			"surfaces": 1,
+			"triangles": 8508
+		},
+		{
+			"asset": "mountain_study_hq",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_hq_lod0_left_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				-18.5999984741211,
+				2.0,
+				0.0
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "71810a93155193b33395f0490f32ed2a112b0f555221ff4e01573f3a6b44f82f",
+			"surfaces": 1,
+			"triangles": 8508
+		},
+		{
+			"asset": "mountain_study_hq",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_hq_lod0_iso_clay.png",
+			"lod": 0,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73248100280762,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "71810a93155193b33395f0490f32ed2a112b0f555221ff4e01573f3a6b44f82f",
+			"surfaces": 1,
+			"triangles": 8508
+		},
+		{
+			"asset": "mountain_study_hq",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_hq_lod0_iso_palette.png",
+			"lod": 0,
+			"material": "coarse palette only",
+			"position": [
+				9.61783027648926,
+				8.73248100280762,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "71810a93155193b33395f0490f32ed2a112b0f555221ff4e01573f3a6b44f82f",
+			"surfaces": 1,
+			"triangles": 8508
+		},
+		{
+			"asset": "mountain_study_hq",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_hq_lod1_iso_clay.png",
+			"lod": 1,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73248100280762,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "73b6c7246456b6c9f21a54eb70a671077b7e56c9319f0ac572ac34a4f82b58e0",
+			"surfaces": 1,
+			"triangles": 3988
+		},
+		{
+			"asset": "mountain_study_hq",
+			"camera_size": 8.68000030517578,
+			"file": "mountain_study_hq_lod2_iso_clay.png",
+			"lod": 2,
+			"material": "neutral clay override",
+			"position": [
+				9.61783027648926,
+				8.73248100280762,
+				14.4267463684082
+			],
+			"resolution": [
+				1280,
+				960
+			],
+			"source_sha256": "8059e29084f453b01905e2309a6f281d7537e8e7ef7abe011eee48c7124fc5fb",
+			"surfaces": 1,
+			"triangles": 1196
+		}
+	],
+	"renderer": "forward_plus",
+	"scope": "Isolated native asset inspection; not the default courtyard composition or target hardware performance.",
+	"valid": true
+}

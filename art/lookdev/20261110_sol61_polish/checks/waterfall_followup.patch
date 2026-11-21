@@ -1,0 +1,37 @@
+--- a/shaders/terrain_editor/waterfall.gdshader
++++ b/shaders/terrain_editor/waterfall.gdshader
+@@ -71,7 +71,7 @@
+ 	float chute_crest = clamp(col_wave*.62+chute*.38,0.0,1.0);
+ 
+ 	float lip = (1.0-smoothstep(.035,.28+.10*chute,drop))*smoothstep(0.0,.025,drop);
+-	float plunge = smoothstep(.34,1.0,receiver/.4);
++	float plunge = smoothstep(.72,1.0,receiver/.4);
+ 	float ext_spray = free_fall ? smoothstep(.54,.84,free_progress)*(1.0-smoothstep(.88,1.0,free_progress)) : 0.0;
+ 	float filament = chute_crest*.35+body*.55+fine*.10;
+ 
+@@ -118,7 +118,8 @@
+ 			side = smoothstep(inset,inset+max(softness,.0001),edge);
+ 		}
+ 		float lip_join = smoothstep(0.0,.05,drop);
+-		opacity = mix(.78,.91,clamp(chute*.5+body*.5+white*.35,0.0,1.0))*mix(.45,1.0,lip_join);
++		// A dense inner body absorbs the hard silhouette of the backing wet wall.
++		opacity = mix(.985,.995,clamp(chute*.5+body*.5+white*.35,0.0,1.0))*mix(.45,1.0,lip_join);
+ 		opacity *= mix(1.0,.76,landing);
+ 	} else {
+ 		// The outer curtain separates broad pale ribbons and jade troughs.
+@@ -153,11 +154,11 @@
+ 		vec4 behind_view=INV_PROJECTION_MATRIX*vec4(bent_uv*2.0-1.0,depth,1.0);
+ 		if(depth<.00001 || behind_view.z/behind_view.w<VERTEX.z-.01)sample_uv=bent_uv;
+ 	}
+-	// Cloud radiance behind an external fall must not turn its lower mesh
+-	// into a rectangular white pane. Absorb the transmitted background and
+-	// let the long jade filaments carry the sheet down into the cloud sea.
++	// The opaque scene-color buffer switches from wet cliff to sky at the
++	// backing mesh silhouette. Free falls keep that hard edge out of their
++	// color, while the thin receiving curtain retains a little refraction.
+ 	vec3 behind=min(texture(screen_texture,sample_uv).rgb,vec3(.34,.46,.45))*vec3(.62,.86,.88);
+-	float transmission=(is_core ? .08 : .12)*(1.0-white*.85);
++	float transmission=(is_core || free_fall ? 0.0 : .06)*(1.0-white*.85);
+ 	ALBEDO=color*(1.0-transmission);
+ 	EMISSION=behind*transmission+vec3(.018,.030,.031)*white+color*.028;
+ 	ALPHA = opacity*side;

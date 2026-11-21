@@ -1,0 +1,34 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-12 17:00:28.147 godot[63528:75392322] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-12 17:00:31.290 godot[63528:75392322] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_before_whole.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_before_reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_before_close.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_before_low.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_before_night.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_after_whole.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_after_reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_after_close.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_after_low.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/7301_after_night.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/2104_before_whole.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/2104_before_reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/2104_before_close.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/2104_after_whole.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/2104_after_reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/2104_after_close.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/4242_before_whole.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/4242_before_reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/4242_before_close.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/4242_after_whole.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/4242_after_reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/4242_after_close.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/913_before_whole.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/913_before_reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/913_before_close.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/913_after_whole.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/913_after_reverse.png
+LOOKDEV saved: res://art/lookdev/20261112_fps_shaders/pairs/913_after_close.png
+PAIRS 28 []

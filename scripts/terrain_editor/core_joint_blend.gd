@@ -14,7 +14,7 @@ static func _first_hit(faces:PackedVector3Array,origin:Vector3,direction:Vector3
 static func _faces(mesh:Mesh,pose:Transform3D)->PackedVector3Array:
  var faces:=PackedVector3Array()
  for s:int in mesh.get_surface_count():
-  var arrays:Array=mesh.surface_get_arrays(s)
+  var arrays:Array=preload("res://scripts/terrain_editor/chunk_geometry.gd").arrays_of(mesh,s)
   var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
   var indices:=PackedInt32Array()
   if arrays[Mesh.ARRAY_INDEX]!=null:indices=arrays[Mesh.ARRAY_INDEX]

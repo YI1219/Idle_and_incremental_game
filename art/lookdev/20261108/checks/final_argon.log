@@ -1,0 +1,11 @@
+Final verification, 2026-11-08. Captured stdout after the initial startup chunk.
+Startup notes: relative --log-file was resolved under user:// and could not create user://art; macOS CA certificate warning was also emitted. The tests continued and their exit status is recorded below. Save tests use the documented /tmp harness; production save code is unchanged.
+
+ok: all twelve shichen apply yaw 28..42 to the scene: []
+ok: all twelve shichen preserve matte lawn parameters: []
+ok: time cycle applies cool silver-grey morning fog (actual (0.78, 0.84, 0.88, 1.0))
+ok: scene retains enabled SSIL with a positive intensity
+ARGON WORLD LOCK: 9/9 passed; 0 failures
+
+EXIT_CODE=0
+

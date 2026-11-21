@@ -1,0 +1,9 @@
+PASS tests/terrain_water_integration_test.gd rc=0 TERRAIN WATER INTEGRATION: 11 checks, 0 failures
+PASS tests/water_flow_test.gd rc=0 WATER FLOW: 92 checks, 0 failures
+PASS tests/water_idle_work_test.gd rc=0 WATER IDLE 10 checks, 0 failures
+PASS tests/water_recession_test.gd rc=0 WATER RECESSION: 16 checks, 0 failures
+PASS tests/water_renderer_test.gd rc=0 water_renderer_test: 48/48 passed
+PASS tests/water_scaling_test.gd rc=0 WATER SCALING 19 checks, 0 failures
+PASS tests/waterfall_flow_shape_test.gd rc=0 WATERFALL FLOW SHAPE: 9 checks, 0 failures
+PASS tests/waterfall_terrace_seal_test.gd rc=0 WATERFALL TERRACE SEAL: 16 checks, 0 failures
+SUITE ran=8 failed=0

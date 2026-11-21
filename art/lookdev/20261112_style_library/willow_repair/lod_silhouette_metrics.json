@@ -1,0 +1,86 @@
+[
+  {
+    "view": "front",
+    "lod": "lod1",
+    "silhouette_iou_1024": 0.7711584779197634,
+    "silhouette_iou_96px_canvas": 0.7663964627855564,
+    "silhouette_pixel_change_1024": 35440
+  },
+  {
+    "view": "front",
+    "lod": "lod2",
+    "silhouette_iou_1024": 0.8156165221046197,
+    "silhouette_iou_96px_canvas": 0.826783114992722,
+    "silhouette_pixel_change_1024": 28953
+  },
+  {
+    "view": "right",
+    "lod": "lod1",
+    "silhouette_iou_1024": 0.798285214005879,
+    "silhouette_iou_96px_canvas": 0.7986651835372637,
+    "silhouette_pixel_change_1024": 41242
+  },
+  {
+    "view": "right",
+    "lod": "lod2",
+    "silhouette_iou_1024": 0.7987090206602966,
+    "silhouette_iou_96px_canvas": 0.7924528301886793,
+    "silhouette_pixel_change_1024": 43502
+  },
+  {
+    "view": "back",
+    "lod": "lod1",
+    "silhouette_iou_1024": 0.7708079145282593,
+    "silhouette_iou_96px_canvas": 0.7639705882352941,
+    "silhouette_pixel_change_1024": 35503
+  },
+  {
+    "view": "back",
+    "lod": "lod2",
+    "silhouette_iou_1024": 0.8152840290554434,
+    "silhouette_iou_96px_canvas": 0.8259286234522942,
+    "silhouette_pixel_change_1024": 29015
+  },
+  {
+    "view": "left",
+    "lod": "lod1",
+    "silhouette_iou_1024": 0.7982745297506676,
+    "silhouette_iou_96px_canvas": 0.7984409799554566,
+    "silhouette_pixel_change_1024": 41246
+  },
+  {
+    "view": "left",
+    "lod": "lod2",
+    "silhouette_iou_1024": 0.7986425967392713,
+    "silhouette_iou_96px_canvas": 0.7919287211740041,
+    "silhouette_pixel_change_1024": 43523
+  },
+  {
+    "view": "top",
+    "lod": "lod1",
+    "silhouette_iou_1024": 0.8531153542459263,
+    "silhouette_iou_96px_canvas": 0.8503054989816701,
+    "silhouette_pixel_change_1024": 16370
+  },
+  {
+    "view": "top",
+    "lod": "lod2",
+    "silhouette_iou_1024": 0.8940961388027037,
+    "silhouette_iou_96px_canvas": 0.903,
+    "silhouette_pixel_change_1024": 12049
+  },
+  {
+    "view": "bottom",
+    "lod": "lod1",
+    "silhouette_iou_1024": 0.8529741561039497,
+    "silhouette_iou_96px_canvas": 0.8501529051987767,
+    "silhouette_pixel_change_1024": 16390
+  },
+  {
+    "view": "bottom",
+    "lod": "lod2",
+    "silhouette_iou_1024": 0.8943889748277317,
+    "silhouette_iou_96px_canvas": 0.902,
+    "silhouette_pixel_change_1024": 12016
+  }
+]

@@ -1,0 +1,135 @@
+--- source_before/interior_crack_fix/terrain_decoration.gd
++++ scripts/terrain_editor/terrain_decoration.gd
+@@ -517,9 +517,11 @@
+ 	for signature in _run_cache:
+ 		if not seen.has(signature):stale.append(signature)
+ 	for signature in stale:_run_cache.erase(signature)
++	_prune_uncovered_step_sides(field)
+ 	_prune_overlapping_buttresses()
+ 	layout_stages.runs=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+ 	preload("res://scripts/terrain_editor/rim_union.gd").apply(field,_columns,assets,fit_core_to_feet,blend_core_joints)
++	field.close_unclad_dry_steps(_columns,assets)
+ 	layout_stages.union=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+ 	_outcrops=preload("res://scripts/terrain_editor/rim_outcrops.gd").build(self,field,seed_value)
+ 	layout_stages.outcrops=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+@@ -528,6 +530,60 @@
+ 	field._index_triangles()
+ 	layout_stages.index=(Time.get_ticks_usec()-t_stage)/1000.0
+ 	layout_ms=(Time.get_ticks_usec()-started)/1000.0
++func _prune_uncovered_step_sides(field)->void:
++	# A source wall is usable only while its whole visible side has a crown
++	# above it. Lowered holes and open notches otherwise expose its side/back
++	# as a sheet. The authoritative generated wall already closes those runs.
++	var removed:Dictionary={}
++	var changed:=true
++	while changed:
++		changed=false
++		var crowns:Dictionary={}
++		for column:Dictionary in _columns:
++			var height:float=column.pose.origin.y
++			var polygon:=PackedVector2Array()
++			for p:Vector2 in assets[column.kind][0].cap_polygon:
++				var point:Vector3=column.pose*Vector3(p.x,0.0,p.y)
++				polygon.append(Vector2(point.x,point.z))
++			if not crowns.has(height):crowns[height]=[]
++			crowns[height].append(polygon)
++		var kept:Array=[]
++		for column:Dictionary in _columns:
++			if column.is_step and _has_uncovered_step_side(field,column,crowns[column.pose.origin.y]):
++				removed[column.edge]=true
++				changed=true
++			else:kept.append(column)
++		_columns=kept
++	if removed.is_empty():return
++	_column_cells.clear()
++	for i:int in _columns.size():_bucket_column(i)
++	var kept_mass:Array=[]
++	for body:Dictionary in _mass:
++		if body.get("is_interior",false) and removed.has(body.get("crown_edge",Vector2(INF,INF))):continue
++		kept_mass.append(body)
++	_mass=kept_mass
++func _has_uncovered_step_side(field,column:Dictionary,crowns:Array)->bool:
++	var height:float=column.pose.origin.y
++	var faces:PackedVector3Array=assets[column.kind][0].faces
++	for i:int in range(0,faces.size(),3):
++		var a:Vector3=column.pose*faces[i]
++		var b:Vector3=column.pose*faces[i+1]
++		var c:Vector3=column.pose*faces[i+2]
++		for point:Vector3 in [a,b,c,(a+b)*.5,(b+c)*.5,(c+a)*.5,(a+b+c)/3.0]:
++			var p:=Vector2(point.x,point.z)
++			if Contours.contains(field.land_regions[height],p):continue
++			var receiver:Dictionary=field.surface_at(p)
++			# Through-holes and the exterior retain their existing source shell.
++			if receiver.is_empty() or int(receiver.water)>=0 or point.y<=float(receiver.height)+.15:continue
++			var covered:=false
++			for polygon:PackedVector2Array in crowns:
++				if Geometry2D.is_point_in_polygon(p,polygon):covered=true;break
++			# The original hole remains cut out of the joined lawn even where
++			# a crown projects across it. It cannot cover this source wall.
++			for hole:PackedVector2Array in field.land_regions[height]:
++				if Contours._area(hole)<0.0 and Geometry2D.is_point_in_polygon(p,hole):covered=false;break
++			if not covered:return true
++	return false
+ func _run_signature(field,a:Vector2,b:Vector2,points:PackedVector2Array,h:float,seed_value:int)->String:
+ 	# Everything _rim_run reads: the chord, the land height, nearby cells and
+ 	# any fall veil that can shorten this run. Same signature, same poses.
+@@ -1100,7 +1156,7 @@
+ 			var st_ext:=Vector2(-st_reach,st_reach)
+ 			var st_clear:=_curtain_span(field,Vector2(st_origin.x,st_origin.z),dir,st_ext,h,false)
+ 			if not is_nan(st_clear.x) and st_clear==st_ext:
+-				_mass.append({"kind":st_kind,"pose":Transform3D(st_basis,st_origin),"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":true,"has_ledge_bush":false})
++				_mass.append({"kind":st_kind,"pose":Transform3D(st_basis,st_origin),"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":true,"has_ledge_bush":false,"crown_edge":c})
+ static func crown_remap(vertex:Vector3,_stretch:float)->Vector3:
+ 	# The crown is authored on the mesh. Scaling must not squash it.
+ 	return vertex
+--- source_before/interior_crack_fix/contour_terrain.gd
++++ scripts/terrain_editor/contour_terrain.gd
+@@ -372,6 +372,48 @@
+ 			elif winding>0 and next<=0:
+ 				surface.polygon(PackedVector2Array([Vector2(left.y,lo),Vector2(right.y,lo),Vector2(right.z,hi),Vector2(left.z,hi)]),height,tint)
+ 			winding=next
++
++func close_unclad_dry_steps(columns:Array,assets:Dictionary)->void:
++	# A dry interior wall owns both authoritative cap endpoints. A neighboring
++	# wet endpoint may clamp the sculpted backing to its bed, and its normal
++	# recession can fold a short span away once source cladding is removed.
++	# Generate the whole uncovered span continuously after that backing pass.
++	var crowns:Dictionary={}
++	for column:Dictionary in columns:
++		var height:float=column.pose.origin.y
++		var polygon:=PackedVector2Array()
++		for p:Vector2 in assets[column.kind][0].cap_polygon:
++			var point:Vector3=column.pose*Vector3(p.x,0.0,p.y)
++			polygon.append(Vector2(point.x,point.z))
++		if not crowns.has(height):crowns[height]=[]
++		crowns[height].append(polygon)
++	var seal:=Legacy.Surface.new()
++	for height:float in land_regions:
++		for loop:PackedVector2Array in land_regions[height]:
++			for i:int in loop.size():
++				var a:Vector2=loop[i]
++				var b:Vector2=loop[(i+1)%loop.size()]
++				var mid:Vector2=(a+b)*.5
++				var direction:Vector2=(b-a).normalized()
++				var outward:=Vector2(direction.y,-direction.x)
++				var upper:Dictionary=surface_at(mid-outward*.25)
++				var receiver:Dictionary=surface_at(mid+outward*.30)
++				if upper.is_empty() or receiver.is_empty() or int(upper.water)>=0 or int(receiver.water)>=0:continue
++				var bottom:float=receiver.height
++				if absf(float(upper.height)-height)>.01 or height-bottom<.4:continue
++				var covered:=false
++				for crown:PackedVector2Array in crowns.get(height,[]):
++					if Geometry2D.is_point_in_polygon(mid,crown):covered=true;break
++				if covered:continue
++				var start:int=seal.vertices.size()
++				seal.quad(Vector3(a.x,height,a.y),Vector3(a.x,bottom,a.y),Vector3(b.x,bottom,b.y),Vector3(b.x,height,b.y),Color(.78,.78,.78))
++				for j:int in range(start,seal.vertices.size()):seal.uv[j]=Vector2(height,1.0)
++	if seal.vertices.is_empty():return
++	_smooth_normals(seal)
++	surfaces.cliff.vertices.append_array(seal.vertices)
++	surfaces.cliff.normals.append_array(seal.normals)
++	surfaces.cliff.colors.append_array(seal.colors)
++	surfaces.cliff.uv.append_array(seal.uv)
+ 
+ func _cliff_profile(p:Vector2,normal:Vector2)->Dictionary:
+ 	var key:=Vector4(p.x,p.y,normal.x,normal.y)

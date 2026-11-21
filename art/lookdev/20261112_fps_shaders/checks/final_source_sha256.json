@@ -1,0 +1,8 @@
+{
+  "shaders/terrain_editor/sky_palette.gdshaderinc": "ba1da5176925e67a44ee913b36f2442e6a295e531f85dfd7c844bf81737e6d88",
+  "shaders/terrain_editor/sky.gdshader": "b712d3154e1a2262e8c7ef1085cce6562861afb43c662dbf96fad2cb58f8d0d6",
+  "shaders/terrain_editor/cloud_deck.gdshader": "9c6f740c3b446255f470c9c1adbe7a6b99ce4852cf2e0b96bc53c4bcb4e85e54",
+  "shaders/terrain_editor/distant_mountain.gdshader": "928fb4f6bbd3eb24a9bd6844870359fb84fef30101adb3e1fd270e58a1bd417e",
+  "scripts/terrain_editor/preview_quality.gd": "1da6b88ee3ab48f92a3d50e2dd61ece3e2d5fa61d177e96a29f4d3039490062c",
+  "tools/art/capture_lookdev.gd": "f1d048a6875ba5e97e141fabbec34d527f3a808e9d88f0abd22d98bb653996fb"
+}

@@ -1,0 +1,18 @@
+{
+  "current_visual_sources_match": true,
+  "differences_from_final_capture": [
+    "res://project.godot"
+  ],
+  "reason": "temporary capture arguments removed",
+  "normal_entry_f11_observed": true,
+  "hud_actor_brush_absent": true,
+  "hint_faded": true,
+  "normal_preview_size": [
+    1278,
+    719
+  ],
+  "native_evidence_size": [
+    2560,
+    1440
+  ]
+}

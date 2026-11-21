@@ -1,0 +1,37 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"checks": 17,
+	"failures": 4,
+	"renderer": "forward_plus",
+	"samples": {
+		"blades0.0": {
+			"drained_difference": 0.0,
+			"dry_pixels": 2249,
+			"wet_pixels": 1525
+		},
+		"blades0.7": {
+			"drained_difference": 0.0,
+			"dry_pixels": 2249,
+			"wet_pixels": 1525
+		},
+		"ground": {
+			"drained_difference": 0.0,
+			"wet_difference": 0.0,
+			"wet_mean": [
+				0.666374266147614,
+				0.66051197052002,
+				0.394271641969681
+			]
+		},
+		"rim0.0": {
+			"drained_difference": 0.0,
+			"dry_pixels": 6628,
+			"wet_pixels": 6628
+		},
+		"rim0.7": {
+			"drained_difference": 0.0,
+			"dry_pixels": 6628,
+			"wet_pixels": 6628
+		}
+	}
+}

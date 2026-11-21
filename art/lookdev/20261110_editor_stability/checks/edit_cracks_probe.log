@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PROBE iteration 0 levels [1.5, 3.5] cliff 13254
+PROBE iteration 1 levels [1.5, 3.0, 3.5] cliff 13596
+PROBE iteration 2 levels [1.5, 2.5, 3.5] cliff 13944
+PROBE iteration 3 levels [1.5, 2.0, 3.5] cliff 14256
+PROBE iteration 4 levels [1.5, 3.5] cliff 14436
+PROBE iteration 5 levels [1.0, 1.5, 3.5] cliff 14574
+PROBE iteration 6 levels [0.5, 1.5, 3.5] cliff 14544
+PROBE iteration 7 levels [0.0, 1.5, 3.5] cliff 14580
+PROBE iteration 8 levels [-0.5, 1.5, 3.5] cliff 14652
+PROBE iteration 9 levels [-1.0, 1.5, 3.5] cliff 14748
+PROBE iteration 10 levels [-1.5, 1.5, 3.5] cliff 14868
+PROBE iteration 11 levels [-2.0, 1.5, 3.5] cliff 14982

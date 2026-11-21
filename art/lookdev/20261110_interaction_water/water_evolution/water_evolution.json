@@ -1,0 +1,539 @@
+{
+	"captures": [
+		{
+			"ambient_energy": 0.200000002980232,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.00728000001981854,
+				"far_distance": 119.040000915527,
+				"far_enabled": true,
+				"far_transition": 166.399993896484,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "water_000s_whole.png",
+			"fill_energy": 0.379999995231628,
+			"fill_rotation": [
+				-42.0,
+				-135.0,
+				0.0
+			],
+			"fog_color": [
+				0.779999971389771,
+				0.839999973773956,
+				0.879999995231628,
+				1.0
+			],
+			"fog_density": 0.00015999999595806,
+			"fov": 31.0,
+			"grass_base": [
+				0.238000005483627,
+				0.351999998092651,
+				0.214000001549721,
+				1.0
+			],
+			"grass_highlight": [
+				0.44200000166893,
+				0.51800000667572,
+				0.312000006437302,
+				1.0
+			],
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"shadow_bias": 0.0350000001490116,
+			"shadow_normal_bias": 0.699999988079071,
+			"shadow_opacity": 0.899999976158142,
+			"shichen": "卯时 · 日出",
+			"ssao_intensity": 0.949999988079071,
+			"ssao_radius": 0.649999976158142,
+			"ssil_enabled": true,
+			"ssil_intensity": 0.400000005960464,
+			"sun_angular": 3.59999990463257,
+			"sun_color": [
+				1.0,
+				0.939999997615814,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 1.86000001430511,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"tonemap_exposure": 1.04999995231628,
+			"tonemap_mode": 2,
+			"volumetric_density": 0.0500000007450581,
+			"volumetric_fog": false,
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.200000002980232,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.00728000001981854,
+				"far_distance": 51.9091110229492,
+				"far_enabled": true,
+				"far_transition": 135.0,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "water_000s_outlet.png",
+			"fill_energy": 0.379999995231628,
+			"fill_rotation": [
+				-42.0,
+				-135.0,
+				0.0
+			],
+			"fog_color": [
+				0.779999971389771,
+				0.839999973773956,
+				0.879999995231628,
+				1.0
+			],
+			"fog_density": 0.00015999999595806,
+			"fov": 31.0,
+			"grass_base": [
+				0.238000005483627,
+				0.351999998092651,
+				0.214000001549721,
+				1.0
+			],
+			"grass_highlight": [
+				0.44200000166893,
+				0.51800000667572,
+				0.312000006437302,
+				1.0
+			],
+			"position": [
+				11.868763923645,
+				9.5,
+				4.56456661224365
+			],
+			"rotation_degrees": [
+				-36.0,
+				66.9999923706055,
+				0.0
+			],
+			"save_error": 0,
+			"shadow_bias": 0.0350000001490116,
+			"shadow_normal_bias": 0.699999988079071,
+			"shadow_opacity": 0.899999976158142,
+			"shichen": "卯时 · 日出",
+			"ssao_intensity": 0.949999988079071,
+			"ssao_radius": 0.649999976158142,
+			"ssil_enabled": true,
+			"ssil_intensity": 0.400000005960464,
+			"sun_angular": 3.59999990463257,
+			"sun_color": [
+				1.0,
+				0.939999997615814,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 1.86000001430511,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"tonemap_exposure": 1.04999995231628,
+			"tonemap_mode": 2,
+			"volumetric_density": 0.0500000007450581,
+			"volumetric_fog": false,
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.200000002980232,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.00728000001981854,
+				"far_distance": 119.040000915527,
+				"far_enabled": true,
+				"far_transition": 166.399993896484,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "water_010s_whole.png",
+			"fill_energy": 0.379999995231628,
+			"fill_rotation": [
+				-42.0,
+				-135.0,
+				0.0
+			],
+			"fog_color": [
+				0.779999971389771,
+				0.839999973773956,
+				0.879999995231628,
+				1.0
+			],
+			"fog_density": 0.00015999999595806,
+			"fov": 31.0,
+			"grass_base": [
+				0.238000005483627,
+				0.351999998092651,
+				0.214000001549721,
+				1.0
+			],
+			"grass_highlight": [
+				0.44200000166893,
+				0.51800000667572,
+				0.312000006437302,
+				1.0
+			],
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"shadow_bias": 0.0350000001490116,
+			"shadow_normal_bias": 0.699999988079071,
+			"shadow_opacity": 0.899999976158142,
+			"shichen": "卯时 · 日出",
+			"ssao_intensity": 0.949999988079071,
+			"ssao_radius": 0.649999976158142,
+			"ssil_enabled": true,
+			"ssil_intensity": 0.400000005960464,
+			"sun_angular": 3.59999990463257,
+			"sun_color": [
+				1.0,
+				0.939999997615814,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 1.86000001430511,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"tonemap_exposure": 1.04999995231628,
+			"tonemap_mode": 2,
+			"volumetric_density": 0.0500000007450581,
+			"volumetric_fog": false,
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.200000002980232,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.00728000001981854,
+				"far_distance": 51.9091110229492,
+				"far_enabled": true,
+				"far_transition": 135.0,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "water_010s_outlet.png",
+			"fill_energy": 0.379999995231628,
+			"fill_rotation": [
+				-42.0,
+				-135.0,
+				0.0
+			],
+			"fog_color": [
+				0.779999971389771,
+				0.839999973773956,
+				0.879999995231628,
+				1.0
+			],
+			"fog_density": 0.00015999999595806,
+			"fov": 31.0,
+			"grass_base": [
+				0.238000005483627,
+				0.351999998092651,
+				0.214000001549721,
+				1.0
+			],
+			"grass_highlight": [
+				0.44200000166893,
+				0.51800000667572,
+				0.312000006437302,
+				1.0
+			],
+			"position": [
+				11.868763923645,
+				9.5,
+				4.56456661224365
+			],
+			"rotation_degrees": [
+				-36.0,
+				66.9999923706055,
+				0.0
+			],
+			"save_error": 0,
+			"shadow_bias": 0.0350000001490116,
+			"shadow_normal_bias": 0.699999988079071,
+			"shadow_opacity": 0.899999976158142,
+			"shichen": "卯时 · 日出",
+			"ssao_intensity": 0.949999988079071,
+			"ssao_radius": 0.649999976158142,
+			"ssil_enabled": true,
+			"ssil_intensity": 0.400000005960464,
+			"sun_angular": 3.59999990463257,
+			"sun_color": [
+				1.0,
+				0.939999997615814,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 1.86000001430511,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"tonemap_exposure": 1.04999995231628,
+			"tonemap_mode": 2,
+			"volumetric_density": 0.0500000007450581,
+			"volumetric_fog": false,
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.200000002980232,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.00728000001981854,
+				"far_distance": 119.040000915527,
+				"far_enabled": true,
+				"far_transition": 166.399993896484,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "water_060s_whole.png",
+			"fill_energy": 0.379999995231628,
+			"fill_rotation": [
+				-42.0,
+				-135.0,
+				0.0
+			],
+			"fog_color": [
+				0.779999971389771,
+				0.839999973773956,
+				0.879999995231628,
+				1.0
+			],
+			"fog_density": 0.00015999999595806,
+			"fov": 31.0,
+			"grass_base": [
+				0.238000005483627,
+				0.351999998092651,
+				0.214000001549721,
+				1.0
+			],
+			"grass_highlight": [
+				0.44200000166893,
+				0.51800000667572,
+				0.312000006437302,
+				1.0
+			],
+			"position": [
+				13.2773733139038,
+				32.0,
+				52.2785301208496
+			],
+			"rotation_degrees": [
+				-30.0,
+				15.9999990463257,
+				0.0
+			],
+			"save_error": 0,
+			"shadow_bias": 0.0350000001490116,
+			"shadow_normal_bias": 0.699999988079071,
+			"shadow_opacity": 0.899999976158142,
+			"shichen": "卯时 · 日出",
+			"ssao_intensity": 0.949999988079071,
+			"ssao_radius": 0.649999976158142,
+			"ssil_enabled": true,
+			"ssil_intensity": 0.400000005960464,
+			"sun_angular": 3.59999990463257,
+			"sun_color": [
+				1.0,
+				0.939999997615814,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 1.86000001430511,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"tonemap_exposure": 1.04999995231628,
+			"tonemap_mode": 2,
+			"volumetric_density": 0.0500000007450581,
+			"volumetric_fog": false,
+			"wallpaper_hud_clear": true
+		},
+		{
+			"ambient_energy": 0.200000002980232,
+			"day_progress": 0.29,
+			"dof": {
+				"blur_amount": 0.00728000001981854,
+				"far_distance": 51.9091110229492,
+				"far_enabled": true,
+				"far_transition": 135.0,
+				"near_distance": 2.0,
+				"near_enabled": false,
+				"near_transition": 1.0
+			},
+			"file": "water_060s_outlet.png",
+			"fill_energy": 0.379999995231628,
+			"fill_rotation": [
+				-42.0,
+				-135.0,
+				0.0
+			],
+			"fog_color": [
+				0.779999971389771,
+				0.839999973773956,
+				0.879999995231628,
+				1.0
+			],
+			"fog_density": 0.00015999999595806,
+			"fov": 31.0,
+			"grass_base": [
+				0.238000005483627,
+				0.351999998092651,
+				0.214000001549721,
+				1.0
+			],
+			"grass_highlight": [
+				0.44200000166893,
+				0.51800000667572,
+				0.312000006437302,
+				1.0
+			],
+			"position": [
+				11.868763923645,
+				9.5,
+				4.56456661224365
+			],
+			"rotation_degrees": [
+				-36.0,
+				66.9999923706055,
+				0.0
+			],
+			"save_error": 0,
+			"shadow_bias": 0.0350000001490116,
+			"shadow_normal_bias": 0.699999988079071,
+			"shadow_opacity": 0.899999976158142,
+			"shichen": "卯时 · 日出",
+			"ssao_intensity": 0.949999988079071,
+			"ssao_radius": 0.649999976158142,
+			"ssil_enabled": true,
+			"ssil_intensity": 0.400000005960464,
+			"sun_angular": 3.59999990463257,
+			"sun_color": [
+				1.0,
+				0.939999997615814,
+				0.800000011920929,
+				1.0
+			],
+			"sun_energy": 1.86000001430511,
+			"sun_rotation": [
+				-25.4999980926514,
+				37.9999961853027,
+				0.0
+			],
+			"tonemap_exposure": 1.04999995231628,
+			"tonemap_mode": 2,
+			"volumetric_density": 0.0500000007450581,
+			"volumetric_fog": false,
+			"wallpaper_hud_clear": true
+		}
+	],
+	"errors": [],
+	"f11": true,
+	"geometry_unchanged": true,
+	"initial_volume": 71.0,
+	"method": "production water_view .1-second ticks and flush; still phase1.25; accelerated offline sampling, not wall-clock video",
+	"no_source": true,
+	"preset": 0,
+	"resolution": [
+		2560,
+		1440
+	],
+	"samples": [
+		{
+			"active_falls": 0,
+			"balance_error": 0.0,
+			"basins": [
+				{
+					"cells": 56,
+					"height": 3.5,
+					"volume": 28.0
+				},
+				{
+					"cells": 86,
+					"height": 1.5,
+					"volume": 43.0
+				}
+			],
+			"discharged": 0.0,
+			"seconds": 0.0,
+			"volume": 71.0
+		},
+		{
+			"active_falls": 2,
+			"balance_error": 0.000000000000611066752753686,
+			"basins": [
+				{
+					"cells": 223,
+					"height": 1.50061287480111,
+					"volume": 43.1366710806473
+				},
+				{
+					"cells": 56,
+					"height": 3.3833044523089,
+					"volume": 21.4650493292983
+				}
+			],
+			"discharged": 6.39827959005502,
+			"seconds": 10.0,
+			"volume": 64.6017204099456
+		},
+		{
+			"active_falls": 2,
+			"balance_error": -0.000000000000085265128291212,
+			"basins": [
+				{
+					"cells": 56,
+					"height": 3.14567522935513,
+					"volume": 8.15781284388707
+				},
+				{
+					"cells": 86,
+					"height": 1.35594597631502,
+					"volume": 30.6113539630915
+				}
+			],
+			"discharged": 32.2308331930213,
+			"seconds": 60.0,
+			"volume": 38.7691668069786
+		}
+	],
+	"scene": "scenes/terrain_editor.tscn",
+	"seed": 7301,
+	"valid": true
+}

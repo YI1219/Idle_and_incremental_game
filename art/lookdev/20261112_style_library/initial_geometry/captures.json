@@ -1,0 +1,29 @@
+{
+	"godot": "4.7.2-stable (official)",
+	"issues": [
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling/lod0.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling/lod1.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/low_mountain_dwelling/lod2.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/open_four_post_pavilion/lod0.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/open_four_post_pavilion/lod1.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/open_four_post_pavilion/lod2.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/short_roofed_corridor/lod0.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/short_roofed_corridor/lod1.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/short_roofed_corridor/lod2.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/short_tiled_courtyard_gate/lod0.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/short_tiled_courtyard_gate/lod1.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/short_tiled_courtyard_gate/lod2.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern/lod0.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern/lod1.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern/lod2.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod0.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod1.glb",
+		"Import failed: /Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/wood_bench/lod2.glb"
+	],
+	"list": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/capture_initial.json",
+	"records": [],
+	"renderer": "forward_plus",
+	"scope": "Isolated imported-material asset review only; art acceptance and hardware FPS unmeasured",
+	"script_sha256": "23d632c27dff39bcd2572a29cc0e33ca09cf87819a404897760f045ae156c6eb",
+	"valid": false
+}

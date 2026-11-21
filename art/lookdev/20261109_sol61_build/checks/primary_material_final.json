@@ -1,0 +1,9 @@
+{
+  "shaders/terrain_editor/stone_surface.gdshaderinc": "6d21b240713edbab5d2b122b376b3a78d1518d10b1d83d678fde05c1a40734c5",
+  "shaders/terrain_editor/cliff.gdshader": "eefc39e9938d7b6a2e30330dcb757e9ca08b00d6a5e92e6ecb0d1165e42598d9",
+  "shaders/terrain_editor/cliff_column.gdshader": "e5796f58a9b7f5104a50468ca947b9fe43b39157180153206d40f5f6685be2fc",
+  "shaders/terrain_editor/ground.gdshader": "39029cbb0fb0f0e8c2eb9b8358bc90ae80dc71a6cac76c61b471a2ca7e6616d2",
+  "shaders/terrain_editor/ground_cover.gdshaderinc": "7f8156fee6e04896015b3a81db5e037014299ba3bfaeb9dd0583dd056c1c3703",
+  "shaders/terrain_editor/grass_blades.gdshader": "116742b3a8c2b7b8cf648ef5c622f1382c071cb9f41d99d3f93b9ec7f1a40289",
+  "scripts/terrain_editor/material_detail.gd": "0205f830419ea87798c4b4def885cb84174a8cb3bc0614b2ccea798c236c5d32"
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "file": "scripts/terrain_editor/editor.gd",
+    "before": "3ca111acec2104572b570127351ba1896d1d162fb44a419c6bb9a65f4ea2c486",
+    "after": "6b7e71bf84a3f2ef6bcf0717cbec84edd8e117b1ce57bc6129be95a9181ec94b"
+  },
+  {
+    "file": "scripts/terrain_editor/edit_preview.gd",
+    "before": "d7f8fc48220d39b27f431530d18ca42ebeb4e683672f2ac2cd20dbfccbdbeb17",
+    "after": "7d65cb502430ce28bf2137801ebf6d6d514abe202083486ad5e1e3c5ff33f31b"
+  },
+  {
+    "file": "shaders/terrain_editor/edit_preview.gdshader",
+    "before": "b14ef12e9fc3ea57a0624020da259facf03f2d095863f1e3cfc4eee0518bc1a9",
+    "after": "1dfec4d4cc58bdd14ee2357a2a1d588a6c9f0eb48ad7f42ed0eef6094d917150"
+  }
+]

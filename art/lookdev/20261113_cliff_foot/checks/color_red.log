@@ -1,0 +1,121 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-13 15:03:37.516 godot[8915:78027632] +[IMKClient subclass]: chose IMKClient_Modern
+ERROR: (7301, 0) underside_rock_c_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (7301, 0) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (7301, 0) underside_rock_b_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (7301, 0) underside_rock_b_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (7301, 0) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (2104, 0) underside_rock_c_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (2104, 0) underside_rock_c_0 instance 1 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (2104, 0) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (2104, 0) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (4242, 1) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (4242, 1) underside_rock_b_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (4242, 1) underside_rock_c_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (4242, 1) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (4242, 1) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (4242, 1) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (913, 2) underside_rock_b_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (913, 2) underside_rock_b_0 instance 1 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (913, 2) underside_rock_c_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (913, 2) underside_rock_c_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (913, 2) underside_rock_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (913, 2) underside_rock_c_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (913, 2) underside_rock_b_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+ERROR: (913, 2) underside_rock_c_0 instance 0 preserves uploaded mineral color
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_color_test.gd:11)
+       [1] _initialize (res://tests/cliff_outer_color_test.gd:51)
+CLIFF OUTER COLOR: 57 checks, 23 failures
+2026-11-13 15:03:43.001 godot[8915:78027632] +[IMKInputSession subclass]: chose IMKInputSession_Modern

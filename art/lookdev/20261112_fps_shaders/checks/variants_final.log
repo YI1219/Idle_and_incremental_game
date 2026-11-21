@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-12 17:04:20.336 godot[66190:75402026] +[IMKClient subclass]: chose IMKClient_Modern
+DOF DEFAULT 1
+2026-11-12 17:04:23.279 godot[66190:75402026] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+{"draws":274,"ms":{"mean":19.34702,"p50":19.331,"p95":20.064},"name":"before","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":19.01248,"p50":18.901,"p95":19.953},"name":"math_only","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":17.92604,"p50":17.923,"p95":18.626},"name":"half_ao","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":18.44408,"p50":18.416,"p95":19.017},"name":"low_dof","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":17.35736,"p50":17.375,"p95":17.97},"name":"combined","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":19.36696,"p50":19.343,"p95":19.764},"name":"before_repeat","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":17.38896,"p50":17.385,"p95":17.749},"name":"combined","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":39.99752,"p50":39.937,"p95":40.564},"name":"before","size":[3840,2160],"triangles":847021}
+{"draws":274,"ms":{"mean":39.31422,"p50":39.221,"p95":40.027},"name":"math_only","size":[3840,2160],"triangles":847021}
+{"draws":274,"ms":{"mean":36.93692,"p50":36.857,"p95":37.799},"name":"half_ao","size":[3840,2160],"triangles":847021}
+{"draws":274,"ms":{"mean":38.11698,"p50":38.1,"p95":38.89},"name":"low_dof","size":[3840,2160],"triangles":847021}
+{"draws":274,"ms":{"mean":35.82798,"p50":35.842,"p95":36.731},"name":"combined","size":[3840,2160],"triangles":847021}
+{"draws":274,"ms":{"mean":40.04692,"p50":39.941,"p95":40.849},"name":"before_repeat","size":[3840,2160],"triangles":847021}
+{"draws":274,"ms":{"mean":35.76942,"p50":35.746,"p95":36.486},"name":"combined","size":[3840,2160],"triangles":847021}

@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-10 17:56:50.504 godot[30543:71169346] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-10 17:56:53.004 godot[30543:71169346] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/water_evolution_review/water_000s_whole.png
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/water_evolution_review/water_000s_outlet.png
+WATER EVOLUTION 0.0s 71.0 retained; 0.0 discharged
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/water_evolution_review/water_010s_whole.png
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/water_evolution_review/water_010s_outlet.png
+WATER EVOLUTION 10.0s 64.6017204099456 retained; 6.39827959005502 discharged
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/water_evolution_review/water_060s_whole.png
+LOOKDEV saved: res://art/lookdev/20261110_interaction_water/water_evolution_review/water_060s_outlet.png
+WATER EVOLUTION 60.0s 38.7691668069786 retained; 32.2308331930213 discharged

@@ -1,0 +1,304 @@
+--- art/lookdev/20261121_reverse_stagger/checks/source_before/scripts/terrain_decoration.gd	2026-11-20 14:58:32
++++ scripts/terrain_editor/terrain_decoration.gd	2026-11-21 13:34:31
+@@ -21,6 +21,43 @@
+ ## Thin fingers of land keep a pillar on every face; merging needs this much
+ ## land behind the pillar.
+ const MERGE_MIN_LAND:=2.8
++## Front-back stagger of outer faces (_stagger_outer_faces).
++## Neighbours: facing within about 53 degrees, tops within this many metres,
++## centres closer than this share of their two widths.
++const STAGGER_FACING:=.60
++const STAGGER_LEVEL:=1.6
++const STAGGER_LINK:=.62
++## A primary takes over a neighbour within about 12 degrees of its facing and
++## this close to its plane, up to this total width.
++const STAGGER_ABSORB_FACING:=.978
++const STAGGER_ABSORB_OFFSET:=.5
++const STAGGER_MAX_FACE:=10.4
++## Metres forward for a primary, back for a secondary (never closer to the
++## contour than STAGGER_MIN_PROUD), and the total play of the rest.
++const STAGGER_PRIMARY:=Vector2(.80,1.25)
++const STAGGER_SECONDARY:=Vector2(.30,.50)
++const STAGGER_PLAIN:=.24
++const STAGGER_MIN_PROUD:=.46
++## The slabs beside a secondary overlap its ends by this much.
++const STAGGER_SEAT:=.18
++## A share of the broad outer runs that the shoulder chance left bare still
++## offer a rock group. One is kept only where no shoulder of the first kind was
++## offered within this radius and it outranks every other offered group within
++## it, so a long wall need not stay a plain row and no wall turns busy.
++const STAGGER_FILL_SHARE:=.37
++const STAGGER_FILL_RADIUS:=5.25
++## Their tops come this far below the lip at most, as a share of the wall
++## height and in metres: lower than that a group reads as a pedestal.
++const STAGGER_FILL_DROP:=Vector2(.34,3.6)
++## A group needs land this far to either side (x) and this far in (y);
++## without it the wall is turning round a nose, where a group reads as a shelf.
++const STAGGER_FILL_FLANK:=Vector2(4.5,2.6)
++## A slab's rank is its width in metres plus a fixed per-slab number worth up
++## to STAGGER_SCORE_PLAY. At or under x it is a secondary, at or over y a primary.
++const STAGGER_SCORE_PLAY:=1.2
++const STAGGER_RANKS:=Vector2(5.5,6.5)
++## Yaw given to a primary or secondary face, in radians either way.
++const STAGGER_YAW:=Vector2(.05,.11)
+ var model_library:=Models.new()
+ var assets:Dictionary={}
+ var contours:RefCounted
+@@ -547,6 +584,7 @@
+ 		if not seen.has(signature):stale.append(signature)
+ 	for signature in stale:_run_cache.erase(signature)
+ 	_merge_narrow_columns()
++	_stagger_outer_faces()
+ 	_prune_uncovered_step_sides(field)
+ 	_prune_overlapping_buttresses()
+ 	layout_stages.runs=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+@@ -653,6 +691,151 @@
+ 			if not merged.has(i):kept.append(_columns[i])
+ 		_columns=kept
+ 	if not changed:return
++	_column_cells.clear()
++	for i:int in _columns.size():_bucket_column(i)
++func _column_proud(column:Dictionary)->float:
++	# How far the slab face stands in front of the contour point it was placed on.
++	var pose:Transform3D=column.pose
++	var flat:=Vector3(column.edge.x,pose.origin.y,column.edge.y)
++	return (pose.origin-flat).dot(column.outward)+float(assets[column.kind][0].crown_z)*pose.basis.z.length()
++func _column_world_width(column:Dictionary)->float:
++	return (column.pose as Transform3D).basis.x.length()*assets[column.kind][0].mesh.get_aabb().size.x
++func _column_end(index:int,toward:Vector2)->Vector2:
++	# The end of the slab that faces the point, in world XZ.
++	var pose:Transform3D=_columns[index].pose
++	var box:AABB=assets[_columns[index].kind][0].mesh.get_aabb()
++	var s:float=(Vector3(toward.x,pose.origin.y,toward.y)-pose.origin).dot(pose.basis.x.normalized())
++	var p:Vector3=pose.origin+pose.basis.x*(box.end.x if s>0.0 else box.position.x)
++	return Vector2(p.x,p.z)
++func _resize_column(index:int,side:float,amount:float)->void:
++	# Moves one end of the slab along its own axis (positive lengthens). The other end stays.
++	var column:Dictionary=_columns[index]
++	var pose:Transform3D=column.pose
++	var axis:Vector3=pose.basis.x.normalized()
++	var full:float=pose.basis.x.length()*assets[column.kind][0].mesh.get_aabb().size.x
++	var factor:float=(full+amount)/full
++	pose.basis.x*=factor
++	pose.origin+=axis*side*amount*.5
++	column.pose=pose
++	column.width=float(column.width)*factor
++func _outer_neighbours(n:int)->Array[int]:
++	# The outer slab next to this one on either side of its run: the nearest
++	# one that faces roughly the same way, stands at a similar level and is
++	# close enough to touch it. -1 where the wall ends.
++	var column:Dictionary=_columns[n]
++	var centre:Vector2=column.edge
++	var along:Vector2=column.run_dir
++	var out:Vector3=column.outward
++	var width:float=_column_world_width(column)
++	var found:Array[int]=[-1,-1]
++	var found_d:Array[float]=[INF,INF]
++	for i:int in _columns.size():
++		var other:Dictionary=_columns[i]
++		if i==n or other.is_step:continue
++		if (other.outward as Vector3).dot(out)<STAGGER_FACING or absf(float(other.pose.origin.y)-float(column.pose.origin.y))>STAGGER_LEVEL:continue
++		var offset:Vector2=(other.edge as Vector2)-centre
++		var lean:float=offset.dot(along)
++		if is_zero_approx(lean):continue
++		var d:=offset.length()
++		if d>STAGGER_LINK*(width+_column_world_width(other)):continue
++		var side:int=0 if lean<0.0 else 1
++		if d<found_d[side]-.0001 or (found[side]!=-1 and absf(d-found_d[side])<=.0001 and _lex_lt(other.edge,_columns[found[side]].edge)):
++			found[side]=i;found_d[side]=d
++	return found
++func _stagger_outer_faces()->void:
++	# A stretch of outer slabs standing on one face line at one width reads as
++	# a guard wall. Each slab takes a role from its own width and a fixed
++	# number of its own (worth up to STAGGER_SCORE_PLAY metres), so an edit
++	# elsewhere cannot change it:
++	# - primary: a broad slab. It steps forward and turns a few degrees, and a
++	#   plain neighbour that continues its plane and offers itself to that side
++	#   is taken over, so one broad face replaces two alike ones;
++	# - secondary: a narrow slab. It steps back and turns, and the slabs beside
++	#   it stop at its ends, so it shows as a recessed face and not as a slot;
++	# - the rest shift a little either way.
++	# Every step looks one slab to either side and no further, and reads the
++	# slabs as they stood before the pass. Slabs that offer a shoulder hold
++	# their place whether or not the shoulder is kept; so do step walls, slabs
++	# cut by a fall, corner chamfers and thin fingers of land.
++	if _columns.size()<2:return
++	var carriers:Dictionary={}
++	for body:Dictionary in _mass:
++		if body.has("host_edge"):carriers[body.host_edge]=true
++	var count:=_columns.size()
++	var locked:=PackedByteArray();locked.resize(count)
++	var role:=PackedByteArray();role.resize(count) # 0 plain, 1 primary, 2 secondary
++	var beside:Array=[]
++	var none:Array[int]=[-1,-1]
++	for n:int in count:
++		var column:Dictionary=_columns[n]
++		locked[n]=1 if (column.is_step or column.get("veil",false) or float(column.get("narrow_run",0.0))>0.0 or float(column.get("land_span",0.0))<MERGE_MIN_LAND or carriers.has(column.edge)) else 0
++		beside.append(_outer_neighbours(n) if not column.is_step else none)
++		if locked[n]==1:continue
++		var cell:Vector2i=Vector2i(roundi(column.edge.x*2.0),roundi(column.edge.y*2.0))
++		var rank:float=_column_world_width(column)+random_at(cell,_run_seed,3071)*STAGGER_SCORE_PLAY
++		if rank>=STAGGER_RANKS.y:role[n]=1
++		elif rank<=STAGGER_RANKS.x:role[n]=2
++	# A rock group is the protrusion of its stretch of wall: the faces beside a
++	# slab that offers one do not step forward as well.
++	for n:int in count:
++		if role[n]!=1:continue
++		for side:int in 2:
++			var other:int=beside[n][side]
++			if other!=-1 and carriers.has(_columns[other].edge):role[n]=0
++	var taken:Dictionary={}
++	var growth:Array=[]
++	for n:int in count:
++		if locked[n]==1 or role[n]!=0:continue
++		var plain:Dictionary=_columns[n]
++		var cell:Vector2i=Vector2i(roundi(plain.edge.x*2.0),roundi(plain.edge.y*2.0))
++		var side:int=0 if random_at(cell,_run_seed,3078)<.5 else 1
++		var host_index:int=beside[n][side]
++		if host_index==-1 or locked[host_index]==1 or role[host_index]!=1:continue
++		var host:Dictionary=_columns[host_index]
++		if absf(float(plain.pose.origin.y)-float(host.pose.origin.y))>.01:continue
++		if (plain.outward as Vector3).dot(host.outward)<STAGGER_ABSORB_FACING:continue
++		if absf(((plain.edge as Vector2)-(host.edge as Vector2)).dot(Vector2(host.outward.x,host.outward.z)))>STAGGER_ABSORB_OFFSET:continue
++		var away:Vector2=(plain.edge as Vector2)*2.0-(host.edge as Vector2)
++		var reach:=_merge_shortfall(host_index,_column_end(n,away))
++		if reach.y<=0.0 or _column_world_width(host)+reach.y>STAGGER_MAX_FACE:continue
++		growth.append([host_index,reach.x,reach.y])
++		taken[n]=true
++	# The slabs beside a secondary stop at its ends.
++	for n:int in count:
++		if locked[n]==1 or role[n]!=2:continue
++		var guest:Dictionary=_columns[n]
++		var half:float=float(guest.get("run_len",0.0))*.5
++		if half<=0.0:continue
++		for side:int in 2:
++			var other:int=beside[n][side]
++			if other==-1 or locked[other]==1 or role[other]==2 or taken.has(other):continue
++			var toward:Vector2=(guest.run_dir as Vector2)*(1.0 if side==1 else -1.0)
++			var junction:Vector2=(guest.edge as Vector2)+toward*half
++			var past:float=(junction-_column_end(other,guest.edge)).dot(toward)
++			var trim:float=minf(past-STAGGER_SEAT,_column_world_width(_columns[other])*.3)
++			if trim>.05:growth.append([other,_merge_shortfall(other,guest.edge).x,-trim])
++	for step:Array in growth:_resize_column(int(step[0]),float(step[1]),float(step[2]))
++	# Front-back steps and turns.
++	for n:int in count:
++		if locked[n]==1 or taken.has(n):continue
++		var column:Dictionary=_columns[n]
++		var cell:Vector2i=Vector2i(roundi(column.edge.x*2.0),roundi(column.edge.y*2.0))
++		var amount:float=random_at(cell,_run_seed,3072)
++		var shift:float=(amount-.5)*STAGGER_PLAIN
++		if role[n]==1:shift=lerpf(STAGGER_PRIMARY.x,STAGGER_PRIMARY.y,amount)
++		elif role[n]==2:shift=-minf(lerpf(STAGGER_SECONDARY.x,STAGGER_SECONDARY.y,amount),maxf(0.0,_column_proud(column)-STAGGER_MIN_PROUD))
++		var pose:Transform3D=column.pose
++		pose.origin+=(column.outward as Vector3)*shift
++		if role[n]!=0:
++			var turn:float=lerpf(STAGGER_YAW.x,STAGGER_YAW.y,random_at(cell,_run_seed,3076))*(1.0 if random_at(cell,_run_seed,3077)<.5 else -1.0)
++			pose.basis=Basis(Vector3.UP,turn)*pose.basis
++		column.pose=pose
++		column.role=["plain","primary","secondary"][role[n]]
++	if not taken.is_empty():
++		var kept:Array=[]
++		for i:int in count:
++			if not taken.has(i):kept.append(_columns[i])
++		_columns=kept
+ 	_column_cells.clear()
+ 	for i:int in _columns.size():_bucket_column(i)
+ func _prune_uncovered_step_sides(field)->void:
+@@ -870,9 +1053,12 @@
+ 	var kept:Array=[]
+ 	var ext_shoulders:Array=[]
+ 	var ext_roots:Array=[]
++	var fillers:Array=[]
+ 	for item:Dictionary in _mass:
+ 		if item.get("is_interior",false):
+ 			kept.append(item)
++		elif item.get("filler",false):
++			fillers.append(item)
+ 		elif item.get("is_shoulder",false):
+ 			ext_shoulders.append(item)
+ 		else:
+@@ -910,6 +1096,27 @@
+ 				var conflict_r:float=5.25
+ 				if sh_pos[i].distance_to(sh_pos[w])<conflict_r:
+ 					state[i]=-1;break
++	# Groups offered by otherwise bare runs are chosen in one hop, so an edit
++	# cannot change one further away than STAGGER_FILL_RADIUS from the run it
++	# touched. The shoulders above never depend on them.
++	for i:int in fillers.size():
++		var origin:Vector3=(fillers[i].pose as Transform3D).origin
++		var at:=Vector2(origin.x,origin.z)
++		var rank:float=float(fillers[i].get("priority",0.0))
++		var wins:=true
++		for p:Vector2 in sh_pos:
++			if p.distance_to(at)<STAGGER_FILL_RADIUS:wins=false;break
++		if wins:
++			for j:int in fillers.size():
++				if j==i:continue
++				var other:Vector3=(fillers[j].pose as Transform3D).origin
++				var other_at:=Vector2(other.x,other.z)
++				if other_at.distance_to(at)>=STAGGER_FILL_RADIUS:continue
++				var other_rank:float=float(fillers[j].get("priority",0.0))
++				if other_rank>rank or (other_rank==rank and _lex_lt(other_at,at)):wins=false;break
++		if wins:
++			sh_anchors.append(at)
++			kept.append(fillers[i])
+ 	var root_anchors:Array[Vector2]=[]
+ 	for rt:Dictionary in ext_roots:
+ 		var orig:Vector3=(rt.pose as Transform3D).origin
+@@ -1358,6 +1565,14 @@
+ 	var room:float=maxf(1.8,drop)
+ 	var sh_chance:float=0.0 if (is_step_corner or is_step_flank or curtain_trimmed) else (.90 if (in_rock_cluster and use_len>=2.05) else (.44 if drop>=2.55 and use_len>=2.45 else 0.0))
+ 	var has_shoulder:bool=allow_sh_mode and profile.base and not step and float(outer_prof.inset)>=0.90 and land_span_d>=1.65 and random_at(cell,seed_value,3030)<sh_chance
++	# The earlier gates (a chance weighted by fixed compass lobes, no shoulder
++	# near the two ends of the default island, and a land probe that the
++	# stair-stepped contour of a gently bowed wall also fails) keep their
++	# results. Any other broad outer run offers a group to the local winner
++	# pass; its land probe reaches further in, so only a real nose fails it.
++	var sh_first:bool=has_shoulder and not (c.x<-15.8 or c.x>16.2) and not (field.surface_at(c+dir*2.65-out*.62).is_empty() or field.surface_at(c-dir*2.65-out*.62).is_empty())
++	var sh_filler:bool=not sh_first and allow_sh_mode and profile.base and not step and not (is_step_corner or is_step_flank or curtain_trimmed) and float(outer_prof.inset)>=0.90 and land_span_d>=MERGE_MIN_LAND and drop>=2.55 and use_len>=2.45 and random_at(cell,seed_value,3082)<STAGGER_FILL_SHARE and not (field.surface_at(c+dir*STAGGER_FILL_FLANK.x-out*STAGGER_FILL_FLANK.y).is_empty() or field.surface_at(c-dir*STAGGER_FILL_FLANK.x-out*STAGGER_FILL_FLANK.y).is_empty())
++	if sh_filler:has_shoulder=true
+ 	var r_drop:float=clampf(.55*(.5+.5*sin(geo_anchor.x*.34+geo_anchor.y*.38+s_phase))+.45*random_at(cell,seed_value,3031),0.0,1.0)
+ 	var is_low_tier:bool=false
+ 	var sh_drop:float=lerpf(1.42,2.05,r_drop) if is_step_flank else lerpf(.95,1.88,r_drop)
+@@ -1410,6 +1625,8 @@
+ 		var target_h:float=clampf(room*tier1_frac,minf(2.35,room*.96),9.85)
+ 		sy=clampf(target_h/eff_body_h,0.85,10.50)
+ 		sh_drop=minf(sh_drop,maxf(.88,body_h*sy-1.35))
++		if sh_filler:
++			sh_drop=minf(lerpf(1.0,clampf(room*STAGGER_FILL_DROP.x,1.9,STAGGER_FILL_DROP.y),pow(random_at(cell,seed_value,3074),1.3)),maxf(.88,body_h*sy-2.9))
+ 		var near_pond_rim:bool=int(field.surface_at(c-out*1.55).get("water",-1))>=0 or int(field.surface_at(c-out*2.25).get("water",-1))>=0
+ 		var max_safe_d:float=lerpf(clampf(proud+land_span_d*.58,1.25,4.35),4.95,smoothstep(2.4,3.8,land_span_d))
+ 		if float(profile.inset)<1.35 and near_pond_rim:
+@@ -1447,11 +1664,11 @@
+ 		pose.origin+=tangent*((crown_clear.x+crown_clear.y)*.5-(body_extent.x+body_extent.y)*.5*crown_fit)
+ 	var index:=_columns.size()
+ 	var narrow_run:float=use_len if (not step and bool(profile.base) and not curtain_trimmed and use_len<NARROW_OUTER_RUN) else 0.0
+-	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy,"is_step":step,"narrow_run":narrow_run,"run_dir":dir,"land_span":land_span_d})
++	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy,"is_step":step,"narrow_run":narrow_run,"run_dir":dir,"land_span":land_span_d,"veil":curtain_trimmed,"run_len":use_len})
+ 	_bucket_column(index)
+ 	# Outer Cliff Buttresses (beveled sloped shoulders integrated into adjacent cliff rock):
+ 	var is_extreme_tip:bool=c.x<-15.8 or c.x>16.2
+-	if has_shoulder and not is_extreme_tip:
++	if has_shoulder and (sh_filler or not is_extreme_tip):
+ 		var sh_idx:=int(random_at(cell,seed_value,3032)*4.0)%4
+ 		var sh_kind:String=UNDERSIDE_KINDS[sh_idx]
+ 		var sh_part:Dictionary=assets[sh_kind][0]
+@@ -1461,7 +1678,7 @@
+ 		var col_bottom_y:float=h-body_h*sy
+ 		var full_wall_h:float=maxf(sh_top-foot_y+.35,sh_top-col_bottom_y+lerpf(.08,.48,root_focus))
+ 		var is_sharp_nose:bool=field.surface_at(c+dir*2.65-out*.62).is_empty() or field.surface_at(c-dir*2.65-out*.62).is_empty()
+-		if full_wall_h>=2.35 and not is_sharp_nose and peninsula_guard>=.32:
++		if full_wall_h>=2.35 and (sh_filler or not is_sharp_nose) and peninsula_guard>=.32:
+ 			var corner_tight:float=peninsula_guard
+ 			var sh_anchor_2d:Vector2=c
+ 			var max_corner_w:float=lerpf(3.40,6.20,corner_tight)
+@@ -1524,7 +1741,8 @@
+ 						var allow_bush:bool=false
+ 						var ledge_pt:Vector3=sh_pose_final.origin+sh_basis*Vector3(0.0,-.032,.22)-Vector3(0.0,.03,0.0)
+ 						var sh_prio:float=sh_w+prom_envelope*2.2
+-						_mass.append({"kind":sh_kind,"pose":sh_pose_final,"mesh":joined,"host_edge":c,"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
++						if sh_filler:sh_prio=-10.0+use_len*.2+random_at(cell,seed_value,3075)
++						_mass.append({"kind":sh_kind,"pose":sh_pose_final,"mesh":joined,"host_edge":c,"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"filler":sh_filler,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
+ 	elif step and drop>=1.45 and use_len>=1.75 and not curtain_trimmed and random_at(cell,seed_value,3061)<.36:
+ 		# Staggered stepped foot boulders along interior terrace cliffs (clear of paths & ponds):
+ 		var floor_probe:Dictionary=field.surface_at(c+out*1.35)

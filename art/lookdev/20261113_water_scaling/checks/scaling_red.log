@@ -1,0 +1,52 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: an exactly stable pool stops repeating the flux solve
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_exact_sleep_and_wake (res://tests/water_scaling_test.gd:18)
+       [2] run (res://tests/water_scaling_test.gd:71)
+ok: sleep preserves exact retained mass and empty transfers
+ok: a bed edit wakes the pool and redistributes conserved water
+ok: waking never discards water
+ERROR: unrelated dry expansion does not enter the wet-cell flux worklist
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_sparse_work (res://tests/water_scaling_test.gd:34)
+       [2] run (res://tests/water_scaling_test.gd:72)
+ok: sparse stepping still wets a receiving cell and conserves mass
+ERROR: configuration builds one immutable terrain snapshot
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_snapshot_lifetime (res://tests/water_scaling_test.gd:46)
+       [2] run (res://tests/water_scaling_test.gd:73)
+ERROR: ordinary flowing updates reuse the terrain snapshot
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_snapshot_lifetime (res://tests/water_scaling_test.gd:48)
+       [2] run (res://tests/water_scaling_test.gd:73)
+ERROR: an explicit mid-worker edit replaces the snapshot before publication
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_snapshot_lifetime (res://tests/water_scaling_test.gd:54)
+       [2] run (res://tests/water_scaling_test.gd:73)
+ok: a stale worker cannot republish removed terrain
+ok: snapshot invalidation retains plus discharges exactly the authored mass
+ERROR: an unchanged explicit flush does not recopy the terrain
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_snapshot_lifetime (res://tests/water_scaling_test.gd:59)
+       [2] run (res://tests/water_scaling_test.gd:73)
+ERROR: a seed-only edit invalidates worker visual inputs
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/water_renderer_test.gd:19)
+       [1] test_snapshot_lifetime (res://tests/water_scaling_test.gd:62)
+       [2] run (res://tests/water_scaling_test.gd:73)
+ok: reset replaces cached terrain images and finite water state
+WATER SCALING 14 checks, 7 failures

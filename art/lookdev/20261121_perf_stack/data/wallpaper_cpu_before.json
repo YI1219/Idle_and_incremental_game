@@ -1,0 +1,16 @@
+{
+	"elapsed_seconds": 8.024072,
+	"fps": 30.0346258109349,
+	"frame_limit": 30,
+	"frames": 241,
+	"hidden": false,
+	"internal_scale": 1.0,
+	"method": "normal runtime loop; --disable-vsync; native 1280x720; live time and water;3s warmup+8s sample; process CPU via ps time delta (not power/thermal measurement)",
+	"process_cpu_percent_one_core": 42.2478761406927,
+	"process_cpu_seconds": 3.39,
+	"resolution": [
+		1280,
+		720
+	],
+	"variant": "after"
+}

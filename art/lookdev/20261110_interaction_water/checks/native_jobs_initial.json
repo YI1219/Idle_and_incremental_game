@@ -1,0 +1,34 @@
+[
+  {
+    "job": "waterfall_before_day",
+    "exit_code": 0
+  },
+  {
+    "job": "final_day",
+    "exit_code": 0
+  },
+  {
+    "job": "final_night",
+    "exit_code": 0
+  },
+  {
+    "job": "held2104",
+    "exit_code": 0
+  },
+  {
+    "job": "held4242",
+    "exit_code": 0
+  },
+  {
+    "job": "held913",
+    "exit_code": 0
+  },
+  {
+    "job": "water_evolution_review",
+    "exit_code": 0
+  },
+  {
+    "job": "interaction_review",
+    "exit_code": 1
+  }
+]

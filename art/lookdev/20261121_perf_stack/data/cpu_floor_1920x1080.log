@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+BASE all processing on: 12.08 ms
+ALL OFF editor subtree processing off: 11.51 ms
+OWN editor._process off (children on): 11.22 ms
+CHILD off @Node3D@4 (Node3D, terrain_renderer.gd)                      12.04 ms  (-0.04)
+CHILD off @Camera3D@6 (Camera3D, editor_camera.gd)                     12.20 ms  (+0.12)
+CHILD off @Node3D@7 (Node3D, distant_landscape.gd)                     12.10 ms  (+0.01)
+CHILD off AmbientMotes (MultiMeshInstance3D, ambient_motes.gd)         12.00 ms  (-0.08)
+CHILD off SunLight (DirectionalLight3D)                                12.05 ms  (-0.03)
+CHILD off FillLight (DirectionalLight3D)                               12.10 ms  (+0.02)
+CHILD off WorldEnvironment (WorldEnvironment)                          11.82 ms  (-0.27)
+CHILD off @MeshInstance3D@38 (MeshInstance3D)                          11.56 ms  (-0.52)
+CHILD off @MeshInstance3D@39 (MeshInstance3D, edit_preview.gd)         11.89 ms  (-0.20)
+CHILD off @CanvasLayer@40 (CanvasLayer, editor_hud.gd)                 11.98 ms  (-0.10)
+CHILD off GameplayDirector (Node3D, director.gd)                       11.79 ms  (-0.29)
+CHILD off @Node3D@48 (Node3D, water_renderer.gd)                       11.89 ms  (-0.19)
+CHILD off @Node3D@49 (Node3D, background_renderer.gd)                  11.78 ms  (-0.30)
+CHILD off @Node@50 (Node, runtime_power.gd)                            11.88 ms  (-0.20)
+WINDOW viewport texture not drawn in the window: 11.56 ms
+NORENDER scene viewport not rendered at all: 12.00 ms
+BASE again: 11.68 ms

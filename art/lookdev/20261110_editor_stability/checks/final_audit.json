@@ -1,0 +1,236 @@
+{
+  "valid": true,
+  "final_images": [
+    {
+      "file": "scene_review_final/level_blueprint.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "3782d1bc5ec3549679d9b04e478eead7f37275a7411d1a02d4d1db152f9a15fb"
+    },
+    {
+      "file": "scene_review_final/upper_after_196.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "91cf2dfb63393bdb75f57007ad6475033d3035d562b11b021d20d8d4d41bff42"
+    },
+    {
+      "file": "scene_review_final/held_2104.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "f2021791814226cea3de0a180a3a44138218eb9bc3da18cd96a728f72d8be639"
+    },
+    {
+      "file": "scene_review_final/01_current_whole.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "6dc65fe211dcbcc9060f16d0acceda9fe0c3f4cef38fc2e2679ed0add34fb02e"
+    },
+    {
+      "file": "scene_review_final/4K_preview.png",
+      "resolution": [
+        3840,
+        2160
+      ],
+      "sha256": "db447782f1577303dc303c0d5ec699d21f0410f11e855af81cdee120a191b923"
+    },
+    {
+      "file": "scene_review_final/00_original_whole.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "8403415e5fb36f2d3f9e41e48a5f89aaa1e1df85a855521634c794b61546d85f"
+    },
+    {
+      "file": "scene_review_final/4K_native.png",
+      "resolution": [
+        3840,
+        2160
+      ],
+      "sha256": "4e72b7675d9419c13d736e7f15b920a0fb58d70d759a7efa4d162a998f120195"
+    },
+    {
+      "file": "scene_review_final/upper_before_16.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "bcfeda0ae67bf5396210f87fa03862c846e098e24c1cab0c584446a2be2ffc2c"
+    },
+    {
+      "file": "scene_review_final/upper_after_16.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "e535809a34c5ee155d761833339859fd0da127bfe3b6985c2d118570bb9fb963"
+    },
+    {
+      "file": "scene_review_final/lower_after.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "44ca3acd1567ee9e64495c3ba6054f0d2898abecf8d6d5b661312962b7bf2b1d"
+    },
+    {
+      "file": "scene_review_final/lower_before.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "b3fbec9d553968a15eb19f3d38722555532dd6c4216b1c0216b22d85a28333a4"
+    },
+    {
+      "file": "scene_review_final/held_4242.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "e1b5171f5f4ab9c5447822602ef3562d8698c88389d158bef6e60b532634594e"
+    },
+    {
+      "file": "scene_review_final/upper_before_196.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "7958a41bffeeadbd2cf81f1995657fa9ae020bb6a4f2931c403501f2ec1638ff"
+    },
+    {
+      "file": "flooded_final/seed_7301/02_after_flooded_reverse.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "18e5126d92021f4c6ea053956d18532a3dfe724e06ae20792f7609b5f4d2b496"
+    },
+    {
+      "file": "flooded_final/seed_7301/03_dry_brush_restored_side.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "a9044bc332a90e46c789d5f2614d19e2d15a28f4bcee21c943f64af5bb67d21a"
+    },
+    {
+      "file": "flooded_final/seed_7301/03_dry_brush_restored_front.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "0576ea6022b8a363bb01daf4546c248a0ebf1e2e816d68d9d91cbeb39477eb0b"
+    },
+    {
+      "file": "flooded_final/seed_7301/02_after_flooded_front.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "ec016ba5449d9b171eea2f9eee66507091483567c67c67536ebada76cb07439c"
+    },
+    {
+      "file": "flooded_final/seed_7301/01_before_flooded_reverse.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "ff908e3471e31d341a528b567650e3f60d077d3f0374ee340def7124a48680ef"
+    },
+    {
+      "file": "flooded_final/seed_7301/01_before_flooded_side.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "b97c4f9245febbc35c19fd231a8773434e2272030b796a20ae130425c32760f9"
+    },
+    {
+      "file": "flooded_final/seed_7301/03_dry_brush_restored_reverse.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "2e4456294006778ffcf236203e5c9daae7ed3aaee47054b4ac2f095da789915a"
+    },
+    {
+      "file": "flooded_final/seed_7301/baseline_reverse.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "96e0258e0a0726c184f8823a13621e35bd2457daf15a363a463cf976da99170b"
+    },
+    {
+      "file": "flooded_final/seed_7301/01_before_flooded_front.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "291fdf9aea6c628286cddd3644b04d2275f38118a9ff6e4bdfee62a65a6a22c2"
+    },
+    {
+      "file": "flooded_final/seed_7301/00_dry_before_lower.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "e8b889b6711be552ec1816455fa2c5f86b21a68c77e8450933af6c46a1e4137c"
+    },
+    {
+      "file": "flooded_final/seed_7301/02_after_flooded_side.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "fdfdd16287b719e1bcd0ef637a292ae653f3450cc62e8f2c94a084e962f68ec7"
+    },
+    {
+      "file": "controls_review/04_4K_settings.png",
+      "resolution": [
+        3840,
+        2160
+      ],
+      "sha256": "36c26f42090fb40dc5caa1d198a461c15780fad74e1d07a8c5ff234bb6e5599b"
+    },
+    {
+      "file": "controls_review/03_level_committed.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "c4ddbc852797126df4e8e09834f5eac460c0607e0bef5569c73b84875a528b89"
+    },
+    {
+      "file": "controls_review/02_level_cancelled.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "28c8344e79d45e84a5037ebf8dd567af31f390b6cd422c559c72831e7d4a5cc4"
+    },
+    {
+      "file": "controls_review/01_level_draft.png",
+      "resolution": [
+        2560,
+        1440
+      ],
+      "sha256": "1d79e7a5228bfb61821b04cd91bf4b51c51ffadf57abfb70e4a7be62fdd9cdde"
+    }
+  ],
+  "same_camera_comparison_pairs": 6,
+  "native_capture_manifests_valid": true,
+  "final_test_groups": 22,
+  "offline_compare_states": 27,
+  "browser_visual_tested": false,
+  "missing_links": [],
+  "flood_mass_error": 1.60937929649663e-12
+}

@@ -1,0 +1,73 @@
+{
+  "pairs": [
+    {
+      "folder": "04_day_pair",
+      "before": "game_before.png",
+      "after": "game_after.png",
+      "same_scene_instance": true,
+      "same_camera_lighting_phase": true,
+      "same_authoritative_data": true
+    },
+    {
+      "folder": "04_day_pair",
+      "before": "whole_before.png",
+      "after": "whole_after.png",
+      "same_scene_instance": true,
+      "same_camera_lighting_phase": true,
+      "same_authoritative_data": true
+    },
+    {
+      "folder": "04_day_pair",
+      "before": "reverse_before.png",
+      "after": "reverse_after.png",
+      "same_scene_instance": true,
+      "same_camera_lighting_phase": true,
+      "same_authoritative_data": true
+    },
+    {
+      "folder": "04_day_pair",
+      "before": "close_before.png",
+      "after": "close_after.png",
+      "same_scene_instance": true,
+      "same_camera_lighting_phase": true,
+      "same_authoritative_data": true
+    },
+    {
+      "folder": "05_night_pair",
+      "before": "game_before.png",
+      "after": "game_after.png",
+      "same_scene_instance": true,
+      "same_camera_lighting_phase": true,
+      "same_authoritative_data": true
+    },
+    {
+      "folder": "05_night_pair",
+      "before": "whole_before.png",
+      "after": "whole_after.png",
+      "same_scene_instance": true,
+      "same_camera_lighting_phase": true,
+      "same_authoritative_data": true
+    },
+    {
+      "folder": "05_night_pair",
+      "before": "reverse_before.png",
+      "after": "reverse_after.png",
+      "same_scene_instance": true,
+      "same_camera_lighting_phase": true,
+      "same_authoritative_data": true
+    },
+    {
+      "folder": "05_night_pair",
+      "before": "close_before.png",
+      "after": "close_after.png",
+      "same_scene_instance": true,
+      "same_camera_lighting_phase": true,
+      "same_authoritative_data": true
+    }
+  ],
+  "native_2k_frames": 16,
+  "render_method": "same instantiated scene, frozen phase, runtime water shader switch",
+  "before_shader_sha256": "56d56995560c25d5a0134e86a833adfaeda980dc16d8689e4f3b03290cfe522d",
+  "after_shader_sha256": "f55f2a238f2fc83d11983025fdbf465bcb44f726be0241291bdde59ea2e77dcf",
+  "browser_rendering_tested": false
+}

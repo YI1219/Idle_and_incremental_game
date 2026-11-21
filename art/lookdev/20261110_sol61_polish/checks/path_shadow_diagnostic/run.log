@@ -1,0 +1,3 @@
+2026-11-10 11:56:02.506 godot[99920:70166466] Failure on line 687 in function id scheduleApplicationNotification(LSNotificationCode, NSWorkspaceNotificationCenter *): noErr == _LSModifyNotification(notificationID, 1, &code, 0, NULL, NULL, NULL)
+2026-11-10 11:56:02.777 godot[99920:70166466] Error received in message reply handler: Connection invalid
+2026-11-10 11:56:02.777 godot[99920:70166469] Connection Invalid error for service com.apple.hiservices-xpcservice.

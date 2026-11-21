@@ -1,0 +1,180 @@
+{
+	"display_server": "macOS",
+	"native_image": {
+		"file": "lod0_native.png",
+		"msaa": 4,
+		"resolution": [
+			1280,
+			960
+		],
+		"sha256": "fea1bf571aca9bf063f76d591a31c0c0ac5d02a121abbd26f24d690b4e23540f"
+	},
+	"output": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime",
+	"proof_lighting": "neutral color ambient .6 and directional light 1.4, shadows off for shape/material resource proof only; not production lighting",
+	"renderer": "forward_plus",
+	"scope": "Reloaded optional resource package, not default courtyard art acceptance or hardware performance",
+	"verification": {
+		"dependencies": {
+			"asset.tscn": [
+				"res://assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime/lod0.res",
+				"res://assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime/lod1.res",
+				"res://assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime/lod2.res"
+			],
+			"lod0.res": [
+				"res://assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime/shared_material.tres"
+			],
+			"lod1.res": [
+				"res://assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime/shared_material.tres"
+			],
+			"lod2.res": [
+				"res://assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime/shared_material.tres"
+			],
+			"shared_material.tres": [
+				"res://assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime/albedo.res"
+			]
+		},
+		"image": {
+			"all_pixels_sha256": "2c5782723b8227e2faa7264847275711ed0145ed0b7d71c382eef826d81e1194",
+			"base_pixels_sha256": "7c7cd8f44f7219659427e43fc9d58d64b433139587032593f9effcd6fc7eef24",
+			"data_bytes": 1398100,
+			"format": 5,
+			"has_mipmaps": true,
+			"height": 512,
+			"mipmap_count": 9,
+			"width": 512
+		},
+		"lods": [
+			{
+				"arrays_sha256": "9591e10b7ed7c0f7b79627c205f029f5f32cef158fe9f840409b11b1fee2d323",
+				"bounds_min_m": [
+					-0.34197998046875,
+					0.0,
+					-0.363671749830246
+				],
+				"dimensions_m": [
+					0.6839599609375,
+					1.0,
+					0.727343499660492
+				],
+				"primitive_type": 3,
+				"surfaces": 1,
+				"transform": [
+					[
+						1.0,
+						0.0,
+						0.0
+					],
+					[
+						0.0,
+						1.0,
+						0.0
+					],
+					[
+						0.0,
+						0.0,
+						1.0
+					],
+					[
+						0.0,
+						0.0,
+						0.0
+					]
+				],
+				"triangles": 1772,
+				"uv0_sha256": "e494f907e77bfc394b72637a558c2bdf1f0f6d57862b6c867355ef770454de2c",
+				"uv1_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+				"vertices": 1334
+			},
+			{
+				"arrays_sha256": "c8bf807ef95e0466d05f3c2e49a7f91d821d06d44057fc7d95323d0dd029bc34",
+				"bounds_min_m": [
+					-0.342020094394684,
+					0.000168384562130086,
+					-0.364373087882996
+				],
+				"dimensions_m": [
+					0.685330271720886,
+					0.99983161687851,
+					0.728943586349487
+				],
+				"primitive_type": 3,
+				"surfaces": 1,
+				"transform": [
+					[
+						1.0,
+						0.0,
+						0.0
+					],
+					[
+						0.0,
+						1.0,
+						0.0
+					],
+					[
+						0.0,
+						0.0,
+						1.0
+					],
+					[
+						0.0,
+						0.0,
+						0.0
+					]
+				],
+				"triangles": 714,
+				"uv0_sha256": "8402f5afa6f4a74a7d62563d05336c28e8aea0fef5b3432b37f674fd5d5df483",
+				"uv1_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+				"vertices": 651
+			},
+			{
+				"arrays_sha256": "1fbbe9d9c22ed3c3ed873f07103401f364453efe13f6cb83f0199bb8aaf10c99",
+				"bounds_min_m": [
+					-0.3413205742836,
+					0.00295062526129186,
+					-0.369819283485413
+				],
+				"dimensions_m": [
+					0.682252585887909,
+					0.995281338691711,
+					0.738848268985748
+				],
+				"primitive_type": 3,
+				"surfaces": 1,
+				"transform": [
+					[
+						1.0,
+						0.0,
+						0.0
+					],
+					[
+						0.0,
+						1.0,
+						0.0
+					],
+					[
+						0.0,
+						0.0,
+						1.0
+					],
+					[
+						0.0,
+						0.0,
+						0.0
+					]
+				],
+				"triangles": 266,
+				"uv0_sha256": "248d7e5c2c18199b0aa0659bbc2123616fa53d6207acf5247952a783e1df8210",
+				"uv1_sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+				"vertices": 322
+			}
+		],
+		"material_overrides": false,
+		"material_values_equal": true,
+		"old_embedded_surface_materials_removed": true,
+		"same_material_instance_across_all_lods": true,
+		"same_texture_instance_across_all_lods": true,
+		"source_geometry_uv_transform_equal": true,
+		"texture_pixels_and_mipmaps_equal": true,
+		"valid": true
+	}
+}

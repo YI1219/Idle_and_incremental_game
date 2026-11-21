@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-13 14:28:59.514 Godot[86730:77918895] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-13 14:29:02.088 Godot[86730:77918895] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+BACKGROUND RENDERER 23 checks, 0 failures

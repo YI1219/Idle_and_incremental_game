@@ -1,0 +1,113 @@
+{
+  "files": {
+    "compare.html": {
+      "sha256": "5d7a3a1393391b9747d400064469539592804a32bb452a0333243bce75248185",
+      "bytes": 2982
+    },
+    "README.md": {
+      "sha256": "1e62acc8e15ef9dfd3ad7edea299a9bb1496ea9e39febcf367e003c42ff77c62",
+      "bytes": 1482
+    },
+    "checks/scene.log": {
+      "sha256": "91db10d580c9e09850c11cd8e88854a00b66c4581d7179306fb96df66964e2e9",
+      "bytes": 463
+    },
+    "checks/capture_water.gd": {
+      "sha256": "d6af27b854a1da0e22865befb6a9da276f12d8bcb776e6306889f07b6366108b",
+      "bytes": 416
+    },
+    "checks/capture_water_pair.gd": {
+      "sha256": "d9c4b39f6bec13d0e23a98fc0cc3de4d952ff6b0f0ae194551f1422fa4ea5c57",
+      "bytes": 1133
+    },
+    "checks/validation.json": {
+      "sha256": "70e591d8dba4ce4c89c867f771e2dc30610b6b2c0f4093ced5b10bf9fb88bf05",
+      "bytes": 2203
+    },
+    "checks/water_before.gdshader.txt": {
+      "sha256": "56d56995560c25d5a0134e86a833adfaeda980dc16d8689e4f3b03290cfe522d",
+      "bytes": 9731
+    },
+    "checks/water_after.gdshader.txt": {
+      "sha256": "f55f2a238f2fc83d11983025fdbf465bcb44f726be0241291bdde59ea2e77dcf",
+      "bytes": 9730
+    },
+    "checks/water.patch": {
+      "sha256": "d1556fe94082103fd2233ae8ea7ef52c25fe41107bf52d9bf0f2352398dbd4fa",
+      "bytes": 1651
+    },
+    "05_night_pair/captures.json": {
+      "sha256": "aa14b4fb782d88d7081263cd421e1c95850194bcf247000c6d66741f3a2292c0",
+      "bytes": 21674
+    },
+    "05_night_pair/whole_after.png": {
+      "sha256": "8c8a29c31b703624434efb7909dc88af82bcf84e8b955bbaf825df936bbedb96",
+      "bytes": 2476125
+    },
+    "05_night_pair/close_before.png": {
+      "sha256": "ec86451148799e7be3c7d03a9aa354d941312cfbdcd7e56e992545d5db686da9",
+      "bytes": 3464444
+    },
+    "05_night_pair/whole_before.png": {
+      "sha256": "9bb3ea7b3e19d4209ee1a65bfdf523d36be6d79808cc3840799df87b10d1ae4b",
+      "bytes": 2472579
+    },
+    "05_night_pair/game_before.png": {
+      "sha256": "6f7d36239f1f4766f21e80a762e892fd441be1024a75a63550370590b6552e26",
+      "bytes": 3140155
+    },
+    "05_night_pair/game_after.png": {
+      "sha256": "01ba8be05b9cbe236b0f789abda73cfa7be9a7bf3c417b36fb4a2dbe6c039ee3",
+      "bytes": 3148834
+    },
+    "05_night_pair/close_after.png": {
+      "sha256": "a24039e6546dfe90ea2f6bc25c2f3d1e0091184c947be25db8e3efd008bba1e0",
+      "bytes": 3490964
+    },
+    "05_night_pair/reverse_after.png": {
+      "sha256": "0097213a2a887ca2d2bc04a9327d0a7c4f669c96d2e41e183e33a9e4f65b430d",
+      "bytes": 1989927
+    },
+    "05_night_pair/reverse_before.png": {
+      "sha256": "480c46924035f793b710cbd318b666b3104932d9a93afc37d396030ca4c0fb7f",
+      "bytes": 1989283
+    },
+    "04_day_pair/captures.json": {
+      "sha256": "eea7dc41dcd0fe0d21900ef4a908c6238ed28d3cdeee96e44445181278637a91",
+      "bytes": 21570
+    },
+    "04_day_pair/whole_after.png": {
+      "sha256": "782bf39fedad23e3f2f35d4238acf5a410da5db7f9d87fcf7514e37e208f2b51",
+      "bytes": 2744308
+    },
+    "04_day_pair/close_before.png": {
+      "sha256": "3d7dff19e1b41c3cb89d0a84adae794d64cfaf09153a43a5c56f25210ef90933",
+      "bytes": 4208051
+    },
+    "04_day_pair/whole_before.png": {
+      "sha256": "42e718a7fd664957241b75797b9048a90b9e25ce33d6333e4299284418ca5717",
+      "bytes": 2740870
+    },
+    "04_day_pair/game_before.png": {
+      "sha256": "8836b21741ea525585338e03152b1a2405c5aaeefe8f4ad9dab4d159cdb2be62",
+      "bytes": 3768540
+    },
+    "04_day_pair/game_after.png": {
+      "sha256": "3be99ef9097ec538cdc72e2f3cff684b37f6af172c8376697feee2bc250006f4",
+      "bytes": 3776660
+    },
+    "04_day_pair/close_after.png": {
+      "sha256": "b85b4cdc2801ec32970af15248529cd6d442b1b03a19193f9c8eee6d4384bd0b",
+      "bytes": 4233754
+    },
+    "04_day_pair/reverse_after.png": {
+      "sha256": "0327560ca963c36b8c2c5edc6d35949d6ced0e880ffa2e62176540027ffe21f4",
+      "bytes": 2297788
+    },
+    "04_day_pair/reverse_before.png": {
+      "sha256": "5edf3ce4d1ced491ffaeb64c7e7c3ed75d6b18a77fded1335858c925d02cf112",
+      "bytes": 2297529
+    }
+  },
+  "native_2k_frames": 16
+}

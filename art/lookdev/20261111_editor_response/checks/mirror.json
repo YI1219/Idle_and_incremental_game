@@ -1,0 +1,942 @@
+{
+  "destination": "/Users/yi/Downloads/scroll_editor_response_20261111",
+  "file_count_including_this_manifest": 188,
+  "files": [
+    {
+      "file": ".gdignore",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "file": "README.md",
+      "sha256": "753f3ca950ef7bf21a4510b10b6eddd2931bf7b357e9c89612a56f54e0483050",
+      "bytes": 4688
+    },
+    {
+      "file": "checks/adaptive_probe.gd",
+      "sha256": "7d88226bf2a726f58734d873deabe3c73fb16f97eaabb502de219bc5479fe048",
+      "bytes": 1292
+    },
+    {
+      "file": "checks/before.json",
+      "sha256": "914e4622d904c512bd090deef67bc9cfa43e3d3082320e5af49189566b5a1eab",
+      "bytes": 1927
+    },
+    {
+      "file": "checks/capture_final.log",
+      "sha256": "4031279f46571746f59f8533805d1080e757020bd77df08dc08ee477633f785d",
+      "bytes": 364
+    },
+    {
+      "file": "checks/capture_response.gd",
+      "sha256": "6aabdf7d8f3177d87ac790db0d9494cf889666e941dea467e142b14d7d947a86",
+      "bytes": 7441
+    },
+    {
+      "file": "checks/capture_review.log",
+      "sha256": "a666214748652d59685927ed1a2a8c11c79f912a1c843ebb64fbd1dfd8e2ab40",
+      "bytes": 364
+    },
+    {
+      "file": "checks/captures_candidate.json",
+      "sha256": "8fd30ca55b7542168f7553f5eb9667b6e9ec7589d268afbc4b63990e17d8f6e2",
+      "bytes": 208320
+    },
+    {
+      "file": "checks/changes.patch",
+      "sha256": "d53fd521b16f410dc9c1d777bd904dc2686ce0ea0dc05382cc603d5d9c1113bb",
+      "bytes": 32909
+    },
+    {
+      "file": "checks/final_audit.json",
+      "sha256": "54f7561b2967d8ee8377a6e1e738c6bd9542e4356b0a6cf5debda04b148eaf26",
+      "bytes": 2949
+    },
+    {
+      "file": "checks/final_candidate.json",
+      "sha256": "a54b4b146626129f0a52f1dbb16ed9dc6cb4b94126505121aba63184f17aa368",
+      "bytes": 221720
+    },
+    {
+      "file": "checks/flooded_pixels/background.png",
+      "sha256": "7088e3a9f819c24db69b019f15b04b802e3b89524c37f2d4c0f483a0bb65e1e5",
+      "bytes": 1021
+    },
+    {
+      "file": "checks/flooded_pixels/blades_drained_0.0.png",
+      "sha256": "24154ed5d29df5885f52f49548a85c8c3b7c9dedec32c88a31be0b5b4b1ad8dd",
+      "bytes": 4520
+    },
+    {
+      "file": "checks/flooded_pixels/blades_drained_0.7.png",
+      "sha256": "24154ed5d29df5885f52f49548a85c8c3b7c9dedec32c88a31be0b5b4b1ad8dd",
+      "bytes": 4520
+    },
+    {
+      "file": "checks/flooded_pixels/blades_dry_0.0.png",
+      "sha256": "24154ed5d29df5885f52f49548a85c8c3b7c9dedec32c88a31be0b5b4b1ad8dd",
+      "bytes": 4520
+    },
+    {
+      "file": "checks/flooded_pixels/blades_dry_0.7.png",
+      "sha256": "24154ed5d29df5885f52f49548a85c8c3b7c9dedec32c88a31be0b5b4b1ad8dd",
+      "bytes": 4520
+    },
+    {
+      "file": "checks/flooded_pixels/blades_wet_0.0.png",
+      "sha256": "7088e3a9f819c24db69b019f15b04b802e3b89524c37f2d4c0f483a0bb65e1e5",
+      "bytes": 1021
+    },
+    {
+      "file": "checks/flooded_pixels/blades_wet_0.7.png",
+      "sha256": "24154ed5d29df5885f52f49548a85c8c3b7c9dedec32c88a31be0b5b4b1ad8dd",
+      "bytes": 4520
+    },
+    {
+      "file": "checks/flooded_pixels/ground_drained.png",
+      "sha256": "0762c9f559faa218396b48017cd9c7f0e551443af153a116639fd06635258c2c",
+      "bytes": 5473
+    },
+    {
+      "file": "checks/flooded_pixels/ground_dry.png",
+      "sha256": "0762c9f559faa218396b48017cd9c7f0e551443af153a116639fd06635258c2c",
+      "bytes": 5473
+    },
+    {
+      "file": "checks/flooded_pixels/ground_empty_high_texel.png",
+      "sha256": "0762c9f559faa218396b48017cd9c7f0e551443af153a116639fd06635258c2c",
+      "bytes": 5473
+    },
+    {
+      "file": "checks/flooded_pixels/ground_flooded.png",
+      "sha256": "474f2e22072d722f49dad7947054b255293c567988852f5261da26d759a945ad",
+      "bytes": 3708
+    },
+    {
+      "file": "checks/flooded_pixels/ground_upper_adjacent_water.png",
+      "sha256": "0762c9f559faa218396b48017cd9c7f0e551443af153a116639fd06635258c2c",
+      "bytes": 5473
+    },
+    {
+      "file": "checks/flooded_pixels/ground_upper_dry.png",
+      "sha256": "0762c9f559faa218396b48017cd9c7f0e551443af153a116639fd06635258c2c",
+      "bytes": 5473
+    },
+    {
+      "file": "checks/flooded_pixels/results.json",
+      "sha256": "1d92c7763c2c2d46a9bcd48179044f3a6363f8bff6941fdda66a21caa288033e",
+      "bytes": 768
+    },
+    {
+      "file": "checks/flooded_pixels/rim_drained_0.0.png",
+      "sha256": "192929e1abc2fe13e2863fd5643612965a0db128ebb6a440ec08919f2f2ba5ab",
+      "bytes": 3120
+    },
+    {
+      "file": "checks/flooded_pixels/rim_drained_0.102.png",
+      "sha256": "9227389f495a117495bae6e26cd312685ed6b4c36c794697c2ed2cfd81c67b58",
+      "bytes": 2868
+    },
+    {
+      "file": "checks/flooded_pixels/rim_drained_0.7.png",
+      "sha256": "08191cf86df2ae761302aaea575b11ca82d8e0a6dcf0738c89f0911bfbfb4581",
+      "bytes": 2826
+    },
+    {
+      "file": "checks/flooded_pixels/rim_dry_0.0.png",
+      "sha256": "192929e1abc2fe13e2863fd5643612965a0db128ebb6a440ec08919f2f2ba5ab",
+      "bytes": 3120
+    },
+    {
+      "file": "checks/flooded_pixels/rim_dry_0.102.png",
+      "sha256": "9227389f495a117495bae6e26cd312685ed6b4c36c794697c2ed2cfd81c67b58",
+      "bytes": 2868
+    },
+    {
+      "file": "checks/flooded_pixels/rim_dry_0.7.png",
+      "sha256": "08191cf86df2ae761302aaea575b11ca82d8e0a6dcf0738c89f0911bfbfb4581",
+      "bytes": 2826
+    },
+    {
+      "file": "checks/flooded_pixels/rim_wet_0.0.png",
+      "sha256": "7088e3a9f819c24db69b019f15b04b802e3b89524c37f2d4c0f483a0bb65e1e5",
+      "bytes": 1021
+    },
+    {
+      "file": "checks/flooded_pixels/rim_wet_0.102.png",
+      "sha256": "9227389f495a117495bae6e26cd312685ed6b4c36c794697c2ed2cfd81c67b58",
+      "bytes": 2868
+    },
+    {
+      "file": "checks/flooded_pixels/rim_wet_0.7.png",
+      "sha256": "08191cf86df2ae761302aaea575b11ca82d8e0a6dcf0738c89f0911bfbfb4581",
+      "bytes": 2826
+    },
+    {
+      "file": "checks/grass_deep_red.log",
+      "sha256": "3649146cd3b4ff57b1b8ac1b22f7f21ca827641486214e03842f338c87270ea9",
+      "bytes": 409
+    },
+    {
+      "file": "checks/grass_pixels/background.png",
+      "sha256": "7088e3a9f819c24db69b019f15b04b802e3b89524c37f2d4c0f483a0bb65e1e5",
+      "bytes": 1021
+    },
+    {
+      "file": "checks/grass_pixels/blades_dry.png",
+      "sha256": "5161e5519e7aaa91314fc36fd6bd9168051f0215e645e619a945af05e43e14c0",
+      "bytes": 4555
+    },
+    {
+      "file": "checks/grass_pixels/blades_fading.png",
+      "sha256": "ec0ccbc7fc3b727a0d443a6728d15620e5dbff6d06b826c271e41a4e65a172eb",
+      "bytes": 4942
+    },
+    {
+      "file": "checks/grass_pixels/blades_growing.png",
+      "sha256": "efb0dd4ebae7c88fe69c801b3c8d0cf6ec8ba64e1f8bf102ff4995d1ee09bdbb",
+      "bytes": 4147
+    },
+    {
+      "file": "checks/grass_pixels/blades_hidden.png",
+      "sha256": "7088e3a9f819c24db69b019f15b04b802e3b89524c37f2d4c0f483a0bb65e1e5",
+      "bytes": 1021
+    },
+    {
+      "file": "checks/grass_pixels/blades_restored.png",
+      "sha256": "5161e5519e7aaa91314fc36fd6bd9168051f0215e645e619a945af05e43e14c0",
+      "bytes": 4555
+    },
+    {
+      "file": "checks/grass_pixels/rim_dry.png",
+      "sha256": "740b809c4031b7a1153cb149e2c73ecb163471675539e37d9f8a0c6889e883f6",
+      "bytes": 2849
+    },
+    {
+      "file": "checks/grass_pixels/rim_fading.png",
+      "sha256": "5388295f8abe74942685ebe991ed450f496dea0e1e2dfeaca02cf1af0bc8fdf2",
+      "bytes": 4091
+    },
+    {
+      "file": "checks/grass_pixels/rim_growing.png",
+      "sha256": "31962f9d9faf0466a8ed509bc12b930e3805507d9b3f9931b0cce3b5e3b146cf",
+      "bytes": 3646
+    },
+    {
+      "file": "checks/grass_pixels/rim_hidden.png",
+      "sha256": "7088e3a9f819c24db69b019f15b04b802e3b89524c37f2d4c0f483a0bb65e1e5",
+      "bytes": 1021
+    },
+    {
+      "file": "checks/grass_pixels/rim_restored.png",
+      "sha256": "740b809c4031b7a1153cb149e2c73ecb163471675539e37d9f8a0c6889e883f6",
+      "bytes": 2849
+    },
+    {
+      "file": "checks/grass_recovery.log",
+      "sha256": "5d0770f71f2dce7d2ea5a954c2194033be082606c9035436d1d7ae63a00e6eb8",
+      "bytes": 913
+    },
+    {
+      "file": "checks/grass_recovery_final.log",
+      "sha256": "6a6e4ce1912df0415bb5262f2355285ca476c1a4dd023048d5abc85c07e21a80",
+      "bytes": 913
+    },
+    {
+      "file": "checks/grass_recovery_green.log",
+      "sha256": "aadfa2f02e0274c9e737b3e5427782a00590a0e0d42dd79e4a75cadad8e9f27a",
+      "bytes": 110
+    },
+    {
+      "file": "checks/hud_before_cache.gd",
+      "sha256": "5c506de1111ae1e9cd3430e210c7945f2e6d8d11e14e90c752af86979f69c928",
+      "bytes": 33954
+    },
+    {
+      "file": "checks/hud_cached--paused-time.log",
+      "sha256": "bea11db1f5fe8ff981e245bda7163ecbe462c588658ae2831bde8ca5aaef7b55",
+      "bytes": 892
+    },
+    {
+      "file": "checks/hud_cached--realtime.log",
+      "sha256": "4b00dfd465f3b6c007dee3e215aeec75e7beed39cd219ba81b78a9f8b3745821",
+      "bytes": 881
+    },
+    {
+      "file": "checks/interactive--hide-hud.log",
+      "sha256": "b34a2d4dc51d331e310afe28a073c127eee818279760e84f84656eb33b9824a6",
+      "bytes": 3370
+    },
+    {
+      "file": "checks/interactive--no-editor.log",
+      "sha256": "a00cf49684dde0058ae9a35ab685fb5b81d594b83eebe78632bd87331ffcb5b5",
+      "bytes": 3310
+    },
+    {
+      "file": "checks/interactive--no-water.log",
+      "sha256": "0fa9e770b92423428a429b7c26ab3f78c4aa0c397dc9eb1d544898f01c097035",
+      "bytes": 3353
+    },
+    {
+      "file": "checks/interactive--paused-time.log",
+      "sha256": "97e45de26a1bd3be4d6f30c09efe4f5c20304873552d77a5c0dd83c831f5960f",
+      "bytes": 725
+    },
+    {
+      "file": "checks/interactive--realtime.log",
+      "sha256": "24b002756ba5b08b9b76474d86a77a662599e1adc64e8e1e11e93fda542d6b91",
+      "bytes": 721
+    },
+    {
+      "file": "checks/interactive_probe.gd",
+      "sha256": "54b5b3b19d20e2e523fb545d52a391d25d06a3603f1b32d5b968da384331ad26",
+      "bytes": 2795
+    },
+    {
+      "file": "checks/native_candidate.json",
+      "sha256": "f47eaaa81243b506a6f6e4433bca659152795042903e54108adbd075d7bba388",
+      "bytes": 208091
+    },
+    {
+      "file": "checks/performance_adaptive.json",
+      "sha256": "2d811e06bd0d5d8f8f923ec5828dd68446785e8df98baa6a979ad939a77a6560",
+      "bytes": 561
+    },
+    {
+      "file": "checks/performance_adaptive.log",
+      "sha256": "0e9fd74dfb22b8c61dd3ddf377f1ff9d36f137097a8fc1627d5fef51e19bb8e2",
+      "bytes": 665
+    },
+    {
+      "file": "checks/performance_cached.json",
+      "sha256": "b85f5daa7d62930231110525e1224cf939c7fc71295c1eb02fc03c96e48c4e43",
+      "bytes": 5155
+    },
+    {
+      "file": "checks/performance_diagnosis.json",
+      "sha256": "c8972776c11695c8adb6de490c377ec2d375b9cb047dbdb866eb1c1bd5f597c0",
+      "bytes": 4594
+    },
+    {
+      "file": "checks/performance_final.json",
+      "sha256": "f03ab1d4e81e645d43ec234916b7a1f07f1a8aa4ef2a1d2bd6df8b1a11651074",
+      "bytes": 5160
+    },
+    {
+      "file": "checks/performance_final.log",
+      "sha256": "40dace417b07896e61c8ed05ebeb9c7186b1aef05d8cc2aaba0484288581392d",
+      "bytes": 3753
+    },
+    {
+      "file": "checks/performance_hud_cached.log",
+      "sha256": "9208855c3bcb620363b5841081b72b35a69e40e2d75324a2d759428ff343142f",
+      "bytes": 887
+    },
+    {
+      "file": "checks/performance_interactive.json",
+      "sha256": "9caef77bfed88f10689bb4f797b2d239266884aa0314999cd899a233677de518",
+      "bytes": 382
+    },
+    {
+      "file": "checks/performance_interactive.log",
+      "sha256": "73cbf4c97a03210d8d341300220948177c97096d69ce8aebd43a758f90639013",
+      "bytes": 699
+    },
+    {
+      "file": "checks/performance_interactive_hide_hud.json",
+      "sha256": "00e2c86a9ceca5a7a7f09045edd13e48407b393da208c968a60c7781655fe2b9",
+      "bytes": 559
+    },
+    {
+      "file": "checks/performance_interactive_hud_cached.json",
+      "sha256": "084a334d513b84c0efd0db9e46e9470b69943ac89c3f66598e74cdcaea87759f",
+      "bytes": 585
+    },
+    {
+      "file": "checks/performance_interactive_native.json",
+      "sha256": "005660094a0e277695c4b96bff416c9e8e4a02ba2866ef5c717a55ab7deb151a",
+      "bytes": 577
+    },
+    {
+      "file": "checks/performance_interactive_no_editor.json",
+      "sha256": "2c392ab1c69f3887f0f1711e7a579aef4f9d209f62cdc6a74f09f367c4ab5ba8",
+      "bytes": 489
+    },
+    {
+      "file": "checks/performance_interactive_no_water.json",
+      "sha256": "71896017421374d19a273a975ab7fc3ff579e5f05561c44274f9765f56e5c296",
+      "bytes": 542
+    },
+    {
+      "file": "checks/performance_interactive_normal.json",
+      "sha256": "084a334d513b84c0efd0db9e46e9470b69943ac89c3f66598e74cdcaea87759f",
+      "bytes": 585
+    },
+    {
+      "file": "checks/performance_interactive_paused_time.json",
+      "sha256": "1a3d663fd7529d3fb162021209897b233dbee4a57f1bf5bb72137bce90467eea",
+      "bytes": 590
+    },
+    {
+      "file": "checks/performance_interactive_realtime.json",
+      "sha256": "6a13e50a5aedea4f8d4f9d7e276494430cddaad239bbe51c01d2803bf15cffeb",
+      "bytes": 579
+    },
+    {
+      "file": "checks/performance_native.log",
+      "sha256": "b0c8b95939c72171b7823bb7fc14e4125b0e057e2612594ecfc24aec83781bda",
+      "bytes": 879
+    },
+    {
+      "file": "checks/performance_probe.gd",
+      "sha256": "7b56aaa6c3a1449967c6a9d8f68a9d14d116175c275519440ff61cd6383fb6a5",
+      "bytes": 2455
+    },
+    {
+      "file": "checks/pointer_benchmark.gd",
+      "sha256": "b7e138c7667f9c5e26dac359e0943394cf30e161b9aedb0b65a06eefc0e83092",
+      "bytes": 1231
+    },
+    {
+      "file": "checks/pointer_benchmark.json",
+      "sha256": "503c190cf19541b64988bdcba7e6f64b3ac73c0dc0b3e26b49840c5ba159a36c",
+      "bytes": 174
+    },
+    {
+      "file": "checks/preview_quality.log",
+      "sha256": "f8c925cdd74241e6bc58bc78ef088c971ca7bc01b3df23c890116db4621722a5",
+      "bytes": 110
+    },
+    {
+      "file": "checks/profile_editor.gd",
+      "sha256": "32bf845a745b66cb6e2c476fb776ff33d3f6f94e7c28bb5bff2942c48569956b",
+      "bytes": 310
+    },
+    {
+      "file": "checks/source_after/project.godot",
+      "sha256": "d4d275e78e2a5105b8ffe0e01f6d19174d92b0de4b4f13b4558e2aec80297acf",
+      "bytes": 4906
+    },
+    {
+      "file": "checks/source_after/scripts/gameplay/ui/shihai_hud.gd",
+      "sha256": "27f408aeb5bc0097204a4180c56859850489921934340453250392737ea24252",
+      "bytes": 35165
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/distant_landscape.gd",
+      "sha256": "b87ebc7e2b3e39f527f55eefefdedebaabcb15a9669faf4e6ef14010f41c4369",
+      "bytes": 9583
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/editor.gd",
+      "sha256": "3ca111acec2104572b570127351ba1896d1d162fb44a419c6bb9a65f4ea2c486",
+      "bytes": 19386
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/grass_recovery.gd",
+      "sha256": "40d4b1e9802c05ac03adbfbbafb018dc3f2dff6808b04500865c4f7c1ae84ba9",
+      "bytes": 4343
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/preview_quality.gd",
+      "sha256": "b6d83c57e83ee3beeb3212ca3d972eea58ecb2c4ab23e23438e75dec05943fab",
+      "bytes": 2121
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/terrain_data.gd",
+      "sha256": "545d0b07385599548607aeebcf5036ae26822aaef37178bf300aec26cb083d49",
+      "bytes": 19286
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/water_renderer.gd",
+      "sha256": "fa111014fd016a67761b5849ce85b3d24d34a772453c98bea6f3203e1b664e4a",
+      "bytes": 19574
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/cloud_deck.gdshader",
+      "sha256": "56c04970bcd5edb79be43f469e3bfb7622632ad656bf8d7cdebaf6235f15f1ea",
+      "bytes": 3840
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/grass_blades.gdshader",
+      "sha256": "7de9a63236d8ce12ded18c09a1c444c7f97a464d202febad305429e95ee1c0e5",
+      "bytes": 5450
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/ground.gdshader",
+      "sha256": "11a043f7f9513a934f1fb0262e5acf7607f555a8ede1740685195a6e2c159b2d",
+      "bytes": 3021
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/live_water.gdshaderinc",
+      "sha256": "0274ef71707e0c6086c5705411819a54cda419753d9b18a974b9018b54eb80e6",
+      "bytes": 1579
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/rim_green.gdshader",
+      "sha256": "d2deb6bc3f299b8cead259ddbd90fa498fb37dee4614c4625df156a0b508ed6a",
+      "bytes": 1871
+    },
+    {
+      "file": "checks/source_before/project.godot",
+      "sha256": "657728fcdf1af7b7a11ebfb38c90801c8b9ae44054214c65364c29a624aa2d23",
+      "bytes": 4722
+    },
+    {
+      "file": "checks/source_before/scripts/gameplay/ui/shihai_hud.gd",
+      "sha256": "7e42fe23c2713c97f32c7a870b947346d86637192dc12f6ffdf903452de9f950",
+      "bytes": 34235
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/distant_landscape.gd",
+      "sha256": "7fa9121f65d02cc274b1db433716aa3cda8bdad114c480147f014bbf9b474077",
+      "bytes": 9376
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/editor.gd",
+      "sha256": "aa87cf7069e247e7940ffe94a764bedb263b4d87e8900d03d99bbf67f4ec1e0d",
+      "bytes": 17843
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/grass_field.gd",
+      "sha256": "2d050a47e85bfa0a42f6ae6fd300439b7d042ee4524ed507f2bf5612249188c6",
+      "bytes": 10062
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/material_detail.gd",
+      "sha256": "0205f830419ea87798c4b4def885cb84174a8cb3bc0614b2ccea798c236c5d32",
+      "bytes": 895
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/preview_quality.gd",
+      "sha256": "fe93ec1b5512c21b57af7a2c335e1c53a98c71bd045432899f0354d5d59ec62e",
+      "bytes": 1291
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/terrain_data.gd",
+      "sha256": "3027f770b347064501f518727cb91d9d7cc2108c0f8865cb4022a2cde1968eec",
+      "bytes": 19378
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/terrain_environment.gd",
+      "sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+      "bytes": 16766
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/terrain_renderer.gd",
+      "sha256": "406369ec1c618613d4bb0dd0cd10e8804a66caa66fb24641b81badabbffe49c8",
+      "bytes": 30944
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/water_renderer.gd",
+      "sha256": "c3dd5beac37e98138b7b054699ab42b07393009245d1da3d68338dc1e29e66be",
+      "bytes": 18671
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/cloud_deck.gdshader",
+      "sha256": "9ab0bc69b8b947bfd9bb59d1bb96f269b9cdbdafd97d56a2950864bdd120f79a",
+      "bytes": 3850
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/foliage_cards.gdshader",
+      "sha256": "45aa35dd5d206e862ae817f6fb9454bef5e53d0b25328e19da326aa145cccbd0",
+      "bytes": 4309
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/grass_blades.gdshader",
+      "sha256": "d807c75654afec9a0d0cd04cbb5c9953ccfffd8abe2afe38d60bcc47b00e329b",
+      "bytes": 5430
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/ground.gdshader",
+      "sha256": "2b3be899c00f0a213b56220b842dc2a4b388090feeb39b06b12cfa641950571a",
+      "bytes": 3037
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/ground_cover.gdshaderinc",
+      "sha256": "7f8156fee6e04896015b3a81db5e037014299ba3bfaeb9dd0583dd056c1c3703",
+      "bytes": 5082
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/live_water.gdshaderinc",
+      "sha256": "7a5e5663f63074eb0b394d22ec9f6510cb46275231d71a29b7b3c91b69523fad",
+      "bytes": 694
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/rim_green.gdshader",
+      "sha256": "edd5f2811c1cd0a8ae0aa14cddcb6958ac551f765225196a953fbf1b78e1caec",
+      "bytes": 1851
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/stone_surface.gdshaderinc",
+      "sha256": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90",
+      "bytes": 9565
+    },
+    {
+      "file": "checks/source_final.json",
+      "sha256": "10ad6c9b00b85d3385b36116a3cd3183b3dcd184a9a2328498ffec69ad1ebd74",
+      "bytes": 2861
+    },
+    {
+      "file": "checks/stroke_green.log",
+      "sha256": "931d03e85da965a33a148cc9e0e0cd5c26ec5f38e8b41d295cbc2925e54bb425",
+      "bytes": 900
+    },
+    {
+      "file": "checks/stroke_green_2.log",
+      "sha256": "ec8c5fb0ea94bcae2cb0061207ed7f5119979d9a7f245a0581810ccf4ba6604f",
+      "bytes": 108
+    },
+    {
+      "file": "checks/stroke_red.log",
+      "sha256": "4fc0a918cefc2616ac8d464a1b37cf3d56dae03a0c2f232079935e8c7af7d611",
+      "bytes": 1284
+    },
+    {
+      "file": "checks/stroke_sample_red.log",
+      "sha256": "2525a28f91100603888e120ca5c94df34de283f8f69204e1fbeb3b4bfcb2d741",
+      "bytes": 410
+    },
+    {
+      "file": "checks/tests/argon_world_lock.log",
+      "sha256": "66b69574752d78850b960ce8bc4461db3e3a6dd60ad58ab022b7b8221f7e7180",
+      "bytes": 670
+    },
+    {
+      "file": "checks/tests/argon_world_lock_delivery.log",
+      "sha256": "66b69574752d78850b960ce8bc4461db3e3a6dd60ad58ab022b7b8221f7e7180",
+      "bytes": 670
+    },
+    {
+      "file": "checks/tests/argon_world_lock_hud.log",
+      "sha256": "66b69574752d78850b960ce8bc4461db3e3a6dd60ad58ab022b7b8221f7e7180",
+      "bytes": 670
+    },
+    {
+      "file": "checks/tests/final_summary.json",
+      "sha256": "5e8699b99875fdde0cbca86819bf23f73bd2124f65afd11eb6d2410ceec9cd70",
+      "bytes": 2997
+    },
+    {
+      "file": "checks/tests/flooded_ground.log",
+      "sha256": "76098f8658d72ab9a11fa76ecc92ba2e318592aebd1e4951211beec144ec87b9",
+      "bytes": 377
+    },
+    {
+      "file": "checks/tests/flooded_ground_delivery.log",
+      "sha256": "7a43e92bebbd38b0cb0c67227f88259561ac603c3e367aab542952a4af8159d0",
+      "bytes": 377
+    },
+    {
+      "file": "checks/tests/grass_lip_soften.log",
+      "sha256": "0d880a2b57293a916730d02b0122a84cd42e900edf62275813ebbfca0d6ae96e",
+      "bytes": 2019
+    },
+    {
+      "file": "checks/tests/grass_lod.log",
+      "sha256": "371d3b6d002252dc265a1342e014e19e614ac0a19a5a0b93d7af51b07cfb84a1",
+      "bytes": 276
+    },
+    {
+      "file": "checks/tests/grass_lod_delivery.log",
+      "sha256": "be246355529fbce9b9bcd3c01e5617dee99e5a1c2edd40ea1a8ff5627fa0fb47",
+      "bytes": 276
+    },
+    {
+      "file": "checks/tests/grass_recovery.log",
+      "sha256": "aadfa2f02e0274c9e737b3e5427782a00590a0e0d42dd79e4a75cadad8e9f27a",
+      "bytes": 110
+    },
+    {
+      "file": "checks/tests/grass_recovery_delivery.log",
+      "sha256": "5cf53cc179e327995716c41744f5bac3848981aba1c5fac9f2aa00af6de3c8c5",
+      "bytes": 110
+    },
+    {
+      "file": "checks/tests/grass_recovery_final.log",
+      "sha256": "5cf53cc179e327995716c41744f5bac3848981aba1c5fac9f2aa00af6de3c8c5",
+      "bytes": 110
+    },
+    {
+      "file": "checks/tests/grass_recovery_render.log",
+      "sha256": "c8d74d931e4aea89bded130e58e3b99340bc2652c13042febea56b514c103325",
+      "bytes": 458
+    },
+    {
+      "file": "checks/tests/grass_recovery_render_delivery.log",
+      "sha256": "2c783f45031c6cb4fbff9bded54467f2994c99d0d1076ce20573ea4560b4833f",
+      "bytes": 458
+    },
+    {
+      "file": "checks/tests/interior_terrain_edit.log",
+      "sha256": "18f7492a35d48c45a574a956056afaf7becd3b64952e83a4d23a682d8d76d6c4",
+      "bytes": 722
+    },
+    {
+      "file": "checks/tests/preview_quality.log",
+      "sha256": "f8c925cdd74241e6bc58bc78ef088c971ca7bc01b3df23c890116db4621722a5",
+      "bytes": 110
+    },
+    {
+      "file": "checks/tests/preview_quality_delivery.log",
+      "sha256": "0d1f1a9c5f2769b96e7a680981fd2c972755708671915604dcc782aff5451a8d",
+      "bytes": 111
+    },
+    {
+      "file": "checks/tests/preview_quality_final.log",
+      "sha256": "0d1f1a9c5f2769b96e7a680981fd2c972755708671915604dcc782aff5451a8d",
+      "bytes": 111
+    },
+    {
+      "file": "checks/tests/sol61_grass_contact.log",
+      "sha256": "872b08e6256a4c6ef1f6415c83208d48747930ec0f8be35aba03d61879a68da9",
+      "bytes": 339
+    },
+    {
+      "file": "checks/tests/sol61_scene.log",
+      "sha256": "91db10d580c9e09850c11cd8e88854a00b66c4581d7179306fb96df66964e2e9",
+      "bytes": 463
+    },
+    {
+      "file": "checks/tests/sol61_scene_delivery.log",
+      "sha256": "91db10d580c9e09850c11cd8e88854a00b66c4581d7179306fb96df66964e2e9",
+      "bytes": 463
+    },
+    {
+      "file": "checks/tests/sol61_scene_hud.log",
+      "sha256": "91db10d580c9e09850c11cd8e88854a00b66c4581d7179306fb96df66964e2e9",
+      "bytes": 463
+    },
+    {
+      "file": "checks/tests/summary.json",
+      "sha256": "f28c22c89a85d310052bc61f926b0e57e9676168e9c3a7b10ad1bf90bf1fdbe5",
+      "bytes": 2076
+    },
+    {
+      "file": "checks/tests/terrain_blueprint.log",
+      "sha256": "db929e79fe4c8f8d1ab8b024b77c8489b0014f60f706d3fcd8ed323fba0b1909",
+      "bytes": 114
+    },
+    {
+      "file": "checks/tests/terrain_blueprint_async.log",
+      "sha256": "de72a98844f7caa07583e30103b64f73659ae5fac77c38a04b344041fb6b1acd",
+      "bytes": 120
+    },
+    {
+      "file": "checks/tests/terrain_blueprint_async_final.log",
+      "sha256": "de72a98844f7caa07583e30103b64f73659ae5fac77c38a04b344041fb6b1acd",
+      "bytes": 120
+    },
+    {
+      "file": "checks/tests/terrain_blueprint_final.log",
+      "sha256": "db929e79fe4c8f8d1ab8b024b77c8489b0014f60f706d3fcd8ed323fba0b1909",
+      "bytes": 114
+    },
+    {
+      "file": "checks/tests/terrain_blueprint_hud.log",
+      "sha256": "db929e79fe4c8f8d1ab8b024b77c8489b0014f60f706d3fcd8ed323fba0b1909",
+      "bytes": 114
+    },
+    {
+      "file": "checks/tests/terrain_controls.log",
+      "sha256": "78f2c2be87f67d608ea383792e196c2913071d46ff1f6d129e19711fd00a0fb6",
+      "bytes": 118
+    },
+    {
+      "file": "checks/tests/terrain_controls_delivery.log",
+      "sha256": "78f2c2be87f67d608ea383792e196c2913071d46ff1f6d129e19711fd00a0fb6",
+      "bytes": 118
+    },
+    {
+      "file": "checks/tests/terrain_controls_final.log",
+      "sha256": "78f2c2be87f67d608ea383792e196c2913071d46ff1f6d129e19711fd00a0fb6",
+      "bytes": 118
+    },
+    {
+      "file": "checks/tests/terrain_controls_hud.log",
+      "sha256": "78f2c2be87f67d608ea383792e196c2913071d46ff1f6d129e19711fd00a0fb6",
+      "bytes": 118
+    },
+    {
+      "file": "checks/tests/terrain_editor_runtime.log",
+      "sha256": "5fdef101ecbbe5a97d142d6efc4c36c1577c82bc1f3dd0fa8e9cc32508f4e773",
+      "bytes": 696
+    },
+    {
+      "file": "checks/tests/terrain_editor_runtime_delivery.log",
+      "sha256": "ca22673be731daf4baa19b9cf353360191ebca94d03e5718b53a11f4f0a9bc5c",
+      "bytes": 110
+    },
+    {
+      "file": "checks/tests/terrain_editor_runtime_final.log",
+      "sha256": "ca22673be731daf4baa19b9cf353360191ebca94d03e5718b53a11f4f0a9bc5c",
+      "bytes": 110
+    },
+    {
+      "file": "checks/tests/terrain_locality.log",
+      "sha256": "188fdc176e51cc5cd877b29ed085e5edb03c7808abc166343121ef08474b69ba",
+      "bytes": 113
+    },
+    {
+      "file": "checks/tests/terrain_stroke_plane.log",
+      "sha256": "33155585ec4e2ec1ccaa0dc182ff4f8f6e94f53ff1413a9f7bda84d935b4530e",
+      "bytes": 108
+    },
+    {
+      "file": "checks/tests/terrain_stroke_plane_delivery.log",
+      "sha256": "33155585ec4e2ec1ccaa0dc182ff4f8f6e94f53ff1413a9f7bda84d935b4530e",
+      "bytes": 108
+    },
+    {
+      "file": "checks/tests/terrain_stroke_plane_final.log",
+      "sha256": "33155585ec4e2ec1ccaa0dc182ff4f8f6e94f53ff1413a9f7bda84d935b4530e",
+      "bytes": 108
+    },
+    {
+      "file": "checks/tests/terrain_surface_anchor.log",
+      "sha256": "6bc567ab93c1432396197271a3d986c83e338d403ee96b07c2d402c347ea1d78",
+      "bytes": 119
+    },
+    {
+      "file": "checks/tests/terrain_surface_anchor_final.log",
+      "sha256": "6bc567ab93c1432396197271a3d986c83e338d403ee96b07c2d402c347ea1d78",
+      "bytes": 119
+    },
+    {
+      "file": "checks/tests/terrain_transition.log",
+      "sha256": "f817ff913e7fef6ba74f46d47624849d8504d8b6c19d58d0e3e0faf09b5421a4",
+      "bytes": 114
+    },
+    {
+      "file": "checks/tests/terrain_water_integration.log",
+      "sha256": "5bf9d3409e60d583ddb417f410ad8133534377c933daf8406545acbf8425ee97",
+      "bytes": 122
+    },
+    {
+      "file": "checks/tests/water_flow.log",
+      "sha256": "86547f261b5c53b02d56faddfcc698e98a3b75e41e1a105bc583deefc5ebd3d2",
+      "bytes": 6040
+    },
+    {
+      "file": "checks/tests/water_recession.log",
+      "sha256": "4e06b04e30fdf967a06bc427ed300d4991c12ece313aca4cd8b2b2ec2b0cbb36",
+      "bytes": 183
+    },
+    {
+      "file": "checks/tests/water_renderer.log",
+      "sha256": "1ee8bc7ed45df35bf77487ad09e5f38811457a17114151478d8c661e7bf26d32",
+      "bytes": 3574
+    },
+    {
+      "file": "checks/tests/waterfall_flow_shape.log",
+      "sha256": "fbe5a514e9ad7a5ca760f8f270db7900aabe66e6c344600fe900ad9ed17f41b5",
+      "bytes": 116
+    },
+    {
+      "file": "checks/tests/waterfall_terrace_seal.log",
+      "sha256": "8410a36a4d47c4c92f30052da0ab59f5a09f507bbe07973e801519bc0af36f9a",
+      "bytes": 119
+    },
+    {
+      "file": "compare.html",
+      "sha256": "481a8beaa38126fa6c6884a9040fe9c6a157231de502b60b663675a7a270b37d",
+      "bytes": 8632
+    },
+    {
+      "file": "review/4K_adaptive.png",
+      "sha256": "b6ff23f88fbef2cf5b621b85181018318f09f6dc3c8bb4edcec8f9710d5f5226",
+      "bytes": 8067200
+    },
+    {
+      "file": "review/4K_native.png",
+      "sha256": "727420b40acb8f4229dad3678b0fb969cbba0a3cc6e53125f8d66d8efc029c88",
+      "bytes": 5724528
+    },
+    {
+      "file": "review/captures.json",
+      "sha256": "97123db7bd6300c810d37326a6734e711451eb81ea8b44c08130019c0b350145",
+      "bytes": 221720
+    },
+    {
+      "file": "review/flood.webp",
+      "sha256": "9688772fefdc41ec98d3e5934d7dd03d7cdc7e0302986fbbf1341fb60177a822",
+      "bytes": 896100
+    },
+    {
+      "file": "review/flood_00.png",
+      "sha256": "c2b7705112e748f748ce1b4cc607170dd9f0e38e2c5debf27e00007b67607da7",
+      "bytes": 3794343
+    },
+    {
+      "file": "review/flood_04.png",
+      "sha256": "7a835a145f91b234ebe42d62fba172a48d79aa56c56588c284614ad358d5874d",
+      "bytes": 4255645
+    },
+    {
+      "file": "review/flood_08.png",
+      "sha256": "0f6bee92c877f8e8e9427f39a7d645169e76b5f63940710c4509b8987e0385b5",
+      "bytes": 4168930
+    },
+    {
+      "file": "review/flood_14.png",
+      "sha256": "38e82d084d7902e898103695cbbc115beb9ed7681d5436a0e7a862d02b3cb174",
+      "bytes": 3813428
+    },
+    {
+      "file": "review/flood_18.png",
+      "sha256": "38e82d084d7902e898103695cbbc115beb9ed7681d5436a0e7a862d02b3cb174",
+      "bytes": 3813428
+    },
+    {
+      "file": "review/regrow.webp",
+      "sha256": "1f01a5ffd8dfcea4d745be9131a96c43ec91bb58afa4f5b24a20019e22c803f3",
+      "bytes": 3230038
+    },
+    {
+      "file": "review/regrow_00.png",
+      "sha256": "42096704cd29b6179e87fe29014b55aba6e4d29605937b0fffb619d85dd9c22b",
+      "bytes": 3742179
+    },
+    {
+      "file": "review/regrow_010.png",
+      "sha256": "18788914e18a345d4524989bc26636b0e5d6d830b0b9ac8ee6c5faa41dbc74c6",
+      "bytes": 4068855
+    },
+    {
+      "file": "review/regrow_020.png",
+      "sha256": "cae1ebdb445ea4800ffc36716baff65f7ecbd3264f581b0d0111b198f9cbab56",
+      "bytes": 4303954
+    },
+    {
+      "file": "review/regrow_040.png",
+      "sha256": "768ec41a5d3fdf42be4a79214e9b44feda96ce5260f3ad076cd9e36c3a467b2c",
+      "bytes": 3606949
+    },
+    {
+      "file": "review/regrow_080.png",
+      "sha256": "768ec41a5d3fdf42be4a79214e9b44feda96ce5260f3ad076cd9e36c3a467b2c",
+      "bytes": 3606949
+    },
+    {
+      "file": "review/regrow_120.png",
+      "sha256": "768ec41a5d3fdf42be4a79214e9b44feda96ce5260f3ad076cd9e36c3a467b2c",
+      "bytes": 3606949
+    },
+    {
+      "file": "review/upper_plane_committed.png",
+      "sha256": "6488c157d21bdeb897c9a8ec2b6f9e6b2c880878194a15db12c2811169efdda9",
+      "bytes": 4076311
+    },
+    {
+      "file": "review/upper_plane_expansion.png",
+      "sha256": "0ab73ddb0e4c9d21b0e6ff1cfe3d50a88b43edb68e413a7a3f4fe7377282caf8",
+      "bytes": 3976486
+    },
+    {
+      "file": "review/whole_current.png",
+      "sha256": "400949d302e1210d4a54483706d1d1b0aff4d350c8a4d5fa242d917da06338cb",
+      "bytes": 2767881
+    }
+  ],
+  "method": "Byte-for-byte copy of current task review, logs, diagnostics and source snapshots"
+}

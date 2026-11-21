@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: stable capped wallpaper gradually recovers from a transient low resolution
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/runtime_power_test.gd:6)
+       [1] run (res://tests/runtime_power_test.gd:37)
+ERROR: hidden-window samples cannot contaminate restored interactive quality
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/runtime_power_test.gd:6)
+       [1] run (res://tests/runtime_power_test.gd:40)
+RUNTIME POWER 12 checks, 2 failures

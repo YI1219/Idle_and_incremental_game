@@ -2,7 +2,7 @@ extends RefCounted
 ## Clip only local half-metre triangles; extra contour vertices do not cut the whole lake.
 const STEP:float=.5
 const VERSION:int=1
-static func build(field,surface_class,sample_height:Callable):
+static func build(field,surface_class,sample_height:Callable,sample_outlet:Callable):
  var result=surface_class.new()
  for level:int in field.water_regions:
   var h:float=level*.5;var loops:Array=field.water_regions[level];var shores:Array=[]
@@ -45,7 +45,9 @@ static func build(field,surface_class,sample_height:Callable):
     for j:int in ts.size()-1:
      var p:=a.lerp(b,ts[j]).snapped(Vector2.ONE*.00001);var q:=a.lerp(b,ts[j+1]).snapped(Vector2.ONE*.00001)
      if p.distance_squared_to(q)<1e-14:continue
-     result.quad(Vector3(p.x,h,p.y),Vector3(p.x,_height(p,field.source,level,shores,cache,sample_height),p.y),Vector3(q.x,_height(q,field.source,level,shores,cache,sample_height),q.y),Vector3(q.x,h,q.y),Color(level/255.0,0,0))
+     var top_p:float=minf(h,float(sample_outlet.call(field.source,p,level)))
+     var top_q:float=minf(h,float(sample_outlet.call(field.source,q,level)))
+     result.quad(Vector3(p.x,top_p,p.y),Vector3(p.x,_height(p,field.source,level,shores,cache,sample_height),p.y),Vector3(q.x,_height(q,field.source,level,shores,cache,sample_height),q.y),Vector3(q.x,top_q,q.y),Color(level/255.0,0,0))
  return result
 
 static func conform(source,surface_class):

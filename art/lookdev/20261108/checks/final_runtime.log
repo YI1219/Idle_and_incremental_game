@@ -1,0 +1,7 @@
+Final verification, 2026-11-08. Captured stdout after the initial startup chunk.
+Startup notes: relative --log-file was resolved under user:// and could not create user://art; macOS CA certificate warning was also emitted. The tests continued and their exit status is recorded below. Save tests use the documented /tmp harness; production save code is unchanged.
+
+TERRAIN EDITOR RUNTIME: 22/22 passed
+
+EXIT_CODE=0
+

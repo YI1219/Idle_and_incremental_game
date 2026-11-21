@@ -1,0 +1,110 @@
+[
+  {
+    "before": "pairs/2104_before_close.png",
+    "after": "pairs/2104_after_close.png",
+    "mean_abs_8bit": 0.021477955005787034,
+    "max_abs_8bit": 4
+  },
+  {
+    "before": "pairs/2104_before_reverse.png",
+    "after": "pairs/2104_after_reverse.png",
+    "mean_abs_8bit": 0.009346788194444443,
+    "max_abs_8bit": 3
+  },
+  {
+    "before": "pairs/2104_before_whole.png",
+    "after": "pairs/2104_after_whole.png",
+    "mean_abs_8bit": 0.005495424623842592,
+    "max_abs_8bit": 2
+  },
+  {
+    "before": "pairs/4242_before_close.png",
+    "after": "pairs/4242_after_close.png",
+    "mean_abs_8bit": 0.02019802517361111,
+    "max_abs_8bit": 7
+  },
+  {
+    "before": "pairs/4242_before_reverse.png",
+    "after": "pairs/4242_after_reverse.png",
+    "mean_abs_8bit": 0.00855857566550926,
+    "max_abs_8bit": 2
+  },
+  {
+    "before": "pairs/4242_before_whole.png",
+    "after": "pairs/4242_after_whole.png",
+    "mean_abs_8bit": 0.005527072482638889,
+    "max_abs_8bit": 3
+  },
+  {
+    "before": "pairs/7301_before_close.png",
+    "after": "pairs/7301_after_close.png",
+    "mean_abs_8bit": 0.022552083333333334,
+    "max_abs_8bit": 4
+  },
+  {
+    "before": "pairs/7301_before_low.png",
+    "after": "pairs/7301_after_low.png",
+    "mean_abs_8bit": 0.014648618344907405,
+    "max_abs_8bit": 7
+  },
+  {
+    "before": "pairs/7301_before_night.png",
+    "after": "pairs/7301_after_night.png",
+    "mean_abs_8bit": 0.003851634837962963,
+    "max_abs_8bit": 1
+  },
+  {
+    "before": "pairs/7301_before_reverse.png",
+    "after": "pairs/7301_after_reverse.png",
+    "mean_abs_8bit": 0.009086733217592591,
+    "max_abs_8bit": 3
+  },
+  {
+    "before": "pairs/7301_before_whole.png",
+    "after": "pairs/7301_after_whole.png",
+    "mean_abs_8bit": 0.00600197120949074,
+    "max_abs_8bit": 2
+  },
+  {
+    "before": "pairs/913_before_close.png",
+    "after": "pairs/913_after_close.png",
+    "mean_abs_8bit": 0.02706497757523148,
+    "max_abs_8bit": 7
+  },
+  {
+    "before": "pairs/913_before_reverse.png",
+    "after": "pairs/913_after_reverse.png",
+    "mean_abs_8bit": 0.009105360243055556,
+    "max_abs_8bit": 3
+  },
+  {
+    "before": "pairs/913_before_whole.png",
+    "after": "pairs/913_after_whole.png",
+    "mean_abs_8bit": 0.006132902922453704,
+    "max_abs_8bit": 2
+  },
+  {
+    "before": "pairs4k/full_before_close.png",
+    "after": "pairs4k/full_after_close.png",
+    "mean_abs_8bit": 0.01846748006687243,
+    "max_abs_8bit": 4
+  },
+  {
+    "before": "pairs4k/full_before_whole.png",
+    "after": "pairs4k/full_after_whole.png",
+    "mean_abs_8bit": 0.0051640866126543205,
+    "max_abs_8bit": 2
+  },
+  {
+    "before": "pairs4k/scaled_before_close.png",
+    "after": "pairs4k/scaled_after_close.png",
+    "mean_abs_8bit": 0.21455910011574073,
+    "max_abs_8bit": 103
+  },
+  {
+    "before": "pairs4k/scaled_before_whole.png",
+    "after": "pairs4k/scaled_after_whole.png",
+    "mean_abs_8bit": 0.07861275880915637,
+    "max_abs_8bit": 90
+  }
+]

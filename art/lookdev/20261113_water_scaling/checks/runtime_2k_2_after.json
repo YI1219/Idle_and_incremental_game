@@ -1,0 +1,21 @@
+{
+	"draw_calls": 460.0,
+	"fps": 56.8744881296068,
+	"frames": 455,
+	"method": "3s warm +8s normal production editor/water/time render loop; fixed SubViewport 3D pixels; balanced current visual settings; limiter/vsync off; no screenshot I/O",
+	"p95_ms": 20.265,
+	"p99_ms": 20.776,
+	"resolution": [
+		2560,
+		1440
+	],
+	"scale": 1.0,
+	"simulated_seconds": 11.1,
+	"size": "2k",
+	"snapshots": 1,
+	"texture_size": [
+		2560.0,
+		1440.0
+	],
+	"variant": "after"
+}

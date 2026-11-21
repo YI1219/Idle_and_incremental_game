@@ -1,0 +1,39 @@
+--- capture_lookdev_before.gd
++++ capture_lookdev.gd
+@@ -8,6 +8,7 @@
+ const SOURCE_FILES: Array[String] = [
+ 	"res://project.godot", "res://scenes/terrain_editor.tscn",
+ 	"res://scripts/terrain_editor/editor.gd", "res://scripts/terrain_editor/editor_camera.gd",
++	"res://scripts/terrain_editor/preview_quality.gd", "res://scripts/terrain_editor/runtime_power.gd",
+ 	"res://scripts/terrain_editor/terrain_data.gd", "res://scripts/terrain_editor/terrain_renderer.gd",
+ 	"res://scripts/terrain_editor/terrain_environment.gd", "res://scripts/gameplay/systems/time_solar_system.gd",
+ 	"res://scripts/gameplay/director.gd",
+@@ -46,6 +47,8 @@
+ var viewport: SubViewport
+ var editor: Node3D
+ var captures: Array[Dictionary] = []
++# Explicit atlas setting used by this capture; variants set this with the server call.
++var shadow_atlas_size: int = 8192
+ var errors: Array[String] = []
+ var frozen_shaders: Dictionary = {}
+ var frozen_materials: Dictionary = {}
+@@ -269,6 +272,8 @@
+ 	var env: Environment = editor.get_node("WorldEnvironment").environment
+ 	captures.append({
+ 		"file": label + ".png", "save_error": result,
++		"viewport_msaa": viewport.msaa_3d, "render_scale": viewport.scaling_3d_scale,
++		"shadow_atlas_size": shadow_atlas_size,
+ 		"position": _vector(editor.camera.position), "rotation_degrees": _vector(editor.camera.rotation_degrees),
+ 		"fov": editor.camera.fov, "dof": _dof_settings(editor.camera), "day_progress": time_progress,
+ 		"grass_base": _color(grass_base), "grass_highlight": _color(grass_highlight),
+@@ -327,7 +332,10 @@
+ 	editor = (load("res://scenes/terrain_editor.tscn") as PackedScene).instantiate()
+ 	viewport.add_child(editor)
+ 	# _ready builds the default preset synchronously; no layout load/save methods are called.
++	editor.runtime_power.process_mode = Node.PROCESS_MODE_DISABLED
+ 	editor.process_mode = Node.PROCESS_MODE_DISABLED
++	editor.set_native_preview(true)
++	Engine.max_fps = 0
+ 	editor.renderer.animate_edits = false
+ 	if preset != 0 or seed_value != int(editor.data.seed):
+ 		editor.data.make_preset(preset)

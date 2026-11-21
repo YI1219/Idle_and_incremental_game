@@ -1,0 +1,140 @@
+{
+  "native": [
+    {
+      "file": "flooded_native.json",
+      "captures": 21,
+      "pairs": [
+        {
+          "seed": 7301,
+          "before": "01_before_flooded_front.png",
+          "after": "02_after_flooded_front.png",
+          "mismatches": [],
+          "data_unchanged": true
+        },
+        {
+          "seed": 7301,
+          "before": "01_before_flooded_reverse.png",
+          "after": "02_after_flooded_reverse.png",
+          "mismatches": [],
+          "data_unchanged": true
+        },
+        {
+          "seed": 2104,
+          "before": "01_before_flooded_front.png",
+          "after": "02_after_flooded_front.png",
+          "mismatches": [],
+          "data_unchanged": true
+        },
+        {
+          "seed": 2104,
+          "before": "01_before_flooded_reverse.png",
+          "after": "02_after_flooded_reverse.png",
+          "mismatches": [],
+          "data_unchanged": true
+        },
+        {
+          "seed": 4242,
+          "before": "01_before_flooded_front.png",
+          "after": "02_after_flooded_front.png",
+          "mismatches": [],
+          "data_unchanged": true
+        },
+        {
+          "seed": 4242,
+          "before": "01_before_flooded_reverse.png",
+          "after": "02_after_flooded_reverse.png",
+          "mismatches": [],
+          "data_unchanged": true
+        }
+      ],
+      "errors": [],
+      "mass_errors": [
+        1.60937929649663e-12,
+        1.60937929649663e-12,
+        1.60937929649663e-12
+      ]
+    },
+    {
+      "file": "flooded_native_reframed.json",
+      "captures": 10,
+      "pairs": [
+        {
+          "seed": 7301,
+          "before": "01_before_flooded_front.png",
+          "after": "02_after_flooded_front.png",
+          "mismatches": [],
+          "data_unchanged": true
+        },
+        {
+          "seed": 7301,
+          "before": "01_before_flooded_side.png",
+          "after": "02_after_flooded_side.png",
+          "mismatches": [],
+          "data_unchanged": true
+        },
+        {
+          "seed": 7301,
+          "before": "01_before_flooded_reverse.png",
+          "after": "02_after_flooded_reverse.png",
+          "mismatches": [],
+          "data_unchanged": true
+        }
+      ],
+      "errors": [],
+      "mass_errors": [
+        1.60937929649663e-12
+      ]
+    }
+  ],
+  "final_source_sha256": {
+    "shaders/terrain_editor/ground.gdshader": "fb59a8277983d1d1da0b8564a7ca3799a6c661f1e11be16f038f369e3a6067c6",
+    "shaders/terrain_editor/rim_green.gdshader": "edd5f2811c1cd0a8ae0aa14cddcb6958ac551f765225196a953fbf1b78e1caec",
+    "shaders/terrain_editor/grass_blades.gdshader": "d807c75654afec9a0d0cd04cbb5c9953ccfffd8abe2afe38d60bcc47b00e329b",
+    "shaders/terrain_editor/live_water.gdshaderinc": "7a5e5663f63074eb0b394d22ec9f6510cb46275231d71a29b7b3c91b69523fad",
+    "tests/flooded_ground_test.gd": "cb396504e61919b8a7e05ace3c5c83aee839bbc656b5046f188bd99a859026d9"
+  },
+  "native_precedes_final_rim_root_correction": true,
+  "correction": "rim water sampling uses supporting crown UV.x instead of compression anchor UV.x - 0.006; native pixel regression RED20/1 -> GREEN20/0",
+  "final_pixels": {
+    "adapter": "Apple M4 Pro (Apple9)",
+    "checks": 20,
+    "failures": 0,
+    "renderer": "forward_plus",
+    "samples": {
+      "blades0.0": {
+        "drained_difference": 0.0,
+        "dry_pixels": 2249,
+        "wet_pixels": 0
+      },
+      "blades0.7": {
+        "drained_difference": 0.0,
+        "dry_pixels": 2249,
+        "wet_pixels": 2249
+      },
+      "ground": {
+        "drained_difference": 0.0,
+        "wet_difference": 0.0365956408778826,
+        "wet_mean": [
+          0.626463294029236,
+          0.630978047847748,
+          0.577523946762085
+        ]
+      },
+      "rim0.0": {
+        "drained_difference": 0.0,
+        "dry_pixels": 6628,
+        "wet_pixels": 0
+      },
+      "rim0.102": {
+        "drained_difference": 0.0,
+        "dry_pixels": 6628,
+        "wet_pixels": 6628
+      },
+      "rim0.7": {
+        "drained_difference": 0.0,
+        "dry_pixels": 6628,
+        "wet_pixels": 6628
+      }
+    }
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "analysis_size": [
+    1672,
+    941
+  ],
+  "note": "Godot source captures remain untouched at native 2560x1440. Analysis resizes only to TARGET native dimensions. Generated TARGET has local composition drift, so these are material sample comparisons, not an art acceptance score. Crops exclude the reference humanoid.",
+  "regions": {
+    "meadow": [
+      650,
+      270,
+      860,
+      310
+    ],
+    "lit_stone": [
+      425,
+      480,
+      550,
+      640
+    ],
+    "front_stone": [
+      920,
+      520,
+      1040,
+      650
+    ],
+    "junction": [
+      500,
+      240,
+      1150,
+      550
+    ]
+  },
+  "images": {
+    "TARGET_B": {
+      "source": "art/lookdev/20261109_wallpaper_targets_sol61/TARGET_B_grass_rock_hero.png",
+      "samples": {
+        "meadow": {
+          "mean_rgb": [
+            149.42,
+            169.1354761904762,
+            86.51988095238096
+          ],
+          "mean_luma": 158.9791199761905,
+          "pixel_gradient": 6.143285630918788
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            189.9088,
+            178.31415,
+            161.53615
+          ],
+          "mean_luma": 179.56780099,
+          "pixel_gradient": 1.44342819367265
+        },
+        "front_stone": {
+          "mean_rgb": [
+            191.56589743589743,
+            177.93269230769232,
+            157.47115384615384
+          ],
+          "mean_luma": 179.35378864102563,
+          "pixel_gradient": 1.7831474559245255
+        },
+        "junction": {
+          "mean_rgb": [
+            168.20131513647644,
+            167.47884367245658,
+            127.56214392059553
+          ],
+          "mean_luma": 164.7504553836228,
+          "pixel_gradient": 3.9855583367784186
+        }
+      }
+    },
+    "06": {
+      "source": "art/lookdev/20261109_sol61_build/06_planar_soft_edges_day/cliff_close.png",
+      "samples": {
+        "meadow": {
+          "mean_rgb": [
+            123.18309523809523,
+            153.0925,
+            71.64511904761905
+          ],
+          "mean_luma": 140.85325964285715,
+          "pixel_gradient": 6.199753078471238
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            197.2258,
+            186.0151,
+            165.73975
+          ],
+          "mean_luma": 186.93461455000002,
+          "pixel_gradient": 1.4605818960590393
+        },
+        "front_stone": {
+          "mean_rgb": [
+            194.0698717948718,
+            182.96192307692309,
+            161.87698717948717
+          ],
+          "mean_luma": 183.8011406025641,
+          "pixel_gradient": 1.7770103983119787
+        },
+        "junction": {
+          "mean_rgb": [
+            166.3776923076923,
+            169.06512655086848,
+            129.88183622828785
+          ],
+          "mean_luma": 165.6647444694789,
+          "pixel_gradient": 3.9095124626424482
+        }
+      }
+    },
+    "07": {
+      "source": "art/lookdev/20261109_sol61_build/07_feel_rebuild_day/cliff_close.png",
+      "samples": {
+        "meadow": {
+          "mean_rgb": [
+            94.66059523809524,
+            114.76523809523809,
+            69.81404761904761
+          ],
+          "mean_luma": 107.24551507142856,
+          "pixel_gradient": 10.184018093047303
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            161.956,
+            155.16075,
+            146.01025
+          ],
+          "mean_luma": 155.94475405,
+          "pixel_gradient": 1.8870862469111365
+        },
+        "front_stone": {
+          "mean_rgb": [
+            164.65096153846153,
+            156.61705128205128,
+            145.44621794871796
+          ],
+          "mean_luma": 157.51852643589743,
+          "pixel_gradient": 2.1265738685527875
+        },
+        "junction": {
+          "mean_rgb": [
+            137.9481141439206,
+            140.1119007444169,
+            119.06491315136476
+          ],
+          "mean_luma": 138.132287208933,
+          "pixel_gradient": 5.2026389546010545
+        }
+      }
+    },
+    "08": {
+      "source": "art/lookdev/20261109_sol61_build/08_primary_material_day/cliff_close.png",
+      "samples": {
+        "meadow": {
+          "mean_rgb": [
+            131.00190476190477,
+            157.06642857142856,
+            80.02738095238095
+          ],
+          "mean_luma": 145.96289157142854,
+          "pixel_gradient": 10.351854075252234
+        },
+        "lit_stone": {
+          "mean_rgb": [
+            195.7948,
+            186.277,
+            166.7918
+          ],
+          "mean_luma": 186.89365284,
+          "pixel_gradient": 0.10214304087796736
+        },
+        "front_stone": {
+          "mean_rgb": [
+            193.93942307692308,
+            184.60820512820513,
+            165.2253205128205
+          ],
+          "mean_luma": 185.19257779487177,
+          "pixel_gradient": 0.24148978140570507
+        },
+        "junction": {
+          "mean_rgb": [
+            165.5620794044665,
+            169.49483374689825,
+            134.0755334987593
+          ],
+          "mean_luma": 166.10145669578165,
+          "pixel_gradient": 4.240805189165788
+        }
+      }
+    }
+  }
+}

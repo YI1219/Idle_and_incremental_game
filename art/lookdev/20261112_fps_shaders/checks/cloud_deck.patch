@@ -1,0 +1,35 @@
+--- cloud_deck_before.gdshader.txt
++++ shaders/terrain_editor/cloud_deck.gdshader
+@@ -32,10 +32,10 @@
+ void fragment(){
+ 	vec3 view=world_position-CAMERA_POSITION_WORLD;
+ 	float distance=max(length(view),.001);
+-	vec2 p=sky_coord(view/distance);
++	vec3 factors=sky_view_factors(view/distance);
+ 	float horizontal=length(world_position.xz-NODE_POSITION_WORLD.xz);
+ 	float inner_mask=inner_clear_radius>.5 ? smoothstep(inner_clear_radius*.45,inner_clear_radius,length(world_position.xz)) : 1.0;
+-	float horizon=smoothstep(.04,.34,p.y);
++	float horizon=smoothstep(.04,.34,factors.x);
+ 	float edge_fade=1.0-smoothstep(fade_radius*.48,fade_radius*.94,horizontal);
+ 	float support=horizon*inner_mask*edge_fade;
+ 	if(support<=0.0)discard;
+@@ -51,8 +51,8 @@
+ 	float thick=smoothstep(coverage-.02,coverage+.32,body);
+ 	float lit=clamp(.44+(body-toward_sun)*(cloud_light_gradient*1.25),0.0,1.0);
+ 	float crest_rim=clamp((body-toward_sun_fine)*22.0,0.0,1.0)*smoothstep(coverage-.03,coverage+.18,body)*(1.0-smoothstep(coverage+.20,coverage+.42,body));
+-	float sun_d=sky_sun_distance(p);
+-	float h_sun=sky_horiz_sun(p);
++	float sun_d=factors.y;
++	float h_sun=factors.z;
+ 	float billow_t=clamp(lit*.58+thick*.48-.05,0.0,1.0);
+ 	// Cool celadon-slate billow troughs -> warm sunlit cream-gold crests:
+ 	vec3 cool_cloud=mix(cloud_shade_color*vec3(.84,.98,1.06),cloud_lit_color*vec3(.74,.84,.90),billow_t*.78);
+@@ -64,7 +64,7 @@
+ 	color+=mix(vec3(.07,.09,.09),vec3(.18,.14,.07),h_sun)*crest_rim*day_t;
+ 	color+=vec3(.16,.11,.05)*exp(-sun_d*1.75)*thick*day_t;
+ 	float aerial=1.0-exp(-distance*aerial_density*.55);
+-	vec3 dir_haze=sky_gradient(p);
++	vec3 dir_haze=sky_gradient_factors(factors);
+ 	ALBEDO=mix(color,dir_haze,clamp(aerial*.36,0.0,.42));
+ 	ALPHA=density*opacity*support;
+ }

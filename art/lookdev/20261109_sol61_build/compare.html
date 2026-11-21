@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>sol61 · Godot 实机材质对照</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#172124;color:#e5e9df;font:15px/1.6 system-ui,sans-serif}main{max-width:1800px;margin:auto;padding:28px}h1{font:28px/1.3 Georgia,serif;margin:0 0 10px}p{margin:6px 0;color:#b7c6c6}a{color:#d8d4a3}button,select{font:inherit;background:#29393a;color:#e5e9df;border:1px solid #516364;border-radius:5px;padding:8px 16px;cursor:pointer}button.active{background:#d8d4a3;color:#172124}nav,.tools{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.status{color:#e2c483}.viewer{position:relative;width:100%;aspect-ratio:16/9;background:#0b1214;overflow:hidden}.viewer img{position:absolute;width:100%;height:100%;object-fit:contain;inset:0}.before{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}.line{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#f4e8bc;pointer-events:none}.caption{display:flex;justify-content:space-between;gap:12px;padding:8px 0;color:#d4ded6}.slider{width:100%;accent-color:#dbd2a6;margin:16px 0}.paired{display:none;grid-template-columns:1fr 1fr;gap:8px}.paired img{width:100%;display:block}.foot{font-size:13px;border-top:1px solid #425456;padding-top:16px;margin-top:22px}code{color:#d5dfc9}details{margin-top:16px}summary{cursor:pointer}table{border-collapse:collapse;margin:12px 0}td{padding:6px 16px 6px 0;border-bottom:1px solid #304245}@media(max-width:700px){main{padding:16px}.paired{grid-template-columns:1fr}}
+</style>
+<main>
+<h1>识海浮空岛 · sol61 实机材质对照</h1>
+<p class="status" id="status">主材质重写实机证据 · 仍未达到 TARGET 美术标准</p>
+<p>全部实机图为无人物的 Godot 原生 2560×1440。TARGET 为独立生成参考，点击对应链接查看；参考中的局部构图漂移不用于替换 BASE 相机。</p>
+<nav id="views"><button data-view="A">A 日景全身</button><button class="active" data-view="B">B 草石近景</button><button data-view="C">C 夜景全身</button><button data-view="D">D 日景反向</button></nav>
+<div class="tools"><select id="baseline"><option value="readability">岩面清晰度恢复 · 撤回版 → 当前</option><option value="meadow">本轮草甸成簇 · 低草旧版 → 当前</option><option value="continued">用户偏好的左版岩面 → 当前（保留新草）</option><option value="rock">历史自阴影清理 · 已撤回</option><option value="lip">草唇体积 · 清理岩面 → 当前</option><option value="12">历史主材质回放 · 12 → 上一版</option><option value="06">06 用户指定基准 → 当前</option><option value="00">去人物原始基线 → 当前</option><option value="contact">草石接触修正 · 00 → 03</option><option value="water">瀑尾修正 · 10 → 11</option></select><button id="mode">并排查看</button><a id="target" target="_blank">对应 TARGET（生成参考） ↗</a><a href="meadow_compare/grass_before_after_target.png" target="_blank">草甸与TARGET裁片 ↗</a><a href="material_compare/junction_contact_sheet.png" target="_blank">岩面材质裁片 ↗</a></div>
+<div class="caption"><span id="beforeLabel"></span><span id="afterLabel"></span></div>
+<div class="viewer" id="viewer"><img id="after" alt="当前 Godot 实机"><div class="before" id="clip"><img id="before" alt="固定相机的修改前实机"></div><div class="line" id="line"></div></div>
+<input id="slider" class="slider" type="range" min="0" max="100" value="50" aria-label="前后对比滑杆">
+<div class="paired" id="paired"><img id="beforePair" alt="修改前"><img id="afterPair" alt="修改后"></div>
+<div class="caption"><a id="beforeFull" target="_blank">修改前 2K 原图 ↗</a><a id="afterFull" target="_blank">当前 2K 原图 ↗</a></div>
+<details><summary>固定采集条件与证据</summary><table><tr><td>唯一入口</td><td><code>scenes/terrain_editor.tscn</code></td></tr><tr><td>地形</td><td>seed7301 / preset0，采集不读写用户存档</td></tr><tr><td>渲染</td><td>Godot 4.7.2 / Forward+ / 4×MSAA / 动态相位1.25</td></tr><tr><td>F11</td><td>生产净屏处理器；UI、画笔及小人均不在捕获中</td></tr><tr><td>日夜</td><td>A/B/D progress0.29；C progress0.00</td></tr><tr><td>相机</td><td id="camera"></td></tr></table><p><a id="beforeManifest" target="_blank">Before manifest</a> · <a id="afterManifest" target="_blank">Current manifest</a> · <a href="material_compare/metrics.json" target="_blank">像素样本数据</a> · <a href="README.md">README</a></p></details>
+<p class="foot">功能校验与像素差异不代表美术验收。当前未声称达到 TARGET，也未声称 Windows 轻薄本 / MacBook Air 已达到 60FPS。</p>
+</main>
+<script>
+const latest={day:'rock_readability_day',night:'rock_readability_night',label:'左版岩面响应＋当前草甸'};
+const views={A:{file:'whole.png',target:'TARGET_A_day_whole.png',cam:'whole · yaw16° · pitch30° · height32'},B:{file:'cliff_close.png',target:'TARGET_B_grass_rock_hero.png',cam:'cliff_close · yaw16° · pitch20° · height10'},C:{file:'whole.png',target:'TARGET_C_night_whole.png',night:true,cam:'whole · yaw16° · pitch30° · height32'},D:{file:'reverse.png',target:'TARGET_D_day_reverse.png',cam:'reverse · yaw196° · pitch30° · height32'}};
+let view='B',paired=false;
+const el=id=>document.getElementById(id);
+function update(){
+ const base=el('baseline').value;
+ if((['contact','water','rock','lip'].includes(base))&&view==='C')view='B';
+ const v=views[view];
+ let before=v.night?'final_night':'final_day';
+ let after=v.night?latest.night:latest.day;
+ let note='岩面响应已恢复到用户偏好的左版final；保留当前草甸。';
+ if(base==='readability'){before=v.night?'meadow_fans_night':'meadow_fans_day';note='按用户反馈恢复左版岩面与自阴影响应，保留草叶与机位。';}
+ if(base==='meadow'){before=v.night?'planted_meadow_night':'planted_meadow_day';after=v.night?'meadow_fans_night':'meadow_fans_day';note='只改变草叶形体、高低草分组与叶材质；岩石、光照、雾、水与相机相同。';}
+ if(base==='12'){before=v.night?'12_material_before_locked_night':'12_material_before_locked_day';after=v.night?'final_night':'final_day';note='历史严格材质回放，仅切岩草shader与贴图绑定。';}
+ if(base==='rock'){before='final_day';after='clean_stone_day';note='历史试验：清理细纹削弱了转折层次，用户偏好左版；此路线已撤回。';}
+ if(base==='lip'){before='clean_stone_day';after='planted_meadow_day';note='只改变既有草唇实例的宽高分簇，根位置、密度与地形相同。';}
+ if(base==='06'){before=v.night?'00_before_night':'06_planar_soft_edges_day';note='06为原始指定基准；全量修改对照，不归因于单个材质。C没有06夜景，显示原始00夜景。';}
+ if(base==='00'){before=v.night?'00_before_night':'00_before_day';note='原始无人物基线与当前；全量修改对照。';}
+ if(base==='contact'){before='00_before_day';after='03_planted_contact_day';note='仅查看草石接触阶段：固定相机/光照；薄草皮不再制造宽蓝灰投影带。';}
+ if(base==='water'){before='10_painted_surface_day';after='11_water_satin_day';note='仅查看瀑尾材料修正：固定相机与其它视觉源码，减弱白色矩形透底。';}
+ el('before').src=el('beforePair').src=el('beforeFull').href=before+'/'+v.file;
+ el('after').src=el('afterPair').src=el('afterFull').href=after+'/'+v.file;
+ el('beforeLabel').textContent='左 · '+before;el('afterLabel').textContent='右 · '+after;
+ el('beforeManifest').href=before+'/captures.json';el('afterManifest').href=after+'/captures.json';
+ el('camera').textContent=v.cam;el('status').textContent=note+' 未声称达到TARGET。';
+ document.querySelectorAll('#views button').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);b.disabled=b.dataset.view==='C'&&(['contact','water','rock','lip'].includes(base))});
+ el('target').href=(location.pathname.includes('/Downloads/')?'../scroll_wallpaper_targets_sol61_20261109/':'../20261109_wallpaper_targets_sol61/')+v.target;
+}
+document.querySelectorAll('#views button').forEach(b=>b.onclick=()=>{view=b.dataset.view;update()});el('baseline').onchange=update;el('slider').oninput=()=>{let x=el('slider').value;el('clip').style.clipPath='inset(0 '+(100-x)+'% 0 0)';el('line').style.left=x+'%'};el('mode').onclick=()=>{paired=!paired;el('viewer').style.display=paired?'none':'block';el('slider').style.display=paired?'none':'block';el('paired').style.display=paired?'grid':'none';el('mode').textContent=paired?'滑杆对照':'并排查看'};update();
+</script></html>

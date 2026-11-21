@@ -1,0 +1,21 @@
+--- a/scripts/terrain_editor/procedural_shard.gd
++++ b/scripts/terrain_editor/procedural_shard.gd
+@@ -307,13 +307,17 @@
+ 		if i < 6:
+ 			fold_z = CREST[arch] + plane_m * (fold_x - ridge_x) + plane_q * (fold_y - neck_y)
+ 		fold.append(Vector3(fold_x, fold_y, fold_z))
+-		var foot_x: float = (p.x + drift * (neck_y - FOOT[arch])) / (1.0 + drift * FOOT_TILT[arch])
++		# The lower ridge settles back inside the original side walls; preserve
++		# the complete side/back footprint that covers the authoritative hull.
++		var foot_drift: float = drift * 0.58
++		var foot_x: float = (p.x + foot_drift * (neck_y - FOOT[arch])) / (1.0 + foot_drift * FOOT_TILT[arch])
+ 		var foot_y: float = FOOT[arch] + FOOT_TILT[arch] * foot_x
+ 		var foot_z: float = p.z
+ 		if i < 6:
+ 			foot_z = CREST[arch] + plane_m * (foot_x - ridge_x) + plane_q * (foot_y - neck_y)
+ 			# Adding distance from the fold plane preserves its shared edge exactly.
+ 			foot_z += ROOT_FOLD[arch] * (foot_y - FOLD[arch] - TILT[arch] * foot_x)
++			foot_z -= ridge_weight * [0.075, 0.055, 0.090, 0.065, 0.050, 0.080, 0.060, 0.085][arch]
+ 		foot.append(Vector3(foot_x, foot_y, foot_z))
+ 	var rings: Array = [collar, shoulder, fold, foot]
+ 	for band in 3:

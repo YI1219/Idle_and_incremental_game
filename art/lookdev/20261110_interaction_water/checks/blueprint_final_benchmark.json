@@ -1,0 +1,323 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"cases": [
+		{
+			"commit_ms": 0.091,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 7.578,
+				"n": 8,
+				"p50": 6.889,
+				"p95": 7.578
+			},
+			"name": "short_raise",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 33.529,
+				"n": 144,
+				"p50": 6.888,
+				"p95": 25.661
+			},
+			"release_to_complete_ms": 1206.675,
+			"release_to_start_ms": 658.917,
+			"started": true,
+			"worker_ms": 703.648,
+			"worker_stages": {
+				"chunks": 102.65,
+				"contours": 286.667,
+				"grass": 35.347,
+				"layout": 314.107,
+				"layout_detail": {
+					"index": 22.875,
+					"outcrops": 15.874,
+					"runs": 3.193,
+					"trim": 50.858,
+					"union": 221.238
+				},
+				"populate": 18.152,
+				"shore": 0.206
+			}
+		},
+		{
+			"commit_ms": 4.899,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 19.832,
+				"n": 153,
+				"p50": 6.873,
+				"p95": 18.269
+			},
+			"name": "held_raise",
+			"prepared_on_release": true,
+			"release_frames_ms": {
+				"max": 27.666,
+				"n": 57,
+				"p50": 6.899,
+				"p95": 26.589
+			},
+			"release_to_complete_ms": 559.284,
+			"release_to_start_ms": 4.793,
+			"started": true,
+			"worker_ms": 810.082,
+			"worker_stages": {
+				"chunks": 119.138,
+				"contours": 311.28,
+				"grass": 39.043,
+				"layout": 379.283,
+				"layout_detail": {
+					"index": 24.357,
+					"outcrops": 17.893,
+					"runs": 3.235,
+					"trim": 53.746,
+					"union": 279.994
+				},
+				"populate": 20.441,
+				"shore": 0.365
+			}
+		},
+		{
+			"commit_ms": 0.166,
+			"continue_ms": {
+				"max": 0.69,
+				"n": 121,
+				"p50": 0.219,
+				"p95": 0.539
+			},
+			"held_frames_ms": {
+				"max": 20.423,
+				"n": 121,
+				"p50": 6.649,
+				"p95": 19.161
+			},
+			"name": "drag_raise",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 30.453,
+				"n": 178,
+				"p50": 6.882,
+				"p95": 26.583
+			},
+			"release_to_complete_ms": 1487.964,
+			"release_to_start_ms": 918.957,
+			"started": true,
+			"worker_ms": 758.69,
+			"worker_stages": {
+				"chunks": 145.151,
+				"contours": 293.866,
+				"grass": 47.736,
+				"layout": 318.839,
+				"layout_detail": {
+					"index": 23.423,
+					"outcrops": 16.585,
+					"runs": 4.858,
+					"trim": 50.262,
+					"union": 223.642
+				},
+				"populate": 26.042,
+				"shore": 0.819
+			}
+		},
+		{
+			"commit_ms": 0.097,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 16.645,
+				"n": 7,
+				"p50": 6.795,
+				"p95": 16.645
+			},
+			"name": "short_contract",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 31.849,
+				"n": 155,
+				"p50": 6.885,
+				"p95": 27.109
+			},
+			"release_to_complete_ms": 1252.479,
+			"release_to_start_ms": 694.012,
+			"started": true,
+			"worker_ms": 734.368,
+			"worker_stages": {
+				"chunks": 105.51,
+				"contours": 304.25,
+				"grass": 34.545,
+				"layout": 324.361,
+				"layout_detail": {
+					"index": 23.249,
+					"outcrops": 16.288,
+					"runs": 4.128,
+					"trim": 50.336,
+					"union": 230.285
+				},
+				"populate": 18.282,
+				"shore": 0.229
+			}
+		},
+		{
+			"commit_ms": 5.42,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 19.842,
+				"n": 151,
+				"p50": 6.887,
+				"p95": 18.462
+			},
+			"name": "held_contract",
+			"prepared_on_release": true,
+			"release_frames_ms": {
+				"max": 29.994,
+				"n": 49,
+				"p50": 6.921,
+				"p95": 26.191
+			},
+			"release_to_complete_ms": 592.91,
+			"release_to_start_ms": 5.283,
+			"started": true,
+			"worker_ms": 837.439,
+			"worker_stages": {
+				"chunks": 125.261,
+				"contours": 321.086,
+				"grass": 36.847,
+				"layout": 390.808,
+				"layout_detail": {
+					"index": 25.293,
+					"outcrops": 16.098,
+					"runs": 3.998,
+					"trim": 60.118,
+					"union": 285.234
+				},
+				"populate": 26.82,
+				"shore": 0.266
+			}
+		},
+		{
+			"commit_ms": 0.182,
+			"continue_ms": {
+				"max": 0.613,
+				"n": 128,
+				"p50": 0.224,
+				"p95": 0.476
+			},
+			"held_frames_ms": {
+				"max": 20.117,
+				"n": 128,
+				"p50": 6.678,
+				"p95": 19.134
+			},
+			"name": "drag_contract",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 41.719,
+				"n": 187,
+				"p50": 6.881,
+				"p95": 25.949
+			},
+			"release_to_complete_ms": 1559.951,
+			"release_to_start_ms": 1002.349,
+			"started": true,
+			"worker_ms": 792.26,
+			"worker_stages": {
+				"chunks": 143.403,
+				"contours": 301.77,
+				"grass": 45.139,
+				"layout": 346.235,
+				"layout_detail": {
+					"index": 24.053,
+					"outcrops": 16.38,
+					"runs": 11.125,
+					"trim": 51.34,
+					"union": 243.273
+				},
+				"populate": 18.79,
+				"shore": 0.839
+			}
+		},
+		{
+			"commit_ms": 0.242,
+			"continue_ms": {},
+			"held_frames_ms": {
+				"max": 19.568,
+				"n": 7,
+				"p50": 6.801,
+				"p95": 19.568
+			},
+			"name": "wide_short_contract",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 50.939,
+				"n": 159,
+				"p50": 6.889,
+				"p95": 27.079
+			},
+			"release_to_complete_ms": 1385.986,
+			"release_to_start_ms": 802.932,
+			"started": true,
+			"worker_ms": 841.917,
+			"worker_stages": {
+				"chunks": 143.457,
+				"contours": 342.742,
+				"grass": 42.224,
+				"layout": 355.429,
+				"layout_detail": {
+					"index": 23.89,
+					"outcrops": 15.937,
+					"runs": 16.93,
+					"trim": 50.492,
+					"union": 248.112
+				},
+				"populate": 21.402,
+				"shore": 0.242
+			}
+		},
+		{
+			"commit_ms": 0.759,
+			"continue_ms": {
+				"max": 0.767,
+				"n": 92,
+				"p50": 0.251,
+				"p95": 0.567
+			},
+			"held_frames_ms": {
+				"max": 20.864,
+				"n": 92,
+				"p50": 15.765,
+				"p95": 19.857
+			},
+			"name": "wide_drag_raise",
+			"prepared_on_release": false,
+			"release_frames_ms": {
+				"max": 32.702,
+				"n": 198,
+				"p50": 6.886,
+				"p95": 17.116
+			},
+			"release_to_complete_ms": 1530.06,
+			"release_to_start_ms": 979.796,
+			"started": true,
+			"worker_ms": 843.443,
+			"worker_stages": {
+				"chunks": 240.949,
+				"contours": 272.735,
+				"grass": 55.559,
+				"layout": 328.985,
+				"layout_detail": {
+					"index": 22.912,
+					"outcrops": 16.143,
+					"runs": 10.92,
+					"trim": 51.01,
+					"union": 227.919
+				},
+				"populate": 100.7,
+				"shore": 0.756
+			}
+		}
+	],
+	"godot": "4.7.2-stable (official)",
+	"method": "production begin/continue + global release input; water active; no capture I/O",
+	"rendering_method": "forward_plus",
+	"resolution": [
+		1280,
+		720
+	]
+}

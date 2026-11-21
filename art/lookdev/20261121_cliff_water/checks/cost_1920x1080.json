@@ -1,0 +1,208 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"method": "one live scene; normal render loop; real fixed-pixel SubViewport shown in a visible 1280x720 window; balanced quality scale 1 unless a variant says otherwise; no cap/vsync/image IO; forward then reverse order",
+	"resolution": [
+		1920,
+		1080
+	],
+	"rounds": 3,
+	"sample_seconds": 4.0,
+	"summary": [
+		{
+			"delta_ms_vs_base": 0.0,
+			"fps": 81.640809285493,
+			"ms": 12.2487761788723,
+			"rounds": [
+				{
+					"draw_calls": 272,
+					"fps": 82.4288638904625,
+					"idle": 330,
+					"ms": 12.1316727272727,
+					"p50": 12.068,
+					"p95": 13.183,
+					"primitives": 854563,
+					"rendered": 330
+				},
+				{
+					"draw_calls": 272,
+					"fps": 81.2031457848821,
+					"idle": 325,
+					"ms": 12.3147938461538,
+					"p50": 12.237,
+					"p95": 13.286,
+					"primitives": 854545,
+					"rendered": 325
+				},
+				{
+					"draw_calls": 272,
+					"fps": 81.301725417139,
+					"idle": 326,
+					"ms": 12.2998619631902,
+					"p50": 12.235,
+					"p95": 13.151,
+					"primitives": 854545,
+					"rendered": 326
+				}
+			],
+			"variant": "base",
+			"worst_p95": 13.286
+		},
+		{
+			"delta_ms_vs_base": 0.105725668929477,
+			"fps": 80.9421547156863,
+			"ms": 12.3545018478017,
+			"rounds": [
+				{
+					"draw_calls": 272,
+					"fps": 81.564888485582,
+					"idle": 327,
+					"ms": 12.2601773700306,
+					"p50": 12.158,
+					"p95": 13.265,
+					"primitives": 854515,
+					"rendered": 327
+				},
+				{
+					"draw_calls": 272,
+					"fps": 80.584580003398,
+					"idle": 323,
+					"ms": 12.4093219814241,
+					"p50": 12.352,
+					"p95": 13.492,
+					"primitives": 854545,
+					"rendered": 323
+				},
+				{
+					"draw_calls": 272,
+					"fps": 80.6841617240332,
+					"idle": 323,
+					"ms": 12.3940061919505,
+					"p50": 12.31,
+					"p95": 13.288,
+					"primitives": 854545,
+					"rendered": 323
+				}
+			],
+			"variant": "swap:water.gdshader",
+			"worst_p95": 13.492
+		},
+		{
+			"delta_ms_vs_base": 0.0376312546727924,
+			"fps": 81.3907568513269,
+			"ms": 12.286407433545,
+			"rounds": [
+				{
+					"draw_calls": 272,
+					"fps": 81.2480906698693,
+					"idle": 325,
+					"ms": 12.3079815384615,
+					"p50": 12.242,
+					"p95": 13.321,
+					"primitives": 854563,
+					"rendered": 325
+				},
+				{
+					"draw_calls": 272,
+					"fps": 81.6834892189035,
+					"idle": 327,
+					"ms": 12.242376146789,
+					"p50": 12.194,
+					"p95": 13.191,
+					"primitives": 854545,
+					"rendered": 327
+				},
+				{
+					"draw_calls": 272,
+					"fps": 81.2422616745755,
+					"idle": 325,
+					"ms": 12.3088646153846,
+					"p50": 12.249,
+					"p95": 13.293,
+					"primitives": 854545,
+					"rendered": 325
+				}
+			],
+			"variant": "swap:waterfall.gdshader",
+			"worst_p95": 13.321
+		},
+		{
+			"delta_ms_vs_base": 0.0202125544410059,
+			"fps": 81.5063100746649,
+			"ms": 12.2689887333133,
+			"rounds": [
+				{
+					"draw_calls": 272,
+					"fps": 80.88338637769,
+					"idle": 324,
+					"ms": 12.3634783950617,
+					"p50": 12.288,
+					"p95": 13.299,
+					"primitives": 854563,
+					"rendered": 324
+				},
+				{
+					"draw_calls": 272,
+					"fps": 81.8043648614339,
+					"idle": 328,
+					"ms": 12.2242865853659,
+					"p50": 12.17,
+					"p95": 13.18,
+					"primitives": 854545,
+					"rendered": 328
+				},
+				{
+					"draw_calls": 272,
+					"fps": 81.8384100593378,
+					"idle": 328,
+					"ms": 12.2192012195122,
+					"p50": 12.101,
+					"p95": 13.375,
+					"primitives": 854545,
+					"rendered": 328
+				}
+			],
+			"variant": "swap:cliff_column.gdshader&swap:cliff.gdshader",
+			"worst_p95": 13.375
+		},
+		{
+			"delta_ms_vs_base": 0.0679671017501704,
+			"fps": 81.1902933442862,
+			"ms": 12.3167432806224,
+			"rounds": [
+				{
+					"draw_calls": 272,
+					"fps": 81.0283671587291,
+					"idle": 325,
+					"ms": 12.3413569230769,
+					"p50": 12.262,
+					"p95": 13.41,
+					"primitives": 854515,
+					"rendered": 325
+				},
+				{
+					"draw_calls": 272,
+					"fps": 80.8942711875579,
+					"idle": 324,
+					"ms": 12.3618148148148,
+					"p50": 12.276,
+					"p95": 13.449,
+					"primitives": 854545,
+					"rendered": 324
+				},
+				{
+					"draw_calls": 272,
+					"fps": 81.6522622420962,
+					"idle": 327,
+					"ms": 12.2470581039755,
+					"p50": 12.171,
+					"p95": 13.17,
+					"primitives": 854545,
+					"rendered": 327
+				}
+			],
+			"variant": "swap:water.gdshader&swap:waterfall.gdshader&swap:cliff_column.gdshader&swap:cliff.gdshader",
+			"worst_p95": 13.449
+		}
+	],
+	"warm_seconds": 1.5
+}

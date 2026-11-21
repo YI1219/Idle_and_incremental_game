@@ -1,0 +1,311 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"cpu": "Apple M4 Pro",
+	"godot": "4.7.2-stable (official)",
+	"idle_window_ms": 11.820209439528,
+	"method": "normal render loop, no cap or vsync; K identical fixed-pixel viewports share one world and the frame time is divided by K; each preset sampled twice (forward then reverse order) per view; full pixels, no dynamic resolution; mains power is the caller's responsibility",
+	"os": "macOS",
+	"refresh_hz": 120.0,
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"fps": 67.3948808346182,
+			"k": 3,
+			"ms": 14.8379222222222,
+			"preset": "native",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 80.0584501507082,
+			"k": 3,
+			"ms": 12.4908738317757,
+			"preset": "balanced",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 137.690488992057,
+			"k": 3,
+			"ms": 7.26266576086956,
+			"preset": "light",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 53.134079150653,
+			"k": 3,
+			"ms": 18.8203129890454,
+			"preset": "native",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "game"
+		},
+		{
+			"fps": 65.0197002218143,
+			"k": 3,
+			"ms": 15.3799540229885,
+			"preset": "balanced",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "game"
+		},
+		{
+			"fps": 113.284431293675,
+			"k": 3,
+			"ms": 8.82733830748228,
+			"preset": "light",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "game"
+		},
+		{
+			"fps": 69.5414625392106,
+			"k": 3,
+			"ms": 14.3799103942652,
+			"preset": "native",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 83.0621134992647,
+			"k": 3,
+			"ms": 12.0391831831832,
+			"preset": "balanced",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 142.982515459205,
+			"k": 3,
+			"ms": 6.99386212914485,
+			"preset": "light",
+			"size": [
+				1920,
+				1080
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 47.5026220457731,
+			"k": 2,
+			"ms": 21.0514695175439,
+			"preset": "native",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 60.1462647802611,
+			"k": 2,
+			"ms": 16.6261363636364,
+			"preset": "balanced",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 103.250392176912,
+			"k": 2,
+			"ms": 9.68519323671498,
+			"preset": "light",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 35.8756381421098,
+			"k": 2,
+			"ms": 27.8740686378545,
+			"preset": "native",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "game"
+		},
+		{
+			"fps": 46.4395035304714,
+			"k": 2,
+			"ms": 21.5333912720201,
+			"preset": "balanced",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "game"
+		},
+		{
+			"fps": 75.8664418768467,
+			"k": 2,
+			"ms": 13.1810583870968,
+			"preset": "light",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "game"
+		},
+		{
+			"fps": 48.1689349103611,
+			"k": 2,
+			"ms": 20.7602680412371,
+			"preset": "native",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 62.2527392835714,
+			"k": 2,
+			"ms": 16.0635501587302,
+			"preset": "balanced",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 103.91813873482,
+			"k": 2,
+			"ms": 9.62295911161207,
+			"preset": "light",
+			"size": [
+				2560,
+				1440
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 24.4560553711108,
+			"k": 1,
+			"ms": 40.8896686250258,
+			"preset": "native",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 33.0523489875268,
+			"k": 1,
+			"ms": 30.255035742766,
+			"preset": "balanced",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 53.2219041907394,
+			"k": 1,
+			"ms": 18.7892563260448,
+			"preset": "light",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 19.0330481908039,
+			"k": 1,
+			"ms": 52.5401916695176,
+			"preset": "native",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "game"
+		},
+		{
+			"fps": 26.0352579381192,
+			"k": 1,
+			"ms": 38.4094523809524,
+			"preset": "balanced",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "game"
+		},
+		{
+			"fps": 40.0487711945606,
+			"k": 1,
+			"ms": 24.9695551242236,
+			"preset": "light",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "game"
+		},
+		{
+			"fps": 26.2282514596588,
+			"k": 1,
+			"ms": 38.1268267744834,
+			"preset": "native",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 35.2058165762327,
+			"k": 1,
+			"ms": 28.4043972630107,
+			"preset": "balanced",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 57.3394781309723,
+			"k": 1,
+			"ms": 17.4399913043478,
+			"preset": "light",
+			"size": [
+				3840,
+				2160
+			],
+			"view": "reverse"
+		}
+	],
+	"sample_seconds": 4.0,
+	"warm_seconds": 1.5
+}

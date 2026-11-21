@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-10 18:34:38.862 Godot[44642:71280143] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-10 18:34:54.681 Godot[44642:71280143] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_layers/00_full.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_layers/01_hide_cliff.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_layers/02_hide_columns.png
+LOOKDEV saved: res://art/lookdev/20261110_editor_stability/checks/crack_layers/03_hide_mantle.png

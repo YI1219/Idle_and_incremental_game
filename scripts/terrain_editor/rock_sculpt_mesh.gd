@@ -85,7 +85,7 @@ static func build(field)->Surface:
    var p:Vector3=surface.vertices[i];var key:=Vector2i(roundi(p.x/Field.STEP),roundi(p.z/Field.STEP))
    if float(top[key])>p.y+.11:surface.colors[i].r=0.0
   var softened:ArrayMesh=preload('res://scripts/terrain_editor/stone_normals.gd').soften(surface.mesh(),65.0,1.0)
-  if softened.get_surface_count()>0:surface.normals=softened.surface_get_arrays(0)[Mesh.ARRAY_NORMAL]
+  if softened.get_surface_count()>0:surface.normals=preload("res://scripts/terrain_editor/chunk_geometry.gd").arrays_of(softened,0)[Mesh.ARRAY_NORMAL]
  return surface
 static func crossing(field,a:Vector3i,b:Vector3i,cache:Dictionary,gradients:Dictionary)->Dictionary:
  if b<a:

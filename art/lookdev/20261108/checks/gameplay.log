@@ -1,0 +1,50 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+ok: terrain_editor.tscn loads
+ok: GameplayDirector initialized on TerrainEditor
+ok: default startup stance is avatar
+ok: sculpt workshop panel hidden in default avatar stance
+ok: top jade bar covers (30,30) UI guard
+ok: cultivator spawns on dry land
+ok: meditation cushion placed on dry terrace
+ok: manual movement vector moves cultivator across island
+ok: walking stamps grass compression trail
+ok: wind dash triggers cleanly
+ok: wind dash returns to idle after burst
+ok: clicking dry ground issues walk command
+ok: cultivator reaches clicked ground target
+ok: matte velvet lawn parameters preserved at step 0
+ok: sun azimuth stays anchored without spinning at step 0
+ok: matte velvet lawn parameters preserved at step 3
+ok: sun azimuth stays anchored without spinning at step 3
+ok: matte velvet lawn parameters preserved at step 6
+ok: sun azimuth stays anchored without spinning at step 6
+ok: matte velvet lawn parameters preserved at step 9
+ok: sun azimuth stays anchored without spinning at step 9
+ok: full 12-shichen cycle advances day and solar term
+ok: F11 wallpaper mode hides HUD and enables autonomous life
+ok: exiting wallpaper mode wakes Song-scroll colophon
+ok: dynamic breathing de-HUD fades cleanly to pure canvas when idle
+ok: player interaction wakes frameless colophon
+ok: clicking pond water commands shoreline fishing
+ok: cultivator walks to bank and casts bamboo rod
+ok: manual tap while waiting gently accelerates fish gathering
+ok: fishing enters golden water-ripple window
+ok: manual reel in ripple peak awards Perfect Catch & Dao Insight
+ok: idle fishing automatically completes 太公忘机钓 catch without failing
+ok: meditation posture activated
+ok: meditation accumulates enough Dao Insight for Realm 1 breakthrough
+ok: breakthrough advances to 炼气圆满 and expands land quota by +90
+ok: Tab stance switch opens frameless bottom seal dock and keeps legacy debug slab hidden
+ok: expand permitted when 5 quota slots remain
+ok: expand brush stops cleanly at exact divine sense land quota (628 == 628)
+ok: expanding island consumes Spirit Qi
+ok: further expansion blocked when quota is full
+ok: contracting land immediately frees 100% of removed quota for reshaping
+ok: contracting land refunds Spirit Qi
+ok: unified layout + gameplay save succeeds
+ok: unified layout + gameplay load succeeds
+ok: gameplay realm, catches and shichen restored from save
+GAMEPLAY M1+M2 TESTS: 45/45 passed

@@ -1,0 +1,113 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"cpu": "Apple M4 Pro",
+	"godot": "4.7.2-stable (official)",
+	"idle_window_ms": 12.2730122699387,
+	"method": "normal render loop, no cap or vsync; K identical fixed-pixel viewports share one world and the frame time is divided by K; each preset sampled twice (forward then reverse order) per view; full pixels, no dynamic resolution; mains power is the caller's responsibility",
+	"os": "macOS",
+	"refresh_hz": 120.0,
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"fps": 32.6577517042452,
+			"k": 1,
+			"ms": 30.6206014748409,
+			"preset": "native",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 42.2318043542159,
+			"k": 1,
+			"ms": 23.6788367272348,
+			"preset": "balanced",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 68.2923743062234,
+			"k": 1,
+			"ms": 14.642923315508,
+			"preset": "light",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "whole"
+		},
+		{
+			"fps": 26.0659580449787,
+			"k": 1,
+			"ms": 38.3642142857143,
+			"preset": "native",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "game"
+		},
+		{
+			"fps": 33.9943800093954,
+			"k": 1,
+			"ms": 29.416627093173,
+			"preset": "balanced",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "game"
+		},
+		{
+			"fps": 52.8948507793428,
+			"k": 1,
+			"ms": 18.9054319138099,
+			"preset": "light",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "game"
+		},
+		{
+			"fps": 34.1563645960056,
+			"k": 1,
+			"ms": 29.2771204379562,
+			"preset": "native",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 44.6707322819072,
+			"k": 1,
+			"ms": 22.3860220980757,
+			"preset": "balanced",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "reverse"
+		},
+		{
+			"fps": 73.0046882776117,
+			"k": 1,
+			"ms": 13.6977504266212,
+			"preset": "light",
+			"size": [
+				3024,
+				1964
+			],
+			"view": "reverse"
+		}
+	],
+	"sample_seconds": 4.0,
+	"warm_seconds": 1.5
+}

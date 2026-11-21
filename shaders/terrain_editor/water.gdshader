@@ -6,9 +6,17 @@ uniform sampler2D depth_texture : hint_depth_texture, filter_nearest, repeat_dis
 uniform sampler2D shore_field : filter_linear, repeat_disable;
 uniform vec2 shore_origin = vec2(0.0);
 uniform vec2 shore_extent = vec2(1.0);
-uniform vec3 water_deep : source_color = vec3(.10,.35,.34);
-uniform float reflection_strength : hint_range(0.0,1.0) = .28;
+uniform vec3 water_deep : source_color = vec3(.10,.38,.36);
+uniform float reflection_strength : hint_range(0.0,1.0) = .47;
 uniform float water_time = -1.0;
+uniform vec3 sun_direction = vec3(.56,.43,.71);
+uniform vec3 glint_color : source_color = vec3(1.0,.94,.80);
+uniform float glint_energy = .45;
+// Below about .35 this also caps the grazing reflection (the engine derives
+// f90 from f0), which keeps the far side of a pond jade instead of sky blue.
+uniform float sky_sheen : hint_range(0.0,1.0) = .28;
+uniform float sheen_ripple : hint_range(1.0,6.0) = 2.6;
+uniform float water_line_strength : hint_range(0.0,.5) = .11;
 varying vec3 world_position;
 
 float hash_water(vec2 p) {
@@ -53,19 +61,19 @@ vec4 water_reflection(vec3 origin,vec3 direction,mat4 view,mat4 projection,mat4 
  if(direction.y<=.01 || reflection_strength<=0.0)return vec4(0.0);
  vec3 start=(view*vec4(origin,1.0)).xyz;
  vec3 ray=(view*vec4(direction,0.0)).xyz;
- float previous=.04;
- for(int i=0;i<12;i++){
-  float travel=.12*pow(1.52,float(i));
+ float previous=.05;
+ for(int i=0;i<24;i++){
+  float travel=.10*pow(1.26,float(i));
   vec3 at=start+ray*travel;
   vec4 clip=projection*vec4(at,1.0);
   if(clip.w<=0.0)return vec4(0.0);
   vec2 uv=clip.xy/clip.w*.5+.5;
-  if(any(lessThan(uv,vec2(.002))) || any(greaterThan(uv,vec2(.998))))return vec4(0.0);
+  if(any(lessThan(uv,vec2(.004))) || any(greaterThan(uv,vec2(.996))))return vec4(0.0);
   vec3 scene=screen_view_position(uv,inv_projection);
   float gap=scene.z-at.z;
-  if(gap>0.0 && gap<1.5){
+  if(gap>0.0 && gap<2.2){
    float lo=previous;float hi=travel;
-   for(int j=0;j<5;j++){
+   for(int j=0;j<6;j++){
     float mid=(lo+hi)*.5;
     vec3 point=start+ray*mid;
     vec4 projected=projection*vec4(point,1.0);
@@ -73,22 +81,28 @@ vec4 water_reflection(vec3 origin,vec3 direction,mat4 view,mat4 projection,mat4 
     scene=screen_view_position(uv,inv_projection);
     if(scene.z-point.z>0.0)hi=mid;else lo=mid;
    }
-   // Sample the endpoint actually being validated, not the last midpoint
-   // (which may have advanced only lo at a depth discontinuity).
    vec4 refined=projection*vec4(start+ray*hi,1.0);
    uv=refined.xy/refined.w*.5+.5;
    scene=screen_view_position(uv,inv_projection);
    vec3 hit=(inv_view*vec4(scene,1.0)).xyz;
    float error=abs(scene.z-(start+ray*hi).z);
-   if(hit.y<=origin.y+.025 || error>.14+hi*.015)return vec4(0.0);
+   if(hit.y<=origin.y+.52 || error>.36+hi*.038)return vec4(0.0);
    vec2 margin=min(uv,vec2(1.0)-uv);
-   float confidence=smoothstep(.008,.07,min(margin.x,margin.y))*(1.0-smoothstep(3.0,12.0,hi));
-   // Depth discontinuities and the waterline are uncertain reflection hits.
-   // Fade before rejecting them, so the finite trace does not paint a hard
-   // grey island onto otherwise clear transmitted water.
-   confidence*=1.0-smoothstep(.02,.14+hi*.015,error);
-   confidence*=smoothstep(.025,.28,hit.y-origin.y);
-   return vec4(texture(screen_texture,uv).rgb,confidence);
+   float confidence=smoothstep(.010,.08,min(margin.x,margin.y))*(1.0-smoothstep(8.0,26.0,hi));
+   confidence*=1.0-smoothstep(.08,.36+hi*.038,error);
+   confidence*=smoothstep(.56,1.38,hit.y-origin.y);
+   // Silky watercolor reflection filter (eliminates blocky staircase holes through alpha_to_coverage foliage!):
+   vec2 b1=vec2(.0082,0.0);
+   vec2 b2=vec2(0.0,.0082);
+   vec2 d1=vec2(.0062,.0062);
+   vec2 d2=vec2(.0062,-.0062);
+   vec3 c0=texture(screen_texture,uv).rgb;
+   vec3 c_ring1=(texture(screen_texture,clamp(uv+b1,vec2(.002),vec2(.998))).rgb+texture(screen_texture,clamp(uv-b1,vec2(.002),vec2(.998))).rgb+texture(screen_texture,clamp(uv+b2,vec2(.002),vec2(.998))).rgb+texture(screen_texture,clamp(uv-b2,vec2(.002),vec2(.998))).rgb)*.25;
+   vec3 c_ring2=(texture(screen_texture,clamp(uv+d1,vec2(.002),vec2(.998))).rgb+texture(screen_texture,clamp(uv-d1,vec2(.002),vec2(.998))).rgb+texture(screen_texture,clamp(uv+d2,vec2(.002),vec2(.998))).rgb+texture(screen_texture,clamp(uv-d2,vec2(.002),vec2(.998))).rgb)*.25;
+   vec3 refl_col=min(c0,c_ring1*1.12)*.24+c_ring1*.44+c_ring2*.32;
+   // Tint reflected silhouettes gently into deep tranquil pond-jade (Ref 1)
+   refl_col=mix(refl_col*vec3(.82,.94,.92),vec3(.045,.135,.128),.26);
+   return vec4(refl_col,confidence);
   }
   previous=travel;
  }
@@ -102,6 +116,7 @@ void vertex(){
 }
 
 void fragment(){
+ if(!terrain_transition_visible(FRAGCOORD.xy))discard;
  float time=water_time<0.0?TIME:water_time;
  vec2 p=world_position.xz;
  vec4 basin=texture(shore_field,(p-shore_origin)/shore_extent);
@@ -109,17 +124,20 @@ void fragment(){
  vec3 broad=height_gradient(p*.95+vec2(time*.055,-time*.043));
  vec3 small=height_gradient(turn*p*2.8+vec2(-time*.08,time*.061)+vec2(17.3,5.8));
  vec3 fine=height_gradient(p*6.4+vec2(time*.03,-time*.07)+vec2(2.1,31.7));
- vec2 slope=broad.yz*.050+transpose(turn)*small.yz*.043+fine.yz*.016;
- slope*=mix(.50,1.0,smoothstep(.015,.35,basin.r));
+ vec2 slope=broad.yz*.026+transpose(turn)*small.yz*.018+fine.yz*.006;
+ slope*=mix(.42,1.0,smoothstep(.015,.35,basin.r));
  vec3 impact=height_gradient(p*4.1+vec2(time*.30,time*1.25)+vec2(41.2,7.3));
- slope+=impact.yz*.09*basin.b;
+ slope+=impact.yz*.055*basin.b;
  vec3 normal_world=normalize(vec3(-slope.x,1.0,-slope.y));
  vec3 normal_view=normalize((VIEW_MATRIX*vec4(normal_world,0.0)).xyz);
- NORMAL=normal_view;
+ // The sheen reads a steeper copy of the same ripples: sky reflection and
+ // fresnel then vary across the pond, while refraction keeps the calm slope.
+ vec3 sheen_normal=normalize(vec3(-slope.x*sheen_ripple,1.0,-slope.y*sheen_ripple));
+ NORMAL=normalize((VIEW_MATRIX*vec4(sheen_normal,0.0)).xyz);
  vec3 view_world=normalize(CAMERA_POSITION_WORLD-world_position);
  vec3 behind=scene_position(SCREEN_UV,INV_PROJECTION_MATRIX,INV_VIEW_MATRIX);
  float vertical_depth=clamp(world_position.y-behind.y,.01,4.0);
- vec2 bend=normal_view.xy*.012*min(vertical_depth,1.4);
+ vec2 bend=normal_view.xy*.009*min(vertical_depth,1.4);
  vec2 bent_uv=clamp(SCREEN_UV+bend,vec2(.001),vec2(.999));
  vec3 bent_position=scene_position(bent_uv,INV_PROJECTION_MATRIX,INV_VIEW_MATRIX);
  // Refraction cannot pull foreground lawn or the cloud sea over a bank.
@@ -128,19 +146,63 @@ void fragment(){
  vec2 sample_uv=valid?bent_uv:SCREEN_UV;
  if(valid)vertical_depth=clamp(world_position.y-bent_position.y,.01,4.0);
  float path=vertical_depth/max(abs(view_world.y),.25);
- vec3 transmission=exp(-vec3(1.35,.35,.23)*path);
+ float shallow_clear=1.0-smoothstep(.02,.24,basin.r);
+ vec3 transmission=exp(-vec3(1.78,.84,.76)*path*mix(1.0,.58,shallow_clear));
  vec3 bed=texture(screen_texture,sample_uv).rgb;
- vec3 color=bed*transmission+water_deep*(vec3(1.0)-transmission)*.65;
- float fresnel=.02+.60*pow(1.0-max(dot(view_world,normal_world),0.0),5.0);
- vec4 reflected=water_reflection(world_position+normal_world*.035,reflect(-view_world,normal_world),VIEW_MATRIX,PROJECTION_MATRIX,INV_PROJECTION_MATRIX,INV_VIEW_MATRIX);
- float reflection=reflection_strength*reflected.a*(.5+.5*pow(1.0-max(dot(view_world,normal_world),0.0),3.0));
+ // Crystal-clear shallow pebble rim transitioning into tranquil celadon-jade deep basin (Europa / Resonance):
+ float shore_t=smoothstep(.02,.42,basin.r);
+ float deep_t=smoothstep(.18,.72,basin.r);
+ vec3 shallow_tint=vec3(.082,.168,.138);
+ vec3 mid_aqua=mix(vec3(.065,.184,.166),water_deep*1.02,.54);
+ vec3 center_deep=mix(mid_aqua,water_deep*.88,deep_t);
+ vec3 water_body=mix(shallow_tint,center_deep,shore_t);
+ vec3 color=bed*transmission*mix(vec3(.97,.98,.91),vec3(.90,.95,.93),shore_t)+water_body*(vec3(1.0)-transmission)*.92;
+ float ripple_wave=broad.x*.48+small.x*.52;
+ float ripple_hl=smoothstep(.66,.86,ripple_wave)*smoothstep(.03,.24,basin.r)*(1.0-basin.b*.5);
+ float shore_caustic=smoothstep(.62,.88,sin(basin.r*42.0-time*1.35+small.x*3.2))*(1.0-smoothstep(.02,.18,basin.r))*(1.0-basin.b*.6);
+ color=mix(color,vec3(.44,.60,.54),ripple_hl*.042+shore_caustic*.055);
+ // Drifting light lines: the level line of two ripple fields that move in
+ // different directions. Lines bend, join and part instead of sliding past
+ // as one fixed pattern, and a finer field breaks them into brush dashes.
+ // No extra noise is evaluated. Lines too thin for the pixel grid fade out.
+ float line_field=abs(broad.x*.58+small.x*.42-.5);
+ float line_width=max(.040,fwidth(line_field)*1.4);
+ float water_line=(1.0-smoothstep(0.0,line_width,line_field))*min(1.0,.085/line_width);
+ // They gather where the broad swell is high, so calm water is left between.
+ water_line*=smoothstep(.40,.66,fine.x)*smoothstep(.50,.68,broad.x)*smoothstep(.05,.30,basin.r)*(1.0-basin.b*.6);
+ color=mix(color,mix(vec3(.50,.68,.62),glint_color,.25),water_line*water_line_strength*(.45+.55*clamp(glint_energy/.45,0.0,1.0)));
+ float fresnel=.03+.52*pow(1.0-max(dot(view_world,normal_world),0.0),4.5);
+ // Mirror-calm broad swell drives SSR so bamboo & tree reflections stay serene and unbroken!
+ vec3 refl_normal=normalize(vec3(-broad.y*.008,1.0,-broad.z*.008));
+ vec4 reflected=water_reflection(world_position+vec3(0.0,.035,0.0),reflect(-view_world,refl_normal),VIEW_MATRIX,PROJECTION_MATRIX,INV_PROJECTION_MATRIX,INV_VIEW_MATRIX);
+ float reflection=reflection_strength*reflected.a*(.56+.44*pow(1.0-max(dot(view_world,refl_normal),0.0),2.1));
  reflection*=1.0-basin.b*.55;
  color=mix(color,reflected.rgb,reflection);
- color=mix(color,vec3(.38,.49,.43),basin.b*basin.b*.04);
- // The opaque buffer already lights the actual submerged terrain. Re-lighting
- // it as diffuse water would flatten the bank shadows and mineral relief.
+ // Delicate pinpoint sunward golden-jade water sparkles (迎光碎金星芒, crisp micro-glints without milky blobs):
+ vec3 sun_dir_w=normalize(sun_direction);
+ vec3 glint_n=normalize(vec3(-slope.x*2.4,1.0,-slope.y*2.4));
+ vec3 half_w=normalize(view_world+sun_dir_w);
+ float spec_align=pow(max(dot(glint_n,half_w),0.0),64.0);
+ vec3 micro_a=height_gradient(p*14.5+vec2(time*.22,-time*.17)+vec2(9.4,21.3));
+ vec3 micro_b=height_gradient(turn*p*19.0+vec2(-time*.19,time*.24)+vec2(33.1,4.7));
+ float pin_sparkle=pow(smoothstep(.76,.97,micro_a.x)*smoothstep(.74,.96,micro_b.x),1.6)*smoothstep(.48,.82,small.x);
+ float sunward_lane=smoothstep(-.25,.60,dot(normalize(vec2(p.x+2.0,p.y-1.5)),vec2(.88,.22)));
+ float sun_glint=(spec_align*.75+pin_sparkle*mix(.25,.85,sunward_lane))*smoothstep(.06,.28,basin.r)*(1.0-reflected.a*.55);
+ color+=glint_color*clamp(sun_glint*glint_energy,0.0,.22);
+ // Silky plunge-pool mist foam & delicate shoreline water-lap ring:
+ float plunge_foot=smoothstep(.60,.95,basin.b+(broad.x-.5)*.12);
+ float plunge_foam=plunge_foot*smoothstep(.52,.76,impact.x*.68+small.x*.32)*.30;
+ float bank_foam=(1.0-smoothstep(.008,.065,basin.r))*smoothstep(.42,.74,small.x)*.14;
+ float foam_mask=clamp(plunge_foam+bank_foam,0.0,1.0);
+ color=mix(color,vec3(.89,.93,.90),foam_mask*.72);
  ALBEDO=vec3(0.0);
  EMISSION=color*(1.0-fresnel);
  ALPHA=1.0;
- METALLIC=0.0;ROUGHNESS=.075+basin.b*.13;SPECULAR=.25;
+ // The sheen is the engine's own sky radiance through a dielectric fresnel:
+ // it follows the hour of the day and costs no tap in this shader.
+ METALLIC=0.0;ROUGHNESS=.20+basin.b*.16;SPECULAR=sky_sheen;
+}
+// Lamps add nothing to a black-albedo surface, and the sun's highlight is the
+// painted glint above, so per-light shading is skipped outright.
+void light(){
 }

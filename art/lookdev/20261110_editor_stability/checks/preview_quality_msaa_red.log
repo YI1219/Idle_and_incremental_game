@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: high-resolution editing reduces redundant multisampling before upscaling
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/preview_quality_test.gd:6)
+       [1] _initialize (res://tests/preview_quality_test.gd:16)
+PREVIEW QUALITY 7 checks, 1 failures

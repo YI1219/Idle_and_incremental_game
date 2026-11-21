@@ -1,0 +1,392 @@
+{
+	"art_accepted": false,
+	"data_sha256_before_placement": "dd496c63342cc53ad9b8c858919c0fd72a55796cbb2fd65ba20658d66740ed18",
+	"data_sha256_now": "dd496c63342cc53ad9b8c858919c0fd72a55796cbb2fd65ba20658d66740ed18",
+	"data_unchanged": true,
+	"mode": "candidates",
+	"placed_count": 6,
+	"placements": [
+		{
+			"art_accepted": false,
+			"asset_path": "res://assets/candidates/style_library_20261112/architecture/low_mountain_dwelling_v02_textured/godot_runtime/asset.tscn",
+			"asset_sha256": "7038e97ee2a4138a35f894589aa52708341d1f26fa7f8a5b924f4316a52cd53e",
+			"id": "TrialHouse",
+			"requested_xz": [
+				-12.0,
+				-8.5
+			],
+			"source_bounds_min_m": [
+				-1.9573546648025513,
+				0.0,
+				-3.0234880447387695
+			],
+			"source_dimensions_m": [
+				3.9147093296051025,
+				3.299999952316284,
+				6.037932395935059
+			],
+			"status": "placed_transient",
+			"support": {
+				"accepted": true,
+				"ground_y_m": 3.5,
+				"height_max_m": 3.5,
+				"height_min_m": 3.5,
+				"method": "rotated full-model XZ AABB sampled on dense grid including all edges; conservative canopy/roof footprint, not exact polygon proof",
+				"pivot_ground_y_m": 3.5,
+				"samples": 486,
+				"spacing_max_m": 0.2
+			},
+			"transform": {
+				"basis_x": [
+					-3.715468110954134e-08,
+					0.0,
+					0.8500000238418579
+				],
+				"basis_y": [
+					0.0,
+					0.8500000238418579,
+					0.0
+				],
+				"basis_z": [
+					-0.8500000238418579,
+					0.0,
+					-3.715468110954134e-08
+				],
+				"position": [
+					-12.0,
+					3.5,
+					-8.5
+				],
+				"rotation_degrees": [
+					0.0,
+					-90.0,
+					0.0
+				],
+				"scale": [
+					0.8500000238418579,
+					0.8500000238418579,
+					0.8500000238418579
+				]
+			}
+		},
+		{
+			"art_accepted": false,
+			"asset_path": "res://assets/candidates/style_library_20261112/architecture/short_tiled_courtyard_gate_textured/godot_runtime/asset.tscn",
+			"asset_sha256": "782325edce51e014af3ef003b711b5187cc83667474a014ebdfe56b8954b720f",
+			"id": "TrialGate",
+			"requested_xz": [
+				-12.5,
+				-1.8
+			],
+			"source_bounds_min_m": [
+				-0.8138262033462524,
+				0.0,
+				-1.7466942071914673
+			],
+			"source_dimensions_m": [
+				1.6193225383758545,
+				3.002610445022583,
+				3.4976277351379395
+			],
+			"status": "placed_transient",
+			"support": {
+				"accepted": true,
+				"ground_y_m": 3.5,
+				"height_max_m": 3.5,
+				"height_min_m": 3.5,
+				"method": "rotated full-model XZ AABB sampled on dense grid including all edges; conservative canopy/roof footprint, not exact polygon proof",
+				"pivot_ground_y_m": 3.5,
+				"samples": 128,
+				"spacing_max_m": 0.2
+			},
+			"transform": {
+				"basis_x": [
+					0.29071712493896484,
+					0.0,
+					0.7987387180328369
+				],
+				"basis_y": [
+					0.0,
+					0.8500000238418579,
+					0.0
+				],
+				"basis_z": [
+					-0.7987387180328369,
+					0.0,
+					0.29071712493896484
+				],
+				"position": [
+					-12.5,
+					3.5,
+					-1.7999999523162842
+				],
+				"rotation_degrees": [
+					0.0,
+					-69.99999237060547,
+					0.0
+				],
+				"scale": [
+					0.8500000238418579,
+					0.8500000238418579,
+					0.8500000238418579
+				]
+			}
+		},
+		{
+			"art_accepted": false,
+			"asset_path": "res://assets/candidates/style_library_20261112/props/wood_bench_textured/godot_runtime/asset.tscn",
+			"asset_sha256": "45d96c8419c1ed58651ae43b64f63688943af85b5535a8e6bb05bdf9628d2959",
+			"id": "TrialBench",
+			"requested_xz": [
+				-12.0,
+				-4.0
+			],
+			"source_bounds_min_m": [
+				-0.29996153712272644,
+				0.0,
+				-0.7356754541397095
+			],
+			"source_dimensions_m": [
+				0.6006642580032349,
+				0.6499999761581421,
+				1.471350908279419
+			],
+			"status": "placed_transient",
+			"support": {
+				"accepted": true,
+				"ground_y_m": 3.5,
+				"height_max_m": 3.5,
+				"height_min_m": 3.5,
+				"method": "rotated full-model XZ AABB sampled on dense grid including all edges; conservative canopy/roof footprint, not exact polygon proof",
+				"pivot_ground_y_m": 3.5,
+				"samples": 45,
+				"spacing_max_m": 0.2
+			},
+			"transform": {
+				"basis_x": [
+					-4.371138828673793e-08,
+					0.0,
+					1.0
+				],
+				"basis_y": [
+					0.0,
+					1.0,
+					0.0
+				],
+				"basis_z": [
+					-1.0,
+					0.0,
+					-4.371138828673793e-08
+				],
+				"position": [
+					-12.0,
+					3.5,
+					-4.0
+				],
+				"rotation_degrees": [
+					0.0,
+					-90.0,
+					0.0
+				],
+				"scale": [
+					1.0,
+					1.0,
+					1.0
+				]
+			}
+		},
+		{
+			"art_accepted": false,
+			"asset_path": "res://assets/candidates/style_library_20261112/props/round_stone_lantern_runtime_textured/godot_runtime_v02/asset.tscn",
+			"asset_sha256": "6480b6b4ee0be5f6307359e1b192f0fdcc7ecdc1ceaa1c526fffc9dc31e49460",
+			"id": "TrialLantern",
+			"requested_xz": [
+				-13.7,
+				-4.2
+			],
+			"source_bounds_min_m": [
+				-0.34202009439468384,
+				0.0,
+				-0.3698192834854126
+			],
+			"source_dimensions_m": [
+				0.6853302717208862,
+				1.0,
+				0.7388482689857483
+			],
+			"status": "placed_transient",
+			"support": {
+				"accepted": true,
+				"ground_y_m": 3.5,
+				"height_max_m": 3.5,
+				"height_min_m": 3.5,
+				"method": "rotated full-model XZ AABB sampled on dense grid including all edges; conservative canopy/roof footprint, not exact polygon proof",
+				"pivot_ground_y_m": 3.5,
+				"samples": 25,
+				"spacing_max_m": 0.2
+			},
+			"transform": {
+				"basis_x": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"basis_y": [
+					0.0,
+					1.0,
+					0.0
+				],
+				"basis_z": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"position": [
+					-13.699999809265137,
+					3.5,
+					-4.199999809265137
+				],
+				"rotation_degrees": [
+					0.0,
+					0.0,
+					0.0
+				],
+				"scale": [
+					1.0,
+					1.0,
+					1.0
+				]
+			}
+		},
+		{
+			"art_accepted": false,
+			"asset_path": "res://assets/candidates/style_library_20261112/nature/hosta_textured/godot_runtime/asset.tscn",
+			"asset_sha256": "3865888bb01dee4a7d162c6868c49f46a27abc7953737f8b41701a7a2707512b",
+			"id": "TrialHosta",
+			"requested_xz": [
+				-14.3,
+				-4.9
+			],
+			"source_bounds_min_m": [
+				-0.6923601031303406,
+				-0.019291460514068604,
+				-0.7145553231239319
+			],
+			"source_dimensions_m": [
+				1.3783198595046997,
+				0.5192914009094238,
+				1.4330391883850098
+			],
+			"status": "placed_transient",
+			"support": {
+				"accepted": true,
+				"ground_y_m": 3.5,
+				"height_max_m": 3.5,
+				"height_min_m": 3.5,
+				"method": "rotated full-model XZ AABB sampled on dense grid including all edges; conservative canopy/roof footprint, not exact polygon proof",
+				"pivot_ground_y_m": 3.5,
+				"samples": 72,
+				"spacing_max_m": 0.2
+			},
+			"transform": {
+				"basis_x": [
+					0.9659258127212524,
+					0.0,
+					-0.258819043636322
+				],
+				"basis_y": [
+					0.0,
+					1.0,
+					0.0
+				],
+				"basis_z": [
+					0.258819043636322,
+					0.0,
+					0.9659258127212524
+				],
+				"position": [
+					-14.300000190734863,
+					3.519291400909424,
+					-4.900000095367432
+				],
+				"rotation_degrees": [
+					0.0,
+					15.0,
+					0.0
+				],
+				"scale": [
+					1.0,
+					1.0,
+					1.0
+				]
+			}
+		},
+		{
+			"art_accepted": false,
+			"asset_path": "res://assets/candidates/style_library_20261112/props/clay_planter_textured/godot_runtime/asset.tscn",
+			"asset_sha256": "688805222513148156cc3fbd09f96419f89b9c4e60609b04a68e630e3661881e",
+			"id": "TrialPlanter",
+			"requested_xz": [
+				-13.6,
+				-6.4
+			],
+			"source_bounds_min_m": [
+				-0.4642053246498108,
+				0.0,
+				-0.4622827172279358
+			],
+			"source_dimensions_m": [
+				0.9230197668075562,
+				0.5070813298225403,
+				0.9283084869384766
+			],
+			"status": "placed_transient",
+			"support": {
+				"accepted": true,
+				"ground_y_m": 3.5,
+				"height_max_m": 3.5,
+				"height_min_m": 3.5,
+				"method": "rotated full-model XZ AABB sampled on dense grid including all edges; conservative canopy/roof footprint, not exact polygon proof",
+				"pivot_ground_y_m": 3.5,
+				"samples": 36,
+				"spacing_max_m": 0.2
+			},
+			"transform": {
+				"basis_x": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"basis_y": [
+					0.0,
+					1.0,
+					0.0
+				],
+				"basis_z": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"position": [
+					-13.600000381469727,
+					3.5,
+					-6.400000095367432
+				],
+				"rotation_degrees": [
+					0.0,
+					0.0,
+					0.0
+				],
+				"scale": [
+					1.0,
+					1.0,
+					1.0
+				]
+			}
+		}
+	],
+	"scope": "Transient native courtyard composition trial; existing terrain/props retained; no user layout read/write, no saved scene, no gameplay acceptance or target-hardware performance claim",
+	"script_sha256": "7767e77992e9113ed30d0fafbc77a64cd13d7742d359fa6481e21799d0776b43",
+	"trial_file": "res://art/source/style_library_20261112/placement_trial.json",
+	"trial_sha256": "57294ea678b05223b4f373174d31e58c402697271a1e46a8ef71b43e98fbe6a6"
+}

@@ -1,0 +1,55 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ok: independent water renderer exists
+ok: initial publication preserves the authored finite volume
+ok: configuration publishes a pool without an undocumented time advance
+ok: independent water mesh is published
+ok: water uses the terrain's shared style material
+ok: live shoreline texture binds to the shared water material
+ok: grass clipping receives a floating-point live water grid
+ok: live grid distinguishes present terrain from the void
+ok: authored-dry receiving terrain gains positive live water
+ok: closed-domain dynamic rendering creates no water
+ok: explicit flush advances exactly the queued simulation duration
+ok: idle publication persists continuous receiving volume
+ok: published pool and waterfall geometry contains only finite coordinates
+ok: flush leaves no worker or queued simulation behind
+ok: new terrain chunks cannot expose legacy dynamic water layers
+ok: static shore and bed layers remain available
+ok: hiding legacy chunks preserves the live renderer's own water
+ok: terrain sync hides legacy layers again after publication
+ok: sync never replaces a task that still owns the solver
+ok: long frame catchup remains bounded
+ok: mid-task cell removal is reconciled before final publication
+ok: mid-task topology changes preserve retained plus discharged water
+ok: every worker's simulation advance remains bounded
+ok: edited topology flush settles all workers
+ok: disposal waits until an active solver advance completes
+ok: declared reset replaces the previous water state
+ok: a dry island publishes no water geometry
+ok: an empty water mesh hides its independent node
+ok: an empty island has a finite empty grid and no water source
+ok: dry and empty domains publish no falls or splash metadata
+ok: a blocked outlet draws no nominal waterfall
+ok: positive downhill flux publishes a live waterfall
+ok: live downhill falls publish mist veil metadata
+ok: live veil metadata carries positive measured outflow and intensity
+ok: a nearby flowing edge cannot turn its blocked neighbour into a waterfall
+ok: nearby outflow cannot attach a detached waterfall to its own basin side
+ok: normal preset retains the authored mass balance
+ok: normal preset water geometry matches its physical wet state
+water timing seed=7301 preset=0 cells=623 advance=14.621ms publish=0.899ms snapshot=0.0ms sync=1.484ms stages={ "solver": 5.167, "mesh": 8.909, "images": 0.545 }
+ok: normal preset retains the authored mass balance
+ok: normal preset water geometry matches its physical wet state
+water timing seed=2104 preset=0 cells=623 advance=13.991ms publish=0.849ms snapshot=0.0ms sync=1.416ms stages={ "solver": 5.078, "mesh": 8.408, "images": 0.505 }
+ok: normal preset retains the authored mass balance
+ok: normal preset water geometry matches its physical wet state
+water timing seed=4242 preset=1 cells=503 advance=13.506ms publish=0.771ms snapshot=0.0ms sync=1.126ms stages={ "solver": 4.283, "mesh": 8.759, "images": 0.464 }
+ok: normal preset retains the authored mass balance
+ok: normal preset water geometry matches its physical wet state
+water timing seed=913 preset=2 cells=571 advance=0.001ms publish=0.0ms snapshot=0.0ms sync=1.332ms stages={ "solver": 0.001, "mesh": 0.0, "images": 0.0 }
+ok: a configured detached renderer also joins its worker on disposal
+ok: scene processing without explicit ticks leaves frozen water unchanged
+ok: sub-visible water remains in the physical volume
+ok: sub-visible water can omit geometry without deleting mass
+water_renderer_test: 48/48 passed

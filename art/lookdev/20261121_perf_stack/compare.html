@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Quality tiers and renderers (2026-11-21)</title>
+<style>
+  body { margin: 0; background: #1d2126; color: #dfe3e6; font: 14px/1.5 -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 14px 20px; border-bottom: 1px solid #333a42; }
+  h1 { font-size: 17px; margin: 0 0 6px; }
+  h2 { font-size: 15px; margin: 18px 20px 4px; }
+  p { margin: 4px 0; color: #aab2ba; max-width: 1100px; }
+  .bar { padding: 10px 20px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-bottom: 1px solid #333a42; }
+  .bar span { color: #8a939c; margin-right: 4px; }
+  button { background: #2b323a; color: #dfe3e6; border: 1px solid #3d4650; border-radius: 4px; padding: 5px 10px; cursor: pointer; font: inherit; }
+  button.on { background: #4f7f78; border-color: #6aa39a; }
+  figure { margin: 0; padding: 14px 20px; }
+  figcaption { color: #8a939c; margin-bottom: 4px; }
+  img { width: 100%; height: auto; display: block; background: #111; cursor: pointer; }
+  .note { padding: 0 20px 10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Quality tiers and renderers on the same frame</h1>
+  <p>Actual Godot output, 2560×1440. <b>Tiers</b>: one frozen scene, only the listed settings differ. <b>Renderers</b>: the same
+  scene started under each of Godot's three renderers. Costs are in <code>README.md</code>. Not art-accepted. Target laptops unmeasured.</p>
+  <p>Click the picture or press <b>space</b> to step through the variants in place; number keys 1 to 5 pick one.</p>
+</header>
+<h2>Tiers (Forward+)</h2>
+<div class="bar" id="tviews"><span>View</span></div>
+<div class="bar" id="tvars"><span>Setting</span></div>
+<figure><figcaption id="tcap"></figcaption><img id="timg" alt="tier still"></figure>
+<h2>Renderers</h2>
+<div class="bar" id="rviews"><span>View</span></div>
+<div class="bar" id="rvars"><span>Renderer</span></div>
+<figure><figcaption id="rcap"></figcaption><img id="rimg" alt="renderer still"></figure>
+<script>
+const TVIEWS = ["game", "whole", "close", "cliff_close", "foot_reverse"];
+const TVARS = [["balanced", "balanced (default): 2x MSAA, SSAO, SSIL, far blur"], ["smaa", "SMAA in place of MSAA"], ["smaa_noil", "SMAA, no SSIL"], ["light", "light tier: SMAA, no SSAO, no SSIL, no far blur"], ["light_noao_keepil", "SMAA, no SSAO, SSIL kept, no far blur"]];
+const RVIEWS = ["whole", "game", "close", "reverse", "cliff_close"];
+const RVARS = [["forward_plus", "Forward+ (current)"], ["mobile", "Mobile"], ["gl_compatibility", "Compatibility (OpenGL)"]];
+let tv = 0, tx = 0, rv = 0, rx = 0;
+function button(parent, label, onClick) { const b = document.createElement("button"); b.textContent = label; b.onclick = onClick; parent.appendChild(b); return b; }
+const tvb = TVIEWS.map((v, i) => button(document.getElementById("tviews"), v, () => { tv = i; draw(); }));
+const txb = TVARS.map((v, i) => button(document.getElementById("tvars"), v[1], () => { tx = i; draw(); }));
+const rvb = RVIEWS.map((v, i) => button(document.getElementById("rviews"), v, () => { rv = i; draw(); }));
+const rxb = RVARS.map((v, i) => button(document.getElementById("rvars"), v[1], () => { rx = i; draw(); }));
+function draw() {
+  tvb.forEach((b, i) => b.classList.toggle("on", i === tv)); txb.forEach((b, i) => b.classList.toggle("on", i === tx));
+  rvb.forEach((b, i) => b.classList.toggle("on", i === rv)); rxb.forEach((b, i) => b.classList.toggle("on", i === rx));
+  const t = "stills/tiers/" + TVIEWS[tv] + "_" + TVARS[tx][0] + ".png";
+  document.getElementById("timg").src = t; document.getElementById("tcap").textContent = TVARS[tx][1] + " · " + t;
+  const r = "stills/renderer_" + RVARS[rx][0] + "/" + RVIEWS[rv] + ".png";
+  document.getElementById("rimg").src = r; document.getElementById("rcap").textContent = RVARS[rx][1] + " · " + r;
+}
+document.getElementById("timg").onclick = () => { tx = (tx + 1) % TVARS.length; draw(); };
+document.getElementById("rimg").onclick = () => { rx = (rx + 1) % RVARS.length; draw(); };
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") { e.preventDefault(); tx = (tx + 1) % TVARS.length; draw(); }
+  const n = parseInt(e.key, 10); if (n >= 1 && n <= TVARS.length) { tx = n - 1; draw(); }
+});
+draw();
+</script>
+</body>
+</html>

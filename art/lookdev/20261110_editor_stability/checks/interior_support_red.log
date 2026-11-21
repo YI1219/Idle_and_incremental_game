@@ -1,0 +1,102 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: continuous wall loses 2 of 51 support rays near (-8.0, -5.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:114)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:135)
+       [3] run (res://tests/interior_terrain_edit_test.gd:168)
+ERROR: continuous wall loses 3 of 30 support rays near (13.0, 0.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:114)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:135)
+       [3] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: warm and fresh columns agree after lowering near (13.0, 0.0) seed 7301
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_fixture (res://tests/interior_terrain_edit_test.gd:141)
+       [2] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: warm and fresh continuous wall agree after lowering near (13.0, 0.0) seed 7301
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_fixture (res://tests/interior_terrain_edit_test.gd:142)
+       [2] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: continuous wall loses 2 of 51 support rays near (-8.0, -5.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:114)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:135)
+       [3] run (res://tests/interior_terrain_edit_test.gd:168)
+ERROR: continuous wall loses 3 of 30 support rays near (13.0, 0.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:114)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:135)
+       [3] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: warm and fresh columns agree after lowering near (13.0, 0.0) seed 2104
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_fixture (res://tests/interior_terrain_edit_test.gd:141)
+       [2] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: warm and fresh continuous wall agree after lowering near (13.0, 0.0) seed 2104
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_fixture (res://tests/interior_terrain_edit_test.gd:142)
+       [2] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: continuous wall loses 2 of 51 support rays near (-8.0, -5.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:114)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:135)
+       [3] run (res://tests/interior_terrain_edit_test.gd:168)
+ERROR: continuous wall loses 3 of 30 support rays near (13.0, 0.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:114)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:135)
+       [3] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: warm and fresh columns agree after lowering near (13.0, 0.0) seed 4242
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_fixture (res://tests/interior_terrain_edit_test.gd:141)
+       [2] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: warm and fresh continuous wall agree after lowering near (13.0, 0.0) seed 4242
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_fixture (res://tests/interior_terrain_edit_test.gd:142)
+       [2] run (res://tests/interior_terrain_edit_test.gd:169)
+ERROR: continuous wall loses 3 of 51 support rays near (-8.0, -5.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:114)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:135)
+       [3] run (res://tests/interior_terrain_edit_test.gd:170)
+ERROR: lowered ground ray grid retains 1 raised source/cap fragments near (-8.0, -5.0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_lawn_grid (res://tests/interior_terrain_edit_test.gd:85)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:134)
+       [3] run (res://tests/interior_terrain_edit_test.gd:171)
+ERROR: continuous wall loses 2 of 72 support rays near (-8.0, -5.0) (top 2, foot 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_wall_support (res://tests/interior_terrain_edit_test.gd:114)
+       [2] verify_fixture (res://tests/interior_terrain_edit_test.gd:135)
+       [3] run (res://tests/interior_terrain_edit_test.gd:171)
+INTERIOR TERRAIN EDIT: 51 checks, 15 failures

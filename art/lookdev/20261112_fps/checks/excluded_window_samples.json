@@ -1,0 +1,74 @@
+[
+  {
+    "file": "runtime_2k_after.json",
+    "exclude_reason": "OS/window stretch changed actual pixels; do not label as requested resolution",
+    "requested_or_window": [
+      2560,
+      963
+    ],
+    "actual_texture": [
+      2289,
+      1288
+    ]
+  },
+  {
+    "file": "runtime_2k_before.json",
+    "exclude_reason": "OS/window stretch changed actual pixels; do not label as requested resolution",
+    "requested_or_window": [
+      2560,
+      963
+    ],
+    "actual_texture": [
+      2289,
+      1288
+    ]
+  },
+  {
+    "file": "runtime_4k_after.json",
+    "exclude_reason": "OS/window stretch changed actual pixels; do not label as requested resolution",
+    "requested_or_window": [
+      3840,
+      963
+    ],
+    "actual_texture": [
+      2289,
+      1288
+    ]
+  },
+  {
+    "file": "runtime_4k_before.json",
+    "exclude_reason": "OS/window stretch changed actual pixels; do not label as requested resolution",
+    "requested_or_window": [
+      3840,
+      963
+    ],
+    "actual_texture": [
+      2289,
+      1288
+    ]
+  },
+  {
+    "file": "runtime_scaled4k_after.json",
+    "exclude_reason": "OS/window stretch changed actual pixels; do not label as requested resolution",
+    "requested_or_window": [
+      3840,
+      963
+    ],
+    "actual_texture": [
+      2289,
+      1288
+    ]
+  },
+  {
+    "file": "runtime_scaled4k_before.json",
+    "exclude_reason": "OS/window stretch changed actual pixels; do not label as requested resolution",
+    "requested_or_window": [
+      3840,
+      963
+    ],
+    "actual_texture": [
+      2289,
+      1288
+    ]
+  }
+]

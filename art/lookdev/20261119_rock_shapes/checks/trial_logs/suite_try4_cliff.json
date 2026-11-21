@@ -1,0 +1,62 @@
+{
+ "ran": 6,
+ "failed": 1,
+ "results": [
+  {
+   "test": "tests/cliff_outer_foot_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 13.35,
+   "tail": "CLIFF OUTER FOOT: 1019 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_form_variety_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.25,
+   "tail": "CLIFF FORM VARIETY: 57 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_mantle_seam_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.25,
+   "tail": "CLIFF MANTLE SEAM: 28 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_partial_crown_seal_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 4.22,
+   "tail": "CLIFF PARTIAL CROWN SEAL: 67 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_near_consistency_test.gd",
+   "headless": true,
+   "rc": 1,
+   "duration_s": 28.4,
+   "tail": "       [2] _initialize (res://tests/cliff_near_consistency_test.gd:382)",
+   "error_lines": [
+    "ERROR: expanded peninsula generated multiple near and narrow rim columns (near=3, narrow=2)"
+   ],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_outer_color_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 8.78,
+   "tail": "2026-11-19 19:06:35.824 godot[77633:325548] +[IMKInputSession subclass]: chose IMKInputSession_Modern",
+   "error_lines": [],
+   "previous_rc": 0
+  }
+ ]
+}

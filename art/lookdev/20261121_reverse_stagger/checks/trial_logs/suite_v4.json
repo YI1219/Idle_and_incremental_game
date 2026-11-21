@@ -1,0 +1,368 @@
+{
+ "ran": 40,
+ "failed": 1,
+ "results": [
+  {
+   "test": "tests/courtyard_composition_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 4.58,
+   "tail": "courtyard_composition: 31 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_outer_foot_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 13.61,
+   "tail": "CLIFF OUTER FOOT: 1229 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/argon_world_lock_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 2.14,
+   "tail": "ARGON WORLD LOCK: 9/9 passed; 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_form_variety_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.24,
+   "tail": "CLIFF FORM VARIETY: 57 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_mantle_seam_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.24,
+   "tail": "CLIFF MANTLE SEAM: 28 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_partial_crown_seal_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 4.33,
+   "tail": "CLIFF PARTIAL CROWN SEAL: 67 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/grass_lip_soften_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 4.84,
+   "tail": "GRASS LIP CHECKS: 24 failures: 0",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/grass_recovery_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.14,
+   "tail": "GRASS RECOVERY 11 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/interior_terrain_edit_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 38.02,
+   "tail": "INTERIOR TERRAIN EDIT: 60 checks, 0 failures, 460 downward rays, 696 horizontal support rays",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/preview_quality_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.15,
+   "tail": "PREVIEW QUALITY 12 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/runtime_power_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.14,
+   "tail": "RUNTIME POWER 16 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/sol61_grass_contact_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.25,
+   "tail": "SOL61 GRASS CONTACT failures: 0",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/sol61_scene_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 3.05,
+   "tail": "SOL61 SCENE: 7 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_blueprint_async_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 6.07,
+   "tail": "TERRAIN BLUEPRINT ASYNC: 16 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_blueprint_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 2.67,
+   "tail": "TERRAIN BLUEPRINT: 13 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_controls_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 2.14,
+   "tail": "terrain_controls_test: 29 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_editor_runtime_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 6.66,
+   "tail": "TERRAIN EDITOR RUNTIME: 22/22 passed",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_locality_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 7.21,
+   "tail": "TERRAIN LOCALITY: 15 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_release_feedback_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 3.03,
+   "tail": "TERRAIN RELEASE FEEDBACK 19 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_stroke_plane_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 2.27,
+   "tail": "STROKE PLANE 15 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_surface_anchor_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 2.42,
+   "tail": "TERRAIN SURFACE ANCHOR: 12 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_transition_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 3.93,
+   "tail": "TERRAIN TRANSITION: 8 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_water_integration_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 4.38,
+   "tail": "TERRAIN WATER INTEGRATION: 11 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_flow_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.64,
+   "tail": "WATER FLOW: 92 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_idle_work_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.55,
+   "tail": "WATER IDLE 10 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_recession_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 5.24,
+   "tail": "WATER RECESSION: 16 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_renderer_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 1.16,
+   "tail": "water_renderer_test: 48/48 passed",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/water_scaling_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.56,
+   "tail": "WATER SCALING 19 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/waterfall_flow_shape_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 0.24,
+   "tail": "WATERFALL FLOW SHAPE: 9 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/waterfall_terrace_seal_test.gd",
+   "headless": true,
+   "rc": 0,
+   "duration_s": 3.26,
+   "tail": "WATERFALL TERRACE SEAL: 16 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_near_consistency_test.gd",
+   "headless": true,
+   "rc": 1,
+   "duration_s": 28.66,
+   "tail": "       [2] _initialize (res://tests/cliff_near_consistency_test.gd:381)",
+   "error_lines": [
+    "ERROR: Option A restrained layout keeps 2..6 clean primary-secondary shoulders (got 8)"
+   ],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/sky_update_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 2.89,
+   "tail": "SKY UPDATE 8 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/sky_direction_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 0.6,
+   "tail": "SKY DIRECTION 4 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/flooded_ground_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 0.93,
+   "tail": "FLOODED GROUND: 20 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/grass_lod_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 0.54,
+   "tail": "GRASS LOD 96 -> 14; 4 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/grass_recovery_render_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 0.68,
+   "tail": "GRASS RECOVERY PIXELS 8 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/background_renderer_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 5.06,
+   "tail": "BACKGROUND RENDERER 23 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/cliff_outer_color_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 8.59,
+   "tail": "CLIFF OUTER COLOR: 93 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/terrain_blueprint_async_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 6.53,
+   "tail": "TERRAIN BLUEPRINT ASYNC: 16 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  },
+  {
+   "test": "tests/courtyard_grass_clearance_test.gd",
+   "headless": false,
+   "rc": 0,
+   "duration_s": 1.24,
+   "tail": "courtyard_grass_clearance: 3 checks, 0 failures",
+   "error_lines": [],
+   "previous_rc": 0
+  }
+ ]
+}

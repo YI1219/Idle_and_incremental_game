@@ -1,0 +1,23 @@
+{
+  "purpose": "Isolate rock/grass material response. Six shaders SHA256-identical to actual 08, replayed on current geometry and current light/fog/water. Exact BASE cameras and dynamic phase. Not an original 06 or 08 full-scene capture.",
+  "overwritten_temporarily": [
+    "shaders/terrain_editor/stone_surface.gdshaderinc",
+    "shaders/terrain_editor/cliff.gdshader",
+    "shaders/terrain_editor/cliff_column.gdshader",
+    "shaders/terrain_editor/ground.gdshader",
+    "shaders/terrain_editor/ground_cover.gdshaderinc",
+    "shaders/terrain_editor/grass_blades.gdshader",
+    "scripts/terrain_editor/material_detail.gd"
+  ],
+  "before_sha256": {
+    "shaders/terrain_editor/stone_surface.gdshaderinc": "5499933c6a116cc66e31a4d7f913c6d0f03290ad4905d9c911acb082b94f0e2c",
+    "shaders/terrain_editor/cliff.gdshader": "a1c60dc13e9b99b3b5867f8e2f12ca0a820a944e877d087d353d35bc4c52fe58",
+    "shaders/terrain_editor/cliff_column.gdshader": "6fbfe201be99f7cfc742315d1674accea2018989f29ca25c787485fbaf1ee120",
+    "shaders/terrain_editor/ground.gdshader": "39029cbb0fb0f0e8c2eb9b8358bc90ae80dc71a6cac76c61b471a2ca7e6616d2",
+    "shaders/terrain_editor/ground_cover.gdshaderinc": "c51bab7b951c0650a4be2227f371d5282096ef477a122121a71997f3d1d9ef6d",
+    "shaders/terrain_editor/grass_blades.gdshader": "4773a2f854fc413d3a09b5e86d1a7d6eea9b6a389dc4c30c654d873d9b49a4df",
+    "scripts/terrain_editor/material_detail.gd": "6246674c4cac215700a5823731593a6e39eb1b6dbf26d9b525c3d915282e68c2"
+  },
+  "restore_manifest": "primary_material_master.json",
+  "person": "remains removed"
+}

@@ -1,0 +1,24 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+POWER STATE true 1 editor_mode=4 suspended=true can=false
+ERROR: viewport size token 0 selects radius
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261112_fps/checks/controls_diagnosis.gd:8)
+       [1] run (res://art/lookdev/20261112_fps/checks/controls_diagnosis.gd:33)
+ERROR: viewport size token 2 selects radius
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261112_fps/checks/controls_diagnosis.gd:8)
+       [1] run (res://art/lookdev/20261112_fps/checks/controls_diagnosis.gd:33)
+ERROR: viewport right drag rotates yaw and pitch
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261112_fps/checks/controls_diagnosis.gd:8)
+       [1] run (res://art/lookdev/20261112_fps/checks/controls_diagnosis.gd:73)
+ERROR: viewport middle drag pans
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://art/lookdev/20261112_fps/checks/controls_diagnosis.gd:8)
+       [1] run (res://art/lookdev/20261112_fps/checks/controls_diagnosis.gd:85)
+terrain_controls_test: 29 checks, 4 failures

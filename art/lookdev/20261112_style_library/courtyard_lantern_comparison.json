@@ -1,0 +1,32 @@
+{
+  "scope": "Single lantern temporary courtyard trial; not production adoption",
+  "baseline": "art/lookdev/20261112_style_library/courtyard_lantern_baseline/captures.json",
+  "candidate": "art/lookdev/20261112_style_library/courtyard_lantern_trial/captures.json",
+  "data_same": true,
+  "camera_light_resolution_same": true,
+  "frames": [
+    {
+      "file": "game.png",
+      "differences": []
+    },
+    {
+      "file": "whole.png",
+      "differences": []
+    },
+    {
+      "file": "reverse.png",
+      "differences": []
+    },
+    {
+      "file": "close.png",
+      "differences": []
+    },
+    {
+      "file": "cliff_close.png",
+      "differences": []
+    }
+  ],
+  "common_source_hashes_same": true,
+  "source_differences": [],
+  "valid": true
+}

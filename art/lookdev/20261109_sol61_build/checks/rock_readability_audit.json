@@ -1,0 +1,87 @@
+{
+  "art_accepted": false,
+  "user_preference": "Cumulative rock comparison left final_day response",
+  "restored_sources_exactly_match_user_preferred_left": true,
+  "native_frames": 10,
+  "pairs": [
+    {
+      "before": "meadow_fans_day",
+      "after": "rock_readability_day",
+      "valid": true,
+      "actor_absent": true,
+      "source_changes": [
+        "res://scripts/terrain_editor/terrain_environment.gd",
+        "res://shaders/terrain_editor/stone_surface.gdshaderinc"
+      ],
+      "metadata_differences": [
+        {
+          "game.png": [
+            "shadow_bias"
+          ]
+        },
+        {
+          "whole.png": [
+            "shadow_bias"
+          ]
+        },
+        {
+          "reverse.png": [
+            "shadow_bias"
+          ]
+        },
+        {
+          "close.png": [
+            "shadow_bias"
+          ]
+        },
+        {
+          "cliff_close.png": [
+            "shadow_bias"
+          ]
+        }
+      ],
+      "terrain_identical": true,
+      "grass_visual_source_identical": true
+    },
+    {
+      "before": "meadow_fans_night",
+      "after": "rock_readability_night",
+      "valid": true,
+      "actor_absent": true,
+      "source_changes": [
+        "res://scripts/terrain_editor/terrain_environment.gd",
+        "res://shaders/terrain_editor/stone_surface.gdshaderinc"
+      ],
+      "metadata_differences": [
+        {
+          "game.png": [
+            "shadow_bias"
+          ]
+        },
+        {
+          "whole.png": [
+            "shadow_bias"
+          ]
+        },
+        {
+          "reverse.png": [
+            "shadow_bias"
+          ]
+        },
+        {
+          "close.png": [
+            "shadow_bias"
+          ]
+        },
+        {
+          "cliff_close.png": [
+            "shadow_bias"
+          ]
+        }
+      ],
+      "terrain_identical": true,
+      "grass_visual_source_identical": true
+    }
+  ],
+  "old_fine_self_shadow_retained": true
+}

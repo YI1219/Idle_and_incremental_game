@@ -1,0 +1,50 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+STRESS iteration 0 levels [1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 1 levels [1.5, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 2 levels [1.5, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 3 levels [1.5, 2.0, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 4 levels [1.0, 1.5, 2.0, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 5 levels [1.0, 1.5, 2.0, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 6 levels [1.0, 1.5, 2.0, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 7 levels [1.0, 1.5, 2.0, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 8 levels [1.0, 1.5, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 9 levels [1.0, 1.5, 2.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 10 levels [1.0, 1.5, 2.0, 3.0, 3.5] suspicious 0/0
+STRESS iteration 11 levels [0.5, 1.0, 1.5, 2.0, 3.0, 3.5] suspicious 0/0
+STRESS iteration 12 levels [0.5, 1.0, 1.5, 2.0, 3.0, 3.5] suspicious 0/0
+STRESS iteration 13 levels [0.5, 1.0, 1.5, 2.0, 3.0, 3.5] suspicious 0/0
+STRESS iteration 14 levels [0.5, 1.0, 1.5, 2.0, 3.0, 3.5] suspicious 0/0
+STRESS iteration 15 levels [0.5, 1.5, 2.0, 3.0, 3.5] suspicious 0/0
+STRESS iteration 16 levels [0.0, 0.5, 1.5, 2.0, 3.0, 3.5] suspicious 0/0
+STRESS iteration 17 levels [-0.5, 0.5, 1.5, 2.0, 3.0, 3.5] suspicious 0/0
+STRESS iteration 18 levels [-0.5, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 19 levels [-1.0, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 20 levels [-1.0, 0.0, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 21 levels [-1.0, 0.0, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 22 levels [-1.0, 0.0, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 23 levels [-1.0, 0.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 24 levels [-1.5, 0.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 25 levels [-2.0, 0.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 26 levels [-2.0, 0.0, 1.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 27 levels [-2.5, 0.0, 1.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 28 levels [-2.5, -0.5, 0.0, 1.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 29 levels [-2.5, -0.5, 0.0, 1.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 30 levels [-2.5, -0.5, 0.0, 1.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 31 levels [-2.5, -0.5, 1.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 32 levels [-3.0, -0.5, 1.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 33 levels [-3.5, -0.5, 1.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 34 levels [-3.5, -0.5, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 35 levels [-4.0, -0.5, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 36 levels [-4.0, -1.0, -0.5, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 37 levels [-4.0, -1.0, -0.5, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 38 levels [-4.0, -1.0, -0.5, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 39 levels [-4.0, -1.0, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 40 levels [-4.0, -1.0, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 41 levels [-4.0, -1.0, 0.5, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 42 levels [-4.0, -1.0, 0.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 43 levels [-4.0, -1.0, 0.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 44 levels [-4.0, -1.5, -1.0, 0.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 45 levels [-4.0, -1.5, -1.0, 0.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 46 levels [-4.0, -1.5, -1.0, 0.0, 1.5, 3.0, 3.5] suspicious 0/0
+STRESS iteration 47 levels [-4.0, -1.5, 0.0, 1.5, 3.0, 3.5] suspicious 0/0

@@ -1,0 +1,7 @@
+Use case: stylized-concept.
+Asset type: square seamless tileable albedo texture for the existing massive rice-gray stone cliffs in a real-time Godot floating-island scene.
+Primary request: a professionally hand-painted gouache mineral pigment surface, flat orthographic scan, filling every pixel edge to edge. This is a BASE COLOR texture only, no objects, no scene, no visible rock silhouette. The final material must read as soft matte painted stone with quiet natural mineral layering rather than plastic, cloth, or a photo.
+Palette: low saturation warm rice-gray, light ivory-gray, restrained cool silver-gray and faint celadon-gray mineral patches. Average RGB approximately 184,178,164 in sRGB; keep most values within 155–205. No green moss.
+Surface: broad very soft irregular 20–40% size pigment islands; smaller overlapping gently feathered 3–12% size warm/cool gouache strokes; very fine dry chalk tooth. Quiet tonal variation, maximum 15% contrast. Organic non-directional brushwork, enough tangible chalk pigment texture to survive mipmapping without noisy dots. Minuscule diffuse pores only, no large cracks.
+Lighting: fully even neutral diffuse flat scan, absolutely no baked shadows, directional shading, bevel edges, highlights, AO, vignette or brightness gradient.
+Constraints: tileable on all four edges, no borders, no perspective, no text, no logos, no distinct stones, no polygon outlines, no sharp veins, no stippled or woven fabric pattern. This material will be triplanar mapped in the existing scene; it must never introduce new architecture or props.

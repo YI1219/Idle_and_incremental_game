@@ -1,0 +1,3021 @@
+{
+	"godot": "4.7.2-stable (official)",
+	"issues": [],
+	"list": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/capture_revisions.json",
+	"records": [
+		{
+			"angle": "front",
+			"asset": "pavilion_v02",
+			"bounds_min_m": [
+				-2.09461736679077,
+				0.0,
+				-2.10029458999634
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"far": 133.872528076172,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					1.54999995231628,
+					20.0808792114258
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-2.09461736679077,
+					0.0,
+					-2.10029458999634
+				],
+				"reference_dimensions_m": [
+					4.18923473358154,
+					3.09999990463257,
+					4.20058917999268
+				],
+				"size": 3.77031135559082,
+				"target": [
+					0.0,
+					1.54999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				4.18923473358154,
+				3.09999990463257,
+				4.20058917999268
+			],
+			"family": "architecture",
+			"file": "architecture/pavilion_v02/lod0_front.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "pavilion_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-2.09461736679077,
+							0.0,
+							-2.10029458999634
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							4.18923473358154,
+							3.09999990463257,
+							4.20058917999268
+						],
+						"material_overlay": null,
+						"node": "pavilion_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 5284
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/pavilion_v02/manifest.json",
+			"manifest_sha256": "5284ff61f0a1a0bca19517df64c1b095d178b43cd40c004fd1db149118ad37bc",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/pavilion_v02/lod0.glb",
+			"model_sha256": "f567f4ecaf3f41ddbc607b6de13060fb3dbf78c2ef1b7776b07569e96b553d1a",
+			"msaa": 4,
+			"original_source_sha256": "cb5f094c17b08089441bd92a50aef08dcc77c5bd1265b70f2cc9475f8424cec0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "back",
+			"asset": "pavilion_v02",
+			"bounds_min_m": [
+				-2.09461736679077,
+				0.0,
+				-2.10029458999634
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					-1.0
+				],
+				"far": 133.872528076172,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					1.54999995231628,
+					-20.0808792114258
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-2.09461736679077,
+					0.0,
+					-2.10029458999634
+				],
+				"reference_dimensions_m": [
+					4.18923473358154,
+					3.09999990463257,
+					4.20058917999268
+				],
+				"size": 3.77031135559082,
+				"target": [
+					0.0,
+					1.54999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				4.18923473358154,
+				3.09999990463257,
+				4.20058917999268
+			],
+			"family": "architecture",
+			"file": "architecture/pavilion_v02/lod0_back.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "pavilion_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-2.09461736679077,
+							0.0,
+							-2.10029458999634
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							4.18923473358154,
+							3.09999990463257,
+							4.20058917999268
+						],
+						"material_overlay": null,
+						"node": "pavilion_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 5284
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/pavilion_v02/manifest.json",
+			"manifest_sha256": "5284ff61f0a1a0bca19517df64c1b095d178b43cd40c004fd1db149118ad37bc",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/pavilion_v02/lod0.glb",
+			"model_sha256": "f567f4ecaf3f41ddbc607b6de13060fb3dbf78c2ef1b7776b07569e96b553d1a",
+			"msaa": 4,
+			"original_source_sha256": "cb5f094c17b08089441bd92a50aef08dcc77c5bd1265b70f2cc9475f8424cec0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "left",
+			"asset": "pavilion_v02",
+			"bounds_min_m": [
+				-2.09461736679077,
+				0.0,
+				-2.10029458999634
+			],
+			"camera": {
+				"direction": [
+					-1.0,
+					0.0,
+					0.0
+				],
+				"far": 133.872528076172,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					-20.0808792114258,
+					1.54999995231628,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-2.09461736679077,
+					0.0,
+					-2.10029458999634
+				],
+				"reference_dimensions_m": [
+					4.18923473358154,
+					3.09999990463257,
+					4.20058917999268
+				],
+				"size": 3.78053021430969,
+				"target": [
+					0.0,
+					1.54999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				4.18923473358154,
+				3.09999990463257,
+				4.20058917999268
+			],
+			"family": "architecture",
+			"file": "architecture/pavilion_v02/lod0_left.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "pavilion_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-2.09461736679077,
+							0.0,
+							-2.10029458999634
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							4.18923473358154,
+							3.09999990463257,
+							4.20058917999268
+						],
+						"material_overlay": null,
+						"node": "pavilion_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 5284
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/pavilion_v02/manifest.json",
+			"manifest_sha256": "5284ff61f0a1a0bca19517df64c1b095d178b43cd40c004fd1db149118ad37bc",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/pavilion_v02/lod0.glb",
+			"model_sha256": "f567f4ecaf3f41ddbc607b6de13060fb3dbf78c2ef1b7776b07569e96b553d1a",
+			"msaa": 4,
+			"original_source_sha256": "cb5f094c17b08089441bd92a50aef08dcc77c5bd1265b70f2cc9475f8424cec0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "right",
+			"asset": "pavilion_v02",
+			"bounds_min_m": [
+				-2.09461736679077,
+				0.0,
+				-2.10029458999634
+			],
+			"camera": {
+				"direction": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"far": 133.872528076172,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					20.0808792114258,
+					1.54999995231628,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-2.09461736679077,
+					0.0,
+					-2.10029458999634
+				],
+				"reference_dimensions_m": [
+					4.18923473358154,
+					3.09999990463257,
+					4.20058917999268
+				],
+				"size": 3.78053021430969,
+				"target": [
+					0.0,
+					1.54999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				4.18923473358154,
+				3.09999990463257,
+				4.20058917999268
+			],
+			"family": "architecture",
+			"file": "architecture/pavilion_v02/lod0_right.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "pavilion_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-2.09461736679077,
+							0.0,
+							-2.10029458999634
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							4.18923473358154,
+							3.09999990463257,
+							4.20058917999268
+						],
+						"material_overlay": null,
+						"node": "pavilion_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 5284
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/pavilion_v02/manifest.json",
+			"manifest_sha256": "5284ff61f0a1a0bca19517df64c1b095d178b43cd40c004fd1db149118ad37bc",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/pavilion_v02/lod0.glb",
+			"model_sha256": "f567f4ecaf3f41ddbc607b6de13060fb3dbf78c2ef1b7776b07569e96b553d1a",
+			"msaa": 4,
+			"original_source_sha256": "cb5f094c17b08089441bd92a50aef08dcc77c5bd1265b70f2cc9475f8424cec0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "pavilion_v02",
+			"bounds_min_m": [
+				-2.09461736679077,
+				0.0,
+				-2.10029458999634
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 133.872528076172,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					10.3835754394531,
+					8.81850242614746,
+					15.5753631591797
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-2.09461736679077,
+					0.0,
+					-2.10029458999634
+				],
+				"reference_dimensions_m": [
+					4.18923473358154,
+					3.09999990463257,
+					4.20058917999268
+				],
+				"size": 5.99520587921143,
+				"target": [
+					0.0,
+					1.54999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				4.18923473358154,
+				3.09999990463257,
+				4.20058917999268
+			],
+			"family": "architecture",
+			"file": "architecture/pavilion_v02/lod0_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "pavilion_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-2.09461736679077,
+							0.0,
+							-2.10029458999634
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							4.18923473358154,
+							3.09999990463257,
+							4.20058917999268
+						],
+						"material_overlay": null,
+						"node": "pavilion_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 5284
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/pavilion_v02/manifest.json",
+			"manifest_sha256": "5284ff61f0a1a0bca19517df64c1b095d178b43cd40c004fd1db149118ad37bc",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/pavilion_v02/lod0.glb",
+			"model_sha256": "f567f4ecaf3f41ddbc607b6de13060fb3dbf78c2ef1b7776b07569e96b553d1a",
+			"msaa": 4,
+			"original_source_sha256": "cb5f094c17b08089441bd92a50aef08dcc77c5bd1265b70f2cc9475f8424cec0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "pavilion_v02",
+			"bounds_min_m": [
+				-2.09461736679077,
+				0.0,
+				-2.09989547729492
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 133.872528076172,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					10.3835754394531,
+					8.81850242614746,
+					15.5753631591797
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-2.09461736679077,
+					0.0,
+					-2.10029458999634
+				],
+				"reference_dimensions_m": [
+					4.18923473358154,
+					3.09999990463257,
+					4.20058917999268
+				],
+				"size": 5.99520587921143,
+				"target": [
+					0.0,
+					1.54999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				4.18923473358154,
+				3.09999990463257,
+				4.20019006729126
+			],
+			"family": "architecture",
+			"file": "architecture/pavilion_v02/lod1_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "pavilion_v02_LOD1_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-2.09461736679077,
+							0.0,
+							-2.09989547729492
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							4.18923473358154,
+							3.09999990463257,
+							4.20019006729126
+						],
+						"material_overlay": null,
+						"node": "pavilion_v02_LOD1_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 2480
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 1,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/pavilion_v02/manifest.json",
+			"manifest_sha256": "5284ff61f0a1a0bca19517df64c1b095d178b43cd40c004fd1db149118ad37bc",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/pavilion_v02/lod1.glb",
+			"model_sha256": "300d2646852968339ba6ac57453492fada57a04ebe0f732234bece9703f36b0b",
+			"msaa": 4,
+			"original_source_sha256": "cb5f094c17b08089441bd92a50aef08dcc77c5bd1265b70f2cc9475f8424cec0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "pavilion_v02",
+			"bounds_min_m": [
+				-2.0758957862854,
+				-0.0025263458956033,
+				-2.08141207695007
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 133.872528076172,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					10.3835754394531,
+					8.81850242614746,
+					15.5753631591797
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-2.09461736679077,
+					0.0,
+					-2.10029458999634
+				],
+				"reference_dimensions_m": [
+					4.18923473358154,
+					3.09999990463257,
+					4.20058917999268
+				],
+				"size": 5.99520587921143,
+				"target": [
+					0.0,
+					1.54999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				4.16017007827759,
+				3.09022927284241,
+				4.17793846130371
+			],
+			"family": "architecture",
+			"file": "architecture/pavilion_v02/lod2_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "pavilion_v02_LOD2_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-2.0758957862854,
+							-0.0025263458956033,
+							-2.08141207695007
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							4.16017007827759,
+							3.09022927284241,
+							4.17793846130371
+						],
+						"material_overlay": null,
+						"node": "pavilion_v02_LOD2_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 744
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 2,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/architecture/pavilion_v02/manifest.json",
+			"manifest_sha256": "5284ff61f0a1a0bca19517df64c1b095d178b43cd40c004fd1db149118ad37bc",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/architecture/pavilion_v02/lod2.glb",
+			"model_sha256": "fc69b412caea21922607ff3574cfd558bf773bb6e15e658e68a74cea9acc4f9d",
+			"msaa": 4,
+			"original_source_sha256": "cb5f094c17b08089441bd92a50aef08dcc77c5bd1265b70f2cc9475f8424cec0",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "front",
+			"asset": "drooping_willow_v02",
+			"bounds_min_m": [
+				-1.32763135433197,
+				0.0,
+				-1.82050812244415
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					1.0
+				],
+				"far": 115.355827331543,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					1.79999995231628,
+					17.303373336792
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.32763135433197,
+					0.0,
+					-1.82050812244415
+				],
+				"reference_dimensions_m": [
+					2.65526270866394,
+					3.59999990463257,
+					3.64101624488831
+				],
+				"size": 4.31999969482422,
+				"target": [
+					0.0,
+					1.79999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				2.65526270866394,
+				3.59999990463257,
+				3.64101624488831
+			],
+			"family": "nature",
+			"file": "nature/drooping_willow_v02/lod0_front.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "drooping_willow_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.32763135433197,
+							0.0,
+							-1.82050812244415
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							2.65526270866394,
+							3.59999990463257,
+							3.64101624488831
+						],
+						"material_overlay": null,
+						"node": "drooping_willow_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 3826
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow_v02/manifest.json",
+			"manifest_sha256": "29da6ce94b9a2a7b6d0c1ef04eae16c358ac073b5669ccb449fa97e979af2496",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/drooping_willow_v02/lod0.glb",
+			"model_sha256": "bca4722faccb57fd45e9f1de11187a7beb97a669aec79383deccf114a608aa85",
+			"msaa": 4,
+			"original_source_sha256": "04f48f792ad79e4e8829de7ce4190f145d75782852ecd1896723d12261a67a30",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "back",
+			"asset": "drooping_willow_v02",
+			"bounds_min_m": [
+				-1.32763135433197,
+				0.0,
+				-1.82050812244415
+			],
+			"camera": {
+				"direction": [
+					0.0,
+					0.0,
+					-1.0
+				],
+				"far": 115.355827331543,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					0.0,
+					1.79999995231628,
+					-17.303373336792
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.32763135433197,
+					0.0,
+					-1.82050812244415
+				],
+				"reference_dimensions_m": [
+					2.65526270866394,
+					3.59999990463257,
+					3.64101624488831
+				],
+				"size": 4.31999969482422,
+				"target": [
+					0.0,
+					1.79999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				2.65526270866394,
+				3.59999990463257,
+				3.64101624488831
+			],
+			"family": "nature",
+			"file": "nature/drooping_willow_v02/lod0_back.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "drooping_willow_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.32763135433197,
+							0.0,
+							-1.82050812244415
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							2.65526270866394,
+							3.59999990463257,
+							3.64101624488831
+						],
+						"material_overlay": null,
+						"node": "drooping_willow_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 3826
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow_v02/manifest.json",
+			"manifest_sha256": "29da6ce94b9a2a7b6d0c1ef04eae16c358ac073b5669ccb449fa97e979af2496",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/drooping_willow_v02/lod0.glb",
+			"model_sha256": "bca4722faccb57fd45e9f1de11187a7beb97a669aec79383deccf114a608aa85",
+			"msaa": 4,
+			"original_source_sha256": "04f48f792ad79e4e8829de7ce4190f145d75782852ecd1896723d12261a67a30",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "left",
+			"asset": "drooping_willow_v02",
+			"bounds_min_m": [
+				-1.32763135433197,
+				0.0,
+				-1.82050812244415
+			],
+			"camera": {
+				"direction": [
+					-1.0,
+					0.0,
+					0.0
+				],
+				"far": 115.355827331543,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					-17.303373336792,
+					1.79999995231628,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.32763135433197,
+					0.0,
+					-1.82050812244415
+				],
+				"reference_dimensions_m": [
+					2.65526270866394,
+					3.59999990463257,
+					3.64101624488831
+				],
+				"size": 4.31999969482422,
+				"target": [
+					0.0,
+					1.79999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				2.65526270866394,
+				3.59999990463257,
+				3.64101624488831
+			],
+			"family": "nature",
+			"file": "nature/drooping_willow_v02/lod0_left.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "drooping_willow_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.32763135433197,
+							0.0,
+							-1.82050812244415
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							2.65526270866394,
+							3.59999990463257,
+							3.64101624488831
+						],
+						"material_overlay": null,
+						"node": "drooping_willow_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 3826
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow_v02/manifest.json",
+			"manifest_sha256": "29da6ce94b9a2a7b6d0c1ef04eae16c358ac073b5669ccb449fa97e979af2496",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/drooping_willow_v02/lod0.glb",
+			"model_sha256": "bca4722faccb57fd45e9f1de11187a7beb97a669aec79383deccf114a608aa85",
+			"msaa": 4,
+			"original_source_sha256": "04f48f792ad79e4e8829de7ce4190f145d75782852ecd1896723d12261a67a30",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "right",
+			"asset": "drooping_willow_v02",
+			"bounds_min_m": [
+				-1.32763135433197,
+				0.0,
+				-1.82050812244415
+			],
+			"camera": {
+				"direction": [
+					1.0,
+					0.0,
+					0.0
+				],
+				"far": 115.355827331543,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					17.303373336792,
+					1.79999995231628,
+					0.0
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.32763135433197,
+					0.0,
+					-1.82050812244415
+				],
+				"reference_dimensions_m": [
+					2.65526270866394,
+					3.59999990463257,
+					3.64101624488831
+				],
+				"size": 4.31999969482422,
+				"target": [
+					0.0,
+					1.79999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				2.65526270866394,
+				3.59999990463257,
+				3.64101624488831
+			],
+			"family": "nature",
+			"file": "nature/drooping_willow_v02/lod0_right.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "drooping_willow_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.32763135433197,
+							0.0,
+							-1.82050812244415
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							2.65526270866394,
+							3.59999990463257,
+							3.64101624488831
+						],
+						"material_overlay": null,
+						"node": "drooping_willow_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 3826
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow_v02/manifest.json",
+			"manifest_sha256": "29da6ce94b9a2a7b6d0c1ef04eae16c358ac073b5669ccb449fa97e979af2496",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/drooping_willow_v02/lod0.glb",
+			"model_sha256": "bca4722faccb57fd45e9f1de11187a7beb97a669aec79383deccf114a608aa85",
+			"msaa": 4,
+			"original_source_sha256": "04f48f792ad79e4e8829de7ce4190f145d75782852ecd1896723d12261a67a30",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "drooping_willow_v02",
+			"bounds_min_m": [
+				-1.32763135433197,
+				0.0,
+				-1.82050812244415
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 115.355827331543,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					8.94736099243164,
+					8.06315231323242,
+					13.4210433959961
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.32763135433197,
+					0.0,
+					-1.82050812244415
+				],
+				"reference_dimensions_m": [
+					2.65526270866394,
+					3.59999990463257,
+					3.64101624488831
+				],
+				"size": 5.98270034790039,
+				"target": [
+					0.0,
+					1.79999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				2.65526270866394,
+				3.59999990463257,
+				3.64101624488831
+			],
+			"family": "nature",
+			"file": "nature/drooping_willow_v02/lod0_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "drooping_willow_v02_LOD0_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.32763135433197,
+							0.0,
+							-1.82050812244415
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							2.65526270866394,
+							3.59999990463257,
+							3.64101624488831
+						],
+						"material_overlay": null,
+						"node": "drooping_willow_v02_LOD0_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 3826
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 0,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow_v02/manifest.json",
+			"manifest_sha256": "29da6ce94b9a2a7b6d0c1ef04eae16c358ac073b5669ccb449fa97e979af2496",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/drooping_willow_v02/lod0.glb",
+			"model_sha256": "bca4722faccb57fd45e9f1de11187a7beb97a669aec79383deccf114a608aa85",
+			"msaa": 4,
+			"original_source_sha256": "04f48f792ad79e4e8829de7ce4190f145d75782852ecd1896723d12261a67a30",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "drooping_willow_v02",
+			"bounds_min_m": [
+				-1.33932268619537,
+				0.00267560943029821,
+				-1.81859648227692
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 115.355827331543,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					8.94736099243164,
+					8.06315231323242,
+					13.4210433959961
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.32763135433197,
+					0.0,
+					-1.82050812244415
+				],
+				"reference_dimensions_m": [
+					2.65526270866394,
+					3.59999990463257,
+					3.64101624488831
+				],
+				"size": 5.98270034790039,
+				"target": [
+					0.0,
+					1.79999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				2.66165137290955,
+				3.59140729904175,
+				3.661452293396
+			],
+			"family": "nature",
+			"file": "nature/drooping_willow_v02/lod1_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "drooping_willow_v02_LOD1_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.33932268619537,
+							0.00267560943029821,
+							-1.81859648227692
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							2.66165137290955,
+							3.59140729904175,
+							3.661452293396
+						],
+						"material_overlay": null,
+						"node": "drooping_willow_v02_LOD1_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 1586
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 1,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow_v02/manifest.json",
+			"manifest_sha256": "29da6ce94b9a2a7b6d0c1ef04eae16c358ac073b5669ccb449fa97e979af2496",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/drooping_willow_v02/lod1.glb",
+			"model_sha256": "df5a0ca1f6fbe65314fc16538484b04d2a8a1177c54cd7c5d6ef154d8342ae0b",
+			"msaa": 4,
+			"original_source_sha256": "04f48f792ad79e4e8829de7ce4190f145d75782852ecd1896723d12261a67a30",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		},
+		{
+			"angle": "iso",
+			"asset": "drooping_willow_v02",
+			"bounds_min_m": [
+				-1.32592511177063,
+				0.0122048836201429,
+				-1.79313337802887
+			],
+			"camera": {
+				"direction": [
+					0.517087697982788,
+					0.361961364746094,
+					0.775631546974182
+				],
+				"far": 115.355827331543,
+				"margin_factor": 1.2,
+				"near": 0.00100000004749745,
+				"nominal_front": "+Z; source orientation retained, no entrance inference",
+				"position": [
+					8.94736099243164,
+					8.06315231323242,
+					13.4210433959961
+				],
+				"projection": "orthographic",
+				"reference_bounds_min_m": [
+					-1.32763135433197,
+					0.0,
+					-1.82050812244415
+				],
+				"reference_dimensions_m": [
+					2.65526270866394,
+					3.59999990463257,
+					3.64101624488831
+				],
+				"size": 5.98270034790039,
+				"target": [
+					0.0,
+					1.79999995231628,
+					0.0
+				]
+			},
+			"dimensions_m": [
+				2.6423921585083,
+				3.58612465858459,
+				3.63278412818909
+			],
+			"family": "nature",
+			"file": "nature/drooping_willow_v02/lod2_iso.png",
+			"geometry": {
+				"material_assignments": [
+					{
+						"class": "StandardMaterial3D",
+						"mesh_node": "drooping_willow_v02_LOD2_0",
+						"name": "geometry_review_neutral_matte",
+						"parameters": {
+							"albedo_color": [
+								0.81525069475174,
+								0.82097989320755,
+								0.803630948066711,
+								1.0
+							],
+							"alpha_hash_scale": 1.0,
+							"alpha_scissor_threshold": 0.5,
+							"blend_mode": 0,
+							"cull_mode": 2,
+							"disable_receive_shadows": false,
+							"emission": [
+								0.0,
+								0.0,
+								0.0,
+								1.0
+							],
+							"emission_enabled": false,
+							"emission_energy_multiplier": 1.0,
+							"metallic": 0.0,
+							"metallic_specular": 0.5,
+							"no_depth_test": false,
+							"normal_enabled": false,
+							"normal_scale": 1.0,
+							"roughness": 0.920000016689301,
+							"shading_mode": 1,
+							"texture_filter": 3,
+							"texture_repeat": true,
+							"transparency": 0,
+							"vertex_color_is_srgb": false,
+							"vertex_color_use_as_albedo": false
+						},
+						"render_priority": 0,
+						"resource_path": "",
+						"surface": 0,
+						"textures": {}
+					}
+				],
+				"materials": 1,
+				"mesh_count": 1,
+				"meshes": [
+					{
+						"bounds_min_m": [
+							-1.32592511177063,
+							0.0122048836201429,
+							-1.79313337802887
+						],
+						"cast_shadow": 1,
+						"dimensions_m": [
+							2.6423921585083,
+							3.58612465858459,
+							3.63278412818909
+						],
+						"material_overlay": null,
+						"node": "drooping_willow_v02_LOD2_0",
+						"surface_count": 1,
+						"visible": true
+					}
+				],
+				"surfaces": 1,
+				"triangles": 594
+			},
+			"lighting": {
+				"adjustment": {
+					"contrast": 1.03999996185303,
+					"saturation": 0.980000019073486
+				},
+				"ambient": {
+					"color": [
+						0.540000021457672,
+						0.649999976158142,
+						0.779999971389771,
+						1.0
+					],
+					"energy": 0.200000002980232,
+					"source": "color"
+				},
+				"background_color": [
+					0.280000001192093,
+					0.300000011920929,
+					0.310000002384186,
+					1.0
+				],
+				"diagnostic_only": false,
+				"fill": {
+					"color": [
+						0.670000016689301,
+						0.790000021457672,
+						1.0,
+						1.0
+					],
+					"energy": 0.379999995231628,
+					"rotation_degrees": [
+						-42.0,
+						-135.0,
+						0.0
+					],
+					"shadows": false
+				},
+				"preset": "天青烟岚 · 宋韵青绿",
+				"scope": "Daylight approximation: production preset sun/fill and filmic exposure; neutral background, color ambient replaces sky, no fog/glow/ground. Not courtyard composition.",
+				"source": "res://scripts/terrain_editor/terrain_environment.gd",
+				"source_sha256": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+				"ssao": {
+					"enabled": true,
+					"intensity": 0.949999988079071,
+					"power": 1.25,
+					"radius": 0.65,
+					"ssao_detail": 0.0,
+					"ssao_horizon": 0.280000001192093,
+					"ssao_light_affect": 0.0399999991059303,
+					"ssao_sharpness": 0.899999976158142
+				},
+				"sun": {
+					"angular_distance": 3.59999990463257,
+					"color": [
+						1.0,
+						0.939999997615814,
+						0.800000011920929,
+						1.0
+					],
+					"directional_shadow_blend_splits": true,
+					"directional_shadow_max_distance": 78.0,
+					"directional_shadow_split_1": 0.140000000596046,
+					"directional_shadow_split_2": 0.340000003576279,
+					"directional_shadow_split_3": 0.620000004768372,
+					"energy": 1.86000001430511,
+					"rotation_degrees": [
+						-25.4999980926514,
+						37.9999961853027,
+						0.0
+					],
+					"shadow_bias": 0.0350000001490116,
+					"shadow_enabled": true,
+					"shadow_normal_bias": 0.699999988079071,
+					"shadow_opacity": 0.899999976158142,
+					"specular": 0.200000002980232
+				},
+				"tonemap": {
+					"exposure": 1.05,
+					"mode": "filmic",
+					"white": 5.2
+				}
+			},
+			"lod": 2,
+			"manifest": "/Users/yi/Projects/games/the-scroll-within/art/source/style_library_20261112/nature/drooping_willow_v02/manifest.json",
+			"manifest_sha256": "29da6ce94b9a2a7b6d0c1ef04eae16c358ac073b5669ccb449fa97e979af2496",
+			"material_override_added": false,
+			"material_policy": "geometry-only untextured source with <=1 material: neutral single matte; no vertex colors added",
+			"model": "/Users/yi/Projects/games/the-scroll-within/assets/candidates/style_library_20261112/nature/drooping_willow_v02/lod2.glb",
+			"model_sha256": "0d5d3221c9b1f8b9eb0e04b63c3fb505cbc92f5bef01a3beb6da4996feb030da",
+			"msaa": 4,
+			"original_source_sha256": "04f48f792ad79e4e8829de7ce4190f145d75782852ecd1896723d12261a67a30",
+			"process_report_not_game_ready": false,
+			"resolution": [
+				1280,
+				960
+			],
+			"scope": "Actual Godot isolated model render, not default courtyard composition or target hardware performance"
+		}
+	],
+	"renderer": "forward_plus",
+	"scope": "Isolated imported-material asset review only; art acceptance and hardware FPS unmeasured",
+	"script_sha256": "361718fb3d829f904f4232392aca5c298c6218748f745f0103ed7feefebc1a59",
+	"valid": true
+}

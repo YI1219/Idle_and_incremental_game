@@ -1,0 +1,5 @@
+{
+  "rendering_and_interaction_tested": false,
+  "reason": "CUA browser URL policy rejected file: protocol; no bypass attempted",
+  "safe_checks": "30 JavaScript view/category states, slider/mode state and image/manifest/TARGET paths passed"
+}

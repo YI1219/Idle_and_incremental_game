@@ -1,0 +1,624 @@
+{
+	"fixture_04": {
+		"final": {
+			"extra": [
+				{
+					"cell": "(-12, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-9, -2)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -2)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-1, 3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(0, 3)",
+					"expected": 1.5,
+					"grass": "3.46935412830187"
+				},
+				{
+					"cell": "(-3, 4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-2, 4)",
+					"expected": 1.5,
+					"grass": "3.49271088739864"
+				},
+				{
+					"cell": "(-3, 5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-3, 6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-9, -9)",
+					"expected": 1.5,
+					"grass": "-inf"
+				},
+				{
+					"cell": "(-8, -9)",
+					"expected": 1.5,
+					"grass": "-inf"
+				}
+			]
+		},
+		"raw": {
+			"extra": [
+				{
+					"cell": "(-12, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-9, -2)",
+					"expected": 1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-3, 8)",
+					"expected": 3.5,
+					"grass": "1.5"
+				}
+			]
+		}
+	},
+	"fixture_10": {
+		"final": {
+			"extra": [
+				{
+					"cell": "(-12, -6)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-9, -2)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -2)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-1, 3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(0, 3)",
+					"expected": 1.5,
+					"grass": "3.46935412830187"
+				},
+				{
+					"cell": "(-3, 4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-2, 4)",
+					"expected": 1.5,
+					"grass": "3.49271088739864"
+				},
+				{
+					"cell": "(-3, 5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-3, 6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-9, -9)",
+					"expected": -1.5,
+					"grass": "-inf"
+				},
+				{
+					"cell": "(-8, -9)",
+					"expected": -1.5,
+					"grass": "-inf"
+				}
+			]
+		},
+		"raw": {
+			"extra": [
+				{
+					"cell": "(-12, -6)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-9, -2)",
+					"expected": -1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-3, 8)",
+					"expected": 3.5,
+					"grass": "1.5"
+				}
+			]
+		}
+	},
+	"fixture_original": {
+		"final": {
+			"extra": [
+				{
+					"cell": "(7, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -2)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-1, 3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(0, 3)",
+					"expected": 1.5,
+					"grass": "3.46935412830187"
+				},
+				{
+					"cell": "(-3, 4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-2, 4)",
+					"expected": 1.5,
+					"grass": "3.49271088739864"
+				},
+				{
+					"cell": "(-3, 5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-3, 6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": []
+		},
+		"raw": {
+			"extra": [],
+			"missing": [
+				{
+					"cell": "(-3, 8)",
+					"expected": 3.5,
+					"grass": "1.5"
+				}
+			]
+		}
+	},
+	"stress_fixture_07": {
+		"final": {
+			"extra": [
+				{
+					"cell": "(-3, -6)",
+					"expected": 2.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -6)",
+					"expected": 1.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -6)",
+					"expected": 1.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -5)",
+					"expected": 1.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -5)",
+					"expected": 1.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -4)",
+					"expected": 1.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -3)",
+					"expected": 1.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -2)",
+					"expected": 1.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-1, 3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(0, 3)",
+					"expected": 1.5,
+					"grass": "3.46935412830187"
+				},
+				{
+					"cell": "(-3, 4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-2, 4)",
+					"expected": 1.5,
+					"grass": "3.49271088739864"
+				},
+				{
+					"cell": "(-3, 5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-3, 6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-12, -3)",
+					"expected": 3.5,
+					"grass": "3.0"
+				}
+			]
+		},
+		"raw": {
+			"extra": [
+				{
+					"cell": "(-3, -6)",
+					"expected": 2.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-12, -3)",
+					"expected": 3.5,
+					"grass": "3.0"
+				},
+				{
+					"cell": "(-3, 8)",
+					"expected": 3.5,
+					"grass": "1.5"
+				}
+			]
+		}
+	},
+	"stress_fixture_23": {
+		"final": {
+			"extra": [
+				{
+					"cell": "(-3, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -6)",
+					"expected": 0.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -6)",
+					"expected": 0.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -5)",
+					"expected": 0.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -5)",
+					"expected": 0.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -4)",
+					"expected": 0.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -3)",
+					"expected": 0.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -2)",
+					"expected": 0.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-1, 3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(0, 3)",
+					"expected": 1.5,
+					"grass": "3.46935412830187"
+				},
+				{
+					"cell": "(-3, 4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-2, 4)",
+					"expected": 1.5,
+					"grass": "3.49271088739864"
+				},
+				{
+					"cell": "(-3, 5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-3, 6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-12, -3)",
+					"expected": 3.5,
+					"grass": "3.0"
+				}
+			]
+		},
+		"raw": {
+			"extra": [
+				{
+					"cell": "(-3, -6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-12, -3)",
+					"expected": 3.5,
+					"grass": "3.0"
+				},
+				{
+					"cell": "(-3, 8)",
+					"expected": 3.5,
+					"grass": "1.5"
+				}
+			]
+		}
+	},
+	"stress_fixture_47": {
+		"final": {
+			"extra": [
+				{
+					"cell": "(-3, -6)",
+					"expected": 0.0,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -6)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -6)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -5)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(8, -5)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -4)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -3)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(7, -2)",
+					"expected": -1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-1, 3)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(0, 3)",
+					"expected": 1.5,
+					"grass": "3.46935412830187"
+				},
+				{
+					"cell": "(-3, 4)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-2, 4)",
+					"expected": 1.5,
+					"grass": "3.49271088739864"
+				},
+				{
+					"cell": "(-3, 5)",
+					"expected": 1.5,
+					"grass": "3.5"
+				},
+				{
+					"cell": "(-3, 6)",
+					"expected": 1.5,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-12, -3)",
+					"expected": 3.5,
+					"grass": "3.0"
+				}
+			]
+		},
+		"raw": {
+			"extra": [
+				{
+					"cell": "(-3, -6)",
+					"expected": 0.0,
+					"grass": "3.5"
+				}
+			],
+			"missing": [
+				{
+					"cell": "(-12, -3)",
+					"expected": 3.5,
+					"grass": "3.0"
+				},
+				{
+					"cell": "(-3, 8)",
+					"expected": 3.5,
+					"grass": "1.5"
+				}
+			]
+		}
+	}
+}

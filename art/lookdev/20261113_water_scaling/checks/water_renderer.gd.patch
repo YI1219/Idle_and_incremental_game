@@ -1,0 +1,140 @@
+diff --git a/art/lookdev/20261113_water_scaling/checks/source_before/water_renderer.gd b/scripts/terrain_editor/water_renderer.gd
+index ea32d1a..c2929f5 100644
+--- a/art/lookdev/20261113_water_scaling/checks/source_before/water_renderer.gd
++++ b/scripts/terrain_editor/water_renderer.gd
+@@ -46,6 +46,14 @@ var _shore_rect: Rect2 = Rect2(Vector2.ZERO, Vector2.ONE)
+ # Last successfully published state; never accept a discarded worker as visible.
+ var _visual_state: Array = []
+ var _shape_cache: Array[Dictionary] = []
++# Main thread replaces this immutable input only after the worker has joined.
++var _terrain_snapshot: Data
++var _snapshot_version: int = -1
++var _solver_revision: int = -1
++var snapshot_build_count: int = 0
++# Worker-owned, terrain-only image input; live patches never mutate its image.
++var _field_snapshot: Data
++var _field_base: Dictionary = {}
+ 
+ class FlowField:
+ 	extends "res://scripts/terrain_editor/contour_terrain.gd"
+@@ -275,6 +283,11 @@ func reset(data: Data) -> void:
+ 	_visual_state.clear()
+ 	_shape_cache.clear()
+ 	_data = data
++	_terrain_snapshot = null
++	_snapshot_version = -1
++	_field_snapshot = null
++	_field_base.clear()
++	_solver_revision = data.revision
+ 	queued_seconds = 0.0
+ 	simulated_seconds = 0.0
+ 	_sync_pending = false
+@@ -339,6 +352,7 @@ func has_pending_updates() -> bool:
+ func _reconcile() -> void:
+ 	var started: int = Time.get_ticks_usec()
+ 	flow.sync(_data)
++	_solver_revision = _data.revision
+ 	_sync_pending = false
+ 	last_sync_ms = float(Time.get_ticks_usec() - started) / 1000.0
+ 
+@@ -350,18 +364,23 @@ func _schedule_advance() -> void:
+ func _start_worker(duration: float) -> void:
+ 	assert(_worker_task < 0, "A water solver can have only one worker owner")
+ 	var started: int = Time.get_ticks_usec()
+-	var snapshot: Data = Data.new()
+-	snapshot.seed = _data.seed
+-	snapshot.cells = _data.cells.duplicate(true)
+-	last_snapshot_ms = float(Time.get_ticks_usec() - started) / 1000.0
+-	_worker_task = WorkerThreadPool.add_task(_build_worker.bind(snapshot, duration), false, "Live water")
++	last_snapshot_ms = 0.0
++	if _terrain_snapshot == null or _snapshot_version != flow.terrain_version or _terrain_snapshot.seed != _data.seed:
++		var snapshot: Data = Data.new()
++		snapshot.seed = _data.seed
++		snapshot.cells = _data.cells.duplicate(true)
++		_terrain_snapshot = snapshot
++		_snapshot_version = flow.terrain_version
++		snapshot_build_count += 1
++		last_snapshot_ms = float(Time.get_ticks_usec() - started) / 1000.0
++	_worker_task = WorkerThreadPool.add_task(_build_worker.bind(_terrain_snapshot, duration), false, "Live water")
+ 
+ func _build_worker(snapshot: Data, duration: float) -> void:
+ 	var started: int = Time.get_ticks_usec()
+ 	if duration > 0.0:
+ 		flow.step(duration)
+ 	var solved: int = Time.get_ticks_usec()
+-	var state: Array = [flow.depths, flow.heights, flow.last_transfers, flow._beds, snapshot.seed]
++	var state: Array = [flow.depths, flow.heights, flow.last_transfers, flow.terrain_version, snapshot.seed]
+ 	if state == _visual_state:
+ 		_worker_result = {"unchanged": true, "duration": duration, "worker_ms": float(solved - started) / 1000.0,
+ 			"stages": {"solver": float(solved - started) / 1000.0, "mesh": 0.0, "images": 0.0}}
+@@ -374,7 +393,10 @@ func _build_worker(snapshot: Data, duration: float) -> void:
+ 	for kind: String in WATER_LAYERS:
+ 		meshes[kind] = field.surfaces[kind].mesh()
+ 	var meshed: int = Time.get_ticks_usec()
+-	var fields: Dictionary = _build_images(snapshot, field)
++	if _field_snapshot != snapshot:
++		_field_base = _build_image_base(snapshot)
++		_field_snapshot = snapshot
++	var fields: Dictionary = _build_images(snapshot, field, _field_base)
+ 	var finished: int = Time.get_ticks_usec()
+ 	_worker_result = {
+ 		"state": state.duplicate(true), "meshes": meshes, "surfaces": field.surfaces,
+@@ -402,7 +424,7 @@ func _collect_worker(wait: bool) -> void:
+ 	if last_step_seconds > 0.0:
+ 		last_advance_worker_ms = last_worker_ms
+ 		last_advance_stages = last_worker_stages
+-	if _sync_pending:
++	if _sync_pending or _solver_revision != _data.revision:
+ 		_reconcile()
+ 		_start_worker(0.0)
+ 		return
+@@ -410,7 +432,7 @@ func _collect_worker(wait: bool) -> void:
+ 		last_publish_ms = 0.0
+ 		return
+ 	var started: int = Time.get_ticks_usec()
+-	flow.write_to_data(_data)
++	flow.write_to_data(_data, false)
+ 	_visual_state = result.state
+ 	_publish(result)
+ 	last_publish_ms = float(Time.get_ticks_usec() - started) / 1000.0
+@@ -495,7 +517,7 @@ func _notification(what: int) -> void:
+ 			RenderingServer.global_shader_parameter_set("live_water_active", 0.0)
+ 			RenderingServer.global_shader_parameter_set("grass_recovery_active", 0.0)
+ 
+-static func _build_images(snapshot: Data, field: FlowField) -> Dictionary:
++static func _build_image_base(snapshot: Data) -> Dictionary:
+ 	var low: Vector2i = Vector2i.ZERO
+ 	var high: Vector2i = Vector2i.ZERO
+ 	if not snapshot.cells.is_empty():
+@@ -506,8 +528,18 @@ static func _build_images(snapshot: Data, field: FlowField) -> Dictionary:
+ 			high = high.max(cell)
+ 	var size: Vector2i = high - low + Vector2i.ONE
+ 	var live: Image = Image.create(size.x, size.y, false, Image.FORMAT_RGBAF)
+-	var shore: Image = Image.create(size.x, size.y, false, Image.FORMAT_RGBA8)
+ 	live.fill(Color(0.0, 0.0, 0.0, 0.0))
++	for cell: Vector2i in snapshot.cells:
++		live.set_pixelv(cell - low, Color(float(snapshot.cells[cell].height), 0.0, 0.0, 1.0))
++	return {"live": live, "low": low, "size": size}
++
++static func _build_images(snapshot: Data, field: FlowField, base: Dictionary = {}) -> Dictionary:
++	if base.is_empty():
++		base = _build_image_base(snapshot)
++	var low: Vector2i = base.low
++	var size: Vector2i = base.size
++	var live: Image = base.live.duplicate()
++	var shore: Image = Image.create(size.x, size.y, false, Image.FORMAT_RGBA8)
+ 	shore.fill(Color(0.0, 0.0, 0.0, 0.0))
+ 	var distances: Dictionary = {}
+ 	var impacts: Dictionary = {}
+@@ -529,7 +561,10 @@ static func _build_images(snapshot: Data, field: FlowField) -> Dictionary:
+ 				impact_queue.append(target)
+ 	_spread_distance(distances, queue, field.basin_ids, 3.0)
+ 	_spread_distance(impacts, impact_queue, field.basin_ids, 4.0)
+-	for cell: Vector2i in snapshot.cells:
++	var updated: Dictionary[Vector2i, bool] = {}
++	for cell: Vector2i in field.live_depths: updated[cell] = true
++	for cell: Vector2i in field.outgoing: updated[cell] = true
++	for cell: Vector2i in updated:
+ 		var pixel: Vector2i = cell - low
+ 		var depth: float = float(field.live_depths.get(cell, 0.0))
+ 		var height: float = float(field.live_heights.get(cell, snapshot.cells[cell].height))

@@ -1,0 +1,20 @@
+--- capture_lookdev_before.gd.txt
++++ tools/art/capture_lookdev.gd
+@@ -49,6 +49,8 @@
+ var captures: Array[Dictionary] = []
+ # Explicit atlas setting used by this capture; variants set this with the server call.
+ var shadow_atlas_size: int = 8192
++var ssao_half_size: bool = ProjectSettings.get_setting("rendering/environment/ssao/half_size")
++var dof_blur_quality: int = ProjectSettings.get_setting("rendering/camera/depth_of_field/depth_of_field_bokeh_quality")
+ var errors: Array[String] = []
+ var frozen_shaders: Dictionary = {}
+ var frozen_materials: Dictionary = {}
+@@ -273,7 +275,7 @@
+ 	captures.append({
+ 		"file": label + ".png", "save_error": result,
+ 		"viewport_msaa": viewport.msaa_3d, "render_scale": viewport.scaling_3d_scale,
+-		"shadow_atlas_size": shadow_atlas_size,
++		"shadow_atlas_size": shadow_atlas_size, "ssao_half_size": ssao_half_size, "dof_blur_quality": dof_blur_quality,
+ 		"position": _vector(editor.camera.position), "rotation_degrees": _vector(editor.camera.rotation_degrees),
+ 		"fov": editor.camera.fov, "dof": _dof_settings(editor.camera), "day_progress": time_progress,
+ 		"grass_base": _color(grass_base), "grass_highlight": _color(grass_highlight),

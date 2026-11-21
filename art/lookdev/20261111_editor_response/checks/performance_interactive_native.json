@@ -1,0 +1,28 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"discharged": 19.6131192627061,
+	"editor_process_ms": {
+		"max": 10.548,
+		"mean": 5.547365,
+		"p50": 5.942,
+		"p95": 7.647
+	},
+	"falls": 2,
+	"frame_ms": {
+		"max": 96.62,
+		"mean": 92.9036,
+		"p50": 93.935,
+		"p95": 95.485
+	},
+	"grass_changing": 0,
+	"hud_redraws": 50,
+	"method": "production editor process, hover and water workers active; fixed BASE A; 240 warmup,120 frames; no screenshot IO",
+	"resolution": [
+		3840,
+		2160
+	],
+	"scale": 1.0,
+	"variant": "native",
+	"water_surface_vertices": 384,
+	"water_volume": 51.3868807372945
+}

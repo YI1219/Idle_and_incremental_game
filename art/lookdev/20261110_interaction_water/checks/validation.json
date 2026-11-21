@@ -1,0 +1,44 @@
+{
+  "valid": true,
+  "native_2k_frames_in_review": 52,
+  "paired_cameras_lighting_data_equal": true,
+  "all_native_capture_jobs_valid": true,
+  "regression_groups": 17,
+  "regressions_clean": true,
+  "protected_sources_unchanged": {
+    "scripts/terrain_editor/terrain_environment.gd": "2f347eb9e68d2fd2656fd36b02e1ded16bc3b510f727cc5a94062f973b085ba4",
+    "scripts/gameplay/systems/time_solar_system.gd": "f9b89188d81dbd9e466d323ee9de8ec95fce240ddfcb4cebac8e485221469d3d",
+    "scripts/terrain_editor/stone_normals.gd": "eddb8325793377f40b625206c9145df9abdf91255ba56322d47487c79ba18a15",
+    "shaders/terrain_editor/stone_surface.gdshaderinc": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90"
+  },
+  "water_balance_max_error": 6.11066752753686e-13,
+  "post_capture_input_only_source_changes": {
+    "final_day": [
+      "res://scripts/terrain_editor/editor.gd"
+    ],
+    "final_night": [
+      "res://scripts/terrain_editor/editor.gd"
+    ],
+    "held2104": [
+      "res://scripts/terrain_editor/editor.gd"
+    ],
+    "held4242": [
+      "res://scripts/terrain_editor/editor.gd"
+    ],
+    "held913": [
+      "res://scripts/terrain_editor/editor.gd"
+    ]
+  },
+  "notes": [
+    "Final F11 stills disable editor processing; later editor.gd correction is confined to pointer anchoring. interaction_ready captures and tests cover the final pointer code.",
+    "Browser rendered preview not performed; page resource/state validation is separate."
+  ],
+  "art_accepted": false,
+  "page_states": {
+    "javascript_states": 32,
+    "phase_boundaries": 2,
+    "resource_paths": 51,
+    "all_exist": true,
+    "browser_rendered": false
+  }
+}

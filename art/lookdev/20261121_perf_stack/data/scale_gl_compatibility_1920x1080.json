@@ -1,0 +1,90 @@
+{
+	"adapter": "Apple M4 Pro",
+	"fits": {
+		"empty": {
+			"floor_ms": 1.66350360911992,
+			"ms_per_render": 1.27827138533241
+		},
+		"scene": {
+			"floor_ms": 3.40814638270049,
+			"ms_per_render": 7.37408848255569
+		}
+	},
+	"method": "K identical fixed-pixel viewports sharing one world in the normal render loop, visible 1280x720 window, no cap or vsync; slope of frame time against K is one scene render, intercept is the machine floor; repeated with all 3D nodes hidden",
+	"mode": "balanced",
+	"resolution": [
+		1920,
+		1080
+	],
+	"rounds": 1,
+	"sample_seconds": 4.0,
+	"samples": [
+		{
+			"k": 1,
+			"ms": 10.9577076502732,
+			"process_ms": 18.2123661202185,
+			"rendered": 366,
+			"round": 0,
+			"scene": true,
+			"setup_cpu_ms": 0.0219262295081967,
+			"viewport_cpu_ms": 2.63237704670494,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 2,
+			"ms": 17.8053777777778,
+			"process_ms": 20.4037777777777,
+			"rendered": 225,
+			"round": 0,
+			"scene": true,
+			"setup_cpu_ms": 0.0296577777777777,
+			"viewport_cpu_ms": 2.40108000649346,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 3,
+			"ms": 25.7058846153846,
+			"process_ms": 28.0069487179487,
+			"rendered": 156,
+			"round": 0,
+			"scene": true,
+			"setup_cpu_ms": 0.0426153846153846,
+			"viewport_cpu_ms": 2.56896153932963,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 1,
+			"ms": 3.01462575301205,
+			"process_ms": 11.9216498493971,
+			"rendered": 1328,
+			"round": 0,
+			"scene": false,
+			"setup_cpu_ms": 0.00950753012048187,
+			"viewport_cpu_ms": 0.979425451437752,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 2,
+			"ms": 4.07434486266531,
+			"process_ms": 7.49375788402843,
+			"rendered": 983,
+			"round": 0,
+			"scene": false,
+			"setup_cpu_ms": 0.0112421159715157,
+			"viewport_cpu_ms": 0.870148523899206,
+			"viewport_gpu_ms": 0.0
+		},
+		{
+			"k": 3,
+			"ms": 5.57116852367688,
+			"process_ms": 8.96827855153207,
+			"rendered": 718,
+			"round": 0,
+			"scene": false,
+			"setup_cpu_ms": 0.0147813370473537,
+			"viewport_cpu_ms": 0.913956823787317,
+			"viewport_gpu_ms": 0.0
+		}
+	],
+	"warm_seconds": 1.5
+}

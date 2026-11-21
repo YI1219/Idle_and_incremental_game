@@ -1,0 +1,477 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: seed 7301 shoulder (-15, 4) hangs below solid core: -8.105 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (-15, 4) hangs below its main rock: -8.105 < -7.369
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (-1, -11) hangs below solid core: -8.259 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (-1, -11) hangs below its main rock: -8.259 < -5.700
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (11, -5) hangs below solid core: -8.981 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (11, -5) hangs below its main rock: -8.981 < -8.128
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (-8, -12) hangs below solid core: -7.022 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (-8, -12) hangs below its main rock: -7.022 < -6.356
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (1, 9) hangs below solid core: -7.318 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (1, 9) hangs below its main rock: -7.318 < -6.892
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (4, -9) hangs below solid core: -7.768 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 7301 shoulder (4, -9) hangs below its main rock: -7.768 < -7.369
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: edited outer edge shoulder (-15, 4) hangs below solid core: -8.605 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (-15, 4) hangs below its main rock: -8.605 < -7.869
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (-1, -11) hangs below solid core: -8.259 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (-1, -11) hangs below its main rock: -8.259 < -5.700
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (11, -5) hangs below solid core: -8.981 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (11, -5) hangs below its main rock: -8.981 < -8.128
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (-8, -12) hangs below solid core: -7.022 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (-8, -12) hangs below its main rock: -7.022 < -6.356
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (1, 9) hangs below solid core: -7.318 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (1, 9) hangs below its main rock: -7.318 < -6.892
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (4, -9) hangs below solid core: -7.768 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: edited outer edge shoulder (4, -9) hangs below its main rock: -7.768 < -7.369
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:63)
+ERROR: undo shoulder (-15, 4) hangs below solid core: -8.105 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (-15, 4) hangs below its main rock: -8.105 < -7.369
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (-1, -11) hangs below solid core: -8.259 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (-1, -11) hangs below its main rock: -8.259 < -5.700
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (11, -5) hangs below solid core: -8.981 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (11, -5) hangs below its main rock: -8.981 < -8.128
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (-8, -12) hangs below solid core: -7.022 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (-8, -12) hangs below its main rock: -7.022 < -6.356
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (1, 9) hangs below solid core: -7.318 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (1, 9) hangs below its main rock: -7.318 < -6.892
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (4, -9) hangs below solid core: -7.768 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: undo shoulder (4, -9) hangs below its main rock: -7.768 < -7.369
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:67)
+ERROR: seed 2104 shoulder (-15, 4) hangs below solid core: -8.140 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (-15, 4) hangs below its main rock: -8.140 < -7.806
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (-9, 7) hangs below solid core: -7.989 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (-9, 7) hangs below its main rock: -7.989 < -7.015
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (-1, -11) hangs below solid core: -8.140 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (-1, -11) hangs below its main rock: -8.140 < -7.806
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (11, -5) hangs below solid core: -9.949 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (11, -5) hangs below its main rock: -9.949 < -7.418
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (-8, -12) hangs below solid core: -8.009 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (-8, -12) hangs below its main rock: -8.009 < -7.095
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (4, -9) hangs below solid core: -7.974 < -6.076
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 2104 shoulder (4, -9) hangs below its main rock: -7.974 < -7.806
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (-10, 4) hangs below solid core: -8.173 < -6.274
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (-10, 4) hangs below its main rock: -8.173 < -7.015
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (0, -7) hangs below solid core: -8.065 < -6.274
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (0, -7) hangs below its main rock: -8.065 < -7.806
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (-16, 3) hangs below solid core: -7.173 < -6.274
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (9, -5) hangs below solid core: -8.480 < -6.274
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (9, -5) hangs below its main rock: -8.480 < -7.508
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (-7, -9) hangs below solid core: -8.053 < -6.274
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (-7, -9) hangs below its main rock: -8.053 < -7.369
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (-12, -9) hangs below solid core: -8.470 < -6.274
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 4242 shoulder (-12, -9) hangs below its main rock: -8.470 < -6.356
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-14, 4) hangs below solid core: -7.290 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-14, 4) hangs below its main rock: -7.290 < -5.700
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-8, 5) hangs below solid core: -7.217 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-8, 5) hangs below its main rock: -7.217 < -6.356
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (1, -11) hangs below solid core: -8.005 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (1, -11) hangs below its main rock: -8.005 < -7.369
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-8, -12) hangs below solid core: -8.108 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-8, -12) hangs below its main rock: -8.108 < -7.806
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-6, 1) hangs below solid core: -7.456 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-6, 1) hangs below its main rock: -7.456 < -6.356
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-2, 1) hangs below solid core: -8.013 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (-2, 1) hangs below its main rock: -8.013 < -7.806
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (13, 9) hangs below solid core: -7.787 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (13, 9) hangs below its main rock: -7.787 < -7.090
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (7, 10) hangs below solid core: -6.330 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (7, 10) hangs below its main rock: -6.330 < -6.133
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (2, 10) hangs below solid core: -7.545 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (2, 10) hangs below its main rock: -7.545 < -7.042
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (5, -7) hangs below solid core: -7.905 < -6.119
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:38)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+ERROR: seed 913 shoulder (5, -7) hangs below its main rock: -7.905 < -5.700
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/cliff_outer_foot_test.gd:14)
+       [1] verify_foot (res://tests/cliff_outer_foot_test.gd:39)
+       [2] _initialize (res://tests/cliff_outer_foot_test.gd:56)
+CLIFF OUTER FOOT: 167 checks, 79 failures

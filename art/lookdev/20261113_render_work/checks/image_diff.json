@@ -1,0 +1,107 @@
+[
+  {
+    "before": "2104_before_close.png",
+    "after": "2104_after_close.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "2104_before_reverse.png",
+    "after": "2104_after_reverse.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "2104_before_whole.png",
+    "after": "2104_after_whole.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "4242_before_close.png",
+    "after": "4242_after_close.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "4242_before_reverse.png",
+    "after": "4242_after_reverse.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "4242_before_whole.png",
+    "after": "4242_after_whole.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "7301_before_close.png",
+    "after": "7301_after_close.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "7301_before_dusk.png",
+    "after": "7301_after_dusk.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "7301_before_low.png",
+    "after": "7301_after_low.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "7301_before_night.png",
+    "after": "7301_after_night.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "7301_before_reverse.png",
+    "after": "7301_after_reverse.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "7301_before_whole.png",
+    "after": "7301_after_whole.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "913_before_close.png",
+    "after": "913_after_close.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "913_before_reverse.png",
+    "after": "913_after_reverse.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  },
+  {
+    "before": "913_before_whole.png",
+    "after": "913_after_whole.png",
+    "mean": 0.0,
+    "max": 0,
+    "different_pixels": 0
+  }
+]

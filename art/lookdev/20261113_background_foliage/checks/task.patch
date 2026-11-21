@@ -1,0 +1,479 @@
+--- task-start/scripts/terrain_editor/editor.gd
++++ scripts/terrain_editor/editor.gd
+@@ -30,6 +30,7 @@
+ var renderer:=Renderer.new()
+ var water_view:=WaterView.new()
+ var preview_quality:=preload("res://scripts/terrain_editor/preview_quality.gd").new()
++var background_view:=preload("res://scripts/terrain_editor/background_renderer.gd").new()
+ var runtime_power:=preload("res://scripts/terrain_editor/runtime_power.gd").new()
+ var camera:=Camera.new()
+ var landscape:=preload("res://scripts/terrain_editor/distant_landscape.gd").new()
+@@ -96,6 +97,8 @@
+ 	water_view.configure(data,renderer)
+ 	renderer.terrain_published.connect(water_view.sync)
+ 	preview_quality.configure(get_viewport())
++	add_child(background_view)
++	background_view.configure(self)
+ 	add_child(runtime_power)
+ 	runtime_power.configure(self)
+ func _create_decoration()->RefCounted:
+@@ -389,6 +392,7 @@
+ 	brush.mesh=mesh
+ func set_native_preview(value:bool)->void:
+ 	preview_quality.set_native(value)
++	if is_instance_valid(background_view):background_view.sync()
+ 
+ func toggle_grid_snap()->void:
+ 	cancel_input()
+--- task-start/scripts/terrain_editor/runtime_power.gd
++++ scripts/terrain_editor/runtime_power.gd
+@@ -34,6 +34,8 @@
+ 		elif not hidden and _suspended:
+ 			_editor.process_mode = _previous_process_mode
+ 			_suspended = false
++		var background: Variant = _editor.get("background_view")
++		if is_instance_valid(background): background.set_suspended(hidden)
+ 	var limit: int = HIDDEN_FPS if hidden else INTERACTIVE_FPS
+ 	if not hidden and wallpaper and _interaction_left <= 0.0:
+ 		limit = WALLPAPER_FPS
+--- /dev/null
++++ scripts/terrain_editor/background_renderer.gd
+@@ -0,0 +1,257 @@
++extends Node3D
++## Render only distant unlit scenery at half internal resolution. The courtyard,
++## waist clouds, primary sky radiance and final postprocessing stay in the main pass.
++const BACKGROUND_LAYER: int = 1 << 19
++const ENABLE_PIXELS: int = 2700000
++const DISABLE_PIXELS: int = 2300000
++const FOG_PROPERTIES: Array[StringName] = [&"fog_enabled", &"fog_light_color", &"fog_light_energy", &"fog_sun_scatter", &"fog_density", &"fog_aerial_perspective", &"fog_sky_affect", &"fog_height", &"fog_height_density"]
++var enabled: bool = true
++var view: SubViewport
++var camera: Camera3D
++var _editor: Node3D
++var _environment: Environment
++var _original_environment: Environment
++var _original_sky: Sky
++var _original_material: ShaderMaterial
++var _adapter: ShaderMaterial
++var _background_material: ShaderMaterial
++var _uniforms: Array[StringName] = []
++var _values: Dictionary = {}
++var _layers: Dictionary = {}
++var _camera_mask: int = 0
++var _active: bool = false
++var _suspended: bool = false
++var _pixel_budget: bool = false
++var _supported: bool = false
++var _ready_image: bool = false
++var _warm_callback: Callable
++var _bounds_dirty: bool = true
++var _bounds: AABB
++var _has_bounds: bool = false
++var _clear_radius: float = INF
++var _far_cloud_height: float = -INF
++var _near_cloud_radius: float = 0.0
++
++func configure(owner_editor: Node3D) -> void:
++ _editor = owner_editor
++ process_priority = 100 # after editor lighting and camera movement
++ if DisplayServer.get_name() == "headless" or RenderingServer.get_current_rendering_method() != "forward_plus":
++  return
++ _original_environment = _editor.get_node("WorldEnvironment").environment
++ _original_sky = _original_environment.sky
++ if _original_sky == null or not _original_sky.sky_material is ShaderMaterial:
++  return
++ _original_material = _original_sky.sky_material
++ if _original_material.shader == null or _original_material.shader.resource_path != "res://shaders/terrain_editor/sky.gdshader":
++  return
++ _camera_mask = _editor.camera.cull_mask
++ for entry: Dictionary in _original_material.shader.get_shader_uniform_list():
++  _uniforms.append(StringName(entry.name))
++ for node: Node in _editor.landscape.get_children():
++  if node is MultiMeshInstance3D:
++   _layers[node] = node.layers
++   var mesh_box: AABB = node.multimesh.mesh.get_aabb()
++   for i: int in node.multimesh.instance_count:
++    var pose: Transform3D = node.transform * node.multimesh.get_instance_transform(i)
++    _clear_radius = minf(_clear_radius, _horizontal_clearance(pose, mesh_box))
++  elif node is MeshInstance3D:
++   if node.position.y <= -28.0:
++    _layers[node] = node.layers
++    _far_cloud_height = maxf(_far_cloud_height, node.position.y)
++   elif node.material_override is ShaderMaterial:
++    var fade: Variant = node.material_override.get_shader_parameter("fade_radius")
++    if fade != null: _near_cloud_radius = maxf(_near_cloud_radius, float(fade))
++ _supported = not _layers.is_empty() and is_finite(_clear_radius) and _near_cloud_radius < _clear_radius
++ _editor.renderer.terrain_published.connect(_invalidate_bounds)
++ sync()
++
++func _horizontal_clearance(pose: Transform3D, box: AABB) -> float:
++ # These mountain instances rotate around Y only. Preserve the oriented
++ # rectangle: an enclosing world AABB reaches much closer to the courtyard.
++ if absf(pose.basis.y.x) > .00001 or absf(pose.basis.y.z) > .00001: return 0.0
++ var polygon := PackedVector2Array()
++ for corner: Vector3 in [box.position, Vector3(box.end.x, box.position.y, box.position.z), Vector3(box.end.x, box.position.y, box.end.z), Vector3(box.position.x, box.position.y, box.end.z)]:
++  var point: Vector3 = pose * corner
++  polygon.append(Vector2(point.x, point.z))
++ if Geometry2D.is_point_in_polygon(Vector2.ZERO, polygon): return 0.0
++ var distance: float = INF
++ for i: int in 4:
++  distance = minf(distance, Geometry2D.get_closest_point_to_segment(Vector2.ZERO, polygon[i], polygon[(i + 1) % 4]).length())
++ return distance
++
++func _invalidate_bounds() -> void:
++ _bounds_dirty = true
++
++func _safe_ordering() -> bool:
++ if _bounds_dirty:
++  _has_bounds = false
++  for box: AABB in _editor.renderer._pick_bounds.values():
++   _bounds = _bounds.merge(box) if _has_bounds else box
++   _has_bounds = true
++  _bounds_dirty = false
++ var center: Vector2 = Vector2(_editor.landscape.position.x, _editor.landscape.position.z)
++ var eye: Vector3 = _editor.to_local(_editor.camera.global_position)
++ if eye.y <= _far_cloud_height or Vector2(eye.x, eye.z).distance_to(center) >= _clear_radius:
++  return false
++ if not _has_bounds: return true
++ if _bounds.position.y <= _far_cloud_height: return false
++ # A conservative courtyard cylinder remains inside every distant mountain's
++ # bounding box. Nearby props/branches receive 16m extra horizontal margin.
++ var low: Vector2 = Vector2(_bounds.position.x, _bounds.position.z) - Vector2.ONE * 16.0
++ var high: Vector2 = Vector2(_bounds.end.x, _bounds.end.z) + Vector2.ONE * 16.0
++ for point: Vector2 in [low, high, Vector2(low.x, high.y), Vector2(high.x, low.y)]:
++  if point.distance_to(center) >= _clear_radius: return false
++ return true
++
++func _ensure_resources() -> void:
++ if view != null: return
++ _environment = _original_environment.duplicate(false)
++ var sky := Sky.new()
++ _background_material = _original_material.duplicate(false)
++ sky.sky_material = _background_material
++ sky.radiance_size = Sky.RADIANCE_SIZE_32
++ sky.process_mode = Sky.PROCESS_MODE_INCREMENTAL
++ _environment.sky = sky
++ _environment.tonemap_mode = Environment.TONE_MAPPER_LINEAR
++ _environment.tonemap_exposure = 1.0
++ _environment.adjustment_enabled = false
++ _environment.glow_enabled = false
++ _environment.ssao_enabled = false
++ _environment.ssil_enabled = false
++ _environment.ssr_enabled = false
++ _environment.sdfgi_enabled = false
++ _environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
++ _environment.ambient_light_energy = 0.0
++ _environment.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
++ view = SubViewport.new()
++ view.name = "DistantBackground"
++ view.world_3d = _editor.get_viewport().find_world_3d()
++ view.use_hdr_2d = true
++ view.msaa_3d = Viewport.MSAA_DISABLED
++ view.render_target_update_mode = SubViewport.UPDATE_DISABLED
++ add_child(view)
++ camera = Camera3D.new()
++ camera.environment = _environment
++ camera.cull_mask = BACKGROUND_LAYER
++ camera.attributes = CameraAttributesPractical.new()
++ view.add_child(camera)
++ camera.make_current()
++ _adapter = _original_material.duplicate(false)
++ _adapter.shader = preload("res://shaders/terrain_editor/background_sky.gdshader")
++ _adapter.set_shader_parameter("background_color", view.get_texture())
++ _copy_parameters(_original_material, _adapter)
++
++func _copy_parameters(source: ShaderMaterial, target: ShaderMaterial) -> void:
++ for key: StringName in _uniforms:
++  target.set_shader_parameter(key, source.get_shader_parameter(key))
++
++func _set_active(value: bool) -> void:
++ if value == _active: return
++ if value:
++  _copy_parameters(_original_material, _adapter)
++  _original_sky.sky_material = _adapter
++  _editor.camera.cull_mask = _camera_mask & ~BACKGROUND_LAYER
++  for node: GeometryInstance3D in _layers:
++   if is_instance_valid(node): node.layers = BACKGROUND_LAYER
++  view.render_target_update_mode = SubViewport.UPDATE_WHEN_PARENT_VISIBLE
++ else:
++  _copy_parameters(_adapter, _original_material)
++  _original_sky.sky_material = _original_material
++  _editor.camera.cull_mask = _camera_mask
++  for node: GeometryInstance3D in _layers:
++   if is_instance_valid(node): node.layers = _layers[node]
++  view.render_target_update_mode = SubViewport.UPDATE_DISABLED
++ _active = value
++ # Shader replacement also requests complete initial radiance, without
++ # changing the shared sky-color/cubemap math or the light parameters.
++ if _editor.gameplay != null: _editor.gameplay.time_system.apply_to_scene(_editor)
++
++func _cancel_warmup() -> void:
++ if _warm_callback.is_valid() and RenderingServer.frame_post_draw.is_connected(_warm_callback):
++  RenderingServer.frame_post_draw.disconnect(_warm_callback)
++ _warm_callback = Callable()
++
++func _image_drawn() -> void:
++ _warm_callback = Callable()
++ _ready_image = true
++
++func _begin_warmup() -> void:
++ _cancel_warmup()
++ _ready_image = false
++ # Keep both cameras able to see these objects for this one warm-up draw.
++ # The main camera still uses the original sky until the image is ready.
++ for node: GeometryInstance3D in _layers:
++  if is_instance_valid(node): node.layers = int(_layers[node]) | BACKGROUND_LAYER
++ view.render_target_update_mode = SubViewport.UPDATE_ONCE
++ _warm_callback = _image_drawn
++ RenderingServer.frame_post_draw.connect(_warm_callback, CONNECT_ONE_SHOT)
++
++func set_suspended(value: bool) -> void:
++ if value == _suspended: return
++ _suspended = value
++ sync()
++
++func is_active() -> bool:
++ return _active
++
++func sync() -> void:
++ if not _supported or not is_instance_valid(_editor): return
++ var main: Viewport = _editor.get_viewport()
++ var internal: Vector2 = main.get_visible_rect().size * main.scaling_3d_scale
++ var pixels: float = internal.x * internal.y
++ if _pixel_budget and pixels < DISABLE_PIXELS: _pixel_budget = false
++ elif not _pixel_budget and pixels >= ENABLE_PIXELS: _pixel_budget = true
++ var wants: bool = enabled and not _suspended and not _editor.preview_quality.native and _pixel_budget
++ wants = wants and _original_environment.background_mode == Environment.BG_SKY and is_equal_approx(_original_environment.background_energy_multiplier, 1.0)
++ wants = wants and _editor.camera.projection == Camera3D.PROJECTION_PERSPECTIVE and not main.use_xr and _safe_ordering()
++ # Do not enable during retirement of a potentially larger old foreground.
++ if not _active and _editor.renderer.morph_progress < 1.0: wants = false
++ if not wants:
++  _cancel_warmup()
++  _set_active(false)
++  if view != null: view.render_target_update_mode = SubViewport.UPDATE_DISABLED
++  _ready_image = false
++  for node: GeometryInstance3D in _layers:
++   if is_instance_valid(node): node.layers = _layers[node]
++  return
++ _ensure_resources()
++ var size: Vector2i = Vector2i(internal * .5).max(Vector2i.ONE)
++ if view.size != size:
++  _set_active(false)
++  view.size = size
++  _begin_warmup()
++ elif not _active and not _ready_image and not _warm_callback.is_valid():
++  _begin_warmup()
++ camera.global_transform = _editor.camera.global_transform
++ camera.projection = _editor.camera.projection
++ camera.fov = _editor.camera.fov
++ camera.size = _editor.camera.size
++ camera.frustum_offset = _editor.camera.frustum_offset
++ camera.keep_aspect = _editor.camera.keep_aspect
++ camera.near = _editor.camera.near
++ camera.far = _editor.camera.far
++ var source: ShaderMaterial = _original_sky.sky_material
++ for key: StringName in _uniforms:
++  var value: Variant = source.get_shader_parameter(key)
++  if not _values.has(key) or _values[key] != value:
++   _background_material.set_shader_parameter(key, value)
++   _values[key] = value
++ for key: StringName in FOG_PROPERTIES:
++  var value: Variant = _original_environment.get(key)
++  var cache_key: StringName = StringName("fog/" + String(key))
++  if not _values.has(cache_key) or _values[cache_key] != value:
++   _environment.set(key, value)
++   _values[cache_key] = value
++ if _ready_image: _set_active(true)
++
++func _process(_delta: float) -> void:
++ sync()
++
++func _exit_tree() -> void:
++ _cancel_warmup()
++ if _active and is_instance_valid(_editor) and is_instance_valid(_editor.camera):
++  _copy_parameters(_adapter, _original_material)
++  _original_sky.sky_material = _original_material
++  _editor.camera.cull_mask = _camera_mask
++ for node: GeometryInstance3D in _layers:
++  if is_instance_valid(node): node.layers = _layers[node]
+--- task-start/shaders/terrain_editor/sky.gdshader
++++ shaders/terrain_editor/sky.gdshader
+@@ -1,40 +1,3 @@
+ shader_type sky;
+-#include "sky_palette.gdshaderinc"
+-uniform sampler2D cloud_backdrop : source_color, filter_linear_mipmap, repeat_enable;
+-uniform float haze : hint_range(0.0,1.0) = .68;
+-uniform vec3 sky_cloud_dark : source_color = vec3(.55,.68,.74);
+-uniform vec3 sky_cloud_light : source_color = vec3(.98,.95,.87);
+-float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+-float noise(vec2 p){vec2 i=floor(p);vec2 f=fract(p);vec2 u=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}
+-void sky(){
+-	if(AT_CUBEMAP_PASS){
+-		float cloud=noise(EYEDIR.xz*14.0);
+-		vec3 sky_col=sky_gradient_factors(sky_view_factors(EYEDIR))*(.94+.10*cloud);
+-		float down=smoothstep(.08,-.68,EYEDIR.y);
+-		COLOR=mix(sky_col,sky_cloud_dark*.68,down);
+-	}else{
+-		vec3 factors=sky_view_factors(EYEDIR);
+-		vec3 color=sky_gradient_factors(factors);
+-		// Soft painted silk-grain & high cirrus wisps in 3D direction space (zero seam!)
+-		vec2 dir_uv=vec2(EYEDIR.x*2.2+EYEDIR.z*1.6,EYEDIR.y*16.0);
+-		float cirrus=smoothstep(.50,.74,noise(dir_uv*vec2(1.6,2.4))+noise(dir_uv*vec2(4.2,5.8))*.24);
+-		color=mix(color,vec3(.98,.96,.90),cirrus*.11*(1.0-smoothstep(.22,.54,factors.x)));
+-		// Analytic C-infinity 3D horizontal cross-fade inside [0.08, 0.92] of cloud_backdrop:
+-		// never touches non-tileable image borders (u=0/1) and never uses atan wrapping!
+-		vec2 h_dir=normalize(vec2(EYEDIR.x,EYEDIR.z)+vec2(1e-5,0.0));
+-		float v_coord=.20+clamp(factors.x,-.22,1.20)*.76;
+-		vec3 sample_a=textureLod(cloud_backdrop,vec2(.50+.41*h_dir.x,v_coord),1.4).rgb;
+-		vec3 sample_b=textureLod(cloud_backdrop,vec2(.50-.41*h_dir.y,v_coord),1.4).rgb;
+-		vec3 source=mix(sample_a,sample_b,h_dir.x*h_dir.x);
+-		float density=smoothstep(.14,.68,source.r);
+-		float cloud_light=smoothstep(.22,.88,source.r);
+-		float h_sun=factors.z;
+-		vec3 cool_c=mix(sky_cloud_dark*vec3(.82,.95,1.04),sky_cloud_light*vec3(.62,.76,.84),cloud_light*.65);
+-		vec3 warm_c=mix(sky_cloud_dark,sky_cloud_light,cloud_light);
+-		vec3 cloud_color=mix(cool_c,warm_c,h_sun);
+-		float sun=factors.y;
+-		cloud_color+=vec3(.09,.07,.035)*exp(-sun*4.2);
+-		color=mix(color,cloud_color,density*smoothstep(.24,.76,factors.x)*(.30+(haze-.65)*.10));
+-		COLOR=mix(color,SKY_SUN_CORE,sky_disc_from_distance(factors.y));
+-	}
+-}
++#include "sky_surface.gdshaderinc"
++void sky(){COLOR=painted_sky(EYEDIR,AT_CUBEMAP_PASS);}
+--- /dev/null
++++ shaders/terrain_editor/sky_surface.gdshaderinc
+@@ -0,0 +1,40 @@
++// Shared visible sky and cubemap math; background compositing keeps this radiance path.
++#include "sky_palette.gdshaderinc"
++uniform sampler2D cloud_backdrop : source_color, filter_linear_mipmap, repeat_enable;
++uniform float haze : hint_range(0.0,1.0) = .68;
++uniform vec3 sky_cloud_dark : source_color = vec3(.55,.68,.74);
++uniform vec3 sky_cloud_light : source_color = vec3(.98,.95,.87);
++float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
++float noise(vec2 p){vec2 i=floor(p);vec2 f=fract(p);vec2 u=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);}
++vec3 painted_sky(vec3 direction,bool cubemap){
++	if(cubemap){
++		float cloud=noise(direction.xz*14.0);
++		vec3 sky_col=sky_gradient_factors(sky_view_factors(direction))*(.94+.10*cloud);
++		float down=smoothstep(.08,-.68,direction.y);
++		return mix(sky_col,sky_cloud_dark*.68,down);
++	}else{
++		vec3 factors=sky_view_factors(direction);
++		vec3 color=sky_gradient_factors(factors);
++		// Soft painted silk-grain & high cirrus wisps in 3D direction space (zero seam!)
++		vec2 dir_uv=vec2(direction.x*2.2+direction.z*1.6,direction.y*16.0);
++		float cirrus=smoothstep(.50,.74,noise(dir_uv*vec2(1.6,2.4))+noise(dir_uv*vec2(4.2,5.8))*.24);
++		color=mix(color,vec3(.98,.96,.90),cirrus*.11*(1.0-smoothstep(.22,.54,factors.x)));
++		// Analytic C-infinity 3D horizontal cross-fade inside [0.08, 0.92] of cloud_backdrop:
++		// never touches non-tileable image borders (u=0/1) and never uses atan wrapping!
++		vec2 h_dir=normalize(vec2(direction.x,direction.z)+vec2(1e-5,0.0));
++		float v_coord=.20+clamp(factors.x,-.22,1.20)*.76;
++		vec3 sample_a=textureLod(cloud_backdrop,vec2(.50+.41*h_dir.x,v_coord),1.4).rgb;
++		vec3 sample_b=textureLod(cloud_backdrop,vec2(.50-.41*h_dir.y,v_coord),1.4).rgb;
++		vec3 source=mix(sample_a,sample_b,h_dir.x*h_dir.x);
++		float density=smoothstep(.14,.68,source.r);
++		float cloud_light=smoothstep(.22,.88,source.r);
++		float h_sun=factors.z;
++		vec3 cool_c=mix(sky_cloud_dark*vec3(.82,.95,1.04),sky_cloud_light*vec3(.62,.76,.84),cloud_light*.65);
++		vec3 warm_c=mix(sky_cloud_dark,sky_cloud_light,cloud_light);
++		vec3 cloud_color=mix(cool_c,warm_c,h_sun);
++		float sun=factors.y;
++		cloud_color+=vec3(.09,.07,.035)*exp(-sun*4.2);
++		color=mix(color,cloud_color,density*smoothstep(.24,.76,factors.x)*(.30+(haze-.65)*.10));
++		return mix(color,SKY_SUN_CORE,sky_disc_from_distance(factors.y));
++	}
++}
+--- /dev/null
++++ shaders/terrain_editor/background_sky.gdshader
+@@ -0,0 +1,9 @@
++shader_type sky;
++// The offscreen sky already includes background fog, in linear HDR.
++render_mode disable_fog;
++#include "sky_surface.gdshaderinc"
++uniform sampler2D background_color : filter_linear, repeat_disable;
++void sky(){
++ if(AT_CUBEMAP_PASS)COLOR=painted_sky(EYEDIR,true);
++ else COLOR=texture(background_color,SCREEN_UV).rgb;
++}
+--- /dev/null
++++ tests/background_renderer_test.gd
+@@ -0,0 +1,78 @@
++extends SceneTree
++var checks: int=0
++var failures: int=0
++func check(ok: bool,label: String) -> void:
++ checks+=1
++ if not ok:failures+=1;push_error(label)
++func _initialize() -> void:call_deferred("run")
++func settle(background: Node3D) -> void:
++ for frame: int in 4:background.sync();await process_frame
++func run() -> void:
++ if DisplayServer.get_name()=="headless":quit(2);return
++ var view: SubViewport=SubViewport.new();view.size=Vector2i(2560,1440);view.own_world_3d=true;view.msaa_3d=Viewport.MSAA_4X;view.render_target_update_mode=SubViewport.UPDATE_ALWAYS;root.add_child(view)
++ var editor: Node3D=load("res://scenes/terrain_editor.tscn").instantiate();view.add_child(editor)
++ editor.process_mode=Node.PROCESS_MODE_DISABLED;editor.runtime_power.process_mode=Node.PROCESS_MODE_DISABLED;editor.set_native_preview(false);Engine.max_fps=0
++ var background: Node3D=editor.get("background_view")
++ check(background!=null,"the scene has a background renderer with an independent render budget")
++ if background==null:editor.free();view.free();quit(1);return
++ editor.set_native_preview(true)
++ check(not background.is_active() and not background._warm_callback.is_valid(),"native override cancels the first warm-up before any draw")
++ editor.set_native_preview(false);editor.runtime_power.refresh(true,true)
++ check(not background.is_active() and not background._warm_callback.is_valid(),"minimizing cancels the first warm-up before any draw")
++ editor.runtime_power.refresh(true,false);Engine.max_fps=0
++ await settle(background)
++ check(background.is_active(),"native2K balanced mode activates the background budget")
++ if background.view==null:
++  print("DIAGNOSTIC supported=",background._supported," radius=",background._clear_radius," near=",background._near_cloud_radius," safe=",background._safe_ordering()," morph=",editor.renderer.morph_progress," native=",editor.preview_quality.native," scale=",view.scaling_3d_scale," bounds=",background._bounds)
++  editor.free();view.free();quit(1);return
++ check(background.view.size==Vector2i(1280,720) and view.size==Vector2i(2560,1440),"only the background uses half the 3D width and height")
++ check(background.view.use_hdr_2d and background.view.get_texture().get_image().get_format() in [Image.FORMAT_RGBH,Image.FORMAT_RGBAH],"intermediate background preserves linear HDR rather than tonemapping twice")
++ var near_cloud: GeometryInstance3D=editor.landscape.get_child(0)
++ var far_cloud: GeometryInstance3D=editor.landscape.get_child(2)
++ check((near_cloud.layers & editor.camera.cull_mask)!=0 and (near_cloud.layers & background.camera.cull_mask)==0,"island-waist clouds remain in the full-resolution foreground")
++ check((far_cloud.layers & editor.camera.cull_mask)==0 and (far_cloud.layers & background.camera.cull_mask)!=0,"far clouds render once in the background camera")
++ view.size=Vector2i(2880,1620);background.sync()
++ check(not background.is_active() and background._warm_callback.is_valid(),"active resize keeps the original background while the new image warms")
++ await settle(background)
++ check(background.is_active() and background.view.size==Vector2i(1440,810),"resized image activates only after its warm-up draw")
++ view.size=Vector2i(2560,1440);await settle(background)
++ editor.camera.position+=Vector3(1,2,3);editor.gameplay.time_system.set_progress(0.0,editor);background.sync()
++ check(background.camera.global_transform==editor.camera.global_transform,"same-frame camera movement reaches the background camera")
++ var palette_matches: bool=true
++ for key: StringName in background._uniforms:
++  palette_matches=palette_matches and background._background_material.get_shader_parameter(key)==background._original_sky.sky_material.get_shader_parameter(key)
++ check(palette_matches,"same-frame manual lighting reaches the background sky")
++ editor.set_native_preview(true)
++ check(not background.is_active() and background.view.render_target_update_mode==SubViewport.UPDATE_DISABLED,"native quality restores full-resolution background and stops the extra viewport")
++ var original_mask: int=editor.camera.cull_mask
++ var original_layer: int=far_cloud.layers
++ var original_sky: Material=editor.get_node("WorldEnvironment").environment.sky.sky_material
++ editor.set_native_preview(false);await settle(background)
++ editor.runtime_power.refresh(true,true)
++ check(not background.is_active() and background.view.render_target_update_mode==SubViewport.UPDATE_DISABLED,"minimizing explicitly stops the offscreen viewport")
++ editor.runtime_power.refresh(true,false);await settle(background)
++ check(background.is_active(),"restoring the window resumes background rendering")
++ view.size=Vector2i(1920,1080);editor.preview_quality.refresh();background.sync()
++ check(not background.is_active() and background.view.render_target_update_mode==SubViewport.UPDATE_DISABLED,"1080p internal rendering bypasses extra viewport overhead")
++ view.size=Vector2i(2560,1440);editor.preview_quality.refresh();await settle(background)
++ check(background.is_active(),"returning to a larger render budget reuses the background renderer")
++ # A large foreground must not be composited in front of nearer distant mountains.
++ editor.renderer._pick_bounds[Vector2i(999,999)]=AABB(Vector3(-1000,-6,-1000),Vector3(2000,8,2000))
++ editor.renderer.terrain_published.emit();background.sync()
++ check(not background.is_active(),"a foreground outside the safe distant scenery radius falls back to correct depth ordering")
++ editor.renderer._pick_bounds.erase(Vector2i(999,999));editor.renderer.terrain_published.emit();await settle(background)
++ check(background.is_active(),"a safe compact foreground may resume after the fallback")
++ background.free()
++ check(editor.camera.cull_mask==original_mask and far_cloud.layers==original_layer,"disposing the renderer restores culling masks and geometry layers")
++ check(editor.get_node("WorldEnvironment").environment.sky.sky_material==original_sky,"disposing restores the original sky material")
++ editor.free()
++ var second: Node3D=load("res://scenes/terrain_editor.tscn").instantiate();view.add_child(second);second.process_mode=Node.PROCESS_MODE_DISABLED;second.runtime_power.process_mode=Node.PROCESS_MODE_DISABLED
++ var warming: Node3D=second.background_view
++ var mask: int=second.camera.cull_mask
++ var far: GeometryInstance3D=second.landscape.get_child(2)
++ var layer: int=warming._layers[far]
++ warming.free()
++ check(second.camera.cull_mask==mask and far.layers==layer,"disposing before the first draw restores all geometry layers")
++ await process_frame
++ check(second.camera.cull_mask==mask and far.layers==layer,"no late callback reactivates a disposed renderer")
++ second.free();view.free();print("BACKGROUND RENDERER ",checks," checks, ",failures," failures");quit(1 if failures else 0)

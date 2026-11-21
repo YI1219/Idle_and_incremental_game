@@ -1,0 +1,79 @@
+--- task_start/block_mantle.gd
++++ scripts/terrain_editor/block_mantle.gd
+@@ -46,12 +46,13 @@
+   region_signs[level]=signs
+  var patches:Dictionary={};var planes:Dictionary={};var caps:Dictionary={}
+  var backing:=Surface.new();var stone:=Surface.new();var bodies:Array=[]
+- var shared_normals:Dictionary={};var base_vertices:Dictionary={}
++ var shared_normals:Dictionary={};var base_vertices:Dictionary={};var shared_caps:Dictionary={}
+  for i in range(0,source.vertices.size(),3):
+   var weighted:Vector3=-(source.vertices[i+1]-source.vertices[i]).cross(source.vertices[i+2]-source.vertices[i])
+   for j in 3:
+    var key:=Vector3i((source.vertices[i+j]*10000).round())
+    shared_normals[key]=shared_normals.get(key,Vector3.ZERO)+weighted
++   shared_caps[key]=minf(shared_caps.get(key,INF),source.uv[i+j].x)
+    if source.uv[i+j].y<-.5:base_vertices[key]=true
+  for i in range(0,source.vertices.size(),3):
+   var tri:Array=[source.vertices[i],source.vertices[i+1],source.vertices[i+2]]
+@@ -65,14 +66,18 @@
+   for p:Vector3 in tri:
+    var point_key:=Vector3i((p*10000).round())
+    var shared:Vector3=shared_normals[point_key].normalized()
+-   var recess:=0.0 if base_vertices.has(point_key) else .68*smoothstep(.45,1.25,h-p.y)*smoothstep(-3.8,-1.4,p.y)
++   # A shared edge has one position even where its incident faces belong to
++   # different terraces. The lowest cap protects the receiving endpoint;
++   # face-local heights split the backing apart at high/low wall junctions.
++   var cap:float=shared_caps[point_key]
++   var recess:=0.0 if base_vertices.has(point_key) else .68*smoothstep(.45,1.25,cap-p.y)*smoothstep(-3.8,-1.4,p.y)
+    # A terrace wall must stay seated on its receiving land or pond. Full
+    # normal recession lifts its exposed foot away from that cap and can
+    # pull it below the water, opening a view into the island's underside.
+    if recess>0.0:
+     var outward:=Vector2(shared.x,shared.z).normalized()
+     var support:float=_top_at(Vector2(p.x,p.z)+outward*.95,regions,cells)
+-    if is_finite(support) and support<h-.1:
++    if is_finite(support) and support<cap-.1:
+      recess*=smoothstep(support+.08,support+.80,p.y)
+    inset.append(p-shared*recess)
+   backing.triangle(inset[0],inset[1],inset[2],Color(.78,.78,.78))
+--- task_start/contour_terrain.gd
++++ scripts/terrain_editor/contour_terrain.gd
+@@ -401,13 +401,32 @@
+ 				if upper.is_empty() or receiver.is_empty() or int(upper.water)>=0 or int(receiver.water)>=0:continue
+ 				var bottom:float=receiver.height
+ 				if absf(float(upper.height)-height)>.01 or height-bottom<.4:continue
+-				var covered:=false
++				# A crown can cover the midpoint while leaving the start of this
++				# span exposed. Split at actual footprint crossings so only the
++				# covered intervals skip their continuous wall.
++				var cuts:Array[float]=[0.0,1.0]
++				var delta:Vector2=b-a
+ 				for crown:PackedVector2Array in crowns.get(height,[]):
+-					if Geometry2D.is_point_in_polygon(mid,crown):covered=true;break
+-				if covered:continue
+-				var start:int=seal.vertices.size()
+-				seal.quad(Vector3(a.x,height,a.y),Vector3(a.x,bottom,a.y),Vector3(b.x,bottom,b.y),Vector3(b.x,height,b.y),Color(.78,.78,.78))
+-				for j:int in range(start,seal.vertices.size()):seal.uv[j]=Vector2(height,1.0)
++					for edge:int in crown.size():
++						var crossing:Variant=Geometry2D.segment_intersects_segment(a,b,crown[edge],crown[(edge+1)%crown.size()])
++						if crossing!=null:cuts.append(clampf((Vector2(crossing)-a).dot(delta)/delta.length_squared(),0.0,1.0))
++				cuts.sort()
++				for interval:int in cuts.size()-1:
++					if cuts[interval+1]-cuts[interval]<.000001:continue
++					var left:Vector2=a.lerp(b,cuts[interval])
++					var right:Vector2=a.lerp(b,cuts[interval+1])
++					var center:Vector2=(left+right)*.5
++					var covered:=false
++					for crown:PackedVector2Array in crowns.get(height,[]):
++						if Geometry2D.is_point_in_polygon(center,crown):covered=true;break
++					if covered:continue
++					var local_receiver:Dictionary=surface_at(center+outward*.30)
++					if local_receiver.is_empty() or int(local_receiver.water)>=0:continue
++					var local_bottom:float=local_receiver.height
++					if height-local_bottom<.4:continue
++					var start:int=seal.vertices.size()
++					seal.quad(Vector3(left.x,height,left.y),Vector3(left.x,local_bottom,left.y),Vector3(right.x,local_bottom,right.y),Vector3(right.x,height,right.y),Color(.78,.78,.78))
++					for j:int in range(start,seal.vertices.size()):seal.uv[j]=Vector2(height,1.0)
+ 	if seal.vertices.is_empty():return
+ 	_smooth_normals(seal)
+ 	surfaces.cliff.vertices.append_array(seal.vertices)

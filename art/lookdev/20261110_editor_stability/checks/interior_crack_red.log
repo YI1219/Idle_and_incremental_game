@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: reported lowered lawn exposes source side sheet at pixel (1500.0, 850.0), hit (-9.148115, 2.862362, -7.141125)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_reported_rays (res://tests/interior_terrain_edit_test.gd:56)
+       [2] run (res://tests/interior_terrain_edit_test.gd:94)
+ERROR: reported lowered lawn exposes source side sheet at pixel (2200.0, 800.0), hit (-10.6547, 3.095045, -6.722658)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/interior_terrain_edit_test.gd:15)
+       [1] verify_reported_rays (res://tests/interior_terrain_edit_test.gd:56)
+       [2] run (res://tests/interior_terrain_edit_test.gd:94)
+EXPOSED 0 (0.0, 0.0) cliff_column_c edge (7.0, -3.1) count 14 example (7.808622, 2.064298, -4.169439)
+EXPOSED 0 (0.0, 0.0) cliff_column_c edge (-0.866357, 3.195272) count 11 example (0.857868, 1.991491, 3.115948)
+EXPOSED 0 (0.0, 0.0) cliff_column_f edge (-2.734891, 6.832244) count 11 example (-1.871438, 2.513684, 4.950416)
+EXPOSED 4 (13.0, 0.0) cliff_column_f edge (16.03985, 1.510667) count 14 example (14.53624, 0.513684, 2.518129)
+EXPOSED 4 (13.0, 0.0) cliff_column_c edge (7.0, -3.1) count 14 example (7.808622, 2.064298, -4.169439)
+EXPOSED 4 (13.0, 0.0) cliff_column_c edge (-0.866357, 3.195272) count 11 example (0.857868, 1.991491, 3.115948)
+EXPOSED 4 (13.0, 0.0) cliff_column_f edge (-2.734891, 6.832244) count 11 example (-1.871438, 2.513684, 4.950416)
+INTERIOR TERRAIN EDIT: 2 checks, 2 failures

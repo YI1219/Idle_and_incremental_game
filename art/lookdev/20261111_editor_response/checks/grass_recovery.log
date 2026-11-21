@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Invalid operands "Vector2" and "Vector2i" for "==" operator.
+          at: GDScript::reload (res://scripts/terrain_editor/grass_recovery.gd:92)
+          GDScript backtrace (most recent call first):
+              [0] _initialize (res://tests/grass_recovery_test.gd:10)
+ERROR: Failed to load script "res://scripts/terrain_editor/grass_recovery.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/grass_recovery_test.gd:10)
+SCRIPT ERROR: Invalid call. Nonexistent function 'new' in base 'GDScript'.
+          at: _initialize (res://tests/grass_recovery_test.gd:10)
+          GDScript backtrace (most recent call first):
+              [0] _initialize (res://tests/grass_recovery_test.gd:10)

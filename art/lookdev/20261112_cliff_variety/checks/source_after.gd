@@ -1,0 +1,602 @@
+extends RefCounted
+## Monumental Multi-Block Shanshui Cliff Architecture
+## (宏伟巨岩断崖 · 饱满3D凸面切削巨石 · 阶梯巨石抱合, aligned with Cliff Refs 01–04):
+## - Ring 0 (y = 0.0) & cap_polygon: exact canonical 10-point crown arc preserved 100%
+##   for seamless, notch-free grass lips (24/24 grass_lip_soften_test).
+## - Every cliff block is a colossal, full-width 3D convex polyhedral boulder (never a flat
+##   curtain wall and never shattered small rubble!), with bold angled cleavage slabs,
+##   upper sky-catching facets, and blunt inward-tucked bases (zero bottom spikes!).
+const Surface = preload("res://scripts/terrain_editor/chunk_geometry.gd").Surface
+const Normals = preload("res://scripts/terrain_editor/stone_normals.gd")
+
+static func _h(seed_value: int, k: float) -> float:
+	return fposmod(sin(float(seed_value) * 12.9898 + k * 78.233) * 43758.5453, 1.0)
+
+static func _r(seed_value: int, k: float, lo: float, hi: float) -> float:
+	return lerpf(lo, hi, _h(seed_value, k))
+
+static func _emit_tri(
+	s: Surface,
+	a: Vector3,
+	b: Vector3,
+	c: Vector3,
+	outward: Vector3,
+	col_a: Color,
+	col_b: Color,
+	col_c: Color,
+	uv_a: Vector2,
+	uv_b: Vector2,
+	uv_c: Vector2,
+	custom_n: Vector3 = Vector3.ZERO
+) -> void:
+	var n := -(b - a).cross(c - a)
+	if n.length_squared() < 1e-10:
+		return
+	var v0 := a; var v1 := b; var v2 := c
+	var c0 := col_a; var c1 := col_b; var c2 := col_c
+	var u0 := uv_a; var u1 := uv_b; var u2 := uv_c
+	if n.dot(outward) < 0.0:
+		v1 = c; v2 = b
+		c1 = col_c; c2 = col_b
+		u1 = uv_c; u2 = uv_b
+		n = -n
+	var fn := custom_n.normalized() if custom_n.length_squared() > 1e-6 else n.normalized()
+	s.vertices.append(v0); s.normals.append(fn); s.colors.append(c0); s.uv.append(u0)
+	s.vertices.append(v1); s.normals.append(fn); s.colors.append(c1); s.uv.append(u1)
+	s.vertices.append(v2); s.normals.append(fn); s.colors.append(c2); s.uv.append(u2)
+
+static func _emit_quad(
+	s: Surface,
+	a: Vector3,
+	b: Vector3,
+	c: Vector3,
+	d: Vector3,
+	outward: Vector3,
+	cols: Array,
+	uvs: Array
+) -> void:
+	var n1 := -(b - a).cross(c - a)
+	if n1.dot(outward) < 0.0:
+		n1 = -n1
+	var n2 := -(a - c).cross(d - c)
+	if n2.dot(outward) < 0.0:
+		n2 = -n2
+	var nq := (n1.normalized() + n2.normalized()).normalized()
+	if nq.length_squared() < 1e-6:
+		nq = outward.normalized()
+	_emit_tri(s, a, b, c, outward, cols[0], cols[1], cols[2], uvs[0], uvs[1], uvs[2], nq)
+	_emit_tri(s, a, c, d, outward, cols[0], cols[2], cols[3], uvs[0], uvs[2], uvs[3], nq)
+
+static func _add_chiseled_block(
+	full: Surface,
+	walls: Surface,
+	center: Vector3,
+	radii: Vector3,
+	seed_value: int,
+	salt: float,
+	rot: Basis,
+	tone_shift: float,
+	inward_sweep: float,
+	joint_center: Vector3,
+	top_pitch: float = 0.42,
+	emit_top: bool = true,
+	keel_taper: float = 0.74,
+	sharp_prow: bool = false,
+	crown_guard: bool = true
+) -> void:
+	var planes: Array[Plane] = []
+	var asym := 1.0 if _h(seed_value, salt + 0.5) < 0.56 else -1.0
+
+	# 1. Upper Crown & Chiseled 3D Mountain-Shoulder Slabs (Refs 01, 03 & 04):
+	#    - When emit_top == false (primary cliff monoliths): cap horizontally at p.y=0.82 inside the
+	#      r1 collar so broad, chiseled vertical/oblique cliff faces rise cleanly to the turf lip.
+	#    - When emit_top == true (full-height outer cliff buttresses): carve a steep 3-plane 3D
+	#      mountain shoulder (ny = 0.62..0.74, ~45° slope — NEVER a flat horizontal drawer top!)
+	#      that slopes down and outward from the upper cliff wall into the outer buttress face.
+	var t_skew := asym * _r(seed_value, salt + 1.0, 0.08, 0.16)
+	planes.append(Plane(Vector3(0.0, 1.0, 0.0), 0.82))
+	if emit_top:
+		var roof_out := clampf(top_pitch + _r(seed_value, salt + 2.0, -0.03, 0.03), 0.34, 0.44)
+		# 2 bold asymmetric chiseled 3D shoulder slabs meeting at a crisp rock ridge (no 3rd center
+		# chamfer plane that would round the shoulder into a pentagon dome!), anchored at (y=0.82, z=-0.02):
+		var n_a := Vector3(-0.26 + t_skew * 0.45, 0.85, roof_out).normalized()
+		var n_b := Vector3( 0.26 + t_skew * 0.45, 0.83, roof_out * 0.90).normalized()
+		planes.append(Plane(n_a, n_a.y * 0.82 - n_a.z * 0.02))
+		planes.append(Plane(n_b, n_b.y * 0.82 - n_b.z * 0.02))
+
+	# 2. Asymmetric Diagonal-Ridged 3D Escarpment & Mid-Waist Cleavage Slabs (Refs 01, 03 & 04):
+	#    - Contrasting vertical pitches (ny_hi vs ny_lo) between left and right flanks make their
+	#      central intersection arête run DIAGONALLY (20°–32°) across the rock massif;
+	#    - An oblique mid-cliff taper plane (ny = -0.20..-0.32) + deep lower V-keel planes (ny = -0.44..-0.58)
+	#      carve grand 3D polygonal facets from mid-cliff down into the mountain root!
+	var prow_bias := asym * _r(seed_value, salt + 4.0, 0.05, 0.14)
+	var yaw_l := -_r(seed_value, salt + 5.0, 0.44, 0.60) + prow_bias
+	var yaw_r := _r(seed_value, salt + 6.0, 0.44, 0.60) + prow_bias
+	var ny_hi := _r(seed_value, salt + 7.0, 0.16, 0.27)
+	var ny_lo := _r(seed_value, salt + 8.0, 0.01, 0.10)
+	var ny_l := ny_hi if asym > 0.0 else ny_lo
+	var ny_r := ny_lo if asym > 0.0 else ny_hi
+	planes.append(Plane(Vector3(sin(yaw_l), ny_l, cos(yaw_l)).normalized(), _r(seed_value, salt + 9.0, 0.76, 0.79)))
+	planes.append(Plane(Vector3(sin(yaw_r), ny_r, cos(yaw_r)).normalized(), _r(seed_value, salt + 10.0, 0.76, 0.79)))
+
+	if not sharp_prow:
+		var prow_yaw := asym * _r(seed_value, salt + 11.0, 0.12, 0.26)
+		var prow_ny := _r(seed_value, salt + 12.0, 0.10, 0.20)
+		planes.append(Plane(Vector3(sin(prow_yaw), prow_ny, cos(prow_yaw)).normalized(), _r(seed_value, salt + 13.0, 0.80, 0.83)))
+
+	var mid_taper_yaw := -asym * _r(seed_value, salt + 20.0, 0.22, 0.38)
+	var mid_taper_ny := -clampf(keel_taper * _r(seed_value, salt + 21.0, 0.26, 0.38), 0.18, 0.30)
+	planes.append(Plane(Vector3(sin(mid_taper_yaw), mid_taper_ny, cos(mid_taper_yaw)).normalized(), _r(seed_value, salt + 30.0, 0.78, 0.81)))
+
+	# 3. Clean Side-Cleft Wing Planes (+-56..64°, d=0.79..0.82):
+	var wing_l := -_r(seed_value, salt + 14.0, 0.98, 1.10)
+	var wing_r := _r(seed_value, salt + 15.0, 0.98, 1.10)
+	planes.append(Plane(Vector3(sin(wing_l), _r(seed_value, salt + 16.0, 0.02, 0.09), cos(wing_l)).normalized(), _r(seed_value, salt + 17.0, 0.79, 0.82)))
+	planes.append(Plane(Vector3(sin(wing_r), _r(seed_value, salt + 18.0, 0.02, 0.09), cos(wing_r)).normalized(), _r(seed_value, salt + 19.0, 0.79, 0.82)))
+
+	# 4. Unified 180-Degree Inward-Tapering Lower V-Keel Root (both front AND side flanks bevel inward
+	#    together from mid-lower cliff to a 2-plane chiseled V-keel root so ZERO side-wall teeth hang down!):
+	var keel_yaw_a := asym * _r(seed_value, salt + 23.0, 0.22, 0.38)
+	var keel_yaw_b := -asym * _r(seed_value, salt + 24.0, 0.26, 0.44)
+	var k_ny_a := -clampf(keel_taper * _r(seed_value, salt + 25.0, 0.60, 0.74), 0.44, 0.56)
+	var k_ny_b := -clampf(keel_taper * _r(seed_value, salt + 26.0, 0.64, 0.78), 0.46, 0.58)
+	planes.append(Plane(Vector3(sin(keel_yaw_a), k_ny_a, cos(keel_yaw_a)).normalized(), _r(seed_value, salt + 27.0, 0.75, 0.79)))
+	planes.append(Plane(Vector3(sin(keel_yaw_b), k_ny_b, cos(keel_yaw_b)).normalized(), _r(seed_value, salt + 28.0, 0.75, 0.79)))
+	planes.append(Plane(Vector3(sin(wing_l), k_ny_a, cos(wing_l)).normalized(), 0.77))
+	planes.append(Plane(Vector3(sin(wing_r), k_ny_b, cos(wing_r)).normalized(), 0.77))
+	planes.append(Plane(Vector3(-0.22 + t_skew * 0.5, -0.90, 0.34).normalized(), 0.80))
+	planes.append(Plane(Vector3( 0.22 + t_skew * 0.5, -0.90, 0.32).normalized(), 0.80))
+
+	# 5. Watertight Side & Back Closure Planes (also slightly inward-tapered at the bottom):
+	planes.append(Plane(Vector3(-0.96, -0.18, 0.18).normalized(), 0.84))
+	planes.append(Plane(Vector3( 0.96, -0.18, 0.18).normalized(), 0.84))
+	planes.append(Plane(Vector3(0.0, 0.02, -0.99).normalized(), 0.78))
+
+	var raw := Geometry3D.compute_convex_mesh_points(planes)
+	var pts: PackedVector3Array = PackedVector3Array()
+	for p: Vector3 in raw:
+		var dup := false
+		for q: Vector3 in pts:
+			if q.distance_squared_to(p) < 1e-6:
+				dup = true
+				break
+		if not dup:
+			pts.append(p)
+	if pts.size() < 4:
+		return
+
+	var xform_pt := func(p: Vector3) -> Vector3:
+		var scaled := Vector3(p.x * radii.x, p.y * radii.y, p.z * radii.z)
+		var rot_p := rot * scaled
+		var low_t := clampf((0.15 - p.y) / 1.05, 0.0, 1.0)
+		rot_p.z -= inward_sweep * radii.z * pow(low_t, 1.25)
+		var out_p := center + rot_p
+		if out_p.y > -0.016:
+			out_p.y = -0.016
+		if crown_guard:
+			var collar_t := smoothstep(-0.016, -0.115, out_p.y)
+			var max_collar_z := lerpf(0.436, 1.08, collar_t)
+			var max_collar_x := lerpf(0.510, 0.84, collar_t)
+			if out_p.z > max_collar_z:
+				out_p.z = max_collar_z
+			out_p.x = clampf(out_p.x, -max_collar_x, max_collar_x)
+		return out_p
+
+	for p_idx in planes.size():
+		var pl: Plane = planes[p_idx]
+		if pl.normal.y > 0.96 or (not emit_top and pl.normal.y > 0.82):
+			continue
+		var on_face: Array[Vector3] = []
+		for p: Vector3 in pts:
+			if absf(pl.distance_to(p)) < 0.0025:
+				on_face.append(p)
+		if on_face.size() < 3:
+			continue
+		var fc := Vector3.ZERO
+		for p: Vector3 in on_face:
+			fc += p
+		fc /= float(on_face.size())
+		var u_ax := (on_face[0] - fc).normalized()
+		if u_ax.length_squared() < 1e-6:
+			continue
+		var v_ax := pl.normal.cross(u_ax).normalized()
+		on_face.sort_custom(func(pa: Vector3, pb: Vector3) -> bool:
+			return atan2((pa - fc).dot(v_ax), (pa - fc).dot(u_ax)) < atan2((pb - fc).dot(v_ax), (pb - fc).dot(u_ax))
+		)
+
+		var w_pts: Array[Vector3] = []
+		for p: Vector3 in on_face:
+			w_pts.append(xform_pt.call(p))
+
+		var w_fc: Vector3 = xform_pt.call(fc)
+		var out_dir: Vector3 = (w_fc - (center - Vector3(0.0, 0.0, inward_sweep * radii.z * 0.35))).normalized()
+		if out_dir.length_squared() < 1e-6:
+			out_dir = (rot * pl.normal).normalized()
+
+		var poly_n := Vector3.ZERO
+		for i in range(1, w_pts.size() - 1):
+			var tn := -(w_pts[i] - w_pts[0]).cross(w_pts[i + 1] - w_pts[0])
+			if tn.dot(out_dir) < 0.0:
+				tn = -tn
+			poly_n += tn
+		if poly_n.length_squared() < 1e-10:
+			continue
+		poly_n = poly_n.normalized()
+
+		var facet_var := (_h(seed_value, salt + 90.0 + float(p_idx)) - 0.5) * 0.014
+		var cols: Array[Color] = []
+		var uvs: Array[Vector2] = []
+		for tp: Vector3 in w_pts:
+			var rel_y := clampf((tp.y - center.y) / maxf(radii.y, 0.05), -1.0, 1.0)
+			var brow := clampf(0.48 + rel_y * 0.24, 0.18, 0.78)
+			var back_tuck := clampf(smoothstep(0.14, -0.28, tp.z) * 0.24, 0.0, 0.28)
+			var joint_cr := 0.0
+			if joint_center.length_squared() > 0.0001:
+				joint_cr = 0.34 * (1.0 - smoothstep(0.08, 0.42, tp.distance_to(joint_center)))
+			var under_cr := 0.18 * clampf(-poly_n.y - 0.16, 0.0, 1.0)
+			var cr := clampf(back_tuck + joint_cr + under_cr, 0.0, 0.64)
+			var val := clampf(0.710 + tone_shift + facet_var - 0.022 * clampf(-tp.y - 0.48, 0.0, 0.65), 0.63, 0.77)
+			cols.append(Color(val, val, val, 1.0))
+			uvs.append(Vector2(brow, cr))
+
+		for i in range(1, w_pts.size() - 1):
+			_emit_tri(full, w_pts[0], w_pts[i], w_pts[i + 1], out_dir, cols[0], cols[i], cols[i + 1], uvs[0], uvs[i], uvs[i + 1], poly_n)
+			_emit_tri(walls, w_pts[0], w_pts[i], w_pts[i + 1], out_dir, cols[0], cols[i], cols[i + 1], uvs[0], uvs[i], uvs[i + 1], poly_n)
+
+static func _soften_pair(full: Surface, walls: Surface) -> Array[ArrayMesh]:
+	# A small normal blend gives the existing rice-stone planes a painted,
+	# softly worn response without moving the crown or adding rock masses.
+	return [Normals.soften(full.mesh(), 55.0, 0.65), Normals.soften(walls.mesh(), 55.0, 0.65)]
+
+static func _add_varied_body(
+	full: Surface, walls: Surface, collar: Array[Vector3], arch: int, tone: Color
+) -> void:
+	# Distinct solid silhouettes, with homothetic sections: each side quad is
+	# planar even where a shoulder, waist or ledge changes direction. The
+	# collar stays canonical; root boulders use their unchanged original body.
+	# Section = (height, uniform XZ scale, lateral lean, outward offset).
+	var sections: Array[Vector4]
+	var front: PackedFloat32Array
+	match arch:
+		1: # Broad shield: a quiet wide face, high shoulder and tucked blunt heel.
+			front = PackedFloat32Array([.38,.49,.52,.52,.49,.38])
+			sections = [Vector4(-.145,1,0,0), Vector4(-.29,1.02,0,.06),
+				Vector4(-.78,.97,-.025,.02), Vector4(-1.03,.72,-.04,-.08)]
+		2: # Oblique slab: one pitched shoulder and a long leaning cleavage face.
+			front = PackedFloat32Array([.36,.40,.44,.48,.52,.39])
+			sections = [Vector4(-.145,1,0,0), Vector4(-.39,.94,.025,.12),
+				Vector4(-.88,.78,-.045,.02), Vector4(-1.10,.66,-.055,-.10)]
+		4: # Double shoulder, with a recessed seam between unequal rock shelves.
+			front = PackedFloat32Array([.37,.47,.55,.55,.47,.37])
+			sections = [Vector4(-.145,1,0,0), Vector4(-.28,1.01,0,.10),
+				Vector4(-.43,.96,-.02,.055), Vector4(-.59,.99,-.025,.105),
+				Vector4(-.90,.83,.01,.02), Vector4(-1.06,.67,.02,-.09)]
+		6: # Low ledge: two relief breaks at different heights from the double shoulder.
+			front = PackedFloat32Array([.38,.51,.54,.52,.46,.36])
+			sections = [Vector4(-.145,1,0,0), Vector4(-.37,.99,-.02,.10),
+				Vector4(-.53,.94,-.015,.045), Vector4(-.72,.98,.01,.095),
+				Vector4(-1.07,.66,.035,-.12)]
+		_: # Worn waist: a broad brow above a deep, solid inward bevel.
+			front = PackedFloat32Array([.36,.44,.50,.53,.49,.38])
+			sections = [Vector4(-.145,1,0,0), Vector4(-.35,1.03,.015,.11),
+				Vector4(-.67,.78,.02,-.04), Vector4(-.92,.81,-.01,.005),
+				Vector4(-1.04,.64,-.02,-.13)]
+	var rings: Array = [collar]
+	for section: Vector4 in sections:
+		var ring: Array[Vector3] = []
+		for i: int in collar.size():
+			var p: Vector3 = collar[i]
+			p.x *= .49 / .51
+			p.z = front[i] if i < 6 else (-.42 if i == 7 else -.085)
+			var point := Vector3(p.x*section.y+section.z, section.x, p.z*section.y+section.w)
+			# One affine shear pitches every cleavage plane together. It
+			# preserves coplanarity and makes the ledges visibly oblique.
+			var pitch: float = -.20 if arch in [1,4,7] else .20
+			# Lower the entire body equally so the raised end of the
+			# pitched shoulder stays below the fixed y=-.042 collar.
+			point.y += pitch*point.x + .045*(point.z-.1) - .03
+			ring.append(point)
+		rings.append(ring)
+	for band: int in rings.size()-1:
+		var upper: Array = rings[band]
+		var lower: Array = rings[band+1]
+		var brow: float = clampf(.70 + float(sections[maxi(0,band-1)].x)*.4,.22,.68)
+		for i: int in collar.size():
+			var ni: int = (i+1)%collar.size()
+			var along: Vector3 = upper[ni]-upper[i]
+			var outward := Vector3(-along.z,0,along.x).normalized()
+			var cols: Array = [tone,tone,tone,tone]
+			var uv := Vector2(brow,0)
+			var uvs: Array = [uv,uv,uv,uv]
+			_emit_quad(full,upper[i],upper[ni],lower[ni],lower[i],outward,cols,uvs)
+			_emit_quad(walls,upper[i],upper[ni],lower[ni],lower[i],outward,cols,uvs)
+	var foot: Array = rings.back()
+	var center := Vector3.ZERO
+	for p: Vector3 in foot: center += p
+	center /= float(foot.size())
+	for i: int in foot.size():
+		var ni: int = (i+1)%foot.size()
+		var uv := Vector2(.22,0)
+		_emit_tri(full,center,foot[i],foot[ni],Vector3.DOWN,tone,tone,tone,uv,uv,uv)
+		_emit_tri(walls,center,foot[i],foot[ni],Vector3.DOWN,tone,tone,tone,uv,uv,uv)
+
+static func _add_continuous_body(
+	full: Surface, walls: Surface, collar: Array[Vector3], arch: int, tone: Color
+) -> void:
+	# The two front planes meet on a diagonal ridge inside fixed-width side walls.
+	const RIDGE := [1, 4, 2, 3, 1, 4, 3, 2]
+	const SLANT := [0.46, -0.34, 0.28, -0.52, 0.16, -0.22, 0.54, -0.12]
+	const FOLD := [-0.54, -0.79, -0.66, -0.47, -0.86, -0.61, -0.74, -0.56]
+	const TILT := [0.32, -0.18, -0.30, 0.20, -0.26, 0.34, -0.12, 0.16]
+	const FOOT := [-1.08, -0.98, -1.10, -1.02, -1.12, -0.96, -1.06, -1.01]
+	const FOOT_TILT := [-0.04, -0.06, 0.05, -0.08, -0.03, 0.06, -0.05, 0.04]
+	const ROOT_FOLD := [0.38, 0.42, 0.34, 0.40, 0.32, 0.44, 0.36, 0.33]
+	const CREST := [0.54, 0.47, 0.51, 0.56, 0.48, 0.53, 0.50, 0.55]
+	var shoulder: Array[Vector3] = []
+	var fold: Array[Vector3] = []
+	var foot: Array[Vector3] = []
+	var ridge_index: int = RIDGE[arch]
+	var ridge_x: float = collar[ridge_index].x * (0.49 / 0.51)
+	var left_z: float = 0.392 if ridge_index > 2 else 0.410
+	var right_z: float = 0.410 if ridge_index > 2 else 0.392
+	var neck_y: float = -0.145
+	var left_m: float = (CREST[arch] - left_z) / (ridge_x + 0.49)
+	var right_m: float = (right_z - CREST[arch]) / (0.49 - ridge_x)
+	var left_q: float = 0.025 + left_m * SLANT[arch]
+	var right_q: float = 0.025 + right_m * SLANT[arch]
+	for i in collar.size():
+		var p: Vector3 = collar[i]
+		if i < 6:
+			p.x *= 0.49 / 0.51
+			if i <= ridge_index:
+				p.z = lerpf(left_z, CREST[arch], (p.x + 0.49) / (ridge_x + 0.49))
+			else:
+				p.z = lerpf(CREST[arch], right_z, (p.x - ridge_x) / (0.49 - ridge_x))
+		elif i == 6:
+			p = Vector3(0.49, neck_y, -0.085)
+		elif i == 7:
+			p = Vector3(0.0, neck_y, -0.42)
+		else:
+			p = Vector3(-0.49, neck_y, -0.085)
+		p.y = neck_y
+		shoulder.append(p)
+		var ridge_weight: float = 0.0
+		var plane_m: float = 0.0
+		var plane_q: float = 0.0
+		if i < 6:
+			if i <= ridge_index:
+				ridge_weight = (p.x + 0.49) / (ridge_x + 0.49)
+				plane_m = left_m
+				plane_q = left_q
+			else:
+				ridge_weight = (0.49 - p.x) / (0.49 - ridge_x)
+				plane_m = right_m
+				plane_q = right_q
+		var drift: float = ridge_weight * SLANT[arch]
+		var fold_x: float = (p.x + drift * (neck_y - FOLD[arch])) / (1.0 + drift * TILT[arch])
+		var fold_y: float = FOLD[arch] + TILT[arch] * fold_x
+		var fold_z: float = p.z
+		if i < 6:
+			fold_z = CREST[arch] + plane_m * (fold_x - ridge_x) + plane_q * (fold_y - neck_y)
+		fold.append(Vector3(fold_x, fold_y, fold_z))
+		var foot_x: float = (p.x + drift * (neck_y - FOOT[arch])) / (1.0 + drift * FOOT_TILT[arch])
+		var foot_y: float = FOOT[arch] + FOOT_TILT[arch] * foot_x
+		var foot_z: float = p.z
+		if i < 6:
+			foot_z = CREST[arch] + plane_m * (foot_x - ridge_x) + plane_q * (foot_y - neck_y)
+			# Adding distance from the fold plane preserves its shared edge exactly.
+			foot_z += ROOT_FOLD[arch] * (foot_y - FOLD[arch] - TILT[arch] * foot_x)
+		foot.append(Vector3(foot_x, foot_y, foot_z))
+	var rings: Array = [collar, shoulder, fold, foot]
+	for band in 3:
+		var upper: Array = rings[band]
+		var lower: Array = rings[band + 1]
+		for i in collar.size():
+			var ni: int = (i + 1) % collar.size()
+			var a: Vector3 = upper[i]
+			var b: Vector3 = upper[ni]
+			var c: Vector3 = lower[ni]
+			var d: Vector3 = lower[i]
+			var along: Vector3 = b - a
+			var outward := Vector3(-along.z, 0.0, along.x).normalized()
+			var cols: Array = [tone, tone, tone, tone]
+			var brow: float = 0.68 if band == 0 else (0.52 if band == 1 else 0.28)
+			var uvs: Array = [Vector2(brow, 0.0), Vector2(brow, 0.0), Vector2(brow, 0.0), Vector2(brow, 0.0)]
+			_emit_quad(full, a, b, c, d, outward, cols, uvs)
+			_emit_quad(walls, a, b, c, d, outward, cols, uvs)
+	var bottom_center := Vector3.ZERO
+	for p: Vector3 in foot:
+		bottom_center += p
+	bottom_center /= float(foot.size())
+	for i in foot.size():
+		var ni: int = (i + 1) % foot.size()
+		_emit_tri(full, bottom_center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
+		_emit_tri(walls, bottom_center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, Vector2(0.22, 0.0), Vector2(0.22, 0.0), Vector2(0.22, 0.0))
+
+static func _build_cliff_crag(seed_value: int, varied: bool = true) -> Dictionary:
+	var full := Surface.new()
+	var walls := Surface.new()
+	var arch := posmod(seed_value, 8)
+
+	# 1. Canonical 10-point Ring 0 (y = 0.0) cap preserved 100% for seamless notch-free grass lips:
+	const U_COLS := [-1.0, -0.62, -0.20, 0.22, 0.62, 1.0]
+	var r0: Array[Vector3] = []
+	var r1: Array[Vector3] = []
+	for u0: float in U_COLS:
+		var z0 := lerpf(0.452, 0.402, pow(absf(u0), 1.85))
+		r0.append(Vector3(u0 * 0.52, 0.0, z0))
+		var z1 := lerpf(0.446, 0.406, pow(absf(u0), 1.85))
+		r1.append(Vector3(u0 * 0.51, -0.042, z1))
+	r0.append(Vector3(0.50, 0.0, -0.06)); r1.append(Vector3(0.48, -0.042, -0.08))
+	r0.append(Vector3(0.0, 0.0, -0.44));  r1.append(Vector3(0.0, -0.042, -0.42))
+	r0.append(Vector3(-0.50, 0.0, -0.06)); r1.append(Vector3(-0.48, -0.042, -0.08))
+
+	var tone_table := [0.014, -0.012, 0.016, -0.018, 0.012, 0.015, -0.014, -0.010]
+	var seed_tone: float = float(tone_table[arch]) + _r(seed_value, 301.0, -0.004, 0.004)
+	var top_col := Color(0.714 + seed_tone, 0.714 + seed_tone, 0.714 + seed_tone, 1.0)
+	var apex_top := Vector3(0.0, 0.0, 0.02)
+	for i in r0.size():
+		var ni := (i + 1) % r0.size()
+		_emit_tri(full, apex_top, r0[i], r0[ni], Vector3.UP, top_col, top_col, top_col, Vector2(0.75, 0.0), Vector2(0.75, 0.0), Vector2(0.75, 0.0))
+		var a := r0[i]; var b := r0[ni]; var c := r1[ni]; var d := r1[i]
+		var out_c := Vector3(-((b.z - a.z) + (c.z - d.z)), 0.0, (b.x - a.x) + (c.x - d.x)).normalized()
+		if out_c.length_squared() < 1e-6:
+			out_c = Vector3((a.x + b.x) * 0.5, 0.0, (a.z + b.z) * 0.5 + 0.25).normalized()
+		var uv_c := [Vector2(0.72, 0.04), Vector2(0.72, 0.04), Vector2(0.68, 0.10), Vector2(0.68, 0.10)]
+		var col_c := [top_col, top_col, top_col, top_col]
+		_emit_quad(full, a, b, c, d, out_c, col_c, uv_c)
+		_emit_quad(walls, a, b, c, d, out_c, col_c, uv_c)
+
+	if varied and arch in [1,2,4,6,7]:
+		_add_varied_body(full, walls, r1, arch, top_col)
+	else:
+		_add_continuous_body(full, walls, r1, arch, top_col)
+
+	var cap_poly := PackedVector2Array([
+		Vector2(-0.52, 0.402),
+		Vector2(-0.36, 0.427),
+		Vector2(-0.17, 0.446),
+		Vector2( 0.00, 0.452),
+		Vector2( 0.17, 0.446),
+		Vector2( 0.36, 0.427),
+		Vector2( 0.52, 0.402),
+		Vector2( 0.49, -0.06),
+		Vector2( 0.00, -0.44),
+		Vector2(-0.49, -0.06),
+	])
+	if Geometry2D.is_polygon_clockwise(cap_poly):
+		cap_poly.reverse()
+
+	var pair := _soften_pair(full, walls)
+	var full_mesh: ArrayMesh = pair[0]
+	var wall_mesh: ArrayMesh = pair[1]
+	var box := full_mesh.get_aabb()
+	return {
+		"mesh": full_mesh,
+		"render_mesh": wall_mesh,
+		"height": 1.0,
+		"geometry_height": maxf(1.08, box.size.y),
+		"crown_z": 0.42,
+		"span_x": 1.10,
+		"span_z": 1.24,
+		"cap_polygon": cap_poly,
+	}
+
+static func _buttress_point(p: Vector3, arch: int) -> Vector3:
+	const SIDE_TILT := [-0.18, 0.16, -0.12, 0.20]
+	const TAPER := [0.22, 0.18, 0.26, 0.20]
+	const LEAN := [0.20, -0.16, 0.24, -0.18]
+	var depth: float = p.y + 0.145
+	var denominator: float = 1.0 - TAPER[arch] * depth
+	# Projective taper keeps the broad faces planar while the rooted silhouette narrows.
+	p.x = (p.x - depth * LEAN[arch]) / denominator
+	p.z = 0.60 + (p.z - 0.60) / denominator
+	p.y = -0.145 + depth * (1.0 + TAPER[arch] * 0.90) / denominator
+	p.y += 0.025 - 0.24 * p.z + SIDE_TILT[arch] * p.x
+	p.x *= 1.24
+	p.z = p.z * 1.12 + 0.11
+	return p
+
+static func _build_root_boulders(seed_value: int) -> Dictionary:
+	# A single oblique shoulder joins the full-height front; no grass-crown collar.
+	var built: Dictionary = _build_cliff_crag(seed_value, false)
+	var arrays: Array = built.mesh.surface_get_arrays(0)
+	var points: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
+	var uvs: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV]
+	var root := Surface.new()
+	var arch: int = posmod(seed_value, 4)
+	var cap: Array[Vector3] = []
+	for i in range(0, points.size(), 3):
+		if maxf(points[i].y, maxf(points[i + 1].y, points[i + 2].y)) > -0.1449:
+			continue
+		var tri: Array[Vector3] = []
+		for k in 3:
+			var p: Vector3 = points[i + k]
+			if absf(p.y + 0.145) < 0.00001 and not cap.has(p):
+				cap.append(p)
+			tri.append(_buttress_point(p, arch))
+		var start: int = root.vertices.size()
+		root.triangle(tri[0], tri[1], tri[2], colors[i])
+		for k in 3:
+			root.colors[start + k] = colors[i + k]
+			root.uv[start + k] = uvs[i + k]
+	var center := Vector3.ZERO
+	for p: Vector3 in cap:
+		center += p
+	center /= float(cap.size())
+	cap.sort_custom(func(a: Vector3, b: Vector3) -> bool:
+		return atan2(a.z-center.z,a.x-center.x) < atan2(b.z-center.z,b.x-center.x))
+	for i in cap.size():
+		root.triangle(_buttress_point(center,arch), _buttress_point(cap[i],arch),
+			_buttress_point(cap[(i+1)%cap.size()],arch), colors[0], true)
+	var mesh: ArrayMesh = Normals.soften(root.mesh(),55.0,0.65)
+	var box: AABB = mesh.get_aabb()
+	return {
+		"mesh": mesh, "render_mesh": mesh, "height": 1.0,
+		"geometry_height": box.size.y, "crown_z": 0.35,
+		"span_x": box.size.x, "span_z": box.size.z,
+		"cap_polygon": PackedVector2Array(),
+	}
+
+## Sculptural 3-Ridge Polyhedral Corner Boulder for Rim-Breaking Outcrops (3B: 3 angled crown facets
+## meeting at a natural rock crest so it NEVER looks like a flat board or plank on the lawn!).
+static func build_rim_crag(seed_value: int) -> ArrayMesh:
+	var full := Surface.new()
+	var planes: Array[Plane] = []
+	var a0 := _h(seed_value, 901.0) * TAU
+	# 3 pitched roof-like crown facets (28°–36° tilt) so the top is a 3D rock ridge, never a flat plank:
+	for k in 3:
+		var ca := a0 + TAU * float(k) / 3.0 + (_h(seed_value, 905.0 + float(k)) - 0.5) * 0.25
+		var tilt := lerpf(0.46, 0.58, _h(seed_value, 910.0 + float(k)))
+		planes.append(Plane(Vector3(cos(ca) * sin(tilt), cos(tilt), sin(ca) * sin(tilt)).normalized(), 0.82))
+	# 6 bold side cleavage planes:
+	for i in 6:
+		var a := a0 + TAU * float(i) / 6.0 + (_h(seed_value, 920.0 + float(i)) - 0.5) * 0.22
+		var lean := lerpf(0.08, 0.22, _h(seed_value, 930.0 + float(i)))
+		planes.append(Plane(Vector3(cos(a), lean, sin(a)).normalized(), lerpf(0.78, 0.84, _h(seed_value, 940.0 + float(i)))))
+	# 3 blunt base planes:
+	for i in 3:
+		var a := a0 + TAU * (float(i) + 0.5) / 3.0
+		planes.append(Plane(Vector3(cos(a) * 0.65, -0.76, sin(a) * 0.65).normalized(), 0.82))
+
+	var raw := Geometry3D.compute_convex_mesh_points(planes)
+	var pts := PackedVector3Array()
+	for p: Vector3 in raw:
+		var dup := false
+		for q: Vector3 in pts:
+			if q.distance_squared_to(p) < 1e-6:
+				dup = true
+				break
+		if not dup:
+			pts.append(p)
+	for p_idx in planes.size():
+		var pl: Plane = planes[p_idx]
+		var on_face: Array[Vector3] = []
+		for p: Vector3 in pts:
+			if absf(pl.distance_to(p)) < 0.0025:
+				on_face.append(p)
+		if on_face.size() < 3:
+			continue
+		var fc := Vector3.ZERO
+		for p: Vector3 in on_face:
+			fc += p
+		fc /= float(on_face.size())
+		var u_ax := (on_face[0] - fc).normalized()
+		if u_ax.length_squared() < 1e-6:
+			continue
+		var v_ax := pl.normal.cross(u_ax).normalized()
+		on_face.sort_custom(func(pa: Vector3, pb: Vector3) -> bool:
+			return atan2((pa - fc).dot(v_ax), (pa - fc).dot(u_ax)) < atan2((pb - fc).dot(v_ax), (pb - fc).dot(u_ax))
+		)
+		var facet_var := (_h(seed_value, 960.0 + float(p_idx)) - 0.5) * 0.018
+		var col := Color(0.710 + facet_var, 0.710 + facet_var, 0.710 + facet_var, 1.0)
+		var uv := Vector2(0.5, 0.12)
+		for i in range(1, on_face.size() - 1):
+			_emit_tri(full, on_face[0], on_face[i], on_face[i + 1], pl.normal, col, col, col, uv, uv, uv, pl.normal)
+	return Normals.soften(full.mesh(), 7.5, 0.16)
+
+static func build(seed_value: int, root: bool = false) -> Dictionary:
+	if root:
+		return _build_root_boulders(seed_value)
+	return _build_cliff_crag(seed_value)

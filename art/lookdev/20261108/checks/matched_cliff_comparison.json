@@ -1,0 +1,128 @@
+{
+  "before": "31_cliff_before_matched",
+  "after": "29_final_cycle",
+  "scope": "Only the four cliff mesh/layout/material files reverted; all other final source and render conditions retained.",
+  "source_delta": [
+    "res://scripts/terrain_editor/procedural_shard.gd",
+    "res://scripts/terrain_editor/terrain_decoration.gd",
+    "res://shaders/terrain_editor/cliff.gdshader",
+    "res://shaders/terrain_editor/cliff_column.gdshader"
+  ],
+  "final_sources_restored": true,
+  "snapshots": {
+    "scripts/terrain_editor/procedural_shard.gd": {
+      "backup": "/tmp/scroll-final-cliff-state/procedural_shard.gd",
+      "final_sha256": "c488af2c531a6bbc99fc0a306588a5390f5e9c88c61e6088f6df5f93ea37fa45",
+      "before_source": "/tmp/scroll-lookdev-originals/procedural_shard.gd",
+      "before_sha256": "04487b76e79e7a6e757bdbfaa3911848cc2dcf27800b845f1b23f0396fcfe9eb"
+    },
+    "scripts/terrain_editor/terrain_decoration.gd": {
+      "backup": "/tmp/scroll-final-cliff-state/terrain_decoration.gd",
+      "final_sha256": "34118d7d5190d558b3ffafa51363a84e3d1b443e986ca35f2708a7284ef89a57",
+      "before_source": "/tmp/scroll_decoration_before12.gd",
+      "before_sha256": "326e6c67b9827841bfc3c58fb4906a8bff10003dd8929ae4af01cade4159f35b"
+    },
+    "shaders/terrain_editor/cliff_column.gdshader": {
+      "backup": "/tmp/scroll-final-cliff-state/cliff_column.gdshader",
+      "final_sha256": "9ff43f18fc93af0705bb66f21236ec6a33fbad6ddba5122f7f02b34730bbc8de",
+      "before_source": "/tmp/scroll-lookdev-originals/cliff_column.gdshader",
+      "before_sha256": "fc774fabe985084f86e1da283342963948e8fe49214a22d03a340f93e55b3baf"
+    },
+    "shaders/terrain_editor/cliff.gdshader": {
+      "backup": "/tmp/scroll-final-cliff-state/cliff.gdshader",
+      "final_sha256": "f82b00ef926fc7ec17ca929551f43ae807db2b4694c87a1091cebe0ddbbdbe6c",
+      "before_source": "/tmp/scroll-lookdev-originals/cliff_core.gdshader",
+      "before_sha256": "4a14a8587bb63b5bd17c4f8dab96fa2cf7c502bf5c4c008fc27ea89750b22061"
+    }
+  },
+  "capture_conditions_verification": {
+    "method": "Exact comparison of recorded JSON values for the five matching camera filenames; no pixel or aesthetic assertion.",
+    "top_level_fields": [
+      "scene",
+      "godot",
+      "renderer",
+      "adapter",
+      "resolution",
+      "msaa",
+      "preset",
+      "seed",
+      "phase",
+      "data_sha256",
+      "single_scene_capture",
+      "f11_handled",
+      "data_unchanged",
+      "actor_static",
+      "house_absent"
+    ],
+    "top_level_differences": {},
+    "frame_fields": [
+      "position",
+      "rotation_degrees",
+      "fov",
+      "dof",
+      "day_progress",
+      "shichen",
+      "sun_rotation",
+      "sun_energy",
+      "sun_color",
+      "fill_rotation",
+      "fill_energy",
+      "ambient_energy",
+      "ssil_enabled",
+      "ssil_intensity",
+      "fog_color",
+      "fog_density",
+      "grass_base",
+      "grass_highlight",
+      "wallpaper_hud_clear"
+    ],
+    "frames": [
+      {
+        "file": "game.png",
+        "matched": true,
+        "differences": {}
+      },
+      {
+        "file": "whole.png",
+        "matched": true,
+        "differences": {}
+      },
+      {
+        "file": "reverse.png",
+        "matched": true,
+        "differences": {}
+      },
+      {
+        "file": "close.png",
+        "matched": true,
+        "differences": {}
+      },
+      {
+        "file": "cliff_close.png",
+        "matched": true,
+        "differences": {}
+      }
+    ],
+    "all_matched": true,
+    "before_valid": true,
+    "after_valid": true,
+    "manifest_sha256": {
+      "before": "3fa0edf0f88f657532e36560a8b55a1d8f8ac328fbbbc193753223836bd3622d",
+      "after": "aa8b44d90df93ba45f8c0992c42800e800a67c1acf971337adfd34043968f76f"
+    }
+  },
+  "source_delta_verified": [
+    "res://scripts/terrain_editor/procedural_shard.gd",
+    "res://scripts/terrain_editor/terrain_decoration.gd",
+    "res://shaders/terrain_editor/cliff.gdshader",
+    "res://shaders/terrain_editor/cliff_column.gdshader"
+  ],
+  "source_delta_matches_declared_four": true,
+  "current_final_files_verified": {
+    "scripts/terrain_editor/procedural_shard.gd": true,
+    "scripts/terrain_editor/terrain_decoration.gd": true,
+    "shaders/terrain_editor/cliff_column.gdshader": true,
+    "shaders/terrain_editor/cliff.gdshader": true
+  },
+  "is_full_project_initial_state": false
+}

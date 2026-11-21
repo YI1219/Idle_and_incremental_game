@@ -1,0 +1,38 @@
+[
+  {
+    "test": "cliff_form_variety_test",
+    "exit": 0
+  },
+  {
+    "test": "cliff_mantle_seam_test",
+    "exit": 0
+  },
+  {
+    "test": "cliff_partial_crown_seal_test",
+    "exit": 0
+  },
+  {
+    "test": "interior_terrain_edit_test",
+    "exit": 0
+  },
+  {
+    "test": "waterfall_terrace_seal_test",
+    "exit": 0
+  },
+  {
+    "test": "terrain_locality_test",
+    "exit": 0
+  },
+  {
+    "test": "sol61_scene_test",
+    "exit": 0
+  },
+  {
+    "test": "grass_lip_soften_test",
+    "exit": 0
+  },
+  {
+    "test": "sol61_grass_contact_test",
+    "exit": 0
+  }
+]

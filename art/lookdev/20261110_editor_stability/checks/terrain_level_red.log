@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: one level stroke aligns both higher and lower neighbours to the sampled height
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_level_test.gd:8)
+       [1] run (res://tests/terrain_level_test.gd:18)
+ERROR: one undo restores the full aligned stroke
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_level_test.gd:8)
+       [1] run (res://tests/terrain_level_test.gd:19)
+ERROR: redo restores the alignment target
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_level_test.gd:8)
+       [1] run (res://tests/terrain_level_test.gd:20)
+ERROR: terrain editing starts on grid for repeatable adjacent strokes
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_level_test.gd:8)
+       [1] run (res://tests/terrain_level_test.gd:23)
+ERROR: level can begin by sampling unchanged ground before a drag
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/terrain_level_test.gd:8)
+       [1] run (res://tests/terrain_level_test.gd:27)
+TERRAIN LEVEL 7 checks, 5 failures

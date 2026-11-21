@@ -1,0 +1,210 @@
+[
+  {
+    "background_active": false,
+    "background_size": "(1280, 720)",
+    "candidate": "base",
+    "draw_calls": 275,
+    "fps": 53.8778454548924,
+    "idle_fps": 53.8778454548924,
+    "idle_frames": 432,
+    "method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 19.574,
+    "p99_ms": 20.031,
+    "rendered_frames": 432,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "root_mode": 0,
+    "root_visible": true,
+    "scale": 1.0,
+    "size": "2k",
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "file": "visible_2k_0_base.json"
+  },
+  {
+    "background_active": true,
+    "background_size": "(1280, 720)",
+    "candidate": "bg",
+    "draw_calls": 254,
+    "fps": 57.9811923507312,
+    "idle_fps": 57.9811923507312,
+    "idle_frames": 464,
+    "method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 18.337,
+    "p99_ms": 18.886,
+    "rendered_frames": 464,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "root_mode": 0,
+    "root_visible": true,
+    "scale": 1.0,
+    "size": "2k",
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "file": "visible_2k_1_bg.json"
+  },
+  {
+    "background_active": true,
+    "background_size": "(1280, 720)",
+    "candidate": "bg",
+    "draw_calls": 254,
+    "fps": 58.0487819493006,
+    "idle_fps": 58.0487819493006,
+    "idle_frames": 465,
+    "method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 18.572,
+    "p99_ms": 19.742,
+    "rendered_frames": 465,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "root_mode": 0,
+    "root_visible": true,
+    "scale": 1.0,
+    "size": "2k",
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "file": "visible_2k_2_bg.json"
+  },
+  {
+    "background_active": false,
+    "background_size": "(1280, 720)",
+    "candidate": "base",
+    "draw_calls": 275,
+    "fps": 54.0584270470915,
+    "idle_fps": 54.0584270470915,
+    "idle_frames": 433,
+    "method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 19.605,
+    "p99_ms": 20.108,
+    "rendered_frames": 433,
+    "resolution": [
+      2560,
+      1440
+    ],
+    "root_mode": 0,
+    "root_visible": true,
+    "scale": 1.0,
+    "size": "2k",
+    "texture_size": [
+      2560.0,
+      1440.0
+    ],
+    "file": "visible_2k_3_base.json"
+  },
+  {
+    "background_active": false,
+    "background_size": "(1280, 720)",
+    "candidate": "base",
+    "draw_calls": 275,
+    "fps": 27.4069124219588,
+    "idle_fps": 27.4069124219588,
+    "idle_frames": 220,
+    "method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 37.869,
+    "p99_ms": 38.218,
+    "rendered_frames": 220,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "root_mode": 0,
+    "root_visible": true,
+    "scale": 1.0,
+    "size": "4k",
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "file": "visible_4k_0_base.json"
+  },
+  {
+    "background_active": true,
+    "background_size": "(1920, 1080)",
+    "candidate": "bg",
+    "draw_calls": 254,
+    "fps": 29.5147586869594,
+    "idle_fps": 29.5147586869594,
+    "idle_frames": 237,
+    "method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 35.732,
+    "p99_ms": 36.308,
+    "rendered_frames": 237,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "root_mode": 0,
+    "root_visible": true,
+    "scale": 1.0,
+    "size": "4k",
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "file": "visible_4k_1_bg.json"
+  },
+  {
+    "background_active": true,
+    "background_size": "(1920, 1080)",
+    "candidate": "bg",
+    "draw_calls": 254,
+    "fps": 29.5209460454264,
+    "idle_fps": 29.5209460454264,
+    "idle_frames": 237,
+    "method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 35.279,
+    "p99_ms": 36.186,
+    "rendered_frames": 237,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "root_mode": 0,
+    "root_visible": true,
+    "scale": 1.0,
+    "size": "4k",
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "file": "visible_4k_2_bg.json"
+  },
+  {
+    "background_active": false,
+    "background_size": "(1280, 720)",
+    "candidate": "base",
+    "draw_calls": 275,
+    "fps": 27.3812543452184,
+    "idle_fps": 27.3812543452184,
+    "idle_frames": 220,
+    "method": "normal live editor/water/daylight;3warm8sample;actual-pixel balanced current settings,no cap/vsync/imageIO",
+    "p95_ms": 38.466,
+    "p99_ms": 44.847,
+    "rendered_frames": 220,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "root_mode": 0,
+    "root_visible": true,
+    "scale": 1.0,
+    "size": "4k",
+    "texture_size": [
+      3840.0,
+      2160.0
+    ],
+    "file": "visible_4k_3_base.json"
+  }
+]

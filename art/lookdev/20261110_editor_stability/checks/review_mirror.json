@@ -1,0 +1,737 @@
+{
+  "valid": true,
+  "review_path": "/Users/yi/Downloads/scroll_editor_stability_20261110",
+  "files": 182,
+  "final_pngs": 28,
+  "sha256_identical": true,
+  "entries": [
+    {
+      "file": "README.md",
+      "sha256": "5f763b1fa1f989b94b33bb347ef7dedf8c1655d83a58db361a41fa303f493fb9"
+    },
+    {
+      "file": "WORK.md",
+      "sha256": "a8ba253185aed6e17f28036a5690aea940af0438ba5ea9405de849da6c13d875"
+    },
+    {
+      "file": "checks/before_sha256.json",
+      "sha256": "46479402e0f9a05e84bbeb73b958134a575b0c7ca6c4b032f01b256ffed50a3e"
+    },
+    {
+      "file": "checks/blueprint_latency_final.json",
+      "sha256": "d7d8dd7c7cc13701e24e5c5b4bea134228331dcab15c2c8e239a0d0bb29dae89"
+    },
+    {
+      "file": "checks/blueprint_latency_final.log",
+      "sha256": "19615126d3b161b74f0b127861da26f98c7323818a14f2226496044b457767bd"
+    },
+    {
+      "file": "checks/compare_cases.json",
+      "sha256": "e1b2ff627286152e1949efd812f08062eade07321ab00b2494f5fc66f2b081ba"
+    },
+    {
+      "file": "checks/compare_offline_test.js",
+      "sha256": "2b07503328ba717c29e9e6ee4d0afce85d5e433b8873bff7f448c57efe2d4d4c"
+    },
+    {
+      "file": "checks/compare_script.js",
+      "sha256": "0ad8ea4dbcdf0f97446df1cc02dc956e67839c4b1f8d4e00d0df1d8f4d5bd7e1"
+    },
+    {
+      "file": "checks/controls_review_final.log",
+      "sha256": "ea7019d947bef4bd4f1ffb96620fe79b4922686ecc1f0f894caa8f8fb6990c45"
+    },
+    {
+      "file": "checks/crack_fix_report.md",
+      "sha256": "eec558931134d3c101da49524c668c1d334b52e67933b57988a8270c85a3e05e"
+    },
+    {
+      "file": "checks/current_task.patch",
+      "sha256": "619b3a549f66370abab8b776c7ea5916d467f1aea7132f4cb3b1ce542d03f005"
+    },
+    {
+      "file": "checks/edit_cracks_coverage.log",
+      "sha256": "5e1c8bc4db498a27f688de084ed8809f687cff760ddfb3f9eba6585d753f383b"
+    },
+    {
+      "file": "checks/edit_cracks_diagnosis.md",
+      "sha256": "d63a22aac9d7ecbc81bb65ea0a75ac4fe84b1b12a1c988a5541ac44049035ea8"
+    },
+    {
+      "file": "checks/edit_cracks_hole_guard.log",
+      "sha256": "1250752540702ca6bca44e8ce73ccca66b01f63640af25d8fa8714e9d137ea22"
+    },
+    {
+      "file": "checks/edit_cracks_incremental.log",
+      "sha256": "7d5bfe3c017317ea53f1932150c6573bdbfd9307a888f5772bbbcaac26e2c1f3"
+    },
+    {
+      "file": "checks/edit_cracks_layers.log",
+      "sha256": "6b103b17c87f6cc3a79bfac1304a92befc56a158f58ed932abe32f6936721eee"
+    },
+    {
+      "file": "checks/edit_cracks_native.log",
+      "sha256": "5050a326937570269271fa2afe0e4cbffe3a08b699f415449bac51f33238f9fb"
+    },
+    {
+      "file": "checks/edit_cracks_probe.log",
+      "sha256": "1012ff59301cb7a7bf5507ab139b12825994cdc7ef8ac711beef2d8e3176a43f"
+    },
+    {
+      "file": "checks/edit_cracks_rays.log",
+      "sha256": "2c84391f78293fc70934e0c08e0f674574c52cae95a4b0d0fa324d890dfa4edd"
+    },
+    {
+      "file": "checks/edit_cracks_stress.log",
+      "sha256": "7fab6564fd0299f5326fa7a419852da634c415e90f323007d1e62d719057f159"
+    },
+    {
+      "file": "checks/edit_cracks_topology.log",
+      "sha256": "5941bbb3f55414487fb7c79c400b3a286d4ac53456305172e09030ae21454017"
+    },
+    {
+      "file": "checks/final_audit.json",
+      "sha256": "7f14b1d5fb925b59fbd92729cd96299919813b6dab987ed8bf8605b15e9ea4fb"
+    },
+    {
+      "file": "checks/final_source_sha256.json",
+      "sha256": "53bd479ce613f6c8f026e389fc8c7330bf110178814572f9bb036961a4b5c0c1"
+    },
+    {
+      "file": "checks/final_tests/argon_world_lock.log",
+      "sha256": "66b69574752d78850b960ce8bc4461db3e3a6dd60ad58ab022b7b8221f7e7180"
+    },
+    {
+      "file": "checks/final_tests/first_suite_summary.json",
+      "sha256": "29544ddd82c5a88c0c2bbabd386479b9bde1fd302d4fc6c0411fd36dbfdbbba9"
+    },
+    {
+      "file": "checks/final_tests/flooded_ground.log",
+      "sha256": "b18025723ed140992098275dbf1c970745c6da89f5f5fa248e9fc0d438c6bf55"
+    },
+    {
+      "file": "checks/final_tests/grass_lip_soften.log",
+      "sha256": "0d880a2b57293a916730d02b0122a84cd42e900edf62275813ebbfca0d6ae96e"
+    },
+    {
+      "file": "checks/final_tests/grass_lod.log",
+      "sha256": "6f7d8aa153a0dd60b6124eff72cf0ff0d8f3f3e31e035afd6c423e43a822c3f8"
+    },
+    {
+      "file": "checks/final_tests/interior_terrain_edit.log",
+      "sha256": "18f7492a35d48c45a574a956056afaf7becd3b64952e83a4d23a682d8d76d6c4"
+    },
+    {
+      "file": "checks/final_tests/preview_quality.log",
+      "sha256": "e937997744a796ca812e3b01a1f0c01e0811dddd0c987a621fe59275b07ac52f"
+    },
+    {
+      "file": "checks/final_tests/sol61_grass_contact.log",
+      "sha256": "872b08e6256a4c6ef1f6415c83208d48747930ec0f8be35aba03d61879a68da9"
+    },
+    {
+      "file": "checks/final_tests/sol61_scene.log",
+      "sha256": "91db10d580c9e09850c11cd8e88854a00b66c4581d7179306fb96df66964e2e9"
+    },
+    {
+      "file": "checks/final_tests/summary.json",
+      "sha256": "c13bed6a3e142b9027db01026e4f37c5f326d82dc6119f7fa083111c31818433"
+    },
+    {
+      "file": "checks/final_tests/terrain_blueprint.log",
+      "sha256": "db929e79fe4c8f8d1ab8b024b77c8489b0014f60f706d3fcd8ed323fba0b1909"
+    },
+    {
+      "file": "checks/final_tests/terrain_blueprint_async.log",
+      "sha256": "de72a98844f7caa07583e30103b64f73659ae5fac77c38a04b344041fb6b1acd"
+    },
+    {
+      "file": "checks/final_tests/terrain_controls.log",
+      "sha256": "78f2c2be87f67d608ea383792e196c2913071d46ff1f6d129e19711fd00a0fb6"
+    },
+    {
+      "file": "checks/final_tests/terrain_editor_runtime.log",
+      "sha256": "ca22673be731daf4baa19b9cf353360191ebca94d03e5718b53a11f4f0a9bc5c"
+    },
+    {
+      "file": "checks/final_tests/terrain_level.log",
+      "sha256": "180f3e7413e95d347d477fb08d0bd714ed24bf79e1988a2fc5f31a731c28e66a"
+    },
+    {
+      "file": "checks/final_tests/terrain_locality.log",
+      "sha256": "188fdc176e51cc5cd877b29ed085e5edb03c7808abc166343121ef08474b69ba"
+    },
+    {
+      "file": "checks/final_tests/terrain_surface_anchor.log",
+      "sha256": "6bc567ab93c1432396197271a3d986c83e338d403ee96b07c2d402c347ea1d78"
+    },
+    {
+      "file": "checks/final_tests/terrain_transition.log",
+      "sha256": "f817ff913e7fef6ba74f46d47624849d8504d8b6c19d58d0e3e0faf09b5421a4"
+    },
+    {
+      "file": "checks/final_tests/terrain_water_integration.log",
+      "sha256": "5bf9d3409e60d583ddb417f410ad8133534377c933daf8406545acbf8425ee97"
+    },
+    {
+      "file": "checks/final_tests/water_flow.log",
+      "sha256": "86547f261b5c53b02d56faddfcc698e98a3b75e41e1a105bc583deefc5ebd3d2"
+    },
+    {
+      "file": "checks/final_tests/water_recession.log",
+      "sha256": "a6959cc8fb8194cdff7c145f54dea16ce271891a1653fc61d739cae1c4ad19a6"
+    },
+    {
+      "file": "checks/final_tests/water_recession_final.log",
+      "sha256": "4e06b04e30fdf967a06bc427ed300d4991c12ece313aca4cd8b2b2ec2b0cbb36"
+    },
+    {
+      "file": "checks/final_tests/water_renderer.log",
+      "sha256": "ec832a28a21611ccd373ff3342bad598c888e1ab38217bfb373d7ddc5c44b6e3"
+    },
+    {
+      "file": "checks/final_tests/waterfall_flow_shape.log",
+      "sha256": "fbe5a514e9ad7a5ca760f8f270db7900aabe66e6c344600fe900ad9ed17f41b5"
+    },
+    {
+      "file": "checks/final_tests/waterfall_terrace_seal.log",
+      "sha256": "8410a36a4d47c4c92f30052da0ab59f5a09f507bbe07973e801519bc0af36f9a"
+    },
+    {
+      "file": "checks/flooded_contact.log",
+      "sha256": "872b08e6256a4c6ef1f6415c83208d48747930ec0f8be35aba03d61879a68da9"
+    },
+    {
+      "file": "checks/flooded_edge_red.log",
+      "sha256": "7534572c8847b642fbc684b36b6c3a546ecc7c1af39bcd5f3205b5a216b222b6"
+    },
+    {
+      "file": "checks/flooded_final.log",
+      "sha256": "ddea5eab2b51d849fe4f246aed1e008e5d7682adedd961aa360877b7152466b5"
+    },
+    {
+      "file": "checks/flooded_green.log",
+      "sha256": "9c29af4c5389ec43c0b7de673a3e68f150b7480e320d55bda173fda914a74c29"
+    },
+    {
+      "file": "checks/flooded_native.log",
+      "sha256": "042be9dcd6942c73875100191e98b6f4d42e7327e64f2ad8e402b2c149a447c7"
+    },
+    {
+      "file": "checks/flooded_native_reframed.log",
+      "sha256": "a656e89286d33ddb48087cb981c00b1fc69d85c62795b266cd0e6064cbcb6a50"
+    },
+    {
+      "file": "checks/flooded_pixels_final/results.json",
+      "sha256": "1d92c7763c2c2d46a9bcd48179044f3a6363f8bff6941fdda66a21caa288033e"
+    },
+    {
+      "file": "checks/flooded_red.log",
+      "sha256": "16ded3d27d3dd85116849d88e27c8268518b69cc0494035bbbe7591579c2c30b"
+    },
+    {
+      "file": "checks/flooded_related.log",
+      "sha256": "caeabb5c652b78ae9249dc3095c9dd1231d6ae7ece61e8f518f4f48354198c1b"
+    },
+    {
+      "file": "checks/flooded_surface_report.md",
+      "sha256": "2fa7e43aed716a28ef75dbe0464ac0ace22279aa1e79dd906a9227ca714d5770"
+    },
+    {
+      "file": "checks/grass_lod_green.log",
+      "sha256": "d8ec67a72937b1feac23943f1e1c93f7f685d2c7dc7cd6efa4bf39edee0f34b4"
+    },
+    {
+      "file": "checks/grass_lod_red.log",
+      "sha256": "58017c2acdb4121bd8a2b7ada10cf7a2d373fef4009b62e20bb25d03570b7852"
+    },
+    {
+      "file": "checks/integration_review.md",
+      "sha256": "8c574244e6b82e7914e40d60c09ffa2911c45d540cfbc5818051ad095db027fb"
+    },
+    {
+      "file": "checks/interior_column_audit.json",
+      "sha256": "1a3c3acd93be6400b36ff3463aa9a088848cde8bb4aea929aff81ac80d6a4936"
+    },
+    {
+      "file": "checks/interior_column_audit.log",
+      "sha256": "7dc324b5ad123b03eef72dd5e5faa9514d8cb02bdf3555a0f3a0b0e3e35a7f52"
+    },
+    {
+      "file": "checks/interior_crack_first_green.log",
+      "sha256": "6bef3f97eaf2b3c947eef4e8e0cadf2a9488884331411bd1acde016e45905bfa"
+    },
+    {
+      "file": "checks/interior_crack_green.log",
+      "sha256": "18f7492a35d48c45a574a956056afaf7becd3b64952e83a4d23a682d8d76d6c4"
+    },
+    {
+      "file": "checks/interior_crack_red.log",
+      "sha256": "9c023deae69f7e77608cfa48ba1a56bd584479b0e913556453bf69c74c3457f0"
+    },
+    {
+      "file": "checks/interior_layout_profile.json",
+      "sha256": "3edc4b321aca7bc7cbd2cac4d106dc6e1c2d83c3761deac217319f385ead60a6"
+    },
+    {
+      "file": "checks/interior_layout_profile.log",
+      "sha256": "5f6ef47f4f4164ca4dcd0abc859661d7c2501be456d14ced9add4f94695a6d05"
+    },
+    {
+      "file": "checks/interior_regression_grass_lip_soften_test.log",
+      "sha256": "0d880a2b57293a916730d02b0122a84cd42e900edf62275813ebbfca0d6ae96e"
+    },
+    {
+      "file": "checks/interior_regression_sol61_scene_test.log",
+      "sha256": "91db10d580c9e09850c11cd8e88854a00b66c4581d7179306fb96df66964e2e9"
+    },
+    {
+      "file": "checks/interior_regression_terrain_locality_test.log",
+      "sha256": "188fdc176e51cc5cd877b29ed085e5edb03c7808abc166343121ef08474b69ba"
+    },
+    {
+      "file": "checks/interior_regression_waterfall_terrace_seal_test.log",
+      "sha256": "8410a36a4d47c4c92f30052da0ab59f5a09f507bbe07973e801519bc0af36f9a"
+    },
+    {
+      "file": "checks/interior_support_detail.log",
+      "sha256": "f25eb18b94c62e51e726ae6aeb10d8e20ad7d6b2b592c0868266fb9592f23ca7"
+    },
+    {
+      "file": "checks/interior_support_probe.log",
+      "sha256": "99d1f3c5e092b8f8bf8886b128318a2cb9c2095f61d74315556fd7bff509c6ee"
+    },
+    {
+      "file": "checks/interior_support_red.log",
+      "sha256": "4c330154e9da9997293d0fffa0710917de9f02ca45d366790937f862cdd34d16"
+    },
+    {
+      "file": "checks/preview_quality_green.log",
+      "sha256": "e937997744a796ca812e3b01a1f0c01e0811dddd0c987a621fe59275b07ac52f"
+    },
+    {
+      "file": "checks/preview_quality_msaa_red.log",
+      "sha256": "40061a91e9a57c61dcff722465ad0878b1113ebeba90373e44bd09e2cea7c174"
+    },
+    {
+      "file": "checks/preview_quality_red.log",
+      "sha256": "f4bd81813e8cb4b905ca712cb4f69e8f0227ca393a99d8b72a37cb2b59aa48ca"
+    },
+    {
+      "file": "checks/resolution_after.json",
+      "sha256": "096f564690b6a2e8b1fd4cc7cff54c48b1135206142ce32e375e94f16f071672"
+    },
+    {
+      "file": "checks/resolution_after.log",
+      "sha256": "120dffb3ed04376d87edfad0a599c9549db04d7668bea2a8bd5d97ffa29deb80"
+    },
+    {
+      "file": "checks/resolution_before.json",
+      "sha256": "e4ccc591f1016c5cf84d6b8026e963470cef378d3861175c6e629338cfd3793f"
+    },
+    {
+      "file": "checks/resolution_before.log",
+      "sha256": "6d21991e7a42f9434143473a0ed74ed32b68037d9f26ea2487cb312c0ff84948"
+    },
+    {
+      "file": "checks/scene_review_final.log",
+      "sha256": "4035d9e56291c012bb5c52db52b4947a54132be564f191a47af565a47b52341e"
+    },
+    {
+      "file": "checks/source_after/scripts/gameplay/ui/shihai_hud.gd",
+      "sha256": "7e42fe23c2713c97f32c7a870b947346d86637192dc12f6ffdf903452de9f950"
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/contour_terrain.gd",
+      "sha256": "94610aa69d37b7f05884d7d9acb9edbcc40ade4f1084f1167cc59e67e2bd8848"
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/editor.gd",
+      "sha256": "aa87cf7069e247e7940ffe94a764bedb263b4d87e8900d03d99bbf67f4ec1e0d"
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/grass_field.gd",
+      "sha256": "2d050a47e85bfa0a42f6ae6fd300439b7d042ee4524ed507f2bf5612249188c6"
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/preview_quality.gd",
+      "sha256": "fe93ec1b5512c21b57af7a2c335e1c53a98c71bd045432899f0354d5d59ec62e"
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/terrain_data.gd",
+      "sha256": "3027f770b347064501f518727cb91d9d7cc2108c0f8865cb4022a2cde1968eec"
+    },
+    {
+      "file": "checks/source_after/scripts/terrain_editor/terrain_decoration.gd",
+      "sha256": "98fc44646af71a02a674e3102108e487f343cb09beba1a5fff06882df4edf5fa"
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/grass_blades.gdshader",
+      "sha256": "d807c75654afec9a0d0cd04cbb5c9953ccfffd8abe2afe38d60bcc47b00e329b"
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/ground.gdshader",
+      "sha256": "2b3be899c00f0a213b56220b842dc2a4b388090feeb39b06b12cfa641950571a"
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/live_water.gdshaderinc",
+      "sha256": "7a5e5663f63074eb0b394d22ec9f6510cb46275231d71a29b7b3c91b69523fad"
+    },
+    {
+      "file": "checks/source_after/shaders/terrain_editor/rim_green.gdshader",
+      "sha256": "edd5f2811c1cd0a8ae0aa14cddcb6958ac551f765225196a953fbf1b78e1caec"
+    },
+    {
+      "file": "checks/source_before/interior_crack_fix/contour_terrain.gd",
+      "sha256": "a257935087ac56778f3087d4e10e08c9139661ba0dcb7c3aa0042c2c57340b00"
+    },
+    {
+      "file": "checks/source_before/interior_crack_fix/terrain_decoration.gd",
+      "sha256": "76a8cc51ff1245048441b499a8d341747cf7998bccff1ee7b0d094f0a3107d01"
+    },
+    {
+      "file": "checks/source_before/project.godot",
+      "sha256": "657728fcdf1af7b7a11ebfb38c90801c8b9ae44054214c65364c29a624aa2d23"
+    },
+    {
+      "file": "checks/source_before/scripts/gameplay/ui/shihai_hud.gd",
+      "sha256": "96cb53ae7e32c55440ac4afaddc93f88f638ad7c81791c744072527ac209f794"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/block_mantle.gd",
+      "sha256": "6833e9c3d5a7861f1aba549c200594d01f10c6edf83d940522aacf735a6c1ac1"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/contour_terrain.gd",
+      "sha256": "a257935087ac56778f3087d4e10e08c9139661ba0dcb7c3aa0042c2c57340b00"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/edit_preview.gd",
+      "sha256": "d7f8fc48220d39b27f431530d18ca42ebeb4e683672f2ac2cd20dbfccbdbeb17"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/editor.gd",
+      "sha256": "8ebbd14cc309fcce439d29692013654e91fe9cc4b03030ab23afde7cf3061243"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/grass_field.gd",
+      "sha256": "1e92723530c3c05b5fa19664de714a70c2c0bdf66f2316132f877fcde522e116"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/grass_lip_soften.gd",
+      "sha256": "a98f6807510b9d80aa32637916ff8f5da18de6a155c9d978a87ca5ec916a1c0d"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/rim_union.gd",
+      "sha256": "4b21b09ae6641f2c86f0d5e6affd377c0922dac892056e66f351e0e75b47182a"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/terrain_data.gd",
+      "sha256": "89ed1fefba9d32d1365dae21da1240eec959ba0ec599ab4b628a6ddfe8484470"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/terrain_decoration.gd",
+      "sha256": "76a8cc51ff1245048441b499a8d341747cf7998bccff1ee7b0d094f0a3107d01"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/terrain_renderer.gd",
+      "sha256": "406369ec1c618613d4bb0dd0cd10e8804a66caa66fb24641b81badabbffe49c8"
+    },
+    {
+      "file": "checks/source_before/scripts/terrain_editor/water_renderer.gd",
+      "sha256": "c3dd5beac37e98138b7b054699ab42b07393009245d1da3d68338dc1e29e66be"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/ambient_motes.gdshader",
+      "sha256": "1a109ca3eea82102ccbeff47e8c5a520b7411c9d7e297e455d5e92b2676fed79"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/cliff.gdshader",
+      "sha256": "313b03afdb7856ff9843a8535ff38f5329e1152d42e73c54c39715a634d378c9"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/cliff_column.gdshader",
+      "sha256": "acf0f639807af21d7a11e75f3f43996e7ff558cd84d7f57c26db631bf254999f"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/cliff_palette.gdshaderinc",
+      "sha256": "f598eeefd883ec085ec2b07a4e7310ccfd7f10d86b4962e378d780f833d8d5af"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/cliff_rock.gdshader",
+      "sha256": "4ef96ab108798503f0304554bdbead4e32f62408ba26d76d355e090df8a78879"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/cloud_deck.gdshader",
+      "sha256": "9ab0bc69b8b947bfd9bb59d1bb96f269b9cdbdafd97d56a2950864bdd120f79a"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/decor_vertex_color.gdshader",
+      "sha256": "f0a4bee2e511cfb5a95d8105047110640f67e9a8ecd1e2f03caf6e724709c3e4"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/distant_mountain.gdshader",
+      "sha256": "3939c797640c6d5823c1151bbde1a0856d75f421356381aca7b1a3e26adf4347"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/edit_preview.gdshader",
+      "sha256": "b14ef12e9fc3ea57a0624020da259facf03f2d095863f1e3cfc4eee0518bc1a9"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/foam.gdshader",
+      "sha256": "044e993efd709b59ab2008059bc1460010076d4332249a295ed6b956347a47de"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/foliage.gdshader",
+      "sha256": "7e6796b8bd474f8d5e02c040703511887398cf7398c13a38918a5f31852a6126"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/foliage_cards.gdshader",
+      "sha256": "45aa35dd5d206e862ae817f6fb9454bef5e53d0b25328e19da326aa145cccbd0"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/grass_blades.gdshader",
+      "sha256": "0ddb8fc746668bcf5ed3f3f450fbc1ae3c4a506205a3965a35a1000472588e04"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/ground.gdshader",
+      "sha256": "c77603a65c82045d0fb3eb7483eb546b93b89f0411fd8378731238502d364201"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/ground_cover.gdshaderinc",
+      "sha256": "7f8156fee6e04896015b3a81db5e037014299ba3bfaeb9dd0583dd056c1c3703"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/lake_bed.gdshader",
+      "sha256": "e4cad6c3007f0fa2c7adb43259546f7c9d5179a5905d87ee58613b1357af02ad"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/land_palette.gdshaderinc",
+      "sha256": "314013f24b2a24fe309378d0e45be37a65f37f1cb77c4de1962fb2714465c9f9"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/live_water.gdshaderinc",
+      "sha256": "1ecc0d325415d578a2d9fab4238c68c0dc5cbe3b1c3e83f3212a75246e3bbe10"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/rim_green.gdshader",
+      "sha256": "7ab9f9b8d6929e92cbf916f00cfcfcb605dacde206fd408f3fd0af94a830fbee"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/sculpt_terrain.gdshader",
+      "sha256": "60a55d6d4714123feee0e15d21e9041ef019ca3f2de71e424954461365837e80"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/shore.gdshader",
+      "sha256": "e1bbc3fb54a3f4f1d35b7e88799f33618b31e69394b79144fd5e5ae35fb9b4e6"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/sky.gdshader",
+      "sha256": "00ebcfab1b939929f559a437821f645feb47d7c0ea8b921cf005d1824f352748"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/sky_palette.gdshaderinc",
+      "sha256": "b56b77b22d0eb2fa6f08db7fe65bd541eb004df39e70d3365e8e78a1b65681cc"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/stone_mantle.gdshader",
+      "sha256": "064b2aa1458659415ea5bb0908b7250c1814301c64fae2e7b96dcbce83388559"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/stone_surface.gdshaderinc",
+      "sha256": "490d6baf8c08de0e92fd8052f033b7a5fc485f511d446d719dbe65d3096f6e90"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/terrain_morph.gdshaderinc",
+      "sha256": "920ef2c7c261683326f4c6139cfd71443d9af54ec956b5b2b38e670b8f2415bb"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/water.gdshader",
+      "sha256": "44c5bed695cdfe21da2944f3a04282849bdcfed9ab0cac87667a1d116c774d23"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/waterfall.gdshader",
+      "sha256": "5a30879e6c31f24de831aa57efbe6830be288a310f06a62bd35a6574051f661a"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/waterfall_mist.gdshader",
+      "sha256": "54f55ac1f750382ce4d4c7bedd2e7ad5f9d113a648b11c80e50dc11958b1ee3a"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/weathering.gdshaderinc",
+      "sha256": "c9d69ab9c8b8c41ceab5c63875e9d7efd83b0173ececa811b0c36e0b740123ac"
+    },
+    {
+      "file": "checks/source_before/shaders/terrain_editor/wet_bank.gdshaderinc",
+      "sha256": "2650f62983e95da6e5bc742b8df3ca83e388dd9d0b37b49d7d7dafaa2a4e7e20"
+    },
+    {
+      "file": "checks/terrain_level_green.log",
+      "sha256": "d024f483ebc13289075685540f509d193c6def4c75b7f46b9423e3cad67098db"
+    },
+    {
+      "file": "checks/terrain_level_red.log",
+      "sha256": "32d54d4d42079e86ae9f36db74e397f4ed6390a60a94313605519c8defd6c897"
+    },
+    {
+      "file": "checks/tests/flooded_ground_test.gd",
+      "sha256": "7f4068668fd5857fb3d64ab82c69a93987fe17c765108696fb0a6a23309f0ed7"
+    },
+    {
+      "file": "checks/tests/grass_lod_test.gd",
+      "sha256": "990f5b69b83611bb6043e4fbed49be5f811312a1c3e270f0bbdbeaaca00cdc7f"
+    },
+    {
+      "file": "checks/tests/interior_terrain_edit_test.gd",
+      "sha256": "75ee4250a163aa3c5b87b3220561ec3dc4a6565c77c1990fc551645b620f1385"
+    },
+    {
+      "file": "checks/tests/preview_quality_test.gd",
+      "sha256": "a870dbdb73514c2361a273281133c65b893329a238f56bed06ba92accac719b6"
+    },
+    {
+      "file": "checks/tests/terrain_level_test.gd",
+      "sha256": "c124076881a45d84be05bd348767ccf71832455fa00f6a08f4404cfadbb4ee91"
+    },
+    {
+      "file": "checks/tests/water_recession_test.gd",
+      "sha256": "2bd0ed22e36c2a6c4c7b7445451f04373725e7a9dc63a57e9cf11f9b347ab5a8"
+    },
+    {
+      "file": "checks/tools/blueprint_benchmark.gd",
+      "sha256": "f4abd50af9e11e9e8aff393663a7a861747d124059e49658743e5c508f904c93"
+    },
+    {
+      "file": "checks/tools/resolution_probe.gd",
+      "sha256": "a5a648edb15768d8a4ce7df019622fd75b1da4a4317781ba694e2afe95e2636a"
+    },
+    {
+      "file": "compare.html",
+      "sha256": "1e6e56533e66819542cb839ed31127e537c3c96cd69b266a9b176529f4519735"
+    },
+    {
+      "file": "controls_review/01_level_draft.png",
+      "sha256": "1d79e7a5228bfb61821b04cd91bf4b51c51ffadf57abfb70e4a7be62fdd9cdde"
+    },
+    {
+      "file": "controls_review/02_level_cancelled.png",
+      "sha256": "28c8344e79d45e84a5037ebf8dd567af31f390b6cd422c559c72831e7d4a5cc4"
+    },
+    {
+      "file": "controls_review/03_level_committed.png",
+      "sha256": "c4ddbc852797126df4e8e09834f5eac460c0607e0bef5569c73b84875a528b89"
+    },
+    {
+      "file": "controls_review/04_4K_settings.png",
+      "sha256": "36c26f42090fb40dc5caa1d198a461c15780fad74e1d07a8c5ff234bb6e5599b"
+    },
+    {
+      "file": "controls_review/controls.json",
+      "sha256": "a282fe747fe25c47bdeb9244533d873d031ee85485c0f380b00cd0d3dccd1380"
+    },
+    {
+      "file": "flooded_final/captures.json",
+      "sha256": "767c560555e817728fb72815c8397751e7c75639141957b7b09b9b74d3d7722c"
+    },
+    {
+      "file": "flooded_final/seed_7301/00_dry_before_lower.png",
+      "sha256": "e8b889b6711be552ec1816455fa2c5f86b21a68c77e8450933af6c46a1e4137c"
+    },
+    {
+      "file": "flooded_final/seed_7301/01_before_flooded_front.png",
+      "sha256": "291fdf9aea6c628286cddd3644b04d2275f38118a9ff6e4bdfee62a65a6a22c2"
+    },
+    {
+      "file": "flooded_final/seed_7301/01_before_flooded_reverse.png",
+      "sha256": "ff908e3471e31d341a528b567650e3f60d077d3f0374ee340def7124a48680ef"
+    },
+    {
+      "file": "flooded_final/seed_7301/01_before_flooded_side.png",
+      "sha256": "b97c4f9245febbc35c19fd231a8773434e2272030b796a20ae130425c32760f9"
+    },
+    {
+      "file": "flooded_final/seed_7301/02_after_flooded_front.png",
+      "sha256": "ec016ba5449d9b171eea2f9eee66507091483567c67c67536ebada76cb07439c"
+    },
+    {
+      "file": "flooded_final/seed_7301/02_after_flooded_reverse.png",
+      "sha256": "18e5126d92021f4c6ea053956d18532a3dfe724e06ae20792f7609b5f4d2b496"
+    },
+    {
+      "file": "flooded_final/seed_7301/02_after_flooded_side.png",
+      "sha256": "fdfdd16287b719e1bcd0ef637a292ae653f3450cc62e8f2c94a084e962f68ec7"
+    },
+    {
+      "file": "flooded_final/seed_7301/03_dry_brush_restored_front.png",
+      "sha256": "0576ea6022b8a363bb01daf4546c248a0ebf1e2e816d68d9d91cbeb39477eb0b"
+    },
+    {
+      "file": "flooded_final/seed_7301/03_dry_brush_restored_reverse.png",
+      "sha256": "2e4456294006778ffcf236203e5c9daae7ed3aaee47054b4ac2f095da789915a"
+    },
+    {
+      "file": "flooded_final/seed_7301/03_dry_brush_restored_side.png",
+      "sha256": "a9044bc332a90e46c789d5f2614d19e2d15a28f4bcee21c943f64af5bb67d21a"
+    },
+    {
+      "file": "flooded_final/seed_7301/baseline_reverse.png",
+      "sha256": "96e0258e0a0726c184f8823a13621e35bd2457daf15a363a463cf976da99170b"
+    },
+    {
+      "file": "scene_review_final/00_original_whole.png",
+      "sha256": "8403415e5fb36f2d3f9e41e48a5f89aaa1e1df85a855521634c794b61546d85f"
+    },
+    {
+      "file": "scene_review_final/01_current_whole.png",
+      "sha256": "6dc65fe211dcbcc9060f16d0acceda9fe0c3f4cef38fc2e2679ed0add34fb02e"
+    },
+    {
+      "file": "scene_review_final/4K_native.png",
+      "sha256": "4e72b7675d9419c13d736e7f15b920a0fb58d70d759a7efa4d162a998f120195"
+    },
+    {
+      "file": "scene_review_final/4K_preview.png",
+      "sha256": "db447782f1577303dc303c0d5ec699d21f0410f11e855af81cdee120a191b923"
+    },
+    {
+      "file": "scene_review_final/captures.json",
+      "sha256": "a1cf4f51f266440de321900fcf2b3e8c01a5d40f3b0c0595f293e2067a86b113"
+    },
+    {
+      "file": "scene_review_final/held_2104.png",
+      "sha256": "f2021791814226cea3de0a180a3a44138218eb9bc3da18cd96a728f72d8be639"
+    },
+    {
+      "file": "scene_review_final/held_4242.png",
+      "sha256": "e1b5171f5f4ab9c5447822602ef3562d8698c88389d158bef6e60b532634594e"
+    },
+    {
+      "file": "scene_review_final/level_blueprint.png",
+      "sha256": "3782d1bc5ec3549679d9b04e478eead7f37275a7411d1a02d4d1db152f9a15fb"
+    },
+    {
+      "file": "scene_review_final/lower_after.png",
+      "sha256": "44ca3acd1567ee9e64495c3ba6054f0d2898abecf8d6d5b661312962b7bf2b1d"
+    },
+    {
+      "file": "scene_review_final/lower_before.png",
+      "sha256": "b3fbec9d553968a15eb19f3d38722555532dd6c4216b1c0216b22d85a28333a4"
+    },
+    {
+      "file": "scene_review_final/upper_after_16.png",
+      "sha256": "e535809a34c5ee155d761833339859fd0da127bfe3b6985c2d118570bb9fb963"
+    },
+    {
+      "file": "scene_review_final/upper_after_196.png",
+      "sha256": "91cf2dfb63393bdb75f57007ad6475033d3035d562b11b021d20d8d4d41bff42"
+    },
+    {
+      "file": "scene_review_final/upper_before_16.png",
+      "sha256": "bcfeda0ae67bf5396210f87fa03862c846e098e24c1cab0c584446a2be2ffc2c"
+    },
+    {
+      "file": "scene_review_final/upper_before_196.png",
+      "sha256": "7958a41bffeeadbd2cf81f1995657fa9ae020bb6a4f2931c403501f2ec1638ff"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ok: an exactly stable pool stops repeating the flux solve
+ok: sleep preserves exact retained mass and empty transfers
+ok: a bed edit wakes the pool and redistributes conserved water
+ok: waking never discards water
+ok: unrelated dry expansion does not enter the wet-cell flux worklist
+ok: sparse stepping still wets a receiving cell and conserves mass
+ok: underflow in a tiny positive timestep must not put a flowing pool to sleep
+ok: underflow followed by normal time retains all water
+ok: explicit persistence canonicalizes invalid raw zero-volume input
+ok: explicit persistence canonicalizes invalid raw zero-volume input
+ok: explicit persistence canonicalizes invalid raw zero-volume input
+ok: configuration builds one immutable terrain snapshot
+ok: ordinary flowing updates reuse the terrain snapshot
+ok: an explicit mid-worker edit replaces the snapshot before publication
+ok: a stale worker cannot republish removed terrain
+ok: snapshot invalidation retains plus discharges exactly the authored mass
+ok: an unchanged explicit flush does not recopy the terrain
+ok: a seed-only edit invalidates worker visual inputs
+ok: reset replaces cached terrain images and finite water state
+WATER SCALING 19 checks, 0 failures

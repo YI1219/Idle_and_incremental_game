@@ -1,0 +1,13 @@
+--- a/scripts/terrain_editor/contour_terrain.gd
++++ b/scripts/terrain_editor/contour_terrain.gd
+@@ -475,6 +475,10 @@
+ 		var water_y:float=profile.water*.5+.045
+ 		var stream:=_fall_point(p,normal,water_y,point.y)
+ 		var clearance:float=(.80 if profile.base else .65)*clampf((water_y-point.y)*2.0,0.0,1.0)
++		# An interior fall's wet wall rejoins the receiving cap at its foot.
++		# Carrying stream clearance through that endpoint leaves an open slot
++		# between the recessed rock and the pond's authoritative boundary.
++		if not profile.base:clearance*=smoothstep(profile.bottom,profile.bottom+.5,point.y)
+ 		var excess:float=(Vector2(point.x-stream.x,point.z-stream.z)).dot(normal)+clearance
+ 		if excess>0.0:point-=Vector3(normal.x,0,normal.y)*excess
+ 	return point

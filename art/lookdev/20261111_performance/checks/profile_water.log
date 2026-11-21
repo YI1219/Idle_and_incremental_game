@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PROFILE 0 total 9.712 { &"cap": 0.047, &"edges": 1.555, &"falls": 7.401, &"normals": 1.645 } basins 2 capverts 348
+PROFILE 1 total 9.177 { &"edges": 1.425, &"falls": 7.258, &"normals": 1.656 } basins 2 capverts 348
+PROFILE 2 total 8.808 { &"edges": 1.173, &"falls": 6.941, &"normals": 1.597 } basins 2 capverts 348
+PROFILE 3 total 9.007 { &"edges": 1.201, &"falls": 7.054, &"normals": 1.702 } basins 2 capverts 348

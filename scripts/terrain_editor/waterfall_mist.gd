@@ -2,9 +2,9 @@ extends MultiMeshInstance3D
 ## Camera-facing spray puffs at each plunge published by ContourTerrain, plus
 ## a veil along each curtain's sides and foot so falls read as thick white
 ## water dissolving into spray. Falls off the island end in a mist cloud.
-const PUFFS_PER_SPLASH := 7
-const MAX_VEIL_PUFFS := 16
-const END_PUFFS := 4
+const PUFFS_PER_SPLASH := 12
+const MAX_VEIL_PUFFS := 4
+const END_PUFFS := 6
 
 func _init()->void:
 	name="WaterfallMist"
@@ -20,21 +20,29 @@ func _init()->void:
 	multimesh.use_custom_data=true
 	multimesh.mesh=quad
 
-func sync(splashes:Array,veils:Array=[])->void:
+func sync(splashes:Array,veils:Array=[],land_regions:Dictionary={})->void:
 	var puffs:Array=[]
 	for splash:Dictionary in splashes:
 		var center:Vector3=splash.center
 		var out:=Vector3(splash.out.x,0,splash.out.y)
 		var tangent:=Vector3(out.z,0,-out.x)
 		var width:float=splash.half_width
+		var intensity:float=clampf(float(splash.get("intensity",1.0)),0.0,1.0)
+		if intensity<=.001:continue
 		for puff in PUFFS_PER_SPLASH:
 			var a:=_hash(center,puff,1)
 			var b:=_hash(center,puff,2)
 			var c:=_hash(center,puff,3)
-			# Puffs hug the curtain foot and drift a short way into the lake.
-			var position:=center+tangent*(a*2.0-1.0)*width*.9+out*lerpf(-.25,.85,b)+Vector3(0,.15+.35*c,0)
-			var size:=lerpf(1.0,1.9,c)*clampf(width/.62,.8,1.6)
-			puffs.append([position,size,Color(float(puff)/PUFFS_PER_SPLASH+a*.1,lerpf(.6,1.3,b),1.0,0)])
+			# Small short-lived droplets launch from the actual receiving level.
+			var position:=center+tangent*(a*2.0-1.0)*width*.80+out*lerpf(.02,.32,b)+Vector3.UP*lerpf(.035,.12,c)
+			var size:=lerpf(.035,.09,c)*sqrt(intensity)
+			puffs.append([position,size,Color(a,lerpf(.20,.65,b),intensity,2.0)])
+		# A little spray stays local to impact, without an opaque cloud apron.
+		for puff in 3:
+			var a:=_hash(center,puff,10)
+			var b:=_hash(center,puff,11)
+			var position:=center+tangent*(a*2.0-1.0)*width*.6+Vector3.UP*.07
+			puffs.append([position,lerpf(.22,.38,b),Color(a,.18,intensity*.42,0.0)])
 	for veil:Dictionary in veils:
 		var lip:Vector3=veil.lip
 		var foot:Vector3=veil.foot
@@ -42,33 +50,64 @@ func sync(splashes:Array,veils:Array=[])->void:
 		var tangent:=Vector3(out.z,0,-out.x)
 		var width:float=veil.half_width
 		var height:=lip.y-foot.y
-		# External curtains fade out a few metres down; their cloud sits there.
-		var reach:=minf(height,4.2) if veil.external else height
-		var count:=clampi(int(reach*1.6+width*1.2),4,MAX_VEIL_PUFFS)
+		# Place spray against the same complete lip-to-foot span as the curtain.
+		var reach:=height
+		var intensity:float=clampf(float(veil.get("intensity",1.0)),0.0,1.0)
+		if intensity<=.001:continue
+		var count:=4 if veil.external else 0
 		for puff in count:
 			var a:=_hash(lip,puff,4)
 			var b:=_hash(lip,puff,5)
 			var c:=_hash(lip,puff,6)
-			var t:=lerpf(.30,1.0,sqrt(b))
+			var t:=lerpf(.66,.98,b) if veil.external else lerpf(.78,.99,b)
 			var drop:=reach*t
 			var along:=lip.lerp(foot,drop/maxf(.001,height))
-			# Most puffs gather at the ragged sides; the rest veil the face.
-			var side:=(1.0 if a>.5 else -1.0)*lerpf(.75,1.15,c) if a<.25 or a>.5 else (a*8.0-3.0)*.6
-			var position:=along+tangent*side*width+out*lerpf(.15,.45,c)
-			var size:=lerpf(.7,1.3,c)*clampf(width/.62,.8,1.5)*lerpf(.8,1.3,t)
-			var opacity:=lerpf(.60,1.0,t)
-			# Negative rise: veil puffs drift down with the falling water.
-			puffs.append([position,size,Color(a+c*.3,-lerpf(.4,.9,b),opacity,0)])
+			var side:=(a*2.0-1.0)*(.62 if veil.external else .52)
+			var position:=along+tangent*side*minf(width,1.10)+out*lerpf(.12,.32,c)
+			var size:=lerpf(.78,1.18,c)*clampf(minf(width,1.10)/.62,.80,1.30)
+			puffs.append([position,size,Color(a+c*.3,-lerpf(.28,.55,b),(.68 if veil.external else .58)*intensity,0)])
 		if veil.external:
-			# The free fall dissolves into a soft cloud where the sheet fades.
+			# Terminal wisps follow the curtain fade instead of masking its middle.
 			for puff in END_PUFFS:
 				var a:=_hash(foot,puff,7)
 				var b:=_hash(foot,puff,8)
 				var c:=_hash(foot,puff,9)
-				var along:=lip.lerp(foot,reach*lerpf(.80,1.05,b)/maxf(.001,height))
-				var position:=along+tangent*(a*2.0-1.0)*width*.8+out*lerpf(.10,.50,c)
-				var size:=lerpf(1.7,2.6,c)*clampf(width/.62,.8,1.6)
-				puffs.append([position,size,Color(a+b*.4,-lerpf(.3,.6,c),1.0,0)])
+				var along:=lip.lerp(foot,reach*lerpf(.80,1.00,b)/maxf(.001,height))
+				var position:=along+tangent*(a*2.0-1.0)*width*.76+out*lerpf(.08,.44,c)
+				var size:=lerpf(1.04,1.52,c)*clampf(width/.62,.82,1.30)
+				puffs.append([position,size,Color(a+b*.4,-lerpf(.22,.48,c),.84*intensity,0)])
+	# Subtle deep root-tip cloud wisps under shadowed cliff keels without washing out solid front cliffs (Ref 1)
+	if not land_regions.is_empty():
+		var all_loops:Array=[]
+		for lvl_k in land_regions:
+			for lp:PackedVector2Array in land_regions[lvl_k]:
+				if lp.size()>=4:all_loops.append(lp)
+		for lvl_h:float in land_regions:
+			for loop:PackedVector2Array in land_regions[lvl_h]:
+				if loop.size()<8:continue
+				var step_i:=maxi(4,loop.size()/14)
+				var idx:=0
+				while idx<loop.size():
+					var p2:Vector2=loop[idx]
+					var prev2:Vector2=loop[(idx-1+loop.size())%loop.size()]
+					var next2:Vector2=loop[(idx+1)%loop.size()]
+					var out2:=Vector2(next2.y-prev2.y,prev2.x-next2.x).normalized()
+					var probe:=p2+out2*1.75
+					var interior:=false
+					for other_lp:PackedVector2Array in all_loops:
+						if Geometry2D.is_point_in_polygon(probe,other_lp):
+							interior=true
+							break
+					var sunlit_front:bool=(p2.x>-1.5 and p2.y>1.2)
+					if not interior and not sunlit_front:
+						var anchor:=Vector3(p2.x,lvl_h,p2.y)
+						var ha:=_hash(anchor,idx,21)
+						var hb:=_hash(anchor,idx,22)
+						var hc:=_hash(anchor,idx,23)
+						var pos:=Vector3(p2.x,-lerpf(3.85,5.15,hb),p2.y)+Vector3(out2.x,0.0,out2.y)*lerpf(-.35,.65,hc)
+						var sz:=lerpf(3.6,5.2,ha)
+						puffs.append([pos,sz,Color(ha,lerpf(.08,.18,hb),.68,1.0)])
+					idx+=step_i
 	multimesh.instance_count=puffs.size()
 	var bounds:=AABB()
 	for index in puffs.size():

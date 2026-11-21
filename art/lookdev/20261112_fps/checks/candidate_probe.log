@@ -1,0 +1,17 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Metal 3.2 - Forward+ - Using Device #0: Apple - Apple M4 Pro (Apple9)
+
+2026-11-12 11:16:09.790 godot[49630:74688053] +[IMKClient subclass]: chose IMKClient_Modern
+2026-11-12 11:16:12.388 godot[49630:74688053] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+{"draws":274,"ms":{"mean":24.9271,"p50":24.908,"p95":25.886},"name":"before","size":[2560,1440],"triangles":846489}
+{"draws":274,"ms":{"mean":23.0375,"p50":23.065,"p95":23.519},"name":"grass_only","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":20.70008,"p50":20.72,"p95":21.639},"name":"settings_only","size":[2560,1440],"triangles":846489}
+{"draws":274,"ms":{"mean":19.23672,"p50":19.123,"p95":20.045},"name":"balanced","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":24.50402,"p50":24.399,"p95":25.682},"name":"before_repeat","size":[2560,1440],"triangles":846489}
+{"draws":274,"ms":{"mean":19.23416,"p50":19.17,"p95":20.11},"name":"balanced","size":[2560,1440],"triangles":846181}
+{"draws":274,"ms":{"mean":47.23582,"p50":47.178,"p95":48.164},"name":"before","size":[3840,2160],"triangles":847049}
+{"draws":274,"ms":{"mean":47.13316,"p50":47.152,"p95":48.142},"name":"grass_only","size":[3840,2160],"triangles":847021}
+{"draws":274,"ms":{"mean":39.70626,"p50":39.507,"p95":41.203},"name":"settings_only","size":[3840,2160],"triangles":847049}
+{"draws":274,"ms":{"mean":39.8832,"p50":40.032,"p95":40.931},"name":"balanced","size":[3840,2160],"triangles":847021}
+{"draws":274,"ms":{"mean":47.24496,"p50":47.264,"p95":47.783},"name":"before_repeat","size":[3840,2160],"triangles":847049}
+{"draws":274,"ms":{"mean":39.67888,"p50":39.79,"p95":40.662},"name":"balanced","size":[3840,2160],"triangles":847021}

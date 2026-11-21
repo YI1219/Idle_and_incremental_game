@@ -1,0 +1,22 @@
+{
+  "stage_suite": {
+    "headless": 28,
+    "native": 6,
+    "passed": 34,
+    "failed": 0
+  },
+  "normal_entry_90frames": "pass",
+  "background_native_contract": "23 checks / 0 failures",
+  "capture_pairs": 16,
+  "matching_capture_conditions": true,
+  "final_source_hashes_match": true,
+  "performance_valid": true,
+  "all_benchmark_idle_frames_rendered": true,
+  "excluded_measurements": [
+    "final_2k_a1.json",
+    "final_2k_b1.json: old idle-only metric lacked drawn-frame validation"
+  ],
+  "target_Air_Windows_measured": false,
+  "temperature_power_measured": false,
+  "runtime_process_cleanup": "only original Godot editor PID29442 remains; no task runtime/debug process"
+}

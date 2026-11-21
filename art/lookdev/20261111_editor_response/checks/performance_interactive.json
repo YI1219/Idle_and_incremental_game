@@ -1,0 +1,17 @@
+{
+	"adapter": "Apple M4 Pro (Apple9)",
+	"discharged": 8.11414098280455,
+	"frame_ms": {
+		"max": 37.101,
+		"mean": 33.8014083333333,
+		"p50": 33.131,
+		"p95": 36.339
+	},
+	"method": "production editor process, hover and water workers active; fixed BASE A; 240 warmup,120 frames; no screenshot IO",
+	"resolution": [
+		3840,
+		2160
+	],
+	"scale": 0.5,
+	"water_volume": 62.8858590171963
+}

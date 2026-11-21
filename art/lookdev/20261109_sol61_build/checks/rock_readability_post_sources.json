@@ -1,0 +1,18 @@
+{
+  "visual_sources_match_native_capture": true,
+  "changed_from_capture": [
+    "res://project.godot"
+  ],
+  "reason": "Temporary capture arguments removed",
+  "normal_entry_and_f11_observed": true,
+  "actor_hud_brush_absent": true,
+  "hint_faded": true,
+  "preview_size": [
+    1278,
+    719
+  ],
+  "native_evidence_size": [
+    2560,
+    1440
+  ]
+}

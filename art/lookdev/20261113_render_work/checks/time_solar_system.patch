@@ -1,0 +1,44 @@
+diff --git a/art/lookdev/20261113_render_work/checks/source_before/time_solar_system.gd b/scripts/gameplay/systems/time_solar_system.gd
+index cc93c4f..e39ff02 100644
+--- a/art/lookdev/20261113_render_work/checks/source_before/time_solar_system.gd
++++ b/scripts/gameplay/systems/time_solar_system.gd
+@@ -203,6 +203,9 @@ var solar_term_index: int = 1
+ var day_count: int = 1
+ var paused: bool = false
+ var _apply_accum: float = 0.0
++# Explicit palette changes must receive one complete radiance draw before
++# routine daylight updates can distribute the same quality filter over frames.
++var _full_sky_frame: int = -1
+ 
+ func tick(delta: float, editor: Node3D) -> void:
+ 	if not paused and delta > 0.0 and cycle_duration_sec > 1.0:
+@@ -216,7 +219,7 @@ func tick(delta: float, editor: Node3D) -> void:
+ 		_apply_accum += delta
+ 		if _apply_accum >= 0.08:
+ 			_apply_accum = 0.0
+-			apply_to_scene(editor)
++			apply_to_scene(editor, false)
+ 
+ func step_shichen(editor: Node3D) -> void:
+ 	var next: float = day_progress + (1.0 / 12.0)
+@@ -299,7 +302,7 @@ static func _blend_dicts(a: Dictionary, b: Dictionary, t: float) -> Dictionary:
+ 	out["cover_relief"] = 0.0
+ 	return out
+ 
+-func apply_to_scene(editor: Node3D) -> void:
++func apply_to_scene(editor: Node3D, immediate_sky: bool = true) -> void:
+ 	if editor == null:
+ 		return
+ 	var p: Dictionary = current_blended_preset()
+@@ -329,6 +332,11 @@ func apply_to_scene(editor: Node3D) -> void:
+ 		settings.adjustment_contrast = float(p["contrast"])
+ 		settings.adjustment_saturation = float(p["saturation"])
+ 		if settings.sky != null and settings.sky.sky_material is ShaderMaterial:
++			if immediate_sky:
++				_full_sky_frame = Engine.get_frames_drawn()
++				settings.sky.process_mode = Sky.PROCESS_MODE_QUALITY
++			elif Engine.get_frames_drawn() > _full_sky_frame:
++				settings.sky.process_mode = Sky.PROCESS_MODE_INCREMENTAL
+ 			var sky_mat := settings.sky.sky_material as ShaderMaterial
+ 			sky_mat.set_shader_parameter("sky_zenith", p["sky_zenith"])
+ 			sky_mat.set_shader_parameter("sky_mid", p["sky_mid"])

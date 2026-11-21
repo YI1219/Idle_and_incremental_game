@@ -9,7 +9,7 @@ static func apply(field,columns:Array,assets:Dictionary,fit_core_to_feet:bool=fa
  var strips:Array=[]
  for col:Dictionary in columns:
   var points:=PackedVector2Array()
-  for p:Vector3 in assets[col.kind][0].mesh.get_faces():
+  for p:Vector3 in preload("res://scripts/terrain_editor/chunk_geometry.gd").faces_of(assets[col.kind][0].mesh):
    if absf(p.y)>.00001:continue
    var q:Vector3=col.pose*p;points.append(Vector2(q.x,q.z))
   var hull:=Geometry2D.convex_hull(points)
@@ -57,7 +57,38 @@ static func apply(field,columns:Array,assets:Dictionary,fit_core_to_feet:bool=fa
     pieces=next
    polygons.append_array(pieces)
   for crown:Dictionary in crowns:
-   if absf(crown.height-h)<.001:_union(polygons,crown.polygon)
+   if absf(crown.height-h)<.001:
+    var c_pieces:Array=[crown.polygon]
+    for higher_h:float in field.levels:
+     if higher_h<=h+.001:continue
+     for h_loop:PackedVector2Array in field.land_regions[higher_h]:
+      if Field._area(h_loop)<0:continue
+      var next_c:Array=[]
+      for cp:PackedVector2Array in c_pieces:
+       for res:PackedVector2Array in Geometry2D.clip_polygons(cp,h_loop):
+        if Field._area(res)>0:next_c.append(res)
+      c_pieces=next_c
+    for higher_crown:Dictionary in crowns:
+     if higher_crown.height<=h+.001:continue
+     var next_c:Array=[]
+     for cp:PackedVector2Array in c_pieces:
+      for res:PackedVector2Array in Geometry2D.clip_polygons(cp,higher_crown.polygon):
+       if Field._area(res)>0:next_c.append(res)
+     c_pieces=next_c
+    for cp:PackedVector2Array in c_pieces:_union(polygons,cp)
+  # Morphological closing fills the narrow notches left where sculpted kit
+  # crowns meet the contour, so the lip chamfer never folds back inside.
+  var closed:Array=[]
+  for poly:PackedVector2Array in polygons:
+   var grown:Array=Geometry2D.offset_polygon(poly,.06,Geometry2D.JOIN_MITER)
+   var pieces:Array=[]
+   for g:PackedVector2Array in grown:
+    if Field._area(g)<=0:continue
+    for back:PackedVector2Array in Geometry2D.offset_polygon(g,-.06,Geometry2D.JOIN_MITER):
+     if Field._area(back)>0:pieces.append(back)
+   if pieces.is_empty():closed.append(poly)
+   else:closed.append_array(pieces)
+  polygons=closed
   polygons.append_array(holes)
   regions[h]=polygons
  field.rim_regions=regions
@@ -85,12 +116,16 @@ static func apply(field,columns:Array,assets:Dictionary,fit_core_to_feet:bool=fa
  # outline without deleting faces, so the backing remains connected.
  var original=field.surfaces.cliff
  var result:=Surface.new()
+ var tucked:Dictionary={}
  for i in range(0,original.vertices.size(),3):
-  var a:=_tuck_shoulder(original.vertices[i],regions,original.uv[i].x)
-  var b:=_tuck_shoulder(original.vertices[i+1],regions,original.uv[i+1].x)
-  var c:=_tuck_shoulder(original.vertices[i+2],regions,original.uv[i+2].x)
+  var points:Array[Vector3]=[]
+  for j:int in 3:
+   var point:Vector3=original.vertices[i+j]
+   var key:=Vector4(point.x,point.y,point.z,original.uv[i+j].x)
+   if not tucked.has(key):tucked[key]=_tuck_shoulder(point,regions,key.w)
+   points.append(tucked[key])
   var start:=result.vertices.size()
-  result.triangle(a,b,c,Color.WHITE)
+  result.triangle(points[0],points[1],points[2],Color.WHITE)
   for k in range(start,result.vertices.size()):
    result.colors[k]=original.colors[i+k-start]
    result.uv[k]=original.uv[i+k-start]
@@ -109,10 +144,11 @@ static func apply(field,columns:Array,assets:Dictionary,fit_core_to_feet:bool=fa
       on_body=minf(on_body,mid.distance_to(Geometry2D.get_closest_point_to_segment(mid,crown.polygon[j],crown.polygon[j+1])))
     if near>1.5 or on_body<.002:continue
     var start:=result.vertices.size()
-    result.quad(Vector3(a.x,h,a.y),Vector3(a.x,h-.70,a.y),Vector3(b.x,h-.70,b.y),Vector3(b.x,h,b.y),Color.WHITE)
+    result.quad(Vector3(a.x,h,a.y),Vector3(a.x,h-1.55,a.y),Vector3(b.x,h-1.55,b.y),Vector3(b.x,h,b.y),Color.WHITE)
     for j in range(start,result.vertices.size()):result.uv[j]=Vector2(h,1.0)
- preload("res://scripts/terrain_editor/block_mantle.gd").close_base(result,field.land_regions)
- var mantle=preload("res://scripts/terrain_editor/block_mantle.gd").build(result,regions)
+ var source_cells:Dictionary=field.source.cells if field.source!=null else {}
+ preload("res://scripts/terrain_editor/block_mantle.gd").close_base(result,field.land_regions,Callable(),NAN,source_cells)
+ var mantle=preload("res://scripts/terrain_editor/block_mantle.gd").build(result,regions,source_cells)
  if fit_core_to_feet and not columns.is_empty() and not field.land_regions.is_empty():
   var lowest:float=field.land_regions.keys().min()
   # Fit the final backing after normal-based recession, so the protected
@@ -120,11 +156,11 @@ static func apply(field,columns:Array,assets:Dictionary,fit_core_to_feet:bool=fa
   preload("res://scripts/terrain_editor/support_core_envelope.gd").apply(mantle.backing,columns,assets,field.land_regions[lowest])
  if blend_core_joints and not columns.is_empty():
   preload("res://scripts/terrain_editor/core_joint_blend.gd").apply(mantle.backing,field,columns,assets)
- # Rim reconstruction emits flat faces. Restore smooth shallow joins on
- # the continuous core while preserving real cliff/floor corner breaks.
- var core_mesh:ArrayMesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(mantle.backing.mesh(),42.0,1.0)
+ # Rim reconstruction emits flat faces. Keep crisp planar facets on the keel
+ # and lower backing with only minimal seam softening.
+ var core_mesh:ArrayMesh=preload("res://scripts/terrain_editor/stone_normals.gd").soften(mantle.backing.mesh(),14.0,.22)
  if core_mesh.get_surface_count()>0:
-  mantle.backing.normals=core_mesh.surface_get_arrays(0)[Mesh.ARRAY_NORMAL]
+  mantle.backing.normals=preload("res://scripts/terrain_editor/chunk_geometry.gd").arrays_of(core_mesh,0)[Mesh.ARRAY_NORMAL]
  field.surfaces.cliff=mantle.backing
  field.surfaces.stone_mantle=mantle.stone
  field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_surface_detail.gd").lip(regions,crowns,assets)
@@ -148,7 +184,7 @@ static func _union(polygons:Array,addition:PackedVector2Array)->void:
 static func _tuck_shoulder(point:Vector3,regions:Dictionary,h:float)->Vector3:
  # Use this face's own cap height: newly added lower levels elsewhere must
  # not retuck an unchanged upper cliff against a different terrace's outline.
- if not regions.has(h) or point.y<h-.70 or point.y>h+.001:return point
+ if not regions.has(h) or point.y<h-1.65 or point.y>h+.001:return point
  var p:=Vector2(point.x,point.z)
  if Field.contains(regions[h],p):return point
  var distance:=INF;var closest:=p;var inward:=Vector2.ZERO
@@ -161,5 +197,7 @@ static func _tuck_shoulder(point:Vector3,regions:Dictionary,h:float)->Vector3:
    if d<distance:
     distance=d;closest=q;inward=Vector2(a.y-b.y,b.x-a.x).normalized()
  if distance<2.25:
-  point.x=closest.x+inward.x*.045;point.z=closest.y+inward.y*.045
+  var w:=smoothstep(h-1.65,h-1.15,point.y)
+  var target:=closest+inward*.045
+  point.x=lerpf(point.x,target.x,w);point.z=lerpf(point.z,target.y,w)
  return point

@@ -1,0 +1,41 @@
+{
+  "scope": "Only nine production visual sources changed in this task; excludes capture/testing/docs and all pre-existing work. Reverse only after checking after_sha256. No rollback applied.",
+  "files": {
+    "scripts/terrain_editor/procedural_shard.gd": {
+      "before_sha256": "04487b76e79e7a6e757bdbfaa3911848cc2dcf27800b845f1b23f0396fcfe9eb",
+      "after_sha256": "c488af2c531a6bbc99fc0a306588a5390f5e9c88c61e6088f6df5f93ea37fa45"
+    },
+    "scripts/terrain_editor/terrain_decoration.gd": {
+      "before_sha256": "326e6c67b9827841bfc3c58fb4906a8bff10003dd8929ae4af01cade4159f35b",
+      "after_sha256": "34118d7d5190d558b3ffafa51363a84e3d1b443e986ca35f2708a7284ef89a57"
+    },
+    "shaders/terrain_editor/cliff_column.gdshader": {
+      "before_sha256": "fc774fabe985084f86e1da283342963948e8fe49214a22d03a340f93e55b3baf",
+      "after_sha256": "9ff43f18fc93af0705bb66f21236ec6a33fbad6ddba5122f7f02b34730bbc8de"
+    },
+    "shaders/terrain_editor/cliff.gdshader": {
+      "before_sha256": "4a14a8587bb63b5bd17c4f8dab96fa2cf7c502bf5c4c008fc27ea89750b22061",
+      "after_sha256": "f82b00ef926fc7ec17ca929551f43ae807db2b4694c87a1091cebe0ddbbdbe6c"
+    },
+    "scripts/terrain_editor/terrain_environment.gd": {
+      "before_sha256": "929211f2653c226ac6434a8969fe1cfcf1b122ec4a7719b1b092011cc3311769",
+      "after_sha256": "308bd71a55f60bfa1e47c8c820fd2b65fb3d176c16cf6c33c18e9d6b0353e984"
+    },
+    "scripts/gameplay/systems/time_solar_system.gd": {
+      "before_sha256": "8be8878ad44f28da4b9c46b20c164e248f6e18f0573a7c05cf8a7fbb0fa9ae0b",
+      "after_sha256": "07cc6bdf6af803597b0532837f776f50eb8fdcf0a7a5479b1c4ad5cb631cf6df"
+    },
+    "scripts/terrain_editor/grass_field.gd": {
+      "before_sha256": "98277229ae4d7b04ab38b9172a6e9f7cc5db5b48dcfc6aec6f6fac698ee824d2",
+      "after_sha256": "242936ab5fca6e227be15dda962847a00ea3ac678db843076b2277860cb8bde4"
+    },
+    "shaders/terrain_editor/ground.gdshader": {
+      "before_sha256": "17b34cacae13de6ac6eb091fa1cf865c12de4af05e1f92b2f64a8434774653f6",
+      "after_sha256": "9ffe76b3afcb9f786dadd6e6288940f84a377deac26db10fbfa1cb07d9cbec3b"
+    },
+    "shaders/terrain_editor/water.gdshader": {
+      "before_sha256": "6a39f0a69c88a583df2d8a3ecb37e0ed858985f9eba99d5341b1fcca4df1c03a",
+      "after_sha256": "a92aeefbdaf672975ac5b54d771b4bd0a92f597561acdcf9a67ea411479ac44e"
+    }
+  }
+}

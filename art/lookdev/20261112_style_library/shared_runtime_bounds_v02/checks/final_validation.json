@@ -1,0 +1,166 @@
+{
+  "valid": true,
+  "red_old_package_gap_reproduced": true,
+  "old_package_and_original_proof_preserved": true,
+  "all_original_source_files_sha256_unchanged": {
+    "asset.blend": "aa1e679a825acfc4771dcb66ef3d8310947205764922150939f65023dc8aefc1",
+    "lod0.glb": "4536e8c7cc31c86e901df994488dfb0a76c03f5000347c82f7a15e038928d935",
+    "lod1.glb": "e0bc25bb5cd5202ea6869475ab8966603e466cb2ca1122157703a1a6764c9812",
+    "lod2.glb": "1b049027ab6abbc68d59da04b5dea21dba6fb4e92c01a963bae197ebc5696271",
+    "process_report.json": "bfb340a56b98c7973ac70865b59ee80c121655fdde0cf4d642c4b3c49cdf68e6",
+    "uv_texture_validation.json": "4286cb74f27fb24f90e33b39dfd26a7c3c104a2a15cab2ba1bf537867d6e100b"
+  },
+  "old_vs_new_mesh_arrays_uv_transforms_material_pixels_and_ranges_identical": true,
+  "only_prefab_bounds_alignment_and_compiler_validation_changed": true,
+  "prefab_attached_scripts": 0,
+  "new_common_reference": {
+    "aabb_coverage_numeric_tolerance_m": 1.41970932483673e-06,
+    "actual_distance_reference_m": [
+      0.000645041465759277,
+      0.5,
+      -0.000395148992538452
+    ],
+    "all_lods_covered_by_common_aabb": true,
+    "common_root_aabb": {
+      "center": [
+        0.000645041465759277,
+        0.5,
+        -0.000395148992538452
+      ],
+      "position": [
+        -0.342020094394684,
+        0.0,
+        -0.369819283485413
+      ],
+      "size": [
+        0.685330271720886,
+        1.0,
+        0.738848268985748
+      ]
+    },
+    "equal_distance_boundary_policy": "Godot 4.7 strict hidden tests dist>end and dist<begin retain both adjacent LODs at exact equality; zero-thickness double render is preserved and documented, no runtime script",
+    "exact_same_center_all_lods": true,
+    "finite_offset_directional_samples": 120,
+    "finite_offset_gap_or_overlap": false,
+    "lod_aabbs": [
+      {
+        "local_custom_aabb": {
+          "center": [
+            0.000645041465759277,
+            0.5,
+            -0.000395148992538452
+          ],
+          "position": [
+            -0.342020094394684,
+            0.0,
+            -0.369819283485413
+          ],
+          "size": [
+            0.685330271720886,
+            1.0,
+            0.738848268985748
+          ]
+        },
+        "transformed_aabb": {
+          "center": [
+            0.000645041465759277,
+            0.5,
+            -0.000395148992538452
+          ],
+          "position": [
+            -0.342020094394684,
+            0.0,
+            -0.369819283485413
+          ],
+          "size": [
+            0.685330271720886,
+            1.0,
+            0.738848268985748
+          ]
+        }
+      },
+      {
+        "local_custom_aabb": {
+          "center": [
+            0.000645041465759277,
+            0.5,
+            -0.000395148992538452
+          ],
+          "position": [
+            -0.342020094394684,
+            0.0,
+            -0.369819283485413
+          ],
+          "size": [
+            0.685330271720886,
+            1.0,
+            0.738848268985748
+          ]
+        },
+        "transformed_aabb": {
+          "center": [
+            0.000645041465759277,
+            0.5,
+            -0.000395148992538452
+          ],
+          "position": [
+            -0.342020094394684,
+            0.0,
+            -0.369819283485413
+          ],
+          "size": [
+            0.685330271720886,
+            1.0,
+            0.738848268985748
+          ]
+        }
+      },
+      {
+        "local_custom_aabb": {
+          "center": [
+            0.000645041465759277,
+            0.5,
+            -0.000395148992538452
+          ],
+          "position": [
+            -0.342020094394684,
+            0.0,
+            -0.369819283485413
+          ],
+          "size": [
+            0.685330271720886,
+            1.0,
+            0.738848268985748
+          ]
+        },
+        "transformed_aabb": {
+          "center": [
+            0.000645041465759277,
+            0.5,
+            -0.000395148992538452
+          ],
+          "position": [
+            -0.342020094394684,
+            0.0,
+            -0.369819283485413
+          ],
+          "size": [
+            0.685330271720886,
+            1.0,
+            0.738848268985748
+          ]
+        }
+      }
+    ],
+    "maximum_pairwise_center_delta_m": 0.0,
+    "official_source": "https://github.com/godotengine/godot/blob/4.7-stable/servers/rendering/renderer_scene_cull.cpp",
+    "valid": true
+  },
+  "native_finite_offset_cases_passed": 120,
+  "native_total_cases": 140,
+  "native_exact_equality_double_render_cases": 18,
+  "remaining_boundary": "Exact same distance can draw both adjacent LODs; zero radial thickness, no runtime workaround added.",
+  "old_compile_report_sha256": "5eb935675e7bd4604dfdb938e9861c48aea78609dc67edc045dc422b79bf66e1",
+  "new_compile_report_sha256": "d78d706e40ba2c170f8ca29963c6decaa1e4deac9727cace0d110e3b0b9a45ce",
+  "native_process": "exit 0; self-terminated"
+}

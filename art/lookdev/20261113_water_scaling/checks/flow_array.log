@@ -1,0 +1,95 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ok: continuous conservative water solver exists
+ok: legacy water plane minus bed defines initial volume
+ok: legacy integer flag becomes an absolute initial surface
+ok: authored dry cells start empty
+ok: initial total is the sum of cell volumes
+ok: configuration resets discharged volume
+ok: configure and step leave authoritative terrain records untouched
+ok: optional continuous volume overrides the legacy plane
+ok: optional volume preserves water received by authored-dry terrain
+ok: continuous initialization does not snap to half metres
+ok: different initial water surfaces remain distinct basins
+ok: bounded transfer decreases the donor volume
+ok: the same transfer increases the receiver without instant large-pool merging
+ok: the donor loses exactly the volume received downstream
+ok: one closed-domain tick conserves total water
+ok: one flowing internal edge publishes one transfer
+ok: transfer endpoints point from donor to receiver
+ok: reported rate integrates to the actual transferred volume
+ok: flow metadata retains upstream and downstream surfaces
+ok: long closed-domain evolution preserves total water
+ok: unequal connected pools reach their volume-derived common level
+ok: leveled pool cells expose exactly the same surface height
+ok: leveled cells expose one basin with its conserved volume
+ok: high surrounding beds keep the closed-domain discharge at zero
+ok: inflow propagates to a remote cell of an existing flat basin
+ok: inflow raises an existing basin as one level
+ok: incoming basin water is taken from the upstream pool
+ok: a substantial waterfall drop remains separate during transfer
+ok: basin inflow redistribution conserves the entire closed volume
+ok: flow into island void decreases retained water
+ok: void outflow records discharged water
+ok: retained plus discharged water remains conserved
+ok: all four exposed edges can discharge conservatively
+ok: void transfer metadata uses null destinations and finite positive rates
+ok: long open-domain evolution preserves retained plus discharged volume
+ok: tiny positive depths are retained without an arbitrary dry cutoff
+ok: tiny-volume evolution also conserves water
+ok: reconfiguration clears the previous simulation and discharge
+ok: a dry island never creates water
+ok: a dry island has no artificial basins or flows
+ok: a bed above the water surface blocks flow
+ok: blocked water remains in its closed source cell
+ok: unchanged sync preserves live donor and receiver volumes
+ok: unchanged sync preserves current visual flow metadata
+ok: explicit persistence writes the current continuous donor volume
+ok: persisting live volumes preserves current visual flow metadata
+ok: persisted solver values are baseline updates rather than refill commands
+ok: a bed raise with legacy automatic dry marker retains its displaced water
+ok: raised-bed water exposes the displaced absolute surface
+ok: bed elevation editing creates or deletes no water
+ok: an explicit changed volume resets only its author-edited cell
+ok: volume authoring preserves an unrelated live donor
+ok: an explicit dry edit removes the affected cell volume
+ok: newly added dry terrain starts empty below existing water elevations
+ok: deleted terrain discharges exactly its existing water
+ok: syncing a different dataset starts its own independent volume state
+ok: raising a flat-pool bed preserves basin volume
+ok: a raised bed leaves the flat basin and displaces its water into lower members
+ok: lowering a bed lowers surface while preserving existing water
+ok: newly opened low terrain receives existing water
+ok: opening a closed basin redistributes water without adding any
+ok: zero negative and nonfinite deltas leave the simulation finite and unchanged
+ok: large frame gaps use bounded substeps with finite conservative outputs
+ok: bounded integration matches the same duration split across normal ticks
+ok: cell insertion order does not change deterministic water results
+ok: invalid optional depths cannot introduce nonfinite or negative water
+ok: simultaneous outlets share a bounded donor budget without negative water
+ok: scaled outlet metadata integrates to exactly the exhausted donor budget
+ok: a falling basin dries its higher bed while retaining lower water
+ok: dry-member removal during discharge preserves retained plus discharged water
+ok: topology deletion splits old basins before changed beds can move water across the gap
+ok: basin splitting discharges only water on deleted terrain
+ok: a changed legacy plane authors only that cell when no volume override exists
+ok: added authored-wet terrain initializes from its own bed and plane
+ok: volume-derived leveling dries a bridge above the new common surface
+ok: a bridge dried during configuration produces two physically connected basins
+ok: each side of a dried bridge exposes its own cells and volume
+ok: stationary pools retain correct separation and volume after a bridge dries
+ok: raising a bridge above the old pool displaces its water and leaves a dry barrier
+ok: raised-bridge water shares between adjacent pools without transferring existing water across the dry barrier
+ok: lowering one separated bed changes only its pool surface
+ok: bed-created partitions expose independent conserved basins
+ok: separated closed pools retain their own water after subsequent simulation
+ok: a normal 0.1 second tick executes four substeps without a floating-point dust fifth step
+ok: every scheduled normal-tick substep remains positive and bounded
+ok: a genuinely tiny positive delta is advanced in full
+ok: actual preset 0 conserves retained plus discharged volume
+ok: actual preset 0 basin levels and volumes match consumer-facing cell data
+ok: actual preset 1 conserves retained plus discharged volume
+ok: actual preset 1 basin levels and volumes match consumer-facing cell data
+ok: actual preset 2 conserves retained plus discharged volume
+ok: actual preset 2 basin levels and volumes match consumer-facing cell data
+WATER FLOW: 92 checks, 0 failures

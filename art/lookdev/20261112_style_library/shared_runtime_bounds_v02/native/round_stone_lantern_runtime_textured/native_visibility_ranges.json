@@ -1,0 +1,1983 @@
+{
+	"boundaries_m": [
+		4.0,
+		10.0
+	],
+	"directions": 10,
+	"exact_boundary_note": "Strict Godot end/begin exclusion permits both meshes at exact equality. This zero-thickness overlap is documented, not hidden or corrected with runtime scripting.",
+	"finite_gap_or_overlap_detected": false,
+	"finite_offset_samples": 120,
+	"measurement": "native SubViewport RENDER_INFO_OBJECTS_IN_FRAME, visible pass; one-LOD baseline calibrated at 3×span; no material overrides or runtime scripts",
+	"minimum_nonzero_offset_m": 0.00001,
+	"native_exact_distance_double_render_samples": 18,
+	"records": [
+		{
+			"actual_distance_m": 3.98999977111816,
+			"boundary_m": 4.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99900007247925,
+			"boundary_m": 4.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99998998641968,
+			"boundary_m": 4.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"image": "threshold0_before.png",
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.0,
+			"boundary_m": 4.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 2,
+			"image": "threshold0_equal.png",
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00001001358032,
+			"boundary_m": 4.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"image": "threshold0_after.png",
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99000024795532,
+			"boundary_m": 4.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99900007247925,
+			"boundary_m": 4.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99998998641968,
+			"boundary_m": 4.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.0,
+			"boundary_m": 4.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00001001358032,
+			"boundary_m": 4.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99000000953674,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99900007247925,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99999022483826,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.0,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00001001358032,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99000000953674,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99900007247925,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99998998641968,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.0,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00001001358032,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99000024795532,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99900007247925,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99998998641968,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.0,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00000953674316,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.9900004863739,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99900007247925,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99999022483826,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.0,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00001001358032,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99000024795532,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99900007247925,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99998998641968,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.0,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00000953674316,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.9900004863739,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99900007247925,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99999022483826,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.0,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00001001358032,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.98999977111816,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99899983406067,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99998998641968,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99999952316284,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00001001358032,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00999975204468,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.98999977111816,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99899983406067,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.9999897480011,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 3.99999976158142,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00000953674316,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.00099992752075,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 4.01000022888184,
+			"boundary_m": 4.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899959564209,
+			"boundary_m": 10.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"image": "threshold1_before.png",
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 2,
+			"image": "threshold1_equal.png",
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"image": "threshold1_after.png",
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0010004043579,
+			"boundary_m": 10.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100002288818,
+			"boundary_m": 10.0,
+			"direction": [
+				1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899959564209,
+			"boundary_m": 10.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0010004043579,
+			"boundary_m": 10.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100002288818,
+			"boundary_m": 10.0,
+			"direction": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899959564209,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0010004043579,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100002288818,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				-1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899959564209,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0010004043579,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100002288818,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.0,
+				1.0
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899959564209,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0010004043579,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100011825562,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899959564209,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0010004043579,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100011825562,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				0.174077659845352,
+				0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899959564209,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0010004043579,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100011825562,
+			"boundary_m": 10.0,
+			"direction": [
+				0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899959564209,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0010004043579,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100011825562,
+			"boundary_m": 10.0,
+			"direction": [
+				-0.696310639381409,
+				-0.174077659845352,
+				-0.696310639381409
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899864196777,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0009994506836,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100002288818,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.98999977111816,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.01,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99899864196777,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 9.99999046325684,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": -0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 2,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.0,
+			"render_objects": 2,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0000095367432,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.00001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0009994506836,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.001,
+			"render_objects": 1,
+			"valid": true
+		},
+		{
+			"actual_distance_m": 10.0100002288818,
+			"boundary_m": 10.0,
+			"direction": [
+				0.0,
+				-0.995037138462067,
+				0.099503718316555
+			],
+			"expected_visible_lods": 1,
+			"objects_per_single_lod": 1,
+			"offset_m": 0.01,
+			"render_objects": 1,
+			"valid": true
+		}
+	],
+	"same_actual_materials_and_meshes": true,
+	"valid": true
+}

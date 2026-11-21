@@ -1,0 +1,2087 @@
+--- a/scripts/terrain_editor/block_mantle.gd
++++ b/scripts/terrain_editor/block_mantle.gd
+@@ -70,7 +70,7 @@
+    # different terraces. The lowest cap protects the receiving endpoint;
+    # face-local heights split the backing apart at high/low wall junctions.
+    var cap:float=shared_caps[point_key]
+-   var recess:=0.0 if base_vertices.has(point_key) else .68*smoothstep(.45,1.25,cap-p.y)*smoothstep(-3.8,-1.4,p.y)
++   var recess:=0.0 if base_vertices.has(point_key) else .68*smoothstep(.45,1.25,cap-p.y)*lerpf(.22,1.0,smoothstep(-4.0,-1.4,p.y))
+    # A terrace wall must stay seated on its receiving land or pond. Full
+    # normal recession lifts its exposed foot away from that cap and can
+    # pull it below the water, opening a view into the island's underside.
+@@ -86,7 +86,7 @@
+   # island shell so the entire underside converges as one unified carved rock mountain!
+   if not cells.is_empty() and cells.size()<=6:continue
+   if base or normal.y<-.78:continue
+-  var poly:=_clip(inset,Vector3.UP,h-2.15)
++  var poly:=_clip(inset,Vector3.UP,minf(h-2.15,-0.45))
+   poly=_clip(poly,Vector3.DOWN,4.5-h)
+   if poly.size()<3:continue
+   var box:=AABB(poly[0],Vector3.ZERO)
+@@ -119,7 +119,29 @@
+      patches[key].append(piece)
+      caps[key]=minf(caps.get(key,INF),h)
+  for key:Vector3i in patches:
+-  var pieces:Array=patches[key]
++  var raw_pieces:Array=patches[key]
++  var seed_n:=Vector3.ZERO
++  var seed_c:=Vector3.ZERO
++  var best_w:=-1.0
++  for poly:Array in raw_pieces:
++   var pn:=Vector3.ZERO;var pc:=Vector3.ZERO;var pw:=0.0
++   for j in range(1,poly.size()-1):
++    var cr:Vector3=-(poly[j]-poly[0]).cross(poly[j+1]-poly[0])
++    var w:=cr.length()
++    pn+=cr;pc+=(poly[0]+poly[j]+poly[j+1])/3.0*w;pw+=w
++   if pw>best_w and pn.length_squared()>.00001:
++    best_w=pw;seed_n=pn.normalized();seed_c=pc/pw
++  if best_w<=0.0:continue
++  var pieces:Array=[]
++  for poly:Array in raw_pieces:
++   var pn:=Vector3.ZERO;var pc:=Vector3.ZERO;var pw:=0.0
++   for j in range(1,poly.size()-1):
++    var cr:Vector3=-(poly[j]-poly[0]).cross(poly[j+1]-poly[0])
++    var w:=cr.length()
++    pn+=cr;pc+=(poly[0]+poly[j]+poly[j+1])/3.0*w;pw+=w
++   if pw>.0001 and pn.length_squared()>.00001 and pn.normalized().dot(seed_n)>=.72 and (pc/pw).distance_to(seed_c)<=2.75:
++    pieces.append(poly)
++  if pieces.is_empty():continue
+   var center:=Vector3.ZERO;var normal:=Vector3.ZERO;var area:=0.0
+   for poly:Array in pieces:
+    for j in range(1,poly.size()-1):
+@@ -128,12 +150,16 @@
+     center+=(poly[0]+poly[j]+poly[j+1])/3.0*weight;normal+=cross;area+=weight
+   if area<.32 or normal.length_squared()<.00001:continue
+   center/=area;normal=normal.normalized()
++  var min_plane_d:=0.0
++  for poly:Array in pieces:
++   for p:Vector3 in poly:min_plane_d=minf(min_plane_d,(p-center).dot(normal))
+   if normal.y<-.85:
+    normal=(normal+Vector3((_hash(Vector3(key)+Vector3(1,4,3))-.5)*.85,0,(_hash(Vector3(key)+Vector3(4,9,8))-.5)*.85)).normalized()
+   var choice:=_hash(Vector3(key)+Vector3(29,11,8))
+   var scale:=.998 if choice<.78 else .972
+-  var offset:=lerpf(-.18,-.04,_hash(Vector3(key)+Vector3(5,11,21)))
+-  if normal.y<-.34:offset=lerpf(-.08,.04,choice)
++  var offset:=lerpf(-.20,-.05,_hash(Vector3(key)+Vector3(5,11,21)))
++  if normal.y<-.34:offset=lerpf(-.10,.02,choice)
++  if min_plane_d<-0.14:offset+=min_plane_d+0.10
+   var depth:=1.55+choice*.95
+   var body:=Surface.new()
+   var tv:=.94+choice*.12
+@@ -153,6 +179,9 @@
+    for j in hull.size():
+     var previous:=hull[(j+hull.size()-1)%hull.size()];var following:=hull[(j+1)%hull.size()]
+     if hull[j].distance_to(Geometry2D.get_closest_point_to_segment(hull[j],previous,following))<.004:
++     hull.remove_at(j);changed=true;break
++    var e1:=(previous-hull[j]).normalized();var e2:=(following-hull[j]).normalized()
++    if e1.dot(e2)>0.82:
+      hull.remove_at(j);changed=true;break
+   var rect:=Rect2(hull[0],Vector2.ZERO)
+   for p:Vector2 in hull:rect=rect.expand(p)
+
+--- /dev/null
++++ b/scripts/terrain_editor/cliff_rim_balding.gd
+@@ -0,0 +1,228 @@
++class_name CliffRimBalding
++extends RefCounted
++## Deterministic world-anchored cliff-into-turf encroachment ("石壁反向露岩与稀疏秃草坪").
++## Along ~35% of dry cliff rims (especially hard convex headland corners), cliff rock
++## bites 0.4m–0.8m back into the lawn surrounded by a 0.6m–1.45m sparse balding turf halo.
++const Data = preload("res://scripts/terrain_editor/terrain_data.gd")
++const Contours = preload("res://scripts/terrain_editor/contour_terrain.gd")
++const Paths = preload("res://scripts/terrain_editor/terrain_paths.gd")
++const STEP := 0.5
++const MAX_INLAND := 2.1
++
++static var _cached_sig: String = ""
++static var _cached_result: Dictionary = {}
++
++static func _hash2(x: float, y: float) -> float:
++	return fposmod(sin(x * 127.1 + y * 311.7) * 43758.5453, 1.0)
++
++static func _noise2(p: Vector2) -> float:
++	var i := p.floor()
++	var f := p - i
++	var ux := f.x * f.x * f.x * (f.x * (f.x * 6.0 - 15.0) + 10.0)
++	var uy := f.y * f.y * f.y * (f.y * (f.y * 6.0 - 15.0) + 10.0)
++	var a := _hash2(i.x, i.y)
++	var b := _hash2(i.x + 1.0, i.y)
++	var c := _hash2(i.x, i.y + 1.0)
++	var d := _hash2(i.x + 1.0, i.y + 1.0)
++	return lerpf(lerpf(a, b, ux), lerpf(c, d, ux), uy)
++
++static func _path_dist(p: Vector2) -> float:
++	var best := 1000.0
++	var pts: Array = Paths.POINTS
++	for i in pts.size() - 1:
++		best = minf(best, p.distance_to(Geometry2D.get_closest_point_to_segment(p, pts[i], pts[i + 1])))
++	return best
++
++## Smooth world-space envelope [0..1] selecting which stretches of cliff rim become
++## wind-scoured balding / exposed-rock transitions (~35% of dry cliff perimeter).
++static func bald_wave(p: Vector2) -> float:
++	var r1 := Vector2(p.x * 0.80 + p.y * 0.60, -p.x * 0.60 + p.y * 0.80)
++	var r2 := Vector2(-p.x * 0.44 + p.y * 0.90, -p.x * 0.90 - p.y * 0.44)
++	var macro := _noise2(r1 * 0.145 + Vector2(5.7, 2.3)) * 0.66 + _noise2(r2 * 0.31 + Vector2(11.4, 7.9)) * 0.34
++	var detail := _noise2(r1 * 0.68 + Vector2(2.1, 9.4)) * 0.60 + _noise2(r2 * 1.55 + Vector2(8.3, 3.6)) * 0.40
++	return clampf(smoothstep(0.60, 0.79, macro + (detail - 0.5) * 0.18), 0.0, 1.0)
++
++static func edge_baldness(p: Vector2) -> float:
++	var path_keep := smoothstep(0.95, 1.65, _path_dist(p))
++	return bald_wave(p) * path_keep
++
++static func build(data: Data, field) -> Dictionary:
++	if data == null or field == null or field.lawn_boundaries.is_empty():
++		return {}
++	var lo_cell := Vector2i(1025, 1025)
++	var hi_cell := Vector2i(-1025, -1025)
++	var sig_parts := PackedStringArray([str(data.seed)])
++	for cell: Vector2i in data.cells:
++		var rec: Dictionary = data.cells[cell]
++		lo_cell = lo_cell.min(cell)
++		hi_cell = hi_cell.max(cell)
++		sig_parts.append("%d,%d:%.2f,%d" % [cell.x, cell.y, float(rec.height), int(rec.water)])
++	if lo_cell.x > hi_cell.x:
++		return {}
++	var sig := "|".join(sig_parts)
++	if sig == _cached_sig and not _cached_result.is_empty():
++		return _cached_result
++
++	# Collect dry cliff drop segments (exterior rims + dry interior cliffs >= 1.15m) in 4m buckets:
++	var buckets: Dictionary = {}
++	var segs: Array = []
++	for key in field.lawn_boundaries:
++		var h: float = float(key)
++		var loops: Array = field.lawn_boundaries[key]
++		for loop: PackedVector2Array in loops:
++			var n := loop.size()
++			if n < 3:
++				continue
++			# Signed area > 0 means outer boundary of this terrace level:
++			var area := 0.0
++			for i in n:
++				area += loop[i].cross(loop[(i + 1) % n])
++			if area <= 0.0:
++				continue
++			for i in n:
++				var a: Vector2 = loop[i]
++				var b: Vector2 = loop[(i + 1) % n]
++				if a.distance_squared_to(b) < 0.0004:
++					continue
++				var seg_len := a.distance_to(b)
++				var dir := (b - a) / seg_len
++				var out := Vector2(dir.y, -dir.x)
++				var mid := (a + b) * 0.5
++				var probe: Dictionary = field.surface_at(mid + out * 0.42)
++				if not probe.is_empty():
++					continue
++				# Convex corner sharpness boost at endpoints:
++				var prev_p: Vector2 = loop[(i - 1 + n) % n]
++				var next_p: Vector2 = loop[(i + 2) % n]
++				var d_prev := (a - prev_p).normalized()
++				var d_next := (next_p - b).normalized()
++				var turn_a := maxf(0.0, d_prev.cross(dir))
++				var turn_b := maxf(0.0, dir.cross(d_next))
++				var corner := clampf(maxf(turn_a, turn_b) * 1.15, 0.0, 1.0)
++				var idx := segs.size()
++				segs.append([a, b, h, corner])
++				var b_lo := Vector2i(floori((minf(a.x, b.x) - MAX_INLAND) / 4.0), floori((minf(a.y, b.y) - MAX_INLAND) / 4.0))
++				var b_hi := Vector2i(floori((maxf(a.x, b.x) + MAX_INLAND) / 4.0), floori((maxf(a.y, b.y) + MAX_INLAND) / 4.0))
++				for bz in range(b_lo.y, b_hi.y + 1):
++					for bx in range(b_lo.x, b_hi.x + 1):
++						var bk := Vector2i(bx, bz)
++						if not buckets.has(bk):
++							buckets[bk] = PackedInt32Array()
++						buckets[bk].append(idx)
++
++	var origin := Vector2(lo_cell.x - 2, lo_cell.y - 2)
++	var extent := Vector2(hi_cell.x - lo_cell.x + 5, hi_cell.y - lo_cell.y + 5)
++	var w_px := maxi(2, int(round(extent.x / STEP)))
++	var h_px := maxi(2, int(round(extent.y / STEP)))
++	var img := Image.create(w_px, h_px, false, Image.FORMAT_RGBA8)
++	img.fill(Color(0, 0, 0, 0))
++
++	var sorted_levels: Array = field.lawn_boundaries.keys()
++	sorted_levels.sort()
++	sorted_levels.reverse()
++
++	for py in h_px:
++		var wz := origin.y + (float(py) + 0.5) * STEP
++		for px in w_px:
++			var wx := origin.x + (float(px) + 0.5) * STEP
++			var p := Vector2(wx, wz)
++			var bk := Vector2i(floori(wx / 4.0), floori(wz / 4.0))
++			if not buckets.has(bk):
++				continue
++			var sh := NAN
++			for h_k in sorted_levels:
++				if Contours.contains(field.lawn_boundaries[h_k], p):
++					sh = float(h_k)
++					break
++			var on_lip_outside := is_nan(sh)
++			var best_d := MAX_INLAND
++			var best_corner := 0.0
++			var best_h := NAN
++			for idx: int in buckets[bk]:
++				var s: Array = segs[idx]
++				var seg_h := float(s[2])
++				if not on_lip_outside and absf(seg_h - sh) > 0.22:
++					continue
++				var cp := Geometry2D.get_closest_point_to_segment(p, s[0], s[1])
++				var d := p.distance_to(cp)
++				if on_lip_outside:
++					if d > 1.55:
++						continue
++				if d < best_d:
++					best_d = d
++					best_corner = float(s[3])
++					best_h = seg_h
++			if best_d >= MAX_INLAND or is_nan(best_h):
++				continue
++			if on_lip_outside:
++				sh = best_h
++				best_d = 0.0
++			# Suppress near water banks and footpath:
++			var water_near := false
++			for wl: int in field.water_regions:
++				if absf(wl * 0.5 - sh) > 0.6:
++					continue
++				for wloop: PackedVector2Array in field.water_regions[wl]:
++					for wi in wloop.size():
++						if p.distance_to(Geometry2D.get_closest_point_to_segment(p, wloop[wi], wloop[(wi + 1) % wloop.size()])) < 1.35:
++							water_near = true
++							break
++					if water_near:
++						break
++				if water_near:
++					break
++			if water_near:
++				continue
++			var prox := clampf(1.0 - best_d / MAX_INLAND, 0.0, 1.0)
++			var path_keep := smoothstep(0.85, 1.55, _path_dist(p))
++			prox *= path_keep
++			if prox > 0.004:
++				img.set_pixel(px, py, Color(prox, best_corner, 0.0, 1.0))
++
++	_cached_sig = sig
++	_cached_result = {"image": img, "origin": origin, "extent": extent, "w": w_px, "h": h_px}
++	return _cached_result
++
++static func sample_at(bald_data: Dictionary, p: Vector2) -> Vector2:
++	# Returns Vector2(stone_bite, sparse_turf) in [0..1], matching ground.gdshader.
++	if bald_data.is_empty() or not bald_data.has("image"):
++		return Vector2.ZERO
++	var origin: Vector2 = bald_data.origin
++	var extent: Vector2 = bald_data.extent
++	var uv := (p - origin) / extent
++	if uv.x <= 0.0 or uv.y <= 0.0 or uv.x >= 1.0 or uv.y >= 1.0:
++		return Vector2.ZERO
++	var img: Image = bald_data.image
++	var fx := clampf(uv.x * float(bald_data.w) - 0.5, 0.0, float(bald_data.w - 1))
++	var fy := clampf(uv.y * float(bald_data.h) - 0.5, 0.0, float(bald_data.h - 1))
++	var x0 := int(floor(fx))
++	var y0 := int(floor(fy))
++	var x1 := mini(x0 + 1, int(bald_data.w) - 1)
++	var y1 := mini(y0 + 1, int(bald_data.h) - 1)
++	var tx := fx - float(x0)
++	var ty := fy - float(y0)
++	var c00 := img.get_pixel(x0, y0)
++	var c10 := img.get_pixel(x1, y0)
++	var c01 := img.get_pixel(x0, y1)
++	var c11 := img.get_pixel(x1, y1)
++	var c := c00.lerp(c10, tx).lerp(c01.lerp(c11, tx), ty)
++	var prox := c.r
++	if prox <= 0.01:
++		return Vector2.ZERO
++	var corner := c.g
++	var wave := bald_wave(p)
++	var patch_drive := clampf(wave + corner * 0.16 * smoothstep(0.05, 0.35, wave), 0.0, 1.0)
++	if patch_drive <= 0.14:
++		return Vector2.ZERO
++	var rag := _noise2(p * 1.35 + Vector2(4.2, 7.8)) * 0.62 + _noise2(p * 3.1 - Vector2(2.6, 5.1)) * 0.38
++	var reach := prox * (0.60 + 0.62 * patch_drive) + (rag - 0.5) * 0.24
++	var stone_bite := smoothstep(0.66, 0.84, reach) * smoothstep(0.26, 0.58, patch_drive)
++	var sparse_turf := smoothstep(0.30, 0.66, reach) * smoothstep(0.16, 0.46, patch_drive)
++	return Vector2(stone_bite, sparse_turf)
++
++static func texture_of(result: Dictionary) -> Texture2D:
++	if result.is_empty() or not result.has("image"):
++		return null
++	if not result.has("texture"):
++		result["texture"] = ImageTexture.create_from_image(result.image)
++	return result.texture
+
+--- a/scripts/terrain_editor/contour_terrain.gd
++++ b/scripts/terrain_editor/contour_terrain.gd
+@@ -373,11 +373,57 @@
+ 				surface.polygon(PackedVector2Array([Vector2(left.y,lo),Vector2(right.y,lo),Vector2(right.z,hi),Vector2(left.z,hi)]),height,tint)
+ 			winding=next
+ 
++static func _terrace_step_relief(p:Vector2,height:float,drop:float,band:int)->Dictionary:
++	var u_along:=p.x*.72+p.y*.69
++	var u_cross:=p.x*.69-p.y*.72
++	var w_block:=.5+.5*sin(u_along*1.35+height*1.7)*cos(u_cross*1.15-height*.9)
++	var w_ledge:=.5+.5*sin(p.x*.88-p.y*1.08+height*2.1)
++	var w_tilt:=sin(p.x*.74+p.y*.58+height*1.3)
++	var cap_out:=minf(.245,drop*.21)
++	match band:
++		0:
++			return {"y":height,"out":0.0}
++		1:
++			var y1:=height-drop*(.19+.045*w_tilt)
++			var o1:=clampf(drop*.16,.075,.23)*lerpf(.74,1.02,w_block)
++			return {"y":y1,"out":clampf(o1,0.0,cap_out)}
++		2:
++			var y2:=height-drop*(.58-.055*w_tilt)
++			var o2:=clampf(drop*.155,.055,.235)*lerpf(.55,1.06,w_ledge*.62+(1.0-w_block)*.38)
++			return {"y":y2,"out":clampf(o2,0.0,cap_out)}
++		_:
++			var o3:=clampf(drop*.11,.04,.18)*lerpf(.68,1.0,.5*w_block+.5*w_ledge)
++			return {"y":height-drop-.04,"out":clampf(o3,0.0,minf(.21,drop*.19))}
++
++static func _crease_normals(surface,crease_deg:float=32.0,strength:float=0.40)->void:
++	if surface.normals.size()!=surface.vertices.size():return
++	var cos_lim:=cos(deg_to_rad(crease_deg))
++	var groups:Dictionary={}
++	for i in surface.vertices.size():
++		var p:Vector3=surface.vertices[i]
++		var key:=Vector3i(roundi(p.x*10000.0),roundi(p.y*10000.0),roundi(p.z*10000.0))
++		if not groups.has(key):groups[key]=[]
++		groups[key].append(i)
++	var out_n:=PackedVector3Array();out_n.resize(surface.normals.size())
++	for indices:Array in groups.values():
++		for i:int in indices:
++			var ni:Vector3=surface.normals[i].normalized()
++			var sum:=Vector3.ZERO
++			var seen:Dictionary={}
++			for j:int in indices:
++				var nj:Vector3=surface.normals[j].normalized()
++				if ni.dot(nj)<cos_lim:continue
++				var nk:=Vector3i(roundi(nj.x*10000.0),roundi(nj.y*10000.0),roundi(nj.z*10000.0))
++				if seen.has(nk):continue
++				seen[nk]=true;sum+=nj
++			if sum.length_squared()<.000001:sum=ni
++			out_n[i]=ni.lerp(sum.normalized(),clampf(strength,0.0,1.0)).normalized()
++	surface.normals=out_n
++
+ func close_unclad_dry_steps(columns:Array,assets:Dictionary)->void:
+-	# A dry interior wall owns both authoritative cap endpoints. A neighboring
+-	# wet endpoint may clamp the sculpted backing to its bed, and its normal
+-	# recession can fold a short span away once source cladding is removed.
+-	# Generate the whole uncovered span continuously after that backing pass.
++	# A dry interior wall owns both authoritative cap endpoints. Build sculpted
++	# multi-band faceted rock faces for all uncovered interior terrace steps
++	# within the strict [0, 0.245m] ray envelope so grass lips rest naturally on stone.
+ 	var crowns:Dictionary={}
+ 	for column:Dictionary in columns:
+ 		var height:float=column.pose.origin.y
+@@ -390,20 +436,57 @@
+ 	var seal:=Legacy.Surface.new()
+ 	for height:float in land_regions:
+ 		for loop:PackedVector2Array in land_regions[height]:
+-			for i:int in loop.size():
+-				var a:Vector2=loop[i]
+-				var b:Vector2=loop[(i+1)%loop.size()]
+-				var mid:Vector2=(a+b)*.5
+-				var direction:Vector2=(b-a).normalized()
+-				var outward:=Vector2(direction.y,-direction.x)
++			var n_pts:int=loop.size()
++			if n_pts<3:continue
++			var seg_out:Array[Vector2]=[];seg_out.resize(n_pts)
++			var seg_dry:Array[bool]=[];seg_dry.resize(n_pts)
++			var seg_outer:Array[bool]=[];seg_outer.resize(n_pts)
++			var seg_bot:PackedFloat32Array=PackedFloat32Array();seg_bot.resize(n_pts)
++			for i:int in n_pts:
++				var a:Vector2=loop[i];var b:Vector2=loop[(i+1)%n_pts]
++				var seg_len:=a.distance_to(b)
++				var outward:=Vector2.RIGHT
++				if seg_len>.0001:
++					var dir:=(b-a)/seg_len
++					outward=Vector2(dir.y,-dir.x)
++				seg_out[i]=outward
++				seg_dry[i]=false
++				seg_outer[i]=false
++				seg_bot[i]=height
++				if seg_len<.0001:continue
++				var mid:=(a+b)*.5
+ 				var upper:Dictionary=surface_at(mid-outward*.25)
+ 				var receiver:Dictionary=surface_at(mid+outward*.30)
+-				if upper.is_empty() or receiver.is_empty() or int(upper.water)>=0 or int(receiver.water)>=0:continue
+-				var bottom:float=receiver.height
+-				if absf(float(upper.height)-height)>.01 or height-bottom<.4:continue
+-				# A crown can cover the midpoint while leaving the start of this
+-				# span exposed. Split at actual footprint crossings so only the
+-				# covered intervals skip their continuous wall.
++				seg_outer[i]=receiver.is_empty() and not upper.is_empty()
++				if not upper.is_empty() and not receiver.is_empty() and int(upper.water)<0 and int(receiver.water)<0:
++					var bot:float=float(receiver.height)
++					if absf(float(upper.height)-height)<=.01 and height-bot>=.4:
++						seg_dry[i]=true
++						seg_bot[i]=bot
++			var vert_out:Array[Vector2]=[];vert_out.resize(n_pts)
++			var vert_taper:PackedFloat32Array=PackedFloat32Array();vert_taper.resize(n_pts)
++			for i:int in n_pts:
++				var prev_i:=(i-1+n_pts)%n_pts
++				var o_a:Vector2=seg_out[prev_i];var o_b:Vector2=seg_out[i]
++				var bis:=o_a+o_b
++				if bis.length_squared()>.0001 and o_a.dot(o_b)>-.25:
++					vert_out[i]=bis.normalized()
++				else:
++					vert_out[i]=o_a if (seg_dry[prev_i] and not seg_dry[i]) else o_b
++				if seg_dry[prev_i] and seg_dry[i]:
++					vert_taper[i]=1.0
++				elif (seg_dry[prev_i] and seg_outer[i]) or (seg_dry[i] and seg_outer[prev_i]):
++					# Seal outer-rim T-junction corners without opening dark edge notches or protruding fins.
++					vert_taper[i]=0.68
++				else:
++					vert_taper[i]=0.0
++			for i:int in n_pts:
++				if not seg_dry[i]:continue
++				var ni:int=(i+1)%n_pts
++				var a:Vector2=loop[i];var b:Vector2=loop[ni]
++				var seg_len:=a.distance_to(b)
++				var direction:Vector2=(b-a)/seg_len
++				var outward:Vector2=seg_out[i]
+ 				var cuts:Array[float]=[0.0,1.0]
+ 				var delta:Vector2=b-a
+ 				for crown:PackedVector2Array in crowns.get(height,[]):
+@@ -412,9 +495,10 @@
+ 						if crossing!=null:cuts.append(clampf((Vector2(crossing)-a).dot(delta)/delta.length_squared(),0.0,1.0))
+ 				cuts.sort()
+ 				for interval:int in cuts.size()-1:
+-					if cuts[interval+1]-cuts[interval]<.000001:continue
+-					var left:Vector2=a.lerp(b,cuts[interval])
+-					var right:Vector2=a.lerp(b,cuts[interval+1])
++					var t0:float=cuts[interval];var t1:float=cuts[interval+1]
++					if t1-t0<.000001:continue
++					var left:Vector2=a.lerp(b,t0)
++					var right:Vector2=a.lerp(b,t1)
+ 					var center:Vector2=(left+right)*.5
+ 					var covered:=false
+ 					for crown:PackedVector2Array in crowns.get(height,[]):
+@@ -422,13 +506,48 @@
+ 					if covered:continue
+ 					var local_receiver:Dictionary=surface_at(center+outward*.30)
+ 					if local_receiver.is_empty() or int(local_receiver.water)>=0:continue
+-					var local_bottom:float=local_receiver.height
++					var local_bottom:float=float(local_receiver.height)
+ 					if height-local_bottom<.4:continue
+-					var start:int=seal.vertices.size()
+-					seal.quad(Vector3(left.x,height,left.y),Vector3(left.x,local_bottom,left.y),Vector3(right.x,local_bottom,right.y),Vector3(right.x,height,right.y),Color(.78,.78,.78))
+-					for j:int in range(start,seal.vertices.size()):seal.uv[j]=Vector2(height,1.0)
++					var span_len:float=left.distance_to(right)
++					var drop:float=height-local_bottom
++					var cols:int=maxi(1,ceili(span_len/.68))
++					var end_t0:float=vert_taper[i] if t0<=.001 else 0.0
++					var end_t1:float=vert_taper[ni] if t1>=.999 else 0.0
++					var cols_pts:Array=[]
++					for c_i in cols+1:
++						var f_span:=float(c_i)/float(cols)
++						var t_seg:=lerpf(t0,t1,f_span)
++						var p2:=left.lerp(right,f_span)
++						var n2:Vector2=vert_out[i].lerp(vert_out[ni],t_seg).normalized()
++						if n2.length_squared()<.0001:n2=outward
++						var dist_a:float=f_span*span_len
++						var dist_b:float=(1.0-f_span)*span_len
++						var t_a:float=lerpf(end_t0,1.0,clampf(dist_a/.45,0.0,1.0)) if end_t0<=.99 else 1.0
++						var t_b:float=lerpf(end_t1,1.0,clampf(dist_b/.45,0.0,1.0)) if end_t1<=.99 else 1.0
++						var taper:float=minf(t_a,t_b)
++						var col_rows:Array[Vector3]=[]
++						for band in 4:
++							var st:Dictionary=_terrace_step_relief(p2,height,drop,band)
++							var out_m:float=float(st.out)*taper
++							var align:float=maxf(.45,absf(n2.dot(outward)))
++							out_m=minf(out_m,minf(.245,drop*.21)*align)
++							var q2:=p2+n2*out_m
++							col_rows.append(Vector3(q2.x,float(st.y),q2.y))
++						cols_pts.append(col_rows)
++					for c_i in cols:
++						var c_left:Array=cols_pts[c_i]
++						var c_right:Array=cols_pts[c_i+1]
++						var mid_p:Vector2=left.lerp(right,(float(c_i)+.5)/float(cols))
++						for band in 3:
++							var shade_hash:=sin(floorf(mid_p.x*.65)*1.9+floorf(mid_p.y*.65)*3.1+float(band)*1.1)
++							var v_col:=clampf(.775+.038*shade_hash,.72,.83)
++							var qcol:=Color(v_col,v_col,v_col,1.0)
++							var start:int=seal.vertices.size()
++							seal.quad(c_left[band],c_left[band+1],c_right[band+1],c_right[band],qcol)
++							for j:int in range(start,seal.vertices.size()):
++								seal.uv[j]=Vector2(height,1.0)
+ 	if seal.vertices.is_empty():return
+-	_smooth_normals(seal)
++	_crease_normals(seal,32.0,.38)
+ 	surfaces.cliff.vertices.append_array(seal.vertices)
+ 	surfaces.cliff.normals.append_array(seal.normals)
+ 	surfaces.cliff.colors.append_array(seal.colors)
+
+--- a/scripts/terrain_editor/grass_field.gd
++++ b/scripts/terrain_editor/grass_field.gd
+@@ -4,6 +4,7 @@
+ ## wind-combed clusters, one packed MultiMesh buffer, no RenderingServer readbacks.
+ const Geometry=preload("res://scripts/terrain_editor/chunk_geometry.gd")
+ const PATHS=preload("res://scripts/terrain_editor/terrain_paths.gd")
++const RimBalding=preload("res://scripts/terrain_editor/cliff_rim_balding.gd")
+ ## Roots per square metre. A continuous low meadow supports occasional taller
+ ## rosettes; the density stays even so low patches do not reveal a dotted floor.
+ const DENSITY:=28.0
+@@ -116,7 +117,7 @@
+ 	return best
+ 
+ ## Returns a detached MultiMeshInstance3D (or null) for one chunk's lawn mesh.
+-static func build(lawn:Mesh,chunk:Vector2i,blockers:Array=[])->MultiMeshInstance3D:
++static func build(lawn:Mesh,chunk:Vector2i,blockers:Array=[],bald_data:Dictionary={})->MultiMeshInstance3D:
+ 	if lawn==null or lawn.get_surface_count()==0:return null
+ 	var arrays:Array=Geometry.arrays_of(lawn,0)
+ 	var vertices:PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
+@@ -167,21 +168,30 @@
+ 					if Geometry2D.is_point_in_polygon(p2,blocker as PackedVector2Array):blocked=true;break
+ 				elif p2.distance_squared_to(Vector2(blocker.x,blocker.z))<blocker.y*blocker.y:blocked=true;break
+ 			if blocked:continue
++			var bald:=RimBalding.sample_at(bald_data,p2) if not bald_data.is_empty() else Vector2.ZERO
++			# Clear 3D grass blades cleanly before bare cliff-stone / pale rooted-sod zones begin,
++			# and suppress overhanging lip eyelashes anywhere along balding/exposed cliff rims.
++			if bald.x>=0.06 or bald.y>=0.48:continue
++			if soft_lip_sample and not bald_data.is_empty() and (bald.x>0.015 or bald.y>0.18 or RimBalding.edge_baldness(p2)>0.06):continue
++			var sparse_w:=clampf(bald.y/0.48,0.0,1.0)
++			var bald_scale:=lerpf(1.0,0.56,sparse_w)
++			var bald_h_scale:=lerpf(1.0,0.18,sparse_w)
+ 			var yaw:=_hash(p.x*2.13+p.z*.71,p.z*1.93-p.x*.83,4.0)*TAU
+ 			var drift:=_organic_drift(p.x,p.z)
+ 			var tuft_patch:=pow(smoothstep(.46,.80,_organic_drift(p.x*2.1+1.3,p.z*2.1-2.7)),1.8)
+ 			# One continuous world field gives neighbouring roots a shared stature.
+ 			# Low areas remain grass, rather than holes cut through the ground.
+-			var scale:=lerpf(.88,1.18,_hash(p.z*1.7+p.x*.5,p.x*2.3,5.0))*lerpf(.90,1.35,tuft_patch)*lerpf(.72,1.0,lip_factor)*rim_taper*path_taper
++			var scale:=lerpf(.88,1.18,_hash(p.z*1.7+p.x*.5,p.x*2.3,5.0))*lerpf(.90,1.35,tuft_patch)*lerpf(.72,1.0,lip_factor)*rim_taper*path_taper*bald_scale
+ 			# Lip plants already follow the real slope. Applying the interior
+ 			# slope-height reduction again flattens their visible leaf arches.
+ 			var slope_height_scale:float=1.0 if soft_lip_sample else lerpf(.46,1.0,lip_factor)
+-			var h_scale:=lerpf(.68,1.35,tuft_patch)*lerpf(.88,1.14,_hash(p.x*1.9,p.z*2.1+p.x*.3,6.0))*slope_height_scale*rim_taper*path_taper
+-			if soft_lip_sample:
++			var h_scale:=lerpf(.68,1.35,tuft_patch)*lerpf(.88,1.14,_hash(p.x*1.9,p.z*2.1+p.x*.3,6.0))*slope_height_scale*rim_taper*path_taper*bald_h_scale
++			if soft_lip_sample and sparse_w<0.25:
++				var lip_keep:=1.0-smoothstep(0.04,0.25,sparse_w)
+ 				# The edge keeps a low planted fringe between taller fans, without
+ 				# turning the new long leaves into an oversized continuous hedge.
+-				scale=maxf(scale,lerpf(.98,1.75,tuft_patch)*rim_taper*path_taper)
+-				h_scale=maxf(h_scale,lerpf(.80,1.70,tuft_patch)*rim_taper*path_taper)
++				scale=lerpf(scale,maxf(scale,lerpf(.98,1.75,tuft_patch)*rim_taper*path_taper),lip_keep)
++				h_scale=lerpf(h_scale,maxf(h_scale,lerpf(.80,1.70,tuft_patch)*rim_taper*path_taper),lip_keep)
+ 			var basis:=Basis(Vector3.UP,yaw).scaled(Vector3(scale,h_scale,scale))
+ 			if soft_lip_sample:
+ 				# Newly planted lip roots follow the rendered triangle, not the flat crown.
+
+--- a/scripts/terrain_editor/grass_lip_soften.gd
++++ b/scripts/terrain_editor/grass_lip_soften.gd
+@@ -3,6 +3,7 @@
+ ## The flat cap stays where it is. The lip is one shallow roll, wide enough
+ ## to read from the game camera, not a second curb.
+ const ContourTerrain = preload("res://scripts/terrain_editor/contour_terrain.gd")
++const RimBalding = preload("res://scripts/terrain_editor/cliff_rim_balding.gd")
+ const SAMPLE_SPACING := 0.36
+ const MAX_REACH := 0.66
+ const RING_COUNT := 5
+@@ -47,7 +48,10 @@
+ 
+ static func _width(p:Vector2)->float:
+ 	# World-anchored, so a closed rim does not kink where the loop index starts.
+-	return 0.38+0.10*sin(p.x*0.83+p.y*0.57)+0.045*sin(p.x*1.67-p.y*1.21+1.2)
++	# Retracts where the cliff rock bites back into balding turf stretches.
++	var base_w:float = 0.38+0.10*sin(p.x*0.83+p.y*0.57)+0.045*sin(p.x*1.67-p.y*1.21+1.2)
++	var bald:float = RimBalding.edge_baldness(p)
++	return base_w*lerpf(1.0,0.18,smoothstep(0.12,0.64,bald))
+ 
+ static func _drop(p:Vector2,base:float)->float:
+ 	# Scale the scallop with the drop so the lawn edge itself stays on the cap.
+@@ -213,14 +217,36 @@
+ 		var at:Vector2 = samples[i].p
+ 		samples[i].weight = fade*_mouth_weight(field,at,h)
+ 	var segments:int = samples.size() if closed else samples.size()-1
+-	# Opposing offsets at a tight crown turn make the rolled strip cross
+-	# itself, producing folded soil triangles. Let the lip die into the
+-	# unchanged flat cap at that pinch instead of bridging the two sides.
++	# Opposing offsets or converging rays at a tight crown turn make the rolled
++	# strip cross or pinch itself, producing folded soil triangles. Let the lip
++	# die into the unchanged flat cap at that pinch instead of bridging across.
++	var zero_pinch:PackedByteArray = PackedByteArray()
++	zero_pinch.resize(samples.size())
+ 	for i in segments:
+ 		var next:int = (i+1)%samples.size()
+-		if (samples[i].out as Vector2).dot(samples[next].out)<.2:
++		var o_l:Vector2 = samples[i].out
++		var o_r:Vector2 = samples[next].out
++		var p_l:Vector2 = samples[i].p
++		var p_r:Vector2 = samples[next].p
++		var r_l:float = float(samples[i].reach)*float(samples[i].weight)
++		var r_r:float = float(samples[next].reach)*float(samples[next].weight)
++		var tip_l:Vector2 = p_l+o_l*r_l
++		var tip_r:Vector2 = p_r+o_r*r_r
++		var ring3_l:Vector2 = p_l+o_l*(r_l*0.76)
++		var ring3_r:Vector2 = p_r+o_r*(r_r*0.76)
++		var base_d:float = p_l.distance_to(p_r)
++		var pinched:bool = o_l.dot(o_r)<.2
++		if not pinched and base_d>0.01 and (r_l>0.05 or r_r>0.05):
++			if tip_l.distance_to(tip_r)<base_d*0.45 or (tip_r-tip_l).dot(p_r-p_l)<=0.0:
++				pinched = true
++			elif tip_l.distance_to(ring3_r)<0.05 or tip_r.distance_to(ring3_l)<0.05:
++				pinched = true
++		if pinched:
++			zero_pinch[i] = 1
++			zero_pinch[next] = 1
++	for i in samples.size():
++		if zero_pinch[i]!=0:
+ 			samples[i].weight = 0.0
+-			samples[next].weight = 0.0
+ 	for i in segments:
+ 		var left:Dictionary = samples[i]
+ 		var right:Dictionary = samples[(i+1)%samples.size()]
+
+--- a/scripts/terrain_editor/procedural_shard.gd
++++ b/scripts/terrain_editor/procedural_shard.gd
+@@ -244,106 +244,115 @@
+ 			_emit_tri(walls, w_pts[0], w_pts[i], w_pts[i + 1], out_dir, cols[0], cols[i], cols[i + 1], uvs[0], uvs[i], uvs[i + 1], poly_n)
+ 
+ static func _soften_pair(full: Surface, walls: Surface) -> Array[ArrayMesh]:
+-	# A small normal blend gives the existing rice-stone planes a painted,
+-	# softly worn response without moving the crown or adding rock masses.
+-	return [Normals.soften(full.mesh(), 55.0, 0.65), Normals.soften(walls.mesh(), 55.0, 0.65)]
++	# Preserve crisp, hard low-poly bevel corners ("转角就是要硬的"); blend only near-coplanar seams.
++	return [Normals.soften(full.mesh(), 20.0, 0.26), Normals.soften(walls.mesh(), 20.0, 0.26)]
+ 
+ static func _add_varied_body(
+ 	full: Surface, walls: Surface, collar: Array[Vector3], arch: int, tone: Color
+ ) -> void:
+-	# Distinct solid silhouettes, with homothetic sections: each side quad is
+-	# planar even where a shoulder, waist or ledge changes direction. The
+-	# collar stays canonical; root boulders use their unchanged original body.
++	# Clean, hard-faceted, strictly monotonic convex cliff faces (Option A):
++	# Zero mid-height barrel bulges and zero wasp-waist inward-then-outward zig-zags.
+ 	# Section = (height, uniform XZ scale, lateral lean, outward offset).
+ 	var sections: Array[Vector4]
+ 	var front: PackedFloat32Array
++	var x_scale := PackedFloat32Array([0.93, 0.97, 0.99, 0.99, 0.97, 0.93, 0.99, 1.0, 0.99])
++	var pitches := [-0.11, -0.14, 0.14, -0.10, -0.15, 0.12, 0.15, -0.13]
+ 	match arch:
+-		1: # Broad shield: a quiet wide face, high shoulder and tucked blunt heel.
+-			front = PackedFloat32Array([.38,.49,.52,.52,.49,.38])
+-			sections = [Vector4(-.145,1,0,0), Vector4(-.29,1.02,0,.06),
+-				Vector4(-.78,.97,-.025,.02), Vector4(-1.03,.72,-.04,-.08)]
+-		2: # Oblique slab: one pitched shoulder and a long leaning cleavage face.
+-			front = PackedFloat32Array([.36,.40,.44,.48,.52,.39])
+-			sections = [Vector4(-.145,1,0,0), Vector4(-.39,.94,.025,.12),
+-				Vector4(-.88,.78,-.045,.02), Vector4(-1.10,.66,-.055,-.10)]
+-		4: # Double shoulder, with a recessed seam between unequal rock shelves.
+-			front = PackedFloat32Array([.37,.47,.55,.55,.47,.37])
+-			sections = [Vector4(-.145,1,0,0), Vector4(-.28,1.01,0,.10),
+-				Vector4(-.43,.96,-.02,.055), Vector4(-.59,.99,-.025,.105),
+-				Vector4(-.90,.83,.01,.02), Vector4(-1.06,.67,.02,-.09)]
+-		6: # Low ledge: two relief breaks at different heights from the double shoulder.
+-			front = PackedFloat32Array([.38,.51,.54,.52,.46,.36])
+-			sections = [Vector4(-.145,1,0,0), Vector4(-.37,.99,-.02,.10),
+-				Vector4(-.53,.94,-.015,.045), Vector4(-.72,.98,.01,.095),
+-				Vector4(-1.07,.66,.035,-.12)]
+-		_: # Worn waist: a broad brow above a deep, solid inward bevel.
+-			front = PackedFloat32Array([.36,.44,.50,.53,.49,.38])
+-			sections = [Vector4(-.145,1,0,0), Vector4(-.35,1.03,.015,.11),
+-				Vector4(-.67,.78,.02,-.04), Vector4(-.92,.81,-.01,.005),
+-				Vector4(-1.04,.64,-.02,-.13)]
++		0: # Calm broad cliff slab: tall straight upper plane and clean lower bevel.
++			front = PackedFloat32Array([0.39, 0.43, 0.45, 0.44, 0.42, 0.38])
++			sections = [Vector4(-0.145, 1.00, 0.0, 0.0), Vector4(-0.62, 0.98, 0.008, -0.012),
++				Vector4(-1.07, 0.81, -0.018, -0.135)]
++		1: # High-browed hard monolith: crisp upper face and long straight inward bevel.
++			front = PackedFloat32Array([0.39, 0.44, 0.46, 0.45, 0.42, 0.38])
++			sections = [Vector4(-0.145, 1.00, 0.0, 0.0), Vector4(-0.52, 0.985, -0.006, -0.006),
++				Vector4(-1.06, 0.80, -0.022, -0.145)]
++		2: # Oblique cleavage slab: asymmetric plane tapering monotonically to the keel.
++			front = PackedFloat32Array([0.37, 0.41, 0.44, 0.46, 0.44, 0.39])
++			sections = [Vector4(-0.145, 1.00, 0.0, 0.0), Vector4(-0.58, 0.97, 0.014, -0.014),
++				Vector4(-1.09, 0.79, -0.026, -0.150)]
++		3: # Deep sheer wall: long calm vertical face with compact foot tuck.
++			front = PackedFloat32Array([0.39, 0.45, 0.46, 0.44, 0.41, 0.38])
++			sections = [Vector4(-0.145, 1.00, 0.0, 0.0), Vector4(-0.70, 0.975, -0.010, -0.016),
++				Vector4(-1.07, 0.81, 0.014, -0.140)]
++		4: # Two-stage convex bevel: vertical upper face, crisp mid bevel, deeper keel bevel.
++			front = PackedFloat32Array([0.38, 0.43, 0.46, 0.46, 0.43, 0.38])
++			sections = [Vector4(-0.145, 1.00, 0.0, 0.0), Vector4(-0.50, 0.985, -0.008, -0.008),
++				Vector4(-0.80, 0.91, -0.014, -0.056), Vector4(-1.08, 0.80, 0.010, -0.148)]
++		5: # Swept prow slab: clean asymmetric ridge tapering steadily inward.
++			front = PackedFloat32Array([0.37, 0.41, 0.45, 0.46, 0.43, 0.39])
++			sections = [Vector4(-0.145, 1.00, 0.0, 0.0), Vector4(-0.60, 0.98, 0.010, -0.010),
++				Vector4(-1.08, 0.80, -0.018, -0.145)]
++		6: # Broad sheer escarpment with crisp lower two-plane chamfer (strictly convex).
++			front = PackedFloat32Array([0.39, 0.44, 0.46, 0.45, 0.42, 0.38])
++			sections = [Vector4(-0.145, 1.00, 0.0, 0.0), Vector4(-0.56, 0.98, -0.010, -0.010),
++				Vector4(-0.84, 0.90, 0.008, -0.062), Vector4(-1.08, 0.79, 0.018, -0.152)]
++		_: # Monumental calm cliff face: eliminates the old arch-7 wasp-waist S-kink.
++			front = PackedFloat32Array([0.38, 0.42, 0.45, 0.46, 0.43, 0.39])
++			sections = [Vector4(-0.145, 1.00, 0.0, 0.0), Vector4(-0.64, 0.98, 0.010, -0.012),
++				Vector4(-1.07, 0.80, -0.016, -0.146)]
++	var pitch: float = float(pitches[posmod(arch, pitches.size())])
+ 	var rings: Array = [collar]
+ 	for section: Vector4 in sections:
+ 		var ring: Array[Vector3] = []
+ 		for i: int in collar.size():
+ 			var p: Vector3 = collar[i]
+-			p.x *= .49 / .51
+-			p.z = front[i] if i < 6 else (-.42 if i == 7 else -.085)
+-			var point := Vector3(p.x*section.y+section.z, section.x, p.z*section.y+section.w)
+-			# One affine shear pitches every cleavage plane together. It
+-			# preserves coplanarity and makes the ledges visibly oblique.
+-			var pitch: float = -.20 if arch in [1,4,7] else .20
+-			# Lower the entire body equally so the raised end of the
+-			# pitched shoulder stays below the fixed y=-.042 collar.
+-			point.y += pitch*point.x + .045*(point.z-.1) - .03
++			p.x *= x_scale[i]
++			p.z = front[i] if i < 6 else (-0.41 if i == 7 else -0.075)
++			var point := Vector3(p.x * section.y + section.z, section.x, p.z * section.y + section.w)
++			# Single affine shear keeps every quad strictly coplanar below the fixed y = -0.042 collar.
++			point.y += pitch * point.x + 0.028 * (point.z - 0.1) - 0.028
+ 			ring.append(point)
+ 		rings.append(ring)
+-	for band: int in rings.size()-1:
++	var last_band := rings.size() - 2
++	for band: int in rings.size() - 1:
+ 		var upper: Array = rings[band]
+-		var lower: Array = rings[band+1]
+-		var brow: float = clampf(.70 + float(sections[maxi(0,band-1)].x)*.4,.22,.68)
++		var lower: Array = rings[band + 1]
++		var brow: float = clampf(0.70 + float(sections[maxi(0, band - 1)].x) * 0.4, 0.22, 0.68)
++		var band_crev := 0.10 if band == last_band else (0.04 if band > 0 else 0.02)
+ 		for i: int in collar.size():
+-			var ni: int = (i+1)%collar.size()
+-			var along: Vector3 = upper[ni]-upper[i]
+-			var outward := Vector3(-along.z,0,along.x).normalized()
+-			var cols: Array = [tone,tone,tone,tone]
+-			var uv := Vector2(brow,0)
+-			var uvs: Array = [uv,uv,uv,uv]
+-			_emit_quad(full,upper[i],upper[ni],lower[ni],lower[i],outward,cols,uvs)
+-			_emit_quad(walls,upper[i],upper[ni],lower[ni],lower[i],outward,cols,uvs)
++			var ni: int = (i + 1) % collar.size()
++			var along: Vector3 = upper[ni] - upper[i]
++			var outward := Vector3(-along.z, 0, along.x).normalized()
++			var flank_crev := band_crev + (0.04 if (i >= 5 or i == 0) else 0.0)
++			var cols: Array = [tone, tone, tone, tone]
++			var uv := Vector2(brow, flank_crev)
++			var uvs: Array = [uv, uv, uv, uv]
++			_emit_quad(full, upper[i], upper[ni], lower[ni], lower[i], outward, cols, uvs)
++			_emit_quad(walls, upper[i], upper[ni], lower[ni], lower[i], outward, cols, uvs)
+ 	var foot: Array = rings.back()
+ 	var center := Vector3.ZERO
+ 	for p: Vector3 in foot: center += p
+ 	center /= float(foot.size())
+ 	for i: int in foot.size():
+-		var ni: int = (i+1)%foot.size()
+-		var uv := Vector2(.22,0)
+-		_emit_tri(full,center,foot[i],foot[ni],Vector3.DOWN,tone,tone,tone,uv,uv,uv)
+-		_emit_tri(walls,center,foot[i],foot[ni],Vector3.DOWN,tone,tone,tone,uv,uv,uv)
++		var ni: int = (i + 1) % foot.size()
++		var uv := Vector2(0.22, 0.12)
++		_emit_tri(full, center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, uv, uv, uv)
++		_emit_tri(walls, center, foot[i], foot[ni], Vector3.DOWN, tone, tone, tone, uv, uv, uv)
+ 
+ static func _add_continuous_body(
+ 	full: Surface, walls: Surface, collar: Array[Vector3], arch: int, tone: Color
+ ) -> void:
+-	# The two front planes meet on a diagonal ridge inside fixed-width side walls.
++	# Clean two-plane front meeting on a crisp ridge without an upper outward nose bulge.
+ 	const RIDGE := [1, 4, 2, 3, 1, 4, 3, 2]
+-	const SLANT := [0.46, -0.34, 0.28, -0.52, 0.16, -0.22, 0.54, -0.12]
+-	const FOLD := [-0.54, -0.79, -0.66, -0.47, -0.86, -0.61, -0.74, -0.56]
+-	const TILT := [0.32, -0.18, -0.30, 0.20, -0.26, 0.34, -0.12, 0.16]
+-	const FOOT := [-1.08, -0.98, -1.10, -1.02, -1.12, -0.96, -1.06, -1.01]
+-	const FOOT_TILT := [-0.04, -0.06, 0.05, -0.08, -0.03, 0.06, -0.05, 0.04]
+-	const ROOT_FOLD := [0.38, 0.42, 0.34, 0.40, 0.32, 0.44, 0.36, 0.33]
+-	const CREST := [0.54, 0.47, 0.51, 0.56, 0.48, 0.53, 0.50, 0.55]
++	const SLANT := [0.24, -0.20, 0.18, -0.26, 0.12, -0.16, 0.26, -0.10]
++	const FOLD := [-0.58, -0.72, -0.64, -0.54, -0.76, -0.62, -0.70, -0.60]
++	const TILT := [0.18, -0.12, -0.18, 0.14, -0.15, 0.20, -0.10, 0.12]
++	const FOOT := [-1.08, -1.02, -1.09, -1.04, -1.10, -1.01, -1.06, -1.03]
++	const FOOT_TILT := [-0.03, -0.04, 0.04, -0.05, -0.02, 0.04, -0.04, 0.03]
++	const ROOT_FOLD := [0.28, 0.30, 0.26, 0.30, 0.25, 0.32, 0.28, 0.26]
++	const CREST := [0.464, 0.452, 0.458, 0.468, 0.454, 0.462, 0.456, 0.465]
+ 	var shoulder: Array[Vector3] = []
+ 	var fold: Array[Vector3] = []
+ 	var foot: Array[Vector3] = []
+ 	var ridge_index: int = RIDGE[arch]
+ 	var ridge_x: float = collar[ridge_index].x * (0.49 / 0.51)
+-	var left_z: float = 0.392 if ridge_index > 2 else 0.410
+-	var right_z: float = 0.410 if ridge_index > 2 else 0.392
++	var left_z: float = 0.394 if ridge_index > 2 else 0.408
++	var right_z: float = 0.408 if ridge_index > 2 else 0.394
+ 	var neck_y: float = -0.145
+ 	var left_m: float = (CREST[arch] - left_z) / (ridge_x + 0.49)
+ 	var right_m: float = (right_z - CREST[arch]) / (0.49 - ridge_x)
+-	var left_q: float = 0.025 + left_m * SLANT[arch]
+-	var right_q: float = 0.025 + right_m * SLANT[arch]
++	var left_q: float = 0.032 + left_m * SLANT[arch]
++	var right_q: float = 0.032 + right_m * SLANT[arch]
+ 	for i in collar.size():
+ 		var p: Vector3 = collar[i]
+ 		if i < 6:
+@@ -447,7 +456,7 @@
+ 		_emit_quad(full, a, b, c, d, out_c, col_c, uv_c)
+ 		_emit_quad(walls, a, b, c, d, out_c, col_c, uv_c)
+ 
+-	if varied and arch in [1,2,4,6,7]:
++	if varied and arch in [1, 2, 4, 6, 7]:
+ 		_add_varied_body(full, walls, r1, arch, top_col)
+ 	else:
+ 		_add_continuous_body(full, walls, r1, arch, top_col)
+@@ -488,17 +497,17 @@
+ 	const LEAN := [0.20, -0.16, 0.24, -0.18]
+ 	var depth: float = p.y + 0.145
+ 	var denominator: float = 1.0 - TAPER[arch] * depth
+-	# Projective taper keeps the broad faces planar while the rooted silhouette narrows.
++	# Projective taper keeps the broad faces planar while the rooted silhouette narrows cleanly.
+ 	p.x = (p.x - depth * LEAN[arch]) / denominator
+ 	p.z = 0.60 + (p.z - 0.60) / denominator
+ 	p.y = -0.145 + depth * (1.0 + TAPER[arch] * 0.90) / denominator
+-	p.y += 0.025 - 0.24 * p.z + SIDE_TILT[arch] * p.x
++	p.y += 0.0253 - 0.241 * p.z + SIDE_TILT[arch] * p.x
+ 	p.x *= 1.24
+ 	p.z = p.z * 1.12 + 0.11
+ 	return p
+ 
+ static func _build_root_boulders(seed_value: int) -> Dictionary:
+-	# A single oblique shoulder joins the full-height front; no grass-crown collar.
++	# Clean single oblique bevel-topped shoulder slab (Option A / before style, hard crisp edges).
+ 	var built: Dictionary = _build_cliff_crag(seed_value, false)
+ 	var arrays: Array = built.mesh.surface_get_arrays(0)
+ 	var points: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+@@ -521,16 +530,17 @@
+ 		for k in 3:
+ 			root.colors[start + k] = colors[i + k]
+ 			root.uv[start + k] = uvs[i + k]
+-	var center := Vector3.ZERO
+-	for p: Vector3 in cap:
+-		center += p
+-	center /= float(cap.size())
+-	cap.sort_custom(func(a: Vector3, b: Vector3) -> bool:
+-		return atan2(a.z-center.z,a.x-center.x) < atan2(b.z-center.z,b.x-center.x))
+-	for i in cap.size():
+-		root.triangle(_buttress_point(center,arch), _buttress_point(cap[i],arch),
+-			_buttress_point(cap[(i+1)%cap.size()],arch), colors[0], true)
+-	var mesh: ArrayMesh = Normals.soften(root.mesh(),55.0,0.65)
++	if not cap.is_empty():
++		var center := Vector3.ZERO
++		for p: Vector3 in cap:
++			center += p
++		center /= float(cap.size())
++		cap.sort_custom(func(a: Vector3, b: Vector3) -> bool:
++			return atan2(a.z - center.z, a.x - center.x) < atan2(b.z - center.z, b.x - center.x))
++		for i in cap.size():
++			root.triangle(_buttress_point(center, arch), _buttress_point(cap[i], arch),
++				_buttress_point(cap[(i + 1) % cap.size()], arch), colors[0], true)
++	var mesh: ArrayMesh = Normals.soften(root.mesh(), 20.0, 0.26)
+ 	var box: AABB = mesh.get_aabb()
+ 	return {
+ 		"mesh": mesh, "render_mesh": mesh, "height": 1.0,
+
+--- a/scripts/terrain_editor/rim_outcrops.gd
++++ b/scripts/terrain_editor/rim_outcrops.gd
+@@ -68,9 +68,9 @@
+ 			return grown[0]
+ 	return hull
+ 
+-static func supported_crag(field, faces: PackedVector3Array, pose: Transform3D, h: float, out: Vector2, max_project: float = 1.18) -> bool:
++static func supported_crag(field, faces: PackedVector3Array, pose: Transform3D, h: float, out: Vector2, max_project: float = 1.15) -> bool:
+ 	# Rim-breaking crags straddle the outer cliff rim: inner portion sits solidly rooted in
+-	# the dry rim cap (h), while the outer chiseled shoulder juts boldly beyond the grass lip
++	# the dry rim cap (h), while the outer chiseled shoulder juts modestly beyond the grass lip
+ 	# into open exterior cliff air (never overlapping lower terraces or lakes).
+ 	var slice := _turf_slice_hull(faces, pose, h - 0.25, 0.0)
+ 	if slice.size() < 3:
+@@ -103,18 +103,19 @@
+ 	if total == 0:
+ 		return false
+ 	var ratio := float(backed) / float(total)
+-	if ratio < 0.16 or ratio > 0.84:
+-		return false
+-	# Ensure solid island interior behind the crag so narrow brushed peninsulas stay clean:
++	if ratio < 0.18 or ratio > 0.84:
++		return false
++	# Ensure solid dry headland behind and flanking the crag so cove bites (e.g. contract brush) never leave floating wedges:
+ 	var center_xz := Vector2(pose.origin.x, pose.origin.z)
+-	var back_probe: Dictionary = field.surface_at(center_xz - out * 1.35)
+-	if back_probe.is_empty():
++	var tan2 := Vector2(out.y, -out.x).normalized()
++	if not dry_surface(field, center_xz - out * 1.45, h):
++		return false
++	if not dry_surface(field, center_xz - out * 0.85 + tan2 * 0.72, h) or not dry_surface(field, center_xz - out * 0.85 - tan2 * 0.72, h):
+ 		return false
+ 	return true
+ 
+ static func build(deco, field, seed_value: int) -> Array:
+ 	var result: Array = []
+-	var anchors: Array[Vector2] = []
+ 	var kind := "rim_outcrop"
+ 	var mesh: Mesh = deco.assets[kind][0].mesh
+ 	var faces: PackedVector3Array = Geometry.faces_of(mesh)
+@@ -145,7 +146,7 @@
+ 			conv += 0.25
+ 		if field.surface_at(edge - tan2 * 3.10 - out * 0.22).is_empty():
+ 			conv += 0.25
+-		var cell := Vector2i((edge * 2.0).floor())
++		var cell := Vector2i(floori(edge.x / 2.6), floori(edge.y / 2.6))
+ 		var choice: float = deco.random_at(cell, seed_value, 4200)
+ 		var ang := atan2(edge.y + 1.5, edge.x)
+ 		var head_wave := 0.5 + 0.5 * cos(ang * 3.0 - 0.45 + float(seed_value % 53) * 0.11)
+@@ -154,25 +155,32 @@
+ 			continue
+ 		candidates.append({"col": col, "score": score, "choice": choice, "cell": cell})
+ 
+-	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a.score) > float(b.score))
+-
+-	for item: Dictionary in candidates:
+-		if anchors.size() >= 3:
+-			break
++	# Purely local spatial-maximum selection (13.5m radius, no global array cap) so distant edits never flip outcrops:
++	for i in candidates.size():
++		var item: Dictionary = candidates[i]
+ 		var col: Dictionary = item.col
+ 		var edge: Vector2 = col.edge
++		var score_i: float = float(item.score)
++		var is_local_peak := true
++		for j in candidates.size():
++			if i == j:
++				continue
++			var other: Dictionary = candidates[j]
++			var edge_j: Vector2 = other.col.edge
++			if edge.distance_to(edge_j) >= 13.5:
++				continue
++			var score_j: float = float(other.score)
++			if score_j > score_i or (is_equal_approx(score_j, score_i) and (edge_j.x < edge.x or (is_equal_approx(edge_j.x, edge.x) and edge_j.y < edge.y))):
++				is_local_peak = false
++				break
++		if not is_local_peak:
++			continue
++
+ 		var h: float = col.pose.origin.y
+ 		var out := Vector2(col.outward.x, col.outward.z)
++		var tan2 := Vector2(col.tangent.x, col.tangent.z).normalized()
+ 		var cell: Vector2i = item.cell
+ 		var choice: float = item.choice
+-
+-		var spaced := true
+-		for anchor: Vector2 in anchors:
+-			if anchor.distance_to(edge) < 14.5:
+-				spaced = false
+-				break
+-		if not spaced:
+-			continue
+ 
+ 		var c2: float = deco.random_at(cell, seed_value, 4211)
+ 		var c3: float = deco.random_at(cell, seed_value, 4212)
+@@ -183,12 +191,16 @@
+ 		var pose: Transform3D
+ 		var fitted := false
+ 		var chosen_p := edge
+-		for inset: float in [0.42, 0.28, 0.14]:
++		for inset: float in [0.36, 0.22, 0.08]:
+ 			var cand := edge + out * inset
+ 			if not clear(cand - out * 0.35, field) or deco._water_distance(field, cand - out * 0.65, h) < 1.95:
+ 				continue
++			if not dry_surface(field, cand - out * 0.85 + tan2 * 0.72, h) or not dry_surface(field, cand - out * 0.85 - tan2 * 0.72, h) or not dry_surface(field, cand - out * 1.45, h):
++				continue
++			if deco.rim_top_at(cand) < h - 0.1 or deco.rim_top_at(cand + tan2 * 0.48) < h - 0.1 or deco.rim_top_at(cand - tan2 * 0.48) < h - 0.1:
++				continue
+ 			pose = pose_for(mesh, cand, h, size, yaw, drop)
+-			if supported_crag(field, faces, pose, h, out, 1.25):
++			if supported_crag(field, faces, pose, h, out, 1.15):
+ 				chosen_p = cand
+ 				fitted = true
+ 				break
+@@ -197,7 +209,6 @@
+ 
+ 		var turf_hull := _turf_slice_hull(faces, pose, h - 0.14, 0.08)
+ 		result.append({"kind": kind, "pose": pose, "height": h, "anchor": chosen_p, "turf_hull": turf_hull})
+-		anchors.append(chosen_p)
+ 	return result
+ 
+ static func trim_cover(surface, rocks: Array, assets: Dictionary):
+
+--- a/scripts/terrain_editor/rim_surface_detail.gd
++++ b/scripts/terrain_editor/rim_surface_detail.gd
+@@ -26,6 +26,7 @@
+      var choice:=_hash(center*2.1+Vector2(h,7))
+      var patch:=_hash((center*.60).floor()+Vector2(h,29))
+      if patch<.32 or choice<.18:continue
++     if preload("res://scripts/terrain_editor/cliff_rim_balding.gd").edge_baldness(center)>.06:continue
+      # Only final crown-backed contours get cover; fall openings stay clear.
+      var on_crown:=false
+      for crown:Dictionary in crowns:
+
+--- a/scripts/terrain_editor/terrain_decoration.gd
++++ b/scripts/terrain_editor/terrain_decoration.gd
+@@ -541,10 +541,10 @@
+ 	preload("res://scripts/terrain_editor/rim_union.gd").apply(field,_columns,assets,fit_core_to_feet,blend_core_joints)
+ 	field.close_unclad_dry_steps(_columns,assets)
+ 	layout_stages.union=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+-	_outcrops=preload("res://scripts/terrain_editor/rim_outcrops.gd").build(self,field,seed_value)
+-	layout_stages.outcrops=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
+-	field.surfaces.rim_green=preload("res://scripts/terrain_editor/rim_outcrops.gd").trim_cover(field.surfaces.rim_green,_outcrops,assets)
+-	layout_stages.trim=(Time.get_ticks_usec()-t_stage)/1000.0;t_stage=Time.get_ticks_usec()
++	# Leave loose rim boulder prop placement to the player ("那种放置物件的完全可以交给玩家自己摆放").
++	_outcrops=[]
++	layout_stages.outcrops=0.0
++	layout_stages.trim=0.0
+ 	field._index_triangles()
+ 	layout_stages.index=(Time.get_ticks_usec()-t_stage)/1000.0
+ 	layout_ms=(Time.get_ticks_usec()-started)/1000.0
+@@ -641,9 +641,125 @@
+ 			var bucket:=Vector2i(x,z)
+ 			if not _column_cells.has(bucket):_column_cells[bucket]=[]
+ 			_column_cells[bucket].append(index)
++func chunk_deco_digest()->Dictionary:
++	var digest:Dictionary={}
++	for col:Dictionary in _columns:
++		var ck:=Data.chunk_of(col.cell)
++		if not digest.has(ck):digest[ck]=[]
++		digest[ck].append(["c",col.kind,col.pose])
++	for st:Dictionary in _mass:
++		var ck:=Data.chunk_of(st.cell)
++		if not digest.has(ck):digest[ck]=[]
++		digest[ck].append(["m",st.kind,st.pose,int(st.mesh.get_meta("join_signature",0)) if st.has("mesh") else 0])
++	for oc:Dictionary in _outcrops:
++		var oc_cell:=Vector2i(Vector2(oc.pose.origin.x,oc.pose.origin.z).floor())
++		var ck:=Data.chunk_of(oc_cell)
++		if not digest.has(ck):digest[ck]=[]
++		digest[ck].append(["o",oc.kind,oc.pose])
++	return digest
++func _layout_terrace_accents(field,seed_value:int)->void:
++	# Scatter grounded layered stone boulders along open dry interior terrace steps
++	# without leaving enclosed pit bottoms or obstructing paths / lower lawn cells.
++	var candidates:Array=[]
++	for h:float in field.levels:
++		if not field.levels.is_empty() and is_equal_approx(h,field.levels[0]):continue
++		for loop:PackedVector2Array in field.land_regions.get(h,[]):
++			if Contours._area(loop)<=0.0 or loop.size()<4:continue
++			var n:=loop.size()
++			var acc:=0.0
++			for i in n:
++				var a:Vector2=loop[i]
++				var b:Vector2=loop[(i+1)%n]
++				var seg_len:=a.distance_to(b)
++				acc+=seg_len
++				if seg_len<.35 or acc<2.4:continue
++				var dir:=(b-a)/seg_len
++				var out:=Vector2(dir.y,-dir.x)
++				var mid:=(a+b)*.5
++				var up:Dictionary=field.surface_at(mid-out*.25)
++				var rec:Dictionary=field.surface_at(mid+out*.30)
++				if up.is_empty() or rec.is_empty() or int(up.water)>=0 or int(rec.water)>=0:continue
++				var bot:float=float(rec.height)
++				var drop:=h-bot
++				if drop<.85 or drop>2.8:continue
++				# Keep accents on open terrace shelves clear of paths, water and narrow pockets.
++				var shelf_ok:=true
++				for dist_p:float in [1.15,1.95]:
++					var s_p:Dictionary=field.surface_at(mid+out*dist_p)
++					if s_p.is_empty() or int(s_p.water)>=0 or float(s_p.height)>bot+.05:
++						shelf_ok=false;break
++				if not shelf_ok or _near_path(mid,1.35) or _near_path(mid+out*.85,1.25):continue
++				if _water_distance(field,mid,h)<1.55 or _water_distance(field,mid+out*.6,bot)<1.35:continue
++				var veil_near:=false
++				for v:Dictionary in field.fall_veils:
++					var vl:Vector3=v.lip
++					if mid.distance_to(Vector2(vl.x,vl.z))<float(v.half_width)+1.45:
++						veil_near=true;break
++				if veil_near:continue
++				var geo_c:=Vector2i(floori(mid.x/2.6),floori(mid.y/2.6))
++				var roll:=random_at(geo_c,seed_value,3061)
++				if roll>=.58:continue
++				var idx:=int(random_at(geo_c,seed_value,3062)*4.0)%4
++				var kind:String=UNDERSIDE_KINDS[idx]
++				var part:Dictionary=assets[kind][0]
++				var st_h:float=float(part.body_height)
++				var st_crown_z:float=float(part.crown_z)
++				var st_drop:float=clampf(drop*lerpf(.18,.40,random_at(geo_c,seed_value,3063)),.20,.88)
++				var st_top:float=h-st_drop
++				var st_height:float=clampf((drop-st_drop+.18)*lerpf(.88,1.02,random_at(geo_c,seed_value,3064)),.88,1.76)
++				var st_w:float=lerpf(1.55,2.45,random_at(geo_c,seed_value,3065))
++				var st_d:float=lerpf(1.15,1.58,random_at(geo_c,seed_value,3066))
++				var st_proud:float=lerpf(.22,.45,random_at(geo_c,seed_value,3068))
++				var tan3:=Vector3(dir.x,0.0,dir.y)
++				var out3:=Vector3(out.x,0.0,out.y)
++				var frame:=Basis(-tan3,Vector3.UP,out3)
++				var st_yaw:=(random_at(geo_c,seed_value,3067)-.5)*.10
++				var st_basis:=frame*Basis(Vector3.UP,st_yaw)*Basis(Vector3.RIGHT,.06)*Basis.from_scale(Vector3(st_w,st_height/st_h,st_d))
++				var st_origin:=Vector3(mid.x,st_top,mid.y)+out3*(st_proud-st_crown_z*st_d)
++				var comp_item:Dictionary={}
++				if drop>=1.0:
++					var side_sign:=-1.0 if random_at(geo_c,seed_value,3070)<.5 else 1.0
++					var mid2:Vector2=mid+dir*(side_sign*lerpf(.72,1.15,random_at(geo_c,seed_value,3071)))
++					var up2:Dictionary=field.surface_at(mid2-out*.25)
++					var rec2:Dictionary=field.surface_at(mid2+out*.30)
++					if not up2.is_empty() and not rec2.is_empty() and int(up2.water)<0 and int(rec2.water)<0 and absf(float(up2.height)-h)<=.05 and float(rec2.height)<=bot+.05 and not _near_path(mid2,1.35) and not _near_path(mid2+out*.85,1.25) and _water_distance(field,mid2,h)>=1.55:
++						var kind2:String=UNDERSIDE_KINDS[(idx+1+int(random_at(geo_c,seed_value,3072)*3.0))%4]
++						var part2:Dictionary=assets[kind2][0]
++						var st2_h:float=float(part2.body_height)
++						var st2_crown_z:float=float(part2.crown_z)
++						var st2_drop:float=clampf(st_drop*lerpf(.35,.55,random_at(geo_c,seed_value,3073)),.10,.36)
++						var st2_top:float=h-st2_drop
++						var st2_height:float=clampf((drop-st2_drop+.10)*lerpf(.78,.94,random_at(geo_c,seed_value,3074)),.78,1.48)
++						var st2_w:float=lerpf(1.18,1.72,random_at(geo_c,seed_value,3075))
++						var st2_d:float=lerpf(.92,1.28,random_at(geo_c,seed_value,3076))
++						var st2_proud:float=lerpf(.14,.32,random_at(geo_c,seed_value,3077))
++						var st2_basis:=frame*Basis(Vector3.UP,-st_yaw*.7)*Basis(Vector3.RIGHT,.05)*Basis.from_scale(Vector3(st2_w,st2_height/st2_h,st2_d))
++						var st2_origin:=Vector3(mid2.x,st2_top,mid2.y)+out3*(st2_proud-st2_crown_z*st2_d)
++						comp_item={"kind":kind2,"pose":Transform3D(st2_basis,st2_origin),"cell":Vector2i(mid2.floor()),"is_shoulder":true,"is_interior":true,"has_ledge_bush":false,"crown_edge":mid2}
++				var score:=1.0-roll+drop*.15
++				candidates.append({"kind":kind,"pose":Transform3D(st_basis,st_origin),"cell":Vector2i(mid.floor()),"is_shoulder":true,"is_interior":true,"has_ledge_bush":false,"crown_edge":mid,"score":score,"companion":comp_item})
++				acc=0.0
++	for i in candidates.size():
++		var c_i:Dictionary=candidates[i]
++		var p_i:Vector2=Vector2((c_i.pose as Transform3D).origin.x,(c_i.pose as Transform3D).origin.z)
++		var win:=true
++		for j in candidates.size():
++			if i==j:continue
++			var c_j:Dictionary=candidates[j]
++			var p_j:Vector2=Vector2((c_j.pose as Transform3D).origin.x,(c_j.pose as Transform3D).origin.z)
++			if p_i.distance_to(p_j)<5.4 and float(c_j.score)>float(c_i.score):
++				win=false;break
++		if win:
++			var kept_item:Dictionary=c_i.duplicate()
++			var comp_keep:Dictionary=kept_item.get("companion",{})
++			kept_item.erase("score")
++			kept_item.erase("companion")
++			_mass.append(kept_item)
++			if not comp_keep.is_empty():
++				_mass.append(comp_keep)
+ func _prune_overlapping_buttresses()->void:
+-	# Ensure exterior Tier-2 & Tier-3 monumental buttresses compose grand multi-block headlands (1 A)
+-	# without piling up or colliding into fragmented small stones:
++	# Purely local 2-hop neighborhood winner selection (propagation strictly <= 7.5m, zero global domino cascade),
++	# allowing staggered high Tier-2 and low Tier-3 shoulders >= 0.65m apart in Y to nest down to 2.25m XZ:
+ 	var kept:Array=[]
+ 	var ext_shoulders:Array=[]
+ 	var ext_roots:Array=[]
+@@ -654,21 +770,39 @@
+ 			ext_shoulders.append(item)
+ 		else:
+ 			ext_roots.append(item)
+-	ext_shoulders.sort_custom(func(a:Dictionary,b:Dictionary)->bool:
+-		return float(a.get("priority",0.0))>float(b.get("priority",0.0))
+-	)
+-	var sh_anchors:Array[Vector2]=[]
++	var n_sh:=ext_shoulders.size()
++	var sh_pos:Array[Vector2]=[]
++	var sh_y:=PackedFloat32Array()
++	var sh_prio:=PackedFloat32Array()
+ 	for sh:Dictionary in ext_shoulders:
+ 		var orig:Vector3=(sh.pose as Transform3D).origin
+-		var p2:=Vector2(orig.x,orig.z)
+-		var ok:=true
+-		for a2:Vector2 in sh_anchors:
+-			if a2.distance_to(p2)<3.85:
+-				ok=false
+-				break
+-		if ok:
+-			sh_anchors.append(p2)
+-			kept.append(sh)
++		sh_pos.append(Vector2(orig.x,orig.z))
++		sh_y.append(orig.y)
++		var tie:=1e-4*fposmod(sin(orig.x*12.9898+orig.z*78.233)*43758.5453,1.0)
++		sh_prio.append(float(sh.get("priority",0.0))+tie)
++	var state:=PackedInt32Array();state.resize(n_sh) # 0=undecided, 1=kept, -1=suppressed
++	var sh_anchors:Array[Vector2]=[]
++	for pass_i in 2:
++		var round_winners:Array[int]=[]
++		for i in n_sh:
++			if state[i]!=0:continue
++			var blocked:=false
++			for j in n_sh:
++				if i==j or state[j]==-1:continue
++				var conflict_r:float=5.25
++				if sh_pos[i].distance_to(sh_pos[j])<conflict_r and (state[j]==1 or sh_prio[j]>sh_prio[i]):
++					blocked=true;break
++			if not blocked:round_winners.append(i)
++		for i:int in round_winners:
++			state[i]=1
++			sh_anchors.append(sh_pos[i])
++			kept.append(ext_shoulders[i])
++		for i in n_sh:
++			if state[i]!=0:continue
++			for w:int in round_winners:
++				var conflict_r:float=5.25
++				if sh_pos[i].distance_to(sh_pos[w])<conflict_r:
++					state[i]=-1;break
+ 	var root_anchors:Array[Vector2]=[]
+ 	for rt:Dictionary in ext_roots:
+ 		var orig:Vector3=(rt.pose as Transform3D).origin
+@@ -676,14 +810,12 @@
+ 		var near_kept_sh:=false
+ 		for a2:Vector2 in sh_anchors:
+ 			if a2.distance_to(p2)<2.2:
+-				near_kept_sh=true
+-				break
++				near_kept_sh=true;break
+ 		if not near_kept_sh:continue
+ 		var ok:=true
+ 		for r2:Vector2 in root_anchors:
+ 			if r2.distance_to(p2)<7.2:
+-				ok=false
+-				break
++				ok=false;break
+ 		if ok:
+ 			root_anchors.append(p2)
+ 			kept.append(rt)
+@@ -709,36 +841,7 @@
+ func _stable_runs(loop:PackedVector2Array,height:float)->Array:
+ 	var cache_key:Array=[height,loop]
+ 	if _outline_run_cache.has(cache_key):return _outline_run_cache[cache_key]
+-	var lengths:Array[float]=[0.0]
+-	for i:int in loop.size():lengths.append(lengths[-1]+loop[i].distance_to(loop[(i+1)%loop.size()]))
+-	var perimeter:float=lengths[-1]
+-	var kept:Array=[]
+-	var intervals:Array[Vector2]=[]
+-	for run:Array in _previous_runs.get(height,[]):
+-		var points:PackedVector2Array=run[2]
+-		var start:Vector2=_loop_distance(points[0],loop,lengths)
+-		var end:Vector2=_loop_distance(points[-1],loop,lengths)
+-		if maxf(start.y,end.y)>.000001:continue
+-		var span:float=fposmod(end.x-start.x,perimeter)
+-		var old_length:float=0.0
+-		var matches:bool=true
+-		for i:int in points.size()-1:
+-			old_length+=points[i].distance_to(points[i+1])
+-			if _loop_distance(points[i],loop,lengths).y>.000001:matches=false;break
+-		if not matches or absf(span-old_length)>.005:continue
+-		kept.append(run)
+-		var finish:float=start.x+span
+-		intervals.append(Vector2(start.x,minf(finish,perimeter)))
+-		if finish>perimeter:intervals.append(Vector2(0.0,finish-perimeter))
+-	if kept.is_empty():
+-		kept=_runs(loop)
+-	else:
+-		intervals.sort_custom(func(a:Vector2,b:Vector2)->bool:return a.x<b.x)
+-		var cursor:float=0.0
+-		for interval:Vector2 in intervals:
+-			if interval.x>cursor+.001:kept.append_array(_runs(_loop_slice(loop,lengths,cursor,interval.x),false))
+-			cursor=maxf(cursor,interval.y)
+-		if cursor<perimeter-.001:kept.append_array(_runs(_loop_slice(loop,lengths,cursor,perimeter),false))
++	var kept:Array=_runs(loop,true)
+ 	if _outline_run_cache.size()>=256:_outline_run_cache.erase(_outline_run_cache.keys()[0])
+ 	_outline_run_cache[cache_key]=kept
+ 	return kept
+@@ -765,66 +868,189 @@
+ 		result.append(a.lerp(b,(high-lengths[i])/length))
+ 	return result
+ 
++static func _world_gate(p:Vector2)->Vector2i:
++	var wx:=p.x+.34*sin(p.y*.24)
++	var wz:=p.y+.34*cos(p.x*.24)
++	return Vector2i(floori(wx/8.6),floori(wz/8.6))
++
++static func _poly_len(pts:PackedVector2Array)->float:
++	var total:=0.0
++	for i in pts.size()-1:total+=pts[i].distance_to(pts[i+1])
++	return total
++
++static func _lex_lt(a:Vector2,b:Vector2)->bool:
++	return a.x<b.x-0.00001 or (absf(a.x-b.x)<=0.00001 and a.y<b.y)
++
++static func _ring_arc(ring:PackedVector2Array,idx_a:int,idx_b:int)->PackedVector2Array:
++	var n:=ring.size()
++	var pts:=PackedVector2Array()
++	var k:=idx_a
++	while true:
++		pts.append(ring[k])
++		if k==idx_b:break
++		k=(k+1)%n
++	return pts
++
++static func _split_unequal_arc(pts:PackedVector2Array,max_len:float)->Array:
++	var total:=_poly_len(pts)
++	if total<=max_len or pts.size()<3:return [pts]
++	var a0:=pts[0];var b0:=pts[-1]
++	var h_val:=fposmod(sin((a0.x+b0.x)*12.9898+(a0.y+b0.y)*78.233)*43758.5453,1.0)
++	var ratio:=lerpf(.38,.62,h_val)
++	var target:=clampf(total*ratio,2.8,total-2.8)
++	if target<=0.5 or target>=total-0.5:return [pts]
++	var acc:=0.0
++	var left:=PackedVector2Array([pts[0]])
++	var right:=PackedVector2Array()
++	for i in pts.size()-1:
++		var p:=pts[i];var q:=pts[i+1]
++		var seg_l:=p.distance_to(q)
++		if right.is_empty():
++			if acc+seg_l<target-0.0001:
++				acc+=seg_l
++				if left[-1].distance_squared_to(q)>0.000001:left.append(q)
++			else:
++				var t:=clampf((target-acc)/maxf(0.000001,seg_l),0.0,1.0)
++				var split_pt:=p.lerp(q,t)
++				if left[-1].distance_squared_to(split_pt)>0.000001:left.append(split_pt)
++				right.append(split_pt)
++				if right[-1].distance_squared_to(q)>0.000001:right.append(q)
++		else:
++			if right[-1].distance_squared_to(q)>0.000001:right.append(q)
++	if left.size()<2 or right.size()<2:return [pts]
++	var out:Array=[]
++	out.append_array(_split_unequal_arc(left,max_len))
++	out.append_array(_split_unequal_arc(right,max_len))
++	return out
++
+ static func _runs(loop:PackedVector2Array,closed:bool=true)->Array:
+-	# Unequal broad spans keep long facades together; curved sections still split
+-	# when their chord leaves the authoritative contour by more than 0.53m:
+-	var sections:Array=[]
+-	if loop.size()<2:return sections
+-	var points:=PackedVector2Array([loop[0]])
+-	var walked:=0.0
+-	var edges:int=loop.size() if closed else loop.size()-1
+-	for i in edges:
+-		var a:=loop[i];var b:=loop[(i+1)%loop.size()];var next:=loop[(i+2)%loop.size()] if closed else loop[mini(i+2,loop.size()-1)]
+-		points.append(b);walked+=a.distance_to(b)
+-		var turn:=absf((next-b).angle_to(b-points[0])) if b.distance_squared_to(points[0])>.00001 else 0.0
+-		if walked>=28.0 or (walked>=3.85 and turn>.95) or i==edges-1:
+-			sections.append(points);points=PackedVector2Array([b]);walked=0.0
+-	const RHYTHM:=[10.5,7.2,12.1,8.7,9.5,6.9]
++	# Canonical world-lattice-anchored local contour partition:
++	# Warm incremental edits and cold rebuilds always produce the exact same splits,
++	# while distant runs stay pinned to local sharp corners and world grid gates.
+ 	var runs:Array=[]
+-	for section:PackedVector2Array in sections:
+-		var total:=0.0
+-		for i in section.size()-1:total+=section[i].distance_to(section[i+1])
+-		if total<=4.95:
+-			if section.size()>1:_append_sagitta_safe(runs,section)
+-			continue
+-		var phase_idx:=posmod(roundi(section[0].x*1.7+section[0].y*2.3),RHYTHM.size())
+-		var phase_wave:=sin(section[0].dot(Vector2(.43,.31)))*.14
+-		var weights:Array[float]=[]
+-		var sum_w:=0.0
+-		var step_i:=0
+-		while sum_w<total-2.35 or weights.is_empty():
+-			var base_w:float=RHYTHM[(phase_idx+step_i)%RHYTHM.size()]
+-			var mod_w:=clampf(base_w*(1.0+phase_wave*cos(float(step_i)*1.9)),6.0,12.2)
+-			weights.append(mod_w)
+-			sum_w+=mod_w
+-			step_i+=1
+-			if step_i>22:break
+-		var scale_f:=total/maxf(.001,sum_w)
+-		var splits:Array[float]=[]
+-		var acc:=0.0
+-		for w_i in range(weights.size()-1):
+-			acc+=weights[w_i]*scale_f
+-			if total-acc>=3.15:
+-				splits.append(acc)
+-		var split_idx:=0
+-		var split:float=splits[0] if not splits.is_empty() else total
+-		var distance:=0.0
+-		var current:=PackedVector2Array([section[0]])
+-		for i in section.size()-1:
+-			var a:=section[i];var b:=section[i+1]
+-			var length:=a.distance_to(b)
+-			while split_idx<splits.size() and split<distance+length-.00001:
+-				var p:=a.lerp(b,(split-distance)/length)
+-				current.append(p);_append_sagitta_safe(runs,current)
+-				current=PackedVector2Array([p])
+-				split_idx+=1
+-				split=splits[split_idx] if split_idx<splits.size() else total
+-			current.append(b);distance+=length
+-			if split_idx<splits.size() and absf(distance-split)<.00001 and i<section.size()-2:
+-				_append_sagitta_safe(runs,current);current=PackedVector2Array([b])
+-				split_idx+=1
+-				split=splits[split_idx] if split_idx<splits.size() else total
+-		if current.size()>1:_append_sagitta_safe(runs,current)
++	if loop.size()<2:return runs
++	var ring:=PackedVector2Array()
++	for p:Vector2 in loop:
++		if ring.is_empty() or ring[-1].distance_squared_to(p)>0.000001:
++			ring.append(p)
++	if closed and ring.size()>1 and ring[0].distance_squared_to(ring[-1])<=0.000001:
++		ring.remove_at(ring.size()-1)
++	var n:=ring.size()
++	if n<2:return runs
++	if not closed:
++		var turns:Array[float]=[]
++		turns.resize(n)
++		turns.fill(0.0)
++		var anchors:Array[int]=[0]
++		for i in range(1,n-1):
++			var prev_p:=ring[i-1];var cur_p:=ring[i];var next_p:=ring[i+1]
++			turns[i]=absf((next_p-cur_p).angle_to(cur_p-prev_p))
++			if turns[i]>0.94 or _world_gate(cur_p)!=_world_gate(prev_p):
++				anchors.append(i)
++		anchors.append(n-1)
++		while anchors.size()>2:
++			var m:=anchors.size()-1
++			var seg_lens:Array[float]=[]
++			for s in m:seg_lens.append(_poly_len(ring.slice(anchors[s],anchors[s+1]+1)))
++			var best_s:=-1
++			var best_len:=3.45
++			var best_pt:=Vector2(INF,INF)
++			for s in m:
++				var l:=seg_lens[s]
++				if l>=3.45:continue
++				var li:=anchors[s];var ri:=anchors[s+1]
++				if s>0 and s+1<m and turns[li]>0.94 and turns[ri]>0.94 and l>=1.25:continue
++				var p:=ring[li]
++				if l<best_len-0.0001 or (absf(l-best_len)<=0.0001 and _lex_lt(p,best_pt)):
++					best_s=s;best_len=l;best_pt=p
++			if best_s==-1:break
++			var drop_idx:=-1
++			if best_s==0:
++				drop_idx=1
++			elif best_s+1==m:
++				drop_idx=best_s
++			else:
++				var l_sharp:=turns[anchors[best_s]]>0.94
++				var r_sharp:=turns[anchors[best_s+1]]>0.94
++				if l_sharp and not r_sharp:drop_idx=best_s+1
++				elif r_sharp and not l_sharp:drop_idx=best_s
++				else:
++					var prev_len:=seg_lens[best_s-1]
++					var next_len:=seg_lens[best_s+1]
++					if absf(prev_len-next_len)>0.0001:drop_idx=best_s if prev_len<next_len else best_s+1
++					else:drop_idx=best_s if _lex_lt(ring[anchors[best_s]],ring[anchors[best_s+1]]) else best_s+1
++			anchors.remove_at(drop_idx)
++		for s in anchors.size()-1:
++			var sub:=ring.slice(anchors[s],anchors[s+1]+1)
++			for part:PackedVector2Array in _split_unequal_arc(sub,12.2):
++				_append_sagitta_safe(runs,part)
++		return runs
++
++	var turns:Array[float]=[]
++	turns.resize(n)
++	var anchors:Array[int]=[]
++	for i in n:
++		var prev_p:=ring[(i-1+n)%n];var cur_p:=ring[i];var next_p:=ring[(i+1)%n]
++		turns[i]=absf((next_p-cur_p).angle_to(cur_p-prev_p))
++		if turns[i]>0.94 or _world_gate(cur_p)!=_world_gate(prev_p):
++			anchors.append(i)
++	if anchors.size()<2:
++		var cum:Array[float]=[0.0]
++		for i in n:cum.append(cum[-1]+ring[i].distance_to(ring[(i+1)%n]))
++		var perim:float=cum[-1]
++		var a0:=0
++		if anchors.is_empty():
++			for i in range(1,n):
++				if _lex_lt(ring[i],ring[a0]):a0=i
++		else:
++			a0=anchors[0]
++		var a1:=(a0+1)%n
++		var best_opp:=INF
++		for i in n:
++			if i==a0:continue
++			var d_arc:=absf(absf(cum[i]-cum[a0])-0.5*perim)
++			if d_arc<best_opp:best_opp=d_arc;a1=i
++		anchors=[mini(a0,a1),maxi(a0,a1)]
++	while anchors.size()>2:
++		var m:=anchors.size()
++		var seg_lens:Array[float]=[]
++		for s in m:seg_lens.append(_poly_len(_ring_arc(ring,anchors[s],anchors[(s+1)%m])))
++		var best_s:=-1
++		var best_len:=3.45
++		var best_pt:=Vector2(INF,INF)
++		for s in m:
++			var l:=seg_lens[s]
++			if l>=3.45:continue
++			var li:=anchors[s];var ri:=anchors[(s+1)%m]
++			if turns[li]>0.94 and turns[ri]>0.94 and l>=1.25:continue
++			var p:=ring[li]
++			if l<best_len-0.0001 or (absf(l-best_len)<=0.0001 and _lex_lt(p,best_pt)):
++				best_s=s;best_len=l;best_pt=p
++		if best_s==-1:break
++		var left_idx:=best_s
++		var right_idx:=(best_s+1)%m
++		var l_sharp:=turns[anchors[left_idx]]>0.94
++		var r_sharp:=turns[anchors[right_idx]]>0.94
++		var drop_idx:=right_idx
++		if l_sharp and not r_sharp:drop_idx=right_idx
++		elif r_sharp and not l_sharp:drop_idx=left_idx
++		else:
++			var prev_len:=seg_lens[(best_s-1+m)%m]
++			var next_len:=seg_lens[(best_s+1)%m]
++			if absf(prev_len-next_len)>0.0001:drop_idx=left_idx if prev_len<next_len else right_idx
++			else:drop_idx=left_idx if _lex_lt(ring[anchors[left_idx]],ring[anchors[right_idx]]) else right_idx
++		anchors.remove_at(drop_idx)
++	var min_k:=0
++	for k in range(1,anchors.size()):
++		if _lex_lt(ring[anchors[k]],ring[anchors[min_k]]):min_k=k
++	if min_k>0:
++		var rot:Array[int]=[]
++		for k in anchors.size():rot.append(anchors[(min_k+k)%anchors.size()])
++		anchors=rot
++	for s in anchors.size():
++		var sub:=_ring_arc(ring,anchors[s],anchors[(s+1)%anchors.size()])
++		for part:PackedVector2Array in _split_unequal_arc(sub,12.2):
++			_append_sagitta_safe(runs,part)
+ 	return runs
+ static func _onto(points:PackedVector2Array,c:Vector2,out:Vector2)->Vector2:
+ 	# A chord cuts a curved contour. Slide the stone centre back onto it.
+@@ -849,9 +1075,9 @@
+ 		if Geometry2D.get_closest_point_to_segment(lip_xz,seg_a,seg_b).distance_to(lip_xz)>float(veil.half_width)+.85:continue
+ 		var mid:=(seg_a+seg_b)*.5
+ 		var along:=(mid-lip_xz).dot(veil.out)
+-		if along<-1.6 or along>1.5:continue
++		if along<-2.2 or along>2.6:continue
+ 		var side:=absf(dir.dot(Vector2(-veil.out.y,veil.out.x)))
+-		var reach:=float(veil.half_width)/maxf(.45,side)+.08
++		var reach:=float(veil.half_width)/maxf(.45,side)+(.24 if veil.external else .08)
+ 		var at:=(lip_xz-a).dot(dir)
+ 		var lo:=at-reach
+ 		var hi:=at+reach
+@@ -893,6 +1119,10 @@
+ 		if absf(prof_sample.rock_top-h)<=.01:
+ 			var is_interior_step:bool=h>.5 and float(prof_sample.top)<h-.25 and out.x>.10 and p_sample.x>-4.5 and p_sample.x<-1.5 and p_sample.y>-1.5
+ 			var is_base:bool=bool(prof_sample.base) and not is_interior_step
++			if not is_base:
++				if field.surface_at(p_sample+dir*.78+out*.35).is_empty() or field.surface_at(p_sample-dir*.78+out*.35).is_empty():
++					terrace_trimmed=true
++					continue
+ 			if mode_filter==-1:
+ 				if is_base:has_base=true
+ 				else:has_step=true
+@@ -945,13 +1175,15 @@
+ 	if inside.is_empty() or int(inside.water)>=0:
+ 		inside=field.surface_at(c-out*.35)
+ 	if inside.is_empty() or int(inside.water)>=0:return
+-	var cell:=Vector2i(roundi(c.x*8.0),roundi(c.y*8.0))
++	var fine_cell:=Vector2i(roundi(c.x*8.0),roundi(c.y*8.0))
++	var geo_anchor:Vector2=c+out*.50
++	var cell:=Vector2i(floori(geo_anchor.x/3.2),floori(geo_anchor.y/3.2))
+ 	var col_hash:float=random_at(cell,seed_value,3021)
+ 	var s_phase:=float(seed_value%97)*.13
+-	# 360-degree monumental geological massing: colossal sheer escarpments + deep inverted mountain-root spires!
+-	var prom_wave:float=.5+.5*sin(c.x*.14+c.y*.17+.5+s_phase)*cos(c.x*.10-c.y*.13+.3)
+-	var cleft_wave:float=sin(c.x*.46-c.y*.41+1.1+s_phase*.7)
+-	var relief_pulse:float=clampf(.5+.38*cleft_wave+.24*(col_hash-.5),0.0,1.0)
++	# Cohesive shanshui geological massing driven by coarse world-space fields:
++	var prom_wave:float=.5+.5*sin(geo_anchor.x*.14+geo_anchor.y*.17+.5+s_phase)*cos(geo_anchor.x*.10-geo_anchor.y*.13+.3)
++	var cleft_wave:float=sin(geo_anchor.x*.34-geo_anchor.y*.31+1.1+s_phase*.7)
++	var relief_pulse:float=clampf(.5+.38*cleft_wave+.18*(col_hash-.5),0.0,1.0)
+ 	var is_narrow_wedge:bool=use_len<3.10 and not step
+ 	var is_grand_slab:bool=use_len>5.20 and not step
+ 	var pick:=mini(BODY_KINDS.size()-1,int(random_at(cell,seed_value,3008)*BODY_KINDS.size()))
+@@ -965,7 +1197,6 @@
+ 		var wedge_choices:Array[int]=[3,2,0,6]
+ 		pick=wedge_choices[int(random_at(cell,seed_value,3011)*wedge_choices.size())%wedge_choices.size()]
+ 	elif relief_pulse<.34 or prom_wave<.28:
+-		# Deep recessed shadow-gorge or twin-block cleft between prouder neighbors -> bold 1.2–2.4m 3D in/out cliff rhythm!
+ 		var bay_choices:Array[int]=[3,3,2,5]
+ 		pick=bay_choices[int(random_at(cell,seed_value,3011)*bay_choices.size())%bay_choices.size()]
+ 	elif is_grand_slab or prom_wave>.48 or relief_pulse>.58:
+@@ -975,20 +1206,14 @@
+ 	var part:Dictionary=assets[kind][0]
+ 	var body_h:float=float(part.body_height)
+ 	var crown_z:float=float(part.crown_z)
+-	var proud_smooth:float=clampf(prom_wave*.74+.16*sin(c.x*.24-c.y*.19+s_phase)+.10,0.0,1.0)
+-	var proud:float=lerpf(.71,.79,proud_smooth) if step else lerpf(.75,.89,proud_smooth)
+-	var span_x:float=maxf(.45,float(part.span_x))
+-	var span_z:float=maxf(.45,float(part.span_z))
+-	var min_step_w:float=2.65 if use_len>=1.85 else maxf(1.35,use_len*1.20)
+-	var want_w:=clampf(use_len*1.26,min_step_w,6.45) if step else clampf(use_len*(1.34 if is_narrow_wedge else 1.26),2.05 if (mode_filter==1 or terrace_trimmed) else 3.55,11.5)
+-	var depth_wave:float=.5+.5*cos(c.x*.22-c.y*.24+.8+s_phase)
+-	var want_d:=lerpf(3.55,4.42,clampf(depth_wave*.42+proud_smooth*.28+relief_pulse*.30,0.0,1.0))
+-	var sx:=want_w/span_x
+-	var sz:=want_d/span_z
+-	var sy:float
+-	var foot_y:float=profile.bottom
+-	var room:float=maxf(1.8,drop)
+-	# 360-degree Monumental Mountain-Root Promontories (十米级巨岩断崖 + 深渊倒锥主山根, Refs 03/04 & Europa):
++	var proud_smooth:float=clampf(prom_wave*.74+.16*sin(geo_anchor.x*.24-geo_anchor.y*.19+s_phase)+.10,0.0,1.0)
++	# Measure cross-peninsula thickness purely via land occupancy so expanded fingers do not punch through:
++	var land_span_d:float=0.6
++	for d_p:float in [0.6,1.0,1.4,1.8,2.2,2.8,3.5,4.4]:
++		if not field.surface_at(c-out*d_p).is_empty():
++			land_span_d=d_p
++		else:
++			break
+ 	var angle_around:=atan2(c.y+1.5,c.x)
+ 	var allow_sh_mode:bool=mode_filter==-1 or (mode_filter==1 and use_len>=1.60)
+ 	var is_terrace_bridge:bool=h>.5 and c.x>-5.6 and c.x<-1.8 and c.y>3.2 and out.y>.15
+@@ -1004,65 +1229,91 @@
+ 	var in_rock_cluster:bool=is_terrace_bridge or (drop>=2.5 and (cluster_field>.44 or root_focus>.38))
+ 	var is_step_corner:bool=h>.5 and c.x>-5.5 and c.x<-1.2 and c.y>3.8
+ 	var is_step_flank:bool=h>.5 and c.x>-9.8 and c.x<-1.2 and c.y>4.0
+-	# Measure true solid island thickness (ignoring shallow interior ponds that clip profile.inset on the Upper Terrace!):
+-	var true_island_d:float=maxf(float(profile.inset),float(outer_prof.inset))
+-	for d_p:float in [1.0,1.5,2.1,2.8,3.6,4.4]:
+-		if not field.surface_at(c-out*d_p).is_empty():
+-			true_island_d=maxf(true_island_d,d_p)
+-		else:
+-			break
+-	var peninsula_guard:float=clampf((true_island_d-1.18)/1.55,0.0,1.0)
+-	# Colossal Secondary Buttress Monoliths (placed on wide headland spans and pruned to >=3.85m spacing):
+-	var sh_chance:float=0.0 if (is_step_corner or curtain_trimmed) else (.92 if (in_rock_cluster and use_len>=2.05) else (.48 if drop>=2.50 and use_len>=2.45 else 0.0))
+-	var has_shoulder:bool=allow_sh_mode and profile.base and not step and float(outer_prof.inset)>=0.90 and true_island_d>=1.65 and random_at(cell,seed_value,3030)<sh_chance
+-	var r_drop:float=clampf(.55*(.5+.5*sin(c.x*.34+c.y*.38+s_phase))+.45*random_at(cell,seed_value,3031),0.0,1.0)
++	var true_island_d:float=maxf(maxf(float(profile.inset),float(outer_prof.inset)),land_span_d)
++	var peninsula_guard:float=clampf((land_span_d-1.15)/1.55,0.0,1.0)
++	var cove_tuck:float=smoothstep(.30,.04,root_focus)
++	var inset_deep:float=clampf((land_span_d-1.25)/1.35,0.0,1.0)
++	var prow_plunge:float=smoothstep(.38,.90,root_focus)*inset_deep
++	var narrow_t:float=smoothstep(1.30,2.55,land_span_d)
++	var main_proud:float=lerpf(.66,.89,clampf(prom_envelope*.52+proud_smooth*.48,0.0,1.0))-cove_tuck*.06
++	var proud:float=lerpf(.68,.78,proud_smooth) if step else lerpf(lerpf(.46,.56,proud_smooth),main_proud,narrow_t)
++	var span_x:float=maxf(.45,float(part.span_x))
++	var span_z:float=maxf(.45,float(part.span_z))
++	var min_step_w:float=2.65 if use_len>=1.85 else maxf(1.35,use_len*1.20)
++	var min_outer_w:float=maxf(1.55,use_len*1.30) if use_len<2.65 else (2.05 if (mode_filter==1 or terrace_trimmed) else 3.45)
++	var want_w:=clampf(use_len*1.26,min_step_w,6.45) if step else clampf(use_len*(1.32 if is_narrow_wedge else 1.24),min_outer_w,11.5)
++	var depth_wave:float=.5+.5*cos(geo_anchor.x*.22-geo_anchor.y*.24+.8+s_phase)
++	var want_d:=lerpf(3.45,4.42,clampf(depth_wave*.42+proud_smooth*.28+relief_pulse*.30,0.0,1.0))
++	var sx:=want_w/span_x
++	var sz:=want_d/span_z
++	var sy:float
++	var foot_y:float=profile.bottom
++	var room:float=maxf(1.8,drop)
++	var sh_chance:float=0.0 if (is_step_corner or is_step_flank or curtain_trimmed) else (.90 if (in_rock_cluster and use_len>=2.05) else (.44 if drop>=2.55 and use_len>=2.45 else 0.0))
++	var has_shoulder:bool=allow_sh_mode and profile.base and not step and float(outer_prof.inset)>=0.90 and land_span_d>=1.65 and random_at(cell,seed_value,3030)<sh_chance
++	var r_drop:float=clampf(.55*(.5+.5*sin(geo_anchor.x*.34+geo_anchor.y*.38+s_phase))+.45*random_at(cell,seed_value,3031),0.0,1.0)
++	var is_low_tier:bool=false
+ 	var sh_drop:float=lerpf(1.42,2.05,r_drop) if is_step_flank else lerpf(.95,1.88,r_drop)
+-	# Keep Tier-2 top safely below any nearby interior pond floor when profile.inset is pond-clipped:
+ 	if float(profile.inset)<1.55 and true_island_d>=2.1:
+ 		sh_drop=maxf(sh_drop,1.28)
+-	var cove_tuck:float=smoothstep(.30,.04,root_focus)
+-	var inset_deep:float=clampf((true_island_d-1.25)/1.35,0.0,1.0)
+-	var prow_plunge:float=smoothstep(.38,.90,root_focus)*inset_deep
+ 	if step:
+ 		sx=want_w/span_x
+-		var step_d:=lerpf(1.85,2.48,clampf(relief_pulse*.62+random_at(cell,seed_value,3015)*.38,0.0,1.0))
++		var step_d:=lerpf(1.75,2.35,clampf(relief_pulse*.62+random_at(cell,seed_value,3015)*.38,0.0,1.0))
+ 		var back_chk:Dictionary=field.surface_at(c-out*1.15)
+ 		if back_chk.is_empty() or float(back_chk.get("height",-99.0))<h-.1:
+ 			step_d=minf(step_d,maxf(1.15,use_len*1.15))
+ 		sz=step_d/span_z
+ 		sy=clampf(drop/.76,1.60,3.95)
+ 	else:
+-		var foot:Vector3=field._profile_point(c,Contours.BOTTOM,out,outer_prof)
+-		foot_y=foot.y
+-		for end_t:float in [span.x,span.y]:
+-			var p_end:=_onto(points,a+dir*clampf(end_t,0.0,length),out)
+-			var prof_end:Dictionary=field._cliff_profile(p_end,out).duplicate()
+-			if not field.levels.is_empty():field._outer_profile(p_end,out,prof_end)
+-			foot_y=minf(foot_y,field._profile_point(p_end,Contours.BOTTOM,out,prof_end).y)
+-		room=maxf(2.4,h-foot_y-.04)
++		var foot_c:float=field._profile_point(c,Contours.BOTTOM,out,outer_prof).y
++		var p_a:=_onto(points,a+dir*clampf(span.x,0.0,length),out)
++		var prof_a:Dictionary=field._cliff_profile(p_a,out).duplicate()
++		if not field.levels.is_empty():field._outer_profile(p_a,out,prof_a)
++		var foot_a:float=field._profile_point(p_a,Contours.BOTTOM,out,prof_a).y
++		var p_b:=_onto(points,a+dir*clampf(span.y,0.0,length),out)
++		var prof_b:Dictionary=field._cliff_profile(p_b,out).duplicate()
++		if not field.levels.is_empty():field._outer_profile(p_b,out,prof_b)
++		var foot_b:float=field._profile_point(p_b,Contours.BOTTOM,out,prof_b).y
++		foot_y=lerpf(foot_c,foot_c*.54+.23*(foot_a+foot_b),smoothstep(1.2,2.4,land_span_d))
++		room=maxf(1.65,h-foot_y-.04)
+ 		var min_ext_veil:=99.0
+ 		for veil_k:Dictionary in field.fall_veils:
+ 			if not veil_k.external:continue
+ 			var vl_k:Vector3=veil_k.lip
+ 			min_ext_veil=minf(min_ext_veil,c.distance_to(Vector2(vl_k.x,vl_k.z)))
+-		var tier1_frac:float=lerpf(1.02,1.28,clampf(prom_envelope*.68+prom_wave*.32,0.0,1.0))-cove_tuck*.02+prow_plunge*.12
++		var broad_span_d:float=0.6
++		for d_p:float in [0.6,1.0,1.4,1.8,2.2,2.8,3.5,4.4]:
++			var flank_d:=minf(d_p,2.4)
++			if not field.surface_at(c-out*d_p).is_empty() and not field.surface_at(c+dir*1.45-out*flank_d).is_empty() and not field.surface_at(c-dir*1.45-out*flank_d).is_empty():
++				broad_span_d=d_p
++			else:
++				break
++		var main_t1:float=lerpf(.98,1.28,clampf(prom_envelope*.58+prom_wave*.42,0.0,1.0))+prow_plunge*.13-cove_tuck*.05
++		main_t1=clampf(main_t1,.94,1.42)
++		if bottom_fall_guard<0.9999:
++			main_t1=lerpf(.95,main_t1,bottom_fall_guard)
+ 		if min_ext_veil<4.8:
+-			tier1_frac=lerpf(.96,tier1_frac,smoothstep(1.9,4.8,min_ext_veil))
+-		if curtain_trimmed:tier1_frac=clampf(tier1_frac,.94,.99)
+-		if true_island_d<1.45:tier1_frac=clampf(tier1_frac,.96,1.02)
+-		var target_h:float=clampf(room*tier1_frac,4.25,9.85)
+-		sy=clampf(target_h/body_h,2.10,9.40)
++			main_t1=lerpf(.94,main_t1,smoothstep(1.9,4.8,min_ext_veil))
++		if curtain_trimmed:main_t1=clampf(main_t1,.93,.99)
++		var plunge_t:float=smoothstep(2.85,3.65,broad_span_d)
++		var tier1_frac:float=lerpf(.95,main_t1,plunge_t)
++		var eff_body_h:float=lerpf(maxf(body_h,float(part.get("geometry_height",body_h))),body_h,plunge_t)
++		var target_h:float=clampf(room*tier1_frac,minf(2.35,room*.96),9.85)
++		sy=clampf(target_h/eff_body_h,0.85,10.50)
++		sh_drop=minf(sh_drop,maxf(.88,body_h*sy-1.35))
+ 		var near_pond_rim:bool=int(field.surface_at(c-out*1.55).get("water",-1))>=0 or int(field.surface_at(c-out*2.25).get("water",-1))>=0
+-		if true_island_d<2.15 or (float(profile.inset)<1.35 and near_pond_rim):
+-			var fit_d:=maxf(2.65,float(profile.inset))
+-			sz=minf(sz,fit_d/span_z)
+-	if sx>sz*2.65:sx=sz*2.65
++		var max_safe_d:float=lerpf(clampf(proud+land_span_d*.58,1.25,4.35),4.95,smoothstep(2.4,3.8,land_span_d))
++		if float(profile.inset)<1.35 and near_pond_rim:
++			max_safe_d=minf(max_safe_d,maxf(1.65,float(profile.inset)+proud))
++		sz=minf(sz,max_safe_d/span_z)
++	var max_aspect_x:float=3.35 if land_span_d<2.8 else 2.65
++	if sx>sz*max_aspect_x:sx=sz*max_aspect_x
+ 	if sz>sx*1.95:sz=sx*1.95
+ 	var open:=span.y-span.x
+ 	if curtain_trimmed:sx=minf(sx,maxf(1.15,open*.88))
+ 	var yaw_amp:float=.024 if step else (.028/maxf(1.0,want_w*.40))
+-	var yaw:=(random_at(cell,seed_value,3005)-.5)*yaw_amp
+-	var width_mult:float=lerpf(1.26,1.34,random_at(cell,seed_value,3024)) if step else (1.12 if curtain_trimmed else lerpf(1.30,1.38,random_at(cell,seed_value,3024)))
++	var yaw:=(random_at(fine_cell,seed_value,3005)-.5)*yaw_amp
++	var width_mult:float=lerpf(1.26,1.34,random_at(cell,seed_value,3024)) if step else (1.10 if curtain_trimmed else lerpf(1.24,1.32,random_at(cell,seed_value,3024)))
+ 	var frame:=Basis(-tangent,Vector3.UP,outward)
+ 	var basis:=frame*Basis(Vector3.UP,yaw)*Basis.from_scale(Vector3(minf(sx*width_mult,8.35 if step else 12.5),sy,sz))
+ 	var pose:=Transform3D(basis,Vector3(c.x,h,c.y)+outward*(proud-crown_z*sz))
+@@ -1081,17 +1332,17 @@
+ 	if is_nan(crown_clear.x):return
+ 	if crown_clear!=body_extent:
+ 		var crown_fit:=(crown_clear.y-crown_clear.x)/(body_extent.y-body_extent.x)
+-		if crown_fit<.52:return
++		if crown_fit<.36:return
+ 		# Scale local X width cleanly without non-orthogonal basis shearing (prevents razor-thin fins!):
+ 		pose.basis.x*=crown_fit
+ 		pose.origin+=tangent*((crown_clear.x+crown_clear.y)*.5-(body_extent.x+body_extent.y)*.5*crown_fit)
+ 	var index:=_columns.size()
+ 	_columns.append({"kind":kind,"pose":pose,"edge":c,"cell":Vector2i(c.floor()),"outward":outward,"tangent":tangent,"width":sx,"thickness":crown_z*sz*2.0,"height":body_h*sy,"is_step":step})
+ 	_bucket_column(index)
+-	# Colossal Full-Height Outer Cliff Buttresses (extending vertically all the way down to the bottom root of the cliff, Refs 01 & 04):
++	# Outer Cliff Buttresses (beveled sloped shoulders integrated into adjacent cliff rock):
+ 	var is_extreme_tip:bool=c.x<-15.8 or c.x>16.2
+ 	if has_shoulder and not is_extreme_tip:
+-		var sh_idx:=int(random_at(cell,seed_value,3032)*3.0)%3
++		var sh_idx:=int(random_at(cell,seed_value,3032)*4.0)%4
+ 		var sh_kind:String=UNDERSIDE_KINDS[sh_idx]
+ 		var sh_part:Dictionary=assets[sh_kind][0]
+ 		var sh_h:float=float(sh_part.body_height)
+@@ -1099,11 +1350,11 @@
+ 		var sh_top:float=h-sh_drop
+ 		var col_bottom_y:float=h-body_h*sy
+ 		var full_wall_h:float=maxf(sh_top-foot_y+.35,sh_top-col_bottom_y+lerpf(.08,.48,root_focus))
+-		var is_sharp_nose:bool=field.surface_at(c+dir*3.05-out*.62).is_empty() or field.surface_at(c-dir*3.05-out*.62).is_empty()
+-		if full_wall_h>=2.80 and not is_sharp_nose and peninsula_guard>=.42:
++		var is_sharp_nose:bool=field.surface_at(c+dir*2.65-out*.62).is_empty() or field.surface_at(c-dir*2.65-out*.62).is_empty()
++		if full_wall_h>=2.35 and not is_sharp_nose and peninsula_guard>=.32:
+ 			var corner_tight:float=peninsula_guard
+ 			var sh_anchor_2d:Vector2=c
+-			var max_corner_w:float=lerpf(3.45,6.15,corner_tight)
++			var max_corner_w:float=lerpf(3.40,6.20,corner_tight)
+ 			for probe_w:float in [3.2,4.2,5.2,6.2]:
+ 				var fl_a:Dictionary=field.surface_at(sh_anchor_2d+dir*(probe_w*.44)-out*.58)
+ 				var fl_b:Dictionary=field.surface_at(sh_anchor_2d-dir*(probe_w*.44)-out*.58)
+@@ -1116,15 +1367,15 @@
+ 					safe_back_d=probe_d
+ 				else:
+ 					break
+-			var sh_w:float=clampf(use_len*lerpf(1.14,1.36,random_at(cell,seed_value,3033)),3.65,max_corner_w)
+-			var sh_height:float=clampf(full_wall_h,3.50,8.65)
++			var sh_w:float=clampf(use_len*lerpf(1.08,1.32,random_at(cell,seed_value,3033)),3.20,max_corner_w)
++			var sh_height:float=clampf(full_wall_h,minf(2.40,room*.92),8.65)
+ 			var bridge_tuck:float=.45 if is_terrace_bridge else 1.0
+-			var bold_cluster:bool=(in_rock_cluster or relief_pulse>.38) and not is_terrace_bridge and corner_tight>.46
+-			var base_out:float=lerpf(.52,.78,random_at(cell,seed_value,3035)) if bold_cluster else lerpf(.38,.60,random_at(cell,seed_value,3035))
++			var bold_cluster:bool=(in_rock_cluster or relief_pulse>.38) and not is_terrace_bridge and corner_tight>.42
++			var base_out:float=lerpf(.72,.98,random_at(cell,seed_value,3035)) if is_low_tier else (lerpf(.54,.80,random_at(cell,seed_value,3035)) if bold_cluster else lerpf(.40,.62,random_at(cell,seed_value,3035)))
+ 			var sh_step_out:float=base_out*lerpf(.68,1.0,corner_tight)*bridge_tuck
+ 			var sh_proud:float=proud+sh_step_out
+-			var max_sh_d:float=maxf(2.65,(sh_proud+safe_back_d-.32)/.66)
+-			var sh_d:float=minf(minf(clampf(want_d*lerpf(.96,1.14,random_at(cell,seed_value,3034)),3.00,4.55),sh_w*1.12),max_sh_d)
++			var max_sh_d:float=maxf(2.55,(sh_proud+safe_back_d-.28)/.66)
++			var sh_d:float=minf(minf(clampf(want_d*lerpf(.96,1.16,random_at(cell,seed_value,3034)),2.85,4.60),sh_w*1.12),max_sh_d)
+ 			var sh_yaw:float=yaw*.5+(random_at(cell,seed_value,3037)-.5)*.032
+ 			var sh_pitch:float=lerpf(.06,.10,random_at(cell,seed_value,3052)) if is_terrace_bridge else lerpf(.012,.032,random_at(cell,seed_value,3052))
+ 			var sh_rot:=Basis(Vector3.UP,sh_yaw)*Basis(Vector3.RIGHT,sh_pitch)
+@@ -1145,33 +1396,42 @@
+ 				if sh_ok:
+ 					# Keep the full upper and middle slab: only its final bevel
+ 					# seats inside the supporting rock. Never compress the whole tier.
+-					var joined:ArrayMesh=preload("res://scripts/terrain_editor/cliff_shoulder_join.gd").build(sh_part.mesh,Transform3D(sh_basis,sh_origin),part.mesh,pose)
+-					if joined==null:return
+-					var near_veil:=curtain_trimmed
+-					for veil_chk:Dictionary in field.fall_veils:
+-						var vl:Vector3=veil_chk.lip
+-						if sh_anchor_2d.distance_to(Vector2(vl.x,vl.z))<3.5:near_veil=true;break
+-					var allow_bush:bool=false
+-					var ledge_pt:Vector3=sh_origin+sh_basis*Vector3(0.0,-.032,.22)-Vector3(0.0,.03,0.0)
+-					var sh_prio:float=sh_w+prom_envelope*2.2
+-					_mass.append({"kind":sh_kind,"pose":Transform3D(sh_basis,sh_origin),"mesh":joined,"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
+-	elif step and drop>=1.45 and use_len>=1.65 and random_at(cell,seed_value,3061)<.52:
+-		# Clean wide stepped foot blocks along interior terrace cliffs (clear of paths & ponds):
++					var join_script:=preload("res://scripts/terrain_editor/cliff_shoulder_join.gd")
++					var joined:ArrayMesh=null
++					var sh_pose_final:=Transform3D(sh_basis,sh_origin)
++					for dy_nudge:float in [0.0,-0.0037,0.0037,-0.0083,0.0083]:
++						var try_pose:=Transform3D(sh_basis,sh_origin+Vector3(0.0,dy_nudge,0.0))
++						var cand_join:ArrayMesh=join_script.build(sh_part.mesh,try_pose,part.mesh,pose)
++						if cand_join!=null and _is_closed_solid(cand_join):
++							joined=cand_join
++							sh_pose_final=try_pose
++							break
++					if joined!=null:
++						var near_veil:=curtain_trimmed
++						for veil_chk:Dictionary in field.fall_veils:
++							var vl:Vector3=veil_chk.lip
++							if sh_anchor_2d.distance_to(Vector2(vl.x,vl.z))<3.5:near_veil=true;break
++						var allow_bush:bool=false
++						var ledge_pt:Vector3=sh_pose_final.origin+sh_basis*Vector3(0.0,-.032,.22)-Vector3(0.0,.03,0.0)
++						var sh_prio:float=sh_w+prom_envelope*2.2
++						_mass.append({"kind":sh_kind,"pose":sh_pose_final,"mesh":joined,"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":false,"priority":sh_prio,"has_ledge_bush":allow_bush,"ledge_point":ledge_pt,"ledge_tangent":tangent})
++	elif step and drop>=1.45 and use_len>=1.75 and not curtain_trimmed and random_at(cell,seed_value,3061)<.36:
++		# Staggered stepped foot boulders along interior terrace cliffs (clear of paths & ponds):
+ 		var floor_probe:Dictionary=field.surface_at(c+out*1.35)
+-		if not floor_probe.is_empty() and int(floor_probe.get("water",-1))<0 and not _near_path(c+out*.95):
+-			var st_idx:=int(random_at(cell,seed_value,3062)*3.0)%3
++		if not floor_probe.is_empty() and int(floor_probe.get("water",-1))<0 and _water_distance(field,c+out*.85,float(floor_probe.get("height",h-drop)))>=1.15 and not _near_path(c+out*.95,1.15):
++			var st_idx:=int(random_at(cell,seed_value,3062)*4.0)%4
+ 			var st_kind:String=UNDERSIDE_KINDS[st_idx]
+ 			var st_part:Dictionary=assets[st_kind][0]
+ 			var st_h:float=float(st_part.body_height)
+ 			var st_crown_z:float=float(st_part.crown_z)
+-			var st_drop:float=lerpf(.48,.88,random_at(cell,seed_value,3063))
++			var st_drop:float=clampf(drop*lerpf(.24,.48,random_at(cell,seed_value,3063)),.34,1.15)
+ 			var st_top:float=h-st_drop
+-			var st_height:float=clampf((drop-st_drop+.24)*lerpf(.90,1.02,random_at(cell,seed_value,3064)),1.25,2.15)
+-			var st_w:float=clampf(use_len*lerpf(.84,1.04,random_at(cell,seed_value,3065)),1.75,2.95)
+-			var st_d:float=clampf(lerpf(1.45,1.88,random_at(cell,seed_value,3066)),1.40,1.95)
++			var st_height:float=clampf((drop-st_drop+.24)*lerpf(.90,1.04,random_at(cell,seed_value,3064)),1.15,2.25)
++			var st_w:float=clampf(use_len*lerpf(.84,1.06,random_at(cell,seed_value,3065)),1.75,3.15)
++			var st_d:float=clampf(lerpf(1.42,1.92,random_at(cell,seed_value,3066)),1.35,1.98)
+ 			var st_yaw:float=yaw*.5
+ 			var st_basis:=frame*Basis(Vector3.UP,st_yaw)*Basis(Vector3.RIGHT,.05)*Basis.from_scale(Vector3(st_w,st_height/st_h,st_d))
+-			var st_proud:float=proud+lerpf(.22,.46,random_at(cell,seed_value,3068))
++			var st_proud:float=proud+lerpf(.24,.48,random_at(cell,seed_value,3068))
+ 			var st_origin:=Vector3(c.x,st_top,c.y)+outward*(st_proud-st_crown_z*st_d)
+ 			var st_box:AABB=st_part.mesh.get_aabb()
+ 			var st_reach:float=absf((st_basis.x*st_box.size.x).dot(tangent))*.5+absf((st_basis.z*st_box.size.z).dot(tangent))*.5
+@@ -1179,6 +1439,21 @@
+ 			var st_clear:=_curtain_span(field,Vector2(st_origin.x,st_origin.z),dir,st_ext,h,false)
+ 			if not is_nan(st_clear.x) and st_clear==st_ext:
+ 				_mass.append({"kind":st_kind,"pose":Transform3D(st_basis,st_origin),"cell":Vector2i(c.floor()),"is_shoulder":true,"is_interior":true,"has_ledge_bush":false,"crown_edge":c})
++static func _is_closed_solid(mesh:ArrayMesh)->bool:
++	if mesh==null or mesh.get_surface_count()==0:return false
++	var faces:PackedVector3Array=Geometry.faces_of(mesh)
++	if faces.is_empty():return false
++	var edges:Dictionary={}
++	for i in range(0,faces.size(),3):
++		for j in 3:
++			var ka:=Vector3i((faces[i+j]*10000.0).round())
++			var kb:=Vector3i((faces[i+(j+1)%3]*10000.0).round())
++			if ka==kb:continue
++			var key:Array=[ka,kb] if ka<kb else [kb,ka]
++			edges[key]=int(edges.get(key,0))+1
++	for count:int in edges.values():
++		if count!=2:return false
++	return not edges.is_empty()
+ static func crown_remap(vertex:Vector3,_stretch:float)->Vector3:
+ 	# The crown is authored on the mesh. Scaling must not squash it.
+ 	return vertex
+
+--- a/scripts/terrain_editor/terrain_renderer.gd
++++ b/scripts/terrain_editor/terrain_renderer.gd
+@@ -25,6 +25,7 @@
+ var _pending_bounds:Dictionary={}
+ var _build_queue:Array=[]
+ var _pending_shore:Dictionary={}
++var _pending_bald:Dictionary={}
+ var _build_data:Data
+ var _build_revision:int=-1
+ var _pending_contours:RefCounted
+@@ -55,6 +56,7 @@
+ var _committed_blueprint_stamp:String=""
+ var _committed_blueprint_revision:int=-1
+ var _published_runs:Dictionary={}
++var _published_chunk_deco:Dictionary={}
+ ## Worker wall time of the last threaded revision and main-thread publish cost.
+ var last_worker_ms:=0.0
+ var last_publish_ms:=0.0
+@@ -201,6 +203,7 @@
+ 		_contour_revision=data.revision
+ 		_discard_pending()
+ 		_pending_shore=preload("res://scripts/terrain_editor/water_shore_field.gd").build(_build_data,contours)
++		_pending_bald=preload("res://scripts/terrain_editor/cliff_rim_balding.gd").build(_build_data,contours)
+ 		# Shared cap triangulation can cross distant chunks. Reconstruct the owning
+ 		# chunks under the ordinary two-chunk budget, including removed geometry.
+ 		# The triangle index avoids scanning the whole island per chunk.
+@@ -264,7 +267,7 @@
+ 	_discard_pending()
+ 	_worker_result={}
+ 	_back_contours.inherit_generation_cache(contours)
+-	_worker_task=WorkerThreadPool.add_task(_worker_build.bind(snapshot,_back_contours,wanted,Time.get_ticks_usec()),false,"terrain revision")
++	_worker_task=WorkerThreadPool.add_task(_worker_build.bind(snapshot,_back_contours,wanted,Time.get_ticks_usec(),null,_published_runs.duplicate(true),_published_chunk_deco.duplicate(true)),false,"terrain revision")
+ 
+ func _blueprint_stamp(draft:Data)->String:
+ 	return "%d|%d"%[draft.get_instance_id(),draft.revision]
+@@ -312,7 +315,7 @@
+ 	_worker_result={}
+ 	_back_contours.inherit_generation_cache(contours)
+ 	_worker_cancel=BuildCancellation.new()
+-	_worker_task=WorkerThreadPool.add_task(_worker_build.bind(snapshot,_back_contours,wanted,Time.get_ticks_usec(),_worker_cancel),false,"terrain blueprint")
++	_worker_task=WorkerThreadPool.add_task(_worker_build.bind(snapshot,_back_contours,wanted,Time.get_ticks_usec(),_worker_cancel,_published_runs.duplicate(true),_published_chunk_deco.duplicate(true)),false,"terrain blueprint")
+ 
+ func _affected_chunks(snapshot:Data)->Dictionary:
+ 	var affected:Dictionary={}
+@@ -368,7 +371,7 @@
+ 		for node:Node3D in result.chunks.values():
+ 			if node!=null:node.free()
+ 
+-func _worker_build(snapshot:Data,field,wanted:Dictionary,started:int,cancellation:BuildCancellation=null)->void:
++func _worker_build(snapshot:Data,field,wanted:Dictionary,started:int,cancellation:BuildCancellation=null,prev_runs:Dictionary={},prev_deco:Dictionary={})->void:
+ 	# Runs off the scene tree: only new resources and detached nodes are made.
+ 	var stages:={}
+ 	var t:=Time.get_ticks_usec()
+@@ -378,16 +381,26 @@
+ 		_worker_result={"field":field,"cancelled":true}
+ 		return
+ 	if decoration!=null:
+-		decoration._previous_runs=_published_runs.duplicate(true)
++		decoration._previous_runs=prev_runs
+ 		decoration._column_layout(field,snapshot.seed)
++		if not prev_deco.is_empty():
++			var next_deco:Dictionary=decoration.chunk_deco_digest()
++			var deco_keys:Dictionary=prev_deco.duplicate()
++			deco_keys.merge(next_deco,true)
++			for chunk:Vector2i in deco_keys:
++				if prev_deco.get(chunk,[])!=next_deco.get(chunk,[]):
++					for z:int in range(-1,2):
++						for x:int in range(-1,2):
++							wanted[chunk+Vector2i(x,z)]=true
+ 	stages.layout=(Time.get_ticks_usec()-t)/1000.0;t=Time.get_ticks_usec()
+ 	if decoration!=null:stages.layout_detail=decoration.layout_stages.duplicate()
+ 	if cancellation!=null and cancellation.is_cancelled():
+ 		_worker_result={"field":field,"cancelled":true}
+ 		return
+ 	var shore:Dictionary=preload("res://scripts/terrain_editor/water_shore_field.gd").build(snapshot,field)
++	var bald:Dictionary=preload("res://scripts/terrain_editor/cliff_rim_balding.gd").build(snapshot,field)
+ 	stages.shore=(Time.get_ticks_usec()-t)/1000.0;t=Time.get_ticks_usec()
+-	var out:={"chunks":{},"faces":{},"bounds":{},"stages":stages}
++	var out:={"chunks":{},"faces":{},"bounds":{},"stages":stages,"bald":bald}
+ 	for chunk in wanted:
+ 		if cancellation!=null and cancellation.is_cancelled():
+ 			out.field=field
+@@ -397,6 +410,7 @@
+ 		_rebuild(chunk,field,snapshot,out)
+ 	stages.chunks=(Time.get_ticks_usec()-t)/1000.0
+ 	out.shore=shore
++	out.bald=bald
+ 	out.data=snapshot
+ 	out.authoritative_revision=snapshot.revision
+ 	out.field=field
+@@ -418,6 +432,7 @@
+ 	_pending_faces=result.faces
+ 	_pending_bounds=result.bounds
+ 	_pending_shore=result.shore
++	_pending_bald=result.get("bald",{})
+ 	_build_data=result.data
+ 	_build_revision=int(result.authoritative_revision)
+ 	_pending_contours=result.field
+@@ -548,7 +563,8 @@
+ 		if out.has("stages"):out.stages.populate=out.stages.get("populate",0.0)+(Time.get_ticks_usec()-t_pop)/1000.0
+ 	if grass_blades_enabled and geometry.has("grass"):
+ 		var t_grass:=Time.get_ticks_usec()
+-		var blades:MultiMeshInstance3D=preload("res://scripts/terrain_editor/grass_field.gd").build(geometry.grass,chunk,_grass_blockers(build,chunk))
++		var bald_data:Dictionary=out.get("bald",_pending_bald)
++		var blades:MultiMeshInstance3D=preload("res://scripts/terrain_editor/grass_field.gd").build(geometry.grass,chunk,_grass_blockers(build,chunk),bald_data)
+ 		if blades!=null:node.add_child(blades)
+ 		if out.has("stages"):out.stages.grass=out.stages.get("grass",0.0)+(Time.get_ticks_usec()-t_grass)/1000.0
+ 	rebuild_count+=1
+@@ -562,6 +578,7 @@
+ 		_pending_contours=null
+ 		if decoration!=null:decoration.contours=contours
+ 	_pending_shore={}
++	_pending_bald={}
+ 	for node in _pending_chunks.values():
+ 		if node!=null:node.free()
+ 	_pending_chunks.clear()
+@@ -606,12 +623,21 @@
+ 	_pending_faces.clear()
+ 	_pending_bounds.clear()
+ 	_published_data=_build_data
+-	if decoration!=null:_published_runs=decoration._previous_runs.duplicate(true)
++	if decoration!=null:
++		_published_runs=decoration._previous_runs.duplicate(true)
++		_published_chunk_deco=decoration.chunk_deco_digest()
+ 	if not _pending_shore.is_empty():
+ 		materials.water.set_shader_parameter("shore_field",preload("res://scripts/terrain_editor/water_shore_field.gd").texture_of(_pending_shore))
+ 		materials.water.set_shader_parameter("shore_origin",_pending_shore.origin)
+ 		materials.water.set_shader_parameter("shore_extent",_pending_shore.extent)
+ 		_pending_shore={}
++	if not _pending_bald.is_empty() and materials.has("grass"):
++		var bald_tex:Texture2D=preload("res://scripts/terrain_editor/cliff_rim_balding.gd").texture_of(_pending_bald)
++		if bald_tex!=null:
++			materials.grass.set_shader_parameter("rim_bald_field",bald_tex)
++			materials.grass.set_shader_parameter("rim_bald_origin",_pending_bald.origin)
++			materials.grass.set_shader_parameter("rim_bald_extent",_pending_bald.extent)
++		_pending_bald={}
+ 	props.sync(contours)
+ 	mist.sync(contours.splash_points,contours.fall_veils,contours.land_regions)
+ 	terrain_published.emit()
+@@ -734,11 +760,16 @@
+ 	_discard_pending()
+ 	_build_queue.clear()
+ 	_contour_revision=-1
++	_published_runs.clear()
++	_published_chunk_deco.clear()
+ 	for chunk in chunks:data.dirty_chunks[chunk]=true
+ 	for cell:Vector2i in data.cells:
+ 		for z in range(-1,2):
+ 			for x in range(-1,2):data.dirty_chunks[Data.chunk_of(cell+Vector2i(x,z))]=true
+ 	flush_dirty(1<<30)
++	if decoration!=null:
++		_published_runs=decoration._previous_runs.duplicate(true)
++		_published_chunk_deco=decoration.chunk_deco_digest()
+ 
+ func pick(ray_origin:Vector3,ray_direction:Vector3)->Dictionary:
+ 	if data==null or ray_direction.length_squared()<0.001:return {}
+
+--- a/shaders/terrain_editor/ground.gdshader
++++ b/shaders/terrain_editor/ground.gdshader
+@@ -11,6 +11,9 @@
+ uniform vec2 grid_center=vec2(0.0);
+ uniform float grid_radius=0.0;
+ uniform float cover_relief = 0.0;
++uniform sampler2D rim_bald_field : filter_linear, repeat_disable, hint_default_black;
++uniform vec2 rim_bald_origin = vec2(-64.0);
++uniform vec2 rim_bald_extent = vec2(128.0);
+ varying vec3 world_position;
+ void vertex(){
+ 	world_position=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;
+@@ -41,14 +44,48 @@
+ 	// distinct from both grass and stone without becoming a dark rim belt.
+ 	vec3 rooted_sod=mix(color*vec3(.92,.86,.65),stone_mid_color*vec3(.96,.88,.72),.50);
+ 	float root_exposure=.28+.56*smoothstep(.30,.72,root_patch);
+-	ALBEDO=mix(lawn,rooted_sod,lip_soil*root_exposure);
++	vec3 surface_col=mix(lawn,rooted_sod,lip_soil*root_exposure);
++	// Reverse cliff-into-turf interaction ("石壁反向露岩与稀疏秃草坪"):
++	// Select cliff headlands and rim stretches let bare cliff stone and thin dry turf bite inward.
++	vec2 bald_uv=(p-rim_bald_origin)/max(rim_bald_extent,vec2(1.0));
++	float bald_inside=step(0.0,bald_uv.x)*step(0.0,bald_uv.y)*step(bald_uv.x,1.0)*step(bald_uv.y,1.0);
++	vec2 bald_sample=texture(rim_bald_field,clamp(bald_uv,vec2(0.0),vec2(1.0))).rg*bald_inside;
++	float rim_prox=bald_sample.x;
++	float stone_bite=0.0;
++	float sparse_turf=0.0;
++	if(rim_prox>0.01){
++		mat2 br1=mat2(vec2(.80,.60),vec2(-.60,.80));
++		mat2 br2=mat2(vec2(-.44,.90),vec2(-.90,-.44));
++		float b_macro=gc_noise(br1*p*.145+vec2(5.7,2.3))*.66+gc_noise(br2*p*.31+vec2(11.4,7.9))*.34;
++		float b_det=gc_noise(br1*p*.68+vec2(2.1,9.4))*.60+gc_noise(br2*p*1.55+vec2(8.3,3.6))*.40;
++		float b_wave=clamp(smoothstep(.60,.79,b_macro+(b_det-.5)*.18),0.0,1.0);
++		float patch_drive=clamp(b_wave+bald_sample.y*.16*smoothstep(.05,.35,b_wave),0.0,1.0);
++		float rag=gc_noise(p*1.35+vec2(4.2,7.8))*.62+gc_noise(p*3.1-vec2(2.6,5.1))*.38;
++		float reach=rim_prox*(.60+.62*patch_drive)+(rag-.5)*.24;
++		stone_bite=smoothstep(.66,.84,reach)*smoothstep(.26,.58,patch_drive)*COLOR.a;
++		sparse_turf=smoothstep(.30,.66,reach)*smoothstep(.16,.46,patch_drive)*COLOR.a;
++		// Keep ground under short-cropped 3D tufts (sparse_turf < 0.48) in warm dry olive-moss;
++		// transition to rooted ochre sod and weathered matte cliff stone aligned with sunlit wall value.
++		float dry_moss_band=smoothstep(.05,.48,sparse_turf);
++		float bare_sod_band=smoothstep(.46,.76,sparse_turf);
++		float exposed_core=smoothstep(.24,.56,stone_bite);
++		vec3 raw_stone=stone_surface(world_position,vec3(0.0,1.0,0.0))*vec3(.72,.69,.61);
++		vec3 cliff_top_stone=mix(rooted_sod*vec3(.96,.92,.84),raw_stone,.74);
++		float tuft_islands=smoothstep(.34,.72,gc_noise(br2*p*2.15+vec2(6.4,1.9)));
++		vec3 dry_olive_turf=lawn*mix(vec3(.95,.93,.78),vec3(1.01,.95,.76),tuft_islands);
++		vec3 bare_stony_sod=mix(rooted_sod*vec3(.98,.94,.85),cliff_top_stone,.46);
++		surface_col=mix(surface_col,dry_olive_turf,dry_moss_band*.78);
++		surface_col=mix(surface_col,bare_stony_sod,bare_sod_band*.84);
++		surface_col=mix(surface_col,cliff_top_stone,exposed_core*.88);
++	}
++	ALBEDO=surface_col;
+ 	float submerged=1.0-live_grass_coverage(world_position);
+ 	if(submerged>0.0)ALBEDO=mix(ALBEDO,wet_bank_material(world_position),submerged);
+ 	vec3 base_normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+ 	if(base_normal.y<0.0)base_normal=-base_normal;
+ 	// Smooth 0.6m–2.2m plush moss-meadow cushion swells on turf:
+ 	float path_clear=smoothstep(.42,.82,gc_path_dist(p));
+-	float cushion_mask=smoothstep(.84,.98,base_normal.y)*COLOR.a*path_clear*gc_standing(p);
++	float cushion_mask=smoothstep(.84,.98,base_normal.y)*COLOR.a*path_clear*gc_standing(p)*clamp(1.0-stone_bite*.92-sparse_turf*.45,0.0,1.0);
+ 	vec2 pillow_g=gc_pillow_grad(p)*(.14*cushion_mask*(1.0-submerged));
+ 	slope*=1.0-submerged;
+ 	vec3 normal_world=normalize(base_normal+vec3(-pillow_g.x-slope.x*cover_relief*detail,0.0,-pillow_g.y-slope.y*cover_relief*detail));

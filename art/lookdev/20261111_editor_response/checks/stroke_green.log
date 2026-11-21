@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Could not resolve external class member "shihai_hud".
+          at: GDScript::reload (res://scripts/terrain_editor/editor.gd:161)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/terrain_stroke_plane_test.gd:12)
+ERROR: Failed to load script "res://scripts/terrain_editor/editor.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] run (res://tests/terrain_stroke_plane_test.gd:12)
+SCRIPT ERROR: Invalid access to property or key 'camera' on a base object of type 'Node3D'.
+          at: run (res://tests/terrain_stroke_plane_test.gd:15)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/terrain_stroke_plane_test.gd:15)
