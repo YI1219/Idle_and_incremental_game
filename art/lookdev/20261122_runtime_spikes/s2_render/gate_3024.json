@@ -1,0 +1,19 @@
+{
+ "size": [3024, 1964],
+ "scene": "bench",
+ "detail": 1,
+ "cells": [4096, 651, 650],
+ "triangles": 388326,
+ "draws": 128,
+ "frames": 240,
+ "rounds": 3,
+ "scene_build_ms": 39.5,
+ "shadow_refresh_ms": 3.564,
+ "full_rebuild_mesh_ms": 13.40,
+ "full_rebuild_with_upload_and_shadow_ms": 20.69,
+ "views": [
+  {"view": "whole", "moving_ms": 1.864, "terms_only_ms": 1.330, "still_ms": 0.547, "moving_rounds": [1.862762325, 1.8639633666666666, 1.8738565958333333], "still_rounds": [0.5446581583333333, 0.5467668375, 0.5488878458333333]},
+  {"view": "game", "moving_ms": 1.592, "terms_only_ms": 1.126, "still_ms": 0.485, "moving_rounds": [1.5911145833333333, 1.5923463541666665, 1.592434025], "still_rounds": [0.48240225416666666, 0.4845286458333333, 0.48913124999999996]},
+  {"view": "low", "moving_ms": 1.858, "terms_only_ms": 1.341, "still_ms": 0.535, "moving_rounds": [1.8575899291666669, 1.8580366291666666, 1.8595633666666667], "still_rounds": [0.5327211791666667, 0.5349703125, 0.5361841999999999]}
+ ]
+}

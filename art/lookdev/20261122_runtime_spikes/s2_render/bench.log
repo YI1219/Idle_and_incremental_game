@@ -1,0 +1,42 @@
+== gate_3024: --size=3024x1964 --png=/tmp/tsw_s2/gate_3024
+scene bench: cells [4096, 651, 650], 388326 triangles, 128 draws, built in 40 ms
+shadow map refresh: 3.56 ms
+RESULT 3024x1964 whole  moving   1.86 ms (536.5 fps)  terms only   1.33 ms  still   0.55 ms
+RESULT 3024x1964 game   moving   1.59 ms (628.0 fps)  terms only   1.13 ms  still   0.48 ms
+RESULT 3024x1964 low    moving   1.86 ms (538.2 fps)  terms only   1.34 ms  still   0.53 ms
+REBUILD focus island (4096 cells): mesh 13.4 ms, with upload and shadow refresh 20.7 ms
+== desktop_3600: --size=3600x2338
+scene bench: cells [4096, 651, 650], 388326 triangles, 128 draws, built in 24 ms
+shadow map refresh: 2.56 ms
+RESULT 3600x2338 whole  moving   2.20 ms (454.3 fps)  terms only   1.45 ms  still   0.77 ms
+RESULT 3600x2338 game   moving   1.89 ms (528.9 fps)  terms only   1.24 ms  still   0.67 ms
+RESULT 3600x2338 low    moving   2.17 ms (461.2 fps)  terms only   1.44 ms  still   0.74 ms
+REBUILD focus island (4096 cells): mesh 13.3 ms, with upload and shadow refresh 21.1 ms
+== gate_3024_sync: --size=3024x1964 --rounds=2
+scene bench: cells [4096, 651, 650], 388326 triangles, 128 draws, built in 24 ms
+shadow map refresh: 2.11 ms
+RESULT 3024x1964 whole  moving   2.03 ms (492.7 fps)  terms only   1.49 ms  still   0.69 ms
+RESULT 3024x1964 game   moving   1.75 ms (571.2 fps)  terms only   1.29 ms  still   0.63 ms
+RESULT 3024x1964 low    moving   2.04 ms (490.7 fps)  terms only   1.51 ms  still   0.67 ms
+REBUILD focus island (4096 cells): mesh 13.2 ms, with upload and shadow refresh 19.1 ms
+== quad_6048: --size=6048x3928 --rounds=2
+scene bench: cells [4096, 651, 650], 388326 triangles, 128 draws, built in 23 ms
+shadow map refresh: 1.75 ms
+RESULT 6048x3928 whole  moving   4.08 ms (244.8 fps)  terms only   1.99 ms  still   2.11 ms
+RESULT 6048x3928 game   moving   3.77 ms (265.5 fps)  terms only   1.97 ms  still   1.83 ms
+RESULT 6048x3928 low    moving   4.01 ms (249.2 fps)  terms only   2.01 ms  still   2.04 ms
+REBUILD focus island (4096 cells): mesh 15.3 ms, with upload and shadow refresh 24.5 ms
+== detail3_3024: --size=3024x1964 --detail=3
+scene bench: cells [4096, 651, 650], 1054074 triangles, 130 draws, built in 52 ms
+shadow map refresh: 3.13 ms
+RESULT 3024x1964 whole  moving   3.57 ms (279.9 fps)  terms only   3.03 ms  still   0.55 ms
+RESULT 3024x1964 game   moving   3.00 ms (333.5 fps)  terms only   2.52 ms  still   0.48 ms
+RESULT 3024x1964 low    moving   3.61 ms (277.3 fps)  terms only   3.09 ms  still   0.53 ms
+REBUILD focus island (4096 cells): mesh 35.1 ms, with upload and shadow refresh 60.1 ms
+== starter_3024: --size=3024x1964 --scene=starter
+scene starter: cells [623], 48712 triangles, 21 draws, built in 3 ms
+shadow map refresh: 1.25 ms
+RESULT 3024x1964 whole  moving   0.91 ms (1098.8 fps)  terms only   0.39 ms  still   0.53 ms
+RESULT 3024x1964 game   moving   0.84 ms (1187.8 fps)  terms only   0.41 ms  still   0.45 ms
+RESULT 3024x1964 low    moving   0.90 ms (1115.8 fps)  terms only   0.41 ms  still   0.49 ms
+REBUILD focus island (623 cells): mesh 1.8 ms, with upload and shadow refresh 3.1 ms
