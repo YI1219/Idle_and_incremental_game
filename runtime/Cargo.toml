@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["spikes/s1_wallpaper", "spikes/s2_render"]
+members = ["spikes/s1_wallpaper", "spikes/s2_render", "spikes/s34_study"]
 
 [workspace.package]
 edition = "2021"

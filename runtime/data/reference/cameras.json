@@ -1,0 +1,21 @@
+{
+ "note": "The twelve fixed review cameras of the frozen Godot project (tools/art/capture_lookdev.gd and the capture scripts under art/lookdev/). Shared by Godot's reference capture and the runtime's captures so both shoot identical views.",
+ "fov_vertical_deg": 31.0,
+ "near": 0.1,
+ "far": 3600.0,
+ "rule": "eye = (cx + sin(yaw) * h / tan(pitch), h, cz + cos(yaw) * h / tan(pitch)); the camera looks at (cx, 0, cz); angles in degrees",
+ "cameras": [
+  {"name": "game", "center": [0, -1], "height": 21, "yaw": 16, "pitch": 27},
+  {"name": "whole", "center": [-2, -1], "height": 32, "yaw": 16, "pitch": 30},
+  {"name": "reverse", "center": [-2, -1], "height": 32, "yaw": 196, "pitch": 30},
+  {"name": "close", "center": [-10, -5], "height": 13, "yaw": 16, "pitch": 30},
+  {"name": "cliff_close", "center": [-8, 6], "height": 10, "yaw": 16, "pitch": 20},
+  {"name": "side_106", "center": [-2, -1], "height": 32, "yaw": 106, "pitch": 30},
+  {"name": "side_286", "center": [-2, -1], "height": 32, "yaw": 286, "pitch": 30},
+  {"name": "foot_front", "center": [-8, 6], "height": 13, "yaw": 16, "pitch": 24},
+  {"name": "foot_reverse", "center": [-2, -1], "height": 17, "yaw": 196, "pitch": 18},
+  {"name": "overview", "center": [-2, -1], "height": 32, "yaw": 16, "pitch": 62},
+  {"name": "terrace_close", "center": [-3, -2], "height": 12.5, "yaw": 28, "pitch": 26},
+  {"name": "outer_hull", "center": [3, 4], "height": 13.5, "yaw": 344, "pitch": 18}
+ ]
+}
