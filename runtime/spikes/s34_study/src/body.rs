@@ -470,7 +470,19 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let out = if field.sample(&field.land2, mid + out) < field.sample(&field.land2, mid - out) { out } else { -out };
             let key = ((mid.x * 0.5 + 0.137).floor() as i32, (mid.y * 0.5 + 0.291).floor() as i32);
             let (h1, h2, h3) = (hash2(key.0, key.1, seed ^ 81), hash2(key.0, key.1, seed ^ 82), hash2(key.0, key.1, seed ^ 83));
-            let thick = 2.4 + 1.6 * h1 + if face.role == Role::Primary { 0.8 } else { 0.0 };
+            let mut thick: f32 = 2.4 + 1.6 * h1 + if face.role == Role::Primary { 0.8 } else { 0.0 };
+            // The block reaches back only as far as the ground over it stays at its top: a pond or
+            // a lower terrace behind the rim would otherwise show its top through the bed or lawn.
+            for start in [face.a, mid, face.b] {
+                let mut d = 0.25;
+                while d < thick + 0.3 {
+                    if field.height_at(start - out * d) < face.top - 0.12 {
+                        thick = thick.min((d - 0.35).max(0.6));
+                        break;
+                    }
+                    d += 0.25;
+                }
+            }
             let front = face.step - 0.12;
             let side = 0.22;
             let turn = (h2 - 0.5) * 0.14;
@@ -528,7 +540,16 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                         centre + Vec2::new(angle.cos(), angle.sin()) * radius * wobble
                     })
                     .collect();
-                let top = plan.iter().map(|p| field.height_at(*p)).fold(f32::MAX, f32::min) - 0.55;
+                // Under the lowest ground anywhere over the column, not only at its corners: a pond
+                // or a lower terrace inside the plan would otherwise show the column's top through it.
+                let mut top = plan.iter().map(|p| field.height_at(*p)).fold(f32::MAX, f32::min);
+                for ring in 0..3 {
+                    for k in 0..12 {
+                        let angle = k as f32 / 12.0 * std::f32::consts::TAU;
+                        top = top.min(field.height_at(centre + Vec2::new(angle.cos(), angle.sin()) * radius * 1.2 * ring as f32 / 2.0));
+                    }
+                }
+                let top = top - 0.55;
                 let far = smoothstep(0.52, 0.97, field.sample(&field.land3, centre));
                 let depth_to = underside(field, centre, seed) + 1.2 + 3.2 * h4 + 2.5 * far * h1;
                 let lean = centre + field.inward(centre) * 4.0;

@@ -180,7 +180,7 @@ struct Hour {
     moss: [f32; 4],
     foam: [f32; 3],
     root_mist: f32,
-    /// Body tint of a waterfall sheet (display value).
+    /// My calibration of the falls per hour: linear factors on the sheet (1 would be the port as is).
     fall: [f32; 3],
     /// My calibration of the island's light (linear factors on sun, sky, ground and fill) and of the
     /// island stone on top of it, measured against the reference frames; 1 at day.
@@ -225,7 +225,7 @@ fn hour_values(name: &str) -> Hour {
             moss: [0.88, 0.95, 0.80, 0.50],
             foam: [0.92, 0.90, 0.86],
             root_mist: 0.96,
-            fall: [0.62, 0.70, 0.66],
+            fall: [0.58, 0.77, 0.81],
             near_gain: [0.70, 0.70, 0.70],
             stone_gain: [0.90, 0.90, 0.95],
         },
@@ -264,7 +264,7 @@ fn hour_values(name: &str) -> Hour {
             moss: [0.90, 0.95, 0.86, 0.45],
             foam: [0.80, 0.88, 0.95],
             root_mist: 0.96,
-            fall: [0.40, 0.52, 0.58],
+            fall: [0.574, 0.719, 0.695],
             near_gain: [0.72, 0.72, 0.72],
             stone_gain: [1.25, 1.0, 0.85],
         },
@@ -306,7 +306,7 @@ fn hour_values(name: &str) -> Hour {
             moss: [0.88, 0.96, 0.79, 0.55],
             foam: [0.95, 0.96, 0.94],
             root_mist: 0.96,
-            fall: [0.58, 0.74, 0.70],
+            fall: [0.55, 0.80, 0.82],
             near_gain: [1.0, 1.0, 1.0],
             stone_gain: [1.0, 1.0, 1.0],
         },
@@ -479,7 +479,7 @@ fn light_set(name: &str) -> ([[f32; 4]; render::LIGHT_SLOTS], Vec3, f32) {
     slots[15] = h.moss;
     slots[16] = [0.0, 0.0, 0.0, h.far_density];
     slots[17] = with_a(lin(h.foam), h.root_mist);
-    slots[18] = with_a(lin(h.fall), 0.0);
+    slots[18] = with_a(h.fall, 0.0);
     // Far field (sky_palette, cloud_deck, distant_mountain): Godot's source_color uniforms, linear.
     slots[20] = with_a(lin(p.sky_zenith), 0.0);
     slots[21] = with_a(lin(p.sky_mid), 0.0);
@@ -527,6 +527,13 @@ fn light_set(name: &str) -> ([[f32; 4]; render::LIGHT_SLOTS], Vec3, f32) {
         (ds[2] + (dl[2] - ds[2]) * 0.8) * day_mist[2] * mist_k[2],
         0.0,
     ];
+    // Dusk and night: the root mist takes the shaded cloud sea's tone below the island in the
+    // reference frames (measured), authored as displayed. Day keeps the value above.
+    match name {
+        "dusk" => slots[43] = with_a(shown([0.70, 0.655, 0.62]), 0.0),
+        "night" => slots[43] = with_a(shown([0.37, 0.48, 0.58]), 0.0),
+        _ => {}
+    }
     slots[44] = with_a(h.near_gain, 0.0);
     slots[45] = with_a(h.stone_gain, 0.0);
     // Pond depth colour: ours (tuned on the day frames) times the preset's change of water_deep.
@@ -752,7 +759,9 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
     let mut clear = Vec::new();
     let things = match props {
         Some(dir) => {
-            let report = props::load(dir, cells, &field, origin, library);
+            // A layout's own scene is loaded where it stood; an island without one (synthetic) gets
+            // that scene's props scattered over it.
+            let report = if courtyard { props::load(dir, cells, &field, origin, library) } else { props::scatter(dir, cells, &field, origin, seed, library) };
             println!("{}", report.line(dir));
             prop_triangles = report.triangles;
             clear = report.clear;
@@ -762,7 +771,7 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
         None => decor::scatter(cells, &field, &colours, seed, &mut clear),
     };
     lap("decor", &mut timings);
-    let grass = grass::build(&field, &top.rim, &clear, seed, origin, field::TopColours::default().lawn);
+    let grass = grass::build(&field, &top.rim, &top.brows, &clear, seed, origin, field::TopColours::default().lawn);
     lap("grass", &mut timings);
     parts.push(("top", top.mesh.triangles()));
     parts.push(("body", body.mesh.triangles()));
@@ -774,7 +783,7 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
     solid.append(&body.mesh);
     solid.append(&things);
     solid.offset(origin);
-    Built { solid, water: water::build_water(cells, origin), grass, faces: body.faces, columns: body.columns, timings, parts }
+    Built { solid, water: water::build_water(cells, &field, origin), grass, faces: body.faces, columns: body.columns, timings, parts }
 }
 
 /// How far from an edit the rim plan changes: the locality test of S4.
@@ -892,7 +901,17 @@ fn main() {
     };
     let mut library = props::Library::default();
     let total = Instant::now();
-    let main_props = props_for(args.layout.as_deref(), true);
+    // A synthetic island gets layout 7301's exported props scattered over it (unless --props=none
+    // or another scene folder is given).
+    let main_props = if args.synthetic > 0 && args.layout.is_none() {
+        match args.props.as_str() {
+            "none" => None,
+            "auto" => Some(std::path::PathBuf::from("runtime/data/reference/scene_7301_0")),
+            dir => Some(dir.into()),
+        }
+    } else {
+        props_for(args.layout.as_deref(), true)
+    };
     let mut main_island = build_island(&cells, args.body, args.seed, Vec3::ZERO, courtyard, main_props.as_deref(), &mut library);
     let build_ms = total.elapsed().as_secs_f64() * 1000.0;
     let mut solid = Mesh::default();
@@ -940,6 +959,8 @@ fn main() {
         let centre = [entry["center"][0].as_f64().unwrap() as f32, entry["center"][1].as_f64().unwrap() as f32];
         cameras.push((entry["name"].as_str().unwrap().to_string(), Camera::orbit(centre, entry["height"].as_f64().unwrap() as f32, entry["yaw"].as_f64().unwrap() as f32, entry["pitch"].as_f64().unwrap() as f32)));
     }
+    // The review set's whole-island view of the 623-cell layouts: the distance the near air is tuned for.
+    let whole_reach = cameras.iter().find(|(n, _)| n == "whole").map_or(60.0, |(_, c)| (c.eye - c.target).length());
     cameras.push(("wallpaper".to_string(), Camera { eye: Vec3::new(26.0, 24.0, 122.0), target: Vec3::new(2.0, 0.0, -4.0), fov_deg: 31.0 }));
     cameras.push(("below".to_string(), Camera { eye: Vec3::new(14.0, -19.0, 30.0), target: Vec3::new(-1.0, -2.0, -1.0), fov_deg: 31.0 }));
     if args.synthetic > 0 {
@@ -972,6 +993,9 @@ fn main() {
             continue;
         }
         let mut light = light;
+        // The near air scales with how far the camera stands from what it orbits (1 up to the
+        // review set's whole-island view).
+        light[16][0] = if wallpaper { 1.0 } else { ((camera.eye - camera.target).length() / whole_reach).max(1.0) };
         // Godot keeps the distant landscape under the camera's orbit centre.
         if wallpaper {
             // The r4 far field (mounds built round the origin, the r4 cloud sea).

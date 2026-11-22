@@ -115,6 +115,242 @@ pub const STEP: f32 = 0.25;
 /// Empty margin kept around the cells so the widest blur has room.
 const MARGIN: f32 = 18.0;
 
+// Terrace steps (round r6). Every cell edge between two land cells of different heights is a
+// step. The steps form a graph on the cell corners; its chains (between junctions of three or
+// more steps and the rim) are subdivided at 0.5 m, relaxed like the outline and kept within
+// `STEP_MAX_MOVE` of the cell edges, so a stair of cells becomes one straight or gently curved
+// run. Each piece keeps the levels of the cell edge it came from, so two levels that step down
+// at the same cell edge stay one wall. Heights near a step come from which side of its smooth
+// contour a point lies on; a step of 0.75 m or more (or one that holds a pond) is a wall: a hard
+// step that the top surface is cut along and a ribbon of cut rock fills.
+/// How far a point looks for a step.
+const STEP_BAND: f32 = 1.2;
+/// The most a relaxed contour point may move from its cell corner or edge midpoint.
+const STEP_MAX_MOVE: f32 = 0.6;
+/// Relaxation passes on the 0.5 m chain points (a Gaussian of about 1.6 m along the chain).
+const STEP_RELAX: usize = 20;
+/// Half width of a soft step (rises under 0.75 m): a lawn slope, not a wall.
+const SOFT_HALF: f32 = 0.22;
+/// A pond's rim above its surface where a wall or the outline holds it, and the sill under the
+/// surface in a fall's notch.
+const RIM_UP: f32 = 0.10;
+const SILL: f32 = -0.03;
+
+/// One piece of a relaxed terrace contour.
+#[derive(Clone, Copy, Debug)]
+pub struct Step {
+    pub a: Vec2,
+    pub b: Vec2,
+    /// Unit normals toward the low side at a and b.
+    pub na: Vec2,
+    pub nb: Vec2,
+    pub high: f32,
+    pub low: f32,
+    pub high_water: Option<f32>,
+    pub low_water: Option<f32>,
+}
+
+impl Step {
+    /// The high side holds a pond that the low side does not share.
+    pub fn pond_wall(&self) -> bool {
+        match self.high_water {
+            Some(level) => self.low_water.map_or(true, |other| other < level - 0.2),
+            None => false,
+        }
+    }
+
+    /// A hard step with a rock face. A step in the bed under one pond is not (it would show
+    /// through the water as a pale line); it stays a soft slope.
+    pub fn wall(&self) -> bool {
+        let same_pond = matches!((self.high_water, self.low_water), (Some(a), Some(b)) if (a - b).abs() < 1e-3);
+        (self.high - self.low >= 0.75 && !same_pond) || self.pond_wall()
+    }
+
+    fn closest(&self, p: Vec2) -> (Vec2, f32) {
+        let ab = self.b - self.a;
+        let t = ((p - self.a).dot(ab) / ab.length_squared().max(1e-9)).clamp(0.0, 1.0);
+        (self.a + ab * t, t)
+    }
+
+    pub fn normal_at(&self, t: f32) -> Vec2 {
+        self.na.lerp(self.nb, t).normalize_or_zero()
+    }
+
+    /// Distance and signed distance (positive on the high side).
+    pub fn signed(&self, p: Vec2) -> (f32, f32) {
+        let (q, t) = self.closest(p);
+        let d = (p - q).length();
+        if (q - p).dot(self.normal_at(t)) >= 0.0 {
+            (d, d)
+        } else {
+            (d, -d)
+        }
+    }
+
+    /// A linear signed value across the step near this piece (positive on the high side), for cutting.
+    pub fn line_sd(&self, p: Vec2) -> f32 {
+        let (q, t) = self.closest(p);
+        (q - p).dot(self.normal_at(t))
+    }
+
+    /// The low-side normal at the point of this piece closest to p.
+    pub fn normal_near(&self, p: Vec2) -> Vec2 {
+        let (_, t) = self.closest(p);
+        self.normal_at(t)
+    }
+}
+
+#[derive(Clone, Copy)]
+struct StepLabel {
+    high: f32,
+    low: f32,
+    high_water: Option<f32>,
+    low_water: Option<f32>,
+    toward_low: Vec2,
+}
+
+/// The relaxed terrace contours of a set of cells.
+fn build_steps(cells: &Cells) -> Vec<Step> {
+    let mut keys: Vec<(i32, i32)> = cells.keys().copied().collect();
+    keys.sort();
+    let mut edges: Vec<((i32, i32), (i32, i32), StepLabel)> = Vec::new();
+    for &(x, z) in &keys {
+        let a = cells[&(x, z)];
+        for (dx, dz) in [(1, 0), (0, 1)] {
+            let Some(b) = cells.get(&(x + dx, z + dz)) else { continue };
+            if (a.h - b.h).abs() < 1e-4 {
+                continue;
+            }
+            let (c0, c1) = if dx == 1 { ((x + 1, z), (x + 1, z + 1)) } else { ((x, z + 1), (x + 1, z + 1)) };
+            let dir = Vec2::new(dx as f32, dz as f32);
+            let (hi, lo, toward_low) = if a.h > b.h { (a, *b, dir) } else { (*b, a, -dir) };
+            edges.push((c0, c1, StepLabel { high: hi.h, low: lo.h, high_water: hi.water, low_water: lo.water, toward_low }));
+        }
+    }
+    let mut at: HashMap<(i32, i32), Vec<usize>> = HashMap::new();
+    for (i, e) in edges.iter().enumerate() {
+        at.entry(e.0).or_default().push(i);
+        at.entry(e.1).or_default().push(i);
+    }
+    let on_rim = |c: (i32, i32)| [(c.0 - 1, c.1 - 1), (c.0, c.1 - 1), (c.0 - 1, c.1), (c.0, c.1)].iter().any(|k| !cells.contains_key(k));
+    let fixed = |c: (i32, i32)| at[&c].len() != 2 || on_rim(c);
+    let mut used = vec![false; edges.len()];
+    // (corners, edge per span, closed)
+    let mut chains: Vec<(Vec<(i32, i32)>, Vec<usize>, bool)> = Vec::new();
+    let mut walk = |start: (i32, i32), first: usize, used: &mut Vec<bool>| -> (Vec<(i32, i32)>, Vec<usize>, bool) {
+        let mut corners = vec![start];
+        let mut spans = Vec::new();
+        let (mut at_corner, mut e) = (start, first);
+        loop {
+            used[e] = true;
+            spans.push(e);
+            let next = if edges[e].0 == at_corner { edges[e].1 } else { edges[e].0 };
+            if next == start {
+                return (corners, spans, true);
+            }
+            corners.push(next);
+            if fixed(next) {
+                return (corners, spans, false);
+            }
+            let mut options: Vec<usize> = at[&next].iter().copied().filter(|&k| !used[k]).collect();
+            options.sort();
+            match options.first() {
+                Some(&k) => {
+                    at_corner = next;
+                    e = k;
+                }
+                None => return (corners, spans, false),
+            }
+        }
+    };
+    let mut corners_sorted: Vec<(i32, i32)> = at.keys().copied().collect();
+    corners_sorted.sort();
+    for &c in &corners_sorted {
+        if !fixed(c) {
+            continue;
+        }
+        let mut list = at[&c].clone();
+        list.sort();
+        for e in list {
+            if !used[e] {
+                chains.push(walk(c, e, &mut used));
+            }
+        }
+    }
+    for e in 0..edges.len() {
+        if !used[e] {
+            chains.push(walk(edges[e].0, e, &mut used));
+        }
+    }
+
+    let mut steps = Vec::new();
+    for (corners, spans, closed) in chains {
+        let corner = |c: (i32, i32)| Vec2::new(c.0 as f32, c.1 as f32);
+        // Points at the corners and the edge midpoints; one label per 0.5 m piece.
+        let mut points: Vec<Vec2> = Vec::new();
+        let mut labels: Vec<StepLabel> = Vec::new();
+        for (k, &e) in spans.iter().enumerate() {
+            let a = corner(corners[k]);
+            let b = if k + 1 < corners.len() { corner(corners[k + 1]) } else { corner(corners[0]) };
+            points.push(a);
+            points.push((a + b) * 0.5);
+            labels.push(edges[e].2);
+            labels.push(edges[e].2);
+        }
+        if !closed {
+            points.push(corner(*corners.last().unwrap()));
+        }
+        let original = points.clone();
+        let n = points.len();
+        for _ in 0..STEP_RELAX {
+            let copy = points.clone();
+            for k in 0..n {
+                let (prev, next) = if closed {
+                    ((k + n - 1) % n, (k + 1) % n)
+                } else if k == 0 || k == n - 1 {
+                    continue;
+                } else {
+                    (k - 1, k + 1)
+                };
+                let relaxed = copy[k] * 0.5 + (copy[prev] + copy[next]) * 0.25;
+                let moved = relaxed - original[k];
+                points[k] = original[k] + moved.clamp_length_max(STEP_MAX_MOVE);
+            }
+        }
+        let pieces = if closed { n } else { n - 1 };
+        let mut normals: Vec<Vec2> = Vec::with_capacity(pieces);
+        for k in 0..pieces {
+            let d = points[(k + 1) % n] - points[k];
+            let mut normal = Vec2::new(-d.y, d.x).normalize_or_zero();
+            if normal.dot(labels[k].toward_low) < 0.0 {
+                normal = -normal;
+            }
+            normals.push(normal);
+        }
+        let joint = |k: usize, other: Option<usize>| -> Vec2 { other.map_or(normals[k], |o| (normals[k] + normals[o]).normalize_or_zero()) };
+        for k in 0..pieces {
+            let before = if k > 0 { Some(k - 1) } else if closed { Some(pieces - 1) } else { None };
+            let after = if k + 1 < pieces { Some(k + 1) } else if closed { Some(0) } else { None };
+            let l = labels[k];
+            steps.push(Step { a: points[k], b: points[(k + 1) % n], na: joint(k, before), nb: joint(k, after), high: l.high, low: l.low, high_water: l.high_water, low_water: l.low_water });
+        }
+        // Chains that end at the rim run on past it, so points beyond the cells still find their side.
+        if !closed && pieces > 0 {
+            for (end, inner, label) in [(0usize, 1usize, labels[0]), (n - 1, n - 2, labels[pieces - 1])] {
+                let c = corners[if end == 0 { 0 } else { corners.len() - 1 }];
+                if !on_rim(c) {
+                    continue;
+                }
+                let dir = (points[end] - points[inner]).normalize_or_zero();
+                let piece = if end == 0 { 0 } else { pieces - 1 };
+                let normal = normals[piece];
+                steps.push(Step { a: points[end], b: points[end] + dir * 1.5, na: normal, nb: normal, high: label.high, low: label.low, high_water: label.high_water, low_water: label.low_water });
+            }
+        }
+    }
+    steps
+}
+
 pub struct Field {
     pub nx: usize,
     pub nz: usize,
@@ -132,6 +368,15 @@ pub struct Field {
     pub water: Vec<f32>,
     /// Blurred "is water" mask, sigma 0.5 m, for banks.
     pub wet: Vec<f32>,
+    /// Relaxed terrace contours and a 1 m bucket index of them.
+    pub steps: Vec<Step>,
+    buckets: HashMap<(i32, i32), Vec<u32>>,
+    /// Where ponds spill (falls), placed on the walls and the outline.
+    pub spills: Vec<crate::water::Spill>,
+    /// Per sample: a wall within 0.4 m (the grid cannot interpolate across it).
+    near_wall: Vec<bool>,
+    cells: Cells,
+    floor: f32,
 }
 
 fn gaussian(grid: &[f32], nx: usize, nz: usize, sigma_m: f32) -> Vec<f32> {
@@ -194,34 +439,210 @@ impl Field {
                 }
             }
         }
-        // Height from smoothed level sets: each terrace edge follows a smooth curve in plan,
-        // and a real step stays a near-vertical cut in section.
+        let _ = raw;
         let land1 = gaussian(&land, nx, nz, 0.45);
-        let mut levels: Vec<f32> = cells.values().map(|c| c.h).collect();
-        levels.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        levels.dedup_by(|a, b| (*a - *b).abs() < 1e-4);
-        let mut height = vec![levels[0]; nx * nz];
-        for k in 1..levels.len() {
-            let (level, rise) = (levels[k], levels[k] - levels[k - 1]);
-            let above: Vec<f32> = (0..nx * nz).map(|s| if land[s] > 0.5 && raw[s] >= level - 1e-4 { 1.0 } else { 0.0 }).collect();
-            let blurred = gaussian(&above, nx, nz, 0.45);
-            let w = if rise >= 0.75 { 0.07 } else { 0.20 };
-            for s in 0..nx * nz {
-                let share = blurred[s] / land1[s].max(1e-4);
-                height[s] += rise * smoothstep(0.5 - w, 0.5 + w, share);
+        let floor = cells.values().map(|c| c.h).fold(f32::MAX, f32::min);
+        let steps = build_steps(cells);
+        let mut buckets: HashMap<(i32, i32), Vec<u32>> = HashMap::new();
+        for (i, s) in steps.iter().enumerate() {
+            let lo = s.a.min(s.b) - Vec2::splat(STEP_BAND);
+            let hi = s.a.max(s.b) + Vec2::splat(STEP_BAND);
+            for z in lo.y.floor() as i32..=hi.y.floor() as i32 {
+                for x in lo.x.floor() as i32..=hi.x.floor() as i32 {
+                    buckets.entry((x, z)).or_default().push(i as u32);
+                }
             }
         }
-        Field {
+        let mut field = Field {
             nx,
             nz,
             origin,
             land1,
             land2: gaussian(&land, nx, nz, 2.5),
             land3: gaussian(&land, nx, nz, 7.0),
-            height,
+            height: vec![0.0; nx * nz],
             water,
             wet: gaussian(&wet, nx, nz, 0.5),
+            steps,
+            buckets,
+            spills: Vec::new(),
+            near_wall: vec![false; nx * nz],
+            cells: cells.clone(),
+            floor,
+        };
+        field.spills = crate::water::junctions(cells).into_iter().map(|s| field.place_spill(s)).collect();
+        for j in 0..nz {
+            for i in 0..nx {
+                let p = field.point(i, j);
+                let s = j * nx + i;
+                field.height[s] = field.surface(p);
+                field.near_wall[s] = field.nearest_step(p).is_some_and(|(k, _, d)| d < 0.4 && field.steps[k].wall());
+            }
         }
+        field
+    }
+
+    /// The nearest step piece within the band: (index, signed distance, distance).
+    pub fn nearest_step(&self, p: Vec2) -> Option<(usize, f32, f32)> {
+        let list = self.buckets.get(&(p.x.floor() as i32, p.y.floor() as i32))?;
+        let mut best: Option<(usize, f32, f32)> = None;
+        for &i in list {
+            let (d, sd) = self.steps[i as usize].signed(p);
+            if best.map_or(true, |b| d < b.2) {
+                best = Some((i as usize, sd, d));
+            }
+        }
+        best.filter(|b| b.2 <= STEP_BAND)
+    }
+
+    /// The nearest wall piece within `reach`.
+    pub fn nearest_wall(&self, p: Vec2, reach: f32) -> Option<usize> {
+        let list = self.buckets.get(&(p.x.floor() as i32, p.y.floor() as i32))?;
+        let mut best: Option<(usize, f32)> = None;
+        for &i in list {
+            let s = &self.steps[i as usize];
+            if !s.wall() {
+                continue;
+            }
+            let (d, _) = s.signed(p);
+            if d <= reach && best.map_or(true, |b| d < b.1) {
+                best = Some((i as usize, d));
+            }
+        }
+        best.map(|b| b.0)
+    }
+
+    /// The cell under p, or the nearest one round it.
+    fn cell_near(&self, p: Vec2) -> Option<Cell> {
+        let (x, z) = (p.x.floor() as i32, p.y.floor() as i32);
+        if let Some(c) = self.cells.get(&(x, z)) {
+            return Some(*c);
+        }
+        let mut best: Option<(Cell, f32)> = None;
+        for dz in -1..=1 {
+            for dx in -1..=1 {
+                if let Some(c) = self.cells.get(&(x + dx, z + dz)) {
+                    let lo = Vec2::new((x + dx) as f32, (z + dz) as f32);
+                    let d = (p - p.clamp(lo, lo + Vec2::ONE)).length();
+                    if best.map_or(true, |b| d < b.1) {
+                        best = Some((*c, d));
+                    }
+                }
+            }
+        }
+        best.map(|b| b.0)
+    }
+
+    /// How much of a fall's notch p is in (1 inside, 0 outside, soft at its sides).
+    pub fn notch(&self, p: Vec2) -> f32 {
+        let mut k: f32 = 0.0;
+        for s in &self.spills {
+            let d = p - s.centre;
+            let (u, o) = (d.dot(s.along).abs(), d.dot(s.out));
+            if o > -1.0 && o < 0.8 {
+                k = k.max(1.0 - smoothstep(s.width * 0.5 - 0.05, s.width * 0.5 + 0.12, u));
+            }
+        }
+        k
+    }
+
+    /// A pond's rim where it is held: a narrow flat bank above its surface `RIM_UP`, falling to
+    /// `base` over 0.18 to 0.40 m inward; in a notch a sill just under the surface.
+    fn rim(&self, p: Vec2, level: f32, inward: f32, base: f32) -> f32 {
+        let top = level - crate::water::SINK + RIM_UP + (SILL - RIM_UP) * self.notch(p);
+        let k = 1.0 - smoothstep(0.18, 0.40, inward.max(0.0));
+        base.max(base + (top - base) * k)
+    }
+
+    /// The ground height on one side of step `i` at p.
+    pub fn side_height(&self, i: usize, p: Vec2, high: bool) -> f32 {
+        let s = &self.steps[i];
+        let sd = s.line_sd(p);
+        if !s.wall() {
+            return s.low + (s.high - s.low) * smoothstep(-SOFT_HALF, SOFT_HALF, sd);
+        }
+        if !high {
+            return s.low;
+        }
+        match s.high_water {
+            Some(level) if s.pond_wall() => self.rim(p, level, sd, s.high),
+            _ => s.high,
+        }
+    }
+
+    /// The exact ground height at p (the grid holds it at its samples).
+    pub fn surface(&self, p: Vec2) -> f32 {
+        let mut h = match self.nearest_step(p) {
+            Some((i, sd, _)) => self.side_height(i, p, sd >= 0.0),
+            None => self.cell_near(p).map_or(self.floor, |c| c.h),
+        };
+        // A pond at the outline is held by a bank too.
+        if let Some(level) = self.cell_near(p).and_then(|c| c.water) {
+            let land = self.sample(&self.land1, p);
+            if land < 0.97 {
+                h = self.rim(p, level, (land - 0.5) / 0.89, h);
+            }
+        }
+        h
+    }
+
+    /// The ground normal at p, taken on p's own side of a nearby wall.
+    pub fn ground_normal(&self, p: Vec2) -> Vec3 {
+        let g = if self.near_wall_at(p) {
+            match self.nearest_wall(p, 0.6) {
+                Some(i) => {
+                    let high = self.steps[i].line_sd(p) >= 0.0;
+                    let e = 0.12;
+                    Vec2::new(
+                        self.side_height(i, p + Vec2::X * e, high) - self.side_height(i, p - Vec2::X * e, high),
+                        self.side_height(i, p + Vec2::Y * e, high) - self.side_height(i, p - Vec2::Y * e, high),
+                    ) / (2.0 * e)
+                }
+                None => self.gradient(&self.height, p, STEP),
+            }
+        } else {
+            self.gradient(&self.height, p, STEP)
+        };
+        Vec3::new(-g.x, 1.0, -g.y).normalize()
+    }
+
+    fn near_wall_at(&self, p: Vec2) -> bool {
+        let g = (p - self.origin) / STEP;
+        let (i, j) = (g.x.floor().clamp(0.0, self.nx as f32 - 2.0) as usize, g.y.floor().clamp(0.0, self.nz as f32 - 2.0) as usize);
+        self.near_wall[j * self.nx + i] || self.near_wall[j * self.nx + i + 1] || self.near_wall[(j + 1) * self.nx + i] || self.near_wall[(j + 1) * self.nx + i + 1]
+    }
+
+    /// Puts a fall found on the cells onto the relaxed wall or the outline.
+    fn place_spill(&self, mut s: crate::water::Spill) -> crate::water::Spill {
+        if s.outer {
+            for _ in 0..4 {
+                let g = self.gradient(&self.land1, s.centre, STEP);
+                let len2 = g.length_squared();
+                if len2 > 1e-6 {
+                    s.centre -= g * ((self.sample(&self.land1, s.centre) - 0.5) / len2).clamp(-0.6, 0.6);
+                }
+            }
+            let out = (-self.gradient(&self.land1, s.centre, STEP * 2.0)).normalize_or_zero();
+            if out != Vec2::ZERO {
+                s.out = out;
+            }
+        } else {
+            for _ in 0..4 {
+                let Some(list) = self.buckets.get(&(s.centre.x.floor() as i32, s.centre.y.floor() as i32)) else { break };
+                let best = list
+                    .iter()
+                    .map(|&i| &self.steps[i as usize])
+                    .filter(|st| st.pond_wall() && st.high_water.is_some_and(|l| (l - s.level).abs() < 1e-3))
+                    .map(|st| (st, st.signed(s.centre).0))
+                    .min_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+                let Some((st, _)) = best else { break };
+                let (q, t) = st.closest(s.centre);
+                s.centre = q;
+                s.out = st.normal_at(t);
+            }
+        }
+        s.along = Vec2::new(-s.out.y, s.out.x);
+        s
     }
 
     pub fn point(&self, i: usize, j: usize) -> Vec2 {
@@ -248,6 +669,9 @@ impl Field {
     }
 
     pub fn height_at(&self, p: Vec2) -> f32 {
+        if self.near_wall_at(p) {
+            return self.surface(p);
+        }
         self.sample(&self.height, p)
     }
 
@@ -296,6 +720,41 @@ pub struct Top {
     pub mesh: Mesh,
     /// Boundary segments of the top surface, for the lip.
     pub rim: Vec<(Vec3, Vec3)>,
+    /// The upper edges of the terrace walls (island coordinates) with the direction over the edge.
+    pub brows: Vec<(Vec3, Vec3, Vec2)>,
+}
+
+/// A triangle whose winding is turned to face along its shading normals.
+fn tri_facing(mesh: &mut Mesh, p: [Vec3; 3], n: [Vec3; 3], c: [Vec3; 3], paint: [Paint; 3]) {
+    let face = (p[1] - p[0]).cross(p[2] - p[0]);
+    if face.dot(n[0] + n[1] + n[2]) < 0.0 {
+        mesh.tri_full([p[0], p[2], p[1]], [n[0], n[2], n[1]], [c[0], c[2], c[1]], [paint[0], paint[2], paint[1]]);
+    } else {
+        mesh.tri_full(p, n, c, paint);
+    }
+}
+
+/// Splits a convex polygon by the sign of `value` at its corners (linear between them):
+/// the part where it is >= 0, the part where it is < 0, and the crossing points.
+fn split_polygon(polygon: &[Vec2], value: &[f32]) -> (Vec<Vec2>, Vec<Vec2>, Vec<Vec2>) {
+    let (mut pos, mut neg, mut cross) = (Vec::new(), Vec::new(), Vec::new());
+    let n = polygon.len();
+    for k in 0..n {
+        let (a, b) = (polygon[k], polygon[(k + 1) % n]);
+        let (va, vb) = (value[k], value[(k + 1) % n]);
+        if va >= 0.0 {
+            pos.push(a);
+        } else {
+            neg.push(a);
+        }
+        if (va >= 0.0) != (vb >= 0.0) {
+            let c = a.lerp(b, va / (va - vb));
+            pos.push(c);
+            neg.push(c);
+            cross.push(c);
+        }
+    }
+    (pos, neg, cross)
 }
 
 /// Colours of the top surface. Kept together so the look study can swap them.
@@ -325,9 +784,23 @@ impl Default for TopColours {
 pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
     let mut mesh = Mesh::default();
     let mut rim = Vec::new();
-    let surface = |p: Vec2| -> (Vec3, Vec3, Vec3, Paint) {
-        let h = field.height_at(p);
-        let g = field.gradient(&field.height, p, STEP);
+    let mut brows = Vec::new();
+    // A top vertex; `side` forces the height (and its slope) onto one side of a wall.
+    let surface = |p: Vec2, side: Option<(usize, bool)>| -> (Vec3, Vec3, Vec3, Paint) {
+        let (h, g) = match side {
+            Some((i, high)) => {
+                let e = 0.12;
+                let g = Vec2::new(
+                    field.side_height(i, p + Vec2::X * e, high) - field.side_height(i, p - Vec2::X * e, high),
+                    field.side_height(i, p + Vec2::Y * e, high) - field.side_height(i, p - Vec2::Y * e, high),
+                ) / (2.0 * e);
+                (field.side_height(i, p, high), g)
+            }
+            None => {
+                let n = field.ground_normal(p);
+                (field.height_at(p), Vec2::new(-n.x / n.y, -n.z / n.y))
+            }
+        };
         // The meadow's broad cushions tilt the light a little (ground.gdshader: pillow gradient
         // 0.14 plus the cover slope 0.10).
         let pillow = crate::grass::pillow_grad(p) * 0.20;
@@ -360,9 +833,21 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
         let line = if stone > 0.5 { 0.8 } else { 0.25 };
         (Vec3::new(p.x, h, p.y), normal, colour, Paint::new(family).sky(sky).line(line).strokes(if stone > 0.5 { 0.6 } else { 0.25 }).id(1))
     };
+    // Every grid sample inside the outline is a corner of up to four cells: made once.
+    let cache: Vec<Option<TopVertex>> = (0..field.nx * field.nz).map(|s| if field.land1[s] >= 0.5 { Some(surface(field.point(s % field.nx, s / field.nx), None)) } else { None }).collect();
     for j in 0..field.nz - 1 {
         for i in 0..field.nx - 1 {
             let corners = [(i, j), (i, j + 1), (i + 1, j + 1), (i + 1, j)];
+            let vertex = |p: Vec2, side: Option<(usize, bool)>| -> TopVertex {
+                for c in corners {
+                    if field.point(c.0, c.1) == p {
+                        if let Some(v) = cache[c.1 * field.nx + c.0] {
+                            return v;
+                        }
+                    }
+                }
+                surface(p, side)
+            };
             let value = |c: (usize, usize)| field.land1[c.1 * field.nx + c.0] - 0.5;
             let values = corners.map(value);
             if values.iter().all(|v| *v < 0.0) {
@@ -386,33 +871,37 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
             if polygon.len() < 3 {
                 continue;
             }
-            let fan: Vec<(Vec3, Vec3, Vec3, Paint)> = polygon.iter().map(|p| surface(*p)).collect();
-            // A terrace step is cut rock, decided per grid cell from the smooth normal at its centre,
-            // so both triangles of a cell agree and the riser has no sawtooth of lines.
             let centre = field.point(i, j) + Vec2::splat(STEP * 0.5);
-            let g = field.gradient(&field.height, centre, STEP);
-            let cell_normal = Vec3::new(-g.x, 1.0, -g.y).normalize();
-            if cell_normal.y < 0.60 {
-                let tone = 0.94 + 0.10 * hash2((centre.x * 1.3).floor() as i32, (centre.y * 1.3).floor() as i32, seed ^ 33);
-                // The lawn above the step, for its mossy brow and the dark band under the lip.
-                let up = g.normalize_or_zero();
-                let lip = field.height_at(centre + up * 0.8).max(field.height_at(centre + up * 0.4));
-                let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(lip);
-                // Under a pond the cut rock takes the bed's colour per vertex, so the waterline
-                // follows the smooth surface instead of the cells' outline.
-                let rock = |c: &(Vec3, Vec3, Vec3, Paint)| {
-                    let under = field.water_at(Vec2::new(c.0.x, c.0.z)).is_some_and(|level| c.0.y < level - crate::water::SINK - 0.02);
-                    if under && c.3.family == Family::Stone { c.2 } else { colours.riser * tone }
-                };
-                for k in 1..fan.len() - 1 {
-                    mesh.tri_full([fan[0].0, fan[k].0, fan[k + 1].0], [cell_normal; 3], [rock(&fan[0]), rock(&fan[k]), rock(&fan[k + 1])], [paint; 3]);
-                }
-            } else {
-                for k in 1..fan.len() - 1 {
-                    let p = [fan[0].0, fan[k].0, fan[k + 1].0];
-                    mesh.tri_full(p, [fan[0].1, fan[k].1, fan[k + 1].1], [fan[0].2, fan[k].2, fan[k + 1].2], [fan[0].3, fan[k].3, fan[k + 1].3]);
+            // A terrace wall through this grid cell: cut the cell along its relaxed contour, each part
+            // at its own level, and fill the cut with a ribbon of rock.
+            if let Some(wi) = field.nearest_wall(centre, STEP * 1.2) {
+                let step = field.steps[wi];
+                // Signed distance to the nearest wall at each corner, so neighbouring grid cells cut a
+                // shared edge at the same point (no seams between their pieces of the ribbon).
+                let values: Vec<f32> = polygon.iter().map(|p| field.nearest_wall(*p, 1.0).map_or_else(|| step.line_sd(*p), |k| field.steps[k].signed(*p).1)).collect();
+                if values.iter().any(|v| *v >= 0.0) && values.iter().any(|v| *v < 0.0) {
+                    let (upper, lower, cross) = split_polygon(&polygon, &values);
+                    for (part, high) in [(&upper, true), (&lower, false)] {
+                        if part.len() < 3 {
+                            continue;
+                        }
+                        // Grid corners as everywhere else (so cut and uncut cells meet); the cut's own
+                        // points on the side they belong to.
+                        let fan: Vec<(Vec3, Vec3, Vec3, Paint)> = part.iter().map(|p| vertex(*p, Some((wi, high)))).collect();
+                        emit_fan(&mut mesh, field, colours, &fan, centre, seed);
+                    }
+                    if cross.len() == 2 {
+                        wall_ribbon(&mut mesh, &mut brows, field, colours, wi, cross[0], cross[1], &surface, seed);
+                    }
+                    if crossings.len() == 2 {
+                        let (a, b) = (crossings[0], crossings[1]);
+                        rim.push((Vec3::new(a.x, field.height_at(a), a.y), Vec3::new(b.x, field.height_at(b), b.y)));
+                    }
+                    continue;
                 }
             }
+            let fan: Vec<(Vec3, Vec3, Vec3, Paint)> = polygon.iter().map(|p| vertex(*p, None)).collect();
+            emit_fan(&mut mesh, field, colours, &fan, centre, seed);
             if crossings.len() == 2 {
                 let (a, b) = (crossings[0], crossings[1]);
                 rim.push((Vec3::new(a.x, field.height_at(a), a.y), Vec3::new(b.x, field.height_at(b), b.y)));
@@ -457,7 +946,111 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
             }
         }
     }
-    Top { mesh, rim }
+    Top { mesh, rim, brows }
+}
+
+type TopVertex = (Vec3, Vec3, Vec3, Paint);
+
+/// One piece of the top surface. A piece that is steep (a soft step too steep for lawn) or that
+/// bridges two levels (where walls meet and the cut cannot follow both) is cut rock, facing the
+/// nearest step's low side.
+fn emit_fan(mesh: &mut Mesh, field: &Field, colours: &TopColours, fan: &[TopVertex], centre: Vec2, seed: u32) {
+    let (lo, hi) = fan.iter().fold((f32::MAX, f32::MIN), |(a, b), v| (a.min(v.0.y), b.max(v.0.y)));
+    let cell_normal = field.ground_normal(centre);
+    let bridge = hi - lo > 0.45 && field.nearest_wall(centre, 0.6).is_some();
+    if cell_normal.y < 0.60 || bridge {
+        let tone = 0.94 + 0.10 * hash2((centre.x * 1.3).floor() as i32, (centre.y * 1.3).floor() as i32, seed ^ 33);
+        let face = if bridge {
+            field.nearest_step(centre).map(|(i, _, _)| field.steps[i].normal_near(centre)).map_or(cell_normal, |n| Vec3::new(n.x, 0.0, n.y))
+        } else {
+            cell_normal
+        };
+        let lip = if bridge { hi } else {
+            let up = Vec2::new(-cell_normal.x, -cell_normal.z).normalize_or_zero();
+            field.height_at(centre + up * 0.8).max(field.height_at(centre + up * 0.4))
+        };
+        let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(lip);
+        // Under a pond the cut rock takes the bed's colour per vertex, so the waterline follows the
+        // smooth surface instead of the cells' outline.
+        let rock = |c: &TopVertex| {
+            let under = field.water_at(Vec2::new(c.0.x, c.0.z)).is_some_and(|level| c.0.y < level - crate::water::SINK - 0.02);
+            if under && c.3.family == Family::Stone && !bridge { c.2 } else { colours.riser * tone }
+        };
+        for k in 1..fan.len() - 1 {
+            tri_facing(mesh, [fan[0].0, fan[k].0, fan[k + 1].0], [face; 3], [rock(&fan[0]), rock(&fan[k]), rock(&fan[k + 1])], [paint; 3]);
+        }
+    } else {
+        for k in 1..fan.len() - 1 {
+            mesh.tri_full([fan[0].0, fan[k].0, fan[k + 1].0], [fan[0].1, fan[k].1, fan[k + 1].1], [fan[0].2, fan[k].2, fan[k + 1].2], [fan[0].3, fan[k].3, fan[k + 1].3]);
+        }
+    }
+}
+
+/// The face of a terrace wall across one grid cell, from c0 to c1 on its relaxed contour: a short
+/// roll of the upper lawn over the edge (3.5 cm out, 5 cm down), then cut rock straight down to
+/// the lower level, in the bed's colour under a pond's surface.
+#[allow(clippy::too_many_arguments)]
+fn wall_ribbon(mesh: &mut Mesh, brows: &mut Vec<(Vec3, Vec3, Vec2)>, field: &Field, colours: &TopColours, wi: usize, c0: Vec2, c1: Vec2, surface: &dyn Fn(Vec2, Option<(usize, bool)>) -> TopVertex, seed: u32) {
+    let step = field.steps[wi];
+    if (c1 - c0).length() < 1e-4 {
+        return;
+    }
+    // Each piece reaches 2 cm past its ends so neighbouring pieces overlap instead of leaving slits.
+    let dir = (c1 - c0).normalize();
+    let (c0, c1) = (c0 - dir * 0.02, c1 + dir * 0.02);
+    let mid = (c0 + c1) * 0.5;
+    let notch = step.pond_wall() && field.notch(mid) > 0.5;
+    // The face stands 3.5 cm out from the cut everywhere (in a notch the roll above it is flat).
+    let (roll_out, roll_down) = if notch { (0.035, 0.0) } else { (0.035, 0.05) };
+    struct End {
+        c: Vec2,
+        n: Vec2,
+        n3: Vec3,
+        top: f32,
+        low: f32,
+        colour: Vec3,
+    }
+    let end = |c: Vec2| {
+        let v = surface(c, Some((wi, true)));
+        let n = step.normal_near(c);
+        End { c, n, n3: Vec3::new(n.x, 0.0, n.y), top: v.0.y, low: field.side_height(wi, c, false), colour: v.2 }
+    };
+    let e = [end(c0), end(c1)];
+    let at = |e: &End, out: f32, y: f32| Vec3::new(e.c.x + e.n.x * out, y, e.c.y + e.n.y * out);
+    {
+        let paint = Paint::new(Family::Ground).sky(1.0).line(0.35).id(1);
+        let rn = [(Vec3::Y * 0.6 + e[0].n3 * 0.4).normalize(), (Vec3::Y * 0.6 + e[1].n3 * 0.4).normalize()];
+        let q = [at(&e[0], 0.0, e[0].top), at(&e[1], 0.0, e[1].top), at(&e[1], roll_out, e[1].top - roll_down), at(&e[0], roll_out, e[0].top - roll_down)];
+        tri_facing(mesh, [q[0], q[1], q[2]], [rn[0], rn[1], rn[1]], [e[0].colour, e[1].colour, e[1].colour], [paint; 3]);
+        tri_facing(mesh, [q[0], q[2], q[3]], [rn[0], rn[1], rn[0]], [e[0].colour, e[1].colour, e[0].colour], [paint; 3]);
+    }
+    // Rows of the rock face; split at the lower side's water surface when it lies on the face.
+    let below = step.low_water.map(|level| level - crate::water::SINK);
+    // A wall faces straight out (the cells it replaced leaned back and took more sky), so its rock
+    // is a little lighter to keep the terrace walls at the reference tone.
+    let tone = (0.94 + 0.10 * hash2((mid.x * 1.3).floor() as i32, (mid.y * 1.3).floor() as i32, seed ^ 33)) * 1.04;
+    let lip = e[0].top.max(e[1].top);
+    let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(lip);
+    let mut rows: Vec<(f32, bool)> = vec![(0.0, false)];
+    if let Some(surface_y) = below {
+        let t = ((e[0].top - roll_down - surface_y) / (e[0].top - roll_down - e[0].low).max(1e-3)).clamp(0.0, 1.0);
+        if t > 0.02 && t < 0.98 {
+            rows.push((t, true));
+        }
+    }
+    rows.push((1.0, true));
+    let y_of = |e: &End, t: f32| (e.top - roll_down) + (e.low - (e.top - roll_down)) * t;
+    for k in 0..rows.len() - 1 {
+        let (t0, t1) = (rows[k].0, rows[k + 1].0);
+        let wet = below.is_some() && k > 0;
+        let colour = if wet { colours.bed } else { colours.riser * tone };
+        let q = [at(&e[0], roll_out, y_of(&e[0], t0)), at(&e[1], roll_out, y_of(&e[1], t0)), at(&e[1], roll_out, y_of(&e[1], t1)), at(&e[0], roll_out, y_of(&e[0], t1))];
+        tri_facing(mesh, [q[0], q[1], q[2]], [e[0].n3, e[1].n3, e[1].n3], [colour; 3], [paint; 3]);
+        tri_facing(mesh, [q[0], q[2], q[3]], [e[0].n3, e[1].n3, e[0].n3], [colour; 3], [paint; 3]);
+    }
+    if !notch && !step.pond_wall() {
+        brows.push((Vec3::new(c0.x, e[0].top, c0.y), Vec3::new(c1.x, e[1].top, c1.y), (e[0].n + e[1].n).normalize_or_zero()));
+    }
 }
 
 /// One closed outline of the island as world-anchored points, with the direction

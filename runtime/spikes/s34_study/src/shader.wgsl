@@ -280,7 +280,11 @@ fn fs_terms(v: VTerms) -> FTerms {
     var display = v.colour.rgb;
     var ao = v.terms.r;
     var brow = 0.0;
-    if (abs(v.colour.a - 85.0 / 255.0) < 0.05) {
+    // The family is per vertex; a triangle whose corners differ (lawn bank and stone bed at a
+    // pond's waterline) interpolates it, and values between two families matched none in the
+    // resolve, which left a thin band without the hour's palette (yellow lines at night). Snap it.
+    let family = round(v.colour.a * 3.0) / 3.0;
+    if (abs(family - 85.0 / 255.0) < 0.05) {
         // Island stone: painted surface, mossy brow under the lawn lip, darker joins and lip band.
         let paint = stone_paint(v.world, n, dx, dy);
         display *= paint.rgb;
@@ -310,7 +314,7 @@ fn fs_terms(v: VTerms) -> FTerms {
         }
     }
     var out: FTerms;
-    out.base = vec4<f32>(display, v.colour.a);
+    out.base = vec4<f32>(display, family);
     var spare = 0.0;
     if (abs(v.extra.r * 255.0 - 20.0) < 0.5) {
         // A far mountain: its mesh's local height (over 1.05) and spine closeness.
@@ -745,8 +749,11 @@ fn mountain_colour(world: vec3<f32>, n: vec3<f32>, height: f32, spine: f32, f: v
 
 // Air between the eye and a surface: light fog near, pale haze far, the root sinking into cloud.
 fn atmosphere(colour: vec3<f32>, world: vec3<f32>, distance: f32) -> vec3<f32> {
-    var result = mix(colour, g.pal[L_FOG].rgb, 1.0 - exp(-distance * g.pal[L_FOG].a));
-    result = mix(result, g.pal[L_HAZE].rgb, 1.0 - exp(-max(distance - 80.0, 0.0) * g.pal[L_FAR].a));
+    // The air scales with the view: L_FAR.x is the camera's distance to its orbit centre over the
+    // review set's whole-island view (at least 1), so a larger island framed whole is not washed out.
+    let k = max(g.pal[L_FAR].x, 1.0);
+    var result = mix(colour, g.pal[L_FOG].rgb, 1.0 - exp(-distance * g.pal[L_FOG].a / k));
+    result = mix(result, g.pal[L_HAZE].rgb, 1.0 - exp(-max(distance - 80.0 * k, 0.0) * g.pal[L_FAR].a / k));
     let low = smoothstep(g.pal[L_MISC].x, g.pal[L_MISC].y, world.y) * g.pal[L_MIST].a;
     return mix(result, cloud_mist(), low);
 }
@@ -1293,8 +1300,11 @@ fn fs_water(v: VWater) -> @location(0) vec4<f32> {
         let softness = max(across_fw * 1.25, mix(0.022, 0.085, loosen));
         let side = smoothstep(0.0, softness, edge + min(fray, 0.0) - 0.012 * loosen);
         let body_a = mix(1.0, mix(0.34, 1.0, smoothstep(0.26, 0.60, groups * 0.50 + fine_f * 0.30 + white * 0.55)), loosen * 0.85);
-        alpha = mix(0.82, 0.95, sqrt(intensity)) * side * body_a * (1.0 - transmission);
-        rgb = water_colour * light * alpha;
+        // The rows on the pond behind the lip (negative drop) fade in, so the sheet grows out of the
+        // pond as it rolls over the lip instead of starting on a line.
+        let roll_in = smoothstep(-0.05, 0.004, v.data.z);
+        alpha = mix(0.82, 0.95, sqrt(intensity)) * side * body_a * (1.0 - transmission) * roll_in;
+        rgb = water_colour * light * g.pal[L_FALL].rgb * alpha;
     } else {
         // Spray: a small soft foam at the foot of a fall.
         var shape: f32;
@@ -1308,6 +1318,14 @@ fn fs_water(v: VWater) -> @location(0) vec4<f32> {
         let billow = 0.65 + 0.55 * vnoise(vec2<f32>(v.world.x + v.world.z, v.world.y) * 1.2 + vec2<f32>(t * 0.15, -t * 0.4));
         let soft = smoothstep(0.0, 0.5, behind);
         alpha = clamp(shape * billow * soft * 0.26, 0.0, 0.32);
+        if (v.data.x > 2.5) {
+            // The foam on the lower pond: a soft white patch thickest where the sheet lands, broken
+            // into drifting flecks toward its rim.
+            let fleck = vnoise(v.world.xz * 6.5 + vec2<f32>(t * 0.3, t * 0.2)) * 0.6 + vnoise(v.world.xz * 15.0 - vec2<f32>(t * 0.4, 0.0)) * 0.4;
+            let land = 1.0 - smoothstep(0.0, 0.55, clamp(v.data.z, 0.0, 1.0));
+            let body = smoothstep(0.25, 0.75, fleck + land * 0.45);
+            alpha = clamp(shape * mix(0.25, 0.85, body) * smoothstep(0.0, 0.06, behind), 0.0, 0.78);
+        }
         rgb = g.pal[L_MIST].rgb * open_light(normalize(to_eye + vec3<f32>(0.0, 1.0, 0.0))) * alpha;
     }
     // Air in front, then falls vanish into the cloud sea rather than ending on a line.
@@ -1778,7 +1796,12 @@ fn fs_prop_leaf(v: VProp) -> FTerms {
     // little of the leaf-cluster dome keeps clusters from going flat.
     let out_dir = normalize(v.anchor);
     let n_light = normalize(out_dir * 0.80 + vec3<f32>(0.0, 0.60, 0.0) + puff_off * 0.35);
-    let vis = prop_visibility(v.world, n_light, v.clip.xy);
+    // Six shadow taps, as for the grass: the cut-out cards overdraw heavily and their busy texture
+    // hides the extra noise.
+    var vis = 1.0;
+    if (dot(n_light, g.sun_dir.xyz) > -0.05) {
+        vis = sun_visibility_taps(v.world, n_light, v.clip.xy, 6);
+    }
     // Godot's sunlit warm rim and back-lit translucency (its light() adds them on top of the
     // diffuse); here they lift the albedo of sunlit outer cards.
     let to_eye = normalize(g.camera_pos.xyz - v.world);

@@ -145,6 +145,8 @@ pub struct Report {
     pub dropped: usize,
     pub dropped_by_kind: BTreeMap<String, usize>,
     pub skipped_materials: usize,
+    /// Placed by `scatter` rather than loaded where the scene had them.
+    pub scattered: bool,
     /// Circles (island coordinates, x z, radius) the grass keeps out of.
     pub clear: Vec<(Vec2, f32)>,
 }
@@ -174,11 +176,13 @@ impl Report {
     pub fn line(&self, dir: &Path) -> String {
         let kinds: Vec<String> = self.dropped_by_kind.iter().map(|(k, n)| format!("{k} {n}")).collect();
         format!(
-            "PROPS loaded {} objects, {} instances, {} triangles, {} dropped{} from {}{}",
+            "PROPS {} {} objects, {} instances, {} triangles, {} {}{} from {}{}",
+            if self.scattered { "scattered" } else { "loaded" },
             self.objects,
             self.instances,
             self.triangles,
             self.dropped,
+            if self.scattered { "short of the source density" } else { "dropped" },
             if kinds.is_empty() { String::new() } else { format!(" ({})", kinds.join(", ")) },
             dir.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
             if self.skipped_materials > 0 { format!(", {} meshes with an unknown shader skipped", self.skipped_materials) } else { String::new() }
@@ -205,20 +209,26 @@ struct MeshData {
     material: usize,
 }
 
-/// Loads one scene's props onto an island built from `cells` and `field`, moved by `origin`,
-/// appending to `library`.
-pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mut Library) -> Report {
+
+/// A scene folder opened: its objects, meshes and the material slots it added to the library.
+struct Scene {
+    json: serde_json::Value,
+    bin: Vec<u8>,
+    meshes: Vec<MeshData>,
+    material_slot: Vec<Option<(u8, u8)>>,
+}
+
+fn open(dir: &Path, library: &mut Library) -> Scene {
     let json_path = dir.join("scene.json");
     let text = std::fs::read_to_string(&json_path).unwrap_or_else(|e| panic!("cannot read {}: {e}", json_path.display()));
-    let scene: serde_json::Value = serde_json::from_str(&text).expect("scene json");
+    let json: serde_json::Value = serde_json::from_str(&text).expect("scene json");
     let bin = std::fs::read(dir.join("scene.bin")).expect("scene.bin");
     if library.texture_dir.is_none() {
         library.texture_dir = Some(dir.join("textures"));
     }
-
     // Materials: class and table index (offset into the shared table).
     let mut material_slot: Vec<Option<(u8, u8)>> = Vec::new();
-    for material in scene["materials"].as_array().expect("materials") {
+    for material in json["materials"].as_array().expect("materials") {
         match material_rows(material) {
             Some((class, rows)) => {
                 assert!(library.materials.len() < MAX_MATERIALS, "too many prop materials");
@@ -228,8 +238,7 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
             None => material_slot.push(None),
         }
     }
-
-    let meshes: Vec<MeshData> = scene["meshes"]
+    let meshes: Vec<MeshData> = json["meshes"]
         .as_array()
         .expect("meshes")
         .iter()
@@ -252,32 +261,110 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
             MeshData { pos, normal, uv, colour, tris, material: m["material"].as_u64().unwrap() as usize }
         })
         .collect();
+    Scene { json, bin, meshes, material_slot }
+}
 
-    let mut report = Report { objects: 0, instances: 0, triangles: 0, dropped: 0, dropped_by_kind: BTreeMap::new(), skipped_materials: 0, clear: Vec::new() };
-    let transform = |v: &[f32]| -> (Mat3, Vec3) { (Mat3::from_cols(Vec3::new(v[0], v[1], v[2]), Vec3::new(v[3], v[4], v[5]), Vec3::new(v[6], v[7], v[8])), Vec3::new(v[9], v[10], v[11])) };
-    for object in scene["objects"].as_array().expect("objects") {
+fn transform(v: &[f32]) -> (Mat3, Vec3) {
+    (Mat3::from_cols(Vec3::new(v[0], v[1], v[2]), Vec3::new(v[3], v[4], v[5]), Vec3::new(v[6], v[7], v[8])), Vec3::new(v[9], v[10], v[11]))
+}
+
+/// An object's world transforms and colours (one per instance, or the node's own).
+fn instances_of(object: &serde_json::Value, bin: &[u8]) -> Vec<((Mat3, Vec3), [f32; 4])> {
+    let node: Vec<f32> = object["transform"].as_array().unwrap().iter().map(|v| v.as_f64().unwrap() as f32).collect();
+    let mut instances = Vec::new();
+    match object.get("instances") {
+        Some(list) if list.is_object() => {
+            let count = list["count"].as_u64().unwrap() as usize;
+            let all = floats(bin, list["transform"].as_i64().unwrap(), count * 12);
+            let colours = list["color"].as_i64().filter(|&o| o >= 0).map(|o| floats(bin, o, count * 4));
+            for i in 0..count {
+                let tint = colours.as_ref().map_or([1.0; 4], |c| [c[i * 4], c[i * 4 + 1], c[i * 4 + 2], c[i * 4 + 3]]);
+                instances.push((transform(&all[i * 12..i * 12 + 12]), tint));
+            }
+        }
+        _ => instances.push((transform(&node), [1.0; 4])),
+    }
+    instances
+}
+
+fn mesh_list(object: &serde_json::Value) -> Vec<usize> {
+    object["meshes"].as_array().unwrap().iter().map(|v| v.as_u64().unwrap() as usize).collect()
+}
+
+/// Bakes one instance (meshes, basis, world origin `at`, tint) into the library.
+fn bake(library: &mut Library, scene: &Scene, meshes: &[usize], kind: &str, basis: Mat3, at: Vec3, tint: [f32; 4], report: &mut Report) {
+    let normal_matrix = basis.inverse().transpose();
+    let mirrored = basis.determinant() < 0.0;
+    report.instances += 1;
+    if kind == "lantern" {
+        // decor_vertex_color.gdshader glows round (12.3, 0.56, -2.45) for a lantern placed
+        // at (12.4, -2.35) on ground at 0: the lamp sits 0.56 m up, 0.1 m off its origin.
+        // (Its constant height predates this layout's 1.5 m ground, so in the reference
+        // the core never lit; here the centre follows the lantern.)
+        library.lanterns.push(at + Vec3::new(-0.1, 0.56, -0.1));
+    }
+    if let Some(radius) = clear_radius(kind) {
+        let size = basis.x_axis.length().max(basis.z_axis.length());
+        report.clear.push((Vec2::new(at.x, at.z), radius * size));
+    }
+    for &mesh_index in meshes {
+        let mesh = &scene.meshes[mesh_index];
+        let Some((class, slot)) = scene.material_slot.get(mesh.material).copied().flatten() else {
+            report.skipped_materials += 1;
+            continue;
+        };
+        let world: Vec<Vec3> = mesh.pos.iter().map(|&v| basis * v + at).collect();
+        // Leaf cards: the direction out of the crown, from the crown's bounding ellipsoid.
+        let (centre, half) = if class == CLASS_LEAF {
+            let (lo, hi) = world.iter().fold((Vec3::splat(f32::MAX), Vec3::splat(f32::MIN)), |(a, b), &p| (a.min(p), b.max(p)));
+            ((lo + hi) * 0.5, ((hi - lo) * 0.5).max(Vec3::splat(0.05)))
+        } else {
+            (Vec3::ZERO, Vec3::ONE)
+        };
+        let bucket = &mut library.buckets[class as usize];
+        for tri in &mesh.tris {
+            let order = if mirrored { [tri[0], tri[2], tri[1]] } else { *tri };
+            for &index in &order {
+                let i = index as usize;
+                let c = mesh.colour[i];
+                let anchor = if class == CLASS_LEAF {
+                    let d = (world[i] - centre) / half;
+                    if d.length() < 1e-4 { Vec3::Y } else { d.normalize() }
+                } else {
+                    at
+                };
+                bucket.push(PropVertex {
+                    pos: world[i].to_array(),
+                    normal: (normal_matrix * mesh.normal[i]).normalize_or_zero().to_array(),
+                    uv: mesh.uv[i].to_array(),
+                    anchor: anchor.to_array(),
+                    colour: [q(c[0] * tint[0]), q(c[1] * tint[1]), q(c[2] * tint[2]), q(c[3] * tint[3])],
+                    mat: [class, slot, 0, 0],
+                });
+            }
+        }
+        report.triangles += mesh.tris.len();
+    }
+}
+
+fn empty_report() -> Report {
+    Report { objects: 0, instances: 0, triangles: 0, dropped: 0, dropped_by_kind: BTreeMap::new(), skipped_materials: 0, clear: Vec::new(), scattered: false }
+}
+
+/// Loads one scene's props onto an island built from `cells` and `field`, moved by `origin`,
+/// appending to `library`.
+pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mut Library) -> Report {
+    let scene = open(dir, library);
+    let mut report = empty_report();
+    for object in scene.json["objects"].as_array().expect("objects") {
         if object["category"].as_str() != Some("on_top") {
             continue;
         }
         let kind = object["kind"].as_str().unwrap_or("?").to_string();
-        let node: Vec<f32> = object["transform"].as_array().unwrap().iter().map(|v| v.as_f64().unwrap() as f32).collect();
-        // Per-instance world transforms and colours.
-        let mut instances: Vec<((Mat3, Vec3), [f32; 4])> = Vec::new();
-        match object.get("instances") {
-            Some(list) if list.is_object() => {
-                let count = list["count"].as_u64().unwrap() as usize;
-                let all = floats(&bin, list["transform"].as_i64().unwrap(), count * 12);
-                let colours = list["color"].as_i64().filter(|&o| o >= 0).map(|o| floats(&bin, o, count * 4));
-                for i in 0..count {
-                    let tint = colours.as_ref().map_or([1.0; 4], |c| [c[i * 4], c[i * 4 + 1], c[i * 4 + 2], c[i * 4 + 3]]);
-                    instances.push((transform(&all[i * 12..i * 12 + 12]), tint));
-                }
-            }
-            _ => instances.push((transform(&node), [1.0; 4])),
-        }
         report.objects += 1;
         let on_water_kind = kind == "lily" || kind == "reeds";
-        for ((basis, at), tint) in instances {
+        let meshes = mesh_list(object);
+        for ((basis, at), tint) in instances_of(object, &scene.bin) {
             // Refit: keep the height above Godot's ground (the cell), stand on this tool's ground.
             let p = Vec2::new(at.x, at.z);
             let cell = cells.get(&(p.x.floor() as i32, p.y.floor() as i32));
@@ -293,60 +380,189 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
                 *report.dropped_by_kind.entry(kind.clone()).or_default() += 1;
                 continue;
             };
-            let shift = Vec3::new(0.0, new_y - at.y, 0.0) + origin;
-            let normal_matrix = basis.inverse().transpose();
-            let mirrored = basis.determinant() < 0.0;
-            report.instances += 1;
-            if kind == "lantern" {
-                // decor_vertex_color.gdshader glows round (12.3, 0.56, -2.45) for a lantern placed
-                // at (12.4, -2.35) on ground at 0: the lamp sits 0.56 m up, 0.1 m off its origin.
-                // (Its constant height predates this layout's 1.5 m ground, so in the reference
-                // the core never lit; here the centre follows the lantern.)
-                library.lanterns.push(at + shift + Vec3::new(-0.1, 0.56, -0.1));
-            }
-            if let Some(radius) = clear_radius(&kind) {
-                let size = basis.x_axis.length().max(basis.z_axis.length());
-                report.clear.push((p, radius * size));
-            }
-            for &mesh_index in object["meshes"].as_array().unwrap().iter().map(|v| v.as_u64().unwrap() as usize).collect::<Vec<_>>().iter() {
-                let mesh = &meshes[mesh_index];
-                let Some((class, slot)) = material_slot.get(mesh.material).copied().flatten() else {
-                    report.skipped_materials += 1;
-                    continue;
-                };
-                let world: Vec<Vec3> = mesh.pos.iter().map(|&v| basis * v + at + shift).collect();
-                // Leaf cards: the direction out of the crown, from the crown's bounding ellipsoid.
-                let (centre, half) = if class == CLASS_LEAF {
-                    let (lo, hi) = world.iter().fold((Vec3::splat(f32::MAX), Vec3::splat(f32::MIN)), |(a, b), &p| (a.min(p), b.max(p)));
-                    ((lo + hi) * 0.5, ((hi - lo) * 0.5).max(Vec3::splat(0.05)))
-                } else {
-                    (Vec3::ZERO, Vec3::ONE)
-                };
-                let bucket = &mut library.buckets[class as usize];
-                for tri in &mesh.tris {
-                    let order = if mirrored { [tri[0], tri[2], tri[1]] } else { *tri };
-                    for &index in &order {
-                        let i = index as usize;
-                        let c = mesh.colour[i];
-                        let anchor = if class == CLASS_LEAF {
-                            let d = (world[i] - centre) / half;
-                            if d.length() < 1e-4 { Vec3::Y } else { d.normalize() }
-                        } else {
-                            at + shift
-                        };
-                        bucket.push(PropVertex {
-                            pos: world[i].to_array(),
-                            normal: (normal_matrix * mesh.normal[i]).normalize_or_zero().to_array(),
-                            uv: mesh.uv[i].to_array(),
-                            anchor: anchor.to_array(),
-                            colour: [q(c[0] * tint[0]), q(c[1] * tint[1]), q(c[2] * tint[2]), q(c[3] * tint[3])],
-                            mat: [class, slot, 0, 0],
-                        });
-                    }
-                }
-                report.triangles += mesh.tris.len();
-            }
+            let world = Vec3::new(at.x, new_y, at.z) + origin;
+            bake(library, &scene, &meshes, &kind, basis, world, tint, &mut report);
         }
+    }
+    // Clearings are in island coordinates.
+    for c in report.clear.iter_mut() {
+        c.0 -= Vec2::new(origin.x, origin.z);
+    }
+    report
+}
+
+/// One placed example of a kind in the source scene: its meshes, basis, tint, and how high its
+/// origin stood above its ground (the cell, or the water level for lilies and reeds).
+#[derive(Clone)]
+struct Example {
+    meshes: Vec<usize>,
+    basis: Mat3,
+    tint: [f32; 4],
+    lift: f32,
+}
+
+/// Kinds a scatter places, with where they go. The scene's unique pieces (the scholar's rock,
+/// bench, lantern) and the authored stepping-stone path are not scattered.
+#[derive(Clone, Copy, PartialEq)]
+enum Ground {
+    Lawn,
+    Shore,
+    Reed,
+    Pond,
+}
+
+fn scatter_kind(kind: &str) -> Option<Ground> {
+    Some(match kind {
+        "tree" | "tree_b" | "bush" | "bamboo" | "surface_rock" | "cliff_rock" | "flower" | "grass_clump" => Ground::Lawn,
+        "shore_rock" | "shore_boulder" | "shore_pebble" => Ground::Shore,
+        "reeds" => Ground::Reed,
+        "lily" => Ground::Pond,
+        _ => return None,
+    })
+}
+
+/// The exported Godot props of `dir` scattered over an island of any size (the synthetic
+/// islands): every scatterable kind at the source layout's count per square metre of dry land (or
+/// of water, for the shore and pond kinds), deterministic by seed. Trees keep off water, walls and
+/// the rim and stand in loose groups with bushes round them; shore stones line the ponds; lilies
+/// and reeds sit on the water. Each instance is one of the source's own (meshes, scale, tint), turned.
+pub fn scatter(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, seed: u32, library: &mut Library) -> Report {
+    let scene = open(dir, library);
+    let mut report = empty_report();
+    report.scattered = true;
+    // The source layout, for its areas and the examples' heights above their ground.
+    let layout_path = dir.parent().unwrap().join(format!("layout_{}.json", dir.file_name().unwrap().to_str().unwrap().trim_start_matches("scene_")));
+    let source = crate::field::load_layout(layout_path.to_str().unwrap());
+    let source_dry = source.values().filter(|c| c.water.is_none()).count().max(1) as f32;
+    let source_wet = source.values().filter(|c| c.water.is_some()).count().max(1) as f32;
+    let mut examples: BTreeMap<String, Vec<Example>> = BTreeMap::new();
+    let mut counts: BTreeMap<String, usize> = BTreeMap::new();
+    // A tree is two objects (trunk and crown) with the same instance transforms: instances of one
+    // kind at the same place are one example with all their meshes.
+    let mut by_place: BTreeMap<(String, i64, i64, i64), (Example, Vec3)> = BTreeMap::new();
+    for object in scene.json["objects"].as_array().expect("objects") {
+        let kind = object["kind"].as_str().unwrap_or("?").to_string();
+        if object["category"].as_str() != Some("on_top") || scatter_kind(&kind).is_none() {
+            continue;
+        }
+        report.objects += 1;
+        let meshes = mesh_list(object);
+        for ((basis, at), tint) in instances_of(object, &scene.bin) {
+            let key = (kind.clone(), (at.x * 1000.0).round() as i64, (at.y * 1000.0).round() as i64, (at.z * 1000.0).round() as i64);
+            by_place
+                .entry(key)
+                .and_modify(|(e, _)| e.meshes.extend(meshes.iter().copied()))
+                .or_insert((Example { meshes: meshes.clone(), basis, tint, lift: 0.0 }, at));
+        }
+    }
+    for ((kind, ..), (mut example, at)) in by_place {
+        *counts.entry(kind.clone()).or_default() += 1;
+        let Some(cell) = source.get(&(at.x.floor() as i32, at.z.floor() as i32)) else { continue };
+        example.lift = match (scatter_kind(&kind), cell.water) {
+            (Some(Ground::Reed | Ground::Pond), Some(level)) => at.y - level,
+            (Some(Ground::Reed | Ground::Pond), None) => continue,
+            _ => at.y - cell.h,
+        }
+        .clamp(-0.3, 0.3);
+        examples.entry(kind).or_default().push(example);
+    }
+
+    let mut keys: Vec<(i32, i32)> = cells.keys().copied().collect();
+    keys.sort();
+    let dry: Vec<(i32, i32)> = keys.iter().copied().filter(|k| cells[k].water.is_none()).collect();
+    let wet: Vec<(i32, i32)> = keys.iter().copied().filter(|k| cells[k].water.is_some()).collect();
+    // Dry cells beside water, and water cells beside land, for the shore kinds.
+    let near = |k: &(i32, i32), want_water: bool| (-1..=1).any(|dz| (-1..=1).any(|dx| cells.get(&(k.0 + dx, k.1 + dz)).is_some_and(|c| c.water.is_some() == want_water)));
+    let bank: Vec<(i32, i32)> = dry.iter().copied().filter(|k| near(k, true)).collect();
+    let edge: Vec<(i32, i32)> = wet.iter().copied().filter(|k| near(k, false)).collect();
+    let open_water: Vec<(i32, i32)> = wet.iter().copied().filter(|k| (-1..=1).all(|dz| (-1..=1).all(|dx| cells.get(&(k.0 + dx, k.1 + dz)).is_some_and(|c| c.water.is_some())))).collect();
+
+    let mut placed: Vec<(Vec2, f32, usize)> = Vec::new();
+    let mut trees: Vec<Vec2> = Vec::new();
+    let kinds = ["tree", "tree_b", "bamboo", "bush", "surface_rock", "cliff_rock", "grass_clump", "flower", "shore_boulder", "shore_rock", "shore_pebble", "reeds", "lily"];
+    for (index, kind) in kinds.iter().enumerate() {
+        let Some(list) = examples.get(*kind) else { continue };
+        if list.is_empty() {
+            continue;
+        }
+        let ground = scatter_kind(kind).unwrap();
+        let source_count = counts[*kind] as f32;
+        let want = match ground {
+            Ground::Lawn => source_count * dry.len() as f32 / source_dry,
+            _ => source_count * wet.len() as f32 / source_wet,
+        }
+        .round() as usize;
+        let pool: &Vec<(i32, i32)> = match ground {
+            Ground::Lawn => &dry,
+            Ground::Shore => &bank,
+            Ground::Reed => &edge,
+            Ground::Pond => &open_water,
+        };
+        if pool.is_empty() {
+            continue;
+        }
+        // Spacing from what is already placed, and from walls and the rim.
+        let (spacing, wall_clear): (f32, f32) = match *kind {
+            "tree" | "tree_b" => (3.2, 1.6),
+            "bamboo" => (2.4, 1.2),
+            "bush" => (0.9, 0.6),
+            "surface_rock" | "cliff_rock" => (1.2, 0.6),
+            "shore_boulder" | "shore_rock" => (0.7, 0.3),
+            "lily" => (0.5, 0.0),
+            _ => (0.35, 0.3),
+        };
+        let mut rng = crate::mesh::Rng::new(seed, 900 + index as u32);
+        let mut made = 0;
+        let mut tries = 0;
+        while made < want && tries < want * 60 + 50 {
+            tries += 1;
+            // Bushes gather round trees half the time; trees in loose groups.
+            let p = if (*kind == "bush" && rng.next() < 0.5 || (*kind == "tree" || *kind == "tree_b") && rng.next() < 0.6) && !trees.is_empty() {
+                let t = trees[(rng.next() * trees.len() as f32) as usize % trees.len()];
+                let angle = rng.range(0.0, std::f32::consts::TAU);
+                let r = if *kind == "bush" { rng.range(1.0, 2.6) } else { rng.range(3.2, 5.0) };
+                t + Vec2::new(angle.cos(), angle.sin()) * r
+            } else {
+                let k = pool[(rng.next() * pool.len() as f32) as usize % pool.len()];
+                Vec2::new(k.0 as f32 + rng.next(), k.1 as f32 + rng.next())
+            };
+            let Some(cell) = cells.get(&(p.x.floor() as i32, p.y.floor() as i32)).copied() else { continue };
+            let wet_k = field.sample(&field.wet, p);
+            let ok = match ground {
+                Ground::Lawn => cell.water.is_none() && wet_k < 0.05 && field.sample(&field.land1, p) > 0.93 && field.ground_normal(p).y > 0.85,
+                // On the bank right at the waterline.
+                Ground::Shore => cell.water.is_none() && wet_k > 0.12 && wet_k < 0.55 && field.sample(&field.land1, p) > 0.85,
+                Ground::Reed => cell.water.is_some() && wet_k < 0.92 && wet_k > 0.55,
+                Ground::Pond => cell.water.is_some() && wet_k > 0.98,
+            };
+            if !ok || (wall_clear > 0.0 && field.nearest_wall(p, wall_clear).is_some()) {
+                continue;
+            }
+            if placed.iter().any(|&(q, r, k)| (q - p).length() < if k == index { spacing.max(r) } else { (spacing + r) * 0.25 }) {
+                continue;
+            }
+            let example = &list[(rng.next() * list.len() as f32) as usize % list.len()];
+            let y = match ground {
+                Ground::Reed | Ground::Pond => cell.water.unwrap() - crate::water::SINK + example.lift,
+                _ => field.height_at(p) + example.lift,
+            };
+            let turn = Mat3::from_rotation_y(rng.range(0.0, std::f32::consts::TAU));
+            let size = rng.range(0.9, 1.1);
+            bake(library, &scene, &example.meshes, kind, turn * example.basis * size, Vec3::new(p.x, y, p.y) + origin, example.tint, &mut report);
+            placed.push((p, spacing, index));
+            if *kind == "tree" || *kind == "tree_b" || *kind == "bamboo" {
+                trees.push(p);
+            }
+            made += 1;
+        }
+        if made < want {
+            report.dropped += want - made;
+            *report.dropped_by_kind.entry(kind.to_string()).or_default() += want - made;
+        }
+    }
+    // Clearings are in island coordinates.
+    for c in report.clear.iter_mut() {
+        c.0 -= Vec2::new(origin.x, origin.z);
     }
     report
 }

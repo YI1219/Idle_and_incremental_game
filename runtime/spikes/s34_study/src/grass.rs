@@ -319,7 +319,7 @@ fn snorm16(v: f32) -> i16 {
 
 /// Builds the field for one island in its own coordinates, moved by `origin`.
 /// `clear` holds circles (centre, radius) the roots keep out of; `lawn` is the base ground colour.
-pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin: Vec3, lawn: Vec3) -> Grass {
+pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(Vec2, f32)], seed: u32, origin: Vec3, lawn: Vec3) -> Grass {
     let spacing = 1.0 / DENSITY.sqrt();
     let lo = field.origin;
     let hi = field.origin + Vec2::new(field.nx as f32, field.nz as f32) * STEP;
@@ -388,8 +388,7 @@ pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin:
                 continue;
             }
             let h = field.height_at(p);
-            let g = field.gradient(&field.height, p, STEP);
-            let ground_n = Vec3::new(-g.x, 1.0, -g.y).normalize();
+            let ground_n = field.ground_normal(p);
             let ny = ground_n.y;
             if ny < 0.62 {
                 continue; // cut rock of a terrace step
@@ -438,7 +437,10 @@ pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin:
     // Lip plants on the outline's roll, aligned to it, raised as Godot's lip samples are, so leaf
     // fans hang over the edge at irregular intervals (wherever the tuft field is high).
     let mut counter = 0i32;
-    for &(a, b) in rim {
+    // The outline's rim (outward from the occupancy field) and the terrace walls' brows (outward
+    // given): the same planted fringe.
+    let edges: Vec<(Vec3, Vec3, Option<Vec2>)> = rim.iter().map(|&(a, b)| (a, b, None)).chain(brows.iter().map(|&(a, b, n)| (a, b, Some(n)))).collect();
+    for &(a, b, given) in &edges {
         let length = (b - a).length();
         let want = length * LIP_DENSITY;
         let mut count = want.floor() as i32;
@@ -458,8 +460,8 @@ pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin:
             if clear_k < 0.5 {
                 continue;
             }
-            let inward = field.gradient(&field.land1, p, STEP * 1.5).normalize_or_zero();
-            let out = Vec3::new(-inward.x, 0.0, -inward.y);
+            let outward = given.unwrap_or_else(|| -field.gradient(&field.land1, p, STEP * 1.5).normalize_or_zero());
+            let out = Vec3::new(outward.x, 0.0, outward.y);
             // On the upper part of the roll, tipped 30 to 52 degrees out (Godot keeps lip
             // triangles up to about 54 degrees).
             let tilt: f32 = (30.0 + 22.0 * hash2(counter, 8, seed ^ 206)).to_radians();

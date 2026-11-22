@@ -111,6 +111,8 @@ pub struct Renderer {
     prop_shadow_leaf_pipeline: wgpu::RenderPipeline,
     /// Vertex buffer, the bind group, and the vertex ranges of stone, decor and leaf.
     props: Option<(wgpu::Buffer, wgpu::BindGroup, [std::ops::Range<u32>; 3])>,
+    /// Props per class and 8 m chunk: class, vertex range, bounds.
+    prop_chunks: Vec<(usize, std::ops::Range<u32>, Vec3, Vec3)>,
     grass_pipeline: wgpu::RenderPipeline,
     /// Vertices, indices, and per chunk its bounds and the index ranges of its three levels.
     grass: Option<GrassGpu>,
@@ -650,6 +652,7 @@ impl Renderer {
             prop_shadow_pipeline,
             prop_shadow_leaf_pipeline,
             props: None,
+            prop_chunks: Vec::new(),
             grass_pipeline,
             grass: None,
         }
@@ -677,13 +680,32 @@ impl Renderer {
             self.props = None;
             return;
         }
+        // Within each class the triangles are grouped in 8 m chunks of the plan with their bounds,
+        // so the terms pass draws only the chunks in view, nearest first (the shadow pass, cached,
+        // draws each class whole).
         let mut all: Vec<PropVertex> = Vec::with_capacity(total);
         let mut ranges: [std::ops::Range<u32>; 3] = [0..0, 0..0, 0..0];
+        let mut chunks = Vec::new();
         for (class, bucket) in library.buckets.iter().enumerate() {
             let start = all.len() as u32;
-            all.extend_from_slice(bucket);
+            let mut by_chunk: std::collections::BTreeMap<(i32, i32), Vec<PropVertex>> = std::collections::BTreeMap::new();
+            for tri in bucket.chunks_exact(3) {
+                let c = (Vec3::from_array(tri[0].pos) + Vec3::from_array(tri[1].pos) + Vec3::from_array(tri[2].pos)) / 3.0;
+                by_chunk.entry(((c.x / 8.0).floor() as i32, (c.z / 8.0).floor() as i32)).or_default().extend_from_slice(tri);
+            }
+            for (_, list) in by_chunk {
+                let first = all.len() as u32;
+                let (mut lo, mut hi) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
+                for v in &list {
+                    lo = lo.min(Vec3::from_array(v.pos));
+                    hi = hi.max(Vec3::from_array(v.pos));
+                }
+                all.extend_from_slice(&list);
+                chunks.push((class, first..all.len() as u32, lo, hi));
+            }
             ranges[class] = start..all.len() as u32;
         }
+        self.prop_chunks = chunks;
         let (mut low, mut high) = self.bounds;
         for vertex in &all {
             let p = Vec3::from_array(vertex.pos);
@@ -824,14 +846,24 @@ impl Renderer {
             pass.set_vertex_buffer(0, solid.slice(..));
             pass.draw(0..*count, 0..1);
             // Props before the grass, so the depth test rejects the leaves they hide.
-            if let Some((buffer, group, ranges)) = &self.props {
+            if let Some((buffer, group, _)) = &self.props {
                 pass.set_bind_group(2, group, &[]);
                 pass.set_vertex_buffer(0, buffer.slice(..));
-                for (pipeline, range) in self.prop_terms_pipelines.iter().zip(ranges.iter()) {
-                    if !range.is_empty() {
-                        pass.set_pipeline(pipeline);
-                        pass.draw(range.clone(), 0..1);
+                let view_proj = self.view_proj(camera);
+                let mut visible: Vec<(usize, f32, std::ops::Range<u32>)> = self
+                    .prop_chunks
+                    .iter()
+                    .filter(|(_, _, lo, hi)| !outside(&view_proj, *lo, *hi))
+                    .map(|(class, range, lo, hi)| (*class, (camera.eye.clamp(*lo, *hi) - camera.eye).length(), range.clone()))
+                    .collect();
+                visible.sort_by(|a, b| a.0.cmp(&b.0).then(a.1.partial_cmp(&b.1).unwrap()));
+                let mut current = usize::MAX;
+                for (class, _, range) in visible {
+                    if class != current {
+                        pass.set_pipeline(&self.prop_terms_pipelines[class]);
+                        current = class;
                     }
+                    pass.draw(range, 0..1);
                 }
             }
             if let Some(gpu) = &self.grass {

@@ -1,0 +1,28 @@
+{
+ "cells": 503,
+ "body": "Karst",
+ "triangles": 24473,
+ "parts": {"top": 21978, "body": 2495, "decor": 0, "props": 60254, "grass full": 297955},
+ "build_ms": 50.91,
+ "stages_ms": {"fields": 27.63, "top": 12.62, "body": 0.26, "decor": 5.14, "grass": 4.60},
+ "faces": 27,
+ "columns": 64,
+ "face_widths_m": [3.9, 6.5, 2.0, 5.9, 2.9, 2.3, 5.6, 3.0, 2.3, 4.6, 2.5, 3.1, 4.6, 6.9, 4.3, 2.0, 4.8, 2.4, 5.0, 4.3, 2.0, 2.5, 5.5, 3.6, 2.9, 2.1, 5.6],
+ "width_min_m": 2.00,
+ "width_max_m": 6.90,
+ "width_spread": 0.392,
+ "step_spread_m": 0.311,
+ "longest_alike_run": 2,
+ "longest_alike_run_m": 5.16,
+ "edit_locality": [
+
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "whole", "p05": 0.412, "p50": 0.780, "p95": 0.902, "white": 0.000, "black": 0.000, "sat_mean": 0.136, "sat_p99": 0.510, "quiet": 0.594},
+  {"view": "reverse", "p05": 0.373, "p50": 0.749, "p95": 0.890, "white": 0.000, "black": 0.000, "sat_mean": 0.124, "sat_p99": 0.506, "quiet": 0.603},
+  {"view": "overview", "p05": 0.376, "p50": 0.635, "p95": 0.898, "white": 0.000, "black": 0.001, "sat_mean": 0.317, "sat_p99": 0.553, "quiet": 0.431}
+ ]
+}

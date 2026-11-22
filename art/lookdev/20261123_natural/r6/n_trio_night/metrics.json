@@ -1,0 +1,26 @@
+{
+ "cells": 623,
+ "body": "Karst",
+ "triangles": 29717,
+ "parts": {"top": 26784, "body": 2933, "decor": 0, "props": 76710, "grass full": 407225},
+ "build_ms": 56.93,
+ "stages_ms": {"fields": 27.33, "top": 16.64, "body": 0.32, "decor": 5.04, "grass": 6.20},
+ "faces": 27,
+ "columns": 72,
+ "face_widths_m": [3.0, 5.3, 2.8, 4.5, 2.5, 2.2, 4.9, 3.5, 2.6, 5.0, 2.0, 5.7, 4.1, 4.3, 5.3, 2.3, 4.5, 2.3, 4.8, 4.5, 5.0, 5.2, 2.0, 2.1, 4.5, 3.1, 2.7],
+ "width_min_m": 2.04,
+ "width_max_m": 5.68,
+ "width_spread": 0.326,
+ "step_spread_m": 0.344,
+ "longest_alike_run": 3,
+ "longest_alike_run_m": 8.75,
+ "edit_locality": [
+
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "wallpaper", "p05": 0.325, "p50": 0.580, "p95": 0.729, "white": 0.000, "black": 0.000, "sat_mean": 0.329, "sat_p99": 0.478, "quiet": 0.685}
+ ]
+}
