@@ -218,7 +218,7 @@ fn hour_values(name: &str) -> Hour {
             far_density: 0.0030,
             water_shallow: [0.36, 0.62, 0.62],
             water_deep: [0.08, 0.31, 0.30],
-            moss: [0.80, 0.90, 0.66, 0.50],
+            moss: [0.88, 0.95, 0.80, 0.50],
             foam: [0.92, 0.90, 0.86],
             root_mist: 0.96,
             fall: [0.62, 0.70, 0.66],
@@ -255,7 +255,7 @@ fn hour_values(name: &str) -> Hour {
             far_density: 0.0030,
             water_shallow: [0.22, 0.48, 0.52],
             water_deep: [0.05, 0.22, 0.27],
-            moss: [0.84, 0.92, 0.80, 0.45],
+            moss: [0.90, 0.95, 0.86, 0.45],
             foam: [0.80, 0.88, 0.95],
             root_mist: 0.96,
             fall: [0.40, 0.52, 0.58],
@@ -295,7 +295,7 @@ fn hour_values(name: &str) -> Hour {
             water_shallow: [0.36, 0.66, 0.56],
             water_deep: [0.03, 0.16, 0.15],
             // The brow under the lawn lip: a multiplicative green tint (rgb) and its strength (a).
-            moss: [0.78, 0.92, 0.62, 0.55],
+            moss: [0.88, 0.96, 0.79, 0.55],
             foam: [0.95, 0.96, 0.94],
             root_mist: 0.96,
             fall: [0.58, 0.74, 0.70],
@@ -470,13 +470,13 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
         None => decor::scatter(cells, &field, &colours, seed, &mut clear),
     };
     lap("decor", &mut timings);
-    let grass = grass::build(&field, &top.rim, &clear, seed, origin);
+    let grass = grass::build(&field, &top.rim, &clear, seed, origin, field::TopColours::default().lawn);
     lap("grass", &mut timings);
     parts.push(("top", top.mesh.triangles()));
     parts.push(("body", body.mesh.triangles()));
     parts.push(("decor", things.triangles()));
     parts.push(("props", prop_triangles));
-    parts.push(("grass full", grass.full_triangles));
+    parts.push(("grass full", grass.clumps.len() * grass::meshes().triangles(0) as usize));
     let mut solid = Mesh::default();
     solid.append(&top.mesh);
     solid.append(&body.mesh);
@@ -679,7 +679,16 @@ fn main() {
         let drawn = renderer.render(&frame);
         let path = format!("{}/{}_{}.png", args.out, args.tag, name);
         let stats = renderer.save_png(&path);
-        println!("GRASS {name}: {} clumps, {} triangles full, {} drawn", all_grass.clumps, all_grass.full_triangles, drawn);
+        println!(
+            "GRASS {name}: {} clumps, {} triangles full, {} drawn, chunks by level {}/{}/{}/{} (two bends, one bend, half roots, quarter roots)",
+            all_grass.clumps.len(),
+            all_grass.clumps.len() as u64 * grass::meshes().triangles(0),
+            drawn.triangles,
+            drawn.chunks[0],
+            drawn.chunks[1],
+            drawn.chunks[2],
+            drawn.chunks[3]
+        );
         println!("FRAME {path}");
         println!(
             "STATS {name}: p05 {:.3} p50 {:.3} p95 {:.3} white {:.3} black {:.3} sat_mean {:.3} sat_p99 {:.3} quiet {:.3}",

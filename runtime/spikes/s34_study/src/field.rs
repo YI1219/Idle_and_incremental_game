@@ -312,7 +312,7 @@ impl Default for TopColours {
     fn default() -> TopColours {
         // The ground under the grass field: close to the blades' mid colour.
         TopColours {
-            lawn: Vec3::new(0.435, 0.530, 0.260),
+            lawn: Vec3::new(0.450, 0.535, 0.280),
             lawn_cool: Vec3::new(0.42, 0.53, 0.267),
             riser: Vec3::new(0.655, 0.618, 0.555),
             bed: Vec3::new(0.22, 0.32, 0.28),
@@ -328,13 +328,16 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
     let surface = |p: Vec2| -> (Vec3, Vec3, Vec3, Paint) {
         let h = field.height_at(p);
         let g = field.gradient(&field.height, p, STEP);
-        let normal = Vec3::new(-g.x, 1.0, -g.y).normalize();
+        // The meadow's broad cushions tilt the light a little (ground.gdshader: pillow gradient
+        // 0.14 plus the cover slope 0.10).
+        let pillow = crate::grass::pillow_grad(p) * 0.20;
+        let normal = Vec3::new(-g.x - pillow.x, 1.0, -g.y - pillow.y).normalize();
         let slope = g.length();
         // Steps are cut as whole facets where the triangles are emitted; vertices stay lawn.
         let stone = 0.0 * slope;
-        // The ground under the blades: the blades' own mid colour and the same soft tone patches,
-        // so gaps between blades do not read (director, 2026-11-23: not a darker ground).
-        let lawn = colours.lawn * crate::grass::lawn_tone(p, seed);
+        // The ground under the rosettes: ground_cover's soft patches round the authored colour;
+        // the rosettes take their colour from it (grass_blades.gdshader).
+        let lawn = crate::grass::lawn_ground(colours.lawn, p);
         let mut colour = lawn.lerp(colours.riser, stone);
         let mut family = if stone > 0.5 { Family::Stone } else { Family::Ground };
         let wet = field.sample(&field.wet, p);
@@ -395,8 +398,14 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
                 let up = g.normalize_or_zero();
                 let lip = field.height_at(centre + up * 0.8).max(field.height_at(centre + up * 0.4));
                 let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(lip);
+                // Under a pond the cut rock takes the bed's colour per vertex, so the waterline
+                // follows the smooth surface instead of the cells' outline.
+                let rock = |c: &(Vec3, Vec3, Vec3, Paint)| {
+                    let under = field.water_at(Vec2::new(c.0.x, c.0.z)).is_some_and(|level| c.0.y < level - crate::water::SINK - 0.02);
+                    if under && c.3.family == Family::Stone { c.2 } else { colours.riser * tone }
+                };
                 for k in 1..fan.len() - 1 {
-                    mesh.tri_full([fan[0].0, fan[k].0, fan[k + 1].0], [cell_normal; 3], [colours.riser * tone; 3], [paint; 3]);
+                    mesh.tri_full([fan[0].0, fan[k].0, fan[k + 1].0], [cell_normal; 3], [rock(&fan[0]), rock(&fan[k]), rock(&fan[k + 1])], [paint; 3]);
                 }
             } else {
                 for k in 1..fan.len() - 1 {
@@ -410,27 +419,40 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
             }
         }
     }
-    // The lip: the lawn rolls over the edge and tucks under, covering the join with the rock.
+    // The lip (round r4): the lawn rolls over the outline by a small radius in its own colour, its
+    // light kept close to the lawn's (normals mostly up), and under the roll a short band of rock
+    // tucks in under the lawn, where the stone's mossy brow begins.
     // Outward direction per end point, so neighbouring pieces share normals and the lip reads as one roll.
     let outward = |p: Vec3| -> Vec3 {
         let inward = field.gradient(&field.land1, Vec2::new(p.x, p.z), STEP * 1.5).normalize_or_zero();
         Vec3::new(-inward.x, 0.0, -inward.y)
     };
+    let _ = seed;
     for &(a, b) in &rim {
-        let mid = Vec2::new((a.x + b.x) * 0.5, (a.z + b.z) * 0.5);
         let (out_a, out_b) = (outward(a), outward(b));
-        let tone = colours.lawn.lerp(colours.lawn_cool, 0.5) * (0.94 + 0.06 * vnoise(mid.x * 0.6, mid.y * 0.6, seed));
-        let rings = [(0.0, 0.0), (0.10, 0.07), (0.12, 0.20), (0.03, 0.36), (-0.16, 0.42)];
+        let (lawn_a, lawn_b) = (crate::grass::lawn_ground(colours.lawn, Vec2::new(a.x, a.z)), crate::grass::lawn_ground(colours.lawn, Vec2::new(b.x, b.z)));
+        // (out, down) in metres; the first three spans are lawn, then rock straight down, so the
+        // wall reads as reaching up to the roll.
+        let rings = [(0.0, 0.0), (0.040, 0.020), (0.060, 0.065), (0.055, 0.115), (0.050, 0.22), (0.045, 0.32)];
         for k in 0..rings.len() - 1 {
             let (o0, d0) = rings[k];
             let (o1, d1) = rings[k + 1];
-            let normal = |out3: Vec3| (out3 * (d1 - d0) + Vec3::Y * (o1 - o0)).normalize_or_zero();
-            let paint = Paint::new(Family::Ground).sky(1.0 - 0.18 * k as f32).line(0.35).id(1);
-            let shade = tone * (1.0 - 0.07 * k as f32);
+            let geometric = |out3: Vec3| (out3 * (d1 - d0) + Vec3::Y * (o1 - o0)).normalize_or_zero();
             let quad = [a + out_a * o0 - Vec3::Y * d0, b + out_b * o0 - Vec3::Y * d0, b + out_b * o1 - Vec3::Y * d1, a + out_a * o1 - Vec3::Y * d1];
-            let (na, nb) = (normal(out_a), normal(out_b));
-            mesh.tri_full([quad[0], quad[1], quad[2]], [na, nb, nb], [shade; 3], [paint; 3]);
-            mesh.tri_full([quad[0], quad[2], quad[3]], [na, nb, na], [shade; 3], [paint; 3]);
+            if k < 3 {
+                let normal = |out3: Vec3| (Vec3::Y * 0.70 + geometric(out3) * 0.30).normalize();
+                let paint = Paint::new(Family::Ground).sky(1.0 - 0.05 * k as f32).line(0.35).id(1);
+                let (na, nb) = (normal(out_a), normal(out_b));
+                mesh.tri_full([quad[0], quad[1], quad[2]], [na, nb, nb], [lawn_a, lawn_b, lawn_b], [paint; 3]);
+                mesh.tri_full([quad[0], quad[2], quad[3]], [na, nb, na], [lawn_a, lawn_b, lawn_a], [paint; 3]);
+            } else {
+                let lip = a.y.max(b.y);
+                let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(lip);
+                let tone = colours.riser;
+                let (na, nb) = (geometric(out_a), geometric(out_b));
+                mesh.tri_full([quad[0], quad[1], quad[2]], [na, nb, nb], [tone; 3], [paint; 3]);
+                mesh.tri_full([quad[0], quad[2], quad[3]], [na, nb, na], [tone; 3], [paint; 3]);
+            }
         }
     }
     Top { mesh, rim }

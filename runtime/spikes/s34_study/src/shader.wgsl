@@ -170,16 +170,17 @@ struct FTerms {
 @group(1) @binding(3) var wash_sampler: sampler;
 
 // The gouache wash (gouache_stone_sol61, sampled in linear) projected from three sides, with
-// explicit gradients so it can run inside the stone branch. 2.2 is Godot's mip bias of 1.15.
+// explicit gradients so it can run inside the stone branch (no extra mip bias: Godot's 1.15 blurred
+// the dabs away under this tool's supersampling).
 fn wash3(p: vec3<f32>, w: vec3<f32>, s: f32, o: vec2<f32>, dx: vec3<f32>, dy: vec3<f32>) -> vec3<f32> {
-    let k = s * 2.2;
+    let k = s;
     return textureSampleGrad(stone_wash, wash_sampler, p.zy * s + o, dx.zy * k, dy.zy * k).rgb * w.x
         + textureSampleGrad(stone_wash, wash_sampler, p.xz * s + o, dx.xz * k, dy.xz * k).rgb * w.y
         + textureSampleGrad(stone_wash, wash_sampler, p.xy * s + o, dx.xy * k, dy.xy * k).rgb * w.z;
 }
 
 fn wash_at(uv: vec2<f32>, du: vec2<f32>, dv: vec2<f32>) -> vec3<f32> {
-    return textureSampleGrad(stone_wash, wash_sampler, uv, du * 2.2, dv * 2.2).rgb;
+    return textureSampleGrad(stone_wash, wash_sampler, uv, du, dv).rgb;
 }
 
 // Linear statistics of the wash: channel means and their luminance (Godot's figures).
@@ -187,19 +188,32 @@ const WASH_MEAN_LUM: f32 = 0.4458;
 const WASH_CHROMA: vec3<f32> = vec3<f32>(1.119, 1.016, 0.865);
 const WASH_SPREAD: f32 = 0.046;
 
-// The island stone's paint as a multiplier on its display colour: a calm triplanar wash (large
-// brush planes, a few per cent of value and a quiet warm/cool drift), the wash pulled about 3:1
-// along gravity on steep faces and gathered into flat values, and faint dry streaks pulled about
-// 6:1. A broad "voice" field lets parts of every face rest. All world anchored (after Godot's
-// stone_surface and stone_cliff_character). Mip filtering turns all of it into one soft tone
-// with a hint of brushwork at a distance.
-fn stone_paint(p: vec3<f32>, n: vec3<f32>, dx: vec3<f32>, dy: vec3<f32>) -> vec3<f32> {
+// Strengths of the ported layers (Godot's values are 1). The brush dabs of the wash are kept at
+// Godot's strength; the broad layers are scaled so one face still reads as one tone.
+const PAINT_WASH: f32 = 2.0;
+const PAINT_CLOUD: f32 = 1.0;
+const PAINT_PLANES: f32 = 0.40;
+const PAINT_DRY: f32 = 0.55;
+// Keeps the painted stone's mean where the vertex colours put it (the wash is warm on average).
+const PAINT_NORM: vec3<f32> = vec3<f32>(1.005, 1.0, 1.03);
+
+// The island stone's paint (round r4), ported from Godot's stone_surface and
+// stone_cliff_character, as a multiplier on the display colour (rgb) and the brush-plane tone (a)
+// for the brow. Linear factors as Godot computes them, raised to 1/2.2 at the end:
+//  - stone_surface: the triplanar gouache wash against its own mean (clamped 0.72..1.28), which
+//    carries the visible short brush dabs; broad mineral "cloud" islands and fine chalk;
+//  - stone_cliff_character on steep faces: the wash pulled 3:1 along gravity and gathered into
+//    flat values (brush planes), its colour drift, and dry strokes pulled 6:1; a broad "voice"
+//    field lets parts of every face rest. All world anchored.
+fn stone_paint(p: vec3<f32>, n: vec3<f32>, dx: vec3<f32>, dy: vec3<f32>) -> vec4<f32> {
     let w = stone_weights(n);
     let q = p * 0.82;
     let wash = mix(wash3(q, w, 0.11, vec2<f32>(0.0), dx * 0.82, dy * 0.82), wash3(q, w, 0.26, vec2<f32>(0.37, 0.61), dx * 0.82, dy * 0.82), 0.38);
-    let lum = dot(wash, vec3<f32>(1.0 / 3.0));
-    var f = vec3<f32>(1.0 + clamp((lum / WASH_MEAN_LUM - 1.0) * 0.6, -0.02, 0.02));
-    f *= mix(vec3<f32>(1.0), clamp(wash / max(lum, 0.02) / WASH_CHROMA, vec3<f32>(0.97), vec3<f32>(1.03)), 0.4);
+    var m = mix(vec3<f32>(1.0), clamp(wash / vec3<f32>(0.4988, 0.4529, 0.3858), vec3<f32>(0.72), vec3<f32>(1.28)), PAINT_WASH);
+    let cloud = stone_noise(p * 0.38 + vec3<f32>(3.2, 7.4, 1.8));
+    let chalk = stone_noise(p * 1.35 + vec3<f32>(8.1, 2.7, 6.4));
+    m *= 1.0 + ((0.935 + 0.105 * cloud + 0.020 * chalk) - 0.9975) * PAINT_CLOUD;
+    var tone = 0.0;
     let steep = 1.0 - smoothstep(0.50, 0.82, abs(n.y));
     if (steep > 0.001) {
         var h = abs(n.xz);
@@ -207,17 +221,18 @@ fn stone_paint(p: vec3<f32>, n: vec3<f32>, dx: vec3<f32>, dy: vec3<f32>) -> vec3
         let plane = wash_at(vec2<f32>(p.z * 0.085 + 0.21, p.y * 0.030), vec2<f32>(dx.z * 0.085, dx.y * 0.030), vec2<f32>(dy.z * 0.085, dy.y * 0.030)) * h.x
             + wash_at(vec2<f32>(p.x * 0.085 + 0.63, p.y * 0.030 + 0.37), vec2<f32>(dx.x * 0.085, dx.y * 0.030), vec2<f32>(dy.x * 0.085, dy.y * 0.030)) * h.y;
         let plane_lum = dot(plane, vec3<f32>(1.0 / 3.0));
-        let tone = clamp((plane_lum - WASH_MEAN_LUM) / WASH_SPREAD, -1.0, 1.0);
+        tone = clamp((plane_lum - WASH_MEAN_LUM) / WASH_SPREAD, -1.0, 1.0);
         let value = smoothstep(-0.55, 0.55, tone) * 2.0 - 1.0;
         let voice = smoothstep(0.28, 0.64, stone_noise(p * vec3<f32>(0.10, 0.065, 0.10) + vec3<f32>(4.7, 1.3, 9.2)));
-        let amount = steep * mix(0.45, 1.0, voice);
-        f *= 1.0 + value * 0.025 * amount;
+        let amount = steep * mix(0.45, 1.0, voice) * PAINT_PLANES;
+        m *= 1.0 + value * 0.15 * amount;
+        m *= mix(vec3<f32>(1.0), clamp(plane / max(plane_lum, 0.02) / WASH_CHROMA, vec3<f32>(0.90), vec3<f32>(1.10)), 0.85 * amount);
         let stroke = wash_at(vec2<f32>(p.z * 0.048 + 0.52, p.y * 0.0085 + 0.11), vec2<f32>(dx.z * 0.048, dx.y * 0.0085), vec2<f32>(dy.z * 0.048, dy.y * 0.0085)).g * h.x
             + wash_at(vec2<f32>(p.x * 0.048 + 0.08, p.y * 0.0085 + 0.71), vec2<f32>(dx.x * 0.048, dx.y * 0.0085), vec2<f32>(dy.x * 0.048, dy.y * 0.0085)).g * h.y;
         let dry = smoothstep(WASH_MEAN_LUM - WASH_SPREAD * 0.45, WASH_MEAN_LUM - WASH_SPREAD * 1.25, stroke);
-        f *= 1.0 - dry * 0.035 * steep * mix(0.25, 1.0, voice);
+        m *= 1.0 - dry * 0.24 * steep * mix(0.25, 1.0, voice) * PAINT_DRY;
     }
-    return f;
+    return vec4<f32>(pow(max(m, vec3<f32>(0.0)), vec3<f32>(1.0 / 2.2)) * PAINT_NORM, tone);
 }
 
 @fragment
@@ -234,14 +249,17 @@ fn fs_terms(v: VTerms) -> FTerms {
     var brow = 0.0;
     if (abs(v.colour.a - 85.0 / 255.0) < 0.05) {
         // Island stone: painted surface, mossy brow under the lawn lip, darker joins and lip band.
-        display *= stone_paint(v.world, n, dx, dy);
+        let paint = stone_paint(v.world, n, dx, dy);
+        display *= paint.rgb;
         let steep = 1.0 - smoothstep(0.50, 0.82, abs(n.y));
         let raw = round(v.extra.b * 255.0) * 256.0 + round(v.extra.a * 255.0);
         if (raw > 0.5) {
             let depth = raw / 65535.0 * 64.0 - 32.0 - v.world.y;
             let below = step(-0.08, depth);
-            let reach = mix(0.30, 0.50, stone_noise(vec3<f32>(v.world.x * 0.38, 5.3, v.world.z * 0.38)));
-            brow = (1.0 - smoothstep(reach * 0.35, reach, depth)) * below * steep;
+            // Godot's mossy brow: uneven drips from the lip, reaching 0.25 to 2.4 m down, their
+            // edge following the brush planes (brow weight 0.6 as on its cliff faces).
+            let reach = mix(0.25, 2.4, smoothstep(0.34, 0.70, stone_noise(vec3<f32>(v.world.x * 0.38, 5.3, v.world.z * 0.38))));
+            brow = 0.6 * (1.0 - smoothstep(reach * 0.30, reach, depth + paint.a * 0.22)) * below * steep;
             ao *= 1.0 - 0.24 * (1.0 - smoothstep(0.0, 0.32, max(depth, 0.0))) * below * steep;
         }
         let width = v.terms.a * 16.0;
@@ -263,56 +281,91 @@ fn fs_terms(v: VTerms) -> FTerms {
 
 // ---------------------------------------------------------------- grass field
 
+// Share of the leaf curl in the shading normal against Godot (a little calmer than its 0.35..0.62).
+const LEAF_CURL: f32 = 0.75;
+// The canopy tone of narrow leaves against Godot's (its far lawn fades blades out; ours keeps them).
+const CANOPY_K: f32 = 1.0;
+
+// Round r4: the frozen project's rosettes, instanced. The clump mesh is in the clump's own frame;
+// each root carries its place, turn, size, the ground colour under it and its tuft volume. Colour
+// follows grass_blades.gdshader's vertex function: relative to the ground, a darker heart and
+// lighter tips only on the tall tufts (its factors are linear; here they act on display values,
+// so they are raised to 1/2.2).
+
 struct GIn {
     @location(0) pos: vec3<f32>,
-    @location(1) normal: vec4<f32>,
-    @location(2) colour: vec4<f32>,
+    @location(1) normal: vec4<f32>,   // curl normal, w position across the leaf
+    @location(2) data: vec4<f32>,     // x position along the leaf, y the leaf's tone
+    @location(3) root: vec3<f32>,
+    @location(4) turn: vec4<f32>,     // quaternion
+    @location(5) size: vec2<f32>,     // horizontal and vertical scale / 4
+    @location(6) ground: vec4<f32>,   // ground display colour, a tuft volume
+    @location(7) misc: vec4<f32>,     // x tone patch, yz pillow gradient (0.5 = 0, 1/64 per unit)
 };
 
 struct VGrass {
     @builtin(position) clip: vec4<f32>,
     @location(0) world: vec3<f32>,
     @location(1) normal: vec3<f32>,
-    @location(2) colour: vec4<f32>,
-    @location(3) across: f32,
+    @location(2) leaf: vec3<f32>,
+    @location(3) canopy: vec3<f32>,
+    @location(4) tc: vec2<f32>,       // x along, y across
 };
+
+fn qrot(q: vec4<f32>, v: vec3<f32>) -> vec3<f32> {
+    let t = 2.0 * cross(q.xyz, v);
+    return v + q.w * t + cross(q.xyz, t);
+}
 
 @vertex
 fn vs_grass(v: GIn) -> VGrass {
     var out: VGrass;
-    out.clip = g.view_proj * vec4<f32>(v.pos, 1.0);
-    out.world = v.pos;
-    out.normal = v.normal.xyz;
-    out.colour = v.colour;
-    out.across = v.normal.w;
+    let q = normalize(v.turn);
+    let s = v.size * 4.0;
+    let world = v.root + qrot(q, vec3<f32>(v.pos.x * s.x, v.pos.y * s.y, v.pos.z * s.x));
+    out.clip = g.view_proj * vec4<f32>(world, 1.0);
+    out.world = world;
+    let t = v.data.x;
+    let tv = v.ground.a;
+    let tone = clamp(v.misc.x * 0.5 + v.data.y * 0.5 + 0.05, 0.0, 1.0);
+    let root_k = mix(vec3<f32>(0.86, 0.90, 0.82), vec3<f32>(0.62, 0.74, 0.51), tv);
+    let fan_tip = mix(vec3<f32>(1.09, 1.12, 0.96), vec3<f32>(1.21, 1.18, 1.01), tone);
+    let tip_k = mix(vec3<f32>(1.04, 1.07, 0.98), fan_tip, tv);
+    let leaf_k = mix(root_k, tip_k, smoothstep(0.06, 0.90, t));
+    let canopy_k = mix(mix(vec3<f32>(0.94, 0.97, 0.88), vec3<f32>(0.78, 0.87, 0.67), tv), mix(vec3<f32>(1.03, 1.05, 0.98), vec3<f32>(1.10, 1.12, 0.97), tv), smoothstep(0.0, 0.80, t));
+    out.leaf = v.ground.rgb * pow(leaf_k, vec3<f32>(1.0 / 2.2));
+    out.canopy = v.ground.rgb * pow(canopy_k, vec3<f32>(1.0 / 2.2)) * CANOPY_K;
+    // Shading normal mostly up, with the leaf's curl mixed in (0.35 to 0.62 with the tuft volume)
+    // and the meadow cushion's slope.
+    var rn = normalize(qrot(q, v.normal.xyz));
+    if (rn.y < 0.0) {
+        rn = -rn;
+    }
+    let pg = (v.misc.yz * 255.0 - 128.0) / 64.0;
+    let lc = mix(0.35, 0.62, tv) * LEAF_CURL;
+    out.normal = normalize(vec3<f32>(rn.x * lc - pg.x, max(0.84, rn.y), rn.z * lc - pg.y));
+    out.tc = vec2<f32>(t, v.normal.w);
     return out;
 }
 
-// Root and tip albedo (display values). The frozen project recorded grass_base (0.238, 0.352,
-// 0.214) and grass_highlight (0.442, 0.518, 0.312), but its meadow also gets ground-cover
-// brightening and sky light this tool lacks; these are matched to its frames instead.
-const GRASS_ROOT: vec3<f32> = vec3<f32>(0.428, 0.522, 0.258);
-const GRASS_TIP: vec3<f32> = vec3<f32>(0.476, 0.581, 0.286);
-
 @fragment
 fn fs_grass(v: VGrass) -> FTerms {
-    // How wide the blade is on screen: narrow blades fold into one canopy tone (Godot's
+    // How wide the leaf is on screen: narrow leaves fold into one canopy tone (Godot's
     // leaf_detail) instead of shimmering dark and light pixels.
-    let width_px = 2.0 / max(fwidth(v.across), 1e-4);
+    let width_px = 2.0 / max(fwidth(v.tc.y), 1e-4);
     let detail = mix(0.45, 1.0, smoothstep(1.5, 5.0, width_px));
-    let n = normalize(v.normal);
-    let t = clamp(v.colour.a, 0.0, 1.0);
-    let tint = v.colour.rgb * 2.0;
-    let leaf = mix(GRASS_ROOT, GRASS_TIP, smoothstep(0.06, 0.90, t)) * tint;
-    let canopy = mix(GRASS_ROOT, GRASS_TIP, 0.30 + 0.50 * smoothstep(0.0, 0.80, t)) * tint;
+    let t = clamp(v.tc.x, 0.0, 1.0);
+    let edge = clamp(v.tc.y * v.tc.y, 0.0, 1.0);
+    let leaf = v.leaf * (1.0 - 0.045 * edge);
+    let n = normalize(mix(vec3<f32>(0.0, 1.0, 0.0), v.normal, detail));
     var vis = 1.0;
     if (dot(n, g.sun_dir.xyz) > -0.05) {
-        vis = sun_visibility_taps(v.world, n, v.clip.xy, 6);
+        vis = sun_visibility_taps(v.world, n, v.clip.xy, 4);
     }
-    // Baked occlusion: low at the root, open at the tip.
-    let ao = mix(0.97, mix(0.90, 1.0, smoothstep(0.0, 0.80, t)), detail);
+    // Occlusion 0.90 at the root to 0.99 at the tip.
+    let ao = mix(0.97, mix(0.90, 0.99, t), detail);
     var out: FTerms;
-    out.base = vec4<f32>(clamp(mix(canopy, leaf, detail), vec3<f32>(0.0), vec3<f32>(1.0)), 0.0);
+    out.base = vec4<f32>(clamp(mix(v.canopy, leaf, detail), vec3<f32>(0.0), vec3<f32>(1.0)), 0.0);
     out.terms = vec4<f32>(vis, ao, 0.0, 0.0);
     out.normal = vec4<f32>(n * 0.5 + 0.5, 1.0 / 255.0);
     return out;
@@ -426,13 +479,30 @@ fn open_light(n: vec3<f32>) -> vec3<f32> {
 // All of it runs at the output resolution. Each output pixel stands for the internal sample at
 // px * scale (its "representative"); the resolve upsamples with depth awareness.
 
+// Occlusion runs at half the internal resolution: each AO pixel stands for the internal sample
+// at px * AO_STRIDE (the output resolution in the resting mode, half of it in the moving mode).
+const AO_STRIDE: i32 = 2;
+
 @group(1) @binding(0) var z_depth: texture_depth_2d;
 
 // View distance of the representative, -1 for sky.
 @fragment
 fn fs_ao_depth(v: VFull) -> @location(0) vec4<f32> {
-    let d = textureLoad(z_depth, vec2<i32>(v.pos.xy) * i32(g.params2.w), 0);
+    let d = textureLoad(z_depth, vec2<i32>(v.pos.xy) * AO_STRIDE, 0);
     return vec4<f32>(select(view_distance(d), -1.0, d >= 1.0), 0.0, 0.0, 1.0);
+}
+
+// The view-distance pyramid (round r4): each level keeps one of every 2 x 2 texels of the level
+// above it, on a rotated grid (McGuire's SAO), so a far occlusion tap reads a coarse level and
+// the cost of the occlusion pass no longer grows as the camera comes close.
+@group(1) @binding(0) var d_src: texture_2d<f32>;
+
+@fragment
+fn fs_aod_down(v: VFull) -> @location(0) vec4<f32> {
+    let p = vec2<i32>(v.pos.xy);
+    let size = vec2<i32>(textureDimensions(d_src));
+    let src = min(p * 2 + vec2<i32>(p.y & 1, p.x & 1), size - 1);
+    return vec4<f32>(textureLoad(d_src, src, 0).r, 0.0, 0.0, 1.0);
 }
 
 @group(1) @binding(0) var s_depth: texture_depth_2d;
@@ -441,7 +511,7 @@ fn fs_ao_depth(v: VFull) -> @location(0) vec4<f32> {
 
 @fragment
 fn fs_ssao(v: VFull) -> @location(0) vec4<f32> {
-    let px = vec2<i32>(v.pos.xy) * i32(g.params2.w);
+    let px = vec2<i32>(v.pos.xy) * AO_STRIDE;
     let depth = textureLoad(s_depth, px, 0);
     if (depth >= 1.0) {
         return vec4<f32>(1.0);
@@ -466,6 +536,10 @@ fn fs_ssao(v: VFull) -> @location(0) vec4<f32> {
     let tangent = t0 * cos(spin) + b0 * sin(spin);
     let bitangent = cross(n, tangent);
     let bias = 0.015 + dist * 0.0004;
+    // Taps more than 8 output pixels away read the pyramid level whose texels are about that far
+    // apart. Resting camera (internal scale above 1): every tap reads the full level, as before.
+    let lod_q = select(3.0, 99.0, g.params2.w > 1.5);
+    let here = v.pos.xy;
     // Twelve taps: nine within 0.65 m (feet of steps, joins, the lawn lip) and three reaching
     // 2.4 m at lower weight (the ground under a tree crown).
     var occluded = 0.0;
@@ -495,7 +569,9 @@ fn fs_ssao(v: VFull) -> @location(0) vec4<f32> {
         if (uv.x < 0.0 || uv.x >= 1.0 || uv.y < 0.0 || uv.y >= 1.0) {
             continue;
         }
-        let found = textureLoad(s_aod, vec2<i32>(uv * size), 0).r;
+        let tap = uv * size;
+        let mip = i32(clamp(floor(log2(max(length(tap - here), 1.0))) - lod_q, 0.0, 4.0));
+        let found = textureLoad(s_aod, vec2<i32>(tap) >> vec2<u32>(u32(mip)), mip).r;
         let scene = select(found, far, found < 0.0);
         // Range check: an occluder more than one reach in front of this point does not darken it,
         // so nothing near draws a halo on what lies behind it.
@@ -517,7 +593,7 @@ fn blur(px: vec2<i32>, step_dir: vec2<i32>) -> f32 {
     let size = vec2<i32>(textureDimensions(b_ao));
     // Seven taps two internal pixels apart (the footprint the blur had at the internal
     // resolution), at least one output pixel apart; depth decides what belongs together.
-    let spacing = max(2 / i32(g.params2.w), 1);
+    let spacing = 1;
     var sum = 0.0;
     var weights = 0.0;
     for (var i = -3; i <= 3; i++) {
@@ -556,7 +632,7 @@ fn fs_blur_v(v: VFull) -> @location(0) vec4<f32> {
 // Occlusion (output resolution) at an internal pixel: bilinear between the four nearest
 // output texels, each weighted by how close its representative's depth is to this pixel's.
 fn ao_at(px: vec2<i32>, own: f32) -> f32 {
-    let scale = i32(g.params2.w);
+    let scale = AO_STRIDE;
     if (scale == 1) {
         return textureLoad(t_ao, px, 0).r;
     }
@@ -675,11 +751,11 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
 struct VWater {
     @builtin(position) clip: vec4<f32>,
     @location(0) world: vec3<f32>,
-    @location(1) data: vec3<f32>,
+    @location(1) data: vec4<f32>,
 };
 
 @vertex
-fn vs_water(@location(0) pos: vec3<f32>, @location(1) data: vec3<f32>) -> VWater {
+fn vs_water(@location(0) pos: vec3<f32>, @location(1) data: vec4<f32>) -> VWater {
     var out: VWater;
     out.clip = g.view_proj * vec4<f32>(pos, 1.0);
     out.world = pos;
@@ -690,89 +766,165 @@ fn vs_water(@location(0) pos: vec3<f32>, @location(1) data: vec3<f32>) -> VWater
 @group(1) @binding(0) var w_depth: texture_depth_2d;
 @group(1) @binding(1) var w_scene: texture_2d<f32>;
 
-fn ripple(p: vec2<f32>, t: f32) -> f32 {
-    return vnoise(p * 1.3 + vec2<f32>(t * 0.11, t * 0.05)) * 0.6 + vnoise(p * 3.1 - vec2<f32>(t * 0.07, t * 0.13)) * 0.4;
+// Pond look constants (round r4).
+const SHALLOW_LIFT: f32 = 1.12;
+const CAUSTIC_K: f32 = 0.08;
+const LINE_K: f32 = 0.12;
+const MIRROR_K: f32 = 0.47;
+const MIRROR_JADE: f32 = 0.26;
+// Fall look constants (round r4): flow intensity (Godot UV.x), white-water gain, body gain.
+const FALL_INTENSITY: f32 = 0.7;
+const FALL_WHITE: f32 = 3.2;
+const FALL_BODY: vec3<f32> = vec3<f32>(2.3, 1.55, 1.55);
+
+// Value noise on the water hash (waterfall.gdshader flow_noise).
+fn vnoise_w(p: vec2<f32>) -> f32 {
+    return height_gradient(p).x;
+}
+
+fn hash_water(p: vec2<f32>) -> f32 {
+    var q = fract(vec3<f32>(p.x, p.y, p.x) * 0.1031);
+    q += dot(q, q.yzx + 33.33);
+    return fract((q.x + q.y) * q.z);
+}
+
+// Value noise and its exact xz derivatives (water.gdshader's height_gradient).
+fn height_gradient(p: vec2<f32>) -> vec3<f32> {
+    let cell = floor(p);
+    let f = fract(p);
+    let blend = f * f * (3.0 - 2.0 * f);
+    let derivative = 6.0 * f * (1.0 - f);
+    let a = hash_water(cell);
+    let b = hash_water(cell + vec2<f32>(1.0, 0.0));
+    let c = hash_water(cell + vec2<f32>(0.0, 1.0));
+    let d = hash_water(cell + vec2<f32>(1.0, 1.0));
+    let k = a - b - c + d;
+    let height = a + (b - a) * blend.x + (c - a) * blend.y + k * blend.x * blend.y;
+    return vec3<f32>(height, derivative * vec2<f32>(b - a + k * blend.y, c - a + k * blend.x));
 }
 
 // Output is premultiplied: rgb is what the water adds, a how much of the picture behind it hides.
 @fragment
 fn fs_water(v: VWater) -> @location(0) vec4<f32> {
-    // How much the ripple-arc coordinate changes per pixel (taken before any discard).
-    let ring_fw = fwidth(v.world.x * 1.5) + fwidth(v.world.z * 1.5);
+    // Godot's ripple fields (water.gdshader), taken before any discard for the line width.
+    let t = g.params.x;
+    let wp = v.world.xz;
+    let turn = mat2x2<f32>(vec2<f32>(0.8, 0.6), vec2<f32>(-0.6, 0.8));
+    let broad = height_gradient(wp * 0.95 + vec2<f32>(t * 0.055, -t * 0.043));
+    let small = height_gradient(turn * wp * 2.8 + vec2<f32>(-t * 0.08, t * 0.061) + vec2<f32>(17.3, 5.8));
+    let fine = height_gradient(wp * 6.4 + vec2<f32>(t * 0.03, -t * 0.07) + vec2<f32>(2.1, 31.7));
+    let line_field = abs(broad.x * 0.58 + small.x * 0.42 - 0.5);
+    let line_fw = fwidth(line_field);
+    let across_fw = fwidth(v.data.y);
     let px = vec2<i32>(v.clip.xy);
     let scene = textureLoad(w_depth, px, 0);
     if (v.clip.z > scene) {
         discard;
     }
-    let t = g.params.x;
     let distance = view_distance(v.clip.z);
     let behind = view_distance(scene) - distance;
     let to_eye = normalize(g.camera_pos.xyz - v.world);
     var rgb: vec3<f32>;
     var alpha: f32;
     if (v.data.x < 0.5) {
-        // Pond. Depth of the water column under this point, from the scene behind it.
+        // Pond (round r4, after water.gdshader). Depth of the water column under this point, from
+        // the scene behind it; `basin` stands in for Godot's shore field (0 at the bank, 1 open).
         let depth = behind * max(to_eye.y, 0.05);
-        let e = 0.15;
-        let h0 = ripple(v.world.xz, t);
-        let nrm = normalize(vec3<f32>(-(ripple(v.world.xz + vec2<f32>(e, 0.0), t) - h0) / e * 0.035, 1.0, -(ripple(v.world.xz + vec2<f32>(0.0, e), t) - h0) / e * 0.035));
+        let basin = smoothstep(0.0, 0.30, depth);
+        var slope = broad.yz * 0.026 + transpose(turn) * small.yz * 0.018 + fine.yz * 0.006;
+        slope *= mix(0.42, 1.0, smoothstep(0.015, 0.35, basin));
+        let nrm = normalize(vec3<f32>(-slope.x, 1.0, -slope.y));
         // The sky reflection kept weak at these pitches: the pond reads by its own jade body.
         let fresnel = (0.02 + 0.98 * pow(1.0 - clamp(dot(nrm, to_eye), 0.0, 1.0), 5.0)) * 0.5;
         let reflected = reflect(-to_eye, nrm);
         let sky = sky_colour(vec3<f32>(reflected.x, abs(reflected.y), reflected.z));
-        // Darker toward the centre as the water deepens.
+        // Darker toward the centre as the water deepens; a paler, clearer shallow band at the shore.
         let deep = smoothstep(0.0, 0.55, depth);
-        let tint = mix(g.pal[L_WATER_SHALLOW].rgb, g.pal[L_WATER_DEEP].rgb, deep) * mix(1.0, 0.86, smoothstep(0.15, 0.80, depth));
+        var tint = mix(g.pal[L_WATER_SHALLOW].rgb, g.pal[L_WATER_DEEP].rgb, deep) * mix(1.0, 0.86, smoothstep(0.15, 0.80, depth));
+        tint = mix(g.pal[L_WATER_SHALLOW].rgb * SHALLOW_LIFT, tint, smoothstep(0.03, 0.22, depth));
         let body = tint * open_light(vec3<f32>(0.0, 1.0, 0.0));
         let absorb = mix(0.40, 0.95, smoothstep(0.0, 0.5, depth));
         let glint = g.pal[L_SUN].rgb * pow(max(dot(reflected, g.sun_dir.xyz), 0.0), 180.0) * 1.6;
         rgb = (1.0 - fresnel) * absorb * body + fresnel * sky + glint;
         alpha = 1.0 - (1.0 - fresnel) * (1.0 - absorb);
-        // A few faint thin pale ripple arcs: rings round scattered centres, broken by noise.
-        let cell = v.world.xz / 2.6;
-        let ci = floor(cell);
-        let centre = ci + vec2<f32>(hash21(ci), hash21(ci + vec2<f32>(7.1, 3.7)));
-        let r = length(cell - centre) * 2.6;
-        let ring = abs(fract(r * 1.5 - t * 0.12 - hash21(ci + vec2<f32>(3.3, 9.1))) - 0.5);
-        let width = max(0.035, ring_fw);
-        let arcs = (1.0 - smoothstep(width * 0.5, width, ring)) * (0.035 / width)
-            * smoothstep(0.58, 0.82, vnoise(v.world.xz * 0.9 + vec2<f32>(11.0, 4.0)))
-            * (1.0 - smoothstep(0.4, 1.25, r)) * smoothstep(0.08, 0.25, depth);
         let pale = g.pal[L_MIST].rgb * open_light(vec3<f32>(0.0, 1.0, 0.0));
-        rgb = mix(rgb, pale * alpha, arcs * 0.16);
-        // Screen-space reflection: march the mirrored view ray through the depth buffer (16
-        // steps at most), so walls, stones and the statue are softly mirrored. Only water pays.
+        // Shore light lines in the shallow band (Godot's shore_caustic).
+        let caustic = smoothstep(0.62, 0.88, sin(basin * 42.0 - t * 1.35 + small.x * 3.2)) * (1.0 - smoothstep(0.02, 0.18, basin));
+        rgb = mix(rgb, pale * 0.62 * alpha, caustic * CAUSTIC_K);
+        // Drifting light lines: the level line of two ripple fields moving different ways, broken
+        // into dashes by a finer field, gathered where the broad swell is high (Godot's water_line).
+        let lw = max(0.040, line_fw * 1.4);
+        let water_line = (1.0 - smoothstep(0.0, lw, line_field)) * min(1.0, 0.085 / lw)
+            * smoothstep(0.50, 0.72, fine.x) * smoothstep(0.60, 0.76, broad.x) * smoothstep(0.05, 0.30, basin);
+        rgb = mix(rgb, pale * alpha, water_line * LINE_K);
+        // Screen-space reflection (Godot's water_reflection): a calm, almost flat mirror normal; a
+        // geometric march of 24 steps, a 6-step binary search on the first crossing, hits behind
+        // thick gaps or near the water line rejected, faded with distance and at the screen edges.
+        // A miss leaves the sky term above.
         if (g.pal[L_SSR].x > 0.5) {
             let size = vec2<f32>(textureDimensions(w_depth));
-            let dir = normalize(reflect(-to_eye, normalize(vec3<f32>(nrm.x * 0.5, 1.0, nrm.z * 0.5))));
-            var q = v.world;
-            var stride = 0.22;
-            var hit = 0.0;
+            let rn = normalize(vec3<f32>(-broad.y * 0.008, 1.0, -broad.z * 0.008));
+            let dir = reflect(-to_eye, rn);
+            var conf = 0.0;
             var mirror = vec3<f32>(0.0);
-            for (var i = 0; i < 16; i++) {
-                q += dir * stride;
-                let c = g.view_proj * vec4<f32>(q, 1.0);
-                if (c.w <= 0.0) {
-                    break;
-                }
-                let uv = vec2<f32>(c.x / c.w * 0.5 + 0.5, 0.5 - c.y / c.w * 0.5);
-                if (uv.x <= 0.0 || uv.x >= 1.0 || uv.y <= 0.0 || uv.y >= 1.0) {
-                    break;
-                }
-                let tap = vec2<i32>(uv * size);
-                let d = textureLoad(w_depth, tap, 0);
-                if (d < 1.0) {
-                    let gap = c.w - view_distance(d);
-                    if (gap > 0.0 && gap < stride * 1.6 + 0.25) {
-                        let edge = min(min(uv.x, 1.0 - uv.x), min(uv.y, 1.0 - uv.y));
-                        hit = smoothstep(0.0, 0.08, edge) * (1.0 - smoothstep(8.0, 24.0, length(q - v.world)));
-                        mirror = textureLoad(w_scene, tap, 0).rgb;
+            if (dir.y > 0.01) {
+                let start = v.world + vec3<f32>(0.0, 0.035, 0.0);
+                var prev = 0.05;
+                for (var i = 0; i < 24; i++) {
+                    let travel = 0.10 * pow(1.26, f32(i));
+                    let c = g.view_proj * vec4<f32>(start + dir * travel, 1.0);
+                    if (c.w <= 0.0) {
                         break;
                     }
+                    let uv = vec2<f32>(c.x / c.w * 0.5 + 0.5, 0.5 - c.y / c.w * 0.5);
+                    if (uv.x < 0.004 || uv.x > 0.996 || uv.y < 0.004 || uv.y > 0.996) {
+                        break;
+                    }
+                    let d = textureLoad(w_depth, vec2<i32>(uv * size), 0);
+                    let gap = c.w - select(view_distance(d), 1e9, d >= 1.0);
+                    if (gap > 0.0 && gap < 2.2) {
+                        var lo = prev;
+                        var hi = travel;
+                        for (var j = 0; j < 6; j++) {
+                            let mid = (lo + hi) * 0.5;
+                            let cm = g.view_proj * vec4<f32>(start + dir * mid, 1.0);
+                            let um = vec2<f32>(cm.x / cm.w * 0.5 + 0.5, 0.5 - cm.y / cm.w * 0.5);
+                            let dm = textureLoad(w_depth, vec2<i32>(clamp(um, vec2<f32>(0.0), vec2<f32>(0.999)) * size), 0);
+                            if (cm.w - select(view_distance(dm), 1e9, dm >= 1.0) > 0.0) {
+                                hi = mid;
+                            } else {
+                                lo = mid;
+                            }
+                        }
+                        let ch = g.view_proj * vec4<f32>(start + dir * hi, 1.0);
+                        let uh = clamp(vec2<f32>(ch.x / ch.w * 0.5 + 0.5, 0.5 - ch.y / ch.w * 0.5), vec2<f32>(0.0), vec2<f32>(0.999));
+                        let dh = textureLoad(w_depth, vec2<i32>(uh * size), 0);
+                        if (dh < 1.0) {
+                            let error = abs(ch.w - view_distance(dh));
+                            let hit = world_at(uh, dh);
+                            if (hit.y > start.y + 0.52 && error < 0.36 + hi * 0.038) {
+                                let margin = min(min(uh.x, 1.0 - uh.x), min(uh.y, 1.0 - uh.y));
+                                conf = smoothstep(0.010, 0.08, margin) * (1.0 - smoothstep(8.0, 26.0, hi));
+                                conf *= 1.0 - smoothstep(0.08, 0.36 + hi * 0.038, error);
+                                conf *= smoothstep(0.56, 1.38, hit.y - start.y);
+                                // Crisp near the water line; a light filter growing with distance.
+                                let r = min(1.0 + hi * 0.25, 4.0) * g.params2.w;
+                                let tap = uh * size;
+                                let lim = vec2<f32>(size - 1.0);
+                                mirror = textureLoad(w_scene, vec2<i32>(tap), 0).rgb * 0.5
+                                    + (textureLoad(w_scene, vec2<i32>(clamp(tap + vec2<f32>(r, 0.0), vec2<f32>(0.0), lim)), 0).rgb
+                                    + textureLoad(w_scene, vec2<i32>(clamp(tap - vec2<f32>(r, 0.0), vec2<f32>(0.0), lim)), 0).rgb
+                                    + textureLoad(w_scene, vec2<i32>(clamp(tap + vec2<f32>(0.0, r), vec2<f32>(0.0), lim)), 0).rgb
+                                    + textureLoad(w_scene, vec2<i32>(clamp(tap - vec2<f32>(0.0, r), vec2<f32>(0.0), lim)), 0).rgb) * 0.125;
+                                mirror = mix(mirror * vec3<f32>(0.82, 0.94, 0.92), vec3<f32>(0.045, 0.135, 0.128), MIRROR_JADE);
+                            }
+                        }
+                        break;
+                    }
+                    prev = travel;
                 }
-                stride *= 1.32;
             }
-            let k = 0.35 * hit * smoothstep(0.03, 0.12, depth);
+            let k = MIRROR_K * conf * (0.56 + 0.44 * pow(1.0 - max(dot(to_eye, rn), 0.0), 2.1)) * smoothstep(0.03, 0.12, depth);
             rgb = rgb * (1.0 - k) + mirror * k;
             alpha = alpha * (1.0 - k) + k;
         }
@@ -784,17 +936,42 @@ fn fs_water(v: VWater) -> @location(0) vec4<f32> {
         rgb *= fade;
         alpha *= fade;
     } else if (v.data.x < 1.5) {
-        // Fall: a teal-tinted body of water with white vertical streaks and a bright lip.
-        let drop = v.data.z;
-        let flow = sqrt(drop + 0.05);
-        let streak = vnoise(vec2<f32>(v.data.y * 6.0, flow * 2.4 - t * 1.4)) * 0.6 + vnoise(vec2<f32>(v.data.y * 13.0, flow * 4.5 - t * 2.2)) * 0.4;
-        let white = clamp(smoothstep(0.52, 0.90, streak) * 0.85 + (1.0 - smoothstep(0.0, 0.12, drop)) * 0.35, 0.0, 1.0);
+        // Fall (round r4, after waterfall.gdshader): one sheet the width of its junction. Water
+        // leaves the lip as a glassy jade sheet; fine white threads gather into ropes as it falls
+        // and loosens. The pattern is laid along sqrt(drop) and runs with the time uniform
+        // (fixed for stills). Crisp top edge at the lip; the sides fray as the sheet loosens.
+        let intensity = FALL_INTENSITY;
+        let drop = max(v.data.z, 0.0);
+        let across = v.data.y;
+        let width = max(v.data.w, 0.01);
+        let loosen = smoothstep(0.10, mix(1.1, 2.3, intensity), drop);
+        let run = sqrt(drop + 0.05) * 3.1 - t * mix(0.95, 2.4, intensity) * 0.75;
+        let lane = across + (sin(run * 0.9 + across * 2.1) * 0.040 + sin(run * 2.3 - across * 5.7) * 0.014) * loosen;
+        let group_uv = vec2<f32>(lane * 5.3, run * 0.42);
+        let groups = vnoise_w(group_uv) * 0.62 + vnoise_w(group_uv * vec2<f32>(2.03, 1.31) + vec2<f32>(7.1, 3.3)) * 0.38;
+        let fine_uv = vec2<f32>(lane * 15.0, run * 1.4) + vec2<f32>(8.1, 3.7);
+        let fine_f = vnoise_w(fine_uv) * 0.60 + vnoise_w(fine_uv * vec2<f32>(2.1, 1.6) + vec2<f32>(1.7, 9.2)) * 0.40;
+        let packets = vnoise_w(vec2<f32>(across * 7.0, run * 2.0 + 11.0));
+        let thread = smoothstep(0.50, 0.72, fine_f) * (0.30 + 0.70 * smoothstep(0.30, 0.62, groups));
+        let rope = smoothstep(mix(0.64, 0.42, loosen), mix(0.82, 0.66, loosen), groups * 0.62 + fine_f * 0.38) * smoothstep(0.30, 0.62, packets);
+        let white = clamp(thread * mix(0.28, 0.50, loosen) * FALL_WHITE + rope * mix(0.20, 0.78, loosen) * FALL_WHITE, 0.0, 1.0);
+        let lip = (1.0 - smoothstep(0.02, 0.16, drop)) * 0.16;
+        let foam = clamp(white + lip, 0.0, 0.92);
         let face = normalize(vec3<f32>(to_eye.x, 0.25, to_eye.z));
+        let bevel = clamp(dot(face, g.sun_dir.xyz) * 0.5 + 0.5, 0.0, 1.0);
+        var jade = mix(vec3<f32>(0.045, 0.175, 0.164), vec3<f32>(0.14, 0.32, 0.285), groups * 0.42 + bevel * 0.08);
+        jade = mix(jade, vec3<f32>(0.27, 0.47, 0.43), loosen * 0.50);
+        let water_colour = mix(jade * FALL_BODY, vec3<f32>(0.92, 0.91, 0.84), foam);
         let light = open_light(face) * 0.85 + open_light(vec3<f32>(0.0, 1.0, 0.0)) * 0.15;
-        let water_body = g.pal[L_FALL].rgb * light;
-        let foam = g.pal[L_MIST].rgb * light;
-        alpha = mix(0.84, 0.96, white);
-        rgb = mix(water_body, foam, white) * alpha;
+        let transmission = mix(mix(0.24, 0.12, intensity), mix(0.12, 0.065, intensity), loosen) * (1.0 - foam);
+        // Metres from the nearer side; ropes peel away from the outline as the sheet loosens.
+        let edge = min(across, width - across);
+        let fray = ((groups - 0.5) * mix(0.03, 0.36, loosen) + (fine_f - 0.5) * 0.06 * loosen) * clamp(width * 0.6, 0.3, 1.0);
+        let softness = max(across_fw * 1.25, mix(0.022, 0.085, loosen));
+        let side = smoothstep(0.0, softness, edge + min(fray, 0.0) - 0.012 * loosen);
+        let body_a = mix(1.0, mix(0.34, 1.0, smoothstep(0.26, 0.60, groups * 0.50 + fine_f * 0.30 + white * 0.55)), loosen * 0.85);
+        alpha = mix(0.82, 0.95, sqrt(intensity)) * side * body_a * (1.0 - transmission);
+        rgb = water_colour * light * alpha;
     } else {
         // Spray: a small soft foam at the foot of a fall.
         var shape: f32;

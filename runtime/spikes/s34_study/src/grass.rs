@@ -1,79 +1,108 @@
-//! The grass field: clumps of tapered blades over the whole lawn, baked into static world-space
-//! geometry per 8 m chunk at three densities. The renderer picks one density per chunk each
-//! frame from its distance to the camera. Shape, density and colour follow the frozen project's
-//! `grass_field.gd` and `grass_blades.gdshader` (28 clumps a square metre, seven blades a clump:
-//! three long arching plumes and four short leaves around a buried root).
+//! The grass field (round r4): the frozen project's meadow rosettes, drawn instanced. One clump
+//! mesh per detail level (seven leaves on a buried root, `grass_field.gd` `clump_mesh()`) and one
+//! record per root (place, turn, size, the ground colour under it), grouped in 8 m chunks. The
+//! renderer picks one level per chunk each frame from how wide a leaf is on screen.
 //!
-//! Where: inside the outline, not on water or the pale bank, not on cut-rock steps, thinner near
-//! ponds, cleared around props (per-kind radii scaled by instance size). Near the outline and at
-//! the top of a terrace step the clumps tip outward and stand taller, and a fringe row rooted on
-//! the lawn lip leans out over it, so the island's edge is a soft grass fringe.
+//! Placement follows `grass_field.gd` `build()`: 28 roots a square metre, random yaw, sizes from
+//! the world `tuft_patch` drift field (fuller tufts gather in drifts between low calm lawn), lip
+//! plants aligned to the lip and raised so fans hang over the edge. Colour follows the vertex
+//! function of `grass_blades.gdshader`: relative to the ground colour under the root, darker heart
+//! and lighter tips only on the tall tufts. Kept from earlier rounds: clearings round props, no
+//! roots on water, the pale bank or cut-rock steps, thinner near ponds.
 use std::collections::BTreeMap;
-use std::ops::Range;
+use std::sync::OnceLock;
 
 use glam::{Quat, Vec2, Vec3};
 
 use crate::field::{Field, STEP};
-use crate::mesh::{hash2, smoothstep, vnoise};
+use crate::mesh::{hash2, smoothstep};
 
+/// One vertex of a clump mesh, in the clump's own frame (root at the origin, unscaled).
 #[repr(C)]
 #[derive(Clone, Copy, bytemuck::Pod, bytemuck::Zeroable)]
-pub struct GrassVertex {
+pub struct LeafVertex {
     pub pos: [f32; 3],
-    /// xyz shading normal (snorm), w position across the blade (-127 one edge, 127 the other, 0 the tip).
+    /// xyz the leaf's curl normal (snorm), w position across the leaf (-127 one edge, 127 the other, 0 the tip).
     pub normal: [i8; 4],
-    /// rgb tint around 128 (the shader doubles it), a position along the blade (0 root, 1 tip).
-    pub colour: [u8; 4],
+    /// x position along the leaf (0 root, 255 tip), y the leaf's tone, z, w spare.
+    pub data: [u8; 4],
 }
 
-pub const LEVELS: usize = 3;
-/// Clumps per square metre at each level.
-pub const DENSITY: [f32; LEVELS] = [28.0, 14.0, 7.0];
-/// Blade width at each level against Godot's blade: thin tapered blades near, a little wider at
-/// the coarser levels so the coverage holds as the density drops (director, 2026-11-23: the
-/// blades read several centimetres wide at Godot's width).
-const WIDEN: [f32; LEVELS] = [0.55, 0.80, 1.10];
-/// Segments of a long and of a short blade at each level.
-const SEGMENTS: [(usize, usize); LEVELS] = [(3, 1), (2, 1), (1, 1)];
+/// One root.
+#[repr(C)]
+#[derive(Clone, Copy, bytemuck::Pod, bytemuck::Zeroable)]
+pub struct Clump {
+    pub root: [f32; 3],
+    /// Rotation from the clump frame to the world (yaw, and the lip tilt), snorm16 quaternion.
+    pub turn: [i16; 4],
+    /// Horizontal and vertical scale, unorm16 over 0..4.
+    pub size: [u16; 2],
+    /// Ground display colour under the root (rgb), a the tuft volume.
+    pub ground: [u8; 4],
+    /// x the ground's tone patch (gc_noise), y and z the pillow gradient (128 = 0, 1/64 per unit), w spare.
+    pub misc: [u8; 4],
+}
+
+/// Detail levels: two bends a leaf, one bend, one bend at half the roots with wider leaves, and a
+/// flat leaf at a quarter of the roots with wider leaves still.
+pub const LEVELS: usize = 4;
+const SEGMENTS: [usize; LEVELS] = [3, 2, 2, 1];
+const WIDEN: [f32; LEVELS] = [1.0, 1.0, 1.6, 2.3];
+/// Projected width of a leaf (output pixels) below which each coarser level is used.
+pub const LEVEL_PX: [f32; LEVELS - 1] = [5.0, 1.5, 0.75];
+/// A representative leaf's full width in metres (Godot's half-widths 0.028 to 0.046).
+pub const LEAF_WIDTH: f32 = 0.075;
 pub const CHUNK: f32 = 8.0;
+const DENSITY: f32 = 28.0;
+/// Lip plants a metre of outline.
+const LIP_DENSITY: f32 = 6.0;
 
 pub struct Chunk {
     pub lo: Vec3,
     pub hi: Vec3,
-    /// Index ranges of the three levels.
-    pub ranges: [Range<u32>; LEVELS],
+    /// First clump and the counts at full, half and quarter density (the clumps of a chunk are
+    /// ordered quarter members first, then half members).
+    pub first: u32,
+    pub counts: [u32; 3],
 }
 
 #[derive(Default)]
 pub struct Grass {
-    pub vertices: Vec<GrassVertex>,
-    pub indices: Vec<u32>,
+    pub clumps: Vec<Clump>,
     pub chunks: Vec<Chunk>,
-    /// Clumps at full density, and the triangles if every chunk were drawn at full density.
-    pub clumps: usize,
-    pub full_triangles: usize,
 }
 
 impl Grass {
     pub fn append(&mut self, other: Grass) {
-        let (v0, i0) = (self.vertices.len() as u32, self.indices.len() as u32);
-        self.vertices.extend_from_slice(&other.vertices);
-        self.indices.extend(other.indices.iter().map(|i| i + v0));
+        let base = self.clumps.len() as u32;
+        self.clumps.extend_from_slice(&other.clumps);
         for chunk in other.chunks {
-            self.chunks.push(Chunk { lo: chunk.lo, hi: chunk.hi, ranges: chunk.ranges.map(|r| r.start + i0..r.end + i0) });
+            self.chunks.push(Chunk { first: chunk.first + base, ..chunk });
         }
-        self.clumps += other.clumps;
-        self.full_triangles += other.full_triangles;
+    }
+}
+
+/// The clump meshes of all levels, one after another: vertices, indices, and per level its
+/// vertex offset and index range.
+pub struct Meshes {
+    pub vertices: Vec<LeafVertex>,
+    pub indices: Vec<u32>,
+    pub levels: [(u32, std::ops::Range<u32>); LEVELS],
+}
+
+impl Meshes {
+    pub fn triangles(&self, level: usize) -> u64 {
+        ((self.levels[level].1.end - self.levels[level].1.start) / 3) as u64
     }
 }
 
 /// Godot's world hash (grass_field.gd `_hash`).
 fn ghash(x: f32, y: f32, salt: f32) -> f32 {
-    let v = (x * 127.1 + y * 311.7 + salt * 74.7).sin() * 43758.5453;
-    v - v.floor()
+    let v = ((x as f64) * 127.1 + (y as f64) * 311.7 + (salt as f64) * 74.7).sin() * 43758.5453;
+    (v - v.floor()) as f32
 }
 
-/// Godot's `_organic_drift`: a soft world field that gives neighbouring roots a shared stature.
+/// Godot's `_organic_drift`.
 fn organic_drift(x: f32, z: f32) -> f32 {
     let wx = x + (z * 0.52).sin() * 0.48;
     let wz = z + (x * 0.46).cos() * 0.48;
@@ -82,8 +111,114 @@ fn organic_drift(x: f32, z: f32) -> f32 {
     (0.5 + 0.34 * d1 + 0.18 * d2).clamp(0.0, 1.0)
 }
 
-/// One of the seven blades of the clump (the same seven for every clump, as in Godot).
-struct Blade {
+/// The fuller-tuft field (grass_field.gd): 0 in the calm lawn, rising to 1 in the drifts.
+pub fn tuft_patch(p: Vec2) -> f32 {
+    smoothstep(0.46, 0.80, organic_drift(p.x * 2.1 + 1.3, p.y * 2.1 - 2.7)).powf(1.8)
+}
+
+// ---- ground_cover.gdshaderinc, ported for the colour of the ground under the lawn and the roots
+
+fn gc_hash(p: Vec2) -> f32 {
+    let v = ((p.x as f64) * 127.1 + (p.y as f64) * 311.7).sin() * 43758.5453;
+    (v - v.floor()) as f32
+}
+
+pub fn gc_noise(p: Vec2) -> f32 {
+    let i = p.floor();
+    let f = p - i;
+    let u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
+    let a = gc_hash(i);
+    let b = gc_hash(i + Vec2::X);
+    let c = gc_hash(i + Vec2::Y);
+    let d = gc_hash(i + Vec2::ONE);
+    let ab = a + (b - a) * u.x;
+    let cd = c + (d - c) * u.x;
+    ab + (cd - ab) * u.y
+}
+
+fn rot_a(p: Vec2) -> Vec2 {
+    Vec2::new(0.8 * p.x - 0.6 * p.y, 0.6 * p.x + 0.8 * p.y)
+}
+
+fn rot_b(p: Vec2) -> Vec2 {
+    Vec2::new(-0.44 * p.x - 0.90 * p.y, 0.90 * p.x - 0.44 * p.y)
+}
+
+fn pillow_core(p: Vec2) -> f32 {
+    gc_noise(rot_a(p) * 0.34 + Vec2::new(3.7, 8.2)) * 0.62 + gc_noise(rot_b(p) * 0.68 + Vec2::new(14.3, 5.9)) * 0.38
+}
+
+/// Godot's `gc_pillow_grad`: the slope of the broad moss cushions (per metre).
+pub fn pillow_grad(p: Vec2) -> Vec2 {
+    let e = 0.22;
+    let h0 = pillow_core(p);
+    Vec2::new(pillow_core(p + Vec2::new(e, 0.0)) - h0, pillow_core(p + Vec2::new(0.0, e)) - h0) / e
+}
+
+fn lin(c: f32) -> f32 {
+    if c <= 0.04045 {
+        c / 12.92
+    } else {
+        ((c + 0.055) / 1.055).powf(2.4)
+    }
+}
+
+fn unlin(c: f32) -> f32 {
+    if c <= 0.0031308 {
+        c * 12.92
+    } else {
+        1.055 * c.max(0.0).powf(1.0 / 2.4) - 0.055
+    }
+}
+
+pub fn to_linear(c: Vec3) -> Vec3 {
+    Vec3::new(lin(c.x), lin(c.y), lin(c.z))
+}
+
+pub fn to_display(c: Vec3) -> Vec3 {
+    Vec3::new(unlin(c.x), unlin(c.y), unlin(c.z))
+}
+
+/// `ground_cover()` without its constant factors and the paths: linear albedo of the meadow.
+fn cover(p: Vec2) -> Vec3 {
+    let base = to_linear(Vec3::new(0.45, 0.52, 0.35));
+    let high = to_linear(Vec3::new(0.68, 0.69, 0.47));
+    let broad = gc_noise(rot_a(p) * 0.32 + Vec2::new(4.3, 9.1));
+    let wash = gc_noise(rot_b(p) * 0.72 + Vec2::new(13.7, 2.4));
+    let pillow = pillow_core(p);
+    let pigment = smoothstep(0.14, 0.88, broad * 0.64 + wash * 0.36);
+    let moss = base.lerp(high, 0.38 + pigment * 0.52);
+    let cool = moss * Vec3::new(0.96, 1.04, 0.95);
+    let warm = moss * Vec3::new(1.28, 1.20, 1.02);
+    let colour = cool.lerp(warm, smoothstep(0.12, 0.88, pillow * 0.58 + wash * 0.42));
+    let paper = gc_noise(rot_b(p) * 2.1 + Vec2::new(6.1, 11.4));
+    colour * (1.015 + 0.030 * paper)
+}
+
+/// The mean of `cover` over a large area, so the soft patches vary round the authored colour.
+fn cover_mean() -> Vec3 {
+    static MEAN: OnceLock<Vec3> = OnceLock::new();
+    *MEAN.get_or_init(|| {
+        let mut sum = Vec3::ZERO;
+        let n = 160;
+        for j in 0..n {
+            for i in 0..n {
+                sum += cover(Vec2::new(i as f32 * 0.613 - 49.0, j as f32 * 0.587 - 47.0));
+            }
+        }
+        sum / (n * n) as f32
+    })
+}
+
+/// The lawn's ground colour at `p` (display values): `base` carrying ground_cover's soft patches.
+pub fn lawn_ground(base: Vec3, p: Vec2) -> Vec3 {
+    to_display(to_linear(base) * cover(p) / cover_mean())
+}
+
+// ---- the clump
+
+/// One of the seven leaves of the clump (the same seven for every clump, as in Godot).
+struct Leaf {
     angle: f32,
     plume: bool,
     height: f32,
@@ -93,13 +228,13 @@ struct Blade {
     tone: f32,
 }
 
-fn blades() -> Vec<Blade> {
+fn leaves() -> Vec<Leaf> {
+    let lerp = |a: f32, c: f32, t: f32| a + (c - a) * t;
     (0..7)
         .map(|b| {
             let bf = b as f32;
             let plume = b < 3;
-            let lerp = |a: f32, c: f32, t: f32| a + (c - a) * t;
-            Blade {
+            Leaf {
                 angle: std::f32::consts::TAU * bf / 7.0 + (ghash(bf, 1.0, 3.0) - 0.5) * 0.42,
                 plume,
                 height: if plume { lerp(0.16, 0.26, ghash(bf, 2.0, 5.0)) } else { lerp(0.07, 0.12, ghash(bf, 2.0, 5.0)) },
@@ -112,88 +247,80 @@ fn blades() -> Vec<Blade> {
         .collect()
 }
 
-/// Where one clump stands and how.
-#[derive(Clone, Copy)]
-struct Site {
-    root: Vec3,
-    /// Rotation from the clump's own frame (yaw included) to the world.
-    turn: Quat,
-    /// The same for the shading normal, which follows only part of an outward tilt so the
-    /// fringe does not go dark against the sky.
-    shade: Quat,
-    scale: f32,
-    h_scale: f32,
-    tint: Vec3,
-    /// Bit 0: in level 1, bit 1: in level 2.
-    levels: u8,
-}
-
 fn snorm(v: f32) -> i8 {
     (v.clamp(-1.0, 1.0) * 127.0).round() as i8
 }
 
-fn emit_clump(out_v: &mut Vec<GrassVertex>, out_i: &mut Vec<u32>, site: &Site, level: usize, shapes: &[Blade], origin: Vec3) -> usize {
-    let mut triangles = 0;
-    for blade in shapes {
-        let segments = if blade.plume { SEGMENTS[level].0 } else { SEGMENTS[level].1 };
-        let width = blade.width * WIDEN[level];
-        let dir = Vec3::new(blade.angle.cos(), 0.0, blade.angle.sin());
-        let side = Vec3::new(-dir.z, 0.0, dir.x);
-        let root = dir * blade.radius;
-        let tone = 0.94 + 0.12 * blade.tone;
-        let tint = (site.tint * tone * 0.5 * 255.0).clamp(Vec3::ZERO, Vec3::splat(255.0));
-        let first = out_v.len() as u32;
-        for i in 0..=segments {
-            let t = i as f32 / segments as f32;
-            let centre = root + dir * blade.lean * t.powf(1.35) + Vec3::Y * blade.height * (t * std::f32::consts::PI * 0.68).sin();
-            let w = width * (1.0 - t * 0.985).powf(0.72);
-            let sides: &[f32] = if i < segments { &[-1.0, 1.0] } else { &[0.0] };
-            for &across in sides {
-                let local = centre + side * (w * across);
-                let local = Vec3::new(local.x * site.scale, local.y * site.h_scale, local.z * site.scale);
-                let pos = site.root + site.turn * local + origin;
-                // Mostly up, so the field shades as one soft surface; a little of the blade's curl.
-                let curl = (Vec3::Y + dir * (0.10 + t * 0.70) + side * (across * 0.42)).normalize();
-                let n = site.shade * Vec3::new(curl.x * 0.15, curl.y.max(0.95), curl.z * 0.15).normalize();
-                out_v.push(GrassVertex {
-                    pos: pos.to_array(),
-                    normal: [snorm(n.x), snorm(n.y), snorm(n.z), snorm(across)],
-                    colour: [tint.x as u8, tint.y as u8, tint.z as u8, (t * 255.0).round() as u8],
-                });
+/// The clump meshes of every level: each leaf a ribbon of `SEGMENTS` quads ending in a point,
+/// centre line `root + dir*lean*t^1.35 + up*height*sin(t*pi*0.68)`, half-width
+/// `w*(1 - 0.985 t)^0.72` (the centre ridge of Godot's near mesh is left out).
+pub fn meshes() -> Meshes {
+    let shapes = leaves();
+    let mut vertices = Vec::new();
+    let mut indices = Vec::new();
+    let mut levels: [(u32, std::ops::Range<u32>); LEVELS] = std::array::from_fn(|_| (0, 0..0));
+    for level in 0..LEVELS {
+        let v0 = vertices.len() as u32;
+        let i0 = indices.len() as u32;
+        let segments = SEGMENTS[level];
+        for leaf in &shapes {
+            let width = leaf.width * WIDEN[level];
+            let dir = Vec3::new(leaf.angle.cos(), 0.0, leaf.angle.sin());
+            let side = Vec3::new(-dir.z, 0.0, dir.x);
+            let root = dir * leaf.radius;
+            let first = vertices.len() as u32 - v0;
+            for i in 0..=segments {
+                let t = i as f32 / segments as f32;
+                let centre = root + dir * leaf.lean * t.powf(1.35) + Vec3::Y * leaf.height * (t * std::f32::consts::PI * 0.68).sin();
+                let w = width * (1.0 - t * 0.985).powf(0.72);
+                let sides: &[f32] = if i < segments { &[-1.0, 1.0] } else { &[0.0] };
+                for &across in sides {
+                    let pos = centre + side * (w * across);
+                    let n = (Vec3::Y + dir * (0.10 + t * 0.70) + side * (across * 0.42)).normalize();
+                    vertices.push(LeafVertex {
+                        pos: pos.to_array(),
+                        normal: [snorm(n.x), snorm(n.y), snorm(n.z), snorm(across)],
+                        data: [(t * 255.0).round() as u8, (leaf.tone * 255.0).round() as u8, leaf.plume as u8, 0],
+                    });
+                }
+            }
+            for i in 0..segments as u32 {
+                let (l0, r0) = (first + 2 * i, first + 2 * i + 1);
+                if (i as usize) + 1 < segments {
+                    indices.extend_from_slice(&[l0, r0, r0 + 2, l0, r0 + 2, l0 + 2]);
+                } else {
+                    indices.extend_from_slice(&[l0, r0, l0 + 2]);
+                }
             }
         }
-        for i in 0..segments {
-            let (l0, r0) = (first + 2 * i as u32, first + 2 * i as u32 + 1);
-            if i + 1 < segments {
-                let (l1, r1) = (l0 + 2, r0 + 2);
-                out_i.extend_from_slice(&[l0, r0, r1, l0, r1, l1]);
-                triangles += 2;
-            } else {
-                out_i.extend_from_slice(&[l0, r0, l0 + 2]);
-                triangles += 1;
-            }
-        }
+        levels[level] = (v0, i0..indices.len() as u32);
     }
-    triangles
+    Meshes { vertices, indices, levels }
 }
 
-/// The lawn's soft large-scale tone: patches 3 to 6 m across, about plus or minus 4% in value,
-/// shifting a little from yellow-green to green. A multiplier on the display colour, shared by
-/// the blades and the ground under them.
-pub fn lawn_tone(p: Vec2, seed: u32) -> Vec3 {
-    let v = (vnoise(p.x * 0.21, p.y * 0.21, seed ^ 31) * 0.65 + vnoise(p.x * 0.37 + 5.1, p.y * 0.37 - 2.3, seed ^ 37) * 0.35 - 0.5) * 2.0;
-    let v = v.clamp(-1.0, 1.0);
-    Vec3::new(1.0 + 0.060 * v, 1.0 + 0.035 * v, 1.0 - 0.005 * v)
-}
+// ---- placement
 
 /// The rim of the top surface (segments on the outline), as `field::build_top` returns it.
 pub type Rim = [(Vec3, Vec3)];
 
+/// One placed root before packing, with its level membership (1 half, 2 quarter).
+struct Site {
+    clump: Clump,
+    member: u8,
+}
+
+fn unorm16(v: f32, range: f32) -> u16 {
+    ((v / range).clamp(0.0, 1.0) * 65535.0).round() as u16
+}
+
+fn snorm16(v: f32) -> i16 {
+    (v.clamp(-1.0, 1.0) * 32767.0).round() as i16
+}
+
 /// Builds the field for one island in its own coordinates, moved by `origin`.
-/// `clear` holds circles (centre, radius) the blades keep out of.
-pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin: Vec3) -> Grass {
-    let shapes = blades();
-    let spacing = 1.0 / DENSITY[0].sqrt();
+/// `clear` holds circles (centre, radius) the roots keep out of; `lawn` is the base ground colour.
+pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin: Vec3, lawn: Vec3) -> Grass {
+    let spacing = 1.0 / DENSITY.sqrt();
     let lo = field.origin;
     let hi = field.origin + Vec2::new(field.nx as f32, field.nz as f32) * STEP;
     // Clearings bucketed by chunk (with their reach) so each root tests only a few.
@@ -221,21 +348,35 @@ pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin:
         let toward = field.gradient(&field.wet, p, STEP).normalize_or_zero();
         field.water_at(p).or_else(|| field.water_at(p + toward * 0.6)).or_else(|| field.water_at(p + toward * 1.2)).map(|level| level - crate::water::SINK)
     };
+    let lerp = |a: f32, b: f32, t: f32| a + (b - a) * t;
     let mut sites: BTreeMap<(i32, i32), Vec<Site>> = BTreeMap::new();
-    let place = |root: Vec3, up: Vec3, scale: f32, h_scale: f32, levels: u8, salt: f32, accent: Vec3, sites: &mut BTreeMap<(i32, i32), Vec<Site>>| {
+    let place = |root: Vec3, up: Vec3, scale: f32, h_scale: f32, member: u8, sites: &mut BTreeMap<(i32, i32), Vec<Site>>| {
         let p = Vec2::new(root.x, root.z);
-        let yaw = ghash(p.x * 2.13 + p.y * 0.71 + salt, p.y * 1.93 - p.x * 0.83, 4.0) * std::f32::consts::TAU;
+        let yaw = ghash(p.x * 2.13 + p.y * 0.71, p.y * 1.93 - p.x * 0.83, 4.0) * std::f32::consts::TAU;
         let turn = Quat::from_rotation_arc(Vec3::Y, up) * Quat::from_rotation_y(yaw);
-        let shade = Quat::from_rotation_arc(Vec3::Y, Vec3::Y.lerp(up, 0.35).normalize()) * Quat::from_rotation_y(yaw);
-        // The lawn's large soft tone patches (shared with the ground under the blades) and a very
-        // small per-clump value, so the field reads calm.
-        let fine = ghash(p.x * 1.7 + p.y * 0.5, p.x * 2.3, 5.0) - 0.5;
-        let tint = lawn_tone(p, seed) * (1.0 + 0.025 * fine) * accent;
+        let ground = lawn_ground(lawn, p);
+        // grass_blades.gdshader: the root's height scale is the tuft's pigment weight.
+        let tuft_volume = smoothstep(0.82, 1.28, h_scale);
+        let patch = gc_noise(p * 0.55 + Vec2::new(4.1, 2.7));
+        let pg = pillow_grad(p) * 0.14;
+        let q = turn.to_array();
+        let clump = Clump {
+            root: (root + origin).to_array(),
+            turn: [snorm16(q[0]), snorm16(q[1]), snorm16(q[2]), snorm16(q[3])],
+            size: [unorm16(scale, 4.0), unorm16(h_scale, 4.0)],
+            ground: [
+                (ground.x.clamp(0.0, 1.0) * 255.0).round() as u8,
+                (ground.y.clamp(0.0, 1.0) * 255.0).round() as u8,
+                (ground.z.clamp(0.0, 1.0) * 255.0).round() as u8,
+                (tuft_volume * 255.0).round() as u8,
+            ],
+            misc: [(patch * 255.0).round() as u8, (128.0 + pg.x * 64.0).round().clamp(0.0, 255.0) as u8, (128.0 + pg.y * 64.0).round().clamp(0.0, 255.0) as u8, 0],
+        };
         let key = ((p.x / CHUNK).floor() as i32, (p.y / CHUNK).floor() as i32);
-        sites.entry(key).or_default().push(Site { root, turn, shade, scale, h_scale, tint, levels });
+        sites.entry(key).or_default().push(Site { clump, member });
     };
 
-    // The field: a jittered lattice at the full density, world anchored.
+    // The field: a jittered lattice at 28 roots a square metre, world anchored.
     let (i0, i1) = ((lo.x / spacing).floor() as i32, (hi.x / spacing).ceil() as i32);
     let (j0, j1) = ((lo.y / spacing).floor() as i32, (hi.y / spacing).ceil() as i32);
     for j in j0..j1 {
@@ -249,7 +390,8 @@ pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin:
             let h = field.height_at(p);
             let g = field.gradient(&field.height, p, STEP);
             let ground_n = Vec3::new(-g.x, 1.0, -g.y).normalize();
-            if ground_n.y < 0.62 {
+            let ny = ground_n.y;
+            if ny < 0.62 {
                 continue; // cut rock of a terrace step
             }
             let mut keep = 1.0;
@@ -266,64 +408,39 @@ pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin:
             if clear_k <= 0.0 {
                 continue;
             }
-            if hash2(i, j, seed ^ 203) > keep {
+            // Godot: steeper lawn carries fewer, smaller plants; the brow of a terrace step is a lip.
+            let lip_factor = smoothstep(0.78, 0.97, ny).clamp(0.42, 1.0);
+            if hash2(i, j, seed ^ 203) > keep * lerp(0.62, 1.0, lip_factor) {
                 continue;
             }
-            // Tip outward near the outline and at the top of a terrace step.
-            let mut up = Vec3::Y.lerp(ground_n, 0.5).normalize();
-            let mut lift: f32 = 1.0;
-            let gl = field.gradient(&field.land1, p, STEP);
-            let edge = if gl.length() > 1e-3 { (land - 0.5) / gl.length() } else { 9.0 };
-            let mut tilt = 0.0;
-            let mut toward = Vec2::ZERO;
-            if edge < 0.5 {
-                let k = 1.0 - edge / 0.5;
-                tilt = 0.60 * k.powf(1.2);
-                toward = -gl.normalize();
-                lift = 1.0 + 0.15 * k;
-            }
-            let gh = field.gradient(&field.height, p, 0.35);
-            if gh.length() > 0.4 {
-                let down = -gh.normalize();
-                let drop = h - field.height_at(p + down * 0.45);
-                if drop > 0.22 {
-                    let k = smoothstep(0.22, 0.7, drop);
-                    if 0.6 * k > tilt {
-                        tilt = 0.6 * k;
-                        toward = down;
-                    }
-                    lift = lift.max(1.0 + 0.15 * k);
-                }
-            }
-            if tilt > 0.0 {
-                up = (up * tilt.cos() + Vec3::new(toward.x, 0.0, toward.y) * tilt.sin()).normalize();
-            }
-            let drift = organic_drift(p.x * 2.1 + 1.3, p.y * 2.1 - 2.7);
-            let tuft = smoothstep(0.46, 0.80, drift).powf(1.8);
-            let lerp = |a: f32, b: f32, t: f32| a + (b - a) * t;
+            let soft_lip = ny < 0.88;
+            let tuft = tuft_patch(p);
+            // Our clearings stand in for Godot's path taper (0.55 at the edge of a clearing).
             let thin = lerp(0.55, 1.0, clear_k) * lerp(0.75, 1.0, keep);
-            let mut scale = lerp(0.92, 1.08, ghash(p.y * 1.7 + p.x * 0.5, p.x * 2.3, 5.0)) * lerp(0.96, 1.08, tuft) * thin;
-            let mut h_scale = lerp(0.86, 1.06, tuft) * lerp(0.94, 1.06, ghash(p.x * 1.9, p.y * 2.1 + p.x * 0.3, 6.0)) * thin * lift;
-            // Levels 1 and 2 keep an even half and quarter of the lattice.
-            let mut levels = (((i + j) & 1 == 0) as u8) | ((((i & 1) == 0 && (j & 1) == 0) as u8) << 1);
-            // A sparse layer of distinct taller tufts, about one per 1.5 square metres: half as tall
-            // again to twice, a little lighter and yellower, kept at every density level.
-            let mut accent = Vec3::ONE;
-            if hash2(i, j, seed ^ 209) < 1.0 / (DENSITY[0] * 1.5) && clear_k > 0.9 && tilt == 0.0 {
-                h_scale *= 1.5 + 0.5 * hash2(i, j, seed ^ 210);
-                scale *= 1.15;
-                accent = Vec3::new(1.07, 1.06, 0.93);
-                levels = 3;
+            let mut scale = lerp(0.88, 1.18, ghash(p.y * 1.7 + p.x * 0.5, p.x * 2.3, 5.0)) * lerp(0.90, 1.35, tuft) * lerp(0.72, 1.0, lip_factor) * thin;
+            let slope_height = if soft_lip { 1.0 } else { lerp(0.46, 1.0, lip_factor) };
+            let mut h_scale = lerp(0.68, 1.35, tuft) * lerp(0.88, 1.14, ghash(p.x * 1.9, p.y * 2.1 + p.x * 0.3, 6.0)) * slope_height * thin;
+            let mut up = Vec3::Y;
+            let mut root = Vec3::new(p.x, h - 0.01, p.y);
+            if soft_lip {
+                // The edge keeps a planted fringe with taller fans where the tuft field is high,
+                // aligned to the lip surface.
+                scale = scale.max(lerp(0.98, 1.75, tuft) * thin);
+                h_scale = h_scale.max(lerp(0.80, 1.70, tuft) * thin);
+                up = ground_n;
+                root = Vec3::new(p.x, h, p.y) - up * 0.008;
             }
-            place(Vec3::new(p.x, h - 0.015, p.y), up, scale, h_scale, levels, 0.0, accent, &mut sites);
+            let member = (((i + j) & 1 == 0) as u8) | ((((i & 1) == 0 && (j & 1) == 0) as u8) << 1);
+            place(root, up, scale, h_scale, member, &mut sites);
         }
     }
 
-    // The fringe: a short, soft row rooted on the lip itself, overhanging it by about 0.15 m at most.
+    // Lip plants on the outline's roll, aligned to it, raised as Godot's lip samples are, so leaf
+    // fans hang over the edge at irregular intervals (wherever the tuft field is high).
     let mut counter = 0i32;
     for &(a, b) in rim {
         let length = (b - a).length();
-        let want = length * 9.0;
+        let want = length * LIP_DENSITY;
         let mut count = want.floor() as i32;
         let mid = Vec2::new((a.x + b.x) * 0.5, (a.z + b.z) * 0.5);
         if hash2((mid.x * 31.0) as i32, (mid.y * 31.0) as i32, seed ^ 204) < want - count as f32 {
@@ -334,45 +451,45 @@ pub fn build(field: &Field, rim: &Rim, clear: &[(Vec2, f32)], seed: u32, origin:
             let u = (k as f32 + hash2(counter, 7, seed ^ 205)) / count.max(1) as f32;
             let at = a.lerp(b, u.min(1.0));
             let p = Vec2::new(at.x, at.z);
-            if field.sample(&field.wet, p) > 0.10 || clearance(p) < 0.5 {
+            if field.sample(&field.wet, p) > 0.10 {
                 continue;
             }
-            let inward = field.gradient(&field.land1, p, STEP).normalize_or_zero();
+            let clear_k = clearance(p);
+            if clear_k < 0.5 {
+                continue;
+            }
+            let inward = field.gradient(&field.land1, p, STEP * 1.5).normalize_or_zero();
             let out = Vec3::new(-inward.x, 0.0, -inward.y);
-            let tilt: f32 = 0.62 + 0.16 * hash2(counter, 8, seed ^ 206);
+            // On the upper part of the roll, tipped 30 to 52 degrees out (Godot keeps lip
+            // triangles up to about 54 degrees).
+            let tilt: f32 = (30.0 + 22.0 * hash2(counter, 8, seed ^ 206)).to_radians();
             let up = (Vec3::Y * tilt.cos() + out * tilt.sin()).normalize();
-            let root = at + out * 0.02 - Vec3::Y * 0.05;
-            let scale = 0.62 + 0.10 * hash2(counter, 9, seed ^ 207);
-            let h_scale = 0.68 + 0.18 * hash2(counter, 10, seed ^ 208);
-            let levels = ((counter & 1 == 0) as u8) | (((counter & 3 == 0) as u8) << 1);
-            place(root, up, scale, h_scale, levels, 17.0, Vec3::ONE, &mut sites);
+            let root = at + out * (0.015 + 0.02 * hash2(counter, 11, seed ^ 209)) - Vec3::Y * 0.012 - up * 0.008;
+            let tuft = tuft_patch(p);
+            let thin = lerp(0.55, 1.0, clear_k);
+            let lip_factor = 0.42;
+            let scale = (lerp(0.88, 1.18, ghash(p.y * 1.7 + p.x * 0.5, p.x * 2.3, 5.0)) * lerp(0.90, 1.35, tuft) * lerp(0.72, 1.0, lip_factor) * thin).max(lerp(0.98, 1.75, tuft) * thin);
+            let h_scale = (lerp(0.68, 1.35, tuft) * lerp(0.88, 1.14, ghash(p.x * 1.9, p.y * 2.1 + p.x * 0.3, 6.0)) * thin).max(lerp(0.80, 1.70, tuft) * thin);
+            let member = ((counter & 1 == 0) as u8) | (((counter & 3 == 0) as u8) << 1);
+            place(root, up, scale, h_scale, member, &mut sites);
         }
     }
 
-    // Bake each chunk at the three levels.
+    // Pack: per chunk the quarter members first, then the half members, then the rest.
     let mut grass = Grass::default();
-    for (_, list) in sites {
+    for (_, mut list) in sites {
+        list.sort_by_key(|s| if s.member & 2 != 0 { 0 } else if s.member & 1 != 0 { 1 } else { 2 });
         let (mut lo3, mut hi3) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
         for site in &list {
-            lo3 = lo3.min(site.root + origin - Vec3::splat(0.6));
-            hi3 = hi3.max(site.root + origin + Vec3::splat(0.6));
+            let r = Vec3::from_array(site.clump.root);
+            lo3 = lo3.min(r - Vec3::new(0.5, 0.4, 0.5));
+            hi3 = hi3.max(r + Vec3::new(0.5, 0.5, 0.5));
         }
-        let mut ranges: [Range<u32>; LEVELS] = [0..0, 0..0, 0..0];
-        for (level, range) in ranges.iter_mut().enumerate() {
-            let start = grass.indices.len() as u32;
-            for site in &list {
-                let member = level == 0 || site.levels & (1 << (level - 1)) != 0;
-                if member {
-                    let tris = emit_clump(&mut grass.vertices, &mut grass.indices, site, level, &shapes, origin);
-                    if level == 0 {
-                        grass.clumps += 1;
-                        grass.full_triangles += tris;
-                    }
-                }
-            }
-            *range = start..grass.indices.len() as u32;
-        }
-        grass.chunks.push(Chunk { lo: lo3, hi: hi3, ranges });
+        let quarter = list.iter().filter(|s| s.member & 2 != 0).count() as u32;
+        let half = list.iter().filter(|s| s.member != 0).count() as u32;
+        let first = grass.clumps.len() as u32;
+        grass.clumps.extend(list.iter().map(|s| s.clump));
+        grass.chunks.push(Chunk { lo: lo3, hi: hi3, first, counts: [list.len() as u32, half, quarter] });
     }
     grass
 }

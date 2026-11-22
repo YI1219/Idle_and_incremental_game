@@ -7,7 +7,7 @@ use std::time::Instant;
 use glam::{Mat4, Vec3};
 use wgpu::util::DeviceExt;
 
-use crate::grass::{self, Grass, GrassVertex};
+use crate::grass::{self, Clump, Grass, LeafVertex};
 use crate::mesh::Vertex;
 use crate::props::{self, PropVertex};
 use crate::water::WaterVertex;
@@ -19,6 +19,7 @@ const WORK_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba16Float;
 const FINAL_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 const AO_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R8Unorm;
 const AOD_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R32Float;
+const AOD_MIPS: u32 = 5;
 pub const LIGHT_SLOTS: usize = 20;
 const GLOBAL_FLOATS: usize = 68 + LIGHT_SLOTS * 4;
 const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
@@ -71,6 +72,10 @@ pub struct Renderer {
     aod_pipeline: wgpu::RenderPipeline,
     aod_group: wgpu::BindGroup,
     aod_view: wgpu::TextureView,
+    /// One view per pyramid level (render targets), and the downsample's bind groups (level k reads k - 1).
+    aod_levels: Vec<wgpu::TextureView>,
+    aod_down_groups: Vec<wgpu::BindGroup>,
+    aod_down_pipeline: wgpu::RenderPipeline,
     ssao_pipeline: wgpu::RenderPipeline,
     ssao_group: wgpu::BindGroup,
     blur_h_pipeline: wgpu::RenderPipeline,
@@ -108,16 +113,25 @@ pub struct Renderer {
     props: Option<(wgpu::Buffer, wgpu::BindGroup, [std::ops::Range<u32>; 3])>,
     grass_pipeline: wgpu::RenderPipeline,
     /// Vertices, indices, and per chunk its bounds and the index ranges of its three levels.
-    grass: Option<(wgpu::Buffer, wgpu::Buffer, Vec<GrassChunk>)>,
+    grass: Option<GrassGpu>,
 }
 
-type GrassChunk = (Vec3, Vec3, [std::ops::Range<u32>; grass::LEVELS]);
+/// The grass on the GPU: the clump meshes of all levels, the roots (instances), and per chunk
+/// its bounds, first root and root counts at full, half and quarter density.
+struct GrassGpu {
+    mesh: wgpu::Buffer,
+    index: wgpu::Buffer,
+    levels: [(u32, std::ops::Range<u32>); grass::LEVELS],
+    clumps: wgpu::Buffer,
+    chunks: Vec<(Vec3, Vec3, u32, [u32; 3])>,
+}
 
-/// Camera distances (to the nearest point of a chunk) at which the grass drops to half and to a
-/// quarter of its density. Level 0 holds through every single-island review camera on the
-/// reference layouts (the lawn of `whole` lies 45 to 85 m away); the coarser levels serve the
-/// far islands of the trio and large synthetic islands seen whole.
-pub const GRASS_SWITCH: [f32; 2] = [80.0, 160.0];
+/// What one frame drew of the grass: triangles, and chunks at each level.
+#[derive(Clone, Copy, Default)]
+pub struct GrassDrawn {
+    pub triangles: u64,
+    pub chunks: [u32; grass::LEVELS],
+}
 
 /// Where the island's stone pigment is read from (relative to the repository root).
 const STONE_WASH: &str = "assets/terrain_editor/gouache_stone_sol61.png";
@@ -238,8 +252,10 @@ impl Renderer {
         // the resolved picture for its reflections; the down pass composites it over the picture.
         let water_view = target(&device, "water", iw, ih, WORK_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
         // Occlusion and its blur run at the output resolution whatever the internal scale is.
-        let ao_a_view = target(&device, "ao a", width, height, AO_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
-        let ao_b_view = target(&device, "ao b", width, height, AO_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
+        // Occlusion targets: half the internal resolution (shader.wgsl AO_STRIDE).
+        let (aw, ah) = ((iw / 2).max(1), (ih / 2).max(1));
+        let ao_a_view = target(&device, "ao a", aw, ah, AO_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
+        let ao_b_view = target(&device, "ao b", aw, ah, AO_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
         let final_texture = target(&device, "final", width, height, FINAL_FORMAT, wgpu::TextureUsages::COPY_SRC);
         let final_view = final_texture.create_view(&Default::default());
 
@@ -328,22 +344,36 @@ impl Renderer {
             cache: None,
         });
 
-        // The grass field: two-sided blades, drawn into the terms after the island.
+        // The grass field: two-sided rosettes, instanced (clump mesh per level, one record per root),
+        // drawn into the terms after the island and the props.
         let grass_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
             label: Some("grass"),
             layout: Some(&layout_of(&[Some(&globals_layout), Some(&terms_bind)])),
             vertex: wgpu::VertexState {
                 module: &shader,
                 entry_point: Some("vs_grass"),
-                buffers: &[Some(wgpu::VertexBufferLayout {
-                    array_stride: std::mem::size_of::<GrassVertex>() as u64,
-                    step_mode: wgpu::VertexStepMode::Vertex,
-                    attributes: &[
-                        wgpu::VertexAttribute { format: wgpu::VertexFormat::Float32x3, offset: 0, shader_location: 0 },
-                        wgpu::VertexAttribute { format: wgpu::VertexFormat::Snorm8x4, offset: 12, shader_location: 1 },
-                        wgpu::VertexAttribute { format: wgpu::VertexFormat::Unorm8x4, offset: 16, shader_location: 2 },
-                    ],
-                })],
+                buffers: &[
+                    Some(wgpu::VertexBufferLayout {
+                        array_stride: std::mem::size_of::<LeafVertex>() as u64,
+                        step_mode: wgpu::VertexStepMode::Vertex,
+                        attributes: &[
+                            wgpu::VertexAttribute { format: wgpu::VertexFormat::Float32x3, offset: 0, shader_location: 0 },
+                            wgpu::VertexAttribute { format: wgpu::VertexFormat::Snorm8x4, offset: 12, shader_location: 1 },
+                            wgpu::VertexAttribute { format: wgpu::VertexFormat::Unorm8x4, offset: 16, shader_location: 2 },
+                        ],
+                    }),
+                    Some(wgpu::VertexBufferLayout {
+                        array_stride: std::mem::size_of::<Clump>() as u64,
+                        step_mode: wgpu::VertexStepMode::Instance,
+                        attributes: &[
+                            wgpu::VertexAttribute { format: wgpu::VertexFormat::Float32x3, offset: 0, shader_location: 3 },
+                            wgpu::VertexAttribute { format: wgpu::VertexFormat::Snorm16x4, offset: 12, shader_location: 4 },
+                            wgpu::VertexAttribute { format: wgpu::VertexFormat::Unorm16x2, offset: 20, shader_location: 5 },
+                            wgpu::VertexAttribute { format: wgpu::VertexFormat::Unorm8x4, offset: 24, shader_location: 6 },
+                            wgpu::VertexAttribute { format: wgpu::VertexFormat::Unorm8x4, offset: 28, shader_location: 7 },
+                        ],
+                    }),
+                ],
                 compilation_options: Default::default(),
             },
             fragment: Some(wgpu::FragmentState { module: &shader, entry_point: Some("fs_grass"), targets: &[Some(TERM_FORMAT.into()), Some(TERM_FORMAT.into()), Some(TERM_FORMAT.into())], compilation_options: Default::default() }),
@@ -357,7 +387,23 @@ impl Renderer {
         // View distance of each output pixel's internal representative (-1 for sky): what the
         // occlusion taps, the blur and the upsample read, so none of them strides through the
         // internal depth buffer.
-        let aod_view = target(&device, "ao depth", width, height, AOD_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
+        // With a pyramid of AOD_MIPS levels (one of every 2 x 2 texels each) for far occlusion taps.
+        let aod_texture = device.create_texture(&wgpu::TextureDescriptor {
+            label: Some("ao depth"),
+            size: wgpu::Extent3d { width: aw, height: ah, depth_or_array_layers: 1 },
+            mip_level_count: AOD_MIPS,
+            sample_count: 1,
+            dimension: wgpu::TextureDimension::D2,
+            format: AOD_FORMAT,
+            usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING,
+            view_formats: &[],
+        });
+        let aod_view = aod_texture.create_view(&Default::default());
+        let aod_level = |level: u32| aod_texture.create_view(&wgpu::TextureViewDescriptor { base_mip_level: level, mip_level_count: Some(1), ..Default::default() });
+        let aod_levels: Vec<wgpu::TextureView> = (0..AOD_MIPS).map(aod_level).collect();
+        let aod_down_bind = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor { label: Some("ao depth down"), entries: &[texture_entry(0, false)] });
+        let aod_down_groups: Vec<wgpu::BindGroup> = (1..AOD_MIPS as usize).map(|k| device.create_bind_group(&wgpu::BindGroupDescriptor { label: None, layout: &aod_down_bind, entries: &[view_entry(0, &aod_levels[k - 1])] })).collect();
+        let aod_down_pipeline = full_screen("ao depth down", &layout_of(&[Some(&globals_layout), Some(&aod_down_bind)]), "fs_aod_down", AOD_FORMAT);
         let aod_bind = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor { label: Some("ao depth"), entries: &[texture_entry(0, true)] });
         let aod_group = device.create_bind_group(&wgpu::BindGroupDescriptor { label: None, layout: &aod_bind, entries: &[view_entry(0, &depth_view)] });
         let aod_pipeline = full_screen("ao depth", &layout_of(&[Some(&globals_layout), Some(&aod_bind)]), "fs_ao_depth", AOD_FORMAT);
@@ -391,11 +437,11 @@ impl Renderer {
                 module: &shader,
                 entry_point: Some("vs_water"),
                 buffers: &[Some(wgpu::VertexBufferLayout {
-                    array_stride: 24,
+                    array_stride: 28,
                     step_mode: wgpu::VertexStepMode::Vertex,
                     attributes: &[
                         wgpu::VertexAttribute { format: wgpu::VertexFormat::Float32x3, offset: 0, shader_location: 0 },
-                        wgpu::VertexAttribute { format: wgpu::VertexFormat::Float32x3, offset: 12, shader_location: 1 },
+                        wgpu::VertexAttribute { format: wgpu::VertexFormat::Float32x4, offset: 12, shader_location: 1 },
                     ],
                 })],
                 compilation_options: Default::default(),
@@ -531,6 +577,9 @@ impl Renderer {
             aod_pipeline,
             aod_group,
             aod_view,
+            aod_levels,
+            aod_down_groups,
+            aod_down_pipeline,
             ssao_pipeline,
             ssao_group,
             blur_h_pipeline,
@@ -569,16 +618,18 @@ impl Renderer {
         }
     }
 
-    /// Uploads the grass field: one vertex and one index buffer, and the chunks' level ranges.
+    /// Uploads the grass field: the clump meshes of all levels and the roots.
     pub fn set_grass(&mut self, grass: &Grass) {
-        if grass.indices.is_empty() {
+        if grass.clumps.is_empty() {
             self.grass = None;
             return;
         }
-        let vertices = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("grass"), contents: bytemuck::cast_slice(&grass.vertices), usage: wgpu::BufferUsages::VERTEX });
-        let indices = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("grass index"), contents: bytemuck::cast_slice(&grass.indices), usage: wgpu::BufferUsages::INDEX });
-        let chunks = grass.chunks.iter().map(|c| (c.lo, c.hi, c.ranges.clone())).collect();
-        self.grass = Some((vertices, indices, chunks));
+        let meshes = grass::meshes();
+        let mesh = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clump mesh"), contents: bytemuck::cast_slice(&meshes.vertices), usage: wgpu::BufferUsages::VERTEX });
+        let index = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clump index"), contents: bytemuck::cast_slice(&meshes.indices), usage: wgpu::BufferUsages::INDEX });
+        let clumps = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clumps"), contents: bytemuck::cast_slice(&grass.clumps), usage: wgpu::BufferUsages::VERTEX });
+        let chunks = grass.chunks.iter().map(|c| (c.lo, c.hi, c.first, c.counts)).collect();
+        self.grass = Some(GrassGpu { mesh, index, levels: meshes.levels.clone(), clumps, chunks });
     }
 
     /// Uploads the props of all islands (one contiguous range per class), their material
@@ -701,11 +752,11 @@ impl Renderer {
 
     /// Records one frame; returns the grass triangles drawn (each chunk at the level its
     /// distance from `camera` picks, chunks outside the view skipped).
-    fn encode(&self, encoder: &mut wgpu::CommandEncoder, shadow: bool, ssao: bool, blur: bool, camera: &Camera) -> u64 {
+    fn encode(&self, encoder: &mut wgpu::CommandEncoder, shadow: bool, ssao: bool, blur: bool, camera: &Camera) -> GrassDrawn {
         let clear = |view| Some(wgpu::RenderPassColorAttachment { view, depth_slice: None, resolve_target: None, ops: wgpu::Operations { load: wgpu::LoadOp::Clear(wgpu::Color::BLACK), store: wgpu::StoreOp::Store } });
         let depth = |view| Some(wgpu::RenderPassDepthStencilAttachment { view, depth_ops: Some(wgpu::Operations { load: wgpu::LoadOp::Clear(1.0), store: wgpu::StoreOp::Store }), stencil_ops: None });
-        let Some((solid, count)) = &self.solid else { return 0 };
-        let mut drawn = 0u64;
+        let Some((solid, count)) = &self.solid else { return GrassDrawn::default() };
+        let mut drawn = GrassDrawn::default();
         if shadow {
             let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("shadow"), color_attachments: &[], depth_stencil_attachment: depth(&self.shadow_view), timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
             pass.set_pipeline(&self.shadow_pipeline);
@@ -735,24 +786,7 @@ impl Renderer {
             pass.set_bind_group(1, &self.terms_group, &[]);
             pass.set_vertex_buffer(0, solid.slice(..));
             pass.draw(0..*count, 0..1);
-            if let Some((vertices, indices, chunks)) = &self.grass {
-                let view_proj = self.view_proj(camera);
-                pass.set_pipeline(&self.grass_pipeline);
-                pass.set_vertex_buffer(0, vertices.slice(..));
-                pass.set_index_buffer(indices.slice(..), wgpu::IndexFormat::Uint32);
-                for (lo, hi, ranges) in chunks {
-                    if outside(&view_proj, *lo, *hi) {
-                        continue;
-                    }
-                    let distance = (camera.eye.clamp(*lo, *hi) - camera.eye).length();
-                    let level = GRASS_SWITCH.iter().filter(|&&d| distance >= d).count();
-                    let range = ranges[level].clone();
-                    if !range.is_empty() {
-                        drawn += ((range.end - range.start) / 3) as u64;
-                        pass.draw_indexed(range, 0, 0..1);
-                    }
-                }
-            }
+            // Props before the grass, so the depth test rejects the leaves they hide.
             if let Some((buffer, group, ranges)) = &self.props {
                 pass.set_bind_group(2, group, &[]);
                 pass.set_vertex_buffer(0, buffer.slice(..));
@@ -763,17 +797,55 @@ impl Renderer {
                     }
                 }
             }
+            if let Some(gpu) = &self.grass {
+                let view_proj = self.view_proj(camera);
+                // Leaf detail per chunk from how wide a leaf is on screen at the chunk's nearest point.
+                let focal = self.height as f32 * 0.5 / (camera.fov_deg.to_radians() * 0.5).tan();
+                let mut visible: Vec<(f32, usize, u32, u32)> = Vec::new();
+                for (lo, hi, first, counts) in &gpu.chunks {
+                    if outside(&view_proj, *lo, *hi) {
+                        continue;
+                    }
+                    let distance = (camera.eye.clamp(*lo, *hi) - camera.eye).length().max(0.01);
+                    let px = grass::LEAF_WIDTH * focal / distance;
+                    let level = grass::LEVEL_PX.iter().filter(|&&t| px < t).count();
+                    let n = match level {
+                        0 | 1 => counts[0],
+                        2 => counts[1],
+                        _ => counts[2],
+                    };
+                    if n > 0 {
+                        visible.push((distance, level, *first, n));
+                    }
+                }
+                // Near chunks first, so nearer leaves hide farther ones before they are shaded.
+                visible.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+                pass.set_pipeline(&self.grass_pipeline);
+                pass.set_vertex_buffer(0, gpu.mesh.slice(..));
+                pass.set_vertex_buffer(1, gpu.clumps.slice(..));
+                pass.set_index_buffer(gpu.index.slice(..), wgpu::IndexFormat::Uint32);
+                for (_, level, first, n) in visible {
+                    let (base, range) = gpu.levels[level].clone();
+                    drawn.triangles += ((range.end - range.start) / 3) as u64 * n as u64;
+                    drawn.chunks[level] += 1;
+                    pass.draw_indexed(range, base as i32, first..first + n);
+                }
+            }
         }
         if ssao {
-            for (label, pipeline, group, view) in [
-                ("ao depth", &self.aod_pipeline, &self.aod_group, &self.aod_view),
-                ("ssao", &self.ssao_pipeline, &self.ssao_group, &self.ao_a_view),
-                ("blur h", &self.blur_h_pipeline, &self.blur_h_group, &self.ao_b_view),
-                ("blur v", &self.blur_v_pipeline, &self.blur_v_group, &self.ao_a_view),
-            ]
-            .into_iter()
-            .take(if blur { 4 } else { 2 })
-            {
+            let mut steps = vec![("ao depth", &self.aod_pipeline, &self.aod_group, &self.aod_levels[0])];
+            if self.scale == 1 {
+                // The pyramid is read only in the moving mode (see fs_ssao).
+                for k in 1..AOD_MIPS as usize {
+                    steps.push(("ao depth down", &self.aod_down_pipeline, &self.aod_down_groups[k - 1], &self.aod_levels[k]));
+                }
+            }
+            steps.push(("ssao", &self.ssao_pipeline, &self.ssao_group, &self.ao_a_view));
+            if blur {
+                steps.push(("blur h", &self.blur_h_pipeline, &self.blur_h_group, &self.ao_b_view));
+                steps.push(("blur v", &self.blur_v_pipeline, &self.blur_v_group, &self.ao_a_view));
+            }
+            for (label, pipeline, group, view) in steps {
                 let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some(label), color_attachments: &[clear(view)], depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
                 pass.set_pipeline(pipeline);
                 pass.set_bind_group(0, &self.globals_group, &[]);
@@ -826,7 +898,7 @@ impl Renderer {
     }
 
     /// Renders one frame, shadow map included; returns the grass triangles drawn.
-    pub fn render(&self, frame: &Frame) -> u64 {
+    pub fn render(&self, frame: &Frame) -> GrassDrawn {
         self.write_globals(frame);
         let mut encoder = self.device.create_command_encoder(&Default::default());
         let drawn = self.encode(&mut encoder, true, frame.ssao, frame.ssao_blur, &frame.camera);
