@@ -20,7 +20,7 @@ const FINAL_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 const AO_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R8Unorm;
 const AOD_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R32Float;
 const AOD_MIPS: u32 = 5;
-pub const LIGHT_SLOTS: usize = 20;
+pub const LIGHT_SLOTS: usize = 46;
 const GLOBAL_FLOATS: usize = 68 + LIGHT_SLOTS * 4;
 const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
 
@@ -135,6 +135,10 @@ pub struct GrassDrawn {
 
 /// Where the island's stone pigment is read from (relative to the repository root).
 const STONE_WASH: &str = "assets/terrain_editor/gouache_stone_sol61.png";
+/// distant_landscape.gd's cloud-deck billow image (256 x 256, made by Godot: data/godot_billow.gd).
+const BILLOW: &str = "runtime/spikes/s34_study/data/billow_4127.png";
+/// The sky's painted cloud band (sky_surface.gdshaderinc `cloud_backdrop`).
+const CLOUD_BACKDROP: &str = "assets/terrain_editor/cloud_backdrop_v01.png";
 
 /// True when the box lies wholly outside one plane of the view volume.
 fn outside(view_proj: &Mat4, lo: Vec3, hi: Vec3) -> bool {
@@ -417,14 +421,47 @@ impl Renderer {
         let blur_h_pipeline = full_screen("blur h", &blur_layout, "fs_blur_h", AO_FORMAT);
         let blur_v_pipeline = full_screen("blur v", &blur_layout, "fs_blur_v", AO_FORMAT);
 
+        // Far field: Godot's cloud-deck billow (distant_landscape.gd's FastNoiseLite image, written
+        // by Godot itself) and the sky's painted cloud backdrop (source_color, so sRGB).
+        let billow = mip_texture(&device, &queue, "billow", &props::load_png(std::path::Path::new(BILLOW)), wgpu::TextureFormat::Rgba8Unorm);
+        let backdrop = mip_texture(&device, &queue, "cloud backdrop", &props::load_png(std::path::Path::new(CLOUD_BACKDROP)), wgpu::TextureFormat::Rgba8UnormSrgb);
+        let far_sampler = device.create_sampler(&wgpu::SamplerDescriptor {
+            label: Some("far"),
+            address_mode_u: wgpu::AddressMode::Repeat,
+            address_mode_v: wgpu::AddressMode::Repeat,
+            mag_filter: wgpu::FilterMode::Linear,
+            min_filter: wgpu::FilterMode::Linear,
+            mipmap_filter: wgpu::MipmapFilterMode::Linear,
+            ..Default::default()
+        });
         let resolve_bind = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
             label: Some("resolve"),
-            entries: &[texture_entry(0, false), texture_entry(1, false), texture_entry(2, false), texture_entry(3, true), texture_entry(4, false), texture_entry(5, false)],
+            entries: &[
+                texture_entry(0, false),
+                texture_entry(1, false),
+                texture_entry(2, false),
+                texture_entry(3, true),
+                texture_entry(4, false),
+                texture_entry(5, false),
+                filtered_entry(6),
+                sampler_entry(7),
+                filtered_entry(8),
+            ],
         });
         let resolve_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
             label: None,
             layout: &resolve_bind,
-            entries: &[view_entry(0, &base_view), view_entry(1, &terms_view), view_entry(2, &normal_view), view_entry(3, &depth_view), view_entry(4, &ao_a_view), view_entry(5, &aod_view)],
+            entries: &[
+                view_entry(0, &base_view),
+                view_entry(1, &terms_view),
+                view_entry(2, &normal_view),
+                view_entry(3, &depth_view),
+                view_entry(4, &ao_a_view),
+                view_entry(5, &aod_view),
+                view_entry(6, &billow),
+                wgpu::BindGroupEntry { binding: 7, resource: wgpu::BindingResource::Sampler(&far_sampler) },
+                view_entry(8, &backdrop),
+            ],
         });
         let resolve_pipeline = full_screen("resolve", &layout_of(&[Some(&globals_layout), Some(&resolve_bind)]), "fs_resolve", WORK_FORMAT);
 

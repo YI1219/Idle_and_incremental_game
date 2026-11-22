@@ -447,7 +447,9 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
                 mesh.tri_full([quad[0], quad[2], quad[3]], [na, nb, na], [lawn_a, lawn_b, lawn_a], [paint; 3]);
             } else {
                 let lip = a.y.max(b.y);
-                let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(lip);
+                // grad 0 marks this band for the terms pass (full mossy brow); its baked occlusion
+                // reads it as the shaded top of the wall under the roll (round r5).
+                let paint = Paint::new(Family::Stone).sky(0.62).line(0.9).strokes(0.8).id(2).grad(0.0).lip(lip);
                 let tone = colours.riser;
                 let (na, nb) = (geometric(out_a), geometric(out_b));
                 mesh.tri_full([quad[0], quad[1], quad[2]], [na, nb, nb], [tone; 3], [paint; 3]);

@@ -1,0 +1,15 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2) from scene_7301_0
+island: 623 cells, 27 faces, 72 columns, 28299 triangles (top 25366, body 2933, decor 0, props 76710, grass full 380835), built in 61.8 ms (fields 25.3, top 24.5, body 0.3, decor 5.7, grass 5.6)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 10881 clumps, 380835 triangles full, 379813 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r5/n_night/n_night_game.png
+STATS game: p05 0.125 p50 0.302 p95 0.663 white 0.000 black 0.024 sat_mean 0.474 sat_p99 0.910 quiet 0.430
+GRASS whole: 10881 clumps, 380835 triangles full, 248003 drawn, chunks by level 4/16/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r5/n_night/n_night_whole.png
+STATS whole: p05 0.180 p50 0.537 p95 0.690 white 0.000 black 0.009 sat_mean 0.381 sat_p99 0.757 quiet 0.535
+GRASS foot_reverse: 10881 clumps, 380835 triangles full, 341859 drawn, chunks by level 11/9/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r5/n_night/n_night_foot_reverse.png
+STATS foot_reverse: p05 0.086 p50 0.369 p95 0.663 white 0.000 black 0.048 sat_mean 0.426 sat_p99 1.000 quiet 0.594
+GRASS terrace_close: 10881 clumps, 380835 triangles full, 368795 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r5/n_night/n_night_terrace_close.png
+STATS terrace_close: p05 0.149 p50 0.227 p95 0.561 white 0.000 black 0.013 sat_mean 0.569 sat_p99 0.804 quiet 0.395

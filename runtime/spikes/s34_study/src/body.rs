@@ -51,7 +51,9 @@ impl Default for StoneColours {
         // Pale rice-grey pigment with almost equal channels: the sun warms it, the sky cools it.
         // (The earlier face (0.72, 0.70, 0.63) and green-grey cool and under tones read khaki-olive
         // under the blue sky light: a yellowish pigment times a cyan light gives green.)
-        StoneColours { face: Vec3::new(0.745, 0.722, 0.675), warm: Vec3::new(0.775, 0.745, 0.68), cool: Vec3::new(0.69, 0.695, 0.70), under: Vec3::new(0.64, 0.65, 0.665) }
+        // Round r5: face and warm raised about 3% and cooled a little (x 1.025, 1.026, 1.036) to meet
+        // the reference's sunlit hanging-block face.
+        StoneColours { face: Vec3::new(0.764, 0.741, 0.699), warm: Vec3::new(0.794, 0.764, 0.704), cool: Vec3::new(0.69, 0.695, 0.70), under: Vec3::new(0.64, 0.65, 0.665) }
     }
 }
 

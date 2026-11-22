@@ -38,6 +38,8 @@ pub struct Library {
     pub materials: Vec<[[f32; 4]; MATERIAL_ROWS]>,
     /// The scene folder the textures are read from (the first one loaded).
     pub texture_dir: Option<PathBuf>,
+    /// Lamp centres of the stone lanterns (world), for their glow at dusk and night.
+    pub lanterns: Vec<Vec3>,
 }
 
 pub struct Image {
@@ -295,6 +297,13 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
             let normal_matrix = basis.inverse().transpose();
             let mirrored = basis.determinant() < 0.0;
             report.instances += 1;
+            if kind == "lantern" {
+                // decor_vertex_color.gdshader glows round (12.3, 0.56, -2.45) for a lantern placed
+                // at (12.4, -2.35) on ground at 0: the lamp sits 0.56 m up, 0.1 m off its origin.
+                // (Its constant height predates this layout's 1.5 m ground, so in the reference
+                // the core never lit; here the centre follows the lantern.)
+                library.lanterns.push(at + shift + Vec3::new(-0.1, 0.56, -0.1));
+            }
             if let Some(radius) = clear_radius(&kind) {
                 let size = basis.x_axis.length().max(basis.z_axis.length());
                 report.clear.push((p, radius * size));

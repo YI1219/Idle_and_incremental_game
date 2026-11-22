@@ -21,7 +21,7 @@ struct Globals {
     params: vec4<f32>,   // x time, y hour, z 1/width, w 1/height (internal)
     params2: vec4<f32>,  // x near, y far, z cloud level, w internal pixels per output pixel
     look: vec4<f32>,     // x ssao on, y fov (radians), z, w spare
-    pal: array<vec4<f32>, 20>,
+    pal: array<vec4<f32>, 46>,
 };
 @group(0) @binding(0) var<uniform> g: Globals;
 
@@ -46,6 +46,34 @@ const L_FAR: i32 = 16;         // a far-haze density per metre beyond 80 m
 const L_MIST: i32 = 17;        // rgb foam and spray albedo (linear), a root mist strength
 const L_FALL: i32 = 18;        // rgb waterfall body tint (linear)
 const L_SSR: i32 = 19;         // x pond reflections on (1) or off (0)
+// Far field (round r5): the frozen project's preset entries as its shaders receive them (linear).
+const L_SKY_ZENITH: i32 = 20;
+const L_SKY_MID: i32 = 21;
+const L_SKY_HORIZON: i32 = 22;
+const L_SKY_GLOW: i32 = 23;
+const L_SKY_CORE: i32 = 24;
+const L_DECK_DARK: i32 = 25;   // sky_cloud_dark: the sky's cloud band and the decks' shade
+const L_DECK_LIGHT: i32 = 26;  // sky_cloud_light
+const L_MOUNT_DARK: i32 = 27;
+const L_MOUNT_LIGHT: i32 = 28;
+const L_LAND: i32 = 29;        // xz the landscape's centre (the view's orbit centre), w the sky's haze
+// The hour's palette shift: linear ratios of the hour's preset entries to the day's (1 at day).
+const L_STONE_MID_K: i32 = 30;
+const L_GRASS_K: i32 = 31;
+const L_LEAF_SHADOW_K: i32 = 32;
+const L_LEAF_MID_K: i32 = 33;
+const L_LEAF_LIT_K: i32 = 34;
+const L_DECOR_SHADOW_K: i32 = 35;
+const L_DECOR_LIT_K: i32 = 36;
+const L_STONE_SHADOW_K: i32 = 37;
+const L_STONE_LIT_K: i32 = 38;
+const L_WALL_K: i32 = 39;       // island walls in light: mix(stone_mid, stone_lit, .45)
+const L_LANTERN: i32 = 40;      // rgb lantern_color (linear), a lantern_glow
+const L_LANTERN_AT: i32 = 41;   // xyz lamp centre, a 1 when there is a lantern
+const L_WALL_SHADE_K: i32 = 42; // island walls in shade: mix(stone_shadow, stone_mid, .38)
+const L_MIST_K: i32 = 43;       // the root mist colour: the day's times the change of Godot's island mist
+const L_NEAR_GAIN: i32 = 44;    // my calibration of the island's light per hour (1 at day)
+const L_STONE_GAIN: i32 = 45;   // and of its stone on top of that
 
 const TAU: f32 = 6.2831853;
 
@@ -123,8 +151,13 @@ struct VTerms {
 @vertex
 fn vs_terms(v: VIn) -> VTerms {
     var out: VTerms;
-    out.clip = g.view_proj * vec4<f32>(v.pos, 1.0);
-    out.world = v.pos;
+    var pos = v.pos;
+    if (abs(v.extra.r * 255.0 - 20.0) < 0.5) {
+        // Far mountains are built round the landscape's centre, which follows the view.
+        pos += vec3<f32>(g.pal[L_LAND].x, 0.0, g.pal[L_LAND].z);
+    }
+    out.clip = g.view_proj * vec4<f32>(pos, 1.0);
+    out.world = pos;
     out.normal = v.normal;
     out.colour = v.colour;
     out.terms = v.terms;
@@ -241,7 +274,7 @@ fn fs_terms(v: VTerms) -> FTerms {
     let dx = dpdx(v.world);
     let dy = dpdy(v.world);
     var vis = 1.0;
-    if (dot(n, g.sun_dir.xyz) > -0.05) {
+    if (dot(n, g.sun_dir.xyz) > -0.05 && abs(v.extra.r * 255.0 - 20.0) >= 0.5) {
         vis = sun_visibility(v.world, n, v.clip.xy);
     }
     var display = v.colour.rgb;
@@ -261,6 +294,14 @@ fn fs_terms(v: VTerms) -> FTerms {
             let reach = mix(0.25, 2.4, smoothstep(0.34, 0.70, stone_noise(vec3<f32>(v.world.x * 0.38, 5.3, v.world.z * 0.38))));
             brow = 0.6 * (1.0 - smoothstep(reach * 0.30, reach, depth + paint.a * 0.22)) * below * steep;
             ao *= 1.0 - 0.24 * (1.0 - smoothstep(0.0, 0.32, max(depth, 0.0))) * below * steep;
+            if (abs(v.extra.r * 255.0 - 2.0) < 0.5 && v.extra.g < 0.03) {
+                // The short rock band under the lawn's roll (field.rs marks it with grad 0): the brow
+                // at full strength, so it reads as the shaded top of the wall, not a pale ledge; the
+                // roll above it overhangs it by a few centimetres, a shadow the 4096 map cannot
+                // resolve, so half the sun is taken off here.
+                brow = 0.85;
+                vis *= 0.5;
+            }
         }
         let width = v.terms.a * 16.0;
         if (width > 0.05) {
@@ -270,11 +311,15 @@ fn fs_terms(v: VTerms) -> FTerms {
     }
     var out: FTerms;
     out.base = vec4<f32>(display, v.colour.a);
+    var spare = 0.0;
     if (abs(v.extra.r * 255.0 - 20.0) < 0.5) {
-        brow = v.extra.g; // a far mound: how far below its crest, for the resolve's fade
+        // A far mountain: its mesh's local height (over 1.05) and spine closeness.
+        brow = v.extra.g;
+        spare = v.terms.b;
     }
-    // r sun visibility, g baked sky occlusion, b spare, a mossy brow (stone) or crest depth (mounds)
-    out.terms = vec4<f32>(vis, ao, v.terms.b, brow);
+    // r sun visibility, g baked sky occlusion, b emission (props) or spine closeness (mountains),
+    // a mossy brow (stone) or local height (mountains)
+    out.terms = vec4<f32>(vis, ao, spare, brow);
     out.normal = vec4<f32>(n * 0.5 + 0.5, v.extra.r);
     return out;
 }
@@ -409,9 +454,14 @@ fn sky_colour(ray: vec3<f32>) -> vec3<f32> {
 
 // Where the island's root dissolves: a cool white, between the lit cloud and its blue-grey shade.
 fn cloud_mist() -> vec3<f32> {
-    return mix(g.pal[L_CLOUD_SHADE].rgb, g.pal[L_CLOUD_LIT].rgb, 0.80) * vec3<f32>(0.965, 0.985, 1.03);
+    if (g.pal[L_LAND].y > 0.5) {
+        return mix(g.pal[L_CLOUD_SHADE].rgb, g.pal[L_CLOUD_LIT].rgb, 0.80) * vec3<f32>(0.965, 0.985, 1.03);
+    }
+    // The day's mist times the change of Godot's island mist colour (main.rs).
+    return g.pal[L_MIST_K].rgb;
 }
 
+// The r4 cloud sea, kept for the three-island wallpaper view (L_LAND.y = 1; see main.rs far_mounds).
 // Cloud sea relief, 0..1. Octaves finer than a few pixel footprints are replaced by their mean.
 fn cloud_relief(p: vec2<f32>, foot: f32) -> f32 {
     var q = p * (1.0 / 190.0);
@@ -430,7 +480,7 @@ fn cloud_relief(p: vec2<f32>, foot: f32) -> f32 {
     return smoothstep(0.22, 0.80, sum / norm);
 }
 
-fn backdrop(ray: vec3<f32>) -> vec3<f32> {
+fn backdrop_r4(ray: vec3<f32>) -> vec3<f32> {
     if (ray.y >= 0.0) {
         return sky_colour(ray);
     }
@@ -459,6 +509,238 @@ fn backdrop(ray: vec3<f32>) -> vec3<f32> {
     let cloud = mix(g.pal[L_CLOUD_LIT].rgb, g.pal[L_CLOUD_SHADE].rgb, shade);
     let haze = 1.0 - exp(-t * 0.0009);
     return mix(cloud, g.pal[L_HAZE].rgb, haze);
+}
+
+// ---------------------------------------------------------------- far field (round r5)
+// The frozen project's far field, ported, not approximated:
+//   sky_palette.gdshaderinc : sky_view_factors, sky_gradient_factors (cool and warm sides about its
+//                             fixed SKY_SUN_DIR), the sun disc
+//   sky_surface.gdshaderinc : painted_sky (cirrus, the painted cloud band cloud_backdrop_v01.png)
+//   cloud_deck.gdshader     : six decks (distant_landscape.gd CLOUD_DECKS) of ribbon-warped billow,
+//                             lit from the difference toward the sun, cool/warm mix, crest rim,
+//                             aerial haze; blended back to front like Godot's transparent pass
+//   distant_mountain.gdshader: the ridges' shading (geometry from main.rs far_mountains)
+// All in linear radiance like Godot's unshaded materials; the down pass applies the same filmic
+// curve. Not ported: Godot's glow and far depth of field (see FAR_LOD_BIAS).
+
+@group(1) @binding(6) var t_billow: texture_2d<f32>;
+@group(1) @binding(7) var s_far: sampler;
+@group(1) @binding(8) var t_backdrop: texture_2d<f32>;
+
+const SKY_SUN_DIR: vec3<f32> = vec3<f32>(0.93, -0.06, -0.36);
+// Extra mip levels on the decks' billow, standing in for Godot's far depth of field (the reference
+// frames blur everything beyond 221 m) and its half-resolution background pass.
+const FAR_LOD_BIAS: f32 = 0.0;
+
+fn sky_view_factors(direction: vec3<f32>) -> vec3<f32> {
+    let d = normalize(direction);
+    let el = asin(clamp(d.y, -1.0, 1.0));
+    let elevation = 0.5 - (el + 0.471239) / 0.54;
+    let horizontal = d.xz / max(length(d.xz), 1e-6);
+    let h_sun = smoothstep(-0.26, 0.42, dot(horizontal, normalize(SKY_SUN_DIR.xz)));
+    let sun = acos(clamp(dot(d, normalize(SKY_SUN_DIR)), -1.0, 1.0)) * 1.35;
+    return vec3<f32>(elevation, sun, h_sun);
+}
+
+fn far_day_t() -> f32 {
+    return smoothstep(0.35, 0.80, g.pal[L_SKY_HORIZON].r);
+}
+
+fn sky_gradient_factors(f: vec3<f32>) -> vec3<f32> {
+    let zenith = g.pal[L_SKY_ZENITH].rgb;
+    let glow = g.pal[L_SKY_GLOW].rgb;
+    var cool = mix(zenith * vec3<f32>(1.12, 1.09, 1.05), g.pal[L_SKY_MID].rgb * vec3<f32>(0.98, 1.02, 1.04), smoothstep(-0.16, 0.34, f.x));
+    cool = mix(cool, zenith * vec3<f32>(0.66, 0.79, 0.86), smoothstep(0.38, 0.92, f.x) * 0.95);
+    var warm = mix(zenith * vec3<f32>(1.28, 1.13, 0.89), g.pal[L_SKY_HORIZON].rgb * vec3<f32>(1.08, 1.01, 0.91), smoothstep(-0.18, 0.38, f.x));
+    warm = mix(warm, glow * vec3<f32>(1.04, 0.97, 0.85), smoothstep(0.24, 0.92, f.x) * 0.88);
+    var colour = mix(cool, warm, f.z);
+    let bloom = exp(-f.y * 1.45);
+    colour = mix(colour, glow, bloom * 0.68);
+    let day_t = far_day_t();
+    let damp = mix(1.0, 0.82, smoothstep(0.42, 0.88, f.x) * (1.0 - f.z));
+    let hdr = mix(1.0, (mix(1.54, 1.84, f.z) + 0.28 * bloom) * damp, day_t);
+    return colour * hdr + vec3<f32>(0.18, 0.13, 0.05) * exp(-f.y * 3.8) * day_t;
+}
+
+fn sky_disc(d: f32) -> f32 {
+    return clamp(exp(-d * 9.0) * 0.58 + exp(-d * 28.0) * 0.32, 0.0, 1.0);
+}
+
+// Godot's sin hash and value noise (sky_surface and distant_mountain).
+fn g_hash(p: vec2<f32>) -> f32 {
+    return fract(sin(dot(p, vec2<f32>(127.1, 311.7))) * 43758.5453);
+}
+
+fn g_noise(p: vec2<f32>) -> f32 {
+    let i = floor(p);
+    let f = fract(p);
+    let u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(g_hash(i), g_hash(i + vec2<f32>(1.0, 0.0)), u.x), mix(g_hash(i + vec2<f32>(0.0, 1.0)), g_hash(i + vec2<f32>(1.0, 1.0)), u.x), u.y);
+}
+
+// sky_surface.gdshaderinc painted_sky, the visible (not cubemap) path.
+fn painted_sky(direction: vec3<f32>, f: vec3<f32>) -> vec3<f32> {
+    var colour = sky_gradient_factors(f);
+    let dir_uv = vec2<f32>(direction.x * 2.2 + direction.z * 1.6, direction.y * 16.0);
+    let cirrus = smoothstep(0.50, 0.74, g_noise(dir_uv * vec2<f32>(1.6, 2.4)) + g_noise(dir_uv * vec2<f32>(4.2, 5.8)) * 0.24);
+    colour = mix(colour, vec3<f32>(0.98, 0.96, 0.90), cirrus * 0.11 * (1.0 - smoothstep(0.22, 0.54, f.x)));
+    let h_dir = normalize(direction.xz + vec2<f32>(1e-5, 0.0));
+    let v_coord = 0.20 + clamp(f.x, -0.22, 1.20) * 0.76;
+    let sample_a = textureSampleLevel(t_backdrop, s_far, vec2<f32>(0.50 + 0.41 * h_dir.x, v_coord), 1.4).rgb;
+    let sample_b = textureSampleLevel(t_backdrop, s_far, vec2<f32>(0.50 - 0.41 * h_dir.y, v_coord), 1.4).rgb;
+    let source = mix(sample_a, sample_b, h_dir.x * h_dir.x);
+    let density = smoothstep(0.14, 0.68, source.r);
+    let cloud_light = smoothstep(0.22, 0.88, source.r);
+    let dark = g.pal[L_DECK_DARK].rgb;
+    let light = g.pal[L_DECK_LIGHT].rgb;
+    let cool_c = mix(dark * vec3<f32>(0.82, 0.95, 1.04), light * vec3<f32>(0.62, 0.76, 0.84), cloud_light * 0.65);
+    let warm_c = mix(dark, light, cloud_light);
+    var cloud_colour = mix(cool_c, warm_c, f.z);
+    cloud_colour += vec3<f32>(0.09, 0.07, 0.035) * exp(-f.y * 4.2);
+    let haze = g.pal[L_LAND].w;
+    colour = mix(colour, cloud_colour, density * smoothstep(0.24, 0.76, f.x) * (0.30 + (haze - 0.65) * 0.10));
+    return mix(colour, g.pal[L_SKY_CORE].rgb, sky_disc(f.y));
+}
+
+fn billow(uv: vec2<f32>, lod: f32) -> f32 {
+    return textureSampleLevel(t_billow, s_far, uv, max(lod, 0.0)).r;
+}
+
+// cloud_deck.gdshader shape(): ribbon-warped billow. Godot picks each tap's mip from its own uv
+// derivatives; here the levels follow from the deck's footprint (`lod` is the level of `u`).
+fn deck_shape(uv: vec2<f32>, lod: f32) -> f32 {
+    let r = vec2<f32>(uv.x * 1.24 + uv.y * 0.22, uv.y * 0.80 - uv.x * 0.16);
+    let warp = vec2<f32>(billow(r * 0.38 + vec2<f32>(0.19, 0.63), lod - 1.40), billow(r * 0.38 + vec2<f32>(0.71, 0.27), lod - 1.40)) - 0.5;
+    let u = r + warp * 0.15;
+    let b0 = billow(u, lod);
+    let b1 = billow(u * 2.25 + vec2<f32>(0.37, 0.11), lod + 1.17);
+    return mix(b0, b1, 0.26);
+}
+
+// The cloud decks along a ray, lowest first, over `colour` (what lies behind them), up to
+// `limit` metres. `f` are the ray's sky_view_factors.
+fn far_decks(colour_in: vec3<f32>, ray: vec3<f32>, f: vec3<f32>, limit: f32) -> vec3<f32> {
+    var colour = colour_in;
+    let horizon = smoothstep(0.04, 0.34, f.x);
+    if (ray.y >= -1e-4 || horizon <= 0.0) {
+        return colour;
+    }
+    // distant_landscape.gd CLOUD_DECKS: (height, uv_scale, coverage, opacity), (inner_clear, fade, offset)
+    var spec = array<vec4<f32>, 6>(
+        vec4<f32>(-390.0, 0.00095, 0.18, 0.99),
+        vec4<f32>(-245.0, 0.0013, 0.24, 0.96),
+        vec4<f32>(-125.0, 0.0018, 0.30, 0.92),
+        vec4<f32>(-28.0, 0.0032, 0.46, 0.28),
+        vec4<f32>(-13.8, 0.0072, 0.52, 0.28),
+        vec4<f32>(-8.2, 0.0104, 0.48, 0.26),
+    );
+    var more = array<vec4<f32>, 6>(
+        vec4<f32>(0.0, 2900.0, 0.81, 0.47),
+        vec4<f32>(0.0, 2900.0, 0.58, 0.29),
+        vec4<f32>(0.0, 2900.0, 0.13, 0.71),
+        vec4<f32>(50.0, 2900.0, 0.31, 0.18),
+        vec4<f32>(19.5, 185.0, 0.44, 0.62),
+        vec4<f32>(18.2, 96.0, 0.22, 0.49),
+    );
+    let land = vec2<f32>(g.pal[L_LAND].x, g.pal[L_LAND].z);
+    var sun_xz = vec2<f32>(0.7, 0.7);
+    if (length(g.sun_dir.xz) > 0.001) {
+        sun_xz = normalize(g.sun_dir.xz);
+    }
+    let day_t = far_day_t();
+    let shade_c = g.pal[L_DECK_DARK].rgb;
+    let lit_c = g.pal[L_DECK_LIGHT].rgb;
+    let drift = vec2<f32>(g.params.x * 0.0009, g.params.x * 0.0004);
+    // One pixel of Godot's background pass (half its internal resolution), in radians.
+    let pix = 2.0 * g.look.y * g.params.w * g.params2.w;
+    let dir_haze = sky_gradient_factors(f);
+    let warm_k = mix(1.0, mix(1.04, 1.52, f.z), day_t);
+    for (var i = 0; i < 6; i++) {
+        let s = spec[i];
+        let e = more[i];
+        let t = (s.x - g.camera_pos.y) / ray.y;
+        if (t <= 0.0 || t >= limit) {
+            continue;
+        }
+        let p = g.camera_pos.xyz + ray * t;
+        var inner = 1.0;
+        if (e.x > 0.5) {
+            inner = smoothstep(e.x * 0.45, e.x, length(p.xz));
+        }
+        let edge = 1.0 - smoothstep(e.y * 0.48, e.y * 0.94, length(p.xz - land));
+        let support = horizon * inner * edge;
+        if (support <= 0.0) {
+            continue;
+        }
+        let uv = p.xz * s.y + e.zw + drift;
+        let foot = t * pix / max(-ray.y, 0.02);
+        let lod = log2(max(foot * s.y * 256.0 * 1.27, 1e-6)) + FAR_LOD_BIAS;
+        let body = deck_shape(uv, lod);
+        let cov = s.z;
+        let density = smoothstep(cov - 0.07, cov + 0.17, body);
+        if (density <= 0.0) {
+            continue;
+        }
+        let toward_sun = deck_shape(uv + sun_xz * 0.022, lod);
+        let toward_sun_fine = deck_shape(uv + sun_xz * 0.009, lod);
+        let thick = smoothstep(cov - 0.02, cov + 0.32, body);
+        let lit = clamp(0.44 + (body - toward_sun) * (14.5 * 1.25), 0.0, 1.0);
+        let crest_rim = clamp((body - toward_sun_fine) * 22.0, 0.0, 1.0) * smoothstep(cov - 0.03, cov + 0.18, body) * (1.0 - smoothstep(cov + 0.20, cov + 0.42, body));
+        let billow_t = clamp(lit * 0.58 + thick * 0.48 - 0.05, 0.0, 1.0);
+        let cool = mix(shade_c * vec3<f32>(0.84, 0.98, 1.06), lit_c * vec3<f32>(0.74, 0.84, 0.90), billow_t * 0.78);
+        let warm = mix(shade_c * vec3<f32>(1.34, 1.24, 1.04), lit_c * vec3<f32>(1.10, 1.04, 0.92), clamp(0.40 + billow_t * 0.60, 0.0, 1.0));
+        var c = mix(cool, warm, f.z) * warm_k;
+        c += mix(vec3<f32>(0.07, 0.09, 0.09), vec3<f32>(0.18, 0.14, 0.07), f.z) * crest_rim * day_t;
+        c += vec3<f32>(0.16, 0.11, 0.05) * exp(-f.y * 1.75) * thick * day_t;
+        let aerial = 1.0 - exp(-t * 0.00085 * 0.55);
+        c = mix(c, dir_haze, clamp(aerial * 0.36, 0.0, 0.42));
+        colour = mix(colour, c, density * s.w * support);
+    }
+    return colour;
+}
+
+// My calibration of the ported far field against the reference frames (measured boxes): the
+// frozen project grades the day with saturation 0.98 where this tool's day uses 1.02 for the near
+// field, and its softlight glow lifts the bright cloud a little; both are folded in here.
+const FAR_GAIN: f32 = 1.05;
+const FAR_SAT: f32 = 0.96;
+
+fn far_grade(c: vec3<f32>) -> vec3<f32> {
+    let luma = dot(c, vec3<f32>(0.2126, 0.7152, 0.0722));
+    return mix(vec3<f32>(luma), c, FAR_SAT) * FAR_GAIN;
+}
+
+// distant_mountain.gdshader: a ridge's colour at `world` with smooth normal `n`, local height
+// `height` (0 at its foot, 1.05 at most) and spine closeness `spine`.
+fn mountain_colour(world: vec3<f32>, n: vec3<f32>, height: f32, spine: f32, f: vec3<f32>, distance: f32) -> vec3<f32> {
+    let ndl = dot(n, normalize(g.sun_dir.xyz));
+    let ridge_split = smoothstep(-0.16, 0.28, ndl);
+    let soft_wrap = smoothstep(-0.72, 0.84, ndl);
+    let light = mix(0.20, 0.88, ridge_split * 0.68 + soft_wrap * 0.32);
+    let brush = g_noise(vec2<f32>(world.x * 0.016 + world.z * 0.014, world.y * 0.055));
+    let cun_mod = 0.95 + 0.10 * brush;
+    let dark = g.pal[L_MOUNT_DARK].rgb;
+    let pale = g.pal[L_MOUNT_LIGHT].rgb;
+    let glow = g.pal[L_SKY_GLOW].rgb;
+    let shade_indigo = dark * vec3<f32>(0.86, 0.99, 1.08);
+    let mid_celadon = mix(dark, pale, 0.54) * vec3<f32>(0.94, 1.02, 1.01);
+    let lit_jade_ochre = mix(pale, glow, 0.28) * vec3<f32>(1.06, 1.02, 0.93);
+    var stone = select(mix(mid_celadon, lit_jade_ochre, (light - 0.5) * 2.0), mix(shade_indigo, mid_celadon, light * 2.0), light < 0.5);
+    stone *= cun_mod;
+    let crest = smoothstep(0.24, 0.88, height) * (0.45 + 0.55 * spine);
+    let crest_gleam = pow(spine, 2.4) * smoothstep(-0.05, 0.45, ndl) * smoothstep(0.32, 0.90, height);
+    stone = mix(stone * mix(1.03, 0.88, crest), lit_jade_ochre * 1.12, crest_gleam * 0.34);
+    let day_t = far_day_t();
+    let day_hdr = mix(1.0, mix(1.14, 1.44, f.z), day_t);
+    stone = mix(stone * vec3<f32>(0.92, 1.00, 1.04), mix(stone, glow, 0.42), f.z * 0.72) * day_hdr;
+    let bg_sky = sky_gradient_factors(f);
+    var aerial = 0.12 + 0.26 * (1.0 - exp(-max(distance - 310.0, 0.0) * 0.00085 * 1.05));
+    aerial = mix(aerial, 0.44, f.z * 0.24);
+    let mist_wave = 0.06 * (g_noise(world.xz * 0.0042) - 0.5);
+    let base_mist = 1.0 - smoothstep(0.13 + mist_wave, 0.46 + mist_wave, height);
+    var col = mix(stone, bg_sky, clamp(aerial, 0.0, 0.50));
+    col = mix(col, bg_sky, clamp(base_mist * 0.97, 0.0, 0.99));
+    return mix(col, g.pal[L_SKY_CORE].rgb, sky_disc(f.y) * 0.35);
 }
 
 // Air between the eye and a surface: light fog near, pale haze far, the root sinking into cloud.
@@ -678,21 +960,50 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
     let px = vec2<i32>(v.pos.xy);
     let depth = textureLoad(t_depth, px, 0);
     let ray = normalize(world_at(v.uv, 1.0) - g.camera_pos.xyz);
+    let r4_far = g.pal[L_LAND].y > 0.5;
+    if (depth >= 1.0 && r4_far) {
+        return vec4<f32>(backdrop_r4(ray), 1.0);
+    }
     if (depth >= 1.0) {
-        return vec4<f32>(backdrop(ray), 1.0);
+        // Sky, then the cloud decks below it.
+        let f = sky_view_factors(ray);
+        return vec4<f32>(far_grade(far_decks(painted_sky(ray, f), ray, f, 1e9)), 1.0);
     }
     let base = textureLoad(t_base, px, 0);
     let terms = textureLoad(t_terms, px, 0);
-    let n = normalize(textureLoad(t_normal, px, 0).xyz * 2.0 - 1.0);
+    let normal_tex = textureLoad(t_normal, px, 0);
+    let n = normalize(normal_tex.xyz * 2.0 - 1.0);
     let family = base.a;
     let world = world_at(v.uv, depth);
+    if (abs(normal_tex.a * 255.0 - 20.0) < 0.5 && !r4_far) {
+        // A far mountain (unshaded in Godot), then the decks in front of it.
+        let along = length(world - g.camera_pos.xyz);
+        let f = sky_view_factors(world - g.camera_pos.xyz);
+        let c = mountain_colour(world, n, terms.a * 1.05, terms.b, f, along);
+        return vec4<f32>(far_grade(far_decks(c, ray, f, along)), 1.0);
+    }
 
     var display = base.rgb;
-    if (family > 0.17 && family < 0.5) {
+    let stone = family > 0.17 && family < 0.5;
+    if (stone) {
         // The mossy brow under the lawn lip: a soft green tint over the stone's own paint.
         display = mix(display, display * g.pal[L_MOSS].rgb, terms.a * g.pal[L_MOSS].a);
     }
-    let albedo = to_linear(display);
+    var albedo = to_linear(display);
+    // Lantern light: decor_vertex_color's warm lift round the lamp and ground_cover's pool on the
+    // lawn (both add lantern_color to the albedo). Faded out below a glow of 0.1, so the day
+    // preset's 0.08 leaves the day frames as they were.
+    let lantern = g.pal[L_LANTERN];
+    let lamp = g.pal[L_LANTERN_AT];
+    let lantern_on = lamp.w * smoothstep(0.1, 0.5, lantern.a);
+    if (family < 0.1) {
+        // Ground and grass: the hour's grass_base / grass_highlight against the day's.
+        albedo *= g.pal[L_GRASS_K].rgb;
+        if (lantern_on > 0.0) {
+            let d = length(world.xz - lamp.xz);
+            albedo += lantern.rgb * exp(-d * d * 0.68) * lantern.a * 0.42 * lantern_on;
+        }
+    }
 
     var ao = terms.g;
     var screen_ao = 1.0;
@@ -718,31 +1029,43 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
         sun_k = max(nl_sun, 0.0) * 0.25 + clamp((nl_sun + 0.42) / 1.42, 0.0, 1.0) * 0.90;
         fill_k = max(nl_fill, 0.0) * 0.25 + clamp((nl_fill + 0.42) / 1.42, 0.0, 1.0) * 0.90;
     }
-    let sun = g.pal[L_SUN].rgb * sun_k * shadow;
+    var sun = g.pal[L_SUN].rgb * sun_k * shadow;
     var hemi = mix(g.pal[L_GROUND].rgb, g.pal[L_SKY].rgb, n.y * 0.5 + 0.5);
-    if (family > 0.17 && family < 0.5) {
+    var fill = g.pal[L_FILL].rgb * fill_k;
+    if (stone) {
         // Island stone in shade: Godot's crisp-facet light gives walls extra sky and cloud-sea
         // bounce, so shaded faces stay a light grey rather than going slate.
         hemi *= 1.32;
+        // The hour's stone palette: lit parts follow mix(stone_mid, stone_lit), shaded parts
+        // mix(stone_shadow, stone_mid), each against the day's.
+        sun *= g.pal[L_WALL_K].rgb;
+        hemi *= g.pal[L_WALL_SHADE_K].rgb;
+        fill *= g.pal[L_WALL_SHADE_K].rgb;
     }
-    let fill = g.pal[L_FILL].rgb * fill_k;
-    let colour = albedo * (sun + (hemi + fill) * ao);
-    let distance = view_distance(depth);
-    if (abs(textureLoad(t_normal, px, 0).a * 255.0 - 20.0) < 0.5) {
-        // A far mound: only its upper band shows; below that it dissolves into the cloud sea seen
-        // along the same ray (no line where it enters; the cloud plane would hide it otherwise),
-        // and the far haze softens what shows.
-        let air = mix(colour, g.pal[L_HAZE].rgb, 1.0 - exp(-max(distance - 80.0, 0.0) * g.pal[L_FAR].a * 0.7));
-        // Cream at the crest, sinking into the blue-grey of the cloud shade lower down, so each
-        // hill reads by its silhouette against the hollows; then the cloud sea itself.
+    var colour = albedo * (sun + (hemi + fill) * ao);
+    let far_id = abs(normal_tex.a * 255.0 - 20.0) < 0.5;
+    if (far_id && r4_far) {
+        // The r4 far mound (wallpaper view): only its upper band shows; below that it dissolves
+        // into the r4 cloud sea along the same ray, and the far haze softens what shows.
+        let distance_m = view_distance(depth);
+        let air = mix(colour, g.pal[L_HAZE].rgb, 1.0 - exp(-max(distance_m - 80.0, 0.0) * g.pal[L_FAR].a * 0.7));
         let shade_air = mix(g.pal[L_CLOUD_SHADE].rgb, g.pal[L_HAZE].rgb, 0.25);
         let toned = mix(air, shade_air, smoothstep(0.05, 0.30, terms.a) * 0.85);
         let emerge = 1.0 - smoothstep(0.30, 0.55, terms.a);
         if (emerge > 0.999) {
             return vec4<f32>(toned, 1.0);
         }
-        return vec4<f32>(mix(backdrop(ray), toned, emerge), 1.0);
+        return vec4<f32>(mix(backdrop_r4(ray), toned, emerge), 1.0);
     }
+    colour *= g.pal[L_NEAR_GAIN].rgb;
+    if (stone) {
+        colour *= g.pal[L_STONE_GAIN].rgb;
+    }
+    if (family > 0.9 && lantern_on > 0.0) {
+        // Props: the lamp's core (emission written by fs_prop_decor in terms.b).
+        colour += lantern.rgb * terms.b * 4.0 * lantern_on;
+    }
+    let distance = view_distance(depth);
     return vec4<f32>(atmosphere(colour, world, distance), 1.0);
 }
 
@@ -1256,11 +1579,11 @@ fn stone_weights(n: vec3<f32>) -> vec3<f32> {
 @fragment
 fn fs_prop_stone(v: VProp) -> FTerms {
     let base = i32(v.mat.y) * 4;
-    let shadow_c = p_mat[base].rgb;
+    let shadow_c = p_mat[base].rgb * g.pal[L_STONE_SHADOW_K].rgb;
     let kind = p_mat[base].a;
-    let mid_c = p_mat[base + 1].rgb;
+    let mid_c = p_mat[base + 1].rgb * g.pal[L_STONE_MID_K].rgb;
     let bank = p_mat[base + 1].a;
-    let lit_c = p_mat[base + 2].rgb;
+    let lit_c = p_mat[base + 2].rgb * g.pal[L_STONE_LIT_K].rgb;
     let n = normalize(v.normal);
     // Godot mixes 7.5% of a detail-map normal in; that turn is under a degree and is skipped.
     let shade_n = n;
@@ -1400,7 +1723,23 @@ fn fs_prop_decor(v: VProp) -> FTerms {
     if (v.uv.y > 0.25 && v.uv.y < 0.90) {
         col *= mix(0.92, 1.05, smoothstep(0.0, 0.82, v.uv.x));
     }
-    return prop_terms(col, n, ao, prop_visibility(v.world, n, v.clip.xy));
+    // The hour's decor_sky_shadow .. decor_sky_lit (by facing) against the day's.
+    col *= mix(g.pal[L_DECOR_SHADOW_K].rgb, g.pal[L_DECOR_LIT_K].rgb, n.y * 0.5 + 0.5);
+    // decor_vertex_color's lantern: a warm lift round the lamp and the lit core (uv.y >= 0.9 within
+    // 0.42 m), faded out below a glow of 0.1 so the day frames stay as they were.
+    let lantern = g.pal[L_LANTERN];
+    let lamp = g.pal[L_LANTERN_AT];
+    var emission = 0.0;
+    let lantern_on = lamp.w * smoothstep(0.1, 0.5, lantern.a);
+    if (lantern_on > 0.0) {
+        let d_lamp = length(v.world - lamp.xyz);
+        col += lantern.rgb * exp(-d_lamp * d_lamp * 0.65) * 0.28 * lantern.a * lantern_on;
+        let core = step(0.90, v.uv.y) * smoothstep(0.52, 0.32, d_lamp);
+        emission = core * (0.36 + 1.35 * lantern.a) * 0.25;
+    }
+    var out = prop_terms(col, n, ao, prop_visibility(v.world, n, v.clip.xy));
+    out.terms.b = clamp(emission, 0.0, 1.0);
+    return out;
 }
 
 // --- foliage_cards.gdshader
@@ -1412,10 +1751,10 @@ fn fs_prop_leaf(v: VProp) -> FTerms {
         discard;
     }
     let base = i32(v.mat.y) * 4;
-    let leaf_shadow = p_mat[base].rgb;
+    let leaf_shadow = p_mat[base].rgb * g.pal[L_LEAF_SHADOW_K].rgb;
     let rim_strength = p_mat[base].a;
-    let leaf_mid = p_mat[base + 1].rgb;
-    let leaf_lit = p_mat[base + 2].rgb;
+    let leaf_mid = p_mat[base + 1].rgb * g.pal[L_LEAF_MID_K].rgb;
+    let leaf_lit = p_mat[base + 2].rgb * g.pal[L_LEAF_LIT_K].rgb;
     // Both faces use the card's own normal, as Godot does (it never flips it for back faces).
     let n = normalize(v.normal);
     let up_ref = select(vec3<f32>(1.0, 0.0, 0.0), vec3<f32>(0.0, 1.0, 0.0), abs(n.y) < 0.96);
