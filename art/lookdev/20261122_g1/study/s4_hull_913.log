@@ -1,0 +1,11 @@
+island: 571 cells, 25 faces, 0 columns, 53418 triangles (top 23600, body 254, decor 24662, tufts 4902), built in 35.4 ms (fields 21.6, top 11.0, body 0.1, decor 1.7)
+form: 25 faces, widths 2.0 to 6.9 m (spread 0.41), step spread 0.40 m, longest alike run 2 faces / 9.0 m
+EDIT expand   at (-6, 2): 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m
+EDIT contract at (10, 10): 8 faces changed, farthest 6.19 m from the stroke, 0 beyond 12 m
+EDIT raise    at (16, 5): 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m
+FRAME art/lookdev/20261122_g1/study/s4_hull_913/s4_hull_913_whole.png
+STATS whole: p05 0.435 p50 0.824 p95 0.871 white 0.000 black 0.000 sat_mean 0.165 sat_p99 0.514 quiet 0.727
+FRAME art/lookdev/20261122_g1/study/s4_hull_913/s4_hull_913_reverse.png
+STATS reverse: p05 0.357 p50 0.831 p95 0.871 white 0.000 black 0.000 sat_mean 0.135 sat_p99 0.514 quiet 0.763
+FRAME art/lookdev/20261122_g1/study/s4_hull_913/s4_hull_913_foot_reverse.png
+STATS foot_reverse: p05 0.314 p50 0.808 p95 0.867 white 0.000 black 0.000 sat_mean 0.137 sat_p99 0.518 quiet 0.614

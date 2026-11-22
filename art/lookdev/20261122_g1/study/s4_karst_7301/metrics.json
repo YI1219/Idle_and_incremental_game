@@ -1,0 +1,34 @@
+{
+ "cells": 623,
+ "body": "Karst",
+ "triangles": 55338,
+ "parts": {"top": 24374, "body": 2933, "decor": 24302, "tufts": 3729},
+ "build_ms": 58.97,
+ "stages_ms": {"fields": 41.39, "top": 14.28, "body": 0.26, "decor": 1.71},
+ "faces": 27,
+ "columns": 72,
+ "face_widths_m": [3.0, 5.3, 2.8, 4.5, 2.5, 2.2, 4.9, 3.5, 2.6, 5.0, 2.0, 5.7, 4.1, 4.3, 5.3, 2.3, 4.5, 2.3, 4.8, 4.5, 5.0, 5.2, 2.0, 2.1, 4.5, 3.1, 2.7],
+ "width_min_m": 2.04,
+ "width_max_m": 5.68,
+ "width_spread": 0.326,
+ "step_spread_m": 0.344,
+ "longest_alike_run": 3,
+ "longest_alike_run_m": 8.75,
+ "edit_locality": [
+  {"stroke": "expand", "at": [4, -8], "faces_before": 27, "faces_after": 27, "faces_changed": 10, "farthest_change_m": 11.19, "changed_beyond_12m": 0},
+  {"stroke": "contract", "at": [14, -3], "faces_before": 27, "faces_after": 28, "faces_changed": 7, "farthest_change_m": 5.52, "changed_beyond_12m": 0},
+  {"stroke": "raise", "at": [17, 0], "faces_before": 27, "faces_after": 28, "faces_changed": 7, "farthest_change_m": 5.26, "changed_beyond_12m": 0}
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "game", "p05": 0.365, "p50": 0.608, "p95": 0.867, "white": 0.001, "black": 0.000, "sat_mean": 0.255, "sat_p99": 0.522, "quiet": 0.450},
+  {"view": "whole", "p05": 0.427, "p50": 0.820, "p95": 0.871, "white": 0.001, "black": 0.000, "sat_mean": 0.169, "sat_p99": 0.510, "quiet": 0.632},
+  {"view": "reverse", "p05": 0.337, "p50": 0.824, "p95": 0.871, "white": 0.000, "black": 0.000, "sat_mean": 0.138, "sat_p99": 0.510, "quiet": 0.701},
+  {"view": "cliff_close", "p05": 0.322, "p50": 0.620, "p95": 0.867, "white": 0.000, "black": 0.000, "sat_mean": 0.219, "sat_p99": 0.525, "quiet": 0.569},
+  {"view": "foot_reverse", "p05": 0.306, "p50": 0.796, "p95": 0.867, "white": 0.000, "black": 0.000, "sat_mean": 0.137, "sat_p99": 0.510, "quiet": 0.566},
+  {"view": "outer_hull", "p05": 0.329, "p50": 0.631, "p95": 0.867, "white": 0.004, "black": 0.000, "sat_mean": 0.196, "sat_p99": 0.518, "quiet": 0.471},
+  {"view": "below", "p05": 0.271, "p50": 0.604, "p95": 0.863, "white": 0.003, "black": 0.000, "sat_mean": 0.153, "sat_p99": 0.431, "quiet": 0.596}
+ ]
+}

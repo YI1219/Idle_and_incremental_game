@@ -11,7 +11,7 @@ use crate::water::WaterVertex;
 const SHADOW_SIZE: u32 = 4096;
 const TERM_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 const WORK_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba16Float;
-const FINAL_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8UnormSrgb;
+const FINAL_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
 
 #[derive(Clone, Copy)]

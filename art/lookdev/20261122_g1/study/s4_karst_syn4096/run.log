@@ -1,0 +1,9 @@
+island: 4096 cells, 64 faces, 395 columns, 401209 triangles (top 142350, body 16908, decor 225700, tufts 16251), built in 172.1 ms (fields 72.7, top 75.8, body 1.0, decor 14.7)
+form: 64 faces, widths 2.0 to 6.6 m (spread 0.34), step spread 0.36 m, longest alike run 4 faces / 18.4 m
+EDIT expand   at (11, -17): 7 faces changed, farthest 2.39 m from the stroke, 0 beyond 12 m
+EDIT contract at (35, 22): 4 faces changed, farthest 2.36 m from the stroke, 0 beyond 12 m
+EDIT raise    at (43, 1): 11 faces changed, farthest 10.06 m from the stroke, 0 beyond 12 m
+FRAME art/lookdev/20261122_g1/study/s4_karst_syn4096/s4_karst_syn4096_whole.png
+STATS whole: p05 0.424 p50 0.839 p95 0.871 white 0.000 black 0.000 sat_mean 0.182 sat_p99 0.490 quiet 0.615
+FRAME art/lookdev/20261122_g1/study/s4_karst_syn4096/s4_karst_syn4096_game.png
+STATS game: p05 0.329 p50 0.533 p95 0.863 white 0.000 black 0.000 sat_mean 0.390 sat_p99 0.529 quiet 0.360

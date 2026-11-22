@@ -194,16 +194,28 @@ impl Field {
                 }
             }
         }
-        let weight = gaussian(&land, nx, nz, 0.20);
-        let mut height = gaussian(&raw, nx, nz, 0.20);
-        for (h, w) in height.iter_mut().zip(&weight) {
-            *h = if *w > 1e-4 { *h / *w } else { 0.0 };
+        // Height from smoothed level sets: each terrace edge follows a smooth curve in plan,
+        // and a real step stays a near-vertical cut in section.
+        let land1 = gaussian(&land, nx, nz, 0.45);
+        let mut levels: Vec<f32> = cells.values().map(|c| c.h).collect();
+        levels.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        levels.dedup_by(|a, b| (*a - *b).abs() < 1e-4);
+        let mut height = vec![levels[0]; nx * nz];
+        for k in 1..levels.len() {
+            let (level, rise) = (levels[k], levels[k] - levels[k - 1]);
+            let above: Vec<f32> = (0..nx * nz).map(|s| if land[s] > 0.5 && raw[s] >= level - 1e-4 { 1.0 } else { 0.0 }).collect();
+            let blurred = gaussian(&above, nx, nz, 0.45);
+            let w = if rise >= 0.75 { 0.07 } else { 0.20 };
+            for s in 0..nx * nz {
+                let share = blurred[s] / land1[s].max(1e-4);
+                height[s] += rise * smoothstep(0.5 - w, 0.5 + w, share);
+            }
         }
         Field {
             nx,
             nz,
             origin,
-            land1: gaussian(&land, nx, nz, 0.45),
+            land1,
             land2: gaussian(&land, nx, nz, 2.5),
             land3: gaussian(&land, nx, nz, 7.0),
             height,
@@ -300,9 +312,9 @@ pub struct TopColours {
 impl Default for TopColours {
     fn default() -> TopColours {
         TopColours {
-            lawn: Vec3::new(0.44, 0.60, 0.27),
-            lawn_warm: Vec3::new(0.56, 0.65, 0.28),
-            lawn_cool: Vec3::new(0.35, 0.54, 0.30),
+            lawn: Vec3::new(0.45, 0.57, 0.30),
+            lawn_warm: Vec3::new(0.54, 0.61, 0.31),
+            lawn_cool: Vec3::new(0.38, 0.52, 0.32),
             riser: Vec3::new(0.70, 0.68, 0.60),
             bed: Vec3::new(0.36, 0.42, 0.36),
             bank: Vec3::new(0.74, 0.71, 0.58),
@@ -374,20 +386,20 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
                 continue;
             }
             let fan: Vec<(Vec3, Vec3, Vec3, Paint)> = polygon.iter().map(|p| surface(*p)).collect();
-            for k in 1..fan.len() - 1 {
-                let p = [fan[0].0, fan[k].0, fan[k + 1].0];
-                let mut face = (p[1] - p[0]).cross(p[2] - p[0]).normalize_or_zero();
-                if face.y < 0.0 {
-                    face = -face;
+            // A terrace step is cut rock, decided per grid cell from the smooth normal at its centre,
+            // so both triangles of a cell agree and the riser has no sawtooth of lines.
+            let centre = field.point(i, j) + Vec2::splat(STEP * 0.5);
+            let g = field.gradient(&field.height, centre, STEP);
+            let cell_normal = Vec3::new(-g.x, 1.0, -g.y).normalize();
+            if cell_normal.y < 0.60 {
+                let tone = 0.94 + 0.10 * hash2((centre.x * 1.3).floor() as i32, (centre.y * 1.3).floor() as i32, seed ^ 33);
+                let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2);
+                for k in 1..fan.len() - 1 {
+                    mesh.tri_full([fan[0].0, fan[k].0, fan[k + 1].0], [cell_normal; 3], [colours.riser * tone; 3], [paint; 3]);
                 }
-                if face.y < 0.60 && face != Vec3::ZERO {
-                    // A terrace step is cut rock: whole facets, flat shaded, with their own edge,
-                    // not a slope smeared between lawn and stone.
-                    let mid = (p[0] + p[1] + p[2]) / 3.0;
-                    let tone = 0.94 + 0.10 * hash2((mid.x * 1.3).floor() as i32, (mid.z * 1.3).floor() as i32, seed ^ 33);
-                    let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2);
-                    mesh.tri_full(p, [face; 3], [colours.riser * tone; 3], [paint; 3]);
-                } else {
+            } else {
+                for k in 1..fan.len() - 1 {
+                    let p = [fan[0].0, fan[k].0, fan[k + 1].0];
                     mesh.tri_full(p, [fan[0].1, fan[k].1, fan[k + 1].1], [fan[0].2, fan[k].2, fan[k + 1].2], [fan[0].3, fan[k].3, fan[k + 1].3]);
                 }
             }
@@ -423,7 +435,7 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
     Top { mesh, rim }
 }
 
-/// One closed outline of the island as evenly spaced points, with the direction
+/// One closed outline of the island as world-anchored points, with the direction
 /// pointing out of the island at each.
 pub struct Outline {
     pub points: Vec<Vec2>,
@@ -432,7 +444,7 @@ pub struct Outline {
 }
 
 /// Outlines traced on the cell grid, smoothed, pulled onto the 0.5 contour of
-/// the fine field, and resampled every `spacing` metres.
+/// the fine field, and sampled where they cross the lattice lines `spacing` apart.
 pub fn outlines(cells: &Cells, field: &Field, spacing: f32) -> Vec<Outline> {
     // Directed unit edges with land on the left.
     let mut next: HashMap<(i32, i32), Vec<(i32, i32)>> = HashMap::new();
@@ -496,23 +508,48 @@ pub fn outlines(cells: &Cells, field: &Field, spacing: f32) -> Vec<Outline> {
                     }
                 }
             }
-            let n = points.len();
-            let length: f32 = (0..n).map(|k| (points[(k + 1) % n] - points[k]).length()).sum();
-            let count = (length / spacing).round().max(8.0) as usize;
-            let step = length / count as f32;
-            let mut even = Vec::with_capacity(count);
-            let (mut k, mut walked, mut target) = (0usize, 0.0_f32, 0.0_f32);
-            while even.len() < count {
-                let (a, b) = (points[k % n], points[(k + 1) % n]);
-                let seg = (b - a).length();
-                if walked + seg >= target && seg > 1e-6 {
-                    even.push(a.lerp(b, (target - walked) / seg));
-                    target += step;
-                } else {
-                    walked += seg;
-                    k += 1;
+            // The crossings are taken on the relaxed and snapped polyline itself, which depends only on
+            // nearby cells. (A dense arc-length resampling as an intermediate slides with the loop's
+            // total length and moved far points by a few millimetres, enough to flip the plan.)
+            let dense = points;
+            // World-anchored points: where the loop crosses the lattice lines x = (i + 0.5) * spacing
+            // and z = (j + 0.5) * spacing, so a distant change of the outline does not move them.
+            // The half offset keeps the lines off the cell edges: a straight stretch of rim lies on a
+            // cell edge, and float noise there would make crossings appear and vanish with the resampling.
+            let mut even: Vec<Vec2> = Vec::new();
+            let m = dense.len();
+            for k in 0..m {
+                let (a, b) = (dense[k], dense[(k + 1) % m]);
+                let mut hits: Vec<(f32, Vec2)> = Vec::new();
+                for axis in 0..2 {
+                    let (va, vb) = if axis == 0 { (a.x, b.x) } else { (a.y, b.y) };
+                    let (fa, fb) = ((va / spacing - 0.5).floor() as i32, (vb / spacing - 0.5).floor() as i32);
+                    for line in fa.min(fb) + 1..=fa.max(fb) {
+                        let at = (line as f32 + 0.5) * spacing;
+                        let t = ((at - va) / (vb - va)).clamp(0.0, 1.0);
+                        let mut p = a.lerp(b, t);
+                        if axis == 0 {
+                            p.x = at;
+                        } else {
+                            p.y = at;
+                        }
+                        hits.push((t, p));
+                    }
+                }
+                hits.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+                for (_, p) in hits {
+                    if even.last().map_or(true, |q: &Vec2| (p - *q).length() >= 0.15) {
+                        even.push(p);
+                    }
                 }
             }
+            while even.len() > 1 && (even[even.len() - 1] - even[0]).length() < 0.15 {
+                even.pop();
+            }
+            if even.len() < 8 {
+                continue;
+            }
+            let count = even.len();
             let outward = (0..count)
                 .map(|k| {
                     let g = field.gradient(&field.land1, even[k], STEP * 2.0);

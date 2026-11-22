@@ -104,14 +104,14 @@ fn palette(hour: &str) -> ([[f32; 4]; 16], Vec3, f32) {
                 [0.55, 0.56, 0.74, 1.0],
                 [0.44, 0.54, 0.62, 1.0],
                 [0.56, 0.54, 0.68, 1.0],
-                [0.94, 0.85, 0.76, 0.96],
+                [0.90, 0.81, 0.72, 0.96],
                 [0.56, 0.61, 0.74, 1.0],
-                [0.96, 0.81, 0.68, 1.0],
+                [0.92, 0.78, 0.66, 1.0],
                 [0.25, 0.19, 0.20, 0.78],
                 [0.62, 0.74, 0.66, 1.0],
                 [0.24, 0.38, 0.46, 1.0],
                 [0.52, 0.54, 0.38, 0.40],
-                [0.97, 0.87, 0.77, 1.0],
+                [0.93, 0.83, 0.73, 1.0],
                 [0.76, 0.73, 0.80, 1.0],
                 [0.88, 0.79, 0.76, 0.0007],
                 [-5.5, -16.5, 1.0, 0.0],
@@ -143,21 +143,21 @@ fn palette(hour: &str) -> ([[f32; 4]; 16], Vec3, f32) {
         ),
         _ => (
             [
-                [1.07, 1.00, 0.89, 0.60],
+                [1.07, 1.00, 0.89, 0.56],
                 [0.56, 0.70, 0.66, 1.0],
-                [0.50, 0.60, 0.78, 1.0],
+                [0.56, 0.64, 0.78, 1.0],
                 [0.50, 0.67, 0.66, 1.0],
                 [0.60, 0.62, 0.72, 1.0],
-                [0.91, 0.90, 0.85, 0.96],
-                [0.62, 0.73, 0.78, 1.0],
-                [0.89, 0.89, 0.85, 1.0],
-                [0.21, 0.19, 0.18, 0.86],
+                [0.87, 0.85, 0.79, 0.96],
+                [0.66, 0.74, 0.76, 1.0],
+                [0.86, 0.85, 0.80, 1.0],
+                [0.20, 0.18, 0.17, 0.90],
                 [0.44, 0.73, 0.65, 1.0],
                 [0.15, 0.41, 0.42, 1.0],
                 [0.50, 0.58, 0.40, 0.45],
-                [0.94, 0.93, 0.89, 1.0],
-                [0.81, 0.86, 0.89, 1.0],
-                [0.80, 0.85, 0.88, 0.0007],
+                [0.89, 0.87, 0.81, 1.0],
+                [0.77, 0.80, 0.80, 1.0],
+                [0.80, 0.82, 0.80, 0.0007],
                 [-5.5, -16.5, 1.0, 0.0],
             ],
             sun(25.5, 38.0),
@@ -193,16 +193,24 @@ fn far_peaks(seed: u32) -> Mesh {
             let p = at + tip * t + Vec2::new(angle.cos(), angle.sin()) * radius * r * wobble[level * sides + k % sides];
             Vec3::new(p.x, base + height * t, p.y)
         };
-        let tone = |t: f32| Vec3::new(0.86, 0.88, 0.87).lerp(Vec3::new(0.58, 0.68, 0.66), t * t);
+        // Nearly one normal for the whole stack, so the sun term is almost constant over it: a flat wash.
+        let normal = |level: usize, k: usize| -> Vec3 {
+            let t = levels[level].0;
+            let axis = at + tip * t;
+            let p = ring(level, k);
+            let radial = Vec2::new(p.x - axis.x, p.z - axis.y).normalize_or_zero();
+            (Vec3::new(radial.x, 0.0, radial.y) * 0.2 + Vec3::new(0.45, 0.75, 0.55)).normalize()
+        };
+        let tone = |t: f32| Vec3::new(0.86, 0.85, 0.80).lerp(Vec3::new(0.66, 0.73, 0.71), t * t);
         for level in 0..levels.len() - 1 {
             for k in 0..sides {
                 let k2 = (k + 1) % sides;
                 let (a, b, c, d) = (ring(level, k), ring(level, k2), ring(level + 1, k2), ring(level + 1, k));
-                let n = (b - a).cross(d - a).normalize_or_zero();
+                let (na, nb, nc, nd) = (normal(level, k), normal(level, k2), normal(level + 1, k2), normal(level + 1, k));
                 let (c0, c1) = (tone(levels[level].0), tone(levels[level + 1].0));
                 let paint = Paint::new(Family::Stone).sky(1.0).line(0.12).id(20);
-                mesh.tri_full([a, b, c], [n; 3], [c0, c0, c1], [paint; 3]);
-                mesh.tri_full([a, c, d], [n; 3], [c0, c1, c1], [paint; 3]);
+                mesh.tri_full([a, b, c], [na, nb, nc], [c0, c0, c1], [paint; 3]);
+                mesh.tri_full([a, c, d], [na, nc, nd], [c0, c1, c1], [paint; 3]);
             }
         }
     };
@@ -268,9 +276,11 @@ fn edit_test(cells: &Cells, seed: u32) -> String {
         let field = field::Field::build(cells);
         let outlines = field::outlines(cells, &field, 0.5);
         let outer = outlines.iter().find(|o| !o.is_hole).expect("outline");
-        body::plan_faces(outer, &field, seed, 0.5)
+        let mut trace = Vec::new();
+        let faces = body::plan_traced(outer, &field, seed, &mut trace);
+        (faces, outer.points.clone(), trace)
     };
-    let before = plan(cells);
+    let (before, before_points, before_trace) = plan(cells);
     let mut lines = Vec::new();
     // Three strokes at the rim: add a 3 x 3 patch outside it, remove one inside it, raise one on it.
     let mut rim: Vec<(i32, i32)> = cells.keys().copied().filter(|&(x, z)| !cells.contains_key(&(x + 1, z))).collect();
@@ -298,20 +308,61 @@ fn edit_test(cells: &Cells, seed: u32) -> String {
                 }
             }
         }
-        let after = plan(&edited);
+        let (after, after_points, after_trace) = plan(&edited);
         let centre = Vec2::new(at.0 as f32 + if name == "expand" { 2.5 } else { -0.5 }, at.1 as f32 + 0.5);
-        let key = |f: &body::Face| ((f.a.x * 5.0).round() as i32, (f.a.y * 5.0).round() as i32, (f.b.x * 5.0).round() as i32, (f.b.y * 5.0).round() as i32, (f.top * 4.0).round() as i32);
-        let old: std::collections::HashSet<_> = before.iter().map(key).collect();
-        let new: std::collections::HashSet<_> = after.iter().map(key).collect();
+        // A face is unchanged when the other plan has one with both ends within 0.30 m and a top within 0.26.
+        let alike = |f: &body::Face, g: &body::Face| (f.a - g.a).length() <= 0.30 && (f.b - g.b).length() <= 0.30 && (f.top - g.top).abs() <= 0.26;
         let mut farthest: f32 = 0.0;
-        let mut changed = 0;
-        for face in before.iter().filter(|f| !new.contains(&key(f))).chain(after.iter().filter(|f| !old.contains(&key(f)))) {
+        let (mut changed, mut far) = (0, 0);
+        let gone = before.iter().filter(|f| !after.iter().any(|g| alike(f, g))).map(|f| (f, "before"));
+        let new = after.iter().filter(|f| !before.iter().any(|g| alike(f, g))).map(|f| (f, "after"));
+        for (face, side) in gone.chain(new) {
             changed += 1;
             let nearest = (face.a - centre).length().min((face.b - centre).length());
             farthest = farthest.max(nearest);
+            if nearest > 12.0 {
+                far += 1;
+                if far == 1 {
+                    // Where does this change first show? Compare each stage of both plans at the face's end points.
+                    let (mine, other, mine_trace, other_trace) =
+                        if side == "before" { (&before_points, &after_points, &before_trace, &after_trace) } else { (&after_points, &before_points, &after_trace, &before_trace) };
+                    let near = |set: &[Vec2], p: Vec2| set.iter().map(|q| (*q - p).length()).fold(f32::MAX, f32::min);
+                    let mut stage = "role or top".to_string();
+                    'found: for (label, p) in [("a", face.a), ("b", face.b)] {
+                        if near(other, p) > 1e-3 {
+                            stage = format!("outline point at end {label} {p:?} (nearest other {:.3} m)", near(other, p));
+                            break 'found;
+                        }
+                        for (s, name) in ["break set", "split", "pairing"].iter().enumerate() {
+                            if near(&mine_trace[s], p) < 1e-3 && near(&other_trace[s], p) > 1e-3 {
+                                let close: Vec<String> = other_trace[s].iter().filter(|q| (**q - p).length() < 2.0).map(|q| format!("{q:?}")).collect();
+                                stage = format!("{name} at end {label} {p:?}, other plan's {name} near it: [{}]", close.join(" "));
+                                break 'found;
+                            }
+                        }
+                    }
+                    let other_faces = if side == "before" { &after } else { &before };
+                    {
+                        let lo = face.a.min(face.b) - Vec2::splat(0.8);
+                        let hi = face.a.max(face.b) + Vec2::splat(0.8);
+                        let inside = |set: &[Vec2]| set.iter().filter(|p| p.cmpge(lo).all() && p.cmple(hi).all()).map(|p| format!("({:.2},{:.2})", p.x, p.y)).collect::<Vec<_>>().join(" ");
+                        for s in 0..3 {
+                            println!("EDITDIAG {name}: stage {s} breaks here, this plan [{}] other plan [{}]", inside(&mine_trace[s]), inside(&other_trace[s]));
+                        }
+                    }
+                    if let Some(twin) = other_faces.iter().find(|g| (g.a - face.a).length() < 1e-3 && (g.b - face.b).length() < 1e-3) {
+                        // Outline points between the ends that the other plan does not have.
+                        let lo = face.a.min(face.b) - Vec2::splat(0.8);
+                        let hi = face.a.max(face.b) + Vec2::splat(0.8);
+                        let odd: Vec<String> = mine.iter().filter(|p| p.cmpge(lo).all() && p.cmple(hi).all() && near(other, **p) > 1e-3).map(|p| format!("{p:?}")).collect();
+                        println!("EDITDIAG {name}: top {:.3} vs {:.3} in the other plan; points near this face missing from the other outline: [{}]", face.top, twin.top, odd.join(" "));
+                    }
+                    println!("EDITDIAG {name}: {side} face {:?}..{:?} ({:.1} m away) first differs in {stage}", face.a, face.b, nearest);
+                }
+            }
         }
-        lines.push(format!("  {{\"stroke\": \"{name}\", \"at\": [{}, {}], \"faces_before\": {}, \"faces_after\": {}, \"faces_changed\": {changed}, \"farthest_change_m\": {farthest:.2}}}", at.0, at.1, before.len(), after.len()));
-        println!("EDIT {name:8} at {at:?}: {changed} faces changed, farthest {farthest:.2} m from the stroke");
+        lines.push(format!("  {{\"stroke\": \"{name}\", \"at\": [{}, {}], \"faces_before\": {}, \"faces_after\": {}, \"faces_changed\": {changed}, \"farthest_change_m\": {farthest:.2}, \"changed_beyond_12m\": {far}}}", at.0, at.1, before.len(), after.len()));
+        println!("EDIT {name:8} at {at:?}: {changed} faces changed, farthest {farthest:.2} m from the stroke, {far} beyond 12 m");
     }
     lines.join(",\n")
 }
@@ -333,7 +384,7 @@ fn main() {
     if args.scene == "trio" {
         // Two more islands, staggered in space and height, built by the same code.
         let folder = std::path::Path::new(args.layout.as_deref().unwrap_or("runtime/data/reference/x")).parent().unwrap().to_path_buf();
-        for (file, seed, origin) in [("layout_4242_1.json", 4242, Vec3::new(56.0, 10.5, -36.0)), ("layout_913_2.json", 913, Vec3::new(-52.0, -8.5, 20.0))] {
+        for (file, seed, origin) in [("layout_4242_1.json", 4242, Vec3::new(46.0, 9.5, -30.0)), ("layout_913_2.json", 913, Vec3::new(-42.0, -7.5, 16.0))] {
             let other = field::load_layout(folder.join(file).to_str().unwrap());
             let built = build_island(&other, args.body, seed, origin, true);
             solid.append(&built.solid);
@@ -367,7 +418,8 @@ fn main() {
         let centre = [entry["center"][0].as_f64().unwrap() as f32, entry["center"][1].as_f64().unwrap() as f32];
         cameras.push((entry["name"].as_str().unwrap().to_string(), Camera::orbit(centre, entry["height"].as_f64().unwrap() as f32, entry["yaw"].as_f64().unwrap() as f32, entry["pitch"].as_f64().unwrap() as f32)));
     }
-    cameras.push(("wallpaper".to_string(), Camera { eye: Vec3::new(34.0, 21.0, 92.0), target: Vec3::new(2.0, 1.5, -6.0), fov_deg: 31.0 }));
+    cameras.push(("wallpaper".to_string(), Camera { eye: Vec3::new(26.0, 24.0, 122.0), target: Vec3::new(2.0, 0.0, -4.0), fov_deg: 31.0 }));
+    cameras.push(("below".to_string(), Camera { eye: Vec3::new(14.0, -19.0, 30.0), target: Vec3::new(-1.0, -2.0, -1.0), fov_deg: 31.0 }));
     if args.synthetic > 0 {
         // A synthetic island has its own size: frame it whole and close.
         let reach = cells.keys().map(|&(x, z)| Vec2::new(x as f32, z as f32).length()).fold(0.0, f32::max);
@@ -382,15 +434,24 @@ fn main() {
     let (pal, sun_dir, hour) = palette(&args.hour);
     std::fs::create_dir_all(&args.out).expect("output folder");
     let mut bench_lines = Vec::new();
+    let mut frame_lines = Vec::new();
     for (name, camera) in cameras.iter() {
-        if !(wanted.contains(&"all") && name != "wallpaper") && !wanted.contains(&name.as_str()) {
+        if !(wanted.contains(&"all") && name != "wallpaper" && name != "below") && !wanted.contains(&name.as_str()) {
             continue;
         }
         let frame = Frame { camera: *camera, sun_dir, time: 3.0, hour, look: look(&args.look), palette: pal };
         renderer.render(&frame);
         let path = format!("{}/{}_{}.png", args.out, args.tag, name);
-        renderer.save_png(&path);
+        let stats = renderer.save_png(&path);
         println!("FRAME {path}");
+        println!(
+            "STATS {name}: p05 {:.3} p50 {:.3} p95 {:.3} white {:.3} black {:.3} sat_mean {:.3} sat_p99 {:.3} quiet {:.3}",
+            stats.luma_p05, stats.luma_p50, stats.luma_p95, stats.near_white, stats.near_black, stats.saturation_mean, stats.saturation_p99, stats.quiet_share
+        );
+        frame_lines.push(format!(
+            "  {{\"view\": \"{name}\", \"p05\": {:.3}, \"p50\": {:.3}, \"p95\": {:.3}, \"white\": {:.3}, \"black\": {:.3}, \"sat_mean\": {:.3}, \"sat_p99\": {:.3}, \"quiet\": {:.3}}}",
+            stats.luma_p05, stats.luma_p50, stats.luma_p95, stats.near_white, stats.near_black, stats.saturation_mean, stats.saturation_p99, stats.quiet_share
+        ));
         if args.bench {
             let ms = renderer.bench(&frame, 120);
             println!("BENCH {name}: {ms:.2} ms a frame at {}x{} with {}x supersampling", args.width, args.height, args.scale);
@@ -400,7 +461,7 @@ fn main() {
     if let Some(path) = &args.metrics {
         let widths: Vec<String> = main_island.faces.iter().map(|f| format!("{:.1}", f.width)).collect();
         let text = format!(
-            "{{\n \"cells\": {},\n \"body\": \"{:?}\",\n \"triangles\": {},\n \"parts\": {{{}}},\n \"build_ms\": {:.2},\n \"stages_ms\": {{{}}},\n \"faces\": {},\n \"columns\": {},\n \"face_widths_m\": [{}],\n \"width_min_m\": {:.2},\n \"width_max_m\": {:.2},\n \"width_spread\": {:.3},\n \"step_spread_m\": {:.3},\n \"longest_alike_run\": {},\n \"longest_alike_run_m\": {:.2},\n \"edit_locality\": [\n{}\n ],\n \"bench\": [\n{}\n ]\n}}\n",
+            "{{\n \"cells\": {},\n \"body\": \"{:?}\",\n \"triangles\": {},\n \"parts\": {{{}}},\n \"build_ms\": {:.2},\n \"stages_ms\": {{{}}},\n \"faces\": {},\n \"columns\": {},\n \"face_widths_m\": [{}],\n \"width_min_m\": {:.2},\n \"width_max_m\": {:.2},\n \"width_spread\": {:.3},\n \"step_spread_m\": {:.3},\n \"longest_alike_run\": {},\n \"longest_alike_run_m\": {:.2},\n \"edit_locality\": [\n{}\n ],\n \"bench\": [\n{}\n ],\n \"frames\": [\n{}\n ]\n}}\n",
             cells.len(),
             args.body,
             main_island.solid.triangles(),
@@ -417,7 +478,8 @@ fn main() {
             metrics.longest_like_run,
             metrics.longest_like_run_m,
             edit_json,
-            bench_lines.join(",\n")
+            bench_lines.join(",\n"),
+            frame_lines.join(",\n")
         );
         std::fs::write(path, text).expect("write metrics");
     }

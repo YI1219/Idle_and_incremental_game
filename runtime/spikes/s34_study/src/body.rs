@@ -48,7 +48,7 @@ pub struct StoneColours {
 
 impl Default for StoneColours {
     fn default() -> StoneColours {
-        StoneColours { face: Vec3::new(0.75, 0.70, 0.60), warm: Vec3::new(0.82, 0.75, 0.60), cool: Vec3::new(0.59, 0.65, 0.66), under: Vec3::new(0.50, 0.56, 0.60) }
+        StoneColours { face: Vec3::new(0.72, 0.70, 0.63), warm: Vec3::new(0.78, 0.73, 0.62), cool: Vec3::new(0.59, 0.65, 0.66), under: Vec3::new(0.50, 0.56, 0.60) }
     }
 }
 
@@ -64,45 +64,111 @@ pub fn underside(field: &Field, p: Vec2, seed: u32) -> f32 {
 /// Splits the outline into faces. A point becomes a break when its score is
 /// the highest within its own window: corners and changes of rim height score
 /// high, and a world-anchored hash supplies the irregular rhythm in between.
-pub fn plan_faces(outline: &Outline, field: &Field, seed: u32, spacing: f32) -> Vec<Face> {
+/// Outline points are world-anchored and unevenly spaced, so every length here is
+/// arc length in metres, never a count of points.
+pub fn plan_faces(outline: &Outline, field: &Field, seed: u32, _spacing: f32) -> Vec<Face> {
+    plan_traced(outline, field, seed, &mut Vec::new())
+}
+
+/// `plan_faces`, also recording the break positions after each stage (break set, split, pairing).
+pub fn plan_traced(outline: &Outline, field: &Field, seed: u32, trace: &mut Vec<Vec<Vec2>>) -> Vec<Face> {
     let n = outline.points.len();
-    let at = |k: isize| outline.points[k.rem_euclid(n as isize) as usize];
-    let rim_height = |k: isize| {
-        let p = at(k);
-        field.height_at(p - outline.outward[k.rem_euclid(n as isize) as usize] * 0.7)
+    let ni = n as isize;
+    let wrap = |k: isize| k.rem_euclid(ni) as usize;
+    let at = |k: isize| outline.points[wrap(k)];
+    let seg: Vec<f32> = (0..n).map(|k| (outline.points[(k + 1) % n] - outline.points[k]).length()).collect();
+    let total: f32 = seg.iter().sum();
+    // Forward arc length from one point to another, summed locally so it does not depend on where the
+    // loop starts (a difference of running sums carries rounding from the whole loop and flips
+    // thresholds such as "at least 2 m" that sit on multiples of the lattice). A full loop when equal.
+    let ahead = |from: usize, to: usize| {
+        if from == to {
+            return total;
+        }
+        let (mut k, mut sum) = (from, 0.0_f32);
+        while k != to {
+            sum += seg[k];
+            k = (k + 1) % n;
+        }
+        sum
     };
+    // The point nearest to a signed arc offset `d` from point `k`.
+    let offset = |k: usize, d: f32| -> usize {
+        let dir: isize = if d >= 0.0 { 1 } else { -1 };
+        let (mut j, mut walked) = (k as isize, 0.0_f32);
+        loop {
+            let next = j + dir;
+            let seg = (at(next) - at(j)).length();
+            if walked + seg >= d.abs() {
+                return if d.abs() - walked < walked + seg - d.abs() { wrap(j) } else { wrap(next) };
+            }
+            walked += seg;
+            j = next;
+            if (j - k as isize).abs() >= ni {
+                return wrap(j);
+            }
+        }
+    };
+    let rim_height = |k: usize| field.height_at(outline.points[k] - outline.outward[k] * 0.7);
+    // Hash keys carry a fixed offset: the points lie exactly on lattice lines, where floor can flip.
+    let cell = |p: Vec2, k: f32| ((p.x * k + 0.137).floor() as i32, (p.y * k + 0.291).floor() as i32);
     let mut score = vec![0.0_f32; n];
-    let mut window = vec![0_isize; n];
-    for k in 0..n as isize {
-        let p = at(k);
-        let reach = (1.5 / spacing).round() as isize;
-        let (d0, d1) = ((p - at(k - reach)).normalize_or_zero(), (at(k + reach) - p).normalize_or_zero());
-        let turn = d0.perp_dot(d1).abs().clamp(0.0, 1.0).asin().to_degrees();
-        let jump = (rim_height(k + 1) - rim_height(k - 1)).abs();
-        score[k as usize] = hash2((p.x * 1.0).floor() as i32, (p.y * 1.0).floor() as i32, seed ^ 61) + 0.7 * (turn / 40.0).min(1.0) + if jump > 0.3 { 2.0 } else { 0.0 };
-        let coarse = hash2((p.x / 5.0).floor() as i32, (p.y / 5.0).floor() as i32, seed ^ 62);
+    let mut window = vec![0.0_f32; n];
+    let mut tie = vec![0.0_f32; n];
+    for k in 0..n {
+        let p = outline.points[k];
+        let (d0, d1) = ((p - outline.points[offset(k, -1.5)]).normalize_or_zero(), (outline.points[offset(k, 1.5)] - p).normalize_or_zero());
+        // A dead zone of one degree: on a straight stretch the turn is float noise, and two points in
+        // the same hash cell would then be ranked by that noise.
+        let turn = (d0.perp_dot(d1).abs().clamp(0.0, 1.0).asin().to_degrees() - 1.0).max(0.0);
+        let jump = (rim_height(offset(k, 0.5)) - rim_height(offset(k, -0.5))).abs();
+        let c1 = cell(p, 1.0);
+        score[k] = hash2(c1.0, c1.1, seed ^ 61) + 0.7 * (turn / 40.0).min(1.0) + if jump > 0.3 { 2.0 } else { 0.0 };
+        let c4 = cell(p, 4.0);
+        tie[k] = hash2(c4.0, c4.1, seed ^ 66);
+        let c5 = cell(p, 0.2);
+        let coarse = hash2(c5.0, c5.1, seed ^ 62);
         // Windows of 2 to 6 metres either side give faces from about 2.5 to 12 metres.
-        window[k as usize] = ((2.0 + 4.0 * coarse * coarse) / spacing).round() as isize;
+        window[k] = 2.0 + 4.0 * coarse * coarse;
     }
     let mut breaks: Vec<usize> = Vec::new();
-    for k in 0..n as isize {
-        let w = window[k as usize];
-        let mine = score[k as usize];
+    for k in 0..n {
+        let (w, mine) = (window[k], score[k]);
+        // Ties go to a fine world-anchored hash first; the index (which shifts when the loop changes) is last.
+        let beats = |j: usize| score[j] > mine || (score[j] == mine && (tie[j] > tie[k] || (tie[j] == tie[k] && j < k)));
         let mut best = true;
-        for d in 1..=w {
-            let (before, after) = (score[(k - d).rem_euclid(n as isize) as usize], score[(k + d).rem_euclid(n as isize) as usize]);
-            if before >= mine || after > mine {
+        let mut j = k;
+        loop {
+            j = (j + 1) % n;
+            if j == k || ahead(k, j) > w {
+                break;
+            }
+            if beats(j) {
                 best = false;
                 break;
             }
         }
         if best {
-            breaks.push(k as usize);
+            j = k;
+            loop {
+                j = (j + n - 1) % n;
+                if j == k || ahead(j, k) > w {
+                    break;
+                }
+                if beats(j) {
+                    best = false;
+                    break;
+                }
+            }
+        }
+        if best {
+            breaks.push(k);
         }
     }
     if breaks.len() < 3 {
-        breaks = (0..6).map(|i| i * n / 6).collect();
+        breaks = (0..6).map(|i| offset(0, i as f32 * total / 6.0)).collect();
     }
+    trace.push(breaks.iter().map(|&k| outline.points[k]).collect());
     // A long face over a curved rim would cut far inside the lawn: split it where it sags most.
     let mut changed = true;
     while changed {
@@ -123,13 +189,14 @@ pub fn plan_faces(outline: &Outline, field: &Field, seed: u32, spacing: f32) -> 
                     worst_at = (from + step) % n;
                 }
             }
-            if worst > 0.85 && count > 6 {
+            if worst > 0.85 && ahead(from, to) > 3.0 {
                 next.push(worst_at);
                 changed = true;
             }
         }
         breaks = next;
     }
+    trace.push(breaks.iter().map(|&k| outline.points[k]).collect());
     // Rhythm: a long face becomes a pair, one broad and one narrow, in an order chosen locally.
     // This is what keeps a gently curved rim from turning into a row of equal chords.
     // Two passes, so the broad part of a very long face is paired again and no face stays a wall.
@@ -138,27 +205,28 @@ pub fn plan_faces(outline: &Outline, field: &Field, seed: u32, spacing: f32) -> 
         for i in 0..breaks.len() {
             let (from, to) = (breaks[i], breaks[(i + 1) % breaks.len()]);
             paired.push(from);
-            let count = (to + n - from) % n;
-            if count as f32 * spacing > if pass == 0 { 5.2 } else { 6.2 } {
-                let p = outline.points[from];
-                let h = hash2((p.x * 0.5).floor() as i32, (p.y * 0.5).floor() as i32, seed ^ (65 + pass));
+            let span = ahead(from, to);
+            if span > if pass == 0 { 5.2 } else { 6.2 } {
+                let key = cell(outline.points[from], 0.5);
+                let h = hash2(key.0, key.1, seed ^ (65 + pass));
                 let share = if h < 0.5 { 0.24 + 0.16 * h } else { 0.60 + 0.16 * h };
-                let cut = (count as f32 * share).round() as usize;
-                if cut >= 4 && count - cut >= 4 {
-                    paired.push((from + cut) % n);
+                let cut = offset(from, span * share);
+                let first = if cut == from { 0.0 } else { ahead(from, cut) };                if first >= 2.0 && span - first >= 2.0 {
+                    paired.push(cut);
                 }
             }
         }
         breaks = paired;
     }
+    trace.push(breaks.iter().map(|&k| outline.points[k]).collect());
     let mut faces = Vec::with_capacity(breaks.len());
     for i in 0..breaks.len() {
         let (from, to) = (breaks[i], breaks[(i + 1) % breaks.len()]);
         let count = (to + n - from) % n;
         let (a, b) = (outline.points[from], outline.points[to]);
-        let width = count as f32 * spacing;
+        let width = ahead(from, to);
         let mid = (a + b) * 0.5;
-        let key = ((mid.x * 0.5).floor() as i32, (mid.y * 0.5).floor() as i32);
+        let key = cell(mid, 0.5);
         let (h1, h2) = (hash2(key.0, key.1, seed ^ 63), hash2(key.0, key.1, seed ^ 64));
         let role = if width >= 4.8 {
             Role::Primary
@@ -169,7 +237,7 @@ pub fn plan_faces(outline: &Outline, field: &Field, seed: u32, spacing: f32) -> 
         };
         let mut top = f32::MAX;
         for step in 0..=count {
-            top = top.min(rim_height((from + step) as isize));
+            top = top.min(rim_height((from + step) % n));
         }
         let (step, depth) = match role {
             Role::Primary => (0.15 + 0.75 * h1, 5.4 + 2.8 * h2 + if h1 > 0.62 { 2.6 } else { 0.0 }),
@@ -358,7 +426,7 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let mid = (face.a + face.b) * 0.5;
             // Outward must point away from the island at the middle of the face.
             let out = if field.sample(&field.land2, mid + out) < field.sample(&field.land2, mid - out) { out } else { -out };
-            let key = ((mid.x * 0.5).floor() as i32, (mid.y * 0.5).floor() as i32);
+            let key = ((mid.x * 0.5 + 0.137).floor() as i32, (mid.y * 0.5 + 0.291).floor() as i32);
             let (h1, h2, h3) = (hash2(key.0, key.1, seed ^ 81), hash2(key.0, key.1, seed ^ 82), hash2(key.0, key.1, seed ^ 83));
             let thick = 2.4 + 1.6 * h1 + if face.role == Role::Primary { 0.8 } else { 0.0 };
             let front = face.step - 0.12;

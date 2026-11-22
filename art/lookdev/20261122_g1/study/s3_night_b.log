@@ -1,0 +1,8 @@
+island: 623 cells, 27 faces, 72 columns, 55338 triangles (top 24374, body 2933, decor 24302, tufts 3729), built in 39.9 ms (fields 24.6, top 12.0, body 0.3, decor 1.7)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+FRAME art/lookdev/20261122_g1/study/s3_night_b/s3_night_b_game.png
+STATS game: p05 0.235 p50 0.349 p95 0.529 white 0.011 black 0.000 sat_mean 0.322 sat_p99 0.518 quiet 0.563
+FRAME art/lookdev/20261122_g1/study/s3_night_b/s3_night_b_whole.png
+STATS whole: p05 0.267 p50 0.439 p95 0.533 white 0.011 black 0.000 sat_mean 0.315 sat_p99 0.494 quiet 0.671
+FRAME art/lookdev/20261122_g1/study/s3_night_b/s3_night_b_cliff_close.png
+STATS cliff_close: p05 0.227 p50 0.349 p95 0.529 white 0.004 black 0.000 sat_mean 0.310 sat_p99 0.553 quiet 0.593

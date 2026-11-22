@@ -1,0 +1,11 @@
+island: 503 cells, 27 faces, 64 columns, 50902 triangles (top 20534, body 2495, decor 24438, tufts 3435), built in 35.0 ms (fields 22.1, top 10.0, body 0.3, decor 1.7)
+form: 27 faces, widths 2.0 to 6.9 m (spread 0.39), step spread 0.31 m, longest alike run 2 faces / 5.2 m
+EDIT expand   at (0, -6): 10 faces changed, farthest 7.27 m from the stroke, 0 beyond 12 m
+EDIT contract at (17, -3): 9 faces changed, farthest 4.59 m from the stroke, 0 beyond 12 m
+EDIT raise    at (20, -1): 9 faces changed, farthest 5.92 m from the stroke, 0 beyond 12 m
+FRAME art/lookdev/20261122_g1/study/s4_karst_4242/s4_karst_4242_whole.png
+STATS whole: p05 0.427 p50 0.827 p95 0.871 white 0.001 black 0.000 sat_mean 0.156 sat_p99 0.510 quiet 0.659
+FRAME art/lookdev/20261122_g1/study/s4_karst_4242/s4_karst_4242_reverse.png
+STATS reverse: p05 0.357 p50 0.827 p95 0.871 white 0.000 black 0.000 sat_mean 0.126 sat_p99 0.506 quiet 0.720
+FRAME art/lookdev/20261122_g1/study/s4_karst_4242/s4_karst_4242_foot_reverse.png
+STATS foot_reverse: p05 0.318 p50 0.796 p95 0.867 white 0.000 black 0.000 sat_mean 0.132 sat_p99 0.510 quiet 0.561

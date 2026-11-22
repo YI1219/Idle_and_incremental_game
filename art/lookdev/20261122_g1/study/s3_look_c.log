@@ -1,0 +1,14 @@
+island: 623 cells, 27 faces, 72 columns, 55338 triangles (top 24374, body 2933, decor 24302, tufts 3729), built in 40.2 ms (fields 25.0, top 12.0, body 0.2, decor 1.7)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+FRAME art/lookdev/20261122_g1/study/s3_look_c/s3_look_c_game.png
+STATS game: p05 0.357 p50 0.600 p95 0.871 white 0.002 black 0.000 sat_mean 0.254 sat_p99 0.522 quiet 0.390
+FRAME art/lookdev/20261122_g1/study/s3_look_c/s3_look_c_whole.png
+STATS whole: p05 0.416 p50 0.820 p95 0.875 white 0.001 black 0.000 sat_mean 0.169 sat_p99 0.514 quiet 0.603
+FRAME art/lookdev/20261122_g1/study/s3_look_c/s3_look_c_reverse.png
+STATS reverse: p05 0.329 p50 0.824 p95 0.875 white 0.000 black 0.000 sat_mean 0.137 sat_p99 0.510 quiet 0.670
+FRAME art/lookdev/20261122_g1/study/s3_look_c/s3_look_c_cliff_close.png
+STATS cliff_close: p05 0.318 p50 0.612 p95 0.871 white 0.001 black 0.000 sat_mean 0.218 sat_p99 0.525 quiet 0.490
+FRAME art/lookdev/20261122_g1/study/s3_look_c/s3_look_c_foot_reverse.png
+STATS foot_reverse: p05 0.302 p50 0.796 p95 0.871 white 0.000 black 0.000 sat_mean 0.137 sat_p99 0.510 quiet 0.513
+FRAME art/lookdev/20261122_g1/study/s3_look_c/s3_look_c_terrace_close.png
+STATS terrace_close: p05 0.357 p50 0.525 p95 0.859 white 0.002 black 0.000 sat_mean 0.362 sat_p99 0.533 quiet 0.379

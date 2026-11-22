@@ -122,8 +122,10 @@ fn brushed(base: vec3<f32>, world: vec3<f32>, n: vec3<f32>, family: f32, weight:
         along = normalize(along);
         let u = dot(world, along);
         let plane = vnoise(vec2<f32>(u * 0.33, world.y * 0.22));
-        let dry = smoothstep(0.60, 0.72, vnoise(vec2<f32>(u * 3.4, world.y * 0.42))) * vnoise(vec2<f32>(u * 13.0, world.y * 1.7));
-        colour = colour * (0.93 + 0.12 * plane) * (1.0 - 0.26 * dry * weight);
+        let cluster = smoothstep(0.64, 0.68, vnoise(vec2<f32>(u * 0.9, world.y * 0.30)));
+        let hair = step(0.62, vnoise(vec2<f32>(u * 24.0, world.y * 1.1)));
+        let dry = cluster * hair;
+        colour = colour * (0.96 + 0.07 * plane) * (1.0 - 0.11 * dry * weight);
     } else if (family >= 0.5 && family < 0.83) {
         // Leaf: dabs.
         let dab = vnoise(world.xz * 5.5 + vec2<f32>(world.y * 3.1, world.y * 1.7));
@@ -291,7 +293,7 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
         let turn = 0.40 * (0.5 + 0.5 * n.y) + 0.60 * max(dot(n, fill_dir), 0.0);
         let half_light = mix(smoothstep(0.10, 0.70, turn), smoothstep(0.30, 0.44, turn), g.look.y);
         let wash = shadow_wash(family);
-        let shade = albedo * mix(wash * 0.80, mix(wash, vec3<f32>(1.0), 0.30), half_light);
+        let shade = albedo * mix(wash * 0.88, mix(wash, vec3<f32>(1.0), 0.30), half_light);
         colour = mix(shade, lit, sun) * mix(g.pal[P_SUN].a, 1.0, terms.g) * g.pal[P_MISC].z;
 
         // Line: heavier on silhouettes, lighter on inner creases, fading with distance.
@@ -300,7 +302,7 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
             let fine = line_at(px, scale, c, n, packed.a, terms.b);
             let wide = line_at(px, scale * 2, c, n, packed.a, terms.b);
             let line = clamp(0.80 * fine + 0.50 * wide, 0.0, 1.0);
-            let fade = exp(-c * g.pal[P_FAR].a * 1.4);
+            let fade = exp(-c * g.pal[P_FAR].a * 1.4) * exp(-c / 160.0);
             // Ink takes the hue of what it draws: green on grass and leaves, warm grey on stone and wood.
             var ink = g.pal[P_INK].rgb;
             if (family < 0.17) {

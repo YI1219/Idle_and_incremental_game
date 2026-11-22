@@ -1,0 +1,6 @@
+island: 623 cells, 27 faces, 72 columns, 55338 triangles (top 24374, body 2933, decor 24302, tufts 3729), built in 40.6 ms (fields 25.0, top 12.3, body 0.2, decor 1.7)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+FRAME art/lookdev/20261122_g1/study/s3_trio_b_day/s3_trio_b_day_whole.png
+STATS whole: p05 0.431 p50 0.820 p95 0.871 white 0.001 black 0.000 sat_mean 0.170 sat_p99 0.510 quiet 0.639
+FRAME art/lookdev/20261122_g1/study/s3_trio_b_day/s3_trio_b_day_wallpaper.png
+STATS wallpaper: p05 0.475 p50 0.843 p95 0.871 white 0.001 black 0.000 sat_mean 0.113 sat_p99 0.478 quiet 0.689

@@ -8,6 +8,8 @@ Owner decision, 2026-11-22 (outranks the 2026-11-21 "stay on Godot and change te
 
 What binds (owner, 2026-11-22): the locked gameplay is the hard constraint; the feel of today's picture is the floor to keep and raise; earlier code, requirement notes, specifications and pipeline, including the older sections of this file, are reference and not rules. The agent sets and pursues the art goal and decides engine internals; the owner judges pictures. The agent has full authority over git for this repository; never discard work without a recoverable tag or backup.
 
+How the work is done (owner, 2026-11-22): Fable directs, reviews and decides; Opus 5.5 sub-agents do the implementation, in the same workspace.
+
 Owner answers in two rounds the same day (full list in section 1.1 of the plan):
 
 - First acceptance gate: this Mac (M4 Pro) on its own screen at 3024x1964 and 60 FPS, fallback 1080p at 120 FPS. Windows and thin laptops come later and nothing waits on them; nothing is claimed for them until measured.
@@ -19,12 +21,15 @@ Owner answers in two rounds the same day (full list in section 1.1 of the plan):
 State of the work:
 
 - Plan: `docs/engine_refactor_plan.md`. No owner decision is open (`docs/engine_refactor_plan_questions.md`).
-- Freeze done: tag `godot-freeze-20261122` on `pr-18-lip`, after 40 of 40 regression cases. Godot at the gate resolution on the default island: default tier 22.4 to 29.4 ms, light tier 13.7 to 18.9 ms (`art/lookdev/20261122_freeze/`). Lookdev pictures are ignored in git and cloned to `~/Archives/the-scroll-within/lookdev_20261122/`. Raw model sources and candidate assets are in the local-only tag `godot-freeze-20261122-full` because `origin` is public.
-- The Godot project is now the frozen picture baseline. Runtime work is on branch `runtime-dev` in `runtime/` (Rust, wgpu 30, winit 0.30); `runtime/README.md` lists what exists.
-- Spike S1 done (`runtime/spikes/s1_wallpaper/`): a true macOS wallpaper window works, between the Finder's icons and the system picture; covered, it presents nothing and uses 0.05% of a core while the simulation stand-in keeps stepping; visible at 30 FPS, 3.6% of a core. Timer pacing is about one frame in twenty a refresh late: the shell needs display-driven pacing. Not tested: display sleep, session lock, several Spaces.
-- Spike S2 done (`runtime/spikes/s2_render/`): on a stand-in scene with a 4,096-cell island and two more in view, the cached-island structure costs 1.6 to 1.9 ms moving and 0.5 ms still at 3024x1964 (budgets 12 and 4 ms). It is the cost of the structure, not of the final picture, and its frames are not a look.
+- Phase 0 done. Freeze: tag `godot-freeze-20261122` on `pr-18-lip`, after 40 of 40 regression cases; Godot at the gate resolution on the default island needs 22.4 to 29.4 ms on its default tier and 13.7 to 18.9 ms on its light tier (`art/lookdev/20261122_freeze/`). Lookdev pictures are ignored in git and cloned to `~/Archives/the-scroll-within/lookdev_20261122/`. Raw model sources and candidate assets are in the local-only tag `godot-freeze-20261122-full` because `origin` is public. Exports for the runtime are in `tools/export/` and `runtime/data/reference/`: cells of the four review layouts, the twelve cameras, production traces; 72 Godot reference frames at 3024x1964 are in `art/lookdev/20261122_g1/godot_baseline/`.
+- Phase 1 done, checkpoint G1 reached: `art/lookdev/20261122_g1/README.md` and `compare.html`. Runtime work is on branch `runtime-dev` in `runtime/` (Rust, wgpu 30, winit 0.30); `runtime/README.md` lists what exists. All of it is throwaway spike code.
+  - S1: a true macOS wallpaper window works; covered, it presents nothing and uses 0.05% of a core; visible at 30 FPS, 3.6% of a core. Timer pacing is not good enough; the shell needs display-driven pacing. Display sleep, session lock and several Spaces are untested.
+  - S2: the cached-island structure costs 1.6 to 1.9 ms moving and 0.5 ms still at 3024x1964 on a stand-in scene (budgets 12 and 4 ms).
+  - S4: picked the hanging-rock body on a liner over the plain hull. Its rim plan passes the locality test on five islands and rebuilds a whole 4,096-cell island in 172 ms. Its defects are listed in the G1 README.
+  - S3: picked line and flat wash on a warm silk-paper ground. With four samples per pixel it costs 5.2 to 8.5 ms a frame at 3024x1964.
+- The G1 picks are the agent's and are not art-accepted. The owner has not yet looked at G1.
 - The Mac's display runs a scaled mode: 1800x1169 points, 3600x2338 backing pixels, on the 3024x1964 panel, at 120 Hz. The gate is measured at 3024x1964; 3600x2338 is reported beside it.
-- Next, no owner input needed: phase 0 exports (cells of the review layouts, fixed cameras, Godot reference frames at 3024x1964), then S4 (generator study) and S3 (look study) on the S2 skeleton, then checkpoint G1 with pictures.
+- Next, unless the owner redirects at G1: phase 2, the shared runtime core and the headless simulation, tested against `runtime/data/reference/production_trace.json`.
 - Still true: no lookdev pass is art-accepted; a new runtime does not by itself fix island form or the presence of large cliff faces.
 
 ## 2026-11-21 session: reverse wall stagger (English)

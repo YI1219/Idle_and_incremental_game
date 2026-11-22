@@ -1,0 +1,28 @@
+{
+ "cells": 623,
+ "body": "Karst",
+ "triangles": 55338,
+ "parts": {"top": 24374, "body": 2933, "decor": 24302, "tufts": 3729},
+ "build_ms": 40.48,
+ "stages_ms": {"fields": 25.18, "top": 12.10, "body": 0.23, "decor": 1.62},
+ "faces": 27,
+ "columns": 72,
+ "face_widths_m": [3.0, 5.3, 2.8, 4.5, 2.5, 2.2, 4.9, 3.5, 2.6, 5.0, 2.0, 5.7, 4.1, 4.3, 5.3, 2.3, 4.5, 2.3, 4.8, 4.5, 5.0, 5.2, 2.0, 2.1, 4.5, 3.1, 2.7],
+ "width_min_m": 2.04,
+ "width_max_m": 5.68,
+ "width_spread": 0.326,
+ "step_spread_m": 0.344,
+ "longest_alike_run": 3,
+ "longest_alike_run_m": 8.75,
+ "edit_locality": [
+
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "game", "p05": 0.227, "p50": 0.349, "p95": 0.529, "white": 0.011, "black": 0.000, "sat_mean": 0.322, "sat_p99": 0.518, "quiet": 0.504},
+  {"view": "whole", "p05": 0.259, "p50": 0.439, "p95": 0.533, "white": 0.011, "black": 0.000, "sat_mean": 0.315, "sat_p99": 0.494, "quiet": 0.646},
+  {"view": "cliff_close", "p05": 0.224, "p50": 0.345, "p95": 0.529, "white": 0.004, "black": 0.000, "sat_mean": 0.310, "sat_p99": 0.553, "quiet": 0.531}
+ ]
+}
