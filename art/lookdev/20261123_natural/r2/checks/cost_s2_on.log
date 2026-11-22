@@ -1,0 +1,9 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2) from scene_7301_0
+island: 623 cells, 27 faces, 72 columns, 31036 triangles (top 24374, body 2933, decor 0, tufts 3729, props 76710), built in 44.0 ms (fields 24.8, top 12.0, body 0.3, decor 5.8)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+FRAME art/lookdev/20261123_natural/r2/checks/cost_s2_on/c_game.png
+STATS game: p05 0.396 p50 0.745 p95 0.914 white 0.007 black 0.001 sat_mean 0.198 sat_p99 0.498 quiet 0.502
+BENCH game: 16.96 ms a frame at 3024x1964 with 2x supersampling, ssao on, fxaa off, props on
+FRAME art/lookdev/20261123_natural/r2/checks/cost_s2_on/c_whole.png
+STATS whole: p05 0.494 p50 0.827 p95 0.925 white 0.011 black 0.000 sat_mean 0.123 sat_p99 0.475 quiet 0.660
+BENCH whole: 15.22 ms a frame at 3024x1964 with 2x supersampling, ssao on, fxaa off, props on

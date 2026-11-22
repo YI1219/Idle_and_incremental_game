@@ -1,0 +1,21 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2) from scene_7301_0
+island: 623 cells, 27 faces, 72 columns, 27307 triangles (top 24374, body 2933, decor 0, props 76710, grass full 212743), built in 55.0 ms (fields 24.6, top 12.3, body 0.3, decor 4.9, grass 12.5)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 11197 clumps, 212743 triangles full, 212743 drawn
+FRAME art/lookdev/20261123_natural/r3/n_7301/n_7301_game.png
+STATS game: p05 0.388 p50 0.757 p95 0.937 white 0.014 black 0.001 sat_mean 0.216 sat_p99 0.545 quiet 0.480
+GRASS whole: 11197 clumps, 212743 triangles full, 212743 drawn
+FRAME art/lookdev/20261123_natural/r3/n_7301/n_7301_whole.png
+STATS whole: p05 0.404 p50 0.820 p95 0.937 white 0.013 black 0.000 sat_mean 0.144 sat_p99 0.506 quiet 0.682
+GRASS reverse: 11197 clumps, 212743 triangles full, 212743 drawn
+FRAME art/lookdev/20261123_natural/r3/n_7301/n_7301_reverse.png
+STATS reverse: p05 0.357 p50 0.773 p95 0.922 white 0.004 black 0.000 sat_mean 0.129 sat_p99 0.502 quiet 0.700
+GRASS cliff_close: 11197 clumps, 212743 triangles full, 179094 drawn
+FRAME art/lookdev/20261123_natural/r3/n_7301/n_7301_cliff_close.png
+STATS cliff_close: p05 0.416 p50 0.729 p95 0.933 white 0.006 black 0.001 sat_mean 0.175 sat_p99 0.561 quiet 0.554
+GRASS foot_reverse: 11197 clumps, 212743 triangles full, 212743 drawn
+FRAME art/lookdev/20261123_natural/r3/n_7301/n_7301_foot_reverse.png
+STATS foot_reverse: p05 0.286 p50 0.753 p95 0.925 white 0.002 black 0.000 sat_mean 0.129 sat_p99 0.506 quiet 0.575
+GRASS terrace_close: 11197 clumps, 212743 triangles full, 205618 drawn
+FRAME art/lookdev/20261123_natural/r3/n_7301/n_7301_terrace_close.png
+STATS terrace_close: p05 0.392 p50 0.627 p95 0.937 white 0.006 black 0.001 sat_mean 0.341 sat_p99 0.565 quiet 0.339

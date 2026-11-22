@@ -302,7 +302,6 @@ pub struct Top {
 #[derive(Clone, Copy)]
 pub struct TopColours {
     pub lawn: Vec3,
-    pub lawn_warm: Vec3,
     pub lawn_cool: Vec3,
     pub riser: Vec3,
     pub bed: Vec3,
@@ -311,12 +310,12 @@ pub struct TopColours {
 
 impl Default for TopColours {
     fn default() -> TopColours {
+        // The ground under the grass field: close to the blades' mid colour.
         TopColours {
-            lawn: Vec3::new(0.45, 0.57, 0.30),
-            lawn_warm: Vec3::new(0.54, 0.61, 0.31),
-            lawn_cool: Vec3::new(0.38, 0.52, 0.32),
-            riser: Vec3::new(0.70, 0.68, 0.60),
-            bed: Vec3::new(0.36, 0.42, 0.36),
+            lawn: Vec3::new(0.435, 0.530, 0.260),
+            lawn_cool: Vec3::new(0.42, 0.53, 0.267),
+            riser: Vec3::new(0.655, 0.618, 0.555),
+            bed: Vec3::new(0.22, 0.32, 0.28),
             bank: Vec3::new(0.74, 0.71, 0.58),
         }
     }
@@ -333,10 +332,9 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
         let slope = g.length();
         // Steps are cut as whole facets where the triangles are emitted; vertices stay lawn.
         let stone = 0.0 * slope;
-        let patch = vnoise(p.x * 0.11, p.y * 0.11, seed ^ 31);
-        let fine = vnoise(p.x * 0.45, p.y * 0.45, seed ^ 32) - 0.5;
-        let mut lawn = if patch > 0.5 { colours.lawn.lerp(colours.lawn_warm, (patch - 0.5) * 1.6) } else { colours.lawn.lerp(colours.lawn_cool, (0.5 - patch) * 1.6) };
-        lawn += Vec3::splat(fine * 0.025);
+        // The ground under the blades: the blades' own mid colour and the same soft tone patches,
+        // so gaps between blades do not read (director, 2026-11-23: not a darker ground).
+        let lawn = colours.lawn * crate::grass::lawn_tone(p, seed);
         let mut colour = lawn.lerp(colours.riser, stone);
         let mut family = if stone > 0.5 { Family::Stone } else { Family::Ground };
         let wet = field.sample(&field.wet, p);
@@ -393,7 +391,10 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
             let cell_normal = Vec3::new(-g.x, 1.0, -g.y).normalize();
             if cell_normal.y < 0.60 {
                 let tone = 0.94 + 0.10 * hash2((centre.x * 1.3).floor() as i32, (centre.y * 1.3).floor() as i32, seed ^ 33);
-                let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2);
+                // The lawn above the step, for its mossy brow and the dark band under the lip.
+                let up = g.normalize_or_zero();
+                let lip = field.height_at(centre + up * 0.8).max(field.height_at(centre + up * 0.4));
+                let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(lip);
                 for k in 1..fan.len() - 1 {
                     mesh.tri_full([fan[0].0, fan[k].0, fan[k + 1].0], [cell_normal; 3], [colours.riser * tone; 3], [paint; 3]);
                 }

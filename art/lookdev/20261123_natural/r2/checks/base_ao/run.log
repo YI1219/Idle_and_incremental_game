@@ -1,0 +1,8 @@
+island: 623 cells, 27 faces, 72 columns, 55338 triangles (top 24374, body 2933, decor 24302, tufts 3729), built in 39.9 ms (fields 24.9, top 12.0, body 0.2, decor 1.7)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+FRAME art/lookdev/20261123_natural/r2/checks/base_ao/base_ao_game.png
+STATS game: p05 0.620 p50 0.812 p95 0.910 white 0.004 black 0.000 sat_mean 0.024 sat_p99 0.173 quiet 0.603
+FRAME art/lookdev/20261123_natural/r2/checks/base_ao/base_ao_whole.png
+STATS whole: p05 0.643 p50 0.835 p95 0.925 white 0.012 black 0.000 sat_mean 0.028 sat_p99 0.145 quiet 0.700
+FRAME art/lookdev/20261123_natural/r2/checks/base_ao/base_ao_cliff_close.png
+STATS cliff_close: p05 0.631 p50 0.792 p95 0.918 white 0.009 black 0.000 sat_mean 0.019 sat_p99 0.165 quiet 0.654

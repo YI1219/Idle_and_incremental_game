@@ -48,7 +48,10 @@ pub struct StoneColours {
 
 impl Default for StoneColours {
     fn default() -> StoneColours {
-        StoneColours { face: Vec3::new(0.72, 0.70, 0.63), warm: Vec3::new(0.78, 0.73, 0.62), cool: Vec3::new(0.59, 0.65, 0.66), under: Vec3::new(0.50, 0.56, 0.60) }
+        // Pale rice-grey pigment with almost equal channels: the sun warms it, the sky cools it.
+        // (The earlier face (0.72, 0.70, 0.63) and green-grey cool and under tones read khaki-olive
+        // under the blue sky light: a yellowish pigment times a cyan light gives green.)
+        StoneColours { face: Vec3::new(0.745, 0.722, 0.675), warm: Vec3::new(0.775, 0.745, 0.68), cool: Vec3::new(0.69, 0.695, 0.70), under: Vec3::new(0.64, 0.65, 0.665) }
     }
 }
 
@@ -337,12 +340,15 @@ pub fn build_hull(field: &Field, colours: &StoneColours, seed: u32, grid: f32, h
                 let depth = (-mid.y).max(0.0);
                 let tone = hash2((mid.x * 0.7) as i32, (mid.z * 0.7) as i32, seed ^ 73) - 0.5;
                 let colour = if hidden { (colours.face * 0.90).lerp(colours.under, 0.25 + 0.6 * smoothstep(0.0, 8.0, depth)) } else { colours.face.lerp(colours.under, smoothstep(1.0, 9.0, depth)) } * (1.0 + tone * 0.08);
+                // The lawn lip over this triangle: the highest rim corner, or the ground above its middle.
+                let lip = [a, b, c].iter().map(|v| v.y + 0.30).fold(field.height_at(Vec2::new(mid.x, mid.z)), f32::max);
                 let paint = Paint::new(Family::Stone)
                     .sky(if hidden { 0.70 } else { 1.0 - 0.5 * smoothstep(0.0, 10.0, depth) })
                     .line(0.9)
                     .strokes(0.8)
                     .id(40 + ((mid.x * 0.37 + mid.z * 0.91).abs() as u32 % 60) as u8)
-                    .grad(if hidden { 0.6 } else { smoothstep(-1.0, 10.0, depth) });
+                    .grad(if hidden { 0.6 } else { smoothstep(-1.0, 10.0, depth) })
+                    .lip(lip);
                 mesh.tri(a, b, c, colour, paint);
             }
         }
@@ -351,10 +357,31 @@ pub fn build_hull(field: &Field, colours: &StoneColours, seed: u32, grid: f32, h
 }
 
 /// A hanging column: an n-sided prism whose foot is a single tilted cut and
-/// whose sides lean inward as they descend.
+/// whose sides lean inward as they descend. The first `front` plan edges are the block's
+/// visible front (their ends and the two side faces after them sit in the joins with the
+/// neighbouring blocks and are darkened there); `lip` is the lawn lip above it, for the brow.
 #[allow(clippy::too_many_arguments)]
-fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, taper: f32, tilt: Vec2, colour: Vec3, colours: &StoneColours, id: u8, tier: f32, ledge: bool) {
+fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, taper: f32, tilt: Vec2, colour: Vec3, colours: &StoneColours, id: u8, tier: f32, ledge: bool, front: usize, lip: Option<f32>) {
     let n = plan.len();
+    // Arc position of each front plan point, and the front's width.
+    let mut along = vec![0.0_f32; n];
+    for k in 0..front.min(n - 1) {
+        along[k + 1] = along[k] + (plan[k + 1] - plan[k]).length();
+    }
+    let width = if front > 0 { along[front.min(n - 1)] } else { 0.0 };
+    // Per edge k (plan[k] -> plan[k + 1]): the join coordinate at its two ends and the width (0: none).
+    let join_of = |k: usize| -> (f32, f32, f32) {
+        if front == 0 || width <= 0.0 {
+            (0.0, 0.0, 0.0)
+        } else if k < front {
+            (along[k] / width, along[k + 1] / width, width)
+        } else if k == front || k == n - 1 {
+            // The side faces: wholly inside a join.
+            (0.0, 0.0, width)
+        } else {
+            (0.0, 0.0, 0.0)
+        }
+    };
     let centre = plan.iter().copied().sum::<Vec2>() / n as f32;
     let pivot = centre.lerp(lean_to, 0.5);
     let foot: Vec<Vec3> = plan
@@ -365,7 +392,13 @@ fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, t
         })
         .collect();
     let head: Vec<Vec3> = plan.iter().map(|p| Vec3::new(p.x, top, p.y)).collect();
-    let paint = |grad: f32, sky: f32| Paint::new(Family::Stone).sky(sky).line(1.0).strokes(1.0).id(id).grad(grad);
+    let paint = |grad: f32, sky: f32| {
+        let p = Paint::new(Family::Stone).sky(sky).line(1.0).strokes(1.0).id(id).grad(grad);
+        match lip {
+            Some(y) => p.lip(y),
+            None => p,
+        }
+    };
     // A waist part of the way down: below it the rock steps in or out a little, which gives the
     // face a bedding line and breaks its height into two unequal parts.
     let salt = (centre.x * 7.3 + centre.y * 3.1).floor() as i32;
@@ -376,21 +409,28 @@ fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, t
     let waist_centre = upper.iter().copied().sum::<Vec3>() / n as f32;
     let lower: Vec<Vec3> = upper.iter().map(|p| waist_centre + (*p - waist_centre) * Vec3::new(scale, 1.0, scale)).collect();
     // Colour sits heavy at the top of a face and thins toward the foot, as a wash does.
-    let (c0, c1, c2) = (colour * 0.90, colour.lerp(colours.cool, 0.12), colour.lerp(colours.under, 0.30 + 0.30 * tier) * 1.06);
+    let (c0, c1, c2) = (colour * 0.97, colour.lerp(colours.cool, 0.10), colour.lerp(colours.under, 0.25 + 0.30 * tier));
     let tone = |g: f32| if g < 0.45 { c0.lerp(c1, g / 0.45) } else { c1.lerp(c2, (g - 0.45) / 0.55) };
-    let sky = |g: f32| (1.0 - 0.22 * tier) * (1.0 - 0.38 * g);
+    let sky = |g: f32| (1.0 - 0.22 * tier) * (1.0 - 0.18 * g);
     let rings: [(&Vec<Vec3>, f32); 4] = [(&head, 0.0), (&upper, at), (&lower, at), (&foot, 1.0)];
     for r in 0..rings.len() - 1 {
         let ((a, ga), (b, gb)) = (rings[r], rings[r + 1]);
+        let normals: Vec<Vec3> = (0..n).map(|k| (a[(k + 1) % n] - a[k]).cross(b[k] - a[k]).normalize_or_zero()).collect();
+        // Each vertical edge takes a quarter of the neighbouring face's normal, so a face stays
+        // nearly flat in the middle but its edges turn the light: a softened arris, no extra geometry.
+        let soften = |own: Vec3, other: Vec3| if other == Vec3::ZERO { own } else { (own * 0.88 + other * 0.12).normalize_or_zero() };
         for k in 0..n {
             let k2 = (k + 1) % n;
-            let normal = (a[k2] - a[k]).cross(b[k] - a[k]).normalize_or_zero();
+            let normal = normals[k];
             if normal == Vec3::ZERO {
                 continue;
             }
+            let (left, right) = (soften(normal, normals[(k + n - 1) % n]), soften(normal, normals[k2]));
             let (pa, pb) = (paint(ga, sky(ga)), paint(gb, sky(gb)));
-            mesh.tri_full([a[k], a[k2], b[k2]], [normal; 3], [tone(ga), tone(ga), tone(gb)], [pa, pa, pb]);
-            mesh.tri_full([a[k], b[k2], b[k]], [normal; 3], [tone(ga), tone(gb), tone(gb)], [pa, pb, pb]);
+            let (u0, u1, w) = join_of(k);
+            let (pa0, pa1, pb0, pb1) = (pa.join(u0, w), pa.join(u1, w), pb.join(u0, w), pb.join(u1, w));
+            mesh.tri_full([a[k], a[k2], b[k2]], [left, right, right], [tone(ga), tone(ga), tone(gb)], [pa0, pa1, pb1]);
+            mesh.tri_full([a[k], b[k2], b[k]], [left, right, left], [tone(ga), tone(gb), tone(gb)], [pa0, pb1, pb0]);
         }
     }
     let foot_centre = foot.iter().copied().sum::<Vec3>() / n as f32;
@@ -448,7 +488,7 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let tilt = (-out) * (-0.16 - 0.14 * h2) + chord * (h1 - 0.5) * 0.30;
             // Some broad faces stop short of the lawn and show a bare rock shelf under the lip.
             let shelf = if face.role == Role::Primary && h2 > 0.62 && face.width < 6.5 { 0.5 + 1.1 * h3 } else { 0.0 };
-            column(&mut mesh, &plan, face.top - 0.20 - shelf, face.depth - shelf * 0.5, inward, 0.80 - 0.10 * h2, tilt, colour, colours, 100 + (index % 70) as u8, 0.0, face.step > 0.28 || shelf > 0.0);
+            column(&mut mesh, &plan, face.top - 0.20 - shelf, face.depth - shelf * 0.5, inward, 0.80 - 0.10 * h2, tilt, colour, colours, 100 + (index % 70) as u8, 0.0, face.step > 0.28 || shelf > 0.0, folds as usize + 1, Some(face.top - shelf));
             columns += 1;
             // And some carry a lower shoulder in front: the local protrusion of that stretch of wall.
             if face.role == Role::Primary && h3 > 0.52 && face.width > 5.5 {
@@ -460,7 +500,7 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                 let shoulder = [s0 + out * stand, s1 + out * (stand - 0.25 * (h3 - 0.5)), s1 + out * (stand - deep), s0 + out * (stand - deep)];
                 let drop = 1.4 + 1.8 * h1;
                 let shoulder_tilt = out * (0.10 + 0.25 * h3) + chord * (h2 - 0.5) * 0.5;
-                column(&mut mesh, &shoulder, face.top - 0.20 - shelf - drop, face.depth * 0.55, inward, 0.84, shoulder_tilt, colour * 1.03, colours, 30 + (index % 9) as u8, 0.0, true);
+                column(&mut mesh, &shoulder, face.top - 0.20 - shelf - drop, face.depth * 0.55, inward, 0.84, shoulder_tilt, colour * 1.03, colours, 30 + (index % 9) as u8, 0.0, true, 1, Some(face.top - 0.10 - shelf - drop));
                 columns += 1;
             }
         }
@@ -493,10 +533,50 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                 let tilt = Vec2::new(h1 - 0.5, h2 - 0.5) * 0.7;
                 let tier = 0.55 + 0.45 * far;
                 let colour = colours.face.lerp(colours.cool, 0.30 + 0.25 * far) * (1.0 + (h2 - 0.5) * 0.08);
-                column(&mut mesh, &plan, top, top + depth_to, lean, 0.62 + 0.14 * h3, tilt, colour, colours, 170 + ((i * 3 + j * 5).rem_euclid(80)) as u8, tier, false);
+                column(&mut mesh, &plan, top, top + depth_to, lean, 0.62 + 0.14 * h3, tilt, colour, colours, 170 + ((i * 3 + j * 5).rem_euclid(80)) as u8, tier, false, 0, None);
                 columns += 1;
             }
         }
     }
+    // Holes through the island (cells missing inside it, as on layout 913): a stone-lined pit
+    // under the lawn lip with a floor, as the frozen project shows, instead of a view into the
+    // unlit inside of the liner.
+    for hole in outlines.iter().filter(|o| o.is_hole) {
+        line_hole(&mut mesh, hole, field, colours, seed);
+    }
     Body { mesh, faces, columns }
+}
+
+fn line_hole(mesh: &mut Mesh, hole: &Outline, field: &Field, colours: &StoneColours, seed: u32) {
+    let n = hole.points.len();
+    let deep = 3.2;
+    let centre = hole.points.iter().copied().sum::<Vec2>() / n as f32;
+    let rim = |k: usize| {
+        let p = hole.points[k];
+        let lip = field.height_at(p - hole.outward[k] * 0.6);
+        (Vec3::new(p.x, lip - 0.30, p.y), lip)
+    };
+    let floor_y = (0..n).map(|k| rim(k).1).fold(f32::MAX, f32::min) - deep;
+    let mut along = 0.0_f32;
+    for k in 0..n {
+        let k2 = (k + 1) % n;
+        let ((a, lip_a), (b, lip_b)) = (rim(k), rim(k2));
+        let (fa, fb) = (Vec3::new(a.x, floor_y, a.z), Vec3::new(b.x, floor_y, b.z));
+        // Facing into the hole; the wall tips back a little toward the island as it rises.
+        let normal = Vec3::new(hole.outward[k].x + hole.outward[k2].x, 0.0, hole.outward[k].y + hole.outward[k2].y).normalize_or_zero();
+        let tone = 0.96 + 0.08 * hash2((along * 0.8) as i32, 3, seed ^ 41);
+        let lip = 0.5 * (lip_a + lip_b);
+        let top = Paint::new(Family::Stone).sky(0.78).id(36).grad(0.1).lip(lip);
+        let low = Paint::new(Family::Stone).sky(0.45).id(36).grad(0.9).lip(lip);
+        let (ct, cb) = (colours.face * tone, colours.face.lerp(colours.under, 0.6) * tone);
+        mesh.tri_full([a, b, fb], [normal; 3], [ct, ct, cb], [top, top, low]);
+        mesh.tri_full([a, fb, fa], [normal; 3], [ct, cb, cb], [top, low, low]);
+        along += (b - a).length();
+    }
+    let floor = Paint::new(Family::Stone).sky(0.40).id(37);
+    let fc = Vec3::new(centre.x, floor_y, centre.y);
+    for k in 0..n {
+        let (a, b) = (rim(k).0, rim((k + 1) % n).0);
+        mesh.tri_full([fc, Vec3::new(b.x, floor_y, b.z), Vec3::new(a.x, floor_y, a.z)], [Vec3::Y; 3], [colours.under; 3], [floor; 3]);
+    }
 }

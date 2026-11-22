@@ -1,0 +1,27 @@
+{
+ "cells": 623,
+ "body": "Karst",
+ "triangles": 27307,
+ "parts": {"top": 24374, "body": 2933, "decor": 0, "props": 76710, "grass full": 212743},
+ "build_ms": 56.03,
+ "stages_ms": {"fields": 24.44, "top": 12.17, "body": 0.25, "decor": 5.98, "grass": 12.01},
+ "faces": 27,
+ "columns": 72,
+ "face_widths_m": [3.0, 5.3, 2.8, 4.5, 2.5, 2.2, 4.9, 3.5, 2.6, 5.0, 2.0, 5.7, 4.1, 4.3, 5.3, 2.3, 4.5, 2.3, 4.8, 4.5, 5.0, 5.2, 2.0, 2.1, 4.5, 3.1, 2.7],
+ "width_min_m": 2.04,
+ "width_max_m": 5.68,
+ "width_spread": 0.326,
+ "step_spread_m": 0.344,
+ "longest_alike_run": 3,
+ "longest_alike_run_m": 8.75,
+ "edit_locality": [
+
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "game", "p05": 0.349, "p50": 0.678, "p95": 0.925, "white": 0.000, "black": 0.001, "sat_mean": 0.272, "sat_p99": 0.580, "quiet": 0.489},
+  {"view": "whole", "p05": 0.365, "p50": 0.812, "p95": 0.925, "white": 0.000, "black": 0.000, "sat_mean": 0.200, "sat_p99": 0.541, "quiet": 0.689}
+ ]
+}

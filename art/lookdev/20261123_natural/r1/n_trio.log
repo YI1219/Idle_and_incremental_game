@@ -1,0 +1,4 @@
+island: 623 cells, 27 faces, 72 columns, 55338 triangles (top 24374, body 2933, decor 24302, tufts 3729), built in 39.7 ms (fields 24.7, top 12.0, body 0.2, decor 1.6)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+FRAME art/lookdev/20261123_natural/r1/n_trio/n_trio_wallpaper.png
+STATS wallpaper: p05 0.686 p50 0.867 p95 0.922 white 0.002 black 0.000 sat_mean 0.052 sat_p99 0.224 quiet 0.664

@@ -1,0 +1,7 @@
+PROPS loaded 80 objects, 206 instances, 60254 triangles, 1 dropped (bush 1) from scene_4242_1
+island: 503 cells, 27 faces, 64 columns, 26464 triangles (top 20534, body 2495, decor 0, tufts 3435, props 60254), built in 37.2 ms (fields 22.1, top 10.0, body 0.2, decor 4.6)
+form: 27 faces, widths 2.0 to 6.9 m (spread 0.39), step spread 0.31 m, longest alike run 2 faces / 5.2 m
+FRAME art/lookdev/20261123_natural/r2/n_4242/n_4242_whole.png
+STATS whole: p05 0.498 p50 0.827 p95 0.925 white 0.011 black 0.000 sat_mean 0.110 sat_p99 0.467 quiet 0.696
+FRAME art/lookdev/20261123_natural/r2/n_4242/n_4242_reverse.png
+STATS reverse: p05 0.349 p50 0.808 p95 0.925 white 0.002 black 0.000 sat_mean 0.107 sat_p99 0.463 quiet 0.670

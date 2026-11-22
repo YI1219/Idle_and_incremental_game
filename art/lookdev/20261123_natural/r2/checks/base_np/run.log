@@ -1,0 +1,4 @@
+island: 623 cells, 27 faces, 72 columns, 55338 triangles (top 24374, body 2933, decor 24302, tufts 3729, props 0), built in 40.3 ms (fields 25.1, top 12.1, body 0.2, decor 1.7)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+FRAME art/lookdev/20261123_natural/r2/checks/base_np/x_cliff_close.png
+STATS cliff_close: p05 0.380 p50 0.718 p95 0.918 white 0.009 black 0.000 sat_mean 0.167 sat_p99 0.506 quiet 0.543

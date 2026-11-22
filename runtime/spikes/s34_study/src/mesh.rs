@@ -8,9 +8,11 @@ pub struct Vertex {
     pub normal: [f32; 3],
     /// rgb wash colour, a = material family / 3.
     pub colour: [u8; 4],
-    /// r = baked sky occlusion, g = bounce, b = line importance, a = paint weight (strokes).
+    /// r = baked sky occlusion, g = position along a block's front (0..1, for the joins),
+    /// b = line importance, a = that front's width / 16 m (0: no join darkening).
     pub terms: [u8; 4],
-    /// r = surface id for line breaks, g = vertical gradient coordinate, b = sway weight, a spare.
+    /// r = surface id, g = vertical gradient coordinate, b and a = the height of the lawn lip
+    /// above this stone as 16 bits over -32..32 m (0: none), for the mossy brow and the lip band.
     pub extra: [u8; 4],
 }
 
@@ -31,17 +33,28 @@ pub fn q(v: f32) -> u8 {
 pub struct Paint {
     pub family: Family,
     pub sky: f32,
-    pub bounce: f32,
     pub line: f32,
     pub strokes: f32,
     pub id: u8,
     pub grad: f32,
+    /// Height of the lawn lip above a stone surface (world y), for the brow.
+    pub lip: Option<f32>,
+    /// Position along a block's front (0..1) and the front's width in metres (0: none).
+    pub join: (f32, f32),
 }
 
 impl Paint {
     pub fn new(family: Family) -> Paint {
         // grad 0.5 is neutral; hanging rock runs 0 at its top to 1 at its foot.
-        Paint { family, sky: 1.0, bounce: 0.3, line: 1.0, strokes: 0.0, id: 0, grad: 0.5 }
+        Paint { family, sky: 1.0, line: 1.0, strokes: 0.0, id: 0, grad: 0.5, lip: None, join: (0.0, 0.0) }
+    }
+    pub fn lip(mut self, v: f32) -> Paint {
+        self.lip = Some(v);
+        self
+    }
+    pub fn join(mut self, along: f32, width: f32) -> Paint {
+        self.join = (along, width);
+        self
     }
     pub fn sky(mut self, v: f32) -> Paint {
         self.sky = v;
@@ -72,12 +85,13 @@ pub struct Mesh {
 
 impl Mesh {
     pub fn vertex(&mut self, p: Vec3, n: Vec3, colour: Vec3, paint: Paint) {
+        let lip = paint.lip.map_or(0u16, |y| (((y + 32.0) / 64.0).clamp(0.0, 1.0) * 65535.0).round().max(1.0) as u16);
         self.vertices.push(Vertex {
             pos: p.to_array(),
             normal: n.to_array(),
             colour: [q(colour.x), q(colour.y), q(colour.z), paint.family as u8],
-            terms: [q(paint.sky), q(paint.bounce), q(paint.line), q(paint.strokes)],
-            extra: [paint.id, q(paint.grad), 0, 0],
+            terms: [q(paint.sky), q(paint.join.0), q(paint.line), q(paint.join.1 / 16.0)],
+            extra: [paint.id, q(paint.grad), (lip >> 8) as u8, (lip & 255) as u8],
         });
     }
 

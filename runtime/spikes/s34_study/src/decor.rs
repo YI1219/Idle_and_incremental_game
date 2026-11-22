@@ -1,5 +1,6 @@
-//! What stands on the island: trees as masses, rocks, stepping stones, bamboo,
-//! lily pads and rim tufts. All procedural, all baked like the rest.
+//! What stands on the island when no exported scene is loaded: trees as masses, rocks,
+//! stepping stones, bamboo and lily pads. All procedural, all baked like the rest. Each
+//! reports where the grass keeps clear of it. (The rim tufts were replaced by grass.rs.)
 use glam::{Vec2, Vec3};
 
 use crate::field::{Cells, Field};
@@ -15,7 +16,6 @@ pub struct DecorColours {
     pub rock: Vec3,
     pub bamboo: Vec3,
     pub pad: Vec3,
-    pub tuft: Vec3,
 }
 
 impl Default for DecorColours {
@@ -29,7 +29,6 @@ impl Default for DecorColours {
             rock: Vec3::new(0.82, 0.78, 0.69),
             bamboo: Vec3::new(0.42, 0.55, 0.33),
             pad: Vec3::new(0.38, 0.54, 0.33),
-            tuft: Vec3::new(0.50, 0.62, 0.32),
         }
     }
 }
@@ -179,19 +178,6 @@ fn lily_pad(mesh: &mut Mesh, at: Vec3, radius: f32, colours: &DecorColours, rng:
     }
 }
 
-fn tuft(mesh: &mut Mesh, at: Vec3, colours: &DecorColours, rng: &mut Rng) {
-    let shade = rng.range(-0.05, 0.05);
-    for _ in 0..3 {
-        let yaw = rng.range(0.0, std::f32::consts::TAU);
-        let side = Vec3::new(yaw.cos(), 0.0, yaw.sin()) * 0.035;
-        let lean = Vec3::new(rng.range(-0.08, 0.08), rng.range(0.16, 0.34), rng.range(-0.08, 0.08));
-        let normal = Vec3::new(lean.x, 1.0, lean.z).normalize();
-        let colour = colours.tuft + Vec3::new(shade, shade, shade * 0.5);
-        let paint = Paint::new(Family::Ground).sky(0.95).line(0.0).id(1);
-        mesh.tri_full([at - side, at + side, at + lean], [normal; 3], [colour * 0.9, colour * 0.9, colour * 1.06], [paint; 3]);
-    }
-}
-
 /// Nearest dry land point to `want`, searching outward; None if the island has none nearby.
 fn dry_spot(cells: &Cells, field: &Field, want: Vec2) -> Option<Vec2> {
     for ring in 0..40 {
@@ -214,7 +200,7 @@ fn dry_spot(cells: &Cells, field: &Field, want: Vec2) -> Option<Vec2> {
 /// The courtyard of the review layouts: a main group at the rear left, a single
 /// accent tree, a pair at the right end, a stone path to the upper pond, rocks
 /// by the water. Positions adapt to the nearest dry ground on other layouts.
-pub fn courtyard(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32) -> Mesh {
+pub fn courtyard(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32, clear: &mut Vec<(Vec2, f32)>) -> Mesh {
     let mut mesh = Mesh::default();
     let mut rng = Rng::new(seed, 5);
     let ground = |p: Vec2| Vec3::new(p.x, field.height_at(p), p.y);
@@ -235,16 +221,20 @@ pub fn courtyard(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32
         let Some(p) = dry_spot(cells, field, want) else { continue };
         let lean = lean.normalize();
         if kind == "pine" {
+            clear.push((p, 0.30));
             pine(&mut mesh, ground(p), height, lean, colours, &mut rng, next_id());
         } else {
+            clear.push((p, 0.35));
             broadleaf(&mut mesh, ground(p), height, lean, colours, &mut rng, next_id());
         }
     }
     if let Some(p) = dry_spot(cells, field, Vec2::new(-5.6, -7.4)) {
+        clear.push((p, 0.75));
         bamboo(&mut mesh, ground(p), colours, &mut rng, next_id());
     }
     // A standing stone as the group's accent.
     if let Some(p) = dry_spot(cells, field, Vec2::new(-7.6, -6.0)) {
+        clear.push((p, 0.75));
         rock(&mut mesh, ground(p) + Vec3::Y * 0.5, Vec3::new(0.42, 1.25, 0.36), colours, &mut rng, next_id());
         rock(&mut mesh, ground(p) + Vec3::new(0.35, 0.0, 0.25), Vec3::new(0.45, 0.3, 0.4), colours, &mut rng, next_id());
     }
@@ -254,6 +244,7 @@ pub fn courtyard(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32
         let want = Vec2::new(-7.4, -5.1).lerp(Vec2::new(-6.6, -2.3), t) + Vec2::new((t * 3.4).sin() * 0.9, 0.0);
         if let Some(p) = dry_spot(cells, field, want) {
             if (p - want).length() < 0.8 {
+                clear.push((p, 0.42));
                 rock(&mut mesh, ground(p) - Vec3::Y * 0.02, Vec3::new(rng.range(0.30, 0.42), 0.07, rng.range(0.24, 0.34)), colours, &mut rng, next_id());
             }
         }
@@ -262,6 +253,7 @@ pub fn courtyard(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32
     let rocks = [(-8.6, 1.6, 0.55), (1.9, -1.7, 0.5), (2.6, 2.0, 0.6), (3.4, 5.6, 0.45), (12.0, 5.4, 0.55), (-11.0, 3.0, 0.4), (-15.2, -1.2, 0.6), (6.5, -1.6, 0.42), (0.2, 3.2, 0.38), (-3.0, 3.9, 0.36)];
     for (x, z, size) in rocks {
         if let Some(p) = dry_spot(cells, field, Vec2::new(x, z)) {
+            clear.push((p, size * 1.4));
             rock(&mut mesh, ground(p), Vec3::new(size * rng.range(0.9, 1.3), size * rng.range(0.55, 0.8), size * rng.range(0.8, 1.2)), colours, &mut rng, next_id());
             if rng.next() < 0.5 {
                 rock(&mut mesh, ground(p) + Vec3::new(size * 1.1, 0.0, size * 0.5), Vec3::splat(size * 0.5), colours, &mut rng, next_id());
@@ -287,32 +279,8 @@ pub fn courtyard(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32
     mesh
 }
 
-/// Tufts where they read: along the rim, sparsely on the lawn.
-pub fn tufts(field: &Field, rim: &[(Vec3, Vec3)], colours: &DecorColours, seed: u32, density: f32) -> Mesh {
-    let mut mesh = Mesh::default();
-    let mut rng = Rng::new(seed, 9);
-    for &(a, b) in rim {
-        let mid = Vec2::new((a.x + b.x) * 0.5, (a.z + b.z) * 0.5);
-        let inward = field.gradient(&field.land1, mid, 0.25).normalize_or_zero();
-        for _ in 0..(2.0 * density) as i32 {
-            let p = mid + inward * rng.range(0.02, 0.5) + Vec2::new(rng.range(-0.12, 0.12), rng.range(-0.12, 0.12));
-            if field.sample(&field.land1, p) > 0.5 && field.sample(&field.wet, p) < 0.1 {
-                tuft(&mut mesh, Vec3::new(p.x, field.height_at(p), p.y), colours, &mut rng);
-            }
-        }
-    }
-    let area = (field.nx as f32 * 0.25) * (field.nz as f32 * 0.25);
-    for _ in 0..(area * 0.9 * density) as i32 {
-        let p = field.origin + Vec2::new(rng.next() * field.nx as f32, rng.next() * field.nz as f32) * 0.25;
-        if field.sample(&field.land1, p) > 0.8 && field.sample(&field.wet, p) < 0.05 && field.gradient(&field.height, p, 0.25).length() < 0.5 {
-            tuft(&mut mesh, Vec3::new(p.x, field.height_at(p), p.y), colours, &mut rng);
-        }
-    }
-    mesh
-}
-
 /// Procedural scatter for islands without an authored courtyard.
-pub fn scatter(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32) -> Mesh {
+pub fn scatter(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32, clear: &mut Vec<(Vec2, f32)>) -> Mesh {
     let mut mesh = Mesh::default();
     let mut rng = Rng::new(seed, 6);
     let mut land: Vec<(i32, i32)> = cells.iter().filter(|(_, c)| c.water.is_none()).map(|(k, _)| *k).collect();
@@ -330,8 +298,10 @@ pub fn scatter(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32) 
             id = id.wrapping_add(11);
             let lean = Vec2::new(rng.range(-1.0, 1.0), rng.range(-1.0, 1.0)).normalize_or_zero();
             if rng.next() < 0.6 {
+                clear.push((p, 0.30));
                 pine(&mut mesh, ground(p), rng.range(3.2, 4.8), lean, colours, &mut rng, id);
             } else {
+                clear.push((p, 0.35));
                 broadleaf(&mut mesh, ground(p), rng.range(4.6, 6.4), lean, colours, &mut rng, id);
             }
         }
@@ -339,6 +309,7 @@ pub fn scatter(cells: &Cells, field: &Field, colours: &DecorColours, seed: u32) 
             if let Some(p) = dry_spot(cells, field, centre + Vec2::new(rng.range(-5.0, 5.0), rng.range(-5.0, 5.0))) {
                 id = id.wrapping_add(7);
                 let size = rng.range(0.35, 0.7);
+                clear.push((p, size * 1.3));
                 rock(&mut mesh, ground(p), Vec3::new(size * 1.1, size * 0.7, size), colours, &mut rng, id);
             }
         }

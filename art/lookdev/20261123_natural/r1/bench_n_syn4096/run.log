@@ -1,0 +1,8 @@
+island: 4096 cells, 64 faces, 395 columns, 401209 triangles (top 142350, body 16908, decor 225700, tufts 16251), built in 174.4 ms (fields 73.7, top 75.9, body 1.1, decor 14.8)
+form: 64 faces, widths 2.0 to 6.6 m (spread 0.34), step spread 0.36 m, longest alike run 4 faces / 18.4 m
+FRAME art/lookdev/20261123_natural/r1/bench_n_syn4096/bench_n_syn4096_whole.png
+STATS whole: p05 0.639 p50 0.839 p95 0.929 white 0.005 black 0.000 sat_mean 0.080 sat_p99 0.259 quiet 0.593
+BENCH whole: 19.15 ms a frame at 3024x1964 with 2x supersampling, ssao on
+FRAME art/lookdev/20261123_natural/r1/bench_n_syn4096/bench_n_syn4096_game.png
+STATS game: p05 0.388 p50 0.596 p95 0.914 white 0.002 black 0.000 sat_mean 0.351 sat_p99 0.506 quiet 0.448
+BENCH game: 28.06 ms a frame at 3024x1964 with 2x supersampling, ssao on

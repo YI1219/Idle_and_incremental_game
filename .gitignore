@@ -32,3 +32,6 @@ runtime/target/
 # (origin is public). They are committed under the local tag godot-freeze-20261122-full.
 art/source/
 assets/candidates/
+
+# Exported Godot scene props (regenerate with tools/export/export_scene_props.gd)
+runtime/data/reference/scene_*/

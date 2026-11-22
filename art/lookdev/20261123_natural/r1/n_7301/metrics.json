@@ -1,0 +1,31 @@
+{
+ "cells": 623,
+ "body": "Karst",
+ "triangles": 55338,
+ "parts": {"top": 24374, "body": 2933, "decor": 24302, "tufts": 3729},
+ "build_ms": 59.66,
+ "stages_ms": {"fields": 43.13, "top": 12.93, "body": 0.27, "decor": 1.86},
+ "faces": 27,
+ "columns": 72,
+ "face_widths_m": [3.0, 5.3, 2.8, 4.5, 2.5, 2.2, 4.9, 3.5, 2.6, 5.0, 2.0, 5.7, 4.1, 4.3, 5.3, 2.3, 4.5, 2.3, 4.8, 4.5, 5.0, 5.2, 2.0, 2.1, 4.5, 3.1, 2.7],
+ "width_min_m": 2.04,
+ "width_max_m": 5.68,
+ "width_spread": 0.326,
+ "step_spread_m": 0.344,
+ "longest_alike_run": 3,
+ "longest_alike_run_m": 8.75,
+ "edit_locality": [
+
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "game", "p05": 0.443, "p50": 0.729, "p95": 0.914, "white": 0.004, "black": 0.000, "sat_mean": 0.212, "sat_p99": 0.498, "quiet": 0.521},
+  {"view": "whole", "p05": 0.498, "p50": 0.824, "p95": 0.925, "white": 0.012, "black": 0.000, "sat_mean": 0.130, "sat_p99": 0.478, "quiet": 0.660},
+  {"view": "reverse", "p05": 0.337, "p50": 0.808, "p95": 0.925, "white": 0.003, "black": 0.000, "sat_mean": 0.123, "sat_p99": 0.471, "quiet": 0.660},
+  {"view": "cliff_close", "p05": 0.380, "p50": 0.718, "p95": 0.918, "white": 0.009, "black": 0.000, "sat_mean": 0.167, "sat_p99": 0.506, "quiet": 0.543},
+  {"view": "foot_reverse", "p05": 0.298, "p50": 0.792, "p95": 0.929, "white": 0.006, "black": 0.000, "sat_mean": 0.121, "sat_p99": 0.482, "quiet": 0.524},
+  {"view": "terrace_close", "p05": 0.475, "p50": 0.588, "p95": 0.878, "white": 0.002, "black": 0.000, "sat_mean": 0.307, "sat_p99": 0.518, "quiet": 0.583}
+ ]
+}

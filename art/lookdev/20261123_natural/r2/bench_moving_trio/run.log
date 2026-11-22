@@ -1,0 +1,8 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2) from scene_7301_0
+PROPS loaded 80 objects, 206 instances, 60254 triangles, 1 dropped (bush 1) from scene_4242_1
+PROPS loaded 60 objects, 154 instances, 71968 triangles, 4 dropped (bush 1, flower 1, grass_clump 2) from scene_913_2
+island: 623 cells, 27 faces, 72 columns, 31036 triangles (top 24374, body 2933, decor 0, tufts 3729, props 76710), built in 42.8 ms (fields 24.7, top 12.0, body 0.3, decor 4.8)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+FRAME art/lookdev/20261123_natural/r2/bench_moving_trio/bench_moving_trio_wallpaper.png
+STATS wallpaper: p05 0.686 p50 0.867 p95 0.922 white 0.003 black 0.000 sat_mean 0.051 sat_p99 0.212 quiet 0.675
+BENCH wallpaper: 5.39 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on

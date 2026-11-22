@@ -1,0 +1,10 @@
+island: 4096 cells, 64 faces, 395 columns, 384958 triangles (top 142350, body 16908, decor 225700, props 0, grass full 1910260), built in 272.2 ms (fields 71.2, top 76.5, body 1.1, decor 14.4, grass 100.3)
+form: 64 faces, widths 2.0 to 6.6 m (spread 0.34), step spread 0.36 m, longest alike run 4 faces / 18.4 m
+GRASS whole: 100540 clumps, 1910260 triangles full, 660521 drawn
+FRAME art/lookdev/20261123_natural/r3/bench_moving_syn4096/bench_moving_syn4096_whole.png
+STATS whole: p05 0.596 p50 0.780 p95 0.933 white 0.003 black 0.000 sat_mean 0.114 sat_p99 0.286 quiet 0.659
+BENCH whole: 8.32 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props off
+GRASS game: 100540 clumps, 1910260 triangles full, 1349834 drawn
+FRAME art/lookdev/20261123_natural/r3/bench_moving_syn4096/bench_moving_syn4096_game.png
+STATS game: p05 0.373 p50 0.616 p95 0.933 white 0.000 black 0.000 sat_mean 0.384 sat_p99 0.541 quiet 0.206
+BENCH game: 10.41 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props off

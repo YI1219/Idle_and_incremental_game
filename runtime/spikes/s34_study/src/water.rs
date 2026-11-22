@@ -1,4 +1,4 @@
-//! Pond surfaces and falls as live geometry. In the study the cells' water
+//! Pond surfaces, falls and spray as live geometry. In the study the cells' water
 //! flags stand in for basins already filled by a spring.
 use glam::{Vec2, Vec3};
 
@@ -13,31 +13,35 @@ const ABYSS: f32 = -17.0;
 #[derive(Clone, Copy, bytemuck::Pod, bytemuck::Zeroable)]
 pub struct WaterVertex {
     pub pos: [f32; 3],
-    /// x: 0 pond, 1 fall; y: metres across the fall; z: metres dropped from the lip.
+    /// x: 0 pond, 1 fall, 2 upright spray veil, 3 flat spray pool;
+    /// falls: y metres across, z metres dropped from the lip; spray: y, z in 0..1 across the quad.
     pub data: [f32; 3],
 }
 
 pub fn build_water(cells: &Cells, origin: Vec3) -> Vec<WaterVertex> {
     let mut out = Vec::new();
+    // Spray goes last so it blends over the ponds and falls it sits on.
+    let mut spray = Vec::new();
     let mut keys: Vec<(i32, i32)> = cells.keys().copied().collect();
     keys.sort();
-    let mut quad = |corners: [Vec3; 4], data: [[f32; 3]; 4]| {
+    let push = |list: &mut Vec<WaterVertex>, corners: [Vec3; 4], data: [[f32; 3]; 4]| {
         for i in [0, 1, 2, 0, 2, 3] {
-            out.push(WaterVertex { pos: (corners[i] + origin).to_array(), data: data[i] });
+            list.push(WaterVertex { pos: (corners[i] + origin).to_array(), data: data[i] });
         }
     };
+    let card = |kind: f32| [[kind, 0.0, 0.0], [kind, 0.0, 1.0], [kind, 1.0, 1.0], [kind, 1.0, 0.0]];
     for &(x, z) in &keys {
         let cell = cells[&(x, z)];
         let Some(level) = cell.water else { continue };
         let y = level - SINK;
         let pond = |x0: f32, z0: f32| [Vec3::new(x0, y, z0), Vec3::new(x0, y, z0 + 1.0), Vec3::new(x0 + 1.0, y, z0 + 1.0), Vec3::new(x0 + 1.0, y, z0)];
-        quad(pond(x as f32, z as f32), [[0.0; 3]; 4]);
+        push(&mut out, pond(x as f32, z as f32), [[0.0; 3]; 4]);
         // Reach under the banks, never over lower water or past the rim.
         for (dx, dz) in [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)] {
             let key = (x + dx, z + dz);
             if let Some(other) = cells.get(&key) {
                 if other.water.is_none() && other.h >= level - 0.3 {
-                    quad(pond(key.0 as f32, key.1 as f32), [[0.0; 3]; 4]);
+                    push(&mut out, pond(key.0 as f32, key.1 as f32), [[0.0; 3]; 4]);
                 }
             }
         }
@@ -67,7 +71,8 @@ pub fn build_water(cells: &Cells, origin: Vec3) -> Vec<WaterVertex> {
                     let p = corner + out_dir * (0.12 + reach * t);
                     Vec3::new(p.x, y - drop * t * t, p.y)
                 };
-                quad(
+                push(
+                    &mut out,
                     [at(c0, t0), at(c0, t1), at(c1, t1), at(c1, t0)],
                     [[1.0, across(c0), drop * t0 * t0], [1.0, across(c0), drop * t1 * t1], [1.0, across(c1), drop * t1 * t1], [1.0, across(c1), drop * t0 * t0]],
                 );
@@ -77,8 +82,28 @@ pub fn build_water(cells: &Cells, origin: Vec3) -> Vec<WaterVertex> {
                 let p = corner + out_dir * push;
                 Vec3::new(p.x, y, p.y)
             };
-            quad([lip(c0, 0.0), lip(c0, 0.12), lip(c1, 0.12), lip(c1, 0.0)], [[0.0; 3]; 4]);
+            push(&mut out, [lip(c0, 0.0), lip(c0, 0.12), lip(c1, 0.12), lip(c1, 0.0)], [[0.0; 3]; 4]);
+
+            // Spray. `side` runs along the lip from c0 to c1.
+            let side = (c1 - c0).normalize_or_zero();
+            let upright = |a: Vec2, b: Vec2, low: f32, high: f32| [Vec3::new(a.x, low, a.y), Vec3::new(a.x, high, a.y), Vec3::new(b.x, high, b.y), Vec3::new(b.x, low, b.y)];
+            if bottom > ABYSS {
+                // Where the fall meets the lower pond: a small soft foam, a low veil and a little pool of it.
+                let foot = 0.12 + reach + 0.10;
+                let (a, b) = (c0 + out_dir * foot - side * 0.45, c1 + out_dir * foot + side * 0.45);
+                push(&mut spray, upright(a, b, bottom - 0.05, bottom + 0.30 * drop.min(1.0) + 0.15), card(2.0));
+                let (near, far) = (foot - 0.25, foot + 0.65);
+                let (p0, p1, p2, p3) = (c0 - side * 0.3 + out_dir * near, c0 - side * 0.3 + out_dir * far, c1 + side * 0.3 + out_dir * far, c1 + side * 0.3 + out_dir * near);
+                let h = bottom + 0.03;
+                push(&mut spray, [Vec3::new(p0.x, h, p0.y), Vec3::new(p1.x, h, p1.y), Vec3::new(p2.x, h, p2.y), Vec3::new(p3.x, h, p3.y)], card(3.0));
+            } else {
+                // Off the island: the sheet frays into a widening veil on its way down into the cloud sea.
+                let foot = 0.12 + reach * 0.8 + 0.25;
+                let (a, b) = (c0 + out_dir * foot - side * 0.8, c1 + out_dir * foot + side * 0.8);
+                push(&mut spray, upright(a, b, y - 0.90 * drop, y - 0.30 * drop), card(2.0));
+            }
         }
     }
+    out.extend_from_slice(&spray);
     out
 }
