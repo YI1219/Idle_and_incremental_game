@@ -1,0 +1,421 @@
+{
+ "note": "Median display colour (0..1) and luma p10/p90 of each box on the 1300 px reduced frames.",
+ "boxes": [
+  {
+   "name": "lawn",
+   "hour": "day",
+   "view": "terrace_close",
+   "box": [
+    950,
+    180,
+    1100,
+    250
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/terrace_close.png",
+   "runtime_frame": "final/n_7301/small/n_7301_terrace_close.png",
+   "reference": {
+    "median": [
+     0.525,
+     0.624,
+     0.31
+    ],
+    "luma_p10": 0.533,
+    "luma_p90": 0.645
+   },
+   "runtime": {
+    "median": [
+     0.565,
+     0.647,
+     0.322
+    ],
+    "luma_p10": 0.558,
+    "luma_p90": 0.653
+   },
+   "max_channel_difference": 0.04
+  },
+  {
+   "name": "wall",
+   "hour": "day",
+   "view": "terrace_close",
+   "box": [
+    450,
+    420,
+    700,
+    470
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/terrace_close.png",
+   "runtime_frame": "final/n_7301/small/n_7301_terrace_close.png",
+   "reference": {
+    "median": [
+     0.792,
+     0.749,
+     0.647
+    ],
+    "luma_p10": 0.733,
+    "luma_p90": 0.773
+   },
+   "runtime": {
+    "median": [
+     0.784,
+     0.741,
+     0.639
+    ],
+    "luma_p10": 0.68,
+    "luma_p90": 0.776
+   },
+   "max_channel_difference": 0.008
+  },
+  {
+   "name": "pond",
+   "hour": "day",
+   "view": "terrace_close",
+   "box": [
+    500,
+    270,
+    700,
+    320
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/terrace_close.png",
+   "runtime_frame": "final/n_7301/small/n_7301_terrace_close.png",
+   "reference": {
+    "median": [
+     0.255,
+     0.467,
+     0.459
+    ],
+    "luma_p10": 0.381,
+    "luma_p90": 0.452
+   },
+   "runtime": {
+    "median": [
+     0.255,
+     0.467,
+     0.463
+    ],
+    "luma_p10": 0.413,
+    "luma_p90": 0.433
+   },
+   "max_channel_difference": 0.004
+  },
+  {
+   "name": "block face",
+   "hour": "day",
+   "view": "cliff_close",
+   "box": [
+    680,
+    430,
+    860,
+    560
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/cliff_close.png",
+   "runtime_frame": "final/n_7301/small/n_7301_cliff_close.png",
+   "reference": {
+    "median": [
+     0.737,
+     0.694,
+     0.608
+    ],
+    "luma_p10": 0.675,
+    "luma_p90": 0.713
+   },
+   "runtime": {
+    "median": [
+     0.761,
+     0.729,
+     0.659
+    ],
+    "luma_p10": 0.699,
+    "luma_p90": 0.834
+   },
+   "max_channel_difference": 0.051
+  },
+  {
+   "name": "sky",
+   "hour": "day",
+   "view": "cliff_close",
+   "box": [
+    20,
+    20,
+    250,
+    180
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/cliff_close.png",
+   "runtime_frame": "final/n_7301/small/n_7301_cliff_close.png",
+   "reference": {
+    "median": [
+     0.729,
+     0.831,
+     0.867
+    ],
+    "luma_p10": 0.569,
+    "luma_p90": 0.813
+   },
+   "runtime": {
+    "median": [
+     0.725,
+     0.824,
+     0.859
+    ],
+    "luma_p10": 0.802,
+    "luma_p90": 0.809
+   },
+   "max_channel_difference": 0.008
+  },
+  {
+   "name": "cloud left",
+   "hour": "day",
+   "view": "whole",
+   "box": [
+    40,
+    500,
+    200,
+    650
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/whole.png",
+   "runtime_frame": "final/n_7301/small/n_7301_whole.png",
+   "reference": {
+    "median": [
+     0.714,
+     0.761,
+     0.773
+    ],
+    "luma_p10": 0.705,
+    "luma_p90": 0.786
+   },
+   "runtime": {
+    "median": [
+     0.706,
+     0.753,
+     0.769
+    ],
+    "luma_p10": 0.698,
+    "luma_p90": 0.78
+   },
+   "max_channel_difference": 0.008
+  },
+  {
+   "name": "cloud right",
+   "hour": "day",
+   "view": "whole",
+   "box": [
+    1180,
+    700,
+    1290,
+    830
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/whole.png",
+   "runtime_frame": "final/n_7301/small/n_7301_whole.png",
+   "reference": {
+    "median": [
+     0.933,
+     0.918,
+     0.871
+    ],
+    "luma_p10": 0.897,
+    "luma_p90": 0.937
+   },
+   "runtime": {
+    "median": [
+     0.906,
+     0.89,
+     0.839
+    ],
+    "luma_p10": 0.87,
+    "luma_p90": 0.909
+   },
+   "max_channel_difference": 0.032
+  },
+  {
+   "name": "cliff",
+   "hour": "dusk",
+   "view": "whole",
+   "box": [
+    620,
+    600,
+    700,
+    660
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/dusk/small/whole.png",
+   "runtime_frame": "final/n_dusk/small/n_dusk_whole.png",
+   "reference": {
+    "median": [
+     0.482,
+     0.412,
+     0.376
+    ],
+    "luma_p10": 0.408,
+    "luma_p90": 0.438
+   },
+   "runtime": {
+    "median": [
+     0.494,
+     0.42,
+     0.376
+    ],
+    "luma_p10": 0.406,
+    "luma_p90": 0.459
+   },
+   "max_channel_difference": 0.012
+  },
+  {
+   "name": "lawn",
+   "hour": "dusk",
+   "view": "whole",
+   "box": [
+    650,
+    280,
+    750,
+    320
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/dusk/small/whole.png",
+   "runtime_frame": "final/n_dusk/small/n_dusk_whole.png",
+   "reference": {
+    "median": [
+     0.404,
+     0.412,
+     0.22
+    ],
+    "luma_p10": 0.37,
+    "luma_p90": 0.421
+   },
+   "runtime": {
+    "median": [
+     0.408,
+     0.404,
+     0.212
+    ],
+    "luma_p10": 0.367,
+    "luma_p90": 0.409
+   },
+   "max_channel_difference": 0.008
+  },
+  {
+   "name": "cloud",
+   "hour": "dusk",
+   "view": "whole",
+   "box": [
+    40,
+    500,
+    200,
+    650
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/dusk/small/whole.png",
+   "runtime_frame": "final/n_dusk/small/n_dusk_whole.png",
+   "reference": {
+    "median": [
+     0.69,
+     0.722,
+     0.733
+    ],
+    "luma_p10": 0.667,
+    "luma_p90": 0.749
+   },
+   "runtime": {
+    "median": [
+     0.686,
+     0.714,
+     0.729
+    ],
+    "luma_p10": 0.663,
+    "luma_p90": 0.743
+   },
+   "max_channel_difference": 0.008
+  },
+  {
+   "name": "cliff",
+   "hour": "night",
+   "view": "whole",
+   "box": [
+    620,
+    600,
+    700,
+    660
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/night/small/whole.png",
+   "runtime_frame": "final/n_night/small/n_night_whole.png",
+   "reference": {
+    "median": [
+     0.208,
+     0.298,
+     0.408
+    ],
+    "luma_p10": 0.274,
+    "luma_p90": 0.299
+   },
+   "runtime": {
+    "median": [
+     0.208,
+     0.31,
+     0.431
+    ],
+    "luma_p10": 0.274,
+    "luma_p90": 0.317
+   },
+   "max_channel_difference": 0.023
+  },
+  {
+   "name": "lawn",
+   "hour": "night",
+   "view": "whole",
+   "box": [
+    650,
+    280,
+    750,
+    320
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/night/small/whole.png",
+   "runtime_frame": "final/n_night/small/n_night_whole.png",
+   "reference": {
+    "median": [
+     0.125,
+     0.275,
+     0.239
+    ],
+    "luma_p10": 0.219,
+    "luma_p90": 0.258
+   },
+   "runtime": {
+    "median": [
+     0.122,
+     0.271,
+     0.235
+    ],
+    "luma_p10": 0.218,
+    "luma_p90": 0.248
+   },
+   "max_channel_difference": 0.004
+  },
+  {
+   "name": "cloud",
+   "hour": "night",
+   "view": "whole",
+   "box": [
+    40,
+    500,
+    200,
+    650
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/night/small/whole.png",
+   "runtime_frame": "final/n_night/small/n_night_whole.png",
+   "reference": {
+    "median": [
+     0.416,
+     0.557,
+     0.667
+    ],
+    "luma_p10": 0.475,
+    "luma_p90": 0.598
+   },
+   "runtime": {
+    "median": [
+     0.424,
+     0.557,
+     0.663
+    ],
+    "luma_p10": 0.476,
+    "luma_p90": 0.599
+   },
+   "max_channel_difference": 0.008
+  }
+ ]
+}

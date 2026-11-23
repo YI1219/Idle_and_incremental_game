@@ -313,7 +313,20 @@ pub fn build_hull(field: &Field, colours: &StoneColours, seed: u32, grid: f32, h
     let level = if hidden { 0.90 } else { 0.60 };
     let place = |p: Vec2, on_rim: bool| -> Vec3 {
         if on_rim {
-            Vec3::new(p.x, field.height_at(p) - 0.30, p.y)
+            // The rim edge runs straight between crossings up to a grid apart, so near a terrace
+            // step a vertex at the upper level would lift the edge above the lower lawn: take the
+            // lowest ground on the island within 0.7 of a grid cell (round r7).
+            let mut low = field.height_at(p);
+            for ring in [0.35_f32, 0.7] {
+                for k in 0..8 {
+                    let angle = k as f32 * std::f32::consts::FRAC_PI_4;
+                    let q = p + Vec2::new(angle.cos(), angle.sin()) * grid * ring;
+                    if field.sample(&field.land1, q) >= 0.5 {
+                        low = low.min(field.height_at(q));
+                    }
+                }
+            }
+            Vec3::new(p.x, low - 0.30, p.y)
         } else {
             Vec3::new(p.x, -underside(field, p, seed), p.y)
         }
@@ -439,11 +452,14 @@ fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, t
     for k in 0..n {
         mesh.tri(foot_centre, foot[k], foot[(k + 1) % n], colour.lerp(colours.under, 0.8), paint(1.0, 0.5));
     }
-    if ledge {
-        let head_centre = head.iter().copied().sum::<Vec3>() / n as f32;
-        for k in 0..n {
-            mesh.tri(head_centre, head[(k + 1) % n], head[k], colour.lerp(colours.warm, 0.25), Paint::new(Family::Stone).sky(1.0).line(1.0).strokes(0.5).id(id));
-        }
+    // Every column is capped (round r7): an open top showed the column's inside wherever the lawn
+    // above did not cover it (a block standing out past the outline, a block at a terrace end).
+    // A ledge is the warm sunlit shelf; other caps sit under the lawn and are rarely seen.
+    let head_centre = head.iter().copied().sum::<Vec3>() / n as f32;
+    let cap = if ledge { colour.lerp(colours.warm, 0.25) } else { colour };
+    for k in 0..n {
+        let paint = Paint::new(Family::Stone).sky(1.0).line(1.0).strokes(0.5).id(id);
+        mesh.tri_full([head_centre, head[(k + 1) % n], head[k]], [Vec3::Y; 3], [cap; 3], [paint; 3]);
     }
 }
 
@@ -518,6 +534,13 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                 columns += 1;
             }
         }
+        // Where the rim steps down (a terrace wall reaching the outline, a pond's bank), a face's
+        // block stands at the lowest ground along it, so under the higher lawn's lip there would be a
+        // gap into the island's inside. A sheer skirt of rock at the outline closes it, from just
+        // under the lip down past the block's top.
+        for face in &faces {
+            rim_skirt(&mut mesh, outer, field, colours, face);
+        }
         // Tier two: deeper masses behind the rim, on a jittered lattice, hanging below the liner.
         let lattice = 3.4;
         let cols = ((field.nx as f32 * crate::field::STEP) / lattice) as i32 + 1;
@@ -568,6 +591,42 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
         line_hole(&mut mesh, hole, field, colours, seed);
     }
     Body { mesh, faces, columns }
+}
+
+/// The skirt under one face's stretch of outline: wherever the lawn's lip stands higher than the
+/// face's block top, a vertical band of rock from 0.22 m under the lip (behind the lip's 0.32 m
+/// roll) down to 0.28 m under the block top. Zero height (and not emitted) on a level rim.
+fn rim_skirt(mesh: &mut Mesh, outer: &Outline, field: &Field, colours: &StoneColours, face: &Face) {
+    let n = outer.points.len();
+    let bottom = face.top - 0.28;
+    let count = (face.to + n - face.from) % n;
+    const SUB: usize = 4;
+    let sample = |k: usize, t: f32| -> (Vec2, Vec2, f32) {
+        let (a, b) = (outer.points[k % n], outer.points[(k + 1) % n]);
+        let p = a.lerp(b, t);
+        let out = outer.outward[k % n].lerp(outer.outward[(k + 1) % n], t).normalize_or_zero();
+        (p, out, field.height_at(p) - 0.22)
+    };
+    for step in 0..count {
+        let k = face.from + step;
+        for s in 0..SUB {
+            let (p0, o0, y0) = sample(k, s as f32 / SUB as f32);
+            let (p1, o1, y1) = sample(k, (s + 1) as f32 / SUB as f32);
+            if y0.max(y1) < bottom + 0.06 {
+                continue;
+            }
+            let (y0, y1) = (y0.max(bottom), y1.max(bottom));
+            let (q0, q1) = (p0 + o0 * 0.045, p1 + o1 * 0.045);
+            let quad = [Vec3::new(q0.x, y0, q0.y), Vec3::new(q1.x, y1, q1.y), Vec3::new(q1.x, bottom, q1.y), Vec3::new(q0.x, bottom, q0.y)];
+            let (n0, n1) = (Vec3::new(o0.x, 0.0, o0.y), Vec3::new(o1.x, 0.0, o1.y));
+            let lip = y0.max(y1) + 0.22;
+            let top = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(4).grad(0.0).lip(lip);
+            let low = Paint::new(Family::Stone).sky(0.80).line(0.9).strokes(0.8).id(4).grad(0.3).lip(lip);
+            let (ct, cb) = (colours.face, colours.face.lerp(colours.cool, 0.15));
+            mesh.tri_full([quad[0], quad[1], quad[2]], [n0, n1, n1], [ct, ct, cb], [top, top, low]);
+            mesh.tri_full([quad[0], quad[2], quad[3]], [n0, n1, n0], [ct, cb, cb], [top, low, low]);
+        }
+    }
 }
 
 fn line_hole(mesh: &mut Mesh, hole: &Outline, field: &Field, colours: &StoneColours, seed: u32) {

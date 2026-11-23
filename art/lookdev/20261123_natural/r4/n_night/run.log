@@ -1,9 +1,0 @@
-PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2) from scene_7301_0
-island: 623 cells, 27 faces, 72 columns, 28299 triangles (top 25366, body 2933, decor 0, props 76710, grass full 380835), built in 60.3 ms (fields 24.9, top 24.1, body 0.2, decor 4.8, grass 5.7)
-form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
-GRASS game: 10881 clumps, 380835 triangles full, 379813 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
-FRAME art/lookdev/20261123_natural/r4/n_night/n_night_game.png
-STATS game: p05 0.184 p50 0.522 p95 0.737 white 0.000 black 0.005 sat_mean 0.361 sat_p99 0.855 quiet 0.367
-GRASS whole: 10881 clumps, 380835 triangles full, 248003 drawn, chunks by level 4/16/0/0 (two bends, one bend, half roots, quarter roots)
-FRAME art/lookdev/20261123_natural/r4/n_night/n_night_whole.png
-STATS whole: p05 0.224 p50 0.580 p95 0.737 white 0.000 black 0.002 sat_mean 0.327 sat_p99 0.843 quiet 0.618

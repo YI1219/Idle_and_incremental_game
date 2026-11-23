@@ -1,7 +1,7 @@
 //! Studies S3 (look) and S4 (island generation) on one tool. Throwaway code.
 //!
 //!   s34_study --layout=runtime/data/reference/layout_7301_0.json | --synthetic=4096
-//!             [--seed=7301] [--body=karst|hull] [--look=n] [--hour=day|dusk|night] [--ssao=on|off|noblur] [--debug=ao]
+//!             [--seed=7301] [--body=karst|hull] [--look=n] [--hour=day|dusk|night] [--ssao=on|off|noblur] [--debug=ao|ssao|parts]
 //!             [--scene=single|trio] [--views=whole,game|all|wallpaper]
 //!             [--cameras=runtime/data/reference/cameras.json]
 //!             [--size=3024x1964] [--scale=2] [--fxaa] [--out=DIR] [--tag=NAME]
@@ -96,7 +96,7 @@ fn parse_args() -> Args {
                 args.ssao = value != "off";
                 args.ssao_blur = value != "noblur";
             }
-            "--debug" => args.debug = match value { "ao" => 1.0, "ssao" => 2.0, _ => 0.0 },
+            "--debug" => args.debug = match value { "ao" => 1.0, "ssao" => 2.0, "parts" => 3.0, _ => 0.0 },
             "--hour" => args.hour = value.to_string(),
             "--scene" => args.scene = value.to_string(),
             "--views" => args.views = value.to_string(),

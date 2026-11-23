@@ -1,6 +1,20 @@
 # 当前上下文
 
-更新：2026-11-22（最新六节为英文，见下）；此前内容更新于2026-11-16。用户最新明确请求优先。原goal已由用户清除，不自动重建。
+更新：2026-11-23（最新七节为英文，见下）；此前内容更新于2026-11-16。用户最新明确请求优先。原goal已由用户清除，不自动重建。
+
+## 2026-11-23 session: owner review of G1 and the natural look (English)
+
+Owner review of checkpoint G1, 2026-11-23 (outranks the G1 picks below): keep the improved hanging-rock construction; look B (ink line and flat wash on silk paper) is not accepted; while preserving the performance goals, bring rendering at least up to the clean, natural, comfortable style of the Godot baseline; balance both; do not start phase 2 if the look still needs work; gameplay constraints unchanged. Recorded in plan 1.1, 3.1 and 5.
+
+What was built (study tool `runtime/spikes/s34_study/`, throwaway code, seven rounds): linear-light natural lighting; the exported Godot trees and props drawn by ports of Godot's prop shaders; Godot's broad-leaf rosette lawn, instanced; painted stone after Godot's stone shaders; mirrored ponds and streaked falls; Godot's sky, cloud decks, far hills and time-of-day presets; smooth terrace walls cut along straightened steps; the hanging-rock body kept. The last round closed the holes where terrace walls end (a rock skirt under the rim, a liner that keeps below the lower lawn, capped rock columns, filler pieces lit from their seen side, a backing behind wall joints), moved props off wall faces and fall notches (up to 1 m, else dropped), and gathered the 4,096-cell island's scattered stones into clusters at shores, wall feet and tree groups.
+
+Package for the owner: `art/lookdev/20261123_natural/` (`README.md`, `compare.html`, `final/`, `checks/`). Not art-accepted.
+
+Final numbers (M4 Pro, mains power, 3024x1964, off screen): one island with the camera moving 5.2 to 7.0 ms over the twelve review views (budget 12 ms; Godot 13.7 to 38.4 ms by tier on the same island); three islands in the wallpaper view 6.1 ms; the 4,096-cell island 10.4 to 11.1 ms; resting camera (2x supersampling, paid once when the camera stops) 20.3 to 21.7 ms. Island build 58 ms (623 cells) and 246 ms (4,096 cells). Edit test: 0 rim faces changed beyond 12 m on five islands (farthest 11.3 m). Colour boxes against the Godot frames mostly within 0.02 (`checks/boxes.json`). Godot regression list rerun on the untouched frozen project: 40 of 40 pass (`checks/suite.log`).
+
+Open items (as in the package README): the three-island view still uses a simpler cloud sea and no far hills; the far hills at the top left of `whole` sit differently from Godot's; Godot's far depth-of-field blur is not ported; no sparkle glints on water; the 4,096-cell island with real props is close to the budget (leaf-card overdraw, no prop distance levels); nothing is animated in the stills; thin shaded joints remain at a few three-step junctions; all of it is study code to be rebuilt in the real renderer.
+
+Next: the owner reviews the package. Phase 2 (core and headless simulation) starts only after the owner accepts the look.
 
 ## 2026-11-22 sessions: purpose-built runtime, plan, freeze, first spikes (English)
 

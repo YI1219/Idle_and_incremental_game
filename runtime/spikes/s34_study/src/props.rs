@@ -145,6 +145,8 @@ pub struct Report {
     pub dropped: usize,
     pub dropped_by_kind: BTreeMap<String, usize>,
     pub skipped_materials: usize,
+    /// Moved (up to 1 m) because their footprint touched a terrace wall or a fall's notch.
+    pub moved: usize,
     /// Placed by `scatter` rather than loaded where the scene had them.
     pub scattered: bool,
     /// Circles (island coordinates, x z, radius) the grass keeps out of.
@@ -176,7 +178,7 @@ impl Report {
     pub fn line(&self, dir: &Path) -> String {
         let kinds: Vec<String> = self.dropped_by_kind.iter().map(|(k, n)| format!("{k} {n}")).collect();
         format!(
-            "PROPS {} {} objects, {} instances, {} triangles, {} {}{} from {}{}",
+            "PROPS {} {} objects, {} instances, {} triangles, {} {}{}{} from {}{}",
             if self.scattered { "scattered" } else { "loaded" },
             self.objects,
             self.instances,
@@ -184,6 +186,7 @@ impl Report {
             self.dropped,
             if self.scattered { "short of the source density" } else { "dropped" },
             if kinds.is_empty() { String::new() } else { format!(" ({})", kinds.join(", ")) },
+            if self.moved > 0 { format!(", {} moved off walls", self.moved) } else { String::new() },
             dir.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
             if self.skipped_materials > 0 { format!(", {} meshes with an unknown shader skipped", self.skipped_materials) } else { String::new() }
         )
@@ -348,7 +351,7 @@ fn bake(library: &mut Library, scene: &Scene, meshes: &[usize], kind: &str, basi
 }
 
 fn empty_report() -> Report {
-    Report { objects: 0, instances: 0, triangles: 0, dropped: 0, dropped_by_kind: BTreeMap::new(), skipped_materials: 0, clear: Vec::new(), scattered: false }
+    Report { objects: 0, instances: 0, triangles: 0, dropped: 0, dropped_by_kind: BTreeMap::new(), skipped_materials: 0, moved: 0, clear: Vec::new(), scattered: false }
 }
 
 /// Loads one scene's props onto an island built from `cells` and `field`, moved by `origin`,
@@ -356,6 +359,18 @@ fn empty_report() -> Report {
 pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mut Library) -> Report {
     let scene = open(dir, library);
     let mut report = empty_report();
+    let mut radius_at: BTreeMap<(i64, i64), f32> = BTreeMap::new();
+    for object in scene.json["objects"].as_array().expect("objects") {
+        if object["category"].as_str() != Some("on_top") {
+            continue;
+        }
+        let meshes = mesh_list(object);
+        for ((basis, at), _) in instances_of(object, &scene.bin) {
+            let r = footprint(&scene, &meshes, basis);
+            let slot = radius_at.entry(place_key(at)).or_insert(0.0);
+            *slot = slot.max(r);
+        }
+    }
     for object in scene.json["objects"].as_array().expect("objects") {
         if object["category"].as_str() != Some("on_top") {
             continue;
@@ -366,8 +381,28 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
         let meshes = mesh_list(object);
         for ((basis, at), tint) in instances_of(object, &scene.bin) {
             // Refit: keep the height above Godot's ground (the cell), stand on this tool's ground.
-            let p = Vec2::new(at.x, at.z);
-            let cell = cells.get(&(p.x.floor() as i32, p.y.floor() as i32));
+            let mut p = Vec2::new(at.x, at.z);
+            let cell = cells.get(&(p.x.floor() as i32, p.y.floor() as i32)).copied();
+            // The relaxed walls and the falls' notches do not follow the cell edges, so a prop that
+            // stood clear in Godot can touch a wall face here: move it to the nearest clear lawn or
+            // shore point within 1 m, or drop it.
+            if !on_water_kind && cell.is_some_and(|c| c.water.is_none()) && field.inside(p) {
+                // One decision per place: a tree's trunk and crown are two objects at one origin.
+                let radius = radius_at[&place_key(at)];
+                if touches_wall(field, p, radius) {
+                    match nearest_clear(field, cells, p, radius) {
+                        Some(q) => {
+                            p = q;
+                            report.moved += 1;
+                        }
+                        None => {
+                            report.dropped += 1;
+                            *report.dropped_by_kind.entry(format!("{kind} at a wall")).or_default() += 1;
+                            continue;
+                        }
+                    }
+                }
+            }
             let new_y = match cell {
                 Some(cell) if field.inside(p) => match cell.water {
                     Some(level) if on_water_kind => Some(level - crate::water::SINK + (at.y - level)),
@@ -380,7 +415,7 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
                 *report.dropped_by_kind.entry(kind.clone()).or_default() += 1;
                 continue;
             };
-            let world = Vec3::new(at.x, new_y, at.z) + origin;
+            let world = Vec3::new(p.x, new_y, p.y) + origin;
             bake(library, &scene, &meshes, &kind, basis, world, tint, &mut report);
         }
     }
@@ -389,6 +424,99 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
         c.0 -= Vec2::new(origin.x, origin.z);
     }
     report
+}
+
+fn place_key(at: Vec3) -> (i64, i64) {
+    ((at.x * 1000.0).round() as i64, (at.z * 1000.0).round() as i64)
+}
+
+/// The radius of what stands on the ground: the farthest vertex (from the origin, in plan) of the
+/// part within 0.4 m of the base, so a tree counts its trunk and not its crown.
+fn footprint(scene: &Scene, meshes: &[usize], basis: Mat3) -> f32 {
+    let mut radius: f32 = 0.05;
+    for &index in meshes {
+        for &v in &scene.meshes[index].pos {
+            let w = basis * v;
+            if w.y < 0.4 {
+                radius = radius.max(Vec2::new(w.x, w.z).length());
+            }
+        }
+    }
+    radius.min(1.2)
+}
+
+/// A footprint of `radius` at p touches a terrace wall (within 5 cm) or a fall's notch.
+fn touches_wall(field: &Field, p: Vec2, radius: f32) -> bool {
+    if field.nearest_wall(p, radius + 0.05).is_some() {
+        return true;
+    }
+    (0..9).any(|k| {
+        let q = if k == 8 { p } else {
+            let angle = k as f32 * std::f32::consts::FRAC_PI_4;
+            p + Vec2::new(angle.cos(), angle.sin()) * (radius + 0.05)
+        };
+        field.notch(q) > 0.01
+    })
+}
+
+/// A lawn or shore point for a footprint of `radius`: off the walls and notches with 3 cm more to
+/// spare, its centre on a dry cell inside the rim, on ground flat enough to stand on.
+fn clear_spot(field: &Field, cells: &Cells, q: Vec2, radius: f32) -> bool {
+    !touches_wall(field, q, radius + 0.03)
+        && cells.get(&(q.x.floor() as i32, q.y.floor() as i32)).is_some_and(|c| c.water.is_none())
+        && field.sample(&field.land1, q) > 0.85
+        && field.ground_normal(q).y > 0.8
+}
+
+/// The nearest clear spot within 1 m of p (rings 0.1 m apart, 24 directions).
+fn nearest_clear(field: &Field, cells: &Cells, p: Vec2, radius: f32) -> Option<Vec2> {
+    for ring in 1..=10 {
+        let r = ring as f32 * 0.1;
+        for k in 0..24 {
+            let angle = k as f32 / 24.0 * std::f32::consts::TAU;
+            let q = p + Vec2::new(angle.cos(), angle.sin()) * r;
+            if clear_spot(field, cells, q, radius) {
+                return Some(q);
+            }
+        }
+    }
+    None
+}
+
+/// Where a new cluster of stones starts, as on the authored layouts: mostly on a pond's bank, at the
+/// foot of a terrace wall or beside a tree group, now and then on open lawn.
+fn rock_anchor(rng: &mut crate::mesh::Rng, bank: &[(i32, i32)], feet: &[Vec2], trees: &[Vec2], dry: &[(i32, i32)]) -> Vec2 {
+    let pick = |rng: &mut crate::mesh::Rng, n: usize| (rng.next() * n as f32) as usize % n.max(1);
+    let in_cell = |rng: &mut crate::mesh::Rng, k: (i32, i32)| Vec2::new(k.0 as f32 + rng.next(), k.1 as f32 + rng.next());
+    let weights = [if bank.is_empty() { 0.0 } else { 0.35 }, if feet.is_empty() { 0.0 } else { 0.30 }, if trees.is_empty() { 0.0 } else { 0.25 }, 0.10];
+    let mut roll = rng.next() * weights.iter().sum::<f32>();
+    let mut choice = 3;
+    for (i, w) in weights.iter().enumerate() {
+        if roll < *w {
+            choice = i;
+            break;
+        }
+        roll -= w;
+    }
+    match choice {
+        0 => {
+            let k = bank[pick(rng, bank.len())];
+            in_cell(rng, k)
+        }
+        1 => {
+            let f = feet[pick(rng, feet.len())];
+            f + Vec2::new(rng.range(-0.3, 0.3), rng.range(-0.3, 0.3))
+        }
+        2 => {
+            let t = trees[pick(rng, trees.len())];
+            let angle = rng.range(0.0, std::f32::consts::TAU);
+            t + Vec2::new(angle.cos(), angle.sin()) * rng.range(1.2, 2.4)
+        }
+        _ => {
+            let k = dry[pick(rng, dry.len())];
+            in_cell(rng, k)
+        }
+    }
 }
 
 /// One placed example of a kind in the source scene: its meshes, basis, tint, and how high its
@@ -480,6 +608,9 @@ pub fn scatter(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, seed: u32
     let mut placed: Vec<(Vec2, f32, usize)> = Vec::new();
     let mut trees: Vec<Vec2> = Vec::new();
     let kinds = ["tree", "tree_b", "bamboo", "bush", "surface_rock", "cliff_rock", "grass_clump", "flower", "shore_boulder", "shore_rock", "shore_pebble", "reeds", "lily"];
+    let rock_kinds = [4usize, 5];
+    // The feet of the terrace walls: 0.75 m out from the middle of each dry wall piece, on its low side.
+    let wall_feet: Vec<Vec2> = field.steps.iter().filter(|s| s.wall() && !s.pond_wall() && s.low_water.is_none()).map(|s| (s.a + s.b) * 0.5 + (s.na + s.nb).normalize_or_zero() * 0.75).collect();
     for (index, kind) in kinds.iter().enumerate() {
         let Some(list) = examples.get(*kind) else { continue };
         if list.is_empty() {
@@ -514,10 +645,27 @@ pub fn scatter(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, seed: u32
         let mut rng = crate::mesh::Rng::new(seed, 900 + index as u32);
         let mut made = 0;
         let mut tries = 0;
+        let rock = *kind == "surface_rock" || *kind == "cliff_rock";
+        // Stones come in small clusters of mixed sizes (round r7): the current cluster's lead stone,
+        // how many more it takes, and how many tries in a row have failed round it.
+        let mut cluster: Option<(Vec2, usize, usize)> = None;
         while made < want && tries < want * 60 + 50 {
             tries += 1;
-            // Bushes gather round trees half the time; trees in loose groups.
-            let p = if (*kind == "bush" && rng.next() < 0.5 || (*kind == "tree" || *kind == "tree_b") && rng.next() < 0.6) && !trees.is_empty() {
+            let mut size = rng.range(0.9, 1.1);
+            let p = if rock {
+                match cluster {
+                    Some((lead, left, _)) if left > 0 => {
+                        let angle = rng.range(0.0, std::f32::consts::TAU);
+                        size = rng.range(0.5, 0.85);
+                        lead + Vec2::new(angle.cos(), angle.sin()) * rng.range(0.45, 1.1)
+                    }
+                    _ => {
+                        cluster = None;
+                        size = rng.range(1.0, 1.3);
+                        rock_anchor(&mut rng, &bank, &wall_feet, &trees, &dry)
+                    }
+                }
+            } else if (*kind == "bush" && rng.next() < 0.5 || (*kind == "tree" || *kind == "tree_b") && rng.next() < 0.6) && !trees.is_empty() {
                 let t = trees[(rng.next() * trees.len() as f32) as usize % trees.len()];
                 let angle = rng.range(0.0, std::f32::consts::TAU);
                 let r = if *kind == "bush" { rng.range(1.0, 2.6) } else { rng.range(3.2, 5.0) };
@@ -526,30 +674,65 @@ pub fn scatter(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, seed: u32
                 let k = pool[(rng.next() * pool.len() as f32) as usize % pool.len()];
                 Vec2::new(k.0 as f32 + rng.next(), k.1 as f32 + rng.next())
             };
-            let Some(cell) = cells.get(&(p.x.floor() as i32, p.y.floor() as i32)).copied() else { continue };
+            let example = &list[(rng.next() * list.len() as f32) as usize % list.len()];
+            let turn = Mat3::from_rotation_y(rng.range(0.0, std::f32::consts::TAU));
+            let basis = turn * example.basis * size;
+            let fail = |cluster: &mut Option<(Vec2, usize, usize)>| {
+                if let Some(c) = cluster.as_mut() {
+                    c.2 += 1;
+                    if c.2 >= 8 {
+                        *cluster = None;
+                    }
+                }
+            };
+            let Some(cell) = cells.get(&(p.x.floor() as i32, p.y.floor() as i32)).copied() else {
+                fail(&mut cluster);
+                continue;
+            };
             let wet_k = field.sample(&field.wet, p);
             let ok = match ground {
+                // Stones may sit on a pond's bank; their footprint keeps off walls and notches.
+                Ground::Lawn if rock => {
+                    cell.water.is_none() && wet_k < 0.45 && field.sample(&field.land1, p) > 0.9 && field.ground_normal(p).y > 0.8 && !touches_wall(field, p, footprint(&scene, &example.meshes, basis) + 0.08)
+                }
                 Ground::Lawn => cell.water.is_none() && wet_k < 0.05 && field.sample(&field.land1, p) > 0.93 && field.ground_normal(p).y > 0.85,
                 // On the bank right at the waterline.
                 Ground::Shore => cell.water.is_none() && wet_k > 0.12 && wet_k < 0.55 && field.sample(&field.land1, p) > 0.85,
                 Ground::Reed => cell.water.is_some() && wet_k < 0.92 && wet_k > 0.55,
                 Ground::Pond => cell.water.is_some() && wet_k > 0.98,
             };
-            if !ok || (wall_clear > 0.0 && field.nearest_wall(p, wall_clear).is_some()) {
+            if !ok || (!rock && wall_clear > 0.0 && field.nearest_wall(p, wall_clear).is_some()) {
+                fail(&mut cluster);
                 continue;
             }
-            if placed.iter().any(|&(q, r, k)| (q - p).length() < if k == index { spacing.max(r) } else { (spacing + r) * 0.25 }) {
+            // Stones keep 0.5 m from one another (any stone kind) and a new cluster 3 m from the others.
+            let starting = rock && cluster.is_none();
+            let crowded = placed.iter().any(|&(q, r, k)| {
+                let d = (q - p).length();
+                if rock && rock_kinds.contains(&k) {
+                    d < if starting { 3.0 } else { 0.5 }
+                } else if k == index {
+                    d < spacing.max(r)
+                } else {
+                    d < (spacing + r) * 0.25
+                }
+            });
+            if crowded {
+                fail(&mut cluster);
                 continue;
             }
-            let example = &list[(rng.next() * list.len() as f32) as usize % list.len()];
             let y = match ground {
                 Ground::Reed | Ground::Pond => cell.water.unwrap() - crate::water::SINK + example.lift,
-                _ => field.height_at(p) + example.lift,
+                _ => field.height_at(p) + if rock { example.lift * size } else { example.lift },
             };
-            let turn = Mat3::from_rotation_y(rng.range(0.0, std::f32::consts::TAU));
-            let size = rng.range(0.9, 1.1);
-            bake(library, &scene, &example.meshes, kind, turn * example.basis * size, Vec3::new(p.x, y, p.y) + origin, example.tint, &mut report);
+            bake(library, &scene, &example.meshes, kind, basis, Vec3::new(p.x, y, p.y) + origin, example.tint, &mut report);
             placed.push((p, spacing, index));
+            if rock {
+                cluster = match cluster {
+                    None => Some((p, 1 + (rng.next() * 4.0) as usize, 0)),
+                    Some((lead, left, _)) => Some((lead, left.saturating_sub(1), 0)),
+                };
+            }
             if *kind == "tree" || *kind == "tree_b" || *kind == "bamboo" {
                 trees.push(p);
             }

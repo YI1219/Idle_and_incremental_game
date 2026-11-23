@@ -958,7 +958,15 @@ fn emit_fan(mesh: &mut Mesh, field: &Field, colours: &TopColours, fan: &[TopVert
     let (lo, hi) = fan.iter().fold((f32::MAX, f32::MIN), |(a, b), v| (a.min(v.0.y), b.max(v.0.y)));
     let cell_normal = field.ground_normal(centre);
     let bridge = hi - lo > 0.45 && field.nearest_wall(centre, 0.6).is_some();
-    if cell_normal.y < 0.60 || bridge {
+    // The piece's own tilt (Newell's normal of the fan): a piece that lies flat is lawn even where the
+    // field's gradient is steep (beside a fall's sill), so it is not lit as a slope facing away (r7).
+    let mut own = Vec3::ZERO;
+    for k in 0..fan.len() {
+        let (a, b) = (fan[k].0, fan[(k + 1) % fan.len()].0);
+        own += Vec3::new((a.y - b.y) * (a.z + b.z), (a.z - b.z) * (a.x + b.x), (a.x - b.x) * (a.y + b.y));
+    }
+    let flat = own.normalize_or_zero().y.abs() > 0.85;
+    if (cell_normal.y < 0.60 && !flat) || bridge {
         let tone = 0.94 + 0.10 * hash2((centre.x * 1.3).floor() as i32, (centre.y * 1.3).floor() as i32, seed ^ 33);
         let face = if bridge {
             field.nearest_step(centre).map(|(i, _, _)| field.steps[i].normal_near(centre)).map_or(cell_normal, |n| Vec3::new(n.x, 0.0, n.y))
@@ -977,7 +985,17 @@ fn emit_fan(mesh: &mut Mesh, field: &Field, colours: &TopColours, fan: &[TopVert
             if under && c.3.family == Family::Stone && !bridge { c.2 } else { colours.riser * tone }
         };
         for k in 1..fan.len() - 1 {
-            tri_facing(mesh, [fan[0].0, fan[k].0, fan[k + 1].0], [face; 3], [rock(&fan[0]), rock(&fan[k]), rock(&fan[k + 1])], [paint; 3]);
+            let p = [fan[0].0, fan[k].0, fan[k + 1].0];
+            // A bridge piece faces the way it actually tilts, upward (round r7): the nearest step's
+            // horizontal normal could point away from the piece's open side and paint it dark.
+            let n = if bridge {
+                let g = (p[1] - p[0]).cross(p[2] - p[0]).normalize_or_zero();
+                let g = if g.y < 0.0 { -g } else { g };
+                if g == Vec3::ZERO { face } else { (g + face * 0.25).normalize() }
+            } else {
+                face
+            };
+            tri_facing(mesh, p, [n; 3], [rock(&fan[0]), rock(&fan[k]), rock(&fan[k + 1])], [paint; 3]);
         }
     } else {
         for k in 1..fan.len() - 1 {
@@ -1047,6 +1065,30 @@ fn wall_ribbon(mesh: &mut Mesh, brows: &mut Vec<(Vec3, Vec3, Vec2)>, field: &Fie
         let q = [at(&e[0], roll_out, y_of(&e[0], t0)), at(&e[1], roll_out, y_of(&e[1], t0)), at(&e[1], roll_out, y_of(&e[1], t1)), at(&e[0], roll_out, y_of(&e[0], t1))];
         tri_facing(mesh, [q[0], q[1], q[2]], [e[0].n3, e[1].n3, e[1].n3], [colour; 3], [paint; 3]);
         tri_facing(mesh, [q[0], q[2], q[3]], [e[0].n3, e[1].n3, e[0].n3], [colour; 3], [paint; 3]);
+    }
+    // A backing face 5 cm behind the cut (8.5 cm behind the face), reaching 0.20 m past both ends and 0.2 m under the lower
+    // level: where two walls meet at an angle or a wall ends against another step, the pieces of
+    // ribbon leave thin slits, and through them this rock shows instead of the island's dark inside.
+    // Under the upper lawn everywhere else, so it is never seen whole.
+    {
+        let back = -0.05;
+        let low = e[0].low.min(e[1].low) - 0.2;
+        let mut corners: Vec<(Vec3, Vec3, Vec3)> = Vec::with_capacity(2);
+        for (k, sign) in [(0usize, -1.0_f32), (1, 1.0)] {
+            let mut reach = 0.20;
+            let mut p = e[k].c + dir * sign * reach + e[k].n * back;
+            while reach > 0.0 && field.sample(&field.land1, p) < 0.6 {
+                reach -= 0.05;
+                p = e[k].c + dir * sign * reach.max(0.0) + e[k].n * back;
+            }
+            let top = (e[k].top - 0.08).min(field.height_at(p) - 0.06).max(low + 0.05);
+            corners.push((Vec3::new(p.x, top, p.y), Vec3::new(p.x, low, p.y), e[k].n3));
+        }
+        let colour = colours.riser * tone;
+        let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(3).lip(lip);
+        let (a, b) = (corners[0], corners[1]);
+        tri_facing(mesh, [a.0, b.0, b.1], [a.2, b.2, b.2], [colour; 3], [paint; 3]);
+        tri_facing(mesh, [a.0, b.1, a.1], [a.2, b.2, a.2], [colour; 3], [paint; 3]);
     }
     if !notch && !step.pond_wall() {
         brows.push((Vec3::new(c0.x, e[0].top, c0.y), Vec3::new(c1.x, e[1].top, c1.y), (e[0].n + e[1].n).normalize_or_zero()));

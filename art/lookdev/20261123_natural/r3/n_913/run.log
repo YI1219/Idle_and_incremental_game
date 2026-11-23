@@ -1,9 +1,0 @@
-PROPS loaded 60 objects, 154 instances, 71968 triangles, 4 dropped (bush 1, flower 1, grass_clump 2) from scene_913_2
-island: 571 cells, 25 faces, 62 columns, 26232 triangles (top 23600, body 2632, decor 0, props 71968, grass full 281086), built in 54.2 ms (fields 21.3, top 11.1, body 0.2, decor 5.7, grass 15.5)
-form: 25 faces, widths 2.0 to 6.9 m (spread 0.41), step spread 0.40 m, longest alike run 2 faces / 9.0 m
-GRASS whole: 14794 clumps, 281086 triangles full, 281086 drawn
-FRAME art/lookdev/20261123_natural/r3/n_913/n_913_whole.png
-STATS whole: p05 0.545 p50 0.816 p95 0.937 white 0.014 black 0.000 sat_mean 0.144 sat_p99 0.518 quiet 0.710
-GRASS reverse: 14794 clumps, 281086 triangles full, 281086 drawn
-FRAME art/lookdev/20261123_natural/r3/n_913/n_913_reverse.png
-STATS reverse: p05 0.349 p50 0.773 p95 0.922 white 0.004 black 0.000 sat_mean 0.136 sat_p99 0.506 quiet 0.718

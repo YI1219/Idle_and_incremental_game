@@ -1,8 +1,0 @@
-island: 623 cells, 27 faces, 72 columns, 55338 triangles (top 24374, body 2933, decor 24302, tufts 3729), built in 40.8 ms (fields 25.3, top 12.2, body 0.2, decor 1.7)
-form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
-FRAME art/lookdev/20261123_natural/r2/checks/base_rest_noao/base_rest_noao_game.png
-STATS game: p05 0.447 p50 0.729 p95 0.914 white 0.004 black 0.000 sat_mean 0.211 sat_p99 0.494 quiet 0.528
-BENCH game: 10.52 ms a frame at 3024x1964 with 2x supersampling, ssao off
-FRAME art/lookdev/20261123_natural/r2/checks/base_rest_noao/base_rest_noao_whole.png
-STATS whole: p05 0.498 p50 0.824 p95 0.925 white 0.012 black 0.000 sat_mean 0.130 sat_p99 0.475 quiet 0.663
-BENCH whole: 11.26 ms a frame at 3024x1964 with 2x supersampling, ssao off

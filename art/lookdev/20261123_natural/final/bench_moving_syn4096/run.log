@@ -1,0 +1,11 @@
+PROPS scattered 85 objects, 1088 instances, 517216 triangles, 0 short of the source density from scene_7301_0
+island: 4096 cells, 63 faces, 393 columns, 182508 triangles (top 160162, body 22346, decor 0, props 517216, grass full 3412710), built in 255.0 ms (fields 84.4, top 93.7, body 1.8, decor 18.9, grass 49.4)
+form: 63 faces, widths 2.0 to 6.6 m (spread 0.33), step spread 0.35 m, longest alike run 4 faces / 18.4 m
+GRASS whole: 97506 clumps, 3412710 triangles full, 2047626 drawn, chunks by level 0/84/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final/bench_moving_syn4096/bench_moving_syn4096_whole.png
+STATS whole: p05 0.404 p50 0.780 p95 0.902 white 0.000 black 0.000 sat_mean 0.175 sat_p99 0.518 quiet 0.503
+BENCH whole: 10.42 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS game: 97506 clumps, 3412710 triangles full, 2022937 drawn, chunks by level 21/43/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final/bench_moving_syn4096/bench_moving_syn4096_game.png
+STATS game: p05 0.333 p50 0.600 p95 0.851 white 0.000 black 0.000 sat_mean 0.379 sat_p99 0.553 quiet 0.149
+BENCH game: 11.05 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on

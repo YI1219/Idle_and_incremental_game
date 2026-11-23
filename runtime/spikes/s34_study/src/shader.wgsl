@@ -270,7 +270,13 @@ fn stone_paint(p: vec3<f32>, n: vec3<f32>, dx: vec3<f32>, dy: vec3<f32>) -> vec4
 
 @fragment
 fn fs_terms(v: VTerms) -> FTerms {
-    let n = normalize(v.normal);
+    var n = normalize(v.normal);
+    // Island stone seen from behind (a filler piece at a terrace junction, a block's side through a
+    // joint) is shaded as if it faced the camera (round r7), so no view shows a surface lit from
+    // its back as a dark hole into the island.
+    if (abs(round(v.colour.a * 3.0) / 3.0 - 85.0 / 255.0) < 0.05 && dot(n, g.camera_pos.xyz - v.world) < 0.0) {
+        n = -n;
+    }
     let dx = dpdx(v.world);
     let dy = dpdy(v.world);
     var vis = 1.0;
@@ -1020,6 +1026,28 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
     }
     if (g.look.z > 1.5) {
         ao = screen_ao;
+    }
+    if (g.look.z > 2.5) {
+        // Which part a pixel belongs to (--debug=parts), by paint id: lawn green, walls and rim bands
+        // orange, liner blue, rim blocks white, deeper columns grey, shoulders yellow, hole lining
+        // purple, anything else (props) red; island surfaces whose normal faces away from the camera
+        // magenta.
+        let id = round(normal_tex.w * 255.0);
+        var c = vec3<f32>(0.9, 0.1, 0.1);
+        let island = id == 1.0 || id == 2.0 || id >= 30.0;
+        if (id == 3.0) { return vec4<f32>(0.0, 1.0, 1.0, 1.0); }
+        if (id == 4.0) { return vec4<f32>(1.0, 1.0, 0.0, 1.0); }
+        if (island && dot(n, -ray) < -0.05 && family > 0.2) {
+            return vec4<f32>(1.0, 0.0, 1.0, 1.0);
+        }
+        if (id == 1.0) { c = vec3<f32>(0.2, 0.7, 0.2); }
+        else if (id == 2.0) { c = vec3<f32>(1.0, 0.55, 0.1); }
+        else if (id == 36.0 || id == 37.0) { c = vec3<f32>(0.6, 0.2, 0.8); }
+        else if (id >= 30.0 && id < 40.0) { c = vec3<f32>(0.95, 0.9, 0.2); }
+        else if (id >= 40.0 && id < 100.0) { c = vec3<f32>(0.15, 0.35, 0.95); }
+        else if (id >= 100.0 && id < 170.0) { c = vec3<f32>(0.95, 0.95, 0.95); }
+        else if (id >= 170.0) { c = vec3<f32>(0.5, 0.5, 0.5); }
+        return vec4<f32>(c, 1.0);
     }
     if (g.look.z > 0.5) {
         // Occlusion only: 1 shows as light grey after the tone curve, 0.5 as mid grey.
