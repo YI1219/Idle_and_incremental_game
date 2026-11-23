@@ -55,6 +55,12 @@ struct Args {
     metrics: Option<String>,
     bench: bool,
     edit_test: bool,
+    /// Round r9: ramp strokes (ax, az, bx, bz, width), applied in order after loading.
+    ramps: Vec<[f32; 5]>,
+    /// Round r9: write the resulting layout (version 2) here.
+    save_layout: Option<String>,
+    /// Round r9: a synthetic island gets one ramp across each long terrace wall.
+    synthetic_ramps: bool,
 }
 
 fn parse_args() -> Args {
@@ -83,6 +89,9 @@ fn parse_args() -> Args {
         metrics: None,
         bench: false,
         edit_test: false,
+        ramps: Vec::new(),
+        save_layout: None,
+        synthetic_ramps: false,
     };
     for arg in std::env::args().skip(1) {
         let (key, value) = arg.split_once('=').unwrap_or((arg.as_str(), ""));
@@ -116,6 +125,13 @@ fn parse_args() -> Args {
             "--metrics" => args.metrics = Some(value.to_string()),
             "--bench" => args.bench = true,
             "--edit-test" => args.edit_test = true,
+            "--ramp" => {
+                let v: Vec<f32> = value.split(',').map(|s| s.trim().parse().expect("--ramp=ax,az,bx,bz,width")).collect();
+                assert!(v.len() == 5, "--ramp=ax,az,bx,bz,width");
+                args.ramps.push([v[0], v[1], v[2], v[3], v[4]]);
+            }
+            "--save-layout" => args.save_layout = Some(value.to_string()),
+            "--synthetic-ramps" => args.synthetic_ramps = true,
             other => panic!("unknown argument {other}"),
         }
     }
@@ -826,7 +842,7 @@ fn edit_test(cells: &Cells, seed: u32) -> String {
                 let key = if name == "expand" { (at.0 + 2 + dx, at.1 + dz) } else { (at.0 - 1 + dx, at.1 + dz) };
                 match name {
                     "expand" => {
-                        edited.entry(key).or_insert(field::Cell { h: cells[&at].h, water: None });
+                        edited.entry(key).or_insert(field::Cell::flat(cells[&at].h, None));
                     }
                     "contract" => {
                         edited.remove(&key);
@@ -897,16 +913,204 @@ fn edit_test(cells: &Cells, seed: u32) -> String {
         lines.push(format!("  {{\"stroke\": \"{name}\", \"at\": [{}, {}], \"faces_before\": {}, \"faces_after\": {}, \"faces_changed\": {changed}, \"farthest_change_m\": {farthest:.2}, \"changed_beyond_12m\": {far}}}", at.0, at.1, before.len(), after.len()));
         println!("EDIT {name:8} at {at:?}: {changed} faces changed, farthest {farthest:.2} m from the stroke, {far} beyond 12 m");
     }
+    // Round r9: a ramp stroke across a terrace wall (the wall edge a third of the way through the
+    // sorted list that takes a valid ramp). Besides the rim plan, the top surface (lawn, banks and
+    // walls) is compared vertex by vertex: a vertex is changed when the other build has none within 1 cm.
+    let walls = field::wall_edges(cells);
+    let mut stroke: Option<(Vec2, Vec2, Cells)> = None;
+    for k in 0..walls.len() {
+        let (k1, k2) = walls[(walls.len() / 3 + k) % walls.len()];
+        let (a, b) = field::ramp_across(cells, k1, k2, 0.3);
+        let mut edited = cells.clone();
+        if field::ramp(&mut edited, a, b, 2.0).is_ok() {
+            stroke = Some((a, b, edited));
+            break;
+        }
+    }
+    if let Some((a, b, edited)) = stroke {
+        let to_stroke = |p: Vec2| {
+            let ab = b - a;
+            let t = ((p - a).dot(ab) / ab.length_squared()).clamp(0.0, 1.0);
+            (p - (a + ab * t)).length()
+        };
+        let (after, _, _) = plan(&edited);
+        let alike = |f: &body::Face, g: &body::Face| (f.a - g.a).length() <= 0.30 && (f.b - g.b).length() <= 0.30 && (f.top - g.top).abs() <= 0.26;
+        let mut farthest: f32 = 0.0;
+        let (mut changed, mut far) = (0, 0);
+        for face in before.iter().filter(|f| !after.iter().any(|g| alike(f, g))).chain(after.iter().filter(|f| !before.iter().any(|g| alike(f, g)))) {
+            changed += 1;
+            let d = to_stroke(face.a).min(to_stroke(face.b));
+            farthest = farthest.max(d);
+            if d > 12.0 {
+                far += 1;
+            }
+        }
+        let top_points = |cells: &Cells| -> Vec<Vec3> {
+            let field = field::Field::build(cells);
+            let top = field::build_top(&field, &field::TopColours::default(), seed);
+            let mut seen = std::collections::HashSet::new();
+            top.mesh.vertices.iter().map(|v| Vec3::from(v.pos)).filter(|p| seen.insert(((p.x * 1e4) as i64, (p.y * 1e4) as i64, (p.z * 1e4) as i64))).collect()
+        };
+        let (p0, p1) = (top_points(cells), top_points(&edited));
+        let index = |set: &[Vec3]| {
+            let mut map: std::collections::HashMap<(i32, i32, i32), Vec<Vec3>> = std::collections::HashMap::new();
+            for p in set {
+                map.entry(((p.x * 10.0).floor() as i32, (p.y * 10.0).floor() as i32, (p.z * 10.0).floor() as i32)).or_default().push(*p);
+            }
+            map
+        };
+        let (i0, i1) = (index(&p0), index(&p1));
+        let has = |map: &std::collections::HashMap<(i32, i32, i32), Vec<Vec3>>, p: Vec3| {
+            let k = ((p.x * 10.0).floor() as i32, (p.y * 10.0).floor() as i32, (p.z * 10.0).floor() as i32);
+            (-1..=1).any(|dx| (-1..=1).any(|dy| (-1..=1).any(|dz| map.get(&(k.0 + dx, k.1 + dy, k.2 + dz)).is_some_and(|l| l.iter().any(|q| (*q - p).length() < 0.01)))))
+        };
+        let mut top_far: f32 = 0.0;
+        let mut top_changed = 0;
+        let mut top_beyond = 0;
+        for p in p0.iter().filter(|p| !has(&i1, **p)).chain(p1.iter().filter(|p| !has(&i0, **p))) {
+            top_changed += 1;
+            let d = to_stroke(Vec2::new(p.x, p.z));
+            top_far = top_far.max(d);
+            if d > 12.0 {
+                top_beyond += 1;
+            }
+        }
+        println!(
+            "EDIT ramp     a=({:.1}, {:.1}) b=({:.1}, {:.1}): {changed} faces changed, farthest {farthest:.2} m from the stroke, {far} beyond 12 m; top surface {top_changed} of {} vertices changed, farthest {top_far:.2} m, {top_beyond} beyond 12 m",
+            a.x, a.y, b.x, b.y, p1.len()
+        );
+        lines.push(format!(
+            "  {{\"stroke\": \"ramp\", \"a\": [{:.2}, {:.2}], \"b\": [{:.2}, {:.2}], \"faces_changed\": {changed}, \"farthest_change_m\": {farthest:.2}, \"changed_beyond_12m\": {far}, \"top_vertices_changed\": {top_changed}, \"top_farthest_m\": {top_far:.2}, \"top_beyond_12m\": {top_beyond}}}",
+            a.x, a.y, b.x, b.y
+        ));
+    } else {
+        println!("EDIT ramp     no wall takes a valid ramp");
+    }
     lines.join(",\n")
+}
+
+/// Round r9 (`--synthetic-ramps`): one ramp of width 2 across each long terrace wall (8 or more
+/// cell edges between the same two levels), near the middle of the wall, deterministic. A ramp is
+/// skipped when its strip would leave the two levels it joins, cover water, or come within 4 m of
+/// another ramp.
+fn synthetic_ramps(cells: &Cells) -> Vec<[f32; 5]> {
+    let edges = field::wall_edges(cells);
+    let n = edges.len();
+    let mut group: Vec<usize> = (0..n).collect();
+    fn root(group: &mut [usize], i: usize) -> usize {
+        let mut r = i;
+        while group[r] != r {
+            r = group[r];
+        }
+        group[i] = r;
+        r
+    }
+    let levels = |e: &((i32, i32), (i32, i32))| {
+        let (a, b) = (cells[&e.0].h, cells[&e.1].h);
+        ((a.max(b) * 4.0).round() as i32, (a.min(b) * 4.0).round() as i32)
+    };
+    let corners = |e: &((i32, i32), (i32, i32))| {
+        let ((x, z), (x2, _)) = *e;
+        if x2 != x { [(x + 1, z), (x + 1, z + 1)] } else { [(x, z + 1), (x + 1, z + 1)] }
+    };
+    let mut by_corner: std::collections::HashMap<(i32, i32), Vec<usize>> = std::collections::HashMap::new();
+    for (i, e) in edges.iter().enumerate() {
+        for c in corners(e) {
+            by_corner.entry(c).or_default().push(i);
+        }
+    }
+    let mut keys: Vec<(i32, i32)> = by_corner.keys().copied().collect();
+    keys.sort();
+    for c in keys {
+        let list = by_corner[&c].clone();
+        for &i in &list {
+            for &j in &list {
+                if i < j && levels(&edges[i]) == levels(&edges[j]) {
+                    let (ri, rj) = (root(&mut group, i), root(&mut group, j));
+                    group[ri.max(rj)] = ri.min(rj);
+                }
+            }
+        }
+    }
+    let mut groups: std::collections::BTreeMap<usize, Vec<usize>> = std::collections::BTreeMap::new();
+    for i in 0..n {
+        let r = root(&mut group, i);
+        groups.entry(r).or_default().push(i);
+    }
+    let mut out: Vec<[f32; 5]> = Vec::new();
+    let mut centres: Vec<Vec2> = Vec::new();
+    for (_, list) in groups {
+        if list.len() < 8 {
+            continue;
+        }
+        let mid_of = |i: usize| (field::centre_of(edges[i].0) + field::centre_of(edges[i].1)) * 0.5;
+        let centroid = list.iter().map(|&i| mid_of(i)).sum::<Vec2>() / list.len() as f32;
+        let mut order = list.clone();
+        order.sort_by(|&i, &j| (mid_of(i) - centroid).length().partial_cmp(&(mid_of(j) - centroid).length()).unwrap().then(i.cmp(&j)));
+        for &i in order.iter().take(8) {
+            let (k1, k2) = edges[i];
+            let (a, b) = field::ramp_across(cells, k1, k2, 0.3);
+            let centre = (a + b) * 0.5;
+            if centres.iter().any(|c| (*c - centre).length() < 4.0) {
+                continue;
+            }
+            let (lo, hi) = (cells[&k1].h.min(cells[&k2].h), cells[&k1].h.max(cells[&k2].h));
+            // The strip may only hold the two levels it joins, all dry and flat.
+            let dir = (b - a).normalize();
+            let length = (b - a).length();
+            let strip_ok = cells.iter().all(|(&key, c)| {
+                let p = field::centre_of(key);
+                let t = (p - a).dot(dir) / length;
+                let off = (p - (a + dir * length * t.clamp(0.0, 1.0))).length();
+                if !(-1e-4..=1.0 + 1e-4).contains(&t) || off > 1.0 + 1e-4 {
+                    return true;
+                }
+                c.water.is_none() && !c.sloped() && ((c.h - lo).abs() < 1e-3 || (c.h - hi).abs() < 1e-3)
+            });
+            let mut test = cells.clone();
+            if strip_ok && field::ramp(&mut test, a, b, 2.0).is_ok() {
+                out.push([a.x, a.y, b.x, b.y, 2.0]);
+                centres.push(centre);
+                break;
+            }
+        }
+    }
+    out
 }
 
 fn main() {
     let args = parse_args();
-    let cells = match (&args.layout, args.synthetic) {
+    let mut cells = match (&args.layout, args.synthetic) {
         (Some(path), _) => field::load_layout(path),
         (None, count) if count > 0 => field::synthetic(count, args.seed),
         _ => panic!("give --layout=FILE or --synthetic=COUNT"),
     };
+    // Round r9: ramp strokes, as a player's tool would make them.
+    let mut strokes: Vec<[f32; 5]> = args.ramps.clone();
+    if args.synthetic_ramps {
+        strokes.extend(synthetic_ramps(&cells));
+    }
+    for r in &strokes {
+        let (a, b) = (Vec2::new(r[0], r[1]), Vec2::new(r[2], r[3]));
+        match field::ramp(&mut cells, a, b, r[4]) {
+            Ok(done) => println!(
+                "RAMP a=({:.2}, {:.2}) b=({:.2}, {:.2}) width {:.1} : {} cells, rise {:.2} m over {:.2} m, gradient {:.3}",
+                a.x, a.y, b.x, b.y, r[4], done.cells, done.rise, done.length, done.gradient
+            ),
+            Err(reason) => println!("RAMP refused: {reason} (a=({:.2}, {:.2}) b=({:.2}, {:.2}) width {:.1})", a.x, a.y, b.x, b.y, r[4]),
+        }
+    }
+    if let Some(path) = &args.save_layout {
+        let (seed, preset) = match &args.layout {
+            Some(p) => {
+                let json: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(p).unwrap()).unwrap();
+                (json["seed"].as_u64().unwrap_or(args.seed as u64) as u32, json["preset"].as_i64().unwrap_or(0))
+            }
+            None => (args.seed, 0),
+        };
+        field::save_layout(path, &cells, seed, preset);
+        println!("LAYOUT saved {path} ({} cells, {} slope cells, version 2)", cells.len(), cells.values().filter(|c| c.sloped()).count());
+    }
     let courtyard = args.layout.is_some();
     // Props folder for a layout: given, from its name, or none (synthetic islands keep the stand-ins).
     let props_for = |layout: Option<&str>, given: bool| -> Option<std::path::PathBuf> {

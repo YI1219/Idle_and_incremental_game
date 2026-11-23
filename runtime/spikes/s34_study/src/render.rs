@@ -15,6 +15,8 @@ use crate::water::WaterVertex;
 const SHADOW_SIZE: u32 = 4096;
 const TERM_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 const WORK_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba16Float;
+/// Round r9 (F3): the far field behind the root mist is drawn at 1/FAR_LOW of the output size per axis.
+const FAR_LOW: u32 = 4;
 /// Plain 8-bit, not sRGB: the down pass writes display-encoded values itself.
 const FINAL_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 const AO_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R8Unorm;
@@ -86,6 +88,9 @@ pub struct Renderer {
     ao_b_view: wgpu::TextureView,
     resolve_pipeline: wgpu::RenderPipeline,
     resolve_group: wgpu::BindGroup,
+    far_low_pipeline: wgpu::RenderPipeline,
+    far_low_group: wgpu::BindGroup,
+    far_low_view: wgpu::TextureView,
     water_pipeline: wgpu::RenderPipeline,
     water_group: wgpu::BindGroup,
     down_pipeline: wgpu::RenderPipeline,
@@ -107,6 +112,12 @@ pub struct Renderer {
     props_bind: wgpu::BindGroupLayout,
     props_materials: wgpu::Buffer,
     prop_terms_pipelines: [wgpu::RenderPipeline; 3],
+    /// Round r9 (F4): leaf cards depth only (cut-out), then shaded with an equal depth test.
+    prop_leaf_depth_pipeline: wgpu::RenderPipeline,
+    prop_leaf_shade_pipeline: wgpu::RenderPipeline,
+    leaf_prepass: bool,
+    /// S34_SKIP=leaf,grass: leave parts out of the terms pass, to measure what they cost.
+    skip: String,
     prop_shadow_pipeline: wgpu::RenderPipeline,
     prop_shadow_leaf_pipeline: wgpu::RenderPipeline,
     /// Vertex buffer, the bind group, and the vertex ranges of stone, decor and leaf.
@@ -125,7 +136,7 @@ struct GrassGpu {
     index: wgpu::Buffer,
     levels: [(u32, std::ops::Range<u32>); grass::LEVELS],
     clumps: wgpu::Buffer,
-    chunks: Vec<(Vec3, Vec3, u32, [u32; 3])>,
+    chunks: Vec<(Vec3, Vec3, u32, [u32; 3], Vec3, Vec3)>,
 }
 
 /// What one frame drew of the grass: triangles, and chunks at each level.
@@ -436,6 +447,28 @@ impl Renderer {
             mipmap_filter: wgpu::MipmapFilterMode::Linear,
             ..Default::default()
         });
+        // Round r9 (F3): the far field at a quarter of the output resolution, for the root's mist to
+        // dissolve into (what lies behind it along the same ray), so the per-pixel cloud decks are
+        // paid only for the sky itself.
+        let (fw, fh) = ((width / FAR_LOW).max(1), (height / FAR_LOW).max(1));
+        let far_low_texture = device.create_texture(&wgpu::TextureDescriptor {
+            label: Some("far low"),
+            size: wgpu::Extent3d { width: fw, height: fh, depth_or_array_layers: 1 },
+            mip_level_count: 1,
+            sample_count: 1,
+            dimension: wgpu::TextureDimension::D2,
+            format: WORK_FORMAT,
+            usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING,
+            view_formats: &[],
+        });
+        let far_low_view = far_low_texture.create_view(&Default::default());
+        let far_low_bind = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor { label: Some("far low"), entries: &[filtered_entry(6), sampler_entry(7), filtered_entry(8)] });
+        let far_low_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: None,
+            layout: &far_low_bind,
+            entries: &[view_entry(6, &billow), wgpu::BindGroupEntry { binding: 7, resource: wgpu::BindingResource::Sampler(&far_sampler) }, view_entry(8, &backdrop)],
+        });
+        let far_low_pipeline = full_screen("far low", &layout_of(&[Some(&globals_layout), Some(&far_low_bind)]), "fs_far_low", WORK_FORMAT);
         let resolve_bind = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
             label: Some("resolve"),
             entries: &[
@@ -448,6 +481,7 @@ impl Renderer {
                 filtered_entry(6),
                 sampler_entry(7),
                 filtered_entry(8),
+                filtered_entry(9),
             ],
         });
         let resolve_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
@@ -463,6 +497,7 @@ impl Renderer {
                 view_entry(6, &billow),
                 wgpu::BindGroupEntry { binding: 7, resource: wgpu::BindingResource::Sampler(&far_sampler) },
                 view_entry(8, &backdrop),
+                view_entry(9, &far_low_view),
             ],
         });
         let resolve_pipeline = full_screen("resolve", &layout_of(&[Some(&globals_layout), Some(&resolve_bind)]), "fs_resolve", WORK_FORMAT);
@@ -576,6 +611,25 @@ impl Renderer {
             prop_terms("prop decor", "fs_prop_decor", Some(wgpu::Face::Back)),
             prop_terms("prop leaf", "fs_prop_leaf", None),
         ];
+        // Round r9 (F4): leaf cards in two steps within the terms pass.
+        let leaf_pipeline = |label: &str, vertex: &str, entry: &str, write: wgpu::ColorWrites, depth: wgpu::DepthStencilState| {
+            let target = |format: wgpu::TextureFormat| Some(wgpu::ColorTargetState { format, blend: None, write_mask: write });
+            device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+                label: Some(label),
+                layout: Some(&prop_terms_layout),
+                vertex: wgpu::VertexState { module: &shader, entry_point: Some(vertex), buffers: &[Some(prop_layout.clone())], compilation_options: Default::default() },
+                fragment: Some(wgpu::FragmentState { module: &shader, entry_point: Some(entry), targets: &[target(TERM_FORMAT), target(TERM_FORMAT), target(TERM_FORMAT)], compilation_options: Default::default() }),
+                primitive: wgpu::PrimitiveState { cull_mode: None, front_face: wgpu::FrontFace::Ccw, ..Default::default() },
+                depth_stencil: Some(depth),
+                multisample: wgpu::MultisampleState::default(),
+                multiview_mask: None,
+                cache: None,
+            })
+        };
+        let depth_only = wgpu::DepthStencilState { format: DEPTH_FORMAT, depth_write_enabled: Some(true), depth_compare: Some(wgpu::CompareFunction::Less), stencil: wgpu::StencilState::default(), bias: wgpu::DepthBiasState::default() };
+        let depth_equal = wgpu::DepthStencilState { format: DEPTH_FORMAT, depth_write_enabled: Some(false), depth_compare: Some(wgpu::CompareFunction::Equal), stencil: wgpu::StencilState::default(), bias: wgpu::DepthBiasState::default() };
+        let prop_leaf_depth_pipeline = leaf_pipeline("prop leaf depth", "vs_prop_depth", "fs_prop_leaf_depth", wgpu::ColorWrites::empty(), depth_only);
+        let prop_leaf_shade_pipeline = leaf_pipeline("prop leaf shade", "vs_prop", "fs_prop_leaf_shade", wgpu::ColorWrites::ALL, depth_equal);
         let shadow_bias = wgpu::DepthBiasState { constant: 2, slope_scale: 2.0, clamp: 0.0 };
         let prop_shadow_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
             label: Some("prop shadow"),
@@ -629,6 +683,9 @@ impl Renderer {
             ao_b_view,
             resolve_pipeline,
             resolve_group,
+            far_low_pipeline,
+            far_low_group,
+            far_low_view,
             water_pipeline,
             water_group,
             down_pipeline,
@@ -649,6 +706,10 @@ impl Renderer {
             props_bind,
             props_materials,
             prop_terms_pipelines,
+            prop_leaf_depth_pipeline,
+            prop_leaf_shade_pipeline,
+            leaf_prepass: std::env::var("S34_LEAF_PREPASS").map_or(true, |v| v != "0"),
+            skip: std::env::var("S34_SKIP").unwrap_or_default(),
             prop_shadow_pipeline,
             prop_shadow_leaf_pipeline,
             props: None,
@@ -668,7 +729,7 @@ impl Renderer {
         let mesh = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clump mesh"), contents: bytemuck::cast_slice(&meshes.vertices), usage: wgpu::BufferUsages::VERTEX });
         let index = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clump index"), contents: bytemuck::cast_slice(&meshes.indices), usage: wgpu::BufferUsages::INDEX });
         let clumps = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clumps"), contents: bytemuck::cast_slice(&grass.clumps), usage: wgpu::BufferUsages::VERTEX });
-        let chunks = grass.chunks.iter().map(|c| (c.lo, c.hi, c.first, c.counts)).collect();
+        let chunks = grass.chunks.iter().map(|c| (c.lo, c.hi, c.first, c.counts, c.parent_lo, c.parent_hi)).collect();
         self.grass = Some(GrassGpu { mesh, index, levels: meshes.levels.clone(), clumps, chunks });
     }
 
@@ -686,12 +747,14 @@ impl Renderer {
         let mut all: Vec<PropVertex> = Vec::with_capacity(total);
         let mut ranges: [std::ops::Range<u32>; 3] = [0..0, 0..0, 0..0];
         let mut chunks = Vec::new();
+        // Round r9 (F4): 4 m chunks (8 m before) cull the crowns more tightly to the view.
+        let size: f32 = std::env::var("S34_PROP_CHUNK").ok().and_then(|v| v.parse().ok()).unwrap_or(4.0);
         for (class, bucket) in library.buckets.iter().enumerate() {
             let start = all.len() as u32;
             let mut by_chunk: std::collections::BTreeMap<(i32, i32), Vec<PropVertex>> = std::collections::BTreeMap::new();
             for tri in bucket.chunks_exact(3) {
                 let c = (Vec3::from_array(tri[0].pos) + Vec3::from_array(tri[1].pos) + Vec3::from_array(tri[2].pos)) / 3.0;
-                by_chunk.entry(((c.x / 8.0).floor() as i32, (c.z / 8.0).floor() as i32)).or_default().extend_from_slice(tri);
+                by_chunk.entry(((c.x / size).floor() as i32, (c.z / size).floor() as i32)).or_default().extend_from_slice(tri);
             }
             for (_, list) in by_chunk {
                 let first = all.len() as u32;
@@ -840,43 +903,61 @@ impl Renderer {
                 occlusion_query_set: None,
                 multiview_mask: None,
             });
-            pass.set_pipeline(&self.terms_pipeline);
             pass.set_bind_group(0, &self.globals_group, &[]);
             pass.set_bind_group(1, &self.terms_group, &[]);
+            let visible: Vec<(usize, f32, std::ops::Range<u32>)> = {
+                let view_proj = self.view_proj(camera);
+                let mut list: Vec<(usize, f32, std::ops::Range<u32>)> = self
+                    .prop_chunks
+                    .iter()
+                    .filter(|(_, _, lo, hi)| !outside(&view_proj, *lo, *hi))
+                    .map(|(class, range, lo, hi)| (*class, (camera.eye.clamp(*lo, *hi) - camera.eye).length(), range.clone()))
+                    .collect();
+                list.sort_by(|a, b| a.0.cmp(&b.0).then(a.1.partial_cmp(&b.1).unwrap()));
+                list
+            };
+            const LEAF: usize = 2;
+            let prepass = self.leaf_prepass && self.props.is_some() && !self.skip.contains("leaf");
+            // Round r9 (F4): the leaf cards' depth first (nearest chunks first).
+            if prepass {
+                let (buffer, group, _) = self.props.as_ref().unwrap();
+                pass.set_bind_group(2, group, &[]);
+                pass.set_vertex_buffer(0, buffer.slice(..));
+                pass.set_pipeline(&self.prop_leaf_depth_pipeline);
+                for (class, _, range) in &visible {
+                    if *class == LEAF {
+                        pass.draw(range.clone(), 0..1);
+                    }
+                }
+            }
+            pass.set_pipeline(&self.terms_pipeline);
             pass.set_vertex_buffer(0, solid.slice(..));
             pass.draw(0..*count, 0..1);
             // Props before the grass, so the depth test rejects the leaves they hide.
             if let Some((buffer, group, _)) = &self.props {
                 pass.set_bind_group(2, group, &[]);
                 pass.set_vertex_buffer(0, buffer.slice(..));
-                let view_proj = self.view_proj(camera);
-                let mut visible: Vec<(usize, f32, std::ops::Range<u32>)> = self
-                    .prop_chunks
-                    .iter()
-                    .filter(|(_, _, lo, hi)| !outside(&view_proj, *lo, *hi))
-                    .map(|(class, range, lo, hi)| (*class, (camera.eye.clamp(*lo, *hi) - camera.eye).length(), range.clone()))
-                    .collect();
-                visible.sort_by(|a, b| a.0.cmp(&b.0).then(a.1.partial_cmp(&b.1).unwrap()));
                 let mut current = usize::MAX;
-                for (class, _, range) in visible {
+                for (class, _, range) in visible.into_iter().filter(|v| !(v.0 == LEAF && self.skip.contains("leaf"))) {
                     if class != current {
-                        pass.set_pipeline(&self.prop_terms_pipelines[class]);
+                        pass.set_pipeline(if class == LEAF && prepass { &self.prop_leaf_shade_pipeline } else { &self.prop_terms_pipelines[class] });
                         current = class;
                     }
                     pass.draw(range, 0..1);
                 }
             }
-            if let Some(gpu) = &self.grass {
+            if let Some(gpu) = self.grass.as_ref().filter(|_| !self.skip.contains("grass")) {
                 let view_proj = self.view_proj(camera);
                 // Leaf detail per chunk from how wide a leaf is on screen at the chunk's nearest point.
                 let focal = self.height as f32 * 0.5 / (camera.fov_deg.to_radians() * 0.5).tan();
                 let mut visible: Vec<(f32, usize, u32, u32)> = Vec::new();
-                for (lo, hi, first, counts) in &gpu.chunks {
+                for (lo, hi, first, counts, plo, phi) in &gpu.chunks {
                     if outside(&view_proj, *lo, *hi) {
                         continue;
                     }
                     let distance = (camera.eye.clamp(*lo, *hi) - camera.eye).length().max(0.01);
-                    let px = grass::LEAF_WIDTH * focal / distance;
+                    // The level of detail follows the 8 m chunk the part belongs to.
+                    let px = grass::LEAF_WIDTH * focal / (camera.eye.clamp(*plo, *phi) - camera.eye).length().max(0.01);
                     let level = grass::LEVEL_PX.iter().filter(|&&t| px < t).count();
                     let n = match level {
                         0 | 1 => counts[0],
@@ -921,6 +1002,13 @@ impl Renderer {
                 pass.set_bind_group(1, group, &[]);
                 pass.draw(0..3, 0..1);
             }
+        }
+        {
+            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("far low"), color_attachments: &[clear(&self.far_low_view)], depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
+            pass.set_pipeline(&self.far_low_pipeline);
+            pass.set_bind_group(0, &self.globals_group, &[]);
+            pass.set_bind_group(1, &self.far_low_group, &[]);
+            pass.draw(0..3, 0..1);
         }
         {
             let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("resolve"), color_attachments: &[clear(&self.work_view)], depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });

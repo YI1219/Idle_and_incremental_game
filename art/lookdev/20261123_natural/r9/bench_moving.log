@@ -1,0 +1,52 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 30617 triangles (top 27303, body 3314, decor 0, props 76710, grass full 410235), built in 68.2 ms (fields 33.5, top 20.0, body 0.4, decor 5.4, grass 7.4)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 11721 clumps, 410235 triangles full, 409213 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_game.png
+STATS game: p05 0.380 p50 0.698 p95 0.867 white 0.000 black 0.001 sat_mean 0.227 sat_p99 0.545 quiet 0.356
+BENCH game: 7.54 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS whole: 11721 clumps, 410235 triangles full, 270249 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_whole.png
+STATS whole: p05 0.482 p50 0.765 p95 0.902 white 0.000 black 0.000 sat_mean 0.153 sat_p99 0.514 quiet 0.567
+BENCH whole: 6.93 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS reverse: 11721 clumps, 410235 triangles full, 303835 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_reverse.png
+STATS reverse: p05 0.314 p50 0.745 p95 0.890 white 0.000 black 0.000 sat_mean 0.131 sat_p99 0.506 quiet 0.617
+BENCH reverse: 6.50 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS close: 11721 clumps, 410235 triangles full, 331590 drawn, chunks by level 14/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_close.png
+STATS close: p05 0.329 p50 0.592 p95 0.788 white 0.000 black 0.002 sat_mean 0.386 sat_p99 0.588 quiet 0.144
+BENCH close: 7.26 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS cliff_close: 11721 clumps, 410235 triangles full, 350910 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_cliff_close.png
+STATS cliff_close: p05 0.384 p50 0.702 p95 0.835 white 0.000 black 0.001 sat_mean 0.201 sat_p99 0.557 quiet 0.369
+BENCH cliff_close: 6.49 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS side_106: 11721 clumps, 410235 triangles full, 287847 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_side_106.png
+STATS side_106: p05 0.298 p50 0.718 p95 0.796 white 0.000 black 0.000 sat_mean 0.155 sat_p99 0.514 quiet 0.528
+BENCH side_106: 6.60 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS side_286: 11721 clumps, 410235 triangles full, 308777 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_side_286.png
+STATS side_286: p05 0.306 p50 0.871 p95 0.910 white 0.000 black 0.000 sat_mean 0.143 sat_p99 0.514 quiet 0.704
+BENCH side_286: 6.87 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS foot_front: 11721 clumps, 410235 triangles full, 350910 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_foot_front.png
+STATS foot_front: p05 0.376 p50 0.698 p95 0.835 white 0.000 black 0.001 sat_mean 0.204 sat_p99 0.557 quiet 0.371
+BENCH foot_front: 6.79 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS foot_reverse: 11721 clumps, 410235 triangles full, 367381 drawn, chunks by level 11/9/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_foot_reverse.png
+STATS foot_reverse: p05 0.271 p50 0.757 p95 0.875 white 0.000 black 0.000 sat_mean 0.142 sat_p99 0.514 quiet 0.584
+BENCH foot_reverse: 5.61 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS overview: 11721 clumps, 410235 triangles full, 391335 drawn, chunks by level 16/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_overview.png
+STATS overview: p05 0.424 p50 0.608 p95 0.886 white 0.000 black 0.001 sat_mean 0.330 sat_p99 0.561 quiet 0.246
+BENCH overview: 7.25 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS terrace_close: 11721 clumps, 410235 triangles full, 398195 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_terrace_close.png
+STATS terrace_close: p05 0.455 p50 0.620 p95 0.839 white 0.000 black 0.001 sat_mean 0.335 sat_p99 0.576 quiet 0.214
+BENCH terrace_close: 7.60 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS outer_hull: 11721 clumps, 410235 triangles full, 365505 drawn, chunks by level 17/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/bench_moving/bench_moving_outer_hull.png
+STATS outer_hull: p05 0.435 p50 0.800 p95 0.902 white 0.000 black 0.001 sat_mean 0.164 sat_p99 0.533 quiet 0.523
+BENCH outer_hull: 6.65 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+DONE rc=0

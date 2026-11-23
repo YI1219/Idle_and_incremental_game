@@ -181,10 +181,15 @@ fn sun_visibility_taps(world: vec3<f32>, n: vec3<f32>, pixel: vec2<f32>, taps: i
     let spin = ign(pixel) * TAU;
     var s = 0.0;
     let count = f32(taps);
+    // Round r9 (F4): the tap directions turn by the golden angle from one tap to the next; turning
+    // a unit vector by a fixed rotation gives the same directions with one cos and sin a pixel
+    // instead of one per tap.
+    var dir = vec2<f32>(cos(spin), sin(spin));
+    let turn = vec2<f32>(-0.73736887, 0.67549029);
     for (var i = 0; i < taps; i++) {
         let r = sqrt((f32(i) + 0.5) / count) * 3.0;
-        let a = f32(i) * 2.3999632 + spin;
-        s += textureSampleCompareLevel(shadow_map, shadow_sampler, uv + vec2<f32>(cos(a), sin(a)) * r * texel, z);
+        s += textureSampleCompareLevel(shadow_map, shadow_sampler, uv + dir * r * texel, z);
+        dir = vec2<f32>(dir.x * turn.x - dir.y * turn.y, dir.x * turn.y + dir.y * turn.x);
     }
     return s / count;
 }
@@ -800,6 +805,52 @@ fn atmosphere(colour: vec3<f32>, world: vec3<f32>, distance: f32) -> vec3<f32> {
     return mix(result, cloud_mist(), low);
 }
 
+// The resolve's air (round r9, F3): as `atmosphere`, but the root dissolves into what lies behind it
+// along the same ray (the sky and the cloud decks the resolve draws there), not into one fixed mist
+// colour, so from any side and at any hour nothing under the island is brighter than the cloud
+// round it. (The water pass has no far-field textures bound and keeps the fixed mist.)
+fn atmosphere_far(colour: vec3<f32>, world: vec3<f32>, distance: f32, uv: vec2<f32>) -> vec3<f32> {
+    let k = max(g.pal[L_FAR].x, 1.0);
+    var result = mix(colour, g.pal[L_FOG].rgb, 1.0 - exp(-distance * g.pal[L_FOG].a / k));
+    result = mix(result, g.pal[L_HAZE].rgb, 1.0 - exp(-max(distance - 80.0 * k, 0.0) * g.pal[L_FAR].a / k));
+    let low = smoothstep(g.pal[L_MISC].x, g.pal[L_MISC].y, world.y) * g.pal[L_MIST].a;
+    if (low <= 0.0) {
+        return result;
+    }
+    return mix(result, far_low_at(uv), low);
+}
+
+// The quarter-resolution far field (fs_far_low), bilinear.
+@group(1) @binding(9) var t_far_low: texture_2d<f32>;
+
+fn far_low_at(uv: vec2<f32>) -> vec3<f32> {
+    let dims = vec2<i32>(textureDimensions(t_far_low));
+    let p = uv * vec2<f32>(dims) - 0.5;
+    let i = vec2<i32>(floor(p));
+    let f = p - floor(p);
+    let hi = dims - 1;
+    let a = textureLoad(t_far_low, clamp(i, vec2<i32>(0), hi), 0).rgb;
+    let b = textureLoad(t_far_low, clamp(i + vec2<i32>(1, 0), vec2<i32>(0), hi), 0).rgb;
+    let c = textureLoad(t_far_low, clamp(i + vec2<i32>(0, 1), vec2<i32>(0), hi), 0).rgb;
+    let d = textureLoad(t_far_low, clamp(i + vec2<i32>(1, 1), vec2<i32>(0), hi), 0).rgb;
+    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+
+@fragment
+fn fs_far_low(v: VFull) -> @location(0) vec4<f32> {
+    let ray = normalize(world_at(v.uv, 1.0) - g.camera_pos.xyz);
+    return vec4<f32>(backdrop(ray), 1.0);
+}
+
+// What the far field shows along a ray where no geometry is: the resolve's sky pixel.
+fn backdrop(ray: vec3<f32>) -> vec3<f32> {
+    if (g.pal[L_LAND].y > 0.5) {
+        return backdrop_r4(ray);
+    }
+    let f = sky_view_factors(ray);
+    return far_grade(far_decks(painted_sky(ray, f), ray, f, 1e9));
+}
+
 // Light arriving at a surface with normal n (sun unshadowed), for water and spray.
 fn open_light(n: vec3<f32>) -> vec3<f32> {
     let hemi = mix(g.pal[L_GROUND].rgb, g.pal[L_SKY].rgb, n.y * 0.5 + 0.5);
@@ -1141,7 +1192,7 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
         colour += lantern.rgb * terms.b * 4.0 * lantern_on;
     }
     let distance = view_distance(depth);
-    return vec4<f32>(atmosphere(colour, world, distance), 1.0);
+    return vec4<f32>(atmosphere_far(colour, world, distance, v.uv), 1.0);
 }
 
 // ---------------------------------------------------------------- water pass
@@ -1611,7 +1662,7 @@ struct PIn {
 };
 
 struct VProp {
-    @builtin(position) clip: vec4<f32>,
+    @builtin(position) @invariant clip: vec4<f32>,
     @location(0) world: vec3<f32>,
     @location(1) normal: vec3<f32>,
     @location(2) uv: vec2<f32>,
@@ -1879,6 +1930,43 @@ fn fs_prop_leaf(v: VProp) -> FTerms {
     if (tex.a < 0.23) {
         discard;
     }
+    return leaf_shade(v, tex);
+}
+
+// Round r9 (F4): the cut-out leaf cards first write depth only (the atlas cut-out and nothing
+// else), at the start of the terms pass; later they are shaded with an equal depth test, so only
+// the one visible fragment per pixel runs the full leaf shading, and the grass and island behind
+// the crowns are rejected by depth before they are shaded.
+struct VPropDepth {
+    @builtin(position) @invariant clip: vec4<f32>,
+    @location(2) uv: vec2<f32>,
+};
+
+// The same clip position as vs_prop (invariant), and only the atlas coordinate.
+@vertex
+fn vs_prop_depth(v: PIn) -> VPropDepth {
+    var out: VPropDepth;
+    out.clip = g.view_proj * vec4<f32>(v.pos, 1.0);
+    out.uv = v.uv;
+    return out;
+}
+
+@fragment
+fn fs_prop_leaf_depth(v: VPropDepth) -> FTerms {
+    if (textureSample(p_atlas, p_clamp, v.uv).a < 0.23) {
+        discard;
+    }
+    var out: FTerms;
+    return out;
+}
+
+@fragment
+fn fs_prop_leaf_shade(v: VProp) -> FTerms {
+    // No discard: the equal depth test keeps only the fragments that survived the cut-out.
+    return leaf_shade(v, textureSample(p_atlas, p_clamp, v.uv));
+}
+
+fn leaf_shade(v: VProp, tex: vec4<f32>) -> FTerms {
     let base = i32(v.mat.y) * 4;
     let leaf_shadow = p_mat[base].rgb * g.pal[L_LEAF_SHADOW_K].rgb;
     let rim_strength = p_mat[base].a;
@@ -1909,16 +1997,20 @@ fn fs_prop_leaf(v: VProp) -> FTerms {
     let n_light = normalize(out_dir * 0.80 + vec3<f32>(0.0, 0.60, 0.0) + puff_off * 0.35);
     // Six shadow taps, as for the grass: the cut-out cards overdraw heavily and their busy texture
     // hides the extra noise.
+    // Round r9 (F4): a card facing away from the sun takes no sun in the resolve (props are lit by
+    // max(n.l, 0)) and no sun kiss below n.l 0.05, so its visibility matters only for the back-lit
+    // translucency; the taps are skipped where that is negligible too.
+    let to_eye = normalize(g.camera_pos.xyz - v.world);
+    let ndl = dot(n_light, g.sun_dir.xyz);
+    let back_k = pow(clamp(dot(-g.sun_dir.xyz, to_eye), 0.0, 1.0), 2.0);
     var vis = 1.0;
-    if (dot(n_light, g.sun_dir.xyz) > -0.05) {
+    if (ndl > 0.0 || (ndl > -0.05 && back_k > 0.004)) {
         vis = sun_visibility_taps(v.world, n_light, v.clip.xy, 6);
     }
     // Godot's sunlit warm rim and back-lit translucency (its light() adds them on top of the
     // diffuse); here they lift the albedo of sunlit outer cards.
-    let to_eye = normalize(g.camera_pos.xyz - v.world);
-    let ndl = dot(n_light, g.sun_dir.xyz);
     let view_rim = pow(1.0 - clamp(dot(n_light, to_eye), 0.0, 1.0), 1.58);
-    let back_scatter = pow(clamp(dot(-g.sun_dir.xyz, to_eye), 0.0, 1.0), 2.0) * vis;
+    let back_scatter = back_k * vis;
     let sun_kiss = smoothstep(0.05, 0.62, ndl) * vis;
     let warm_rim = vec3<f32>(1.56, 1.42, 0.96) * (view_rim * sun_kiss * 0.62 + back_scatter * 0.36) * smoothstep(0.36, 0.94, card_ao) * rim_strength;
     col *= vec3<f32>(1.0) + warm_rim * 0.6;

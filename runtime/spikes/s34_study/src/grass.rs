@@ -53,6 +53,9 @@ pub const LEVEL_PX: [f32; LEVELS - 1] = [5.0, 1.5, 0.75];
 /// A representative leaf's full width in metres (Godot's half-widths 0.028 to 0.046).
 pub const LEAF_WIDTH: f32 = 0.075;
 pub const CHUNK: f32 = 8.0;
+/// Round r9 (F4): the size of the parts grass is culled in (the level of detail follows the 8 m chunk).
+/// 4 m parts were tried: fewer blades drawn, but more instanced draws made the frame 1.5 ms slower.
+const CULL: f32 = 8.0;
 const DENSITY: f32 = 28.0;
 /// Lip plants a metre of outline.
 const LIP_DENSITY: f32 = 6.0;
@@ -64,6 +67,9 @@ pub struct Chunk {
     /// ordered quarter members first, then half members).
     pub first: u32,
     pub counts: [u32; 3],
+    /// The bounds of the 8 m chunk this part belongs to (its level of detail is chosen on them).
+    pub parent_lo: Vec3,
+    pub parent_hi: Vec3,
 }
 
 #[derive(Default)]
@@ -381,7 +387,7 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
             ],
             misc: [(patch * 255.0).round() as u8, (128.0 + pg.x * 64.0).round().clamp(0.0, 255.0) as u8, (128.0 + pg.y * 64.0).round().clamp(0.0, 255.0) as u8, 0],
         };
-        let key = ((p.x / CHUNK).floor() as i32, (p.y / CHUNK).floor() as i32);
+        let key = ((p.x / CULL).floor() as i32, (p.y / CULL).floor() as i32);
         sites.entry(key).or_default().push(Site { clump, member });
     };
 
@@ -433,12 +439,15 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
             if clear_k <= 0.0 {
                 continue;
             }
+            // Round r9: on a slope cell (a ramp, a hillside) the lawn grows as on flat ground, each root
+            // turned to the slope; the soft banks and cheeks beside it keep the lip rule below.
+            let on_slope = field.slope_at(p) != Vec2::ZERO && field.nearest_step(p).map_or(true, |(_, _, d)| d > 0.3);
             // Godot: steeper lawn carries fewer, smaller plants; the brow of a terrace step is a lip.
-            let lip_factor = smoothstep(0.78, 0.97, ny).clamp(0.42, 1.0);
+            let lip_factor = if on_slope { 1.0 } else { smoothstep(0.78, 0.97, ny).clamp(0.42, 1.0) };
             if hash2(i, j, seed ^ 203) > keep * lerp(0.62, 1.0, lip_factor) {
                 continue;
             }
-            let soft_lip = ny < 0.88;
+            let soft_lip = ny < 0.88 && !on_slope;
             let tuft = tuft_patch(p);
             // Our clearings stand in for Godot's path taper (0.55 at the edge of a clearing).
             let thin = lerp(0.55, 1.0, clear_k) * lerp(0.75, 1.0, keep);
@@ -447,6 +456,10 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
             let mut h_scale = lerp(0.68, 1.35, tuft) * lerp(0.88, 1.14, ghash(p.x * 1.9, p.y * 2.1 + p.x * 0.3, 6.0)) * slope_height * thin;
             let mut up = Vec3::Y;
             let mut root = Vec3::new(p.x, h - 0.01, p.y);
+            if on_slope {
+                up = ground_n;
+                root = Vec3::new(p.x, h, p.y) - up * 0.01;
+            }
             if soft_lip {
                 // The edge keeps a planted fringe with taller fans where the tuft field is high,
                 // aligned to the lip surface.
@@ -503,9 +516,10 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
         }
     }
 
-    // Pack: per chunk the quarter members first, then the half members, then the rest.
+    // Pack: per part the quarter members first, then the half members, then the rest.
     let mut grass = Grass::default();
-    for (_, mut list) in sites {
+    let mut parent_of: Vec<(i32, i32)> = Vec::new();
+    for (key, mut list) in sites {
         list.sort_by_key(|s| if s.member & 2 != 0 { 0 } else if s.member & 1 != 0 { 1 } else { 2 });
         let (mut lo3, mut hi3) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
         for site in &list {
@@ -517,7 +531,19 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
         let half = list.iter().filter(|s| s.member != 0).count() as u32;
         let first = grass.clumps.len() as u32;
         grass.clumps.extend(list.iter().map(|s| s.clump));
-        grass.chunks.push(Chunk { lo: lo3, hi: hi3, first, counts: [list.len() as u32, half, quarter] });
+        grass.chunks.push(Chunk { lo: lo3, hi: hi3, first, counts: [list.len() as u32, half, quarter], parent_lo: lo3, parent_hi: hi3 });
+        let per = (CHUNK / CULL) as i32;
+        parent_of.push((key.0.div_euclid(per), key.1.div_euclid(per)));
+    }
+    // Each part's level of detail follows its 8 m chunk, as before the parts were split.
+    let mut bounds: BTreeMap<(i32, i32), (Vec3, Vec3)> = BTreeMap::new();
+    for (chunk, parent) in grass.chunks.iter().zip(&parent_of) {
+        let b = bounds.entry(*parent).or_insert((Vec3::splat(f32::MAX), Vec3::splat(f32::MIN)));
+        b.0 = b.0.min(chunk.lo);
+        b.1 = b.1.max(chunk.hi);
+    }
+    for (chunk, parent) in grass.chunks.iter_mut().zip(&parent_of) {
+        (chunk.parent_lo, chunk.parent_hi) = bounds[parent];
     }
     grass
 }

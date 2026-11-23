@@ -70,8 +70,19 @@ pub fn load_png(path: &Path) -> Image {
 pub fn default_dir(layout: &str) -> Option<PathBuf> {
     let path = Path::new(layout);
     let stem = path.file_stem()?.to_str()?;
-    let suffix = stem.strip_prefix("layout_")?;
-    Some(path.parent()?.join(format!("scene_{suffix}")))
+    let mut suffix = stem.strip_prefix("layout_")?.to_string();
+    // Round r9: an edited layout (`layout_7301_0_ramps.json`) takes the scene of the layout it was
+    // made from: drop trailing `_name` parts until a scene folder exists.
+    loop {
+        let dir = path.parent()?.join(format!("scene_{suffix}"));
+        if dir.join("scene.json").exists() {
+            return Some(dir);
+        }
+        match suffix.rfind('_') {
+            Some(i) => suffix.truncate(i),
+            None => return Some(path.parent()?.join(format!("scene_{}", stem.strip_prefix("layout_")?))),
+        }
+    }
 }
 
 fn lin(v: f32) -> f32 {
@@ -147,6 +158,9 @@ pub struct Report {
     pub skipped_materials: usize,
     /// Moved (up to 1 m) because their footprint touched a terrace wall or a fall's notch.
     pub moved: usize,
+    /// Round r9 (F2): stones over a pond lowered onto its bed, or moved to the shore.
+    pub bedded: usize,
+    pub shored: usize,
     /// Placed by `scatter` rather than loaded where the scene had them.
     pub scattered: bool,
     /// Circles (island coordinates, x z, radius) the grass keeps out of.
@@ -186,7 +200,7 @@ impl Report {
             self.dropped,
             if self.scattered { "short of the source density" } else { "dropped" },
             if kinds.is_empty() { String::new() } else { format!(" ({})", kinds.join(", ")) },
-            if self.moved > 0 { format!(", {} moved off walls", self.moved) } else { String::new() },
+            if self.moved > 0 { format!(", {} moved off walls", self.moved) } else { String::new() } + &if self.bedded + self.shored > 0 { format!(", {} stones set on a pond bed, {} moved to the shore", self.bedded, self.shored) } else { String::new() },
             dir.file_name().and_then(|n| n.to_str()).unwrap_or("?"),
             if self.skipped_materials > 0 { format!(", {} meshes with an unknown shader skipped", self.skipped_materials) } else { String::new() }
         )
@@ -351,7 +365,7 @@ fn bake(library: &mut Library, scene: &Scene, meshes: &[usize], kind: &str, basi
 }
 
 fn empty_report() -> Report {
-    Report { objects: 0, instances: 0, triangles: 0, dropped: 0, dropped_by_kind: BTreeMap::new(), skipped_materials: 0, moved: 0, clear: Vec::new(), scattered: false }
+    Report { objects: 0, instances: 0, triangles: 0, dropped: 0, dropped_by_kind: BTreeMap::new(), skipped_materials: 0, moved: 0, bedded: 0, shored: 0, clear: Vec::new(), scattered: false }
 }
 
 /// Loads one scene's props onto an island built from `cells` and `field`, moved by `origin`,
@@ -359,6 +373,7 @@ fn empty_report() -> Report {
 pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mut Library) -> Report {
     let scene = open(dir, library);
     let mut report = empty_report();
+    let source = source_layout(dir).unwrap_or_else(|| cells.clone());
     let mut radius_at: BTreeMap<(i64, i64), f32> = BTreeMap::new();
     for object in scene.json["objects"].as_array().expect("objects") {
         if object["category"].as_str() != Some("on_top") {
@@ -403,10 +418,60 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
                     }
                 }
             }
+            // Round r9: the height above Godot's own cell (from the scene's layout, so an edited
+            // layout does not change it).
+            let godot_h = source.get(&(at.x.floor() as i32, at.z.floor() as i32)).map(|c| c.h);
+            let mut basis = basis;
             let new_y = match cell {
                 Some(cell) if field.inside(p) => match cell.water {
                     Some(level) if on_water_kind => Some(level - crate::water::SINK + (at.y - level)),
-                    _ => Some(field.height_at(p) + (at.y - cell.h)),
+                    _ => {
+                        let lift = at.y - godot_h.unwrap_or(cell.h);
+                        let radius = radius_at.get(&place_key(at)).copied().unwrap_or(0.3);
+                        let ring: Vec<Vec2> = (0..8).map(|k| p + Vec2::from_angle(k as f32 * std::f32::consts::FRAC_PI_4) * radius * 0.8).collect();
+                        let wet_ring = ring.iter().filter(|q| field.water_at(**q).is_some()).count();
+                        let floating = |kind: &str| -> Option<(f32, f32, f32, f32)> {
+                            if !is_stone(kind) || !(field.water_at(p).is_some() || wet_ring >= 5) {
+                                return None;
+                            }
+                            let (low, high) = extent_y(&scene, &meshes, basis);
+                            let size = (high - low).max(0.05);
+                            let wet: Vec<Vec2> = std::iter::once(p).chain(ring.iter().copied()).filter(|q| field.water_at(*q).is_some()).collect();
+                            let bed = wet.iter().map(|q| field.height_at(*q)).sum::<f32>() / wet.len().max(1) as f32;
+                            let level = wet.iter().filter_map(|q| field.water_at(*q)).fold(f32::MIN, f32::max) - crate::water::SINK;
+                            // Only a stone whose underside stands clear of the bed (it floats in the clear water).
+                            let bottom = field.height_at(p) + lift + low;
+                            (bottom - bed > 0.05 + 0.1 * size).then_some((low, size, bed, level))
+                        };
+                        if let Some((low, size, bed, level)) = floating(&kind) {
+                            if level - bed > 0.6 * size {
+                                match nearest_shore(field, cells, p, radius) {
+                                    Some(q) => {
+                                        p = q;
+                                        report.shored += 1;
+                                        Some(field.height_at(q) + lift.min(0.0))
+                                    }
+                                    None => None,
+                                }
+                            } else {
+                                report.bedded += 1;
+                                Some(bed - low - 0.04 * size)
+                            }
+                        } else if ring.iter().chain(std::iter::once(&p)).any(|q| field.slope_at(*q) != Vec2::ZERO) {
+                            // Round r9: on a slope a tree (or anything upright) stays upright and sinks
+                            // its base to the lowest ground under its footprint; stones, flowers and
+                            // tufts tilt with the ground.
+                            if is_upright(&kind) {
+                                Some(ring.iter().chain(std::iter::once(&p)).map(|q| field.height_at(*q)).fold(f32::MAX, f32::min) + lift)
+                            } else {
+                                let n = field.ground_normal(p);
+                                basis = Mat3::from_quat(glam::Quat::from_rotation_arc(Vec3::Y, n)) * basis;
+                                Some(field.height_at(p) + lift)
+                            }
+                        } else {
+                            Some(field.height_at(p) + lift)
+                        }
+                    }
                 },
                 _ => None,
             };
@@ -424,6 +489,54 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
         c.0 -= Vec2::new(origin.x, origin.z);
     }
     report
+}
+
+/// The layout a scene was exported with (`scene_7301_0` -> `layout_7301_0.json`).
+fn source_layout(dir: &Path) -> Option<Cells> {
+    let name = dir.file_name()?.to_str()?.strip_prefix("scene_")?;
+    let path = dir.parent()?.join(format!("layout_{name}.json"));
+    path.exists().then(|| crate::field::load_layout(path.to_str().unwrap()))
+}
+
+/// Kinds that are stones: they tilt with a slope and rest on a pond's bed.
+fn is_stone(kind: &str) -> bool {
+    matches!(kind, "surface_rock" | "cliff_rock" | "shore_rock" | "shore_boulder" | "shore_pebble" | "path")
+}
+
+/// Kinds that stand upright whatever the ground does (they sink their base on a slope).
+fn is_upright(kind: &str) -> bool {
+    matches!(kind, "tree" | "tree_b" | "bamboo" | "bush" | "bench" | "lantern" | "scholar_rock")
+}
+
+/// The lowest and highest point of an instance's meshes above its origin.
+fn extent_y(scene: &Scene, meshes: &[usize], basis: Mat3) -> (f32, f32) {
+    let (mut low, mut high) = (f32::MAX, f32::MIN);
+    for &index in meshes {
+        for &v in &scene.meshes[index].pos {
+            let y = (basis * v).y;
+            low = low.min(y);
+            high = high.max(y);
+        }
+    }
+    if low > high {
+        (0.0, 0.0)
+    } else {
+        (low, high)
+    }
+}
+
+/// The nearest dry shore point within 2.5 m for a stone of `radius` (rings 0.1 m apart).
+fn nearest_shore(field: &Field, cells: &Cells, p: Vec2, radius: f32) -> Option<Vec2> {
+    for ring in 1..=25 {
+        let r = ring as f32 * 0.1;
+        for k in 0..32 {
+            let q = p + Vec2::from_angle(k as f32 / 32.0 * std::f32::consts::TAU) * r;
+            if field.water_at(q).is_none() && (0..8).all(|m| field.water_at(q + Vec2::from_angle(m as f32 * 0.785) * radius * 0.6).is_none()) && clear_spot(field, cells, q, radius) {
+                return Some(q);
+            }
+        }
+    }
+    None
 }
 
 fn place_key(at: Vec3) -> (i64, i64) {
@@ -702,6 +815,11 @@ pub fn scatter(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, seed: u32
                 Ground::Pond => cell.water.is_some() && wet_k > 0.98,
             };
             if !ok || (!rock && wall_clear > 0.0 && field.nearest_wall(p, wall_clear).is_some()) {
+                fail(&mut cluster);
+                continue;
+            }
+            // Round r9: no trees on a slope cell (or with a slope cell under their crown's foot).
+            if matches!(&*kind.to_string(), "tree" | "tree_b") && (0..9).any(|k| field.slope_at(p + if k == 8 { Vec2::ZERO } else { Vec2::from_angle(k as f32 * 0.785) * 1.2 }) != Vec2::ZERO) {
                 fail(&mut cluster);
                 continue;
             }

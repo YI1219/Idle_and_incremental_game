@@ -1,0 +1,18 @@
+PROPS loaded 80 objects, 206 instances, 60254 triangles, 1 dropped (bush 1), 12 moved off walls, 7 stones set on a pond bed, 16 moved to the shore from scene_4242_1
+island: 503 cells, 27 faces, 44 columns, 25428 triangles (top 22216, body 3212, decor 0, props 60254, grass full 296940), built in 60.5 ms (fields 30.6, top 16.4, body 0.3, decor 5.8, grass 5.4)
+form: 27 faces, widths 2.0 to 6.9 m (spread 0.38), step spread 0.30 m, longest alike run 2 faces / 5.3 m
+GRASS game: 8484 clumps, 296940 triangles full, 296940 drawn, chunks by level 16/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_slope/n_slope_game.png
+STATS game: p05 0.376 p50 0.722 p95 0.867 white 0.000 black 0.001 sat_mean 0.193 sat_p99 0.537 quiet 0.406
+GRASS whole: 8484 clumps, 296940 triangles full, 188258 drawn, chunks by level 3/13/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_slope/n_slope_whole.png
+STATS whole: p05 0.486 p50 0.773 p95 0.902 white 0.000 black 0.000 sat_mean 0.139 sat_p99 0.510 quiet 0.581
+GRASS reverse: 8484 clumps, 296940 triangles full, 181230 drawn, chunks by level 1/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_slope/n_slope_reverse.png
+STATS reverse: p05 0.341 p50 0.749 p95 0.886 white 0.000 black 0.000 sat_mean 0.121 sat_p99 0.506 quiet 0.630
+GRASS close: 8484 clumps, 296940 triangles full, 201810 drawn, chunks by level 10/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_slope/n_slope_close.png
+STATS close: p05 0.353 p50 0.624 p95 0.843 white 0.000 black 0.002 sat_mean 0.317 sat_p99 0.580 quiet 0.208
+GRASS overview: 8484 clumps, 296940 triangles full, 258055 drawn, chunks by level 13/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_slope/n_slope_overview.png
+STATS overview: p05 0.416 p50 0.635 p95 0.894 white 0.000 black 0.001 sat_mean 0.275 sat_p99 0.553 quiet 0.341

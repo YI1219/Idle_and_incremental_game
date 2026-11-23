@@ -1,0 +1,19 @@
+PROPS loaded 91 objects, 222 instances, 76087 triangles, 7 dropped (bush 2, cliff_rock 1, grass_clump 2, shore_boulder 1, shore_rock 1), 7 moved off walls, 7 stones set on a pond bed, 25 moved to the shore from scene_2104_0
+island: 623 cells, 24 faces, 46 columns, 30593 triangles (top 27303, body 3290, decor 0, props 76087, grass full 402115), built in 69.7 ms (fields 33.5, top 19.9, body 0.4, decor 7.4, grass 7.0)
+form: 24 faces, widths 2.0 to 6.4 m (spread 0.33), step spread 0.32 m, longest alike run 3 faces / 12.6 m
+GRASS game: 11489 clumps, 402115 triangles full, 401037 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_2104/n_2104_game.png
+STATS game: p05 0.388 p50 0.702 p95 0.867 white 0.000 black 0.001 sat_mean 0.226 sat_p99 0.549 quiet 0.348
+GRASS whole: 11489 clumps, 402115 triangles full, 266119 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_2104/n_2104_whole.png
+STATS whole: p05 0.482 p50 0.765 p95 0.902 white 0.000 black 0.000 sat_mean 0.153 sat_p99 0.518 quiet 0.559
+GRASS reverse: 11489 clumps, 402115 triangles full, 296905 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_2104/n_2104_reverse.png
+STATS reverse: p05 0.322 p50 0.741 p95 0.890 white 0.000 black 0.000 sat_mean 0.129 sat_p99 0.510 quiet 0.609
+GRASS overview: 11489 clumps, 402115 triangles full, 382515 drawn, chunks by level 16/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_2104/n_2104_overview.png
+STATS overview: p05 0.427 p50 0.608 p95 0.886 white 0.000 black 0.001 sat_mean 0.330 sat_p99 0.561 quiet 0.248
+GRASS terrace_close: 11489 clumps, 402115 triangles full, 390005 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/r9/n_2104/n_2104_terrace_close.png
+STATS terrace_close: p05 0.455 p50 0.620 p95 0.839 white 0.000 black 0.001 sat_mean 0.332 sat_p99 0.576 quiet 0.222
+DONE rc=0
