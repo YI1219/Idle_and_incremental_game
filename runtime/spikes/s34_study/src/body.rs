@@ -53,7 +53,9 @@ impl Default for StoneColours {
         // under the blue sky light: a yellowish pigment times a cyan light gives green.)
         // Round r5: face and warm raised about 3% and cooled a little (x 1.025, 1.026, 1.036) to meet
         // the reference's sunlit hanging-block face.
-        StoneColours { face: Vec3::new(0.764, 0.741, 0.699), warm: Vec3::new(0.794, 0.764, 0.704), cool: Vec3::new(0.69, 0.695, 0.70), under: Vec3::new(0.64, 0.65, 0.665) }
+        // Round r8: darker and warmer (x 0.885, 0.865, 0.83 on display values), toward the Godot
+        // baseline's warm beige walls (sunlit about 0.71, 0.67, 0.59).
+        StoneColours { face: Vec3::new(0.650, 0.619, 0.580), warm: Vec3::new(0.676, 0.638, 0.584), cool: Vec3::new(0.587, 0.580, 0.581), under: Vec3::new(0.544, 0.542, 0.552) }
     }
 }
 
@@ -419,7 +421,10 @@ fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, t
     let salt = (centre.x * 7.3 + centre.y * 3.1).floor() as i32;
     let (w1, w2) = (hash2(salt, id as i32, 401), hash2(salt, id as i32, 402));
     let at = 0.30 + 0.34 * w1;
-    let scale = if w2 < 0.5 { 0.90 + 0.06 * w2 } else { 1.02 + 0.06 * (w2 - 0.5) };
+    // Round r8: no bedding step (the reference has no horizontal joints); the rings coincide and
+    // the zero-height band between them is skipped.
+    let _ = w2;
+    let scale = 1.0;
     let upper: Vec<Vec3> = (0..n).map(|k| head[k].lerp(foot[k], at)).collect();
     let waist_centre = upper.iter().copied().sum::<Vec3>() / n as f32;
     let lower: Vec<Vec3> = upper.iter().map(|p| waist_centre + (*p - waist_centre) * Vec3::new(scale, 1.0, scale)).collect();
@@ -463,6 +468,66 @@ fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, t
     }
 }
 
+/// Round r8: one tall vertical block, as the Godot baseline's cliff faces are: a prism whose sides
+/// run straight down from the cap (no taper, no waist, no bedding step), whose sharp corners carry
+/// a narrow chamfer (the light bevel on the reference's vertical edges), capped flat at the top,
+/// its foot cut on a tilted plane far down in the root mist. `plan` runs with the block's outside
+/// on the left of each edge seen from above (the order `column` uses).
+#[allow(clippy::too_many_arguments)]
+fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom: f32, tilt: Vec2, shift: Vec2, colour: Vec3, colours: &StoneColours, id: u8, lip: Option<f32>, cap_warm: f32) {
+    let n0 = plan.len();
+    // Chamfer every corner that turns by more than 25 degrees.
+    let mut ring: Vec<Vec2> = Vec::with_capacity(n0 * 2);
+    for k in 0..n0 {
+        let (prev, p, next) = (plan[(k + n0 - 1) % n0], plan[k], plan[(k + 1) % n0]);
+        let (d0, d1) = ((prev - p).normalize_or_zero(), (next - p).normalize_or_zero());
+        let turn = 180.0 - d0.dot(d1).clamp(-1.0, 1.0).acos().to_degrees();
+        if turn > 25.0 {
+            let c = 0.075_f32.min((prev - p).length() * 0.3).min((next - p).length() * 0.3);
+            ring.push(p + d0 * c);
+            ring.push(p + d1 * c);
+        } else {
+            ring.push(p);
+        }
+    }
+    let n = ring.len();
+    let centre = ring.iter().copied().sum::<Vec2>() / n as f32;
+    let head: Vec<Vec3> = ring.iter().map(|p| Vec3::new(p.x, top(*p), p.y)).collect();
+    let foot: Vec<Vec3> = ring.iter().map(|p| Vec3::new(p.x + shift.x, bottom + (*p - centre).dot(tilt), p.y + shift.y)).collect();
+    let paint = |grad: f32, sky: f32| {
+        let p = Paint::new(Family::Stone).sky(sky).line(1.0).strokes(1.0).id(id).grad(grad);
+        match lip {
+            Some(y) => p.lip(y),
+            None => p,
+        }
+    };
+    let low = colour.lerp(colours.under, 0.18);
+    for k in 0..n {
+        let k2 = (k + 1) % n;
+        let normal = (head[k2] - head[k]).cross(foot[k] - head[k]).normalize_or_zero();
+        if normal == Vec3::ZERO {
+            continue;
+        }
+        let (pt, pb) = (paint(0.0, 1.0), paint(1.0, 0.86));
+        mesh.tri_full([head[k], head[k2], foot[k2]], [normal; 3], [colour, colour, low], [pt, pt, pb]);
+        mesh.tri_full([head[k], foot[k2], foot[k]], [normal; 3], [colour, low, low], [pt, pb, pb]);
+    }
+    let foot_centre = foot.iter().copied().sum::<Vec3>() / n as f32;
+    for k in 0..n {
+        mesh.tri(foot_centre, foot[k], foot[(k + 1) % n], colour.lerp(colours.under, 0.8), paint(1.0, 0.5));
+    }
+    // The cap: flat where it sits under the lawn, the sloped wedge top on a buttress slab.
+    let head_centre = head.iter().copied().sum::<Vec3>() / n as f32;
+    let cap = colour.lerp(colours.warm, cap_warm);
+    for k in 0..n {
+        let (a, b) = (head[(k + 1) % n], head[k]);
+        let normal = (a - head_centre).cross(b - head_centre).normalize_or_zero();
+        let normal = if normal.y < 0.0 { -normal } else { normal };
+        let p = Paint::new(Family::Stone).sky(1.0).line(1.0).strokes(0.5).id(id).grad(0.0);
+        mesh.tri_full([head_centre, a, b], [normal; 3], [cap; 3], [p; 3]);
+    }
+}
+
 pub struct Body {
     pub mesh: Mesh,
     pub faces: Vec<Face>,
@@ -499,40 +564,84 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                     d += 0.25;
                 }
             }
+            // Round r8, after the Godot baseline's cliff columns: each rim face is one tall vertical
+            // face from just under the lawn's lip down into the root mist, crisp at its edges, set
+            // forward or back of its neighbours by its role (a narrow face stands back as a recess),
+            // turned by a degree or two at most. The shelves, shoulders, waists and bedding steps of
+            // earlier rounds are gone.
             let front = face.step - 0.12;
             let side = 0.22;
-            let turn = (h2 - 0.5) * 0.14;
+            let turn = (h2 - 0.5) * 0.05;
             let (a, b) = (face.a - chord * side + out * (front - turn * face.width * 0.5), face.b + chord * side + out * (front + turn * face.width * 0.5));
-            // A broad face is folded once or twice so it turns in the light instead of lying flat.
+            // Only a very broad face is folded once, gently, so it is not one flat card.
             let mut plan = vec![a];
-            let folds = if face.width > 4.6 { 1 } else { 0 };
-            for fold in 0..folds {
-                let t = (fold as f32 + 0.35 + 0.5 * hash2(key.0 + fold, key.1, seed ^ 84)) / (folds as f32 + 0.6);
-                let push = (hash2(key.0, key.1 + fold, seed ^ 85) - 0.5) * 0.5;
-                plan.push(a.lerp(b, t.clamp(0.2, 0.8)) + out * push);
+            if face.width > 5.0 {
+                let t = 0.35 + 0.3 * hash2(key.0, key.1, seed ^ 84);
+                let push = (hash2(key.0, key.1 + 1, seed ^ 85) - 0.5) * 0.30;
+                plan.push(a.lerp(b, t) + out * push);
             }
             plan.extend([b, b - out * thick + chord * 0.2 * (h3 - 0.3), a - out * thick - chord * 0.2 * (h1 - 0.3)]);
-            let inward = mid - out * (thick + 3.0);
-            let tone = 1.0 + (h3 - 0.5) * 0.10;
-            let colour = if face.role == Role::Primary { colours.face.lerp(colours.warm, 0.35) } else { colours.face } * tone;
-            let tilt = (-out) * (-0.16 - 0.14 * h2) + chord * (h1 - 0.5) * 0.30;
-            // Some broad faces stop short of the lawn and show a bare rock shelf under the lip.
-            let shelf = if face.role == Role::Primary && h2 > 0.62 && face.width < 6.5 { 0.5 + 1.1 * h3 } else { 0.0 };
-            column(&mut mesh, &plan, face.top - 0.20 - shelf, face.depth - shelf * 0.5, inward, 0.80 - 0.10 * h2, tilt, colour, colours, 100 + (index % 70) as u8, 0.0, face.step > 0.28 || shelf > 0.0, folds as usize + 1, Some(face.top - shelf));
+            let tone = 1.0 + (h3 - 0.5) * 0.06;
+            let colour = colours.face * tone;
+            // The foot: 7.6 to 9.4 m under the cap, cut a little out of level; it lies in the mist.
+            let cap = face.top - 0.20;
+            let tilt = (-out) * (0.04 + 0.05 * h2) + chord * (h1 - 0.5) * 0.10;
+            tall_block(&mut mesh, &plan, &|_| cap, cap - 7.6 - 1.8 * h2, tilt, Vec2::ZERO, colour, colours, 100 + (index % 70) as u8, Some(face.top), 0.0);
             columns += 1;
-            // And some carry a lower shoulder in front: the local protrusion of that stretch of wall.
-            if face.role == Role::Primary && h3 > 0.52 && face.width > 5.5 {
-                let share = 0.34 + 0.18 * h1;
-                let begin = if h2 < 0.5 { 0.06 } else { 0.94 - share };
-                let (s0, s1) = (face.a + (face.b - face.a) * begin, face.a + (face.b - face.a) * (begin + share));
-                let stand = front + 0.55 + 0.55 * h2;
-                let deep = 1.5 + 1.0 * h1;
-                let shoulder = [s0 + out * stand, s1 + out * (stand - 0.25 * (h3 - 0.5)), s1 + out * (stand - deep), s0 + out * (stand - deep)];
-                let drop = 1.4 + 1.8 * h1;
-                let shoulder_tilt = out * (0.10 + 0.25 * h3) + chord * (h2 - 0.5) * 0.5;
-                column(&mut mesh, &shoulder, face.top - 0.20 - shelf - drop, face.depth * 0.55, inward, 0.84, shoulder_tilt, colour * 1.03, colours, 30 + (index % 9) as u8, 0.0, true, 1, Some(face.top - 0.10 - shelf - drop));
-                columns += 1;
+        }
+        // Buttress slabs (Godot's shoulder groups): a few broad slabs standing against the wall,
+        // each with one broad wedge top sloping out, its top well under the lawn's edge, standing a
+        // metre or two proud, leaning a little. A face offers one when it is broad enough; of two
+        // neighbours that both offer, the one with the higher world-anchored number keeps it (one
+        // hop, so an edit changes slabs only near itself). About one every 8 to 12 m of rim.
+        let nf = faces.len();
+        let offer = |i: usize| -> Option<f32> {
+            let f = &faces[i];
+            let mid = (f.a + f.b) * 0.5;
+            let key = ((mid.x * 0.5 + 0.137).floor() as i32, (mid.y * 0.5 + 0.291).floor() as i32);
+            let h = hash2(key.0, key.1, seed ^ 87);
+            let wide = f.width >= 3.4 || (f.width >= 2.8 && h > 0.85);
+            (wide && f.role != Role::Secondary && h > 0.42 && field.notch(mid) < 0.05 && field.notch(f.a) < 0.05 && field.notch(f.b) < 0.05).then_some(h)
+        };
+        for i in 0..nf {
+            let Some(h) = offer(i) else { continue };
+            if offer((i + nf - 1) % nf).is_some_and(|o| o > h) || offer((i + 1) % nf).is_some_and(|o| o > h) {
+                continue;
             }
+            let face = &faces[i];
+            let chord = (face.b - face.a).normalize_or_zero();
+            let out = Vec2::new(chord.y, -chord.x);
+            let mid = (face.a + face.b) * 0.5;
+            let out = if field.sample(&field.land2, mid + out) < field.sample(&field.land2, mid - out) { out } else { -out };
+            let key = ((mid.x * 0.5 + 0.137).floor() as i32, (mid.y * 0.5 + 0.291).floor() as i32);
+            let (s1, s2, s3, s4) = (hash2(key.0, key.1, seed ^ 88), hash2(key.0, key.1, seed ^ 89), hash2(key.0, key.1, seed ^ 90), hash2(key.0, key.1, seed ^ 96));
+            let width = (face.width * (0.92 + 0.25 * s1)).clamp(3.8, 6.0).min(face.width + 1.2);
+            let centre = mid + chord * (s2 - 0.5) * (face.width - width * 0.8).max(0.0) * 0.5;
+            let wall = face.step - 0.12;
+            let proud = 0.85 + 0.6 * s3;
+            // `across` runs so that the outside lies on the left of fa -> fb (the order `tall_block` wants).
+            let yaw = (s4 - 0.5) * 0.36;
+            let across0 = Vec2::new(-out.y, out.x);
+            let across = Vec2::new(across0.x * yaw.cos() - across0.y * yaw.sin(), across0.x * yaw.sin() + across0.y * yaw.cos());
+            let ahead = Vec2::new(across.y, -across.x);
+            let (fa, fb) = (centre - across * width * 0.5 + ahead * (wall + proud), centre + across * width * 0.5 + ahead * (wall + proud));
+            let (ba, bb) = (centre - across * width * 0.5 + ahead * (wall - 0.7), centre + across * width * 0.5 + ahead * (wall - 0.7));
+            let plan = [fa, fb, bb, ba];
+            // Top 1.5 to 3.5 m under the lawn's edge at the wall, falling outward 34 to 48 degrees.
+            let back_top = face.top - 1.5 - 2.0 * s1 * s2.max(0.4);
+            let slope = (34.0 + 14.0 * s2).to_radians().tan();
+            let base = centre + ahead * wall;
+            // The wedge: the top also falls along the slab's length (16 to 30 degrees, either way), so
+            // the front is a trapezoid with one high and one low shoulder.
+            let along = (16.0 + 14.0 * s3).to_radians().tan() * if s4 < 0.5 { 1.0 } else { -1.0 };
+            let top = move |p: Vec2| back_top - ((p - base).dot(ahead)).max(0.0) * slope - ((p - centre).dot(across) + width * 0.5 * along.signum()) * along * 0.7;
+            let height = 3.8 + 1.4 * s4;
+            // Leaning against the wall: the foot stands 0.25 to 0.55 m farther out than the top, and
+            // steps a little sideways.
+            let lean = across * (s3 - 0.5) * 0.10 + ahead * (0.25 + 0.30 * s1);
+            let colour = colours.face.lerp(colours.warm, 0.15) * (1.0 + (s1 - 0.5) * 0.05);
+            tall_block(&mut mesh, &plan, &top, back_top - height, Vec2::new(0.0, 0.0), lean, colour, colours, 30 + (i % 9) as u8, Some(face.top), 0.0);
+            columns += 1;
         }
         // Where the rim steps down (a terrace wall reaching the outline, a pond's bank), a face's
         // block stands at the lowest ground along it, so under the higher lawn's lip there would be a
@@ -542,7 +651,8 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             rim_skirt(&mut mesh, outer, field, colours, face);
         }
         // Tier two: deeper masses behind the rim, on a jittered lattice, hanging below the liner.
-        let lattice = 3.4;
+        // Round r8: fewer and larger, so the underside reads as a few soft masses in the mist.
+        let lattice = 5.2;
         let cols = ((field.nx as f32 * crate::field::STEP) / lattice) as i32 + 1;
         let rows = ((field.nz as f32 * crate::field::STEP) / lattice) as i32 + 1;
         for j in 0..rows {
@@ -554,7 +664,7 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                     continue;
                 }
                 let sides = 5 + (h3 * 2.0) as usize;
-                let radius = 1.7 + 1.3 * h4;
+                let radius = 2.4 + 1.4 * h4;
                 let spin = h3 * std::f32::consts::TAU;
                 let plan: Vec<Vec2> = (0..sides)
                     .map(|k| {
@@ -574,7 +684,8 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                 }
                 let top = top - 0.55;
                 let far = smoothstep(0.52, 0.97, field.sample(&field.land3, centre));
-                let depth_to = underside(field, centre, seed) + 1.2 + 3.2 * h4 + 2.5 * far * h1;
+                // Feet about 2 to 3 m under the root mist's full level, so the underside ends evenly.
+                let depth_to = (underside(field, centre, seed) + 2.0 + 1.6 * h4 + 1.5 * far * h1).min(top + 8.0 + 1.0 * h4);
                 let lean = centre + field.inward(centre) * 4.0;
                 let tilt = Vec2::new(h1 - 0.5, h2 - 0.5) * 0.7;
                 let tier = 0.55 + 0.45 * far;

@@ -344,11 +344,20 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
         }
         k
     };
-    let water_surface = |p: Vec2| -> Option<f32> {
+    // A level found by looking toward the water only counts when this ground is near it (round r8:
+    // the lawn at the foot of a pond's wall took the upper pond's level and went bare).
+    let water_surface = |p: Vec2, h: f32| -> Option<f32> {
         let toward = field.gradient(&field.wet, p, STEP).normalize_or_zero();
-        field.water_at(p).or_else(|| field.water_at(p + toward * 0.6)).or_else(|| field.water_at(p + toward * 1.2)).map(|level| level - crate::water::SINK)
+        field
+            .water_at(p)
+            .or_else(|| [0.6_f32, 1.2].iter().filter_map(|d| field.water_at(p + toward * *d)).find(|l| h > l - crate::water::SINK - 0.3))
+            .map(|level| level - crate::water::SINK)
     };
     let lerp = |a: f32, b: f32, t: f32| a + (b - a) * t;
+    let diag: Option<Vec2> = std::env::var("S34_GRASSDIAG").ok().map(|s| {
+        let v: Vec<f32> = s.split(',').map(|x| x.parse().unwrap()).collect();
+        Vec2::new(v[0], v[1])
+    });
     let mut sites: BTreeMap<(i32, i32), Vec<Site>> = BTreeMap::new();
     let place = |root: Vec3, up: Vec3, scale: f32, h_scale: f32, member: u8, sites: &mut BTreeMap<(i32, i32), Vec<Site>>| {
         let p = Vec2::new(root.x, root.z);
@@ -396,14 +405,31 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
             let mut keep = 1.0;
             let wet = field.sample(&field.wet, p);
             if wet > 0.02 {
-                if let Some(surface) = water_surface(p) {
+                if let Some(surface) = water_surface(p, h) {
                     if h < surface + 0.05 || (h - surface).abs() < 0.12 {
                         continue; // under water, or on the pale bank at the waterline
                     }
                 }
                 keep *= 1.0 - 0.65 * smoothstep(0.03, 0.45, wet);
             }
-            let clear_k = clearance(p);
+            let mut clear_k = clearance(p);
+            if let Some(at) = diag {
+                if (p - at).length() < 0.5 {
+                    let w = field.nearest_wall(p, 0.7).map(|i| field.steps[i].signed(p));
+                    println!("GRASSDIAG ({:.2},{:.2}) h {h:.2} ny {ny:.2} wet {wet:.3} clear {clear_k:.2} wall {w:?}", p.x, p.y);
+                }
+            }
+            // Round r8: the foot of a terrace wall is always planted. A prop's clearing that reached a
+            // wall left bare ground there, and in the prop's shadow that bare strip read as a dark
+            // cavity under the wall (the owner's hollow joint). Props stand at least 0.4 m off walls.
+            if clear_k < 1.0 {
+                if let Some(i) = field.nearest_wall(p, 0.7) {
+                    let (d, sd) = field.steps[i].signed(p);
+                    if sd < 0.0 {
+                        clear_k = clear_k.max(0.85 * (1.0 - smoothstep(0.42, 0.70, d)));
+                    }
+                }
+            }
             if clear_k <= 0.0 {
                 continue;
             }

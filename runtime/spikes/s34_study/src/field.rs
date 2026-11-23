@@ -588,6 +588,27 @@ impl Field {
 
     /// The ground normal at p, taken on p's own side of a nearby wall.
     pub fn ground_normal(&self, p: Vec2) -> Vec3 {
+        // Round r8 (the owner's "hollow joint"): within a metre of a wall the grid's central
+        // difference reads samples across the wall, so the lawn at a wall's foot was tilted toward
+        // the wall and lit as a slope facing away from the sun: a dark band wherever no grass
+        // covered it (props keep the grass clear). Take exact heights on each side, and per axis
+        // the one-sided difference that does not jump.
+        if !self.near_wall_at(p) && self.nearest_wall(p, 1.0).is_some() {
+            let e = 0.12;
+            let c = self.surface(p);
+            let axis = |d: Vec2| {
+                let (a, b) = (self.surface(p + d * e) - c, c - self.surface(p - d * e));
+                if a.abs() < 0.3 && b.abs() < 0.3 {
+                    (a + b) / (2.0 * e)
+                } else if a.abs() < b.abs() {
+                    a / e
+                } else {
+                    b / e
+                }
+            };
+            let g = Vec2::new(axis(Vec2::X), axis(Vec2::Y));
+            return Vec3::new(-g.x, 1.0, -g.y).normalize();
+        }
         let g = if self.near_wall_at(p) {
             match self.nearest_wall(p, 0.6) {
                 Some(i) => {
@@ -773,8 +794,10 @@ impl Default for TopColours {
         TopColours {
             lawn: Vec3::new(0.450, 0.535, 0.280),
             lawn_cool: Vec3::new(0.42, 0.53, 0.267),
-            riser: Vec3::new(0.655, 0.618, 0.555),
-            bed: Vec3::new(0.22, 0.32, 0.28),
+            // Round r8: lifted a little against the island stone's darker shade, to hold the reference tone.
+            riser: Vec3::new(0.676, 0.640, 0.585),
+            // Round r8: a pale sandy stone bed; the water pass tints and darkens it with depth.
+            bed: Vec3::new(0.60, 0.57, 0.47),
             bank: Vec3::new(0.74, 0.71, 0.58),
         }
     }
@@ -817,7 +840,10 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
         if wet > 0.02 {
             // The nearest water level, looked for a little further in when p is on the bank.
             let toward = field.gradient(&field.wet, p, STEP).normalize_or_zero();
-            let level = field.water_at(p).or_else(|| field.water_at(p + toward * 0.6)).or_else(|| field.water_at(p + toward * 1.2));
+            // Round r8: a level found by looking toward the water must belong to this ground: the
+            // lower lawn at the foot of a pond's wall found the upper pond's level, counted itself
+            // 2 m under water and was painted in the bed's dark colour (the owner's hollow joint).
+            let level = field.water_at(p).or_else(|| [0.6_f32, 1.2].iter().filter_map(|d| field.water_at(p + toward * *d)).find(|l| h > l - crate::water::SINK - 0.3));
             if let Some(level) = level {
                 let surface = level - crate::water::SINK;
                 // A narrow pale bank at the waterline, the bed below it; the lawn runs right up to the bank.
@@ -946,7 +972,65 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
             }
         }
     }
+    junction_posts(&mut mesh, field, colours, seed);
     Top { mesh, rim, brows }
+}
+
+/// Round r8: where three or more steps meet at a cell corner and one of them is a wall, the pieces
+/// of ribbon stop at the edges of the 0.25 m grid cell round the corner and leave a slit (the
+/// owner's slit left of the upper fall; 7301 `side_106`, 913 `terrace_close`). A slim post of cut
+/// rock stands in the corner from just under the highest lawn down past the lowest ground: it
+/// fills the slit and reads as the corner of the wall.
+fn junction_posts(mesh: &mut Mesh, field: &Field, colours: &TopColours, seed: u32) {
+    let mut corners: Vec<(i32, i32)> = field.cells.keys().flat_map(|&(x, z)| [(x, z), (x + 1, z), (x, z + 1), (x + 1, z + 1)]).collect();
+    corners.sort();
+    corners.dedup();
+    for (x, z) in corners {
+        let ring = [(x - 1, z - 1), (x, z - 1), (x, z), (x - 1, z)];
+        let cells: Vec<Option<Cell>> = ring.iter().map(|k| field.cells.get(k).copied()).collect();
+        if cells.iter().any(|c| c.is_none()) {
+            continue;
+        }
+        let cells: Vec<Cell> = cells.into_iter().flatten().collect();
+        // The ground each cell shows: a pond's held rim, else the lawn.
+        let level = |c: &Cell| c.water.map_or(c.h, |w| w - crate::water::SINK + RIM_UP);
+        let (mut steps, mut wall) = (0, false);
+        for k in 0..4 {
+            let (a, b) = (cells[k], cells[(k + 1) % 4]);
+            if (a.h - b.h).abs() > 1e-4 {
+                steps += 1;
+                let s = Step { a: Vec2::ZERO, b: Vec2::X, na: Vec2::Y, nb: Vec2::Y, high: a.h.max(b.h), low: a.h.min(b.h), high_water: if a.h > b.h { a.water } else { b.water }, low_water: if a.h > b.h { b.water } else { a.water } };
+                wall |= s.wall();
+            }
+        }
+        let p = Vec2::new(x as f32, z as f32);
+        if steps < 3 || !wall || field.notch(p) > 0.2 {
+            continue;
+        }
+        let top = cells.iter().map(level).fold(f32::MIN, f32::max).min(field.height_at(p) + 2.0) - 0.06;
+        let bottom = cells.iter().map(|c| c.h).fold(f32::MAX, f32::min) - 0.15;
+        let tone = (0.94 + 0.10 * hash2(x * 3, z * 3, seed ^ 33)) * 1.04;
+        let colour = colours.riser * tone;
+        let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(top + 0.06);
+        const SIDES: usize = 8;
+        let radius = 0.11;
+        let spin = hash2(x, z, seed ^ 37) * std::f32::consts::TAU;
+        // Each side takes the light of the wall it faces (not a round column's), so the post reads
+        // as the corner of the walls round it.
+        let at = |k: usize| {
+            let a = spin + k as f32 / SIDES as f32 * std::f32::consts::TAU;
+            let d = Vec2::new(a.cos(), a.sin());
+            let n = field.nearest_wall(p + d * 0.3, 0.5).map(|i| field.steps[i].normal_near(p + d * 0.3)).filter(|n| n.dot(d) > 0.2).unwrap_or(d);
+            (p + d * radius, Vec3::new(n.x, 0.0, n.y))
+        };
+        for k in 0..SIDES {
+            let ((p0, n0), (p1, n1)) = (at(k), at(k + 1));
+            let q = [Vec3::new(p0.x, top, p0.y), Vec3::new(p1.x, top, p1.y), Vec3::new(p1.x, bottom, p1.y), Vec3::new(p0.x, bottom, p0.y)];
+            tri_facing(mesh, [q[0], q[1], q[2]], [n0, n1, n1], [colour; 3], [paint; 3]);
+            tri_facing(mesh, [q[0], q[2], q[3]], [n0, n1, n0], [colour; 3], [paint; 3]);
+            tri_facing(mesh, [Vec3::new(p.x, top, p.y), q[0], q[1]], [Vec3::Y; 3], [colour; 3], [paint; 3]);
+        }
+    }
 }
 
 type TopVertex = (Vec3, Vec3, Vec3, Paint);

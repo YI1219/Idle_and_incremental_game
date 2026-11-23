@@ -1,0 +1,37 @@
+{
+ "cells": 571,
+ "body": "Karst",
+ "triangles": 28820,
+ "parts": {"top": 25480, "body": 3340, "decor": 0, "props": 71968, "grass full": 521255},
+ "build_ms": 55.28,
+ "stages_ms": {"fields": 26.96, "top": 13.43, "body": 0.37, "decor": 5.34, "grass": 8.11},
+ "faces": 25,
+ "columns": 46,
+ "face_widths_m": [5.1, 2.1, 2.8, 5.5, 2.0, 4.1, 2.0, 6.9, 4.8, 2.0, 5.7, 4.6, 4.4, 2.3, 2.3, 4.3, 2.0, 4.3, 6.6, 2.0, 5.5, 6.8, 5.9, 3.1, 4.3],
+ "width_min_m": 2.00,
+ "width_max_m": 6.92,
+ "width_spread": 0.407,
+ "step_spread_m": 0.400,
+ "longest_alike_run": 2,
+ "longest_alike_run_m": 9.02,
+ "edit_locality": [
+
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "game", "p05": 0.388, "p50": 0.702, "p95": 0.875, "white": 0.000, "black": 0.001, "sat_mean": 0.238, "sat_p99": 0.553, "quiet": 0.338},
+  {"view": "whole", "p05": 0.525, "p50": 0.769, "p95": 0.902, "white": 0.000, "black": 0.000, "sat_mean": 0.158, "sat_p99": 0.522, "quiet": 0.556},
+  {"view": "reverse", "p05": 0.290, "p50": 0.745, "p95": 0.890, "white": 0.000, "black": 0.000, "sat_mean": 0.139, "sat_p99": 0.514, "quiet": 0.592},
+  {"view": "close", "p05": 0.275, "p50": 0.604, "p95": 0.796, "white": 0.000, "black": 0.004, "sat_mean": 0.382, "sat_p99": 0.584, "quiet": 0.099},
+  {"view": "cliff_close", "p05": 0.376, "p50": 0.698, "p95": 0.847, "white": 0.000, "black": 0.001, "sat_mean": 0.200, "sat_p99": 0.557, "quiet": 0.377},
+  {"view": "side_106", "p05": 0.267, "p50": 0.722, "p95": 0.800, "white": 0.000, "black": 0.000, "sat_mean": 0.159, "sat_p99": 0.522, "quiet": 0.527},
+  {"view": "side_286", "p05": 0.310, "p50": 0.871, "p95": 0.910, "white": 0.000, "black": 0.000, "sat_mean": 0.143, "sat_p99": 0.518, "quiet": 0.686},
+  {"view": "foot_front", "p05": 0.408, "p50": 0.698, "p95": 0.851, "white": 0.000, "black": 0.001, "sat_mean": 0.205, "sat_p99": 0.557, "quiet": 0.369},
+  {"view": "foot_reverse", "p05": 0.243, "p50": 0.765, "p95": 0.890, "white": 0.000, "black": 0.001, "sat_mean": 0.152, "sat_p99": 0.522, "quiet": 0.559},
+  {"view": "overview", "p05": 0.353, "p50": 0.616, "p95": 0.890, "white": 0.000, "black": 0.000, "sat_mean": 0.373, "sat_p99": 0.565, "quiet": 0.190},
+  {"view": "terrace_close", "p05": 0.451, "p50": 0.624, "p95": 0.839, "white": 0.000, "black": 0.001, "sat_mean": 0.365, "sat_p99": 0.580, "quiet": 0.136},
+  {"view": "outer_hull", "p05": 0.361, "p50": 0.835, "p95": 0.906, "white": 0.000, "black": 0.001, "sat_mean": 0.166, "sat_p99": 0.541, "quiet": 0.513}
+ ]
+}

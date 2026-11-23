@@ -168,6 +168,20 @@ pub fn build_water(cells: &Cells, field: &Field, origin: Vec3) -> Vec<WaterVerte
         let Some(level) = cell.water else { continue };
         let y = level - SINK;
         let this = |w: Option<f32>| w.is_some_and(|l| (l - level).abs() < 1e-3);
+        // Round r8: how open the water is round a point (share of this pond's cells within 2 m,
+        // 0.5 at a straight shore, 1 in open water), for the clear shallow margin.
+        let open = |p: Vec2| -> f32 {
+            let mut hits = 0.0;
+            for ring in [0.7_f32, 1.4, 2.1] {
+                for k in 0..8 {
+                    let a = k as f32 * std::f32::consts::FRAC_PI_4 + ring;
+                    if this(field.water_at(p + Vec2::new(a.cos(), a.sin()) * ring)) {
+                        hits += 1.0;
+                    }
+                }
+            }
+            hits / 24.0
+        };
         // At a wall: water on its low side only if that side is this pond; on its high side it is
         // under the ground there or held by the rim. Squares of lower cells keep only what lies on
         // the high side of this pond's own wall.
@@ -215,7 +229,8 @@ pub fn build_water(cells: &Cells, field: &Field, origin: Vec3) -> Vec<WaterVerte
             let at = |p: Vec2| Vec3::new(p.x, y, p.y);
             let clear = |p: &Vec2| field.sample(&field.land1, *p) > 0.97 && field.nearest_step(*p).map_or(true, |(i, _, d)| !field.steps[i].wall() || d > 1.0);
             if own && probe.iter().all(clear) {
-                push(&mut out, [at(lo), at(lo + Vec2::Y), at(lo + Vec2::ONE), at(lo + Vec2::X)], [[0.0; 4]; 4]);
+                let d = |p: Vec2| [0.0, open(p), 0.0, 0.0];
+                push(&mut out, [at(lo), at(lo + Vec2::Y), at(lo + Vec2::ONE), at(lo + Vec2::X)], [d(lo), d(lo + Vec2::Y), d(lo + Vec2::ONE), d(lo + Vec2::X)]);
                 continue;
             }
             for sz in 0..4 {
@@ -225,7 +240,7 @@ pub fn build_water(cells: &Cells, field: &Field, origin: Vec3) -> Vec<WaterVerte
                     let polygon = clip(&square, &|p| keep(p, own));
                     for k in 1..polygon.len().saturating_sub(1) {
                         for p in [polygon[0], polygon[k], polygon[k + 1]] {
-                            out.push(WaterVertex { pos: (at(p) + origin).to_array(), data: [0.0; 4] });
+                            out.push(WaterVertex { pos: (at(p) + origin).to_array(), data: [0.0, open(p), 0.0, 0.0] });
                         }
                     }
                 }

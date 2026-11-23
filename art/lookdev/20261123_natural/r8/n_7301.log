@@ -1,0 +1,40 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 30688 triangles (top 27374, body 3314, decor 0, props 76710, grass full 412160), built in 77.8 ms (fields 40.9, top 20.0, body 0.4, decor 7.2, grass 7.5)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 11776 clumps, 412160 triangles full, 411138 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_game.png
+STATS game: p05 0.380 p50 0.702 p95 0.871 white 0.000 black 0.001 sat_mean 0.228 sat_p99 0.545 quiet 0.349
+GRASS whole: 11776 clumps, 412160 triangles full, 271614 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_whole.png
+STATS whole: p05 0.482 p50 0.769 p95 0.902 white 0.000 black 0.000 sat_mean 0.154 sat_p99 0.518 quiet 0.555
+GRASS reverse: 11776 clumps, 412160 triangles full, 304990 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_reverse.png
+STATS reverse: p05 0.314 p50 0.745 p95 0.894 white 0.000 black 0.000 sat_mean 0.131 sat_p99 0.510 quiet 0.603
+GRASS close: 11776 clumps, 412160 triangles full, 333410 drawn, chunks by level 14/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_close.png
+STATS close: p05 0.329 p50 0.592 p95 0.788 white 0.000 black 0.002 sat_mean 0.386 sat_p99 0.588 quiet 0.150
+GRASS cliff_close: 11776 clumps, 412160 triangles full, 352730 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_cliff_close.png
+STATS cliff_close: p05 0.384 p50 0.706 p95 0.843 white 0.000 black 0.001 sat_mean 0.202 sat_p99 0.557 quiet 0.370
+GRASS side_106: 11776 clumps, 412160 triangles full, 289464 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_side_106.png
+STATS side_106: p05 0.298 p50 0.722 p95 0.800 white 0.000 black 0.000 sat_mean 0.155 sat_p99 0.514 quiet 0.522
+GRASS side_286: 11776 clumps, 412160 triangles full, 309932 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_side_286.png
+STATS side_286: p05 0.306 p50 0.871 p95 0.910 white 0.000 black 0.000 sat_mean 0.143 sat_p99 0.514 quiet 0.701
+GRASS foot_front: 11776 clumps, 412160 triangles full, 352730 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_foot_front.png
+STATS foot_front: p05 0.376 p50 0.702 p95 0.839 white 0.000 black 0.001 sat_mean 0.205 sat_p99 0.557 quiet 0.371
+GRASS foot_reverse: 11776 clumps, 412160 triangles full, 368956 drawn, chunks by level 11/9/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_foot_reverse.png
+STATS foot_reverse: p05 0.271 p50 0.769 p95 0.894 white 0.000 black 0.000 sat_mean 0.142 sat_p99 0.518 quiet 0.566
+GRASS overview: 11776 clumps, 412160 triangles full, 393155 drawn, chunks by level 16/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_overview.png
+STATS overview: p05 0.420 p50 0.604 p95 0.886 white 0.000 black 0.001 sat_mean 0.331 sat_p99 0.561 quiet 0.242
+GRASS terrace_close: 11776 clumps, 412160 triangles full, 400120 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_terrace_close.png
+STATS terrace_close: p05 0.451 p50 0.616 p95 0.839 white 0.000 black 0.001 sat_mean 0.335 sat_p99 0.576 quiet 0.212
+GRASS outer_hull: 11776 clumps, 412160 triangles full, 367430 drawn, chunks by level 17/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_7301/n_7301_outer_hull.png
+STATS outer_hull: p05 0.435 p50 0.808 p95 0.906 white 0.000 black 0.001 sat_mean 0.164 sat_p99 0.537 quiet 0.512
+DONE rc=0

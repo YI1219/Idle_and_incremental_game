@@ -1,0 +1,19 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 30688 triangles (top 27374, body 3314, decor 0, props 76710, grass full 412160), built in 60.9 ms (fields 27.4, top 17.8, body 0.3, decor 6.9, grass 7.1)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 11776 clumps, 412160 triangles full, 411138 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_dusk/n_dusk_game.png
+STATS game: p05 0.227 p50 0.376 p95 0.820 white 0.000 black 0.002 sat_mean 0.270 sat_p99 0.573 quiet 0.424
+GRASS whole: 11776 clumps, 412160 triangles full, 271614 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_dusk/n_dusk_whole.png
+STATS whole: p05 0.286 p50 0.710 p95 0.863 white 0.000 black 0.000 sat_mean 0.171 sat_p99 0.518 quiet 0.582
+GRASS foot_front: 11776 clumps, 412160 triangles full, 352730 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_dusk/n_dusk_foot_front.png
+STATS foot_front: p05 0.235 p50 0.380 p95 0.761 white 0.000 black 0.001 sat_mean 0.249 sat_p99 0.596 quiet 0.464
+GRASS terrace_close: 11776 clumps, 412160 triangles full, 400120 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_dusk/n_dusk_terrace_close.png
+STATS terrace_close: p05 0.243 p50 0.357 p95 0.745 white 0.000 black 0.002 sat_mean 0.399 sat_p99 0.639 quiet 0.292
+GRASS outer_hull: 11776 clumps, 412160 triangles full, 367430 drawn, chunks by level 17/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_dusk/n_dusk_outer_hull.png
+STATS outer_hull: p05 0.247 p50 0.573 p95 0.871 white 0.000 black 0.001 sat_mean 0.200 sat_p99 0.561 quiet 0.565
+DONE rc=0

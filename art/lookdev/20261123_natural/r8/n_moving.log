@@ -1,0 +1,16 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 30688 triangles (top 27374, body 3314, decor 0, props 76710, grass full 412160), built in 59.0 ms (fields 27.6, top 17.9, body 0.3, decor 4.5, grass 7.2)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 11776 clumps, 412160 triangles full, 411138 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_moving/n_moving_game.png
+STATS game: p05 0.380 p50 0.702 p95 0.871 white 0.000 black 0.001 sat_mean 0.228 sat_p99 0.545 quiet 0.348
+GRASS foot_front: 11776 clumps, 412160 triangles full, 352730 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_moving/n_moving_foot_front.png
+STATS foot_front: p05 0.376 p50 0.702 p95 0.839 white 0.000 black 0.001 sat_mean 0.205 sat_p99 0.557 quiet 0.364
+GRASS terrace_close: 11776 clumps, 412160 triangles full, 400120 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_moving/n_moving_terrace_close.png
+STATS terrace_close: p05 0.451 p50 0.620 p95 0.839 white 0.000 black 0.001 sat_mean 0.335 sat_p99 0.576 quiet 0.208
+GRASS outer_hull: 11776 clumps, 412160 triangles full, 367430 drawn, chunks by level 17/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/r8/n_moving/n_moving_outer_hull.png
+STATS outer_hull: p05 0.427 p50 0.808 p95 0.906 white 0.000 black 0.001 sat_mean 0.164 sat_p99 0.533 quiet 0.515
+DONE rc=0

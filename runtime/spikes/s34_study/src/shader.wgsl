@@ -227,6 +227,11 @@ const PAINT_WASH: f32 = 2.0;
 const PAINT_CLOUD: f32 = 1.0;
 const PAINT_PLANES: f32 = 0.40;
 const PAINT_DRY: f32 = 0.55;
+// Round r8: the island stone's sky and bounce light (1.32 before).
+const STONE_SHADE: vec3<f32> = vec3<f32>(0.58, 0.63, 0.66);
+// And its fill light, which reaches the faces on the island's far side (the reference's back walls
+// are a light blue-grey, about 0.42, 0.45, 0.47, against 0.52 for a side face in the sun's shade).
+const STONE_FILL: vec3<f32> = vec3<f32>(2.7, 2.45, 1.65);
 // Keeps the painted stone's mean where the vertex colours put it (the wash is warm on average).
 const PAINT_NORM: vec3<f32> = vec3<f32>(1.005, 1.0, 1.03);
 
@@ -281,7 +286,11 @@ fn fs_terms(v: VTerms) -> FTerms {
     let dy = dpdy(v.world);
     var vis = 1.0;
     if (dot(n, g.sun_dir.xyz) > -0.05 && abs(v.extra.r * 255.0 - 20.0) >= 0.5) {
-        vis = sun_visibility(v.world, n, v.clip.xy);
+        // The wall backing (id 3) shows only through the slits where pieces of wall meet, 8.5 cm
+        // behind the faces: it takes the sun as if it stood in the faces' plane, so the slit's
+        // edges do not throw a shadow line into it (round r8).
+        let lift = select(0.0, 0.14, abs(v.extra.r * 255.0 - 3.0) < 0.5);
+        vis = sun_visibility(v.world + n * lift, n, v.clip.xy);
     }
     var display = v.colour.rgb;
     var ao = v.terms.r;
@@ -312,6 +321,33 @@ fn fs_terms(v: VTerms) -> FTerms {
                 brow = 0.85;
                 vis *= 0.5;
             }
+        }
+        if (abs(v.extra.r * 255.0 - 1.0) < 0.5) {
+            // Round r8: the pond bed (top surface under water, id 1 in the stone family): a pale
+            // sandy stone with pebbles, a few per square metre, some darker and some paler, each a
+            // soft-edged oval with a little shading on its sun side. The water pass tints it.
+            let q = v.world.xz * 2.4;
+            let cell = floor(q - 0.5);
+            var peb = 0.0;
+            var tint = 1.0;
+            for (var j = 0; j <= 1; j++) {
+                for (var i = 0; i <= 1; i++) {
+                    let c = cell + vec2<f32>(f32(i), f32(j));
+                    let h = hash21(c * 1.37 + 5.1);
+                    if (h > 0.30) {
+                        continue;
+                    }
+                    let centre = c + vec2<f32>(hash21(c + 1.7), hash21(c + 9.3));
+                    let r = 0.16 + 0.22 * hash21(c + 3.3);
+                    let d = length((q - centre) * vec2<f32>(1.0, 1.35)) / r;
+                    let k = 1.0 - smoothstep(0.75, 1.0, d);
+                    if (k > peb) {
+                        peb = k;
+                        tint = select(0.86, 1.08, hash21(c + 7.7) > 0.55) * (1.0 + 0.08 * (centre.x - q.x) / r);
+                    }
+                }
+            }
+            display *= mix(1.0, tint, peb);
         }
         let width = v.terms.a * 16.0;
         if (width > 0.05) {
@@ -1020,7 +1056,9 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
 
     var ao = terms.g;
     var screen_ao = 1.0;
-    if (g.look.x > 0.5) {
+    // The wall backing (id 3) is seen only through slits, where screen-space occlusion reads the
+    // faces around it as a deep crease; it keeps its baked occlusion only (round r8).
+    if (g.look.x > 0.5 && abs(normal_tex.a * 255.0 - 3.0) >= 0.5) {
         screen_ao = ao_at(px, view_distance(depth));
         ao = min(ao, screen_ao);
     }
@@ -1070,12 +1108,14 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
     if (stone) {
         // Island stone in shade: Godot's crisp-facet light gives walls extra sky and cloud-sea
         // bounce, so shaded faces stay a light grey rather than going slate.
-        hemi *= 1.32;
+        // Round r8: the reference walls show a strong difference between sun and shade (shaded
+        // faces near 0.52 against sunlit 0.71), so the extra sky and bounce of earlier rounds is gone.
+        hemi *= STONE_SHADE;
         // The hour's stone palette: lit parts follow mix(stone_mid, stone_lit), shaded parts
         // mix(stone_shadow, stone_mid), each against the day's.
         sun *= g.pal[L_WALL_K].rgb;
         hemi *= g.pal[L_WALL_SHADE_K].rgb;
-        fill *= g.pal[L_WALL_SHADE_K].rgb;
+        fill *= g.pal[L_WALL_SHADE_K].rgb * STONE_FILL;
     }
     var colour = albedo * (sun + (hemi + fill) * ao);
     let far_id = abs(normal_tex.a * 255.0 - 20.0) < 0.5;
@@ -1130,6 +1170,13 @@ const CAUSTIC_K: f32 = 0.08;
 const LINE_K: f32 = 0.12;
 const MIRROR_K: f32 = 0.47;
 const MIRROR_JADE: f32 = 0.26;
+// Round r8, clear water: absorption per metre of view path (red first), the jade body scattered in,
+// the light lines on the bed, the refraction displacement (metres per metre of depth).
+const WATER_SIGMA: vec3<f32> = vec3<f32>(4.6, 2.0, 2.2);
+const WATER_BODY: vec3<f32> = vec3<f32>(0.053, 0.123, 0.072);
+const CAUSTIC_BED: f32 = 0.35;
+const REFRACT_K: f32 = 0.08;
+const FRESNEL_K: f32 = 0.72;
 // Fall look constants (round r4): flow intensity (Godot UV.x), white-water gain, body gain.
 const FALL_INTENSITY: f32 = 0.7;
 const FALL_WHITE: f32 = 3.2;
@@ -1193,19 +1240,55 @@ fn fs_water(v: VWater) -> @location(0) vec4<f32> {
         slope *= mix(0.42, 1.0, smoothstep(0.015, 0.35, basin));
         let nrm = normalize(vec3<f32>(-slope.x, 1.0, -slope.y));
         // The sky reflection kept weak at these pitches: the pond reads by its own jade body.
-        let fresnel = (0.02 + 0.98 * pow(1.0 - clamp(dot(nrm, to_eye), 0.0, 1.0), 5.0)) * 0.5;
+        let fresnel = (0.02 + 0.98 * pow(1.0 - clamp(dot(nrm, to_eye), 0.0, 1.0), 5.0)) * FRESNEL_K;
         let reflected = reflect(-to_eye, nrm);
         let sky = sky_colour(vec3<f32>(reflected.x, abs(reflected.y), reflected.z));
-        // Darker toward the centre as the water deepens; a paler, clearer shallow band at the shore.
-        let deep = smoothstep(0.0, 0.55, depth);
-        var tint = mix(g.pal[L_WATER_SHALLOW].rgb, g.pal[L_WATER_DEEP].rgb, deep) * mix(1.0, 0.86, smoothstep(0.15, 0.80, depth));
-        tint = mix(g.pal[L_WATER_SHALLOW].rgb * SHALLOW_LIFT, tint, smoothstep(0.03, 0.22, depth));
-        let body = tint * open_light(vec3<f32>(0.0, 1.0, 0.0));
-        let absorb = mix(0.40, 0.95, smoothstep(0.0, 0.5, depth));
+        // Round r8: clear water over a visible bed (after water.gdshader's refraction and
+        // absorption, made clearer). The pass composes the picture behind the surface itself (alpha
+        // 1): the bed, the submerged stones and stems, read a little displaced by the ripples, then
+        // absorbed per channel along the view ray's path through the water (red first, so depth
+        // turns jade), with the water's own jade body scattered in as the bed fades.
+        let open = open_light(vec3<f32>(0.0, 1.0, 0.0));
+        let size_w = vec2<f32>(textureDimensions(w_depth));
+        var spx = px;
+        var path = behind;
+        {
+            // Refraction: the floor point seen through the bent ray, kept only when it is still
+            // under this water (not a bank or a stone in front of the surface).
+            let floor_p = world_at((vec2<f32>(px) + 0.5) / size_w, scene);
+            let bent = floor_p + vec3<f32>(slope.x, 0.0, slope.y) * REFRACT_K * min(depth, 1.0) / 0.026;
+            let c = g.view_proj * vec4<f32>(bent, 1.0);
+            let uv = vec2<f32>(c.x / c.w * 0.5 + 0.5, 0.5 - c.y / c.w * 0.5);
+            if (c.w > 0.0 && uv.x > 0.0 && uv.x < 1.0 && uv.y > 0.0 && uv.y < 1.0) {
+                let q = vec2<i32>(uv * size_w);
+                let dq = textureLoad(w_depth, q, 0);
+                let bq = view_distance(dq) - distance;
+                if (dq > v.clip.z && abs(bq - behind) < 0.25 + 0.3 * behind) {
+                    spx = q;
+                    path = bq;
+                }
+            }
+        }
+        var floor_c = textureLoad(w_scene, spx, 0).rgb;
+        // Soft light lines on the bed in the shallows (lake_bed.gdshader's caustic web, stronger):
+        // focused ribbons of a warped sine field, only where the sun reaches.
+        let margin = 1.0 - smoothstep(0.52, 0.95, v.data.y);
+        let cq = v.world.xz * 1.5 + vec2<f32>(sin(v.world.z * 1.1 + t * 0.3), cos(v.world.x * 0.9 - t * 0.25)) * 0.6;
+        let focus = abs(sin(cq.x * 2.1 + sin(cq.y * 1.7)) + sin(cq.y * 2.3 + sin(cq.x * 1.3))) * 0.5;
+        let web = (1.0 - smoothstep(0.0, 0.16, abs(focus - 0.35))) * (0.45 + 0.55 * vnoise(v.world.xz * 0.7));
+        floor_c *= 1.0 + CAUSTIC_BED * web * smoothstep(0.015, 0.06, depth) * margin * max(g.sun_dir.y, 0.0);
+        // Clearer at the margin, as Godot's shore factor makes it (k 0.58 at the bank).
+        // And clearer within about 2 m of the shore (v.data.y: how open the water is, from water.rs).
+        let clear_k = mix(0.55, 1.0, smoothstep(0.02, 0.26, depth)) * mix(1.0, 0.30, margin);
+        let trans = exp(-WATER_SIGMA * min(path, 8.0) * clear_k);
+        // The hour shifts it as Godot shifts water_deep (ratio to the day value).
+        let body = WATER_BODY * open * g.pal[L_WATER_DEEP].rgb / vec3<f32>(0.00232, 0.0222, 0.0194);
+        let water_c = floor_c * trans * vec3<f32>(0.97, 0.99, 0.95) + body * (1.0 - trans);
         let glint = g.pal[L_SUN].rgb * pow(max(dot(reflected, g.sun_dir.xyz), 0.0), 180.0) * 1.6;
-        rgb = (1.0 - fresnel) * absorb * body + fresnel * sky + glint;
-        alpha = 1.0 - (1.0 - fresnel) * (1.0 - absorb);
-        let pale = g.pal[L_MIST].rgb * open_light(vec3<f32>(0.0, 1.0, 0.0));
+        // The sky seen in the surface, toned a little toward the water (as Godot tints its mirror).
+        rgb = (1.0 - fresnel) * water_c + fresnel * sky * vec3<f32>(1.0, 0.98, 0.80) + glint;
+        alpha = 1.0;
+        let pale = g.pal[L_MIST].rgb * open;
         // Shore light lines in the shallow band (Godot's shore_caustic).
         let caustic = smoothstep(0.62, 0.88, sin(basin * 42.0 - t * 1.35 + small.x * 3.2)) * (1.0 - smoothstep(0.02, 0.18, basin));
         rgb = mix(rgb, pale * 0.62 * alpha, caustic * CAUSTIC_K);

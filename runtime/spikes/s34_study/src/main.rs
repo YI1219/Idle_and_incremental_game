@@ -749,6 +749,23 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
     };
     let field = field::Field::build(cells);
     lap("fields", &mut timings);
+    // S34_HEIGHTS="x0,z0,x1,z1": the ground height on a 0.25 m grid (hole hunting).
+    if let (Ok(spec), true) = (std::env::var("S34_HEIGHTS"), origin == Vec3::ZERO) {
+        let v: Vec<f32> = spec.split(',').map(|s| s.parse().unwrap()).collect();
+        let mut z = v[1];
+        while z <= v[3] {
+            let mut row = format!("HEIGHTS z {z:6.2}:");
+            let mut x = v[0];
+            while x <= v[2] {
+                let p = Vec2::new(x, z);
+                let mark = if field.water_at(p).is_some() { 'w' } else if field.nearest_wall(p, 0.15).is_some() { '|' } else { ' ' };
+                row += &format!(" {:4.2}{mark}", field.height_at(p));
+                x += 0.25;
+            }
+            println!("{row}");
+            z += 0.25;
+        }
+    }
     let top = field::build_top(&field, &field::TopColours::default(), seed);
     lap("top", &mut timings);
     let outlines = field::outlines(cells, &field, 0.5);
@@ -970,7 +987,64 @@ fn main() {
         cameras.push(("whole".to_string(), Camera::orbit([0.0, 0.0], reach * 1.35, 16.0, 30.0)));
         cameras.push(("game".to_string(), Camera::orbit([reach * 0.2, reach * 0.1], reach * 0.55, 16.0, 27.0)));
     }
+    // Ad hoc close-ups for hole hunting: S34_CAMERA="ex,ey,ez,tx,ty,tz,fov" adds a view named "probe".
+    if let Ok(spec) = std::env::var("S34_CAMERA") {
+        let v: Vec<f32> = spec.split(',').map(|s| s.trim().parse().expect("S34_CAMERA numbers")).collect();
+        cameras.push(("probe".to_string(), Camera { eye: Vec3::new(v[0], v[1], v[2]), target: Vec3::new(v[3], v[4], v[5]), fov_deg: v[6] }));
+    }
     let wanted: Vec<&str> = args.views.split(',').collect();
+    // S34_PICK="view:x,y;x,y": the island point under output pixels (CPU ray cast on the solid mesh).
+    if let Ok(spec) = std::env::var("S34_PICK") {
+        let (view, list) = spec.split_once(':').expect("S34_PICK view:x,y;...");
+        if let Some((_, cam)) = cameras.iter().find(|(n, _)| n == view) {
+            let aspect = args.width as f32 / args.height as f32;
+            let fwd = (cam.target - cam.eye).normalize();
+            let right = fwd.cross(Vec3::Y).normalize();
+            let up = right.cross(fwd);
+            let half = (cam.fov_deg.to_radians() * 0.5).tan();
+            for item in list.split(';') {
+                let (x, y) = item.split_once(',').unwrap();
+                let (x, y): (f32, f32) = (x.parse().unwrap(), y.parse().unwrap());
+                let sx = ((x + 0.5) / args.width as f32 * 2.0 - 1.0) * half * aspect;
+                let sy = (1.0 - (y + 0.5) / args.height as f32 * 2.0) * half;
+                let dir = (fwd + right * sx + up * sy).normalize();
+                let mut best: Option<(f32, usize)> = None;
+                let v = &solid.vertices;
+                for t in 0..casters / 3 {
+                    let (p0, p1, p2) = (Vec3::from(v[t * 3].pos), Vec3::from(v[t * 3 + 1].pos), Vec3::from(v[t * 3 + 2].pos));
+                    let (e1, e2) = (p1 - p0, p2 - p0);
+                    let h = dir.cross(e2);
+                    let a = e1.dot(h);
+                    if a.abs() < 1e-9 {
+                        continue;
+                    }
+                    let f = 1.0 / a;
+                    let s = cam.eye - p0;
+                    let u = f * s.dot(h);
+                    if !(0.0..=1.0).contains(&u) {
+                        continue;
+                    }
+                    let q = s.cross(e1);
+                    let w = f * dir.dot(q);
+                    if w < 0.0 || u + w > 1.0 {
+                        continue;
+                    }
+                    let d = f * e2.dot(q);
+                    if d > 0.01 && best.map_or(true, |b| d < b.0) {
+                        best = Some((d, t));
+                    }
+                }
+                match best {
+                    Some((d, t)) => {
+                        let p = cam.eye + dir * d;
+                        let vx = &v[t * 3];
+                        println!("PICK {view} ({x},{y}): at ({:.2}, {:.2}, {:.2}), {:.1} m, normal ({:.2}, {:.2}, {:.2}), paint id {}", p.x, p.y, p.z, d, vx.normal[0], vx.normal[1], vx.normal[2], vx.extra[0]);
+                    }
+                    None => println!("PICK {view} ({x},{y}): nothing"),
+                }
+            }
+        }
+    }
 
     let mut renderer = Renderer::new(args.width, args.height, args.scale, args.fxaa);
     renderer.set_scene(&solid.vertices, casters, &water);
@@ -996,6 +1070,14 @@ fn main() {
         // The near air scales with how far the camera stands from what it orbits (1 up to the
         // review set's whole-island view).
         light[16][0] = if wallpaper { 1.0 } else { ((camera.eye - camera.target).length() / whole_reach).max(1.0) };
+        // Round r8: the root mist rises to where the Godot baseline's walls dissolve, at a fairly even
+        // level 6 to 8 m under the lawn's edge (its stone_root_veil runs from y -2.5 to -5.7); the
+        // hanging columns below are only soft shapes in it. The three-island view keeps the old
+        // band (its islands stand at other heights).
+        if !wallpaper {
+            light[12][0] = -4.0;
+            light[12][1] = -6.9;
+        }
         // Godot keeps the distant landscape under the camera's orbit centre.
         if wallpaper {
             // The r4 far field (mounds built round the origin, the r4 cloud sea).
