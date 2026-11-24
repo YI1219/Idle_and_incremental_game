@@ -916,14 +916,17 @@ fn edit_test(cells: &Cells, seed: u32) -> String {
     // Round r9: a ramp stroke across a terrace wall (the wall edge a third of the way through the
     // sorted list that takes a valid ramp). Besides the rim plan, the top surface (lawn, banks and
     // walls) is compared vertex by vertex: a vertex is changed when the other build has none within 1 cm.
+    // Round r10: and a diagonal one, 45 degrees off the wall's normal, width 2, from the wall edge two
+    // thirds of the way through the list.
     let walls = field::wall_edges(cells);
+    for (label, angle, width, from) in [("ramp", 0.0_f32, 2.0_f32, walls.len() / 3), ("diag", 45.0, 2.0, walls.len() * 2 / 3)] {
     let mut stroke: Option<(Vec2, Vec2, Cells)> = None;
     for k in 0..walls.len() {
-        let (k1, k2) = walls[(walls.len() / 3 + k) % walls.len()];
-        let (a, b) = field::ramp_across(cells, k1, k2, 0.3);
+        let (k1, k2) = walls[(from + k) % walls.len()];
+        let (a, b) = field::ramp_across_turned(cells, k1, k2, 0.3, angle);
         let mut edited = cells.clone();
-        if field::ramp(&mut edited, a, b, 2.0).is_ok() {
-            stroke = Some((a, b, edited));
+        if let Ok(done) = field::ramp(&mut edited, a, b, width) {
+            stroke = Some((done.a, done.b, edited));
             break;
         }
     }
@@ -976,18 +979,31 @@ fn edit_test(cells: &Cells, seed: u32) -> String {
             }
         }
         println!(
-            "EDIT ramp     a=({:.1}, {:.1}) b=({:.1}, {:.1}): {changed} faces changed, farthest {farthest:.2} m from the stroke, {far} beyond 12 m; top surface {top_changed} of {} vertices changed, farthest {top_far:.2} m, {top_beyond} beyond 12 m",
+            "EDIT {label:8} a=({:.1}, {:.1}) b=({:.1}, {:.1}) width {width:.0}: {changed} faces changed, farthest {farthest:.2} m from the stroke, {far} beyond 12 m; top surface {top_changed} of {} vertices changed, farthest {top_far:.2} m, {top_beyond} beyond 12 m",
             a.x, a.y, b.x, b.y, p1.len()
         );
         lines.push(format!(
-            "  {{\"stroke\": \"ramp\", \"a\": [{:.2}, {:.2}], \"b\": [{:.2}, {:.2}], \"faces_changed\": {changed}, \"farthest_change_m\": {farthest:.2}, \"changed_beyond_12m\": {far}, \"top_vertices_changed\": {top_changed}, \"top_farthest_m\": {top_far:.2}, \"top_beyond_12m\": {top_beyond}}}",
+            "  {{\"stroke\": \"{label}\", \"a\": [{:.2}, {:.2}], \"b\": [{:.2}, {:.2}], \"width\": {width:.0}, \"faces_changed\": {changed}, \"farthest_change_m\": {farthest:.2}, \"changed_beyond_12m\": {far}, \"top_vertices_changed\": {top_changed}, \"top_farthest_m\": {top_far:.2}, \"top_beyond_12m\": {top_beyond}}}",
             a.x, a.y, b.x, b.y
         ));
     } else {
-        println!("EDIT ramp     no wall takes a valid ramp");
+        println!("EDIT {label:8} no wall takes a valid ramp");
+    }
     }
     lines.join(",\n")
 }
+
+/// Round r10: the ramp views (name, target, yaw, pitch, distance); see where they are added to the
+/// cameras. ramp1..3: the three ramps of layout_7301_0_ramps.json; slope: the broad slope of
+/// layout_4242_1_slope.json; diag1, diag2: the diagonal ramps of layout_2104_0_ramps.json.
+const RAMP_VIEWS: [(&str, [f32; 3], f32, f32, f32); 6] = [
+    ("ramp1", [-1.0, 2.0, 8.0], 125.0, 30.0, 14.0),
+    ("ramp2", [-5.0, 3.0, 5.5], 35.0, 30.0, 14.0),
+    ("ramp3", [-7.5, 4.25, -9.0], 200.0, 30.0, 14.0),
+    ("slope", [5.0, 2.5, -3.0], 55.0, 28.0, 16.0),
+    ("diag1", [-13.0, 4.25, -7.5], 25.0, 30.0, 13.0),
+    ("diag2", [7.0, 2.5, -4.5], 95.0, 30.0, 14.0),
+];
 
 /// Round r9 (`--synthetic-ramps`): one ramp of width 2 across each long terrace wall (8 or more
 /// cell edges between the same two levels), near the middle of the wall, deterministic. A ramp is
@@ -1047,9 +1063,12 @@ fn synthetic_ramps(cells: &Cells) -> Vec<[f32; 5]> {
         let centroid = list.iter().map(|&i| mid_of(i)).sum::<Vec2>() / list.len() as f32;
         let mut order = list.clone();
         order.sort_by(|&i, &j| (mid_of(i) - centroid).length().partial_cmp(&(mid_of(j) - centroid).length()).unwrap().then(i.cmp(&j)));
+        // Round r10: the ramps take turns at a direction and width, so the island mixes axis-aligned
+        // and diagonal strokes (straight across the wall, then 30 and 45 degrees off it, width 2 or 3).
+        let (angle, width) = [(0.0_f32, 2.0_f32), (30.0, 2.0), (45.0, 3.0), (-30.0, 3.0)][out.len() % 4];
         for &i in order.iter().take(8) {
             let (k1, k2) = edges[i];
-            let (a, b) = field::ramp_across(cells, k1, k2, 0.3);
+            let (a, b) = field::ramp_across_turned(cells, k1, k2, 0.3, angle);
             let centre = (a + b) * 0.5;
             if centres.iter().any(|c| (*c - centre).length() < 4.0) {
                 continue;
@@ -1062,14 +1081,16 @@ fn synthetic_ramps(cells: &Cells) -> Vec<[f32; 5]> {
                 let p = field::centre_of(key);
                 let t = (p - a).dot(dir) / length;
                 let off = (p - (a + dir * length * t.clamp(0.0, 1.0))).length();
-                if !(-1e-4..=1.0 + 1e-4).contains(&t) || off > 1.0 + 1e-4 {
+                if !(-1e-4..=1.0 + 1e-4).contains(&t) || off > width * 0.5 + 1e-4 {
                     return true;
                 }
                 c.water.is_none() && !c.sloped() && ((c.h - lo).abs() < 1e-3 || (c.h - hi).abs() < 1e-3)
             });
+            // Both ends on the two levels the ramp joins.
+            let ends_ok = [a, b].iter().all(|p| field::cell_surface(cells, *p).is_some_and(|(h, _)| (h - lo).abs() < 1e-3 || (h - hi).abs() < 1e-3));
             let mut test = cells.clone();
-            if strip_ok && field::ramp(&mut test, a, b, 2.0).is_ok() {
-                out.push([a.x, a.y, b.x, b.y, 2.0]);
+            if strip_ok && ends_ok && field::ramp(&mut test, a, b, width).is_ok() {
+                out.push([a.x, a.y, b.x, b.y, width]);
                 centres.push(centre);
                 break;
             }
@@ -1093,10 +1114,13 @@ fn main() {
     for r in &strokes {
         let (a, b) = (Vec2::new(r[0], r[1]), Vec2::new(r[2], r[3]));
         match field::ramp(&mut cells, a, b, r[4]) {
-            Ok(done) => println!(
-                "RAMP a=({:.2}, {:.2}) b=({:.2}, {:.2}) width {:.1} : {} cells, rise {:.2} m over {:.2} m, gradient {:.3}",
-                a.x, a.y, b.x, b.y, r[4], done.cells, done.rise, done.length, done.gradient
-            ),
+            Ok(done) => {
+                let angle = (done.b - done.a).y.atan2((done.b - done.a).x).to_degrees();
+                println!(
+                    "RAMP a=({:.2}, {:.2}) b=({:.2}, {:.2}) width {:.1} (drawn ({:.2}, {:.2}) to ({:.2}, {:.2}), {:.0} deg) : {} cells, rise {:.2} m over {:.2} m, gradient {:.3}",
+                    done.a.x, done.a.y, done.b.x, done.b.y, r[4], a.x, a.y, b.x, b.y, angle, done.cells, done.rise, done.length, done.gradient
+                )
+            }
             Err(reason) => println!("RAMP refused: {reason} (a=({:.2}, {:.2}) b=({:.2}, {:.2}) width {:.1})", a.x, a.y, b.x, b.y, r[4]),
         }
     }
@@ -1184,6 +1208,19 @@ fn main() {
     let whole_reach = cameras.iter().find(|(n, _)| n == "whole").map_or(60.0, |(_, c)| (c.eye - c.target).length());
     cameras.push(("wallpaper".to_string(), Camera { eye: Vec3::new(26.0, 24.0, 122.0), target: Vec3::new(2.0, 0.0, -4.0), fov_deg: 31.0 }));
     cameras.push(("below".to_string(), Camera { eye: Vec3::new(14.0, -19.0, 30.0), target: Vec3::new(-1.0, -2.0, -1.0), fov_deg: 31.0 }));
+    // Round r10: views that show the ramps, each named for a ramp of a reference layout and fixed in
+    // the world, so the plain layout renders from the same camera (before and after). The camera
+    // looks at the ramp's middle at its mid height from `dist` metres, `pitch` degrees down, from
+    // the ramp's low side about 35 degrees off its axis, looking up the ramp: the incline rising
+    // through the terrace wall it cuts, the wall's face on either side, on whichever side nothing
+    // large stands in front. (From 60 degrees off, the raised cheek of the ramp's lower half faced
+    // the camera and hid the incline.) `yaw` as in cameras.json (the eye lies toward (sin yaw,
+    // cos yaw) from the target).
+    for (name, target, yaw, pitch, dist) in RAMP_VIEWS {
+        let (y, p) = (yaw.to_radians(), pitch.to_radians());
+        let target = Vec3::from(target);
+        cameras.push((name.to_string(), Camera { eye: target + Vec3::new(y.sin() * p.cos(), p.sin(), y.cos() * p.cos()) * dist, target, fov_deg: 31.0 }));
+    }
     if args.synthetic > 0 {
         // A synthetic island has its own size: frame it whole and close.
         let reach = cells.keys().map(|&(x, z)| Vec2::new(x as f32, z as f32).length()).fold(0.0, f32::max);
@@ -1267,7 +1304,8 @@ fn main() {
     let mut bench_lines = Vec::new();
     let mut frame_lines = Vec::new();
     for (name, camera) in cameras.iter() {
-        if !(wanted.contains(&"all") && name != "wallpaper" && name != "below") && !wanted.contains(&name.as_str()) {
+        let extra = name == "wallpaper" || name == "below" || RAMP_VIEWS.iter().any(|v| v.0 == name);
+        if !(wanted.contains(&"all") && !extra) && !wanted.contains(&name.as_str()) {
             continue;
         }
         let mut light = light;

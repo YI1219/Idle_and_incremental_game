@@ -474,20 +474,29 @@ fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, t
 /// its foot cut on a tilted plane far down in the root mist. `plan` runs with the block's outside
 /// on the left of each edge seen from above (the order `column` uses).
 #[allow(clippy::too_many_arguments)]
-fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom: f32, tilt: Vec2, shift: Vec2, colour: Vec3, colours: &StoneColours, id: u8, lip: Option<f32>, cap_warm: f32) {
+fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom: f32, tilt: Vec2, shift: Vec2, colour: Vec3, colours: &StoneColours, id: u8, lip: Option<f32>, cap_warm: f32, wide: (&[usize], f32, Vec2)) {
     let n0 = plan.len();
-    // Chamfer every corner that turns by more than 25 degrees.
+    // Chamfer every corner that turns by more than 25 degrees; the corners listed in `wide` take a
+    // broader rounded bevel of `wide.1` (round r10: a rim block's front corners, see the caller).
+    // `wide.2` is the block's outward direction: a broad bevel is shaded as a shallow rounded edge,
+    // its normal turning from the front face's only a third of the way to the end side's.
     let mut ring: Vec<Vec2> = Vec::with_capacity(n0 * 2);
+    // Whether the side from ring[k] to ring[k + 1] is a chamfer: 0 no, 1 narrow, 2 broad.
+    let mut soft: Vec<u8> = Vec::with_capacity(n0 * 2);
     for k in 0..n0 {
         let (prev, p, next) = (plan[(k + n0 - 1) % n0], plan[k], plan[(k + 1) % n0]);
         let (d0, d1) = ((prev - p).normalize_or_zero(), (next - p).normalize_or_zero());
         let turn = 180.0 - d0.dot(d1).clamp(-1.0, 1.0).acos().to_degrees();
         if turn > 25.0 {
-            let c = 0.075_f32.min((prev - p).length() * 0.3).min((next - p).length() * 0.3);
+            let size = if wide.0.contains(&k) { wide.1 } else { 0.075 };
+            let c = size.min((prev - p).length() * 0.3).min((next - p).length() * 0.3);
             ring.push(p + d0 * c);
+            soft.push(if wide.0.contains(&k) { 2 } else { 1 });
             ring.push(p + d1 * c);
+            soft.push(0);
         } else {
             ring.push(p);
+            soft.push(0);
         }
     }
     let n = ring.len();
@@ -502,15 +511,33 @@ fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom:
         }
     };
     let low = colour.lerp(colours.under, 0.18);
+    let normals: Vec<Vec3> = (0..n).map(|k| (head[(k + 1) % n] - head[k]).cross(foot[k] - head[k]).normalize_or_zero()).collect();
     for k in 0..n {
         let k2 = (k + 1) % n;
-        let normal = (head[k2] - head[k]).cross(foot[k] - head[k]).normalize_or_zero();
+        let normal = normals[k];
         if normal == Vec3::ZERO {
             continue;
         }
+        // Round r10: a chamfer is shaded as a rounded edge, its normal turning from one neighbouring
+        // face's to the other's. Lit flat, the chamfer at a rim face's end turned away from the sun
+        // and read as a black hairline between two faces. A broad bevel (a rim block's front corner,
+        // where it may stand proud of its neighbour) turns only a third of the way from the front
+        // face toward the end side: with the full turn, the bevel's middle faced away from the sun,
+        // took the corner's occlusion as well and still read as a dark line.
+        let (prev, next) = (normals[(k + n - 1) % n], normals[k2]);
+        let (na, nb) = match soft[k] {
+            1 => (prev, next),
+            2 => {
+                let out = Vec3::new(wide.2.x, 0.0, wide.2.y);
+                let (front, side) = if prev.dot(out) >= next.dot(out) { (prev, next) } else { (next, prev) };
+                let partial = front.lerp(side, 0.33).normalize_or_zero();
+                if front == prev { (front, partial) } else { (partial, front) }
+            }
+            _ => (normal, normal),
+        };
         let (pt, pb) = (paint(0.0, 1.0), paint(1.0, 0.86));
-        mesh.tri_full([head[k], head[k2], foot[k2]], [normal; 3], [colour, colour, low], [pt, pt, pb]);
-        mesh.tri_full([head[k], foot[k2], foot[k]], [normal; 3], [colour, low, low], [pt, pb, pb]);
+        mesh.tri_full([head[k], head[k2], foot[k2]], [na, nb, nb], [colour, colour, low], [pt, pt, pb]);
+        mesh.tri_full([head[k], foot[k2], foot[k]], [na, nb, na], [colour, low, low], [pt, pb, pb]);
     }
     let foot_centre = foot.iter().copied().sum::<Vec3>() / n as f32;
     for k in 0..n {
@@ -586,7 +613,14 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             // The foot: 7.6 to 9.4 m under the cap, cut a little out of level; it lies in the mist.
             let cap = face.top - 0.20;
             let tilt = (-out) * (0.04 + 0.05 * h2) + chord * (h1 - 0.5) * 0.10;
-            tall_block(&mut mesh, &plan, &|_| cap, cap - 7.6 - 1.8 * h2, tilt, Vec2::ZERO, colour, colours, 100 + (index % 70) as u8, Some(face.top), 0.0);
+            // Round r10: the two front corners take a 0.20 m rounded bevel. Neighbouring blocks
+            // overlap 0.22 m along the rim and stand up to about 0.2 m forward or back of each other;
+            // with the narrow chamfer the forward block's end side showed in the step, turned from
+            // the sun, as a black hairline. The bevel spans the step and is shaded as a shallow rounded
+            // edge (see `tall_block`), so the joint reads as a soft
+            // rounded edge of shaded stone.
+            let corners = [0, plan.len() - 3];
+            tall_block(&mut mesh, &plan, &|_| cap, cap - 7.6 - 1.8 * h2, tilt, Vec2::ZERO, colour, colours, 100 + (index % 70) as u8, Some(face.top), 0.0, (&corners, 0.20, out));
             columns += 1;
         }
         // Buttress slabs (Godot's shoulder groups): a few broad slabs standing against the wall,
@@ -640,7 +674,7 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             // steps a little sideways.
             let lean = across * (s3 - 0.5) * 0.10 + ahead * (0.25 + 0.30 * s1);
             let colour = colours.face.lerp(colours.warm, 0.15) * (1.0 + (s1 - 0.5) * 0.05);
-            tall_block(&mut mesh, &plan, &top, back_top - height, Vec2::new(0.0, 0.0), lean, colour, colours, 30 + (i % 9) as u8, Some(face.top), 0.0);
+            tall_block(&mut mesh, &plan, &top, back_top - height, Vec2::new(0.0, 0.0), lean, colour, colours, 30 + (i % 9) as u8, Some(face.top), 0.0, (&[], 0.0, Vec2::ZERO));
             columns += 1;
         }
         // Where the rim steps down (a terrace wall reaching the outline, a pond's bank), a face's

@@ -42,9 +42,11 @@ pub type Cells = HashMap<(i32, i32), Cell>;
 
 /// The largest gradient a slope cell may have (about 31 degrees).
 pub const MAX_GRADIENT: f32 = 0.6;
-/// Two neighbouring surfaces that agree along their shared edge to within this at both ends are
-/// continuous there (no step).
-pub const CONTINUOUS: f32 = 0.08;
+/// Two neighbouring dry surfaces (one of them a slope) that agree along their shared edge to within
+/// this at both ends are continuous there (no step): round r10 raised it from 0.08 so the staircase
+/// ends of a diagonal ramp (its plane off the flat terrace by up to about 0.7 m times the gradient)
+/// blend into one surface over the rounded crease instead of forming little banks.
+pub const CONTINUOUS: f32 = 0.25;
 
 /// Reads a layout exported by tools/export/export_layouts.gd (version 1), or one written by
 /// `save_layout` (version 2: real heights and an optional `"slope": [gx, gz]` per cell).
@@ -95,14 +97,45 @@ pub fn cell_surface(cells: &Cells, p: Vec2) -> Option<(f32, Cell)> {
 
 /// What a ramp stroke did.
 pub struct RampDone {
+    /// The stroke's ends after snapping (see `snap_stroke`).
+    pub a: Vec2,
+    pub b: Vec2,
     pub cells: usize,
     pub rise: f32,
     pub length: f32,
     pub gradient: f32,
 }
 
-/// The ramp stroke (round r9): every cell whose centre lies within `width / 2` of the segment a-b
-/// and between its ends becomes a slope cell on the plane from (a, ha) to (b, hb).
+/// Round r10: the stroke rule. A stroke within 7.5 degrees of a grid axis is made exactly
+/// axis-aligned and snapped so the ramp is exactly `width` cells across and ends on cell edges: its
+/// centre line on a cell edge for an even width, on a row of cell centres for an odd one, its ends on
+/// the nearest cell edge along the axis. Any other stroke is kept as drawn; the ramp is then the
+/// cells whose centres lie in the strip, and its ends and sides follow staircases of cell edges.
+pub fn snap_stroke(a: Vec2, b: Vec2, width: f32) -> (Vec2, Vec2) {
+    let d = b - a;
+    if d.length() < 1e-6 {
+        return (a, b);
+    }
+    let along_x = d.x.abs() >= d.y.abs();
+    let off_axis = if along_x { (d.y / d.x).atan().abs() } else { (d.x / d.y).atan().abs() };
+    if off_axis > 7.5_f32.to_radians() {
+        return (a, b);
+    }
+    let w = width.round().max(1.0) as i32;
+    let across = |v: f32| if w % 2 == 0 { v.round() } else { (v - 0.5).round() + 0.5 };
+    if along_x {
+        let z = across((a.y + b.y) * 0.5);
+        (Vec2::new(a.x.round(), z), Vec2::new(b.x.round(), z))
+    } else {
+        let x = across((a.x + b.x) * 0.5);
+        (Vec2::new(x, a.y.round()), Vec2::new(x, b.y.round()))
+    }
+}
+
+/// The ramp stroke (round r9, snapped since r10): the ends' heights are those of the cells under
+/// the drawn points a and b; the stroke is snapped (`snap_stroke`), and every cell whose centre lies
+/// within `width / 2` of the snapped segment and between its ends becomes a slope cell on the plane
+/// from (a, ha) to (b, hb).
 pub fn ramp(cells: &mut Cells, a: Vec2, b: Vec2, width: f32) -> Result<RampDone, String> {
     let (ha, ca) = cell_surface(cells, a).ok_or_else(|| format!("start ({:.2}, {:.2}) is off the island", a.x, a.y))?;
     let (hb, cb) = cell_surface(cells, b).ok_or_else(|| format!("end ({:.2}, {:.2}) is off the island", b.x, b.y))?;
@@ -112,6 +145,7 @@ pub fn ramp(cells: &mut Cells, a: Vec2, b: Vec2, width: f32) -> Result<RampDone,
     if cb.water.is_some() {
         return Err(format!("end ({:.2}, {:.2}) is water", b.x, b.y));
     }
+    let (a, b) = snap_stroke(a, b, width);
     let length = (b - a).length();
     if length < 2.0 {
         return Err(format!("too short ({length:.2} m, at least 2 m)"));
@@ -145,7 +179,7 @@ pub fn ramp(cells: &mut Cells, a: Vec2, b: Vec2, width: f32) -> Result<RampDone,
     for &(key, t) in &picked {
         cells.insert(key, Cell { h: ha + rise * t, water: None, slope });
     }
-    Ok(RampDone { cells: picked.len(), rise, length, gradient })
+    Ok(RampDone { a, b, cells: picked.len(), rise, length, gradient })
 }
 
 /// The cells of one terrace wall (an edge between two dry flat cells rising 0.75 m or more), for
@@ -180,6 +214,24 @@ pub fn ramp_across(cells: &Cells, k1: (i32, i32), k2: (i32, i32), want: f32) -> 
     let edge = (centre_of(low) + centre_of(high)) * 0.5;
     let mid = edge + across * 0.5;
     (mid - up * half, mid + up * half)
+}
+
+/// Round r10: a ramp across the wall edge between k1 and k2 turned `angle_deg` from the wall's
+/// normal (0 gives `ramp_across`), centred on the edge's midpoint, about `rise / want` long.
+/// Returns (a, b) from the low side to the high side.
+pub fn ramp_across_turned(cells: &Cells, k1: (i32, i32), k2: (i32, i32), want: f32, angle_deg: f32) -> (Vec2, Vec2) {
+    if angle_deg.abs() < 1e-3 {
+        return ramp_across(cells, k1, k2, want);
+    }
+    let (c1, c2) = (cells[&k1], cells[&k2]);
+    let (low, high) = if c1.h < c2.h { (k1, k2) } else { (k2, k1) };
+    let up = Vec2::new((high.0 - low.0) as f32, (high.1 - low.1) as f32);
+    let (s, c) = angle_deg.to_radians().sin_cos();
+    let dir = Vec2::new(up.x * c - up.y * s, up.x * s + up.y * c);
+    let rise = (cells[&high].h - cells[&low].h).abs();
+    let half = ((rise / want) * 0.5).ceil().max(1.0) + 0.5;
+    let mid = (centre_of(low) + centre_of(high)) * 0.5;
+    (mid - dir * half, mid + dir * half)
 }
 
 fn smooth_min(a: f32, b: f32, k: f32) -> f32 {
@@ -304,6 +356,10 @@ pub struct Step {
     pub low_cell: (i32, i32),
     /// Whether this piece is a wall (decided per chain where a slope cell is involved).
     pub is_wall: bool,
+    /// Round r10: distance along the chain from a (resp. b) to a free end of the chain (a corner
+    /// inside the island where only this chain's step ends: the tip of a ramp's cheek), or infinity.
+    pub fade0: f32,
+    pub fade1: f32,
 }
 
 /// The old rule for one cell edge: a rise of 0.75 m or more (not in the bed under one pond), or
@@ -359,6 +415,17 @@ impl Step {
         (q - p).dot(self.normal_at(t))
     }
 
+    /// Round r10: how far along the chain p lies from its free end (negative beyond it), or infinity.
+    pub fn tip_distance(&self, p: Vec2) -> f32 {
+        if self.fade0.is_infinite() && self.fade1.is_infinite() {
+            return f32::INFINITY;
+        }
+        let ab = self.b - self.a;
+        let len = ab.length().max(1e-6);
+        let u = (p - self.a).dot(ab) / len;
+        (self.fade0 + u).min(self.fade1 + len - u)
+    }
+
     /// The low-side normal at the point of this piece closest to p.
     pub fn normal_near(&self, p: Vec2) -> Vec2 {
         let (_, t) = self.closest(p);
@@ -379,6 +446,16 @@ struct StepLabel {
     sloped: bool,
     /// The largest rise over this half edge.
     rise: f32,
+    /// Round r10: the rise at the half edge's two ends (in its own direction).
+    r0: f32,
+    r1: f32,
+}
+
+impl StepLabel {
+    fn reversed(mut self) -> StepLabel {
+        std::mem::swap(&mut self.r0, &mut self.r1);
+        self
+    }
 }
 
 /// Whether the edge between two neighbouring cells is a step, and its labels per half edge (from
@@ -393,7 +470,7 @@ fn edge_labels(ka: (i32, i32), a: Cell, kb: (i32, i32), b: Cell, c0: Vec2, c1: V
             return None;
         }
         let (hi, lo, toward_low, hk, lk) = if a.h > b.h { (a, b, dir, ka, kb) } else { (b, a, -dir, kb, ka) };
-        let label = StepLabel { high: hi.h, low: lo.h, high_water: hi.water, low_water: lo.water, toward_low, high_cell: hk, low_cell: lk, sloped: false, rise: hi.h - lo.h };
+        let label = StepLabel { high: hi.h, low: lo.h, high_water: hi.water, low_water: lo.water, toward_low, high_cell: hk, low_cell: lk, sloped: false, rise: hi.h - lo.h, r0: hi.h - lo.h, r1: hi.h - lo.h };
         return Some([label, label]);
     }
     let diff = |p: Vec2| a.plane(ka, p) - b.plane(kb, p);
@@ -421,6 +498,8 @@ fn edge_labels(ka: (i32, i32), a: Cell, kb: (i32, i32), b: Cell, c0: Vec2, c1: V
             low_cell: lk,
             sloped: true,
             rise: diff(p0).abs().max(diff(p1).abs()),
+            r0: diff(p0).abs(),
+            r1: diff(p1).abs(),
         }
     };
     Some([half(c0, mid), half(mid, c1)])
@@ -499,29 +578,72 @@ fn build_steps(cells: &Cells) -> (Vec<Step>, Vec<(i32, i32)>) {
         }
     }
 
+    // Labels per chain (one per 0.5 m piece) and whether each chain beside a slope cell is a wall.
+    let corner = |c: (i32, i32)| Vec2::new(c.0 as f32, c.1 as f32);
+    let chain_labels: Vec<Vec<StepLabel>> = chains
+        .iter()
+        .map(|(corners, spans, _)| {
+            let mut labels: Vec<StepLabel> = Vec::new();
+            for (k, &e) in spans.iter().enumerate() {
+                // The half labels run from the edge's c0; a span walked the other way takes them reversed.
+                let [h0, h1] = edges[e].2;
+                let (first, second) = if corners[k] == edges[e].0 { (h0, h1) } else { (h1.reversed(), h0.reversed()) };
+                labels.push(first);
+                labels.push(second);
+            }
+            labels
+        })
+        .collect();
+    // Round r9: a chain beside a slope cell is a wall as a whole when its rise reaches 0.75 m
+    // anywhere (so a ramp's cheek is one wedge of wall that tapers to nothing); a chain of flat
+    // cells keeps the rule per piece.
+    let sloped_chain: Vec<bool> = chain_labels.iter().map(|ls| ls.iter().any(|l| l.sloped)).collect();
+    let mut chain_wall: Vec<bool> = chain_labels.iter().map(|ls| ls.iter().any(|l| wall_rule(l.rise, l.high_water, l.low_water))).collect();
+    // Round r10: where a ramp cuts through a terrace wall, the wall ends at a corner where the ramp's
+    // cheeks begin. A cheek lower than 0.75 m was a soft bank, steep enough to be painted as a bare
+    // facet, and the wall's end stood open against it (a dark slit, the backing). A sloped chain that
+    // starts where a wall ends (a junction of three or more steps inside the island) with a rise of
+    // 0.12 m or more there is now a wall too: the wall turns into the ramp's cheeks, which taper away.
+    let mut wall_ends: HashMap<(i32, i32), usize> = HashMap::new();
+    for (i, (corners, _, closed)) in chains.iter().enumerate() {
+        if *closed {
+            continue;
+        }
+        let ls = &chain_labels[i];
+        let wall_at = |l: &StepLabel| if sloped_chain[i] { chain_wall[i] } else { wall_rule(l.high - l.low, l.high_water, l.low_water) };
+        if wall_at(&ls[0]) {
+            *wall_ends.entry(corners[0]).or_default() += 1;
+        }
+        if wall_at(&ls[ls.len() - 1]) {
+            *wall_ends.entry(*corners.last().unwrap()).or_default() += 1;
+        }
+    }
+    let junction_corner = |c: (i32, i32)| at[&c].len() >= 3 && !on_rim(c);
+    for (i, (corners, _, closed)) in chains.iter().enumerate() {
+        if *closed || !sloped_chain[i] || chain_wall[i] {
+            continue;
+        }
+        let ls = &chain_labels[i];
+        let ends = [(corners[0], ls[0].r0), (*corners.last().unwrap(), ls[ls.len() - 1].r1)];
+        if ends.iter().any(|&(c, rise)| junction_corner(c) && wall_ends.get(&c).copied().unwrap_or(0) > 0 && rise >= 0.12) {
+            chain_wall[i] = true;
+        }
+    }
     let mut steps = Vec::new();
-    for (corners, spans, closed) in chains {
-        let corner = |c: (i32, i32)| Vec2::new(c.0 as f32, c.1 as f32);
-        // Points at the corners and the edge midpoints; one label per 0.5 m piece.
+    for (ci, (corners, spans, closed)) in chains.into_iter().enumerate() {
         let mut points: Vec<Vec2> = Vec::new();
-        let mut labels: Vec<StepLabel> = Vec::new();
-        for (k, &e) in spans.iter().enumerate() {
+        for k in 0..spans.len() {
             let a = corner(corners[k]);
             let b = if k + 1 < corners.len() { corner(corners[k + 1]) } else { corner(corners[0]) };
             points.push(a);
             points.push((a + b) * 0.5);
-            // The half labels run from the edge's c0; a span walked the other way takes them reversed.
-            let [h0, h1] = edges[e].2;
-            let (first, second) = if corners[k] == edges[e].0 { (h0, h1) } else { (h1, h0) };
-            labels.push(first);
-            labels.push(second);
         }
-        // Round r9: a chain beside a slope cell is a wall as a whole when its rise reaches 0.75 m
-        // anywhere (so a ramp's cheek is one wedge of wall that tapers to nothing); a chain of flat
-        // cells keeps the rule per piece.
-        let chain_wall = labels.iter().any(|l| wall_rule(l.rise, l.high_water, l.low_water));
-        let sloped_chain = labels.iter().any(|l| l.sloped);
-        let is_wall = |l: &StepLabel| if sloped_chain { chain_wall } else { wall_rule(l.high - l.low, l.high_water, l.low_water) };
+        let labels = &chain_labels[ci];
+        let (sloped, whole_wall) = (sloped_chain[ci], chain_wall[ci]);
+        let is_wall = |l: &StepLabel| if sloped { whole_wall } else { wall_rule(l.high - l.low, l.high_water, l.low_water) };
+        // Free ends (round r10): a corner inside the island where only this chain's step ends.
+        let free = |c: (i32, i32)| at[&c].len() == 1 && !on_rim(c);
+        let (free0, free1) = if closed { (false, false) } else { (free(corners[0]), free(*corners.last().unwrap())) };
         if !closed {
             points.push(corner(*corners.last().unwrap()));
         }
@@ -553,11 +675,21 @@ fn build_steps(cells: &Cells) -> (Vec<Step>, Vec<(i32, i32)>) {
             normals.push(normal);
         }
         let joint = |k: usize, other: Option<usize>| -> Vec2 { other.map_or(normals[k], |o| (normals[k] + normals[o]).normalize_or_zero()) };
+        // Arc length to each point, for the distance to a free end.
+        let mut arc = vec![0.0_f32; pieces + 1];
+        for k in 0..pieces {
+            arc[k + 1] = arc[k] + (points[(k + 1) % n] - points[k]).length();
+        }
+        let total = arc[pieces];
         for k in 0..pieces {
             let before = if k > 0 { Some(k - 1) } else if closed { Some(pieces - 1) } else { None };
             let after = if k + 1 < pieces { Some(k + 1) } else if closed { Some(0) } else { None };
             let l = labels[k];
+            let fade0 = if free0 { arc[k] } else { f32::INFINITY };
+            let fade1 = if free1 { total - arc[k + 1] } else { f32::INFINITY };
             steps.push(Step {
+                fade0,
+                fade1,
                 a: points[k],
                 b: points[(k + 1) % n],
                 na: joint(k, before),
@@ -582,6 +714,8 @@ fn build_steps(cells: &Cells) -> (Vec<Step>, Vec<(i32, i32)>) {
                 let piece = if end == 0 { 0 } else { pieces - 1 };
                 let normal = normals[piece];
                 steps.push(Step {
+                    fade0: f32::INFINITY,
+                    fade1: f32::INFINITY,
                     a: points[end],
                     b: points[end] + dir * 1.5,
                     na: normal,
@@ -654,7 +788,10 @@ pub struct Field {
 }
 
 /// Half width of the rounding where a slope meets a continuous neighbour (a ramp's foot and top).
-const CREASE: f32 = 0.3;
+/// Round r10: 0.4 (from 0.3), so the small mismatches now counted as continuous roll out softly.
+const CREASE: f32 = 0.4;
+/// Round r10: how far from a cheek's free tip its two sides start closing on each other.
+const TIP_FADE: f32 = 0.7;
 
 fn gaussian(grid: &[f32], nx: usize, nz: usize, sigma_m: f32) -> Vec<f32> {
     let sigma = sigma_m / STEP;
@@ -721,12 +858,15 @@ impl Field {
         let floor = cells.values().map(|c| c.h).fold(f32::MAX, f32::min);
         let (steps, corners) = build_steps(cells);
         let has_slopes = cells.values().any(|c| c.sloped());
-        // Slope cells and their four neighbours: the only cells whose ground is not their flat height.
+        // Slope cells and their eight neighbours (four before r10): the only cells whose ground is
+        // not their flat height.
         let mut slope_near = std::collections::HashSet::new();
         for (&(x, z), c) in cells.iter() {
             if c.sloped() {
-                for k in [(x, z), (x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)] {
-                    slope_near.insert(k);
+                for dz in -1..=1 {
+                    for dx in -1..=1 {
+                        slope_near.insert((x + dx, z + dz));
+                    }
                 }
             }
         }
@@ -832,8 +972,21 @@ impl Field {
         // included), next to a soft step its blend, which the sector across it shares; so the
         // sectors meet the cells round the junction, which take the nearest step too.
         let (d0, d1) = (self.steps[r0].signed(p).0, self.steps[r1].signed(p).0);
-        let pick = if (d0 - d1).abs() < 1e-4 { if self.steps[r0].wall() { r0 } else { r1 } } else if d0 < d1 { r0 } else { r1 };
-        self.side_height(pick, p, side(pick))
+        // Round r10: blended by distance instead of taking the nearer step outright. Where the two
+        // bounding steps give different grounds (a wall's top beside a pond's soft shore), the pick
+        // jumped along the sector's bisector, and the lawn lip at the corner showed a small angled
+        // step. On each ray the ground is still exactly that step's; at the corner a wall's.
+        if d0 + d1 < 1e-4 {
+            let pick = if self.steps[r0].wall() { r0 } else { r1 };
+            return self.side_height(pick, p, side(pick));
+        }
+        // The blend fades back to the nearer step's ground by 0.3 m from the corner, so the samples
+        // at the edge of the cut zone still meet the uncut cells round it.
+        let (h0, h1) = (self.side_height(r0, p, side(r0)), self.side_height(r1, p, side(r1)));
+        let picked = if d0 < d1 { h0 } else { h1 };
+        let w0 = d1 * d1 / (d0 * d0 + d1 * d1);
+        let blend = 1.0 - smoothstep(0.12, 0.3, (p - jn.at).length());
+        picked + (h0 * w0 + h1 * (1.0 - w0) - picked) * blend
     }
 
     /// The nearest wall piece within `reach`.
@@ -907,24 +1060,31 @@ impl Field {
         if !self.has_slopes || !self.slope_near.contains(&key) {
             return cell.h;
         }
-        let base = cell.plane(key, p);
-        let mut h = base;
+        // Round r10: a blend over the 2 x 2 cells round the corner of this cell nearest to p, with
+        // smooth weights per axis that sum to one. A neighbour joins with its own plane where it is
+        // continuous with this cell (the diagonal one through either edge neighbour); otherwise it
+        // takes the bilinear stand-in, so a step is left to the step code. At a staircase corner of a
+        // diagonal ramp the planes of all four cells meet in one smooth surface.
+        let own = cell.plane(key, p);
         let centre = centre_of(key);
-        for (dx, dz) in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
-            let nk = (key.0 + dx, key.1 + dz);
-            let Some(other) = self.cells.get(&nk) else { continue };
-            if !cell.sloped() && !other.sloped() {
-                continue;
-            }
-            // How far p lies beyond this edge of the cell (negative inside).
-            let d = if dx != 0 { (p.x - centre.x) * dx as f32 - 0.5 } else { (p.y - centre.y) * dz as f32 - 0.5 };
-            let w = smoothstep(-CREASE, CREASE, d);
-            if w <= 0.0 || !self.continuous(key, cell, nk, other) {
-                continue;
-            }
-            h += (other.plane(nk, p) - base) * w;
+        let (sx, sz) = (if p.x >= centre.x { 1 } else { -1 }, if p.y >= centre.y { 1 } else { -1 });
+        let wx = smoothstep(-CREASE, CREASE, (p.x - centre.x) * sx as f32 - 0.5);
+        let wz = smoothstep(-CREASE, CREASE, (p.y - centre.y) * sz as f32 - 0.5);
+        if wx <= 0.0 && wz <= 0.0 {
+            return own;
         }
-        h
+        let (kx, kz, kd) = ((key.0 + sx, key.1), (key.0, key.1 + sz), (key.0 + sx, key.1 + sz));
+        let joined = |k: (i32, i32), with: (i32, i32), c: &Cell| -> Option<Cell> {
+            let other = self.cells.get(&k)?;
+            self.continuous(with, c, k, other).then_some(*other)
+        };
+        let cx = joined(kx, key, cell);
+        let cz = joined(kz, key, cell);
+        let vx = cx.map_or(own, |c| c.plane(kx, p));
+        let vz = cz.map_or(own, |c| c.plane(kz, p));
+        let cd = cx.and_then(|c| joined(kd, kx, &c)).or_else(|| cz.and_then(|c| joined(kd, kz, &c)));
+        let vd = cd.map_or(vx + vz - own, |c| c.plane(kd, p));
+        own * (1.0 - wx) * (1.0 - wz) + vx * wx * (1.0 - wz) + vz * (1.0 - wx) * wz + vd * wx * wz
     }
 
     /// How much of a fall's notch p is in (1 inside, 0 outside, soft at its sides).
@@ -954,9 +1114,29 @@ impl Field {
         let sd = s.line_sd(p);
         // Round r9: each side is its cell's ground (a plane on a slope cell), so a step's rise varies
         // along it; on flat cells these are the two levels as before.
-        let (hi, lo) = if self.step_sloped.get(i).copied().unwrap_or(false) { (self.cell_ground(s.high_cell, p), self.cell_ground(s.low_cell, p)) } else { (s.high, s.low) };
+        let sloped = self.step_sloped.get(i).copied().unwrap_or(false);
+        let (mut hi, mut lo) = if sloped { (self.cell_ground(s.high_cell, p), self.cell_ground(s.low_cell, p)) } else { (s.high, s.low) };
         if !s.wall() {
-            return lo + (hi - lo) * smoothstep(-SOFT_HALF, SOFT_HALF, sd);
+            // Round r10: a soft step beside a slope is as wide as its rise needs to stay a lawn bank
+            // (at most about 45 degrees), not a steep facet painted as bare rock.
+            let half = if sloped { SOFT_HALF.max((hi - lo).abs() * 0.55) } else { SOFT_HALF };
+            return lo + (hi - lo) * smoothstep(-half, half, sd);
+        }
+        // Round r10: toward a free end (a cheek's tip) both sides close on their middle, so the
+        // rise runs out to nothing at the tip whatever the cells' mismatch there; beyond the tip the
+        // ground passes back to the cell's own over 0.9 m.
+        if sloped {
+            let tip = s.tip_distance(p);
+            if tip < TIP_FADE {
+                let k = smoothstep(0.0, TIP_FADE, tip);
+                let mid = (hi + lo) * 0.5;
+                if tip <= 0.0 {
+                    let own = self.cell_near(p).map_or(mid, |(key, _)| self.cell_ground(key, p));
+                    return mid + (own - mid) * smoothstep(0.0, 0.9, -tip);
+                }
+                hi = mid + (hi - mid) * k;
+                lo = mid + (lo - mid) * k;
+            }
         }
         if !high {
             return lo;
@@ -1617,8 +1797,11 @@ fn ribbon(
         let low_y = low.height(field, c).min(top);
         // The face stands 3.5 cm out from the cut; the roll above it drops 5 cm, less on a low
         // wedge, none in a fall's notch or at a junction's corner.
+        // Round r10: at a junction's corner the roll keeps its drop (only its reach out is zero, so
+        // the walls still share the corner's edge): without it the rock rose to the lawn there and the
+        // lip showed a small angled step where the roll ran out.
         let out = if corner { 0.0 } else { 0.035 };
-        let down = if notch || corner { 0.0 } else { 0.05_f32.min((top - low_y) * 0.5) };
+        let down = if notch { 0.0 } else { 0.05_f32.min((top - low_y) * 0.5) };
         End { c, n, n3: Vec3::new(n.x, 0.0, n.y), top, low: low_y, colour: v.2, out, down }
     };
     let e = [end(c0, mitre.0), end(c1, mitre.1)];
@@ -1668,7 +1851,9 @@ fn ribbon(
         for (k, sign) in [(0usize, -1.0_f32), (1, 1.0)] {
             let mut reach: f32 = if (k == 0 && mitre.0) || (k == 1 && mitre.1) { 0.0 } else { 0.20 };
             let mut p = e[k].c + dir * sign * reach + e[k].n * back;
-            while reach > 0.0 && field.sample(&field.land1, p) < 0.6 {
+            // Round r10: nor past the end where the ground falls below the wall's foot (a pond's
+            // bank or bed beside the corner), where the backing stood in the open as a sliver.
+            while reach > 0.0 && (field.sample(&field.land1, p) < 0.6 || field.height_at(p) < e[k].low - 0.03) {
                 reach -= 0.05;
                 p = e[k].c + dir * sign * reach.max(0.0) + e[k].n * back;
             }
