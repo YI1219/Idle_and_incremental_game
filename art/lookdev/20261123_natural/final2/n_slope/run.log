@@ -1,0 +1,42 @@
+PROPS loaded 80 objects, 204 instances, 59996 triangles, 3 dropped (bush 1, bush at a wall 1, shore_boulder at a wall 1), 10 moved off walls, 7 stones set on a pond bed, 16 moved to the shore from scene_4242_1
+island: 503 cells, 27 faces, 44 columns, 26020 triangles (top 22324, body 3696, decor 0, props 59996, grass full 309645), built in 63.1 ms (fields 30.9, top 18.3, body 0.6, decor 5.6, grass 6.1)
+form: 27 faces, widths 2.0 to 6.9 m (spread 0.38), step spread 0.30 m, longest alike run 2 faces / 5.3 m
+GRASS game: 8847 clumps, 309645 triangles full, 309645 drawn, chunks by level 16/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_game.png
+STATS game: p05 0.384 p50 0.722 p95 0.867 white 0.000 black 0.001 sat_mean 0.195 sat_p99 0.537 quiet 0.407
+GRASS whole: 8847 clumps, 309645 triangles full, 197309 drawn, chunks by level 3/13/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_whole.png
+STATS whole: p05 0.486 p50 0.773 p95 0.902 white 0.000 black 0.000 sat_mean 0.140 sat_p99 0.510 quiet 0.582
+GRASS reverse: 8847 clumps, 309645 triangles full, 189581 drawn, chunks by level 1/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_reverse.png
+STATS reverse: p05 0.345 p50 0.749 p95 0.886 white 0.000 black 0.000 sat_mean 0.122 sat_p99 0.506 quiet 0.631
+GRASS close: 8847 clumps, 309645 triangles full, 210280 drawn, chunks by level 10/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_close.png
+STATS close: p05 0.353 p50 0.624 p95 0.843 white 0.000 black 0.002 sat_mean 0.321 sat_p99 0.580 quiet 0.205
+GRASS cliff_close: 8847 clumps, 309645 triangles full, 217910 drawn, chunks by level 11/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_cliff_close.png
+STATS cliff_close: p05 0.369 p50 0.725 p95 0.855 white 0.000 black 0.001 sat_mean 0.167 sat_p99 0.545 quiet 0.439
+GRASS side_106: 8847 clumps, 309645 triangles full, 235613 drawn, chunks by level 6/10/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_side_106.png
+STATS side_106: p05 0.349 p50 0.725 p95 0.796 white 0.000 black 0.000 sat_mean 0.147 sat_p99 0.514 quiet 0.554
+GRASS side_286: 8847 clumps, 309645 triangles full, 229159 drawn, chunks by level 5/11/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_side_286.png
+STATS side_286: p05 0.376 p50 0.875 p95 0.910 white 0.000 black 0.000 sat_mean 0.128 sat_p99 0.510 quiet 0.734
+GRASS foot_front: 8847 clumps, 309645 triangles full, 217910 drawn, chunks by level 11/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_foot_front.png
+STATS foot_front: p05 0.439 p50 0.722 p95 0.859 white 0.000 black 0.000 sat_mean 0.169 sat_p99 0.545 quiet 0.441
+GRASS foot_reverse: 8847 clumps, 309645 triangles full, 258223 drawn, chunks by level 8/8/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_foot_reverse.png
+STATS foot_reverse: p05 0.310 p50 0.765 p95 0.875 white 0.000 black 0.000 sat_mean 0.137 sat_p99 0.514 quiet 0.588
+GRASS overview: 8847 clumps, 309645 triangles full, 270305 drawn, chunks by level 13/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_overview.png
+STATS overview: p05 0.420 p50 0.635 p95 0.894 white 0.000 black 0.001 sat_mean 0.277 sat_p99 0.553 quiet 0.341
+GRASS terrace_close: 8847 clumps, 309645 triangles full, 271040 drawn, chunks by level 14/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_terrace_close.png
+STATS terrace_close: p05 0.463 p50 0.671 p95 0.851 white 0.000 black 0.001 sat_mean 0.267 sat_p99 0.565 quiet 0.299
+GRASS outer_hull: 8847 clumps, 309645 triangles full, 269395 drawn, chunks by level 14/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_outer_hull.png
+STATS outer_hull: p05 0.376 p50 0.839 p95 0.902 white 0.000 black 0.001 sat_mean 0.145 sat_p99 0.522 quiet 0.542
+GRASS slope: 8847 clumps, 309645 triangles full, 253365 drawn, chunks by level 11/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_slope/n_slope_slope.png
+STATS slope: p05 0.341 p50 0.624 p95 0.788 white 0.000 black 0.000 sat_mean 0.288 sat_p99 0.584 quiet 0.417

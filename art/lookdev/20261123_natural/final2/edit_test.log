@@ -1,0 +1,35 @@
+== edit_7301
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+EDIT expand   at (4, -8): 12 faces changed, farthest 11.19 m from the stroke, 0 beyond 12 m
+EDIT contract at (14, -3): 7 faces changed, farthest 5.52 m from the stroke, 0 beyond 12 m
+EDIT raise    at (17, 0): 7 faces changed, farthest 5.26 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(-5.0, -10.0) b=(-11.0, -10.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1612 of 15979 vertices changed, farthest 2.45 m, 0 beyond 12 m
+EDIT diag     a=(-1.2, 8.3) b=(-4.8, 4.7) width 2: 4 faces changed, farthest 1.24 m from the stroke, 0 beyond 12 m; top surface 1735 of 16323 vertices changed, farthest 2.48 m, 0 beyond 12 m
+== edit_2104
+form: 24 faces, widths 2.0 to 6.4 m (spread 0.33), step spread 0.32 m, longest alike run 3 faces / 12.6 m
+EDIT expand   at (4, -8): 7 faces changed, farthest 2.39 m from the stroke, 0 beyond 12 m
+EDIT contract at (14, -3): 13 faces changed, farthest 11.32 m from the stroke, 0 beyond 12 m
+EDIT raise    at (17, 0): 7 faces changed, farthest 5.08 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(-5.0, -10.0) b=(-11.0, -10.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1612 of 15979 vertices changed, farthest 2.45 m, 0 beyond 12 m
+EDIT diag     a=(-1.2, 8.3) b=(-4.8, 4.7) width 2: 2 faces changed, farthest 1.24 m from the stroke, 0 beyond 12 m; top surface 1735 of 16323 vertices changed, farthest 2.48 m, 0 beyond 12 m
+== edit_4242
+form: 27 faces, widths 2.0 to 6.9 m (spread 0.39), step spread 0.31 m, longest alike run 2 faces / 5.2 m
+EDIT expand   at (0, -6): 10 faces changed, farthest 7.27 m from the stroke, 0 beyond 12 m
+EDIT contract at (17, -3): 9 faces changed, farthest 4.59 m from the stroke, 0 beyond 12 m
+EDIT raise    at (20, -1): 9 faces changed, farthest 5.92 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(6.0, -4.0) b=(-2.0, -4.0) width 2: 9 faces changed, farthest 4.04 m from the stroke, 0 beyond 12 m; top surface 1788 of 12231 vertices changed, farthest 4.00 m, 0 beyond 12 m
+EDIT diag     a=(5.2, -0.3) b=(-1.2, -6.7) width 2: 8 faces changed, farthest 3.36 m from the stroke, 0 beyond 12 m; top surface 1982 of 12515 vertices changed, farthest 2.03 m, 0 beyond 12 m
+== edit_913
+form: 25 faces, widths 2.0 to 6.9 m (spread 0.41), step spread 0.40 m, longest alike run 2 faces / 9.0 m
+EDIT expand   at (-6, 2): 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m
+EDIT contract at (10, 10): 8 faces changed, farthest 6.19 m from the stroke, 0 beyond 12 m
+EDIT raise    at (16, 5): 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(1.0, 7.0) b=(1.0, -1.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1880 of 14210 vertices changed, farthest 3.90 m, 0 beyond 12 m
+EDIT diag     a=(9.2, 2.7) b=(2.8, -3.7) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 2150 of 14755 vertices changed, farthest 3.31 m, 0 beyond 12 m
+== edit_syn
+form: 63 faces, widths 2.0 to 6.6 m (spread 0.33), step spread 0.35 m, longest alike run 4 faces / 18.4 m
+EDIT expand   at (11, -17): 7 faces changed, farthest 2.39 m from the stroke, 0 beyond 12 m
+EDIT contract at (35, 22): 4 faces changed, farthest 2.36 m from the stroke, 0 beyond 12 m
+EDIT raise    at (43, 1): 11 faces changed, farthest 10.06 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(-11.0, 17.0) b=(-7.0, 17.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1096 of 96131 vertices changed, farthest 3.08 m, 0 beyond 12 m
+EDIT diag     a=(12.8, 24.3) b=(9.2, 20.7) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1310 of 96443 vertices changed, farthest 3.13 m, 0 beyond 12 m

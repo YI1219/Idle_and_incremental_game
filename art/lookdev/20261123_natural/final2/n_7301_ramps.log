@@ -1,0 +1,48 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 31317 triangles (top 27665, body 3652, decor 0, props 76710, grass full 425355), built in 81.6 ms (fields 33.6, top 29.1, body 0.6, decor 7.6, grass 8.9)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 12153 clumps, 425355 triangles full, 424207 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_game.png
+STATS game: p05 0.384 p50 0.698 p95 0.867 white 0.000 black 0.001 sat_mean 0.230 sat_p99 0.545 quiet 0.355
+GRASS whole: 12153 clumps, 425355 triangles full, 279713 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_whole.png
+STATS whole: p05 0.486 p50 0.765 p95 0.902 white 0.000 black 0.000 sat_mean 0.155 sat_p99 0.518 quiet 0.563
+GRASS reverse: 12153 clumps, 425355 triangles full, 313705 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_reverse.png
+STATS reverse: p05 0.314 p50 0.745 p95 0.890 white 0.000 black 0.000 sat_mean 0.131 sat_p99 0.510 quiet 0.613
+GRASS close: 12153 clumps, 425355 triangles full, 343175 drawn, chunks by level 14/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_close.png
+STATS close: p05 0.329 p50 0.592 p95 0.788 white 0.000 black 0.002 sat_mean 0.397 sat_p99 0.588 quiet 0.146
+GRASS cliff_close: 12153 clumps, 425355 triangles full, 362670 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_cliff_close.png
+STATS cliff_close: p05 0.439 p50 0.698 p95 0.835 white 0.000 black 0.001 sat_mean 0.205 sat_p99 0.557 quiet 0.371
+GRASS side_106: 12153 clumps, 425355 triangles full, 298347 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_side_106.png
+STATS side_106: p05 0.298 p50 0.718 p95 0.796 white 0.000 black 0.000 sat_mean 0.156 sat_p99 0.514 quiet 0.525
+GRASS side_286: 12153 clumps, 425355 triangles full, 319795 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_side_286.png
+STATS side_286: p05 0.310 p50 0.871 p95 0.910 white 0.000 black 0.000 sat_mean 0.143 sat_p99 0.518 quiet 0.700
+GRASS foot_front: 12153 clumps, 425355 triangles full, 362670 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_foot_front.png
+STATS foot_front: p05 0.435 p50 0.698 p95 0.835 white 0.000 black 0.001 sat_mean 0.208 sat_p99 0.557 quiet 0.375
+GRASS foot_reverse: 12153 clumps, 425355 triangles full, 381269 drawn, chunks by level 11/9/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_foot_reverse.png
+STATS foot_reverse: p05 0.271 p50 0.761 p95 0.875 white 0.000 black 0.000 sat_mean 0.143 sat_p99 0.518 quiet 0.576
+GRASS overview: 12153 clumps, 425355 triangles full, 406140 drawn, chunks by level 16/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_overview.png
+STATS overview: p05 0.420 p50 0.604 p95 0.886 white 0.000 black 0.001 sat_mean 0.337 sat_p99 0.561 quiet 0.239
+GRASS terrace_close: 12153 clumps, 425355 triangles full, 413315 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_terrace_close.png
+STATS terrace_close: p05 0.463 p50 0.620 p95 0.839 white 0.000 black 0.001 sat_mean 0.339 sat_p99 0.576 quiet 0.215
+GRASS outer_hull: 12153 clumps, 425355 triangles full, 380310 drawn, chunks by level 17/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_outer_hull.png
+STATS outer_hull: p05 0.467 p50 0.800 p95 0.902 white 0.000 black 0.001 sat_mean 0.166 sat_p99 0.537 quiet 0.514
+GRASS ramp1: 12153 clumps, 425355 triangles full, 161805 drawn, chunks by level 7/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_ramp1.png
+STATS ramp1: p05 0.494 p50 0.671 p95 0.800 white 0.000 black 0.000 sat_mean 0.290 sat_p99 0.584 quiet 0.351
+GRASS ramp2: 12153 clumps, 425355 triangles full, 323190 drawn, chunks by level 12/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_ramp2.png
+STATS ramp2: p05 0.478 p50 0.620 p95 0.773 white 0.000 black 0.000 sat_mean 0.383 sat_p99 0.588 quiet 0.203
+GRASS ramp3: 12153 clumps, 425355 triangles full, 368270 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_7301_ramps/n_7301_ramps_ramp3.png
+STATS ramp3: p05 0.137 p50 0.463 p95 0.671 white 0.000 black 0.010 sat_mean 0.351 sat_p99 0.604 quiet 0.118

@@ -1,0 +1,18 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 31317 triangles (top 27665, body 3652, decor 0, props 76710, grass full 425355), built in 80.4 ms (fields 33.6, top 29.5, body 0.7, decor 5.8, grass 9.0)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 12153 clumps, 425355 triangles full, 424207 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_night_ramps/n_night_ramps_game.png
+STATS game: p05 0.125 p50 0.259 p95 0.647 white 0.000 black 0.024 sat_mean 0.483 sat_p99 0.914 quiet 0.496
+GRASS whole: 12153 clumps, 425355 triangles full, 279713 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_night_ramps/n_night_ramps_whole.png
+STATS whole: p05 0.176 p50 0.529 p95 0.678 white 0.000 black 0.009 sat_mean 0.385 sat_p99 0.749 quiet 0.570
+GRASS terrace_close: 12153 clumps, 425355 triangles full, 413315 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_night_ramps/n_night_ramps_terrace_close.png
+STATS terrace_close: p05 0.145 p50 0.235 p95 0.537 white 0.000 black 0.013 sat_mean 0.550 sat_p99 0.800 quiet 0.431
+GRASS ramp1: 12153 clumps, 425355 triangles full, 161805 drawn, chunks by level 7/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_night_ramps/n_night_ramps_ramp1.png
+STATS ramp1: p05 0.141 p50 0.239 p95 0.569 white 0.000 black 0.017 sat_mean 0.513 sat_p99 0.882 quiet 0.492
+GRASS ramp2: 12153 clumps, 425355 triangles full, 323190 drawn, chunks by level 12/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_night_ramps/n_night_ramps_ramp2.png
+STATS ramp2: p05 0.165 p50 0.224 p95 0.329 white 0.000 black 0.004 sat_mean 0.570 sat_p99 0.714 quiet 0.429

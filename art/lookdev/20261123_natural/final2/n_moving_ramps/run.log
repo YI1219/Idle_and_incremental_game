@@ -1,0 +1,18 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 31317 triangles (top 27665, body 3652, decor 0, props 76710, grass full 425355), built in 80.6 ms (fields 33.5, top 29.1, body 0.7, decor 6.3, grass 9.1)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 12153 clumps, 425355 triangles full, 424207 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_moving_ramps/n_moving_ramps_game.png
+STATS game: p05 0.384 p50 0.698 p95 0.867 white 0.000 black 0.001 sat_mean 0.230 sat_p99 0.545 quiet 0.354
+GRASS terrace_close: 12153 clumps, 425355 triangles full, 413315 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_moving_ramps/n_moving_ramps_terrace_close.png
+STATS terrace_close: p05 0.463 p50 0.620 p95 0.839 white 0.000 black 0.001 sat_mean 0.339 sat_p99 0.576 quiet 0.211
+GRASS ramp1: 12153 clumps, 425355 triangles full, 161805 drawn, chunks by level 7/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_moving_ramps/n_moving_ramps_ramp1.png
+STATS ramp1: p05 0.494 p50 0.671 p95 0.800 white 0.000 black 0.000 sat_mean 0.290 sat_p99 0.584 quiet 0.348
+GRASS ramp2: 12153 clumps, 425355 triangles full, 323190 drawn, chunks by level 12/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_moving_ramps/n_moving_ramps_ramp2.png
+STATS ramp2: p05 0.478 p50 0.620 p95 0.773 white 0.000 black 0.000 sat_mean 0.383 sat_p99 0.588 quiet 0.196
+GRASS ramp3: 12153 clumps, 425355 triangles full, 368270 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_moving_ramps/n_moving_ramps_ramp3.png
+STATS ramp3: p05 0.137 p50 0.463 p95 0.671 white 0.000 black 0.010 sat_mean 0.351 sat_p99 0.604 quiet 0.110

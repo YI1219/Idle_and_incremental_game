@@ -1,0 +1,11 @@
+PROPS loaded 60 objects, 154 instances, 71968 triangles, 4 dropped (bush 1, flower 1, grass_clump 2), 2 moved off walls from scene_913_2
+island: 571 cells, 25 faces, 46 columns, 29446 triangles (top 25480, body 3966, decor 0, props 71968, grass full 548800), built in 64.6 ms (fields 32.8, top 14.4, body 0.6, decor 6.7, grass 9.0)
+form: 25 faces, widths 2.0 to 6.9 m (spread 0.41), step spread 0.40 m, longest alike run 2 faces / 9.0 m
+EDIT expand   at (-6, 2): 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m
+EDIT contract at (10, 10): 8 faces changed, farthest 6.19 m from the stroke, 0 beyond 12 m
+EDIT raise    at (16, 5): 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(1.0, 7.0) b=(1.0, -1.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1880 of 14210 vertices changed, farthest 3.90 m, 0 beyond 12 m
+EDIT diag     a=(9.2, 2.7) b=(2.8, -3.7) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 2150 of 14755 vertices changed, farthest 3.31 m, 0 beyond 12 m
+GRASS whole: 15680 clumps, 548800 triangles full, 391174 drawn, chunks by level 4/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/edit_913/edit_913_whole.png
+STATS whole: p05 0.525 p50 0.769 p95 0.902 white 0.000 black 0.000 sat_mean 0.159 sat_p99 0.525 quiet 0.566

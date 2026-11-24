@@ -1,0 +1,129 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling bitflags v2.13.2
+   Compiling cfg_aliases v0.2.2
+   Compiling objc2 v0.6.5
+   Compiling cfg-if v1.0.5
+   Compiling objc2-encode v4.1.0
+   Compiling autocfg v1.5.1
+   Compiling thiserror v2.0.21
+   Compiling libm v0.2.16
+   Compiling foldhash v0.2.0
+   Compiling equivalent v1.0.3
+   Compiling zerocopy v0.8.64
+   Compiling rustc-hash v1.1.0
+   Compiling hashbrown v0.17.1
+   Compiling libc v0.2.191
+   Compiling num-traits v0.2.19
+   Compiling naga v30.0.2
+   Compiling log v0.4.35
+   Compiling unicode-width v0.2.3
+   Compiling parking_lot_core v0.9.12
+   Compiling indexmap v2.14.2
+   Compiling bit-vec v0.9.1
+   Compiling codespan-reporting v0.13.1
+   Compiling bit-set v0.10.0
+   Compiling arrayvec v0.7.8
+   Compiling scopeguard v1.2.0
+   Compiling smallvec v1.16.6
+   Compiling once_cell v1.21.4
+   Compiling static_assertions v1.1.0
+   Compiling raw-window-handle v0.6.2
+   Compiling lock_api v0.4.14
+   Compiling wgpu-hal v30.0.2
+   Compiling simd-adler32 v0.3.10
+   Compiling libloading v0.8.9
+   Compiling crc32fast v1.5.5
+   Compiling adler2 v2.0.1
+   Compiling profiling v1.0.18
+   Compiling wgpu-core v30.0.2
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling litrs v1.0.1
+   Compiling document-features v0.2.12
+   Compiling miniz_oxide v0.9.1
+   Compiling syn v3.0.10
+   Compiling objc2-core-foundation v0.3.2
+   Compiling syn v2.0.119
+   Compiling block2 v0.6.2
+   Compiling objc2-foundation v0.3.2
+   Compiling objc2-core-graphics v0.3.2
+   Compiling wgpu v30.0.2
+   Compiling serde_json v1.0.154
+   Compiling thiserror-impl v2.0.21
+   Compiling bytemuck_derive v1.12.1
+   Compiling parking_lot v0.12.5
+   Compiling miniz_oxide v0.8.9
+   Compiling bytemuck v1.25.2
+   Compiling objc2-metal v0.3.2
+   Compiling zerocopy-derive v0.8.64
+   Compiling fdeflate v0.3.7
+   Compiling flate2 v1.1.11
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.19
+   Compiling png v0.18.1
+   Compiling pollster v0.4.0
+   Compiling glam v0.30.10
+   Compiling objc2-quartz-core v0.3.2
+   Compiling raw-window-metal v1.1.0
+   Compiling naga-types v30.0.2
+   Compiling wgpu-types v30.0.2
+   Compiling half v2.7.1
+   Compiling wgpu-naga-bridge v30.0.2
+   Compiling wgpu-core-deps-apple v30.0.2
+   Compiling s34_study v0.0.0 (/private/tmp/tsw_wt_e32/runtime/spikes/s34_study)
+warning: variable does not need to be mutable
+   --> spikes/s34_study/src/field.rs:240:9
+    |
+240 |     let mut walk = |start: (i32, i32), first: usize, used: &mut Vec<bool>| -> (Vec<(i32, i32)>, Vec<usize>, bool) {
+    |         ----^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `lawn_cool` is never read
+   --> spikes/s34_study/src/field.rs:764:9
+    |
+762 | pub struct TopColours {
+    |            ---------- field in this struct
+763 |     pub lawn: Vec3,
+764 |     pub lawn_cool: Vec3,
+    |         ^^^^^^^^^
+    |
+    = note: `TopColours` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `quad` is never used
+   --> spikes/s34_study/src/mesh.rs:109:12
+    |
+ 86 | impl Mesh {
+    | --------- method in this implementation
+...
+109 |     pub fn quad(&mut self, a: Vec3, b: Vec3, c: Vec3, d: Vec3, colour: Vec3, paint: Paint) {
+    |            ^^^^
+
+warning: field `aod_view` is never read
+  --> spikes/s34_study/src/render.rs:74:5
+   |
+60 | pub struct Renderer {
+   |            -------- field in this struct
+...
+74 |     aod_view: wgpu::TextureView,
+   |     ^^^^^^^^
+
+warning: field `junction` is never read
+  --> spikes/s34_study/src/water.rs:41:9
+   |
+36 | pub struct Spill {
+   |            ----- field in this struct
+...
+41 |     pub junction: f32,
+   |         ^^^^^^^^
+   |
+   = note: `Spill` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: `s34_study` (bin "s34_study") generated 5 warnings (run `cargo fix --bin "s34_study" -p s34_study` to apply 1 suggestion)
+    Finished `release` profile [optimized + debuginfo] target(s) in 22.51s
+build rc=0

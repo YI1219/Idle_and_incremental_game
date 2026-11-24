@@ -22,7 +22,9 @@ run() {  # run NAME SECONDS ARGS...
   tools/perf/gpu_run.sh $secs $SHOT $OUT/$name --tag=$name --metrics=$OUT/$name/metrics.json "$@" > $OUT/$name.log 2>&1
   local rc=$?
   echo "$(date +%H:%M:%S) $name rc=$rc"
-  if [ $rc -eq 0 ]; then touch $OUT/$name.ok; else echo $name >> $OUT/FAILED; fi
+  # shot.sh ends in a pipe, so its status says little: a run counts only if it printed a
+  # frame or an edit line and did not panic.
+  if [ $rc -eq 0 ] && grep -q -E "^FRAME|^EDIT" $OUT/$name.log && ! grep -q "panicked" $OUT/$name.log; then touch $OUT/$name.ok; else echo $name >> $OUT/FAILED; fi
 }
 
 L7301="--layout=$REF/layout_7301_0.json --seed=7301 --body=karst"
@@ -47,9 +49,9 @@ run n_dusk        900 ${=L7301} --hour=dusk  --views=$V12
 run n_night       900 ${=L7301} --hour=night --views=$V12
 run n_dusk_ramps  600 ${=R7301} --hour=dusk  --views=whole,game,terrace_close,ramp1,ramp2
 run n_night_ramps 600 ${=R7301} --hour=night --views=whole,game,terrace_close,ramp1,ramp2
-run n_trio        600 --scene=trio --views=wallpaper
-run n_trio_dusk   600 --scene=trio --hour=dusk  --views=wallpaper
-run n_trio_night  600 --scene=trio --hour=night --views=wallpaper
+run n_trio        600 ${=L7301} --scene=trio --views=wallpaper
+run n_trio_dusk   600 ${=L7301} --scene=trio --hour=dusk  --views=wallpaper
+run n_trio_night  600 ${=L7301} --scene=trio --hour=night --views=wallpaper
 run n_syn4096       600 ${=SYN} --views=whole,game,overview
 run n_syn4096_ramps 600 ${=SYN} --synthetic-ramps --views=whole,game,overview
 
@@ -69,10 +71,12 @@ for n in edit_7301 edit_2104 edit_4242 edit_913 edit_syn; do
   grep -E "^form|^EDIT|^RAMP" $OUT/$n.log >> $OUT/edit_test.log
 done
 
-# Benches last, with nothing else running: 120 frames per view with the camera orbiting.
-run bench_moving               900 ${=L7301} ${=MOVING} --bench --views=$V12
+# Benches last: 120 frames per view with the camera orbiting. They are only fair on an idle
+# machine, so the load and the busiest processes are recorded beside them.
+{ date; uptime; ps -Ao pcpu,comm -r | head -6; } > $OUT/load_at_benches.txt 2>&1
+run bench_moving              900 ${=L7301} ${=MOVING} --bench --views=$V12
 run bench_moving_ramps         900 ${=R7301} ${=MOVING} --bench --views=$V12
-run bench_moving_trio          600 --scene=trio ${=MOVING} --bench --views=wallpaper
+run bench_moving_trio          600 ${=L7301} --scene=trio ${=MOVING} --bench --views=wallpaper
 run bench_moving_syn4096       600 ${=SYN} ${=MOVING} --bench --views=whole,game
 run bench_moving_syn4096_ramps 600 ${=SYN} --synthetic-ramps ${=MOVING} --bench --views=whole,game
 run bench_rest                 600 ${=L7301} --bench --views=whole,game

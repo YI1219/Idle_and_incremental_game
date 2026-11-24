@@ -1,0 +1,48 @@
+{
+ "cells": 623,
+ "body": "Karst",
+ "triangles": 31317,
+ "parts": {"top": 27665, "body": 3652, "decor": 0, "props": 76710, "grass full": 425355},
+ "build_ms": 79.89,
+ "stages_ms": {"fields": 33.65, "top": 29.03, "body": 0.62, "decor": 5.64, "grass": 9.09},
+ "faces": 27,
+ "columns": 47,
+ "face_widths_m": [3.0, 5.3, 2.8, 4.5, 2.5, 2.2, 4.9, 3.5, 2.6, 5.0, 2.0, 5.7, 4.1, 4.3, 5.3, 2.3, 4.5, 2.3, 4.8, 4.5, 5.0, 5.2, 2.0, 2.1, 4.5, 3.1, 2.7],
+ "width_min_m": 2.04,
+ "width_max_m": 5.68,
+ "width_spread": 0.326,
+ "step_spread_m": 0.344,
+ "longest_alike_run": 3,
+ "longest_alike_run_m": 8.75,
+ "edit_locality": [
+
+ ],
+ "bench": [
+  {"view": "game", "ms": 9.013},
+  {"view": "whole", "ms": 8.542},
+  {"view": "reverse", "ms": 8.020},
+  {"view": "close", "ms": 9.013},
+  {"view": "cliff_close", "ms": 8.048},
+  {"view": "side_106", "ms": 8.223},
+  {"view": "side_286", "ms": 8.422},
+  {"view": "foot_front", "ms": 8.419},
+  {"view": "foot_reverse", "ms": 6.957},
+  {"view": "overview", "ms": 9.000},
+  {"view": "terrace_close", "ms": 9.476},
+  {"view": "outer_hull", "ms": 8.239}
+ ],
+ "frames": [
+  {"view": "game", "p05": 0.384, "p50": 0.698, "p95": 0.867, "white": 0.000, "black": 0.001, "sat_mean": 0.230, "sat_p99": 0.545, "quiet": 0.354},
+  {"view": "whole", "p05": 0.482, "p50": 0.765, "p95": 0.902, "white": 0.000, "black": 0.000, "sat_mean": 0.155, "sat_p99": 0.514, "quiet": 0.567},
+  {"view": "reverse", "p05": 0.314, "p50": 0.745, "p95": 0.890, "white": 0.000, "black": 0.000, "sat_mean": 0.131, "sat_p99": 0.506, "quiet": 0.619},
+  {"view": "close", "p05": 0.329, "p50": 0.592, "p95": 0.788, "white": 0.000, "black": 0.002, "sat_mean": 0.397, "sat_p99": 0.588, "quiet": 0.141},
+  {"view": "cliff_close", "p05": 0.431, "p50": 0.698, "p95": 0.835, "white": 0.000, "black": 0.001, "sat_mean": 0.205, "sat_p99": 0.557, "quiet": 0.365},
+  {"view": "side_106", "p05": 0.298, "p50": 0.718, "p95": 0.796, "white": 0.000, "black": 0.000, "sat_mean": 0.156, "sat_p99": 0.514, "quiet": 0.526},
+  {"view": "side_286", "p05": 0.310, "p50": 0.871, "p95": 0.910, "white": 0.000, "black": 0.000, "sat_mean": 0.143, "sat_p99": 0.514, "quiet": 0.702},
+  {"view": "foot_front", "p05": 0.431, "p50": 0.698, "p95": 0.835, "white": 0.000, "black": 0.001, "sat_mean": 0.208, "sat_p99": 0.557, "quiet": 0.369},
+  {"view": "foot_reverse", "p05": 0.271, "p50": 0.757, "p95": 0.875, "white": 0.000, "black": 0.000, "sat_mean": 0.143, "sat_p99": 0.514, "quiet": 0.586},
+  {"view": "overview", "p05": 0.420, "p50": 0.608, "p95": 0.886, "white": 0.000, "black": 0.001, "sat_mean": 0.336, "sat_p99": 0.561, "quiet": 0.242},
+  {"view": "terrace_close", "p05": 0.463, "p50": 0.620, "p95": 0.839, "white": 0.000, "black": 0.001, "sat_mean": 0.339, "sat_p99": 0.576, "quiet": 0.211},
+  {"view": "outer_hull", "p05": 0.463, "p50": 0.800, "p95": 0.902, "white": 0.000, "black": 0.001, "sat_mean": 0.166, "sat_p99": 0.533, "quiet": 0.520}
+ ]
+}

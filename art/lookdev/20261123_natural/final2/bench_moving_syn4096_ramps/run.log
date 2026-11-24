@@ -1,0 +1,19 @@
+RAMP a=(-21.00, 8.00) b=(-21.00, 4.00) width 2.0 (drawn (-21.00, 8.00) to (-21.00, 4.00), -90 deg) : 8 cells, rise 1.00 m over 4.00 m, gradient 0.250
+RAMP a=(-16.17, 17.25) b=(-11.83, 19.75) width 2.0 (drawn (-16.17, 17.25) to (-11.83, 19.75), 30 deg) : 10 cells, rise 1.00 m over 5.00 m, gradient 0.200
+RAMP a=(-14.47, -20.97) b=(-9.53, -16.03) width 3.0 (drawn (-14.47, -20.97) to (-9.53, -16.03), 45 deg) : 20 cells, rise 1.50 m over 7.00 m, gradient 0.214
+RAMP a=(6.03, 5.75) b=(-0.03, 9.25) width 3.0 (drawn (6.03, 5.75) to (-0.03, 9.25), 150 deg) : 20 cells, rise 1.50 m over 7.00 m, gradient 0.214
+RAMP a=(15.00, 9.00) b=(11.00, 9.00) width 2.0 (drawn (15.00, 9.00) to (11.00, 9.00), 180 deg) : 8 cells, rise 1.00 m over 4.00 m, gradient 0.250
+RAMP a=(18.17, 28.75) b=(13.83, 26.25) width 2.0 (drawn (18.17, 28.75) to (13.83, 26.25), -150 deg) : 10 cells, rise 1.00 m over 5.00 m, gradient 0.200
+RAMP a=(28.23, 3.73) b=(31.77, 7.27) width 3.0 (drawn (28.23, 3.73) to (31.77, 7.27), 45 deg) : 16 cells, rise 1.00 m over 5.00 m, gradient 0.200
+RAMP a=(34.97, 7.25) b=(41.03, 3.75) width 3.0 (drawn (34.97, 7.25) to (41.03, 3.75), -30 deg) : 20 cells, rise 1.50 m over 7.00 m, gradient 0.214
+PROPS scattered 85 objects, 1088 instances, 517216 triangles, 0 short of the source density from scene_7301_0
+island: 4096 cells, 63 faces, 220 columns, 175997 triangles (top 161827, body 14170, decor 0, props 517216, grass full 3466470), built in 326.6 ms (fields 92.4, top 139.4, body 2.1, decor 19.4, grass 65.5)
+form: 63 faces, widths 2.0 to 6.6 m (spread 0.33), step spread 0.35 m, longest alike run 4 faces / 18.4 m
+GRASS whole: 99042 clumps, 3466470 triangles full, 2079882 drawn, chunks by level 0/86/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/bench_moving_syn4096_ramps/bench_moving_syn4096_ramps_whole.png
+STATS whole: p05 0.467 p50 0.773 p95 0.902 white 0.000 black 0.000 sat_mean 0.177 sat_p99 0.522 quiet 0.516
+BENCH whole: 13.38 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS game: 99042 clumps, 3466470 triangles full, 2051119 drawn, chunks by level 21/44/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/bench_moving_syn4096_ramps/bench_moving_syn4096_ramps_game.png
+STATS game: p05 0.365 p50 0.604 p95 0.851 white 0.000 black 0.000 sat_mean 0.370 sat_p99 0.553 quiet 0.144
+BENCH game: 13.85 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on

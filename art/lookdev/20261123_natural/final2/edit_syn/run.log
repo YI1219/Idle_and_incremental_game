@@ -1,0 +1,11 @@
+PROPS scattered 85 objects, 1088 instances, 517216 triangles, 0 short of the source density from scene_7301_0
+island: 4096 cells, 63 faces, 220 columns, 174440 triangles (top 160216, body 14224, decor 0, props 517216, grass full 3461080), built in 288.9 ms (fields 90.5, top 108.2, body 2.2, decor 20.4, grass 60.2)
+form: 63 faces, widths 2.0 to 6.6 m (spread 0.33), step spread 0.35 m, longest alike run 4 faces / 18.4 m
+EDIT expand   at (11, -17): 7 faces changed, farthest 2.39 m from the stroke, 0 beyond 12 m
+EDIT contract at (35, 22): 4 faces changed, farthest 2.36 m from the stroke, 0 beyond 12 m
+EDIT raise    at (43, 1): 11 faces changed, farthest 10.06 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(-11.0, 17.0) b=(-7.0, 17.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1096 of 96131 vertices changed, farthest 3.08 m, 0 beyond 12 m
+EDIT diag     a=(12.8, 24.3) b=(9.2, 20.7) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1310 of 96443 vertices changed, farthest 3.13 m, 0 beyond 12 m
+GRASS whole: 98888 clumps, 3461080 triangles full, 2076648 drawn, chunks by level 0/85/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/edit_syn/edit_syn_whole.png
+STATS whole: p05 0.443 p50 0.773 p95 0.902 white 0.000 black 0.000 sat_mean 0.177 sat_p99 0.522 quiet 0.516

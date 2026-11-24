@@ -1,0 +1,30 @@
+{
+ "cells": 623,
+ "body": "Karst",
+ "triangles": 30985,
+ "parts": {"top": 27303, "body": 3682, "decor": 0, "props": 76710, "grass full": 422800},
+ "build_ms": 70.14,
+ "stages_ms": {"fields": 33.68, "top": 20.10, "body": 0.54, "decor": 6.36, "grass": 7.85},
+ "faces": 27,
+ "columns": 47,
+ "face_widths_m": [3.0, 5.3, 2.8, 4.5, 2.5, 2.2, 4.9, 3.5, 2.6, 5.0, 2.0, 5.7, 4.1, 4.3, 5.3, 2.3, 4.5, 2.3, 4.8, 4.5, 5.0, 5.2, 2.0, 2.1, 4.5, 3.1, 2.7],
+ "width_min_m": 2.04,
+ "width_max_m": 5.68,
+ "width_spread": 0.326,
+ "step_spread_m": 0.344,
+ "longest_alike_run": 3,
+ "longest_alike_run_m": 8.75,
+ "edit_locality": [
+  {"stroke": "expand", "at": [4, -8], "faces_before": 27, "faces_after": 27, "faces_changed": 12, "farthest_change_m": 11.19, "changed_beyond_12m": 0},
+  {"stroke": "contract", "at": [14, -3], "faces_before": 27, "faces_after": 28, "faces_changed": 7, "farthest_change_m": 5.52, "changed_beyond_12m": 0},
+  {"stroke": "raise", "at": [17, 0], "faces_before": 27, "faces_after": 28, "faces_changed": 7, "farthest_change_m": 5.26, "changed_beyond_12m": 0},
+  {"stroke": "ramp", "a": [-5.00, -10.00], "b": [-11.00, -10.00], "width": 2, "faces_changed": 0, "farthest_change_m": 0.00, "changed_beyond_12m": 0, "top_vertices_changed": 1612, "top_farthest_m": 2.45, "top_beyond_12m": 0},
+  {"stroke": "diag", "a": [-1.23, 8.27], "b": [-4.77, 4.73], "width": 2, "faces_changed": 4, "farthest_change_m": 1.24, "changed_beyond_12m": 0, "top_vertices_changed": 1735, "top_farthest_m": 2.48, "top_beyond_12m": 0}
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "whole", "p05": 0.482, "p50": 0.765, "p95": 0.902, "white": 0.000, "black": 0.000, "sat_mean": 0.154, "sat_p99": 0.518, "quiet": 0.563}
+ ]
+}

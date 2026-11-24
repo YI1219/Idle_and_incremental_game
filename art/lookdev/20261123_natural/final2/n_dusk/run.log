@@ -1,0 +1,39 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 30985 triangles (top 27303, body 3682, decor 0, props 76710, grass full 422800), built in 69.1 ms (fields 33.2, top 20.0, body 0.5, decor 6.0, grass 7.6)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 12080 clumps, 422800 triangles full, 421652 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_game.png
+STATS game: p05 0.227 p50 0.380 p95 0.820 white 0.000 black 0.002 sat_mean 0.268 sat_p99 0.573 quiet 0.425
+GRASS whole: 12080 clumps, 422800 triangles full, 278516 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_whole.png
+STATS whole: p05 0.286 p50 0.714 p95 0.863 white 0.000 black 0.000 sat_mean 0.170 sat_p99 0.518 quiet 0.591
+GRASS reverse: 12080 clumps, 422800 triangles full, 311850 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_reverse.png
+STATS reverse: p05 0.176 p50 0.698 p95 0.855 white 0.000 black 0.000 sat_mean 0.117 sat_p99 0.502 quiet 0.687
+GRASS close: 12080 clumps, 422800 triangles full, 340585 drawn, chunks by level 14/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_close.png
+STATS close: p05 0.188 p50 0.345 p95 0.486 white 0.000 black 0.005 sat_mean 0.469 sat_p99 0.655 quiet 0.220
+GRASS cliff_close: 12080 clumps, 422800 triangles full, 360115 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_cliff_close.png
+STATS cliff_close: p05 0.239 p50 0.373 p95 0.757 white 0.000 black 0.002 sat_mean 0.251 sat_p99 0.604 quiet 0.471
+GRASS side_106: 12080 clumps, 422800 triangles full, 296814 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_side_106.png
+STATS side_106: p05 0.188 p50 0.675 p95 0.749 white 0.000 black 0.000 sat_mean 0.133 sat_p99 0.518 quiet 0.570
+GRASS side_286: 12080 clumps, 422800 triangles full, 318150 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_side_286.png
+STATS side_286: p05 0.208 p50 0.835 p95 0.878 white 0.000 black 0.000 sat_mean 0.162 sat_p99 0.518 quiet 0.736
+GRASS foot_front: 12080 clumps, 422800 triangles full, 360115 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_foot_front.png
+STATS foot_front: p05 0.243 p50 0.384 p95 0.765 white 0.000 black 0.001 sat_mean 0.247 sat_p99 0.600 quiet 0.465
+GRASS foot_reverse: 12080 clumps, 422800 triangles full, 379092 drawn, chunks by level 11/9/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_foot_reverse.png
+STATS foot_reverse: p05 0.153 p50 0.686 p95 0.839 white 0.000 black 0.002 sat_mean 0.132 sat_p99 0.522 quiet 0.697
+GRASS overview: 12080 clumps, 422800 triangles full, 403585 drawn, chunks by level 16/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_overview.png
+STATS overview: p05 0.247 p50 0.349 p95 0.855 white 0.000 black 0.001 sat_mean 0.380 sat_p99 0.596 quiet 0.324
+GRASS terrace_close: 12080 clumps, 422800 triangles full, 410760 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_terrace_close.png
+STATS terrace_close: p05 0.247 p50 0.357 p95 0.745 white 0.000 black 0.002 sat_mean 0.398 sat_p99 0.639 quiet 0.300
+GRASS outer_hull: 12080 clumps, 422800 triangles full, 377755 drawn, chunks by level 17/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/n_dusk/n_dusk_outer_hull.png
+STATS outer_hull: p05 0.255 p50 0.702 p95 0.871 white 0.000 black 0.001 sat_mean 0.198 sat_p99 0.561 quiet 0.574

@@ -1,18 +1,26 @@
 {
- "note": "Median display colour (0..1) and luma p10/p90 of each box on the 1300 px reduced frames.",
+ "note": "Median display colour (0..1) and luma p10/p90 of each box on the 1300 px reduced frames: Godot reference, first review (before, walls and ponds), second review (runtime).",
  "boxes": [
   {
    "name": "lawn",
    "hour": "day",
    "view": "terrace_close",
+   "group": "other",
+   "change": "",
    "box": [
     950,
     180,
     1100,
     250
    ],
+   "reference_box": [
+    950,
+    180,
+    1100,
+    250
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/day/small/terrace_close.png",
-   "runtime_frame": "final/n_7301/small/n_7301_terrace_close.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_terrace_close.png",
    "reference": {
     "median": [
      0.525,
@@ -37,24 +45,42 @@
    "name": "wall",
    "hour": "day",
    "view": "terrace_close",
+   "group": "wall",
+   "change": "rock walls",
    "box": [
     450,
     420,
     700,
     470
    ],
+   "reference_box": [
+    450,
+    430,
+    700,
+    480
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/day/small/terrace_close.png",
-   "runtime_frame": "final/n_7301/small/n_7301_terrace_close.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_terrace_close.png",
    "reference": {
     "median": [
      0.792,
-     0.749,
+     0.745,
      0.647
     ],
-    "luma_p10": 0.733,
-    "luma_p90": 0.773
+    "luma_p10": 0.73,
+    "luma_p90": 0.772
    },
    "runtime": {
+    "median": [
+     0.784,
+     0.741,
+     0.639
+    ],
+    "luma_p10": 0.677,
+    "luma_p90": 0.776
+   },
+   "before_frame": "final/n_7301/small/n_7301_terrace_close.png",
+   "before": {
     "median": [
      0.784,
      0.741,
@@ -63,30 +89,49 @@
     "luma_p10": 0.68,
     "luma_p90": 0.776
    },
+   "before_max_channel_difference": 0.008,
    "max_channel_difference": 0.008
   },
   {
-   "name": "pond",
+   "name": "pond centre",
    "hour": "day",
    "view": "terrace_close",
+   "group": "pond",
+   "change": "water",
    "box": [
     500,
     270,
     700,
     320
    ],
+   "reference_box": [
+    500,
+    260,
+    700,
+    310
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/day/small/terrace_close.png",
-   "runtime_frame": "final/n_7301/small/n_7301_terrace_close.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_terrace_close.png",
    "reference": {
     "median": [
      0.255,
-     0.467,
-     0.459
+     0.463,
+     0.463
     ],
     "luma_p10": 0.381,
     "luma_p90": 0.452
    },
    "runtime": {
+    "median": [
+     0.333,
+     0.522,
+     0.475
+    ],
+    "luma_p10": 0.465,
+    "luma_p90": 0.489
+   },
+   "before_frame": "final/n_7301/small/n_7301_terrace_close.png",
+   "before": {
     "median": [
      0.255,
      0.467,
@@ -95,20 +140,29 @@
     "luma_p10": 0.413,
     "luma_p90": 0.433
    },
-   "max_channel_difference": 0.004
+   "before_max_channel_difference": 0.004,
+   "max_channel_difference": 0.078
   },
   {
    "name": "block face",
    "hour": "day",
    "view": "cliff_close",
+   "group": "wall",
+   "change": "rock walls",
    "box": [
     680,
     430,
     860,
     560
    ],
+   "reference_box": [
+    680,
+    430,
+    860,
+    560
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/day/small/cliff_close.png",
-   "runtime_frame": "final/n_7301/small/n_7301_cliff_close.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_cliff_close.png",
    "reference": {
     "median": [
      0.737,
@@ -120,6 +174,16 @@
    },
    "runtime": {
     "median": [
+     0.733,
+     0.69,
+     0.592
+    ],
+    "luma_p10": 0.656,
+    "luma_p90": 0.749
+   },
+   "before_frame": "final/n_7301/small/n_7301_cliff_close.png",
+   "before": {
+    "median": [
      0.761,
      0.729,
      0.659
@@ -127,20 +191,335 @@
     "luma_p10": 0.699,
     "luma_p90": 0.834
    },
-   "max_channel_difference": 0.051
+   "before_max_channel_difference": 0.051,
+   "max_channel_difference": 0.016
+  },
+  {
+   "name": "sunlit wall",
+   "hour": "day",
+   "view": "outer_hull",
+   "group": "wall",
+   "change": "rock walls",
+   "box": [
+    360,
+    450,
+    480,
+    640
+   ],
+   "reference_box": [
+    330,
+    450,
+    480,
+    640
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/outer_hull.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_outer_hull.png",
+   "reference": {
+    "median": [
+     0.71,
+     0.671,
+     0.592
+    ],
+    "luma_p10": 0.654,
+    "luma_p90": 0.705
+   },
+   "runtime": {
+    "median": [
+     0.729,
+     0.686,
+     0.596
+    ],
+    "luma_p10": 0.656,
+    "luma_p90": 0.711
+   },
+   "before_frame": "final/n_7301/small/n_7301_outer_hull.png",
+   "before": {
+    "median": [
+     0.761,
+     0.733,
+     0.663
+    ],
+    "luma_p10": 0.592,
+    "luma_p90": 0.771
+   },
+   "before_max_channel_difference": 0.071,
+   "max_channel_difference": 0.019
+  },
+  {
+   "name": "shaded wall",
+   "hour": "day",
+   "view": "outer_hull",
+   "group": "wall",
+   "change": "rock walls",
+   "box": [
+    200,
+    440,
+    290,
+    600
+   ],
+   "reference_box": [
+    200,
+    440,
+    290,
+    600
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/outer_hull.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_outer_hull.png",
+   "reference": {
+    "median": [
+     0.525,
+     0.514,
+     0.467
+    ],
+    "luma_p10": 0.476,
+    "luma_p90": 0.591
+   },
+   "runtime": {
+    "median": [
+     0.553,
+     0.514,
+     0.451
+    ],
+    "luma_p10": 0.499,
+    "luma_p90": 0.542
+   },
+   "before_frame": "final/n_7301/small/n_7301_outer_hull.png",
+   "before": {
+    "median": [
+     0.608,
+     0.592,
+     0.545
+    ],
+    "luma_p10": 0.565,
+    "luma_p90": 0.632
+   },
+   "before_max_channel_difference": 0.083,
+   "max_channel_difference": 0.028
+  },
+  {
+   "name": "upper pond",
+   "hour": "day",
+   "view": "outer_hull",
+   "group": "pond",
+   "change": "water",
+   "box": [
+    300,
+    275,
+    540,
+    300
+   ],
+   "reference_box": [
+    300,
+    275,
+    540,
+    300
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/outer_hull.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_outer_hull.png",
+   "reference": {
+    "median": [
+     0.424,
+     0.573,
+     0.553
+    ],
+    "luma_p10": 0.494,
+    "luma_p90": 0.601
+   },
+   "runtime": {
+    "median": [
+     0.424,
+     0.58,
+     0.58
+    ],
+    "luma_p10": 0.492,
+    "luma_p90": 0.587
+   },
+   "before_frame": "final/n_7301/small/n_7301_outer_hull.png",
+   "before": {
+    "median": [
+     0.357,
+     0.545,
+     0.573
+    ],
+    "luma_p10": 0.461,
+    "luma_p90": 0.58
+   },
+   "before_max_channel_difference": 0.067,
+   "max_channel_difference": 0.027
+  },
+  {
+   "name": "lower pond",
+   "hour": "day",
+   "view": "outer_hull",
+   "group": "pond",
+   "change": "water",
+   "box": [
+    700,
+    340,
+    900,
+    380
+   ],
+   "reference_box": [
+    700,
+    340,
+    900,
+    380
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/outer_hull.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_outer_hull.png",
+   "reference": {
+    "median": [
+     0.376,
+     0.525,
+     0.502
+    ],
+    "luma_p10": 0.462,
+    "luma_p90": 0.537
+   },
+   "runtime": {
+    "median": [
+     0.388,
+     0.553,
+     0.545
+    ],
+    "luma_p10": 0.506,
+    "luma_p90": 0.546
+   },
+   "before_frame": "final/n_7301/small/n_7301_outer_hull.png",
+   "before": {
+    "median": [
+     0.314,
+     0.51,
+     0.537
+    ],
+    "luma_p10": 0.46,
+    "luma_p90": 0.501
+   },
+   "before_max_channel_difference": 0.062,
+   "max_channel_difference": 0.043
+  },
+  {
+   "name": "sunlit wall",
+   "hour": "day",
+   "view": "foot_front",
+   "group": "wall",
+   "change": "rock walls",
+   "box": [
+    660,
+    420,
+    830,
+    680
+   ],
+   "reference_box": [
+    660,
+    420,
+    830,
+    680
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/foot_front.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_foot_front.png",
+   "reference": {
+    "median": [
+     0.729,
+     0.69,
+     0.608
+    ],
+    "luma_p10": 0.675,
+    "luma_p90": 0.713
+   },
+   "runtime": {
+    "median": [
+     0.729,
+     0.686,
+     0.596
+    ],
+    "luma_p10": 0.612,
+    "luma_p90": 0.737
+   },
+   "before_frame": "final/n_7301/small/n_7301_foot_front.png",
+   "before": {
+    "median": [
+     0.765,
+     0.733,
+     0.663
+    ],
+    "luma_p10": 0.606,
+    "luma_p90": 0.83
+   },
+   "before_max_channel_difference": 0.055,
+   "max_channel_difference": 0.012
+  },
+  {
+   "name": "pond",
+   "hour": "day",
+   "view": "foot_front",
+   "group": "pond",
+   "change": "water",
+   "box": [
+    800,
+    185,
+    1050,
+    225
+   ],
+   "reference_box": [
+    800,
+    185,
+    1050,
+    225
+   ],
+   "reference_frame": "../20261122_g1/godot_baseline/day/small/foot_front.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_foot_front.png",
+   "reference": {
+    "median": [
+     0.361,
+     0.533,
+     0.522
+    ],
+    "luma_p10": 0.454,
+    "luma_p90": 0.54
+   },
+   "runtime": {
+    "median": [
+     0.38,
+     0.549,
+     0.537
+    ],
+    "luma_p10": 0.482,
+    "luma_p90": 0.54
+   },
+   "before_frame": "final/n_7301/small/n_7301_foot_front.png",
+   "before": {
+    "median": [
+     0.31,
+     0.514,
+     0.533
+    ],
+    "luma_p10": 0.449,
+    "luma_p90": 0.509
+   },
+   "before_max_channel_difference": 0.051,
+   "max_channel_difference": 0.019
   },
   {
    "name": "sky",
    "hour": "day",
    "view": "cliff_close",
+   "group": "other",
+   "change": "",
    "box": [
     20,
     20,
     250,
     180
    ],
+   "reference_box": [
+    20,
+    20,
+    250,
+    180
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/day/small/cliff_close.png",
-   "runtime_frame": "final/n_7301/small/n_7301_cliff_close.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_cliff_close.png",
    "reference": {
     "median": [
      0.729,
@@ -165,14 +544,22 @@
    "name": "cloud left",
    "hour": "day",
    "view": "whole",
+   "group": "other",
+   "change": "",
    "box": [
     40,
     500,
     200,
     650
    ],
+   "reference_box": [
+    40,
+    500,
+    200,
+    650
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/day/small/whole.png",
-   "runtime_frame": "final/n_7301/small/n_7301_whole.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_whole.png",
    "reference": {
     "median": [
      0.714,
@@ -197,14 +584,22 @@
    "name": "cloud right",
    "hour": "day",
    "view": "whole",
+   "group": "other",
+   "change": "",
    "box": [
     1180,
     700,
     1290,
     830
    ],
+   "reference_box": [
+    1180,
+    700,
+    1290,
+    830
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/day/small/whole.png",
-   "runtime_frame": "final/n_7301/small/n_7301_whole.png",
+   "runtime_frame": "final2/n_7301/small/n_7301_whole.png",
    "reference": {
     "median": [
      0.933,
@@ -229,14 +624,22 @@
    "name": "cliff",
    "hour": "dusk",
    "view": "whole",
+   "group": "wall",
+   "change": "",
    "box": [
     620,
     600,
     700,
     660
    ],
+   "reference_box": [
+    620,
+    600,
+    700,
+    660
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/dusk/small/whole.png",
-   "runtime_frame": "final/n_dusk/small/n_dusk_whole.png",
+   "runtime_frame": "final2/n_dusk/small/n_dusk_whole.png",
    "reference": {
     "median": [
      0.482,
@@ -248,6 +651,16 @@
    },
    "runtime": {
     "median": [
+     0.396,
+     0.333,
+     0.294
+    ],
+    "luma_p10": 0.312,
+    "luma_p90": 0.389
+   },
+   "before_frame": "final/n_dusk/small/n_dusk_whole.png",
+   "before": {
+    "median": [
      0.494,
      0.42,
      0.376
@@ -255,20 +668,29 @@
     "luma_p10": 0.406,
     "luma_p90": 0.459
    },
-   "max_channel_difference": 0.012
+   "before_max_channel_difference": 0.012,
+   "max_channel_difference": 0.086
   },
   {
    "name": "lawn",
    "hour": "dusk",
    "view": "whole",
+   "group": "other",
+   "change": "",
    "box": [
     650,
     280,
     750,
     320
    ],
+   "reference_box": [
+    650,
+    280,
+    750,
+    320
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/dusk/small/whole.png",
-   "runtime_frame": "final/n_dusk/small/n_dusk_whole.png",
+   "runtime_frame": "final2/n_dusk/small/n_dusk_whole.png",
    "reference": {
     "median": [
      0.404,
@@ -293,14 +715,22 @@
    "name": "cloud",
    "hour": "dusk",
    "view": "whole",
+   "group": "other",
+   "change": "",
    "box": [
     40,
     500,
     200,
     650
    ],
+   "reference_box": [
+    40,
+    500,
+    200,
+    650
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/dusk/small/whole.png",
-   "runtime_frame": "final/n_dusk/small/n_dusk_whole.png",
+   "runtime_frame": "final2/n_dusk/small/n_dusk_whole.png",
    "reference": {
     "median": [
      0.69,
@@ -325,14 +755,22 @@
    "name": "cliff",
    "hour": "night",
    "view": "whole",
+   "group": "wall",
+   "change": "",
    "box": [
     620,
     600,
     700,
     660
    ],
+   "reference_box": [
+    620,
+    600,
+    700,
+    660
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/night/small/whole.png",
-   "runtime_frame": "final/n_night/small/n_night_whole.png",
+   "runtime_frame": "final2/n_night/small/n_night_whole.png",
    "reference": {
     "median": [
      0.208,
@@ -344,6 +782,16 @@
    },
    "runtime": {
     "median": [
+     0.169,
+     0.255,
+     0.369
+    ],
+    "luma_p10": 0.214,
+    "luma_p90": 0.294
+   },
+   "before_frame": "final/n_night/small/n_night_whole.png",
+   "before": {
+    "median": [
      0.208,
      0.31,
      0.431
@@ -351,20 +799,29 @@
     "luma_p10": 0.274,
     "luma_p90": 0.317
    },
-   "max_channel_difference": 0.023
+   "before_max_channel_difference": 0.023,
+   "max_channel_difference": 0.043
   },
   {
    "name": "lawn",
    "hour": "night",
    "view": "whole",
+   "group": "other",
+   "change": "",
    "box": [
     650,
     280,
     750,
     320
    ],
+   "reference_box": [
+    650,
+    280,
+    750,
+    320
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/night/small/whole.png",
-   "runtime_frame": "final/n_night/small/n_night_whole.png",
+   "runtime_frame": "final2/n_night/small/n_night_whole.png",
    "reference": {
     "median": [
      0.125,
@@ -389,14 +846,22 @@
    "name": "cloud",
    "hour": "night",
    "view": "whole",
+   "group": "other",
+   "change": "",
    "box": [
     40,
     500,
     200,
     650
    ],
+   "reference_box": [
+    40,
+    500,
+    200,
+    650
+   ],
    "reference_frame": "../20261122_g1/godot_baseline/night/small/whole.png",
-   "runtime_frame": "final/n_night/small/n_night_whole.png",
+   "runtime_frame": "final2/n_night/small/n_night_whole.png",
    "reference": {
     "median": [
      0.416,

@@ -1,0 +1,51 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 30985 triangles (top 27303, body 3682, decor 0, props 76710, grass full 422800), built in 74.1 ms (fields 35.5, top 20.8, body 0.7, decor 7.0, grass 8.0)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 12080 clumps, 422800 triangles full, 421652 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_game.png
+STATS game: p05 0.388 p50 0.698 p95 0.867 white 0.000 black 0.001 sat_mean 0.229 sat_p99 0.545 quiet 0.354
+BENCH game: 9.13 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS whole: 12080 clumps, 422800 triangles full, 278516 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_whole.png
+STATS whole: p05 0.482 p50 0.765 p95 0.902 white 0.000 black 0.000 sat_mean 0.154 sat_p99 0.514 quiet 0.567
+BENCH whole: 8.59 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS reverse: 12080 clumps, 422800 triangles full, 311850 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_reverse.png
+STATS reverse: p05 0.314 p50 0.745 p95 0.890 white 0.000 black 0.000 sat_mean 0.131 sat_p99 0.506 quiet 0.618
+BENCH reverse: 8.03 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS close: 12080 clumps, 422800 triangles full, 340585 drawn, chunks by level 14/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_close.png
+STATS close: p05 0.333 p50 0.592 p95 0.788 white 0.000 black 0.002 sat_mean 0.393 sat_p99 0.588 quiet 0.144
+BENCH close: 9.02 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS cliff_close: 12080 clumps, 422800 triangles full, 360115 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_cliff_close.png
+STATS cliff_close: p05 0.439 p50 0.702 p95 0.835 white 0.000 black 0.001 sat_mean 0.202 sat_p99 0.557 quiet 0.366
+BENCH cliff_close: 8.12 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS side_106: 12080 clumps, 422800 triangles full, 296814 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_side_106.png
+STATS side_106: p05 0.298 p50 0.718 p95 0.796 white 0.000 black 0.000 sat_mean 0.155 sat_p99 0.514 quiet 0.526
+BENCH side_106: 8.22 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS side_286: 12080 clumps, 422800 triangles full, 318150 drawn, chunks by level 6/14/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_side_286.png
+STATS side_286: p05 0.310 p50 0.871 p95 0.910 white 0.000 black 0.000 sat_mean 0.143 sat_p99 0.514 quiet 0.703
+BENCH side_286: 8.66 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS foot_front: 12080 clumps, 422800 triangles full, 360115 drawn, chunks by level 15/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_foot_front.png
+STATS foot_front: p05 0.435 p50 0.698 p95 0.835 white 0.000 black 0.001 sat_mean 0.206 sat_p99 0.557 quiet 0.369
+BENCH foot_front: 8.68 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS foot_reverse: 12080 clumps, 422800 triangles full, 379092 drawn, chunks by level 11/9/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_foot_reverse.png
+STATS foot_reverse: p05 0.271 p50 0.757 p95 0.875 white 0.000 black 0.000 sat_mean 0.143 sat_p99 0.514 quiet 0.585
+BENCH foot_reverse: 7.03 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS overview: 12080 clumps, 422800 triangles full, 403585 drawn, chunks by level 16/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_overview.png
+STATS overview: p05 0.420 p50 0.608 p95 0.886 white 0.000 black 0.001 sat_mean 0.336 sat_p99 0.561 quiet 0.242
+BENCH overview: 9.26 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS terrace_close: 12080 clumps, 422800 triangles full, 410760 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_terrace_close.png
+STATS terrace_close: p05 0.463 p50 0.620 p95 0.839 white 0.000 black 0.001 sat_mean 0.335 sat_p99 0.576 quiet 0.212
+BENCH terrace_close: 9.87 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on
+GRASS outer_hull: 12080 clumps, 422800 triangles full, 377755 drawn, chunks by level 17/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME /Users/yi/Projects/games/the-scroll-within/art/lookdev/20261123_natural/final2/control/now_7301_b/now_7301_b_outer_hull.png
+STATS outer_hull: p05 0.467 p50 0.800 p95 0.902 white 0.000 black 0.001 sat_mean 0.165 sat_p99 0.533 quiet 0.520
+BENCH outer_hull: 8.60 ms a frame at 3024x1964 with 1x supersampling, ssao on, fxaa on, props on

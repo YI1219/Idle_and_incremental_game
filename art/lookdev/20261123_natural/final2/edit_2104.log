@@ -1,0 +1,11 @@
+PROPS loaded 91 objects, 222 instances, 76087 triangles, 7 dropped (bush 2, cliff_rock 1, grass_clump 2, shore_boulder 1, shore_rock 1), 7 moved off walls, 7 stones set on a pond bed, 25 moved to the shore from scene_2104_0
+island: 623 cells, 24 faces, 46 columns, 31041 triangles (top 27303, body 3738, decor 0, props 76087, grass full 416150), built in 72.9 ms (fields 34.1, top 20.6, body 0.6, decor 8.3, grass 7.6)
+form: 24 faces, widths 2.0 to 6.4 m (spread 0.33), step spread 0.32 m, longest alike run 3 faces / 12.6 m
+EDIT expand   at (4, -8): 7 faces changed, farthest 2.39 m from the stroke, 0 beyond 12 m
+EDIT contract at (14, -3): 13 faces changed, farthest 11.32 m from the stroke, 0 beyond 12 m
+EDIT raise    at (17, 0): 7 faces changed, farthest 5.08 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(-5.0, -10.0) b=(-11.0, -10.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1612 of 15979 vertices changed, farthest 2.45 m, 0 beyond 12 m
+EDIT diag     a=(-1.2, 8.3) b=(-4.8, 4.7) width 2: 2 faces changed, farthest 1.24 m from the stroke, 0 beyond 12 m; top surface 1735 of 16323 vertices changed, farthest 2.48 m, 0 beyond 12 m
+GRASS whole: 11890 clumps, 416150 triangles full, 275646 drawn, chunks by level 5/15/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261123_natural/final2/edit_2104/edit_2104_whole.png
+STATS whole: p05 0.486 p50 0.765 p95 0.902 white 0.000 black 0.000 sat_mean 0.153 sat_p99 0.518 quiet 0.561

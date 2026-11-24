@@ -1,0 +1,8 @@
+Tue Nov 24 16:13:07 HKT 2026
+16:13  up 4 days, 22:40, 1 user, load averages: 6.89 6.82 6.95
+ %CPU COMM
+ 96.6 /Library/Application Support/Checkpoint/Endpoint Connect/TracSrvWrapper
+ 44.2 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer
+ 39.2 /Applications/Paseo.app/Contents/Frameworks/Paseo Helper (Renderer).app/Contents/MacOS/Paseo Helper (Renderer)
+ 37.8 /Applications/Aurora Slim.app/Contents/MacOS/Aurora Slim
+ 26.8 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/158.0.8127.37/Helpers/Codex (Aperitif).app/Contents/MacOS/Codex (Aperitif)
