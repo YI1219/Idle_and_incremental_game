@@ -237,6 +237,10 @@ const STONE_SHADE: vec3<f32> = vec3<f32>(0.58, 0.63, 0.66);
 // And its fill light, which reaches the faces on the island's far side (the reference's back walls
 // are a light blue-grey, about 0.42, 0.45, 0.47, against 0.52 for a side face in the sun's shade).
 const STONE_FILL: vec3<f32> = vec3<f32>(2.7, 2.45, 1.65);
+// Round r10d: the least fill a terrace wall in shade takes (as a cosine toward the fill light).
+const WALL_FILL_FLOOR: f32 = 0.80;
+// Round r10d: that least light is warmed as light bounced off the sunlit lawn and stone would be.
+const WALL_BOUNCE: vec3<f32> = vec3<f32>(1.12, 1.0, 0.84);
 // Keeps the painted stone's mean where the vertex colours put it (the wash is warm on average).
 const PAINT_NORM: vec3<f32> = vec3<f32>(1.005, 1.0, 1.03);
 
@@ -1111,6 +1115,12 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
     // faces around it as a deep crease; it keeps its baked occlusion only (round r8).
     if (g.look.x > 0.5 && abs(normal_tex.a * 255.0 - 3.0) >= 0.5) {
         screen_ao = ao_at(px, view_distance(depth));
+        if (abs(normal_tex.a * 255.0 - 2.0) < 0.5 && stone) {
+            // Round r10d: a terrace wall or ramp cheek under the lawn's overhanging grass: the blades
+            // are thin and let the sky through, but screen-space occlusion reads them as solid, and a
+            // low cheek wholly under them went black. Keep half of it, as soft contact shade.
+            screen_ao = mix(screen_ao, 1.0, 0.55);
+        }
         ao = min(ao, screen_ao);
     }
     if (g.look.z > 1.5) {
@@ -1156,6 +1166,7 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
     var sun = g.pal[L_SUN].rgb * sun_k * shadow;
     var hemi = mix(g.pal[L_GROUND].rgb, g.pal[L_SKY].rgb, n.y * 0.5 + 0.5);
     var fill = g.pal[L_FILL].rgb * fill_k;
+    var wall_least = vec3<f32>(0.0);
     if (stone) {
         // Island stone in shade: Godot's crisp-facet light gives walls extra sky and cloud-sea
         // bounce, so shaded faces stay a light grey rather than going slate.
@@ -1167,8 +1178,18 @@ fn fs_resolve(v: VFull) -> @location(0) vec4<f32> {
         sun *= g.pal[L_WALL_K].rgb;
         hemi *= g.pal[L_WALL_SHADE_K].rgb;
         fill *= g.pal[L_WALL_SHADE_K].rgb * STONE_FILL;
+        if (abs(normal_tex.a * 255.0 - 2.0) < 0.5) {
+            // Round r10d: a terrace wall or a ramp's cheek in shade is lit at least as a shaded
+            // cliff face turned toward the fill light is (the lit lawn in front of it bounces light
+            // into it too), keeping only a soft part of its occlusion. A cheek facing away from both
+            // sun and fill, under the grass's overhang, read as a black slot.
+            let shade = 1.0 - smoothstep(0.0, 0.4, sun_k * shadow);
+            let least = (hemi + g.pal[L_FILL].rgb * g.pal[L_WALL_SHADE_K].rgb * STONE_FILL * WALL_FILL_FLOOR) * WALL_BOUNCE * mix(0.85, 1.0, ao) * shade;
+            wall_least = least;
+        }
     }
-    var colour = albedo * (sun + (hemi + fill) * ao);
+    // (The floor sees the stone with half its mossy brow: a low cheek lies wholly in the brow.)
+    var colour = max(albedo * (sun + (hemi + fill) * ao), mix(albedo, to_linear(base.rgb), 0.5) * wall_least);
     let far_id = abs(normal_tex.a * 255.0 - 20.0) < 0.5;
     if (far_id && r4_far) {
         // The r4 far mound (wallpaper view): only its upper band shows; below that it dissolves

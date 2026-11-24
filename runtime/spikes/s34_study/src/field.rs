@@ -1323,7 +1323,7 @@ pub struct Top {
 }
 
 /// A triangle whose winding is turned to face along its shading normals.
-fn tri_facing(mesh: &mut Mesh, p: [Vec3; 3], n: [Vec3; 3], c: [Vec3; 3], paint: [Paint; 3]) {
+pub(crate) fn tri_facing(mesh: &mut Mesh, p: [Vec3; 3], n: [Vec3; 3], c: [Vec3; 3], paint: [Paint; 3]) {
     let face = (p[1] - p[0]).cross(p[2] - p[0]);
     if face.dot(n[0] + n[1] + n[2]) < 0.0 {
         mesh.tri_full([p[0], p[2], p[1]], [n[0], n[2], n[1]], [c[0], c[2], c[1]], [paint[0], paint[2], paint[1]]);

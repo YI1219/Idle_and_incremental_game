@@ -804,7 +804,7 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
         None => decor::scatter(cells, &field, &colours, seed, &mut clear),
     };
     lap("decor", &mut timings);
-    let grass = grass::build(&field, &top.rim, &top.brows, &clear, seed, origin, field::TopColours::default().lawn);
+    let grass = grass::build(&field, &top.rim, &top.brows, &body.fringe, &clear, seed, origin, field::TopColours::default().lawn);
     lap("grass", &mut timings);
     parts.push(("top", top.mesh.triangles()));
     parts.push(("body", body.mesh.triangles()));

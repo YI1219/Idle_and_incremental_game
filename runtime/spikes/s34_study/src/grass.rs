@@ -325,7 +325,7 @@ fn snorm16(v: f32) -> i16 {
 
 /// Builds the field for one island in its own coordinates, moved by `origin`.
 /// `clear` holds circles (centre, radius) the roots keep out of; `lawn` is the base ground colour.
-pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(Vec2, f32)], seed: u32, origin: Vec3, lawn: Vec3) -> Grass {
+pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], fringe: &crate::body::Fringe, clear: &[(Vec2, f32)], seed: u32, origin: Vec3, lawn: Vec3) -> Grass {
     let spacing = 1.0 / DENSITY.sqrt();
     let lo = field.origin;
     let hi = field.origin + Vec2::new(field.nx as f32, field.nz as f32) * STEP;
@@ -391,6 +391,31 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
         sites.entry(key).or_default().push(Site { clump, member });
     };
 
+    // Round r10d: the lawn caps of rim blocks (convex or nearly so; even-odd test), with bounds.
+    let pads: Vec<(Vec2, Vec2, &Vec<Vec2>, f32)> = fringe
+        .pads
+        .iter()
+        .map(|(poly, h)| (poly.iter().fold(Vec2::splat(f32::MAX), |m, p| m.min(*p)), poly.iter().fold(Vec2::splat(f32::MIN), |m, p| m.max(*p)), poly, *h))
+        .collect();
+    let pad_at = |p: Vec2| -> Option<f32> {
+        for (lo, hi, poly, h) in &pads {
+            if p.x < lo.x || p.y < lo.y || p.x > hi.x || p.y > hi.y {
+                continue;
+            }
+            let mut inside = false;
+            let n = poly.len();
+            for k in 0..n {
+                let (a, b) = (poly[k], poly[(k + 1) % n]);
+                if (a.y > p.y) != (b.y > p.y) && p.x < a.x + (b.x - a.x) * (p.y - a.y) / (b.y - a.y) {
+                    inside = !inside;
+                }
+            }
+            if inside {
+                return Some(*h);
+            }
+        }
+        None
+    };
     // The field: a jittered lattice at 28 roots a square metre, world anchored.
     let (i0, i1) = ((lo.x / spacing).floor() as i32, (hi.x / spacing).ceil() as i32);
     let (j0, j1) = ((lo.y / spacing).floor() as i32, (hi.y / spacing).ceil() as i32);
@@ -399,11 +424,18 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
             let jitter = Vec2::new(hash2(i, j, seed ^ 201), hash2(i, j, seed ^ 202));
             let p = (Vec2::new(i as f32, j as f32) + jitter) * spacing;
             let land = field.sample(&field.land1, p);
-            if land < 0.5 || field.water_at(p).is_some() {
+            // Round r10d: off the outline, the lawn on a rim block's cap (see `body::lawn_cap`).
+            let mut pad_h: Option<f32> = None;
+            if land < 0.5 {
+                pad_h = pad_at(p);
+                if pad_h.is_none() {
+                    continue;
+                }
+            } else if field.water_at(p).is_some() {
                 continue;
             }
-            let h = field.height_at(p);
-            let ground_n = field.ground_normal(p);
+            let h = pad_h.unwrap_or_else(|| field.height_at(p));
+            let ground_n = if pad_h.is_some() { Vec3::Y } else { field.ground_normal(p) };
             let ny = ground_n.y;
             if ny < 0.62 {
                 continue; // cut rock of a terrace step
@@ -441,7 +473,7 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
             }
             // Round r9: on a slope cell (a ramp, a hillside) the lawn grows as on flat ground, each root
             // turned to the slope; the soft banks and cheeks beside it keep the lip rule below.
-            let on_slope = field.slope_at(p) != Vec2::ZERO && field.nearest_step(p).map_or(true, |(_, _, d)| d > 0.3);
+            let on_slope = pad_h.is_none() && field.slope_at(p) != Vec2::ZERO && field.nearest_step(p).map_or(true, |(_, _, d)| d > 0.3);
             // Godot: steeper lawn carries fewer, smaller plants; the brow of a terrace step is a lip.
             let lip_factor = if on_slope { 1.0 } else { smoothstep(0.78, 0.97, ny).clamp(0.42, 1.0) };
             if hash2(i, j, seed ^ 203) > keep * lerp(0.62, 1.0, lip_factor) {
@@ -478,7 +510,7 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], clear: &[(V
     let mut counter = 0i32;
     // The outline's rim (outward from the occupancy field) and the terrace walls' brows (outward
     // given): the same planted fringe.
-    let edges: Vec<(Vec3, Vec3, Option<Vec2>)> = rim.iter().map(|&(a, b)| (a, b, None)).chain(brows.iter().map(|&(a, b, n)| (a, b, Some(n)))).collect();
+    let edges: Vec<(Vec3, Vec3, Option<Vec2>)> = rim.iter().map(|&(a, b)| (a, b, None)).chain(brows.iter().chain(fringe.edges.iter()).map(|&(a, b, n)| (a, b, Some(n)))).collect();
     for &(a, b, given) in &edges {
         let length = (b - a).length();
         let want = length * LIP_DENSITY;
