@@ -1239,7 +1239,9 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                 }
                 let mut d = 0.25;
                 while d < thick + 0.3 {
-                    if field.height_at(start - out * d) < face.top - 0.12 {
+                    // Round k5: also where the probe leaves the island (a narrow strip of land: the block
+                    // reached across it and its cap showed as a grey shelf on the far side).
+                    if field.height_at(start - out * d) < face.top - 0.12 || field.sample(&field.land1, start - out * d) < 0.55 {
                         thick = thick.min((d - 0.35).max(0.6));
                         break;
                     }

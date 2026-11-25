@@ -18,6 +18,7 @@ mod mesh;
 mod props;
 mod render;
 mod settle;
+mod brush;
 mod water;
 
 use std::time::Instant;
@@ -767,7 +768,7 @@ struct Built {
 
 /// Builds one island. With `props` the exported Godot props are loaded into `library` and the
 /// procedural trees, bamboo, rocks, stones and lily pads are not made (rim tufts stay).
-fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courtyard: bool, props: Option<&std::path::Path>, library: &mut props::Library, extra: &[props::Placement]) -> Built {
+fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courtyard: bool, props: Option<&std::path::Path>, library: &mut props::Library, items: &props::Items) -> Built {
     let mut timings = Vec::new();
     let mut parts = Vec::new();
     let mut clock = Instant::now();
@@ -806,7 +807,7 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
         Some(dir) => {
             // A layout's own scene is loaded where it stood; an island without one (synthetic) gets
             // that scene's props scattered over it.
-            let report = if courtyard { props::load_with(dir, cells, &field, origin, library, extra) } else { props::scatter(dir, cells, &field, origin, seed, library) };
+            let report = if courtyard { props::load_with(dir, cells, &field, origin, library, items) } else { props::scatter(dir, cells, &field, origin, seed, library) };
             println!("{}", report.line(dir));
             prop_triangles = report.triangles;
             clear = report.clear;
@@ -1209,7 +1210,7 @@ fn main() {
     } else {
         props_for(args.layout.as_deref(), true)
     };
-    let mut main_island = build_island(&cells, args.body, args.seed, Vec3::ZERO, courtyard, main_props.as_deref(), &mut library, &[]);
+    let mut main_island = build_island(&cells, args.body, args.seed, Vec3::ZERO, courtyard, main_props.as_deref(), &mut library, &props::Items::scene());
     let build_ms = total.elapsed().as_secs_f64() * 1000.0;
     let mut solid = Mesh::default();
     solid.append(&main_island.solid);
@@ -1222,7 +1223,7 @@ fn main() {
             let path = folder.join(file);
             let other = field::load_layout(path.to_str().unwrap());
             let other_props = props_for(path.to_str(), false);
-            let built = build_island(&other, args.body, seed, origin, true, other_props.as_deref(), &mut library, &[]);
+            let built = build_island(&other, args.body, seed, origin, true, other_props.as_deref(), &mut library, &props::Items::scene());
             solid.append(&built.solid);
             water.extend_from_slice(&built.water);
             all_grass.append(built.grass);

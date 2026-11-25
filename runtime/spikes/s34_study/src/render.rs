@@ -22,7 +22,7 @@ const FINAL_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 const AO_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R8Unorm;
 const AOD_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R32Float;
 const AOD_MIPS: u32 = 5;
-pub const LIGHT_SLOTS: usize = 48;
+pub const LIGHT_SLOTS: usize = 49;
 /// Round k2: slots 46 and 47 carry the settle motion's clock and map (settle.rs, shader.wgsl L_SETTLE).
 pub const SETTLE_SLOT: usize = 46;
 const GLOBAL_FLOATS: usize = 68 + LIGHT_SLOTS * 4;

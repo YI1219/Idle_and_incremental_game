@@ -21,7 +21,7 @@ struct Globals {
     params: vec4<f32>,   // x time, y hour, z 1/width, w 1/height (internal)
     params2: vec4<f32>,  // x near, y far, z cloud level, w internal pixels per output pixel
     look: vec4<f32>,     // x ssao on, y fov (radians), z, w spare
-    pal: array<vec4<f32>, 48>,
+    pal: array<vec4<f32>, 49>,
 };
 @group(0) @binding(0) var<uniform> g: Globals;
 
@@ -76,6 +76,7 @@ const L_NEAR_GAIN: i32 = 44;    // my calibration of the island's light per hour
 const L_STONE_GAIN: i32 = 45;   // and of its stone on top of that
 const L_SETTLE: i32 = 46;       // round k2: x settle clock (s since the edit; < 0 off), yz map origin (x, z), w map step
 const L_SETTLE_N: i32 = 47;     // x, y map size in texels, z prop instances
+const L_SETTLE_G: i32 = 48;     // round k5: ghost ranges: x, y solid vertices, z, w water vertices
 
 const TAU: f32 = 6.2831853;
 
@@ -142,6 +143,7 @@ fn filmic(x: vec3<f32>) -> vec3<f32> {
 struct SettleTexel {
     a: vec4<f32>,   // anchor height, new height, band low, band high
     b: vec4<f32>,   // weight, translate share (1: new land, lifted whole), start delay (s), grass regrowth
+    c: vec4<f32>,   // round k5: edge dip (land left beside land removed), water fill, ghost zone, spare
 };
 @group(0) @binding(1) var<storage, read> settle_map: array<SettleTexel>;
 @group(0) @binding(2) var<storage, read> settle_items: array<vec4<f32>>;   // origin xyz, start delay (< 0: does not grow)
@@ -157,6 +159,16 @@ const SETTLE_ITEM_S: f32 = 0.50;
 const SETTLE_ITEM_BACK_Y: f32 = 1.9;  // about 12 %: the height leads
 const SETTLE_ITEM_BACK_XZ: f32 = 1.4; // about 7 %: the width follows
 const SETTLE_ITEM_XZ_LAG: f32 = 0.05;
+// Round k5: removal. Old geometry that leaves (land removed, items removed, water drained) is drawn
+// as a ghost: land lifts a hair, then falls away into the cloud with an ease-in; items swell a
+// little, then shrink to nothing; drained water sinks to its bed. Land left standing at the cut dips
+// and settles back. Ghosts are hidden once their motion is over or the clock is off.
+const SETTLE_GHOST_S: f32 = 0.70;
+const SETTLE_GHOST_FALL: f32 = 7.0;
+const SETTLE_ITEM_OUT_S: f32 = 0.45;
+const SETTLE_DRAIN_S: f32 = 0.60;
+const SETTLE_EDGE_DIP: f32 = 0.18;
+const SETTLE_FILL_S: f32 = 0.70;
 
 fn settle_clock() -> f32 {
     return g.pal[L_SETTLE].x;
@@ -186,6 +198,7 @@ fn settle_at(p: vec2<f32>) -> SettleTexel {
     if (q.x < 0.0 || q.y < 0.0 || q.x > n.x - 1.0 || q.y > n.y - 1.0) {
         out.a = vec4<f32>(0.0, 0.0, 1.0e4, -1.0e4);
         out.b = vec4<f32>(0.0);
+        out.c = vec4<f32>(0.0);
         return out;
     }
     let i = vec2<i32>(floor(q));
@@ -196,6 +209,7 @@ fn settle_at(p: vec2<f32>) -> SettleTexel {
     let t11 = settle_texel(i.x + 1, i.y + 1);
     out.a = mix(mix(t00.a, t10.a, f.x), mix(t01.a, t11.a, f.x), f.y);
     out.b = mix(mix(t00.b, t10.b, f.x), mix(t01.b, t11.b, f.x), f.y);
+    out.c = mix(mix(t00.c, t10.c, f.x), mix(t01.c, t11.c, f.x), f.y);
     let near = settle_texel(i32(round(q.x)), i32(round(q.y)));
     out.a.z = near.a.z;
     out.a.w = near.a.w;
@@ -209,14 +223,53 @@ fn settle_ground(pos: vec3<f32>) -> vec3<f32> {
         return pos;
     }
     let s = settle_at(pos.xz);
+    var p = pos;
+    // Round k5: land left standing at a cut dips and settles back, all of it (rim blocks too).
+    if (s.c.x > 0.002) {
+        let u = clamp((settle_clock() - s.b.z) / 0.6, 0.0, 1.0);
+        p.y -= SETTLE_EDGE_DIP * s.c.x * sin(3.14159 * u * 1.25) * pow(1.0 - u, 1.5) / 0.55;
+    }
     // Under new land (any translate share) everything below moves too, so the old land's edge bends instead of tearing.
     if (s.b.x < 0.002 || pos.y > s.a.w || (pos.y < s.a.z && s.b.y < 0.01)) {
-        return pos;
+        return p;
     }
     let k = settle_back((settle_clock() - s.b.z) / SETTLE_GROUND_S, SETTLE_GROUND_BACK);
     let start = s.a.x - mix(pos.y, s.a.y, s.b.y);
-    return pos + vec3<f32>(0.0, s.b.x * (1.0 - k) * start, 0.0);
+    return p + vec3<f32>(0.0, s.b.x * (1.0 - k) * start, 0.0);
 }
+
+// Ease in with a little anticipation: 0 at u = 0, dipping a little below 0, 1 at u = 1.
+fn settle_back_in(u: f32, c1: f32) -> f32 {
+    let v = clamp(u, 0.0, 1.0);
+    return (c1 + 1.0) * v * v * v - c1 * v * v;
+}
+
+// Round k5: is vertex `vi` of the island's buffer a ghost (old land leaving), and of the water's?
+fn settle_is_ghost_solid(vi: u32) -> bool {
+    let r = g.pal[L_SETTLE_G];
+    return f32(vi) >= r.x && f32(vi) < r.y;
+}
+
+fn settle_is_ghost_water(vi: u32) -> bool {
+    let r = g.pal[L_SETTLE_G];
+    return f32(vi) >= r.z && f32(vi) < r.w;
+}
+
+// Where a ghost point of removed land is now, or w < 0 when it is gone (hide it).
+fn settle_ghost_fall(pos: vec3<f32>) -> vec4<f32> {
+    if (!settle_active()) {
+        return vec4<f32>(pos, -1.0);
+    }
+    let s = settle_at(pos.xz);
+    let u = (settle_clock() - s.b.z) / SETTLE_GHOST_S;
+    if (u >= 1.0) {
+        return vec4<f32>(pos, -1.0);
+    }
+    return vec4<f32>(pos - vec3<f32>(0.0, SETTLE_GHOST_FALL * settle_back_in(u, 1.2), 0.0), 1.0);
+}
+
+// A clip position outside the view volume: the vertex's triangle is dropped.
+const SETTLE_HIDDEN: vec4<f32> = vec4<f32>(2.0, 2.0, 2.0, 1.0);
 
 // How far a grass root has grown (1 where it does not regrow).
 fn settle_grass(root: vec3<f32>) -> f32 {
@@ -257,15 +310,30 @@ fn settle_normal(n: vec3<f32>, world: vec3<f32>, lift: f32) -> vec3<f32> {
 // A prop vertex: a placed item grows about its origin (height first, width a moment later); every
 // item rides the ground under its origin.
 fn settle_prop(pos: vec3<f32>, mat: vec4<u32>) -> vec3<f32> {
-    if (!settle_active()) {
-        return pos;
-    }
     let id = mat.z + mat.w * 256u;
     if (f32(id) >= g.pal[L_SETTLE_N].z) {
         return pos;
     }
+    if (!settle_active()) {
+        // A ghost (removed item) stays hidden when no motion runs.
+        let w = settle_items[id].w;
+        return select(pos, settle_items[id].xyz, w <= -10.0);
+    }
     let item = settle_items[id];
     var p = pos;
+    if (item.w <= -10.0) {
+        // Round k5: a removed item (ghost): swells a little, then shrinks to nothing; over removed
+        // land it falls with it. Hidden (collapsed) once its motion is over.
+        let t = settle_clock() - (-item.w - 10.0);
+        let u = t / SETTLE_ITEM_OUT_S;
+        if (u >= 1.0) {
+            return item.xyz;
+        }
+        let k = 1.0 - settle_back_in(u, 1.7);
+        let s = settle_at(item.xz);
+        let fall = s.c.z * SETTLE_GHOST_FALL * settle_back_in(t / SETTLE_GHOST_S, 1.2);
+        return item.xyz + (pos - item.xyz) * k - vec3<f32>(0.0, fall, 0.0);
+    }
     if (item.w >= 0.0) {
         let t = settle_clock() - item.w;
         let sy = settle_back(t / SETTLE_ITEM_S, SETTLE_ITEM_BACK_Y);
@@ -278,7 +346,14 @@ fn settle_prop(pos: vec3<f32>, mat: vec4<u32>) -> vec3<f32> {
 // ---------------------------------------------------------------- shadow map
 
 @vertex
-fn vs_shadow(v: VIn) -> @builtin(position) vec4<f32> {
+fn vs_shadow(v: VIn, @builtin(vertex_index) vi: u32) -> @builtin(position) vec4<f32> {
+    if (settle_is_ghost_solid(vi)) {
+        let gp = settle_ghost_fall(v.pos);
+        if (gp.w < 0.0) {
+            return SETTLE_HIDDEN;
+        }
+        return g.light_view_proj * vec4<f32>(gp.xyz, 1.0);
+    }
     return g.light_view_proj * vec4<f32>(settle_ground(v.pos), 1.0);
 }
 
@@ -295,9 +370,20 @@ struct VTerms {
 };
 
 @vertex
-fn vs_terms(v: VIn) -> VTerms {
+fn vs_terms(v: VIn, @builtin(vertex_index) vi: u32) -> VTerms {
     var out: VTerms;
     var pos = v.pos;
+    if (settle_is_ghost_solid(vi)) {
+        let gp = settle_ghost_fall(v.pos);
+        out.clip = select(g.view_proj * vec4<f32>(gp.xyz, 1.0), SETTLE_HIDDEN, gp.w < 0.0);
+        out.world = gp.xyz;
+        out.normal = v.normal;
+        out.colour = v.colour;
+        out.terms = v.terms;
+        out.extra = v.extra;
+        out.lift = 0.0;
+        return out;
+    }
     if (abs(v.extra.r * 255.0 - 20.0) < 0.5) {
         // Far mountains are built round the landscape's centre, which follows the view.
         pos += vec3<f32>(g.pal[L_LAND].x, 0.0, g.pal[L_LAND].z);
@@ -454,6 +540,12 @@ fn fs_terms(v: VTerms) -> FTerms {
         vis = sun_visibility(v.world + n * lift, n, v.clip.xy);
     }
     var display = v.colour.rgb;
+    // Round k5: lawn pulled into a steep face by the settle motion (the old wall's step at the start
+    // of a ramp) reads as earth and stone for that moment, not as a green wall.
+    if (settle_active() && abs(v.lift) > 0.01 && v.colour.a < 0.05) {
+        let facet = normalize(cross(dx, dy));
+        display = mix(display, vec3<f32>(0.62, 0.585, 0.54), 1.0 - smoothstep(0.35, 0.70, abs(facet.y)));
+    }
     var ao = v.terms.r;
     var brow = 0.0;
     // The family is per vertex; a triangle whose corners differ (lawn bank and stone bed at a
@@ -574,12 +666,19 @@ fn vs_grass(v: GIn) -> VGrass {
     var out: VGrass;
     let q = normalize(v.turn);
     // Round k2: on changed ground the clump rides the ground and regrows (settle motion).
-    let grow = settle_grass(v.root);
+    var grow = settle_grass(v.root);
+    var root = settle_ground(v.root);
+    if (v.misc.w > 0.5) {
+        // Round k5: grass on land an edit removed (a ghost): falls with the land and withers.
+        let gp = settle_ghost_fall(v.root);
+        root = gp.xyz;
+        grow = select(1.0 - settle_back_in((settle_clock() - settle_at(v.root.xz).b.z) / SETTLE_GHOST_S, 0.0), 0.0, gp.w < 0.0);
+    }
     var s = v.size * 4.0;
     if (grow != 1.0) {
         s *= vec2<f32>(0.35 + 0.65 * grow, grow);
     }
-    let world = settle_ground(v.root) + qrot(q, vec3<f32>(v.pos.x * s.x, v.pos.y * s.y, v.pos.z * s.x));
+    let world = root + qrot(q, vec3<f32>(v.pos.x * s.x, v.pos.y * s.y, v.pos.z * s.x));
     out.clip = g.view_proj * vec4<f32>(world, 1.0);
     out.world = world;
     let t = v.data.x;
@@ -1382,8 +1481,41 @@ struct VWater {
 };
 
 @vertex
-fn vs_water(@location(0) pos: vec3<f32>, @location(1) data: vec4<f32>) -> VWater {
+fn vs_water(@location(0) pos_in: vec3<f32>, @location(1) data: vec4<f32>, @builtin(vertex_index) vi: u32) -> VWater {
     var out: VWater;
+    var pos = pos_in;
+    if (settle_is_ghost_water(vi)) {
+        // Round k5: water that leaves: over removed land it falls with the land; otherwise (drained)
+        // it sinks to its bed. Hidden once done or with the clock off.
+        let s = settle_at(pos.xz);
+        if (!settle_active()) {
+            out.clip = SETTLE_HIDDEN;
+            return out;
+        }
+        if (s.c.z > 0.5) {
+            let gp = settle_ghost_fall(pos);
+            if (gp.w < 0.0) {
+                out.clip = SETTLE_HIDDEN;
+                return out;
+            }
+            pos = gp.xyz;
+        } else {
+            let u = (settle_clock() - s.b.z) / SETTLE_DRAIN_S;
+            if (u >= 1.0) {
+                out.clip = SETTLE_HIDDEN;
+                return out;
+            }
+            let e = u * u * (3.0 - 2.0 * clamp(u, 0.0, 1.0));
+            pos.y = mix(pos.y, s.a.y - 0.08, clamp(e, 0.0, 1.0));
+        }
+    } else if (settle_active() && data.x < 0.5) {
+        // Water that rose or appeared: the surface comes up from the bed and settles.
+        let s = settle_at(pos.xz);
+        if (s.c.y > 0.002) {
+            let k = settle_back((settle_clock() - s.b.z - 0.05) / SETTLE_FILL_S, 1.2);
+            pos.y += s.c.y * (1.0 - k) * (s.a.y - pos.y);
+        }
+    }
     out.clip = g.view_proj * vec4<f32>(pos, 1.0);
     out.world = pos;
     out.data = data;

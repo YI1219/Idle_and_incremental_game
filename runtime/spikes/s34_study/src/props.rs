@@ -50,6 +50,27 @@ pub struct Library {
 pub struct Instance {
     pub kind: String,
     pub origin: Vec3,
+    /// Round k5: what names the instance across rebuilds: its place in the scene's export (x, z),
+    /// or where an edit placed it. An edit that removes the item records this.
+    pub source: Vec2,
+}
+
+/// Round k5: which items an island carries: the scene's own (or none, for an island built up from
+/// nothing), less those an edit removed (by `Instance::source`), plus those edits placed.
+#[derive(Clone, Default)]
+pub struct Items {
+    pub scene: bool,
+    pub placed: Vec<Placement>,
+    pub removed: Vec<Vec2>,
+}
+
+impl Items {
+    pub fn scene() -> Items {
+        Items { scene: true, placed: Vec::new(), removed: Vec::new() }
+    }
+    fn is_removed(&self, source: Vec2) -> bool {
+        self.removed.iter().any(|r| (*r - source).length() < 0.02)
+    }
 }
 
 /// An item placed by an edit (settle sequences): a kind from the scene's exported set, where it
@@ -335,13 +356,13 @@ fn mesh_list(object: &serde_json::Value) -> Vec<usize> {
 }
 
 /// Bakes one instance (meshes, basis, world origin `at`, tint) into the library.
-fn bake(library: &mut Library, scene: &Scene, meshes: &[usize], kind: &str, basis: Mat3, at: Vec3, tint: [f32; 4], report: &mut Report) {
+fn bake(library: &mut Library, scene: &Scene, meshes: &[usize], kind: &str, basis: Mat3, at: Vec3, tint: [f32; 4], report: &mut Report, source: Vec2) {
     let normal_matrix = basis.inverse().transpose();
     let mirrored = basis.determinant() < 0.0;
     report.instances += 1;
     let id = library.instances.len();
     assert!(id < 65536, "more than 65536 prop instances");
-    library.instances.push(Instance { kind: kind.to_string(), origin: at });
+    library.instances.push(Instance { kind: kind.to_string(), origin: at, source });
     if kind == "lantern" {
         // decor_vertex_color.gdshader glows round (12.3, 0.56, -2.45) for a lantern placed
         // at (12.4, -2.35) on ground at 0: the lamp sits 0.56 m up, 0.1 m off its origin.
@@ -401,7 +422,9 @@ fn empty_report() -> Report {
 /// appending to `library`; then the items an edit placed (settle sequences), each a copy of one of the scene's
 /// examples of its kind (a tree's trunk and crown together) standing on this tool's ground with
 /// the example's height above its own cell.
-pub fn load_with(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mut Library, extra: &[Placement]) -> Report {
+pub fn load_with(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mut Library, items: &Items) -> Report {
+    let extra: Vec<Placement> = items.placed.iter().copied().filter(|p| !items.is_removed(p.at)).collect();
+    let extra = &extra[..];
     let scene = open(dir, library);
     let mut report = empty_report();
     let source = source_layout(dir).unwrap_or_else(|| cells.clone());
@@ -422,10 +445,16 @@ pub fn load_with(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library
             continue;
         }
         let kind = object["kind"].as_str().unwrap_or("?").to_string();
+        if !items.scene {
+            continue;
+        }
         report.objects += 1;
         let on_water_kind = kind == "lily" || kind == "reeds";
         let meshes = mesh_list(object);
         for ((basis, at), tint) in instances_of(object, &scene.bin) {
+            if items.is_removed(Vec2::new(at.x, at.z)) {
+                continue;
+            }
             // Refit: keep the height above Godot's ground (the cell), stand on this tool's ground.
             let mut p = Vec2::new(at.x, at.z);
             let cell = cells.get(&(p.x.floor() as i32, p.y.floor() as i32)).copied();
@@ -512,7 +541,7 @@ pub fn load_with(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library
                 continue;
             };
             let world = Vec3::new(p.x, new_y, p.y) + origin;
-            bake(library, &scene, &meshes, &kind, basis, world, tint, &mut report);
+            bake(library, &scene, &meshes, &kind, basis, world, tint, &mut report, Vec2::new(at.x, at.z));
         }
     }
     if !extra.is_empty() {
@@ -539,7 +568,7 @@ pub fn load_with(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library
             let basis = Mat3::from_rotation_y(item.yaw) * Mat3::from_diagonal(scale * item.size);
             let lift = if is_stone(item.kind) { lift * item.size } else { lift };
             let world = Vec3::new(item.at.x, field.height_at(item.at) + lift, item.at.y) + origin;
-            bake(library, &scene, &example.meshes, item.kind, basis, world, example.tint, &mut report);
+            bake(library, &scene, &example.meshes, item.kind, basis, world, example.tint, &mut report, item.at);
         }
     }
     // Clearings are in island coordinates.
@@ -901,7 +930,7 @@ pub fn scatter(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, seed: u32
                 Ground::Reed | Ground::Pond => cell.water.unwrap() - crate::water::SINK + example.lift,
                 _ => field.height_at(p) + if rock { example.lift * size } else { example.lift },
             };
-            bake(library, &scene, &example.meshes, kind, basis, Vec3::new(p.x, y, p.y) + origin, example.tint, &mut report);
+            bake(library, &scene, &example.meshes, kind, basis, Vec3::new(p.x, y, p.y) + origin, example.tint, &mut report, p);
             placed.push((p, spacing, index));
             if rock {
                 cluster = match cluster {

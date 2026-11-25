@@ -60,6 +60,7 @@ const DENSITY: f32 = 28.0;
 /// Lip plants a metre of outline.
 const LIP_DENSITY: f32 = 6.0;
 
+#[derive(Clone)]
 pub struct Chunk {
     pub lo: Vec3,
     pub hi: Vec3,
