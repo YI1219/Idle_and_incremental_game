@@ -1,0 +1,12 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+island: 623 cells, 27 faces, 47 columns, 39615 triangles (top 27761, body 11854, decor 0, props 76710, grass full 423115), built in 89.2 ms (fields 49.2, top 21.2, body 1.1, decor 8.4, grass 7.7)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+GRASS game: 12089 clumps, 423115 triangles full, 421967 drawn, chunks by level 19/1/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261125_settle/regress/regress_game.png
+STATS game: p05 0.388 p50 0.698 p95 0.867 white 0.000 black 0.001 sat_mean 0.229 sat_p99 0.545 quiet 0.356
+GRASS terrace_close: 12089 clumps, 423115 triangles full, 411075 drawn, chunks by level 18/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261125_settle/regress/regress_terrace_close.png
+STATS terrace_close: p05 0.463 p50 0.616 p95 0.839 white 0.000 black 0.001 sat_mean 0.335 sat_p99 0.576 quiet 0.219
+GRASS outer_hull: 12089 clumps, 423115 triangles full, 378070 drawn, chunks by level 17/0/0/0 (two bends, one bend, half roots, quarter roots)
+FRAME art/lookdev/20261125_settle/regress/regress_outer_hull.png
+STATS outer_hull: p05 0.463 p50 0.800 p95 0.902 white 0.000 black 0.001 sat_mean 0.165 sat_p99 0.537 quiet 0.518

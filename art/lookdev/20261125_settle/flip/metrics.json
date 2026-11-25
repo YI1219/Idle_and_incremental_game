@@ -1,0 +1,9 @@
+{
+ "settle": [
+  {"sequence": "raise", "rebuild_ms": 70.22, "stages_ms": {"fields": 33.81, "top": 18.47, "body": 1.30, "decor": 6.87, "grass": 8.08}, "settle_map_ms": 0.158, "texels": 2025, "upload_ms": 20.76},
+  {"sequence": "lower", "rebuild_ms": 77.79, "stages_ms": {"fields": 39.93, "top": 18.46, "body": 1.08, "decor": 7.41, "grass": 7.96}, "settle_map_ms": 0.229, "texels": 2025, "upload_ms": 28.27},
+  {"sequence": "expand", "rebuild_ms": 69.81, "stages_ms": {"fields": 34.46, "top": 17.91, "body": 1.10, "decor": 6.64, "grass": 7.75}, "settle_map_ms": 0.267, "texels": 2205, "upload_ms": 17.85},
+  {"sequence": "place", "rebuild_ms": 67.78, "stages_ms": {"fields": 32.95, "top": 17.11, "body": 0.95, "decor": 7.56, "grass": 7.63}, "settle_map_ms": 0.328, "texels": 3068, "upload_ms": 19.46},
+  {"sequence": "ramp", "rebuild_ms": 70.22, "stages_ms": {"fields": 33.39, "top": 19.93, "body": 1.03, "decor": 6.22, "grass": 7.98}, "settle_map_ms": 0.432, "texels": 3185, "upload_ms": 25.34}
+ ]
+}

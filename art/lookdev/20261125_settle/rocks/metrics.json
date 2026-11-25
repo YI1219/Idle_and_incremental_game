@@ -1,0 +1,30 @@
+{
+ "cells": 623,
+ "body": "Karst",
+ "triangles": 39615,
+ "parts": {"top": 27761, "body": 11854, "decor": 0, "props": 76710, "grass full": 423115},
+ "build_ms": 70.42,
+ "stages_ms": {"fields": 33.07, "top": 20.20, "body": 1.04, "decor": 6.93, "grass": 7.63},
+ "faces": 27,
+ "columns": 47,
+ "face_widths_m": [3.0, 5.3, 2.8, 4.5, 2.5, 2.2, 4.9, 3.5, 2.6, 5.0, 2.0, 5.7, 4.1, 4.3, 5.3, 2.3, 4.5, 2.3, 4.8, 4.5, 5.0, 5.2, 2.0, 2.1, 4.5, 3.1, 2.7],
+ "width_min_m": 2.04,
+ "width_max_m": 5.68,
+ "width_spread": 0.326,
+ "step_spread_m": 0.344,
+ "longest_alike_run": 3,
+ "longest_alike_run_m": 8.75,
+ "edit_locality": [
+
+ ],
+ "bench": [
+
+ ],
+ "frames": [
+  {"view": "game", "p05": 0.388, "p50": 0.698, "p95": 0.867, "white": 0.000, "black": 0.001, "sat_mean": 0.229, "sat_p99": 0.545, "quiet": 0.356},
+  {"view": "cliff_close", "p05": 0.451, "p50": 0.702, "p95": 0.835, "white": 0.000, "black": 0.001, "sat_mean": 0.202, "sat_p99": 0.557, "quiet": 0.378},
+  {"view": "foot_front", "p05": 0.424, "p50": 0.698, "p95": 0.835, "white": 0.000, "black": 0.001, "sat_mean": 0.206, "sat_p99": 0.557, "quiet": 0.382},
+  {"view": "terrace_close", "p05": 0.463, "p50": 0.616, "p95": 0.839, "white": 0.000, "black": 0.001, "sat_mean": 0.335, "sat_p99": 0.576, "quiet": 0.219},
+  {"view": "outer_hull", "p05": 0.463, "p50": 0.800, "p95": 0.902, "white": 0.000, "black": 0.001, "sat_mean": 0.165, "sat_p99": 0.537, "quiet": 0.518}
+ ]
+}

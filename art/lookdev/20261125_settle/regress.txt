@@ -1,0 +1,3 @@
+game: max channel difference 25/255, pixels differing 344
+terrace_close: max channel difference 46/255, pixels differing 1745
+outer_hull: max channel difference 15/255, pixels differing 145

@@ -1,0 +1,31 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_raise_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE raise latency: rebuild 70.3 ms (fields 33.7, top 19.2, body 1.0, decor 5.7, grass 7.9), settle map 0.20 ms (45 x 45 texels, 11.0 x 11.0 m), upload 19.4 ms, total 89.9 ms; 0 placed items
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_raise_t1500.png
+BENCH settle_raise: settled 9.59 ms (shadow cached), 10.08 ms (shadow redrawn), during the motion 10.13 ms (shadow redrawn) a frame at 3024x1964 with 1x supersampling, fxaa on
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_lower_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE lower latency: rebuild 68.8 ms (fields 33.7, top 18.1, body 1.0, decor 6.5, grass 7.9), settle map 0.27 ms (45 x 45 texels, 11.0 x 11.0 m), upload 16.7 ms, total 85.8 ms; 0 placed items
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_lower_t1500.png
+BENCH settle_lower: settled 8.29 ms (shadow cached), 8.68 ms (shadow redrawn), during the motion 8.67 ms (shadow redrawn) a frame at 3024x1964 with 1x supersampling, fxaa on
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_expand_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE expand latency: rebuild 73.0 ms (fields 34.0, top 18.2, body 2.0, decor 6.3, grass 9.1), settle map 0.28 ms (49 x 45 texels, 12.0 x 11.0 m), upload 18.0 ms, total 91.2 ms; 0 placed items
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_expand_t1500.png
+BENCH settle_expand: settled 7.96 ms (shadow cached), 8.32 ms (shadow redrawn), during the motion 8.33 ms (shadow redrawn) a frame at 3024x1964 with 1x supersampling, fxaa on
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_place_before.png
+PROPS loaded 91 objects, 230 instances, 84112 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE place latency: rebuild 69.9 ms (fields 33.5, top 17.2, body 1.1, decor 7.6, grass 7.8), settle map 0.33 ms (59 x 52 texels, 14.5 x 12.6 m), upload 19.3 ms, total 89.5 ms; 6 placed items
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_place_t1500.png
+BENCH settle_place: settled 9.45 ms (shadow cached), 9.64 ms (shadow redrawn), during the motion 9.59 ms (shadow redrawn) a frame at 3024x1964 with 1x supersampling, fxaa on
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_ramp_before.png
+SETTLE ramp: 8 cells, rise -1.00 m over 4.00 m
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE ramp latency: rebuild 72.0 ms (fields 34.7, top 19.7, body 1.2, decor 7.0, grass 7.9), settle map 0.42 ms (49 x 65 texels, 12.0 x 16.0 m), upload 17.5 ms, total 89.9 ms; 0 placed items
+FRAME art/lookdev/20261125_settle/bench_b/bench_b_ramp_t1500.png
+BENCH settle_ramp: settled 8.39 ms (shadow cached), 8.68 ms (shadow redrawn), during the motion 8.73 ms (shadow redrawn) a frame at 3024x1964 with 1x supersampling, fxaa on

@@ -22,7 +22,9 @@ const FINAL_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 const AO_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R8Unorm;
 const AOD_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R32Float;
 const AOD_MIPS: u32 = 5;
-pub const LIGHT_SLOTS: usize = 46;
+pub const LIGHT_SLOTS: usize = 48;
+/// Round k2: slots 46 and 47 carry the settle motion's clock and map (settle.rs, shader.wgsl L_SETTLE).
+pub const SETTLE_SLOT: usize = 46;
 const GLOBAL_FLOATS: usize = 68 + LIGHT_SLOTS * 4;
 const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
 
@@ -67,6 +69,10 @@ pub struct Renderer {
     pub scale: u32,
     globals: wgpu::Buffer,
     globals_group: wgpu::BindGroup,
+    globals_layout: wgpu::BindGroupLayout,
+    /// Round k2: the settle map (two vec4 a texel) and the prop instances' settle records.
+    settle_map: wgpu::Buffer,
+    settle_items: wgpu::Buffer,
     shadow_view: wgpu::TextureView,
     shadow_pipeline: wgpu::RenderPipeline,
     terms_pipeline: wgpu::RenderPipeline,
@@ -110,6 +116,9 @@ pub struct Renderer {
     /// FXAA after the tone curve: the down pass writes `ldr`, FXAA writes `final`.
     fxaa: Option<(wgpu::TextureView, wgpu::RenderPipeline, wgpu::BindGroup)>,
     props_bind: wgpu::BindGroupLayout,
+    /// The props' texture bind group and the folder it was read from (kept across uploads: an
+    /// edit re-uploads the props' vertices, not their textures).
+    props_textures: Option<(std::path::PathBuf, wgpu::BindGroup)>,
     props_materials: wgpu::Buffer,
     prop_terms_pipelines: [wgpu::RenderPipeline; 3],
     /// Round r9 (F4): leaf cards depth only (cut-out), then shaded with an equal depth test.
@@ -250,14 +259,39 @@ impl Renderer {
         let globals = device.create_buffer(&wgpu::BufferDescriptor { label: Some("globals"), size: (GLOBAL_FLOATS * 4) as u64, usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST, mapped_at_creation: false });
         let globals_layout = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
             label: Some("globals"),
-            entries: &[wgpu::BindGroupLayoutEntry {
-                binding: 0,
-                visibility: wgpu::ShaderStages::VERTEX_FRAGMENT,
-                ty: wgpu::BindingType::Buffer { ty: wgpu::BufferBindingType::Uniform, has_dynamic_offset: false, min_binding_size: None },
-                count: None,
-            }],
+            entries: &[
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::VERTEX_FRAGMENT,
+                    ty: wgpu::BindingType::Buffer { ty: wgpu::BufferBindingType::Uniform, has_dynamic_offset: false, min_binding_size: None },
+                    count: None,
+                },
+                // Round k2: the settle map and the prop instances' settle records (vertex stages).
+                wgpu::BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: wgpu::ShaderStages::VERTEX,
+                    ty: wgpu::BindingType::Buffer { ty: wgpu::BufferBindingType::Storage { read_only: true }, has_dynamic_offset: false, min_binding_size: None },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 2,
+                    visibility: wgpu::ShaderStages::VERTEX,
+                    ty: wgpu::BindingType::Buffer { ty: wgpu::BufferBindingType::Storage { read_only: true }, has_dynamic_offset: false, min_binding_size: None },
+                    count: None,
+                },
+            ],
         });
-        let globals_group = device.create_bind_group(&wgpu::BindGroupDescriptor { label: None, layout: &globals_layout, entries: &[wgpu::BindGroupEntry { binding: 0, resource: globals.as_entire_binding() }] });
+        let settle_map = device.create_buffer(&wgpu::BufferDescriptor { label: Some("settle map"), size: 32, usage: wgpu::BufferUsages::STORAGE, mapped_at_creation: false });
+        let settle_items = device.create_buffer(&wgpu::BufferDescriptor { label: Some("settle items"), size: 16, usage: wgpu::BufferUsages::STORAGE, mapped_at_creation: false });
+        let globals_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: None,
+            layout: &globals_layout,
+            entries: &[
+                wgpu::BindGroupEntry { binding: 0, resource: globals.as_entire_binding() },
+                wgpu::BindGroupEntry { binding: 1, resource: settle_map.as_entire_binding() },
+                wgpu::BindGroupEntry { binding: 2, resource: settle_items.as_entire_binding() },
+            ],
+        });
 
         let shadow_view = target(&device, "shadow", SHADOW_SIZE, SHADOW_SIZE, DEPTH_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
         let base_view = target(&device, "base", iw, ih, TERM_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
@@ -663,6 +697,9 @@ impl Renderer {
             scale,
             globals,
             globals_group,
+            globals_layout,
+            settle_map,
+            settle_items,
             shadow_view,
             shadow_pipeline,
             terms_pipeline,
@@ -704,6 +741,7 @@ impl Renderer {
             bounds: (Vec3::ZERO, Vec3::ZERO),
             fxaa,
             props_bind,
+            props_textures: None,
             props_materials,
             prop_terms_pipelines,
             prop_leaf_depth_pipeline,
@@ -784,6 +822,12 @@ impl Renderer {
         }
         self.queue.write_buffer(&self.props_materials, 0, bytemuck::cast_slice(&table));
         let dir = library.texture_dir.clone().expect("texture folder");
+        if let Some((_, group)) = self.props_textures.as_ref().filter(|(d, _)| *d == dir) {
+            let group = group.clone();
+            let buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("props"), contents: bytemuck::cast_slice(&all), usage: wgpu::BufferUsages::VERTEX });
+            self.props = Some((buffer, group, ranges));
+            return;
+        }
         // The atlas and the detail map are data (linear); the gouache wash is colour (sRGB).
         let atlas = mip_texture(&self.device, &self.queue, "leaf atlas", &props::load_png(&dir.join("botanical_foliage_atlas.png")), wgpu::TextureFormat::Rgba8Unorm);
         let gouache = mip_texture(&self.device, &self.queue, "stone gouache", &props::load_png(&dir.join("gouache_stone_sol61.png")), wgpu::TextureFormat::Rgba8UnormSrgb);
@@ -817,6 +861,7 @@ impl Renderer {
                 wgpu::BindGroupEntry { binding: 5, resource: self.props_materials.as_entire_binding() },
             ],
         });
+        self.props_textures = Some((dir, group.clone()));
         let buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("props"), contents: bytemuck::cast_slice(&all), usage: wgpu::BufferUsages::VERTEX });
         self.props = Some((buffer, group, ranges));
     }
@@ -834,6 +879,58 @@ impl Renderer {
             high = high.max(p);
         }
         self.bounds = (low, high);
+    }
+
+    /// Round k2: uploads an edit's settle map and the prop instances' settle records (settle.rs).
+    /// The motion runs while the frame's clock (light slot SETTLE_SLOT) is between 0 and the end.
+    pub fn set_settle(&mut self, map: &[crate::settle::Texel], items: &[[f32; 4]]) {
+        self.settle_map = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("settle map"), contents: bytemuck::cast_slice(map), usage: wgpu::BufferUsages::STORAGE });
+        self.settle_items = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("settle items"), contents: bytemuck::cast_slice(items), usage: wgpu::BufferUsages::STORAGE });
+        self.rebind_globals();
+    }
+
+    /// No settle motion: the map is one empty texel and no instance grows.
+    pub fn clear_settle(&mut self) {
+        let items = vec![[0.0_f32, 0.0, 0.0, -1.0]; 1];
+        self.set_settle(&[crate::settle::Texel::default()], &items);
+    }
+
+    fn rebind_globals(&mut self) {
+        self.globals_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: None,
+            layout: &self.globals_layout,
+            entries: &[
+                wgpu::BindGroupEntry { binding: 0, resource: self.globals.as_entire_binding() },
+                wgpu::BindGroupEntry { binding: 1, resource: self.settle_map.as_entire_binding() },
+                wgpu::BindGroupEntry { binding: 2, resource: self.settle_items.as_entire_binding() },
+            ],
+        });
+    }
+
+    /// Round k2: milliseconds per frame with the camera orbiting as in `bench`, but the shadow map
+    /// redrawn every frame (moving geometry); with `cycle` the settle clock runs at 60 frames a
+    /// second and wraps at `cycle` seconds, so every frame is part of a motion.
+    pub fn bench_settle(&self, frame: &Frame, frames: u32, cycle: Option<f32>) -> f64 {
+        self.render(frame);
+        self.wait();
+        let start = Instant::now();
+        for index in 0..frames {
+            let mut moved = *frame;
+            let turn = glam::Quat::from_rotation_y(index as f32 * 0.012);
+            moved.camera.eye = frame.camera.target + turn * (frame.camera.eye - frame.camera.target);
+            if let Some(end) = cycle {
+                moved.light[SETTLE_SLOT][0] = (index as f32 / 60.0) % end;
+            }
+            self.write_globals(&moved);
+            let mut encoder = self.device.create_command_encoder(&Default::default());
+            self.encode(&mut encoder, true, frame.ssao, frame.ssao_blur, &moved.camera);
+            self.queue.submit([encoder.finish()]);
+            if index % 8 == 7 {
+                self.wait();
+            }
+        }
+        self.wait();
+        start.elapsed().as_secs_f64() * 1000.0 / frames as f64
     }
 
     fn light_matrix(&self, sun_dir: Vec3) -> Mat4 {

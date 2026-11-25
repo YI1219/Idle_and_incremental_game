@@ -17,6 +17,7 @@ mod grass;
 mod mesh;
 mod props;
 mod render;
+mod settle;
 mod water;
 
 use std::time::Instant;
@@ -61,6 +62,9 @@ struct Args {
     save_layout: Option<String>,
     /// Round r9: a synthetic island gets one ramp across each long terrace wall.
     synthetic_ramps: bool,
+    /// Round k2: settle sequences to render (settle.rs), and the times of their frames (seconds).
+    settle: Vec<String>,
+    settle_times: Vec<f32>,
 }
 
 fn parse_args() -> Args {
@@ -92,6 +96,8 @@ fn parse_args() -> Args {
         ramps: Vec::new(),
         save_layout: None,
         synthetic_ramps: false,
+        settle: Vec::new(),
+        settle_times: Vec::new(),
     };
     for arg in std::env::args().skip(1) {
         let (key, value) = arg.split_once('=').unwrap_or((arg.as_str(), ""));
@@ -132,6 +138,8 @@ fn parse_args() -> Args {
             }
             "--save-layout" => args.save_layout = Some(value.to_string()),
             "--synthetic-ramps" => args.synthetic_ramps = true,
+            "--settle" => args.settle = value.split(',').map(|s| s.to_string()).collect(),
+            "--settle-times" => args.settle_times = value.split(',').map(|s| s.trim().parse().expect("--settle-times=t,t,...")).collect(),
             other => panic!("unknown argument {other}"),
         }
     }
@@ -552,6 +560,8 @@ fn light_set(name: &str) -> ([[f32; 4]; render::LIGHT_SLOTS], Vec3, f32) {
     }
     slots[44] = with_a(h.near_gain, 0.0);
     slots[45] = with_a(h.stone_gain, 0.0);
+    // Round k2: the settle motion is off unless an edit runs its clock (settle.rs).
+    slots[render::SETTLE_SLOT] = [-1.0, 0.0, 0.0, settle::STEP];
     // Pond depth colour: ours (tuned on the day frames) times the preset's change of water_deep.
     let wd = ratio(p.water_deep, day.water_deep);
     slots[14] = [slots[14][0] * wd[0], slots[14][1] * wd[1], slots[14][2] * wd[2], 0.0];
@@ -751,11 +761,13 @@ struct Built {
     columns: usize,
     timings: Vec<(&'static str, f64)>,
     parts: Vec<(&'static str, usize)>,
+    /// The island's fields (the settle motion compares them before and after an edit).
+    field: field::Field,
 }
 
 /// Builds one island. With `props` the exported Godot props are loaded into `library` and the
 /// procedural trees, bamboo, rocks, stones and lily pads are not made (rim tufts stay).
-fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courtyard: bool, props: Option<&std::path::Path>, library: &mut props::Library) -> Built {
+fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courtyard: bool, props: Option<&std::path::Path>, library: &mut props::Library, extra: &[props::Placement]) -> Built {
     let mut timings = Vec::new();
     let mut parts = Vec::new();
     let mut clock = Instant::now();
@@ -794,7 +806,7 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
         Some(dir) => {
             // A layout's own scene is loaded where it stood; an island without one (synthetic) gets
             // that scene's props scattered over it.
-            let report = if courtyard { props::load(dir, cells, &field, origin, library) } else { props::scatter(dir, cells, &field, origin, seed, library) };
+            let report = if courtyard { props::load_with(dir, cells, &field, origin, library, extra) } else { props::scatter(dir, cells, &field, origin, seed, library) };
             println!("{}", report.line(dir));
             prop_triangles = report.triangles;
             clear = report.clear;
@@ -816,7 +828,8 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
     solid.append(&body.mesh);
     solid.append(&things);
     solid.offset(origin);
-    Built { solid, water: water::build_water(cells, &field, origin), grass, faces: body.faces, columns: body.columns, timings, parts }
+    let water = water::build_water(cells, &field, origin);
+    Built { solid, water, grass, faces: body.faces, columns: body.columns, timings, parts, field }
 }
 
 /// How far from an edit the rim plan changes: the locality test of S4.
@@ -1101,6 +1114,45 @@ fn synthetic_ramps(cells: &Cells) -> Vec<[f32; 5]> {
 
 fn main() {
     let args = parse_args();
+    if !args.settle.is_empty() {
+        // Round k2: the appear-and-settle sequences (settle.rs), on the given layout.
+        let layout = args.layout.clone().expect("--settle needs --layout (the sequences are placed on layout 7301)");
+        std::fs::create_dir_all(&args.out).expect("output folder");
+        let (mut light, sun_dir, hour) = light_set(&args.hour);
+        light[19][0] = if args.ssr { 1.0 } else { 0.0 };
+        let props = match args.props.as_str() {
+            "none" => None,
+            "auto" => props::default_dir(&layout).filter(|dir| dir.join("scene.json").exists()),
+            dir => Some(dir.into()),
+        };
+        let mut renderer = Renderer::new(args.width, args.height, args.scale, args.fxaa);
+        let settings = settle::Settings {
+            layout: &layout,
+            props,
+            body: args.body,
+            seed: args.seed,
+            out: &args.out,
+            tag: &args.tag,
+            names: args.settle.clone(),
+            times: args.settle_times.clone(),
+            bench: args.bench,
+            ssao: args.ssao,
+            ssao_blur: args.ssao_blur,
+            light,
+            sun_dir,
+            hour,
+            width: args.width,
+            height: args.height,
+            scale: args.scale,
+            fxaa: args.fxaa,
+            grass: args.grass,
+        };
+        let lines = settle::run(&settings, &mut renderer);
+        if let Some(path) = &args.metrics {
+            std::fs::write(path, format!("{{\n \"settle\": [\n{}\n ]\n}}\n", lines.join(",\n"))).expect("write metrics");
+        }
+        return;
+    }
     let mut cells = match (&args.layout, args.synthetic) {
         (Some(path), _) => field::load_layout(path),
         (None, count) if count > 0 => field::synthetic(count, args.seed),
@@ -1157,7 +1209,7 @@ fn main() {
     } else {
         props_for(args.layout.as_deref(), true)
     };
-    let mut main_island = build_island(&cells, args.body, args.seed, Vec3::ZERO, courtyard, main_props.as_deref(), &mut library);
+    let mut main_island = build_island(&cells, args.body, args.seed, Vec3::ZERO, courtyard, main_props.as_deref(), &mut library, &[]);
     let build_ms = total.elapsed().as_secs_f64() * 1000.0;
     let mut solid = Mesh::default();
     solid.append(&main_island.solid);
@@ -1170,7 +1222,7 @@ fn main() {
             let path = folder.join(file);
             let other = field::load_layout(path.to_str().unwrap());
             let other_props = props_for(path.to_str(), false);
-            let built = build_island(&other, args.body, seed, origin, true, other_props.as_deref(), &mut library);
+            let built = build_island(&other, args.body, seed, origin, true, other_props.as_deref(), &mut library, &[]);
             solid.append(&built.solid);
             water.extend_from_slice(&built.water);
             all_grass.append(built.grass);

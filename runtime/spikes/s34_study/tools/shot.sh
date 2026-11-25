@@ -8,7 +8,7 @@ OUT=$1; shift
 HERE=${0:A:h}
 BIN=$HERE/../../../target/release/s34_study
 mkdir -p $OUT/small
-$BIN --out=$OUT "$@" | tee -a $OUT/run.log | grep -E "^island|^form|^EDIT|^PROPS|^GRASS|^BENCH|^STATS|^FRAME|^RAMP|^LAYOUT" | while read -r line; do
+$BIN --out=$OUT "$@" | tee -a $OUT/run.log | grep -E "^island|^form|^EDIT|^SETTLE|^PROPS|^GRASS|^BENCH|^STATS|^FRAME|^RAMP|^LAYOUT" | while read -r line; do
   echo "$line"
   if [[ $line == FRAME* ]]; then
     file=${line#FRAME }

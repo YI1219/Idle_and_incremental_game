@@ -19,7 +19,8 @@ pub struct PropVertex {
     pub anchor: [f32; 3],
     /// Raw Godot vertex colour (times the instance colour where there is one).
     pub colour: [u8; 4],
-    /// x class (0 stone, 1 decor, 2 leaf), y material index, z, w spare.
+    /// x class (0 stone, 1 decor, 2 leaf), y material index, z and w the instance id (low byte
+    /// first; `Library::instances`), which the settle motion reads its instance record with.
     pub mat: [u8; 4],
 }
 
@@ -40,6 +41,26 @@ pub struct Library {
     pub texture_dir: Option<PathBuf>,
     /// Lamp centres of the stone lanterns (world), for their glow at dusk and night.
     pub lanterns: Vec<Vec3>,
+    /// Settle motion: every baked instance in order of its id (kind and world origin).
+    pub instances: Vec<Instance>,
+}
+
+/// One baked instance: what it is and where its origin stands (world).
+#[derive(Clone)]
+pub struct Instance {
+    pub kind: String,
+    pub origin: Vec3,
+}
+
+/// An item placed by an edit (settle sequences): a kind from the scene's exported set, where it
+/// stands, its yaw (radians) and scale, and which of the scene's examples of that kind to copy.
+#[derive(Clone, Copy)]
+pub struct Placement {
+    pub kind: &'static str,
+    pub at: Vec2,
+    pub yaw: f32,
+    pub size: f32,
+    pub pick: usize,
 }
 
 pub struct Image {
@@ -165,6 +186,11 @@ pub struct Report {
     pub scattered: bool,
     /// Circles (island coordinates, x z, radius) the grass keeps out of.
     pub clear: Vec<(Vec2, f32)>,
+}
+
+/// `clear_radius` for the settle motion (settle.rs: grass regrows round a placed item).
+pub fn clear_radius_of(kind: &str) -> Option<f32> {
+    clear_radius(kind)
 }
 
 /// Grass clearing radius per prop kind at unit scale: the frozen project's GRASS_CLEAR
@@ -313,6 +339,9 @@ fn bake(library: &mut Library, scene: &Scene, meshes: &[usize], kind: &str, basi
     let normal_matrix = basis.inverse().transpose();
     let mirrored = basis.determinant() < 0.0;
     report.instances += 1;
+    let id = library.instances.len();
+    assert!(id < 65536, "more than 65536 prop instances");
+    library.instances.push(Instance { kind: kind.to_string(), origin: at });
     if kind == "lantern" {
         // decor_vertex_color.gdshader glows round (12.3, 0.56, -2.45) for a lantern placed
         // at (12.4, -2.35) on ground at 0: the lamp sits 0.56 m up, 0.1 m off its origin.
@@ -356,7 +385,7 @@ fn bake(library: &mut Library, scene: &Scene, meshes: &[usize], kind: &str, basi
                     uv: mesh.uv[i].to_array(),
                     anchor: anchor.to_array(),
                     colour: [q(c[0] * tint[0]), q(c[1] * tint[1]), q(c[2] * tint[2]), q(c[3] * tint[3])],
-                    mat: [class, slot, 0, 0],
+                    mat: [class, slot, (id & 255) as u8, (id >> 8) as u8],
                 });
             }
         }
@@ -369,8 +398,10 @@ fn empty_report() -> Report {
 }
 
 /// Loads one scene's props onto an island built from `cells` and `field`, moved by `origin`,
-/// appending to `library`.
-pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mut Library) -> Report {
+/// appending to `library`; then the items an edit placed (settle sequences), each a copy of one of the scene's
+/// examples of its kind (a tree's trunk and crown together) standing on this tool's ground with
+/// the example's height above its own cell.
+pub fn load_with(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mut Library, extra: &[Placement]) -> Report {
     let scene = open(dir, library);
     let mut report = empty_report();
     let source = source_layout(dir).unwrap_or_else(|| cells.clone());
@@ -482,6 +513,33 @@ pub fn load(dir: &Path, cells: &Cells, field: &Field, origin: Vec3, library: &mu
             };
             let world = Vec3::new(p.x, new_y, p.y) + origin;
             bake(library, &scene, &meshes, &kind, basis, world, tint, &mut report);
+        }
+    }
+    if !extra.is_empty() {
+        // Examples by kind, in a fixed order: instances of one kind at one place are one example.
+        let mut by_place: BTreeMap<(String, i64, i64, i64), (Example, Vec3)> = BTreeMap::new();
+        for object in scene.json["objects"].as_array().expect("objects") {
+            let kind = object["kind"].as_str().unwrap_or("?").to_string();
+            if object["category"].as_str() != Some("on_top") || !extra.iter().any(|e| e.kind == kind) {
+                continue;
+            }
+            let meshes = mesh_list(object);
+            for ((basis, at), tint) in instances_of(object, &scene.bin) {
+                let key = (kind.clone(), (at.x * 1000.0).round() as i64, (at.y * 1000.0).round() as i64, (at.z * 1000.0).round() as i64);
+                by_place.entry(key).and_modify(|(e, _)| e.meshes.extend(meshes.iter().copied())).or_insert((Example { meshes: meshes.clone(), basis, tint, lift: 0.0 }, at));
+            }
+        }
+        for item in extra {
+            let examples: Vec<&(Example, Vec3)> = by_place.iter().filter(|(k, _)| k.0 == item.kind).map(|(_, v)| v).collect();
+            assert!(!examples.is_empty(), "the scene has no {} to place", item.kind);
+            let (example, at) = examples[item.pick % examples.len()];
+            let lift = source.get(&(at.x.floor() as i32, at.z.floor() as i32)).map_or(0.0, |c| at.y - c.h).clamp(-0.3, 0.3);
+            // The example's own turn is replaced by the item's yaw; its scale is kept.
+            let scale = Vec3::new(example.basis.x_axis.length(), example.basis.y_axis.length(), example.basis.z_axis.length());
+            let basis = Mat3::from_rotation_y(item.yaw) * Mat3::from_diagonal(scale * item.size);
+            let lift = if is_stone(item.kind) { lift * item.size } else { lift };
+            let world = Vec3::new(item.at.x, field.height_at(item.at) + lift, item.at.y) + origin;
+            bake(library, &scene, &example.meshes, item.kind, basis, world, example.tint, &mut report);
         }
     }
     // Clearings are in island coordinates.

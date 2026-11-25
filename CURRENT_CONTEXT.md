@@ -1,6 +1,14 @@
 # 当前上下文
 
-更新：2026-11-24（最新八节为英文，见下）；此前内容更新于2026-11-16。用户最新明确请求优先。原goal已由用户清除，不自动重建。
+更新：2026-11-25（最新九节为英文，见下）；此前内容更新于2026-11-16。用户最新明确请求优先。原goal已由用户清除，不自动重建。
+
+## 2026-11-25 session: rounded rock edges and appear-and-settle (English)
+
+Owner instruction of 2026-11-25 (after the second review package), scope exactly two items, still no full art accept and no phase 2: (1) soften and chamfer the rock-wall edges toward Godot (rounder slab edges and face junctions, no hard crease on slab tops); (2) a short Tiny Glade-like appear-and-settle when terrain or items are edited (not a growth simulation: ground rises and settles, grass and props emerge with a slight overshoot; local or incremental updates so the interaction stays immediate). Tiny Glade stays a soft material reference only.
+
+- (1) Done in commit `f0a77fe` (round k1, `body.rs`, `field.rs`). Two small remainders are noted, not fixed: a shelf where a rim skirt's end meets a forward block, and a thin joint line where two rim blocks meet nearly flush.
+- (2) Round k2, `runtime/spikes/s34_study/src/settle.rs` and the `settle_*` functions in `shader.wgsl`: the island is rebuilt once per edit, a settle table over the edit's dirty rectangle (0.25 m texels: old and new height, band, weight, new-land share, delay, grass regrowth) plus one record per prop instance goes to two storage buffers, and one clock value drives the motion in the vertex shaders; no mesh work while it plays. Edit to first frame of motion about 90 ms on layout 7301 (whole-island rebuild about 70 ms; a chunked rebuild is phase 3's edit pipeline, not started). The motion adds 0.2 to 0.5 ms a frame at 3024x1964 in the moving mode (shadow map redrawn), for about 1.2 s.
+- Review package for the owner: `art/lookdev/20261125_settle/` (`README.md`, `compare.html`, `questions.md`). Not reviewed yet; phase 2 still waits.
 
 ## 2026-11-24 session: owner's second review, four adjustments (English)
 

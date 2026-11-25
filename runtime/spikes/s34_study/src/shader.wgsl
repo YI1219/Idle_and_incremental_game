@@ -21,7 +21,7 @@ struct Globals {
     params: vec4<f32>,   // x time, y hour, z 1/width, w 1/height (internal)
     params2: vec4<f32>,  // x near, y far, z cloud level, w internal pixels per output pixel
     look: vec4<f32>,     // x ssao on, y fov (radians), z, w spare
-    pal: array<vec4<f32>, 46>,
+    pal: array<vec4<f32>, 48>,
 };
 @group(0) @binding(0) var<uniform> g: Globals;
 
@@ -74,6 +74,8 @@ const L_WALL_SHADE_K: i32 = 42; // island walls in shade: mix(stone_shadow, ston
 const L_MIST_K: i32 = 43;       // the root mist colour: the day's times the change of Godot's island mist
 const L_NEAR_GAIN: i32 = 44;    // my calibration of the island's light per hour (1 at day)
 const L_STONE_GAIN: i32 = 45;   // and of its stone on top of that
+const L_SETTLE: i32 = 46;       // round k2: x settle clock (s since the edit; < 0 off), yz map origin (x, z), w map step
+const L_SETTLE_N: i32 = 47;     // x, y map size in texels, z prop instances
 
 const TAU: f32 = 6.2831853;
 
@@ -130,11 +132,154 @@ fn filmic(x: vec3<f32>) -> vec3<f32> {
     return ((x * (a * x + c * b) + d * e) / (x * (a * x + b) + d * f)) - e / f;
 }
 
+// ---------------------------------------------------------------- settle motion (round k2)
+// After an edit the island is rebuilt once; for about a second after it the vertex stages ease the
+// new shape in from the old one (settle.rs). Changed ground moves from its old height to its new
+// one and settles with a small overshoot; grass on changed ground and the items an edit placed grow
+// from nothing with a slight overshoot, rippling out from the stroke. With the clock off (L_SETTLE.x
+// < 0, or past SETTLE_END) every function here returns its input untouched.
+
+struct SettleTexel {
+    a: vec4<f32>,   // anchor height, new height, band low, band high
+    b: vec4<f32>,   // weight, translate share (1: new land, lifted whole), start delay (s), grass regrowth
+};
+@group(0) @binding(1) var<storage, read> settle_map: array<SettleTexel>;
+@group(0) @binding(2) var<storage, read> settle_items: array<vec4<f32>>;   // origin xyz, start delay (< 0: does not grow)
+
+const SETTLE_END: f32 = 1.5;          // settle.rs END
+const SETTLE_GROUND_S: f32 = 0.55;    // the ground's motion
+const SETTLE_GROUND_BACK: f32 = 1.3;  // overshoot about 6 % of the height change
+const SETTLE_GRASS_LAG: f32 = 0.10;   // grass starts after the ground under it
+const SETTLE_GRASS_JITTER: f32 = 0.14;
+const SETTLE_GRASS_S: f32 = 0.42;
+const SETTLE_GRASS_BACK: f32 = 1.7;   // about 10 %
+const SETTLE_ITEM_S: f32 = 0.50;
+const SETTLE_ITEM_BACK_Y: f32 = 1.9;  // about 12 %: the height leads
+const SETTLE_ITEM_BACK_XZ: f32 = 1.4; // about 7 %: the width follows
+const SETTLE_ITEM_XZ_LAG: f32 = 0.05;
+
+fn settle_clock() -> f32 {
+    return g.pal[L_SETTLE].x;
+}
+
+fn settle_active() -> bool {
+    let c = g.pal[L_SETTLE].x;
+    return c >= 0.0 && c < SETTLE_END;
+}
+
+// Ease out with overshoot: 0 at u = 0, 1 at u = 1, peaking a little above 1 on the way.
+fn settle_back(u: f32, c1: f32) -> f32 {
+    let v = clamp(u, 0.0, 1.0) - 1.0;
+    return 1.0 + (c1 + 1.0) * v * v * v + c1 * v * v;
+}
+
+fn settle_texel(i: i32, j: i32) -> SettleTexel {
+    let n = vec2<i32>(g.pal[L_SETTLE_N].xy);
+    return settle_map[clamp(j, 0, n.y - 1) * n.x + clamp(i, 0, n.x - 1)];
+}
+
+// The settle map at a ground point: bilinear, except the band (nearest texel). Nothing moves outside the map.
+fn settle_at(p: vec2<f32>) -> SettleTexel {
+    var out: SettleTexel;
+    let n = g.pal[L_SETTLE_N].xy;
+    let q = (p - g.pal[L_SETTLE].yz) / g.pal[L_SETTLE].w;
+    if (q.x < 0.0 || q.y < 0.0 || q.x > n.x - 1.0 || q.y > n.y - 1.0) {
+        out.a = vec4<f32>(0.0, 0.0, 1.0e4, -1.0e4);
+        out.b = vec4<f32>(0.0);
+        return out;
+    }
+    let i = vec2<i32>(floor(q));
+    let f = q - floor(q);
+    let t00 = settle_texel(i.x, i.y);
+    let t10 = settle_texel(i.x + 1, i.y);
+    let t01 = settle_texel(i.x, i.y + 1);
+    let t11 = settle_texel(i.x + 1, i.y + 1);
+    out.a = mix(mix(t00.a, t10.a, f.x), mix(t01.a, t11.a, f.x), f.y);
+    out.b = mix(mix(t00.b, t10.b, f.x), mix(t01.b, t11.b, f.x), f.y);
+    let near = settle_texel(i32(round(q.x)), i32(round(q.y)));
+    out.a.z = near.a.z;
+    out.a.w = near.a.w;
+    return out;
+}
+
+// A point of the island (lawn, wall, rock) during the motion: changed ground is pressed toward its
+// old height (anchor) and released with a small overshoot; new land is lifted whole.
+fn settle_ground(pos: vec3<f32>) -> vec3<f32> {
+    if (!settle_active()) {
+        return pos;
+    }
+    let s = settle_at(pos.xz);
+    // Under new land (any translate share) everything below moves too, so the old land's edge bends instead of tearing.
+    if (s.b.x < 0.002 || pos.y > s.a.w || (pos.y < s.a.z && s.b.y < 0.01)) {
+        return pos;
+    }
+    let k = settle_back((settle_clock() - s.b.z) / SETTLE_GROUND_S, SETTLE_GROUND_BACK);
+    let start = s.a.x - mix(pos.y, s.a.y, s.b.y);
+    return pos + vec3<f32>(0.0, s.b.x * (1.0 - k) * start, 0.0);
+}
+
+// How far a grass root has grown (1 where it does not regrow).
+fn settle_grass(root: vec3<f32>) -> f32 {
+    if (!settle_active()) {
+        return 1.0;
+    }
+    let s = settle_at(root.xz);
+    if (s.b.w < 0.01) {
+        return 1.0;
+    }
+    let jitter = hash21(root.xz * 7.31) * SETTLE_GRASS_JITTER;
+    let k = settle_back((settle_clock() - s.b.z - SETTLE_GRASS_LAG - jitter) / SETTLE_GRASS_S, SETTLE_GRASS_BACK);
+    return mix(1.0, k, clamp(s.b.w, 0.0, 1.0));
+}
+
+// The shading normal of a surface the motion deforms: turned by the rotation that takes the
+// undeformed surface's facet normal to the deformed one's (a surface only lifted keeps its normal,
+// a lawn pressed into the old wall's step shades as a step).
+fn settle_normal(n: vec3<f32>, world: vec3<f32>, lift: f32) -> vec3<f32> {
+    let was = world - vec3<f32>(0.0, lift, 0.0);
+    let a = cross(dpdx(was), dpdy(was));
+    let b = cross(dpdx(world), dpdy(world));
+    if (dot(a, a) < 1e-14 || dot(b, b) < 1e-14) {
+        return n;
+    }
+    let an = normalize(a);
+    let bn = normalize(b);
+    let k = cross(an, bn);
+    let s = length(k);
+    let c = dot(an, bn);
+    if (s < 1e-4) {
+        return n;
+    }
+    let axis = k / s;
+    return normalize(n * c + cross(axis, n) * s + axis * dot(axis, n) * (1.0 - c));
+}
+
+// A prop vertex: a placed item grows about its origin (height first, width a moment later); every
+// item rides the ground under its origin.
+fn settle_prop(pos: vec3<f32>, mat: vec4<u32>) -> vec3<f32> {
+    if (!settle_active()) {
+        return pos;
+    }
+    let id = mat.z + mat.w * 256u;
+    if (f32(id) >= g.pal[L_SETTLE_N].z) {
+        return pos;
+    }
+    let item = settle_items[id];
+    var p = pos;
+    if (item.w >= 0.0) {
+        let t = settle_clock() - item.w;
+        let sy = settle_back(t / SETTLE_ITEM_S, SETTLE_ITEM_BACK_Y);
+        let sxz = settle_back((t - SETTLE_ITEM_XZ_LAG) / SETTLE_ITEM_S, SETTLE_ITEM_BACK_XZ);
+        p = item.xyz + (pos - item.xyz) * vec3<f32>(sxz, sy, sxz);
+    }
+    return p + (settle_ground(item.xyz) - item.xyz);
+}
+
 // ---------------------------------------------------------------- shadow map
 
 @vertex
 fn vs_shadow(v: VIn) -> @builtin(position) vec4<f32> {
-    return g.light_view_proj * vec4<f32>(v.pos, 1.0);
+    return g.light_view_proj * vec4<f32>(settle_ground(v.pos), 1.0);
 }
 
 // ---------------------------------------------------------------- terms pass
@@ -146,6 +291,7 @@ struct VTerms {
     @location(2) colour: vec4<f32>,
     @location(3) terms: vec4<f32>,
     @location(4) extra: vec4<f32>,
+    @location(5) lift: f32,       // round k2: how far the settle motion moved this point up (m)
 };
 
 @vertex
@@ -155,7 +301,10 @@ fn vs_terms(v: VIn) -> VTerms {
     if (abs(v.extra.r * 255.0 - 20.0) < 0.5) {
         // Far mountains are built round the landscape's centre, which follows the view.
         pos += vec3<f32>(g.pal[L_LAND].x, 0.0, g.pal[L_LAND].z);
+    } else {
+        pos = settle_ground(pos);
     }
+    out.lift = pos.y - v.pos.y;
     out.clip = g.view_proj * vec4<f32>(pos, 1.0);
     out.world = pos;
     out.normal = v.normal;
@@ -285,6 +434,9 @@ fn stone_paint(p: vec3<f32>, n: vec3<f32>, dx: vec3<f32>, dy: vec3<f32>) -> vec4
 @fragment
 fn fs_terms(v: VTerms) -> FTerms {
     var n = normalize(v.normal);
+    if (settle_active()) {
+        n = settle_normal(n, v.world, v.lift);
+    }
     // Island stone seen from behind (a filler piece at a terrace junction, a block's side through a
     // joint) is shaded as if it faced the camera (round r7), so no view shows a surface lit from
     // its back as a dark hole into the island.
@@ -421,8 +573,13 @@ fn qrot(q: vec4<f32>, v: vec3<f32>) -> vec3<f32> {
 fn vs_grass(v: GIn) -> VGrass {
     var out: VGrass;
     let q = normalize(v.turn);
-    let s = v.size * 4.0;
-    let world = v.root + qrot(q, vec3<f32>(v.pos.x * s.x, v.pos.y * s.y, v.pos.z * s.x));
+    // Round k2: on changed ground the clump rides the ground and regrows (settle motion).
+    let grow = settle_grass(v.root);
+    var s = v.size * 4.0;
+    if (grow != 1.0) {
+        s *= vec2<f32>(0.35 + 0.65 * grow, grow);
+    }
+    let world = settle_ground(v.root) + qrot(q, vec3<f32>(v.pos.x * s.x, v.pos.y * s.y, v.pos.z * s.x));
     out.clip = g.view_proj * vec4<f32>(world, 1.0);
     out.world = world;
     let t = v.data.x;
@@ -1702,8 +1859,9 @@ struct VProp {
 @vertex
 fn vs_prop(v: PIn) -> VProp {
     var out: VProp;
-    out.clip = g.view_proj * vec4<f32>(v.pos, 1.0);
-    out.world = v.pos;
+    let pos = settle_prop(v.pos, v.mat);
+    out.clip = g.view_proj * vec4<f32>(pos, 1.0);
+    out.world = pos;
     out.normal = v.normal;
     out.uv = v.uv;
     out.anchor = v.anchor;
@@ -1714,7 +1872,7 @@ fn vs_prop(v: PIn) -> VProp {
 
 @vertex
 fn vs_prop_shadow(v: PIn) -> @builtin(position) vec4<f32> {
-    return g.light_view_proj * vec4<f32>(v.pos, 1.0);
+    return g.light_view_proj * vec4<f32>(settle_prop(v.pos, v.mat), 1.0);
 }
 
 struct VPropShadow {
@@ -1725,7 +1883,7 @@ struct VPropShadow {
 @vertex
 fn vs_prop_shadow_leaf(v: PIn) -> VPropShadow {
     var out: VPropShadow;
-    out.clip = g.light_view_proj * vec4<f32>(v.pos, 1.0);
+    out.clip = g.light_view_proj * vec4<f32>(settle_prop(v.pos, v.mat), 1.0);
     out.uv = v.uv;
     return out;
 }
@@ -1967,7 +2125,7 @@ struct VPropDepth {
 @vertex
 fn vs_prop_depth(v: PIn) -> VPropDepth {
     var out: VPropDepth;
-    out.clip = g.view_proj * vec4<f32>(v.pos, 1.0);
+    out.clip = g.view_proj * vec4<f32>(settle_prop(v.pos, v.mat), 1.0);
     out.uv = v.uv;
     return out;
 }

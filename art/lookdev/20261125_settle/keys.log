@@ -1,0 +1,51 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/keys/keys_raise_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE raise latency: rebuild 70.5 ms (fields 34.2, top 18.8, body 1.0, decor 6.8, grass 8.1), settle map 0.21 ms (45 x 45 texels, 11.0 x 11.0 m), upload 40.1 ms, total 110.9 ms; 0 placed items
+FRAME art/lookdev/20261125_settle/keys/keys_raise_t0000.png
+FRAME art/lookdev/20261125_settle/keys/keys_raise_t0100.png
+FRAME art/lookdev/20261125_settle/keys/keys_raise_t0200.png
+FRAME art/lookdev/20261125_settle/keys/keys_raise_t0350.png
+FRAME art/lookdev/20261125_settle/keys/keys_raise_t0600.png
+FRAME art/lookdev/20261125_settle/keys/keys_raise_t1500.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/keys/keys_lower_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE lower latency: rebuild 67.7 ms (fields 33.3, top 18.3, body 1.0, decor 5.7, grass 7.8), settle map 0.24 ms (45 x 45 texels, 11.0 x 11.0 m), upload 19.0 ms, total 86.9 ms; 0 placed items
+FRAME art/lookdev/20261125_settle/keys/keys_lower_t0000.png
+FRAME art/lookdev/20261125_settle/keys/keys_lower_t0100.png
+FRAME art/lookdev/20261125_settle/keys/keys_lower_t0200.png
+FRAME art/lookdev/20261125_settle/keys/keys_lower_t0350.png
+FRAME art/lookdev/20261125_settle/keys/keys_lower_t0600.png
+FRAME art/lookdev/20261125_settle/keys/keys_lower_t1500.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/keys/keys_expand_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE expand latency: rebuild 67.0 ms (fields 33.0, top 17.7, body 1.1, decor 5.5, grass 7.9), settle map 0.29 ms (49 x 45 texels, 12.0 x 11.0 m), upload 21.1 ms, total 88.5 ms; 0 placed items
+FRAME art/lookdev/20261125_settle/keys/keys_expand_t0000.png
+FRAME art/lookdev/20261125_settle/keys/keys_expand_t0100.png
+FRAME art/lookdev/20261125_settle/keys/keys_expand_t0200.png
+FRAME art/lookdev/20261125_settle/keys/keys_expand_t0350.png
+FRAME art/lookdev/20261125_settle/keys/keys_expand_t0600.png
+FRAME art/lookdev/20261125_settle/keys/keys_expand_t1500.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/keys/keys_place_before.png
+PROPS loaded 91 objects, 230 instances, 84112 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE place latency: rebuild 69.1 ms (fields 33.5, top 17.7, body 1.1, decor 7.0, grass 7.7), settle map 0.34 ms (59 x 52 texels, 14.5 x 12.6 m), upload 23.9 ms, total 93.4 ms; 6 placed items
+FRAME art/lookdev/20261125_settle/keys/keys_place_t0000.png
+FRAME art/lookdev/20261125_settle/keys/keys_place_t0100.png
+FRAME art/lookdev/20261125_settle/keys/keys_place_t0200.png
+FRAME art/lookdev/20261125_settle/keys/keys_place_t0350.png
+FRAME art/lookdev/20261125_settle/keys/keys_place_t0600.png
+FRAME art/lookdev/20261125_settle/keys/keys_place_t1500.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261125_settle/keys/keys_ramp_before.png
+SETTLE ramp: 8 cells, rise -1.00 m over 4.00 m
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+SETTLE ramp latency: rebuild 72.1 ms (fields 34.0, top 20.0, body 0.9, decor 7.0, grass 8.0), settle map 0.42 ms (49 x 65 texels, 12.0 x 16.0 m), upload 19.2 ms, total 91.7 ms; 0 placed items
+FRAME art/lookdev/20261125_settle/keys/keys_ramp_t0000.png
+FRAME art/lookdev/20261125_settle/keys/keys_ramp_t0100.png
+FRAME art/lookdev/20261125_settle/keys/keys_ramp_t0200.png
+FRAME art/lookdev/20261125_settle/keys/keys_ramp_t0350.png
+FRAME art/lookdev/20261125_settle/keys/keys_ramp_t0600.png
+FRAME art/lookdev/20261125_settle/keys/keys_ramp_t1500.png
