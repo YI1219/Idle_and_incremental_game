@@ -250,6 +250,9 @@ pub fn plan_traced(outline: &Outline, field: &Field, seed: u32, trace: &mut Vec<
         }
         let (step, depth) = match role {
             Role::Primary => (0.15 + 0.75 * h1, 5.4 + 2.8 * h2 + if h1 > 0.62 { 2.6 } else { 0.0 }),
+            // Round k5: a narrow face (under 1.6 m) stands nearly flush: recessed 0.27 to 0.55 m it was a
+            // dark slot under the lawn lip that read as a pipe.
+            Role::Secondary if width < 1.6 => (-0.02 - 0.06 * h1, 2.2 + 1.6 * h2),
             Role::Secondary => (-0.15 - 0.28 * h1, 2.2 + 1.6 * h2),
             Role::Plain => (-0.10 + 0.30 * h1, 3.4 + 2.2 * h2),
         };
@@ -513,10 +516,16 @@ struct Edges {
     salt: u32,
     /// Corners whose shading turns less than the geometry (see `CornerTurn`).
     turn: Vec<CornerTurn>,
+    /// Round k5: corners kept nearly square (3.5 cm): where two rim blocks meet nearly flush, two
+    /// rounded corners side by side carved a groove that read as a thin dark joint.
+    square: Vec<Vec2>,
 }
 
 impl Edges {
     fn radius(&self, p: Vec2) -> f32 {
+        if self.square.iter().any(|q| (*q - p).length() < 1e-3) {
+            return 0.035;
+        }
         let h = hash2((p.x * 2.7 + 0.31).floor() as i32, (p.y * 2.7 + 0.53).floor() as i32, self.salt);
         self.corner.0 + (self.corner.1 - self.corner.0) * h
     }
@@ -546,9 +555,26 @@ struct RimBlock {
     lip: f32,
     lawn: bool,
     edges: Edges,
+    /// Round k5: how the block leans: its foot moves by `shift`, plus `bow` outward (or inward) at
+    /// the middle of its front, so the face is a slightly twisted plane, not an upright card.
+    shift: Vec2,
+    /// The foot's offset under the front's other end (`shift` is under its first end).
+    shift_b: Vec2,
+    bow: f32,
+    /// The face's first end, its direction along the rim and width, and its outward normal.
+    a: Vec2,
+    chord: Vec2,
+    width: f32,
+    out: Vec2,
 }
 
 impl RimBlock {
+    /// How far the foot under a plan point stands from the point (the lean).
+    fn foot_at(&self, p: Vec2) -> Vec2 {
+        let t = ((p - self.a).dot(self.chord) / self.width.max(0.1)).clamp(0.0, 1.0);
+        self.shift.lerp(self.shift_b, t) + self.out * self.bow * (std::f32::consts::PI * t).sin()
+    }
+
     /// Height of the top of the block's rock sides (under the stone cap's roll or the lawn's).
     /// The top of the block's stone: its flat cap, or the top of its rock sides under a lawn cap.
     fn top_surface(&self) -> f32 {
@@ -583,6 +609,8 @@ struct Filler {
     colour: Vec3,
     id: u8,
     lip: f32,
+    /// Round k5: the foot follows the leaning block it fills against.
+    shift: Vec2,
 }
 
 /// Round k1: the junction of two neighbouring rim blocks where `pro`'s end stands out in front of
@@ -692,6 +720,7 @@ fn rim_junction(pro: &RimBlock, other: &RimBlock, pro_left: bool) -> Option<(Cor
         colour: (pro.colour + other.colour) * 0.5,
         id: pro.id,
         lip: pro.lip.max(other.lip),
+        shift: pro.foot_at(v),
     };
     Some((turn, Some(filler)))
 }
@@ -701,7 +730,7 @@ fn rim_junction(pro: &RimBlock, other: &RimBlock, pro_left: bool) -> Option<(Cor
 fn emit_filler(mesh: &mut Mesh, f: &Filler, colours: &StoneColours) {
     let n = f.pts.len();
     let low = f.colour.lerp(colours.under, 0.18);
-    let at = |k: usize, y: f32| Vec3::new(f.pts[k].x, y, f.pts[k].y);
+    let at = |k: usize, y: f32| { let s = if y < f.top - 0.01 { f.shift } else { Vec2::ZERO }; Vec3::new(f.pts[k].x + s.x, y, f.pts[k].y + s.y) };
     let deep = |k: usize| (std::f32::consts::PI * k as f32 / (n - 1) as f32).sin();
     let paint = |k: usize, grad: f32| {
         let sky = if grad < 0.5 { 1.0 - 0.14 * deep(k) } else { 0.86 - 0.10 * deep(k) };
@@ -718,7 +747,7 @@ fn emit_filler(mesh: &mut Mesh, f: &Filler, colours: &StoneColours) {
     // The cap and the foot: fans from the V's apex.
     let pc = Paint::new(Family::Stone).sky(1.0).line(1.0).strokes(0.5).id(f.id).grad(0.0);
     let pf = Paint::new(Family::Stone).sky(0.5).line(1.0).strokes(1.0).id(f.id).grad(1.0);
-    let (apex_t, apex_b) = (Vec3::new(f.apex.x, f.top, f.apex.y), Vec3::new(f.apex.x, f.bottom, f.apex.y));
+    let (apex_t, apex_b) = (Vec3::new(f.apex.x, f.top, f.apex.y), Vec3::new(f.apex.x + f.shift.x, f.bottom, f.apex.y + f.shift.y));
     for k in 0..n - 1 {
         crate::field::tri_facing(mesh, [apex_t, at(k, f.top), at(k + 1, f.top)], [Vec3::Y; 3], [f.colour; 3], [pc; 3]);
         crate::field::tri_facing(mesh, [apex_b, at(k, f.bottom), at(k + 1, f.bottom)], [Vec3::NEG_Y; 3], [low; 3], [pf; 3]);
@@ -838,7 +867,7 @@ fn rounded_column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to:
     let centre = plan.iter().copied().sum::<Vec2>() / plan.len() as f32;
     let pivot = centre.lerp(lean_to, 0.5);
     // Two pieces per corner (they hang in the root mist; three cost a third more for nothing seen).
-    let edges = Edges { corner: (0.15, 0.22), roll: 0.0, crown: false, salt: 0xC01 ^ id as u32, turn: Vec::new() };
+    let edges = Edges { corner: (0.15, 0.22), roll: 0.0, crown: false, salt: 0xC01 ^ id as u32, turn: Vec::new(), square: Vec::new() };
     let ring = rounded_ring(plan, &edges, 2);
     let n = ring.len();
     let foot: Vec<Vec3> = ring
@@ -902,7 +931,7 @@ fn rounded_column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to:
 /// With `Edges::crown` the top is a small grid of rings shaded by the height function's own normals
 /// (one surface, no crease); otherwise a flat fan.
 #[allow(clippy::too_many_arguments)]
-fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom: f32, tilt: Vec2, shift: Vec2, colour: Vec3, colours: &StoneColours, id: u8, lip: Option<f32>, cap_warm: f32, edges: Edges, lawn: Option<(Vec3, &Field)>, fringe: &mut Fringe) {
+fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom: f32, tilt: Vec2, shift: &dyn Fn(Vec2) -> Vec2, colour: Vec3, colours: &StoneColours, id: u8, lip: Option<f32>, cap_warm: f32, edges: Edges, lawn: Option<(Vec3, &Field)>, fringe: &mut Fringe) {
     let ring = rounded_ring(plan, &edges, 3);
     let n = ring.len();
     if n < 3 {
@@ -941,7 +970,7 @@ fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom:
         })
         .collect();
     let head: Vec<Vec3> = (0..n).map(|k| edge_pt[k] - Vec3::Y * tangent[k]).collect();
-    let foot: Vec<Vec3> = ring.iter().map(|r| Vec3::new(r.p.x + shift.x, bottom + (r.p - centre).dot(tilt), r.p.y + shift.y)).collect();
+    let foot: Vec<Vec3> = ring.iter().map(|r| { let s = shift(r.p); Vec3::new(r.p.x + s.x, bottom + (r.p - centre).dot(tilt), r.p.y + s.y) }).collect();
     let paint = |grad: f32, sky: f32| {
         let p = Paint::new(Family::Stone).sky(sky).line(1.0).strokes(1.0).id(id).grad(grad);
         match lip {
@@ -1316,12 +1345,19 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let (skew_b, skew_a) = (chord * (0.2 * (h3 - 0.3)), -chord * (0.2 * (h1 - 0.3)));
             let (a, back_a, clip_a, prow_a) = reach(face.a, -chord, front_a, wall_a, skew_a);
             let (b, back_b, clip_b, prow_b) = reach(face.b, chord, front_b, wall_b, skew_b);
-            // Only a very broad face is folded once, gently, so it is not one flat card.
+            // Round k5: a face wider than 2.6 m is folded once (wider than 5.5 m twice), 8 to 22 cm in
+            // or out, so a broad face reads as a few planes of one rock, not one flat card. (Before,
+            // only faces over 5 m were folded, by at most 15 cm.)
             let mut plan = vec![a];
-            if face.width > 5.0 {
-                let t = 0.35 + 0.3 * hash2(key.0, key.1, seed ^ 84);
-                let push = (hash2(key.0, key.1 + 1, seed ^ 85) - 0.5) * 0.30;
-                plan.push(a.lerp(b, t) + out * push);
+            if face.width > 2.6 {
+                let folds = if face.width > 5.5 { 2 } else { 1 };
+                for f in 0..folds {
+                    let hf = hash2(key.0 + 7 * f, key.1, seed ^ 84);
+                    let t = (f as f32 + 1.0) / (folds as f32 + 1.0) + (hf - 0.5) * 0.24 / folds as f32;
+                    let hp = hash2(key.0, key.1 + 1 + 5 * f, seed ^ 85);
+                    let push = if hp < 0.5 { -1.0 } else { 1.0 } * (0.08 + 0.14 * (2.0 * (hp - 0.5).abs()));
+                    plan.push(a.lerp(b, t) + out * push);
+                }
             }
             // A pulled-back end keeps its back corner from leaning out past it again.
             let lean_in = |front_corner: Vec2, back: Vec2, clipped: bool, away: Vec2| -> Vec2 {
@@ -1342,14 +1378,35 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let tone = 1.0 + (h3 - 0.5) * 0.06;
             let colour = colours.face * tone;
             // The foot: 7.6 to 9.4 m under the cap, cut a little out of level; it lies in the mist.
-            let tilt = (-out) * (0.04 + 0.05 * h2) + chord * (h1 - 0.5) * 0.10;
+            // Round k5: the foot is cut more out of level along the rim (up to 14 cm a metre, from
+            // 5), so the root's lower edge is not one even line.
+            let tilt = (-out) * (0.04 + 0.05 * h2) + chord * (h1 - 0.5) * 0.28;
+            // Round k5: the block leans: its foot stands 0.15 to 1.0 m further in than its top (a
+            // lean of 1 to 7 degrees over its height, so the island narrows toward its root as the
+            // reference's does), up to 0.3 m sideways, and the middle of its front bows up to 0.3 m
+            // in or out at the foot. The lean follows a smooth world-anchored noise (about 6 m across)
+            // plus a little per face, so neighbours lean nearly alike and step gently in and out of
+            // each other below the lawn; per-face leans alone opened dark wedge-shaped slits between
+            // them. World-anchored, so an edit changes leans only where it changes faces.
+            // The lean is a field over the world (inward from the island's mid-scale outline, its
+            // amount and a sideways drift from smooth noise), taken at the two ends of the front: two
+            // neighbours meeting at a junction take the same lean there, so no gap opens between
+            // them below the lawn.
+            let lean_at = |p: Vec2| -> Vec2 {
+                let inward = field.inward(p);
+                let amount = 0.15 + 0.85 * vnoise(p.x * 0.16 + 3.1, p.y * 0.16, seed ^ 99);
+                let drift = Vec2::new(vnoise(p.x * 0.16, p.y * 0.16 + 7.7, seed ^ 100) - 0.5, vnoise(p.x * 0.16 + 11.3, p.y * 0.16, seed ^ 113) - 0.5) * 0.6;
+                inward * amount + drift
+            };
+            let (shift, shift_b) = (lean_at(face.a), lean_at(face.b));
+            let bow = (hash2(key.0, key.1, seed ^ 101) - 0.5) * 0.4;
             // Round k1: every vertical edge is rounded, 0.12 to 0.22 m (it replaces round r10's flat
             // 0.20 m bevel at the front corners, shaded a third of the way round); neighbouring
             // blocks overlap 0.22 m along the rim and stand up to about 0.2 m forward or back of each
             // other, so the forward block's rounded corner spans the step. The top edge of a stone
             // cap rolls over 0.14 m (a lawn cap rolls the lawn over it instead).
-            let edges = Edges { corner: (0.12, 0.22), roll: 0.14, crown: false, salt: seed ^ 0x6B31, turn: Vec::new() };
-            blocks.push(RimBlock { plan, b_index, cap, bottom: face.top - 0.20 - 7.6 - 1.8 * h2, tilt, colour, id: 100 + (index % 70) as u8, lip: face.top, lawn, edges });
+            let edges = Edges { corner: (0.12, 0.22), roll: 0.14, crown: false, salt: seed ^ 0x6B31, turn: Vec::new(), square: Vec::new() };
+            blocks.push(RimBlock { plan, b_index, cap, bottom: face.top - 0.20 - 7.6 - 1.8 * h2, tilt, colour, id: 100 + (index % 70) as u8, lip: face.top, lawn, edges, shift, shift_b, bow, a: face.a, chord, width: face.width.max(0.1), out });
         }
         // Round k1: where one block's end stands out past its neighbour's front (a step forward, or a
         // convex turn of the rim, where the two blocks' overlap left a narrow V-shaped slit that read
@@ -1376,7 +1433,13 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             if (ci - cj).length() > 0.8 {
                 continue;
             }
-            if let Some((turn, filler)) = rim_junction(&blocks[i], &blocks[j], true) {
+            if step < 0.25 {
+                // Round k5: at a small step (under 25 cm) the two corners stay square (they overlap
+                // along the rim, and the backing plate below closes the joint): two rounded corners side
+                // by side carved a groove that read as a thin dark joint or a pipe.
+                blocks[i].edges.square.push(ci);
+                blocks[j].edges.square.push(cj);
+            } else if let Some((turn, filler)) = rim_junction(&blocks[i], &blocks[j], true) {
                 blocks[i].edges.turn.push(turn);
                 blocks[j].edges.turn.push(CornerTurn { at: cj, frac: back_frac, front_incoming: false });
                 fillers.extend(filler);
@@ -1384,20 +1447,48 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                 blocks[j].edges.turn.push(turn);
                 blocks[i].edges.turn.push(CornerTurn { at: ci, frac: back_frac, front_incoming: true });
                 fillers.extend(filler);
-            } else if step < 0.10 {
-                let frac = 0.15 + 0.85 * smoothstep(0.03, 0.30, step);
-                blocks[i].edges.turn.push(CornerTurn { at: ci, frac, front_incoming: true });
-                blocks[j].edges.turn.push(CornerTurn { at: cj, frac, front_incoming: false });
             }
         }
         for b in &blocks {
             let lawn_colour = b.lawn.then_some((colours.lawn, field));
             let cap = b.cap;
-            tall_block(&mut mesh, &b.plan, &|_| cap, b.bottom, b.tilt, Vec2::ZERO, b.colour, colours, b.id, Some(b.lip), 0.0, b.edges.clone(), lawn_colour, &mut fringe);
+            tall_block(&mut mesh, &b.plan, &|_| cap, b.bottom, b.tilt, &|p| b.foot_at(p), b.colour, colours, b.id, Some(b.lip), 0.0, b.edges.clone(), lawn_colour, &mut fringe);
             columns += 1;
         }
         for f in &fillers {
             emit_filler(&mut mesh, f, colours);
+        }
+        // Round k5: a backing plate 6 cm behind every junction of two rim blocks, from the lower of
+        // their tops down to the higher foot, each end following its own block's lean. Where two
+        // fronts meet at a slight angle (or lean apart below the lawn) a hairline crack showed the
+        // dark inside of the island; now it shows lit stone a little recessed, as a joint.
+        for i in 0..nb {
+            let j = (i + 1) % nb;
+            if i == j {
+                continue;
+            }
+            let (ci, _, _) = blocks[i].front_end(true);
+            let (cj, _, _) = blocks[j].front_end(false);
+            if (ci - cj).length() > 1.5 {
+                continue;
+            }
+            let along = {
+                let d = cj - ci;
+                if d.length() > 0.02 { d.normalize() } else { blocks[i].chord }
+            };
+            let n = (blocks[i].out + blocks[j].out).normalize_or_zero();
+            let (p0, p1) = (ci - along * 0.25 - n * 0.025, cj + along * 0.25 - n * 0.025);
+            let top = blocks[i].top_surface().min(blocks[j].top_surface()) - 0.02;
+            let bottom = blocks[i].bottom.max(blocks[j].bottom) + 0.3;
+            let (s0, s1) = (blocks[i].foot_at(ci), blocks[j].foot_at(cj));
+            let q = [Vec3::new(p0.x, top, p0.y), Vec3::new(p1.x, top, p1.y), Vec3::new(p1.x + s1.x, bottom, p1.y + s1.y), Vec3::new(p0.x + s0.x, bottom, p0.y + s0.y)];
+            let nn = Vec3::new(n.x, 0.0, n.y);
+            let colour = (blocks[i].colour + blocks[j].colour) * 0.5 * 0.97;
+            let low = colour.lerp(colours.under, 0.18);
+            let lip = blocks[i].lip.max(blocks[j].lip);
+            let (pt, pb) = (Paint::new(Family::Stone).sky(0.85).line(1.0).strokes(1.0).id(blocks[i].id).grad(0.0).lip(lip), Paint::new(Family::Stone).sky(0.7).line(1.0).strokes(1.0).id(blocks[i].id).grad(1.0).lip(lip));
+            crate::field::tri_facing(&mut mesh, [q[0], q[1], q[2]], [nn; 3], [colour, colour, low], [pt, pt, pb]);
+            crate::field::tri_facing(&mut mesh, [q[0], q[2], q[3]], [nn; 3], [colour, low, low], [pt, pb, pb]);
         }
         // Buttress slabs (Godot's shoulder groups): a few broad slabs standing against the wall,
         // each with one broad wedge top sloping out, its top well under the lawn's edge, standing a
@@ -1410,8 +1501,8 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let mid = (f.a + f.b) * 0.5;
             let key = ((mid.x * 0.5 + 0.137).floor() as i32, (mid.y * 0.5 + 0.291).floor() as i32);
             let h = hash2(key.0, key.1, seed ^ 87);
-            let wide = f.width >= 3.4 || (f.width >= 2.8 && h > 0.85);
-            (wide && f.role != Role::Secondary && h > 0.42 && field.notch(mid) < 0.05 && field.notch(f.a) < 0.05 && field.notch(f.b) < 0.05).then_some(h)
+            let wide = f.width >= 3.0 || (f.width >= 2.6 && h > 0.8);
+            (wide && f.role != Role::Secondary && h > 0.32 && field.notch(mid) < 0.05 && field.notch(f.a) < 0.05 && field.notch(f.b) < 0.05).then_some(h)
         };
         for i in 0..nf {
             let Some(h) = offer(i) else { continue };
@@ -1425,54 +1516,72 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let out = if field.sample(&field.land2, mid + out) < field.sample(&field.land2, mid - out) { out } else { -out };
             let key = ((mid.x * 0.5 + 0.137).floor() as i32, (mid.y * 0.5 + 0.291).floor() as i32);
             let (s1, s2, s3, s4) = (hash2(key.0, key.1, seed ^ 88), hash2(key.0, key.1, seed ^ 89), hash2(key.0, key.1, seed ^ 90), hash2(key.0, key.1, seed ^ 96));
-            let width = (face.width * (0.92 + 0.25 * s1)).clamp(3.8, 6.0).min(face.width + 1.2);
+            let (s6, s7, s8, s9) = (hash2(key.0, key.1, seed ^ 102), hash2(key.0, key.1, seed ^ 103), hash2(key.0, key.1, seed ^ 104), hash2(key.0, key.1, seed ^ 105));
+            // Round k5: slab sizes vary more (2.8 to 6 m wide, 3.4 to 6.2 m tall), and one slab in
+            // two gets a smaller companion leaning against its side, set lower and turned the other
+            // way (Godot's shoulder groups hold one to three slabs).
+            let width = (face.width * (0.80 + 0.40 * s1)).clamp(2.8, 6.0).min(face.width + 1.2);
             let centre = mid + chord * (s2 - 0.5) * (face.width - width * 0.8).max(0.0) * 0.5;
             let wall = face.step - 0.12;
-            let proud = 0.85 + 0.6 * s3;
-            // `across` runs so that the outside lies on the left of fa -> fb (the order `tall_block` wants).
-            let yaw = (s4 - 0.5) * 0.36;
-            let across0 = Vec2::new(-out.y, out.x);
-            let across = Vec2::new(across0.x * yaw.cos() - across0.y * yaw.sin(), across0.x * yaw.sin() + across0.y * yaw.cos());
-            let ahead = Vec2::new(across.y, -across.x);
-            let (fa, fb) = (centre - across * width * 0.5 + ahead * (wall + proud), centre + across * width * 0.5 + ahead * (wall + proud));
-            let (ba, bb) = (centre - across * width * 0.5 + ahead * (wall - 0.7), centre + across * width * 0.5 + ahead * (wall - 0.7));
-            let plan = [fa, fb, bb, ba];
-            // Top 1.5 to 3.5 m under the lawn's edge at the wall, falling outward 34 to 48 degrees.
-            let back_top = face.top - 1.5 - 2.0 * s1 * s2.max(0.4);
-            let slope = (34.0 + 14.0 * s2).to_radians().tan();
-            let base = centre + ahead * wall;
-            // The wedge: the top also falls along the slab's length (16 to 30 degrees, either way), so
-            // the front is a trapezoid with one high and one low shoulder.
-            let along = (16.0 + 14.0 * s3).to_radians().tan() * if s4 < 0.5 { 1.0 } else { -1.0 };
-            // Round k1: the fold where the top meets the wall is eased over about 0.12 m (it lies at
-            // the wall's face), and the visible part of the top (from the wall out to the front)
-            // carries a slight crown, 3 to 6 cm at its middle, so it reads as one weathered surface.
-            let s5 = hash2(key.0, key.1, seed ^ 97);
-            let (crown, vis_mid, vis_half) = (0.03 + 0.03 * s5, wall + proud * 0.5, proud * 0.5 + 0.30);
-            let ease = |x: f32| 0.5 * (x + (x * x + 0.0144).sqrt());
-            let top = move |p: Vec2| {
-                let (u, v) = ((p - centre).dot(across) / (width * 0.5), ((p - centre).dot(ahead) - vis_mid) / vis_half);
-                back_top - ease((p - base).dot(ahead)) * slope - ((p - centre).dot(across) + width * 0.5 * along.signum()) * along * 0.7 + crown * (1.0 - u * u).max(0.0) * (1.0 - v * v).max(0.0)
-            };
-            let height = 3.8 + 1.4 * s4;
-            // Leaning against the wall: the foot stands 0.25 to 0.55 m farther out than the top, and
-            // steps a little sideways.
-            let lean = across * (s3 - 0.5) * 0.10 + ahead * (0.25 + 0.30 * s1);
-            let colour = colours.face.lerp(colours.warm, 0.15) * (1.0 + (s1 - 0.5) * 0.05);
-            // Round k1: vertical edges rounded 0.18 to 0.30 m, the top's edges 0.18 to 0.28 m.
-            let edges = Edges { corner: (0.18, 0.30), roll: 0.18 + 0.10 * hash2(key.0, key.1, seed ^ 98), crown: true, salt: seed ^ 0x5B1A, turn: Vec::new() };
-            if std::env::var("S34_BLOCKDBG").is_ok_and(|v| v == "slabs") {
-                println!("SLAB {} front {:?} {:?} out {:?} back_top {:.2} lawn {:.2}", 30 + i % 9, fa, fb, ahead, back_top, face.top);
+            let side = if s8 < 0.5 { -1.0 } else { 1.0 };
+            let mut slabs = vec![(centre, width, 0.85 + 0.6 * s3, face.top - 1.5 - 2.0 * s1 * s2.max(0.4), 3.4 + 2.8 * s7, 0.0_f32, 1.0_f32)];
+            if s9 > 0.5 {
+                let w2 = width * (0.45 + 0.2 * s8);
+                let c2 = centre + chord * side * (width * 0.5 + w2 * 0.15);
+                slabs.push((c2, w2, 0.55 + 0.5 * s2, slabs[0].3 - 0.7 - 1.1 * s9, slabs[0].4 * (0.6 + 0.2 * s1), 1.0, -1.0));
             }
-            tall_block(&mut mesh, &plan, &top, back_top - height, Vec2::new(0.0, 0.0), lean, colour, colours, 30 + (i % 9) as u8, Some(face.top), 0.0, edges, None, &mut fringe);
-            columns += 1;
+            for (n, &(centre, width, proud, back_top, height, second, turn_sign)) in slabs.iter().enumerate() {
+                let salt = n as i32 * 13;
+                let r = |k: u32| hash2(key.0 + salt, key.1, seed ^ k);
+                // Round k5: turned 11 to 27 degrees off the wall, never square to it (a slab parallel
+                // to the wall, seen face on with its rounded rim, read as a framed door).
+                let yaw = if s6 < 0.5 { -1.0 } else { 1.0 } * turn_sign * (0.20 + 0.27 * r(106));
+                // `across` runs so that the outside lies on the left of fa -> fb (the order `tall_block` wants).
+                let across0 = Vec2::new(-out.y, out.x);
+                let across = Vec2::new(across0.x * yaw.cos() - across0.y * yaw.sin(), across0.x * yaw.sin() + across0.y * yaw.cos());
+                let ahead = Vec2::new(across.y, -across.x);
+                let (fa, fb) = (centre - across * width * 0.5 + ahead * (wall + proud), centre + across * width * 0.5 + ahead * (wall + proud));
+                let (ba, bb) = (centre - across * width * 0.5 + ahead * (wall - 0.7), centre + across * width * 0.5 + ahead * (wall - 0.7));
+                // Round k5: the front is folded once, 12 to 32 cm out at a point off its middle, so it
+                // is two planes, not one flat card.
+                let fold = fa.lerp(fb, 0.38 + 0.24 * r(107)) + ahead * (0.12 + 0.20 * r(108));
+                let plan = [fa, fold, fb, bb, ba];
+                // Top 1.5 to 3.5 m under the lawn's edge at the wall (a companion lower), falling
+                // outward 34 to 48 degrees.
+                let slope = (34.0 + 14.0 * r(109)).to_radians().tan();
+                let base = centre + ahead * wall;
+                // The wedge: the top also falls along the slab's length (16 to 30 degrees, either
+                // way), so the front is a trapezoid with one high and one low shoulder.
+                let along = (16.0 + 14.0 * s3).to_radians().tan() * if (s4 < 0.5) == (second < 0.5) { 1.0 } else { -1.0 };
+                // Round k1: the fold where the top meets the wall is eased over about 0.12 m, and the
+                // visible part of the top carries a slight crown, 3 to 6 cm at its middle.
+                let s5 = r(97);
+                let (crown, vis_mid, vis_half) = (0.03 + 0.03 * s5, wall + proud * 0.5, proud * 0.5 + 0.30);
+                let ease = |x: f32| 0.5 * (x + (x * x + 0.0144).sqrt());
+                let top = move |p: Vec2| {
+                    let (u, v) = ((p - centre).dot(across) / (width * 0.5), ((p - centre).dot(ahead) - vis_mid) / vis_half);
+                    back_top - ease((p - base).dot(ahead)) * slope - ((p - centre).dot(across) + width * 0.5 * along.signum()) * along * 0.7 + crown * (1.0 - u * u).max(0.0) * (1.0 - v * v).max(0.0)
+                };
+                // Round k5: leaning against the wall and rolled sideways: the foot stands 0.35 to
+                // 0.9 m farther out than the top and up to 0.7 m to one side (before: 0.25 to 0.55 m
+                // out, 5 cm sideways), so slabs read as fallen and propped, not stood up.
+                let lean = across * (r(110) - 0.5) * 1.4 + ahead * (0.35 + 0.55 * s1);
+                let colour = colours.face.lerp(colours.warm, 0.15) * (1.0 + (r(111) - 0.5) * 0.06);
+                // Round k1: vertical edges rounded 0.18 to 0.30 m, the top's edges 0.18 to 0.28 m.
+                let edges = Edges { corner: (0.18, 0.30), roll: 0.18 + 0.10 * r(98), crown: true, salt: seed ^ 0x5B1A, turn: Vec::new(), square: Vec::new() };
+                if std::env::var("S34_BLOCKDBG").is_ok_and(|v| v == "slabs") {
+                    println!("SLAB {} front {:?} {:?} out {:?} back_top {:.2} lawn {:.2}", 30 + i % 9, fa, fb, ahead, back_top, face.top);
+                }
+                tall_block(&mut mesh, &plan, &top, back_top - height, Vec2::new(0.0, 0.0), &move |_| lean, colour, colours, 30 + ((i + n) % 9) as u8, Some(face.top), 0.0, edges, None, &mut fringe);
+                columns += 1;
+            }
         }
         // Where the rim steps down (a terrace wall reaching the outline, a pond's bank), a face's
         // block stands at the lowest ground along it, so under the higher lawn's lip there would be a
         // gap into the island's inside. A sheer skirt of rock at the outline closes it, from just
         // under the lip down past the block's top.
-        for face in &faces {
-            rim_skirt(&mut mesh, outer, field, colours, face);
+        for (face, block) in faces.iter().zip(&blocks) {
+            rim_skirt(&mut mesh, outer, field, colours, face, &block.plan[..=block.b_index], block.cap, &mut fringe);
         }
         // Tier two: deeper masses behind the rim, on a jittered lattice, hanging below the liner.
         // Round r8: fewer and larger, so the underside reads as a few soft masses in the mist.
@@ -1529,51 +1638,83 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
 }
 
 /// The skirt under one face's stretch of outline: wherever the lawn's lip stands higher than the
-/// face's block top, a vertical band of rock from 0.22 m under the lip (behind the lip's 0.32 m
-/// roll) down to 0.28 m under the block top. Zero height (and not emitted) on a level rim.
-fn rim_skirt(mesh: &mut Mesh, outer: &Outline, field: &Field, colours: &StoneColours, face: &Face) {
+/// face's block top (a terrace wall or a pond's bank reaching the outline), rock from the block's
+/// top up to just under the lawn. Round k5: it stands flush with the block's front below it, and the
+/// lawn is carried out over it to that front with the lip's roll and a fringe of grass, as on a
+/// lawn-capped block. (It was a band at the outline, behind the block's front, so the block's top
+/// showed as a short stone shelf under a recessed band.)
+fn rim_skirt(mesh: &mut Mesh, outer: &Outline, field: &Field, colours: &StoneColours, face: &Face, front: &[Vec2], block_top: f32, fringe: &mut Fringe) {
     let n = outer.points.len();
-    let bottom = face.top - 0.28;
+    let bottom = block_top - 0.10;
     let count = (face.to + n - face.from) % n;
     const SUB: usize = 4;
-    let sample = |k: usize, t: f32| -> (Vec2, Vec2, f32) {
+    // How far along `o` from `p` the block's front lies (none if the ray misses it).
+    let to_front = |p: Vec2, o: Vec2| -> Option<f32> {
+        let mut best: Option<f32> = None;
+        for w in front.windows(2) {
+            let e = w[1] - w[0];
+            let denom = o.perp_dot(e);
+            if denom.abs() < 1e-5 {
+                continue;
+            }
+            let t = (w[0] - p).perp_dot(e) / denom;
+            let u = (w[0] - p).perp_dot(o) / denom;
+            if (-0.05..=1.05).contains(&u) && t > -0.6 && t < 1.5 && best.map_or(true, |b: f32| t.abs() < b.abs()) {
+                best = Some(t);
+            }
+        }
+        best
+    };
+    let sample = |k: usize, t: f32| -> (Vec2, Vec2, f32, f32) {
         let (a, b) = (outer.points[k % n], outer.points[(k + 1) % n]);
         let p = a.lerp(b, t);
-        let out = outer.outward[k % n].lerp(outer.outward[(k + 1) % n], t).normalize_or_zero();
-        (p, out, field.height_at(p) - 0.22)
+        let o = outer.outward[k % n].lerp(outer.outward[(k + 1) % n], t).normalize_or_zero();
+        let d = to_front(p, o).map_or(0.045, |t| (t + 0.004).max(0.045));
+        (p, o, field.height_at(p), d)
     };
+    let lawn_paint = Paint::new(Family::Ground).sky(1.0).line(0.35).id(1);
+    let tilt = [0.0_f32, 0.30, 0.55, 0.72];
     for step in 0..count {
         let k = face.from + step;
         for s in 0..SUB {
-            let (p0, o0, y0) = sample(k, s as f32 / SUB as f32);
-            let (p1, o1, y1) = sample(k, (s + 1) as f32 / SUB as f32);
-            if y0.max(y1) < bottom + 0.06 {
+            let (p0, o0, h0, d0) = sample(k, s as f32 / SUB as f32);
+            let (p1, o1, h1, d1) = sample(k, (s + 1) as f32 / SUB as f32);
+            if h0.max(h1) - 0.03 < block_top + 0.06 {
                 continue;
             }
-            let (y0, y1) = (y0.max(bottom), y1.max(bottom));
-            let (q0, q1) = (p0 + o0 * 0.045, p1 + o1 * 0.045);
-            let quad = [Vec3::new(q0.x, y0, q0.y), Vec3::new(q1.x, y1, q1.y), Vec3::new(q1.x, bottom, q1.y), Vec3::new(q0.x, bottom, q0.y)];
+            // The lawn's level over the skirt (never under the block's top).
+            let (y0, y1) = ((h0 - 0.03).max(block_top), (h1 - 0.03).max(block_top));
+            // Rings of the lawn: 0.15 m inside the outline, then the roll at the front edge.
+            let ring = |r: usize| -> [Vec3; 2] {
+                let (inset, drop) = LAWN_ROLL[r];
+                let (q0, q1) = (p0 + o0 * (d0 - inset), p1 + o1 * (d1 - inset));
+                [Vec3::new(q0.x, y0 - drop, q0.y), Vec3::new(q1.x, y1 - drop, q1.y)]
+            };
+            let nrm = |r: usize, o: Vec2| (Vec3::Y * (1.0 - tilt[r]) + Vec3::new(o.x, 0.0, o.y) * tilt[r]).normalize();
+            let col = |q: Vec3| crate::grass::lawn_ground(colours.lawn, Vec2::new(q.x, q.z));
+            let back = [Vec3::new(p0.x - o0.x * 0.15, y0, p0.y - o0.y * 0.15), Vec3::new(p1.x - o1.x * 0.15, y1, p1.y - o1.y * 0.15)];
+            let first = ring(0);
+            crate::field::tri_facing(mesh, [back[0], back[1], first[1]], [Vec3::Y; 3], [col(back[0]), col(back[1]), col(first[1])], [lawn_paint; 3]);
+            crate::field::tri_facing(mesh, [back[0], first[1], first[0]], [Vec3::Y; 3], [col(back[0]), col(first[1]), col(first[0])], [lawn_paint; 3]);
+            for r in 0..LAWN_ROLL.len() - 1 {
+                let (a, b) = (ring(r), ring(r + 1));
+                let (na, nb) = ([nrm(r, o0), nrm(r, o1)], [nrm(r + 1, o0), nrm(r + 1, o1)]);
+                crate::field::tri_facing(mesh, [a[0], a[1], b[1]], [na[0], na[1], nb[1]], [col(a[0]), col(a[1]), col(b[1])], [lawn_paint; 3]);
+                crate::field::tri_facing(mesh, [a[0], b[1], b[0]], [na[0], nb[1], nb[0]], [col(a[0]), col(b[1]), col(b[0])], [lawn_paint; 3]);
+            }
+            let mid = ring(1);
+            fringe.edges.push((mid[0], mid[1], (o0 + o1).normalize_or_zero()));
+            // The rock face, from under the roll down into the block's top.
+            let last = ring(LAWN_ROLL.len() - 1);
+            let (f0, f1) = (p0 + o0 * d0, p1 + o1 * d1);
+            let quad = [last[0], last[1], Vec3::new(f1.x, bottom, f1.y), Vec3::new(f0.x, bottom, f0.y)];
             let (n0, n1) = (Vec3::new(o0.x, 0.0, o0.y), Vec3::new(o1.x, 0.0, o1.y));
-            let lip = y0.max(y1) + 0.22;
+            let lip = y0.max(y1);
             let top = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(4).grad(0.0).lip(lip);
             let low = Paint::new(Family::Stone).sky(0.80).line(0.9).strokes(0.8).id(4).grad(0.3).lip(lip);
-            let (ct, cb) = (colours.face, colours.face.lerp(colours.cool, 0.15));
-            // Round k1: the skirt's lower edge rolls back under itself onto the block below (7 cm
-            // in, 7 cm down) instead of ending in a free edge whose ledge shadow read as a cut line.
-            let ease = 0.06_f32.min((y0.max(y1) - bottom) * 0.4);
-            let tilt = |n: Vec3, k: f32| (n - Vec3::Y * k).normalize();
-            let mid = [Vec3::new(q0.x, bottom + ease, q0.y), Vec3::new(q1.x, bottom + ease, q1.y)];
-            let under = [Vec3::new(q0.x - o0.x * 0.07, bottom - 0.07, q0.y - o0.y * 0.07), Vec3::new(q1.x - o1.x * 0.07, bottom - 0.07, q1.y - o1.y * 0.07)];
-            let (y0m, y1m) = (quad[0].y.max(mid[0].y), quad[1].y.max(mid[1].y));
-            let (t0, t1) = (Vec3::new(q0.x, y0m, q0.y), Vec3::new(q1.x, y1m, q1.y));
-            mesh.tri_full([t0, t1, mid[1]], [n0, n1, n1], [ct, ct, cb], [top, top, low]);
-            mesh.tri_full([t0, mid[1], mid[0]], [n0, n1, n0], [ct, cb, cb], [top, low, low]);
-            let (b0, b1) = (tilt(n0, 0.36), tilt(n1, 0.36));
-            mesh.tri_full([mid[0], mid[1], quad[2]], [n0, n1, b1], [cb; 3], [low; 3]);
-            mesh.tri_full([mid[0], quad[2], quad[3]], [n0, b1, b0], [cb; 3], [low; 3]);
-            let (u0, u1) = (tilt(n0, 1.0), tilt(n1, 1.0));
-            mesh.tri_full([quad[3], quad[2], under[1]], [b0, b1, u1], [cb; 3], [low; 3]);
-            mesh.tri_full([quad[3], under[1], under[0]], [b0, u1, u0], [cb; 3], [low; 3]);
+            let (ct, cb) = (colours.face, colours.face.lerp(colours.cool, 0.10));
+            crate::field::tri_facing(mesh, [quad[0], quad[1], quad[2]], [n0, n1, n1], [ct, ct, cb], [top, top, low]);
+            crate::field::tri_facing(mesh, [quad[0], quad[2], quad[3]], [n0, n1, n0], [ct, cb, cb], [top, low, low]);
         }
     }
 }
