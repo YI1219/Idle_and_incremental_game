@@ -243,7 +243,7 @@ fn hour_values(name: &str) -> Hour {
             root_mist: 0.96,
             fall: [0.58, 0.77, 0.81],
             near_gain: [0.70, 0.70, 0.70],
-            stone_gain: [0.90, 0.90, 0.95],
+            stone_gain: [1.26, 1.26, 1.40],
         },
         // Godot capture "night" (day progress 0.02): moonlight as recorded; backdrop from the 子 keyframe, lifted toward the captured frame.
         "night" => Hour {
@@ -282,7 +282,7 @@ fn hour_values(name: &str) -> Hour {
             root_mist: 0.96,
             fall: [0.574, 0.719, 0.695],
             near_gain: [0.72, 0.72, 0.72],
-            stone_gain: [1.25, 1.0, 0.85],
+            stone_gain: [1.56, 1.18, 0.93],
         },
         // Godot capture "day" (day progress 0.29) and terrain_environment.gd's day keyframe.
         _ => Hour {
