@@ -375,12 +375,372 @@ pub fn build_hull(field: &Field, colours: &StoneColours, seed: u32, grid: f32, h
     mesh
 }
 
+/// Round k1: a point of a block's plan after its corners are rounded.
+#[derive(Clone, Copy)]
+struct RingPt {
+    p: Vec2,
+    /// Shading normal (horizontal, outward).
+    n: Vec2,
+    /// For a point on a rounded corner: the plan corner it replaces, that corner's mitre and the
+    /// arc's radius (an inset deeper than the radius collapses onto the mitre point). Otherwise
+    /// `corner` is the point itself, `mitre` its own inset direction and `radius` 0.
+    corner: Vec2,
+    mitre: Vec2,
+    radius: f32,
+    /// The arc's own radial direction (the shading normal `n` may turn less, see `CornerTurn`).
+    radial: Vec2,
+    /// Up to 1 in the middle of a convex arc (worn lightening), -1 at a concave corner.
+    wear: f32,
+}
+
+impl RingPt {
+    /// The point moved inward by `h` (the inner edge of the top's roll).
+    fn inset(&self, h: f32) -> Vec2 {
+        if self.radius > 0.0 && h > self.radius {
+            self.corner - self.mitre * h
+        } else if self.radius > 0.0 {
+            self.p - self.radial * h
+        } else {
+            self.p - self.mitre * h
+        }
+    }
+}
+
+/// Round k1: a rounded corner whose shading normal turns only `frac` of the way from the front's
+/// normal toward the end side's (a block end standing out into a narrow V beside its neighbour,
+/// see `rim_junction`). `front_incoming`: the front is the edge that arrives at the corner.
+#[derive(Clone, Copy)]
+struct CornerTurn {
+    at: Vec2,
+    frac: f32,
+    front_incoming: bool,
+}
+
+/// The vector that moves both edges at a corner (outward normals n0, n1) outward by 1 m.
+fn mitre_of(n0: Vec2, n1: Vec2) -> Vec2 {
+    (n0 + n1) / (1.0 + n0.dot(n1)).max(0.25)
+}
+
+/// Round k1: a plan (outside on the left of each edge seen from above, so an edge's outward normal
+/// is (d.y, -d.x)) with every convex corner turning by 12 degrees or more replaced by a circular
+/// arc of `segments` pieces whose normals turn smoothly from one side's to the other's; its radius
+/// is `radius(corner)`, less where an edge is too short. A concave corner keeps its point, shaded
+/// with the mean of its sides' normals over 0.15 m either side (a soft junction, not a crease).
+/// A gentler corner keeps its point with the mean normal.
+fn rounded_ring(plan: &[Vec2], edges: &Edges, segments: usize) -> Vec<RingPt> {
+    let mut pts: Vec<Vec2> = Vec::with_capacity(plan.len());
+    for &p in plan {
+        if pts.last().map_or(true, |q: &Vec2| (p - *q).length() > 0.01) {
+            pts.push(p);
+        }
+    }
+    while pts.len() > 3 && (pts[0] - pts[pts.len() - 1]).length() <= 0.01 {
+        pts.pop();
+    }
+    let n = pts.len();
+    let mut ring = Vec::with_capacity(n * (segments + 1));
+    for k in 0..n {
+        let (prev, p, next) = (pts[(k + n - 1) % n], pts[k], pts[(k + 1) % n]);
+        let (l0, l1) = ((p - prev).length(), (next - p).length());
+        let (d0, d1) = ((p - prev) / l0, (next - p) / l1);
+        let (n0, n1) = (Vec2::new(d0.y, -d0.x), Vec2::new(d1.y, -d1.x));
+        let theta = d0.dot(d1).clamp(-1.0, 1.0).acos();
+        let convex = n0.dot(d1) < 0.0;
+        let m = mitre_of(n0, n1);
+        let plain = |q: Vec2, nn: Vec2, mm: Vec2, wear: f32| RingPt { p: q, n: nn, corner: q, mitre: mm, radius: 0.0, radial: nn, wear };
+        if theta < 12.0_f32.to_radians() {
+            ring.push(plain(p, (n0 + n1).normalize_or_zero(), m, 0.0));
+        } else if !convex {
+            let s = 0.15_f32.min(0.3 * l0).min(0.3 * l1);
+            ring.push(plain(p - d0 * s, n0, n0, 0.0));
+            ring.push(plain(p, (n0 + n1).normalize_or_zero(), m, -1.0));
+            ring.push(plain(p + d1 * s, n1, n1, 0.0));
+        } else {
+            let half = (theta * 0.5).tan().max(1e-3);
+            let t = (edges.radius(p) * half).min(0.45 * l0).min(0.45 * l1);
+            let r = t / half;
+            let centre = p - d0 * t - n0 * r;
+            let sign = if n0.perp_dot(n1) >= 0.0 { 1.0 } else { -1.0 };
+            let turn = edges.turn.iter().find(|c| (c.at - p).length() < 1e-3).copied();
+            for s in 0..=segments {
+                let f = s as f32 / segments as f32;
+                let nn = rotate(n0, sign * theta * f);
+                let shade = match turn {
+                    Some(c) if c.front_incoming => rotate(n0, sign * theta * f * c.frac),
+                    Some(c) => rotate(n1, -sign * theta * (1.0 - f) * c.frac),
+                    None => nn,
+                };
+                let wear = (std::f32::consts::PI * f).sin() * turn.map_or(1.0, |c| c.frac);
+                ring.push(RingPt { p: centre + nn * r, n: shade, corner: p, mitre: m, radius: r, radial: nn, wear });
+            }
+        }
+    }
+    ring
+}
+
+/// The normal of a block's side at a ring point: horizontal along the ring, following the side's
+/// lean from `head` down to `foot`.
+fn side_normal(n: Vec2, head: Vec3, foot: Vec3) -> Vec3 {
+    let out = Vec3::new(n.x, 0.0, n.y);
+    let along = Vec3::new(-n.y, 0.0, n.x);
+    let normal = along.cross(foot - head).normalize_or_zero();
+    if normal == Vec3::ZERO {
+        out
+    } else if normal.dot(out) < 0.0 {
+        -normal
+    } else {
+        normal
+    }
+}
+
+/// The upward normal of a height function at a point.
+fn height_normal(top: &dyn Fn(Vec2) -> f32, p: Vec2) -> Vec3 {
+    let e = 0.05;
+    let gx = (top(p + Vec2::X * e) - top(p - Vec2::X * e)) / (2.0 * e);
+    let gz = (top(p + Vec2::Y * e) - top(p - Vec2::Y * e)) / (2.0 * e);
+    Vec3::new(-gx, 1.0, -gz).normalize()
+}
+
+/// Round k1: how a block's edges are rounded. `corner` is the radius range of its vertical edges
+/// (a world-anchored hash picks one per corner), `roll` the reach of the rounded edge along its
+/// top (0: a sharp top edge), `crown` fills the top with a small grid shaded by the height
+/// function's own normals (a buttress slab's sloped top) instead of a flat fan.
+#[derive(Clone)]
+struct Edges {
+    corner: (f32, f32),
+    roll: f32,
+    crown: bool,
+    salt: u32,
+    /// Corners whose shading turns less than the geometry (see `CornerTurn`).
+    turn: Vec<CornerTurn>,
+}
+
+impl Edges {
+    fn radius(&self, p: Vec2) -> f32 {
+        let h = hash2((p.x * 2.7 + 0.31).floor() as i32, (p.y * 2.7 + 0.53).floor() as i32, self.salt);
+        self.corner.0 + (self.corner.1 - self.corner.0) * h
+    }
+}
+
+fn rotate(v: Vec2, angle: f32) -> Vec2 {
+    let (s, c) = angle.sin_cos();
+    Vec2::new(c * v.x - s * v.y, s * v.x + c * v.y)
+}
+
+/// How far from a convex corner `rounded_ring` starts its arc along both edges (d0 arrives at the
+/// corner, d1 leaves it, l0 and l1 the edges' lengths).
+fn corner_cut(edges: &Edges, p: Vec2, d0: Vec2, d1: Vec2, l0: f32, l1: f32) -> f32 {
+    let theta = d0.dot(d1).clamp(-1.0, 1.0).acos();
+    (edges.radius(p) * (theta * 0.5).tan().max(1e-3)).min(0.45 * l0).min(0.45 * l1)
+}
+
+/// Round k1: a rim block, planned before it is built.
+struct RimBlock {
+    plan: Vec<Vec2>,
+    b_index: usize,
+    cap: f32,
+    bottom: f32,
+    tilt: Vec2,
+    colour: Vec3,
+    id: u8,
+    lip: f32,
+    lawn: bool,
+    edges: Edges,
+}
+
+impl RimBlock {
+    /// Height of the top of the block's rock sides (under the stone cap's roll or the lawn's).
+    /// The top of the block's stone: its flat cap, or the top of its rock sides under a lawn cap.
+    fn top_surface(&self) -> f32 {
+        if self.lawn {
+            self.cap - LAWN_ROLL[LAWN_ROLL.len() - 1].1
+        } else {
+            self.cap
+        }
+    }
+
+    /// The block's corner at its first (a) or last (b) front end, and its front edge there (from,
+    /// to, in plan order).
+    fn front_end(&self, b_end: bool) -> (Vec2, Vec2, Vec2) {
+        let n = self.plan.len();
+        if b_end {
+            (self.plan[self.b_index], self.plan[(self.b_index + n - 1) % n], self.plan[self.b_index])
+        } else {
+            (self.plan[0], self.plan[0], self.plan[1])
+        }
+    }
+}
+
+/// Round k1: a concave fillet filling the V between a block's end and its neighbour's front.
+struct Filler {
+    /// The arc's points (from the end side to the front) and their shading normals.
+    pts: Vec<Vec2>,
+    normals: Vec<Vec2>,
+    /// The V's apex (the fillet's cap and foot fan from it).
+    apex: Vec2,
+    top: f32,
+    bottom: f32,
+    colour: Vec3,
+    id: u8,
+    lip: f32,
+}
+
+/// Round k1: the junction of two neighbouring rim blocks where `pro`'s end stands out in front of
+/// `other`'s front (`pro_left`: `pro` comes first along the rim, so its far front corner is the
+/// one at the junction). Returns the shading turn for `pro`'s corner there and, where the end
+/// stands out farther than its rounded corner reaches, a concave fillet across the V between its
+/// end side and `other`'s front. The narrower the V, the less the corner's shading turns toward
+/// the end side (a V under about 20 degrees is shaded as if the two fronts met in one rounded
+/// edge); a V of 85 degrees or more (a straight step forward) keeps the full rounded corner.
+fn rim_junction(pro: &RimBlock, other: &RimBlock, pro_left: bool) -> Option<(CornerTurn, Option<Filler>)> {
+    let np = pro.plan.len();
+    let no = other.plan.len();
+    if np < 4 || no < 4 {
+        return None;
+    }
+    // pro's corner P, its front direction (along the rim, plan order) and its end side (from P back).
+    let (p, q, front_from, front_incoming) = if pro_left {
+        (pro.plan[pro.b_index], pro.plan[(pro.b_index + 1) % np], pro.plan[(pro.b_index + np - 1) % np], true)
+    } else {
+        (pro.plan[0], pro.plan[np - 1], pro.plan[1], false)
+    };
+    let (l_end, l_front) = ((q - p).length(), (front_from - p).length());
+    if l_end < 0.05 || l_front < 0.05 {
+        return None;
+    }
+    let d_end = (q - p) / l_end;
+    // other's front edge e0 -> e1 in plan order; its outward normal.
+    let (e0, e1) = if pro_left { (other.plan[0], other.plan[1]) } else { (other.plan[(other.b_index + no - 1) % no], other.plan[other.b_index]) };
+    let le = (e1 - e0).length();
+    if le < 0.05 {
+        return None;
+    }
+    let de = (e1 - e0) / le;
+    let nf = Vec2::new(de.y, -de.x);
+    // P must stand out in front of other's front.
+    if (p - e0).dot(nf) < 0.03 {
+        return None;
+    }
+    // Where pro's end side crosses other's front line.
+    let denom = d_end.perp_dot(de);
+    if denom.abs() < 1e-3 {
+        return None;
+    }
+    let s = (e0 - p).perp_dot(de) / denom;
+    let u = (e0 - p).perp_dot(d_end) / denom;
+    if s < 0.02 || s > l_end - 0.02 || u < -0.3 || u > le + 0.3 {
+        return None;
+    }
+    let v = p + d_end * s;
+    // pro's front normal, and its end side's outward normal (plan order).
+    let (n_front, n_end) = if front_incoming {
+        let d = (p - front_from) / l_front;
+        (Vec2::new(d.y, -d.x), Vec2::new(d_end.y, -d_end.x))
+    } else {
+        let d = (front_from - p) / l_front;
+        let de2 = -d_end;
+        (Vec2::new(d.y, -d.x), Vec2::new(de2.y, -de2.x))
+    };
+    let ray1 = -d_end;
+    let ray2 = if de.dot(n_end) > 0.0 { de } else { -de };
+    let alpha = ray1.dot(ray2).clamp(-1.0, 1.0).acos();
+    if alpha > 150.0_f32.to_radians() {
+        return None;
+    }
+    // A small step reads as a joint in one cliff, not as a free corner: the corner turns its shading
+    // only as far as the step is deep (fully from 0.3 m).
+    let step = (p - e0).dot(nf);
+    let frac = smoothstep(20.0_f32.to_radians(), 85.0_f32.to_radians(), alpha) * (0.15 + 0.85 * smoothstep(0.03, 0.30, step));
+    let turn = CornerTurn { at: p, frac, front_incoming };
+    // Where pro's rounded corner ends on its end side.
+    let (d0, d1, l0, l1) = if front_incoming { ((p - front_from) / l_front, d_end, l_front, l_end) } else { (-d_end, (front_from - p) / l_front, l_end, l_front) };
+    let cut = corner_cut(&pro.edges, p, d0, d1, l0, l1);
+    if s <= cut + 0.03 {
+        return Some((turn, None));
+    }
+    // The room along other's front from the V to its far end.
+    let room = if ray2.dot(de) > 0.0 { le - u } else { u };
+    let reach = (s - cut).min(0.6).min(room - 0.05);
+    if reach < 0.03 {
+        return Some((turn, None));
+    }
+    let a = v + ray1 * reach;
+    let b = v + ray2 * reach;
+    let half = alpha * 0.5;
+    let bis = (ray1 + ray2).normalize_or_zero();
+    let centre = v + bis * (reach / half.cos().max(0.05));
+    let rf = reach * half.tan();
+    // The shading normal where pro's corner ends: its front normal turned `frac` of the way.
+    let sign = if n_front.perp_dot(n_end) >= 0.0 { 1.0 } else { -1.0 };
+    let n_a = rotate(n_front, sign * n_front.dot(n_end).clamp(-1.0, 1.0).acos() * frac);
+    const SEG: usize = 4;
+    let (ua, ub) = ((a - centre) / rf.max(1e-4), (b - centre) / rf.max(1e-4));
+    let sweep = ua.perp_dot(ub).atan2(ua.dot(ub));
+    let mut pts = Vec::with_capacity(SEG + 1);
+    let mut normals = Vec::with_capacity(SEG + 1);
+    for k in 0..=SEG {
+        let f = k as f32 / SEG as f32;
+        pts.push(centre + rotate(ua, sweep * f) * rf);
+        normals.push(n_a.lerp(nf, f).normalize_or_zero());
+    }
+    let filler = Filler {
+        pts,
+        normals,
+        apex: v,
+        top: pro.top_surface().min(other.top_surface()) - 0.005,
+        bottom: pro.bottom.max(other.bottom) + 0.5,
+        colour: (pro.colour + other.colour) * 0.5,
+        id: pro.id,
+        lip: pro.lip.max(other.lip),
+    };
+    Some((turn, Some(filler)))
+}
+
+/// Round k1: a junction's fillet, from its cap down to its foot, with a gentle baked contact shade
+/// deepest in the middle of the fillet.
+fn emit_filler(mesh: &mut Mesh, f: &Filler, colours: &StoneColours) {
+    let n = f.pts.len();
+    let low = f.colour.lerp(colours.under, 0.18);
+    let at = |k: usize, y: f32| Vec3::new(f.pts[k].x, y, f.pts[k].y);
+    let deep = |k: usize| (std::f32::consts::PI * k as f32 / (n - 1) as f32).sin();
+    let paint = |k: usize, grad: f32| {
+        let sky = if grad < 0.5 { 1.0 - 0.14 * deep(k) } else { 0.86 - 0.10 * deep(k) };
+        Paint::new(Family::Stone).sky(sky).line(1.0).strokes(1.0).id(f.id).grad(grad).lip(f.lip)
+    };
+    for k in 0..n - 1 {
+        let k2 = k + 1;
+        let (na, nb) = (Vec3::new(f.normals[k].x, 0.0, f.normals[k].y), Vec3::new(f.normals[k2].x, 0.0, f.normals[k2].y));
+        let (ta, tb) = (1.0 - 0.04 * deep(k), 1.0 - 0.04 * deep(k2));
+        let q = [at(k, f.top), at(k2, f.top), at(k2, f.bottom), at(k, f.bottom)];
+        crate::field::tri_facing(mesh, [q[0], q[1], q[2]], [na, nb, nb], [f.colour * ta, f.colour * tb, low * tb], [paint(k, 0.0), paint(k2, 0.0), paint(k2, 1.0)]);
+        crate::field::tri_facing(mesh, [q[0], q[2], q[3]], [na, nb, na], [f.colour * ta, low * tb, low * ta], [paint(k, 0.0), paint(k2, 1.0), paint(k, 1.0)]);
+    }
+    // The cap and the foot: fans from the V's apex.
+    let pc = Paint::new(Family::Stone).sky(1.0).line(1.0).strokes(0.5).id(f.id).grad(0.0);
+    let pf = Paint::new(Family::Stone).sky(0.5).line(1.0).strokes(1.0).id(f.id).grad(1.0);
+    let (apex_t, apex_b) = (Vec3::new(f.apex.x, f.top, f.apex.y), Vec3::new(f.apex.x, f.bottom, f.apex.y));
+    for k in 0..n - 1 {
+        crate::field::tri_facing(mesh, [apex_t, at(k, f.top), at(k + 1, f.top)], [Vec3::Y; 3], [f.colour; 3], [pc; 3]);
+        crate::field::tri_facing(mesh, [apex_b, at(k, f.bottom), at(k + 1, f.bottom)], [Vec3::NEG_Y; 3], [low; 3], [pf; 3]);
+    }
+}
+
+/// Worn lightening on a convex rounded edge, soft shade at a concave corner (baked into the colour).
+fn wear_tone(wear: f32) -> f32 {
+    1.0 + 0.035 * wear.max(0.0) - 0.05 * (-wear).max(0.0)
+}
+
 /// A hanging column: an n-sided prism whose foot is a single tilted cut and
 /// whose sides lean inward as they descend. The first `front` plan edges are the block's
 /// visible front (their ends and the two side faces after them sit in the joins with the
 /// neighbouring blocks and are darkened there); `lip` is the lawn lip above it, for the brow.
+/// Round k1: its vertical edges are rounded (0.15 to 0.22 m, two pieces), as a rim face's are.
 #[allow(clippy::too_many_arguments)]
 fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, taper: f32, tilt: Vec2, colour: Vec3, colours: &StoneColours, id: u8, tier: f32, ledge: bool, front: usize, lip: Option<f32>) {
+    if front == 0 {
+        rounded_column(mesh, plan, top, depth, lean_to, taper, tilt, colour, colours, id, tier, ledge, lip);
+        return;
+    }
     let n = plan.len();
     // Arc position of each front plan point, and the front's width.
     let mut along = vec![0.0_f32; n];
@@ -470,44 +830,118 @@ fn column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, t
     }
 }
 
-/// Round r8: one tall vertical block, as the Godot baseline's cliff faces are: a prism whose sides
-/// run straight down from the cap (no taper, no waist, no bedding step), whose sharp corners carry
-/// a narrow chamfer (the light bevel on the reference's vertical edges), capped flat at the top,
-/// its foot cut on a tilted plane far down in the root mist. `plan` runs with the block's outside
-/// on the left of each edge seen from above (the order `column` uses).
+/// Round k1: `column` without a front (the second tier under the island), its vertical edges
+/// rounded. The same rings, colours and caps as before; the old softened arris (a quarter of the
+/// neighbouring face's normal) is replaced by real arcs with smooth normals.
 #[allow(clippy::too_many_arguments)]
-fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom: f32, tilt: Vec2, shift: Vec2, colour: Vec3, colours: &StoneColours, id: u8, lip: Option<f32>, cap_warm: f32, wide: (&[usize], f32, Vec2), lawn: Option<(Vec3, &Field)>, fringe: &mut Fringe) {
-    let n0 = plan.len();
-    // Chamfer every corner that turns by more than 25 degrees; the corners listed in `wide` take a
-    // broader rounded bevel of `wide.1` (round r10: a rim block's front corners, see the caller).
-    // `wide.2` is the block's outward direction: a broad bevel is shaded as a shallow rounded edge,
-    // its normal turning from the front face's only a third of the way to the end side's.
-    let mut ring: Vec<Vec2> = Vec::with_capacity(n0 * 2);
-    // Whether the side from ring[k] to ring[k + 1] is a chamfer: 0 no, 1 narrow, 2 broad.
-    let mut soft: Vec<u8> = Vec::with_capacity(n0 * 2);
-    for k in 0..n0 {
-        let (prev, p, next) = (plan[(k + n0 - 1) % n0], plan[k], plan[(k + 1) % n0]);
-        let (d0, d1) = ((prev - p).normalize_or_zero(), (next - p).normalize_or_zero());
-        let turn = 180.0 - d0.dot(d1).clamp(-1.0, 1.0).acos().to_degrees();
-        if turn > 25.0 {
-            let size = if wide.0.contains(&k) { wide.1 } else { 0.075 };
-            let c = size.min((prev - p).length() * 0.3).min((next - p).length() * 0.3);
-            ring.push(p + d0 * c);
-            soft.push(if wide.0.contains(&k) { 2 } else { 1 });
-            ring.push(p + d1 * c);
-            soft.push(0);
-        } else {
-            ring.push(p);
-            soft.push(0);
+fn rounded_column(mesh: &mut Mesh, plan: &[Vec2], top: f32, depth: f32, lean_to: Vec2, taper: f32, tilt: Vec2, colour: Vec3, colours: &StoneColours, id: u8, tier: f32, ledge: bool, lip: Option<f32>) {
+    let centre = plan.iter().copied().sum::<Vec2>() / plan.len() as f32;
+    let pivot = centre.lerp(lean_to, 0.5);
+    // Two pieces per corner (they hang in the root mist; three cost a third more for nothing seen).
+    let edges = Edges { corner: (0.15, 0.22), roll: 0.0, crown: false, salt: 0xC01 ^ id as u32, turn: Vec::new() };
+    let ring = rounded_ring(plan, &edges, 2);
+    let n = ring.len();
+    let foot: Vec<Vec3> = ring
+        .iter()
+        .map(|r| {
+            let q = pivot + (r.p - pivot) * taper;
+            Vec3::new(q.x, top - depth + (q - centre).dot(tilt), q.y)
+        })
+        .collect();
+    let head: Vec<Vec3> = ring.iter().map(|r| Vec3::new(r.p.x, top, r.p.y)).collect();
+    let paint = |grad: f32, sky: f32| {
+        let p = Paint::new(Family::Stone).sky(sky).line(1.0).strokes(1.0).id(id).grad(grad);
+        match lip {
+            Some(y) => p.lip(y),
+            None => p,
+        }
+    };
+    let salt = (centre.x * 7.3 + centre.y * 3.1).floor() as i32;
+    let at = 0.30 + 0.34 * hash2(salt, id as i32, 401);
+    let waist: Vec<Vec3> = (0..n).map(|k| head[k].lerp(foot[k], at)).collect();
+    let (c0, c1, c2) = (colour * 0.97, colour.lerp(colours.cool, 0.10), colour.lerp(colours.under, 0.25 + 0.30 * tier));
+    let tone = |g: f32| if g < 0.45 { c0.lerp(c1, g / 0.45) } else { c1.lerp(c2, (g - 0.45) / 0.55) };
+    let sky = |g: f32| (1.0 - 0.22 * tier) * (1.0 - 0.18 * g);
+    let normals: Vec<Vec3> = (0..n).map(|k| side_normal(ring[k].n, head[k], foot[k])).collect();
+    let rings: [(&Vec<Vec3>, f32); 3] = [(&head, 0.0), (&waist, at), (&foot, 1.0)];
+    for r in 0..rings.len() - 1 {
+        let ((a, ga), (b, gb)) = (rings[r], rings[r + 1]);
+        let (pa, pb) = (paint(ga, sky(ga)), paint(gb, sky(gb)));
+        for k in 0..n {
+            let k2 = (k + 1) % n;
+            let (w0, w1) = (wear_tone(ring[k].wear), wear_tone(ring[k2].wear));
+            let (na, nb) = (normals[k], normals[k2]);
+            mesh.tri_full([a[k], a[k2], b[k2]], [na, nb, nb], [tone(ga) * w0, tone(ga) * w1, tone(gb) * w1], [pa, pa, pb]);
+            mesh.tri_full([a[k], b[k2], b[k]], [na, nb, na], [tone(ga) * w0, tone(gb) * w1, tone(gb) * w0], [pa, pb, pb]);
         }
     }
+    let foot_centre = foot.iter().copied().sum::<Vec3>() / n as f32;
+    for k in 0..n {
+        mesh.tri(foot_centre, foot[k], foot[(k + 1) % n], colour.lerp(colours.under, 0.8), paint(1.0, 0.5));
+    }
+    let head_centre = head.iter().copied().sum::<Vec3>() / n as f32;
+    let cap = if ledge { colour.lerp(colours.warm, 0.25) } else { colour };
+    for k in 0..n {
+        let paint = Paint::new(Family::Stone).sky(1.0).line(1.0).strokes(0.5).id(id);
+        mesh.tri_full([head_centre, head[(k + 1) % n], head[k]], [Vec3::Y; 3], [cap; 3], [paint; 3]);
+    }
+}
+
+/// Round r8: one tall vertical block, as the Godot baseline's cliff faces are: a prism whose sides
+/// run straight down from the cap (no taper, no waist, no bedding step), capped at the top, its
+/// foot cut on a tilted plane far down in the root mist. `plan` runs with the block's outside on
+/// the left of each edge seen from above (the order `column` uses).
+///
+/// Round k1 (the owner: edges too sharp, the slab top's crease reads as a cut): every convex
+/// vertical edge is a real rounded edge (`Edges::corner`, three pieces, normals turning smoothly
+/// from one side's to the other's), a concave corner is shaded across softly, and unless a lawn
+/// cap covers it the top edge rolls over: a curve of three pieces from the side, `Edges::roll`
+/// under the edge, to the top, `roll` in from the edge, tangent to both, its normals turning from
+/// the side's to the top's. Where a vertical edge meets the top the roll closes on the corner, so
+/// three edges meet in one rounded corner. The rounded edges carry a slight worn lightening.
+/// With `Edges::crown` the top is a small grid of rings shaded by the height function's own normals
+/// (one surface, no crease); otherwise a flat fan.
+#[allow(clippy::too_many_arguments)]
+fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom: f32, tilt: Vec2, shift: Vec2, colour: Vec3, colours: &StoneColours, id: u8, lip: Option<f32>, cap_warm: f32, edges: Edges, lawn: Option<(Vec3, &Field)>, fringe: &mut Fringe) {
+    let ring = rounded_ring(plan, &edges, 3);
     let n = ring.len();
-    let centre = ring.iter().copied().sum::<Vec2>() / n as f32;
+    if n < 3 {
+        return;
+    }
+    let centre = ring.iter().map(|r| r.p).sum::<Vec2>() / n as f32;
     // Round r10d: a lawn cap (a rim block standing forward of the lawn's outline) carries the lawn
     // out to its edges and rolls it over them; the rock sides start under the roll.
     let roll_drop = if lawn.is_some() { LAWN_ROLL[LAWN_ROLL.len() - 1].1 } else { 0.0 };
-    let head: Vec<Vec3> = ring.iter().map(|p| Vec3::new(p.x, top(*p) - roll_drop, p.y)).collect();
-    let foot: Vec<Vec3> = ring.iter().map(|p| Vec3::new(p.x + shift.x, bottom + (*p - centre).dot(tilt), p.y + shift.y)).collect();
+    let top_at = |p: Vec2| top(p) - roll_drop;
+    let reach = if lawn.is_some() { 0.0 } else { edges.roll };
+    // Per ring point: the edge's corner (on the top, over the plan), the roll's inner end (on the
+    // top, `reach` in) and the side's top (under the corner by about the roll's length).
+    let edge_pt: Vec<Vec3> = ring.iter().map(|r| Vec3::new(r.p.x, top_at(r.p), r.p.y)).collect();
+    // The roll's tangent length at each point: `reach` on a square edge, less on an obtuse one
+    // (radius x tan(turn / 2)), so a slab's front edge, where a top falling 34 to 48 degrees meets
+    // the front, rounds with the same radius instead of turning into a long soft shoulder.
+    let tangent: Vec<f32> = ring
+        .iter()
+        .map(|r| {
+            if reach <= 0.0 {
+                return 0.0;
+            }
+            let side = Vec3::new(r.n.x, 0.0, r.n.y);
+            let turn = side.dot(height_normal(&top_at, r.p)).clamp(-1.0, 1.0).acos().clamp(20.0_f32.to_radians(), 110.0_f32.to_radians());
+            reach * (turn * 0.5).tan()
+        })
+        .collect();
+    let inner: Vec<Vec3> = ring
+        .iter()
+        .zip(&tangent)
+        .map(|(r, &t)| {
+            // Measured along the top: horizontally a little less where the top slopes.
+            let q = r.inset(t * height_normal(&top_at, r.p).y);
+            Vec3::new(q.x, top_at(q), q.y)
+        })
+        .collect();
+    let head: Vec<Vec3> = (0..n).map(|k| edge_pt[k] - Vec3::Y * tangent[k]).collect();
+    let foot: Vec<Vec3> = ring.iter().map(|r| Vec3::new(r.p.x + shift.x, bottom + (r.p - centre).dot(tilt), r.p.y + shift.y)).collect();
     let paint = |grad: f32, sky: f32| {
         let p = Paint::new(Family::Stone).sky(sky).line(1.0).strokes(1.0).id(id).grad(grad);
         match lip {
@@ -516,55 +950,116 @@ fn tall_block(mesh: &mut Mesh, plan: &[Vec2], top: &dyn Fn(Vec2) -> f32, bottom:
         }
     };
     let low = colour.lerp(colours.under, 0.18);
-    let normals: Vec<Vec3> = (0..n).map(|k| (head[(k + 1) % n] - head[k]).cross(foot[k] - head[k]).normalize_or_zero()).collect();
+    // The sides' normals: horizontal direction from the rounded ring (smooth round a corner), the
+    // tilt from the faces themselves (head edge across, head to foot down), as before round k1. A
+    // leaning slab's front is a twisted quad (sloped top, level foot); a tilt taken from each
+    // vertical line alone lifted its low shoulder's normal and lit the whole front like its top.
+    let face: Vec<Vec3> = (0..n).map(|k| (head[(k + 1) % n] - head[k]).cross(foot[k] - head[k]).normalize_or_zero()).collect();
+    let side_n: Vec<Vec3> = (0..n)
+        .map(|k| {
+            let r = &ring[k];
+            let (prev, next) = (face[(k + n - 1) % n], face[k]);
+            let same_arc = |o: &RingPt| o.radius > 0.0 && (o.corner - r.corner).length() < 1e-4;
+            // An arc's end takes the flat side's normal; any other point the mean of its two pieces.
+            let a = if r.radius > 0.0 && r.wear.abs() < 1e-4 {
+                if same_arc(&ring[(k + n - 1) % n]) { next } else { prev }
+            } else {
+                (prev + next).normalize_or_zero()
+            };
+            let g = a.y / Vec2::new(a.x, a.z).length().max(1e-3);
+            let out = Vec3::new(r.n.x, g.clamp(-2.0, 2.0), r.n.y).normalize_or_zero();
+            if out == Vec3::ZERO { side_normal(r.n, head[k], foot[k]) } else { out }
+        })
+        .collect();
+    let wear: Vec<f32> = ring.iter().map(|r| wear_tone(r.wear)).collect();
+    let (pt, pb) = (paint(0.0, 1.0), paint(1.0, 0.86));
     for k in 0..n {
         let k2 = (k + 1) % n;
-        let normal = normals[k];
-        if normal == Vec3::ZERO {
-            continue;
-        }
-        // Round r10: a chamfer is shaded as a rounded edge, its normal turning from one neighbouring
-        // face's to the other's. Lit flat, the chamfer at a rim face's end turned away from the sun
-        // and read as a black hairline between two faces. A broad bevel (a rim block's front corner,
-        // where it may stand proud of its neighbour) turns only a third of the way from the front
-        // face toward the end side: with the full turn, the bevel's middle faced away from the sun,
-        // took the corner's occlusion as well and still read as a dark line.
-        let (prev, next) = (normals[(k + n - 1) % n], normals[k2]);
-        let (na, nb) = match soft[k] {
-            // Round r10d: half way between the chamfer's own normal and each neighbour's. With the
-            // neighbours' own normals, the chamfer at a block's back corner (where a pulled-back end
-            // or a thin block shows it) took the back side's normal, turned from sun and camera,
-            // and read as a black line between the block and a terrace wall.
-            1 => ((prev + normal).normalize_or_zero(), (next + normal).normalize_or_zero()),
-            2 => {
-                let out = Vec3::new(wide.2.x, 0.0, wide.2.y);
-                let (front, side) = if prev.dot(out) >= next.dot(out) { (prev, next) } else { (next, prev) };
-                let partial = front.lerp(side, 0.33).normalize_or_zero();
-                if front == prev { (front, partial) } else { (partial, front) }
-            }
-            _ => (normal, normal),
-        };
-        let (pt, pb) = (paint(0.0, 1.0), paint(1.0, 0.86));
-        mesh.tri_full([head[k], head[k2], foot[k2]], [na, nb, nb], [colour, colour, low], [pt, pt, pb]);
-        mesh.tri_full([head[k], foot[k2], foot[k]], [na, nb, na], [colour, low, low], [pt, pb, pb]);
+        let (na, nb) = (side_n[k], side_n[k2]);
+        let (ca, cb, la, lb) = (colour * wear[k], colour * wear[k2], low * wear[k], low * wear[k2]);
+        mesh.tri_full([head[k], head[k2], foot[k2]], [na, nb, nb], [ca, cb, lb], [pt, pt, pb]);
+        mesh.tri_full([head[k], foot[k2], foot[k]], [na, nb, na], [ca, lb, la], [pt, pb, pb]);
     }
     let foot_centre = foot.iter().copied().sum::<Vec3>() / n as f32;
     for k in 0..n {
         mesh.tri(foot_centre, foot[k], foot[(k + 1) % n], colour.lerp(colours.under, 0.8), paint(1.0, 0.5));
     }
     if let Some((lawn, field)) = lawn {
-        lawn_cap(mesh, &ring, top, lawn, field, fringe);
+        let plan2: Vec<Vec2> = ring.iter().map(|r| r.p).collect();
+        lawn_cap(mesh, &plan2, top, lawn, field, fringe);
         return;
     }
-    // The cap: flat where it sits under the lawn, the sloped wedge top on a buttress slab.
-    let head_centre = head.iter().copied().sum::<Vec3>() / n as f32;
     let cap = colour.lerp(colours.warm, cap_warm);
-    for k in 0..n {
-        let (a, b) = (head[(k + 1) % n], head[k]);
-        let normal = (a - head_centre).cross(b - head_centre).normalize_or_zero();
-        let normal = if normal.y < 0.0 { -normal } else { normal };
-        let p = Paint::new(Family::Stone).sky(1.0).line(1.0).strokes(0.5).id(id).grad(0.0);
-        mesh.tri_full([head_centre, a, b], [normal; 3], [cap; 3], [p; 3]);
+    // The cap's paint carries no lip (as before); the roll's first piece is the side's.
+    let pc = Paint::new(Family::Stone).sky(1.0).line(1.0).strokes(0.5).id(id).grad(0.0);
+    let top_n: Vec<Vec3> = inner.iter().map(|q| height_normal(&top_at, Vec2::new(q.x, q.z))).collect();
+    let mut cap_ring = head.clone();
+    if reach > 0.0 {
+        // The roll: a quadratic curve from the side's top through the edge's corner to the inner end.
+        const ROWS: [f32; 4] = [0.0, 1.0 / 3.0, 2.0 / 3.0, 1.0];
+        let at = |k: usize, s: f32| head[k] * (1.0 - s) * (1.0 - s) + edge_pt[k] * 2.0 * s * (1.0 - s) + inner[k] * s * s;
+        let nrm = |k: usize, s: f32| (side_n[k] * (1.0 - s) + top_n[k] * s).normalize_or_zero();
+        let col = |k: usize, s: f32| {
+            let worn = if s > 0.0 && s < 1.0 { 1.035 } else { 1.0 };
+            if s >= 1.0 { cap * wear[k] } else { colour * wear[k] * worn }
+        };
+        for r in 0..ROWS.len() - 1 {
+            let (s0, s1) = (ROWS[r], ROWS[r + 1]);
+            let p = if r == 0 { pt } else { pc };
+            for k in 0..n {
+                let k2 = (k + 1) % n;
+                // Ordered as the sides are (upper edge first), so the roll faces out as they do.
+                let q = [at(k, s1), at(k2, s1), at(k2, s0), at(k, s0)];
+                let nn = [nrm(k, s1), nrm(k2, s1), nrm(k2, s0), nrm(k, s0)];
+                let cc = [col(k, s1), col(k2, s1), col(k2, s0), col(k, s0)];
+                mesh.tri_full([q[0], q[1], q[2]], [nn[0], nn[1], nn[2]], [cc[0], cc[1], cc[2]], [p; 3]);
+                mesh.tri_full([q[0], q[2], q[3]], [nn[0], nn[2], nn[3]], [cc[0], cc[2], cc[3]], [p; 3]);
+            }
+        }
+        cap_ring = inner.clone();
+    }
+    let ring_c = cap_ring.iter().map(|q| Vec2::new(q.x, q.z)).sum::<Vec2>() / n as f32;
+    if edges.crown {
+        // A small grid of rings toward the middle, each point on the height function and shaded by
+        // its normal, so the sloped top reads as one surface with a slight crown.
+        let scales = [1.0_f32, 0.66, 0.33];
+        let rings: Vec<Vec<(Vec3, Vec3)>> = scales
+            .iter()
+            .map(|&s| {
+                (0..n)
+                    .map(|k| {
+                        let q = ring_c + (Vec2::new(cap_ring[k].x, cap_ring[k].z) - ring_c) * s;
+                        let p3 = if s == 1.0 { cap_ring[k] } else { Vec3::new(q.x, top_at(q), q.y) };
+                        (p3, height_normal(&top_at, q))
+                    })
+                    .collect()
+            })
+            .collect();
+        for r in 0..rings.len() - 1 {
+            for k in 0..n {
+                let k2 = (k + 1) % n;
+                let (a, b, c, d) = (rings[r][k], rings[r][k2], rings[r + 1][k2], rings[r + 1][k]);
+                let (ca, cb) = (if r == 0 { cap * wear[k] } else { cap }, if r == 0 { cap * wear[k2] } else { cap });
+                mesh.tri_full([a.0, c.0, b.0], [a.1, c.1, b.1], [ca, cap, cb], [pc; 3]);
+                mesh.tri_full([a.0, d.0, c.0], [a.1, d.1, c.1], [ca, cap, cap], [pc; 3]);
+            }
+        }
+        let mid = Vec3::new(ring_c.x, top_at(ring_c), ring_c.y);
+        let mid_n = height_normal(&top_at, ring_c);
+        let last = &rings[rings.len() - 1];
+        for k in 0..n {
+            let (a, b) = (last[(k + 1) % n], last[k]);
+            mesh.tri_full([mid, a.0, b.0], [mid_n, a.1, b.1], [cap; 3], [pc; 3]);
+        }
+    } else {
+        // The flat cap under the lawn.
+        let hc = cap_ring.iter().copied().sum::<Vec3>() / n as f32;
+        for k in 0..n {
+            let (a, b) = (cap_ring[(k + 1) % n], cap_ring[k]);
+            let normal = (a - hc).cross(b - hc).normalize_or_zero();
+            let normal = if normal.y < 0.0 { -normal } else if normal == Vec3::ZERO { Vec3::Y } else { normal };
+            mesh.tri_full([hc, a, b], [normal; 3], [cap; 3], [pc; 3]);
+        }
     }
 }
 
@@ -662,7 +1157,9 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
     let mut columns = 0;
     let mut fringe = Fringe::default();
     if kind == Kind::Karst {
-        // Tier one: the rim faces, each the front of a hanging block.
+        // Tier one: the rim faces, each the front of a hanging block. Round k1: the blocks are planned
+        // first and built after their junctions are looked at (see `rim_junction`).
+        let mut blocks: Vec<RimBlock> = Vec::with_capacity(faces.len());
         for (index, face) in faces.iter().enumerate() {
             let chord = (face.b - face.a).normalize_or_zero();
             let out = Vec2::new(chord.y, -chord.x);
@@ -846,16 +1343,61 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let colour = colours.face * tone;
             // The foot: 7.6 to 9.4 m under the cap, cut a little out of level; it lies in the mist.
             let tilt = (-out) * (0.04 + 0.05 * h2) + chord * (h1 - 0.5) * 0.10;
-            // Round r10: the two front corners take a 0.20 m rounded bevel. Neighbouring blocks
-            // overlap 0.22 m along the rim and stand up to about 0.2 m forward or back of each other;
-            // with the narrow chamfer the forward block's end side showed in the step, turned from
-            // the sun, as a black hairline. The bevel spans the step and is shaded as a shallow rounded
-            // edge (see `tall_block`), so the joint reads as a soft
-            // rounded edge of shaded stone.
-            let corners = [0, b_index];
-            let lawn_colour = lawn.then_some((colours.lawn, field));
-            tall_block(&mut mesh, &plan, &|_| cap, face.top - 0.20 - 7.6 - 1.8 * h2, tilt, Vec2::ZERO, colour, colours, 100 + (index % 70) as u8, Some(face.top), 0.0, (&corners, 0.20, out), lawn_colour, &mut fringe);
+            // Round k1: every vertical edge is rounded, 0.12 to 0.22 m (it replaces round r10's flat
+            // 0.20 m bevel at the front corners, shaded a third of the way round); neighbouring
+            // blocks overlap 0.22 m along the rim and stand up to about 0.2 m forward or back of each
+            // other, so the forward block's rounded corner spans the step. The top edge of a stone
+            // cap rolls over 0.14 m (a lawn cap rolls the lawn over it instead).
+            let edges = Edges { corner: (0.12, 0.22), roll: 0.14, crown: false, salt: seed ^ 0x6B31, turn: Vec::new() };
+            blocks.push(RimBlock { plan, b_index, cap, bottom: face.top - 0.20 - 7.6 - 1.8 * h2, tilt, colour, id: 100 + (index % 70) as u8, lip: face.top, lawn, edges });
+        }
+        // Round k1: where one block's end stands out past its neighbour's front (a step forward, or a
+        // convex turn of the rim, where the two blocks' overlap left a narrow V-shaped slit that read
+        // as a black line), the slit is filled with a concave fillet and the corner is shaded softly.
+        let nb = blocks.len();
+        let mut fillers: Vec<Filler> = Vec::new();
+        for i in 0..nb {
+            let j = (i + 1) % nb;
+            if i == j {
+                continue;
+            }
+            // Each block's corner at the junction and how far it stands in front of the other's front.
+            let (ci, fi0, fi1) = blocks[i].front_end(true);
+            let (cj, fj0, fj1) = blocks[j].front_end(false);
+            let normal_of = |a: Vec2, b: Vec2| {
+                let d = (b - a).normalize_or_zero();
+                Vec2::new(d.y, -d.x)
+            };
+            let (off_i, off_j) = ((ci - fj0).dot(normal_of(fj0, fj1)), (cj - fi1).dot(normal_of(fi0, fi1)));
+            let step = off_i.max(off_j).max(0.0);
+            // The corner that stands back (or both, where the fronts are flush) turns its shading only
+            // as far as the step is deep: two fully rounded corners side by side made a dark groove.
+            let back_frac = 0.15 + 0.85 * smoothstep(0.10, 0.40, step);
+            if (ci - cj).length() > 0.8 {
+                continue;
+            }
+            if let Some((turn, filler)) = rim_junction(&blocks[i], &blocks[j], true) {
+                blocks[i].edges.turn.push(turn);
+                blocks[j].edges.turn.push(CornerTurn { at: cj, frac: back_frac, front_incoming: false });
+                fillers.extend(filler);
+            } else if let Some((turn, filler)) = rim_junction(&blocks[j], &blocks[i], false) {
+                blocks[j].edges.turn.push(turn);
+                blocks[i].edges.turn.push(CornerTurn { at: ci, frac: back_frac, front_incoming: true });
+                fillers.extend(filler);
+            } else if step < 0.10 {
+                let frac = 0.15 + 0.85 * smoothstep(0.03, 0.30, step);
+                blocks[i].edges.turn.push(CornerTurn { at: ci, frac, front_incoming: true });
+                blocks[j].edges.turn.push(CornerTurn { at: cj, frac, front_incoming: false });
+            }
+        }
+        for b in &blocks {
+            let lawn_colour = b.lawn.then_some((colours.lawn, field));
+            let cap = b.cap;
+            tall_block(&mut mesh, &b.plan, &|_| cap, b.bottom, b.tilt, Vec2::ZERO, b.colour, colours, b.id, Some(b.lip), 0.0, b.edges.clone(), lawn_colour, &mut fringe);
             columns += 1;
+        }
+        for f in &fillers {
+            emit_filler(&mut mesh, f, colours);
         }
         // Buttress slabs (Godot's shoulder groups): a few broad slabs standing against the wall,
         // each with one broad wedge top sloping out, its top well under the lawn's edge, standing a
@@ -902,13 +1444,27 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             // The wedge: the top also falls along the slab's length (16 to 30 degrees, either way), so
             // the front is a trapezoid with one high and one low shoulder.
             let along = (16.0 + 14.0 * s3).to_radians().tan() * if s4 < 0.5 { 1.0 } else { -1.0 };
-            let top = move |p: Vec2| back_top - ((p - base).dot(ahead)).max(0.0) * slope - ((p - centre).dot(across) + width * 0.5 * along.signum()) * along * 0.7;
+            // Round k1: the fold where the top meets the wall is eased over about 0.12 m (it lies at
+            // the wall's face), and the visible part of the top (from the wall out to the front)
+            // carries a slight crown, 3 to 6 cm at its middle, so it reads as one weathered surface.
+            let s5 = hash2(key.0, key.1, seed ^ 97);
+            let (crown, vis_mid, vis_half) = (0.03 + 0.03 * s5, wall + proud * 0.5, proud * 0.5 + 0.30);
+            let ease = |x: f32| 0.5 * (x + (x * x + 0.0144).sqrt());
+            let top = move |p: Vec2| {
+                let (u, v) = ((p - centre).dot(across) / (width * 0.5), ((p - centre).dot(ahead) - vis_mid) / vis_half);
+                back_top - ease((p - base).dot(ahead)) * slope - ((p - centre).dot(across) + width * 0.5 * along.signum()) * along * 0.7 + crown * (1.0 - u * u).max(0.0) * (1.0 - v * v).max(0.0)
+            };
             let height = 3.8 + 1.4 * s4;
             // Leaning against the wall: the foot stands 0.25 to 0.55 m farther out than the top, and
             // steps a little sideways.
             let lean = across * (s3 - 0.5) * 0.10 + ahead * (0.25 + 0.30 * s1);
             let colour = colours.face.lerp(colours.warm, 0.15) * (1.0 + (s1 - 0.5) * 0.05);
-            tall_block(&mut mesh, &plan, &top, back_top - height, Vec2::new(0.0, 0.0), lean, colour, colours, 30 + (i % 9) as u8, Some(face.top), 0.0, (&[], 0.0, Vec2::ZERO), None, &mut fringe);
+            // Round k1: vertical edges rounded 0.18 to 0.30 m, the top's edges 0.18 to 0.28 m.
+            let edges = Edges { corner: (0.18, 0.30), roll: 0.18 + 0.10 * hash2(key.0, key.1, seed ^ 98), crown: true, salt: seed ^ 0x5B1A, turn: Vec::new() };
+            if std::env::var("S34_BLOCKDBG").is_ok_and(|v| v == "slabs") {
+                println!("SLAB {} front {:?} {:?} out {:?} back_top {:.2} lawn {:.2}", 30 + i % 9, fa, fb, ahead, back_top, face.top);
+            }
+            tall_block(&mut mesh, &plan, &top, back_top - height, Vec2::new(0.0, 0.0), lean, colour, colours, 30 + (i % 9) as u8, Some(face.top), 0.0, edges, None, &mut fringe);
             columns += 1;
         }
         // Where the rim steps down (a terrace wall reaching the outline, a pond's bank), a face's
@@ -1002,8 +1558,22 @@ fn rim_skirt(mesh: &mut Mesh, outer: &Outline, field: &Field, colours: &StoneCol
             let top = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(4).grad(0.0).lip(lip);
             let low = Paint::new(Family::Stone).sky(0.80).line(0.9).strokes(0.8).id(4).grad(0.3).lip(lip);
             let (ct, cb) = (colours.face, colours.face.lerp(colours.cool, 0.15));
-            mesh.tri_full([quad[0], quad[1], quad[2]], [n0, n1, n1], [ct, ct, cb], [top, top, low]);
-            mesh.tri_full([quad[0], quad[2], quad[3]], [n0, n1, n0], [ct, cb, cb], [top, low, low]);
+            // Round k1: the skirt's lower edge rolls back under itself onto the block below (7 cm
+            // in, 7 cm down) instead of ending in a free edge whose ledge shadow read as a cut line.
+            let ease = 0.06_f32.min((y0.max(y1) - bottom) * 0.4);
+            let tilt = |n: Vec3, k: f32| (n - Vec3::Y * k).normalize();
+            let mid = [Vec3::new(q0.x, bottom + ease, q0.y), Vec3::new(q1.x, bottom + ease, q1.y)];
+            let under = [Vec3::new(q0.x - o0.x * 0.07, bottom - 0.07, q0.y - o0.y * 0.07), Vec3::new(q1.x - o1.x * 0.07, bottom - 0.07, q1.y - o1.y * 0.07)];
+            let (y0m, y1m) = (quad[0].y.max(mid[0].y), quad[1].y.max(mid[1].y));
+            let (t0, t1) = (Vec3::new(q0.x, y0m, q0.y), Vec3::new(q1.x, y1m, q1.y));
+            mesh.tri_full([t0, t1, mid[1]], [n0, n1, n1], [ct, ct, cb], [top, top, low]);
+            mesh.tri_full([t0, mid[1], mid[0]], [n0, n1, n0], [ct, cb, cb], [top, low, low]);
+            let (b0, b1) = (tilt(n0, 0.36), tilt(n1, 0.36));
+            mesh.tri_full([mid[0], mid[1], quad[2]], [n0, n1, b1], [cb; 3], [low; 3]);
+            mesh.tri_full([mid[0], quad[2], quad[3]], [n0, b1, b0], [cb; 3], [low; 3]);
+            let (u0, u1) = (tilt(n0, 1.0), tilt(n1, 1.0));
+            mesh.tri_full([quad[3], quad[2], under[1]], [b0, b1, u1], [cb; 3], [low; 3]);
+            mesh.tri_full([quad[3], under[1], under[0]], [b0, u1, u0], [cb; 3], [low; 3]);
         }
     }
 }

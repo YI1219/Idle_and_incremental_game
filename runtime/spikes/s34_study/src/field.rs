@@ -1515,6 +1515,50 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
                     }
                 }
                 // Each wall ray's piece within this grid cell, from the corner outward.
+                let high_ccw = |r: usize| {
+                    let u = jn.dirs[r];
+                    field.steps[jn.rays[r]].line_sd(jn.at + u * 0.2 + Vec2::new(-u.y, u.x) * 0.05) >= 0.0
+                };
+                // The angle of sector r (from ray r counter-clockwise to ray r + 1).
+                let span_of = |r: usize| {
+                    let (u0, u1) = (jn.dirs[r], jn.dirs[(r + 1) % n]);
+                    let s = u1.y.atan2(u1.x) - u0.y.atan2(u0.x);
+                    if s <= 0.0 { s + std::f32::consts::TAU } else { s }
+                };
+                // Round k1: the wall that shares this ray's corner edge: the other wall bounding the
+                // same upper sector (a convex corner when that sector is under a half turn), else the
+                // other wall bounding the same lower sector (an inner corner).
+                let soft_corner = |r: usize| -> Option<SoftCorner> {
+                    let (next, prev) = ((r + 1) % n, (r + n - 1) % n);
+                    let own = field.steps[jn.rays[r]].normal_near(jn.at);
+                    let partner = |o: usize, sector: usize, upper: bool| -> Option<SoftCorner> {
+                        let other = &field.steps[jn.rays[o]];
+                        if !other.wall() {
+                            return None;
+                        }
+                        let n2 = (own + other.normal_near(jn.at)).normalize_or_zero();
+                        if n2 == Vec2::ZERO {
+                            return None;
+                        }
+                        let small = span_of(sector) < std::f32::consts::PI;
+                        let convex = upper == small;
+                        Some(SoftCorner { at: jn.at, n: n2, tone: if convex { 1.03 } else { 0.95 } })
+                    };
+                    let upper = if high_ccw(r) {
+                        if !high_ccw(next) { partner(next, r, true) } else { None }
+                    } else if high_ccw(prev) {
+                        partner(prev, prev, true)
+                    } else {
+                        None
+                    };
+                    upper.or_else(|| if high_ccw(r) {
+                        if !high_ccw(prev) { partner(prev, prev, false) } else { None }
+                    } else if high_ccw(next) {
+                        partner(next, r, false)
+                    } else {
+                        None
+                    })
+                };
                 for r in 0..n {
                     let si = jn.rays[r];
                     if !field.steps[si].wall() {
@@ -1530,7 +1574,7 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
                     let probe = jn.at + u * 0.2 + Vec2::new(-u.y, u.x) * 0.05;
                     let ccw_high = field.steps[si].line_sd(probe) >= 0.0;
                     let (high, low) = if ccw_high { (ccw, cw) } else { (cw, ccw) };
-                    ribbon(&mut mesh, &mut brows, field, colours, si, jn.at + u * t0, jn.at + u * t1, high, low, (t0 < 1e-4, false), &surface, seed);
+                    ribbon(&mut mesh, &mut brows, field, colours, si, jn.at + u * t0, jn.at + u * t1, high, low, (t0 < 1e-4, false), &surface, seed, soft_corner(r));
                 }
                 if crossings.len() == 2 {
                     let (a, b) = (crossings[0], crossings[1]);
@@ -1557,7 +1601,7 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
                         emit_fan(&mut mesh, field, colours, &fan, centre, seed);
                     }
                     if cross.len() == 2 {
-                        ribbon(&mut mesh, &mut brows, field, colours, wi, cross[0], cross[1], Side::Step(wi, true), Side::Step(wi, false), (false, false), &surface, seed);
+                        ribbon(&mut mesh, &mut brows, field, colours, wi, cross[0], cross[1], Side::Step(wi, true), Side::Step(wi, false), (false, false), &surface, seed, None);
                     }
                     if crossings.len() == 2 {
                         let (a, b) = (crossings[0], crossings[1]);
@@ -1734,6 +1778,19 @@ fn emit_fan(mesh: &mut Mesh, field: &Field, colours: &TopColours, fan: &[TopVert
     }
 }
 
+/// Round k1: how far from a junction's corner a wall's shading eases toward the corner's.
+const SOFT_CORNER: f32 = 0.13;
+
+/// Round k1: a junction's corner that a wall shares with another wall: where it is, the shading
+/// normal there (the mean of the two walls' normals) and the rock's tone there (a little lighter
+/// on a convex corner, a little darker in an inner one).
+#[derive(Clone, Copy)]
+struct SoftCorner {
+    at: Vec2,
+    n: Vec2,
+    tone: f32,
+}
+
 /// The face of a terrace wall across one grid cell, from c0 to c1 on its relaxed contour: a short
 /// roll of the upper lawn over the edge (3.5 cm out, up to 5 cm down), then cut rock straight down
 /// to the lower ground, in the bed's colour under a pond's surface. Round r9: the two grounds are
@@ -1756,10 +1813,22 @@ fn ribbon(
     mitre: (bool, bool),
     surface: &dyn Fn(Vec2, Option<Side>) -> TopVertex,
     seed: u32,
+    soft: Option<SoftCorner>,
 ) {
     let step = field.steps[wi];
     if (c1 - c0).length() < 1e-4 {
         return;
+    }
+    // Round k1: near a junction's corner shared with another wall the face is split where the
+    // corner's rounding ends, so the eased normal turns over that distance only.
+    if let Some(sc) = soft {
+        let (d0, d1) = ((c0 - sc.at).length(), (c1 - sc.at).length());
+        if (d0 < SOFT_CORNER - 0.02 && d1 > SOFT_CORNER + 0.02) || (d1 < SOFT_CORNER - 0.02 && d0 > SOFT_CORNER + 0.02) {
+            let m = c0.lerp(c1, ((SOFT_CORNER - d0) / (d1 - d0)).clamp(0.0, 1.0));
+            ribbon(mesh, brows, field, colours, wi, c0, m, high, low, (mitre.0, false), surface, seed, soft);
+            ribbon(mesh, brows, field, colours, wi, m, c1, high, low, (false, mitre.1), surface, seed, soft);
+            return;
+        }
     }
     let rise = |c: Vec2| high.height(field, c) - low.height(field, c);
     let (r0, r1) = (rise(c0), rise(c1));
@@ -1767,8 +1836,8 @@ fn ribbon(
         let t = r0 / (r0 - r1);
         if t > 0.02 && t < 0.98 {
             let m = c0.lerp(c1, t);
-            ribbon(mesh, brows, field, colours, wi, c0, m, high, low, (mitre.0, false), surface, seed);
-            ribbon(mesh, brows, field, colours, wi, m, c1, high, low, (false, mitre.1), surface, seed);
+            ribbon(mesh, brows, field, colours, wi, c0, m, high, low, (mitre.0, false), surface, seed, soft);
+            ribbon(mesh, brows, field, colours, wi, m, c1, high, low, (false, mitre.1), surface, seed, soft);
             return;
         }
     }
@@ -1789,10 +1858,22 @@ fn ribbon(
         colour: Vec3,
         out: f32,
         down: f32,
+        wear: f32,
     }
     let end = |c: Vec2, corner: bool| {
         let v = surface(c, Some(high));
         let n = if flipped { -step.normal_near(c) } else { step.normal_near(c) };
+        // Round k1: within SOFT_CORNER of a junction's corner the normal eases toward the corner's
+        // (the mean of the two walls that share it) and the rock takes the corner's tone, so the
+        // wall turns the corner as a rounded edge (or a soft inner corner), not a knife edge.
+        // (Positions keep the wall's own normal; only the shading normal eases.)
+        let (shade, wear) = match soft {
+            Some(sc) if !flipped && (c - sc.at).length() < SOFT_CORNER => {
+                let w = 1.0 - (c - sc.at).length() / SOFT_CORNER;
+                ((n + (sc.n - n) * w).normalize_or_zero(), 1.0 + (sc.tone - 1.0) * w)
+            }
+            _ => (n, 1.0),
+        };
         let top = v.0.y;
         let low_y = low.height(field, c).min(top);
         // The face stands 3.5 cm out from the cut; the roll above it drops 5 cm, less on a low
@@ -1802,7 +1883,7 @@ fn ribbon(
         // lip showed a small angled step where the roll ran out.
         let out = if corner { 0.0 } else { 0.035 };
         let down = if notch { 0.0 } else { 0.05_f32.min((top - low_y) * 0.5) };
-        End { c, n, n3: Vec3::new(n.x, 0.0, n.y), top, low: low_y, colour: v.2, out, down }
+        End { c, n, n3: Vec3::new(shade.x, 0.0, shade.y), top, low: low_y, colour: v.2, out, down, wear }
     };
     let e = [end(c0, mitre.0), end(c1, mitre.1)];
     if e[0].top - e[0].low < 1e-3 && e[1].top - e[1].low < 1e-3 {
@@ -1824,21 +1905,41 @@ fn ribbon(
     let lip = e[0].top.max(e[1].top);
     let paint = Paint::new(Family::Stone).sky(0.86).line(0.9).strokes(0.8).id(2).lip(lip);
     let mut rows: Vec<f32> = vec![0.0];
+    let mut water_t: Option<f32> = None;
     if let Some(surface_y) = below {
         let t = ((e[0].top - e[0].down - surface_y) / (e[0].top - e[0].down - e[0].low).max(1e-3)).clamp(0.0, 1.0);
         if t > 0.02 && t < 0.98 {
             rows.push(t);
+            water_t = Some(t);
         }
     }
     rows.push(1.0);
+    // Round k1: a soft top edge under the lawn's roll. The face's top row is shaded as the start of
+    // a rounded arris (its normal tilted 30 degrees up, a few per cent lighter) easing to the
+    // straight face 0.10 m down; only on a face 0.3 m high or more, not under water.
+    let face_h = |e: &End| e.top - e.down - e.low;
+    let mut rolled = !notch && face_h(&e[0]) > 0.3 && face_h(&e[1]) > 0.3;
+    if rolled {
+        let t = 0.10 / face_h(&e[0]).min(face_h(&e[1]));
+        if t < rows[1] - 0.03 {
+            rows.insert(1, t);
+        } else {
+            rolled = false;
+        }
+    }
     let y_of = |e: &End, t: f32| (e.top - e.down) + (e.low - (e.top - e.down)) * t;
+    let shade = |e: &End, t: f32| if rolled && t == 0.0 { (e.n3 + Vec3::Y * 0.58).normalize() } else { e.n3 };
+    let worn = |t: f32| if rolled && t == 0.0 { 1.03 } else { 1.0 };
     for k in 0..rows.len() - 1 {
         let (t0, t1) = (rows[k], rows[k + 1]);
-        let wet = below.is_some() && k > 0;
+        // Under the water line: the row that starts at the water split (the old `k > 0`).
+        let wet = water_t.is_some_and(|w| t0 >= w);
         let colour = if wet { colours.bed } else { colours.riser * tone };
+        let (ca0, ca1, cb0, cb1) = (colour * e[0].wear * worn(t0), colour * e[1].wear * worn(t0), colour * e[0].wear * worn(t1), colour * e[1].wear * worn(t1));
         let q = [at(&e[0], e[0].out, y_of(&e[0], t0)), at(&e[1], e[1].out, y_of(&e[1], t0)), at(&e[1], e[1].out, y_of(&e[1], t1)), at(&e[0], e[0].out, y_of(&e[0], t1))];
-        tri_facing(mesh, [q[0], q[1], q[2]], [e[0].n3, e[1].n3, e[1].n3], [colour; 3], [paint; 3]);
-        tri_facing(mesh, [q[0], q[2], q[3]], [e[0].n3, e[1].n3, e[0].n3], [colour; 3], [paint; 3]);
+        let nn = [shade(&e[0], t0), shade(&e[1], t0), shade(&e[1], t1), shade(&e[0], t1)];
+        tri_facing(mesh, [q[0], q[1], q[2]], [nn[0], nn[1], nn[2]], [ca0, ca1, cb1], [paint; 3]);
+        tri_facing(mesh, [q[0], q[2], q[3]], [nn[0], nn[2], nn[3]], [ca0, cb1, cb0], [paint; 3]);
     }
     // A backing face 5 cm behind the cut (8.5 cm behind the face), reaching 0.20 m past both ends
     // (not past a junction's corner) and 0.2 m under the lower level: where a wall ends against
