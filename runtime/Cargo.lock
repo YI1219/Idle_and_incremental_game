@@ -1544,12 +1544,15 @@ dependencies = [
 name = "s34_study"
 version = "0.0.0"
 dependencies = [
+ "block2 0.6.2",
  "bytemuck",
  "glam",
+ "objc2 0.6.5",
  "png",
  "pollster",
  "serde_json",
  "wgpu",
+ "winit",
 ]
 
 [[package]]

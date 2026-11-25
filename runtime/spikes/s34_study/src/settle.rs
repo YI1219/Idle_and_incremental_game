@@ -253,7 +253,7 @@ pub fn instance_table(library: &Library, placed: &[Placement], centre: Vec2) -> 
 }
 
 /// An edit of a sequence.
-enum Edit {
+pub(crate) enum Edit {
     /// Cells x0..=x1, z0..=z1 change height by `by` (dry cells only).
     Height { x0: i32, z0: i32, x1: i32, z1: i32, by: f32 },
     /// Cells x0..=x1, z0..=z1 become land at height `h` where they were none.
@@ -275,14 +275,14 @@ const PLACED: [Placement; 6] = [
     Placement { kind: "flower", at: Vec2::new(0.4, -6.6), yaw: 0.3, size: 1.0, pick: 0 },
 ];
 
-struct Sequence {
-    name: &'static str,
-    edit: Edit,
-    centre: Vec2,
+pub(crate) struct Sequence {
+    pub(crate) name: &'static str,
+    pub(crate) edit: Edit,
+    pub(crate) centre: Vec2,
     camera: ([f32; 3], f32, f32, f32),
 }
 
-fn sequences() -> Vec<Sequence> {
+pub(crate) fn sequences() -> Vec<Sequence> {
     vec![
         Sequence { name: "raise", edit: Edit::Height { x0: -5, z0: -7, x1: -3, z1: -5, by: 1.0 }, centre: Vec2::new(-3.5, -5.5), camera: ([-3.5, 3.9, -5.5], 20.0, 30.0, 12.0) },
         Sequence { name: "lower", edit: Edit::Height { x0: 2, z0: -7, x1: 4, z1: -5, by: -1.0 }, centre: Vec2::new(3.5, -5.5), camera: ([3.5, 3.0, -5.5], 20.0, 36.0, 12.0) },
@@ -299,7 +299,7 @@ fn view(target: [f32; 3], yaw: f32, pitch: f32, dist: f32) -> Camera {
 }
 
 /// Applies an edit; returns the edited cells, the cell rectangle it touched and the placements.
-fn apply(cells: &Cells, edit: &Edit) -> (Cells, (Vec2, Vec2), Vec<Placement>) {
+pub(crate) fn apply(cells: &Cells, edit: &Edit) -> (Cells, (Vec2, Vec2), Vec<Placement>) {
     let mut out = cells.clone();
     match edit {
         Edit::Height { x0, z0, x1, z1, by } => {
