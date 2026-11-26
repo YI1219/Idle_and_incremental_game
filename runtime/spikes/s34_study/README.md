@@ -103,6 +103,30 @@ Cells (1 m, heights in 0.5 m steps, an optional water level, and in a version-2 
 
 Colours are authored as display values and decoded to linear in the shader; backdrop colours are pre-inverted through the tone curve so they appear as written. The hour's palette shifts come from the frozen project's blended style presets (`tools/blend_preset.py`).
 
+## Real-time window (round k5)
+
+`--window` (`src/window.rs`, `src/gputime.rs`) puts the picture on the Mac's screen in real time and measures what reaches the glass. Run from the repository root:
+
+```
+runtime/spikes/s34_study/tools/window_run.sh OUT TAG [--seconds=20] [--scenarios=idle,moving,editing] [options]
+```
+
+The script stops if the Mac is not on AC power, records the load (uptime, top five processes) before and after, and runs `s34_study --window` under `gpu_run.sh`; the window closes by itself (Escape also stops it). Outputs: `OUT/TAG_<scenario>.csv` (one row per presented frame: interval, acquire wait, encode, submit, present call, upload, GPU span, interval on the glass, state-sampled-to-glass latency, shadow, settle clock), `OUT/TAG_<scenario>_passes.csv` (each pass's own GPU time), `OUT/TAG_summary.txt` and `.json`.
+
+- Window: a borderless window covering the built-in display (`--fullscreen=cover`, 3600 x 2338 drawable at the owner's scaled 1800 x 1169 mode, 120 Hz ProMotion; NSScreen reports 120 frames a second). `--fullscreen=native` is macOS full screen, which keeps the notch band free: 3600 x 2252.
+- Picture: the existing renderer, layout 7301, camera `game`, day, the moving-camera mode (`--scale=1`, FXAA). The last pass writes straight into the surface texture (`--present=direct`, plain `Bgra8Unorm` tagged sRGB, since the renderer writes display values itself) or into the final texture that a pass then copies (`--present=blit`). Offscreen stills are bit-identical to 3bc9d74.
+- Scenarios: `idle` (camera still, shadow map cached), `moving` (orbit at 0.72 rad/s), `editing` (every 2.5 s the settle edit `--edit=raise` or its undo; the rebuild runs on a worker thread through `rebuild_island`, the one function to swap for an incremental update; the worker also builds the settle map and the GPU buffers, `Renderer::prepare`; the frame loop only swaps them in, `Renderer::install`, and starts the settle clock; the shadow map is redrawn while the motion runs).
+- Measured: CPU times per frame (CACurrentMediaTime); GPU time from timestamp queries at pass boundaries (Metal offers TIMESTAMP_QUERY only, not inside passes or encoders; a frame's queries are resolved two frames later, because a resolve in the same command buffer can run before the last pass ends); and the time each frame reached the glass, `MTLDrawable.presentedTime`, read in a presented handler that a wrapper of `-[CAMetalLayer nextDrawable]` attaches to every drawable (`--presented-time=off` to leave it out). With Fifo the CPU-side present cadence (a proxy under back-pressure) agreed with the glass cadence within 0.1 fps on every run; with Immediate it did not (85.7 against 85.1, frames dropped). Glass intervals are exact multiples of 8.33 ms.
+- Options: `--latency=1|2` (`desired_maximum_frame_latency`; default 1), `--present-mode=fifo|immediate` (Metal offers no Mailbox), `--latch=late|early` (sample the frame's state after or before the drawable wait; default late), `--upload=worker|main`, `--worker-qos=interactive|default`, `--pace=HZ`, `--shadow=always`, and `--render-scale=F`, a disclosed quality reduction (the picture drawn at F of the surface size and stretched), off by default.
+
+Findings (2026-11-26, Mac busy throughout: load 7 to 9, a VPN process at 100% CPU):
+
+- The frame costs 10.5 to 12.5 ms of GPU time at 3600 x 2338, so 120 Hz is out of reach. Own share per pass (moving, p50): terms 4.1 to 4.8, resolve 3.4 to 3.8, water 0.6 to 0.8, ssao 0.6 to 0.7, fxaa 0.5, down 0.5, far low 0.35, blur 0.42, ao depth 0.07, shadow 0.7 to 0.9 (only during a settle motion). Offscreen at the same size: everything 13.0 ms, without grass 12.4, without leaf cards 12.6, without SSR 12.5, without SSAO 10.8: the terms pass is the island and props shading, not the grass.
+- With two frames in flight (the naive loop) Fifo presents 80 to 93 frames a second, every interval 8.33 or 16.67 ms (constant judder), 48 ms from sampled state to glass, and installing an edit's buffers on the frame loop stalls it 13 to 56 ms.
+- Default now: one frame in flight, late latching, direct present, upload prepared on the worker: a locked 59.5 to 59.8 frames a second with even 16.67 ms intervals, 31 to 32 ms from sampled state to glass, edits installed in 0.3 to 0.8 ms. Cost: with one frame in flight a frame whose GPU time passes about 14 ms takes 25 ms (seen while the settle motion redraws the shadow map on a loaded machine).
+- Edit to first motion frame on the glass: 140 to 180 ms either way; the rebuild (70 to 120 ms) dominates, and it runs 20 to 30 ms slower when the frame loop sleeps in the drawable wait (user-interactive QoS on the worker helps only marginally).
+- `--render-scale=0.8` (a quality reduction) brings the GPU to about 8.5 ms, still not enough for a steady 120 Hz, so it is not worth its softening (game view against native 3600 x 2338, bilinear stretch: mean difference 1.4/255, PSNR 37.2 dB, 3.2 % of pixels off by more than 8/255, mostly edges and grass); `--pace=60` with two frames in flight paces worse than one frame in flight.
+
 ## Known limits
 
 - Where three steps meet next to a fall's notch, the corner's top can show a small angled step in the lip. Island stone seen from behind is shaded as if it faced the camera.

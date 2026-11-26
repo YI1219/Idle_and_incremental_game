@@ -136,6 +136,8 @@ pub struct Renderer {
     grass_pipeline: wgpu::RenderPipeline,
     /// Vertices, indices, and per chunk its bounds and the index ranges of its three levels.
     grass: Option<GrassGpu>,
+    /// Round k5: GPU timestamps per pass (window mode only; gputime.rs).
+    pub timer: Option<crate::gputime::GpuTimer>,
 }
 
 /// The grass on the GPU: the clump meshes of all levels, the roots (instances), and per chunk
@@ -146,6 +148,99 @@ struct GrassGpu {
     levels: [(u32, std::ops::Range<u32>); grass::LEVELS],
     clumps: wgpu::Buffer,
     chunks: Vec<(Vec3, Vec3, u32, [u32; 3], Vec3, Vec3)>,
+}
+
+/// Round k5: an edit's upload made off the frame loop (`Renderer::prepare`, `install`).
+pub struct Prepared {
+    solid: (wgpu::Buffer, u32),
+    casters: u32,
+    water: Option<(wgpu::Buffer, u32)>,
+    bounds: (Vec3, Vec3),
+    props: Option<(wgpu::Buffer, [std::ops::Range<u32>; 3], Vec<(usize, std::ops::Range<u32>, Vec3, Vec3)>, Vec<[f32; 4]>, std::path::PathBuf)>,
+    grass: Option<GrassGpu>,
+    settle: (wgpu::Buffer, wgpu::Buffer),
+}
+
+/// One vertex buffer holding `parts` back to back, written once into mapped memory (no
+/// concatenated copy on the CPU first).
+fn concat_buffer(device: &wgpu::Device, label: &str, parts: &[&[u8]]) -> wgpu::Buffer {
+    let size: usize = parts.iter().map(|p| p.len()).sum();
+    let buffer = device.create_buffer(&wgpu::BufferDescriptor { label: Some(label), size: size.max(4).next_multiple_of(4) as u64, usage: wgpu::BufferUsages::VERTEX, mapped_at_creation: true });
+    {
+        let mut view = buffer.slice(..).get_mapped_range_mut().expect("mapped vertex buffer");
+        let mut at = 0;
+        for part in parts {
+            view.slice(at..at + part.len()).copy_from_slice(part);
+            at += part.len();
+        }
+    }
+    buffer.unmap();
+    buffer
+}
+
+/// The grass field's buffers: the clump meshes of all levels and the roots.
+fn grass_gpu(device: &wgpu::Device, grass: &Grass) -> Option<GrassGpu> {
+    if grass.clumps.is_empty() {
+        return None;
+    }
+    let meshes = grass::meshes();
+    let mesh = device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clump mesh"), contents: bytemuck::cast_slice(&meshes.vertices), usage: wgpu::BufferUsages::VERTEX });
+    let index = device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clump index"), contents: bytemuck::cast_slice(&meshes.indices), usage: wgpu::BufferUsages::INDEX });
+    let clumps = device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clumps"), contents: bytemuck::cast_slice(&grass.clumps), usage: wgpu::BufferUsages::VERTEX });
+    let chunks = grass.chunks.iter().map(|c| (c.lo, c.hi, c.first, c.counts, c.parent_lo, c.parent_hi)).collect();
+    Some(GrassGpu { mesh, index, levels: meshes.levels.clone(), clumps, chunks })
+}
+
+/// The props baked for upload: one contiguous range per class, chunks with bounds, the material table.
+struct BakedProps {
+    vertices: Vec<PropVertex>,
+    ranges: [std::ops::Range<u32>; 3],
+    chunks: Vec<(usize, std::ops::Range<u32>, Vec3, Vec3)>,
+    bounds: (Vec3, Vec3),
+    table: Vec<[f32; 4]>,
+}
+
+fn bake_props(library: &props::Library, total: usize) -> BakedProps {
+    // Within each class the triangles are grouped in 8 m chunks of the plan with their bounds,
+    // so the terms pass draws only the chunks in view, nearest first (the shadow pass, cached,
+    // draws each class whole).
+    let mut all: Vec<PropVertex> = Vec::with_capacity(total);
+    let mut ranges: [std::ops::Range<u32>; 3] = [0..0, 0..0, 0..0];
+    let mut chunks = Vec::new();
+    // Round r9 (F4): 4 m chunks (8 m before) cull the crowns more tightly to the view.
+    let size: f32 = std::env::var("S34_PROP_CHUNK").ok().and_then(|v| v.parse().ok()).unwrap_or(4.0);
+    for (class, bucket) in library.buckets.iter().enumerate() {
+        let start = all.len() as u32;
+        let mut by_chunk: std::collections::BTreeMap<(i32, i32), Vec<PropVertex>> = std::collections::BTreeMap::new();
+        for tri in bucket.chunks_exact(3) {
+            let c = (Vec3::from_array(tri[0].pos) + Vec3::from_array(tri[1].pos) + Vec3::from_array(tri[2].pos)) / 3.0;
+            by_chunk.entry(((c.x / size).floor() as i32, (c.z / size).floor() as i32)).or_default().extend_from_slice(tri);
+        }
+        for (_, list) in by_chunk {
+            let first = all.len() as u32;
+            let (mut lo, mut hi) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
+            for v in &list {
+                lo = lo.min(Vec3::from_array(v.pos));
+                hi = hi.max(Vec3::from_array(v.pos));
+            }
+            all.extend_from_slice(&list);
+            chunks.push((class, first..all.len() as u32, lo, hi));
+        }
+        ranges[class] = start..all.len() as u32;
+    }
+    let (mut low, mut high) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
+    for vertex in &all {
+        let p = Vec3::from_array(vertex.pos);
+        low = low.min(p);
+        high = high.max(p);
+    }
+    let mut table = vec![[0.0_f32; 4]; props::MAX_MATERIALS * props::MATERIAL_ROWS];
+    for (index, rows) in library.materials.iter().enumerate() {
+        for (r, row) in rows.iter().enumerate() {
+            table[index * props::MATERIAL_ROWS + r] = *row;
+        }
+    }
+    BakedProps { vertices: all, ranges, chunks, bounds: (low, high), table }
 }
 
 /// What one frame drew of the grass: triangles, and chunks at each level.
@@ -253,6 +348,12 @@ impl Renderer {
         let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
         let adapter = pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions { power_preference: wgpu::PowerPreference::HighPerformance, ..Default::default() })).expect("adapter");
         let (device, queue) = pollster::block_on(adapter.request_device(&wgpu::DeviceDescriptor::default())).expect("device");
+        Renderer::with_device(device, queue, width, height, scale, fxaa, FINAL_FORMAT)
+    }
+
+    /// Round k5: on a given device (the window's), with the last pass (down, or FXAA when on)
+    /// writing `out_format`, so it can draw straight into a surface texture (window.rs).
+    pub fn with_device(device: wgpu::Device, queue: wgpu::Queue, width: u32, height: u32, scale: u32, fxaa: bool, out_format: wgpu::TextureFormat) -> Renderer {
         let (iw, ih) = (width * scale, height * scale);
         let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor { label: Some("study"), source: wgpu::ShaderSource::Wgsl(include_str!("shader.wgsl").into()) });
 
@@ -307,7 +408,7 @@ impl Renderer {
         let (aw, ah) = ((iw / 2).max(1), (ih / 2).max(1));
         let ao_a_view = target(&device, "ao a", aw, ah, AO_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
         let ao_b_view = target(&device, "ao b", aw, ah, AO_FORMAT, wgpu::TextureUsages::empty()).create_view(&Default::default());
-        let final_texture = target(&device, "final", width, height, FINAL_FORMAT, wgpu::TextureUsages::COPY_SRC);
+        let final_texture = target(&device, "final", width, height, out_format, wgpu::TextureUsages::COPY_SRC);
         let final_view = final_texture.create_view(&Default::default());
 
         let vertex_layout = wgpu::VertexBufferLayout {
@@ -569,7 +670,7 @@ impl Renderer {
 
         let one_colour = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor { label: Some("down"), entries: &[texture_entry(0, false), texture_entry(1, false)] });
         let down_group = device.create_bind_group(&wgpu::BindGroupDescriptor { label: None, layout: &one_colour, entries: &[view_entry(0, &work_view), view_entry(1, &water_view)] });
-        let down_pipeline = full_screen("down", &layout_of(&[Some(&globals_layout), Some(&one_colour)]), "fs_down", FINAL_FORMAT);
+        let down_pipeline = full_screen("down", &layout_of(&[Some(&globals_layout), Some(&one_colour)]), "fs_down", if fxaa { FINAL_FORMAT } else { out_format });
 
         let clamp_sampler = device.create_sampler(&wgpu::SamplerDescriptor {
             label: Some("clamp"),
@@ -586,7 +687,7 @@ impl Renderer {
                 layout: &bind,
                 entries: &[view_entry(0, &ldr_view), wgpu::BindGroupEntry { binding: 1, resource: wgpu::BindingResource::Sampler(&clamp_sampler) }],
             });
-            let pipeline = full_screen("fxaa", &layout_of(&[Some(&globals_layout), Some(&bind)]), "fs_fxaa", FINAL_FORMAT);
+            let pipeline = full_screen("fxaa", &layout_of(&[Some(&globals_layout), Some(&bind)]), "fs_fxaa", out_format);
             (ldr_view, pipeline, group)
         });
 
@@ -754,21 +855,30 @@ impl Renderer {
             prop_chunks: Vec::new(),
             grass_pipeline,
             grass: None,
+            timer: None,
         }
+    }
+
+    /// Round k5: the final picture (display values), for a blit to a surface (window.rs).
+    pub fn final_view(&self) -> &wgpu::TextureView {
+        &self.final_view
+    }
+
+    /// Round k5: one frame recorded into `encoder` (globals written), its last pass into `out`
+    /// (a surface texture) or the final texture; the shadow map only when `shadow`.
+    pub fn draw(&self, encoder: &mut wgpu::CommandEncoder, frame: &Frame, shadow: bool, out: Option<&wgpu::TextureView>) -> GrassDrawn {
+        self.write_globals(frame);
+        self.encode(encoder, shadow, frame.ssao, frame.ssao_blur, &frame.camera, out)
+    }
+
+    /// Round k5: a pass's GPU timestamps when the window's timer is on.
+    fn ts(&self, label: &'static str) -> Option<wgpu::RenderPassTimestampWrites<'_>> {
+        self.timer.as_ref().and_then(|t| t.pass(label))
     }
 
     /// Uploads the grass field: the clump meshes of all levels and the roots.
     pub fn set_grass(&mut self, grass: &Grass) {
-        if grass.clumps.is_empty() {
-            self.grass = None;
-            return;
-        }
-        let meshes = grass::meshes();
-        let mesh = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clump mesh"), contents: bytemuck::cast_slice(&meshes.vertices), usage: wgpu::BufferUsages::VERTEX });
-        let index = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clump index"), contents: bytemuck::cast_slice(&meshes.indices), usage: wgpu::BufferUsages::INDEX });
-        let clumps = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some("clumps"), contents: bytemuck::cast_slice(&grass.clumps), usage: wgpu::BufferUsages::VERTEX });
-        let chunks = grass.chunks.iter().map(|c| (c.lo, c.hi, c.first, c.counts, c.parent_lo, c.parent_hi)).collect();
-        self.grass = Some(GrassGpu { mesh, index, levels: meshes.levels.clone(), clumps, chunks });
+        self.grass = grass_gpu(&self.device, grass);
     }
 
     /// Uploads the props of all islands (one contiguous range per class), their material
@@ -779,48 +889,11 @@ impl Renderer {
             self.props = None;
             return;
         }
-        // Within each class the triangles are grouped in 8 m chunks of the plan with their bounds,
-        // so the terms pass draws only the chunks in view, nearest first (the shadow pass, cached,
-        // draws each class whole).
-        let mut all: Vec<PropVertex> = Vec::with_capacity(total);
-        let mut ranges: [std::ops::Range<u32>; 3] = [0..0, 0..0, 0..0];
-        let mut chunks = Vec::new();
-        // Round r9 (F4): 4 m chunks (8 m before) cull the crowns more tightly to the view.
-        let size: f32 = std::env::var("S34_PROP_CHUNK").ok().and_then(|v| v.parse().ok()).unwrap_or(4.0);
-        for (class, bucket) in library.buckets.iter().enumerate() {
-            let start = all.len() as u32;
-            let mut by_chunk: std::collections::BTreeMap<(i32, i32), Vec<PropVertex>> = std::collections::BTreeMap::new();
-            for tri in bucket.chunks_exact(3) {
-                let c = (Vec3::from_array(tri[0].pos) + Vec3::from_array(tri[1].pos) + Vec3::from_array(tri[2].pos)) / 3.0;
-                by_chunk.entry(((c.x / size).floor() as i32, (c.z / size).floor() as i32)).or_default().extend_from_slice(tri);
-            }
-            for (_, list) in by_chunk {
-                let first = all.len() as u32;
-                let (mut lo, mut hi) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
-                for v in &list {
-                    lo = lo.min(Vec3::from_array(v.pos));
-                    hi = hi.max(Vec3::from_array(v.pos));
-                }
-                all.extend_from_slice(&list);
-                chunks.push((class, first..all.len() as u32, lo, hi));
-            }
-            ranges[class] = start..all.len() as u32;
-        }
-        self.prop_chunks = chunks;
-        let (mut low, mut high) = self.bounds;
-        for vertex in &all {
-            let p = Vec3::from_array(vertex.pos);
-            low = low.min(p);
-            high = high.max(p);
-        }
-        self.bounds = (low, high);
-        let mut table = vec![[0.0_f32; 4]; props::MAX_MATERIALS * props::MATERIAL_ROWS];
-        for (index, rows) in library.materials.iter().enumerate() {
-            for (r, row) in rows.iter().enumerate() {
-                table[index * props::MATERIAL_ROWS + r] = *row;
-            }
-        }
-        self.queue.write_buffer(&self.props_materials, 0, bytemuck::cast_slice(&table));
+        let baked = bake_props(library, total);
+        let (all, ranges) = (baked.vertices, baked.ranges);
+        self.prop_chunks = baked.chunks;
+        self.bounds = (self.bounds.0.min(baked.bounds.0), self.bounds.1.max(baked.bounds.1));
+        self.queue.write_buffer(&self.props_materials, 0, bytemuck::cast_slice(&baked.table));
         let dir = library.texture_dir.clone().expect("texture folder");
         if let Some((_, group)) = self.props_textures.as_ref().filter(|(d, _)| *d == dir) {
             let group = group.clone();
@@ -889,6 +962,57 @@ impl Renderer {
         self.rebind_globals();
     }
 
+    /// Round k5: everything an edit uploads (scene, props, grass, settle map), made off the frame
+    /// loop with only the device (a worker thread); `install` then swaps it in without copying.
+    /// Prop textures are kept from the earlier upload (an edit does not change them).
+    #[allow(clippy::too_many_arguments)]
+    pub fn prepare(device: &wgpu::Device, casters: &[Vertex], rest: &[Vertex], water: &[WaterVertex], library: &props::Library, grass: &Grass, map: &[crate::settle::Texel], items: &[[f32; 4]]) -> Prepared {
+        let init = |label: &str, contents: &[u8], usage: wgpu::BufferUsages| device.create_buffer_init(&wgpu::util::BufferInitDescriptor { label: Some(label), contents, usage });
+        let (mut low, mut high) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
+        for vertex in casters {
+            low = low.min(Vec3::from_array(vertex.pos));
+            high = high.max(Vec3::from_array(vertex.pos));
+        }
+        let total: usize = library.buckets.iter().map(|b| b.len()).sum();
+        let props = (total > 0).then(|| {
+            let baked = bake_props(library, total);
+            low = low.min(baked.bounds.0);
+            high = high.max(baked.bounds.1);
+            let buffer = init("props", bytemuck::cast_slice(&baked.vertices), wgpu::BufferUsages::VERTEX);
+            (buffer, baked.ranges, baked.chunks, baked.table, library.texture_dir.clone().expect("texture folder"))
+        });
+        Prepared {
+            solid: (concat_buffer(device, "solid", &[bytemuck::cast_slice(casters), bytemuck::cast_slice(rest)]), (casters.len() + rest.len()) as u32),
+            casters: casters.len() as u32,
+            water: (!water.is_empty()).then(|| (init("water", bytemuck::cast_slice(water), wgpu::BufferUsages::VERTEX), water.len() as u32)),
+            bounds: (low, high),
+            props,
+            grass: grass_gpu(device, grass),
+            settle: (init("settle map", bytemuck::cast_slice(map), wgpu::BufferUsages::STORAGE), init("settle items", bytemuck::cast_slice(items), wgpu::BufferUsages::STORAGE)),
+        }
+    }
+
+    /// Round k5: swaps in what `prepare` made (the props' textures must already be loaded).
+    pub fn install(&mut self, p: Prepared) {
+        self.solid = Some(p.solid);
+        self.casters = p.casters;
+        self.water = p.water;
+        self.bounds = p.bounds;
+        match p.props {
+            Some((buffer, ranges, chunks, table, dir)) => {
+                let (_, group) = self.props_textures.as_ref().filter(|(d, _)| *d == dir).expect("prop textures loaded before install");
+                let group = group.clone();
+                self.queue.write_buffer(&self.props_materials, 0, bytemuck::cast_slice(&table));
+                self.prop_chunks = chunks;
+                self.props = Some((buffer, group, ranges));
+            }
+            None => self.props = None,
+        }
+        self.grass = p.grass;
+        (self.settle_map, self.settle_items) = p.settle;
+        self.rebind_globals();
+    }
+
     /// No settle motion: the map is one empty texel and no instance grows.
     pub fn clear_settle(&mut self) {
         let items = vec![[0.0_f32, 0.0, 0.0, -1.0]; 1];
@@ -923,7 +1047,7 @@ impl Renderer {
             }
             self.write_globals(&moved);
             let mut encoder = self.device.create_command_encoder(&Default::default());
-            self.encode(&mut encoder, true, frame.ssao, frame.ssao_blur, &moved.camera);
+            self.encode(&mut encoder, true, frame.ssao, frame.ssao_blur, &moved.camera, None);
             self.queue.submit([encoder.finish()]);
             if index % 8 == 7 {
                 self.wait();
@@ -971,13 +1095,13 @@ impl Renderer {
 
     /// Records one frame; returns the grass triangles drawn (each chunk at the level its
     /// distance from `camera` picks, chunks outside the view skipped).
-    fn encode(&self, encoder: &mut wgpu::CommandEncoder, shadow: bool, ssao: bool, blur: bool, camera: &Camera) -> GrassDrawn {
+    fn encode(&self, encoder: &mut wgpu::CommandEncoder, shadow: bool, ssao: bool, blur: bool, camera: &Camera, out: Option<&wgpu::TextureView>) -> GrassDrawn {
         let clear = |view| Some(wgpu::RenderPassColorAttachment { view, depth_slice: None, resolve_target: None, ops: wgpu::Operations { load: wgpu::LoadOp::Clear(wgpu::Color::BLACK), store: wgpu::StoreOp::Store } });
         let depth = |view| Some(wgpu::RenderPassDepthStencilAttachment { view, depth_ops: Some(wgpu::Operations { load: wgpu::LoadOp::Clear(1.0), store: wgpu::StoreOp::Store }), stencil_ops: None });
         let Some((solid, count)) = &self.solid else { return GrassDrawn::default() };
         let mut drawn = GrassDrawn::default();
         if shadow {
-            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("shadow"), color_attachments: &[], depth_stencil_attachment: depth(&self.shadow_view), timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
+            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("shadow"), color_attachments: &[], depth_stencil_attachment: depth(&self.shadow_view), timestamp_writes: self.ts("shadow"), occlusion_query_set: None, multiview_mask: None });
             pass.set_pipeline(&self.shadow_pipeline);
             pass.set_bind_group(0, &self.globals_group, &[]);
             pass.set_vertex_buffer(0, solid.slice(..));
@@ -996,7 +1120,7 @@ impl Renderer {
                 label: Some("terms"),
                 color_attachments: &[clear(&self.base_view), clear(&self.terms_view), clear(&self.normal_view)],
                 depth_stencil_attachment: depth(&self.depth_view),
-                timestamp_writes: None,
+                timestamp_writes: self.ts("terms"),
                 occlusion_query_set: None,
                 multiview_mask: None,
             });
@@ -1093,7 +1217,7 @@ impl Renderer {
                 steps.push(("blur v", &self.blur_v_pipeline, &self.blur_v_group, &self.ao_a_view));
             }
             for (label, pipeline, group, view) in steps {
-                let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some(label), color_attachments: &[clear(view)], depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
+                let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some(label), color_attachments: &[clear(view)], depth_stencil_attachment: None, timestamp_writes: self.ts(label), occlusion_query_set: None, multiview_mask: None });
                 pass.set_pipeline(pipeline);
                 pass.set_bind_group(0, &self.globals_group, &[]);
                 pass.set_bind_group(1, group, &[]);
@@ -1101,14 +1225,14 @@ impl Renderer {
             }
         }
         {
-            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("far low"), color_attachments: &[clear(&self.far_low_view)], depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
+            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("far low"), color_attachments: &[clear(&self.far_low_view)], depth_stencil_attachment: None, timestamp_writes: self.ts("far low"), occlusion_query_set: None, multiview_mask: None });
             pass.set_pipeline(&self.far_low_pipeline);
             pass.set_bind_group(0, &self.globals_group, &[]);
             pass.set_bind_group(1, &self.far_low_group, &[]);
             pass.draw(0..3, 0..1);
         }
         {
-            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("resolve"), color_attachments: &[clear(&self.work_view)], depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
+            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("resolve"), color_attachments: &[clear(&self.work_view)], depth_stencil_attachment: None, timestamp_writes: self.ts("resolve"), occlusion_query_set: None, multiview_mask: None });
             pass.set_pipeline(&self.resolve_pipeline);
             pass.set_bind_group(0, &self.globals_group, &[]);
             pass.set_bind_group(1, &self.resolve_group, &[]);
@@ -1119,7 +1243,7 @@ impl Renderer {
                 label: Some("water"),
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment { view: &self.water_view, depth_slice: None, resolve_target: None, ops: wgpu::Operations { load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT), store: wgpu::StoreOp::Store } })],
                 depth_stencil_attachment: None,
-                timestamp_writes: None,
+                timestamp_writes: self.ts("water"),
                 occlusion_query_set: None,
                 multiview_mask: None,
             });
@@ -1130,15 +1254,16 @@ impl Renderer {
             pass.draw(0..*count, 0..1);
         }
         {
-            let into = self.fxaa.as_ref().map_or(&self.final_view, |(ldr, _, _)| ldr);
-            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("down"), color_attachments: &[clear(into)], depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
+            let target = out.unwrap_or(&self.final_view);
+            let into = self.fxaa.as_ref().map_or(target, |(ldr, _, _)| ldr);
+            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("down"), color_attachments: &[clear(into)], depth_stencil_attachment: None, timestamp_writes: self.ts("down"), occlusion_query_set: None, multiview_mask: None });
             pass.set_pipeline(&self.down_pipeline);
             pass.set_bind_group(0, &self.globals_group, &[]);
             pass.set_bind_group(1, &self.down_group, &[]);
             pass.draw(0..3, 0..1);
         }
         if let Some((_, pipeline, group)) = &self.fxaa {
-            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("fxaa"), color_attachments: &[clear(&self.final_view)], depth_stencil_attachment: None, timestamp_writes: None, occlusion_query_set: None, multiview_mask: None });
+            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor { label: Some("fxaa"), color_attachments: &[clear(out.unwrap_or(&self.final_view))], depth_stencil_attachment: None, timestamp_writes: self.ts("fxaa"), occlusion_query_set: None, multiview_mask: None });
             pass.set_pipeline(pipeline);
             pass.set_bind_group(0, &self.globals_group, &[]);
             pass.set_bind_group(1, group, &[]);
@@ -1155,7 +1280,7 @@ impl Renderer {
     pub fn render(&self, frame: &Frame) -> GrassDrawn {
         self.write_globals(frame);
         let mut encoder = self.device.create_command_encoder(&Default::default());
-        let drawn = self.encode(&mut encoder, true, frame.ssao, frame.ssao_blur, &frame.camera);
+        let drawn = self.encode(&mut encoder, true, frame.ssao, frame.ssao_blur, &frame.camera, None);
         self.queue.submit([encoder.finish()]);
         drawn
     }
@@ -1172,7 +1297,7 @@ impl Renderer {
             moved.camera.eye = frame.camera.target + turn * (frame.camera.eye - frame.camera.target);
             self.write_globals(&moved);
             let mut encoder = self.device.create_command_encoder(&Default::default());
-            self.encode(&mut encoder, false, frame.ssao, frame.ssao_blur, &moved.camera);
+            self.encode(&mut encoder, false, frame.ssao, frame.ssao_blur, &moved.camera, None);
             self.queue.submit([encoder.finish()]);
             if index % 8 == 7 {
                 self.wait();

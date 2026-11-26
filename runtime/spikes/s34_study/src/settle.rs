@@ -438,7 +438,7 @@ pub fn transition(before: &Island, after: &mut Island, lo: Vec2, hi: Vec2, centr
 }
 
 /// An edit of a sequence.
-enum Edit {
+pub(crate) enum Edit {
     /// Cells x0..=x1, z0..=z1 change height by `by` (dry cells only).
     Height { x0: i32, z0: i32, x1: i32, z1: i32, by: f32 },
     /// Cells x0..=x1, z0..=z1 become land at height `h` where they were none.
@@ -462,12 +462,12 @@ const PLACED: [Placement; 6] = [
     Placement { kind: "flower", at: Vec2::new(0.4, -6.6), yaw: 0.3, size: 1.0, pick: 0 },
 ];
 
-struct Sequence {
-    name: &'static str,
+pub(crate) struct Sequence {
+    pub(crate) name: &'static str,
     /// Strokes applied first, without motion, to set the island up (a pit, a pond in it).
-    pre: Vec<crate::brush::Stroke>,
-    edit: Edit,
-    centre: Vec2,
+    pub(crate) pre: Vec<crate::brush::Stroke>,
+    pub(crate) edit: Edit,
+    pub(crate) centre: Vec2,
     camera: ([f32; 3], f32, f32, f32),
 }
 
@@ -475,7 +475,7 @@ fn stroke(tool: crate::brush::Tool, path: &[(f32, f32)], radius: f32) -> crate::
     crate::brush::Stroke { tool, path: path.iter().map(|&(x, z)| Vec2::new(x, z)).collect(), radius, level: 0.0, width: 2.0, item: None }
 }
 
-fn sequences() -> Vec<Sequence> {
+pub(crate) fn sequences() -> Vec<Sequence> {
     use crate::brush::Tool;
     // A pit (lowered 1 m, 3 x 3 cells) on the main terrace, and a pond in it (level 3.0, between the
     // pit's floor at 2.5 and the lawn at 3.5).
@@ -506,7 +506,7 @@ fn view(target: [f32; 3], yaw: f32, pitch: f32, dist: f32) -> Camera {
 
 /// Applies an edit; returns the edited cells and items, the rectangle it touched, its centre and
 /// the placements.
-fn apply(cells: &Cells, items: &props::Items, library: &Library, edit: &Edit) -> (Cells, props::Items, (Vec2, Vec2), Option<Vec2>, Vec<Placement>) {
+pub(crate) fn apply(cells: &Cells, items: &props::Items, library: &Library, edit: &Edit) -> (Cells, props::Items, (Vec2, Vec2), Option<Vec2>, Vec<Placement>) {
     let mut out = cells.clone();
     let mut items = items.clone();
     match edit {
@@ -707,51 +707,63 @@ pub fn run(s: &Settings, renderer: &mut Renderer) -> Vec<String> {
     lines
 }
 
-/// Uploads an island (and, with a transition, its motion: the ghosts are drawn after the island's
-/// own geometry, in ranges the shaders are told of). Returns the ghost ranges for light slot
-/// `SETTLE_SLOT + 2` (solid start and end, water start and end; zeros without a transition).
-pub fn upload(renderer: &mut Renderer, island: &Island, far: &crate::mesh::Mesh, grass: bool, motion: Option<&Transition>) -> [f32; 4] {
-    let mut solid = crate::mesh::Mesh::default();
-    solid.append(&island.built.solid);
-    let island_end = solid.vertices.len();
-    let mut ranges = [0.0_f32; 4];
+/// Round k5: an island's buffers with an edit's ghosts appended: solid (island, then ghost land; all
+/// cast shadows), water (island, then ghost water), grass (ghost clumps as a chunk of their own),
+/// and the ghost ranges for light slot `SETTLE_SLOT + 2` (solid start and end, water start and end;
+/// zeros without a transition).
+pub struct Composed {
+    pub solid: Vec<crate::mesh::Vertex>,
+    pub water: Vec<crate::water::WaterVertex>,
+    pub grass: crate::grass::Grass,
+    pub ranges: [f32; 4],
+}
+
+pub fn compose(island: &Island, motion: Option<&Transition>) -> Composed {
+    let mut solid = island.built.solid.vertices.clone();
     let mut water = island.built.water.clone();
+    let mut clumps = island.built.grass.clumps.clone();
+    let mut chunks = island.built.grass.chunks.clone();
+    let mut ranges = [0.0_f32; 4];
     if let Some(t) = motion {
-        solid.vertices.extend_from_slice(&t.ghost_solid);
-        ranges[0] = island_end as f32;
-        ranges[1] = solid.vertices.len() as f32;
+        ranges[0] = solid.len() as f32;
+        solid.extend_from_slice(&t.ghost_solid);
+        ranges[1] = solid.len() as f32;
         ranges[2] = water.len() as f32;
         water.extend_from_slice(&t.ghost_water);
         ranges[3] = water.len() as f32;
+        if !t.ghost_clumps.is_empty() {
+            let first = clumps.len() as u32;
+            let (mut lo, mut hi) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
+            for c in &t.ghost_clumps {
+                lo = lo.min(Vec3::from(c.root) - Vec3::splat(1.0));
+                hi = hi.max(Vec3::from(c.root) + Vec3::new(1.0, 1.5, 1.0));
+            }
+            // The ghosts fall up to SETTLE_GHOST_FALL m: the chunk's bounds reach that far down.
+            lo.y -= 7.0;
+            clumps.extend_from_slice(&t.ghost_clumps);
+            let n = t.ghost_clumps.len() as u32;
+            chunks.push(crate::grass::Chunk { lo, hi, first, counts: [n, n, n], parent_lo: lo, parent_hi: hi });
+        }
     }
+    Composed { solid, water, grass: crate::grass::Grass { clumps, chunks }, ranges }
+}
+
+/// Uploads an island (and, with a transition, its motion: the ghosts are drawn after the island's
+/// own geometry, in ranges the shaders are told of). Returns the ghost ranges for light slot
+/// `SETTLE_SLOT + 2` (zeros without a transition).
+pub fn upload(renderer: &mut Renderer, island: &Island, far: &crate::mesh::Mesh, grass: bool, motion: Option<&Transition>) -> [f32; 4] {
+    let c = compose(island, motion);
+    let mut solid = crate::mesh::Mesh { vertices: c.solid };
     let casters = solid.vertices.len();
     solid.append(far);
-    renderer.set_scene(&solid.vertices, casters, &water);
+    renderer.set_scene(&solid.vertices, casters, &c.water);
     renderer.set_props(&island.library);
     if grass {
-        match motion.filter(|t| !t.ghost_clumps.is_empty()) {
-            Some(t) => {
-                let mut clumps = island.built.grass.clumps.clone();
-                let mut chunks = island.built.grass.chunks.clone();
-                let first = clumps.len() as u32;
-                let (mut lo, mut hi) = (Vec3::splat(f32::MAX), Vec3::splat(f32::MIN));
-                for c in &t.ghost_clumps {
-                    lo = lo.min(Vec3::from(c.root) - Vec3::splat(1.0));
-                    hi = hi.max(Vec3::from(c.root) + Vec3::new(1.0, 1.5, 1.0));
-                }
-                // The ghosts fall up to GHOST_FALL m: the chunk's bounds reach that far down.
-                lo.y -= 7.0;
-                clumps.extend_from_slice(&t.ghost_clumps);
-                let n = t.ghost_clumps.len() as u32;
-                chunks.push(crate::grass::Chunk { lo, hi, first, counts: [n, n, n], parent_lo: lo, parent_hi: hi });
-                renderer.set_grass(&crate::grass::Grass { clumps, chunks });
-            }
-            None => renderer.set_grass(&island.built.grass),
-        }
+        renderer.set_grass(&c.grass);
     }
     match motion {
         Some(t) => renderer.set_settle(&t.map.texels, &t.items),
         None => renderer.clear_settle(),
     }
-    ranges
+    c.ranges
 }

@@ -13,6 +13,7 @@
 mod body;
 mod decor;
 mod field;
+mod gputime;
 mod grass;
 mod mesh;
 mod props;
@@ -21,6 +22,7 @@ mod settle;
 mod brush;
 mod demo;
 mod water;
+mod window;
 
 use std::time::Instant;
 
@@ -1142,6 +1144,10 @@ fn synthetic_ramps(cells: &Cells) -> Vec<[f32; 5]> {
 }
 
 fn main() {
+    // Round k5: the real-time window (window.rs).
+    if std::env::args().any(|a| a == "--window") {
+        return window::main();
+    }
     let args = parse_args();
     if let Some(script) = &args.demo {
         // Round k5: the construction demonstration (demo.rs).

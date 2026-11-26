@@ -32,7 +32,7 @@ pub const MATERIAL_ROWS: usize = 4;
 pub const MAX_MATERIALS: usize = 96;
 
 /// Everything the renderer needs for the props of all islands.
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Library {
     /// One bucket per class so each class is one contiguous draw.
     pub buckets: [Vec<PropVertex>; 3],
