@@ -3,7 +3,7 @@
 //!
 //!   s34_study --window --layout=runtime/data/reference/layout_7301_0.json
 //!             [--scenarios=idle,moving,editing] [--seconds=20] [--warmup=2]
-//!             [--present-mode=fifo|immediate] [--latency=2] [--fullscreen=cover|native]
+//!             [--present-mode=fifo|immediate] [--latency=1] [--fullscreen=cover|native]
 //!             [--present=direct|blit] [--upload=worker|main] [--scale=1] [--fxaa=on|off]
 //!             [--edit=raise] [--edit-period=2.5] [--presented-time=on|off] [--gpu-time=on|off]
 //!             [--shadow=cached|always] [--hour=day] [--out=DIR] [--tag=NAME]
@@ -98,7 +98,7 @@ fn parse() -> Opts {
         seconds: 20.0,
         warmup: 2.0,
         present_mode: wgpu::PresentMode::Fifo,
-        latency: 2,
+        latency: 1,
         fullscreen: "cover".into(),
         direct: true,
         worker_upload: true,
