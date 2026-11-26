@@ -83,6 +83,8 @@ struct Opts {
     pace: f64,
     /// Sample the frame's state after the drawable is acquired (late latching) or before.
     late_latch: bool,
+    /// Run the rebuild worker at user-interactive QoS.
+    worker_qos: bool,
     out: String,
     tag: String,
 }
@@ -110,6 +112,7 @@ fn parse() -> Opts {
         render_scale: 1.0,
         pace: 0.0,
         late_latch: true,
+        worker_qos: true,
         out: "/tmp/tsw_present/runs".into(),
         tag: "win".into(),
     };
@@ -145,6 +148,7 @@ fn parse() -> Opts {
             "--render-scale" => o.render_scale = value.parse().expect("render scale"),
             "--pace" => o.pace = value.parse().expect("pace Hz"),
             "--latch" => o.late_latch = value != "early",
+            "--worker-qos" => o.worker_qos = value != "default",
             "--out" => o.out = value.into(),
             "--tag" => o.tag = value.into(),
             other => panic!("unknown argument for --window: {other}"),
@@ -220,10 +224,16 @@ struct Done {
 
 /// The worker: holds the island's current cells and fields, applies the edit or its undo, rebuilds,
 /// builds the settle map against the state before, and prepares the upload.
-fn spawn_worker(base: Cells, field: field::Field, edit: (Cells, Vec<Placement>, Vec2, Vec2, Vec2), spec: SceneSpec, far: Mesh, device: Option<wgpu::Device>) -> (mpsc::Sender<Job>, mpsc::Receiver<Done>) {
+fn spawn_worker(base: Cells, field: field::Field, edit: (Cells, Vec<Placement>, Vec2, Vec2, Vec2), spec: SceneSpec, far: Mesh, device: Option<wgpu::Device>, interactive: bool) -> (mpsc::Sender<Job>, mpsc::Receiver<Done>) {
     let (job_tx, job_rx) = mpsc::channel::<Job>();
     let (done_tx, done_rx) = mpsc::channel::<Done>();
     std::thread::spawn(move || {
+        // Round k5: without this the rebuild ran 30 to 50 % slower whenever the frame loop slept in
+        // the drawable wait (latency 1): macOS moved the worker to the efficiency cores.
+        if interactive {
+            let code = mac::worker_interactive();
+            println!("WINDOW worker thread QoS user-interactive: {}", if code == 0 { "set" } else { "not set" });
+        }
         let (edited, placed, lo, hi, centre) = edit;
         let mut current = (base.clone(), field);
         for job in job_rx {
@@ -465,7 +475,7 @@ impl App {
         });
         if let Some(edit) = self.edit.clone() {
             let device = self.o.worker_upload.then(|| device.clone());
-            self.worker = Some(spawn_worker(self.base.clone(), field, edit, self.spec.clone(), { let mut far = Mesh::default(); far.append(&self.far); far }, device));
+            self.worker = Some(spawn_worker(self.base.clone(), field, edit, self.spec.clone(), { let mut far = Mesh::default(); far.append(&self.far); far }, device, self.o.worker_qos));
         }
         self.gpu = Some(Gpu { surface, device, queue, config, renderer, blit });
         self.warm_until = now() + self.o.warmup;
@@ -721,13 +731,14 @@ impl App {
             summary += &format!("# {n}\n");
         }
         summary += &format!(
-            "# settings: present mode {:?}, desired_maximum_frame_latency {}, fullscreen {}, present {}, upload {}, latch {}, pace {}, render scale {}, scale {}, fxaa {}, shadow {}, display refresh {:.1} Hz (NSScreen maximumFramesPerSecond {}), skipped acquires {}\n",
+            "# settings: present mode {:?}, desired_maximum_frame_latency {}, fullscreen {}, present {}, upload {}, latch {}, worker qos interactive {}, pace {}, render scale {}, scale {}, fxaa {}, shadow {}, display refresh {:.1} Hz (NSScreen maximumFramesPerSecond {}), skipped acquires {}\n",
             self.o.present_mode,
             self.o.latency,
             self.o.fullscreen,
             if self.o.direct { "direct" } else { "blit" },
             if self.o.worker_upload { "worker" } else { "main" },
             if self.o.late_latch { "late" } else { "early" },
+            self.o.worker_qos,
             self.o.pace,
             self.o.render_scale,
             self.o.scale,
@@ -1149,6 +1160,15 @@ mod mac {
         drawable
     }
 
+    extern "C" {
+        fn pthread_set_qos_class_self_np(qos: u32, relative_priority: i32) -> i32;
+    }
+
+    /// The calling thread at QOS_CLASS_USER_INTERACTIVE (0x21): kept on the performance cores.
+    pub fn worker_interactive() -> i32 {
+        unsafe { pthread_set_qos_class_self_np(0x21, 0) }
+    }
+
     pub fn install_presented_handler() -> bool {
         let Some(class) = AnyClass::get(c"CAMetalLayer") else { return false };
         unsafe {
@@ -1205,6 +1225,9 @@ mod mac {
         use std::sync::OnceLock;
         static START: OnceLock<std::time::Instant> = OnceLock::new();
         START.get_or_init(std::time::Instant::now).elapsed().as_secs_f64()
+    }
+    pub fn worker_interactive() -> i32 {
+        -1
     }
     pub fn install_presented_handler() -> bool {
         false
