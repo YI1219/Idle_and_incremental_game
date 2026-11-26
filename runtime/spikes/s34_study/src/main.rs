@@ -779,7 +779,7 @@ struct Built {
 
 /// Builds one island. With `props` the exported Godot props are loaded into `library` and the
 /// procedural trees, bamboo, rocks, stones and lily pads are not made (rim tufts stay).
-fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courtyard: bool, props: Option<&std::path::Path>, library: &mut props::Library, items: &props::Items) -> Built {
+fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courtyard: bool, props: Option<&std::path::Path>, library: &mut props::Library, items: &props::Items, prior: Option<&body::Prior>) -> Built {
     let mut timings = Vec::new();
     let mut parts = Vec::new();
     let mut clock = Instant::now();
@@ -822,7 +822,7 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
         let body = s.spawn(|| {
             let t = Instant::now();
             let outlines = field::outlines(cells, &field, 0.5);
-            let body = body::build_body(kind, &field, &outlines, &body::StoneColours::default(), seed, 0.5);
+            let body = body::build_body(kind, &field, &outlines, &body::StoneColours::default(), seed, 0.5, prior);
             (body, t.elapsed().as_secs_f64() * 1000.0)
         });
         // The props on this thread meanwhile.
@@ -1288,7 +1288,7 @@ fn main() {
     } else {
         props_for(args.layout.as_deref(), true)
     };
-    let mut main_island = build_island(&cells, args.body, args.seed, Vec3::ZERO, courtyard, main_props.as_deref(), &mut library, &props::Items::scene());
+    let mut main_island = build_island(&cells, args.body, args.seed, Vec3::ZERO, courtyard, main_props.as_deref(), &mut library, &props::Items::scene(), None);
     let build_ms = total.elapsed().as_secs_f64() * 1000.0;
     let mut solid = Mesh::default();
     solid.append(&main_island.solid);
@@ -1301,7 +1301,7 @@ fn main() {
             let path = folder.join(file);
             let other = field::load_layout(path.to_str().unwrap());
             let other_props = props_for(path.to_str(), false);
-            let built = build_island(&other, args.body, seed, origin, true, other_props.as_deref(), &mut library, &props::Items::scene());
+            let built = build_island(&other, args.body, seed, origin, true, other_props.as_deref(), &mut library, &props::Items::scene(), None);
             solid.append(&built.solid);
             water.extend_from_slice(&built.water);
             all_grass.append(built.grass);

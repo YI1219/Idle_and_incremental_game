@@ -177,8 +177,8 @@ pub struct SceneSpec {
 /// the top surface in parallel bands, top surface, body and props at once). Swap this one function
 /// for a more incremental update; everything else (transition, upload preparation, the frame loop)
 /// stays.
-pub fn rebuild_island(cells: &Cells, items: &crate::props::Items, spec: &SceneSpec) -> settle::Island {
-    settle::build(spec.body, spec.seed, spec.props.as_deref(), cells.clone(), items)
+pub fn rebuild_island(cells: &Cells, items: &crate::props::Items, spec: &SceneSpec, prior: Option<&crate::body::Prior>) -> settle::Island {
+    settle::build(spec.body, spec.seed, spec.props.as_deref(), cells.clone(), items, prior)
 }
 
 /// The island ready for upload: vertices with the far mountains appended (the first `casters`
@@ -246,7 +246,9 @@ fn spawn_worker(base: settle::Island, base_items: crate::props::Items, edit: Edi
         for job in job_rx {
             let (target, items, placed): (&Cells, &crate::props::Items, &[Placement]) = if job.forward { (&edited, &edited_items, &placed) } else { (&base_cells, &base_items, &[]) };
             let start = now();
-            let mut after = rebuild_island(target, items, &spec);
+            // Round k5b: the rim plan outside the edit's zone is kept (body::Prior); lo..hi carry 4 m of margin.
+            let prior = crate::body::Prior::new(&current.built.faces, lo + Vec2::splat(4.0), hi - Vec2::splat(4.0));
+            let mut after = rebuild_island(target, items, &spec, Some(&prior));
             let rebuilt = now();
             let tr = settle::transition(&current, &mut after, lo, hi, centre, placed);
             let mapped = now();
@@ -1062,7 +1064,7 @@ pub fn main() {
     let spec = SceneSpec { props, body: crate::body::Kind::Karst, seed: o.seed };
     let far = crate::far_mountains();
     let start = now();
-    let island = rebuild_island(&cells, &crate::props::Items::scene(), &spec);
+    let island = rebuild_island(&cells, &crate::props::Items::scene(), &spec, None);
     println!("WINDOW island built in {:.1} ms", (now() - start) * 1000.0);
     let lantern = island.library.lanterns.first().copied();
     // Light and camera as the stills of view `game` (main.rs).

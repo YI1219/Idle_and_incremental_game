@@ -64,10 +64,35 @@ impl Default for StoneColours {
 /// Underside depth of the liner at a point: shallow under the rim, deep under
 /// the middle of wide parts, so the body reads as an inverted mountain.
 pub fn underside(field: &Field, p: Vec2, seed: u32) -> f32 {
-    let near = smoothstep(0.50, 0.96, field.sample(&field.land2, p));
-    let far = smoothstep(0.52, 0.97, field.sample(&field.land3, p));
+    // Round k5b: from the distance to the outline within 8 m (`edge_distance`), not the 2.5 m and 7 m
+    // blurs, which an edit 20 m away could change.
+    let (edge, _) = edge_distance(field, p);
+    let near = smoothstep(0.5, 4.5, edge);
+    let far = smoothstep(0.5, 9.0, edge);
     let ridge = vnoise(p.x * 0.16, p.y * 0.16, seed ^ 51) - 0.5;
     2.2 + 4.8 * near + 8.5 * far * far + ridge * 2.4 * (0.3 + far)
+}
+
+/// Round k5b: how far a point lies inside the island's outline (the 0.45 m blur's half level), found
+/// by probing rings of 12 directions every 0.5 m out to 8 m, and the direction away from the nearest
+/// outside probe (into the island). It reads only the island within 8 m of the point.
+pub fn edge_distance(field: &Field, p: Vec2) -> (f32, Vec2) {
+    let mut r = 0.5;
+    while r <= 8.0 {
+        let mut away = Vec2::ZERO;
+        for k in 0..12 {
+            let a = k as f32 / 12.0 * std::f32::consts::TAU;
+            let d = Vec2::new(a.cos(), a.sin());
+            if field.sample(&field.land1, p + d * r) < 0.5 {
+                away -= d;
+            }
+        }
+        if away != Vec2::ZERO {
+            return (r - 0.25, away.normalize_or_zero());
+        }
+        r += 0.5;
+    }
+    (8.0, Vec2::ZERO)
 }
 
 /// Splits the outline into faces. A point becomes a break when its score is
@@ -75,12 +100,36 @@ pub fn underside(field: &Field, p: Vec2, seed: u32) -> f32 {
 /// high, and a world-anchored hash supplies the irregular rhythm in between.
 /// Outline points are world-anchored and unevenly spaced, so every length here is
 /// arc length in metres, never a count of points.
-pub fn plan_faces(outline: &Outline, field: &Field, seed: u32, _spacing: f32) -> Vec<Face> {
-    plan_traced(outline, field, seed, &mut Vec::new())
+/// Round k5b: what an edit keeps of the island before it: the rim plan's breaks (the faces' first
+/// points) and the zone the edit changed. Breaks outside the zone that still lie on the outline are
+/// kept as they were; only breaks inside it are planned again, so every face wholly outside the zone
+/// is the same face as before (the rim plan's windows reach up to 6 m either side, and before this a
+/// changed outline could move breaks, and the blocks built on them, 10 m and more from the edit).
+#[derive(Clone)]
+pub struct Prior {
+    pub breaks: Vec<Vec2>,
+    pub lo: Vec2,
+    pub hi: Vec2,
+}
+
+impl Prior {
+    /// From an island's faces and an edit's rectangle (grown by 2.5 m: the outline moves up to about
+    /// 1.5 m from changed cells).
+    pub fn new(faces: &[Face], lo: Vec2, hi: Vec2) -> Prior {
+        Prior { breaks: faces.iter().map(|f| f.a).collect(), lo: lo - Vec2::splat(2.5), hi: hi + Vec2::splat(2.5) }
+    }
+}
+
+pub fn plan_faces(outline: &Outline, field: &Field, seed: u32, _spacing: f32, prior: Option<&Prior>) -> Vec<Face> {
+    plan_traced_with(outline, field, seed, &mut Vec::new(), prior)
+}
+
+pub fn plan_traced(outline: &Outline, field: &Field, seed: u32, trace: &mut Vec<Vec<Vec2>>) -> Vec<Face> {
+    plan_traced_with(outline, field, seed, trace, None)
 }
 
 /// `plan_faces`, also recording the break positions after each stage (break set, split, pairing).
-pub fn plan_traced(outline: &Outline, field: &Field, seed: u32, trace: &mut Vec<Vec<Vec2>>) -> Vec<Face> {
+pub fn plan_traced_with(outline: &Outline, field: &Field, seed: u32, trace: &mut Vec<Vec<Vec2>>, prior: Option<&Prior>) -> Vec<Face> {
     let n = outline.points.len();
     let ni = n as isize;
     let wrap = |k: isize| k.rem_euclid(ni) as usize;
@@ -227,7 +276,46 @@ pub fn plan_traced(outline: &Outline, field: &Field, seed: u32, trace: &mut Vec<
         }
         breaks = paired;
     }
+    // Round k5b: no face narrower than 1.4 m: such a face stood between two broad ones as a thin pillar
+    // and read as vertical stripes. Of its two ends, the break with the lower (world-anchored) score
+    // goes, so the face merges into a neighbour; decided from the list as it stands (one pass, the
+    // same wherever the loop starts).
+    if breaks.len() > 4 {
+        let m = breaks.len();
+        let drop: Vec<bool> = (0..m)
+            .map(|i| {
+                // Break i ends the face before it and starts the face after it.
+                let (prev, next) = (breaks[(i + m - 1) % m], breaks[(i + 1) % m]);
+                let (before_w, after_w) = (ahead(prev, breaks[i]), ahead(breaks[i], next));
+                let weaker = |a: usize, b: usize| score[a] < score[b] || (score[a] == score[b] && tie[a] < tie[b]);
+                (after_w < 1.4 && weaker(breaks[i], next)) || (before_w < 1.4 && weaker(breaks[i], prev))
+            })
+            .collect();
+        let kept: Vec<usize> = breaks.iter().zip(&drop).filter(|(_, d)| !**d).map(|(b, _)| *b).collect();
+        if kept.len() >= 3 {
+            breaks = kept;
+        }
+    }
     trace.push(breaks.iter().map(|&k| outline.points[k]).collect());
+    if let Some(pr) = prior {
+        let in_zone = |p: Vec2| p.cmpge(pr.lo).all() && p.cmple(pr.hi).all();
+        let mut kept: Vec<usize> = Vec::new();
+        for b in &pr.breaks {
+            if !in_zone(*b) {
+                if let Some(k) = outline.points.iter().position(|q| (*q - *b).length() < 1e-3) {
+                    kept.push(k);
+                }
+            }
+        }
+        let near_kept = |k: usize| kept.iter().any(|&q| q != k && ahead(k, q).min(ahead(q, k)) < 1.5);
+        let mut merged: Vec<usize> = kept.clone();
+        merged.extend(breaks.iter().copied().filter(|&k| in_zone(outline.points[k]) && !near_kept(k)));
+        merged.sort_unstable();
+        merged.dedup();
+        if merged.len() >= 3 {
+            breaks = merged;
+        }
+    }
     let mut faces = Vec::with_capacity(breaks.len());
     for i in 0..breaks.len() {
         let (from, to) = (breaks[i], breaks[(i + 1) % breaks.len()]);
@@ -310,11 +398,13 @@ pub fn form_metrics(faces: &[Face]) -> FormMetrics {
 /// wall of facets from just under the lip down to its first inner row.
 pub fn build_hull(field: &Field, colours: &StoneColours, seed: u32, grid: f32, hidden: bool) -> Mesh {
     let mut mesh = Mesh::default();
-    let cols = ((field.nx as f32 * crate::field::STEP) / grid) as i32 + 1;
-    let rows = ((field.nz as f32 * crate::field::STEP) / grid) as i32 + 1;
+    // Round k5b: the grid is anchored to the world, not to the field's corner (which moves with the
+    // island's bounds, and moved every vertex of the liner with it).
+    let (i0, j0) = ((field.origin.x / grid).floor() as i32 - 1, (field.origin.y / grid).floor() as i32 - 1);
+    let (i1, j1) = (((field.origin.x + field.nx as f32 * crate::field::STEP) / grid).ceil() as i32 + 1, ((field.origin.y + field.nz as f32 * crate::field::STEP) / grid).ceil() as i32 + 1);
     let vertex = |i: i32, j: i32| -> Vec2 {
         let jitter = Vec2::new(hash2(i, j, seed ^ 71) - 0.5, hash2(i, j, seed ^ 72) - 0.5) * grid * 0.55;
-        field.origin + Vec2::new(i as f32, j as f32) * grid + jitter
+        Vec2::new(i as f32, j as f32) * grid + jitter
     };
     // As a liner behind hanging rock the hull sits well inside the rim, so recessed faces stay in front of it.
     let level = if hidden { 0.90 } else { 0.60 };
@@ -338,8 +428,8 @@ pub fn build_hull(field: &Field, colours: &StoneColours, seed: u32, grid: f32, h
             Vec3::new(p.x, -underside(field, p, seed), p.y)
         }
     };
-    for j in 0..rows {
-        for i in 0..cols {
+    for j in j0..j1 {
+        for i in i0..i1 {
             let corners = [vertex(i, j), vertex(i, j + 1), vertex(i + 1, j + 1), vertex(i + 1, j)];
             let values = corners.map(|p| field.sample(&field.land1, p) - level);
             if values.iter().all(|v| *v < 0.0) {
@@ -516,15 +606,15 @@ struct Edges {
     salt: u32,
     /// Corners whose shading turns less than the geometry (see `CornerTurn`).
     turn: Vec<CornerTurn>,
-    /// Round k5: corners kept nearly square (3.5 cm): where two rim blocks meet nearly flush, two
-    /// rounded corners side by side carved a groove that read as a thin dark joint.
+    /// Round k5: corners left sharp, where two rim blocks meet at one shared corner (round k5b: a
+    /// 3.5 cm arc there caught the light as a bright vertical line).
     square: Vec<Vec2>,
 }
 
 impl Edges {
     fn radius(&self, p: Vec2) -> f32 {
         if self.square.iter().any(|q| (*q - p).length() < 1e-3) {
-            return 0.035;
+            return 0.0;
         }
         let h = hash2((p.x * 2.7 + 0.31).floor() as i32, (p.y * 2.7 + 0.53).floor() as i32, self.salt);
         self.corner.0 + (self.corner.1 - self.corner.0) * h
@@ -1177,12 +1267,12 @@ pub struct Body {
     pub fringe: Fringe,
 }
 
-pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &StoneColours, seed: u32, spacing: f32) -> Body {
+pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &StoneColours, seed: u32, spacing: f32, prior: Option<&Prior>) -> Body {
     let mut mesh = build_hull(field, colours, seed, if kind == Kind::Hull { 2.4 } else { 2.0 }, kind == Kind::Karst);
     let Some(outer) = outlines.iter().find(|o| !o.is_hole) else {
         return Body { mesh, faces: Vec::new(), columns: 0, fringe: Fringe::default() };
     };
-    let faces = plan_faces(outer, field, seed, spacing);
+    let faces = plan_faces(outer, field, seed, spacing, prior);
     let mut columns = 0;
     let mut fringe = Fringe::default();
     if kind == Kind::Karst {
@@ -1347,17 +1437,17 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             let (skew_b, skew_a) = (chord * (0.2 * (h3 - 0.3)), -chord * (0.2 * (h1 - 0.3)));
             let (a, back_a, clip_a, prow_a) = reach(face.a, -chord, front_a, wall_a, skew_a);
             let (b, back_b, clip_b, prow_b) = reach(face.b, chord, front_b, wall_b, skew_b);
-            // Round k5: a face wider than 2.6 m is folded once (wider than 5.5 m twice), 8 to 22 cm in
+            // Round k5 (k5b: wider than 4 m, twice over 7 m, 6 to 14 cm, so folds stay soft bends, not stripes): a face is folded, in
             // or out, so a broad face reads as a few planes of one rock, not one flat card. (Before,
             // only faces over 5 m were folded, by at most 15 cm.)
             let mut plan = vec![a];
-            if face.width > 2.6 {
-                let folds = if face.width > 5.5 { 2 } else { 1 };
+            if face.width > 4.0 {
+                let folds = if face.width > 7.0 { 2 } else { 1 };
                 for f in 0..folds {
                     let hf = hash2(key.0 + 7 * f, key.1, seed ^ 84);
                     let t = (f as f32 + 1.0) / (folds as f32 + 1.0) + (hf - 0.5) * 0.24 / folds as f32;
                     let hp = hash2(key.0, key.1 + 1 + 5 * f, seed ^ 85);
-                    let push = if hp < 0.5 { -1.0 } else { 1.0 } * (0.08 + 0.14 * (2.0 * (hp - 0.5).abs()));
+                    let push = if hp < 0.5 { -1.0 } else { 1.0 } * (0.06 + 0.08 * (2.0 * (hp - 0.5).abs()));
                     plan.push(a.lerp(b, t) + out * push);
                 }
             }
@@ -1394,13 +1484,15 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             // amount and a sideways drift from smooth noise), taken at the two ends of the front: two
             // neighbours meeting at a junction take the same lean there, so no gap opens between
             // them below the lawn.
-            let lean_at = |p: Vec2| -> Vec2 {
-                let inward = field.inward(p);
+            // Round k5b: inward is the outline's own normal at that point (from the island's 0.45 m
+            // blur), not the 2.5 m blur's gradient, which an edit 7 m away could turn.
+            let lean_at = |p: Vec2, inward: Vec2| -> Vec2 {
                 let amount = 0.15 + 0.85 * vnoise(p.x * 0.16 + 3.1, p.y * 0.16, seed ^ 99);
                 let drift = Vec2::new(vnoise(p.x * 0.16, p.y * 0.16 + 7.7, seed ^ 100) - 0.5, vnoise(p.x * 0.16 + 11.3, p.y * 0.16, seed ^ 113) - 0.5) * 0.6;
                 inward * amount + drift
             };
-            let (shift, shift_b) = (lean_at(face.a), lean_at(face.b));
+            let n_out = outer.points.len();
+            let (shift, shift_b) = (lean_at(face.a, -outer.outward[face.from % n_out]), lean_at(face.b, -outer.outward[face.to % n_out]));
             let bow = (hash2(key.0, key.1, seed ^ 101) - 0.5) * 0.4;
             // Round k1: every vertical edge is rounded, 0.12 to 0.22 m (it replaces round r10's flat
             // 0.20 m bevel at the front corners, shaded a third of the way round); neighbouring
@@ -1432,15 +1524,27 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
             // The corner that stands back (or both, where the fronts are flush) turns its shading only
             // as far as the step is deep: two fully rounded corners side by side made a dark groove.
             let back_frac = 0.15 + 0.85 * smoothstep(0.10, 0.40, step);
-            if (ci - cj).length() > 0.8 {
+            let gap = (ci - cj).length();
+            // A concave turn of the rim (the next face turns toward the outside of this one): the two
+            // fronts meet at the inside corner whatever the step, else a deep dark slot opened between
+            // them (round k5b; a brush-made outline has many such turns).
+            let concave = blocks[i].out.dot(blocks[j].chord) > 0.05;
+            if gap > if concave { 2.5 } else { 1.6 } || (gap > 0.8 && step >= 0.45 && !concave) {
                 continue;
             }
-            if step < 0.25 {
-                // Round k5: at a small step (under 25 cm) the two corners stay square (they overlap
-                // along the rim, and the backing plate below closes the joint): two rounded corners side
-                // by side carved a groove that read as a thin dark joint or a pipe.
-                blocks[i].edges.square.push(ci);
-                blocks[j].edges.square.push(cj);
+            if step < 0.45 || concave {
+                // Round k5b: at a small step (under 45 cm) the two fronts meet at one shared corner, sharp,
+                // so the wall has a single crease there. Before (round k5) each block kept its own corner
+                // and reached 0.22 m past the other, with a backing plate behind: the narrow end faces,
+                // the small corner arcs and the plate showed as thin vertical stripes. (Round k1 rounded
+                // both corners: a groove.) Both blocks lean alike at the shared corner (the lean is a
+                // field over the world), so the crease stays closed all the way down.
+                let shared = (ci + cj) * 0.5;
+                let bi = blocks[i].b_index;
+                blocks[i].plan[bi] = shared;
+                blocks[j].plan[0] = shared;
+                blocks[i].edges.square.push(shared);
+                blocks[j].edges.square.push(shared);
             } else if let Some((turn, filler)) = rim_junction(&blocks[i], &blocks[j], true) {
                 blocks[i].edges.turn.push(turn);
                 blocks[j].edges.turn.push(CornerTurn { at: cj, frac: back_frac, front_incoming: false });
@@ -1460,38 +1564,8 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
         for f in &fillers {
             emit_filler(&mut mesh, f, colours);
         }
-        // Round k5: a backing plate 6 cm behind every junction of two rim blocks, from the lower of
-        // their tops down to the higher foot, each end following its own block's lean. Where two
-        // fronts meet at a slight angle (or lean apart below the lawn) a hairline crack showed the
-        // dark inside of the island; now it shows lit stone a little recessed, as a joint.
-        for i in 0..nb {
-            let j = (i + 1) % nb;
-            if i == j {
-                continue;
-            }
-            let (ci, _, _) = blocks[i].front_end(true);
-            let (cj, _, _) = blocks[j].front_end(false);
-            if (ci - cj).length() > 1.5 {
-                continue;
-            }
-            let along = {
-                let d = cj - ci;
-                if d.length() > 0.02 { d.normalize() } else { blocks[i].chord }
-            };
-            let n = (blocks[i].out + blocks[j].out).normalize_or_zero();
-            let (p0, p1) = (ci - along * 0.25 - n * 0.025, cj + along * 0.25 - n * 0.025);
-            let top = blocks[i].top_surface().min(blocks[j].top_surface()) - 0.02;
-            let bottom = blocks[i].bottom.max(blocks[j].bottom) + 0.3;
-            let (s0, s1) = (blocks[i].foot_at(ci), blocks[j].foot_at(cj));
-            let q = [Vec3::new(p0.x, top, p0.y), Vec3::new(p1.x, top, p1.y), Vec3::new(p1.x + s1.x, bottom, p1.y + s1.y), Vec3::new(p0.x + s0.x, bottom, p0.y + s0.y)];
-            let nn = Vec3::new(n.x, 0.0, n.y);
-            let colour = (blocks[i].colour + blocks[j].colour) * 0.5 * 0.97;
-            let low = colour.lerp(colours.under, 0.18);
-            let lip = blocks[i].lip.max(blocks[j].lip);
-            let (pt, pb) = (Paint::new(Family::Stone).sky(0.85).line(1.0).strokes(1.0).id(blocks[i].id).grad(0.0).lip(lip), Paint::new(Family::Stone).sky(0.7).line(1.0).strokes(1.0).id(blocks[i].id).grad(1.0).lip(lip));
-            crate::field::tri_facing(&mut mesh, [q[0], q[1], q[2]], [nn; 3], [colour, colour, low], [pt, pt, pb]);
-            crate::field::tri_facing(&mut mesh, [q[0], q[2], q[3]], [nn; 3], [colour, low, low], [pt, pb, pb]);
-        }
+        // Round k5b: the backing plates of round k5 are gone (junctions with a small step now share one
+        // corner; at a larger step the k1 fillet closes the V).
         // Buttress slabs (Godot's shoulder groups): a few broad slabs standing against the wall,
         // each with one broad wedge top sloping out, its top well under the lawn's edge, standing a
         // metre or two proud, leaning a little. A face offers one when it is broad enough; of two
@@ -1587,15 +1661,19 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
         }
         // Tier two: deeper masses behind the rim, on a jittered lattice, hanging below the liner.
         // Round r8: fewer and larger, so the underside reads as a few soft masses in the mist.
+        // Round k5b: the lattice is anchored to the world (it was anchored to the field's corner,
+        // which moves whenever an edit moves the island's bounds, and every column moved with it), and
+        // a column reads only the island within 8 m of it (`edge_distance`), not the 7 m blur, which
+        // an edit 20 m away could change.
         let lattice = 5.2;
-        let cols = ((field.nx as f32 * crate::field::STEP) / lattice) as i32 + 1;
-        let rows = ((field.nz as f32 * crate::field::STEP) / lattice) as i32 + 1;
-        for j in 0..rows {
-            for i in 0..cols {
+        let (i0, j0) = ((field.origin.x / lattice).floor() as i32 - 1, (field.origin.y / lattice).floor() as i32 - 1);
+        let (i1, j1) = (((field.origin.x + field.nx as f32 * crate::field::STEP) / lattice).ceil() as i32 + 1, ((field.origin.y + field.nz as f32 * crate::field::STEP) / lattice).ceil() as i32 + 1);
+        for j in j0..=j1 {
+            for i in i0..=i1 {
                 let (h1, h2, h3, h4) = (hash2(i, j, seed ^ 91), hash2(i, j, seed ^ 92), hash2(i, j, seed ^ 93), hash2(i, j, seed ^ 94));
-                let centre = field.origin + (Vec2::new(i as f32, j as f32) + Vec2::new(h1, h2) * 0.8) * lattice;
-                let inside = field.sample(&field.land2, centre);
-                if inside < 0.70 || field.sample(&field.land1, centre) < 0.9 {
+                let centre = (Vec2::new(i as f32, j as f32) + Vec2::new(h1, h2) * 0.8) * lattice;
+                let (edge, inward) = edge_distance(field, centre);
+                if edge < 2.2 || field.sample(&field.land1, centre) < 0.9 {
                     continue;
                 }
                 let sides = 5 + (h3 * 2.0) as usize;
@@ -1618,10 +1696,13 @@ pub fn build_body(kind: Kind, field: &Field, outlines: &[Outline], colours: &Sto
                     }
                 }
                 let top = top - 0.55;
-                let far = smoothstep(0.52, 0.97, field.sample(&field.land3, centre));
+                let far = smoothstep(0.5, 9.0, edge);
                 // Feet about 2 to 3 m under the root mist's full level, so the underside ends evenly.
-                let depth_to = (underside(field, centre, seed) + 2.0 + 1.6 * h4 + 1.5 * far * h1).min(top + 8.0 + 1.0 * h4);
-                let lean = centre + field.inward(centre) * 4.0;
+                let near = smoothstep(0.5, 4.5, edge);
+                let ridge = vnoise(centre.x * 0.16, centre.y * 0.16, seed ^ 51) - 0.5;
+                let underside_here = 2.2 + 4.8 * near + 8.5 * far * far + ridge * 2.4 * (0.3 + far);
+                let depth_to = (underside_here + 2.0 + 1.6 * h4 + 1.5 * far * h1).min(top + 8.0 + 1.0 * h4);
+                let lean = centre + inward * 4.0;
                 let tilt = Vec2::new(h1 - 0.5, h2 - 0.5) * 0.7;
                 let tier = 0.55 + 0.45 * far;
                 let colour = colours.face.lerp(colours.cool, 0.30 + 0.25 * far) * (1.0 + (h2 - 0.5) * 0.08);

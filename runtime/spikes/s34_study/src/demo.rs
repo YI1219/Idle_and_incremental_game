@@ -161,9 +161,9 @@ pub struct Settings<'a> {
 pub fn run(s: &Settings, renderer: &mut Renderer) {
     let script = load(s.script);
     let far = crate::far_mountains();
-    let build = |cells: Cells, items: &Items| settle::build(s.body, s.seed, Some(s.props.as_path()), cells, items);
+    let build = |cells: Cells, items: &Items, prior: Option<&crate::body::Prior>| settle::build(s.body, s.seed, Some(s.props.as_path()), cells, items, prior);
     let mut items = Items { scene: false, placed: Vec::new(), removed: Vec::new() };
-    let mut island = build(mound_cells(&script), &items);
+    let mut island = build(mound_cells(&script), &items, None);
     println!("DEMO start: one mound, {} cells", island.cells.len());
     let frame_of = |camera: Camera, clock: f32, motion: Option<(&Transition, [f32; 4])>| {
         let mut light = s.light;
@@ -189,7 +189,8 @@ pub fn run(s: &Settings, renderer: &mut Renderer) {
             if let Some(why) = &done.refused {
                 println!("DEMO {}: refused ({why})", step.stroke.tool.name());
             } else {
-                island = build(cells, &items);
+                let prior = crate::body::Prior::new(&island.built.faces, done.lo, done.hi);
+                island = build(cells, &items, Some(&prior));
             }
         }
         settle::upload(renderer, &island, &far, s.grass, None);
@@ -198,6 +199,9 @@ pub fn run(s: &Settings, renderer: &mut Renderer) {
             let path = format!("{}/{}_after_{name}.png", s.out, s.tag);
             renderer.save_png(&path);
             println!("FRAME {path}");
+        }
+        if let Ok(path) = std::env::var("S34_DEMO_SAVE") {
+            crate::field::save_layout(&path, &island.cells, s.seed, 0);
         }
         println!("DEMO end: {} cells, {} items", island.cells.len(), island.library.instances.len());
         return;
@@ -245,7 +249,8 @@ pub fn run(s: &Settings, renderer: &mut Renderer) {
         if let Some(why) = &done.refused {
             println!("DEMO step {} {}: refused ({why})", index + 1, step.stroke.tool.name());
         } else {
-            let mut after = build(cells, &next_items);
+            let prior = crate::body::Prior::new(&island.built.faces, done.lo, done.hi);
+            let mut after = build(cells, &next_items, Some(&prior));
             let rebuilt = clock.elapsed().as_secs_f64() * 1000.0;
             let lap = Instant::now();
             let lo = done.lo - Vec2::splat(4.0);

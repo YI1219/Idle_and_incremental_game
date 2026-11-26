@@ -100,6 +100,9 @@ pub fn build_map(before_cells: &Cells, before: &Field, after_cells: &Cells, afte
     let mut gone = vec![false; n];
     let mut new_land = vec![false; n];
     let mut fill = vec![0.0_f32; n];
+    // Round k5b: how far the ground fell where an edit lowered it (it retracts: the old volume sinks
+    // as a ghost, the new ground stays where it is).
+    let mut lowered = vec![0.0_f32; n];
     let mut anchor = vec![0.0_f32; n];
     let mut fresh = vec![0.0_f32; n];
     let mut mode = vec![0.0_f32; n];
@@ -129,7 +132,10 @@ pub fn build_map(before_cells: &Cells, before: &Field, after_cells: &Cells, afte
                 mode[k] = 1.0;
                 anchor[k] = h_new - RISE;
                 band[k] = (-1.0e4, h_new + BAND);
-            } else if is && (h_new - h_old).abs() > 0.01 {
+            } else if is && was && h_old - h_new > 0.01 {
+                lowered[k] = h_old - h_new;
+                band[k] = (h_new - BAND, h_new + BAND);
+            } else if is && h_new - h_old > 0.01 {
                 changed[k] = 1.0;
                 band[k] = (h_old.min(h_new) - BAND, h_old.max(h_new) + BAND);
             } else {
@@ -272,13 +278,32 @@ pub fn build_map(before_cells: &Cells, before: &Field, after_cells: &Cells, afte
             }
         }
     }
+    // The sink: the most any texel within 0.75 m fell, so an old block's walls sink with its top.
+    let mut sink = vec![0.0_f32; n];
+    if lowered.iter().any(|l| *l > 0.0) {
+        for j in 0..nz as i32 {
+            for i in 0..nx as i32 {
+                let mut m = 0.0_f32;
+                for dj in -3..=3_i32 {
+                    for di in -3..=3_i32 {
+                        let (a, b) = (i + di, j + dj);
+                        if a >= 0 && b >= 0 && a < nx as i32 && b < nz as i32 {
+                            m = m.max(lowered[(b as usize) * nx + a as usize]);
+                        }
+                    }
+                }
+                sink[(j as usize) * nx + i as usize] = m;
+            }
+        }
+    }
     let fill = blur(&fill.iter().enumerate().map(|(k, f)| if *f > 0.0 || (k >= 1 && fill[k - 1] > 0.0) || (k + 1 < n && fill[k + 1] > 0.0) { 1.0 } else { 0.0 }).collect::<Vec<f32>>());
     let mut texels = Vec::with_capacity(n);
     for j in 0..nz {
         for i in 0..nx {
             let k = j * nx + i;
             let p = at(i, j);
-            let mut grass = weight[k];
+            // Grass on lowered ground regrows as the old volume sinks into it.
+            let mut grass = weight[k].max(if lowered[k] > 0.0 { 1.0 } else { 0.0 });
             let mut delay = DELAY_PER_M * (p - centre).length();
             for &(c, r, d) in regrow {
                 let s = 1.0 - crate::mesh::smoothstep(r + 0.15, r + 0.55, (p - c).length());
@@ -289,7 +314,7 @@ pub fn build_map(before_cells: &Cells, before: &Field, after_cells: &Cells, afte
             }
             let border = i == 0 || j == 0 || i + 1 == nx || j + 1 == nz;
             let (edge, fill) = if border { (0.0, 0.0) } else { (edge[k], fill[k]) };
-            texels.push(Texel { a: [anchor[k], fresh[k], wide[k].0, wide[k].1], b: [weight[k], mode_grown[k], delay, grass], c: [edge, fill, zone[k], 0.0] });
+            texels.push(Texel { a: [anchor[k], fresh[k], wide[k].0, wide[k].1], b: [weight[k], mode_grown[k], delay, grass], c: [edge, fill, zone[k], sink[k]] });
         }
     }
     // S34_SETTLE_DUMP="x,z0,z1": the texels along one line of x (checking a map).
@@ -411,9 +436,16 @@ pub fn transition(before: &Island, after: &mut Island, lo: Vec2, hi: Vec2, centr
     // Land, water and grass that leave: old geometry over the ghost zone (land removed and the rim
     // that hung off it), and old water where none stands after the edit.
     let centroid = |p: [[f32; 3]; 3]| Vec2::new((p[0][0] + p[1][0] + p[2][0]) / 3.0, (p[0][2] + p[1][2] + p[2][2]) / 3.0);
+    // Round k5b: and, where the edit lowered the ground, the old volume that stands above the new
+    // ground (a raised block's top and walls, or the lawn over a new pit): it sinks into the new ground
+    // and merges with it (retract, then merge), instead of the new surface being stretched up to the old
+    // height and flattened.
+    let above_new = |p: Vec2, top: f32| top > after.built.field.height_at(p) + 0.03;
     let mut ghost_solid = Vec::new();
     for tri in before.built.solid.vertices.chunks_exact(3) {
-        if map.ghost_zone(centroid([tri[0].pos, tri[1].pos, tri[2].pos])) {
+        let c = centroid([tri[0].pos, tri[1].pos, tri[2].pos]);
+        let top = tri[0].pos[1].max(tri[1].pos[1]).max(tri[2].pos[1]);
+        if map.ghost_zone(c) || (map.texel(c).is_some_and(|t| t.c[3] > 0.01) && above_new(c, top)) {
             ghost_solid.extend_from_slice(tri);
         }
     }
@@ -427,7 +459,8 @@ pub fn transition(before: &Island, after: &mut Island, lo: Vec2, hi: Vec2, centr
     }
     let mut ghost_clumps = Vec::new();
     for clump in &before.built.grass.clumps {
-        if map.ghost_zone(Vec2::new(clump.root[0], clump.root[2])) {
+        let r = Vec2::new(clump.root[0], clump.root[2]);
+        if map.ghost_zone(r) || (map.texel(r).is_some_and(|t| t.c[3] > 0.01) && above_new(r, clump.root[1])) {
             let mut g = *clump;
             g.misc[3] = 255;
             ghost_clumps.push(g);
@@ -449,6 +482,8 @@ pub(crate) enum Edit {
     Place(&'static [Placement]),
     /// Round k5: a stroke of the brush tools (brush.rs), the path every edit of the runtime takes.
     Brush(crate::brush::Stroke),
+    /// Round k5b: several strokes committed as one edit (a block unloaded in one go).
+    Brushes(Vec<crate::brush::Stroke>),
 }
 
 /// The sequences on layout 7301: name, the edit, its centre, and the camera (target, yaw, pitch,
@@ -493,6 +528,8 @@ pub(crate) fn sequences() -> Vec<Sequence> {
         Sequence { name: "erase", pre: vec![], edit: Edit::Brush(stroke(Tool::Contract, &[(-14.0, 4.2), (-12.0, 4.8)], 1.6)), centre: Vec2::new(-13.0, 4.5), camera: ([-12.5, 2.5, 4.5], 25.0, 24.0, 17.0) },
         Sequence { name: "remove", pre: vec![], edit: Edit::Brush(stroke(Tool::Remove, &[(-15.6, -4.4)], 1.4)), centre: Vec2::new(-15.6, -4.4), camera: ([-15.6, 4.6, -4.4], 25.0, 26.0, 13.0) },
         Sequence { name: "unraise", pre: vec![stroke(Tool::Raise, &[(-3.5, -5.5)], 1.6), stroke(Tool::Raise, &[(-3.5, -5.5)], 1.6)], edit: Edit::Brush(stroke(Tool::Lower, &[(-3.5, -5.5)], 1.6)), centre: Vec2::new(-3.5, -5.5), camera: ([-3.5, 3.9, -5.5], 20.0, 30.0, 12.0) },
+        // Round k5b: a block raised 1 m (rock walls) unloaded back to the lawn in one edit.
+        Sequence { name: "unload", pre: vec![stroke(Tool::Raise, &[(-3.5, -5.5)], 1.6), stroke(Tool::Raise, &[(-3.5, -5.5)], 1.6)], edit: Edit::Brushes(vec![stroke(Tool::Lower, &[(-3.5, -5.5)], 1.6), stroke(Tool::Lower, &[(-3.5, -5.5)], 1.6)]), centre: Vec2::new(-3.5, -5.5), camera: ([-3.5, 3.9, -5.5], 20.0, 30.0, 12.0) },
         Sequence { name: "fill", pre: lower_twice(), edit: Edit::Brush(pond()), centre: Vec2::new(3.5, -5.5), camera: ([3.5, 3.0, -5.5], 20.0, 36.0, 12.0) },
         Sequence { name: "drain", pre: { let mut v = lower_twice(); v.push(pond()); v }, edit: Edit::Brush(stroke(Tool::Dry, &[(3.5, -5.5)], 1.8)), centre: Vec2::new(3.5, -5.5), camera: ([3.5, 3.0, -5.5], 20.0, 36.0, 12.0) },
     ]
@@ -546,6 +583,18 @@ pub(crate) fn apply(cells: &Cells, items: &props::Items, library: &Library, edit
             println!("SETTLE brush {}: {} changed{}", stroke.tool.name(), done.changed, done.refused.as_deref().map(|r| format!(" (refused: {r})")).unwrap_or_default());
             (out, items, (done.lo, done.hi), Some(done.centre), done.placed)
         }
+        Edit::Brushes(strokes) => {
+            let (mut lo, mut hi, mut placed, mut centre) = (Vec2::splat(f32::MAX), Vec2::splat(f32::MIN), Vec::new(), Vec2::ZERO);
+            for stroke in strokes {
+                let done = crate::brush::apply(&mut out, &mut items, library, stroke);
+                println!("SETTLE brush {}: {} changed", stroke.tool.name(), done.changed);
+                lo = lo.min(done.lo);
+                hi = hi.max(done.hi);
+                centre = done.centre;
+                placed.extend(done.placed);
+            }
+            (out, items, (lo, hi), Some(centre), placed)
+        }
     }
 }
 
@@ -580,9 +629,9 @@ pub struct Settings<'a> {
 }
 
 /// Builds an island from cells and items (the same build every edit does).
-pub fn build(s_body: crate::body::Kind, seed: u32, props_dir: Option<&std::path::Path>, cells: Cells, items: &props::Items) -> Island {
+pub fn build(s_body: crate::body::Kind, seed: u32, props_dir: Option<&std::path::Path>, cells: Cells, items: &props::Items, prior: Option<&crate::body::Prior>) -> Island {
     let mut library = Library::default();
-    let built = crate::build_island(&cells, s_body, seed, Vec3::ZERO, true, props_dir, &mut library, items);
+    let built = crate::build_island(&cells, s_body, seed, Vec3::ZERO, true, props_dir, &mut library, items, prior);
     Island { cells, built, library }
 }
 
@@ -638,7 +687,7 @@ pub fn run(s: &Settings, renderer: &mut Renderer) -> Vec<String> {
         for st in &seq.pre {
             crate::brush::apply(&mut cells, &mut items, &Library::default(), st);
         }
-        let before = build(s.body, s.seed, s.props.as_deref(), cells, &items);
+        let before = build(s.body, s.seed, s.props.as_deref(), cells, &items, None);
         upload(renderer, &before, &far, s.grass, None);
         renderer.render(&frame_at(-1.0, None));
         let path = format!("{}/{}_{}_before.png", s.out, s.tag, seq.name);
@@ -648,8 +697,16 @@ pub fn run(s: &Settings, renderer: &mut Renderer) -> Vec<String> {
         let (edited, after_items, (lo, hi), centre, placed) = apply(&before.cells, &items, &before.library, &seq.edit);
         let centre = centre.unwrap_or(seq.centre);
         let start = Instant::now();
-        let mut after = build(s.body, s.seed, s.props.as_deref(), edited, &after_items);
+        // Round k5b: the edit keeps the rim plan outside the zone it changed (body::Prior).
+        let prior = crate::body::Prior::new(&before.built.faces, lo, hi);
+        let mut after = build(s.body, s.seed, s.props.as_deref(), edited, &after_items, Some(&prior));
         let rebuilt = start.elapsed().as_secs_f64() * 1000.0;
+        // Round k5b: S34_DIFF=1: which triangles the edit changed, and how far from it.
+        let diff = std::env::var("S34_DIFF").is_ok().then(|| {
+            let (changed, line) = diff_solid(&before, &after, lo, hi);
+            println!("DIFF {}: {line}", seq.name);
+            changed
+        });
         let lap = Instant::now();
         // The dirty rectangle: what the edit touched plus 4 m (the top surface changes at most 4 m
         // from a stroke, README "Locality").
@@ -688,6 +745,13 @@ pub fn run(s: &Settings, renderer: &mut Renderer) -> Vec<String> {
             renderer.save_png(&path);
             println!("FRAME {path}");
         }
+        if let Some(changed) = &diff {
+            upload_diff(renderer, &after, changed, &far);
+            renderer.render(&frame_at(-1.0, None));
+            let path = format!("{}/{}_{}_diff.png", s.out, s.tag, seq.name);
+            renderer.save_png(&path);
+            println!("FRAME {path}");
+        }
         if s.bench {
             let still = renderer.bench(&frame_at(END + 1.0, Some((&motion, ranges))), 120);
             let shadowed = renderer.bench_settle(&frame_at(END + 1.0, Some((&motion, ranges))), 120, None);
@@ -716,6 +780,91 @@ pub struct Composed {
     pub water: Vec<crate::water::WaterVertex>,
     pub grass: crate::grass::Grass,
     pub ranges: [f32; 4],
+}
+
+/// Round k5b: which triangles of `after`'s island did not exist in `before` (no triangle with the
+/// same three corners within 1 mm), and a report per part (top surface, body) of how far from the
+/// edit's rectangle `lo..hi` they lie. Evidence for whether an edit stays local.
+pub fn diff_solid(before: &Island, after: &Island, lo: Vec2, hi: Vec2) -> (Vec<bool>, String) {
+    let key = |p: [f32; 3]| ((p[0] * 1000.0).round() as i64, (p[1] * 1000.0).round() as i64, (p[2] * 1000.0).round() as i64);
+    let tri_key = |t: &[crate::mesh::Vertex]| {
+        let mut k = [key(t[0].pos), key(t[1].pos), key(t[2].pos)];
+        k.sort();
+        k
+    };
+    let old: std::collections::HashSet<[(i64, i64, i64); 3]> = before.built.solid.vertices.chunks_exact(3).map(tri_key).collect();
+    let parts = &after.built.parts;
+    let top_n = parts.iter().find(|p| p.0 == "top").map_or(0, |p| p.1);
+    let body_n = parts.iter().find(|p| p.0 == "body").map_or(0, |p| p.1);
+    let mut changed = Vec::with_capacity(after.built.solid.vertices.len() / 3);
+    // Per part: changed, total, farthest distance, beyond 3 m, beyond 6 m.
+    let mut stats = [(0usize, 0usize, 0.0_f32, 0usize, 0usize); 3];
+    for (i, t) in after.built.solid.vertices.chunks_exact(3).enumerate() {
+        let part = if i < top_n { 0 } else if i < top_n + body_n { 1 } else { 2 };
+        let c = !old.contains(&tri_key(t));
+        changed.push(c);
+        stats[part].1 += 1;
+        if c {
+            let p = Vec2::new((t[0].pos[0] + t[1].pos[0] + t[2].pos[0]) / 3.0, (t[0].pos[2] + t[1].pos[2] + t[2].pos[2]) / 3.0);
+            let d = (p - p.clamp(lo, hi)).length();
+            let s = &mut stats[part];
+            s.0 += 1;
+            s.2 = s.2.max(d);
+            s.3 += (d > 3.0) as usize;
+            s.4 += (d > 6.0) as usize;
+        }
+    }
+    // Body changes beyond 3 m by what they belong to (the paint id: liner 40..=99, rim blocks and
+    // their joints 100..=169, hanging columns 170.., slabs 30..=38, skirt 4, others).
+    let mut far_by: std::collections::BTreeMap<&str, (usize, f32)> = std::collections::BTreeMap::new();
+    for (i, t) in after.built.solid.vertices.chunks_exact(3).enumerate() {
+        if i < top_n || i >= top_n + body_n || !changed[i] {
+            continue;
+        }
+        let p = Vec2::new((t[0].pos[0] + t[1].pos[0] + t[2].pos[0]) / 3.0, (t[0].pos[2] + t[1].pos[2] + t[2].pos[2]) / 3.0);
+        let d = (p - p.clamp(lo, hi)).length();
+        if d <= 3.0 {
+            continue;
+        }
+        let id = t[0].extra[0];
+        let group = match id {
+            4 => "skirt",
+            30..=38 => "slabs",
+            40..=99 => "liner (hidden)",
+            100..=169 => "rim blocks",
+            170..=255 => "hanging columns",
+            _ => "other",
+        };
+        let e = far_by.entry(group).or_insert((0, 0.0));
+        e.0 += 1;
+        e.1 = e.1.max(d);
+    }
+    let mut line = ["top", "body", "decor"]
+        .iter()
+        .zip(stats.iter())
+        .map(|(n, s)| format!("{n} {} of {} triangles new, farthest {:.2} m from the edit, {} beyond 3 m, {} beyond 6 m", s.0, s.1, s.2, s.3, s.4))
+        .collect::<Vec<_>>()
+        .join("; ");
+    if !far_by.is_empty() {
+        line += &format!("; body beyond 3 m: {}", far_by.iter().map(|(g, (n, d))| format!("{g} {n} (to {d:.1} m)")).collect::<Vec<_>>().join(", "));
+    }
+    (changed, line)
+}
+
+/// Round k5b: the island with the triangles `diff_solid` found new painted magenta (a check frame).
+pub fn upload_diff(renderer: &mut Renderer, island: &Island, changed: &[bool], far: &crate::mesh::Mesh) {
+    let mut solid = crate::mesh::Mesh { vertices: island.built.solid.vertices.clone() };
+    for (i, c) in changed.iter().enumerate() {
+        if *c {
+            for v in &mut solid.vertices[i * 3..i * 3 + 3] {
+                v.colour = [235, 40, 200, v.colour[3]];
+            }
+        }
+    }
+    let casters = solid.vertices.len();
+    solid.append(far);
+    renderer.set_scene(&solid.vertices, casters, &island.built.water);
+    renderer.clear_settle();
 }
 
 pub fn compose(island: &Island, motion: Option<&Transition>) -> Composed {

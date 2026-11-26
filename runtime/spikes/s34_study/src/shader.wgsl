@@ -143,7 +143,7 @@ fn filmic(x: vec3<f32>) -> vec3<f32> {
 struct SettleTexel {
     a: vec4<f32>,   // anchor height, new height, band low, band high
     b: vec4<f32>,   // weight, translate share (1: new land, lifted whole), start delay (s), grass regrowth
-    c: vec4<f32>,   // round k5: edge dip (land left beside land removed), water fill, ghost zone, spare
+    c: vec4<f32>,   // round k5: edge dip (land left beside land removed), water fill, ghost zone, (k5b) sink: how far lowered ground fell
 };
 @group(0) @binding(1) var<storage, read> settle_map: array<SettleTexel>;
 @group(0) @binding(2) var<storage, read> settle_items: array<vec4<f32>>;   // origin xyz, start delay (< 0: does not grow)
@@ -255,12 +255,22 @@ fn settle_is_ghost_water(vi: u32) -> bool {
     return f32(vi) >= r.z && f32(vi) < r.w;
 }
 
-// Where a ghost point of removed land is now, or w < 0 when it is gone (hide it).
+// Where a ghost point is now, or w < 0 when it is gone (hide it). Over removed land it falls away
+// into the cloud; where the ground was lowered (round k5b) the old volume retracts: it sinks by the
+// height the ground lost, with the ground's ease and small overshoot, and is hidden once it has met
+// the new ground (where it then lies, so nothing jumps).
 fn settle_ghost_fall(pos: vec3<f32>) -> vec4<f32> {
     if (!settle_active()) {
         return vec4<f32>(pos, -1.0);
     }
     let s = settle_at(pos.xz);
+    if (s.c.z < 0.5 && s.c.w > 0.01) {
+        let u = (settle_clock() - s.b.z) / SETTLE_GROUND_S;
+        if (u >= 1.0) {
+            return vec4<f32>(pos, -1.0);
+        }
+        return vec4<f32>(pos - vec3<f32>(0.0, s.c.w * settle_back(u, SETTLE_GROUND_BACK), 0.0), 1.0);
+    }
     let u = (settle_clock() - s.b.z) / SETTLE_GHOST_S;
     if (u >= 1.0) {
         return vec4<f32>(pos, -1.0);
@@ -340,7 +350,14 @@ fn settle_prop(pos: vec3<f32>, mat: vec4<u32>) -> vec3<f32> {
         let sxz = settle_back((t - SETTLE_ITEM_XZ_LAG) / SETTLE_ITEM_S, SETTLE_ITEM_BACK_XZ);
         p = item.xyz + (pos - item.xyz) * vec3<f32>(sxz, sy, sxz);
     }
-    return p + (settle_ground(item.xyz) - item.xyz);
+    // Round k5b: an item standing where the ground was lowered starts at the old height and sinks
+    // with the old volume.
+    let s = settle_at(item.xz);
+    var sink = 0.0;
+    if (s.c.z < 0.5 && s.c.w > 0.01) {
+        sink = s.c.w * (1.0 - settle_back((settle_clock() - s.b.z) / SETTLE_GROUND_S, SETTLE_GROUND_BACK));
+    }
+    return p + (settle_ground(item.xyz) - item.xyz) + vec3<f32>(0.0, sink, 0.0);
 }
 
 // ---------------------------------------------------------------- shadow map
@@ -672,7 +689,10 @@ fn vs_grass(v: GIn) -> VGrass {
         // Round k5: grass on land an edit removed (a ghost): falls with the land and withers.
         let gp = settle_ghost_fall(v.root);
         root = gp.xyz;
-        grow = select(1.0 - settle_back_in((settle_clock() - settle_at(v.root.xz).b.z) / SETTLE_GHOST_S, 0.0), 0.0, gp.w < 0.0);
+        // Over removed land it withers as it falls; on a retracting volume it sinks with it.
+        let gs = settle_at(v.root.xz);
+        let wither = select(1.0, 1.0 - settle_back_in((settle_clock() - gs.b.z) / SETTLE_GHOST_S, 0.0), gs.c.z > 0.5);
+        grow = select(wither, 0.0, gp.w < 0.0);
     }
     var s = v.size * 4.0;
     if (grow != 1.0) {
