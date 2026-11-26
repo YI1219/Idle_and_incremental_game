@@ -420,7 +420,12 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], fringe: &cr
     // The field: a jittered lattice at 28 roots a square metre, world anchored.
     let (i0, i1) = ((lo.x / spacing).floor() as i32, (hi.x / spacing).ceil() as i32);
     let (j0, j1) = ((lo.y / spacing).floor() as i32, (hi.y / spacing).ceil() as i32);
-    for j in j0..j1 {
+    // Round k5: the lattice in bands of rows on all cores, each band with its own sites per chunk,
+    // joined in row order (the same sites in the same order as one pass).
+    let rows = (j1 - j0).max(0) as usize;
+    let bands = crate::field::par_map(16, |band| {
+    let mut sites: BTreeMap<(i32, i32), Vec<Site>> = BTreeMap::new();
+    for j in (j0 + (band * rows / 16) as i32)..(j0 + ((band + 1) * rows / 16) as i32) {
         for i in i0..i1 {
             let jitter = Vec2::new(hash2(i, j, seed ^ 201), hash2(i, j, seed ^ 202));
             let p = (Vec2::new(i as f32, j as f32) + jitter) * spacing;
@@ -503,6 +508,13 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], fringe: &cr
             }
             let member = (((i + j) & 1 == 0) as u8) | ((((i & 1) == 0 && (j & 1) == 0) as u8) << 1);
             place(root, up, scale, h_scale, member, &mut sites);
+        }
+    }
+    sites
+    });
+    for band in bands {
+        for (key, mut list) in band {
+            sites.entry(key).or_default().append(&mut list);
         }
     }
 

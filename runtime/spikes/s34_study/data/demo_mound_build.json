@@ -5,9 +5,9 @@
   "hold_end": 3.0,
   "mound": {"centre": [0.0, 0.0], "radius": 3.5, "height": 1.0, "crown_radius": 1.8, "crown_height": 1.5},
   "camera": [
-    {"t": 0.0, "target": [0.0, 0.8, 0.0], "yaw": 20, "pitch": 30, "dist": 15},
-    {"t": 4.0, "target": [0.5, 0.8, 0.0], "yaw": 24, "pitch": 31, "dist": 19},
-    {"t": 12.0, "target": [0.0, 0.8, -0.5], "yaw": 34, "pitch": 33, "dist": 30},
+    {"t": 0.0, "target": [0.0, 0.8, 0.0], "yaw": 20, "pitch": 30, "dist": 18},
+    {"t": 3.0, "target": [0.5, 0.8, 0.0], "yaw": 24, "pitch": 32, "dist": 26},
+    {"t": 10.0, "target": [0.0, 0.8, -0.5], "yaw": 34, "pitch": 33, "dist": 31},
     {"t": 24.0, "target": [0.0, 0.8, -1.0], "yaw": 70, "pitch": 34, "dist": 33},
     {"t": 36.0, "target": [0.0, 0.8, -1.0], "yaw": 125, "pitch": 33, "dist": 33},
     {"t": 48.0, "target": [0.0, 0.8, -1.0], "yaw": 185, "pitch": 32, "dist": 33},
