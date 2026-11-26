@@ -382,7 +382,7 @@ impl Renderer {
                 },
             ],
         });
-        let settle_map = device.create_buffer(&wgpu::BufferDescriptor { label: Some("settle map"), size: 32, usage: wgpu::BufferUsages::STORAGE, mapped_at_creation: false });
+        let settle_map = device.create_buffer(&wgpu::BufferDescriptor { label: Some("settle map"), size: std::mem::size_of::<crate::settle::Texel>() as u64, usage: wgpu::BufferUsages::STORAGE, mapped_at_creation: false });
         let settle_items = device.create_buffer(&wgpu::BufferDescriptor { label: Some("settle items"), size: 16, usage: wgpu::BufferUsages::STORAGE, mapped_at_creation: false });
         let globals_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
             label: None,
