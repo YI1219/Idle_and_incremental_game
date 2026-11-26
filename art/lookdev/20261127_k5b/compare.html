@@ -1,0 +1,115 @@
+<!doctype html><meta charset=utf-8><title>Round k5b</title><style>body{font:15px/1.45 -apple-system,Helvetica,sans-serif;margin:24px auto;max-width:1320px;color:#222;background:#f6f5f1}
+h1{font-size:24px}h2{margin-top:38px;border-bottom:1px solid #ccc;padding-bottom:4px}h3{margin:18px 0 6px}
+.row{display:grid;gap:6px;margin-bottom:10px}.r3{grid-template-columns:1fr 1fr 1fr}.r2{grid-template-columns:1fr 1fr}
+figure{margin:0}img,video{width:100%;border-radius:3px;display:block}figcaption{font-size:12px;color:#555}
+table{border-collapse:collapse;font-size:13px;margin:8px 0}td,th{border:1px solid #ccc;padding:3px 7px;text-align:right}th{background:#ebe9e2}td.l,th.l{text-align:left}
+pre{white-space:pre-wrap;background:#ebe9e2;padding:8px;font-size:12px}.note{color:#555;font-size:13px}.answer{background:#fff;border:1px solid #ccc;padding:10px 14px}</style>
+<h1>Round k5b: local edits, unloading as retract-then-merge, rock walls without stripes</h1>
+<p class=note>Owner review of 2026-11-26. Layout 7301 unless noted. Before = build dd9a597 (the round-k5 package); after = this round. Videos play in the browser (H.264). README.md has the details.</p>
+<h2>Question 4: is the original procedural generation at fault?</h2><div class=answer><p><b>Partly yes.</b> Of the three problems, the coupled changes came from the island generator itself, and the other two from round k5's own edit motion and junction pieces. Each was measured and fixed in this round.</p>
+<ol>
+<li><b>Coupled changes: the generator was not local for edits that change the island's outline.</b> A new check compares every triangle before and after an edit (<code>S34_DIFF=1</code>). Edits that only change height (raise, lower, ramp, water) were already local: only top-surface triangles inside the edit changed. Erasing or adding land at the rim changed rock <b>up to 21 to 22 m away</b> (erase: 1,010 body triangles more than 3 m from the stroke, 686 more than 6 m). Four causes in the generator:
+ <ul>
+ <li>The hanging columns under the island and the hidden liner were placed on a grid anchored to the corner of the island's bounding box. An edit that moved the bounds moved the grid, and with it every column. Their depth also came from a 7 m blur of the island that reaches about 20 m.</li>
+ <li>The rim plan chooses where one rock face ends and the next begins by letting each point compete with its neighbours 2 to 6 m either side, then splits and pairs long faces. A changed outline could therefore re-plan faces about 10 m away, and every block built on them changed.</li>
+ <li>The rim blocks' lean read a 2.5 m blur.</li>
+ <li>The grass planted along the rim took its random numbers from one counter running over every rim edge of the island, so adding or removing one edge changed every lip plant after it, all round the island (visible as a thin line of change along the whole rim). It now takes them from each plant's own place.</li>
+ </ul>
+ Fixed: world-anchored grids sized from the distance to the outline within 8 m; leans from the outline's own normal; lip plants keyed by their own place; and an edit keeps the rim plan's face boundaries outside the zone it changes, so faces wholly outside are the same faces. Erase now changes nothing beyond 9.0 m (rim blocks within 7.1 m, was 10.1 m); expand within 8.0 m (was 22.2 m). What still changes beyond 3 m is the face or two next to the edit and the hanging columns under the island within 8 m.</li>
+<li><b>The render restart came from how edits were applied.</b> Every edit rebuilds the whole island and swaps all of it in at once. Whatever the generator had changed away from the edit therefore appeared in one frame, with no motion over it. The swap itself costs the frame loop nothing (it is prepared on a worker since round k5). With a local generator it now changes nothing outside the edit's zone, so the whole-island rebuild no longer shows as a restart. A per-chunk incremental rebuild is no longer needed for correctness; it remains an option for latency on large islands.</li>
+<li><b>The strange polygons when unloading a raised block were not the generator.</b> They came from round k5's settle motion, which raised the new, lower surface to the old height and released it. With the block's walls gone, that surface spanned from the old top to the ground, then flattened. Now the old block retracts: it sinks into the lawn by the height it loses and merges. The <b>vertical stripes</b> were round k5's junction pieces (3.5 cm corner arcs, 0.22 m overlaps, backing plates), also not the original generator; removed.</li>
+</ol>
+</div>
+<h2>(a) Unloading a raised block: retract, then merge</h2>
+<p class=note>After: the old block (top, walls, grass) sinks straight into the lawn by the height it loses, settles with a small overshoot and merges; the lawn under it stays where it is. Before: the new lawn was pulled up to the block's old height and released, so for a moment it spanned from the block's top to the ground as stretched faces, then flattened.</p>
+<div class='row r2'><figure><video src='motion_mp4/unload.mp4' controls loop muted preload=metadata></video><figcaption>after: unload a block raised 1 m (two lower strokes, one edit)</figcaption></figure><figure><video src='motion_before_mp4/unraise.mp4' controls loop muted preload=metadata></video><figcaption>before: lower a raised block by 0.5 m (the case the owner saw)</figcaption></figure></div>
+<div class='row r2'><figure><video src='motion_mp4/unraise.mp4' controls loop muted preload=metadata></video><figcaption>after: lower a raised block by 0.5 m</figcaption></figure><figure><video src='motion_mp4/lower.mp4' controls loop muted preload=metadata></video><figcaption>after: lower a lawn patch by 1 m (the lawn sinks to become the pit floor)</figcaption></figure></div>
+<div class='row r2'><figure><video src='motion_before_mp4/lower.mp4' controls loop muted preload=metadata></video><figcaption>before: lower a lawn patch by 1 m</figcaption></figure><figure><video src='motion_mp4/ramp.mp4' controls loop muted preload=metadata></video><figcaption>after: a ramp (its lower half lowers: the old terrace edge retracts)</figcaption></figure></div>
+<div class='row' style='grid-template-columns:repeat(6,1fr)'><figure><img src='web/motion_unload_before.jpg'><figcaption>after: unload before</figcaption></figure><figure><img src='web/motion_unload_t0000.jpg'><figcaption>after: unload t0000</figcaption></figure><figure><img src='web/motion_unload_t0100.jpg'><figcaption>after: unload t0100</figcaption></figure><figure><img src='web/motion_unload_t0200.jpg'><figcaption>after: unload t0200</figcaption></figure><figure><img src='web/motion_unload_t0333.jpg'><figcaption>after: unload t0333</figcaption></figure><figure><img src='web/motion_unload_t0567.jpg'><figcaption>after: unload t0567</figcaption></figure></div>
+<div class='row' style='grid-template-columns:repeat(6,1fr)'><figure><img src='web/motion_before_unraise_before.jpg'><figcaption>before: unraise before</figcaption></figure><figure><img src='web/motion_before_unraise_t0000.jpg'><figcaption>before: unraise t0000</figcaption></figure><figure><img src='web/motion_before_unraise_t0100.jpg'><figcaption>before: unraise t0100</figcaption></figure><figure><img src='web/motion_before_unraise_t0200.jpg'><figcaption>before: unraise t0200</figcaption></figure><figure><img src='web/motion_before_unraise_t0333.jpg'><figcaption>before: unraise t0333</figcaption></figure><figure><img src='web/motion_before_unraise_t0567.jpg'><figcaption>before: unraise t0567</figcaption></figure></div>
+<h2>(b) Edits stay local: no coupled changes, no restart</h2>
+<p class=note>Each pair: the whole island from the front (and from behind) before the edit and after it has settled, with every pixel that changed tinted magenta. Before this round, erasing or adding land at the rim changed rock 10 to 22 m away (rim blocks re-planned, the hanging columns and the liner moved), all at the moment the edit landed; now only the rock at the edit and its immediate neighbours changes.</p>
+<div class='row r2'><figure><img src='web/heat_before_front_erase.jpg'><figcaption>erase, front, before this round: 2.74 % of pixels changed</figcaption></figure><figure><img src='web/heat_after_front_erase.jpg'><figcaption>erase, front, after: 1.71 % of pixels changed</figcaption></figure></div>
+<div class='row r2'><figure><img src='web/heat_before_back_erase.jpg'><figcaption>erase, back, before this round: 0.85 % of pixels changed</figcaption></figure><figure><img src='web/heat_after_back_erase.jpg'><figcaption>erase, back, after: 0.14 % of pixels changed</figcaption></figure></div>
+<div class='row r2'><figure><img src='web/heat_before_front_expand.jpg'><figcaption>expand, front, before this round: 3.49 % of pixels changed</figcaption></figure><figure><img src='web/heat_after_front_expand.jpg'><figcaption>expand, front, after: 3.05 % of pixels changed</figcaption></figure></div>
+<div class='row r2'><figure><img src='web/heat_before_back_expand.jpg'><figcaption>expand, back, before this round: 0.46 % of pixels changed</figcaption></figure><figure><img src='web/heat_after_back_expand.jpg'><figcaption>expand, back, after: 0.07 % of pixels changed</figcaption></figure></div>
+<h3>Triangles the edit changed (this build), and how far from the edit</h3>
+<pre>DIFF raise: top 612 of 28161 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13986 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+DIFF lower: top 612 of 28161 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 126 of 13966 triangles new, farthest 2.76 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+DIFF expand: top 1075 of 28363 triangles new, farthest 1.77 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 2625 of 15456 triangles new, farthest 8.02 m from the edit, 456 beyond 3 m, 79 beyond 6 m; body beyond 3 m: hanging columns 132 (to 8.0 m), liner (hidden) 18 (to 6.9 m), other 84 (to 7.1 m), rim blocks 149 (to 7.2 m), slabs 73 (to 4.1 m)
+DIFF place: top 0 of 27761 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13986 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+DIFF ramp: top 814 of 27871 triangles new, farthest 0.04 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 506 of 14306 triangles new, farthest 1.77 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+DIFF erase: top 630 of 27585 triangles new, farthest 1.83 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 2219 of 14540 triangles new, farthest 9.02 m from the edit, 524 beyond 3 m, 102 beyond 6 m; body beyond 3 m: hanging columns 149 (to 9.0 m), liner (hidden) 37 (to 8.4 m), other 122 (to 5.5 m), rim blocks 200 (to 7.1 m), skirt 16 (to 5.5 m)
+DIFF remove: top 0 of 27761 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13986 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+DIFF unload: top 212 of 27761 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13986 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+DIFF fill: top 160 of 28241 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13966 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+DIFF drain: top 80 of 28161 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13966 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+DIFF expand: top 1075 of 28363 triangles new, farthest 1.77 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 2625 of 15456 triangles new, farthest 8.02 m from the edit, 456 beyond 3 m, 79 beyond 6 m; body beyond 3 m: hanging columns 132 (to 8.0 m), liner (hidden) 18 (to 6.9 m), other 84 (to 7.1 m), rim blocks 149 (to 7.2 m), slabs 73 (to 4.1 m)
+DIFF erase: top 630 of 27585 triangles new, farthest 1.83 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 2219 of 14540 triangles new, farthest 9.02 m from the edit, 524 beyond 3 m, 102 beyond 6 m; body beyond 3 m: hanging columns 149 (to 9.0 m), liner (hidden) 37 (to 8.4 m), other 122 (to 5.5 m), rim blocks 200 (to 7.1 m), skirt 16 (to 5.5 m)</pre>
+<div class='row r2'><figure><img src='web/diffwhole_erase.jpg'><figcaption>erase: triangles new after the edit, magenta</figcaption></figure><figure><img src='web/diffwhole_expand.jpg'><figcaption>expand: triangles new after the edit, magenta</figcaption></figure></div>
+<h3>On the Mac's display with an erase every 2.5 s (3600 x 2338, 120 Hz), before and after</h3>
+<table><tr><th class=l>build</th><th class=l>scenario</th><th>fps on glass</th><th>interval p50 / p95 / p99 / max ms</th><th>intervals over 25 ms</th><th>GPU p50 / p95 ms</th><th>edit to glass ms</th><th>rebuild ms</th></tr>
+<tr><td class=l>before</td><td class=l>idle</td><td>59.98</td><td>16.67 / 16.67 / 16.67 / 25.00</td><td>0</td><td>10.27 / 10.46</td><td></td><td></td></tr>
+<tr><td class=l>before</td><td class=l>editing</td><td>59.82</td><td>16.67 / 16.67 / 16.67 / 25.00</td><td>1</td><td>10.39 / 10.65</td><td>122, 115, 114, 106, 114, 106, 114, 105</td><td>50, 54, 54, 50, 52, 52, 47, 51</td></tr>
+<tr><td class=l>after</td><td class=l>idle</td><td>60.00</td><td>16.67 / 16.67 / 16.67 / 16.67</td><td>0</td><td>10.23 / 10.39</td><td></td><td></td></tr>
+<tr><td class=l>after</td><td class=l>editing</td><td>59.77</td><td>16.67 / 16.67 / 16.67 / 25.00</td><td>0</td><td>10.33 / 10.62</td><td>113, 105, 105, 98, 106, 106, 105, 107</td><td>45, 46, 50, 48, 49, 50, 51, 48</td></tr>
+</table>
+<p class=note>Load at the runs:  -InternalBattery-0 (id=7012451)	100%; charged; 0:00 remaining present: true |  -InternalBattery-0 (id=7012451)	100%; charged; 0:00 remaining present: true</p>
+<h2>(c) Rock walls without the vertical stripes</h2>
+<p class=note>The stripes were thin pieces round k5 added where two rim blocks meet: a 3.5 cm corner arc that caught the light, a 0.22 m overlap that left a sliver of each block's end showing, and a backing plate behind every joint. Now two blocks that meet nearly flush (or at an inside turn of the rim) share one sharp corner, a single crease; the plates are gone; folds are fewer and softer. Larger steps keep the accepted rounded edge.</p>
+<div class='row r2'><figure><a href='walls_before/walls_before_foot_front.png'><img src='web/walls_before_foot_front.jpg'></a><figcaption>foot_front, before</figcaption></figure><figure><a href='walls/walls_foot_front.png'><img src='web/walls_foot_front.jpg'></a><figcaption>foot_front, after</figcaption></figure></div>
+<div class='row r2'><figure><a href='walls_before/walls_before_cliff_close.png'><img src='web/walls_before_cliff_close.jpg'></a><figcaption>cliff_close, before</figcaption></figure><figure><a href='walls/walls_cliff_close.png'><img src='web/walls_cliff_close.jpg'></a><figcaption>cliff_close, after</figcaption></figure></div>
+<div class='row r2'><figure><a href='walls_before/walls_before_reverse.png'><img src='web/walls_before_reverse.jpg'></a><figcaption>reverse, before</figcaption></figure><figure><a href='walls/walls_reverse.png'><img src='web/walls_reverse.jpg'></a><figcaption>reverse, after</figcaption></figure></div>
+<div class='row r2'><figure><a href='walls_before/walls_before_side_286.png'><img src='web/walls_before_side_286.jpg'></a><figcaption>side_286, before</figcaption></figure><figure><a href='walls/walls_side_286.png'><img src='web/walls_side_286.jpg'></a><figcaption>side_286, after</figcaption></figure></div>
+<div class='row r2'><figure><img src='web/demo_before_wide.jpg'><figcaption>island built from one mound, wide, before</figcaption></figure><figure><img src='web/demo_after_wide.jpg'><figcaption>the same strokes, wide, after</figcaption></figure></div>
+<div class='row r2'><figure><img src='web/demo_before_low.jpg'><figcaption>island built from one mound, low, before</figcaption></figure><figure><img src='web/demo_after_low.jpg'><figcaption>the same strokes, low, after</figcaption></figure></div>
+<div class='row r2'><figure><img src='web/demo_before_top.jpg'><figcaption>island built from one mound, top, before</figcaption></figure><figure><img src='web/demo_after_top.jpg'><figcaption>the same strokes, top, after</figcaption></figure></div>
+<h2>Built from one mound with the brush tools (this build)</h2>
+<p class=note>The same script as the k5 package (runtime/spikes/s34_study/data/demo_mound_build.json), replayed through the edit path (brush.rs), 30 frames a second of scene time. Unloading (lower strokes over raised ground) now retracts; erasing no longer moves rock away from the stroke.</p>
+<video src='construction.mp4' controls preload=metadata></video>
+<pre>DEMO start: one mound, 32 cells
+DEMO step 1 expand: 29 changed, 61 cells, rebuild 6.1 ms (fields 4.0, top+body+decor 1.3, (top 1.3, body 0.7, decor) 0.7, grass 0.7), transition 0.61 ms, upload 10.2 ms
+DEMO step 2 expand: 37 changed, 98 cells, rebuild 8.9 ms (fields 5.6, top+body+decor 1.9, (top 1.9, body 1.0, decor) 0.9, grass 1.2), transition 0.59 ms, upload 20.0 ms
+DEMO step 3 expand: 62 changed, 160 cells, rebuild 11.1 ms (fields 5.7, top+body+decor 3.5, (top 3.4, body 1.3, decor) 0.8, grass 1.8), transition 0.76 ms, upload 18.3 ms
+DEMO step 4 expand: 20 changed, 180 cells, rebuild 10.2 ms (fields 6.1, top+body+decor 2.2, (top 2.2, body 1.4, decor) 1.0, grass 1.8), transition 0.68 ms, upload 23.6 ms
+DEMO step 5 raise: 29 changed, 180 cells, rebuild 10.1 ms (fields 5.9, top+body+decor 2.2, (top 2.2, body 1.4, decor) 0.5, grass 1.8), transition 0.74 ms, upload 12.7 ms
+DEMO step 6 raise: 29 changed, 180 cells, rebuild 12.1 ms (fields 5.5, top+body+decor 4.4, (top 4.4, body 1.4, decor) 0.8, grass 1.9), transition 1.39 ms, upload 10.0 ms
+DEMO step 7 raise: 8 changed, 180 cells, rebuild 12.1 ms (fields 5.8, top+body+decor 4.3, (top 4.2, body 1.5, decor) 0.8, grass 1.9), transition 0.49 ms, upload 9.1 ms
+DEMO step 8 lower: 8 changed, 180 cells, rebuild 12.1 ms (fields 5.6, top+body+decor 4.3, (top 4.3, body 1.5, decor) 0.9, grass 1.8), transition 0.49 ms, upload 12.4 ms
+DEMO step 9 lower: 8 changed, 180 cells, rebuild 13.1 ms (fields 6.4, top+body+decor 4.2, (top 4.2, body 1.5, decor) 0.8, grass 2.2), transition 0.62 ms, upload 10.2 ms
+DEMO step 10 water: 8 changed, 180 cells, rebuild 12.0 ms (fields 5.5, top+body+decor 4.1, (top 4.1, body 1.5, decor) 0.9, grass 1.8), transition 0.47 ms, upload 15.2 ms
+DEMO step 11 lower: 4 changed, 180 cells, rebuild 13.2 ms (fields 6.3, top+body+decor 4.4, (top 4.4, body 1.5, decor) 0.9, grass 1.9), transition 0.69 ms, upload 15.1 ms
+DEMO step 12 lower: 4 changed, 180 cells, rebuild 13.2 ms (fields 6.0, top+body+decor 4.7, (top 4.6, body 1.6, decor) 0.7, grass 1.8), transition 0.66 ms, upload 9.8 ms
+DEMO step 13 water: 4 changed, 180 cells, rebuild 13.1 ms (fields 5.6, top+body+decor 4.8, (top 4.8, body 1.5, decor) 0.7, grass 1.9), transition 0.64 ms, upload 14.5 ms
+DEMO step 14 ramp: 8 changed, 180 cells, rebuild 13.5 ms (fields 5.8, top+body+decor 5.0, (top 4.9, body 1.6, decor) 0.8, grass 1.9), transition 1.11 ms, upload 15.1 ms
+DEMO step 15 contract (erase): 7 changed, 173 cells, rebuild 14.0 ms (fields 6.1, top+body+decor 5.1, (top 5.0, body 1.8, decor) 0.9, grass 2.0), transition 0.70 ms, upload 15.0 ms
+DEMO step 16 place: 2 changed, 173 cells, rebuild 13.0 ms (fields 5.3, top+body+decor 5.0, (top 5.0, body 1.8, decor) 1.1, grass 1.9), transition 0.76 ms, upload 44.1 ms
+DEMO step 17 place: 3 changed, 173 cells, rebuild 14.4 ms (fields 6.3, top+body+decor 5.2, (top 5.1, body 1.7, decor) 1.4, grass 2.1), transition 1.29 ms, upload 13.7 ms
+DEMO step 18 place: 3 changed, 173 cells, rebuild 13.3 ms (fields 5.3, top+body+decor 5.2, (top 5.2, body 1.7, decor) 1.2, grass 2.0), transition 0.75 ms, upload 11.8 ms
+DEMO step 19 place: 3 changed, 173 cells, rebuild 13.6 ms (fields 5.5, top+body+decor 5.3, (top 5.2, body 1.8, decor) 1.6, grass 2.0), transition 0.82 ms, upload 17.3 ms
+DEMO step 20 place: 1 changed, 173 cells, rebuild 14.0 ms (fields 6.0, top+body+decor 5.2, (top 5.2, body 1.7, decor) 1.5, grass 2.0), transition 0.56 ms, upload 10.0 ms
+DEMO step 21 remove item: 1 changed, 173 cells, rebuild 13.8 ms (fields 5.9, top+body+decor 5.1, (top 5.0, body 1.7, decor) 1.2, grass 1.9), transition 0.56 ms, upload 10.0 ms
+DEMO step 22 dry: 8 changed, 173 cells, rebuild 13.4 ms (fields 5.8, top+body+decor 5.0, (top 5.0, body 1.8, decor) 1.7, grass 2.2), transition 0.55 ms, upload 10.4 ms
+DEMO step 23 water: 8 changed, 173 cells, rebuild 13.8 ms (fields 6.0, top+body+decor 5.1, (top 5.0, body 1.7, decor) 1.3, grass 2.0), transition 0.49 ms, upload 10.7 ms
+DEMO step 24 lower: 8 changed, 173 cells, rebuild 13.6 ms (fields 5.4, top+body+decor 5.4, (top 5.4, body 2.0, decor) 1.2, grass 2.0), transition 0.60 ms, upload 14.7 ms
+DEMO end: 1782 frames, 173 cells, 11 items</pre>
+<h2>Checks</h2><pre>Hole check (--debug=parts, twelve views):
+parts_cliff_close.png: 0 back-facing island pixels
+parts_close.png: 0 back-facing island pixels
+parts_foot_front.png: 0 back-facing island pixels
+parts_foot_reverse.png: 0 back-facing island pixels
+parts_game.png: 0 back-facing island pixels
+parts_outer_hull.png: 0 back-facing island pixels
+parts_overview.png: 0 back-facing island pixels
+parts_reverse.png: 0 back-facing island pixels
+parts_side_106.png: 0 back-facing island pixels
+parts_side_286.png: 0 back-facing island pixels
+parts_terrace_close.png: 0 back-facing island pixels
+parts_whole.png: 0 back-facing island pixels
+
+Edit locality test:
+EDIT expand   at (4, -8): 12 faces changed, farthest 11.19 m from the stroke, 0 beyond 12 m
+EDIT contract at (14, -3): 7 faces changed, farthest 5.52 m from the stroke, 0 beyond 12 m
+EDIT raise    at (17, 0): 7 faces changed, farthest 5.26 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(-5.0, -10.0) b=(-11.0, -10.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1788 of 16465 vertices changed, farthest 2.45 m, 0 beyond 12 m
+EDIT diag     a=(-1.2, 8.3) b=(-4.8, 4.7) width 2: 4 faces changed, farthest 1.24 m from the stroke, 0 beyond 12 m; top surface 1906 of 16822 vertices changed, farthest 2.48 m, 0 beyond 12 m</pre>

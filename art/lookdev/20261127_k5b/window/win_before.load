@@ -1,0 +1,18 @@
+2026-11-26 23:58:27
+Now drawing from 'AC Power'
+ -InternalBattery-0 (id=7012451)	100%; charged; 0:00 remaining present: true
+23:58  up 7 days,  6:26, 1 user, load averages: 7.61 8.43 7.58
+ %CPU COMM
+ 99.1 /Library/Application Support/Checkpoint/Endpoint Connect/TracSrvWrapper
+ 49.4 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer
+ 48.0 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.a
+ 38.0 /Applications/Aurora Slim.app/Contents/MacOS/Aurora Slim
+ 30.0 /Applications/Grok Bot.app/Contents/Frameworks/Grok Bot Helper.app/Contents/MacOS/Grok Bot Helper
+after:
+23:59  up 7 days,  6:26, 1 user, load averages: 6.07 7.94 7.45
+ %CPU COMM
+ 97.2 /Library/Application Support/Checkpoint/Endpoint Connect/TracSrvWrapper
+ 45.8 /Applications/Aurora Slim.app/Contents/MacOS/Aurora Slim
+ 45.1 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer
+ 14.8 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Conte
+  4.4 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/158.0.8127.89/Helpers/C

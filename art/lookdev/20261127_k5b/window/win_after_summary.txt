@@ -1,0 +1,32 @@
+# win_after (unix time 1795711360)
+# monitor Some("Monitor #41052") 3600x2338 scale 2 refresh Some(120000) mHz
+# occluded=false at 0.144 s
+# window inner 3600x2338 physical, scale factor 2
+# presentedTime handler installed: true
+# adapter Apple M4 Pro (Metal); timestamp features on device: Features { features_wgpu: FeaturesWGPU(0x0), features_webgpu: FeaturesWebGPU(TIMESTAMP_QUERY) }
+# surface caps: formats [Bgra8UnormSrgb, Bgra8Unorm, Rgba16Float, Rgb10a2Unorm], present modes [Fifo, Immediate], alpha [Opaque, PostMultiplied]
+# surface configured: 3600x2338 Bgra8Unorm colour space Auto, Fifo, desired_maximum_frame_latency 1
+# renderer 3600x2338 (render scale 1) internal scale 1 fxaa true present direct gpu timer true (period 1 ns) pace off
+# scenario idle starts at frame 115
+# scenario editing starts at frame 1315
+# settings: present mode Fifo, desired_maximum_frame_latency 1, fullscreen cover, present direct, upload worker, latch late, worker qos interactive true, pace 0, render scale 1, scale 1, fxaa true, shadow cached, display refresh 120.0 Hz (NSScreen maximumFramesPerSecond 120), skipped acquires 0
+
+idle: 1171 frames over 19.50 s
+  present-call cadence (CPU): 60.00 fps, interval p50 16.71 p95 17.75 p99 18.64 max 19.90 ms, intervals > 1.5x refresh (12.50 ms): 1170, > 25 ms: 0
+  on glass (presentedTime): 1171 frames, 60.00 fps, interval p50 16.67 p95 16.67 p99 16.67 max 16.67 ms, > 1.5x refresh: 1170, dropped (presentedTime 0): 0; state sampled to glass p50 31.4 p95 31.9 ms
+  GPU frame span: 1171 timed, p50 10.23 p95 10.39 max 10.84 ms; CPU acquire wait p50 13.51 p95 15.19 ms; CPU acquire to present call p50 2.92 p95 3.45 ms
+  passes, own share p50/p95 ms: ao depth 0.057/0.094, ao depth down 0.007/0.015, blur h 0.213/0.279, blur v 0.200/0.274, down 0.452/0.536, far low 0.344/0.405, fxaa 0.454/0.520, resolve 2.751/2.882, ssao 0.675/0.737, terms 4.178/4.347, water 0.745/0.859
+
+editing: 1166 frames over 19.49 s
+  present-call cadence (CPU): 59.77 fps, interval p50 16.72 p95 17.93 p99 19.60 max 24.91 ms, intervals > 1.5x refresh (12.50 ms): 1165, > 25 ms: 0
+  on glass (presentedTime): 1166 frames, 59.77 fps, interval p50 16.67 p95 16.67 p99 16.67 max 25.00 ms, > 1.5x refresh: 1165, dropped (presentedTime 0): 0; state sampled to glass p50 31.2 p95 32.1 ms
+  GPU frame span: 1166 timed, p50 10.33 p95 10.62 max 11.00 ms; CPU acquire wait p50 14.06 p95 15.98 ms; CPU acquire to present call p50 2.16 p95 3.44 ms
+  passes, own share p50/p95 ms: ao depth 0.056/0.075, ao depth down 0.007/0.015, blur h 0.213/0.279, blur v 0.200/0.272, down 0.451/0.517, far low 0.344/0.402, fxaa 0.456/0.530, resolve 2.730/2.842, shadow 0.567/0.673, ssao 0.674/0.737, terms 3.815/4.257, water 0.722/0.852
+  edit 0 (edit): rebuild 45.4 ms, settle map 2.20 ms, upload prep 20.4 ms (worker); install on the frame loop 0.39 ms; issued to first motion frame's present call 81.6 ms, to glass 113.0 ms; that frame's interval 17.0 ms
+  edit 1 (undo): rebuild 45.7 ms, settle map 1.26 ms, upload prep 10.1 ms (worker); install on the frame loop 0.36 ms; issued to first motion frame's present call 75.0 ms, to glass 105.0 ms; that frame's interval 17.0 ms
+  edit 2 (edit): rebuild 50.1 ms, settle map 1.56 ms, upload prep 11.9 ms (worker); install on the frame loop 0.41 ms; issued to first motion frame's present call 73.4 ms, to glass 105.0 ms; that frame's interval 17.0 ms
+  edit 3 (undo): rebuild 48.0 ms, settle map 0.93 ms, upload prep 15.2 ms (worker); install on the frame loop 0.38 ms; issued to first motion frame's present call 67.1 ms, to glass 98.4 ms; that frame's interval 17.0 ms
+  edit 4 (edit): rebuild 48.5 ms, settle map 1.72 ms, upload prep 14.3 ms (worker); install on the frame loop 0.37 ms; issued to first motion frame's present call 76.0 ms, to glass 106.3 ms; that frame's interval 15.9 ms
+  edit 5 (undo): rebuild 49.5 ms, settle map 0.74 ms, upload prep 12.1 ms (worker); install on the frame loop 0.43 ms; issued to first motion frame's present call 75.2 ms, to glass 106.4 ms; that frame's interval 16.6 ms
+  edit 6 (edit): rebuild 50.9 ms, settle map 1.42 ms, upload prep 11.6 ms (worker); install on the frame loop 0.34 ms; issued to first motion frame's present call 74.2 ms, to glass 104.8 ms; that frame's interval 16.8 ms
+  edit 7 (undo): rebuild 47.5 ms, settle map 1.13 ms, upload prep 14.0 ms (worker); install on the frame loop 0.33 ms; issued to first motion frame's present call 77.7 ms, to glass 106.6 ms; that frame's interval 17.5 ms

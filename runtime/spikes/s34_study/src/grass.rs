@@ -520,7 +520,6 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], fringe: &cr
 
     // Lip plants on the outline's roll, aligned to it, raised as Godot's lip samples are, so leaf
     // fans hang over the edge at irregular intervals (wherever the tuft field is high).
-    let mut counter = 0i32;
     // The outline's rim (outward from the occupancy field) and the terrace walls' brows (outward
     // given): the same planted fringe.
     let edges: Vec<(Vec3, Vec3, Option<Vec2>)> = rim.iter().map(|&(a, b)| (a, b, None)).chain(brows.iter().chain(fringe.edges.iter()).map(|&(a, b, n)| (a, b, Some(n)))).collect();
@@ -532,9 +531,13 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], fringe: &cr
         if hash2((mid.x * 31.0) as i32, (mid.y * 31.0) as i32, seed ^ 204) < want - count as f32 {
             count += 1;
         }
+        // Round k5b: each plant's numbers come from its own place (the edge's midpoint and its index
+        // along the edge). They came from one counter running over every edge of the island, so an edit
+        // that added or removed one edge changed every lip plant after it, all round the island.
+        let (kx, kz) = ((mid.x * 31.0).round() as i32, (mid.y * 31.0).round() as i32);
         for k in 0..count {
-            counter += 1;
-            let u = (k as f32 + hash2(counter, 7, seed ^ 205)) / count.max(1) as f32;
+            let hk = |salt: u32| hash2(kx.wrapping_add(k * 7919), kz.wrapping_sub(k * 6007), seed ^ salt);
+            let u = (k as f32 + hk(205)) / count.max(1) as f32;
             let at = a.lerp(b, u.min(1.0));
             let p = Vec2::new(at.x, at.z);
             if field.sample(&field.wet, p) > 0.10 {
@@ -548,15 +551,16 @@ pub fn build(field: &Field, rim: &Rim, brows: &[(Vec3, Vec3, Vec2)], fringe: &cr
             let out = Vec3::new(outward.x, 0.0, outward.y);
             // On the upper part of the roll, tipped 30 to 52 degrees out (Godot keeps lip
             // triangles up to about 54 degrees).
-            let tilt: f32 = (30.0 + 22.0 * hash2(counter, 8, seed ^ 206)).to_radians();
+            let tilt: f32 = (30.0 + 22.0 * hk(206)).to_radians();
             let up = (Vec3::Y * tilt.cos() + out * tilt.sin()).normalize();
-            let root = at + out * (0.015 + 0.02 * hash2(counter, 11, seed ^ 209)) - Vec3::Y * 0.012 - up * 0.008;
+            let root = at + out * (0.015 + 0.02 * hk(209)) - Vec3::Y * 0.012 - up * 0.008;
             let tuft = tuft_patch(p);
             let thin = lerp(0.55, 1.0, clear_k);
             let lip_factor = 0.42;
             let scale = (lerp(0.88, 1.18, ghash(p.y * 1.7 + p.x * 0.5, p.x * 2.3, 5.0)) * lerp(0.90, 1.35, tuft) * lerp(0.72, 1.0, lip_factor) * thin).max(lerp(0.98, 1.75, tuft) * thin);
             let h_scale = (lerp(0.68, 1.35, tuft) * lerp(0.88, 1.14, ghash(p.x * 1.9, p.y * 2.1 + p.x * 0.3, 6.0)) * thin).max(lerp(0.80, 1.70, tuft) * thin);
-            let member = ((counter & 1 == 0) as u8) | (((counter & 3 == 0) as u8) << 1);
+            let r = hk(210);
+            let member = ((r < 0.5) as u8) | (((r < 0.25) as u8) << 1);
             place(root, up, scale, h_scale, member, &mut sites);
         }
     }

@@ -1,0 +1,92 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_raise_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF raise: top 612 of 28161 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13986 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+SETTLE raise latency: rebuild 23.1 ms (fields 8.2, top+body+decor 8.2, (top 8.2, body 2.7, decor) 4.3, grass 4.2), settle map and ghosts 1.08 ms (45 x 45 texels, 11.0 x 11.0 m; ghosts: 0 land triangles, 0 water triangles, 0 grass clumps, 0 items), upload 16.9 ms, total 41.1 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_raise_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_raise_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_lower_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF lower: top 612 of 28161 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 126 of 13966 triangles new, farthest 2.76 m from the edit, 0 beyond 3 m, 0 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+SETTLE lower latency: rebuild 21.8 ms (fields 8.0, top+body+decor 8.1, (top 8.1, body 2.6, decor) 5.4, grass 4.1), settle map and ghosts 0.90 ms (45 x 45 texels, 11.0 x 11.0 m; ghosts: 223 land triangles, 0 water triangles, 159 grass clumps, 0 items), upload 18.5 ms, total 41.2 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_lower_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_lower_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_expand_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF expand: top 1075 of 28363 triangles new, farthest 1.77 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 2625 of 15456 triangles new, farthest 8.02 m from the edit, 456 beyond 3 m, 79 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body beyond 3 m: hanging columns 132 (to 8.0 m), liner (hidden) 18 (to 6.9 m), other 84 (to 7.1 m), rim blocks 149 (to 7.2 m), slabs 73 (to 4.1 m)
+SETTLE expand latency: rebuild 21.2 ms (fields 7.8, top+body+decor 7.9, (top 7.9, body 2.9, decor) 4.5, grass 3.9), settle map and ghosts 0.65 ms (49 x 45 texels, 12.0 x 11.0 m; ghosts: 0 land triangles, 0 water triangles, 0 grass clumps, 0 items), upload 15.2 ms, total 37.0 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_expand_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_expand_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_place_before.png
+PROPS loaded 91 objects, 230 instances, 84112 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF place: top 0 of 27761 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13986 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+SETTLE place latency: rebuild 22.9 ms (fields 8.3, top+body+decor 7.8, (top 7.8, body 2.6, decor) 4.7, grass 4.5), settle map and ghosts 1.19 ms (59 x 52 texels, 14.5 x 12.6 m; ghosts: 0 land triangles, 0 water triangles, 0 grass clumps, 0 items), upload 17.1 ms, total 41.2 ms; 6 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_place_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_place_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_ramp_before.png
+SETTLE ramp: 8 cells, rise -1.00 m over 4.00 m
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF ramp: top 814 of 27871 triangles new, farthest 0.04 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 506 of 14306 triangles new, farthest 1.77 m from the edit, 0 beyond 3 m, 0 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+SETTLE ramp latency: rebuild 22.6 ms (fields 7.8, top+body+decor 9.3, (top 9.3, body 2.7, decor) 4.5, grass 4.0), settle map and ghosts 1.16 ms (49 x 65 texels, 12.0 x 16.0 m; ghosts: 345 land triangles, 0 water triangles, 154 grass clumps, 0 items), upload 17.6 ms, total 41.4 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_ramp_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_ramp_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_erase_before.png
+SETTLE brush contract (erase): 9 changed
+PROPS loaded 91 objects, 218 instances, 75885 triangles, 12 dropped (bush 2, cliff_rock 1, flower 2, grass_clump 3, shore_boulder 1, shore_pebble 2, surface_rock 1), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF erase: top 630 of 27585 triangles new, farthest 1.83 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 2219 of 14540 triangles new, farthest 9.02 m from the edit, 524 beyond 3 m, 102 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body beyond 3 m: hanging columns 149 (to 9.0 m), liner (hidden) 37 (to 8.4 m), other 122 (to 5.5 m), rim blocks 200 (to 7.1 m), skirt 16 (to 5.5 m)
+SETTLE erase latency: rebuild 21.7 ms (fields 8.1, top+body+decor 7.8, (top 7.7, body 2.7, decor) 5.2, grass 4.1), settle map and ghosts 1.34 ms (53 x 45 texels, 13.0 x 11.0 m; ghosts: 1302 land triangles, 0 water triangles, 357 grass clumps, 6 items), upload 18.3 ms, total 41.3 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_erase_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_erase_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_remove_before.png
+SETTLE brush remove item: 5 changed
+PROPS loaded 91 objects, 218 instances, 69247 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF remove: top 0 of 27761 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13986 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+SETTLE remove latency: rebuild 23.3 ms (fields 8.2, top+body+decor 9.0, (top 9.0, body 2.7, decor) 5.1, grass 4.1), settle map and ghosts 1.22 ms (48 x 50 texels, 11.6 x 12.1 m; ghosts: 0 land triangles, 0 water triangles, 0 grass clumps, 6 items), upload 16.3 ms, total 40.8 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_remove_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_remove_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_unload_before.png
+SETTLE brush lower: 9 changed
+SETTLE brush lower: 9 changed
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF unload: top 212 of 27761 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13986 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+SETTLE unload latency: rebuild 21.7 ms (fields 8.4, top+body+decor 7.4, (top 7.4, body 2.6, decor) 3.7, grass 4.2), settle map and ghosts 0.73 ms (45 x 45 texels, 11.0 x 11.0 m; ghosts: 526 land triangles, 0 water triangles, 221 grass clumps, 0 items), upload 17.5 ms, total 39.9 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_unload_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_unload_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_fill_before.png
+SETTLE brush water: 9 changed
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF fill: top 160 of 28241 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13966 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+SETTLE fill latency: rebuild 28.4 ms (fields 13.1, top+body+decor 9.2, (top 9.2, body 2.9, decor) 4.4, grass 4.0), settle map and ghosts 0.70 ms (45 x 45 texels, 11.0 x 11.0 m; ghosts: 0 land triangles, 0 water triangles, 0 grass clumps, 0 items), upload 15.3 ms, total 44.4 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_fill_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_fill_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diff_drain_before.png
+SETTLE brush dry: 9 changed
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF drain: top 80 of 28161 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 0 of 13966 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m
+SETTLE drain latency: rebuild 21.5 ms (fields 8.0, top+body+decor 8.0, (top 8.0, body 2.8, decor) 3.6, grass 4.0), settle map and ghosts 0.78 ms (45 x 45 texels, 11.0 x 11.0 m; ghosts: 0 land triangles, 288 water triangles, 0 grass clumps, 0 items), upload 16.3 ms, total 38.6 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diff_drain_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diff_drain_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diffwhole_expand_before.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF expand: top 1075 of 28363 triangles new, farthest 1.77 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 2625 of 15456 triangles new, farthest 8.02 m from the edit, 456 beyond 3 m, 79 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body beyond 3 m: hanging columns 132 (to 8.0 m), liner (hidden) 18 (to 6.9 m), other 84 (to 7.1 m), rim blocks 149 (to 7.2 m), slabs 73 (to 4.1 m)
+SETTLE expand latency: rebuild 22.4 ms (fields 8.6, top+body+decor 8.2, (top 8.2, body 3.1, decor) 4.8, grass 4.0), settle map and ghosts 0.91 ms (49 x 45 texels, 12.0 x 11.0 m; ghosts: 0 land triangles, 0 water triangles, 0 grass clumps, 0 items), upload 17.0 ms, total 40.3 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diffwhole_expand_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diffwhole_expand_diff.png
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+FRAME art/lookdev/20261127_k5b/diff/diffwhole_erase_before.png
+SETTLE brush contract (erase): 9 changed
+PROPS loaded 91 objects, 218 instances, 75885 triangles, 12 dropped (bush 2, cliff_rock 1, flower 2, grass_clump 3, shore_boulder 1, shore_pebble 2, surface_rock 1), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+DIFF erase: top 630 of 27585 triangles new, farthest 1.83 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body 2219 of 14540 triangles new, farthest 9.02 m from the edit, 524 beyond 3 m, 102 beyond 6 m; decor 0 of 0 triangles new, farthest 0.00 m from the edit, 0 beyond 3 m, 0 beyond 6 m; body beyond 3 m: hanging columns 149 (to 9.0 m), liner (hidden) 37 (to 8.4 m), other 122 (to 5.5 m), rim blocks 200 (to 7.1 m), skirt 16 (to 5.5 m)
+SETTLE erase latency: rebuild 21.8 ms (fields 8.3, top+body+decor 7.9, (top 7.9, body 2.9, decor) 4.5, grass 4.0), settle map and ghosts 1.38 ms (53 x 45 texels, 13.0 x 11.0 m; ghosts: 1302 land triangles, 0 water triangles, 357 grass clumps, 6 items), upload 18.8 ms, total 41.9 ms; 0 placed items
+FRAME art/lookdev/20261127_k5b/diff/diffwhole_erase_t1500.png
+FRAME art/lookdev/20261127_k5b/diff/diffwhole_erase_diff.png

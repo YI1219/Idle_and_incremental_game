@@ -1,6 +1,13 @@
 # 当前上下文
 
-更新：2026-11-25（最新九节为英文，见下）；此前内容更新于2026-11-16。用户最新明确请求优先。原goal已由用户清除，不自动重建。
+更新：2026-11-27（最新十节为英文，见下）；此前内容更新于2026-11-16。用户最新明确请求优先。原goal已由用户清除，不自动重建。
+
+## 2026-11-26/27 sessions: rounds k5 and k5b (English)
+
+Owner direction of 2026-11-26 (the k1 chamfer accepted; not a full art accept; no phase 2): improve the rock massing (not upright stacked polygons), repair visual defects, play the settle motion on removal too, build a demonstration from one mound with the real brush tools, and measure real time on the Mac's display. Owner review of the same evening: unloading blocks changed other blocks and seemed to restart the render, rock walls showed vertical stripes, unloading a raised block stretched the surface over the gap and then flattened it; asked whether the original procedural generation is at fault.
+
+- Round k5 (commits a0de959 to dd9a597 on `runtime-dev`): leaning, folded rim blocks and turned, propped buttress slabs (`body.rs`); the settle motion for removal (ghosts of what leaves) and the brush path (`brush.rs`, plan 2.3 commands with the frozen editor's rules); the construction demonstration (`demo.rs`, `data/demo_mound_build.json`); the parallel rebuild (24 to 29 ms against 63.5 ms on one core); the real-time window (`window.rs`, merged from the k5-present branch: a locked 60 frames a second with even 16.67 ms intervals at the 3600 x 2338 drawable, GPU about 10 to 12 ms, so 120 Hz would need look or resolution decisions). Package `art/lookdev/20261126_k5/` (renders; its compare page was not built before the owner's review).
+- Round k5b (commit 70a6549 and after): edits stay local (world-anchored column and liner grids sized within 8 m, leans from the outline normal, the rim plan kept outside the edit's zone: erase now changes nothing beyond 9 m, was 21 m); unloading retracts (the old volume sinks into the new ground and merges); junctions share one corner (no stripes). The answer to the owner's question 4 (partly yes: the generator was not local for outline edits; the stretched surfaces and the stripes were round k5's own motion and junction pieces) and the evidence are in the package `art/lookdev/20261127_k5b/` (`README.md`, `compare.html`). Not reviewed yet; phase 2 still waits.
 
 ## 2026-11-25 session: rounded rock edges and appear-and-settle (English)
 

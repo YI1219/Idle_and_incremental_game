@@ -1,0 +1,8 @@
+PROPS loaded 91 objects, 224 instances, 76710 triangles, 6 dropped (bush 1, cliff_rock 1, grass_clump 1, shore_boulder 1, shore_pebble 2), 12 moved off walls, 11 stones set on a pond bed, 17 moved to the shore from scene_7301_0
+island: 623 cells, 27 faces, 50 columns, 41747 triangles (top 27761, body 13986, decor 0, props 76710, grass full 430150), built in 24.0 ms (fields 7.6, top+body+decor 10.5, (top 10.5, body 5.4, decor) 5.7, grass 3.7)
+form: 27 faces, widths 2.0 to 5.7 m (spread 0.33), step spread 0.34 m, longest alike run 3 faces / 8.7 m
+EDIT expand   at (4, -8): 12 faces changed, farthest 11.19 m from the stroke, 0 beyond 12 m
+EDIT contract at (14, -3): 7 faces changed, farthest 5.52 m from the stroke, 0 beyond 12 m
+EDIT raise    at (17, 0): 7 faces changed, farthest 5.26 m from the stroke, 0 beyond 12 m
+EDIT ramp     a=(-5.0, -10.0) b=(-11.0, -10.0) width 2: 0 faces changed, farthest 0.00 m from the stroke, 0 beyond 12 m; top surface 1788 of 16465 vertices changed, farthest 2.45 m, 0 beyond 12 m
+EDIT diag     a=(-1.2, 8.3) b=(-4.8, 4.7) width 2: 4 faces changed, farthest 1.24 m from the stroke, 0 beyond 12 m; top surface 1906 of 16822 vertices changed, farthest 2.48 m, 0 beyond 12 m
