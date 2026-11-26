@@ -1,0 +1,42 @@
+{
+  "comment": "Round k5 construction demonstration: one standalone mound, then brush strokes through brush.rs. Paths are pointer positions in island coordinates (x, z), metres. Heights in metres. See demo.rs.",
+  "fps": 30,
+  "hold_start": 1.6,
+  "hold_end": 3.0,
+  "mound": {"centre": [0.0, 0.0], "radius": 3.5, "height": 1.0, "crown_radius": 1.8, "crown_height": 1.5},
+  "camera": [
+    {"t": 0.0, "target": [0.0, 0.8, 0.0], "yaw": 20, "pitch": 30, "dist": 15},
+    {"t": 4.0, "target": [0.5, 0.8, 0.0], "yaw": 24, "pitch": 31, "dist": 19},
+    {"t": 12.0, "target": [0.0, 0.8, -0.5], "yaw": 34, "pitch": 33, "dist": 30},
+    {"t": 24.0, "target": [0.0, 0.8, -1.0], "yaw": 70, "pitch": 34, "dist": 33},
+    {"t": 36.0, "target": [0.0, 0.8, -1.0], "yaw": 125, "pitch": 33, "dist": 33},
+    {"t": 48.0, "target": [0.0, 0.8, -1.0], "yaw": 185, "pitch": 32, "dist": 33},
+    {"t": 62.0, "target": [0.0, 0.8, -1.0], "yaw": 235, "pitch": 30, "dist": 32}
+  ],
+  "steps": [
+    {"tool": "expand", "path": [[3.0, 0.5], [5.5, 0.0], [7.0, 1.5]], "radius": 2.2, "caption": "grow land east (at the mound's lawn height)"},
+    {"tool": "expand", "path": [[-3.5, 2.0], [-6.0, 3.5], [-4.0, 6.0]], "radius": 2.2, "caption": "grow land south-west"},
+    {"tool": "expand", "path": [[0.0, -3.5], [-2.5, -6.5], [2.5, -7.0], [5.0, -4.0]], "radius": 2.2, "caption": "grow land north"},
+    {"tool": "expand", "path": [[2.5, 4.0], [5.5, 4.5]], "radius": 2.0, "caption": "round off the south-east"},
+    {"tool": "raise", "path": [[-1.5, -6.0], [2.5, -6.5]], "radius": 2.0, "caption": "+0.5 m: a soft bank"},
+    {"tool": "raise", "path": [[-1.5, -6.0], [2.5, -6.5]], "radius": 2.0, "caption": "+0.5 m more: the bank becomes a rock wall"},
+    {"tool": "raise", "path": [[6.0, 0.5]], "radius": 1.6, "caption": "a small soft hill"},
+    {"tool": "lower", "path": [[-4.5, 4.0]], "radius": 1.5, "caption": "-0.5 m: a hollow"},
+    {"tool": "lower", "path": [[-4.5, 4.0]], "radius": 1.5, "caption": "-0.5 m more: a walled pit"},
+    {"tool": "water", "path": [[-4.5, 4.0]], "radius": 1.8, "level": 0.5, "caption": "fill the pit: a pond"},
+    {"tool": "lower", "path": [[1.0, -8.2]], "radius": 1.3, "caption": "cut a basin at the north rim"},
+    {"tool": "lower", "path": [[1.0, -8.2]], "radius": 1.3, "caption": "deeper"},
+    {"tool": "water", "path": [[1.0, -8.2]], "radius": 1.4, "level": 1.5, "caption": "fill it: it spills over the rim"},
+    {"tool": "ramp", "path": [[3.5, -1.5], [3.5, -5.5]], "width": 2.0, "drag": 1.0, "caption": "a ramp up to the north terrace"},
+    {"tool": "contract", "path": [[8.0, 2.0], [7.2, 3.2]], "radius": 1.3, "caption": "erase a bay in the east rim"},
+    {"tool": "place", "path": [[-2.0, -6.4], [4.6, -6.2]], "item": {"kind": "tree", "size": 0.55, "yaw": 0.7, "pick": 0}, "after": 1.8, "caption": "two trees on the terrace"},
+    {"tool": "place", "path": [[-3.6, -5.6], [5.6, -5.0], [1.5, 2.5]], "item": {"kind": "bush", "size": 0.9, "yaw": 2.0, "pick": 1}, "caption": "bushes"},
+    {"tool": "place", "path": [[-2.8, 2.9], [-6.0, 5.0], [-5.6, 2.6]], "item": {"kind": "surface_rock", "size": 0.7, "yaw": 1.1, "pick": 0}, "caption": "stones by the pond"},
+    {"tool": "place", "path": [[0.8, 1.0], [-1.0, -1.2], [3.0, 2.2]], "item": {"kind": "flower", "size": 1.0, "yaw": 0.4, "pick": 0}, "caption": "flowers"},
+    {"tool": "place", "path": [[-1.5, 2.0]], "item": {"kind": "lantern", "size": 1.0, "yaw": 0.8, "pick": 0}, "caption": "a stone lantern"},
+    {"tool": "remove", "path": [[1.5, 2.5]], "radius": 0.6, "caption": "take one bush away again"},
+    {"tool": "dry", "path": [[-4.5, 4.0]], "radius": 1.8, "caption": "drain the pond"},
+    {"tool": "water", "path": [[-4.5, 4.0]], "radius": 1.8, "level": 0.5, "caption": "and fill it again"},
+    {"tool": "lower", "path": [[6.0, 0.5]], "radius": 1.6, "caption": "level the small hill away"}
+  ]
+}

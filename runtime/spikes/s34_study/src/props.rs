@@ -276,17 +276,28 @@ struct MeshData {
 
 /// A scene folder opened: its objects, meshes and the material slots it added to the library.
 struct Scene {
-    json: serde_json::Value,
-    bin: Vec<u8>,
-    meshes: Vec<MeshData>,
+    json: std::sync::Arc<serde_json::Value>,
+    bin: std::sync::Arc<Vec<u8>>,
+    meshes: std::sync::Arc<Vec<MeshData>>,
     material_slot: Vec<Option<(u8, u8)>>,
 }
 
+/// Round k5: scenes already read and parsed (an edit rebuilds the props; reading and parsing the
+/// export each time cost several milliseconds of the edit's latency).
+type Parsed = (std::sync::Arc<serde_json::Value>, std::sync::Arc<Vec<u8>>, std::sync::Arc<Vec<MeshData>>);
+static PARSED: std::sync::OnceLock<std::sync::Mutex<BTreeMap<PathBuf, Parsed>>> = std::sync::OnceLock::new();
+
 fn open(dir: &Path, library: &mut Library) -> Scene {
-    let json_path = dir.join("scene.json");
-    let text = std::fs::read_to_string(&json_path).unwrap_or_else(|e| panic!("cannot read {}: {e}", json_path.display()));
-    let json: serde_json::Value = serde_json::from_str(&text).expect("scene json");
-    let bin = std::fs::read(dir.join("scene.bin")).expect("scene.bin");
+    let cache = PARSED.get_or_init(|| std::sync::Mutex::new(BTreeMap::new()));
+    let hit = cache.lock().unwrap().get(dir).cloned();
+    let (json, bin, meshes) = match hit {
+        Some(p) => p,
+        None => {
+            let p = parse(dir);
+            cache.lock().unwrap().insert(dir.to_path_buf(), p.clone());
+            p
+        }
+    };
     if library.texture_dir.is_none() {
         library.texture_dir = Some(dir.join("textures"));
     }
@@ -302,6 +313,14 @@ fn open(dir: &Path, library: &mut Library) -> Scene {
             None => material_slot.push(None),
         }
     }
+    Scene { json, bin, meshes, material_slot }
+}
+
+fn parse(dir: &Path) -> Parsed {
+    let json_path = dir.join("scene.json");
+    let text = std::fs::read_to_string(&json_path).unwrap_or_else(|e| panic!("cannot read {}: {e}", json_path.display()));
+    let json: serde_json::Value = serde_json::from_str(&text).expect("scene json");
+    let bin = std::fs::read(dir.join("scene.bin")).expect("scene.bin");
     let meshes: Vec<MeshData> = json["meshes"]
         .as_array()
         .expect("meshes")
@@ -325,7 +344,7 @@ fn open(dir: &Path, library: &mut Library) -> Scene {
             MeshData { pos, normal, uv, colour, tris, material: m["material"].as_u64().unwrap() as usize }
         })
         .collect();
-    Scene { json, bin, meshes, material_slot }
+    (std::sync::Arc::new(json), std::sync::Arc::new(bin), std::sync::Arc::new(meshes))
 }
 
 fn transform(v: &[f32]) -> (Mat3, Vec3) {

@@ -19,6 +19,7 @@ mod props;
 mod render;
 mod settle;
 mod brush;
+mod demo;
 mod water;
 
 use std::time::Instant;
@@ -66,6 +67,10 @@ struct Args {
     /// Round k2: settle sequences to render (settle.rs), and the times of their frames (seconds).
     settle: Vec<String>,
     settle_times: Vec<f32>,
+    /// Round k5: the construction demonstration script (demo.rs), and whether to render only its
+    /// before and after stills (from the views named in `--views`).
+    demo: Option<String>,
+    demo_stills: bool,
 }
 
 fn parse_args() -> Args {
@@ -99,6 +104,8 @@ fn parse_args() -> Args {
         synthetic_ramps: false,
         settle: Vec::new(),
         settle_times: Vec::new(),
+        demo: None,
+        demo_stills: false,
     };
     for arg in std::env::args().skip(1) {
         let (key, value) = arg.split_once('=').unwrap_or((arg.as_str(), ""));
@@ -139,6 +146,8 @@ fn parse_args() -> Args {
             }
             "--save-layout" => args.save_layout = Some(value.to_string()),
             "--synthetic-ramps" => args.synthetic_ramps = true,
+            "--demo" => args.demo = Some(value.to_string()),
+            "--demo-stills" => args.demo_stills = true,
             "--settle" => args.settle = value.split(',').map(|s| s.to_string()).collect(),
             "--settle-times" => args.settle_times = value.split(',').map(|s| s.trim().parse().expect("--settle-times=t,t,...")).collect(),
             other => panic!("unknown argument {other}"),
@@ -795,28 +804,47 @@ fn build_island(cells: &Cells, kind: body::Kind, seed: u32, origin: Vec3, courty
             z += 0.25;
         }
     }
-    let top = field::build_top(&field, &field::TopColours::default(), seed);
-    lap("top", &mut timings);
-    let outlines = field::outlines(cells, &field, 0.5);
-    let body = body::build_body(kind, &field, &outlines, &body::StoneColours::default(), seed, 0.5);
-    lap("body", &mut timings);
+    // Round k5: the top surface, the body and the props depend only on the field: built at once
+    // (each stage's own time is reported; "parallel" is the wall time of the three together).
     let colours = decor::DecorColours::default();
     let mut prop_triangles = 0;
     let mut clear = Vec::new();
-    let things = match props {
-        Some(dir) => {
-            // A layout's own scene is loaded where it stood; an island without one (synthetic) gets
-            // that scene's props scattered over it.
-            let report = if courtyard { props::load_with(dir, cells, &field, origin, library, items) } else { props::scatter(dir, cells, &field, origin, seed, library) };
-            println!("{}", report.line(dir));
-            prop_triangles = report.triangles;
-            clear = report.clear;
-            Mesh::default()
-        }
-        None if courtyard => decor::courtyard(cells, &field, &colours, seed, &mut clear),
-        None => decor::scatter(cells, &field, &colours, seed, &mut clear),
-    };
-    lap("decor", &mut timings);
+    let mut decor_ms = 0.0;
+    let mut things = Mesh::default();
+    let ((top, top_ms), (body, body_ms)) = std::thread::scope(|s| {
+        let top = s.spawn(|| {
+            let t = Instant::now();
+            let top = field::build_top(&field, &field::TopColours::default(), seed);
+            (top, t.elapsed().as_secs_f64() * 1000.0)
+        });
+        let body = s.spawn(|| {
+            let t = Instant::now();
+            let outlines = field::outlines(cells, &field, 0.5);
+            let body = body::build_body(kind, &field, &outlines, &body::StoneColours::default(), seed, 0.5);
+            (body, t.elapsed().as_secs_f64() * 1000.0)
+        });
+        // The props on this thread meanwhile.
+        let decor_clock = Instant::now();
+        things = match props {
+            Some(dir) => {
+                // A layout's own scene is loaded where it stood; an island without one (synthetic) gets
+                // that scene's props scattered over it.
+                let report = if courtyard { props::load_with(dir, cells, &field, origin, library, items) } else { props::scatter(dir, cells, &field, origin, seed, library) };
+                println!("{}", report.line(dir));
+                prop_triangles = report.triangles;
+                clear = report.clear;
+                Mesh::default()
+            }
+            None if courtyard => decor::courtyard(cells, &field, &colours, seed, &mut clear),
+            None => decor::scatter(cells, &field, &colours, seed, &mut clear),
+        };
+        decor_ms = decor_clock.elapsed().as_secs_f64() * 1000.0;
+        (top.join().expect("top"), body.join().expect("body"))
+    });
+    lap("top+body+decor", &mut timings);
+    timings.push(("(top", top_ms));
+    timings.push(("body", body_ms));
+    timings.push(("decor)", decor_ms));
     let grass = grass::build(&field, &top.rim, &top.brows, &body.fringe, &clear, seed, origin, field::TopColours::default().lawn);
     lap("grass", &mut timings);
     parts.push(("top", top.mesh.triangles()));
@@ -1115,6 +1143,50 @@ fn synthetic_ramps(cells: &Cells) -> Vec<[f32; 5]> {
 
 fn main() {
     let args = parse_args();
+    if let Some(script) = &args.demo {
+        // Round k5: the construction demonstration (demo.rs).
+        std::fs::create_dir_all(&args.out).expect("output folder");
+        let (mut light, sun_dir, hour) = light_set(&args.hour);
+        light[19][0] = if args.ssr { 1.0 } else { 0.0 };
+        let props = match args.props.as_str() {
+            "auto" | "none" => std::path::PathBuf::from("runtime/data/reference/scene_7301_0"),
+            dir => dir.into(),
+        };
+        // Stills: named views given as "name:tx,ty,tz,yaw,pitch,dist;..." in S34_DEMO_VIEWS.
+        let stills = args.demo_stills.then(|| {
+            std::env::var("S34_DEMO_VIEWS")
+                .unwrap_or_else(|_| "wide:0,0.5,0,25,32,30;low:0,0,0,140,18,26;top:0,0,0,250,55,30".into())
+                .split(';')
+                .map(|item| {
+                    let (name, spec) = item.split_once(':').expect("name:tx,ty,tz,yaw,pitch,dist");
+                    let v: Vec<f32> = spec.split(',').map(|x| x.trim().parse().unwrap()).collect();
+                    let (y, p) = (v[3].to_radians(), v[4].to_radians());
+                    let target = Vec3::new(v[0], v[1], v[2]);
+                    (name.to_string(), Camera { eye: target + Vec3::new(y.sin() * p.cos(), p.sin(), y.cos() * p.cos()) * v[5], target, fov_deg: 31.0 })
+                })
+                .collect::<Vec<_>>()
+        });
+        let mut renderer = Renderer::new(args.width, args.height, args.scale, args.fxaa);
+        let settings = demo::Settings {
+            script,
+            props,
+            body: args.body,
+            seed: args.seed,
+            out: &args.out,
+            tag: &args.tag,
+            light,
+            sun_dir,
+            hour,
+            ssao: args.ssao,
+            ssao_blur: args.ssao_blur,
+            width: args.width,
+            height: args.height,
+            grass: args.grass,
+            stills,
+        };
+        demo::run(&settings, &mut renderer);
+        return;
+    }
     if !args.settle.is_empty() {
         // Round k2: the appear-and-settle sequences (settle.rs), on the given layout.
         let layout = args.layout.clone().expect("--settle needs --layout (the sequences are placed on layout 7301)");

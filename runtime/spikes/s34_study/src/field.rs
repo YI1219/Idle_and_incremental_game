@@ -798,29 +798,54 @@ fn gaussian(grid: &[f32], nx: usize, nz: usize, sigma_m: f32) -> Vec<f32> {
     let radius = (sigma * 3.0).ceil() as i32;
     let kernel: Vec<f32> = (-radius..=radius).map(|i| (-(i * i) as f32 / (2.0 * sigma * sigma)).exp()).collect();
     let total: f32 = kernel.iter().sum();
-    let mut pass = vec![0.0; grid.len()];
-    for z in 0..nz {
-        for x in 0..nx {
-            let mut sum = 0.0;
-            for (k, weight) in kernel.iter().enumerate() {
-                let sx = (x as i32 + k as i32 - radius).clamp(0, nx as i32 - 1) as usize;
-                sum += grid[z * nx + sx] * weight;
-            }
-            pass[z * nx + x] = sum / total;
-        }
+    // Round k5: both passes on all cores, a row per task (same sums in the same order).
+    let pass: Vec<f32> = par_map(nz, |z| {
+        (0..nx)
+            .map(|x| {
+                let mut sum = 0.0;
+                for (k, weight) in kernel.iter().enumerate() {
+                    let sx = (x as i32 + k as i32 - radius).clamp(0, nx as i32 - 1) as usize;
+                    sum += grid[z * nx + sx] * weight;
+                }
+                sum / total
+            })
+            .collect::<Vec<f32>>()
+    })
+    .into_iter()
+    .flatten()
+    .collect();
+    par_map(nz, |z| {
+        (0..nx)
+            .map(|x| {
+                let mut sum = 0.0;
+                for (k, weight) in kernel.iter().enumerate() {
+                    let sz = (z as i32 + k as i32 - radius).clamp(0, nz as i32 - 1) as usize;
+                    sum += pass[sz * nx + x] * weight;
+                }
+                sum / total
+            })
+            .collect::<Vec<f32>>()
+    })
+    .into_iter()
+    .flatten()
+    .collect()
+}
+
+/// Round k5: bands of rows of the top surface built at once.
+const BANDS: usize = 16;
+
+/// Round k5: `f` over 0..n on scoped threads (contiguous chunks, one per core), results in order.
+pub(crate) fn par_map<T: Send>(n: usize, f: impl Fn(usize) -> T + Sync) -> Vec<T> {
+    let threads = std::thread::available_parallelism().map_or(4, |c| c.get()).clamp(1, 12);
+    if n < 2 || threads == 1 || std::env::var("S34_SERIAL").is_ok() {
+        return (0..n).map(&f).collect();
     }
-    let mut out = vec![0.0; grid.len()];
-    for z in 0..nz {
-        for x in 0..nx {
-            let mut sum = 0.0;
-            for (k, weight) in kernel.iter().enumerate() {
-                let sz = (z as i32 + k as i32 - radius).clamp(0, nz as i32 - 1) as usize;
-                sum += pass[sz * nx + x] * weight;
-            }
-            out[z * nx + x] = sum / total;
-        }
-    }
-    out
+    let chunk = n.div_ceil(threads);
+    let f = &f;
+    std::thread::scope(|s| {
+        let handles: Vec<_> = (0..threads).map(|t| s.spawn(move || ((t * chunk).min(n)..((t + 1) * chunk).min(n)).map(f).collect::<Vec<T>>())).collect();
+        handles.into_iter().flat_map(|h| h.join().expect("worker")).collect()
+    })
 }
 
 impl Field {
@@ -921,12 +946,19 @@ impl Field {
         };
         field.step_sloped = field.steps.iter().map(|s| field.slope_near.contains(&s.high_cell) || field.slope_near.contains(&s.low_cell)).collect();
         field.spills = crate::water::junctions(cells).into_iter().map(|s| field.place_spill(s)).collect();
-        for j in 0..nz {
-            for i in 0..nx {
-                let p = field.point(i, j);
-                let s = j * nx + i;
-                field.height[s] = field.surface(p);
-                field.near_wall[s] = field.nearest_step(p).is_some_and(|(k, _, d)| d < 0.4 && field.steps[k].wall());
+        // Round k5: on all cores, a row per task.
+        let rows = par_map(nz, |j| {
+            (0..nx)
+                .map(|i| {
+                    let p = field.point(i, j);
+                    (field.surface(p), field.nearest_step(p).is_some_and(|(k, _, d)| d < 0.4 && field.steps[k].wall()))
+                })
+                .collect::<Vec<(f32, bool)>>()
+        });
+        for (j, row) in rows.into_iter().enumerate() {
+            for (i, (h, w)) in row.into_iter().enumerate() {
+                field.height[j * nx + i] = h;
+                field.near_wall[j * nx + i] = w;
             }
         }
         field
@@ -1435,8 +1467,16 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
         (Vec3::new(p.x, h, p.y), normal, colour, Paint::new(family).sky(sky).line(line).strokes(if stone > 0.5 { 0.6 } else { 0.25 }).id(1))
     };
     // Every grid sample inside the outline is a corner of up to four cells: made once.
-    let cache: Vec<Option<TopVertex>> = (0..field.nx * field.nz).map(|s| if field.land1[s] >= 0.5 { Some(surface(field.point(s % field.nx, s / field.nx), None)) } else { None }).collect();
-    for j in 0..field.nz - 1 {
+    // Round k5: made on all cores, a row of samples per task.
+    let cache: Vec<Option<TopVertex>> = par_map(field.nz, |j| (0..field.nx).map(|i| { let s = j * field.nx + i; if field.land1[s] >= 0.5 { Some(surface(field.point(i, j), None)) } else { None } }).collect::<Vec<_>>()).into_iter().flatten().collect();
+    // Round k5: the grid is cut in bands of rows built on all cores, each with its own mesh, rim and
+    // brows, joined in order afterwards (the same pieces in the same order as one pass made).
+    let rows = field.nz - 1;
+    let bands = par_map(BANDS, |band| {
+    let mut mesh = Mesh::default();
+    let mut rim = Vec::new();
+    let mut brows = Vec::new();
+    for j in (band * rows / BANDS)..((band + 1) * rows / BANDS) {
         for i in 0..field.nx - 1 {
             let corners = [(i, j), (i, j + 1), (i + 1, j + 1), (i + 1, j)];
             let vertex = |p: Vec2, side: Option<Side>| -> TopVertex {
@@ -1617,6 +1657,13 @@ pub fn build_top(field: &Field, colours: &TopColours, seed: u32) -> Top {
                 rim.push((Vec3::new(a.x, field.height_at(a), a.y), Vec3::new(b.x, field.height_at(b), b.y)));
             }
         }
+    }
+    (mesh, rim, brows)
+    });
+    for (m, r, b) in bands {
+        mesh.append(&m);
+        rim.extend(r);
+        brows.extend(b);
     }
     // The lip (round r4): the lawn rolls over the outline by a small radius in its own colour, its
     // light kept close to the lawn's (normals mostly up), and under the roll a short band of rock
